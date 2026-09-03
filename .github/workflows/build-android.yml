@@ -72,16 +72,28 @@ jobs:
           tail = lines[-30:]
           if tail:
               emit('TAIL30', '\n'.join(tail))
-          # 2) 错误特征行聚类（取最后若干簇，每簇带前 6 行上下文）
-          pats = re.compile(r'(error|Error|fatal|FAILED|Command failed|Error code|Killed|No space|Traceback|make\[\d|clang:|internal compiler|out of memory|SIGKILL)', re.I)
-          idxs = [i for i, l in enumerate(lines) if pats.search(l)]
-          clusters = []
-          for i in idxs[-60:]:
-              if clusters and i - clusters[-1][0] <= 12:
-                  continue
-              clusters.append((i, '\n'.join(lines[max(0, i - 6):i + 3])))
-          for i, block in clusters[-7:]:
-              emit('CLUSTER@L%d' % (i + 1), block)
+          # 2) 精确抓 clang 诊断行（error:/fatal error:；编译命令行只有 -Werror= 无 error: 冒号，天然免疫）
+          def clip(l):
+              return l if len(l) <= 300 else l[:300] + '...[TRUNC]'
+          err_re = re.compile(r'\berror:', re.I)
+          err_idxs = [i for i, l in enumerate(lines) if err_re.search(l)]
+          groups = []
+          for i in err_idxs:
+              if groups and i - groups[-1][-1] <= 20:
+                  groups[-1].append(i)
+              else:
+                  groups.append([i])
+          for gi, g in enumerate(groups[-5:]):
+              lo = max(0, g[0] - 8)
+              hi = min(len(lines), g[-1] + 3)
+              emit('ERRBLK%d@L%d' % (gi + 1, g[0] + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
+          # 3) 总结性错误行兜底（make Error / errors generated / OOM / Traceback）
+          sum_re = re.compile(r'(errors? generated|make(?:\[\d+\])?: \*\*\* .*Error \d+|# Error code:|Command failed|Killed|No space left|out of memory|SIGKILL|Traceback)', re.I)
+          sidxs = [i for i, l in enumerate(lines) if sum_re.search(l)]
+          for i in sidxs[-3:]:
+              lo = max(0, i - 4)
+              hi = min(len(lines), i + 2)
+              emit('SUMM@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
           PYEOF
             exit $rc
           fi
