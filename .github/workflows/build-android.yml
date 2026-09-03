@@ -1,0 +1,44 @@
+name: build-android
+# 叙事工坊 · Android 版 APK 构建（Kivy/KivyMD 壳 + 复用 desktop core/seed）。
+# 前置：android/app/{core,seed} 为 .gitignore 生成物，必须先在 CI 中执行
+#   scripts/sync_android.sh 从仓库根单一事实源同步，再跑逻辑冒烟自测。
+# 产出：推送 v* 标签时自动发布 APK 到 GitHub Releases（与 build-desktop 同模式）。
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: Build Android APK (KivyMD)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 同步共享源码与种子数据（core + seed 生成到 android/app/）
+        run: bash scripts/sync_android.sh
+
+      - name: 控制器逻辑冒烟（纯 python3 全链路自测，快速失败门禁）
+        run: python3 scripts/selftest_android.py
+
+      - name: Build with Buildozer（spec 位于 android/）
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          workdir: android
+          buildozer_version: master
+
+      - name: 上传 APK（Artifacts，Actions 页可直接下载）
+        uses: actions/upload-artifact@v4
+        with:
+          name: narrativeforge-android-apk
+          path: ${{ steps.buildozer.outputs.filename }}
+
+      - name: 发布到 GitHub Releases（仅推送 v* 标签时触发）
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          allowUpdates: true
+          files: ${{ steps.buildozer.outputs.filename }}
