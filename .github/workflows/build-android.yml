@@ -64,7 +64,8 @@ jobs:
         #     setuptools）；6b66944 的流程只装了 Cython 从未装 setuptools，导致
         #     BackendUnavailable。预装后 PEP517 后端即可 import。
         #   ③ android/p4a_noisolation_wheel.patch：PyProjectRecipe.build_arch 的
-        #     `python -m build --wheel` 改为 --no-isolation + packages 补 wheel。
+        #     `python -m build --wheel` 改为 --no-isolation --skip-dependency-check
+        #     + packages 补 wheel。
         #     实证（937fb6d diag 双通道）：hostpython3 site_dir 已有 setuptools84/
         #     Cython3.1.8（install_hostpython_prerequisites --target 装成），且
         #     PYTHONPATH=site_dir 在 build frontend 生效（pyproject_hooks 从 site_dir
@@ -72,6 +73,13 @@ jobs:
         #     venv 的 pip 装 backend requires 无任何输出，setuptools.build_meta 永远
         #     import 不到 → pyjnius-sdl2 BackendUnavailable）。--no-isolation 直接用
         #     当前 env（PYTHONPATH=site_dir）跑 backend，import 即成功。
+        #     --skip-dependency-check（v4）：`python -m build` 的防御性预检用
+        #     importlib.metadata 扫 dist-info 判 pyproject requires 版本，读到
+        #     pyjnius 时期装入的 Cython-3.1.8.dist-info 残留（pip --upgrade
+        #     --target 覆盖降级不删旧 dist-info）报 found 3.1.8；且 Kivy 2.3.0
+        #     setup.cfg cython_max=3.0.0 与 hostpython_prerequisites 装的 3.0.12
+        #     天然错配 → Unmet dependencies 提前 exit 1（后端其实已正常跑到
+        #     egg_info/Building extensions）。跳过该预检不损失安全性。
         # spec 的 p4a.source_dir 指向本目录：source_dir 模式下 buildozer 跳过全部
         # git 操作（不 clone/reset/clean），直接用这份已打补丁的源码。
         run: |
@@ -88,14 +96,15 @@ jobs:
           # 补丁②：PEP517 构建 venv 预装 setuptools+wheel（kivymd sdist 构建修复）
           git -C "$P4A_DIR" apply --check "$GITHUB_WORKSPACE/android/p4a_pep517_setuptools.patch" \
             && git -C "$P4A_DIR" apply "$GITHUB_WORKSPACE/android/p4a_pep517_setuptools.patch"
-          # 补丁③：PyProjectRecipe wheel 构建改 --no-isolation + 补装 wheel
-          # （pyjnius-sdl2 等 PyProjectRecipe 的 BackendUnavailable 修复）
+          # 补丁③：PyProjectRecipe wheel 构建改 --no-isolation --skip-dependency-check
+          # + 补装 wheel（BackendUnavailable + build 预检 dist-info 误报修复）
           git -C "$P4A_DIR" apply --check "$GITHUB_WORKSPACE/android/p4a_noisolation_wheel.patch" \
             && git -C "$P4A_DIR" apply "$GITHUB_WORKSPACE/android/p4a_noisolation_wheel.patch"
           echo "patched p4a ready: $P4A_DIR @ $(git -C "$P4A_DIR" rev-parse --short HEAD)"
           grep -n 'ac_cv_func_getgrgid_r=no' "$P4A_DIR/pythonforandroid/recipes/python3/__init__.py" | head -3
           grep -n 'setuptools & wheel for PEP517' "$P4A_DIR/pythonforandroid/build.py" | head -3
           grep -n -- '--no-isolation' "$P4A_DIR/pythonforandroid/recipe.py" | head -3
+          grep -n -- '--skip-dependency-check' "$P4A_DIR/pythonforandroid/recipe.py" | head -3
 
       - name: Buildozer 构建 debug APK（spec 位于 android/）
         working-directory: android

@@ -1,6 +1,8 @@
---- a/pythonforandroid/recipe.py	2026-09-03 14:44:29.756593187 +0000
-+++ b/pythonforandroid/recipe.py	2026-09-03 14:44:25.888593187 +0000
-@@ -1313,7 +1313,7 @@
+diff --git a/pythonforandroid/recipe.py b/pythonforandroid/recipe.py
+index 8808ffc..c64e459 100644
+--- a/pythonforandroid/recipe.py
++++ b/pythonforandroid/recipe.py
+@@ -1313,7 +1313,7 @@ class PyProjectRecipe(PythonRecipe):
              return
  
          self.install_hostpython_prerequisites(
@@ -9,7 +11,7 @@
          )
          self.patch_shebangs(self._host_recipe.site_bin, self.real_hostpython_location)
  
-@@ -1324,9 +1324,31 @@
+@@ -1324,9 +1324,47 @@ class PyProjectRecipe(PythonRecipe):
          # copy hostpython to built python to ensure correct selection of libs and includes
          shprint(sh.cp, self.real_hostpython_location, self.ctx.python_recipe.python_exe)
  
@@ -25,6 +27,21 @@
 +        # wheel (see packages= above). Sanity-probe that import below so a
 +        # regression shows up as a clear message instead of a nested
 +        # BackendUnavailable.
++        #
++        # --skip-dependency-check: `python -m build` (PyPA build >= 0.10)
++        # runs a defensive pre-check of the pyproject [build-system]
++        # requires against sys.executable via importlib.metadata. With
++        # --no-isolation that check is redundant (we already run in the
++        # env whose PYTHONPATH/site_dir we just probed) and on p4a it
++        # misfires: importlib.metadata reads the FIRST Cython*.dist-info
++        # in site_dir, and earlier recipes' Cython 3.1.8 install left its
++        # dist-info behind after pip --upgrade --target downgraded the
++        # .py files to 3.0.12 -- so the pre-check reports "found 3.1.8".
++        # Kivy 2.3.0 also declares cython<=3.0.0 (setup.cfg cython_max)
++        # while hostpython_prerequisites installs 3.0.12 for Kivy 2.3.1,
++        # so wanted/found can never match -- yet 3.0.12 builds Kivy fine
++        # ("untested" warning only; egg_info/Building extensions proceed).
++        # Skipping the check loses no real safety and unblocks the build.
 +        shprint(
 +            sh.Command(self.ctx.python_recipe.python_exe),
 +            "-c",
@@ -38,6 +55,7 @@
              "-m",
              "build",
 +            "--no-isolation",
++            "--skip-dependency-check",
              "--wheel",
              "--config-setting",
              "builddir={}".format(sub_build_dir),
