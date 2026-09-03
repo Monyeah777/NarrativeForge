@@ -1,0 +1,779 @@
+
+===== TAIL250 =====
+ warning: kivy/core/window/window_attrs.pxi:3:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_attrs.pxi:14:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_attrs.pxi:24:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_info.pxd:5:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_info.pxd:11:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_info.pxd:16:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_info.pyx:3:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_info.pyx:18:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/window_info.pyx:28:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+[INFO   ] building 'kivy.core.window.window_info' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/window_info.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/window_info.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/window_info.o -o build/lib.linux-x86_64-cpython-311/kivy/core/window/window_info.cpython-311-x86_64-linux-gnu.so -lm
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/tesselator.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/tesselator.pyx
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/cgl_backend/cgl_debug.o -o build/lib.linux-x86_64-cpython-311/kivy/graphics/cgl_backend/cgl_debug.cpython-311-x86_64-linux-gnu.so -lm
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/text/text_layout.o -o build/lib.linux-x86_64-cpython-311/kivy/core/text/text_layout.cpython-311-x86_64-linux-gnu.so -lm
+[INFO   ] building 'kivy.graphics.tesselator' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/tesselator.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/tesselator.o
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/boxshadow.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/boxshadow.pyx
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/vertex_instructions.o -o build/lib.linux-x86_64-cpython-311/kivy/graphics/vertex_instructions.cpython-311-x86_64-linux-gnu.so -lm
+ warning: kivy/graphics/instructions.pxd:30:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/bucketalloc.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/bucketalloc.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/dict.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/dict.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/geom.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/geom.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/mesh.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/mesh.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/priorityq.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/priorityq.o
+[INFO   ] building 'kivy.graphics.boxshadow' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/boxshadow.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/boxshadow.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/sweep.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/sweep.o
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/_window_sdl2.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/_window_sdl2.pyx
+ warning: kivy/core/window/../../../kivy/lib/sdl2.pxi:475:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -Ikivy/lib/libtess2/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/tess.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/tess.o
+ warning: kivy/core/window/../../../kivy/lib/../core/window/window_attrs.pxi:3:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/../../../kivy/lib/../core/window/window_attrs.pxi:14:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/../../../kivy/lib/../core/window/window_attrs.pxi:24:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/../../../kivy/lib/sdl2.pxi:1060:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/../../../kivy/lib/sdl2.pxi:1068:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/../../../kivy/lib/sdl2.pxi:1077:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/_window_sdl2.pyx:18:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/_window_sdl2.pyx:21:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/_window_sdl2.pyx:24:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/tesselator.o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/bucketalloc.o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/dict.o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/geom.o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/mesh.o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/priorityq.o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/sweep.o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/lib/libtess2/Source/tess.o -o build/lib.linux-x86_64-cpython-311/kivy/graphics/tesselator.cpython-311-x86_64-linux-gnu.so -lm
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/boxshadow.o -o build/lib.linux-x86_64-cpython-311/kivy/graphics/boxshadow.cpython-311-x86_64-linux-gnu.so -lm
+ warning: kivy/core/window/_window_sdl2.pyx:422:8: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/_window_sdl2.pyx:432:8: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/window/_window_sdl2.pyx:441:8: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/text/_text_sdl2.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/text/_text_sdl2.pyx
+ warning: kivy/core/text/../../lib/sdl2.pxi:475:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ performance hint: kivy/core/window/_window_sdl2.pyx:822:5: Exception check on 'custom_titlebar_handler_callback' will always require the GIL to be acquired. Declare 'custom_titlebar_handler_callback' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+ warning: kivy/core/text/../../lib/../core/window/window_attrs.pxi:3:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/text/../../lib/../core/window/window_attrs.pxi:14:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/text/../../lib/../core/window/window_attrs.pxi:24:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/text/../../lib/sdl2.pxi:1060:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/text/../../lib/sdl2.pxi:1068:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/text/../../lib/sdl2.pxi:1077:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/image/_img_sdl2.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/image/_img_sdl2.pyx
+[INFO   ] building 'kivy.core.text._text_sdl2' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/text/_text_sdl2.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/text/_text_sdl2.o
+[INFO   ] building 'kivy.core.window._window_sdl2' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/_window_sdl2.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/_window_sdl2.o
+ warning: kivy/core/image/../../lib/sdl2.pxi:475:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/image/../../lib/../core/window/window_attrs.pxi:3:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/image/../../lib/../core/window/window_attrs.pxi:14:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/image/../../lib/../core/window/window_attrs.pxi:24:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/image/../../lib/sdl2.pxi:1060:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/image/../../lib/sdl2.pxi:1068:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/image/../../lib/sdl2.pxi:1077:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+[INFO   ] building 'kivy.core.image._img_sdl2' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/image/_img_sdl2.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/image/_img_sdl2.o
+/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/_window_sdl2.c:8730:22: warning: incompatible pointer types passing 'SDL_EventFilter *' (aka 'int (**)(void *, union SDL_Event *)') to parameter of type 'SDL_EventFilter' (aka 'int (*)(void *, union SDL_Event *)'); dereference with * [-Wincompatible-pointer-types]
+ 8730 |   SDL_SetEventFilter(((SDL_EventFilter *)__pyx_f_4kivy_4core_6window_12_window_sdl2__event_filter), ((void *)__pyx_v_self));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                      *
+/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include/SDL_events.h:1017:65: note: passing argument to parameter 'filter' here
+ 1017 | extern DECLSPEC void SDLCALL SDL_SetEventFilter(SDL_EventFilter filter,
+      |                                                                 ^
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/svg.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/svg.pyx
+ warning: kivy/graphics/instructions.pxd:30:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/text/_text_sdl2.o -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer -o build/lib.linux-x86_64-cpython-311/kivy/core/text/_text_sdl2.cpython-311-x86_64-linux-gnu.so -lm
+1 warning generated.
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/window/_window_sdl2.o -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer -o build/lib.linux-x86_64-cpython-311/kivy/core/window/_window_sdl2.cpython-311-x86_64-linux-gnu.so -lm
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/image/_img_sdl2.o -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer -o build/lib.linux-x86_64-cpython-311/kivy/core/image/_img_sdl2.cpython-311-x86_64-linux-gnu.so -lm
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/audio/audio_sdl2.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/audio/audio_sdl2.pyx
+Compiling /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/clipboard/_clipboard_sdl2.pyx because it changed.
+[1/1] Cythonizing /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/clipboard/_clipboard_sdl2.pyx
+ warning: kivy/core/clipboard/../../lib/sdl2.pxi:475:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/clipboard/../../lib/../core/window/window_attrs.pxi:3:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/audio/../../../kivy/lib/sdl2.pxi:475:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/clipboard/../../lib/../core/window/window_attrs.pxi:14:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/clipboard/../../lib/../core/window/window_attrs.pxi:24:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/clipboard/../../lib/sdl2.pxi:1060:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/clipboard/../../lib/sdl2.pxi:1068:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/clipboard/../../lib/sdl2.pxi:1077:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/audio/../../../kivy/lib/../core/window/window_attrs.pxi:3:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/audio/../../../kivy/lib/../core/window/window_attrs.pxi:14:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/audio/../../../kivy/lib/../core/window/window_attrs.pxi:24:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/audio/../../../kivy/lib/sdl2.pxi:1060:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/audio/../../../kivy/lib/sdl2.pxi:1068:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+ warning: kivy/core/audio/../../../kivy/lib/sdl2.pxi:1077:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+[INFO   ] building 'kivy.core.clipboard._clipboard_sdl2' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/clipboard/_clipboard_sdl2.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/clipboard/_clipboard_sdl2.o
+[INFO   ] building 'kivy.core.audio.audio_sdl2' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/audio/audio_sdl2.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/audio/audio_sdl2.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/clipboard/_clipboard_sdl2.o -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer -o build/lib.linux-x86_64-cpython-311/kivy/core/clipboard/_clipboard_sdl2.cpython-311-x86_64-linux-gnu.so -lm
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/core/audio/audio_sdl2.o -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer -o build/lib.linux-x86_64-cpython-311/kivy/core/audio/audio_sdl2.cpython-311-x86_64-linux-gnu.so -lm
+[INFO   ] building 'kivy.graphics.svg' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -c /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/svg.c -o build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/svg.o
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build -lpython3.11 -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge/arm64-v8a -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/libs_collections/narrativeforge -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/obj/local/arm64-v8a -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include -DANDROID -I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/svg.o -o build/lib.linux-x86_64-cpython-311/kivy/graphics/svg.cpython-311-x86_64-linux-gnu.so -lm
+ error: Command '['/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang', '-target', 'aarch64-linux-android24', '-fomit-frame-pointer', '-march=armv8-a', '-fPIC', '-target', 'aarch64-linux-android24', '-fomit-frame-pointer', '-march=armv8-a', '-fPIC', '-I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include', '-DANDROID', '-I/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include', '-I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/Include', '-fPIC', '-I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/include', '-INOTNONE/usr/include', '-I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Include', '-I/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build', '-c', '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/cgl_backend/cgl_gl.c', '-o', 'build/temp.linux-x86_64-cpython-311/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/cgl_backend/cgl_gl.o']' returned non-zero exit status 1.
+
+[93mTIP[0m pass --env-dir and --sdist-extract-dir to keep the build environment and sources, then see https://build.pypa.io/en/stable/how-to/troubleshooting.html#debug-a-failed-build for help debugging a failed build
+[91mERROR[0m Backend subprocess exited when trying to invoke build_wheel
+
+
+  STDERR:
+
+# Command failed: ('/usr/bin/python3', '-m', 'pythonforandroid.toolchain', 'create', '--dist_name=narrativeforge', '--bootstrap=sdl2', '--requirements=python3,kivy==2.3.0,kivymd==1.2.0,plyer', '--arch=arm64-v8a', '--copy-libs', '--color=always', '--storage-dir=/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a', '--ndk-api=24', '--ignore-setup-py', '--debug')
+# Error code: 1
+# ENVIRONMENT:
+#     SHELL = '/bin/bash'
+#     SELENIUM_JAR_PATH = '/usr/share/java/selenium-server.jar'
+#     CONDA = '/usr/share/miniconda'
+#     GITHUB_WORKSPACE = '/home/runner/work/NarrativeForge/NarrativeForge'
+#     JAVA_HOME_11_X64 = '/usr/lib/jvm/temurin-11-jdk-amd64'
+#     JAVA_HOME_25_X64 = '/usr/lib/jvm/temurin-25-jdk-amd64'
+#     GITHUB_PATH = '/home/runner/work/_temp/_runner_file_commands/add_path_5c27e76f-4be0-47ae-8234-ca918e21c45a'
+#     GITHUB_ACTION = '__run_6'
+#     JAVA_HOME = '/usr/lib/jvm/temurin-17-jdk-amd64'
+#     GITHUB_RUN_NUMBER = '19'
+#     RUNNER_NAME = 'GitHub Actions 1000000087'
+#     GRADLE_HOME = '/usr/share/gradle-9.7.1'
+#     GITHUB_REPOSITORY_OWNER_ID = '315313170'
+#     ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE = '/opt/actionarchivecache'
+#     XDG_CONFIG_HOME = '/home/runner/.config'
+#     MEMORY_PRESSURE_WRITE = 'c29tZSAyMDAwMDAgMjAwMDAwMAA='
+#     DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
+#     ANT_HOME = '/usr/share/ant'
+#     JAVA_HOME_8_X64 = '/usr/lib/jvm/temurin-8-jdk-amd64'
+#     GITHUB_TRIGGERING_ACTOR = 'Monyeah777'
+#     GITHUB_REF_TYPE = 'branch'
+#     HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS = '3650'
+#     ACTIONS_RUNNER_RETURN_JOB_RESULT_FOR_HOSTED = '1'
+#     ANDROID_NDK = '/usr/local/lib/android/sdk/ndk/27.3.13750724'
+#     BOOTSTRAP_HASKELL_NONINTERACTIVE = '1'
+#     PWD = '/home/runner/work/NarrativeForge/NarrativeForge/android'
+#     PIPX_BIN_DIR = '/opt/pipx_bin'
+#     LOGNAME = 'runner'
+#     GITHUB_ARTIFACTS_LIST = '/home/runner/work/_temp/_runner_file_commands/artifacts_list_5c27e76f-4be0-47ae-8234-ca918e21c45a'
+#     GITHUB_REPOSITORY_ID = '1355521137'
+#     GITHUB_ACTIONS = 'true'
+#     USE_BAZEL_FALLBACK_VERSION = 'silent:'
+#     ANDROID_NDK_LATEST_HOME = '/usr/local/lib/android/sdk/ndk/29.0.14206865'
+#     SYSTEMD_EXEC_PID = '2031'
+#     GITHUB_SHA = 'aed20ce086c172e5f11313c0dc6b82020e54b474'
+#     GITHUB_WORKFLOW_REF = 'Monyeah777/NarrativeForge/.github/workflows/build-android.yml@refs/heads/main'
+#     POWERSHELL_DISTRIBUTION_CHANNEL = 'GitHub-Actions-Linux'
+#     RUNNER_ENVIRONMENT = 'github-hosted'
+#     DOTNET_MULTILEVEL_LOOKUP = '0'
+#     GITHUB_REF = 'refs/heads/main'
+#     RUNNER_OS = 'Linux'
+#     GITHUB_REF_PROTECTED = 'false'
+#     HOME = '/home/runner'
+#     GITHUB_API_URL = 'https://api.github.com'
+#     LANG = 'C.UTF-8'
+#     GOROOT_1_25_X64 = '/opt/hostedtoolcache/go/1.25.14/x64'
+#     RUNNER_TRACKING_ID = 'github_b5c71358-9151-484c-b08e-1fbff4f6a305'
+#     RUNNER_ARCH = 'X64'
+#     MEMORY_PRESSURE_WATCH = '/sys/fs/cgroup/system.slice/hosted-compute-agent.service/memory.pressure'
+#     RUNNER_TEMP = '/home/runner/work/_temp'
+#     GITHUB_STATE = '/home/runner/work/_temp/_runner_file_commands/save_state_5c27e76f-4be0-47ae-8234-ca918e21c45a'
+#     EDGEWEBDRIVER = '/usr/local/share/edge_driver'
+#     JAVA_HOME_21_X64 = '/usr/lib/jvm/temurin-21-jdk-amd64'
+#     GITHUB_ENV = '/home/runner/work/_temp/_runner_file_commands/set_env_5c27e76f-4be0-47ae-8234-ca918e21c45a'
+#     GITHUB_EVENT_PATH = '/home/runner/work/_temp/_github_workflow/event.json'
+#     INVOCATION_ID = '78fd50c8c5534f0a8e960b7a978eee17'
+#     GITHUB_EVENT_NAME = 'push'
+#     GITHUB_RUN_ID = '33773266378'
+#     JAVA_HOME_17_X64 = '/usr/lib/jvm/temurin-17-jdk-amd64'
+#     ANDROID_NDK_HOME = '/usr/local/lib/android/sdk/ndk/27.3.13750724'
+#     GITHUB_STEP_SUMMARY = '/home/runner/work/_temp/_runner_file_commands/step_summary_5c27e76f-4be0-47ae-8234-ca918e21c45a'
+#     HOMEBREW_NO_AUTO_UPDATE = '1'
+#     GITHUB_ACTOR = 'Monyeah777'
+#     NVM_DIR = '/home/runner/.nvm'
+#     SGX_AESM_ADDR = '1'
+#     GITHUB_RUN_ATTEMPT = '1'
+#     ANDROID_HOME = '/usr/local/lib/android/sdk'
+#     GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql'
+#     ACCEPT_EULA = 'Y'
+#     USER = 'runner'
+#     PSModulePath = '/root/.local/share/powershell/Modules:/usr/local/share/powershell/Modules:/opt/microsoft/powershell/7/Modules:/usr/share/az_15.6.1'
+#     GITHUB_SERVER_URL = 'https://github.com'
+#     PIPX_HOME = '/opt/pipx'
+#     GECKOWEBDRIVER = '/usr/local/share/gecko_driver'
+#     CHROMEWEBDRIVER = '/usr/local/share/chromedriver-linux64'
+#     SHLVL = '1'
+#     ANDROID_SDK_ROOT = '/usr/local/lib/android/sdk'
+#     VCPKG_INSTALLATION_ROOT = '/usr/local/share/vcpkg'
+#     GITHUB_ACTOR_ID = '315313170'
+#     ACTIONS_ORCHESTRATION_ID = '0cdbd103-7c4b-4e76-93f7-4ac17203577d.build-android.__default'
+#     RUNNER_TOOL_CACHE = '/opt/hostedtoolcache'
+#     ImageVersion = '20260831.293.1'
+#     DOTNET_NOLOGO = '1'
+#     GITHUB_ARTIFACTS = '/home/runner/work/_temp/_runner_file_commands/artifacts_5c27e76f-4be0-47ae-8234-ca918e21c45a'
+#     GITHUB_WORKFLOW_SHA = 'aed20ce086c172e5f11313c0dc6b82020e54b474'
+#     GOROOT_1_24_X64 = '/opt/hostedtoolcache/go/1.24.13/x64'
+#     GITHUB_REF_NAME = 'main'
+#     GITHUB_JOB = 'build-android'
+#     XDG_RUNTIME_DIR = '/run/user/1001'
+#     AZURE_EXTENSION_DIR = '/opt/az/azcliextensions'
+#     GOROOT_1_26_X64 = '/opt/hostedtoolcache/go/1.26.7/x64'
+#     GITHUB_REPOSITORY = 'Monyeah777/NarrativeForge'
+#     CHROME_BIN = '/usr/bin/google-chrome'
+#     ANDROID_NDK_ROOT = '/usr/local/lib/android/sdk/ndk/27.3.13750724'
+#     GITHUB_RETENTION_DAYS = '90'
+#     JOURNAL_STREAM = '9:13128'
+#     RUNNER_WORKSPACE = '/home/runner/work/NarrativeForge'
+#     GITHUB_ACTION_REPOSITORY = ''
+#     HCA_CLOUD_PROVIDER = 'azure'
+#     PATH = '/home/runner/.buildozer/android/platform/apache-ant-1.9.4/bin:/home/runner/.local/bin:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
+#     GITHUB_BASE_REF = ''
+#     GHCUP_INSTALL_BASE_PREFIX = '/usr/local'
+#     CI = 'true'
+#     SWIFT_PATH = '/usr/share/swift/usr/bin'
+#     ImageOS = 'ubuntu24'
+#     GITHUB_REPOSITORY_OWNER = 'Monyeah777'
+#     GITHUB_HEAD_REF = ''
+#     GITHUB_ACTION_REF = ''
+#     ENABLE_RUNNER_TRACING = 'true'
+#     GITHUB_WORKFLOW = 'build-android'
+#     DEBIAN_FRONTEND = 'noninteractive'
+#     GITHUB_OUTPUT = '/home/runner/work/_temp/_runner_file_commands/set_output_5c27e76f-4be0-47ae-8234-ca918e21c45a'
+#     AGENT_TOOLSDIRECTORY = '/opt/hostedtoolcache'
+#     _ = '/home/runner/.local/bin/buildozer'
+#     PACKAGES_PATH = '/home/runner/.buildozer/android/packages'
+#     ANDROIDSDK = '/home/runner/.buildozer/android/platform/android-sdk'
+#     ANDROIDNDK = '/home/runner/.buildozer/android/platform/android-ndk-r28c'
+#     ANDROIDAPI = '33'
+#     ANDROIDMINAPI = '24'
+# 
+# Buildozer failed to execute the last command
+# The error might be hidden in the log above this error
+# Please read the full log, and search for it before
+# raising an issue with buildozer itself.
+# In case of a bug report, please add a full log with log_level = 2
+
+===== ERRBLK1@L19352 =====
+ performance hint: kivy/graphics/cgl_backend/cgl_mock.pyx:69:5: Exception check on 'mockBufferSubData' will always require the GIL to be acquired.
+ Possible solutions:
+ 	1. Declare 'mockBufferSubData' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+ 	2. Use an 'int' return type on 'mockBufferSubData' to allow an error code to be returned.
+ performance hint: kivy/graphics/cgl_backend/cgl_mock.pyx:71:5: Exception check on 'mockClear' will always require the GIL to be acquired.
+ Possible solutions:
+ 	1. Declare 'mockClear' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+ warning: kivy/graphics/cgl_backend/cgl_glew.pyx:17:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/cgl_backend/cgl_gl.c:4563:52: error: incompatible function pointer types assigning to 'void (*)(GLuint, GLsizei, const GLchar *...[TRUNC]
+ 4563 |   __pyx_v_4kivy_8graphics_3cgl_cgl->glShaderSource = glShaderSource;
+      |                                                    ^ ~~~~~~~~~~~~~~
+
+===== ERRBLK2@L20810 =====
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/N...[TRUNC]
+[INFO   ] building 'kivy.core.audio.audio_sdl2' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/N...[TRUNC]
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/...[TRUNC]
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/...[TRUNC]
+[INFO   ] building 'kivy.graphics.svg' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/N...[TRUNC]
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/...[TRUNC]
+ error: Command '['/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang', '-target', 'aarch64-linux-android24', '-fomit-frame-pointer', '-march=armv8-a', '-fPIC', '-target', 'aarch64-linux-android24', '-fomit-frame-pointer', '-march=armv8-a', '-fP...[TRUNC]
+
+[93mTIP[0m pass --env-dir and --sdist-extract-dir to keep the build environment and sources, then see https://build.pypa.io/en/stable/how-to/troubleshooting.html#debug-a-failed-build for help debugging a failed build
+
+===== ERRBLK3@L20902 =====
+WARNING: A problem occurred while running pkg-config --libs --cflags sdl2 SDL2_ttf SDL2_image SDL2_mixer (code 1)
+
+b"Package sdl2 was not found in the pkg-config search path.\nPerhaps you should add the directory containing `sdl2.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'sdl2', required by 'virtual:world', not found\nPackage 'SDL2_ttf', required by 'virtual:world', not found\nPackage 'SDL2_image...[TRUNC]
+
+SDL2: found SDL header at /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL/include/SDL.h
+SDL2: found SDL_mixer header at /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_mixer/include/SDL_mixer.h
+SDL2: found SDL_ttf header at /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_ttf/SDL_ttf.h
+SDL2: found SDL_image header at /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/bootstrap_builds/sdl2/jni/SDL2_image/include/SDL_image.h
+ERROR: Dependency for context.pyx not resolved: config.pxi
+ERROR: Dependency for compiler.pyx not resolved: config.pxi
+ERROR: Dependency for context_instructions.pyx not resolved: config.pxi
+ERROR: Dependency for fbo.pyx not resolved: config.pxi
+ERROR: Dependency for gl_instructions.pyx not resolved: config.pxi
+ERROR: Dependency for instructions.pyx not resolved: config.pxi
+ERROR: Dependency for opengl.pyx not resolved: config.pxi
+ERROR: Dependency for opengl_utils.pyx not resolved: config.pxi
+ERROR: Dependency for shader.pyx not resolved: config.pxi
+ERROR: Dependency for stencil_instructions.pyx not resolved: config.pxi
+ERROR: Dependency for scissor_instructions.pyx not resolved: config.pxi
+ERROR: Dependency for texture.pyx not resolved: config.pxi
+ERROR: Dependency for vbo.pyx not resolved: config.pxi
+ERROR: Dependency for vertex.pyx not resolved: config.pxi
+ERROR: Dependency for vertex_instructions.pyx not resolved: config.pxi
+ERROR: Dependency for cgl.pyx not resolved: config.pxi
+ERROR: Dependency for cgl_mock.pyx not resolved: config.pxi
+ERROR: Dependency for cgl_gl.pyx not resolved: config.pxi
+ERROR: Dependency for cgl_glew.pyx not resolved: config.pxi
+ERROR: Dependency for cgl_sdl2.pyx not resolved: config.pxi
+ERROR: Dependency for svg.pyx not resolved: config.pxi
+ERROR: Dependency for boxshadow.pyx not resolved: config.pxi
+ /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/setuptools/dist.py:765: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+ !!
+
+===== ERRBLK4@L21819 =====
+ performance hint: kivy/graphics/cgl_backend/cgl_mock.pyx:69:5: Exception check on 'mockBufferSubData' will always require the GIL to be acquired.
+ Possible solutions:
+ 	1. Declare 'mockBufferSubData' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+ 	2. Use an 'int' return type on 'mockBufferSubData' to allow an error code to be returned.
+ performance hint: kivy/graphics/cgl_backend/cgl_mock.pyx:71:5: Exception check on 'mockClear' will always require the GIL to be acquired.
+ Possible solutions:
+ 	1. Declare 'mockClear' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+ warning: kivy/graphics/cgl_backend/cgl_glew.pyx:17:0: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/kivy-sdl2/arm64-v8a__ndk_target_24/kivy/kivy/graphics/cgl_backend/cgl_gl.c:4563:52: error: incompatible function pointer types assigning to 'void (*)(GLuint, GLsizei, const GLchar *...[TRUNC]
+ 4563 |   __pyx_v_4kivy_8graphics_3cgl_cgl->glShaderSource = glShaderSource;
+      |                                                    ^ ~~~~~~~~~~~~~~
+
+===== ERRBLK5@L23277 =====
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/N...[TRUNC]
+[INFO   ] building 'kivy.core.audio.audio_sdl2' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/N...[TRUNC]
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/...[TRUNC]
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/...[TRUNC]
+[INFO   ] building 'kivy.graphics.svg' extension
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -I/home/runner/work/NarrativeForge/N...[TRUNC]
+[INFO   ] /home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang -target aarch64-linux-android24 -fomit-frame-pointer -march=armv8-a -fPIC -shared -L/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/...[TRUNC]
+ error: Command '['/home/runner/.buildozer/android/platform/android-ndk-r28c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang', '-target', 'aarch64-linux-android24', '-fomit-frame-pointer', '-march=armv8-a', '-fPIC', '-target', 'aarch64-linux-android24', '-fomit-frame-pointer', '-march=armv8-a', '-fP...[TRUNC]
+
+[93mTIP[0m pass --env-dir and --sdist-extract-dir to keep the build environment and sources, then see https://build.pypa.io/en/stable/how-to/troubleshooting.html#debug-a-failed-build for help debugging a failed build
+
+===== SUMM@L21824 =====
+ 4563 |   __pyx_v_4kivy_8graphics_3cgl_cgl->glShaderSource = glShaderSource;
+      |                                                    ^ ~~~~~~~~~~~~~~
+ 	2. Use an 'int' return type on 'mockClear' to allow an error code to be returned.
+ warning: kivy/graphics/cgl_backend/cgl_glew.pyx:26:4: The 'IF' statement is deprecated and will be removed in a future Cython version. Consider using runtime conditions or C macros instead. See https://github.com/cython/cython/issues/4310
+1 error generated.
+ performance hint: kivy/graphics/cgl_backend/cgl_mock.pyx:73:5: Exception check on 'mockClearColor' will always require the GIL to be acquired.
+
+===== SUMM@L23285 =====
+
+
+  STDERR:
+
+# Command failed: ('/usr/bin/python3', '-m', 'pythonforandroid.toolchain', 'create', '--dist_name=narrativeforge', '--bootstrap=sdl2', '--requirements=python3,kivy==2.3.0,kivymd==1.2.0,plyer', '--arch=arm64-v8a', '--copy-libs', '--color=always', '--storage-dir=/home/runner/work/NarrativeForge/Narrat...[TRUNC]
+# Error code: 1
+
+===== SUMM@L23286 =====
+
+  STDERR:
+
+# Command failed: ('/usr/bin/python3', '-m', 'pythonforandroid.toolchain', 'create', '--dist_name=narrativeforge', '--bootstrap=sdl2', '--requirements=python3,kivy==2.3.0,kivymd==1.2.0,plyer', '--arch=arm64-v8a', '--copy-libs', '--color=always', '--storage-dir=/home/runner/work/NarrativeForge/Narrat...[TRUNC]
+# Error code: 1
+# ENVIRONMENT:
+
+===== PEPCTX@L15758 =====
+[1m[90m[DEBUG][39m[0m:   	running egg_info
+[1m[90m[DEBUG][39m[0m:   	creating pyjnius.egg-info
+[1m[90m[DEBUG][39m[0m:   	writing pyjnius.egg-info/PKG-INFO
+[1m[90m[DEBUG][39m[0m:   	writing dependency_links to pyjnius.egg-info/dependency_links.txt
+[1m[90m[DEBUG][39m[0m:   	writing requirements to pyjnius.egg-info/requires.txt
+[1m[90m[DEBUG][39m[0m:   	writing top-level names to pyjnius.egg-info/top_level.txt
+[1m[90m[DEBUG][39m[0m:   	writing manifest file 'pyjnius.egg-info/SOURCES.txt'
+[1m[90m[DEBUG][39m[0m:   	reading manifest file 'pyjnius.egg-info/SOURCES.txt'
+[1m[90m[DEBUG][39m[0m:   	reading manifest template 'MANIFEST.in'
+[1m[90m[DEBUG][39m[0m:   	adding license file 'LICENSE'
+[1m[90m[DEBUG][39m[0m:   	writing manifest file 'pyjnius.egg-info/SOURCES.txt'
+[1m[90m[DEBUG][39m[0m:   	Copying pyjnius.egg-info to build/bdist.linux-x86_64/wheel/./pyjnius-1.7.0-py3.11.egg-info
+[1m[90m[DEBUG][39m[0m:   	running install_scripts
+[1m[90m[DEBUG][39m[0m:   	creating build/bdist.linux-x86_64/wheel/pyjnius-1.7.0.dist-info/WHEEL
+[1m[90m[DEBUG][39m[0m:   	creating '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/pyjnius-sdl2/arm64-v8a__ndk_target_24/pyjnius/dist/.tmp-a6i4g22e/pyjnius-1.7.0-cp311-cp311-android_24_aarch64.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius_config.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'setup_sdist.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/__init__.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/env.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/jnius.cpython-311-x86_64-linux-gnu.so'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/reflect.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/signatures.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/src/org/jnius/NativeInvocationHandler.class'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/src/org/jnius/NativeInvocationHandler.java'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/licenses/LICENSE'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/METADATA'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/WHEEL'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/top_level.txt'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/RECORD'
+[1m[90m[DEBUG][39m[0m:   	removing build/bdist.linux-x86_64/wheel
+[1m[90m[DEBUG][39m[0m:   	[1m[92mSuccessfully built [4mpyjnius-1.7.0-cp311-cp311-android_24_aarch64.whl[0m[1m[92m[0m
+[1m[INFO][0m:    [36m<- directory context /home/runner/p4a[39m
+[1m[INFO][0m:    Installing built wheel: pyjnius-1.7.0-cp311-cp311-android_24_aarch64.whl
+[1m[INFO][0m:    [1m[32mBuilding android for arm64-v8a[0m[39m
+[1m[INFO][0m:    android apparently isn't already in site-packages
+stty: 'standard input': Inappropriate ioctl for device
+[1m[90m[DEBUG][39m[0m:   [90m->[0m running python3 -m pip install build[virtualenv] pip setuptools wheel Cython>=0.29,<3.1 --target /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/ --python-version 3.11.13 --only-binary=:all: --upgrade[0m
+[1m[90m[DEBUG][39m[0m:   	Collecting pip
+[1m[90m[DEBUG][39m[0m:   	  Using cached pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting Cython<3.1,>=0.29
+[1m[90m[DEBUG][39m[0m:   	  Downloading Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Using cached build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting packaging>=24.0 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting pyproject_hooks (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting virtualenv>=20.36.1 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached virtualenv-21.7.8-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting distlib<1,>=0.3.7 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached distlib-0.4.3-py2.py3-none-any.whl.metadata (5.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting filelock<4,>=3.24.2 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached filelock-3.32.5-py3-none-any.whl.metadata (2.0 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting platformdirs<5,>=3.9.1 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached platformdirs-4.11.7-py3-none-any.whl.metadata (5.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting python-discovery>=1.6 (from virtualenv>=20.36.1->build[virtualenv])
+
+===== PEPCTX@L15863 =====
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:89:12: warning: returning 'const char *' from a function with result type 'char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	   89 |     return reading;
+[1m[90m[DEBUG][39m[0m:   	      |            ^~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:186:28: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  186 |         BUILD_MANUFACTURER = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:190:21: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  190 |         BUILD_MODEL = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                     ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:194:23: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  194 |         BUILD_PRODUCT = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:200:31: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  200 |         BUILD_VERSION_RELEASE = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	5 warnings generated.
+[1m[90m[DEBUG][39m[0m:   	android/_android_billing_jni.c:95:12: warning: returning 'const char *' from a function with result type 'char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	   95 |     return reading;
+[1m[90m[DEBUG][39m[0m:   	      |            ^~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_billing_jni.c:118:12: warning: returning 'const char *' from a function with result type 'char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  118 |     return reading;
+[1m[90m[DEBUG][39m[0m:   	      |            ^~~~~~~
+[1m[90m[DEBUG][39m[0m:   	2 warnings generated.
+[1m[90m[DEBUG][39m[0m:   	android/_android_sound_jni.c:142:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+[1m[90m[DEBUG][39m[0m:   	  142 | }
+[1m[90m[DEBUG][39m[0m:   	      | ^
+[1m[90m[DEBUG][39m[0m:   	android/_android_sound_jni.c:167:10: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  167 |     jbuf = (*env)->GetStringUTFChars(env, s, NULL);
+[1m[90m[DEBUG][39m[0m:   	      |          ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	2 warnings generated.
+[1m[90m[DEBUG][39m[0m:   	[1m[92mSuccessfully built [4mandroid-1.0-cp311-cp311-android_24_aarch64.whl[0m[1m[92m[0m
+[1m[INFO][0m:    [36m<- directory context /home/runner/p4a[39m
+[1m[INFO][0m:    Installing built wheel: android-1.0-cp311-cp311-android_24_aarch64.whl
+[1m[INFO][0m:    [1m[32mBuilding kivy for arm64-v8a[0m[39m
+[1m[INFO][0m:    kivy apparently isn't already in site-packages
+stty: 'standard input': Inappropriate ioctl for device
+[1m[90m[DEBUG][39m[0m:   [90m->[0m running python3 -m pip install build[virtualenv] pip setuptools wheel cython>=0.29.1,<=3.0.12 --target /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/ --python-version 3.11.13 --only-binary=:all: --upgrade[0m
+[1m[90m[DEBUG][39m[0m:   	Collecting pip
+[1m[90m[DEBUG][39m[0m:   	  Using cached pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting cython<=3.0.12,>=0.29.1
+[1m[90m[DEBUG][39m[0m:   	  Using cached Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Using cached build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting packaging>=24.0 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting pyproject_hooks (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting virtualenv>=20.36.1 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached virtualenv-21.7.8-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting distlib<1,>=0.3.7 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached distlib-0.4.3-py2.py3-none-any.whl.metadata (5.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting filelock<4,>=3.24.2 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached filelock-3.32.5-py3-none-any.whl.metadata (2.0 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting platformdirs<5,>=3.9.1 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached platformdirs-4.11.7-py3-none-any.whl.metadata (5.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting python-discovery>=1.6 (from virtualenv>=20.36.1->build[virtualenv])
+
+===== PEPCTX@L15758 =====
+[1m[90m[DEBUG][39m[0m:   	running egg_info
+[1m[90m[DEBUG][39m[0m:   	creating pyjnius.egg-info
+[1m[90m[DEBUG][39m[0m:   	writing pyjnius.egg-info/PKG-INFO
+[1m[90m[DEBUG][39m[0m:   	writing dependency_links to pyjnius.egg-info/dependency_links.txt
+[1m[90m[DEBUG][39m[0m:   	writing requirements to pyjnius.egg-info/requires.txt
+[1m[90m[DEBUG][39m[0m:   	writing top-level names to pyjnius.egg-info/top_level.txt
+[1m[90m[DEBUG][39m[0m:   	writing manifest file 'pyjnius.egg-info/SOURCES.txt'
+[1m[90m[DEBUG][39m[0m:   	reading manifest file 'pyjnius.egg-info/SOURCES.txt'
+[1m[90m[DEBUG][39m[0m:   	reading manifest template 'MANIFEST.in'
+[1m[90m[DEBUG][39m[0m:   	adding license file 'LICENSE'
+[1m[90m[DEBUG][39m[0m:   	writing manifest file 'pyjnius.egg-info/SOURCES.txt'
+[1m[90m[DEBUG][39m[0m:   	Copying pyjnius.egg-info to build/bdist.linux-x86_64/wheel/./pyjnius-1.7.0-py3.11.egg-info
+[1m[90m[DEBUG][39m[0m:   	running install_scripts
+[1m[90m[DEBUG][39m[0m:   	creating build/bdist.linux-x86_64/wheel/pyjnius-1.7.0.dist-info/WHEEL
+[1m[90m[DEBUG][39m[0m:   	creating '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/pyjnius-sdl2/arm64-v8a__ndk_target_24/pyjnius/dist/.tmp-a6i4g22e/pyjnius-1.7.0-cp311-cp311-android_24_aarch64.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius_config.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'setup_sdist.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/__init__.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/env.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/jnius.cpython-311-x86_64-linux-gnu.so'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/reflect.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/signatures.py'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/src/org/jnius/NativeInvocationHandler.class'
+[1m[90m[DEBUG][39m[0m:   	adding 'jnius/src/org/jnius/NativeInvocationHandler.java'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/licenses/LICENSE'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/METADATA'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/WHEEL'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/top_level.txt'
+[1m[90m[DEBUG][39m[0m:   	adding 'pyjnius-1.7.0.dist-info/RECORD'
+[1m[90m[DEBUG][39m[0m:   	removing build/bdist.linux-x86_64/wheel
+[1m[90m[DEBUG][39m[0m:   	[1m[92mSuccessfully built [4mpyjnius-1.7.0-cp311-cp311-android_24_aarch64.whl[0m[1m[92m[0m
+[1m[INFO][0m:    [36m<- directory context /home/runner/p4a[39m
+[1m[INFO][0m:    Installing built wheel: pyjnius-1.7.0-cp311-cp311-android_24_aarch64.whl
+[1m[INFO][0m:    [1m[32mBuilding android for arm64-v8a[0m[39m
+[1m[INFO][0m:    android apparently isn't already in site-packages
+stty: 'standard input': Inappropriate ioctl for device
+[1m[90m[DEBUG][39m[0m:   [90m->[0m running python3 -m pip install build[virtualenv] pip setuptools wheel Cython>=0.29,<3.1 --target /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/ --python-version 3.11.13 --only-binary=:all: --upgrade[0m
+[1m[90m[DEBUG][39m[0m:   	Collecting pip
+[1m[90m[DEBUG][39m[0m:   	  Using cached pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting Cython<3.1,>=0.29
+[1m[90m[DEBUG][39m[0m:   	  Downloading Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Using cached build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting packaging>=24.0 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting pyproject_hooks (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting virtualenv>=20.36.1 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached virtualenv-21.7.8-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting distlib<1,>=0.3.7 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached distlib-0.4.3-py2.py3-none-any.whl.metadata (5.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting filelock<4,>=3.24.2 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached filelock-3.32.5-py3-none-any.whl.metadata (2.0 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting platformdirs<5,>=3.9.1 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached platformdirs-4.11.7-py3-none-any.whl.metadata (5.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting python-discovery>=1.6 (from virtualenv>=20.36.1->build[virtualenv])
+
+===== PEPCTX@L15863 =====
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:89:12: warning: returning 'const char *' from a function with result type 'char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	   89 |     return reading;
+[1m[90m[DEBUG][39m[0m:   	      |            ^~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:186:28: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  186 |         BUILD_MANUFACTURER = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:190:21: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  190 |         BUILD_MODEL = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                     ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:194:23: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  194 |         BUILD_PRODUCT = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_jni.c:200:31: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  200 |         BUILD_VERSION_RELEASE = (*env)->GetStringUTFChars(env, sval, 0);
+[1m[90m[DEBUG][39m[0m:   	      |                               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	5 warnings generated.
+[1m[90m[DEBUG][39m[0m:   	android/_android_billing_jni.c:95:12: warning: returning 'const char *' from a function with result type 'char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	   95 |     return reading;
+[1m[90m[DEBUG][39m[0m:   	      |            ^~~~~~~
+[1m[90m[DEBUG][39m[0m:   	android/_android_billing_jni.c:118:12: warning: returning 'const char *' from a function with result type 'char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  118 |     return reading;
+[1m[90m[DEBUG][39m[0m:   	      |            ^~~~~~~
+[1m[90m[DEBUG][39m[0m:   	2 warnings generated.
+[1m[90m[DEBUG][39m[0m:   	android/_android_sound_jni.c:142:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+[1m[90m[DEBUG][39m[0m:   	  142 | }
+[1m[90m[DEBUG][39m[0m:   	      | ^
+[1m[90m[DEBUG][39m[0m:   	android/_android_sound_jni.c:167:10: warning: assigning to 'char *' from 'const char *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+[1m[90m[DEBUG][39m[0m:   	  167 |     jbuf = (*env)->GetStringUTFChars(env, s, NULL);
+[1m[90m[DEBUG][39m[0m:   	      |          ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1m[90m[DEBUG][39m[0m:   	2 warnings generated.
+[1m[90m[DEBUG][39m[0m:   	[1m[92mSuccessfully built [4mandroid-1.0-cp311-cp311-android_24_aarch64.whl[0m[1m[92m[0m
+[1m[INFO][0m:    [36m<- directory context /home/runner/p4a[39m
+[1m[INFO][0m:    Installing built wheel: android-1.0-cp311-cp311-android_24_aarch64.whl
+[1m[INFO][0m:    [1m[32mBuilding kivy for arm64-v8a[0m[39m
+[1m[INFO][0m:    kivy apparently isn't already in site-packages
+stty: 'standard input': Inappropriate ioctl for device
+[1m[90m[DEBUG][39m[0m:   [90m->[0m running python3 -m pip install build[virtualenv] pip setuptools wheel cython>=0.29.1,<=3.0.12 --target /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/ --python-version 3.11.13 --only-binary=:all: --upgrade[0m
+[1m[90m[DEBUG][39m[0m:   	Collecting pip
+[1m[90m[DEBUG][39m[0m:   	  Using cached pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting cython<=3.0.12,>=0.29.1
+[1m[90m[DEBUG][39m[0m:   	  Using cached Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Using cached build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting packaging>=24.0 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting pyproject_hooks (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting virtualenv>=20.36.1 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached virtualenv-21.7.8-py3-none-any.whl.metadata (3.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting distlib<1,>=0.3.7 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached distlib-0.4.3-py2.py3-none-any.whl.metadata (5.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting filelock<4,>=3.24.2 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached filelock-3.32.5-py3-none-any.whl.metadata (2.0 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting platformdirs<5,>=3.9.1 (from virtualenv>=20.36.1->build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached platformdirs-4.11.7-py3-none-any.whl.metadata (5.5 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting python-discovery>=1.6 (from virtualenv>=20.36.1->build[virtualenv])
+
+===== KWSuccessfullyinstalle =====
+[1m[90m[DEBUG][39m[0m:   	[?25l
+[1m[90m[DEBUG][39m[0m:   	[?25h
+[1m[90m[DEBUG][39m[0m:   	Successfully installed Cython-3.0.12 build-1.6.0 distlib-0.4.3 filelock-3.32.5 packaging-26.3 pip-26.2.1 platformdirs-4.11.7 pyproject_hooks-1.2.0 python-discovery-1.6.0 setuptools-84.0.0 virtualenv-21.7.8 wheel-0.48.0
+[1m[INFO][0m:    Fixing shebang for '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/bin/pip3.11'
+[1m[INFO][0m:    Fixing shebang for '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/bin/wheel'
+[1m[INFO][0m:    Fixing shebang for '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/bin/cython'
+
+===== KWSuccessfullyinstalle =====
+[1m[90m[DEBUG][39m[0m:   	[?25l
+[1m[90m[DEBUG][39m[0m:   	[?25h
+[1m[90m[DEBUG][39m[0m:   	Successfully installed build-1.6.0 cython-3.0.12 distlib-0.4.3 filelock-3.32.5 packaging-26.3 pip-26.2.1 platformdirs-4.11.7 pyproject_hooks-1.2.0 python-discovery-1.6.0 setuptools-84.0.0 virtualenv-21.7.8 wheel-0.48.0
+[1m[INFO][0m:    Fixing shebang for '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/bin/pip3.11'
+[1m[INFO][0m:    Fixing shebang for '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/bin/wheel'
+[1m[INFO][0m:    Fixing shebang for '/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages/bin/cython'
+
+===== KWInstallingcollectedp =====
+[1m[90m[DEBUG][39m[0m:   	Using cached python_discovery-1.6.0-py3-none-any.whl (38 kB)
+[1m[90m[DEBUG][39m[0m:   	Using cached pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
+[1m[90m[DEBUG][39m[0m:   	Installing collected packages: distlib, setuptools, pyproject_hooks, platformdirs, pip, packaging, filelock, Cython, wheel, python-discovery, build, virtualenv
+[1m[90m[DEBUG][39m[0m:   	[?25l
+[1m[90m[DEBUG][39m[0m:   	[?25h
+[1m[90m[DEBUG][39m[0m:   	Successfully installed Cython-3.0.12 build-1.6.0 distlib-0.4.3 filelock-3.32.5 packaging-26.3 pip-26.2.1 platformdirs-4.11.7 pyproject_hooks-1.2.0 python-discovery-1.6.0 setuptools-84.0.0 virtualenv-21.7.8 wheel-0.48.0
+
+===== KWInstallingcollectedp =====
+[1m[90m[DEBUG][39m[0m:   	Using cached python_discovery-1.6.0-py3-none-any.whl (38 kB)
+[1m[90m[DEBUG][39m[0m:   	Using cached pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
+[1m[90m[DEBUG][39m[0m:   	Installing collected packages: distlib, setuptools, pyproject_hooks, platformdirs, pip, packaging, filelock, cython, wheel, python-discovery, build, virtualenv
+[1m[90m[DEBUG][39m[0m:   	[?25l
+[1m[90m[DEBUG][39m[0m:   	[?25h
+[1m[90m[DEBUG][39m[0m:   	Successfully installed build-1.6.0 cython-3.0.12 distlib-0.4.3 filelock-3.32.5 packaging-26.3 pip-26.2.1 platformdirs-4.11.7 pyproject_hooks-1.2.0 python-discovery-1.6.0 setuptools-84.0.0 virtualenv-21.7.8 wheel-0.48.0
+
+===== KWCollectingsetuptools =====
+[1m[90m[DEBUG][39m[0m:   	Collecting pip
+[1m[90m[DEBUG][39m[0m:   	  Using cached pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+
+===== KWCollectingsetuptools =====
+[1m[90m[DEBUG][39m[0m:   	Collecting pip
+[1m[90m[DEBUG][39m[0m:   	  Using cached pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+
+===== KWCollectingwheel =====
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting Cython<3.1,>=0.29
+[1m[90m[DEBUG][39m[0m:   	  Downloading Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+
+===== KWCollectingwheel =====
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting cython<=3.0.12,>=0.29.1
+[1m[90m[DEBUG][39m[0m:   	  Using cached Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+
+===== KWCollectingbuild =====
+[1m[90m[DEBUG][39m[0m:   	Collecting Cython<3.1,>=0.29
+[1m[90m[DEBUG][39m[0m:   	  Downloading Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Using cached build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting packaging>=24.0 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+
+===== KWCollectingbuild =====
+[1m[90m[DEBUG][39m[0m:   	Collecting cython<=3.0.12,>=0.29.1
+[1m[90m[DEBUG][39m[0m:   	  Using cached Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Using cached build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting packaging>=24.0 (from build[virtualenv])
+[1m[90m[DEBUG][39m[0m:   	  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+
+===== KWCollectingCython =====
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Downloading wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting Cython<3.2
+[1m[90m[DEBUG][39m[0m:   	  Downloading cython-3.1.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.1 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Downloading build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+
+===== KWCollectingCython =====
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting Cython<3.1,>=0.29
+[1m[90m[DEBUG][39m[0m:   	  Downloading Cython-3.0.12-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting build[virtualenv]
+[1m[90m[DEBUG][39m[0m:   	  Using cached build-1.6.0-py3-none-any.whl.metadata (5.6 kB)
+
+===== KWUsingcachedsetuptool =====
+[1m[90m[DEBUG][39m[0m:   	  Using cached pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Using cached setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Using cached wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting cython<=3.0.12,>=0.29.1
+
+===== KWUsingcachedsetuptool =====
+[1m[90m[DEBUG][39m[0m:   	Using cached build-1.6.0-py3-none-any.whl (31 kB)
+[1m[90m[DEBUG][39m[0m:   	Using cached pip-26.2.1-py3-none-any.whl (1.8 MB)
+[1m[90m[DEBUG][39m[0m:   	Using cached setuptools-84.0.0-py3-none-any.whl (818 kB)
+[1m[90m[DEBUG][39m[0m:   	Using cached wheel-0.48.0-py3-none-any.whl (33 kB)
+[1m[90m[DEBUG][39m[0m:   	Using cached packaging-26.3-py3-none-any.whl (129 kB)
+[1m[90m[DEBUG][39m[0m:   	Using cached virtualenv-21.7.8-py3-none-any.whl (5.3 MB)
+
+===== KWDownloadingsetuptool =====
+[1m[90m[DEBUG][39m[0m:   	  Downloading pip-26.2.1-py3-none-any.whl.metadata (4.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting setuptools
+[1m[90m[DEBUG][39m[0m:   	  Downloading setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting wheel
+[1m[90m[DEBUG][39m[0m:   	  Downloading wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+[1m[90m[DEBUG][39m[0m:   	Collecting Cython<3.2
+
+===== KWDownloadingsetuptool =====
+[2K   [91m━━━━━━━━━━━━━━━━━━━━━━━━━[0m[90m╺[0m[90m━━━━━━━━━━━━━━[0m [32m1.1/1.8 MB[0m [31m34.2 MB/s[0m eta [36m0:00:01[0m
+[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.8/1.8 MB[0m [31m39.9 MB/s[0m eta [36m0:00:00[0m
+[1m[90m[DEBUG][39m[0m:   	[?25hDownloading setuptools-84.0.0-py3-none-any.whl (818 kB)
+[1m[90m[DEBUG][39m[0m:   	[?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/818.2 kB[0m [31m?[0m eta [36m-:--:--[0m
+[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m818.2/818.2 kB[0m [31m88.0 MB/s[0m eta [36m0:00:00[0m
+[1m[90m[DEBUG][39m[0m:   	[?25hDownloading wheel-0.48.0-py3-none-any.whl (33 kB)
+
+===== ENVPROBE =====
+HP=/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/python3
+AP=/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build/python3
+SP=/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/root/usr/local/lib/python3.11/site-packages
+SP top-level entries (setuptools/build/wheel/pip/pyproject/virtualenv):
+  build
+  build-1.6.0.dist-info
+  pip
+  pip-24.0.dist-info
+  pip-26.2.1.dist-info
+  pyproject_hooks
+  pyproject_hooks-1.2.0.dist-info
+  setuptools
+  setuptools-65.5.0.dist-info
+  setuptools-84.0.0.dist-info
+  virtualenv
+  virtualenv-21.7.8.dist-info
+  wheel
+  wheel-0.48.0.dist-info
+=== HPROBE rc=1 ===
+EXE /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/python3
+PREFIX /usr/local
+SP0 
+PATH |/usr/local/lib/python311.zip|/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Lib|/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/native-build/build/lib.linux-x86_64-3.11
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'setuptools'
+
+=== APROBE rc=1 ===
+EXE /home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build/python3
+PREFIX /usr/local
+SP0 
+PATH |/usr/local/lib/python311.zip|/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/hostpython3/desktop/hostpython3/Lib|/home/runner/work/NarrativeForge/NarrativeForge/android/.buildozer/android/platform/build-arm64-v8a/build/other_builds/python3/arm64-v8a__ndk_target_24/python3/android-build/build/lib.linux-aarch64-3.11
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'setuptools'
+
+
+===== FINDST =====
+NO setuptools dir under site-packages in BB(maxdepth8)
