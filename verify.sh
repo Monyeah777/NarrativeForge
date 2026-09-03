@@ -28,17 +28,17 @@ check1(){
     [ -f "03_管线库/$p" ] || { no "03 缺管线文件: $p"; err=1; }
   done
   local n04=$(find 04_模块库 -name '*.md' 2>/dev/null | wc -l)
-  [ "$n04" -eq 32 ] || { no "04_模块库应 32 个 md，实为 $n04"; err=1; }
+  [ "$n04" -ge 32 ] || { no "04_模块库应至少 32 个 md（叙事基准，可增不减），实为 $n04"; err=1; }
   local nw=$(find 04_模块库/世界类 -name '*.md' 2>/dev/null | wc -l)
   local ne=$(find 04_模块库/事件类 -name '*.md' 2>/dev/null | wc -l)
   local nq=$(find 04_模块库/情感类 -name '*.md' 2>/dev/null | wc -l)
   local ns=$(find 04_模块库/生存类 -name '*.md' 2>/dev/null | wc -l)
   local ng=$(find 04_模块库/通用类 -name '*.md' 2>/dev/null | wc -l)
-  [ "$nw" -eq 6 ] || { no "04 世界类应 6，实为 $nw"; err=1; }
-  [ "$ne" -eq 6 ] || { no "04 事件类应 6，实为 $ne"; err=1; }
-  [ "$nq" -eq 6 ] || { no "04 情感类应 6，实为 $nq"; err=1; }
-  [ "$ns" -eq 8 ] || { no "04 生存类应 8，实为 $ns"; err=1; }
-  [ "$ng" -eq 6 ] || { no "04 通用类应 6，实为 $ng"; err=1; }
+  [ "$nw" -ge 6 ] || { no "04 世界类应至少 6，实为 $nw"; err=1; }
+  [ "$ne" -ge 6 ] || { no "04 事件类应至少 6，实为 $ne"; err=1; }
+  [ "$nq" -ge 6 ] || { no "04 情感类应至少 6，实为 $nq"; err=1; }
+  [ "$ns" -ge 8 ] || { no "04 生存类应至少 8，实为 $ns"; err=1; }
+  [ "$ng" -ge 6 ] || { no "04 通用类应至少 6，实为 $ng"; err=1; }
   [ -f 05_资产库/README.md ] || { no '05_资产库缺总 README'; err=1; }
   local nx=$(find 05_资产库/校园包 -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l)
   local xh=$(find 05_资产库/西幻包 -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l)
@@ -46,7 +46,7 @@ check1(){
   [ "$xh" -eq 23 ] || { no "西幻包资产应 23 文件，实为 $xh"; err=1; }
   [ -d 05_资产库/用户自定义 ] || { no '05 缺 用户自定义 目录'; err=1; }
   if [ "$err" -eq 0 ]; then
-    ok '根级 5 md + LICENSE；03 管线 4（P00 骨架 + P01/P02/P03 实例）；04 模块 32（世界6/事件6/情感6/生存8/通用6）；05 总README+校园29+西幻23+用户自定义'
+    ok '根级 5 md + LICENSE；03 管线 ≥4（P00 骨架 + P01/P02/P03 实例）；04 模块 ≥32（世界≥6/事件≥6/情感≥6/生存≥8/通用≥6，可增不减）；05 总README+校园29+西幻23+用户自定义'
   fi
 }
 
