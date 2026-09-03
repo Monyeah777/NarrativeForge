@@ -20,4 +20,10 @@ NARRATIVE_FORGE_HOME=<数据目录> QT_QPA_PLATFORM=offscreen python3 scripts/sm
 
 ## 打包
 
-见 `packaging/README.md`。Windows 上运行 `packaging/build_windows.bat`，产物为 `dist\NarrativeForge.exe`；macOS 用 `build_macos.sh`，Linux 用 `build_linux.sh`。
+见 `packaging/README.md`。三平台产物由 GitHub Actions 自动构建（仓库根 `.github/workflows/build-desktop.yml`），发布在 Releases / Actions Artifacts：
+
+- Windows：`dist\NarrativeForge.exe`
+- macOS：`dist/NarrativeForge`（Mach-O）
+- Linux：`dist/NarrativeForge`（ELF）
+
+本地手动构建：macOS 用 `packaging/build_macos.sh`，Linux 用 `packaging/build_linux.sh`。原 `build_windows.bat` 已移除，Windows 产物由 CI 自动构建。

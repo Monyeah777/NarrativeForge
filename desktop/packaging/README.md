@@ -2,11 +2,13 @@
 
 NarrativeForge（叙事工坊）桌面工具基于 **PySide6 + PyInstaller** 三平台打包：
 
-| 平台 | 脚本 | 产物 |
+| 平台 | 构建方式 | 产物 |
 |---|---|---|
-| Windows | `build_windows.bat`（在 Windows 上运行） | `dist\NarrativeForge.exe` |
+| Windows | GitHub Actions 自动构建（仓库根 `.github/workflows/build-desktop.yml`） | `dist\NarrativeForge.exe` |
 | macOS | `build_macos.sh`（在 macOS 上运行） | `dist/NarrativeForge`（Mach-O） |
 | Linux | `build_linux.sh`（在 Linux 上运行） | `dist/NarrativeForge`（ELF） |
+
+原 `build_windows.bat` 已移除。Windows 产物不再依赖本机手动脚本：推送 `main` 或 `v*` tag 后，GitHub Actions 在云端三平台并行执行 PyInstaller 构建，产物上传 Actions Artifacts；推送 `v*` tag 时自动发布 Release，社区用户从 Releases 页直接下载成品。
 
 ## 共同说明
 
