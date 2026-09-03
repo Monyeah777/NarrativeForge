@@ -2,6 +2,9 @@ name: build-android
 # 叙事工坊 · Android 版 APK 构建（Kivy/KivyMD 壳 + 复用 desktop core/seed）。
 # 前置：android/app/{core,seed} 为 .gitignore 生成物，必须先在 CI 中执行
 #   scripts/sync_android.sh 从仓库根单一事实源同步，再跑逻辑冒烟自测。
+# 构建：不依赖第三方 docker action（其自定义 Dockerfile 构建层易碎），
+#   直接在 ubuntu-latest 上 apt 装 JDK17、从 GitHub 拉取 buildozer master，
+#   buildozer 自动下载 Android SDK/NDK（~/.buildozer 做 cache 加速）。
 # 产出：推送 v* 标签时自动发布 APK 到 GitHub Releases（与 build-desktop 同模式）。
 on:
   push:
@@ -23,22 +26,43 @@ jobs:
       - name: 控制器逻辑冒烟（纯 python3 全链路自测，快速失败门禁）
         run: python3 scripts/selftest_android.py
 
-      - name: Build with Buildozer（spec 位于 android/）
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - name: 安装 JDK 17 与构建依赖
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends \
+            openjdk-17-jdk autoconf automake libtool pkg-config \
+            zlib1g-dev libncurses-dev unzip zip
+          echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> "$GITHUB_ENV"
+
+      - name: 安装 Buildozer（从 GitHub 拉取 master，p4a 需 Cython<3）
+        run: |
+          python3 -m pip install --user --upgrade pip
+          python3 -m pip install --user "Cython<3.0"
+          python3 -m pip install --user git+https://github.com/kivy/buildozer.git@master
+          export PATH="$HOME/.local/bin:$PATH"
+          buildozer --version
+
+      - name: 缓存 Buildozer 全局目录（SDK/NDK，按 spec 变更失效）
+        uses: actions/cache@v4
         with:
-          workdir: android
-          buildozer_version: master
+          path: ~/.buildozer
+          key: buildozer-${{ runner.os }}-${{ hashFiles('android/buildozer.spec') }}
+
+      - name: Buildozer 构建 debug APK（spec 位于 android/）
+        working-directory: android
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          buildozer -v android debug
 
       - name: 上传 APK（Artifacts，Actions 页可直接下载）
         uses: actions/upload-artifact@v4
         with:
           name: narrativeforge-android-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: android/bin/*.apk
 
       - name: 发布到 GitHub Releases（仅推送 v* 标签时触发）
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           allowUpdates: true
-          files: ${{ steps.buildozer.outputs.filename }}
+          files: android/bin/*.apk
