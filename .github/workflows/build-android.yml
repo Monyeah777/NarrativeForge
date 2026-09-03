@@ -52,7 +52,23 @@ jobs:
         working-directory: android
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          buildozer -v android debug
+          set +e
+          buildozer -v android debug > /tmp/buildozer.log 2>&1
+          rc=$?
+          if [ $rc -ne 0 ]; then
+            python3 - <<'PYEOF'
+          import io
+          try:
+              lines = io.open('/tmp/buildozer.log', encoding='utf-8', errors='replace').read().splitlines()
+          except Exception:
+              lines = []
+          tail = lines[-150:]
+          msg = '\n'.join(tail) if tail else '(no log captured)'
+          msg = msg.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          print('::error file=buildozer.spec,title=buildozer FAILED (tail 150 lines)::' + msg[:30000])
+          PYEOF
+            exit $rc
+          fi
 
       - name: 上传 APK（Artifacts，Actions 页可直接下载）
         uses: actions/upload-artifact@v4
