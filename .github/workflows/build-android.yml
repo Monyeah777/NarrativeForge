@@ -53,7 +53,9 @@ jobs:
       - name: 预制 patched p4a（#3180 + grp 禁用 + PEP517 setuptools/no-isolation 补丁）
         # p4a 的 arch.get_env() 从零构建 env 白名单（仅透传 HOME/PATH/CCACHE_*），
         # workflow 里 export 的 ac_cv 变量到不了 configure —— 必须改 p4a 源码层。
-        # 方案：clone develop → reset --hard 到 #3180（CPython 3.11.13 + NDK r28c）
+        # 方案：clone develop → reset --hard 到 #3180（CPython 3.11.13；#3180 起
+        #   默认 NDK r28c，但 spec 已强制 android.ndk=25b 降级 clang——Kivy 2.3.0
+        #   cgl_gl 与 NDK r26+ 头文件签名冲突，见构建步骤注释）
         #   → 依次打入三个补丁：
         #   ① android/p4a_disable_grp.patch：在 python3 recipe 的 configure_args
         #     注入 ac_cv_func_getgrgid(_r)=no（configure 命令行参数不受 env 白名单限制）。
@@ -112,6 +114,12 @@ jobs:
           export PATH="$HOME/.local/bin:$PATH"
           # grp 禁用已由预制 p4a 的 configure_args 注入（见 p4a_disable_grp.patch），
           # 此处不再 export ac_cv（p4a env 白名单机制下 export 根本到不了 configure）。
+          # NDK 由 spec android.ndk=25b 固定（buildozer 自动下载 r25b 并 --ndk-dir
+          # 传给 p4a）：Kivy 2.3.0 cgl_backend/cgl_gl.pyx 的 glShaderSource 函数指针
+          # 声明为 const GLchar **，NDK r26+（clang16+）GLES2 头文件为
+          # const GLchar *const *，clang16 起该诊断默认 error → cgl_gl.c:4563 判死
+          # （第 9 轮崩溃点，--skip-dependency-check 后的新障碍）。r25b=clang14
+          # 仅为 warning，是 Kivy 2.3.0 时代 p4a 官方 NDK 组合。
           # 清掉 python3 上次失败残留的 configure 产物：p4a 仅在 android-build/
           # 无 config.status 时才重跑 configure，残留会让新 configure_args 不生效。
           find ~/.buildozer -maxdepth 5 -type d -name 'android-build' -path '*python3*' -exec rm -rf {} + 2>/dev/null || true

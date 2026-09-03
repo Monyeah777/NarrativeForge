@@ -15,6 +15,13 @@ requirements = python3,kivy==2.3.0,kivymd==1.2.0,plyer
 # Android 权限：读写通过系统文件选择器(SAF)/分享 intent，无需全盘；保留基础存储权限兼容旧路径
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 android.api = 33
+# NDK 固定 r25b（clang 14，2022-09）：Kivy 2.3.0 cgl_backend/cgl_gl.pyx 把
+# glShaderSource 函数指针声明为 const GLchar **（4563 行赋值处），而 NDK r26+
+# （clang 16+）GLES2/gl2.h 声明为 const GLchar *const *；clang 16 起把
+# -Wincompatible-function-pointer-types 从 warning 升级为默认 error →
+# cgl_gl.c:4563 编译判死（第 9 轮 CI 崩溃点）。r25b(clang14) 仅报 warning，
+# 与 Kivy 2.3.0 发布时代（2023-02）p4a 官方 NDK 组合一致；p4a #3180 仍兼容。
+android.ndk = 25b
 # minapi 需 >=24：CPython 3.14 的 remote_debugging 模块调用 preadv/pwritev，
 # Android bionic 自 API 24(Android 7.0) 起才在 <sys/uio.h> 声明这两个函数（API23 报 implicit declaration）
 android.minapi = 24
