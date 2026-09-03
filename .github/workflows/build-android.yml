@@ -57,15 +57,31 @@ jobs:
           rc=$?
           if [ $rc -ne 0 ]; then
             python3 - <<'PYEOF'
-          import io
+          import io, re
           try:
-              lines = io.open('/tmp/buildozer.log', encoding='utf-8', errors='replace').read().splitlines()
+              raw = io.open('/tmp/buildozer.log', encoding='utf-8', errors='replace').read()
+              lines = raw.splitlines()
           except Exception:
               lines = []
-          tail = lines[-150:]
-          msg = '\n'.join(tail) if tail else '(no log captured)'
-          msg = msg.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
-          print('::error file=buildozer.spec,title=buildozer FAILED (tail 150 lines)::' + msg[:30000])
+          def esc(s):
+              return s.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          def emit(tag, block):
+              block = block[-3400:]
+              print('::error file=buildozer.spec,title=LOG %s::%s' % (tag, esc(block)))
+          # 1) 原始末尾 30 行（最能反映中断点）
+          tail = lines[-30:]
+          if tail:
+              emit('TAIL30', '\n'.join(tail))
+          # 2) 错误特征行聚类（取最后若干簇，每簇带前 6 行上下文）
+          pats = re.compile(r'(error|Error|fatal|FAILED|Command failed|Error code|Killed|No space|Traceback|make\[\d|clang:|internal compiler|out of memory|SIGKILL)', re.I)
+          idxs = [i for i, l in enumerate(lines) if pats.search(l)]
+          clusters = []
+          for i in idxs[-60:]:
+              if clusters and i - clusters[-1][0] <= 12:
+                  continue
+              clusters.append((i, '\n'.join(lines[max(0, i - 6):i + 3])))
+          for i, block in clusters[-7:]:
+              emit('CLUSTER@L%d' % (i + 1), block)
           PYEOF
             exit $rc
           fi
