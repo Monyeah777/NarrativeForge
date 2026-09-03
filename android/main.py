@@ -45,8 +45,12 @@ class MainApp(MDApp):
         seed_stats = self.ctrl.ensure_seeded()
 
         root = MDBoxLayout(orientation="vertical")
+        # 注意：KivyMD 1.2.0 的 MDTopAppBar 没有 subtitle 属性（全类属性集仅
+        # title/left_action_items/right_action_items/mode/type/headline_text 等，
+        # 传入未知 kwarg 会在 EventDispatcher.__init__ 抛 TypeError 导致启动闪退）。
+        # elevation 继承自基类 NotchedBox（toolbar.py:787 NumericProperty），合法。
+        # 版本信息改由右下角"关于"区域/各页空态展示，此处仅保留主标题。
         bar = MDTopAppBar(title=config.APP_NAME,
-                          subtitle=f"v{config.APP_VERSION} · 模块组合器",
                           elevation=2)
         root.add_widget(bar)
 

@@ -18,7 +18,7 @@ from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.list import MDList
 from kivymd.uix.scrollview import MDScrollView
-from kivymd.uix.selectioncontrol import MDCheckbox, MDRadioButton
+from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.textfield import MDTextField
 
@@ -57,12 +57,20 @@ def _module_row(ctrl: Controller, m: Module,
 
 def _radio_row(text: str, group: str, active: bool,
                on_select: Callable[[bool], None]) -> MDBoxLayout:
-    """单选行：MDRadioButton + 文本（radio 激活时触发 on_select(True)）。"""
+    """单选行：MDCheckbox(group=...) + 文本（radio 激活时触发 on_select(True)）。
+
+    注：KivyMD 1.2.0 已移除 MDRadioButton（全包零引用、selectioncontrol 仅导出
+    MDCheckbox/MDSwitch/Thumb）。MDCheckbox 继承 ToggleButtonBehavior，
+    在 group 为非 "root"/"child" 的普通组时使用 radio 圆形图标（radio_icon_normal/
+    radio_icon_down）且同组互斥——即等价于旧版 MDRadioButton 的单选语义。
+    旧代码 `from kivymd.uix.selectioncontrol import MDRadioButton` 会抛
+    ImportError，导致 main.py 顶层 import screens 时即崩溃闪退（本修复根因）。
+    """
     row = MDBoxLayout(orientation="horizontal",
                       size_hint_y=None, height=dp(52),
                       padding=[dp(4), 0, dp(12), 0])
-    rb = MDRadioButton(size_hint=(None, 1), width=dp(48),
-                       group=group, active=active)
+    rb = MDCheckbox(size_hint=(None, 1), width=dp(48),
+                    group=group, active=active)
     rb.bind(active=lambda _w, v, fn=on_select: v and fn())
     row.add_widget(rb)
     lab = MDLabel(text=text, size_hint_x=1, theme_text_color="Secondary")
