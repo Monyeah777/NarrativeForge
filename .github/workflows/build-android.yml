@@ -165,6 +165,67 @@ jobs:
               hi = min(len(lines), i + 30)
               emit('PEPCTX@L%d' % (i + 1), '\n'.join(clip2(x) for x in lines[lo:hi]))
           PYEOF
+            # --- 增强诊断：失败现场完整 dump + PEP517 环境实测 ---
+            python3 - <<'PYEOF2'
+          import io, re, subprocess, os, glob
+          raw = io.open('/tmp/buildozer.log', encoding='utf-8', errors='replace').read()
+          lines = raw.splitlines()
+          def esc(s):
+              return s.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          def emit(tag, block):
+              block = block[-3400:]
+              print('::error file=buildozer.spec,title=LOG %s::%s' % (tag, esc(block)))
+          # A) 文件末尾 250 行（完整失败现场，含 install_hostpython_prerequisites 与隔离环境安装细节）
+          emit('TAIL250', '\n'.join(lines[-250:]))
+          # B) pip 安装结果关键行（install_hostpython_prerequisites 与 build 隔离 requires 到底装了什么）
+          for kw in ['Successfully installed', 'Installing collected packages', 'Collecting setuptools',
+                     'Collecting wheel', 'Collecting build', 'Collecting Cython', 'Using cached setuptools',
+                     'Downloading setuptools', 'Building wheel for', 'Creating isolated environment']:
+              idxs = [i for i, l in enumerate(lines) if kw in l]
+              for i in idxs[-2:]:
+                  lo = max(0, i - 2); hi = min(len(lines), i + 4)
+                  emit('KW' + re.sub(r'\W', '', kw)[:20], '\n'.join(lines[lo:hi]))
+          # C) hostpython3 / android-build python3 的 setuptools 实测（判断 import 到底从哪失败）
+          BB = os.path.join(os.environ.get('GITHUB_WORKSPACE', '/home/runner/work/NarrativeForge/NarrativeForge'),
+                            'android/.buildozer/android/platform/build-arm64-v8a/build/other_builds')
+          def glob1(*parts):
+              return glob.glob(os.path.join(BB, *parts))[:1]
+          hp = glob1('hostpython3', '*', 'hostpython3', 'native-build', 'python3')
+          ap = glob1('python3', '*', 'python3', 'android-build', 'python3')
+          sp = glob1('hostpython3', '*', 'hostpython3', 'native-build', 'root', 'usr', 'local', 'lib', 'python3.11', 'site-packages')
+          out = ['HP=%s' % (hp[0] if hp else 'NOT FOUND'),
+                 'AP=%s' % (ap[0] if ap else 'NOT FOUND'),
+                 'SP=%s' % (sp[0] if sp else 'NOT FOUND')]
+          if sp:
+              try:
+                  items = sorted(os.listdir(sp[0]))
+                  out.append('SP top-level entries (pip/build/setuptools/wheel/pyproject):')
+                  for it in items:
+                      if any(k in it for k in ('setuptools', 'build', 'wheel', 'pip', 'pyproject', 'virtualenv')):
+                          out.append('  ' + it)
+              except Exception as e:
+                  out.append('SP list err: %s' % e)
+          probe = ("import sys; print('EXE', sys.executable); print('PREFIX', sys.prefix); "
+                   "print('SP0', sys.path[0] if sys.path else ''); print('PATH', '|'.join(sys.path[:8])); "
+                   "import setuptools; print('SETUPTOOLS', setuptools.__version__, setuptools.__file__)")
+          for tag, exe in (('HPROBE', hp), ('APROBE', ap)):
+              if exe:
+                  try:
+                      r = subprocess.run([exe[0], '-c', probe], capture_output=True, text=True, timeout=30)
+                      out.append('=== %s rc=%d ===' % (tag, r.returncode))
+                      out.append((r.stdout + r.stderr)[-3300:])
+                  except Exception as e:
+                      out.append('%s ERR %s' % (tag, e))
+          emit('ENVPROBE', '\n'.join(out))
+          # D) 全盘查找 setuptools 目录（判断到底装到了哪里）
+          try:
+              r = subprocess.run(['find', BB, '-maxdepth', '8', '-type', 'd', '-name', 'setuptools'],
+                                 capture_output=True, text=True, timeout=30)
+              dirs = [x for x in r.stdout.splitlines() if 'site-packages' in x][:15]
+              emit('FINDST', '\n'.join(dirs) if dirs else 'NO setuptools dir under site-packages in BB(maxdepth8)')
+          except Exception as e:
+              emit('FINDST', 'find err: %s' % e)
+          PYEOF2
             # 保留完整日志供下载分析
             cp /tmp/buildozer.log "$GITHUB_WORKSPACE/buildozer.log" 2>/dev/null || true
             exit $rc
