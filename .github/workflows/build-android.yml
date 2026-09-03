@@ -52,6 +52,16 @@ jobs:
         working-directory: android
         run: |
           export PATH="$HOME/.local/bin:$PATH"
+          # CPython 3.11 configure 对 grp 模块的启停只看 ac_cv_func_getgrgid(_r)
+          # （3.14 起才追加 getgrent 检查）。Android bionic 提供 getgrgid 但
+          # 不提供 getgrent/setgrent/endgrent，导致 grpmodule.c 编译失败。
+          # 注入 autoconf 缓存变量 = no，让 grp 状态降为 missing 从而跳过编译。
+          export ac_cv_func_getgrgid=no
+          export ac_cv_func_getgrgid_r=no
+          export ac_cv_func_getgrent=no
+          # 清掉 python3 上次失败残留的 configure 产物：p4a 仅在 android-build/
+          # 无 config.status 时才重跑 configure，残留会让上面的 ac_cv 不生效。
+          find ~/.buildozer -maxdepth 5 -type d -name 'android-build' -path '*python3*' -exec rm -rf {} + 2>/dev/null || true
           set +e
           buildozer -v android debug > /tmp/buildozer.log 2>&1
           rc=$?
