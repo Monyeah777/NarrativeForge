@@ -1,0 +1,43 @@
+--- a/pythonforandroid/recipe.py	2026-09-03 14:44:29.756593187 +0000
++++ b/pythonforandroid/recipe.py	2026-09-03 14:44:25.888593187 +0000
+@@ -1313,7 +1313,7 @@
+             return
+ 
+         self.install_hostpython_prerequisites(
+-            packages=["build[virtualenv]", "pip", "setuptools"] + self.hostpython_prerequisites
++            packages=["build[virtualenv]", "pip", "setuptools", "wheel"] + self.hostpython_prerequisites
+         )
+         self.patch_shebangs(self._host_recipe.site_bin, self.real_hostpython_location)
+ 
+@@ -1324,9 +1324,31 @@
+         # copy hostpython to built python to ensure correct selection of libs and includes
+         shprint(sh.cp, self.real_hostpython_location, self.ctx.python_recipe.python_exe)
+ 
++        # Wheel builds run with --no-isolation. `python -m build`'s default
++        # isolated env (venv+pip) is broken on p4a's hostpython3: the fresh
++        # venv never gets a working setuptools (its pip install of the
++        # backend requirements produces no output at all), so sdists with a
++        # [build-system] table fail with:
++        #   BackendUnavailable: Cannot import 'setuptools.build_meta'
++        # Running the backend directly in this env works because PYTHONPATH
++        # already points at hostpython3's site_dir, where
++        # install_hostpython_prerequisites installed setuptools / Cython /
++        # wheel (see packages= above). Sanity-probe that import below so a
++        # regression shows up as a clear message instead of a nested
++        # BackendUnavailable.
++        shprint(
++            sh.Command(self.ctx.python_recipe.python_exe),
++            "-c",
++            "import setuptools, setuptools.build_meta, wheel, Cython; "
++            "print('no-isolation env OK: setuptools', setuptools.__version__, "
++            "'legacy backend:', hasattr(setuptools.build_meta, '__legacy__'))",
++            _env=env,
++        )
++
+         build_args = [
+             "-m",
+             "build",
++            "--no-isolation",
+             "--wheel",
+             "--config-setting",
+             "builddir={}".format(sub_build_dir),

@@ -50,11 +50,11 @@ jobs:
           path: ~/.buildozer
           key: buildozer-${{ runner.os }}-${{ hashFiles('android/buildozer.spec') }}
 
-      - name: 预制 patched p4a（#3180 + grp 禁用 + PEP517 setuptools 补丁）
+      - name: 预制 patched p4a（#3180 + grp 禁用 + PEP517 setuptools/no-isolation 补丁）
         # p4a 的 arch.get_env() 从零构建 env 白名单（仅透传 HOME/PATH/CCACHE_*），
         # workflow 里 export 的 ac_cv 变量到不了 configure —— 必须改 p4a 源码层。
         # 方案：clone develop → reset --hard 到 #3180（CPython 3.11.13 + NDK r28c）
-        #   → 依次打入两个补丁：
+        #   → 依次打入三个补丁：
         #   ① android/p4a_disable_grp.patch：在 python3 recipe 的 configure_args
         #     注入 ac_cv_func_getgrgid(_r)=no（configure 命令行参数不受 env 白名单限制）。
         #   ② android/p4a_pep517_setuptools.patch：在 build.py run_pymodules_install
@@ -63,6 +63,15 @@ jobs:
         #     setuptools.build_meta:__legacy__ 且 requires 为空（直接从当前环境 import
         #     setuptools）；6b66944 的流程只装了 Cython 从未装 setuptools，导致
         #     BackendUnavailable。预装后 PEP517 后端即可 import。
+        #   ③ android/p4a_noisolation_wheel.patch：PyProjectRecipe.build_arch 的
+        #     `python -m build --wheel` 改为 --no-isolation + packages 补 wheel。
+        #     实证（937fb6d diag 双通道）：hostpython3 site_dir 已有 setuptools84/
+        #     Cython3.1.8（install_hostpython_prerequisites --target 装成），且
+        #     PYTHONPATH=site_dir 在 build frontend 生效（pyproject_hooks 从 site_dir
+        #     加载）；但 build 默认的 venv+pip 隔离环境在 hostpython3 上坏掉（新鲜
+        #     venv 的 pip 装 backend requires 无任何输出，setuptools.build_meta 永远
+        #     import 不到 → pyjnius-sdl2 BackendUnavailable）。--no-isolation 直接用
+        #     当前 env（PYTHONPATH=site_dir）跑 backend，import 即成功。
         # spec 的 p4a.source_dir 指向本目录：source_dir 模式下 buildozer 跳过全部
         # git 操作（不 clone/reset/clean），直接用这份已打补丁的源码。
         run: |
@@ -79,9 +88,14 @@ jobs:
           # 补丁②：PEP517 构建 venv 预装 setuptools+wheel（kivymd sdist 构建修复）
           git -C "$P4A_DIR" apply --check "$GITHUB_WORKSPACE/android/p4a_pep517_setuptools.patch" \
             && git -C "$P4A_DIR" apply "$GITHUB_WORKSPACE/android/p4a_pep517_setuptools.patch"
+          # 补丁③：PyProjectRecipe wheel 构建改 --no-isolation + 补装 wheel
+          # （pyjnius-sdl2 等 PyProjectRecipe 的 BackendUnavailable 修复）
+          git -C "$P4A_DIR" apply --check "$GITHUB_WORKSPACE/android/p4a_noisolation_wheel.patch" \
+            && git -C "$P4A_DIR" apply "$GITHUB_WORKSPACE/android/p4a_noisolation_wheel.patch"
           echo "patched p4a ready: $P4A_DIR @ $(git -C "$P4A_DIR" rev-parse --short HEAD)"
           grep -n 'ac_cv_func_getgrgid_r=no' "$P4A_DIR/pythonforandroid/recipes/python3/__init__.py" | head -3
           grep -n 'setuptools & wheel for PEP517' "$P4A_DIR/pythonforandroid/build.py" | head -3
+          grep -n -- '--no-isolation' "$P4A_DIR/pythonforandroid/recipe.py" | head -3
 
       - name: Buildozer 构建 debug APK（spec 位于 android/）
         working-directory: android
