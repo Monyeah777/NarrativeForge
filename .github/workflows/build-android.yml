@@ -154,9 +154,29 @@ jobs:
               lo = max(0, i - 6)
               hi = min(len(lines), i + 12)
               emit('PIPERR@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
+          # 5) PEP517 上下文大块（BackendUnavailable / 首个 pip 错误行前后各 30 行，
+          #    行长放宽到 1500 —— 便于还原 pip 实际执行环境与命令链）
+          def clip2(l):
+              return l if len(l) <= 1500 else l[:1500] + '...[TRUNC]'
+          ctx_re = re.compile(r'(BackendUnavailable|Getting build dependencies|Installing build dependencies|Building wheel for|Getting requirements to build wheel|ERROR: Could not build wheels|Successfully built)', re.I)
+          cidxs = [i for i, l in enumerate(lines) if ctx_re.search(l)]
+          for i in (cidxs[:2] + cidxs[-3:]):
+              lo = max(0, i - 30)
+              hi = min(len(lines), i + 30)
+              emit('PEPCTX@L%d' % (i + 1), '\n'.join(clip2(x) for x in lines[lo:hi]))
           PYEOF
+            # 保留完整日志供下载分析
+            cp /tmp/buildozer.log "$GITHUB_WORKSPACE/buildozer.log" 2>/dev/null || true
             exit $rc
           fi
+
+      - name: 上传 buildozer.log（失败排障用，完整日志）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildozer-log
+          path: buildozer.log
+          if-no-files-found: ignore
 
       - name: 上传 APK（Artifacts，Actions 页可直接下载）
         uses: actions/upload-artifact@v4
