@@ -23,8 +23,8 @@ check1(){
     [ -f "$f" ] || { no "根级缺失: $f"; err=1; }
   done
   local n03=$(find 03_管线库 -maxdepth 1 -name '*.md' 2>/dev/null | wc -l)
-  [ "$n03" -eq 3 ] || { no "03_管线库应 3 个 md，实为 $n03"; err=1; }
-  for p in P01_标准管线.md P02_校园情感流管线.md P03_西幻生存流管线.md; do
+  [ "$n03" -ge 4 ] || { no "03_管线库应至少 4 个 md（P00 骨架 + 叙事实例），实为 $n03"; err=1; }
+  for p in P00_通用文档生成管线.md P01_标准管线.md P02_校园情感流管线.md P03_西幻生存流管线.md; do
     [ -f "03_管线库/$p" ] || { no "03 缺管线文件: $p"; err=1; }
   done
   local n04=$(find 04_模块库 -name '*.md' 2>/dev/null | wc -l)
@@ -46,7 +46,7 @@ check1(){
   [ "$xh" -eq 23 ] || { no "西幻包资产应 23 文件，实为 $xh"; err=1; }
   [ -d 05_资产库/用户自定义 ] || { no '05 缺 用户自定义 目录'; err=1; }
   if [ "$err" -eq 0 ]; then
-    ok '根级 5 md + LICENSE；03 管线 3；04 模块 32（世界6/事件6/情感6/生存8/通用6）；05 总README+校园29+西幻23+用户自定义'
+    ok '根级 5 md + LICENSE；03 管线 4（P00 骨架 + P01/P02/P03 实例）；04 模块 32（世界6/事件6/情感6/生存8/通用6）；05 总README+校园29+西幻23+用户自定义'
   fi
 }
 
