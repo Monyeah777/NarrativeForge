@@ -16,6 +16,8 @@ jobs:
   build-android:
     name: Build Android APK (KivyMD)
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -94,25 +96,33 @@ jobs:
           buildozer -v android debug > /tmp/buildozer.log 2>&1
           rc=$?
           if [ $rc -ne 0 ]; then
-            python3 - <<'PYEOF'
-          import io, re
-          try:
-              raw = io.open('/tmp/buildozer.log', encoding='utf-8', errors='replace').read()
-              lines = raw.splitlines()
-          except Exception:
-              lines = []
+            # === 统一诊断段（单 heredoc） ===
+            # annotation 通道有 ~10 条/job 上限：72ec2df/125b841 两轮均为 11 条
+            #（10 条用户注入 + Node20 deprecation），125b841 追加的 TAIL250/ENVPROBE/
+            # FINDST/KW 全部超限被静默丢弃 —— 这就是 PYEOF2 段"未生效"的根因。
+            # 同时 artifact/logs 下载本地无权限（401/403）。故诊断输出改走双通道：
+            #   ① diag-latest 分支 push 回仓库（完整现场，本地 git fetch 即可全量分析；
+            #      workflow 只监听 main/v* 标签，不会触发循环）
+            #   ② 前 6 段同时注入 ::error annotation（即时 UI 可见，避开上限）
+            python3 - <<'PYDIAG'
+          import io, re, os, glob, subprocess, gzip, shutil
+          raw = io.open('/tmp/buildozer.log', encoding='utf-8', errors='replace').read()
+          lines = raw.splitlines()
+          blk = []
+          def clip(l, n=300):
+              return l if len(l) <= n else l[:n] + '...[TRUNC]'
           def esc(s):
               return s.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
-          def emit(tag, block):
-              block = block[-3400:]
-              print('::error file=buildozer.spec,title=LOG %s::%s' % (tag, esc(block)))
-          # 1) 原始末尾 30 行（最能反映中断点）
-          tail = lines[-30:]
-          if tail:
-              emit('TAIL30', '\n'.join(tail))
-          # 2) 精确抓 clang 诊断行（error:/fatal error:；编译命令行只有 -Werror= 无 error: 冒号，天然免疫）
-          def clip(l):
-              return l if len(l) <= 300 else l[:300] + '...[TRUNC]'
+          def emit(tag, body):
+              body = body[-3400:]
+              print('::error file=buildozer.spec,title=LOG %s::%s' % (tag, esc(body)))
+          def add(tag, body):
+              blk.append('\n===== %s =====\n%s' % (tag, body))
+              if len(blk) <= 6:
+                  emit(tag, body)
+          # 1) 完整失败现场（末尾 250 行）
+          add('TAIL250', '\n'.join(lines[-250:]))
+          # 2) error 行聚类（clang 诊断）
           err_re = re.compile(r'\berror:', re.I)
           err_idxs = [i for i, l in enumerate(lines) if err_re.search(l)]
           groups = []
@@ -122,70 +132,37 @@ jobs:
               else:
                   groups.append([i])
           for gi, g in enumerate(groups[-5:]):
-              lo = max(0, g[0] - 8)
-              hi = min(len(lines), g[-1] + 3)
-              emit('ERRBLK%d@L%d' % (gi + 1, g[0] + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
-          # 3) 总结性错误行兜底（make Error / errors generated / OOM / Traceback）
+              lo = max(0, g[0] - 8); hi = min(len(lines), g[-1] + 3)
+              add('ERRBLK%d@L%d' % (gi + 1, g[0] + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
+          # 3) 总结性错误行
           sum_re = re.compile(r'(errors? generated|make(?:\[\d+\])?: \*\*\* .*Error \d+|# Error code:|Command failed|Killed|No space left|out of memory|SIGKILL|Traceback)', re.I)
           sidxs = [i for i, l in enumerate(lines) if sum_re.search(l)]
           for i in sidxs[-3:]:
-              lo = max(0, i - 4)
-              hi = min(len(lines), i + 2)
-              # Traceback 需向后扩到异常类型行（pip 栈帧后 1-40 行内通常出现
-              # 形如 "ModuleNotFoundError: ..." 或 "ERROR: ..." 的独立行）
-              if 'Traceback' in lines[i]:
-                  j = i + 1
-                  while j < min(len(lines), i + 40):
-                      if re.match(r'^\s*[A-Za-z_][A-Za-z0-9_.]*(Error|Exception|Warning)\s*:', lines[j]) or \
-                         re.match(r'^(ERROR|error|Error)\b', lines[j].strip()):
-                          hi = j + 1
-                          break
-                      if lines[j].strip() == '' and j > i + 3:
-                          hi = j
-                          break
-                      j += 1
-                  hi = min(len(lines), hi)
-              emit('SUMM@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
-          # 4) pip/PEP517 特有错误精抓（pyproject_hooks 异常常无 error: 前缀，
-          #    且"Getting build dependencies"后的真实原因在更后面的行）
+              lo = max(0, i - 4); hi = min(len(lines), i + 2)
+              add('SUMM@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
+          # 4) pip/PEP517 特有错误
           pip_re = re.compile(r'(subprocess-exited-with-error|BackendUnavailable|backend (?:process|call)|No module named|ModuleNotFoundError|Could not find a version|No matching distribution|ReadTimeoutError|ConnectionError|\[SSL:|CERTIFICATE_VERIFY_FAILED|ERROR: Command errored|error: subprocess|pip .* (?:failed|error))', re.I)
           pidx = [i for i, l in enumerate(lines) if pip_re.search(l)]
           for i in pidx[-3:]:
-              lo = max(0, i - 6)
-              hi = min(len(lines), i + 12)
-              emit('PIPERR@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
-          # 5) PEP517 上下文大块（BackendUnavailable / 首个 pip 错误行前后各 30 行，
-          #    行长放宽到 1500 —— 便于还原 pip 实际执行环境与命令链）
+              lo = max(0, i - 6); hi = min(len(lines), i + 12)
+              add('PIPERR@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
+          # 5) PEP517 上下文大块（BackendUnavailable / Getting build deps 前后 30 行）
           def clip2(l):
               return l if len(l) <= 1500 else l[:1500] + '...[TRUNC]'
           ctx_re = re.compile(r'(BackendUnavailable|Getting build dependencies|Installing build dependencies|Building wheel for|Getting requirements to build wheel|ERROR: Could not build wheels|Successfully built)', re.I)
           cidxs = [i for i, l in enumerate(lines) if ctx_re.search(l)]
           for i in (cidxs[:2] + cidxs[-3:]):
-              lo = max(0, i - 30)
-              hi = min(len(lines), i + 30)
-              emit('PEPCTX@L%d' % (i + 1), '\n'.join(clip2(x) for x in lines[lo:hi]))
-          PYEOF
-            # --- 增强诊断：失败现场完整 dump + PEP517 环境实测 ---
-            python3 - <<'PYEOF2'
-          import io, re, subprocess, os, glob
-          raw = io.open('/tmp/buildozer.log', encoding='utf-8', errors='replace').read()
-          lines = raw.splitlines()
-          def esc(s):
-              return s.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
-          def emit(tag, block):
-              block = block[-3400:]
-              print('::error file=buildozer.spec,title=LOG %s::%s' % (tag, esc(block)))
-          # A) 文件末尾 250 行（完整失败现场，含 install_hostpython_prerequisites 与隔离环境安装细节）
-          emit('TAIL250', '\n'.join(lines[-250:]))
-          # B) pip 安装结果关键行（install_hostpython_prerequisites 与 build 隔离 requires 到底装了什么）
+              lo = max(0, i - 30); hi = min(len(lines), i + 30)
+              add('PEPCTX@L%d' % (i + 1), '\n'.join(clip2(x) for x in lines[lo:hi]))
+          # 6) pip 安装结果关键行（install_hostpython_prerequisites 与隔离 requires 到底装了什么）
           for kw in ['Successfully installed', 'Installing collected packages', 'Collecting setuptools',
                      'Collecting wheel', 'Collecting build', 'Collecting Cython', 'Using cached setuptools',
                      'Downloading setuptools', 'Building wheel for', 'Creating isolated environment']:
               idxs = [i for i, l in enumerate(lines) if kw in l]
               for i in idxs[-2:]:
                   lo = max(0, i - 2); hi = min(len(lines), i + 4)
-                  emit('KW' + re.sub(r'\W', '', kw)[:20], '\n'.join(lines[lo:hi]))
-          # C) hostpython3 / android-build python3 的 setuptools 实测（判断 import 到底从哪失败）
+                  add('KW' + re.sub(r'\W', '', kw)[:20], '\n'.join(lines[lo:hi]))
+          # 7) hostpython3 / android-build python3 的 setuptools import 实测
           BB = os.path.join(os.environ.get('GITHUB_WORKSPACE', '/home/runner/work/NarrativeForge/NarrativeForge'),
                             'android/.buildozer/android/platform/build-arm64-v8a/build/other_builds')
           def glob1(*parts):
@@ -199,7 +176,7 @@ jobs:
           if sp:
               try:
                   items = sorted(os.listdir(sp[0]))
-                  out.append('SP top-level entries (pip/build/setuptools/wheel/pyproject):')
+                  out.append('SP top-level entries (setuptools/build/wheel/pip/pyproject/virtualenv):')
                   for it in items:
                       if any(k in it for k in ('setuptools', 'build', 'wheel', 'pip', 'pyproject', 'virtualenv')):
                           out.append('  ' + it)
@@ -216,20 +193,38 @@ jobs:
                       out.append((r.stdout + r.stderr)[-3300:])
                   except Exception as e:
                       out.append('%s ERR %s' % (tag, e))
-          emit('ENVPROBE', '\n'.join(out))
-          # D) 全盘查找 setuptools 目录（判断到底装到了哪里）
+          add('ENVPROBE', '\n'.join(out))
+          # 8) 全盘查找 setuptools 目录（判断到底装到哪里）
           try:
               r = subprocess.run(['find', BB, '-maxdepth', '8', '-type', 'd', '-name', 'setuptools'],
                                  capture_output=True, text=True, timeout=30)
               dirs = [x for x in r.stdout.splitlines() if 'site-packages' in x][:15]
-              emit('FINDST', '\n'.join(dirs) if dirs else 'NO setuptools dir under site-packages in BB(maxdepth8)')
+              add('FINDST', '\n'.join(dirs) if dirs else 'NO setuptools dir under site-packages in BB(maxdepth8)')
           except Exception as e:
-              emit('FINDST', 'find err: %s' % e)
-          PYEOF2
-            # 保留完整日志供下载分析
+              add('FINDST', 'find err: %s' % e)
+          # 汇总写文件（完整诊断文本）
+          io.open('/tmp/diag.txt', 'w', encoding='utf-8').write('\n'.join(blk))
+          # 完整 buildozer.log 压缩存档（本地 fetch diag 分支后全量分析）
+          try:
+              with io.open('/tmp/buildozer.log', 'rb') as fi, gzip.open('/tmp/buildozer.log.gz', 'wb') as fo:
+                  shutil.copyfileobj(fi, fo)
+          except Exception as e:
+              io.open('/tmp/gz_err.txt', 'w').write('gz err: %s' % e)
+          PYDIAG
+            # push 完整现场回 diag-latest 分支（不触发 workflow：on push 仅监听 main/v*）
+            cp /tmp/diag.txt "$GITHUB_WORKSPACE/diag.txt" 2>/dev/null || true
+            cp /tmp/buildozer.log.gz "$GITHUB_WORKSPACE/buildozer.log.gz" 2>/dev/null || true
             cp /tmp/buildozer.log "$GITHUB_WORKSPACE/buildozer.log" 2>/dev/null || true
+            cd "$GITHUB_WORKSPACE"
+            git config user.name "ci-diag"
+            git config user.email "ci-diag@users.noreply.github.com"
+            git checkout -B diag-latest 2>/dev/null || git branch -f diag-latest HEAD
+            git add diag.txt buildozer.log.gz 2>/dev/null || true
+            git commit --allow-empty -m "ci-diag run ${GITHUB_RUN_ID} $(date -u +%FT%TZ)" 2>/dev/null || true
+            git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/Monyeah777/NarrativeForge.git" HEAD:diag-latest
             exit $rc
           fi
+
 
       - name: 上传 buildozer.log（失败排障用，完整日志）
         if: failure()
