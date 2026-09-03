@@ -31,7 +31,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends \
             openjdk-17-jdk autoconf automake libtool pkg-config \
-            zlib1g-dev libncurses-dev libltdl-dev unzip zip
+            zlib1g-dev libncurses-dev libltdl-dev libssl-dev unzip zip
           echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> "$GITHUB_ENV"
 
       - name: 安装 Buildozer（从 GitHub 拉取 master，p4a 需 Cython<3）
@@ -119,7 +119,29 @@ jobs:
           for i in sidxs[-3:]:
               lo = max(0, i - 4)
               hi = min(len(lines), i + 2)
+              # Traceback 需向后扩到异常类型行（pip 栈帧后 1-40 行内通常出现
+              # 形如 "ModuleNotFoundError: ..." 或 "ERROR: ..." 的独立行）
+              if 'Traceback' in lines[i]:
+                  j = i + 1
+                  while j < min(len(lines), i + 40):
+                      if re.match(r'^\s*[A-Za-z_][A-Za-z0-9_.]*(Error|Exception|Warning)\s*:', lines[j]) or \
+                         re.match(r'^(ERROR|error|Error)\b', lines[j].strip()):
+                          hi = j + 1
+                          break
+                      if lines[j].strip() == '' and j > i + 3:
+                          hi = j
+                          break
+                      j += 1
+                  hi = min(len(lines), hi)
               emit('SUMM@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
+          # 4) pip/PEP517 特有错误精抓（pyproject_hooks 异常常无 error: 前缀，
+          #    且"Getting build dependencies"后的真实原因在更后面的行）
+          pip_re = re.compile(r'(subprocess-exited-with-error|BackendUnavailable|backend (?:process|call)|No module named|ModuleNotFoundError|Could not find a version|No matching distribution|ReadTimeoutError|ConnectionError|\[SSL:|CERTIFICATE_VERIFY_FAILED|ERROR: Command errored|error: subprocess|pip .* (?:failed|error))', re.I)
+          pidx = [i for i, l in enumerate(lines) if pip_re.search(l)]
+          for i in pidx[-3:]:
+              lo = max(0, i - 6)
+              hi = min(len(lines), i + 12)
+              emit('PIPERR@L%d' % (i + 1), '\n'.join(clip(x) for x in lines[lo:hi]))
           PYEOF
             exit $rc
           fi
