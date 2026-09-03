@@ -15,7 +15,9 @@ requirements = python3,kivy==2.3.0,kivymd==1.2.0,plyer
 # Android 权限：读写通过系统文件选择器(SAF)/分享 intent，无需全盘；保留基础存储权限兼容旧路径
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 android.api = 33
-android.minapi = 23
+# minapi 需 >=24：CPython 3.14 的 remote_debugging 模块调用 preadv/pwritev，
+# Android bionic 自 API 24(Android 7.0) 起才在 <sys/uio.h> 声明这两个函数（API23 报 implicit declaration）
+android.minapi = 24
 android.archs = arm64-v8a
 android.accept_sdk_license = True
 
