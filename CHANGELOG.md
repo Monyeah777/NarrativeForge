@@ -3,7 +3,11 @@
 > 格式约定：Keep a Changelog 中文化（Added/Changed/Fixed 语义）；版本段按时间倒序；[Unreleased] = 当前主线开发中；发布即归档为 [版本号] + 日期段并打 annotated tag（ROADMAP §8 治理指针 3）。
 > 基线说明：本文件随 v0.6.0 方案 B 第①步落盘（2026-09-04）；早期版本（v0.1.0–v0.5.0）条目按 git 版本史（八 tag）回写简述。
 
-## [Unreleased] - v0.8.0 自定义模块组合（开发中）
+## [Unreleased] - v0.9.0 Android 同步门禁 + APK 闪退修复（开发中）
+### Added
+- 12_v0.9.0_Android同步门禁与APK闪退修复方案.md 落盘（方案真相源，I5）：v0.9.0 定位为「Android 同步门禁 + APK 闪退修复——把 sync --check 差异校验接入 CI（缺口⑦闭环：Android↔真源一致性不再靠人工）；对 APK 闪退修复做验证归档 + 纳入 CI 回归门禁保障」。关键前提（git merge-base 实证）：三处闪退修复代码（6b9445e MDRadioButton→MDCheckbox + MDTopAppBar 去 subtitle / 7fd6c0f bump / e92f119 CJK 字体注册）均已含于 v0.8.0 历史——本版对闪退定位 =「验证修复已含历史版本 + 归档根因链 + CI 门禁保障」，非新写修复代码。问题全景 A1–A3（A1 闪退修复已含 v0.8.0 但无 CI 回归保障 / A2 CI 同步不带 --check 缺口⑦ / A3 三件套版本状态滞后于 git 事实）；改进收口 B1–B3（B1 验证归档 + selftest_android.py UI 启动安全静态断言三断言：无 MDRadioButton import / MDTopAppBar 无 subtitle kwarg / _register_cjk_fonts 定义 + build() 首行调用 / B2 build-android.yml 同步步骤后追加 sync --check 自证闸门（保留生成步骤再自证，规避 fresh checkout 生成物缺失边界）/ B3 三件套收口 + v0.9.0 语义厘清）；任务分解 T1 静态断言（无前置）→ T2 CI --check 闸门（无前置，与 T1 可并行）→ T3 版本收口核验（依赖 T1/T2）；提交规划 C0–C3（本版无协议层改动，verify.sh PASS=20 不变）。ROADMAP §1 L14 v0.9.0 状态切「🔵 当前主线」+ §6 范围细化落盘；README 协议链追加 12、新增 v0.9.0 🔵 块引用、v0.8.0 块引用切「✅ 已发布 2026-09-04」；本段下方 [0.8.0] 段归档为治理指针 3 发布归档收口（v0.8.0 发布时遗留，原 [Unreleased] v0.8.0 段内容原样迁入不增删改）。
+
+## [0.8.0] - 2026-09-04（v0.8.0 自定义模块组合）
 ### Added
 - 11_v0.8.0_自定义模块组合方案.md 落盘（方案真相源，I5）：v0.8.0 定位为「自定义模块组合——在 v0.7 开放协议注册之上对外开放模块组合，第三方题材模块可在 P00 骨架上自由组合装配为新的社区管线（方案甲：references 受控跨包引用）」。问题全景 A1–A3（A1 模块组合无机读通道 / A2 组合装配合法性无门禁 / A3 管线派生纯人读无组合清单）；改进收口 B1–B3（B1 组合引用 Schema 化 / B2 组合登记机制 + registry protocols[] references 投影 / B3 check15 组合门禁）；任务分解 T1 组合引用 Schema 规范 → T2 组合登记 + 两包 retro-fit + registry protocols[] → T3 verify.sh check15 + v2.5；提交规划 C0–C4。ROADMAP §1 行 13 v0.8.0 状态切「🔵 当前主线」+ §5 范围细化落盘；README 协议链追加 11、版本行切 v0.8.0（当前主线·开发中）。
 ## [0.7.0] - 2026-09-04（v0.7.0 自定义协议）

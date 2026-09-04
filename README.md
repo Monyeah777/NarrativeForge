@@ -29,8 +29,9 @@
 图文流程与 FAQ 见 `community/README.md`。
 
 ## 协议链
-01_核心协议 → 02_联动注册表 → 03_管线库 → 04_模块库 → 05_资产库 → 06_Agent执行协议 → 07_官方核心出厂与社区预设导航 → 08_v0.5.0_优化版方案 → 09_v0.6.0_协议中转站方案 → 10_v0.7.0_自定义协议方案 → 11_v0.8.0_自定义模块组合方案。
-> **v0.8.0 自定义模块组合**（🔵 当前主线·开发中）：在 v0.7 开放协议注册之上对外开放模块组合——第三方题材模块可在 P00 骨架上自由组合装配为新的社区管线（references 受控跨包引用：01 §6.1 Schema v1→v2 → 02 §8.4 组合登记 + registry.json protocols[] references 投影 → verify.sh check15 组合门禁 v2.5）；方案真相源见 11_v0.8.0_自定义模块组合方案.md；版本演进与任务记录见 ROADMAP 与 CHANGELOG。
+01_核心协议 → 02_联动注册表 → 03_管线库 → 04_模块库 → 05_资产库 → 06_Agent执行协议 → 07_官方核心出厂与社区预设导航 → 08_v0.5.0_优化版方案 → 09_v0.6.0_协议中转站方案 → 10_v0.7.0_自定义协议方案 → 11_v0.8.0_自定义模块组合方案 → 12_v0.9.0_Android同步门禁与APK闪退修复方案。
+> **v0.9.0 Android 同步门禁 + APK 闪退修复**（🔵 当前主线·开发中）：闪退修复代码（MDRadioButton→MDCheckbox / MDTopAppBar 去 subtitle / CJK 字体注册）已含于 v0.8.0 历史（git merge-base 实证），本版对其做验证归档 + 回归断言入冒烟（selftest_android.py UI 启动安全静态断言三断言），并把 Android↔真源同步差异校验接入 CI（build-android.yml sync 步骤后追加 sync_android.sh --check 自证闸门，缺口⑦闭环）；方案真相源见 12_v0.9.0_Android同步门禁与APK闪退修复方案.md；版本演进与任务记录见 ROADMAP 与 CHANGELOG。
+> **v0.8.0 自定义模块组合**（✅ 已发布 2026-09-04）：在 v0.7 开放协议注册之上对外开放模块组合——第三方题材模块可在 P00 骨架上自由组合装配为新的社区管线（references 受控跨包引用：01 §6.1 Schema v1→v2 → 02 §8.4 组合登记 + registry.json protocols[] references 投影 → verify.sh check15 组合门禁 v2.5）；方案真相源见 11_v0.8.0_自定义模块组合方案.md；版本演进与任务记录见 ROADMAP 与 CHANGELOG。
 > **v0.7.0 自定义协议**（✅ 已发布 2026-09-04）：在 v0.6 统一入口之上对外开放协议注册——第三方按 protocol.yaml 协议声明注册自定义协议（01 §6.1 Schema 规范 → 02 §8.3 登记三要件 + registry.json protocols[] 投影 → verify.sh check14 注册门禁 v2.4，全量 PASS=19 全绿）；校园/西幻两包 retro-fit 为首例战例；版本演进与任务记录见 ROADMAP 与 CHANGELOG。
 
 ## 开箱即玩：社区领域预设

@@ -10,8 +10,8 @@
 | v0.5.0 | 优化版 | ✅ 已发布（2026-09-04） | 吸收外部项目精华、夯实底层能力（T1–T6） | 08_v0.5.0_优化版方案.md |
 | v0.6.0 | 协议中转站 | ✅ 已发布（2026-09-04） | 协议体系从人读规范文档升级为机读可驱动的通用协议层 | 09_v0.6.0_协议中转站方案.md |
 | v0.7.0 | 自定义协议 | ✅ 已发布（2026-09-04） | 对外开放协议注册，第三方可注册自定义协议 | 10_v0.7.0_自定义协议方案.md |
-| v0.8.0 | 自定义模块组合 | 🔵 当前主线 | 对外开放模块组合，第三方题材模块可组合装配 | 11_v0.8.0_自定义模块组合方案.md |
-| v0.9.0 | Android 同步门禁 | 🔮 规划 | APK 闪退修复 + Android↔真源同步差异入 CI | — |
+| v0.8.0 | 自定义模块组合 | ✅ 已发布（2026-09-04） | 对外开放模块组合，第三方题材模块可组合装配 | 11_v0.8.0_自定义模块组合方案.md |
+| v0.9.0 | Android 同步门禁 | 🔵 当前主线 | APK 闪退修复 + Android↔真源同步差异入 CI | 12_v0.9.0_Android同步门禁与APK闪退修复方案.md |
 | v1.0.0 | 全平台正式版 | 🔮 规划 | desktop / android / 协议层 / 社区生态收口，正式发布 | — |
 
 > **「协议开放三部曲」内在脉络**：**v0.6 统一入口 → v0.7 开放自定义协议 → v0.8 开放模块组合**。v0.6 若未建立统一入口，v0.7/v0.8 的开放将无从谈起——统一入口是协议开放的地基。
@@ -75,7 +75,7 @@
 ### 版本内提交约定
 按 09 惯例：每批次独立 commit（C0–C4）；verify.sh（含 check14）全绿方可推送。
 
-## 5. v0.8.0 自定义模块组合（🔵 当前主线）
+## 5. v0.8.0 自定义模块组合（✅ 已发布 2026-09-04）
 ### 一句话目标
 在 v0.7 开放协议注册之上**对外开放模块组合**——第三方题材模块可在 P00 骨架上自由组合装配为新的社区管线（方案甲：references 受控跨包引用）。
 ### 范围边界
@@ -93,9 +93,25 @@
 ### 版本内提交约定
 按 09/10 惯例：每批次独立 commit（C0–C4）；verify.sh（含 check15）全绿方可推送。
 
-## 6. v0.9.0 Android 同步门禁 + APK 闪退修复（🔮 规划）
-
-一句话：修复 Android 端 APK 闪退问题；把 sync --check 差异校验接入 CI（缺口⑦闭环：Android↔真源一致性不再靠人工）。前置：v0.6.0 已交付 sync_android.sh --check 模式本体。
+## 6. v0.9.0 Android 同步门禁 + APK 闪退修复（🔵 当前主线）
+### 一句话目标
+把 sync --check 差异校验接入 CI（缺口⑦闭环：Android↔真源一致性不再靠人工）；对 APK 闪退修复（代码已含 v0.8.0 历史，git merge-base 实证）做验证归档 + 纳入 CI 回归门禁保障。
+### 范围边界
+✅ **三做**（任务分解见 12_v0.9.0_Android同步门禁与APK闪退修复方案.md，A→B→T 三层）：
+1. **闪退修复验证归档 + 回归断言入冒烟（B1/T1）**：git merge-base 实证三处修复代码（`6b9445e` MDRadioButton→MDCheckbox + MDTopAppBar 去 subtitle / `e92f119` CJK 字体注册）均已含于 v0.8.0 tag——本版定位为「验证修复已含历史版本 + 归档根因链」，非新写修复代码；selftest_android.py 增 UI 启动安全静态断言三断言（screens.py 无 MDRadioButton import / main.py MDTopAppBar 无 subtitle kwarg / `_register_cjk_fonts` 定义在场且 build() 首行调用），纯 python3 文件读取无 Kivy 依赖，FAIL 任一 = 冒烟 exit 1。
+2. **CI 同步门禁 --check 自证（B2/T2）**：build-android.yml 同步步骤（`bash scripts/sync_android.sh`，core/seed 为 .gitignore 生成物不入库故 CI 中 sync 是其唯一生成途径）后**追加**一步 `bash scripts/sync_android.sh --check` 自证闸门——先保留生成步骤再自证（直接替换会命中 fresh checkout 生成物缺失边界必然失败）；有差异 exit 1 fail CI、无差异继续冒烟。缺口⑦（Android↔真源一致性不再靠人工）闭环。
+3. **三件套版本收口（B3/T3）**：CHANGELOG [Unreleased] v0.8.0 段归档 [0.8.0]（治理指针 3 发布归档收口）+ 新建 [Unreleased] v0.9.0 段；ROADMAP §1 L14/§5 状态归位；README 协议链追加 12 + v0.8.0 块引用切 ✅ + 新增 v0.9.0 🔵 块引用——v0.9.0 版本语义（「修复闪退」）与代码事实（修复已含 v0.8.0）厘清落档。
+❌ **三不做**：
+1. Android 功能扩展（UI/功能迭代明确不在本版，同历版三不做）。
+2. 端到端测试入 CI（真机/模拟器启动 UI 自动化留范围外，延续 v0.5.0–v0.8.0 四版范围外声明；APK 装机启动验证仍靠真机手动验收）。
+3. 协议层与 verify.sh 门禁改动（本版无协议层 Schema/门禁改动，check1–15 PASS=20 不变；sync_android.sh --check 本体与 buildozer/p4a 构建链三补丁均不动）。
+### 交付锚点
+- 12_v0.9.0_Android同步门禁与APK闪退修复方案.md（A→B→T 三层落盘，11 格式）。
+- selftest_android.py UI 启动安全静态断言三断言（纯 python3 无 Kivy 依赖，闪退修复点回归有 CI 闸门）。
+- build-android.yml sync --check 自证闸门步骤（缺口⑦闭环）。
+- 三件套收口（CHANGELOG [0.8.0] 归档 + [Unreleased] v0.9.0 段 / README 协议链 12 + 块引用双切 / ROADMAP §1 L14 🔵 + §6 展开）+ tag v0.9.0。
+### 版本内提交约定
+按 10/11 惯例：每批次独立 commit（C0–C3）；verify.sh（含 check12，全量 PASS=20）全绿方可推送。
 
 ## 7. v1.0.0 全平台正式版（🔮 规划）
 
