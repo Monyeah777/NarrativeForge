@@ -29,6 +29,11 @@
 | INTERACTION_DEPTH | INTERACTION_DEPTH.md | 8 类（freq/quality/damage） | 1582-1677 | M40（关系深度） |
 | PERSONALITY_LINK | PERSONALITY_LINK.md | 3 组系数 + 3 组参数 | 1678-1711 | M40（破坏结算） |
 
+> **官方模块对照（v0.5.0 T2.2 补注）**：上表 A 区「主要消费模块」列为**源文切片残留编号**（源文 8620 行内旧模块体系编号，切片未改写，I3），非本仓库模块文件全集。可解析规则：
+> - **官方核心模块（04_模块库 实存）**：M00 / 通用:M10 / M06 / M08 / M12 / M13 / M20 / M23 / M24 / M50 / M80 / 事件:M22 —— 表内 M23（COGNITIVE_LOAD）、M08（WEATHER_SEASON）、M80（WRITING_STYLE/COGNITIVE_LOAD）即官方核心件。
+> - **本包模块（modules/ 实存，9 件）**：情感:M22 / M40 / M41 / M43 / M55 / M57 / M58 / M59 / M65 —— 表内 M22（情感:M22，FEAR_LIBRARY/EMOTION_WHEEL/ATTR_TEMPLATES）、M40、M43、M55、M57、M59、M65 均直接对应本包模块文件。
+> - **源编号残留（无模块文件，仅溯源上下文）**：M07 / M10（未限定前缀）/ M21 / M26 / M34 / M42 / M60 / M62 等 —— 表内 GOSSIP_TOPICS 的 M34、BIG5_INFER/EVOLUTION_RULES 的 M21 即此类；实际消费对象以各模块头 events/core.assets 声明与 02 注册表 §8.1 在册为准。
+
 ### B. 扩展资产（v0.7.7-v0.7.9 新增 12 键，第 11-13 章，源行 2475-2885）
 
 | 资产键 | 文件 | 条目规模 | 源行区间 | 引入版本/章节 |
