@@ -1,6 +1,21 @@
 # 模块 M12 · NPC 对话
 > 类别：事件｜来源：共享｜挂载点：P50 交互执行（active）｜依赖：M20、M13｜被依赖：M13｜发布：无
 
+```yaml
+machine_contract:
+  schema: "1"
+  id: M12
+  name: NPC 对话
+  category: 事件
+  layer: P50
+  inputs: [M20, M13]
+  outputs: []
+  events:
+    publish: []
+    subscribe: []
+  interfaces: []
+```
+
 ## 1. 职责
 管理**NPC 对话模板与交互行为素材**：维护 13+ NPC 的对话模板体系（闲聊/任务线索/好感回应/秘密情报），按触发条件供给可选项与台词。（npc_dialogue_templates 13+NPC / 对话类别与触发规则，模板内容随社区题材包扩展）。是"台词库"，与 M13 状态机构成模板-状态互查的双向耦合。
 

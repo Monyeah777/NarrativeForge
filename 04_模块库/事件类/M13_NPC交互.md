@@ -1,6 +1,21 @@
 # 模块 M13 · NPC 交互
 > 类别：事件｜来源：共享｜挂载点：P30 事件生产（active）｜依赖：M12、M06、M20｜被依赖：M40、M14（随社区包）、事件:M22｜发布：`interaction_update`
 
+```yaml
+machine_contract:
+  schema: "1"
+  id: M13
+  name: NPC 交互
+  category: 事件
+  layer: P30
+  inputs: [M12, M06, M20]
+  outputs: []
+  events:
+    publish: [interaction_update]
+    subscribe: [quest_state, level_up]
+  interfaces: []
+```
+
 ## 1. 职责
 管理 **NPC 运行时状态机、记忆、日程、目标与好感函数**：实例化 NPC 个体，维护其与玩家的好感数值与交互历史，把每次交互结算为 interaction_update 广播给关系/声望/叙事模块。（NPCInstance 状态机 / NPC记忆 / 日程行为 / 目标系统 / 死亡继承 / 好感度函数）。**NPC 个体真相来源**（群体声望归 M14；M14 随社区西幻包）。
 
