@@ -103,15 +103,15 @@ check4(){
   fi
 }
 check5(){
-  echo '== [5/6·A] 质检门（M80 gate 三档 ↔ 06 §5）=='
+  echo '== [5/6·A] 质检门（M80 gate_action 流水线 ↔ 06 §5）=='
   local err=0
-  for k in 'pass:' 'warn:' 'fail:' '白描' '隐藏域直述'; do
+  for k in 'pass:' 'warn:' 'fail:' '白描' '隐藏域直述' 'gate_action' 'gate_decision_record'; do
     grep -q "$k" 04_模块库/通用类/M80_输出生成器.md || { no "M80 gate 缺: $k"; err=1; }
   done
   for k in 'pass' 'warn' 'fail' '隐藏域直述' '白描'; do
     grep -q "$k" 06_Agent执行协议.md || { no "06 §5 gate 缺呼应: $k"; err=1; }
   done
-  if [ "$err" -eq 0 ]; then ok 'M80 gate 三档（pass/warn/fail + 白描降级）与 06 §5 呼应一致'
+  if [ "$err" -eq 0 ]; then ok 'M80 gate_action 声明式流水线（pass/warn/fail + 白描降级 + 决策记录）与 06 §5 呼应一致'
   fi
 }
 check6(){
