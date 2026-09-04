@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.3  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）
+# 版本 : v2.4  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
-#        [段 C] 代码层门禁（check12/check13，无条件执行：check12 = desktop unittest 40 用例 + 全量 py_compile；check13 = 协议版本一致性 + 迁移完整性）
+#        [段 C] 代码层门禁（check12/check13/check14，无条件执行：check12 = desktop unittest 40 用例 + 全量 py_compile；check13 = 协议版本一致性 + 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致）
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
@@ -348,9 +348,139 @@ PYEOF
   if [ "$err" -eq 0 ]; then ok '协议版本一致性 + 迁移完整性全绿（check13：三处版本一致 + §9.3 四步在场 + 13 件模块全等）'
   fi
 }
+check14(){
+  echo '== [14/段C] 社区协议登记门禁（v0.7.0 check14：01 §6.1 Schema + 02 §8.3 登记三要件 + registry protocols[] 投影）=='
+  local err=0
+  # 依赖探测：python3 + PyYAML（yaml 解析用；缺失时该子项 WARN 降级文本粗校验，不 FAIL——动作 3）
+  local PYOK=0 YAMLOK=0
+  command -v python3 >/dev/null 2>&1 && PYOK=1
+  { [ "$PYOK" -eq 1 ] && python3 -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
+  [ "$YAMLOK" -eq 1 ] || wn 'python3/PyYAML 不在（check14 ② yaml 解析降级文本粗校验；建议 pip install pyyaml 后重跑精确校验）'
+  # ① protocol.yaml 在场（登记三要件①）
+  local d miss=0
+  for d in community/校园情感领域包 community/西幻生存领域包; do
+    [ -f "$d/protocol.yaml" ] || { no "①缺协议声明: $d/protocol.yaml（登记三要件①不满足）"; miss=1; }
+  done
+  if [ "$miss" -eq 1 ]; then
+    no 'protocol.yaml 缺失——check14 ②-⑦ 跳过（登记三要件不全，包不被平台门禁识别）'
+    return
+  fi
+  # ②-⑦ 精确比对（python3 + PyYAML：解析两包 protocol.yaml + desktop registry.json + 02 文档反解）
+  if [ "$YAMLOK" -eq 1 ]; then
+    if python3 - <<'PYEOF' >/tmp/nf_check14.log 2>&1
+import json, re, sys
+import yaml
+
+PKGS = ['community/校园情感领域包', 'community/西幻生存领域包']
+REQUIRED = [
+    'protocol.schema_version', 'package.id', 'package.name', 'package.pipeline',
+    'package.module_id_range', 'package.categories', 'package.dependencies.core_only',
+    'package.dependencies.core_modules', 'package.dependencies.cross_package',
+    'package.modules', 'package.assets', 'package.mount_layers',
+]
+OFFICIAL13 = ['M00', '通用:M10', 'M08', 'M23', 'M24', 'M50', 'M80',
+              '事件:M22', 'M06', 'M12', 'M13', 'M20', 'M90']
+errs = []
+data = {}
+# --- 解析两包 protocol.yaml + ②必填 12 字段 ---
+for d in PKGS:
+    try:
+        data[d] = yaml.safe_load(open(d + '/protocol.yaml', encoding='utf-8'))
+    except Exception as e:
+        errs.append('%s yaml 解析失败: %s' % (d, e))
+        continue
+    pkg = data[d].get('package', {})
+    for k in REQUIRED:
+        node, parts = data[d], k.split('.')
+        for p in parts:
+            if isinstance(node, dict) and p in node:
+                node = node[p]
+            else:
+                errs.append('%s 缺必填字段: %s' % (d, k)); break
+    mr, ms = pkg.get('module_id_range'), pkg.get('modules')
+    if isinstance(mr, list) and isinstance(ms, list) and len(mr) != len(ms):
+        errs.append('%s module_id_range(%d) != modules(%d)' % (d, len(mr), len(ms)))
+if not errs:
+    # ③ R2 类别包间不冲突（校园 ∩ 西幻 = ∅）
+    cats = {d: set(data[d]['package']['categories']) for d in PKGS}
+    inter = cats[PKGS[0]] & cats[PKGS[1]]
+    if inter:
+        errs.append('③R2 类别冲突（两社区包不得共占独占类别）: ' + ','.join(sorted(inter)))
+    # ④ R1 core_modules ⊆ 官方核心 13 件 + cross_package 空
+    for d in PKGS:
+        dep = data[d]['package']['dependencies']
+        bad = [x for x in dep.get('core_modules', []) if x not in OFFICIAL13]
+        if bad: errs.append('%s ④R1 core_modules 越界官方核心 13 件: %s' % (d, ','.join(bad)))
+        if dep.get('core_only') is not True: errs.append('%s ④R1 core_only 应为 true' % d)
+        if dep.get('cross_package'): errs.append('%s ④R1 cross_package 应为空数组' % d)
+    # ⑤ 编号在册一致（module_id_range ↔ 02 §8 反解）+ M91-M99 不占用
+    doc = open('02_联动注册表.md', encoding='utf-8').read()
+    m81 = re.search(r'^### 8\.1\b.*?(?=^### 8\.2\b)', doc, re.S | re.M)
+    m82 = re.search(r'^### 8\.2\b.*?(?=^### 8\.3\b)', doc, re.S | re.M)
+    segmap = {PKGS[0]: m81.group(0) if m81 else '', PKGS[1]: m82.group(0) if m82 else ''}
+    for d in PKGS:
+        ids = [str(x) for x in data[d]['package']['module_id_range']]
+        m99 = [i for i in ids if re.match(r'^M9[1-9]$', i)]
+        if m99: errs.append('%s ⑤M91-M99 段被占用: %s（新包新增编号才落 M91-M99，既有包沿用原编号）' % (d, ','.join(m99)))
+        mm = re.search(r'模块（(\d+)）', segmap[d])
+        regn = int(mm.group(1)) if mm else -1
+        if regn < 0:
+            errs.append('%s ⑤02 §8 在册模块数未取到' % d)
+        elif len(ids) != regn:
+            errs.append('%s ⑤module_id_range(%d) != 02 §8 在册(%d)' % (d, len(ids), regn))
+    # ⑥ protocol.yaml ↔ README 关键字段一致（双源一致，check14 ⑥）
+    for d in PKGS:
+        rd = open(d + '/README.md', encoding='utf-8').read()
+        pkg = data[d]['package']
+        if pkg['name'] not in rd: errs.append('%s ⑥README 缺包名: %s' % (d, pkg['name']))
+        if pkg['pipeline'] not in rd: errs.append('%s ⑥README 缺管线: %s' % (d, pkg['pipeline']))
+        ac = pkg['assets']['count']
+        if str(ac) not in rd: errs.append('%s ⑥README 缺资产数 %d 字样' % (d, ac))
+    # ⑦ registry protocols[] ↔ protocol.yaml / 02 §8 一致（check14 ⑦）
+    reg = json.load(open('desktop/src/core/registry.json', encoding='utf-8'))
+    prots = {p['id']: p for p in reg.get('protocols', [])}
+    if len(prots) != 2:
+        errs.append('⑦registry protocols[] 条目数=%d（预期 2：校园+西幻）' % len(prots))
+    for d in PKGS:
+        pkg = data[d]['package']
+        pid = pkg['id']
+        p = prots.get(pid)
+        if not p:
+            errs.append('⑦registry protocols[] 缺条目: %s' % pid); continue
+        if p['pipeline'] != pkg['pipeline']: errs.append('⑦%s pipeline 不一致' % pid)
+        if sorted(p['categories']) != sorted(pkg['categories']): errs.append('⑦%s categories 不一致' % pid)
+        if p['schema_version'] != data[d]['protocol']['schema_version']: errs.append('⑦%s schema_version 不一致' % pid)
+        if len(p['module_ids']) != len(pkg['module_id_range']): errs.append('⑦%s module_ids 条数(%d) != module_id_range(%d)' % (pid, len(p['module_ids']), len(pkg['module_id_range'])))
+        if p['assets']['count'] != pkg['assets']['count']: errs.append('⑦%s assets.count 不一致' % pid)
+        if len(p['mount_layers']) != len(pkg['mount_layers']): errs.append('⑦%s mount_layers 层数(%d) != protocol(%d)' % (pid, len(p['mount_layers']), len(pkg['mount_layers'])))
+        mm = re.search(r'模块（(\d+)）', segmap[d])
+        regn = int(mm.group(1)) if mm else -1
+        if regn >= 0 and len(p['module_ids']) != regn:
+            errs.append('⑦%s module_ids(%d) != 02 §8 在册(%d)' % (pid, len(p['module_ids']), regn))
+sys.exit(1 if errs else 0)
+PYEOF
+    then
+      :
+    else
+      no "check14 ②-⑦ 校验失败——$(head -5 /tmp/nf_check14.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    # 降级：PyYAML 缺失 → 文本粗校验必填键在场（②），③-⑦ WARN 跳过不 FAIL（动作 3）
+    local dd k miss2=0
+    for dd in community/校园情感领域包 community/西幻生存领域包; do
+      for k in 'schema_version' 'package:' 'id:' 'name:' 'pipeline:' 'module_id_range' 'categories:' 'core_only' 'core_modules' 'cross_package' 'modules:' 'assets:' 'mount_layers'; do
+        grep -q "$k" "$dd/protocol.yaml" || { no "②(降级) $dd/protocol.yaml 缺键: $k"; miss2=1; }
+      done
+    done
+    [ "$miss2" -eq 0 ] || err=1
+    [ "$miss2" -eq 0 ] && wn 'check14 ②-⑦ 精确比对跳过（PyYAML 缺失，仅必填键文本粗校验；建议安装 pyyaml 后重跑）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '社区协议登记门禁全绿（check14 七项：①protocol.yaml 在场 ②Schema 必填 12 字段 ③R2 类别不冲突 ④R1 依赖边界 ⑤编号在册一致+M91-M99 不占用 ⑥双源一致 ⑦protocols[] 投影一致）'
+  fi
+}
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.3（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性）'
+echo ' NarrativeForge 三段式验收门禁  v2.4（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -362,9 +492,10 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁 + 协议一致性门禁（check12/check13，无条件执行）——'
+echo '—— 段 C：代码层门禁 + 协议一致性门禁（check12/check13/check14，无条件执行）——'
 check12
 check13
+check14
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
