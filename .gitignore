@@ -5,3 +5,7 @@ build/
 dist/
 __pycache__/
 *.pyc
+
+# 本地 AI 协作工作区（天枢运行时状态与项目标记，不入库）
+.rivet/
+.rivet.md
