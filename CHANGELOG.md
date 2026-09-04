@@ -5,6 +5,9 @@
 
 ## [Unreleased] - v0.7.0 自定义协议（开发中）
 
+### Changed
+- 10_v0.7.0_自定义协议方案.md 落盘（方案真相源，I5）：v0.7.0 定位为「自定义协议——在 v0.6 统一入口之上对外开放协议注册，第三方可按协议声明注册自定义协议，进入注册表登记与门禁调度」。问题全景 A1–A3（A1 第三方协议注册无机读入口 / A2 协议声明无机读 Schema / A3 注册无门禁校验）；改进收口 B1–B3（B1 protocol.yaml Schema 机读化 / B2 注册流程机读化 + registry.json protocols[] 投影 / B3 check14 注册门禁）；任务分解 T1 协议声明 Schema 规范 → T2 两包 retro-fit + 02 §8.3/§9 升级 + registry.json protocols[] → T3 verify.sh check14 + v2.4；提交规划 C0–C4。ROADMAP §1 行 12 v0.7.0 状态切「🔵 当前主线」+ §4 范围细化落盘；README 协议链追加 10、版本行切 v0.7.0（当前主线·开发中）。
+
 ## [0.6.0] - 2026-09-04（v0.6.0 协议中转站）
 
 ### Added
