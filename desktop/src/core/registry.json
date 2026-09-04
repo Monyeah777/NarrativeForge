@@ -1,0 +1,39 @@
+{
+  "registry_schema_version": "2",
+  "schema_name": "narrativeforge.registry",
+  "registry_name": "官方核心注册表",
+  "truth_source": "02_联动注册表.md",
+  "note": "02 文档为注册表真相源（I5）；本文件为 02 §2 模块表 / §3 订阅 / §5 挂载点的机读投影（v0.6.0 T1.1 引入）。同步纪律：改 02 必同步本文件，反之亦然，二者一致性由 verify.sh check13 断言（T2.3 实现）。动态订阅（社区题材包装配挂接的事件源）不属核心内部固定订阅，随社区包登记，不入本文件。",
+  "modules": [
+    { "id": "M00", "name": "数据结构", "category": "通用", "source": "核心", "mounts": [ { "layer": "P00", "status": "active" } ] },
+    { "id": "通用:M10", "name": "时间推进", "category": "通用", "source": "核心", "mounts": [ { "layer": "P10", "status": "active" } ] },
+    { "id": "M23", "name": "认知边界", "category": "通用", "source": "核心", "mounts": [ { "layer": "P20", "status": "active" } ] },
+    { "id": "M24", "name": "组合规则", "category": "通用", "source": "共享", "mounts": [ { "layer": "P70", "status": "active" } ] },
+    { "id": "M50", "name": "主循环", "category": "通用", "source": "核心", "scheduler": true, "mounts": [] },
+    { "id": "M80", "name": "输出生成器", "category": "通用", "source": "核心", "mounts": [ { "layer": "P80", "status": "active" } ] },
+    { "id": "事件:M22", "name": "事件叙事", "category": "事件", "source": "核心", "mounts": [ { "layer": "P30", "status": "active" } ] },
+    { "id": "M06", "name": "任务剧情", "category": "事件", "source": "共享", "mounts": [ { "layer": "P30", "status": "active" } ] },
+    { "id": "M12", "name": "NPC对话", "category": "事件", "source": "共享", "mounts": [ { "layer": "P50", "status": "active" } ] },
+    { "id": "M13", "name": "NPC交互", "category": "事件", "source": "共享", "mounts": [ { "layer": "P30", "status": "active" } ] },
+    { "id": "M20", "name": "世界知识库", "category": "事件", "source": "共享", "mounts": [ { "layer": "P70", "status": "active" }, { "layer": "P00", "status": "available" } ] },
+    { "id": "M08", "name": "季节天气", "category": "世界", "source": "共享", "mounts": [ { "layer": "P10", "status": "available" } ] },
+    { "id": "M90", "name": "技术文档结构", "category": "技术文档", "source": "核心（P90 实证样例）", "mounts": [ { "layer": "P90", "status": "active" } ] }
+  ],
+  "mount_points": {
+    "P00": { "name": "数据基座", "default": ["M00"], "available": ["M00", "M20"], "optional": false },
+    "P10": { "name": "世界推进", "default": ["通用:M10"], "available": ["通用:M10", "M08"], "optional": false },
+    "P20": { "name": "角色状态", "default": ["M23"], "available": ["M23"], "optional": false },
+    "P30": { "name": "事件生产", "default": ["事件:M22", "M06", "M13"], "available": ["事件:M22", "M06", "M13", "M12"], "optional": false },
+    "P40": { "name": "行为决策", "default": [], "available": [], "optional": true },
+    "P50": { "name": "交互执行", "default": ["M12"], "available": ["M12"], "optional": false },
+    "P60": { "name": "长期演变", "default": [], "available": [], "optional": true },
+    "P70": { "name": "叙事素材", "default": ["M20", "M24"], "available": ["M20", "M24"], "optional": false },
+    "P80": { "name": "输出呈现", "default": ["M80"], "available": ["M80"], "optional": false }
+  },
+  "subscriptions": {
+    "tick_day": { "publisher": "通用:M10", "subscribers": ["M08"], "note": "时间推进 → 季节天气；社区侧订阅（生存:M01/M19、M40 等）随社区包登记" },
+    "quest_state": { "publisher": "M06", "subscribers": ["M13"], "note": "任务剧情状态 → NPC 交互；社区侧订阅（M04、生存:M10）随社区包登记" },
+    "narrative_event": { "publisher": "事件:M22", "subscribers": ["M80"], "note": "事件叙事 → M80 输出门（M80 唯一叙事输入）" },
+    "interaction_update": { "publisher": "M13", "subscribers": ["事件:M22"], "note": "NPC 交互更新 → 事件总线；社区侧订阅（M40、M14）随社区包登记" }
+  }
+}

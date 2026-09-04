@@ -9,6 +9,7 @@
 - 工程治理三件套落盘：ROADMAP.md（五版本路线唯一规划真相源 + 治理指针四项）/ CHANGELOG.md（本文件）/ CONTRIBUTING.md（Conventional Commits + 四步验证门槛 + 三改动域细则）。
 - .github 模板：ISSUE_TEMPLATE（bug_report / feature_request）+ PULL_REQUEST_TEMPLATE（改动域勾选 + 门禁自检清单）。
 - verify.sh 增 check12 代码层门禁（desktop/tests/test_core.py 40 用例 unittest + py_compile 语法抽查）。
+- T1.1 机读投影落地（协议中转站 B1 第一步）：desktop/src/core/registry.json 落盘（registry_schema_version "2"，13 件模块表 / P00–P80 挂载点含 P40/P60 optional / 四组固定订阅）；02 §9 机读投影声明 + 字段映射 + 同步纪律；registry_schema_version 1→2 V2 bump 首例（迁移记录四步见 02 §9.3）。
 
 ### Changed
 - 09_v0.6.0_协议中转站方案.md 落盘（方案真相源，I5）：v0.6.0 定位为「协议中转站——协议体系从人读规范文档升级为机读可驱动的通用协议层」。三项改进收口：B1 协议统一入口（02 §9 机读投影 registry.json + desktop Runtime 装载器 registry_loader，I5 扩展为「文档层 + 机读投影双校验唯一」）；B2 迁移机制落地（01 §7 实操模板 + registry_schema_version 1→2 V2 bump 首例 + verify.sh check13 断言）；B3 同步工具链 --check（sync_android.sh 只读差异校验，有差异 exit 1）。任务分解 T1 协议统一入口 → T2 迁移机制（依赖 T1.1 bump 素材）→ T3 sync --check（独立并行）；提交规划 C0–C5。
