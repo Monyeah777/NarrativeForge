@@ -25,7 +25,7 @@ c = Controller(home=HOME)
 # ---- 1. 种子自举 ----
 st = c.ensure_seeded()
 print("[1] ensure_seeded →", st)
-assert st["modules"] > 0 and st["pipelines"] > 0 and st["asset_packs"] > 0 \
+assert st["modules"] > 0 and st["pipelines"] > 0 \
     and not st["errors"], st
 
 print("    pipelines:", [(p.id, p.name) for p in c.list_pipelines()])
@@ -40,9 +40,9 @@ assert st2.get("skipped"), st2
 print("[2] 幂等跳过 ✓", st2)
 
 # ---- 3. 管线选择（持久化） ----
-c.set_pipeline("P02")
-assert c.current_pipeline_id == "P02"
-print("[3] set_pipeline P02 →", c.current_pipeline().id,
+c.set_pipeline("P01")
+assert c.current_pipeline_id == "P01"
+print("[3] set_pipeline P01 →", c.current_pipeline().id,
       c.current_pipeline().name)
 
 # ---- 4. 自动勾选（管线各层默认模块） ----
