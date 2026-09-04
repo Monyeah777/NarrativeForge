@@ -8,7 +8,7 @@
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-10，两包在场时执行；缺包 WARN 跳过）
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
-#        校园资产 29 文件 1573 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
+#        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
 set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -134,7 +134,7 @@ check7(){
   if [ -d community/校园情感领域包 ]; then
     local cmod=$(find community/校园情感领域包/modules -name '*.md' 2>/dev/null | wc -l)
     local cass=$(find community/校园情感领域包/assets -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l)
-    [ "$cmod" -eq 6 ] || { no "校园包 modules 应 6 件，实为 $cmod"; err=1; }
+    [ "$cmod" -eq 9 ] || { no "校园包 modules 应 9 件，实为 $cmod"; err=1; }
     [ "$cass" -eq 29 ] || { no "校园包 assets 应 29 件，实为 $cass"; err=1; }
     [ -f community/校园情感领域包/README.md ] || { no '校园包缺顶层 README'; err=1; }
     [ -f community/校园情感领域包/pipelines/P02_校园情感流管线.md ] || { no '校园包缺 pipelines/P02_校园情感流管线.md'; err=1; }
@@ -151,7 +151,7 @@ check7(){
   else
     wn '西幻生存领域包不在场（跳过其结构校验）'
   fi
-  if [ "$err" -eq 0 ]; then ok '校园 6 模块+29 资产+P02+README；西幻 14 模块+23 资产+P03+README 结构完整'
+  if [ "$err" -eq 0 ]; then ok '校园 9 模块+29 资产+P02+README；西幻 14 模块+23 资产+P03+README 结构完整'
   fi
 }
 check8(){
@@ -159,7 +159,7 @@ check8(){
   local err=0 c='' w=''
   if [ -d community/校园情感领域包 ]; then
     c=$(find community/校园情感领域包/assets -name '*.md' ! -name 'README.md' -exec wc -l {} + 2>/dev/null | awk '/total/{s+=$1} END{print s+0}')
-    [ "$c" -eq 1573 ] || { no "校园资产累计行数 ${c}（应 1573）——与发布基线核对"; err=1; }
+    [ "$c" -eq 1575 ] || { no "校园资产累计行数 ${c}（应 1575）——与发布基线核对"; err=1; }
   else
     wn '校园情感领域包不在场（跳过行数溯源）'
   fi
