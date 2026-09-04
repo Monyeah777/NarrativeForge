@@ -367,7 +367,7 @@ check14(){
   [ "$YAMLOK" -eq 1 ] || wn 'Python/PyYAML 不可用（check14 ② yaml 解析降级文本粗校验；建议 pip install pyyaml 后重跑精确校验）'
   # ① protocol.yaml 在场（登记三要件①）
   local d miss=0
-  for d in community/校园情感领域包 community/西幻生存领域包; do
+  for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包; do
     [ -f "$d/protocol.yaml" ] || { no "①缺协议声明: $d/protocol.yaml（登记三要件①不满足）"; miss=1; }
   done
   if [ "$miss" -eq 1 ]; then
@@ -381,6 +381,8 @@ import json, re, sys
 import yaml
 
 PKGS = ['community/校园情感领域包', 'community/西幻生存领域包']
+COMBO = ['community/校园西幻轻混组合包']
+ALL_PKGS = PKGS + COMBO
 REQUIRED = [
     'protocol.schema_version', 'package.id', 'package.name', 'package.pipeline',
     'package.module_id_range', 'package.categories', 'package.dependencies.core_only',
@@ -391,8 +393,8 @@ OFFICIAL13 = ['M00', '通用:M10', 'M08', 'M23', 'M24', 'M50', 'M80',
               '事件:M22', 'M06', 'M12', 'M13', 'M20', 'M90']
 errs = []
 data = {}
-# --- 解析两包 protocol.yaml + ②必填 12 字段 ---
-for d in PKGS:
+# --- 解析领域包+组合包 protocol.yaml + ②必填 12 字段 ---
+for d in ALL_PKGS:
     try:
         data[d] = yaml.safe_load(open(d + '/protocol.yaml', encoding='utf-8'))
     except Exception as e:
@@ -415,8 +417,8 @@ if not errs:
     inter = cats[PKGS[0]] & cats[PKGS[1]]
     if inter:
         errs.append('③R2 类别冲突（两社区包不得共占独占类别）: ' + ','.join(sorted(inter)))
-    # ④ R1 core_modules ⊆ 官方核心 13 件 + cross_package 空
-    for d in PKGS:
+    # ④ R1 core_modules ⊆ 官方核心 13 件 + cross_package 空（含组合包）
+    for d in ALL_PKGS:
         dep = data[d]['package']['dependencies']
         bad = [x for x in dep.get('core_modules', []) if x not in OFFICIAL13]
         if bad: errs.append('%s ④R1 core_modules 越界官方核心 13 件: %s' % (d, ','.join(bad)))
@@ -437,8 +439,8 @@ if not errs:
             errs.append('%s ⑤02 §8 在册模块数未取到' % d)
         elif len(ids) != regn:
             errs.append('%s ⑤module_id_range(%d) != 02 §8 在册(%d)' % (d, len(ids), regn))
-    # ⑥ protocol.yaml ↔ README 关键字段一致（双源一致，check14 ⑥）
-    for d in PKGS:
+    # ⑥ protocol.yaml ↔ README 关键字段一致（双源一致，check14 ⑥，含组合包）
+    for d in ALL_PKGS:
         rd = open(d + '/README.md', encoding='utf-8').read()
         pkg = data[d]['package']
         if pkg['name'] not in rd: errs.append('%s ⑥README 缺包名: %s' % (d, pkg['name']))
@@ -448,9 +450,9 @@ if not errs:
     # ⑦ registry protocols[] ↔ protocol.yaml / 02 §8 一致（check14 ⑦）
     reg = json.load(open('desktop/src/core/registry.json', encoding='utf-8'))
     prots = {p['id']: p for p in reg.get('protocols', [])}
-    if len(prots) != 2:
-        errs.append('⑦registry protocols[] 条目数=%d（预期 2：校园+西幻）' % len(prots))
-    for d in PKGS:
+    if len(prots) != len(ALL_PKGS):
+        errs.append('⑦registry protocols[] 条目数=%d（预期 %d：两领域包+组合包）' % (len(prots), len(ALL_PKGS)))
+    for d in ALL_PKGS:
         pkg = data[d]['package']
         pid = pkg['id']
         p = prots.get(pid)
@@ -462,10 +464,11 @@ if not errs:
         if len(p['module_ids']) != len(pkg['module_id_range']): errs.append('⑦%s module_ids 条数(%d) != module_id_range(%d)' % (pid, len(p['module_ids']), len(pkg['module_id_range'])))
         if p['assets']['count'] != pkg['assets']['count']: errs.append('⑦%s assets.count 不一致' % pid)
         if len(p['mount_layers']) != len(pkg['mount_layers']): errs.append('⑦%s mount_layers 层数(%d) != protocol(%d)' % (pid, len(p['mount_layers']), len(pkg['mount_layers'])))
-        mm = re.search(r'模块（(\d+)）', segmap[d])
-        regn = int(mm.group(1)) if mm else -1
-        if regn >= 0 and len(p['module_ids']) != regn:
-            errs.append('⑦%s module_ids(%d) != 02 §8 在册(%d)' % (pid, len(p['module_ids']), regn))
+        if d in segmap:
+            mm = re.search(r'模块（(\d+)）', segmap[d])
+            regn = int(mm.group(1)) if mm else -1
+            if regn >= 0 and len(p['module_ids']) != regn:
+                errs.append('⑦%s module_ids(%d) != 02 §8 在册(%d)' % (pid, len(p['module_ids']), regn))
 sys.exit(1 if errs else 0)
 PYEOF
     then
@@ -476,7 +479,7 @@ PYEOF
   else
     # 降级：PyYAML 缺失 → 文本粗校验必填键在场（②），③-⑦ WARN 跳过不 FAIL（动作 3）
     local dd k miss2=0
-    for dd in community/校园情感领域包 community/西幻生存领域包; do
+    for dd in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包; do
       for k in 'schema_version' 'package:' 'id:' 'name:' 'pipeline:' 'module_id_range' 'categories:' 'core_only' 'core_modules' 'cross_package' 'modules:' 'assets:' 'mount_layers'; do
         grep -q "$k" "$dd/protocol.yaml" || { no "②(降级) $dd/protocol.yaml 缺键: $k"; miss2=1; }
       done
@@ -497,7 +500,7 @@ check15(){
     if "$PY3" - <<'PYEOF' >/tmp/nf_check15.log 2>&1
 import json, sys
 import yaml
-PKGS = ['community/校园情感领域包', 'community/西幻生存领域包']
+PKGS = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/校园西幻轻混组合包']
 OFFICIAL13 = ['M00', '通用:M10', 'M08', 'M23', 'M24', 'M50', 'M80',
               '事件:M22', 'M06', 'M12', 'M13', 'M20', 'M90']
 errs = []
@@ -621,7 +624,7 @@ PYEOF
   else
     # 降级：PyYAML 缺失 → references 键文本粗校验（①-⑤ 精确比对跳过不 FAIL）
     local d miss3=0
-    for d in community/校园情感领域包 community/西幻生存领域包; do
+    for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包; do
       grep -q 'references:' "$d/protocol.yaml" || { no "check15 降级 $d/protocol.yaml 缺 references: 键（v2 必含，可为 []）"; miss3=1; }
     done
     [ "$miss3" -eq 0 ] || err=1
@@ -685,8 +688,9 @@ for f in CORE13:
         errs.append('①%s machine_contract.events 形状违约（publish/subscribe 须均为列表）: keys=%s' % (f, sorted(mc.keys())))
     if 'interfaces' in mc and not isinstance(mc.get('interfaces'), list):
         errs.append('①%s machine_contract.interfaces 非列表: %r' % (f, mc.get('interfaces')))
-# ② 社区模块分级（13 方案 §6 开放问题 1 过渡策略）：机读完备 → 同结构强校验；未完备存量 → WARN+统计不阻断
-for pkg in ('community/校园情感领域包', 'community/西幻生存领域包'):
+# ② 社区模块分级（13 方案 §6 开放问题 1 过渡策略）：机读完备 → 同结构强校验；未完备存量 → WARN+统计不阻断（community/*/ 自动发现，含组合包）
+for pkg in sorted(glob.glob('community/*/')):
+    pkg = pkg.rstrip('/')
     mod_dir = os.path.join(pkg, 'modules')
     if not os.path.isdir(mod_dir):
         continue
@@ -707,7 +711,8 @@ for pkg in ('community/校园情感领域包', 'community/西幻生存领域包'
 reg = json.load(open('desktop/src/core/registry.json', encoding='utf-8'))
 prots = {p['id']: p for p in reg.get('protocols', [])}
 pkg_dir = {}
-for pkg in ('community/校园情感领域包', 'community/西幻生存领域包'):
+for pkg in sorted(glob.glob('community/*/')):
+    pkg = pkg.rstrip('/')
     try:
         data = yaml.safe_load(open(pkg + '/protocol.yaml', encoding='utf-8'))
         pid = (data.get('package') or {}).get('id')
