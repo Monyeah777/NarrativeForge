@@ -70,10 +70,13 @@ def check_assembly(selected: List[Module], pipeline: Pipeline) -> List[str]:
     if not selected:
         issues.append("未选择任何模块")
         return issues
-    # 缺核心模块提示
-    core_need = {"M00", "M80"}
+    # 缺核心模块提示——数据源经注册表 mount_points P00/P80 default 推导
+    # （09 §4 T1.2 收敛点 CP1：取代历史硬编码 core_need={"M00","M80"}；
+    #   01 §5 I5 真相唯一：注册表是运行状态的唯一真相来源，禁止硬编码）
+    from .registry_loader import load_registry  # 懒导入：仅装配检查时读注册表
+    core_need = set(load_registry().core_anchor_modules())
     have = {m.id for m in selected} | {m.id.split(":")[-1] for m in selected}
-    for c in core_need:
+    for c in sorted(core_need):
         if c not in have:
             issues.append(f"提示：缺少核心模块 {c}（数据基座/输出呈现）")
     # 重复同层模块允许，但提示跨层空缺
