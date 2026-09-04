@@ -138,6 +138,7 @@
 
 ## 7. 状态持久化与回卷
 
+- **save_schema_version**：每份存档携带 `save_schema_version: "1"`（v0.5.0 T2.3 首引）。读取 vN-1 存档遵循 01 协议 §7 兼容规则：未知字段忽略并告警（只增不删）；结构性变更须 bump 版本并在变更记录注明迁移说明。
 - **写档时机**：每回合 end（M50 一致性校验通过后）+ 关键事件后（关系越档 / 升级 / 死亡重生 / 遗憾显形）。
 - **存档键（预设 A 校园）**：`relationships`（M40 关系网）/ `active_quests`（M06 任务）/ `ghost_data`（M65 幽灵）/ 人格演变轨迹（EVOLUTION_RULES）。
 - **存档键（预设 B 西幻）**：`attributes` + `vitals`（M01）/ `economy`（M09）/ `relations`（M14 声望）/ `death_blessings`（生存:M10）/ 世界档案（区域/阵营/帮派/建筑）。
