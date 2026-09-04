@@ -1,0 +1,69 @@
+# protocol.yaml — 第三方协议声明（西幻生存领域包，v0.7.0 retro-fit）
+# 依据 01 §6.1 Schema 模板骨架；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ 断言）
+protocol:
+  schema_version: "1"          # 声明 Schema 版本，首引 "1"；bump 走 01 §7 V1/V2/V3
+package:
+  id: 西幻生存领域包             # 包目录名（机读唯一标识，与 02 §8.2 在册一致）
+  name: 西幻生存领域包           # 显示名（与 README 标题一致）
+  pipeline: P03                 # 自带装载管线（R3；P03 西幻生存流）
+  module_id_range:              # 模块编号清单（R2 + M91-M99 规则；既有包沿用原编号不改号）
+    - "M01"                     # 自带：职业成长
+    - "M02"                     # 自带：种族天赋
+    - "M03"                     # 自带：技能融合（P20 allowed 备选）
+    - "M04"                     # 自带：战斗系统
+    - "M07"                     # 自带：地图区域
+    - "M09"                     # 自带：经济贸易
+    - "生存:M10"                # 自带：死亡重生（与官方通用:M10 重号，类别前缀限定，非新占号）
+    - "M11"                     # 自带：文字魔法
+    - "M14"                     # 自带：阵营声望
+    - "M15"                     # 自带：帮派势力
+    - "M16"                     # 自带：建筑据点
+    - "M17"                     # 自带：生产制造
+    - "M18"                     # 自带：混沌事件
+    - "M19"                     # 自带：遗传后代
+  categories:                   # 独占类别声明（R2；平台校验包间不冲突）
+    - 生存
+    - 世界
+    - 事件
+  dependencies:                 # R1 依赖边界
+    core_only: true             # 只依赖官方核心层
+    core_modules: [M00, 通用:M10, M08, M23, 事件:M22, M06, M12, M13, M20, M24, M50, M80]   # ⊆ 官方核心 13 件（12 件配合，README §1 同）
+    cross_package: []           # 禁跨包依赖，必须为空
+  modules:                      # 模块清单（与模块文档 / 02 §8.2 在册一致）
+    - id: "M01"
+      desc: 职业成长
+    - id: "M02"
+      desc: 种族天赋
+    - id: "M03"
+      desc: 技能融合
+    - id: "M04"
+      desc: 战斗系统
+    - id: "M07"
+      desc: 地图区域
+    - id: "M09"
+      desc: 经济贸易
+    - id: "生存:M10"
+      desc: 死亡重生
+    - id: "M11"
+      desc: 文字魔法
+    - id: "M14"
+      desc: 阵营声望
+    - id: "M15"
+      desc: 帮派势力
+    - id: "M16"
+      desc: 建筑据点
+    - id: "M17"
+      desc: 生产制造
+    - id: "M18"
+      desc: 混沌事件
+    - id: "M19"
+      desc: 遗传后代
+  assets:                       # 资产声明（I4：仅经 §3 五接口访问）
+    count: 23                   # 内容文件数（23 内容 + assets/README.md = assets/ 24 文件，02 §8.2）
+    readme: README.md           # 包根 README（人读速览，双源一致对照）
+  mount_layers:                 # 挂载层声明（R3，对齐 02 §5 挂载点键名）
+    P20 角色状态: {default: [M01, M02, M19], available: [M03, M23]}               # M03/M23 为 allowed 备选
+    P30 事件生产: {default: [M18], available: []}                                 # 混沌事件（与核心 M06/事件:M22 同层）
+    P40 行为决策: {default: [M04, M11], available: []}                            # 主挂载层之一（02 §8.2）
+    P50 交互执行: {default: [M04, M11, M17], available: []}                      # 战斗结算/魔法施放/生产
+    P60 世界演变: {default: [生存:M10, M07, M09, M14, M15, M16], available: []}   # 主挂载层之二（旅行/经济/阵营/死亡重生）

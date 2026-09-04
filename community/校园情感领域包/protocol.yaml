@@ -1,0 +1,51 @@
+# protocol.yaml — 第三方协议声明（校园情感领域包，v0.7.0 retro-fit）
+# 依据 01 §6.1 Schema 模板骨架；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ 断言）
+protocol:
+  schema_version: "1"          # 声明 Schema 版本，首引 "1"；bump 走 01 §7 V1/V2/V3
+package:
+  id: 校园情感领域包             # 包目录名（机读唯一标识，与 02 §8.1 在册一致）
+  name: 校园情感领域包           # 显示名（与 README 标题一致）
+  pipeline: P02                 # 自带装载管线（R3；P02 校园情感流）
+  module_id_range:              # 模块编号清单（R2 + M91-M99 规则；既有包沿用原编号不改号）
+    - "情感:M22"                # 自带：三冲动驱动（与官方事件:M22 重号，类别前缀限定，非新占号）
+    - "M40"                     # 自带：关系深度
+    - "M41"                     # 自带：恋爱进阶
+    - "M43"                     # 自带：情敌系统
+    - "M55"                     # 自带：匿名情书
+    - "M57"                     # 自带：朋友圈动态
+    - "M58"                     # 自带：电话通讯
+    - "M59"                     # 自带：群聊系统
+    - "M65"                     # 自带：幽灵遗憾
+  categories:                   # 独占类别声明（R2；平台校验包间不冲突）
+    - 情感
+  dependencies:                 # R1 依赖边界
+    core_only: true             # 只依赖官方核心层
+    core_modules: [M00, 通用:M10, M08, M23, 事件:M22, M06, M12, M13, M20, M24, M50, M80]   # ⊆ 官方核心 13 件（12 件配合，README §1 同）
+    cross_package: []           # 禁跨包依赖，必须为空
+  modules:                      # 模块清单（与模块文档 / 02 §8.1 在册一致）
+    - id: "情感:M22"
+      desc: 三冲动驱动（v0.7.12 冲动-社会关系隔离）
+    - id: "M40"
+      desc: 关系深度
+    - id: "M41"
+      desc: 恋爱进阶
+    - id: "M43"
+      desc: 情敌系统
+    - id: "M55"
+      desc: 匿名情书
+    - id: "M57"
+      desc: 朋友圈动态
+    - id: "M58"
+      desc: 电话通讯
+    - id: "M59"
+      desc: 群聊系统
+    - id: "M65"
+      desc: 幽灵遗憾
+  assets:                       # 资产声明（I4：仅经 §3 五接口访问）
+    count: 29                   # 内容文件数（29 内容 + assets/README.md = assets/ 30 文件，02 §8.1）
+    readme: README.md           # 包根 README（人读速览，双源一致对照）
+  mount_layers:                 # 挂载层声明（R3，对齐 02 §5 挂载点键名）
+    P20 角色状态: {default: [情感:M22], available: []}                            # 与核心 M23 同层（三冲动基线）
+    P40 行为决策: {default: [情感:M22, M40, M41, M43, M55], available: []}        # 主挂载层（P01 空层装配，02 §8.1）
+    P50 交互执行: {default: [M57, M58, M59], available: []}                      # 与核心 M12/M13 同层（社交流结算）
+    P60 长期演变: {default: [M40, M65], available: []}                           # 遗憾沉淀/幽灵冷却
