@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.1  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）
+# 版本 : v2.2  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
+#        [段 C] 代码层门禁（check12，无条件执行：desktop unittest 40 用例 + 全量 py_compile）
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
@@ -256,9 +257,35 @@ check11(){
   if [ "$err" -eq 0 ]; then ok '资产三方对账全清：幽灵编号=0（源编号残留已豁免）/ 孤儿模块=0 / 未登记模块=0'
   fi
 }
-# ================= 主执行体（两段式） =================
+check12(){
+  echo '== [12/代码层] 桌面核心单元测试 + 全量 py_compile 语法抽查（v0.6.0 治理补漏）=='
+  local err=0
+  # ① desktop core 单元测试（test_core.py 7 类 40 用例，纯 unittest 无 pytest 依赖）
+  if [ -d desktop/tests ]; then
+    if ( cd desktop && python3 -m unittest discover -s tests -q >/tmp/nf_check12_unittest.log 2>&1 ); then
+      ok 'desktop core 单元测试全绿（test_core.py 40 用例，纯 unittest 内置）'
+    else
+      no 'desktop core 单元测试失败——见 /tmp/nf_check12_unittest.log（预期 Ran 40 tests OK）'; err=1
+    fi
+  else
+    wn 'desktop/tests 不在场（跳过代码层 unittest）'
+  fi
+  # ② 全量 py_compile 语法抽查（desktop/src android/app scripts 三处 py）
+  if command -v python3 >/dev/null 2>&1; then
+    if python3 -m compileall -q desktop/src android/app scripts >/tmp/nf_check12_pyc.log 2>&1; then
+      ok '全量 py_compile 语法抽查通过（desktop/src android/app scripts）'
+    else
+      no 'py_compile 语法抽查失败——见 /tmp/nf_check12_pyc.log'; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 py_compile）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '代码层门禁全绿：unittest 40 用例 + py_compile'
+  fi
+}
+# ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 两段式验收门禁  v2.1（对齐 07 §7 + 08 T5 A5 资产对账）'
+echo ' NarrativeForge 三段式验收门禁  v2.2（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -270,6 +297,8 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
+echo '—— 段 C：代码层门禁（check12，无条件执行）——'
+check12
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
