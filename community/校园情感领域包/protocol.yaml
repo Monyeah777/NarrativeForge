@@ -1,7 +1,7 @@
 # protocol.yaml — 第三方协议声明（校园情感领域包，v0.7.0 retro-fit）
 # 依据 01 §6.1 Schema 模板骨架；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ 断言）
 protocol:
-  schema_version: "1"          # 声明 Schema 版本，首引 "1"；bump 走 01 §7 V1/V2/V3
+  schema_version: "2"          # 组合引用 Schema 版本，v2 起支持 references；bump 走 01 §7 V1/V2/V3
 package:
   id: 校园情感领域包             # 包目录名（机读唯一标识，与 02 §8.1 在册一致）
   name: 校园情感领域包           # 显示名（与 README 标题一致）
@@ -21,7 +21,8 @@ package:
   dependencies:                 # R1 依赖边界
     core_only: true             # 只依赖官方核心层
     core_modules: [M00, 通用:M10, M08, M23, 事件:M22, M06, M12, M13, M20, M24, M50, M80]   # ⊆ 官方核心 13 件（12 件配合，README §1 同）
-    cross_package: []           # 禁跨包依赖，必须为空
+    cross_package: []           # deprecated 兼容字段（恒空）；references 为唯一跨包引用通道（v0.8.0）
+  references: []              # v0.8.0 retro-fit：无跨包引用，v2 向后兼容演示（01 §6.1 可选缺省 []）
   modules:                      # 模块清单（与模块文档 / 02 §8.1 在册一致）
     - id: "情感:M22"
       desc: 三冲动驱动（v0.7.12 冲动-社会关系隔离）

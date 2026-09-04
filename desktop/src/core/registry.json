@@ -50,7 +50,8 @@
         "P50": { "name": "交互执行", "default": ["M57", "M58", "M59"], "available": [] },
         "P60": { "name": "长期演变", "default": ["M40", "M65"], "available": [] }
       },
-      "schema_version": "1"
+      "references": [],
+      "schema_version": "2"
     },
     {
       "id": "西幻生存领域包",
@@ -66,7 +67,8 @@
         "P50": { "name": "交互执行", "default": ["M04", "M11", "M17"], "available": [] },
         "P60": { "name": "世界演变", "default": ["生存:M10", "M07", "M09", "M14", "M15", "M16"], "available": [] }
       },
-      "schema_version": "1"
+      "references": [],
+      "schema_version": "2"
     }
   ]
 }
