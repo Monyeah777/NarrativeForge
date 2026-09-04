@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.2  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁）
+# 版本 : v2.3  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
-#        [段 C] 代码层门禁（check12，无条件执行：desktop unittest 40 用例 + 全量 py_compile）
+#        [段 C] 代码层门禁（check12/check13，无条件执行：check12 = desktop unittest 40 用例 + 全量 py_compile；check13 = 协议版本一致性 + 迁移完整性）
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
@@ -283,9 +283,74 @@ check12(){
   if [ "$err" -eq 0 ]; then ok '代码层门禁全绿：unittest 40 用例 + py_compile'
   fi
 }
+check13(){
+  echo '== [13/段C] 协议版本一致性 + 迁移完整性（09 方案 T2.3）=='
+  local err=0
+  # ① 版本一致性：02 头部 registry_schema_version == desktop/android registry.json 版本（三处同源）
+  local v02 vdesk vandr
+  v02=$(grep -o 'registry_schema_version: *"[^"]*"' 02_联动注册表.md | head -1 | sed 's/.*"\([^"]*\)"/\1/')
+  vdesk=$(python3 -c "import json;print(json.load(open('desktop/src/core/registry.json'))['registry_schema_version'])" 2>/dev/null)
+  vandr=$(python3 -c "import json;print(json.load(open('android/app/core/registry.json'))['registry_schema_version'])" 2>/dev/null)
+  if [ -n "$v02" ] && [ -n "$vdesk" ] && [ -n "$vandr" ]; then
+    if [ "$v02" = "$vdesk" ] && [ "$vdesk" = "$vandr" ]; then
+      ok "协议版本三处一致：02 头部 = desktop registry.json = android registry.json = \"$v02\""
+    else
+      no "协议版本不一致：02=\"$v02\" desktop=\"$vdesk\" android=\"$vandr\"（须三处同步 bump）"; err=1
+    fi
+  else
+    no "版本字段缺失：02=\"${v02:-空}\" desktop=\"${vdesk:-空}\" android=\"${vandr:-空}\""; err=1
+  fi
+  # ② 迁移完整性：bump 实体必有迁移记录（02 §9.3 四步在场）
+  local seg miss='' k
+  seg=$(awk '/^### 9\.3 迁移记录/{f=1} f' 02_联动注册表.md)
+  if [ -n "$seg" ]; then
+    for k in '现状快照' 'bump 声明' '迁移说明' '校验回读'; do
+      echo "$seg" | grep -q "$k" || miss="$miss $k"
+    done
+    if [ -z "$miss" ]; then
+      ok '迁移记录在场：02 §9.3 四步齐备（现状快照/bump 声明/迁移说明/校验回读）'
+    else
+      no "02 §9.3 迁移记录缺步：$miss（bump 实体必有迁移记录，按 01 §7 迁移实操四步补全）"; err=1
+    fi
+  else
+    no '02 缺 §9.3 迁移记录节（版本 bump 实体必有迁移记录）'; err=1
+  fi
+  # ③ 模块逐条一致：02 §2 模块表 13 件 == registry.json modules（条目数与 ID 集合全等）
+  if command -v python3 >/dev/null 2>&1; then
+    if python3 - <<'PYEOF' >/tmp/nf_check13_cmp.log 2>&1
+import json, re, sys
+doc = open('02_联动注册表.md', encoding='utf-8').read()
+m = re.search(r'## 2\. 官方核心模块表.*?(?=\n## 3\.)', doc, re.S)
+rows = []
+if m:
+    for line in m.group(0).splitlines():
+        cells = [c.strip() for c in line.strip().strip('|').split('|')]
+        if len(cells) == 5 and cells[0] not in ('模块ID', '---') and cells[0]:
+            rows.append(cells)
+doc_ids = [r[0] for r in rows]
+reg_ids = [x['id'] for x in json.load(open('desktop/src/core/registry.json', encoding='utf-8'))['modules']]
+errs = []
+if len(doc_ids) != 13: errs.append('02 §2 模块表行数=%d（预期 13）' % len(doc_ids))
+if len(reg_ids) != 13: errs.append('registry.json modules 数=%d（预期 13）' % len(reg_ids))
+only_doc = sorted(set(doc_ids) - set(reg_ids)); only_reg = sorted(set(reg_ids) - set(doc_ids))
+if only_doc: errs.append('02 有而 registry.json 缺：' + ','.join(only_doc))
+if only_reg: errs.append('registry.json 有而 02 缺：' + ','.join(only_reg))
+sys.exit(1 if errs else 0)
+PYEOF
+    then
+      ok '模块逐条一致：02 §2 模块表 13 件 == registry.json modules（ID 集合全等）'
+    else
+      no "模块表与机读投影不一致——$(head -3 /tmp/nf_check13_cmp.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check13 模块逐条比对）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '协议版本一致性 + 迁移完整性全绿（check13：三处版本一致 + §9.3 四步在场 + 13 件模块全等）'
+  fi
+}
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.2（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层）'
+echo ' NarrativeForge 三段式验收门禁  v2.3（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -297,8 +362,9 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁（check12，无条件执行）——'
+echo '—— 段 C：代码层门禁 + 协议一致性门禁（check12/check13，无条件执行）——'
 check12
+check13
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
