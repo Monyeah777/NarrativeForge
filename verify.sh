@@ -129,12 +129,18 @@ check6(){
   fi
 }
 check7(){
-  echo '== [7/4·B] 社区两包结构完整（07 §7 项2）=='
-  local err=0
+  echo '== [7/4·B] 社区两包结构完整（07 §7 项2，T6 在册数一致性）=='
+  local err=0 regxy='' regxh=''
+  # T6：在册数一致性——02 §8.1/§8.2 登记行反解在册模块数，与 modules/ 实存件数比对（防注册表与文件失同步）
+  if [ -f 02_联动注册表.md ]; then
+    regxy=$(sed -n '/^### 8\.1/,/^### 8\.2/p' 02_联动注册表.md | grep -oE '模块（[0-9]+）' | grep -oE '[0-9]+')
+    regxh=$(sed -n '/^### 8\.2/,/^### 8\.3/p' 02_联动注册表.md | grep -oE '模块（[0-9]+）' | grep -oE '[0-9]+')
+  fi
   if [ -d community/校园情感领域包 ]; then
     local cmod=$(find community/校园情感领域包/modules -name '*.md' 2>/dev/null | wc -l)
     local cass=$(find community/校园情感领域包/assets -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l)
-    [ "$cmod" -eq 9 ] || { no "校园包 modules 应 9 件，实为 $cmod"; err=1; }
+    [ -n "$regxy" ] || { no '02 §8.1 未取到校园包在册模块数（登记行缺失）'; err=1; }
+    [ "$cmod" -eq "$regxy" ] || { no "校园包 modules 实存 $cmod 件，02 §8.1 在册 $regxy 件——不一致"; err=1; }
     [ "$cass" -eq 29 ] || { no "校园包 assets 应 29 件，实为 $cass"; err=1; }
     [ -f community/校园情感领域包/README.md ] || { no '校园包缺顶层 README'; err=1; }
     [ -f community/校园情感领域包/pipelines/P02_校园情感流管线.md ] || { no '校园包缺 pipelines/P02_校园情感流管线.md'; err=1; }
@@ -144,14 +150,15 @@ check7(){
   if [ -d community/西幻生存领域包 ]; then
     local xmod=$(find community/西幻生存领域包/modules -name '*.md' 2>/dev/null | wc -l)
     local xass=$(find community/西幻生存领域包/assets -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l)
-    [ "$xmod" -eq 14 ] || { no "西幻包 modules 应 14 件，实为 $xmod"; err=1; }
+    [ -n "$regxh" ] || { no '02 §8.2 未取到西幻包在册模块数（登记行缺失）'; err=1; }
+    [ "$xmod" -eq "$regxh" ] || { no "西幻包 modules 实存 $xmod 件，02 §8.2 在册 $regxh 件——不一致"; err=1; }
     [ "$xass" -eq 23 ] || { no "西幻包 assets 应 23 件，实为 $xass"; err=1; }
     [ -f community/西幻生存领域包/README.md ] || { no '西幻包缺顶层 README'; err=1; }
     [ -f community/西幻生存领域包/pipelines/P03_西幻生存流管线.md ] || { no '西幻包缺 pipelines/P03_西幻生存流管线.md'; err=1; }
   else
     wn '西幻生存领域包不在场（跳过其结构校验）'
   fi
-  if [ "$err" -eq 0 ]; then ok '校园 9 模块+29 资产+P02+README；西幻 14 模块+23 资产+P03+README 结构完整'
+  if [ "$err" -eq 0 ]; then ok "校园 ${cmod:-9} 模块+29 资产+P02+README（与 02 §8.1 在册 ${regxy:-9} 一致）；西幻 ${xmod:-14} 模块+23 资产+P03+README（与 02 §8.2 在册 ${regxh:-14} 一致）结构完整"
   fi
 }
 check8(){
