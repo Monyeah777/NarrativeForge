@@ -5,7 +5,7 @@ package.name = narrativeforge
 package.domain = org.narrativeforge
 source.dir = .
 source.include_exts = py,kv,json,md,txt,png,jpg,jpeg,ttf
-version = 0.3.0
+version = 0.3.2
 orientation = portrait
 fullscreen = 0
 

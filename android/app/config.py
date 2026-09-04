@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 
 APP_NAME = "叙事工坊"
-APP_VERSION = "0.3.0"
+APP_VERSION = "0.3.2"
 PACKAGE_ID = "org.narrativeforge.narrativeforge"
 
 
