@@ -9,7 +9,7 @@
    - 输出：competition_score:int
    ## 规则 / ## 核心逻辑：...
    ## 引用的资产：LOCATIONS, GANG
-2. NarrativeForge 仓库格式（真实模块，如 04_模块库/情感类/M22_三冲动驱动.md）：
+2. NarrativeForge 仓库格式（真实模块，如 community/校园情感领域包/modules/M22_三冲动驱动.md）：
    # 模块 情感:M22 · 三冲动驱动
    > 类别：情感｜来源：校园｜挂载点：P40 行为决策（active）｜依赖：M00、M40｜发布：npc_action
    ## 1. 职责 / ## 2. 出厂规则 ...
