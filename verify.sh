@@ -14,6 +14,15 @@
 set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT" || { echo '无法进入仓库根目录'; exit 2; }
+# ---- Python 解释器探测（Windows 兼容）----
+# Windows 的 python3 可能是应用商店 stub：command -v 能找到但执行静默失败零输出。
+# 以「能真正执行 import sys」为可用判据：stub 被跳过，回退真实 python。
+PY3=''
+if command -v python3 >/dev/null 2>&1 && python3 -c 'import sys' >/dev/null 2>&1; then
+  PY3='python3'
+elif command -v python >/dev/null 2>&1 && python -c 'import sys' >/dev/null 2>&1; then
+  PY3='python'
+fi
 PASS=0; FAIL=0; WARN=0
 ok(){ PASS=$((PASS+1)); printf '  [PASS] %s\n' "$1"; }
 no(){ FAIL=$((FAIL+1)); printf '  [FAIL] %s\n' "$1"; }
@@ -262,7 +271,7 @@ check12(){
   local err=0
   # ① desktop core 单元测试（test_core.py 7 类 40 用例，纯 unittest 无 pytest 依赖）
   if [ -d desktop/tests ]; then
-    if ( cd desktop && python3 -m unittest discover -s tests -q >/tmp/nf_check12_unittest.log 2>&1 ); then
+    if ( cd desktop && "$PY3" -m unittest discover -s tests -q >/tmp/nf_check12_unittest.log 2>&1 ); then
       ok 'desktop core 单元测试全绿（test_core.py 40 用例，纯 unittest 内置）'
     else
       no 'desktop core 单元测试失败——见 /tmp/nf_check12_unittest.log（预期 Ran 40 tests OK）'; err=1
@@ -271,8 +280,8 @@ check12(){
     wn 'desktop/tests 不在场（跳过代码层 unittest）'
   fi
   # ② 全量 py_compile 语法抽查（desktop/src android/app scripts 三处 py）
-  if command -v python3 >/dev/null 2>&1; then
-    if python3 -m compileall -q desktop/src android/app scripts >/tmp/nf_check12_pyc.log 2>&1; then
+  if [ -n "$PY3" ]; then
+    if "$PY3" -m compileall -q desktop/src android/app scripts >/tmp/nf_check12_pyc.log 2>&1; then
       ok '全量 py_compile 语法抽查通过（desktop/src android/app scripts）'
     else
       no 'py_compile 语法抽查失败——见 /tmp/nf_check12_pyc.log'; err=1
@@ -289,8 +298,8 @@ check13(){
   # ① 版本一致性：02 头部 registry_schema_version == desktop/android registry.json 版本（三处同源）
   local v02 vdesk vandr
   v02=$(grep -o 'registry_schema_version: *"[^"]*"' 02_联动注册表.md | head -1 | sed 's/.*"\([^"]*\)"/\1/')
-  vdesk=$(python3 -c "import json;print(json.load(open('desktop/src/core/registry.json'))['registry_schema_version'])" 2>/dev/null)
-  vandr=$(python3 -c "import json;print(json.load(open('android/app/core/registry.json'))['registry_schema_version'])" 2>/dev/null)
+  vdesk=$("$PY3" -c "import json;print(json.load(open('desktop/src/core/registry.json', encoding='utf-8'))['registry_schema_version'])" 2>/dev/null)
+  vandr=$("$PY3" -c "import json;print(json.load(open('android/app/core/registry.json', encoding='utf-8'))['registry_schema_version'])" 2>/dev/null)
   if [ -n "$v02" ] && [ -n "$vdesk" ] && [ -n "$vandr" ]; then
     if [ "$v02" = "$vdesk" ] && [ "$vdesk" = "$vandr" ]; then
       ok "协议版本三处一致：02 头部 = desktop registry.json = android registry.json = \"$v02\""
@@ -316,8 +325,8 @@ check13(){
     no '02 缺 §9.3 迁移记录节（版本 bump 实体必有迁移记录）'; err=1
   fi
   # ③ 模块逐条一致：02 §2 模块表 13 件 == registry.json modules（条目数与 ID 集合全等）
-  if command -v python3 >/dev/null 2>&1; then
-    if python3 - <<'PYEOF' >/tmp/nf_check13_cmp.log 2>&1
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check13_cmp.log 2>&1
 import json, re, sys
 doc = open('02_联动注册表.md', encoding='utf-8').read()
 m = re.search(r'## 2\. 官方核心模块表.*?(?=\n## 3\.)', doc, re.S)
@@ -353,9 +362,9 @@ check14(){
   local err=0
   # 依赖探测：python3 + PyYAML（yaml 解析用；缺失时该子项 WARN 降级文本粗校验，不 FAIL——动作 3）
   local PYOK=0 YAMLOK=0
-  command -v python3 >/dev/null 2>&1 && PYOK=1
-  { [ "$PYOK" -eq 1 ] && python3 -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
-  [ "$YAMLOK" -eq 1 ] || wn 'python3/PyYAML 不在（check14 ② yaml 解析降级文本粗校验；建议 pip install pyyaml 后重跑精确校验）'
+  [ -n "$PY3" ] && PYOK=1
+  { [ "$PYOK" -eq 1 ] && "$PY3" -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
+  [ "$YAMLOK" -eq 1 ] || wn 'Python/PyYAML 不可用（check14 ② yaml 解析降级文本粗校验；建议 pip install pyyaml 后重跑精确校验）'
   # ① protocol.yaml 在场（登记三要件①）
   local d miss=0
   for d in community/校园情感领域包 community/西幻生存领域包; do
@@ -367,7 +376,7 @@ check14(){
   fi
   # ②-⑦ 精确比对（python3 + PyYAML：解析两包 protocol.yaml + desktop registry.json + 02 文档反解）
   if [ "$YAMLOK" -eq 1 ]; then
-    if python3 - <<'PYEOF' >/tmp/nf_check14.log 2>&1
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check14.log 2>&1
 import json, re, sys
 import yaml
 
@@ -481,11 +490,11 @@ PYEOF
 check15(){
   echo '== [15/段C] 组合引用门禁（v0.8.0 check15：02 §8.4 references 五断言）=='
   local err=0 PYOK=0 YAMLOK=0
-  command -v python3 >/dev/null 2>&1 && PYOK=1
-  { [ "$PYOK" -eq 1 ] && python3 -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
-  [ "$YAMLOK" -eq 1 ] || wn 'python3/PyYAML 不在（check15 组合引用精确比对降级为 references 键文本粗校验；建议 pip install pyyaml 后重跑）'
+  [ -n "$PY3" ] && PYOK=1
+  { [ "$PYOK" -eq 1 ] && "$PY3" -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
+  [ "$YAMLOK" -eq 1 ] || wn 'Python/PyYAML 不可用（check15 组合引用精确比对降级为 references 键文本粗校验；建议 pip install pyyaml 后重跑）'
   if [ "$YAMLOK" -eq 1 ]; then
-    if python3 - <<'PYEOF' >/tmp/nf_check15.log 2>&1
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check15.log 2>&1
 import json, sys
 import yaml
 PKGS = ['community/校园情感领域包', 'community/西幻生存领域包']
