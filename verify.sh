@@ -367,7 +367,7 @@ check14(){
   [ "$YAMLOK" -eq 1 ] || wn 'Python/PyYAML 不可用（check14 ② yaml 解析降级文本粗校验；建议 pip install pyyaml 后重跑精确校验）'
   # ① protocol.yaml 在场（登记三要件①）
   local d miss=0
-  for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包; do
+  for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包 community/通用核心基础包; do
     [ -f "$d/protocol.yaml" ] || { no "①缺协议声明: $d/protocol.yaml（登记三要件①不满足）"; miss=1; }
   done
   if [ "$miss" -eq 1 ]; then
@@ -382,7 +382,8 @@ import yaml
 
 PKGS = ['community/校园情感领域包', 'community/西幻生存领域包']
 COMBO = ['community/校园西幻轻混组合包']
-ALL_PKGS = PKGS + COMBO
+CORE = ['community/通用核心基础包']
+ALL_PKGS = PKGS + COMBO + CORE
 REQUIRED = [
     'protocol.schema_version', 'package.id', 'package.name', 'package.pipeline',
     'package.module_id_range', 'package.categories', 'package.dependencies.core_only',
@@ -451,7 +452,7 @@ if not errs:
     reg = json.load(open('desktop/src/core/registry.json', encoding='utf-8'))
     prots = {p['id']: p for p in reg.get('protocols', [])}
     if len(prots) != len(ALL_PKGS):
-        errs.append('⑦registry protocols[] 条目数=%d（预期 %d：两领域包+组合包）' % (len(prots), len(ALL_PKGS)))
+        errs.append('⑦registry protocols[] 条目数=%d（预期 %d：两领域包+组合包+通用包）' % (len(prots), len(ALL_PKGS)))
     for d in ALL_PKGS:
         pkg = data[d]['package']
         pid = pkg['id']
@@ -479,7 +480,7 @@ PYEOF
   else
     # 降级：PyYAML 缺失 → 文本粗校验必填键在场（②），③-⑦ WARN 跳过不 FAIL（动作 3）
     local dd k miss2=0
-    for dd in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包; do
+    for dd in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包 community/通用核心基础包; do
       for k in 'schema_version' 'package:' 'id:' 'name:' 'pipeline:' 'module_id_range' 'categories:' 'core_only' 'core_modules' 'cross_package' 'modules:' 'assets:' 'mount_layers'; do
         grep -q "$k" "$dd/protocol.yaml" || { no "②(降级) $dd/protocol.yaml 缺键: $k"; miss2=1; }
       done
@@ -500,7 +501,7 @@ check15(){
     if "$PY3" - <<'PYEOF' >/tmp/nf_check15.log 2>&1
 import json, sys
 import yaml
-PKGS = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/校园西幻轻混组合包']
+PKGS = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/校园西幻轻混组合包', 'community/通用核心基础包']
 OFFICIAL13 = ['M00', '通用:M10', 'M08', 'M23', 'M24', 'M50', 'M80',
               '事件:M22', 'M06', 'M12', 'M13', 'M20', 'M90']
 errs = []
@@ -624,7 +625,7 @@ PYEOF
   else
     # 降级：PyYAML 缺失 → references 键文本粗校验（①-⑤ 精确比对跳过不 FAIL）
     local d miss3=0
-    for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包; do
+    for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包 community/通用核心基础包; do
       grep -q 'references:' "$d/protocol.yaml" || { no "check15 降级 $d/protocol.yaml 缺 references: 键（v2 必含，可为 []）"; miss3=1; }
     done
     [ "$miss3" -eq 0 ] || err=1

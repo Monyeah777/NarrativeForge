@@ -476,6 +476,56 @@
         }
       ],
       "schema_version": "2"
+    },
+    {
+      "assets": {
+        "count": 0,
+        "readme": "README.md"
+      },
+      "categories": [
+        "通用"
+      ],
+      "id": "通用核心基础包",
+      "module_ids": [
+        "M93",
+        "M94",
+        "M95",
+        "M96"
+      ],
+      "mount_layers": {
+        "P00": {
+          "name": "数据基座",
+          "default": [
+            "M93"
+          ],
+          "available": []
+        },
+        "P10": {
+          "name": "世界推进",
+          "default": [
+            "M94"
+          ],
+          "available": []
+        },
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "M95"
+          ],
+          "available": []
+        },
+        "P80": {
+          "name": "输出呈现",
+          "default": [
+            "M96"
+          ],
+          "available": []
+        }
+      },
+      "name": "通用核心基础包",
+      "pipeline": "P05",
+      "references": [],
+      "schema_version": "2"
     }
   ]
 }
