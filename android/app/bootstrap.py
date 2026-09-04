@@ -18,6 +18,7 @@ from . import config
 from .core.models import AssetPack, now_str
 from .core.parser import parse_asset_entries_from_text, parse_module
 from .core.pipeline_loader import discover_pipelines
+from .core.registry_loader import load_registry
 from .core.storage import Store
 
 _SEED_VERSION_KEY = "seed_version"
@@ -58,8 +59,21 @@ def seed_from_dir(store: Store, seed_root: Path, force: bool = False) -> dict:
             stats["errors"].append(f"管线导入失败: {exc}")
 
     # ---- 模块：04_模块库/<分类>/*.md → store.save_module ----
+    # T1.3（09 §4 T1.3 动作1）：模块登记改经 registry_loader——
+    # 官方核心模块的类别/挂载层以 registry.json 机读登记为准
+    # （01 §5 I5 唯一真相源），替代硬编码扫 seed 目录（目录名/文件名）推导；
+    # seed 文件只提供正文内容。未在册模块（社区/第三方，registry 只管官方核心）
+    # 保留原布局推导回退，不改变其装载语义。
     mod_root = seed_root / "04_模块库"
     if mod_root.exists():
+        try:
+            _reg = load_registry()
+        except Exception as exc:  # noqa: BLE001
+            _reg = None
+            stats["errors"].append(
+                f"注册表装载失败，模块登记回退文件布局推导: {exc}")
+        _cat_long = {s: s + "类"
+                     for s in ("情感", "生存", "世界", "事件", "通用", "技术文档")}
         for cat_dir in sorted(mod_root.iterdir()):
             if not cat_dir.is_dir():
                 continue
@@ -67,15 +81,31 @@ def seed_from_dir(store: Store, seed_root: Path, force: bool = False) -> dict:
                 try:
                     text = md.read_text(encoding="utf-8")
                     m = parse_module(text)
-                    # 分类以所在目录为准（仓库文件可能不含分类前缀）
-                    if m.category == "通用类" and cat_dir.name != "通用类":
-                        m.category = cat_dir.name
-                    stem = md.stem
-                    if ":" in stem:
-                        prefix, _rest = stem.split(":", 1)
-                        if prefix in ("情感", "生存", "世界", "事件", "通用", "技术文档"):
-                            if m.category == "通用类":
-                                m.category = prefix + "类"
+                    # 身份裁定：registry 在册（官方核心）→ 类别/挂载层以登记为准
+                    reg_entry = (None if _reg is None
+                                 else _reg.get_module(f"{cat_dir.name}:{m.id}"))
+                    if reg_entry:
+                        cat_short = (reg_entry.get("category") or "").rstrip("类")
+                        if cat_short in _cat_long:
+                            m.category = _cat_long[cat_short]
+                        # active 挂载层；M50(scheduler)/M08(仅 available) 等
+                        # 无 active 声明时保留文件元信息
+                        active_layers = [mm.get("layer") for mm in
+                                         reg_entry.get("mounts", [])
+                                         if mm.get("status") == "active"]
+                        if active_layers:
+                            m.layer = active_layers[0]
+                    else:
+                        # 未在册（社区/第三方）：保持原布局推导逻辑
+                        if m.category == "通用类" and cat_dir.name != "通用类":
+                            m.category = cat_dir.name
+                        stem = md.stem
+                        if ":" in stem:
+                            prefix, _rest = stem.split(":", 1)
+                            if prefix in ("情感", "生存", "世界", "事件",
+                                          "通用", "技术文档"):
+                                if m.category == "通用类":
+                                    m.category = prefix + "类"
                     m.source_md = text
                     store.save_module(m)
                     stats["modules"] += 1
