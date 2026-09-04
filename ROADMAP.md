@@ -10,7 +10,7 @@
 | v0.5.0 | 优化版 | ✅ 已发布（2026-09-04） | 吸收外部项目精华、夯实底层能力（T1–T6） | 08_v0.5.0_优化版方案.md |
 | v0.6.0 | 协议中转站 | ✅ 已发布（2026-09-04） | 协议体系从人读规范文档升级为机读可驱动的通用协议层 | 09_v0.6.0_协议中转站方案.md |
 | v0.7.0 | 自定义协议 | ✅ 已发布（2026-09-04） | 对外开放协议注册，第三方可注册自定义协议 | 10_v0.7.0_自定义协议方案.md |
-| v0.8.0 | 自定义模块组合 | 🔮 规划 | 对外开放模块组合，第三方题材模块可组合装配 | — |
+| v0.8.0 | 自定义模块组合 | 🔵 当前主线 | 对外开放模块组合，第三方题材模块可组合装配 | 11_v0.8.0_自定义模块组合方案.md |
 | v0.9.0 | Android 同步门禁 | 🔮 规划 | APK 闪退修复 + Android↔真源同步差异入 CI | — |
 | v1.0.0 | 全平台正式版 | 🔮 规划 | desktop / android / 协议层 / 社区生态收口，正式发布 | — |
 
@@ -75,9 +75,23 @@
 ### 版本内提交约定
 按 09 惯例：每批次独立 commit（C0–C4）；verify.sh（含 check14）全绿方可推送。
 
-## 5. v0.8.0 自定义模块组合（🔮 规划）
-
-一句话：**对外开放模块组合**——第三方题材模块可在 P00 骨架上自由组合装配为新的社区管线。承接 v0.7 协议注册，范围细化留待立项展开。
+## 5. v0.8.0 自定义模块组合（🔵 当前主线）
+### 一句话目标
+在 v0.7 开放协议注册之上**对外开放模块组合**——第三方题材模块可在 P00 骨架上自由组合装配为新的社区管线（方案甲：references 受控跨包引用）。
+### 范围边界
+✅ **三做**（任务分解见 11_v0.8.0_自定义模块组合方案.md，A→B→T 三层）：
+1. **组合引用 Schema 机读化（B1/T1）**：01 §6.1 protocol.yaml Schema v1→v2——新增 `package.references` 跨包模块白名单引用（source_package/module_id/source_schema_version/asset_readonly）；R1 演进为「禁互引 + references 受控引用（依赖闭包闭合官方核心）」，cross_package 保留恒空 deprecated；01 §7 迁移记录 v1→v2 四步入档。
+2. **组合登记机制 + 投影扩展（B2/T2）**：02 §8.4 组合管线登记（四规则：引用在册可寻址/依赖闭包闭合官方核心/同层 default 槽位唯一/契约 WARN 提示）+ 文档级组合声明示例；校园/西幻两包 protocol.yaml retro-fit schema_version→"2"（references: [] 向后兼容演示）；registry.json protocols[] 补 references（registry_schema_version 保持 "2"，V1 只增不删）。
+3. **组合门禁 check15（B3/T3，v2.5）**：verify.sh 新增 check15 组合门禁（入段 C）——引用在册可寻址 / 依赖闭包闭合官方核心 / 挂载层 default 冲突 / schema_version v2 兼容 / protocol.yaml ↔ registry protocols[] references 一致。
+❌ **三不做**：
+1. Runtime 组合调度引擎改造（registry_loader 保持只读官方核心投影，引擎级消费归后续版本）。
+2. 跨包资产内容复制与完整题材级可玩组合包战例（资产只读通道运行时实现 + 战例深度留 v0.8.1，见 11 方案 §6 开放问题 1/3）。
+3. Android 功能扩展与 APK 闪退修复（= v0.9.0）；端到端测试入 CI（范围外）。
+### 交付锚点
+- 11_v0.8.0_自定义模块组合方案.md（A→B→T 三层落盘，10 格式）。
+- verify.sh v2.5（check1–15 全绿）+ 两包 protocol.yaml schema_version "2" + registry.json protocols[] references 投影。
+### 版本内提交约定
+按 09/10 惯例：每批次独立 commit（C0–C4）；verify.sh（含 check15）全绿方可推送。
 
 ## 6. v0.9.0 Android 同步门禁 + APK 闪退修复（🔮 规划）
 

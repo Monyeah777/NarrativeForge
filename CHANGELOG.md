@@ -3,6 +3,9 @@
 > 格式约定：Keep a Changelog 中文化（Added/Changed/Fixed 语义）；版本段按时间倒序；[Unreleased] = 当前主线开发中；发布即归档为 [版本号] + 日期段并打 annotated tag（ROADMAP §8 治理指针 3）。
 > 基线说明：本文件随 v0.6.0 方案 B 第①步落盘（2026-09-04）；早期版本（v0.1.0–v0.5.0）条目按 git 版本史（八 tag）回写简述。
 
+## [Unreleased] - v0.8.0 自定义模块组合（开发中）
+### Added
+- 11_v0.8.0_自定义模块组合方案.md 落盘（方案真相源，I5）：v0.8.0 定位为「自定义模块组合——在 v0.7 开放协议注册之上对外开放模块组合，第三方题材模块可在 P00 骨架上自由组合装配为新的社区管线（方案甲：references 受控跨包引用）」。问题全景 A1–A3（A1 模块组合无机读通道 / A2 组合装配合法性无门禁 / A3 管线派生纯人读无组合清单）；改进收口 B1–B3（B1 组合引用 Schema 化 / B2 组合登记机制 + registry protocols[] references 投影 / B3 check15 组合门禁）；任务分解 T1 组合引用 Schema 规范 → T2 组合登记 + 两包 retro-fit + registry protocols[] → T3 verify.sh check15 + v2.5；提交规划 C0–C4。ROADMAP §1 行 13 v0.8.0 状态切「🔵 当前主线」+ §5 范围细化落盘；README 协议链追加 11、版本行切 v0.8.0（当前主线·开发中）。
 ## [0.7.0] - 2026-09-04（v0.7.0 自定义协议）
 
 ### Added
