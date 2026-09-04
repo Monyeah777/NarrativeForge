@@ -27,7 +27,7 @@ android.ndk = 25b
 # minapi 需 >=24：CPython 3.14 的 remote_debugging 模块调用 preadv/pwritev，
 # Android bionic 自 API 24(Android 7.0) 起才在 <sys/uio.h> 声明这两个函数（API23 报 implicit declaration）
 android.minapi = 24
-android.archs = arm64-v8a
+android.archs = arm64-v8a,x86_64
 android.accept_sdk_license = True
 
 # debug 签名（MVP 阶段 sideload 安装；正式签名后续接入 keystore）

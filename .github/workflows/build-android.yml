@@ -286,3 +286,35 @@ jobs:
         with:
           allowUpdates: true
           files: android/bin/*.apk
+  # ============ C7 · T3-1 端到端测试入 CI（缺口⑩闭环）：Android 模拟器启动冒烟最小集 ============
+  # 复用 build-android job 构建产物（debug APK），模拟器 boot → 安装 x86_64 ABI APK →
+  # am start 真实启动 → pidof 存活断言（不闪退冒烟）。独立 job 容错：冒烟失败不影响主构建产物上传。
+  android-emulator-smoke:
+    name: android-emulator-smoke（启动不闪退冒烟）
+    needs: build-android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 下载 debug APK（buildozer 双架构产物，含 x86_64）
+        uses: actions/download-artifact@v4
+        with:
+          name: narrativeforge-android-apk
+          path: android/bin
+      - name: 模拟器启动冒烟（安装 x86_64 APK → am start → pidof 存活断言）
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: pixel_4
+          disable-animations: true
+          script: |
+            set -e
+            APK=$(ls android/bin/*x86_64*.apk 2>/dev/null | head -1)
+            echo "x86_64 APK: ${APK:-<none>}"
+            test -n "$APK"
+            adb install -r "$APK"
+            adb shell am start -W -n org.narrativeforge.narrativeforge/org.kivy.android.PythonActivity
+            sleep 20
+            PID=$(adb shell pidof org.narrativeforge.narrativeforge)
+            echo "narrativeforge pid = [${PID}]"
+            test -n "$PID"

@@ -1,0 +1,20 @@
+name: e2e-desktop
+# C7 · T3-1 端到端测试入 CI（缺口⑩闭环）：桌面端 headless 端到端断言。
+# 直驱 desktop core 真实链路（装载官方 13 件 + T2-2 组合包 M91/M92 + P04 轻混装配流管线
+# → 按层装配 → check_assembly → generate_document → 产物断言），无需 GUI、无需 Android 生成物。
+# 独立 workflow 容错隔离：桌面断言失败不影响 Android 构建流（build-android.yml）。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  e2e-headless:
+    name: desktop-headless-e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 桌面端到端 headless 冒烟断言（T3-1 缺口⑩闭环）
+        run: python3 scripts/e2e_desktop_headless.py
