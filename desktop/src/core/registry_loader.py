@@ -21,11 +21,13 @@
   B. 模型形态：类别长名 + ":" + 裸号（通用类:M00 / 事件类:M22）——经 Store 安装的
      模块 models.Module.full_id 即此形态。
 
-API（09 §4 T1.2 动作 1 四件套）：
+API（09 §4 T1.2 动作 1 四件套 + T1-3 只读寻址）：
 - list_core_modules()         官方核心模块表（注册表登记 13 件）标识符列表
 - get_module(module_id)       按标识符查模块条目（A/B 双形态 + 裸号唯一解引用）
 - layer_mounts(layer_id)      某层挂载点（name/default/available/optional）
 - validate_assembly(module_ids)  R3 装配校验（返回 issues；空列表 = 通过）
+- asset_get(source_package, key)  跨包只读寻址源包资产（T1-3/v1.0.0，白名单授权
+  + 路径规范化；仅 references.asset_readonly: true 声明的源包可寻址，只读不复制）
 """
 from __future__ import annotations
 
@@ -58,16 +60,27 @@ class Registry:
     modules: list = field(default_factory=list)
     mount_points: dict = field(default_factory=dict)
     subscriptions: dict = field(default_factory=dict)
+    #: protocols[] 组合包投影（02 §8.4 组合登记 -> registry protocols[]；T1-3 消费
+    #: references 白名单做只读寻址授权，不参与装配驱动——❌②纪律）。
+    protocols: list = field(default_factory=list)
 
     # ---- 内部索引（fid_key(id) -> 条目；裸号 -> [条目]；构建时填充） ----
     _by_norm: dict = field(default_factory=dict, init=False, repr=False)
     _by_num: dict = field(default_factory=dict, init=False, repr=False)
+    #: T1-3 跨包只读寻址白名单：protocols[].references[] 中 asset_readonly: true
+    #: 声明的 source_package 集合（02 §8.4 / registry protocols[].references[]）。
+    _readonly_sources: set = field(default_factory=set, init=False, repr=False)
 
     def __post_init__(self) -> None:
         for m in self.modules:
             mid = m.get("id", "")
             self._by_norm[fid_key(mid)] = m
             self._by_num.setdefault(mid.split(":")[-1], []).append(m)
+        # T1-3：组合包 references 投影 -> 只读寻址授权表（空白名单 = 全拒）
+        for p in self.protocols:
+            for ref in p.get("references") or []:
+                if ref.get("asset_readonly") is True and ref.get("source_package"):
+                    self._readonly_sources.add(ref["source_package"])
 
     # ------------------------------------------------------------- 四件套 API
     def list_core_modules(self) -> List[str]:
@@ -174,7 +187,51 @@ class Registry:
             mp = self.mount_points.get(lid) or {}
             anchors.extend(mp.get("default") or [])
         return anchors
+    # ---- T1-3 cross-package readonly asset addressing ----
+    @staticmethod
+    def _community_root() -> Optional[Path]:
+        '''Locate community assets root (T1-3). desktop/src/core or
+        android/app/core both reach repo root at parents[3]; probe each
+        ancestor for community/ dir. None if absent.'''
+        for anc in Path(__file__).resolve().parents:
+            cand = anc / "community"
+            if cand.is_dir():
+                return cand
+        return None
 
+    def asset_get(self, source_package: str, key: str) -> Optional[str]:
+        """Cross-package readonly asset addressing (T1-3): read text of
+        community/<source_package>/assets/<key>.md when source_package is
+        in the readonly whitelist (_readonly_sources, projected from
+        protocols references asset_readonly); None otherwise. Path
+        normalized: key must be a bare file base (no / or .. components)
+        and the resolved target must stay inside the assets dir.
+        Read-only: never copies/moves/writes (I5). Missing -> None."""
+        if not source_package or not key:
+            return None
+        if source_package not in self._readonly_sources:
+            return None
+        root = self._community_root()
+        if root is None:
+            return None
+        root_r = root.resolve()
+        assets_dir = (root_r / source_package / "assets").resolve()
+        if not assets_dir.is_dir() or not str(assets_dir).startswith(str(root_r) + "/"):
+            return None
+        k = key.strip()
+        if k.endswith(".md"):
+            k = k[:-3]
+        if not k or "/" in k or ".." in k or k != Path(k).name:
+            return None
+        target = (assets_dir / (k + ".md")).resolve()
+        if not str(target).startswith(str(assets_dir) + "/"):
+            return None
+        if not target.is_file():
+            return None
+        try:
+            return target.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            return None
 
 @lru_cache(maxsize=4)
 def load_registry(path: Optional[Union[str, Path]] = None) -> Registry:
@@ -195,4 +252,5 @@ def load_registry(path: Optional[Union[str, Path]] = None) -> Registry:
         modules=raw.get("modules", []),
         mount_points=raw.get("mount_points", {}),
         subscriptions=raw.get("subscriptions", {}),
+        protocols=raw.get("protocols", []),
     )

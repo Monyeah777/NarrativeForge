@@ -216,5 +216,61 @@ class TestCoreAnchorModules(unittest.TestCase):
         self.assertEqual(r.core_anchor_modules(), expected)
 
 
+class TestAssetGet(unittest.TestCase):
+    """T1-3 cross-package read-only asset addressing (C3 feat(runtime)).
+
+    asset_get(source_package, key) semantics:
+      - whitelist only: references[].asset_readonly is True and non-empty
+        source_package (02 sect8.4 -> registry protocols[].references[])
+      - authorized path: real file text under community/<source_package>/assets/
+        read-only, no copy (I5 single-truth discipline)
+      - key normalization: strip, drop .md suffix, forbid '/' and '..', must be
+        plain file base name; unauthorized/traversal/missing -> None (no raise)
+    """
+    CAMPUS = "\u6821\u56ed\u60c5\u611f\u9886\u57df\u5305"   # campus emotion pack
+    FANTASY = "\u897f\u5e7b\u751f\u5b58\u9886\u57df\u5305"  # fantasy survival pack
+
+    @staticmethod
+    def _registry_with_readonly(*packages):
+        """Registry with whitelisted refs; bypasses load_registry lru_cache."""
+        refs = [{'source_package': pkg, 'asset_readonly': True} for pkg in packages]
+        return Registry(modules=[], mount_points={}, subscriptions={},
+                        protocols=[{'id': 'demo', 'references': refs}])
+
+    def test_authorized_package_reads_real_asset(self):
+        r = self._registry_with_readonly(self.CAMPUS)
+        content = r.asset_get(self.CAMPUS, 'ATTR_TEMPLATES')
+        self.assertIsInstance(content, str)
+        self.assertGreater(len(content), 1000)
+        self.assertIn('ATTR_TEMPLATES', content[:200])
+
+    def test_md_suffix_tolerated(self):
+        r = self._registry_with_readonly(self.CAMPUS)
+        self.assertEqual(r.asset_get(self.CAMPUS, 'ATTR_TEMPLATES.md'),
+                         r.asset_get(self.CAMPUS, 'ATTR_TEMPLATES'))
+
+    def test_unauthorized_package_returns_none(self):
+        r = self._registry_with_readonly(self.CAMPUS)
+        self.assertIsNone(r.asset_get(self.FANTASY, 'ATTR_TEMPLATES'))
+
+    def test_traversal_and_separator_rejected(self):
+        r = self._registry_with_readonly(self.CAMPUS)
+        self.assertIsNone(r.asset_get(self.CAMPUS, '../README'))
+        self.assertIsNone(r.asset_get(self.CAMPUS, 'a/b'))
+        self.assertIsNone(r.asset_get(self.CAMPUS, '..'))
+
+    def test_missing_key_returns_none(self):
+        r = self._registry_with_readonly(self.CAMPUS)
+        self.assertIsNone(r.asset_get(self.CAMPUS, 'NO_SUCH_ASSET'))
+
+    def test_empty_whitelist_rejects_all(self):
+        r = self._registry_with_readonly()
+        self.assertIsNone(r.asset_get(self.CAMPUS, 'ATTR_TEMPLATES'))
+
+    def test_empty_args_returns_none(self):
+        r = self._registry_with_readonly(self.CAMPUS)
+        self.assertIsNone(r.asset_get('', ''))
+        self.assertIsNone(r.asset_get(self.CAMPUS, ''))
+
 if __name__ == "__main__":
     unittest.main()
