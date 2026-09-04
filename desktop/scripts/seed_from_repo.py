@@ -7,6 +7,7 @@
 - 管线：解析 03_管线库/*.md → 保存为 cache/pipelines.json（工具启动时读取）
 - 模块：扫描 04_模块库/<分类>/*.md → parse_module（仓库格式）→ store.save_module
 - 资产：扫描 05_资产库/<包>/*.md → 键值分段 → store.save_asset_pack
+- 范围：仅官方核心结构（03/04/05）；community/ 社区领域包（P02/P03）不由此导入
 
 幂等：重复执行会覆盖同名模块/资产（module.json 每次重写）。
 """
