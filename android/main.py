@@ -11,6 +11,8 @@ from pathlib import Path
 # 确保 android/ 下 app 包可导入（buildozer source.dir=. 时工作目录即本目录）
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from kivy.core.text import LabelBase
+
 from kivymd.app import MDApp
 from kivymd.uix.bottomnavigation import MDBottomNavigation, MDBottomNavigationItem
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -21,6 +23,28 @@ from app.controller import Controller
 from app.ui.screens import (
     AssetTab, GenerateTab, ImportTab, ModulesTab, PipelineTab,
 )
+
+# ── CJK 字体修复（v0.3.3）───────────────────────────────────────
+# 根因：KivyMD 打包的 Roboto 系列（Roboto-Regular/Bold/...，见 kivymd/
+#   font_definitions.py 的 LabelBase.register）不含 CJK 字形；Android 上
+#   Kivy 经 FreeType 渲染中文找不到字形，统一输出 .notdef 占位（沙漏形），
+#   即真机截图中标题「叙事工坊」/tab 名/正文全变方块的根本原因。
+# 修复：思源黑体 SC（Noto Sans SC，含拉丁 + CJK）随 APK 打包（fonts/），
+#   并在 build() 创建任何控件前覆盖注册 Roboto* 名称，使 KivyMD 全部
+#   文本样式（H1-H6/Body/Button/Caption...）自动获得中文字形。
+_CJK_FONT = str(Path(__file__).resolve().parent / "fonts" / "NotoSansSC-Regular.otf")
+_CJK_FONT_NAMES = ("Roboto", "RobotoThin", "RobotoLight", "RobotoMedium", "RobotoBlack")
+
+
+def _register_cjk_fonts() -> None:
+    """用含 CJK 的思源黑体覆盖 KivyMD 注册的 Roboto* 名称（幂等）。
+
+    必须在任何控件创建/首次绘制前调用：Kivy 的 LabelBase._fonts 是全局
+    注册表，同名 register 直接覆盖；未传 fn_bold/italic 时自动回退 regular。
+    """
+    for _name in _CJK_FONT_NAMES:
+        LabelBase.register(name=_name, fn_regular=_CJK_FONT)
+
 
 
 class MainApp(MDApp):
@@ -36,6 +60,8 @@ class MainApp(MDApp):
         self.tab_generate: GenerateTab = None
 
     def build(self):
+        # 先覆盖 Roboto* → 思源黑体 SC（否则标题/正文中文继续渲染为沙漏占位）
+        _register_cjk_fonts()
         self.theme_cls.primary_palette = "Teal"
         self.theme_cls.theme_style = "Light"
         self.title = config.APP_NAME

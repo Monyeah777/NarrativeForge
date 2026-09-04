@@ -4,8 +4,10 @@ title = 叙事工坊
 package.name = narrativeforge
 package.domain = org.narrativeforge
 source.dir = .
-source.include_exts = py,kv,json,md,txt,png,jpg,jpeg,ttf
-version = 0.3.2
+# CJK 字体 fonts/NotoSansSC-Regular.otf（思源黑体 SC）需随包打入，otf 必须列入
+source.include_exts = py,kv,json,md,txt,png,jpg,jpeg,ttf,otf
+# v0.3.3：打包 CJK 字体（fonts/NotoSansSC-Regular.otf）修复 Android 全中文 notdef 沙漏占位
+version = 0.3.3
 orientation = portrait
 fullscreen = 0
 
