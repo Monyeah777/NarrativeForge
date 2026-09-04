@@ -36,27 +36,29 @@
 
 ### B. 扩展资产（v0.7.7-v0.7.9 新增 12 键，第 11-13 章，源行 2475-2885）
 
-| 资产键 | 文件 | 条目规模 | 源行区间 | 引入版本/章节 |
-|--------|------|----------|----------|----------------|
-| FAMILY_BACKGROUND | FAMILY_BACKGROUND.md | 12（FB001-FB899） | 2494-2530 | v0.7.7 / 11.2 |
-| DAILY_HABITS | DAILY_HABITS_SCHEDULE.md | 12（DH001-DH899） | 2531-2574 | v0.7.7 / 11.3 |
-| SCHEDULE | DAILY_HABITS_SCHEDULE.md | 10（SC001-SC899） | 2531-2574（同文件 SCHEDULE 段） | v0.7.7 / 11.3 |
-| GIFT_PREFS | GIFT_PREFS.md | 10（GP001-GP899） | 2575-2606 | v0.7.7 / 11.4 |
-| HIDDEN_EVENTS | HIDDEN_EVENTS.md | 8（HE001-HE899） | 2607-2658 | v0.7.7 / 11.5 |
-| SOCIAL_FEED | SOCIAL_FEED.md | 8（SF001-SF899） | 2673-2689 | v0.7.8 / 12.2 |
-| PHONE_CALL | PHONE_CALL.md | 8（PC001-PC899） | 2690-2704 | v0.7.8 / 12.3 |
-| GROUP_CHAT | GROUP_CHAT.md | 8（GC001-GC899） | 2705-2720 | v0.7.8 / 12.4 |
-| RIVAL_INFO | RIVAL_INFO.md | 6（RI001-RI899） | 2796-2814 | v0.7.9 / 13.2 |
-| PRESSURE_RULES | PRESSURE_RULES.md | 8（PR001-PR899） | 2815-2836 | v0.7.9 / 13.3 |
-| PART_TIME_JOB | PART_TIME_JOB.md | 20（PJ001-PJ899） | 2837-2855 | v0.7.9 / 13.4 |
-| WEATHER_MOOD | WEATHER_MOOD.md | 8（WM001-WM899） | 2856-2872 | v0.7.9 / 13.5 |
+| 资产键 | 文件 | 条目规模 | 源行区间 | 引入版本/章节 | 主要消费模块 |
+|--------|------|----------|----------|----------------|--------------|
+| FAMILY_BACKGROUND | FAMILY_BACKGROUND.md | 12（FB001-FB899） | 2494-2530 | v0.7.7 / 11.2 | — |
+| DAILY_HABITS | DAILY_HABITS_SCHEDULE.md | 12（DH001-DH899） | 2531-2574 | v0.7.7 / 11.3 | — |
+| SCHEDULE | DAILY_HABITS_SCHEDULE.md | 10（SC001-SC899） | 2531-2574（同文件 SCHEDULE 段） | v0.7.7 / 11.3 | — |
+| GIFT_PREFS | GIFT_PREFS.md | 10（GP001-GP899） | 2575-2606 | v0.7.7 / 11.4 | — |
+| HIDDEN_EVENTS | HIDDEN_EVENTS.md | 8（HE001-HE899） | 2607-2658 | v0.7.7 / 11.5 | — |
+| SOCIAL_FEED | SOCIAL_FEED.md | 8（SF001-SF899） | 2673-2689 | v0.7.8 / 12.2 | M57（core.assets 声明） |
+| PHONE_CALL | PHONE_CALL.md | 8（PC001-PC899） | 2690-2704 | v0.7.8 / 12.3 | M58（core.assets 声明） |
+| GROUP_CHAT | GROUP_CHAT.md | 8（GC001-GC899） | 2705-2720 | v0.7.8 / 12.4 | M59（core.assets 声明） |
+| RIVAL_INFO | RIVAL_INFO.md | 6（RI001-RI899） | 2796-2814 | v0.7.9 / 13.2 | — |
+| PRESSURE_RULES | PRESSURE_RULES.md | 8（PR001-PR899） | 2815-2836 | v0.7.9 / 13.3 | — |
+| PART_TIME_JOB | PART_TIME_JOB.md | 20（PJ001-PJ899） | 2837-2855 | v0.7.9 / 13.4 | — |
+| WEATHER_MOOD | WEATHER_MOOD.md | 8（WM001-WM899） | 2856-2872 | v0.7.9 / 13.5 | — |
+
+> **B 表消费列补注（v0.5.0 T5 补）**：「—」= 本包 9 件模块字面零引用（含正文 prose 与 core.assets 两级 grep 均无命中）——属"资产在册、消费方待扩展或经 P 层/官方核心侧调度"状态，非孤儿资产；若后续版本新增消费模块，以模块头 core.assets 声明为准回填本列。
 
 ### C. 附机制文件（非资产实体，供模块联动参考）
 
-| 文件 | 内容 | 源行区间 |
-|------|------|----------|
-| 附_社交系统触发联动.md | 触发扫描伪代码 + 深度联动矩阵 + 防丢包清单（12.5-12.7） | 2721-2780 |
-| 附_生活情敌联动结算.md | 生活与情敌结算防丢包清单（13.6） | 2873-2885 |
+| 文件 | 内容 | 源行区间 | 联动参考模块 |
+|------|------|----------|--------------|
+| 附_社交系统触发联动.md | 触发扫描伪代码 + 深度联动矩阵 + 防丢包清单（12.5-12.7） | 2721-2780 | M57 / M58 / M59（§12.5 社交结算段同段依序 scan_feeds / scan_calls / scan_group_chats） |
+| 附_生活情敌联动结算.md | 生活与情敌结算防丢包清单（13.6） | 2873-2885 | —（本包模块零字面引用；供 P 层生活/情敌结算联动参考） |
 
 ---
 
@@ -84,6 +86,29 @@ asset_match("BIG5_INFER", {"behaviors": [...]})  # 大五剖面推断
 asset_roll("GOSSIP_TOPICS", {"mood": "日常"})    # 按 mood 加权抽话题
 asset_register("FAMILY_BACKGROUND", {...FB901...})  # 自定义条目
 ```
+
+---
+
+## 6. 反向索引（模块 → 消费资产键，v0.5.0 T5 补注）
+
+本包 9 件在册模块（02 联动注册表 §8.1：情感:M22/M40/M41/M43/M55/M57/M58/M59/M65）对资产键的消费关系。依据三级标注：**①core.assets 声明级**（模块头 yaml 协议段显式声明，权威）；**②正文 prose 引用级**（模块正文直接引用键名/资产语义，无显式声明）；**③资产侧标注级**（A/B 表「主要消费模块」列由资产侧推断，模块正文无键名字面命中）。
+
+| 模块 | 消费资产键 | 依据 |
+|------|-----------|------|
+| M57 朋友圈动态 | SOCIAL_FEED / FORUM_POSTS（core.assets 声明）；GOSSIP_TOPICS / WRITING_STYLE（正文联动）；附_社交系统触发联动（§12.5 scan_feeds） | ①+② |
+| M58 电话通讯 | PHONE_CALL（core.assets 声明）；附_社交系统触发联动（§12.5 scan_calls） | ① |
+| M59 群聊系统 | GROUP_CHAT / GOSSIP_TOPICS（core.assets 声明）；附_社交系统触发联动（§12.5 scan_group_chats） | ① |
+| M40 关系深度 | INTERACTION_DEPTH（核心模型，正文 §1/§2）；BIG5_INFER / BEHAVIOR_SIGNALS / PERSONALITY_LINK（剖面推断/行为信号/破坏结算） | ②/③ |
+| M43 情敌系统 | ATTR_TEMPLATES（情敌生成取样） | ② |
+| M55 匿名情书 | LOCATIONS（投递通道取样：鞋柜/书桌/信箱） | ② |
+| M65 幽灵遗憾 | REGRET_LIBRARY（遗憾系统基线） | ② |
+| M22 三冲动驱动 | FEAR_LIBRARY / EMOTION_WHEEL / ATTR_TEMPLATES（冲动区数据，受 v0.7.12 隔离约束）；INTERACTION_DEPTH（§7 违例与边界提及） | ③ |
+| M41 恋爱进阶 | —（无直接资产键引用，数据流经 M40 关系深度模型桥接） | — |
+
+> 反向索引差异说明（v0.5.0 T5）：
+> - **B 表 9 键零消费**：FAMILY_BACKGROUND / DAILY_HABITS / SCHEDULE / GIFT_PREFS / HIDDEN_EVENTS / RIVAL_INFO / PRESSURE_RULES / PART_TIME_JOB / WEATHER_MOOD 及附_生活情敌联动结算，本包 9 模块两级 grep 均无字面命中——资产在册、消费方待扩展或经 P 层/官方核心侧调度（P50 社交结算段仅消费 M57/M58/M59 对应键）；非孤儿。
+> - **M22 标注差异**：A 表 FEAR_LIBRARY / EMOTION_WHEEL / ATTR_TEMPLATES 行"M22（恐惧驱动/三冲动）"为资产侧推断（③级），模块正文无 asset_* 显式调用；冲动层读表须遵守 v0.7.12 冲动-社会关系隔离（数据仅供表层行为驱动，告白/交往/约会等关系推进权归 M40/M41）。
+> - **M41 桥接**：不直接消费资产键，其恋爱进阶逻辑依赖 M40 关系深度（INTERACTION_DEPTH 族）间接读取，故不计入资产侧消费列。
 
 ---
 
