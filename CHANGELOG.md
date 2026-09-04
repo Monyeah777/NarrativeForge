@@ -3,7 +3,12 @@
 > 格式约定：Keep a Changelog 中文化（Added/Changed/Fixed 语义）；版本段按时间倒序；[Unreleased] = 当前主线开发中；发布即归档为 [版本号] + 日期段并打 annotated tag（ROADMAP §8 治理指针 3）。
 > 基线说明：本文件随 v0.6.0 方案 B 第①步落盘（2026-09-04）；早期版本（v0.1.0–v0.5.0）条目按 git 版本史（八 tag）回写简述。
 
-## [Unreleased] - v0.7.0 自定义协议（开发中）
+## [0.7.0] - 2026-09-04（v0.7.0 自定义协议）
+
+### Added
+- T1 协议声明 Schema 机读化（B1）：01 §6 新增 6.1 第三方协议声明 protocol.yaml Schema 规范（必填 12 字段表 + R1→dependencies / R2→categories+module_id_range / R3→pipeline+mount_layers 映射 + M91-M99 编号规则 + 模板），社区包根目录必带 protocol.yaml。
+- T2 注册流程机读化 + 投影扩展（B2）：02 §8.3 升级「登记 = protocol.yaml 在场 + 本表在册 + registry.json protocols[] 投影」三要件 + §9.1 字段映射表 §8↔protocols[] 行 + §9.2 社区登记同步纪律第 4 条；校园/西幻两包 retro-fit 落 protocol.yaml（校园 51 行 / 西幻 69 行）作首例战例，两包 README 补双源一致声明；registry.json 增 protocols[] 两包投影（schema_version 保持 "2"，V1 只增不删）。
+- T3 注册门禁 check14（B3）：verify.sh 升 v2.4 新增 check14 社区协议登记门禁（入段 C 无条件执行）——protocol.yaml 在场 / Schema 必填 12 字段 yaml 解析 / R2 类别不冲突 / R1 依赖边界 / M91-M99 不占用 + 编号在册一致 / protocol.yaml↔README 双源一致 / registry protocols[] 投影一致，七项全绿 PASS=19。
 
 ### Changed
 - 10_v0.7.0_自定义协议方案.md 落盘（方案真相源，I5）：v0.7.0 定位为「自定义协议——在 v0.6 统一入口之上对外开放协议注册，第三方可按协议声明注册自定义协议，进入注册表登记与门禁调度」。问题全景 A1–A3（A1 第三方协议注册无机读入口 / A2 协议声明无机读 Schema / A3 注册无门禁校验）；改进收口 B1–B3（B1 protocol.yaml Schema 机读化 / B2 注册流程机读化 + registry.json protocols[] 投影 / B3 check14 注册门禁）；任务分解 T1 协议声明 Schema 规范 → T2 两包 retro-fit + 02 §8.3/§9 升级 + registry.json protocols[] → T3 verify.sh check14 + v2.4；提交规划 C0–C4。ROADMAP §1 行 12 v0.7.0 状态切「🔵 当前主线」+ §4 范围细化落盘；README 协议链追加 10、版本行切 v0.7.0（当前主线·开发中）。
