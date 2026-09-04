@@ -41,8 +41,10 @@
 
 | 路径 | 内容 |
 | --- | --- |
+| `community/校园情感领域包/README.md` | **校园情感流（P02）装载手册**：6 题材模块 + 29 资产 + 默认状态/节拍 + 红线 + 验收 |
+| `community/西幻生存领域包/README.md` | **西幻生存流（P03）装载手册**：14 题材模块 + 23 内容资产 + 运行规则 + 红线 + 验收 |
 | `community/模板制作指令包.md` | **给任意前端 AI 的指令**：复制即用，让 AI 帮你产出可导入的模板 |
-| `01_核心协议.md` ~ `07_社区版预设.md` | 协议 / 注册表 / 管线库 / 模块库 / 资产库 / Agent 执行协议 / 预设 |
+| `01_核心协议.md` ~ `07_官方核心出厂与社区预设导航.md` | 协议 / 注册表 / 管线库 / 模块库 / 资产库 / Agent 执行协议 / 官方核心出厂与社区预设导航 |
 | `desktop/` | 桌面工具源码（PySide6）；构建见 `.github/workflows/build-desktop.yml` |
 | `.github/workflows/build-desktop.yml` | 三平台自动打包（替代原 build_windows.bat），tag `v*` 自动发 Release |
 

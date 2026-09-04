@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 十项验收门禁（07 §7 可执行化）
-# 版本 : v1.0  配套 : 07_社区版预设.md §7（L116-129 判定标准）
+# 版本 : v1.0  配套 : 07_官方核心出厂与社区预设导航.md §7（L116-129 判定标准）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
@@ -19,7 +19,7 @@ wn(){ WARN=$((WARN+1)); printf '  [WARN] %s\n' "$1"; }
 check1(){
   echo '== [1/10] 目录结构完整 =='
   local err=0
-  for f in 01_核心协议.md 02_联动注册表.md 06_Agent执行协议.md 07_社区版预设.md README.md LICENSE; do
+  for f in 01_核心协议.md 02_联动注册表.md 06_Agent执行协议.md 07_官方核心出厂与社区预设导航.md README.md LICENSE; do
     [ -f "$f" ] || { no "根级缺失: $f"; err=1; }
   done
   local n03=$(find 03_管线库 -maxdepth 1 -name '*.md' 2>/dev/null | wc -l)
@@ -100,7 +100,7 @@ check4(){
     grep -q "$q" 02_联动注册表.md || { no "注册表缺限定 ID: $q"; err=1; }
   done
   # 02/06/07：逐行扫描——含 M10/M22 的行须带类别词；仅当 M10 与 M22 同现（重号元说明）时豁免
-  for f in 02_联动注册表.md 06_Agent执行协议.md 07_社区版预设.md; do
+  for f in 02_联动注册表.md 06_Agent执行协议.md 07_官方核心出厂与社区预设导航.md; do
     local bad=$(awk '
       { hasCat = ($0 ~ /通用|生存|情感|事件/)
         m10 = ($0 ~ /(^|[^0-9])M10([^0-9]|$)/)
@@ -205,10 +205,10 @@ check10(){
   echo '== [10/10] 入口导航（README → 07 → 协议链/资产/管线）=='
   local err=0
   # 总 README 指向 07 预设
-  grep -q '07_社区版预设' README.md || { no 'README 缺指向 07_社区版预设'; err=1; }
+  grep -q "07_官方核心出厂与社区预设导航" README.md || { no 'README 缺指向 07_官方核心出厂与社区预设导航'; err=1; }
   # 07 头部依据链：01/02/03/05/06 全部可寻址
   for k in '01_核心协议' '02_联动注册表' '03_管线库' '05_资产库' '06_Agent执行协议'; do
-    grep -q "$k" 07_社区版预设.md || { no "07 缺引用: $k"; err=1; }
+    grep -q "$k" 07_官方核心出厂与社区预设导航.md || { no "07 缺引用: $k"; err=1; }
   done
   # 被引用目标文件确实存在（可访问性闭环）
   for f in 01_核心协议.md 02_联动注册表.md 06_Agent执行协议.md; do
