@@ -3,7 +3,10 @@
 > 格式约定：Keep a Changelog 中文化（Added/Changed/Fixed 语义）；版本段按时间倒序；[Unreleased] = 当前主线开发中；发布即归档为 [版本号] + 日期段并打 annotated tag（ROADMAP §8 治理指针 3）。
 > 基线说明：本文件随 v0.6.0 方案 B 第①步落盘（2026-09-04）；早期版本（v0.1.0–v0.5.0）条目按 git 版本史（八 tag）回写简述。
 
-## [Unreleased] - v0.9.0 Android 同步门禁 + APK 闪退修复（开发中）
+## [Unreleased] - v1.0.0 全平台正式版（开发中）
+### Added
+- 13_v1.0.0_全平台正式版方案.md 落盘（方案真相源，I5）：v1.0.0 定位为「全平台正式版·打好地基——协议层收口 + 社区生态收口 + 双端质量收口，功能扩展一律外推」。连续八版（v0.1–v0.9）协议/平台/生态快速演进后，历版方案 §6 开放问题与 ROADMAP 范围外声明累计 6+ 条「明示留待 v1.0.0」收口项一次兑现。问题全景 A1–A3（A1 协议层三处半收口：契约仲裁仅 WARN / 模块头契约无机读 / asset_readonly 无运行时 / A2 社区生态无协作流程与真实战例 / A3 双端发布质量无端到端闸门）；改进收口 B1–B3（B1 协议层收口：模块头契约机读化 + 自动契约仲裁 WARN→FAIL + desktop Runtime asset_get 跨包只读寻址 / B2 社区生态收口：CONTRIBUTING 协作流程五步 + community/「校园 × 西幻轻混」完整可玩组合包战例 / B3 双端发布质量收口：端到端测试入 CI 缺口⑩闭环（桌面 headless 断言 + Android 模拟器启动冒烟最小集）+ 正式发布仪式三件套终态收口）；任务分解 T1 协议层收口（T1-1 机读化 → T1-2 仲裁升级 → T1-3 只读寻址，check16 随 T1-3 一次性入段 C）→ T2 社区生态收口（T2-1 流程文档化 → T2-2 完整战例，依赖 T1）→ T3 双端发布质量收口（T3-1 端到端入 CI，依赖 T2-2 → T3-2 发布仪式终态 + tag v1.0.0）；提交规划 C0–C8（C0 仅动文档 PASS=20 保持；C1–C3 中间态 PASS=20 保持；C4 起 PASS=22 终态）。ROADMAP §1 L15 v1.0.0 状态切「🔵 当前主线」+ §7 一句话展开完整范围（✅三做/❌三不做）落盘；README 协议链追加 13、新增 v1.0.0 🔵 块引用、v0.9.0 块引用切「✅ 已发布 2026-09-04」；本段下方 [0.9.0] 段归档为治理指针 3 发布归档收口（v0.9.0 发布时遗留，原 [Unreleased] v0.9.0 段内容原样迁入不增删改）。
+## [0.9.0] - 2026-09-04（v0.9.0 Android 同步门禁 + APK 闪退修复）
 ### Added
 - 12_v0.9.0_Android同步门禁与APK闪退修复方案.md 落盘（方案真相源，I5）：v0.9.0 定位为「Android 同步门禁 + APK 闪退修复——把 sync --check 差异校验接入 CI（缺口⑦闭环：Android↔真源一致性不再靠人工）；对 APK 闪退修复做验证归档 + 纳入 CI 回归门禁保障」。关键前提（git merge-base 实证）：三处闪退修复代码（6b9445e MDRadioButton→MDCheckbox + MDTopAppBar 去 subtitle / 7fd6c0f bump / e92f119 CJK 字体注册）均已含于 v0.8.0 历史——本版对闪退定位 =「验证修复已含历史版本 + 归档根因链 + CI 门禁保障」，非新写修复代码。问题全景 A1–A3（A1 闪退修复已含 v0.8.0 但无 CI 回归保障 / A2 CI 同步不带 --check 缺口⑦ / A3 三件套版本状态滞后于 git 事实）；改进收口 B1–B3（B1 验证归档 + selftest_android.py UI 启动安全静态断言三断言：无 MDRadioButton import / MDTopAppBar 无 subtitle kwarg / _register_cjk_fonts 定义 + build() 首行调用 / B2 build-android.yml 同步步骤后追加 sync --check 自证闸门（保留生成步骤再自证，规避 fresh checkout 生成物缺失边界）/ B3 三件套收口 + v0.9.0 语义厘清）；任务分解 T1 静态断言（无前置）→ T2 CI --check 闸门（无前置，与 T1 可并行）→ T3 版本收口核验（依赖 T1/T2）；提交规划 C0–C3（本版无协议层改动，verify.sh PASS=20 不变）。ROADMAP §1 L14 v0.9.0 状态切「🔵 当前主线」+ §6 范围细化落盘；README 协议链追加 12、新增 v0.9.0 🔵 块引用、v0.8.0 块引用切「✅ 已发布 2026-09-04」；本段下方 [0.8.0] 段归档为治理指针 3 发布归档收口（v0.8.0 发布时遗留，原 [Unreleased] v0.8.0 段内容原样迁入不增删改）。
 
