@@ -25,6 +25,15 @@ jobs:
       - name: 同步共享源码与种子数据（core + seed 生成到 android/app/）
         run: bash scripts/sync_android.sh
 
+      # 缺口⑦治理：Android 壳消费的 core/seed 是 .gitignore 生成物（不入库），
+      # v0.8.0 收口时曾出现人工漏同步导致的 desktop↔android 双端漂移（如
+      # core/registry.json 源 6110B vs 生成物 4186B 停在旧快照）——此后一致性
+      # 不再靠人工，sync 后立即 --check 自证：有差异 exit 1 fail CI，无差异放行。
+      # 注：必须保留上方生成步骤后再自证（fresh checkout 下生成物缺失，直接
+      # 替换为 --check 会命中缺失边界必然失败）。
+      - name: 双端一致性自证闸门（sync --check，缺口⑦）
+        run: bash scripts/sync_android.sh --check
+
       - name: 控制器逻辑冒烟（纯 python3 全链路自测，快速失败门禁）
         run: python3 scripts/selftest_android.py
 
