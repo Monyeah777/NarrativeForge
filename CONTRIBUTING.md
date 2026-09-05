@@ -82,8 +82,23 @@ python3 -m compileall -q desktop/src android/app scripts
 - 版本行同步：schema_version / registry_schema_version 等字段级改动走 01 §7 V1（只增不删）/ V2（结构性变更 bump + 迁移记录）规则。
 - 发布纪律：tag vX.Y.Z 为版本真相源（I5）、禁止在已发布 tag 上回写（§2）；发布条目同步 CHANGELOG 与 ROADMAP。
 
-## 5. Issue / PR 规范
+### 4.5 方案文档纪律（NN_ 方案模板必填两段，v2.2.0 B1/B2 起）
+新增/修订方案文档（`NN_<版本>_<主题>方案.md`，含 .rivet/plans/ 草稿与 08-32 既有同型）**必含**以下两段，位置在「核心」段之后：
 
+**B1 五问自检（Clarify 自检，每方案回答五问）**
+1. **谁消费本功能**——具体消费方（模块/CLI/verify check/文档/外部产物格式），不接受「将来可能有用」。
+2. **何时/如何验证被消费**——验证动作 + 时机（如「nf CLI 冒烟输出」「verify checkNN 绿」「单测断言」），可独立跑、有可观察结果。
+3. **与非目标边界**——明确不做（对照 01 §5 I5 / L3_FROZEN 冻结面 / ROADMAP 条件池），一句话边界声明。
+4. **与现存协议关系**——涉及 01-07 哪一层、是否需 02 登记 / registry 投影 / schema bump（V1/V2）。
+5. **失败定义**——什么算验收不通过（RED 判据），与 §3 验证门槛对齐。
+
+**B2 消费方声明（防 C-a 无消费方能力重演，并入 B1 五问 ①/②）**
+- 以表格或清单声明：**功能** → **谁消费** → **怎么验证被消费**。消费方为空的条目不得进入方案（须先裁掉或绑定后续立项）。
+- 追溯锚点：落地后 README L32 协议链 / CHANGELOG 条目须能指回该方案（治理指针 2），verify 新增 check 须在头部配套说明引方案号。
+
+> 反例（C-a 教训）：模块质量分级曾因无消费方搁置——五问 ① 答不出「谁消费」即方案未成熟。正面示例见方案 33（A2 消费方 = nf who-refers CLI + retriever 库；A4 = verify check21）。
+
+## 5. Issue / PR 规范
 - **缺陷上报**：使用 .github/ISSUE_TEMPLATE/bug_report.md——APK 闪退必填：设备型号 / 系统版本 / App 版本 / 复现步骤 / 日志。
 - **功能请求**：使用 .github/ISSUE_TEMPLATE/feature_request.md。
 - **PR**：使用 .github/PULL_REQUEST_TEMPLATE.md，勾选改动域（协议层 / 代码层 / 社区包）+ 门禁自检清单（verify.sh 全绿 / unittest 40 用例 / 是否改 core 已 sync / py_compile 通过）。
