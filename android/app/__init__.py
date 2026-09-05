@@ -1,1 +1,0 @@
-"""叙事工坊 · Android 应用包：Kivy/KivyMD UI 壳 + core 复用 + 种子自举。"""
