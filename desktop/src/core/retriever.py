@@ -2,6 +2,8 @@
 
 - search(store, kind, query) -> list[Hit]：module / asset_pack / pipeline /
   protocol 四类对象统一检索，query 在 ref/name/tags/描述 上大小写不敏感子串匹配。
+  E5 扩展：kind=community_module / community_pipeline 显式检索 community 仓库
+  盘点（可装载未装 + 已装项，入 kind=None 全量）。
 - **不上向量库**：对象量级几十~几百，全表线性扫描足够（结构化 grep 原则）。
 - **Discovery 轻量**：每 Hit 只带元数据卡片（ref/name/tags/layer），不带正文——
   全文按需在装配/选择时加载（对齐 Agent Skills 渐进披露 Discovery/Activation 两层）。
@@ -97,9 +99,39 @@ def _protocol_hits(q: str, limit: int) -> List[Hit]:
 
 
 # ------------------------------------------------------------------ 入口
+def _community_hits(store: Store, kind: str, q: str, limit: int) -> List[Hit]:
+    """社区仓库盘点源（E5）：community/<pkg> 可装载未装 + 已装判定。
+
+    仅在显式 kind=community_module / community_pipeline 时检索（不入
+    kind=None 全量混排——社区项与已装 module 可能同 ref 双行，噪音大于
+    价值；E4 四类「本地已装/在册」语义保持独立）。
+    """
+    out = []
+    try:
+        from .community_inventory import catalog
+        for it in catalog(store):
+            if it.kind != kind:
+                continue
+            if not _match(q, it.ref, it.name, it.pkg, it.layer):
+                continue
+            state = "✓已装" if it.installed else "可装载"
+            tags = [it.pkg, state]
+            out.append(Hit(kind=kind, ref=it.ref, name=it.name,
+                           tags=tags, layer=it.layer))
+            if len(out) >= limit:
+                break
+    except Exception:
+        pass    # 盘点失败（仓库缺 community/）：社区源空（不阻断其它源）
+    return out
+
+
 def search(store: Store, kind: Optional[str] = None,
            query: str = "", *, limit: int = 30) -> List[Hit]:
-    """统一检索入口。kind=None 跨四类；query 空串返回该 kind 全部（Discovery 列表）。"""
+    """统一检索入口。kind=None 跨四类（本地已装/在册）；query 空串返回 Discovery 列表。
+
+    E5 扩展：kind='community_module' / 'community_pipeline' 检索 community
+    仓库盘点（可装载未装 + 已装项），显式指定才并入。
+    """
     q = (query or "").strip()
     hits: List[Hit] = []
     wanted = kind in (None, "module")
@@ -111,4 +143,6 @@ def search(store: Store, kind: Optional[str] = None,
         hits.extend(_pipeline_hits(store, q, limit))
     if kind in (None, "protocol"):
         hits.extend(_protocol_hits(q, limit))
+    if kind in ("community_module", "community_pipeline"):
+        hits.extend(_community_hits(store, kind, q, limit))
     return hits[:limit]

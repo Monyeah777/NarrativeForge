@@ -84,6 +84,40 @@ class TestSearch(unittest.TestCase):
         # Discovery 轻量：有元数据，不强制带正文
         self.assertTrue(hasattr(h, "name") and hasattr(h, "layer"))
 
+    # ---- E5：community 盘点源（真实仓库） ----
+    def test_community_module_kind(self):
+        hits = search(self.store, "community_module", "M55")
+        self.assertTrue(hits, "community_module 应命中校园 M55")
+        self.assertTrue(any(h.ref == "情感类:M55" for h in hits),
+                        f"refs={[h.ref for h in hits]}")
+        hit = next(h for h in hits if h.ref == "情感类:M55")
+        self.assertEqual(hit.kind, "community_module")
+        self.assertEqual(hit.tags[0], "校园情感领域包", f"tags={hit.tags}")
+
+    def test_community_pipeline_kind(self):
+        hits = search(self.store, "community_pipeline", "P04")
+        self.assertTrue(hits)
+        self.assertTrue(any(h.ref == "P04" for h in hits),
+                        f"refs={[h.ref for h in hits]}")
+
+    def test_community_default_all_excludes_community(self):
+        # kind=None 全量不并入社区项（与 E4 四类语义隔离）
+        hits = search(self.store, None, "M55")
+        kinds = {h.kind for h in hits}
+        self.assertNotIn("community_module", kinds,
+                         "kind=None 不应混入 community_module")
+
+    def test_community_installed_flag(self):
+        # 先装一件 community 模块 → 盘点 ref installed 标记在 Hit tags 中
+        from core.community_inventory import catalog, install_module
+        items = [i for i in catalog(self.store)
+                 if i.kind == "community_module" and i.ref == "情感类:M55"]
+        self.assertTrue(items)
+        self.assertTrue(install_module(self.store, items[0]))
+        hits = search(self.store, "community_module", "M55")
+        hit = next(h for h in hits if h.ref == "情感类:M55")
+        self.assertIn("✓已装", hit.tags, f"tags={hit.tags}")
+
 
 if __name__ == "__main__":
     unittest.main()
