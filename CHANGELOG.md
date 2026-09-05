@@ -1,10 +1,11 @@
-## [Unreleased] - v2.0.x（2.0 E2/E3/E4 收口，工作分支 feat/v1.1-fix 已提交未发布）
+## [Unreleased] - v2.0.x（2.0 E2-E5 收口，工作分支 feat/v1.1-fix 已提交未发布）
 ### Added
 - **v2.0.x-E2 协议定义向导（方案 19，031f543 docs + 9bf5055 feat）**：自定义协议 GUI 化落地——`desktop/src/core/protocol_wizard.py`（ProtocolForm + build_protocol_yaml 生成合规 protocol.yaml v2 + self_check）+ `desktop/src/ui/protocol_wizard_dialog.py`（向导 QDialog）+ zone_g「创建自定义协议…」入口（协议定义从手写 Schema 门槛降为填表生成）。
 - **v2.0.x-E3 组合运行时调度引擎（方案 20，07b8bf0 docs + caa45f4 feat）**：references 跨包引用运行时消费——`desktop/src/core/composer.py`（resolve_combination 按 registry protocols references 闭包解析 + build_assembly 装配前合并 own+reference 模块正文，轻混 P04 导出 world 现含校园 M55/西幻 M17）；e2e [8] + zone_d 生成默认含引用。
 - **v2.0.x-E4 模块市场雏形（方案 21，6699566 docs + 7d3678f feat）**：zone_g 升级检索驱动一站式视图——消费 retriever.search 四类（module/asset_pack/pipeline/protocol 本地资源）结果表 + 按 kind 分流动作（module 加入装配追加进 selected / pipeline 设为当前管线 / asset_pack 选用资产包 / protocol 查看详情）；main_window 增 add_module_to_assembly（追加语义，区别于预设重填）+ set_current_pipeline；装配态标记随 ②③ 勾选联动；`scripts/smoke_zone_g_market.py` offscreen 冒烟（检索命中→加入装配→层树同步→四类齐备）。
+- **v2.0.x-E5 模块市场雏形深化（方案 22，69dd4b2 W1 core + 7d3678f 系 UI）**：community 仓库盘点——新增 `desktop/src/core/community_inventory.py`（catalog 盘点 4 包 29 模块 + 4 管线 + 已装判定；install_module save_module 幂等 / install_pipeline pipelines cache 按 id merge 不覆盖既有）；retriever.search 扩 kind=community_module/community_pipeline（显式指定才并入，E4 四类语义隔离，Hit tags=[来源包,✓已装/可装载]）；zone_g kind 下拉加「社区模块/社区管线」档——未装一键装载入库（module → on_modules_changed / pipeline → reload_pipelines）、已装转加入装配/设为当前管线；`scripts/smoke_zone_g_market.py` [7][8] 装载冒烟（M55 装载入库→标记翻转、P04 cache merge→③ 下拉含）。I5 边界裁决：references 跨包只读（E3）与用户工作区装载（E5，等同 seed_from_repo 既有模式）正交不冲突。
 ### Changed
-- README 协议链追加 19/20/21（顺带收口 E2/E3 落地时的协议链遗漏，治理指针 2）。
+- README 协议链追加 19/20/21/22（治理指针 2，收口 E2-E5 落地）。
 
 ## [2.0.0] - 2026-09-05（v2.0.0 导出层：上游生成器——E0 三件套 + CCV3/SKILL 出口）
 ### Added
