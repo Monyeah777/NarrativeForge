@@ -89,5 +89,35 @@ class TestSelfCheck(unittest.TestCase):
                             for w in self_check(text)))
 
 
+class TestDocSemantics(unittest.TestCase):
+    """A1 补遗（28 方案）：ProtocolForm.doc_semantics 声明入口 → yaml 键 → self_check。"""
+
+    def test_project_rules_emitted_and_valid(self):
+        f = _sample_form()
+        f.doc_semantics = "project_rules"
+        text = build_protocol_yaml(f)
+        self.assertIn("doc_semantics: project_rules", text)
+        self.assertEqual(self_check(text), [], "合法值 self_check 应通过")
+
+    def test_skill_emitted_and_valid(self):
+        f = _sample_form()
+        f.doc_semantics = "skill"
+        text = build_protocol_yaml(f)
+        self.assertIn("doc_semantics: skill", text)
+        self.assertEqual(self_check(text), [], "合法值 self_check 应通过")
+
+    def test_default_no_key_backward_compatible(self):
+        # 缺省空串 → 不产键（真实实例兼容，登记门禁不读该键）
+        text = build_protocol_yaml(_sample_form())
+        self.assertNotIn("doc_semantics", text)
+        self.assertEqual(self_check(text), [])
+
+    def test_invalid_value_rejected_at_build(self):
+        f = _sample_form()
+        f.doc_semantics = "bogus"
+        with self.assertRaises(ValueError):
+            build_protocol_yaml(f)
+
+
 if __name__ == "__main__":
     unittest.main()

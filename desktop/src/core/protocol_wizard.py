@@ -34,6 +34,10 @@ class ProtocolForm:
     modules: List[Tuple[str, str]] = field(default_factory=list)  # [(id, desc)]
     mount_layers: Dict[str, Dict] = field(default_factory=dict)  # {层名:{default,available}}
     core_modules: List[str] = field(default_factory=list)  # 缺省 = DEFAULT_CORE_MODULES
+    # A1 补遗（28 方案）：产出语义声明——"" 未声明 / "project_rules" / "skill"
+    # （对齐 semantics.PROJECT_RULES / SKILL；声明后写入 yaml 供 self_check 校验、
+    # 下游按裁决路由 AGENTS/CLAUDE 或 SKILL）
+    doc_semantics: str = ""
 
 
 def _fmt_list(items) -> str:
@@ -43,6 +47,15 @@ def _fmt_list(items) -> str:
 
 def build_protocol_yaml(form: ProtocolForm) -> str:
     """表单 → 合规 protocol.yaml 文本（结构对齐真实实例）。"""
+    # A1 补遗：产出语义声明非空时校验值域并写入 package 段（空=不写，兼容真实实例）
+    sem_line = ""
+    if form.doc_semantics:
+        from .semantics import PROJECT_RULES, SKILL
+        if form.doc_semantics not in (PROJECT_RULES, SKILL):
+            raise ValueError(
+                f"doc_semantics 应为 '{PROJECT_RULES}' 或 '{SKILL}'"
+                f"（产物×适配矩阵：AGENTS=项目约定 / SKILL=能力包），实际 {form.doc_semantics}")
+        sem_line = f"  doc_semantics: {form.doc_semantics}\n"
     core = list(form.core_modules) if form.core_modules else DEFAULT_CORE_MODULES
     core_l = "\n".join(f'    - "{c}"' if ":" in c or c == "M00"
                        else f"    - {c}" for c in core)
@@ -65,7 +78,7 @@ package:
   id: {form.id}
   name: {form.name}
   pipeline: {form.pipeline}
-  module_id_range:
+{sem_line}  module_id_range:
 {ids_l}
   categories:
 {cat_l}
