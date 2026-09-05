@@ -1,3 +1,11 @@
+## [Unreleased] - v2.0.x（2.0 E2/E3/E4 收口，工作分支 feat/v1.1-fix 已提交未发布）
+### Added
+- **v2.0.x-E2 协议定义向导（方案 19，031f543 docs + 9bf5055 feat）**：自定义协议 GUI 化落地——`desktop/src/core/protocol_wizard.py`（ProtocolForm + build_protocol_yaml 生成合规 protocol.yaml v2 + self_check）+ `desktop/src/ui/protocol_wizard_dialog.py`（向导 QDialog）+ zone_g「创建自定义协议…」入口（协议定义从手写 Schema 门槛降为填表生成）。
+- **v2.0.x-E3 组合运行时调度引擎（方案 20，07b8bf0 docs + caa45f4 feat）**：references 跨包引用运行时消费——`desktop/src/core/composer.py`（resolve_combination 按 registry protocols references 闭包解析 + build_assembly 装配前合并 own+reference 模块正文，轻混 P04 导出 world 现含校园 M55/西幻 M17）；e2e [8] + zone_d 生成默认含引用。
+- **v2.0.x-E4 模块市场雏形（方案 21，6699566 docs + 7d3678f feat）**：zone_g 升级检索驱动一站式视图——消费 retriever.search 四类（module/asset_pack/pipeline/protocol 本地资源）结果表 + 按 kind 分流动作（module 加入装配追加进 selected / pipeline 设为当前管线 / asset_pack 选用资产包 / protocol 查看详情）；main_window 增 add_module_to_assembly（追加语义，区别于预设重填）+ set_current_pipeline；装配态标记随 ②③ 勾选联动；`scripts/smoke_zone_g_market.py` offscreen 冒烟（检索命中→加入装配→层树同步→四类齐备）。
+### Changed
+- README 协议链追加 19/20/21（顺带收口 E2/E3 落地时的协议链遗漏，治理指针 2）。
+
 ## [2.0.0] - 2026-09-05（v2.0.0 导出层：上游生成器——E0 三件套 + CCV3/SKILL 出口）
 ### Added
 - **v1.2.0 协议中转站 v2（IR 内容归一化，2.0 E0-①）**：ir.py IRDocument/IRLayer/IRModule + normalize_module_body + ir_to_md（IR 默认 MD 适配器）；generator.render_ir 装配→IR（层序/层外/资产 refs+missing 归一），generate_document 改两段（render_ir+ir_to_md），对外 MD 输出零回归（一致性 diff 逐字节）。方案 14。
