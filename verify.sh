@@ -369,10 +369,11 @@ check14(){
   [ -n "$PY3" ] && PYOK=1
   { [ "$PYOK" -eq 1 ] && "$PY3" -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
   [ "$YAMLOK" -eq 1 ] || wn 'Python/PyYAML 不可用（check14 ② yaml 解析降级文本粗校验；建议 pip install pyyaml 后重跑精确校验）'
-  # ① protocol.yaml 在场（登记三要件①）
+  # ① protocol.yaml 在场（登记三要件①；community/* 自动扫描——新增包目录须自带协议声明，含组合/通用包）
   local d miss=0
-  for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包 community/通用核心基础包; do
-    [ -f "$d/protocol.yaml" ] || { no "①缺协议声明: $d/protocol.yaml（登记三要件①不满足）"; miss=1; }
+  for d in community/*/; do
+    d=${d%/}
+    [ -f "$d/protocol.yaml" ] || { no "①缺协议声明: $d/protocol.yaml（登记三要件①不满足；community/* 下每个目录须为带 protocol.yaml 的登记包）"; miss=1; }
   done
   if [ "$miss" -eq 1 ]; then
     no 'protocol.yaml 缺失——check14 ②-⑦ 跳过（登记三要件不全，包不被平台门禁识别）'
@@ -381,13 +382,17 @@ check14(){
   # ②-⑦ 精确比对（python3 + PyYAML：解析两包 protocol.yaml + desktop registry.json + 02 文档反解）
   if [ "$YAMLOK" -eq 1 ]; then
     if "$PY3" - <<'PYEOF' >/tmp/nf_check14.log 2>&1
-import json, re, sys
+import glob, json, os, re, sys
 import yaml
 
-PKGS = ['community/校园情感领域包', 'community/西幻生存领域包']
-COMBO = ['community/校园西幻轻混组合包']
-CORE = ['community/通用核心基础包']
-ALL_PKGS = PKGS + COMBO + CORE
+# C2 包目录 glob 化（29 方案 B3-C）：遍历层（②④⑥⑦ + ① 目录在场）自动发现 community/* 全部
+# 含 protocol.yaml 的目录——新增组合/通用包登记零改 verify.sh（目录 + protocol.yaml + registry 条目即可）。
+# DOMAIN = 领域包显式登记（③ 独占类别互斥 + ⑤ 编号在册/M91-99 不占用专属）——领域包语义依赖
+# 02 §8.1/8.2 段落结构（segmap）与「不占 M91-99 社区段」规则（通用 M93-96/轻混 M91-92 合法占段，
+# 不能内容推导纳入领域检查）；新增领域包须在此登记 + 02 §8 开新段 + registry 条目（登记三要件②）。
+DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包']
+ALL_PKGS = sorted(d.replace('\\', '/') for d in glob.glob('community/*')
+                  if os.path.isdir(d) and os.path.isfile(os.path.join(d, 'protocol.yaml')))
 REQUIRED = [
     'protocol.schema_version', 'package.id', 'package.name', 'package.pipeline',
     'package.module_id_range', 'package.categories', 'package.dependencies.core_only',
@@ -417,11 +422,13 @@ for d in ALL_PKGS:
     if isinstance(mr, list) and isinstance(ms, list) and len(mr) != len(ms):
         errs.append('%s module_id_range(%d) != modules(%d)' % (d, len(mr), len(ms)))
 if not errs:
-    # ③ R2 类别包间不冲突（校园 ∩ 西幻 = ∅）
-    cats = {d: set(data[d]['package']['categories']) for d in PKGS}
-    inter = cats[PKGS[0]] & cats[PKGS[1]]
-    if inter:
-        errs.append('③R2 类别冲突（两社区包不得共占独占类别）: ' + ','.join(sorted(inter)))
+    # ③ R2 类别包间不冲突（领域包独占类别两两互斥；DOMAIN 显式登记，见 C2 注释）
+    cats = {d: set(data[d]['package']['categories']) for d in DOMAIN}
+    for i in range(len(DOMAIN)):
+        for j in range(i + 1, len(DOMAIN)):
+            inter = cats[DOMAIN[i]] & cats[DOMAIN[j]]
+            if inter:
+                errs.append('③R2 类别冲突（领域包不得共占独占类别）: %s∩%s=%s' % (DOMAIN[i], DOMAIN[j], ','.join(sorted(inter))))
     # ④ R1 core_modules ⊆ 官方核心 13 件 + cross_package 空（含组合包）
     for d in ALL_PKGS:
         dep = data[d]['package']['dependencies']
@@ -429,12 +436,16 @@ if not errs:
         if bad: errs.append('%s ④R1 core_modules 越界官方核心 13 件: %s' % (d, ','.join(bad)))
         if dep.get('core_only') is not True: errs.append('%s ④R1 core_only 应为 true' % d)
         if dep.get('cross_package'): errs.append('%s ④R1 cross_package 应为空数组' % d)
-    # ⑤ 编号在册一致（module_id_range ↔ 02 §8 反解）+ M91-M99 不占用
+    # ⑤ 编号在册一致（module_id_range ↔ 02 §8 反解）+ M91-M99 不占用（领域包专属：通用/组合包合法占 M91-99 社区段）
     doc = open('02_联动注册表.md', encoding='utf-8').read()
-    m81 = re.search(r'^### 8\.1\b.*?(?=^### 8\.2\b)', doc, re.S | re.M)
-    m82 = re.search(r'^### 8\.2\b.*?(?=^### 8\.3\b)', doc, re.S | re.M)
-    segmap = {PKGS[0]: m81.group(0) if m81 else '', PKGS[1]: m82.group(0) if m82 else ''}
-    for d in PKGS:
+    # segmap：领域包目录 → 02 §8.x 段（按段标题含包名定位；新增领域包自动匹配，勿硬编码 §8.1/§8.2 下标）
+    segmap = {}
+    for d in DOMAIN:
+        segname = d.split('/')[-1]
+        segpat = re.compile(r'^### 8\.\d+ %s\b.*?(?=^### 8\.|^## 9\.)' % re.escape(segname), re.S | re.M)
+        segm = segpat.search(doc)
+        segmap[d] = segm.group(0) if segm else ''
+    for d in DOMAIN:
         ids = [str(x) for x in data[d]['package']['module_id_range']]
         m99 = [i for i in ids if re.match(r'^M9[1-9]$', i)]
         if m99: errs.append('%s ⑤M91-M99 段被占用: %s（新包新增编号才落 M91-M99，既有包沿用原编号）' % (d, ','.join(m99)))
@@ -466,9 +477,26 @@ if not errs:
         if p['pipeline'] != pkg['pipeline']: errs.append('⑦%s pipeline 不一致' % pid)
         if sorted(p['categories']) != sorted(pkg['categories']): errs.append('⑦%s categories 不一致' % pid)
         if p['schema_version'] != data[d]['protocol']['schema_version']: errs.append('⑦%s schema_version 不一致' % pid)
-        if len(p['module_ids']) != len(pkg['module_id_range']): errs.append('⑦%s module_ids 条数(%d) != module_id_range(%d)' % (pid, len(p['module_ids']), len(pkg['module_id_range'])))
+        # ⑦ 升级（29 方案 B3-C）：module_ids / mount_layers 从长度比对 → 元素级全序
+        reg_ids = [str(x) for x in p.get('module_ids', [])]
+        proto_ids = [str(x) for x in pkg.get('module_id_range', [])]
+        if reg_ids != proto_ids:
+            errs.append('⑦%s module_ids 与 module_id_range 不一致（元素级）: reg=%s proto=%s' % (pid, reg_ids, proto_ids))
         if p['assets']['count'] != pkg['assets']['count']: errs.append('⑦%s assets.count 不一致' % pid)
-        if len(p['mount_layers']) != len(pkg['mount_layers']): errs.append('⑦%s mount_layers 层数(%d) != protocol(%d)' % (pid, len(p['mount_layers']), len(pkg['mount_layers'])))
+        # mount_layers 键归一：protocol 长键（P40 行为决策）→ Pxx 短键（registry 形态）
+        def _layer_key(k):
+            return str(k).split()[0] if str(k).split() else str(k)
+        reg_ml = {_layer_key(k): v for k, v in (p.get('mount_layers') or {}).items()}
+        proto_ml = {_layer_key(k): v for k, v in (pkg.get('mount_layers') or {}).items()}
+        if set(reg_ml) != set(proto_ml):
+            errs.append('⑦%s mount_layers 层集不一致: reg=%s proto=%s' % (pid, sorted(reg_ml), sorted(proto_ml)))
+        else:
+            for lid in sorted(reg_ml):
+                for field in ('default', 'available'):
+                    rv = reg_ml[lid].get(field) if isinstance(reg_ml[lid], dict) else []
+                    pv = proto_ml[lid].get(field) if isinstance(proto_ml[lid], dict) else []
+                    if (rv or []) != (pv or []):
+                        errs.append('⑦%s 层 %s %s 不一致: reg=%s proto=%s' % (pid, lid, field, rv, pv))
         if d in segmap:
             mm = re.search(r'模块（(\d+)）', segmap[d])
             regn = int(mm.group(1)) if mm else -1
@@ -484,7 +512,8 @@ PYEOF
   else
     # 降级：PyYAML 缺失 → 文本粗校验必填键在场（②），③-⑦ WARN 跳过不 FAIL（动作 3）
     local dd k miss2=0
-    for dd in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包 community/通用核心基础包; do
+    for dd in community/*/; do
+      dd=${dd%/}
       for k in 'schema_version' 'package:' 'id:' 'name:' 'pipeline:' 'module_id_range' 'categories:' 'core_only' 'core_modules' 'cross_package' 'modules:' 'assets:' 'mount_layers'; do
         grep -q "$k" "$dd/protocol.yaml" || { no "②(降级) $dd/protocol.yaml 缺键: $k"; miss2=1; }
       done
@@ -503,9 +532,12 @@ check15(){
   [ "$YAMLOK" -eq 1 ] || wn 'Python/PyYAML 不可用（check15 组合引用精确比对降级为 references 键文本粗校验；建议 pip install pyyaml 后重跑）'
   if [ "$YAMLOK" -eq 1 ]; then
     if "$PY3" - <<'PYEOF' >/tmp/nf_check15.log 2>&1
-import json, sys
+import glob, json, os, sys
 import yaml
-PKGS = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/校园西幻轻混组合包', 'community/通用核心基础包']
+# C2 包目录 glob 化（29 方案 B3-C）：check15 遍历层扫全部含 protocol.yaml 的 community 目录
+# （references 空包自动跳过，组合门禁语义不变）；新增包登记零改 verify.sh
+PKGS = sorted(d.replace('\\', '/') for d in glob.glob('community/*')
+              if os.path.isdir(d) and os.path.isfile(os.path.join(d, 'protocol.yaml')))
 OFFICIAL13 = ['M00', '通用:M10', 'M08', 'M23', 'M24', 'M50', 'M80',
               '事件:M22', 'M06', 'M12', 'M13', 'M20', 'M90']
 errs = []
@@ -629,7 +661,8 @@ PYEOF
   else
     # 降级：PyYAML 缺失 → references 键文本粗校验（①-⑤ 精确比对跳过不 FAIL）
     local d miss3=0
-    for d in community/校园情感领域包 community/西幻生存领域包 community/校园西幻轻混组合包 community/通用核心基础包; do
+    for d in community/*/; do
+      d=${d%/}
       grep -q 'references:' "$d/protocol.yaml" || { no "check15 降级 $d/protocol.yaml 缺 references: 键（v2 必含，可为 []）"; miss3=1; }
     done
     [ "$miss3" -eq 0 ] || err=1
