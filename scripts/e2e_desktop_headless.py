@@ -22,6 +22,10 @@ import os
 import shutil
 import sys
 
+# Windows GBK 控制台兼容：stdout 强制 UTF-8（print ✓ 在 cp936 下抛 UnicodeEncodeError）
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 仓库根
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 
