@@ -113,8 +113,11 @@ class ZoneDGenerate(QtWidgets.QWidget):
         asset_pack = self.app.store.get_asset_pack(ap_name) if ap_name else None
         title = self.title_edit.text().strip()
         try:
+            from ..core.composer import build_assembly
             from ..core.generator import render_ir
-            ir = render_ir(pipe, modules, asset_pack=asset_pack, title=title)
+            asm = build_assembly(self.app.store, pipe, modules,
+                                 include_references=True)
+            ir = render_ir(pipe, asm, asset_pack=asset_pack, title=title)
             md = ir_to_md(ir)
             gen_warns = ir.warnings
         except Exception as exc:      # noqa: BLE001

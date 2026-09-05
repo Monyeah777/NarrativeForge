@@ -183,10 +183,14 @@ print("[8] v2.0.0 导出战例（IR→quality_gate→export ccv3）")
 from core.generator import render_ir
 from core.quality_gate import run_gate
 from core.exporter import export
+from core.composer import build_assembly
 from pathlib import Path
 OUT_DIR = HOME  # 与 MD 同目录（NF_TEST_HOME 临时目录）
-ir = render_ir(p04, selected, asset_pack=None, title=title)
+assemble_combo = build_assembly(store, p04, selected, include_references=True)
+ir = render_ir(p04, assemble_combo, asset_pack=None, title=title)
 gate = run_gate(ir)
+check("质量门 ok（导出可放行）", gate.ok(),
+      f"PASS {gate.n_pass}/WARN {gate.n_warn}/FAIL {gate.n_fail}")
 check("质量门 ok（导出可放行）", gate.ok(),
       f"PASS {gate.n_pass}/WARN {gate.n_warn}/FAIL {gate.n_fail}")
 eres = export(ir, "ccv3", dest_dir=OUT_DIR)
@@ -202,6 +206,8 @@ world = _json.loads(Path(OUT_DIR, "world.json").read_text(encoding="utf-8"))
 world_keys = "".join("".join(e.get("keys") or []) for e in world["entries"])
 check("world 覆盖叙事模块 M91/M92",
       "M91" in world_keys and "M92" in world_keys, "")
+check("world 含跨包引用 M55(校园)/M17(西幻)（E3 运行时生效）",
+      "M55" in world_keys and "M17" in world_keys, "")
 check("导出无未映射警告（不静默丢弃）", not eres.warnings,
       f"warnings={eres.warnings}")
 check("world 条目已落盘", len(world["entries"]) > 0,
