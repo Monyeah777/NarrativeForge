@@ -526,6 +526,40 @@
       "pipeline": "P05",
       "references": [],
       "schema_version": "2"
+    },
+    {
+      "id": "技术文档域包",
+      "name": "技术文档域包",
+      "pipeline": "P06",
+      "categories": [
+        "技术文档"
+      ],
+      "module_ids": [
+        "M97",
+        "M98"
+      ],
+      "assets": {
+        "count": 0,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "M97"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "M98"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2"
     }
   ]
 }
