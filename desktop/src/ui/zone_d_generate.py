@@ -5,7 +5,9 @@ from pathlib import Path
 
 from PySide6 import QtCore, QtWidgets
 
-from ..core.generator import generate_document, default_filename
+from ..core.generator import default_filename
+from ..core.ir import ir_to_md
+from ..core.quality_gate import run_gate
 from ..core.models import AssetPack
 from ..core.validator import check_assembly
 from . import common
@@ -106,19 +108,32 @@ class ZoneDGenerate(QtWidgets.QWidget):
         asset_pack = self.app.store.get_asset_pack(ap_name) if ap_name else None
         title = self.title_edit.text().strip()
         try:
-            md, gen_warns = generate_document(
-                pipe, modules, asset_pack=asset_pack, title=title)
+            from ..core.generator import render_ir
+            ir = render_ir(pipe, modules, asset_pack=asset_pack, title=title)
+            md = ir_to_md(ir)
+            gen_warns = ir.warnings
         except Exception as exc:      # noqa: BLE001
             common.error(self, f"生成失败：{exc}")
             return
         self.last_md = md
         self.preview.setPlainText(md)
+        # 质量治理门（v1.4.0）：IR 层三态质检，装配/导出前可见
+        gate = run_gate(ir)
+        gate_lines = (["", "—— 质量门 ——",
+                       f"PASS {gate.n_pass} · WARN {gate.n_warn}"
+                       f" · FAIL {gate.n_fail}"
+                       + ("（可产出）" if gate.ok()
+                          else "（存在 FAIL——建议修复后重生成）")]
+                      + [f"  [{i.level.upper()}] {i.message}"
+                         for i in gate.issues])
         warns = (["—— 装配检查 ——"] + issues +
-                 ["", "—— 生成器提示 ——"] + (gen_warns or ["（无）"]))
+                 ["", "—— 生成器提示 ——"] + (gen_warns or ["（无）"]) +
+                 gate_lines)
         self.warn_view.setPlainText("\n".join(warns))
         self.hint.setText(
             f"✓ 生成完成：{len(modules)} 个模块 → {len(md)} 字符"
             + (f"，资产附录来自「{asset_pack.name}」" if asset_pack else "")
+            + f"；质量门 {'通过' if gate.ok() else 'FAIL ' + str(gate.n_fail)}"
             + "。可点击「保存为文件…」。")
 
     def do_save(self):
