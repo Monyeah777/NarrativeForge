@@ -10,6 +10,7 @@
 - verify.sh v2.9→v2.10（check19/20/21 入段 C，头部/统计配套说明同步；单测 199 OK、PASS=29 全绿）。
 - README 协议链追加 33 + v2.2.0 版本块（治理指针 2）；ROADMAP §7.6 条件池（C/D 族，af3d191）+ 执行状态更新；CONTRIBUTING §4.5（B1/B2）；方案真相源 33_v2.2.0_外部吸收首波方案.md 落盘。
 - **v2.2.0 发布收口**：CHANGELOG [Unreleased] → [2.2.0] 归档 + README v2.2.0 块切「✅ 已发布」+ ROADMAP §1 v2.2.0 行 + tag v2.2.0（治理指针 3）。
+- **v2.2.0 补遗（registry 变更前置机读化闭环，7f73da8）**：`nf impact <target>` CLI——拟删除 module/protocol 前置影响面预检（`removal_impact_protocol` 整包删除 + `impact_of_change` 自动判别 + `--check` 门禁退出码）；check22 不新增（与 check21 重复，前置检查 = 操作时 CLI 消费方而非静态门禁）。33 方案遗留第 1 条闭环。单测 199→222。
 
 ## [2.0.x] - 2026-09-05（2.0 E2-E5 收口：协议向导 + 组合运行时 + 模块市场雏形 + 仓库盘点）
 ### Added
