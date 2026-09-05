@@ -50,6 +50,17 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="不并入 E3 references 跨包模块（默认并入）")
     run.add_argument("--force-export", action="store_true",
                      help="质量门 FAIL 也导出（诊断用；ok 仍 False）")
+
+    reg = sub.add_parser("register",
+                         help="协议登记本地助手（B3-B：protocol.yaml → registry protocols[]）")
+    reg.add_argument("pkg_dir", help="包目录（如 community/校园西幻轻混组合包）")
+    reg.add_argument("--check", dest="mode", action="store_const", const="check",
+                     help="只校验三要件 + 打印投影 diff（缺省，不写盘）")
+    reg.add_argument("--apply", dest="mode", action="store_const", const="apply",
+                     help="校验全过后合并写 registry.json protocols[]（只增不删）")
+    reg.add_argument("--registry", default=None,
+                     help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+    reg.set_defaults(mode="check")
     return p
 
 
@@ -75,8 +86,68 @@ def _seed_store(store):
     return stats
 
 
+def _cmd_register(args) -> int:
+    """nf register：本地登记助手（B3-B）。--check 只读 / --apply 合并写。"""
+    from core.protocol_projection import project_entry
+    from core.registry_sync import check_registerable, merge_protocols
+
+    reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    doc_path = os.path.join(ROOT, "02_联动注册表.md")
+
+    # 三要件校验（② 02 在册；① protocol.yaml 由 check_registerable 内置）
+    with open(doc_path, encoding="utf-8") as f:
+        doc = f.read()
+    issues = check_registerable(args.pkg_dir, doc)
+    if issues:
+        for msg in issues:
+            print(f"  [拒绝] {msg}", file=sys.stderr)
+        print("✗ 校验未通过——须先满足登记三要件（02 §8.3）；详见 02 §9.2 同步纪律", file=sys.stderr)
+        return 2
+
+    entry = project_entry(args.pkg_dir)
+
+    import json
+    with open(reg_path, encoding="utf-8") as f:
+        reg = json.load(f)
+    cur = reg.get("protocols")
+    if not isinstance(cur, list):
+        print("✗ registry protocols[] 缺失或非列表", file=sys.stderr)
+        return 2
+
+    # 键序无关比较：merge 结果与现状在规范化（sorted keys）意义上相等 → 无实质变化
+    def _canon(prots):
+        return sorted(json.dumps(p, sort_keys=True, ensure_ascii=False) for p in prots)
+
+    existing = next((p for p in cur if p["id"] == entry["id"]), None)
+    merged = merge_protocols(cur, [entry])
+    changed = _canon(merged) != _canon(cur)
+    print(f"== nf register {entry['id']} [{args.mode}] ==")
+    if not changed:
+        print("  投影与 registry 现状一致，无更新（幂等，不写盘）")
+        if args.mode == "apply":
+            return 0
+        return 0
+    print("  将更新 protocols[]：%s" % ("新增" if existing is None else "覆盖"))
+    diff_keys = sorted(k for k in entry if not existing or existing.get(k) != entry.get(k))
+    if diff_keys:
+        print("  差异字段：%s" % ", ".join(diff_keys))
+
+    if args.mode != "apply":
+        print("  [--check] 未写盘（--apply 才合并写入）")
+        return 0
+
+    reg["protocols"] = merged
+    with open(reg_path, "w", encoding="utf-8") as f:
+        json.dump(reg, f, ensure_ascii=False, indent=2)
+    print(f"  ✓ 已写入 {reg_path}（protocols[] {len(cur)} → {len(merged)} 条，只增不删）")
+    print("  下一步：跑 `bash verify.sh` 由 check14 ⑦ 元素级断言自证")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
+    if args.cmd == "register":
+        return _cmd_register(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2
