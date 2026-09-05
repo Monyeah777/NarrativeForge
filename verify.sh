@@ -422,13 +422,16 @@ for d in ALL_PKGS:
     if isinstance(mr, list) and isinstance(ms, list) and len(mr) != len(ms):
         errs.append('%s module_id_range(%d) != modules(%d)' % (d, len(mr), len(ms)))
 if not errs:
-    # ③ R2 类别包间不冲突（领域包独占类别两两互斥；DOMAIN 显式登记，见 C2 注释）
-    cats = {d: set(data[d]['package']['categories']) for d in DOMAIN}
-    for i in range(len(DOMAIN)):
-        for j in range(i + 1, len(DOMAIN)):
-            inter = cats[DOMAIN[i]] & cats[DOMAIN[j]]
+    # ③ R2 类别包间不冲突（全部登记包独占类别两两互斥——32 方案 C-b 扩域：
+    #    从 DOMAIN 两领域包扩为 ALL_PKGS 全两两；新题材域包（techdoc 技术文档）
+    #    自带模块落 M91-99 社区段不进 DOMAIN，类别仍须与其他社区包无交集）
+    cats = {d: set(data[d]['package'].get('categories') or []) for d in ALL_PKGS}
+    pkgs = list(ALL_PKGS)
+    for i in range(len(pkgs)):
+        for j in range(i + 1, len(pkgs)):
+            inter = cats[pkgs[i]] & cats[pkgs[j]]
             if inter:
-                errs.append('③R2 类别冲突（领域包不得共占独占类别）: %s∩%s=%s' % (DOMAIN[i], DOMAIN[j], ','.join(sorted(inter))))
+                errs.append('③R2 类别冲突（登记包不得共占独占类别）: %s∩%s=%s' % (pkgs[i], pkgs[j], ','.join(sorted(inter))))
     # ④ R1 core_modules ⊆ 官方核心 13 件 + cross_package 空（含组合包）
     for d in ALL_PKGS:
         dep = data[d]['package']['dependencies']
