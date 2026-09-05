@@ -216,7 +216,7 @@ class Registry:
             return None
         root_r = root.resolve()
         assets_dir = (root_r / source_package / "assets").resolve()
-        if not assets_dir.is_dir() or not str(assets_dir).startswith(str(root_r) + "/"):
+        if not assets_dir.is_dir() or not assets_dir.is_relative_to(root_r):
             return None
         k = key.strip()
         if k.endswith(".md"):
@@ -224,7 +224,7 @@ class Registry:
         if not k or "/" in k or ".." in k or k != Path(k).name:
             return None
         target = (assets_dir / (k + ".md")).resolve()
-        if not str(target).startswith(str(assets_dir) + "/"):
+        if not target.is_relative_to(assets_dir):
             return None
         if not target.is_file():
             return None

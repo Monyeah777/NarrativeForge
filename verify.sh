@@ -637,12 +637,12 @@ PYEOF
 check16(){
   echo '== [16/段C] 契约仲裁门禁（v1.0.0 check16：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配自动仲裁 + 运行时寻址授权一致）=='
   local errA=0 errB=0 PYOK=0 YAMLOK=0
-  command -v python3 >/dev/null 2>&1 && PYOK=1
-  { [ "$PYOK" -eq 1 ] && python3 -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
+  [ -n "$PY3" ] && PYOK=1
+  { [ "$PYOK" -eq 1 ] && "$PY3" -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
   [ "$YAMLOK" -eq 1 ] || wn 'python3/PyYAML 不在（check16-A 契约仲裁降级 machine_contract 键文本粗校验；建议 pip install pyyaml 后重跑）'
   # ---- 子断言 A：契约仲裁（官方核心 13 件机读结构 + references 装配 publish⊆subscribe）----
   if [ "$YAMLOK" -eq 1 ]; then
-    if python3 - <<'PYEOF' >/tmp/nf_check16a.log 2>&1
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check16a.log 2>&1
 import json, sys, os, glob
 import yaml
 CORE13 = [
@@ -787,7 +787,7 @@ PYEOF
   fi
   # ---- 子断言 B：运行时寻址授权一致（registry references.asset_readonly ↔ _readonly_sources ↔ asset_get；loader 纯 json 消费，无 PyYAML 依赖）----
   if [ "$PYOK" -eq 1 ]; then
-    if python3 - <<'PYEOF' >/tmp/nf_check16b.log 2>&1
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check16b.log 2>&1
 import json, sys, os, glob
 sys.path.insert(0, 'desktop/src')
 from core.registry_loader import load_registry
@@ -831,7 +831,7 @@ PYEOF
       no "check16-B 运行时寻址授权断言失败——$(head -5 /tmp/nf_check16b.log | tr '\n' ' ')"; errB=1
     fi
   else
-    no 'check16-B 运行时寻址授权断言无法执行（python3 不在）'; errB=1
+    no 'check16-B 运行时寻址授权断言无法执行（Python 解释器不可用）'; errB=1
   fi
   if [ "$errB" -eq 0 ]; then ok '运行时寻址授权一致（check16-B：registry references.asset_readonly ↔ _readonly_sources ↔ asset_get 三方一致，空白名单全拒）'
   fi
