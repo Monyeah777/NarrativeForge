@@ -43,8 +43,8 @@ def _build_parser() -> argparse.ArgumentParser:
     run.add_argument("--seed", action="store_true",
                      help="把 04_模块库官方核心 + community 组合包装载进 store（演示/自测）")
     run.add_argument("--fmt", default="ccv3",
-                     choices=["ccv3", "skill", "agents", "claude"],
-                     help="导出格式（exporter 注册表：ccv3/skill/agents/claude）")
+                     choices=["ccv3", "skill", "agents", "claude", "mcp"],
+                     help="导出格式（exporter 注册表：ccv3/skill/agents/claude/mcp）")
     run.add_argument("--dest", default=None, help="导出目录（缺省=store 根）")
     run.add_argument("--no-include-refs", action="store_true",
                      help="不并入 E3 references 跨包模块（默认并入）")

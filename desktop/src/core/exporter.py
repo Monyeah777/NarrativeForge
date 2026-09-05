@@ -24,6 +24,7 @@ from .ir import IRDocument
 from .ccv3_adapter import map_ir_to_ccv3, world_entries
 from .skill_adapter import export_skill
 from .agent_rules_adapter import export_agents, export_claude
+from .mcp_adapter import export_mcp
 
 
 @dataclass
@@ -64,6 +65,7 @@ _REGISTRY = {
     "skill": export_skill,
     "agents": export_agents,
     "claude": export_claude,
+    "mcp": export_mcp,
 }
 
 
