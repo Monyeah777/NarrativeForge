@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.7  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）
+# 版本 : v2.9  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
-#        [段 C] 代码层门禁（check12/check13/check14/check15/check16，无条件执行：check12 = desktop unittest 40 用例 + 全量 py_compile；check13 = 协议版本一致性 + 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致）
+#        [段 C] 代码层门禁（check12-check18，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
+#        段 A/B = L0/L1（协议一致性 + 内容对账），check12-18 = L2 core（unittest/py_compile/协议投影/
+#        组合/契约/质量/导出门）；android 相关 check 已随 L3 端壳冻结移出（见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门）
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
@@ -269,45 +271,47 @@ check11(){
 check12(){
   echo '== [12/代码层] 桌面核心单元测试 + 全量 py_compile 语法抽查（v0.6.0 治理补漏）=='
   local err=0
-  # ① desktop core 单元测试（test_core.py 7 类 40 用例，纯 unittest 无 pytest 依赖）
+  # ① desktop core 单元测试（desktop/tests 全量 discover，纯 unittest 无 pytest 依赖；L2 核心层）
   if [ -d desktop/tests ]; then
     if ( cd desktop && "$PY3" -m unittest discover -s tests -q >/tmp/nf_check12_unittest.log 2>&1 ); then
-      ok 'desktop core 单元测试全绿（test_core.py 40 用例，纯 unittest 内置）'
+      ok 'desktop core 单元测试全绿（desktop/tests 全量 discover，纯 unittest 内置）'
     else
-      no 'desktop core 单元测试失败——见 /tmp/nf_check12_unittest.log（预期 Ran 40 tests OK）'; err=1
+      no 'desktop core 单元测试失败——见 /tmp/nf_check12_unittest.log'; err=1
     fi
   else
     wn 'desktop/tests 不在场（跳过代码层 unittest）'
   fi
-  # ② 全量 py_compile 语法抽查（desktop/src android/app scripts 三处 py）
+  # ② 全量 py_compile 语法抽查（desktop/src scripts——L2 core 域；android/app
+  #    已随 L3 端壳冻结移出，不再编译，见 23 方案 / L3_FROZEN.md）
   if [ -n "$PY3" ]; then
-    if "$PY3" -m compileall -q desktop/src android/app scripts >/tmp/nf_check12_pyc.log 2>&1; then
-      ok '全量 py_compile 语法抽查通过（desktop/src android/app scripts）'
+    if "$PY3" -m compileall -q desktop/src scripts >/tmp/nf_check12_pyc.log 2>&1; then
+      ok '全量 py_compile 语法抽查通过（desktop/src scripts）'
     else
       no 'py_compile 语法抽查失败——见 /tmp/nf_check12_pyc.log'; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 py_compile）'
   fi
-  if [ "$err" -eq 0 ]; then ok '代码层门禁全绿：unittest 40 用例 + py_compile'
+  if [ "$err" -eq 0 ]; then ok '代码层门禁全绿：unittest 全量 + py_compile（L2 核心层）'
   fi
 }
 check13(){
   echo '== [13/段C] 协议版本一致性 + 迁移完整性（09 方案 T2.3）=='
   local err=0
-  # ① 版本一致性：02 头部 registry_schema_version == desktop/android registry.json 版本（三处同源）
-  local v02 vdesk vandr
+  # ① 版本一致性：02 头部 registry_schema_version == desktop registry.json 版本
+  #    （两处同源。android/app/core 为 L3 端壳 sync 生成物，已随分层治理冻结
+  #    移出主仓库演进主线——不再参与比对，见 23 方案 / L3_FROZEN.md）
+  local v02 vdesk
   v02=$(grep -o 'registry_schema_version: *"[^"]*"' 02_联动注册表.md | head -1 | sed 's/.*"\([^"]*\)"/\1/')
   vdesk=$("$PY3" -c "import json;print(json.load(open('desktop/src/core/registry.json', encoding='utf-8'))['registry_schema_version'])" 2>/dev/null)
-  vandr=$("$PY3" -c "import json;print(json.load(open('android/app/core/registry.json', encoding='utf-8'))['registry_schema_version'])" 2>/dev/null)
-  if [ -n "$v02" ] && [ -n "$vdesk" ] && [ -n "$vandr" ]; then
-    if [ "$v02" = "$vdesk" ] && [ "$vdesk" = "$vandr" ]; then
-      ok "协议版本三处一致：02 头部 = desktop registry.json = android registry.json = \"$v02\""
+  if [ -n "$v02" ] && [ -n "$vdesk" ]; then
+    if [ "$v02" = "$vdesk" ]; then
+      ok "协议版本两处一致：02 头部 = desktop registry.json = \"$v02\""
     else
-      no "协议版本不一致：02=\"$v02\" desktop=\"$vdesk\" android=\"$vandr\"（须三处同步 bump）"; err=1
+      no "协议版本不一致：02=\"$v02\" desktop=\"$vdesk\"（须两处同步 bump）"; err=1
     fi
   else
-    no "版本字段缺失：02=\"${v02:-空}\" desktop=\"${vdesk:-空}\" android=\"${vandr:-空}\""; err=1
+    no "版本字段缺失：02=\"${v02:-空}\" desktop=\"${vdesk:-空}\""; err=1
   fi
   # ② 迁移完整性：bump 实体必有迁移记录（02 §9.3 四步在场）
   local seg miss='' k
@@ -864,7 +868,7 @@ check18(){
 }
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.8（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门）'
+echo ' NarrativeForge 三段式验收门禁  v2.9（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -876,7 +880,7 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁 + 协议一致性门禁（check12/check13/check14/check15/check16，无条件执行）——'
+echo '—— 段 C：代码层门禁（L2 core：check12-check18 无条件执行；android 相关已随 L3 冻结移出）——'
 check12
 check13
 check14
