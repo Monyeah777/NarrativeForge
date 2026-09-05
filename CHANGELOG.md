@@ -1,4 +1,4 @@
-## [Unreleased]（v2.2.0 外部吸收首波，方案 33 执行中）
+## [2.2.0] - 2026-09-05（v2.2.0 外部吸收首波：verify 验证纵深 A1-A5 + 方案模板纪律 B1-B2）
 ### Added
 - **v2.2.0-A1 导出产物 schema 合规（方案 33 Wave1，cc3106e）**：verify 新 check19——新增 `desktop/src/core/export_schema.py`（5 导出格式 ccv3/skill/agents/claude/mcp 各建逐键 shape 自检）+ `desktop/tests/test_export_schema.py`（合法产物 PASS、篡改 FAIL）。verify PASS 24→26。
 - **v2.2.0-A2 引用反查（方案 33 Wave2，c13fb95）**：`retriever.referenced_by(module_id, path)` 反向引用查询（遍历 registry protocols[].references，裸号 M55 ↔ 限定 id 情感:M55 双向命中）+ `nf who-refers <module_id>` CLI（--registry 可指路径；单测 +6）。
@@ -8,7 +8,8 @@
 - **v2.2.0-B1/B2 方案模板纪律（方案 33 Wave4，e68718b）**：CONTRIBUTING 新增 §4.5——NN_ 方案模板必填两段：B1 五问自检（谁消费/何时验证被消费/与非目标边界/与现存协议关系/失败定义）+ B2 消费方声明（功能→谁消费→怎么验证被消费，空消费方不得入方案），防 C-a 无消费方能力重演。
 ### Changed
 - verify.sh v2.9→v2.10（check19/20/21 入段 C，头部/统计配套说明同步；单测 199 OK、PASS=29 全绿）。
-- README 协议链追加 33 + v2.2.0 主线块（治理指针 2）；ROADMAP §7.6 条件池（C/D 族，af3d191）+ 执行状态更新；CONTRIBUTING §4.5（B1/B2）；方案真相源 33_v2.2.0_外部吸收首波方案.md 落盘。
+- README 协议链追加 33 + v2.2.0 版本块（治理指针 2）；ROADMAP §7.6 条件池（C/D 族，af3d191）+ 执行状态更新；CONTRIBUTING §4.5（B1/B2）；方案真相源 33_v2.2.0_外部吸收首波方案.md 落盘。
+- **v2.2.0 发布收口**：CHANGELOG [Unreleased] → [2.2.0] 归档 + README v2.2.0 块切「✅ 已发布」+ ROADMAP §1 v2.2.0 行 + tag v2.2.0（治理指针 3）。
 
 ## [2.0.x] - 2026-09-05（2.0 E2-E5 收口：协议向导 + 组合运行时 + 模块市场雏形 + 仓库盘点）
 ### Added
