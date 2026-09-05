@@ -1,4 +1,4 @@
-## [Unreleased] - 2.0 导出层序列（v1.2.0–v2.0.x，feat/v1.1-fix 分支开发中）
+## [2.0.0] - 2026-09-05（v2.0.0 导出层：上游生成器——E0 三件套 + CCV3/SKILL 出口）
 ### Added
 - **v1.2.0 协议中转站 v2（IR 内容归一化，2.0 E0-①）**：ir.py IRDocument/IRLayer/IRModule + normalize_module_body + ir_to_md（IR 默认 MD 适配器）；generator.render_ir 装配→IR（层序/层外/资产 refs+missing 归一），generate_document 改两段（render_ir+ir_to_md），对外 MD 输出零回归（一致性 diff 逐字节）。方案 14。
 - **v1.3.0 Agentic 检索（2.0 E0-②）**：retriever.search() 四类统一入口（module/asset_pack/pipeline/protocol），结构化 grep 不上向量 + Hit 元数据卡片（对齐 Agent Skills Discovery）。方案 15。
