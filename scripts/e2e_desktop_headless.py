@@ -178,6 +178,35 @@ i80 = md.index("## 层 P80 · 输出呈现")
 check("层序 P00 < P40 < P50 < P80", i00 < i40 < i50 < i80,
       f"实际 {i00}/{i40}/{i50}/{i80}")
 
+# ---- [8] v2.0.0 导出战例：IR → 质检门 → CCV3 导出（战略验收自动化段）----
+print("[8] v2.0.0 导出战例（IR→quality_gate→export ccv3）")
+from core.generator import render_ir
+from core.quality_gate import run_gate
+from core.exporter import export
+from pathlib import Path
+OUT_DIR = HOME  # 与 MD 同目录（NF_TEST_HOME 临时目录）
+ir = render_ir(p04, selected, asset_pack=None, title=title)
+gate = run_gate(ir)
+check("质量门 ok（导出可放行）", gate.ok(),
+      f"PASS {gate.n_pass}/WARN {gate.n_warn}/FAIL {gate.n_fail}")
+eres = export(ir, "ccv3", dest_dir=OUT_DIR)
+exported = {os.path.basename(f) for f in eres.files}
+check("chara.json 已导出", "chara.json" in exported,
+      f"files={sorted(exported)}")
+import json as _json
+chara = _json.loads(
+    Path(OUT_DIR, "chara.json").read_text(encoding="utf-8"))
+check("chara spec = chara_card_v3", chara.get("spec") == "chara_card_v3",
+      f"spec={chara.get('spec')}")
+world = _json.loads(Path(OUT_DIR, "world.json").read_text(encoding="utf-8"))
+world_keys = "".join("".join(e.get("keys") or []) for e in world["entries"])
+check("world 覆盖叙事模块 M91/M92",
+      "M91" in world_keys and "M92" in world_keys, "")
+check("导出无未映射警告（不静默丢弃）", not eres.warnings,
+      f"warnings={eres.warnings}")
+check("world 条目已落盘", len(world["entries"]) > 0,
+      f"{len(world['entries'])} 条")
+
 # ---- 汇总 ----
 stats = store.stats()
 check("Store 模块总数 = 15（官方13 + 组合包2）",
