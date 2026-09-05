@@ -101,13 +101,14 @@ class MergeProtocolsTest(unittest.TestCase):
         out = registry_sync.merge_protocols(reg, [entry])
         ids = [p["id"] for p in out]
         self.assertIn("测试新包X", ids)
-        # 既有 4 条保序在前（只增）
+        # 既有条目保序在前（只增不删），新 id 追加末尾——条数动态（现 5 包，勿硬编码）
         orig = [p["id"] for p in _reg_protocols()]
-        self.assertEqual(ids[:4], orig)
+        self.assertEqual(ids[: len(orig)], orig)
+        self.assertEqual(ids[-1], "测试新包X")
 
     def test_merge_never_removes(self):
         reg = list(_reg_protocols())
-        # 传入的 entries 只含 1 个 → 其余 3 条必须保留（只增不删）
+        # 传入的 entries 只含 1 个 → 其余条必须保留（只增不删）
         entry = self._sample(pid="校园情感领域包")
         out = registry_sync.merge_protocols(reg, [entry])
         self.assertEqual(len(out), len(reg))

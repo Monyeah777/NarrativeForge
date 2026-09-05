@@ -123,7 +123,8 @@ class GateIsomorphismTest(unittest.TestCase):
 
     def test_expected_projection_error_message(self):
         """⑦ 断言错误消息文本（生成物与门禁共享语义的回归锚）。"""
-        verify_src = open(VERIFY, encoding="utf-8").read()
+        with open(VERIFY, encoding="utf-8") as f:
+            verify_src = f.read()
         self.assertIn("module_ids 与 module_id_range 不一致（元素级）", verify_src)
         self.assertIn("mount_layers 层集不一致", verify_src)
 

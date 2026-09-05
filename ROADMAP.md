@@ -160,7 +160,7 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 3. **协议向导自举闭环**（B3）：向导生成 → check14 门禁 → 注册一站式（生成物直接可登记）。✅ **C+A 已落地（方案 29）**：C=check14 ⑦ 元素级全序（module_ids/mount_layers 逐条比对，同长度漂移可抓）+ 包目录 glob 化（新增组合/通用包零改 verify.sh）+ Windows 分隔符兼容；A=`desktop/src/core/protocol_projection.py`（protocol.yaml → registry protocols[] 条目，字段与 ⑦ 断言同构）。✅ **B 已落地（方案 30）**：`nf register` 本地登记助手（registry_sync 校验三要件 + merge 只增不删幂等 → nf.py register --check/--apply；02 §9.2 豁免子句划界——受控路径非 PR 机器人/自动流水线）。B3 三段闭环全通：向导生成 → check14 门禁 → 登记机读落地。
 4. **市场协议本体化**（B4）：E5 社区盘点之上补版本 / 依赖解析 / 冲突仲裁 / 上架规则——目录视图 → 真协议。✅ **CLI/库先行已落地（方案 31）**：`desktop/src/core/market_analyzer.py`（check15 ②③ 判据提为可 import 库——`dependencies` 依赖闭包 + `conflicts` 挂载冲突）+ nf.py `market <包目录>` 查询（登记状态/依赖/冲突，门禁前移）。✅ **瑶光发现已修（31 补遗）**：verify.sh check15 ② 源包嵌套 references 死检查（原误取 dependencies 层恒空，references 实居 package 层）——verify.sh 判据已改 `pkg2.get('references')`（package 层），RED 反证：注入嵌套后检出「嵌套 references」；真 4 包 PASS=24 保持。遗留：包版本槽位（协议层 V2）+ 上架规则/市场目录视图——GUI（zone_g）解冻后以 market_analyzer 为库层接壳立项。
 
-✅ **C 内容库资产化**：题材/行业域包广度扩展（techdoc 域 = 新领域三步自然延伸）+ 模块质量分级（官方核心/社区/实验）+ 版本化；**内容由 A/B 工具链自动生成/校验**（内容=产物，非手工艺品），不逐包手写。
+✅ **C 内容库资产化**：题材/行业域包广度扩展（techdoc 域 = 新领域三步自然延伸）+ 模块质量分级（官方核心/社区/实验）+ 版本化；**内容由 A/B 工具链自动生成/校验**（内容=产物，非手工艺品），不逐包手写。🔵 **techdoc 域包战例已落地（方案 32）**：community 第 5 包「技术文档域包」——第一个非叙事题材域包（自带 M97 术语管理/M98 修订记录落 M91-99 社区段 + core_modules 引官方含 M90 + P06 派生管线），02 §8 登记 + registry protocols[] 第 5 条（nf register 工具链实战走通），verify ③ R2 扩域 ALL_PKGS 全两两。遗留：模块质量分级（C-a 无消费方待用途）+ 版本化（B4 协议层 V2 遗留）。
 
 ✅ **D 验证/治理基础设施**：verify 分层门禁（L0-L2 默认全绿，**已完成 23 方案 v2.9**）+ CI 收敛基础层闸门（ci-verify + e2e-desktop，**已完成 23 方案**）；本段即 ROADMAP 空位补正文。
 
