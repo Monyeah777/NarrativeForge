@@ -39,6 +39,11 @@ class ZoneDGenerate(QtWidgets.QWidget):
         b_save = QtWidgets.QPushButton("保存为文件…")
         b_save.clicked.connect(self.do_save)
         bar.addWidget(b_save)
+        b_ccv3 = QtWidgets.QPushButton("导出 CCV3…")
+        b_ccv3.setToolTip("v2.0.0：装配产物经质量门后导出为 chara_card_v3 "
+                          "（.json/.world，可导入 SillyTavern）")
+        b_ccv3.clicked.connect(self.do_export_ccv3)
+        bar.addWidget(b_ccv3)
         root.addLayout(bar)
 
         split = QtWidgets.QSplitter(QtCore.Qt.Vertical)
@@ -135,6 +140,44 @@ class ZoneDGenerate(QtWidgets.QWidget):
             + (f"，资产附录来自「{asset_pack.name}」" if asset_pack else "")
             + f"；质量门 {'通过' if gate.ok() else 'FAIL ' + str(gate.n_fail)}"
             + "。可点击「保存为文件…」。")
+
+    def do_export_ccv3(self):
+        """v2.0.0：当前装配 → render_ir → 质量门 → export ccv3（.json/.world）。"""
+        pipe = self.app.current_pipeline
+        if pipe is None:
+            common.warn(self, "暂无管线。")
+            return
+        mods = []
+        for fid in sorted(self.app.selected):
+            m = self.app.store.get_module(fid)
+            if m is not None:
+                mods.append(m)
+        if not mods:
+            common.warn(self, "未选择任何模块——先装配再导出。")
+            return
+        try:
+            from ..core.generator import render_ir
+            from ..core.quality_gate import run_gate
+            from ..core.exporter import export
+            ir = render_ir(pipe, mods, asset_pack=None,
+                           title=self.title_edit.text().strip())
+            gate = run_gate(ir)
+            if not gate.ok():
+                common.error(self, f"质量门 FAIL（{gate.n_fail}）——先修复装配再导出。")
+                return
+            dest = QtWidgets.QFileDialog.getExistingDirectory(
+                self, "选择导出目录", str(Path.home() / "Documents"))
+            if not dest:
+                return
+            res = export(ir, "ccv3", dest_dir=dest)
+            names = "、".join(Path(f).name for f in res.files)
+            tail = ""
+            if res.warnings:
+                tail = "\n警告：" + "；".join(res.warnings[:3])
+            common.info(self, f"✓ 已导出 CCV3：{names}\n"
+                              f"（可导入 SillyTavern 的角色卡/世界书）{tail}")
+        except Exception as exc:  # noqa: BLE001
+            common.error(self, f"导出失败：{exc}")
 
     def do_save(self):
         if not self.last_md:
