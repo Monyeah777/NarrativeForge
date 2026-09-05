@@ -152,7 +152,7 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 1. **techdoc → AGENTS.md / CLAUDE.md**（A1，既定下一步——ROADMAP v2.0.x 行旧文已预告）。
 2. **techdoc/协议定义 → MCP server 定义**（A2，JSON 协议导出）。
 3. **协议向导产物 → 各 agent 框架 rules 多目标渲染**（A3——E2 产物本应多出口，现单出口）。
-4. **双向适配补全**（A4：「外部→NF」读入 SKILL/CCV3 反哺内部表示——「上游生成器」完整语义的另一半）。
+4. **双向适配补全**（A4：「外部→NF」读入 SKILL/CCV3 反哺内部表示——「上游生成器」完整语义的另一半）。🔒 **待外部样例/战例，暂缓**（方案 31 后核验，启明视角三重阻碍属实）：① 读入能力零基础（desktop/src 无 parse_ccv3/parse_skill/adapter_in 反向符号，五 adapter 全 export-only）；② 无外部产物样本（全仓库无 SKILL.md/chara_card_v3 样例，唯一 JSON 为自身 registry.json——解析方向无样例输入则连 RED 测试都写不出，**不可测试性**比 A3 的「格式可能不准」更堵）；③ 外部 spec 真实性未验证（agentskills.io/SillyTavern 锚点仅 docstring 声称）+ 读入后无消费方（反哺 IR 之后无导入动作消费）。**前置 = 一份真实外部产物样例**（下游实跑产出的 .card/world.json/SKILL.md 或手供样例目录）——样例到手前 A4 评估无意义，勿重复侦察。
 
 ✅ **B 生成器能力纵向深化**：
 1. **质检可解释化**（B1）：quality_gate 三态门 → 可解释报告 + 自动修复建议（warn 现无 actionable 输出）。
