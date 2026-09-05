@@ -21,6 +21,7 @@
 | v2.0.x | 2.0 E1-E5 收口 | ✅ 已实现（2026-09-05） | CCV3/SKILL 出口 + 协议向导 + 组合运行时 + 模块市场雏形 + 仓库盘点 | 17-22 方案文档 |
 | v2.1.0 | 基础层深化 A/B/C 首波 | ✅ 已发布（2026-09-05，tag v2.1.0） | A1/A2 适配器 + B1-B4（管道化/质量门/协议自举/登记助手/market）+ C-b techdoc 域包战例 + 23 分层治理 | 23-32 方案文档 |
 | v2.2.0 | 外部吸收首波 | ✅ 已发布（2026-09-05，tag v2.2.0） | verify 验证纵深 A1-A5（export_schema/引用反查/文档完整性/registry 闭合/MCP 规范核查）+ B1/B2 方案模板纪律 | 33 方案文档 + 33_v2.2.0_A5-MCP规范差距核查报告.md |
+| v2.3.0 | 基础层深化首波 | 🔵 主线执行中（方案 34） | A3 规则出口打通（doc_semantics 透传）+ B2 变体装配（variants）+ B3 文档 retro-fit（M93/M96） | 34 方案文档（§7.5 展开） |
 | v2.3+ | 基础层深化续 | 🔮 规划（方向见 §7.5，条件池 §7.6） | C/D 条件池（端壳生态 / AI 内容生成，触发条件冻结） | —（§7.5/§7.6 展开） |
 
 > **「协议开放三部曲」内在脉络**：**v0.6 统一入口 → v0.7 开放自定义协议 → v0.8 开放模块组合**。v0.6 若未建立统一入口，v0.7/v0.8 的开放将无从谈起——统一入口是协议开放的地基。
@@ -153,12 +154,12 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 ✅ **A 适配矩阵补全**（产物×适配矩阵：现两格填实 techdoc→SKILL / 装配→CCV3）：
 1. **techdoc → AGENTS.md / CLAUDE.md**（A1，既定下一步——ROADMAP v2.0.x 行旧文已预告）。
 2. **techdoc/协议定义 → MCP server 定义**（A2，JSON 协议导出）。
-3. **协议向导产物 → 各 agent 框架 rules 多目标渲染**（A3——E2 产物本应多出口，现单出口）。
+3. **协议向导产物 → 各 agent 框架 rules 多目标渲染**（A3——E2 产物本应多出口，现单出口）。✅ **A3 规则出口打通已落地（方案 34）**：doc_semantics 三层透传（render_ir/pipe/nf run `--doc-semantics {project_rules,skill}`）——techdoc 规则装配可显式声明 project_rules → AGENTS.md/CLAUDE.md 出口（此前 render_ir 不写 IR.meta['doc_semantics'] → classify 回退 skill 拒出，断链已修复）。P90 战例端到端产 AGENTS.md。GUI 向导声明 UI 留 E4/L3 解冻。
 4. **双向适配补全**（A4：「外部→NF」读入 SKILL/CCV3 反哺内部表示——「上游生成器」完整语义的另一半）。🔒 **待外部样例/战例，暂缓**（方案 31 后核验，启明视角三重阻碍属实）：① 读入能力零基础（desktop/src 无 parse_ccv3/parse_skill/adapter_in 反向符号，五 adapter 全 export-only）；② 无外部产物样本（全仓库无 SKILL.md/chara_card_v3 样例，唯一 JSON 为自身 registry.json——解析方向无样例输入则连 RED 测试都写不出，**不可测试性**比 A3 的「格式可能不准」更堵）；③ 外部 spec 真实性未验证（agentskills.io/SillyTavern 锚点仅 docstring 声称）+ 读入后无消费方（反哺 IR 之后无导入动作消费）。**前置 = 一份真实外部产物样例**（下游实跑产出的 .card/world.json/SKILL.md 或手供样例目录）——样例到手前 A4 评估无意义，勿重复侦察。
 
 ✅ **B 生成器能力纵向深化**：
 1. **质检可解释化**（B1）：quality_gate 三态门 → 可解释报告 + 自动修复建议（warn 现无 actionable 输出）。
-2. **组合运行时升级 + 全链管道化**（B2）：composer 静态闭包合并 → 变体/条件组合 + 冲突仲裁报告；**retrieve→compose→gate→export 串成单命令**（E4/E5 已备检索/装载，只差串链——CLI/库先行形态的地基）。
+2. **组合运行时升级 + 全链管道化**（B2）：composer 静态闭包合并 → 变体/条件组合 + 冲突仲裁报告；**retrieve→compose→gate→export 串成单命令**（E4/E5 已备检索/装载，只差串链——CLI/库先行形态的地基）。✅ **B2 变体装配已落地（方案 34）**：新增 `desktop/src/core/variants.py`（apply_variant base+add−remove 幂等 + variant_assemblies 全变体展开 + 跨变体重叠仲裁报告，声明级不阻断）+ nf run `--variant-add/--variant-remove`（P04 冒烟 `--variant-remove` 导出 PASSED）。裁决：不扩展 references schema（composer freeze），变体 = 装配层模板选择。遗留：条件组合运行时判断（if/分支动态路由）留协议 V2/后续。
 3. **协议向导自举闭环**（B3）：向导生成 → check14 门禁 → 注册一站式（生成物直接可登记）。✅ **C+A 已落地（方案 29）**：C=check14 ⑦ 元素级全序（module_ids/mount_layers 逐条比对，同长度漂移可抓）+ 包目录 glob 化（新增组合/通用包零改 verify.sh）+ Windows 分隔符兼容；A=`desktop/src/core/protocol_projection.py`（protocol.yaml → registry protocols[] 条目，字段与 ⑦ 断言同构）。✅ **B 已落地（方案 30）**：`nf register` 本地登记助手（registry_sync 校验三要件 + merge 只增不删幂等 → nf.py register --check/--apply；02 §9.2 豁免子句划界——受控路径非 PR 机器人/自动流水线）。B3 三段闭环全通：向导生成 → check14 门禁 → 登记机读落地。
 4. **市场协议本体化**（B4）：E5 社区盘点之上补版本 / 依赖解析 / 冲突仲裁 / 上架规则——目录视图 → 真协议。✅ **CLI/库先行已落地（方案 31）**：`desktop/src/core/market_analyzer.py`（check15 ②③ 判据提为可 import 库——`dependencies` 依赖闭包 + `conflicts` 挂载冲突）+ nf.py `market <包目录>` 查询（登记状态/依赖/冲突，门禁前移）。✅ **瑶光发现已修（31 补遗）**：verify.sh check15 ② 源包嵌套 references 死检查（原误取 dependencies 层恒空，references 实居 package 层）——verify.sh 判据已改 `pkg2.get('references')`（package 层），RED 反证：注入嵌套后检出「嵌套 references」；真 4 包 PASS=24 保持。遗留：包版本槽位（协议层 V2）+ 上架规则/市场目录视图——GUI（zone_g）解冻后以 market_analyzer 为库层接壳立项。
 
