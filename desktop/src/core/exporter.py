@@ -23,6 +23,7 @@ from typing import List, Optional
 from .ir import IRDocument
 from .ccv3_adapter import map_ir_to_ccv3, world_entries
 from .skill_adapter import export_skill
+from .agent_rules_adapter import export_agents, export_claude
 
 
 @dataclass
@@ -61,6 +62,8 @@ def _export_ccv3(ir: IRDocument, dest_dir: Path, res: ExportResult) -> None:
 _REGISTRY = {
     "ccv3": _export_ccv3,
     "skill": export_skill,
+    "agents": export_agents,
+    "claude": export_claude,
 }
 
 
