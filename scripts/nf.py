@@ -49,6 +49,10 @@ def _build_parser() -> argparse.ArgumentParser:
                      choices=["project_rules", "skill"],
                      help="显式声明装配产物语义（v2.3.0 A3：project_rules → AGENTS/CLAUDE 出口；skill → SKILL）——不传则回退 classify 启发式")
     run.add_argument("--dest", default=None, help="导出目录（缺省=store 根）")
+    run.add_argument("--variant-add", default="",
+                     help="变体增量模块 full_id（逗号分隔，v2.3.0 B2：经 apply_variant 并入 selected）")
+    run.add_argument("--variant-remove", default="",
+                     help="变体移除模块 full_id（逗号分隔，从 selected 剔除；与 --variant-add 同用时 remove 优先）")
     run.add_argument("--no-include-refs", action="store_true",
                      help="不并入 E3 references 跨包模块（默认并入）")
     run.add_argument("--force-export", action="store_true",
@@ -308,6 +312,16 @@ def main(argv=None) -> int:
         print(f"  store：{store.home}")
 
     selected = [m.strip() for m in args.modules.split(",") if m.strip()]
+    # B2 变体：--variant-add/--variant-remove 经 apply_variant 变换 selected
+    if args.variant_add or args.variant_remove:
+        from core.variants import apply_variant
+        v = apply_variant(selected, {
+            "add": [x.strip() for x in args.variant_add.split(",") if x.strip()],
+            "remove": [x.strip() for x in args.variant_remove.split(",") if x.strip()],
+        })
+        selected = v.selected
+        print(f"  [变体] selected {args.modules.split(',')} → {selected}"
+              + (f"（移除 {args.variant_remove}）" if args.variant_remove else ""))
     dest = args.dest
     r = pipe(store, pipeline, selected,
              include_references=not args.no_include_refs,
