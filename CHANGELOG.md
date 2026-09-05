@@ -1,3 +1,17 @@
+## [Unreleased] - 2.0 导出层序列（v1.2.0–v2.0.x，feat/v1.1-fix 分支开发中）
+### Added
+- **v1.2.0 协议中转站 v2（IR 内容归一化，2.0 E0-①）**：ir.py IRDocument/IRLayer/IRModule + normalize_module_body + ir_to_md（IR 默认 MD 适配器）；generator.render_ir 装配→IR（层序/层外/资产 refs+missing 归一），generate_document 改两段（render_ir+ir_to_md），对外 MD 输出零回归（一致性 diff 逐字节）。方案 14。
+- **v1.3.0 Agentic 检索（2.0 E0-②）**：retriever.search() 四类统一入口（module/asset_pack/pipeline/protocol），结构化 grep 不上向量 + Hit 元数据卡片（对齐 Agent Skills Discovery）。方案 15。
+- **v1.4.0 质量治理闭环（2.0 E0-③）**：quality_gate.run_gate 三态质检门（空装配+核心锚点 fail / 资产悬空+层外 warn，ok()=fail==0 不变量）；zone_d 生成后三态展示；verify check17 入段 C（PASS→23）。方案 16。
+- **v2.0.0 导出层 CCV3 首发（2.0 E1 收口）**：立项核心发现=CCV3 语义错配（NF 装配=世界规则集→character_book 主承载，persona 主角占位）；ccv3_adapter（IR→chara_card_v3+world，引擎锚点排除/资产独立/无静默丢弃）；exporter 格式注册表 + PNG 卡（QImage tEXt，零新依赖）；e2e 导出战例（真实组合包→IR→质量门→export 全绿）；zone_d「导出 CCV3」按钮（质量门 FAIL 阻断）；verify check18 入段 C（PASS→24）。方案 17。
+- **v2.0.x SKILL 出口插件**：skill_adapter（techdoc IR→SKILL.md agentskills 格式；narrative IR 拒出——产物×适配矩阵第二行机制化）。方案 18。
+### Changed
+- verify.sh v2.6→v2.8（check17 质量门 / check18 导出契约，PASS 22→24）。
+### Fixed（Windows 跨平台，本分支修复）
+- registry_loader.asset_get 路径包含硬编码 '/' → is_relative_to（Windows resolve 反斜杠致资产寻址全拒）。
+- verify.sh check16 漏用裸 python3 stub（对齐 PY3 回退）。
+- e2e_desktop_headless stdout GBK reconfigure（Windows cp936 ✓ 崩溃）。
+
 # Changelog
 
 > 格式约定：Keep a Changelog 中文化（Added/Changed/Fixed 语义）；版本段按时间倒序；[Unreleased] = 当前主线开发中；发布即归档为 [版本号] + 日期段并打 annotated tag（ROADMAP §8 治理指针 3）。
