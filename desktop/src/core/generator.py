@@ -16,6 +16,7 @@ from datetime import datetime
 from typing import List, Optional, Tuple
 
 from .models import Module, Pipeline, AssetPack
+from .ir import IRDocument, IRLayer, IRModule, normalize_module_body, ir_to_md
 
 DOC_TEMPLATE = """# {title}
 
@@ -135,42 +136,93 @@ def _json_text(v) -> str:
     return json.dumps(v, ensure_ascii=False, indent=2)
 
 
+def _ir_content(m: Module) -> str:
+    """模块正文归一（IR content 输入）：source.md 优先，空则 logic 兜底。"""
+    body = (m.source_md or "").strip()
+    if not body:
+        body = f"### 逻辑\n\n```\n{m.logic or '（无逻辑描述）'}\n```\n"
+    return normalize_module_body(body)
+
+
+def render_ir(pipeline: Pipeline,
+              modules: List[Module],
+              asset_pack: Optional[AssetPack] = None,
+              title: str = "",
+              ) -> IRDocument:
+    """装配 → IRDocument（v1.2.0 内容归一化层核心）。
+
+    层间按管线层序、层内保 modules 传入序（order_modules 输出）；层外模块
+    入 extra_modules。资产键收集 → asset_refs（缺失键置 None + asset_missing）。
+    原 generate_document 的字符串拼装下沉为 ir_to_md（IR 默认适配器）。
+    """
+    ordered, warnings = order_modules(modules, pipeline)
+    title = title or _doc_title(pipeline)
+
+    by_layer: dict = {}
+    for m in ordered:
+        by_layer.setdefault(m.layer, []).append(m)
+
+    layers_ir: List[IRLayer] = []
+    for lid in pipeline.layer_ids:
+        layer = pipeline.layer(lid)
+        lm = by_layer.pop(lid, [])
+        if not lm:
+            continue
+        layers_ir.append(IRLayer(
+            id=lid,
+            name=layer.name if layer else "",
+            description=layer.description if layer else "",
+            modules=[IRModule(full_id=m.full_id, name=m.name, layer=m.layer,
+                              content=_ir_content(m)) for m in lm]))
+
+    extra: List[IRModule] = []
+    for lm in by_layer.values():
+        extra.extend(IRModule(full_id=m.full_id, name=m.name, layer=m.layer,
+                              content=_ir_content(m)) for m in lm)
+
+    keys: List[str] = []
+    for m in ordered:
+        for k in m.assets or []:
+            if k not in keys:
+                keys.append(k)
+    entries = (asset_pack.entries if asset_pack else {}) or {}
+    refs: dict = {}
+    missing: List[str] = []
+    for k in keys:
+        if k in entries:
+            refs[k] = entries[k]
+        else:
+            refs[k] = None
+            missing.append(k)
+
+    return IRDocument(
+        type="techdoc" if pipeline.structure_type == "techdoc" else "narrative",
+        title=title,
+        pipeline_id=pipeline.id,
+        pipeline_name=pipeline.name,
+        layers=layers_ir,
+        extra_modules=extra,
+        asset_refs=refs,
+        asset_missing=missing,
+        warnings=warnings,
+        meta={
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "generator": "nf-ir-v1",
+            "asset_text": asset_pack.name if asset_pack else "无",
+        })
+
+
 def generate_document(pipeline: Pipeline,
                       modules: List[Module],
                       asset_pack: Optional[AssetPack] = None,
                       title: str = "",
                       ) -> Tuple[str, List[str]]:
-    """生成完整文档。返回 (md文本, 警告列表)。"""
-    ordered, warnings = order_modules(modules, pipeline)
-    title = title or _doc_title(pipeline)
-    asset_text = asset_pack.name if asset_pack else "无"
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    """生成完整文档（对外签名与输出不变——IR 化后行为零回归）。
 
-    parts = [DOC_TEMPLATE.format(
-        title=title,
-        pipeline_name=pipeline.name,
-        pipeline_id=pipeline.id,
-        module_count=len(ordered),
-        asset_text=asset_text,
-        timestamp=timestamp,
-        toc=_toc(ordered, pipeline),
-    )]
-
-    # 逐层输出
-    last_layer = None
-    for m in ordered:
-        if m.layer != last_layer:
-            layer = pipeline.layer(m.layer)
-            if layer:
-                parts.append(
-                    f"\n## 层 {layer.id} · {layer.name}\n\n{layer.description}\n")
-            else:
-                parts.append(f"\n## 层 {m.layer}（未在管线中声明）\n")
-            last_layer = m.layer
-        parts.append(_module_block(m))
-
-    parts.append(_asset_appendix(collect_asset_keys(ordered), asset_pack))
-    return "\n\n".join(parts), warnings
+    内部两段：render_ir 产统一 IR → ir_to_md 序列化（MD 为 IR 默认适配器）。
+    """
+    ir = render_ir(pipeline, modules, asset_pack=asset_pack, title=title)
+    return ir_to_md(ir), ir.warnings
 
 
 def default_filename(pipeline: Pipeline) -> str:
