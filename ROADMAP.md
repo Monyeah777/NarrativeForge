@@ -140,9 +140,10 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 ### 版本内提交约定
 按 11/12 惯例：每批次独立 commit（C0–C8）；verify.sh 门禁全绿方可提交（C0 仅动文档 PASS=20 保持；C1–C3 中间态 PASS=20 保持；C4 起 PASS=22 终态）；C8 push 前依 13 方案 §6 开放问题 6 向用户索取一次性新 PAT（不写入 config）。
 
-## 8. 治理指针（四项约定）
+## 8. 治理指针（五项约定）
 
 1. **README 版本行指针**：README 版本行（L33 锚点「vX.Y.Z（当前主线）」）随发布更新。
 2. **协议链随方案文档追加**：README L32 协议链每新增方案文档（08→09→…）追加一行。
 3. **CHANGELOG 发布归档**：每次发布把 [Unreleased] 归档为 [版本号] + 日期段，并同步打 annotated tag。
-4. **门禁全绿铁律**：verify.sh（含 check12 代码层 unittest）0 WARN 0 FAIL 方可提交；任一 FAIL = 协议事故，回滚再改。
+4. **门禁全绿铁律**：verify.sh（v2.9 分层门禁，含 check12 代码层 unittest）0 WARN 0 FAIL 方可提交；任一 FAIL = 协议事故，回滚再改。基础层提交以 `bash verify.sh` 全绿为唯一标尺（clone 即绿，零前置）。
+5. **分层治理（23 方案）**：L3 端壳（android/ + desktop/src/ui 等）冻结移出主仓库演进主线，见 `L3_FROZEN.md`——端壳改动不随基础层演进；verify/CI 只锁 L0-L2；未来一次性产出从 git 历史恢复 + 触发 v* tag workflow。

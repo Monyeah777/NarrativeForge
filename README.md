@@ -9,13 +9,13 @@
 - 管线（03_管线库）：数据流转骨架，含领域无关的 P00 通用骨架（装载→语境推进→实体状态→内容生产→决策→装配→一致性→素材→输出）；P01/P02/P03 是 P00 在叙事领域的实例装配。新领域复制 P00 派生新管线即可，引擎不改一行。
 - 资产（随领域包分发）：数据模板/素材，按键挂载供模块裁剪注入。领域资产位于 community/<领域包>/assets/（随包附带溯源索引）；05_资产库仅留用户自定义扩增槽与总索引（见 05_资产库/README.md）。
 
-## 下载桌面工具
+## 分层与端壳（L3 冻结）
 
-桌面工具（社区版，Windows exe / macOS / Linux）在 **Releases** 发布成品，由 GitHub Actions 自动构建（`.github/workflows/build-desktop.yml`）。社区用户无需安装 Python、无需运行任何构建脚本：
+本项目分四层治理（23 方案）：L0 协议层 / L1 内容层 / L2 核心逻辑层（`desktop/src/core`，纯 Python 零依赖，**高频迭代主战场**）/ L3 端壳层。端壳（桌面 GUI / Android APK）是包络层——**当前冻结，最后一次性产出交付形态**，不随基础层演进（详见 `L3_FROZEN.md`）。
 
-1. 打开仓库 Releases 页，下载对应平台产物（`NarrativeForge.exe` / Mach-O / ELF）。
-2. 双击运行。首次启动自动创建数据目录 `~/.NarrativeForge/`。
-3. 源码运行兜底：`cd desktop && pip install PySide6 && python main.py`。
+端壳源码已移出主仓库演进主线（git 历史保留），产出时从冻结快照恢复并触发构建 workflow（仅 v* 标签 / 手动触发）：Release 页可下载 `NarrativeForge.exe` / macOS / Linux 成品（`.github/workflows/build-desktop.yml`），APK 由 `.github/workflows/build-android.yml` 产出。
+
+基础层验证不依赖端壳：`bash verify.sh`（v2.9，L0-L2 分层门禁，clone 即绿）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
 
 ## 社区版模板闭环（自制模板 → 组装 → 输出 MD）
 
@@ -47,10 +47,12 @@
 
 ① 在 community/ 下建领域包，包内 modules/ 按协议增题材模块 → ② 包内 assets/ 增资产模板并登记溯源索引（assets/README.md）→ ③ 复制 P00 派生新管线放包内 pipelines/，并在 02 §8 社区登记表登记，verify.sh 自动纳入 I5 调度。
 
-## 桌面工具（desktop/）
+## 核心逻辑层（desktop/src/core/）
 
-这套协议的 GUI 实现：拖入 .md 模块 → 校验 → 勾选装配 → 输出文档。
+基础层真身：纯 Python 零第三方依赖的装配/IR/质检/导出/检索逻辑，被端壳（桌面 GUI / android）复用。L0-L2 验证入口：
 
-- 自动化构建：`.github/workflows/build-desktop.yml`（三平台并行；推送 `v*` tag 自动发布 Release）
-- 打包说明：`desktop/packaging/README.md`
-- 源码运行与单测：`desktop/README.md`
+- 分层门禁：`bash verify.sh`（v2.9，check1-18 全绿 PASS=24，clone 即绿）
+- 单元测试：`cd desktop && python -m unittest discover -s tests`
+- 端到端：`python scripts/e2e_desktop_headless.py`（直驱 core，无需 GUI/端壳）
+
+> 端壳层（桌面 GUI `desktop/src/ui` + android app）已冻结移出演进主线，详见 `L3_FROZEN.md`——接回时从 git 历史恢复 + 重建 sync 镜像。

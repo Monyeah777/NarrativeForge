@@ -6,6 +6,7 @@
 - **v2.0.x-E5 模块市场雏形深化（方案 22，69dd4b2 W1 core + 47c0dfd W2 UI）**：community 仓库盘点——新增 `desktop/src/core/community_inventory.py`（catalog 盘点 4 包 29 模块 + 4 管线 + 已装判定；install_module save_module 幂等 / install_pipeline pipelines cache 按 id merge 不覆盖既有）；retriever.search 扩 kind=community_module/community_pipeline（显式指定才并入，E4 四类语义隔离，Hit tags=[来源包,✓已装/可装载]）；zone_g kind 下拉加「社区模块/社区管线」档——未装一键装载入库（module → on_modules_changed / pipeline → reload_pipelines）、已装转加入装配/设为当前管线；`scripts/smoke_zone_g_market.py` [7][8] 装载冒烟（M55 装载入库→标记翻转、P04 cache merge→③ 下拉含）。I5 边界裁决：references 跨包只读（E3）与用户工作区装载（E5，等同 seed_from_repo 既有模式）正交不冲突。
 ### Changed
 - README 协议链追加 19/20/21/22（治理指针 2，收口 E2-E5 落地）。
+- **23 方案分层治理**：L3 端壳冻结移出主仓库演进主线——verify.sh v2.9 分层门禁（check13① 去 android 两处比对、check12② compileall 去 android、版本号收口，clone 即绿零前置）+ CI 新增 ci-verify（L0-L2 闸门）+ build-desktop/build-android 退役 main 自动触发（仅 v* tag/手动）+ `L3_FROZEN.md` 真相源落盘（含移出清单索引与接回路径）。L2 core 语义零回归（135 单测/verify PASS=24/e2e 全绿）。
 
 ## [2.0.0] - 2026-09-05（v2.0.0 导出层：上游生成器——E0 三件套 + CCV3/SKILL 出口）
 ### Added
