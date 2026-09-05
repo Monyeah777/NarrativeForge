@@ -111,4 +111,13 @@ def self_check(yaml_text: str) -> List[str]:
         for d in (spec.get("default") or []):
             if str(d).split(":")[-1] not in id_range:
                 warns.append(f"挂载层 {layer} default {d} 不在 module_id_range 内")
+    # A1 裁决规则集成（25 方案）：协议若声明产出语义（doc_semantics），
+    # 校验值域并提示出口——project_rules → AGENTS/CLAUDE，skill → SKILL。
+    sem = pkg.get("doc_semantics") or proto.get("doc_semantics")
+    if sem is not None:
+        from .semantics import PROJECT_RULES, SKILL
+        if sem not in (PROJECT_RULES, SKILL):
+            warns.append(
+                f"doc_semantics 应为 '{PROJECT_RULES}' 或 '{SKILL}'，"
+                f"实际 {sem}（产物×适配矩阵：AGENTS=项目约定 / SKILL=能力包）")
     return warns
