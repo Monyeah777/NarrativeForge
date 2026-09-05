@@ -52,14 +52,12 @@ class ZoneGCommunity(QtWidgets.QWidget):
         gf.addStretch(1)
         root.addWidget(grp_file)
 
-        grp_gh = QtWidgets.QGroupBox("③ 社区在线拉取（阶段②规划）")
+        grp_gh = QtWidgets.QGroupBox("③ 创建自定义协议（E2 协议定义向导）")
         gg = QtWidgets.QHBoxLayout(grp_gh)
-        b_gh = QtWidgets.QPushButton("从 GitHub 拉取…")
-        b_gh.setEnabled(False)
-        b_gh.setToolTip("阶段②实现：读取社区索引 → 选择模块/管线/资产包 → 下载安装。"
-                        "\nMVP 阶段请使用上方本地导入。")
-        gg.addWidget(b_gh)
-        gg.addWidget(QtWidgets.QLabel("（未启用：MVP 阶段以本地导入代替）"))
+        b_wizard = QtWidgets.QPushButton("创建自定义协议…")
+        b_wizard.clicked.connect(self.do_open_wizard)
+        b_wizard.setToolTip("v2.0.x-E2：填表生成合规 protocol.yaml（不懂 Schema 也能定义第三方协议）")
+        gg.addWidget(b_wizard)
         gg.addStretch(1)
         root.addWidget(grp_gh)
 
@@ -68,6 +66,13 @@ class ZoneGCommunity(QtWidgets.QWidget):
         self.result.setStyleSheet("color: #1a6e2a;")
         root.addWidget(self.result)
         root.addStretch(1)
+
+    # ---------- E2 协议定义向导 ----------
+    def do_open_wizard(self):
+        """打开自定义协议向导对话框（E2）。"""
+        from .protocol_wizard_dialog import ProtocolWizardDialog
+        dlg = ProtocolWizardDialog(self.app, self)
+        dlg.exec()
 
     # ---------- 导入逻辑 ----------
     def _load_module_json(self, jfile: Path) -> Module | None:
