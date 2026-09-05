@@ -45,6 +45,9 @@ def _build_parser() -> argparse.ArgumentParser:
     run.add_argument("--fmt", default="ccv3",
                      choices=["ccv3", "skill", "agents", "claude", "mcp"],
                      help="导出格式（exporter 注册表：ccv3/skill/agents/claude/mcp）")
+    run.add_argument("--doc-semantics", default=None,
+                     choices=["project_rules", "skill"],
+                     help="显式声明装配产物语义（v2.3.0 A3：project_rules → AGENTS/CLAUDE 出口；skill → SKILL）——不传则回退 classify 启发式")
     run.add_argument("--dest", default=None, help="导出目录（缺省=store 根）")
     run.add_argument("--no-include-refs", action="store_true",
                      help="不并入 E3 references 跨包模块（默认并入）")
@@ -309,7 +312,8 @@ def main(argv=None) -> int:
     r = pipe(store, pipeline, selected,
              include_references=not args.no_include_refs,
              fmt=args.fmt, dest_dir=dest,
-             fail_on_gate=not args.force_export)
+             fail_on_gate=not args.force_export,
+             doc_semantics=args.doc_semantics)
 
     print(f"\n== 质量门 ==\n  PASS {r.gate.n_pass} · WARN {r.gate.n_warn}"
           f" · FAIL {r.gate.n_fail}" + ("（可产出）" if r.ok else "（存在 FAIL）"))

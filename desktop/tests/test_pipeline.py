@@ -117,5 +117,70 @@ class TestPipe(unittest.TestCase):
         self.assertIsNotNone(r.export, "force 导出应产出文件")
 
 
+class TestDocSemanticsPassthrough(unittest.TestCase):
+    """v2.3.0 A3：pipe doc_semantics 透传 render_ir → IR.meta → classify/出口。
+
+    RED 基线（修改前）：render_ir 不写 meta['doc_semantics'] → techdoc 装配
+    classify 回退 skill → agents/claude 出口拒出。本测试断言透传后声明生效。
+    """
+
+    def _env(self):
+        store, p04, selected = _mk_env()
+        return store, p04, selected
+
+    def _techdoc_env(self):
+        """P90 装配：官方 13 件 + M90，selected 含 P00/P80 锚点 + M90。"""
+        store = Store(home=tempfile.mkdtemp(prefix="nf_a3p_"))
+        for f in sorted(glob.glob(str(ROOT / "04_模块库" / "*" / "*.md"))):
+            try:
+                m = parse_module(Path(f).read_text(encoding="utf-8"))
+                store.save_module(m)
+            except Exception:
+                continue
+        p90 = load_pipeline_file(ROOT / "03_管线库" / "P90_技术文档生成管线.md")
+        selected = ["通用类:M00", "技术文档类:M90", "通用类:M80"]
+        return store, p90, selected
+
+    def test_default_no_declaration_classify_skill(self):
+        from core.pipeline import pipe
+        store, p90, sel = self._techdoc_env()
+        r = pipe(store, p90, sel, fmt="ccv3", dest_dir=tempfile.mkdtemp())
+        self.assertTrue(r.ok, f"P90 锚点装配应 gate ok：{r.gate}")
+        from core.semantics import classify_doc_semantics
+        self.assertEqual(classify_doc_semantics(r.ir), "skill",
+                         "无 doc_semantics 声明 → 回退 skill（兼容现状）")
+
+    def test_project_rules_declaration_reaches_agents_export(self):
+        from core.pipeline import pipe
+        from core.semantics import classify_doc_semantics, PROJECT_RULES
+        store, p90, sel = self._techdoc_env()
+        dest = tempfile.mkdtemp(prefix="nf_a3p_out_")
+        r = pipe(store, p90, sel, fmt="agents",
+                 doc_semantics="project_rules", dest_dir=dest)
+        self.assertTrue(r.ok, f"gate 应 ok：{r.gate}")
+        # 声明透传到 IR.meta → classify 判 project_rules（不再回退 skill）
+        self.assertEqual(r.ir.meta.get("doc_semantics"), "project_rules")
+        self.assertEqual(classify_doc_semantics(r.ir), PROJECT_RULES)
+        # agents 出口应产出 AGENTS.md
+        self.assertIsNotNone(r.export)
+        names = {Path(f).name for f in r.export.files}
+        self.assertIn("AGENTS.md", names, f"files={r.export.files}")
+
+    def test_skill_declaration_writes_meta(self):
+        from core.pipeline import pipe
+        store, p90, sel = self._techdoc_env()
+        r = pipe(store, p90, sel, fmt="ccv3", dest_dir=tempfile.mkdtemp(),
+                 doc_semantics="skill")
+        self.assertEqual(r.ir.meta.get("doc_semantics"), "skill")
+
+    def test_invalid_value_ignored_not_crash(self):
+        from core.pipeline import pipe
+        store, p90, sel = self._techdoc_env()
+        r = pipe(store, p90, sel, fmt="ccv3", dest_dir=tempfile.mkdtemp(),
+                 doc_semantics="bogus")  # 值域外 → 不写 meta，不崩
+        self.assertTrue(r.ok)
+        self.assertNotIn("doc_semantics", r.ir.meta)
+
+
 if __name__ == "__main__":
     unittest.main()

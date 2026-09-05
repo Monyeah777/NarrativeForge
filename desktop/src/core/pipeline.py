@@ -42,6 +42,7 @@ def pipe(store: Store, pipeline: Pipeline,
          fmt: str = "ccv3",
          dest_dir=None,
          fail_on_gate: bool = True,
+         doc_semantics: Optional[str] = None,
          ) -> PipeResult:
     """全链单命令：selected(full_id) → 装配+引用合并 → IR → 质检 → 导出。
 
@@ -49,6 +50,8 @@ def pipe(store: Store, pipeline: Pipeline,
     - include_references：E3 跨包 references 是否并入装配（默认并入）。
     - fmt/dest_dir：透传 exporter.export；fmt 未注册 → KeyError（显式暴露）。
     - fail_on_gate=False：质量门 fail 也导出（下游诊断用）——但 ok() 仍 False。
+    - doc_semantics（v2.3.0 A3）：显式声明产物语义（project_rules/skill），
+      透传 render_ir → IR.meta（classify 声明优先）。None = 不写（兼容现状）。
     """
     warnings: List[str] = []
 
@@ -70,7 +73,7 @@ def pipe(store: Store, pipeline: Pipeline,
                          include_references=include_references)
 
     # ---- ③ render_ir：装配 → IR ----
-    ir = render_ir(pipeline, asm)
+    ir = render_ir(pipeline, asm, doc_semantics=doc_semantics)
     warnings.extend(ir.warnings or [])
 
     # ---- ④ gate：IR 质检三态 ----

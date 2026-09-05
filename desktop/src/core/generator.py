@@ -148,12 +148,17 @@ def render_ir(pipeline: Pipeline,
               modules: List[Module],
               asset_pack: Optional[AssetPack] = None,
               title: str = "",
+              doc_semantics: Optional[str] = None,
               ) -> IRDocument:
     """装配 → IRDocument（v1.2.0 内容归一化层核心）。
 
     层间按管线层序、层内保 modules 传入序（order_modules 输出）；层外模块
     入 extra_modules。资产键收集 → asset_refs（缺失键置 None + asset_missing）。
     原 generate_document 的字符串拼装下沉为 ir_to_md（IR 默认适配器）。
+
+    doc_semantics（v2.3.0 A3）：装配端显式声明产物语义（"project_rules" /
+    "skill"，借 semantics 常量），写入 IR.meta——classify_doc_semantics 显式
+    声明优先于启发式。None = 不写（兼容现状，回退启发式/缺省 skill）。
     """
     ordered, warnings = order_modules(modules, pipeline)
     title = title or _doc_title(pipeline)
@@ -195,6 +200,16 @@ def render_ir(pipeline: Pipeline,
             refs[k] = None
             missing.append(k)
 
+    meta: dict = {
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "generator": "nf-ir-v1",
+        "asset_text": asset_pack.name if asset_pack else "无",
+    }
+    if doc_semantics is not None:
+        from .semantics import PROJECT_RULES, SKILL
+        if doc_semantics in (PROJECT_RULES, SKILL):
+            meta["doc_semantics"] = doc_semantics
+
     return IRDocument(
         type="techdoc" if pipeline.structure_type == "techdoc" else "narrative",
         title=title,
@@ -205,11 +220,7 @@ def render_ir(pipeline: Pipeline,
         asset_refs=refs,
         asset_missing=missing,
         warnings=warnings,
-        meta={
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "generator": "nf-ir-v1",
-            "asset_text": asset_pack.name if asset_pack else "无",
-        })
+        meta=meta)
 
 
 def generate_document(pipeline: Pipeline,
