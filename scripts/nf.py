@@ -67,6 +67,12 @@ def _build_parser() -> argparse.ArgumentParser:
     mkt.add_argument("pkg_dir", help="包目录（如 community/校园西幻轻混组合包）")
     mkt.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+
+    whr = sub.add_parser("who-refers",
+                         help="引用反查（A2：谁引用了某模块，遍历 registry references）")
+    whr.add_argument("module_id", help="模块 id（如 M91 或 情感:M55）")
+    whr.add_argument("--registry", default=None,
+                     help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
     return p
 
 
@@ -201,12 +207,30 @@ def _cmd_market(args) -> int:
     return 0
 
 
+def _cmd_who_refers(args) -> int:
+    """nf who-refers <module_id>：谁在 references 中引用了该模块（A2 反查）。"""
+    from core.retriever import referenced_by
+
+    reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    refs = referenced_by(args.module_id, path=reg_path)
+    print(f"== 谁引用了 {args.module_id} ==")
+    if not refs:
+        print("  无（registry protocols[].references 中无引用）")
+        return 0
+    for r in refs:
+        ro = "只读" if r.get("asset_readonly") else ""
+        print(f"  {r['referrer']} → {r['source_package']}.{r['module_id']} {ro}")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "market":
         return _cmd_market(args)
+    if args.cmd == "who-refers":
+        return _cmd_who_refers(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2

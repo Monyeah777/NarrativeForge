@@ -151,3 +151,33 @@ def search(store: Store, kind: Optional[str] = None,
     if kind in ("community_module", "community_pipeline"):
         hits.extend(_community_hits(store, kind, q, limit))
     return hits[:limit]
+
+
+def referenced_by(module_id: str, path=None) -> List[dict]:
+    """反向引用查询（v2.2.0 A2）：registry protocols[].references 中引用该模块的包。
+
+    支持「谁引用了 M55」——遍历 registry protocols 的 references，返回引用方列表
+    [{referrer, source_package, module_id, source_schema_version, asset_readonly}]
+    （referrer = 声明引用该模块的 protocol/包 id；source_package.module_id =
+    被引目标）。模块 id 匹配支持裸号（M55）与限定 id（情感:M55）；path 缺省 =
+    registry.json 默认位置（同 load_registry）。
+    """
+    try:
+        from .registry_loader import load_registry
+        registry = load_registry(path)
+    except Exception:
+        return []
+    bare = str(module_id).split(":")[-1] if ":" in str(module_id) else str(module_id)
+    refs_out: List[dict] = []
+    for p in (registry.protocols or []):
+        for r in (p.get("references") or []):
+            mid = str(r.get("module_id", ""))
+            if mid == module_id or (mid and mid.split(":")[-1] == bare):
+                refs_out.append({
+                    "referrer": p.get("id"),
+                    "source_package": r.get("source_package"),
+                    "module_id": r.get("module_id"),
+                    "source_schema_version": r.get("source_schema_version"),
+                    "asset_readonly": r.get("asset_readonly"),
+                })
+    return refs_out

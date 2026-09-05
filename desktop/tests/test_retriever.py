@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core.models import Module, AssetPack, Pipeline, PipelineLayer  # noqa: E402
 from core.storage import Store  # noqa: E402
-from core.retriever import search, Hit  # noqa: E402
+from core.retriever import search, Hit, referenced_by  # noqa: E402
 
 
 def _mk_store():
@@ -117,6 +117,92 @@ class TestSearch(unittest.TestCase):
         hits = search(self.store, "community_module", "M55")
         hit = next(h for h in hits if h.ref == "情感类:M55")
         self.assertIn("✓已装", hit.tags, f"tags={hit.tags}")
+
+
+class TestReferencedBy(unittest.TestCase):
+    """v2.2.0 A2 引用反查：registry protocols[].references 反向命中。
+
+    用隔离临时 registry 断言语义（不依赖真实数据漂移）；真实 registry
+    命中作 smoke 回归（M55/M17 被轻混组合包引用）。
+    """
+
+    def _mk_registry(self, path, protocols):
+        import json
+        reg = {"registry_schema_version": "2", "schema_name": "test",
+               "registry_name": "t", "truth_source": "t",
+               "modules": [], "mount_points": {}, "subscriptions": {},
+               "protocols": protocols}
+        path.write_text(json.dumps(reg, ensure_ascii=False), encoding="utf-8")
+
+    def test_bare_module_id_hit(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory(prefix="nf_rb_") as td:
+            p = Path(td) / "registry.json"
+            self._mk_registry(p, [{
+                "id": "测试包A",
+                "references": [{"source_package": "校园情感领域包",
+                                "module_id": "M55", "source_schema_version": "2",
+                                "asset_readonly": True}],
+            }])
+            refs = referenced_by("M55", path=p)
+            self.assertEqual(len(refs), 1)
+            self.assertEqual(refs[0]["referrer"], "测试包A")
+            self.assertEqual(refs[0]["source_package"], "校园情感领域包")
+            self.assertEqual(refs[0]["module_id"], "M55")
+            self.assertTrue(refs[0]["asset_readonly"])
+
+    def test_qualified_id_matches_bare(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory(prefix="nf_rb_") as td:
+            p = Path(td) / "registry.json"
+            self._mk_registry(p, [{
+                "id": "测试包A",
+                "references": [{"source_package": "校园情感领域包",
+                                "module_id": "M55"}],
+            }])
+            # 查询方带类别前缀（情感类:M55）也应命中裸号 reference
+            refs = referenced_by("情感类:M55", path=p)
+            self.assertEqual(len(refs), 1)
+            self.assertEqual(refs[0]["referrer"], "测试包A")
+
+    def test_no_reference_returns_empty(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory(prefix="nf_rb_") as td:
+            p = Path(td) / "registry.json"
+            self._mk_registry(p, [{
+                "id": "测试包A",
+                "references": [{"source_package": "校园情感领域包",
+                                "module_id": "M55"}],
+            }])
+            self.assertEqual(referenced_by("M99", path=p), [])
+            self.assertEqual(referenced_by("M91", path=p), [])
+
+    def test_no_references_key_ok(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory(prefix="nf_rb_") as td:
+            p = Path(td) / "registry.json"
+            self._mk_registry(p, [{"id": "无引用包"}])
+            self.assertEqual(referenced_by("M55", path=p), [])
+
+    def test_missing_registry_returns_empty(self):
+        # registry 缺失：retriever 不阻断——返回 []（与 _protocol_hits 同策略）
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory(prefix="nf_rb_") as td:
+            refs = referenced_by("M55", path=Path(td) / "nope.json")
+            self.assertEqual(refs, [])
+
+    def test_real_registry_smoke(self):
+        # I5 真相源回归：轻混组合包引用校园情感 M55 / 西幻生存 M17
+        refs = referenced_by("M55")
+        self.assertTrue(refs, "真实 registry 中 M55 应被引用")
+        self.assertIn("校园西幻轻混组合包", [r["referrer"] for r in refs])
+        # M91 官方核心模块不被社区引用（registry 无引用即空）
+        self.assertEqual(referenced_by("M91"), [])
 
 
 if __name__ == "__main__":
