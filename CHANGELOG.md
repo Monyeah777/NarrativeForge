@@ -1,9 +1,15 @@
-## [Unreleased] - v2.0.x（2.0 E2-E5 收口，工作分支 feat/v1.1-fix 已提交未发布）
+## [2.0.x] - 2026-09-05（2.0 E2-E5 收口：协议向导 + 组合运行时 + 模块市场雏形 + 仓库盘点）
 ### Added
 - **v2.0.x-E2 协议定义向导（方案 19，031f543 docs + 9bf5055 feat）**：自定义协议 GUI 化落地——`desktop/src/core/protocol_wizard.py`（ProtocolForm + build_protocol_yaml 生成合规 protocol.yaml v2 + self_check）+ `desktop/src/ui/protocol_wizard_dialog.py`（向导 QDialog）+ zone_g「创建自定义协议…」入口（协议定义从手写 Schema 门槛降为填表生成）。
 - **v2.0.x-E3 组合运行时调度引擎（方案 20，07b8bf0 docs + caa45f4 feat）**：references 跨包引用运行时消费——`desktop/src/core/composer.py`（resolve_combination 按 registry protocols references 闭包解析 + build_assembly 装配前合并 own+reference 模块正文，轻混 P04 导出 world 现含校园 M55/西幻 M17）；e2e [8] + zone_d 生成默认含引用。
 - **v2.0.x-E4 模块市场雏形（方案 21，6699566 docs + 7d3678f feat）**：zone_g 升级检索驱动一站式视图——消费 retriever.search 四类（module/asset_pack/pipeline/protocol 本地资源）结果表 + 按 kind 分流动作（module 加入装配追加进 selected / pipeline 设为当前管线 / asset_pack 选用资产包 / protocol 查看详情）；main_window 增 add_module_to_assembly（追加语义，区别于预设重填）+ set_current_pipeline；装配态标记随 ②③ 勾选联动；`scripts/smoke_zone_g_market.py` offscreen 冒烟（检索命中→加入装配→层树同步→四类齐备）。
 - **v2.0.x-E5 模块市场雏形深化（方案 22，69dd4b2 W1 core + 47c0dfd W2 UI）**：community 仓库盘点——新增 `desktop/src/core/community_inventory.py`（catalog 盘点 4 包 29 模块 + 4 管线 + 已装判定；install_module save_module 幂等 / install_pipeline pipelines cache 按 id merge 不覆盖既有）；retriever.search 扩 kind=community_module/community_pipeline（显式指定才并入，E4 四类语义隔离，Hit tags=[来源包,✓已装/可装载]）；zone_g kind 下拉加「社区模块/社区管线」档——未装一键装载入库（module → on_modules_changed / pipeline → reload_pipelines）、已装转加入装配/设为当前管线；`scripts/smoke_zone_g_market.py` [7][8] 装载冒烟（M55 装载入库→标记翻转、P04 cache merge→③ 下拉含）。I5 边界裁决：references 跨包只读（E3）与用户工作区装载（E5，等同 seed_from_repo 既有模式）正交不冲突。
+### Changed
+- README 协议链追加 19/20/21/22（治理指针 2，收口 E2-E5 落地）。
+- **23 方案分层治理**：L3 端壳冻结移出主仓库演进主线——verify.sh v2.9 分层门禁（check13① 去 android 两处比对、check12② compileall 去 android、版本号收口，clone 即绿零前置）+ CI 新增 ci-verify（L0-L2 闸门）+ build-desktop/build-android 退役 main 自动触发（仅 v* tag/手动）+ `L3_FROZEN.md` 真相源落盘（含移出清单索引与接回路径）。L2 core 语义零回归（135 单测/verify PASS=24/e2e 全绿）。
+
+## [2.1.0] - 2026-09-05（v2.1.0 基础层深化：A 适配面 + B 生成器 + C 内容资产化——CLI/库先行 + 自举工具链）
+### Added
 - **v2.1.0-B2 全链管道化（方案 24，f25ea79 W1 + c59b11f W2）**：retrieve→compose→gate→export 单命令——新增 `desktop/src/core/pipeline.py`（pipe() 单一入口：selected full_id → build_assembly(E3 references 并入) → render_ir → quality_gate 三态 → gate.ok 且非禁阻断才 export；本地缺失项跳过入 warnings；fail_on_gate=False 强制导出诊断产物但 ok 仍 False——可信任度不变量不破）+ `scripts/nf.py` CLI（run 子命令，GateResult 摘要 + FAIL exit 1 镜像 verify 铁律；skill 拒 narrative 的产物×适配矩阵纪律 warnings 透传）。CLI/库先行薄壳形态（L3_FROZEN.md）的地基，L2 首个里程碑。
 - **v2.1.0-A1 AGENTS/CLAUDE 适配器 + SKILL 边界裁决机制化（方案 25，74db425 W1 + 98ed908 W2）**：产物×适配矩阵第三格——新增 `desktop/src/core/semantics.py`（两判据裁决唯一真源：`classify_doc_semantics(ir)` meta 显式声明 > title/模块名项目约定词启发 > 缺省回退 skill）+ `agent_rules_adapter.py`（techdoc+project_rules → AGENTS.md/CLAUDE.md 项目约定出口，narrative/能力语义拒出同 skill 纪律）+ exporter 注册 agents/claude；protocol_wizard.self_check 内置 doc_semantics 值域校验 + nf.py --fmt 扩 agents/claude。CLI/库先行 + 裁决规则供向导/生成器复用。
 - **v2.1.0-B1 质量门可解释化（方案 26，9d396df）**：quality_gate 三态门 → 可解释报告 + 自动修复建议——`Issue` 加 `suggestion` 字段（缺省空串，向后兼容）+ 四条默认规则各补 actionable 修复指引（R1 空装配→勾选含核心 M00/M80 / R2 缺锚点→勾选 P00/P80 / W1 资产悬空→装包或删引用 / W2 层外→移层位或改层序）+ `GateResult.report_text()` 可解释报告（fail 优先、warn 可行动）；nf.py 质量门打印带建议。warn 从"只提示"变"告诉你怎么改"。
@@ -13,9 +19,6 @@
 - **v2.1.0-B3-B 协议登记助手（方案 30，本批）**：B3 自举闭环最后一段接通——`nf register` 本地登记助手把 projection 产物**校验后合并**入 registry protocols[]（替代人工手抄）。02 §9.2 加**豁免子句**（受控路径：包已 §8 在册 + protocol.yaml 合规 → 同步派生投影 = 02 发起登记的机读落地，与 PR 机器人/自动流水线划界）；新增 `desktop/src/core/registry_sync.py`（`check_registerable` 三要件 + `merge_protocols` 只增不删/保键序/幂等——幂等 = 无实质变化不写盘）+ nf.py `register` 子命令（--check 只读 / --apply 写盘后提示 verify 自证；02 未在册 exit 2）。集成自证：registry 漂移 → --check 检出不写盘 → --apply 修复 → verify check14 ⑦ PASS=24。verify PASS=24 + 单测 177 绿。
 - **v2.1.0-B4 市场协议 CLI 先行（方案 31，本批）**：check15 ②③ 判据提为可 import 库——新增 `desktop/src/core/market_analyzer.py`（`dependencies` 依赖闭包无环/叶⊆官方13/源包嵌套 references + `conflicts` 挂载层键归一 default 交集）+ nf.py `market <包目录>` 子命令（登记状态 + 依赖闭包 + 冲突预检，CLI 先行门禁前移）。**瑶光发现已修（31 补遗）**：verify.sh check15 ② 源包嵌套检查原误取 dependencies.references 恒空（references 与 dependencies 平级居 package 层）——verify.sh 判据改 `pkg2.get('references')`（package 层），RED 反证注入嵌套可抓、真 4 包 PASS=24 保持。verify PASS=24 + 单测 184 绿。
 - **v2.1.0-C-b techdoc 域包战例（方案 32，本批）**：C 线内容库资产化首个落地——community 第 5 包「技术文档域包」（第一个非叙事题材域包，README 扩展新领域三步完整战例）。自带 M97 术语管理 / M98 修订记录（落 M91-99 社区段，已实证空闲）+ core_modules 引官方 13 件含 M90 + P06 技术文档题材装配流管线 + 02 §8 登记；**verify.sh check14 ③ R2 类别互斥从 DOMAIN 扩为 ALL_PKGS 全两两**（新题材域包自带模块落社区段不进 DOMAIN，类别仍须与社区包无交集；现有 4 包类别空交集不误报）；**nf register --apply 工具链实战**写 registry protocols[] 第 5 条（30 方案首次对新领域包走通三要件拦截→放行）+ nf market info 输出在册/无冲突；测试锚点改动态 N 条（registry 4→5）。verify PASS=24 全绿（⑦ 内部 5 包元素级全过）+ 单测 184 绿。
-### Changed
-- README 协议链追加 19/20/21/22（治理指针 2，收口 E2-E5 落地）。
-- **23 方案分层治理**：L3 端壳冻结移出主仓库演进主线——verify.sh v2.9 分层门禁（check13① 去 android 两处比对、check12② compileall 去 android、版本号收口，clone 即绿零前置）+ CI 新增 ci-verify（L0-L2 闸门）+ build-desktop/build-android 退役 main 自动触发（仅 v* tag/手动）+ `L3_FROZEN.md` 真相源落盘（含移出清单索引与接回路径）。L2 core 语义零回归（135 单测/verify PASS=24/e2e 全绿）。
 
 ## [2.0.0] - 2026-09-05（v2.0.0 导出层：上游生成器——E0 三件套 + CCV3/SKILL 出口）
 ### Added
