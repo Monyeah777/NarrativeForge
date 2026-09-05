@@ -904,6 +904,21 @@ check18(){
     wn 'desktop/tests 不在场（跳过 check18）'
   fi
 }
+check19(){
+  echo '== [19/段C] 导出产物 schema 合规（v2.2.0 A1：export_schema 5 格式 shape 自检）=='
+  local err=0
+  if [ -d desktop/tests ]; then
+    if ( cd desktop && "$PY3" -m unittest tests.test_export_schema -q >/tmp/nf_check19_unittest.log 2>&1 ); then
+      ok '导出产物 schema 校验全绿（ccv3/skill/agents/claude/mcp 5 格式 shape 自检：合法产物通过 + 篡改检出）'
+    else
+      no "导出产物 schema 校验失败——见 /tmp/nf_check19_unittest.log"; err=1
+    fi
+  else
+    wn 'desktop/tests 不在场（跳过 check19）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '导出产物 schema 合规门禁全绿（check19：A1 外部吸收——产物 shape 不漂移）'
+  fi
+}
 # ================= 主执行体（三段式） =================
 echo '=================================================='
 echo ' NarrativeForge 三段式验收门禁  v2.9（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
@@ -926,6 +941,7 @@ check15
 check16
 check17
 check18
+check19
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
