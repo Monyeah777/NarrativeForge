@@ -107,8 +107,12 @@ def main(argv=None) -> int:
 
     print(f"\n== 质量门 ==\n  PASS {r.gate.n_pass} · WARN {r.gate.n_warn}"
           f" · FAIL {r.gate.n_fail}" + ("（可产出）" if r.ok else "（存在 FAIL）"))
+    # B1 可解释化：逐条含修复建议（quality_gate 报告样式，warn/fail 都 actionable）
     for issue in r.gate.issues:
-        print(f"  [{issue.level.upper()}] {issue.message}")
+        if issue.level in ("fail", "warn"):
+            print(f"  [{issue.level.upper()}] {issue.message}")
+            if issue.suggestion:
+                print(f"      建议：{issue.suggestion}")
     for w in r.warnings:
         print(f"  [INFO] {w}")
     if r.export is not None:
