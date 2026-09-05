@@ -73,6 +73,14 @@ def _build_parser() -> argparse.ArgumentParser:
     whr.add_argument("module_id", help="模块 id（如 M91 或 情感:M55）")
     whr.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+
+    imp = sub.add_parser("impact",
+                         help="变更影响面预检（A4 前置：拟删除 module/protocol 前查破坏性影响）")
+    imp.add_argument("target", help="目标（protocol id 如 校园情感领域包，或 module id 如 M55 / 情感:M55）")
+    imp.add_argument("--check", dest="mode", action="store_const", const="check",
+                     help="门禁模式：破坏性变更（有引用方/官方在册）exit 1，无破坏 exit 0")
+    imp.add_argument("--registry", default=None,
+                     help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
     return p
 
 
@@ -223,6 +231,48 @@ def _cmd_who_refers(args) -> int:
     return 0
 
 
+def _cmd_impact(args) -> int:
+    """nf impact <target>：拟删除目标（module/protocol）的破坏性影响预检（A4 前置）。
+
+    --check 门禁模式：破坏性变更（module 被引用/官方在册，或整包删除有引用方）
+    exit 1——镜像 verify 铁律，供变更前门禁接线。
+    """
+    from core.impact_check import impact_of_change
+    from core.registry_loader import load_registry
+
+    reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    reg = load_registry(reg_path)
+    im = impact_of_change(reg, args.target)
+    print(f"== 删除影响面预检: {args.target} ==")
+    if im.get("error"):
+        print(f"  [拒绝] {im['error']}")
+        return 2
+
+    if "module_id" in im:                     # module 级
+        refs = im["referenced_by"]
+        print(f"  类型: module（官方在册 {im['in_official_core'] or '无'} · "
+              f"属包 {im['in_packages'] or '无'}）")
+        if not refs and not im["in_official_core"]:
+            print("  无破坏性影响（无引用方且非官方核心——可安全移除）")
+            return 0
+        for r in refs:
+            ro = "只读" if r.get("asset_readonly") else ""
+            print(f"  破坏性: 被 {r['protocol']} 引用（引用声明源 {r['source_package']}"
+                  f"，asset_readonly {ro or 'false'}）")
+        if im["in_official_core"]:
+            print(f"  破坏性: 官方核心在册 {im['in_official_core']}（删官方核心 = 协议事故）")
+        return 1 if args.mode == "check" else 0
+    # protocol 级（整包删除）
+    refs = im["referenced_by_packages"]
+    print(f"  类型: protocol 整包（module_ids {im['module_ids'] or '无'}）")
+    if not refs:
+        print("  无破坏性影响（无其它包引用本包模块——可安全移除，自身 references 随之消失）")
+        return 0
+    for r in refs:
+        print(f"  破坏性: 被 {r['protocol']} 引用（引用声明源 {r['source_package']}）")
+    return 1 if args.mode == "check" else 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -231,6 +281,8 @@ def main(argv=None) -> int:
         return _cmd_market(args)
     if args.cmd == "who-refers":
         return _cmd_who_refers(args)
+    if args.cmd == "impact":
+        return _cmd_impact(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2

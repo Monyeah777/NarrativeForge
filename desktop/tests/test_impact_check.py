@@ -16,8 +16,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core.impact_check import (  # noqa: E402
-    check_registry, referenced_by_packages, registry_integrity_issues,
-    removal_impact,
+    check_registry, impact_of_change, referenced_by_packages,
+    registry_integrity_issues, removal_impact, removal_impact_protocol,
 )
 from core.registry_loader import Registry  # noqa: E402
 
@@ -115,6 +115,70 @@ class TestRemovalImpact(unittest.TestCase):
     def test_removal_official_core(self):
         im = removal_impact(_reg(), "M00")
         self.assertEqual(im["in_official_core"], ["M00"])
+
+
+class TestRemovalImpactProtocol(unittest.TestCase):
+    """A4 前置扩展：整包删除影响面（removal_impact_protocol / impact_of_change）。"""
+
+    def test_package_deletion_clean_when_unreferenced(self):
+        # 被引用方是校园西幻轻混组合包（它引用 M55/M17）——删它无破坏（它自己引用别人）
+        reg = _reg()
+        im = removal_impact_protocol(reg, "校园西幻轻混组合包")
+        self.assertNotIn("error", im)
+        self.assertEqual(im["referenced_by_packages"], [])
+        self.assertEqual(im["module_ids"], ["M91", "M92"])
+
+    def test_package_deletion_destructive_when_its_modules_referenced(self):
+        # 删源包 校园情感领域包：轻混引用 M55 → 破坏性
+        reg = _reg()
+        im = removal_impact_protocol(reg, "校园情感领域包")
+        self.assertEqual(len(im["referenced_by_packages"]), 1)
+        self.assertEqual(im["referenced_by_packages"][0]["protocol"],
+                         "校园西幻轻混组合包")
+        self.assertIn("M55", im["referenced_modules"])
+
+    def test_self_reference_not_counted(self):
+        # 源包自身 references 声明不算破坏（删本包自身 references 一并消失）
+        reg = _reg()
+        im = removal_impact_protocol(reg, "校园情感领域包")
+        self.assertEqual(im["module_ids"], ["情感:M22", "M40", "M55"])
+        prots = {r["protocol"] for r in im["referenced_by_packages"]}
+        self.assertNotIn("校园情感领域包", prots)
+
+    def test_unknown_protocol_returns_error(self):
+        reg = _reg()
+        im = removal_impact_protocol(reg, "幽灵领域包")
+        self.assertIn("error", im)
+        self.assertIn("protocol 不在 registry protocols[] 在册", im["error"])
+
+
+class TestImpactOfChange(unittest.TestCase):
+    """A4 前置统一入口：自动判别 protocol vs module。"""
+
+    def test_protocol_target_dispatch(self):
+        reg = _reg()
+        im = impact_of_change(reg, "校园情感领域包")
+        self.assertIn("protocol_id", im)
+        self.assertIn("referenced_by_packages", im)
+
+    def test_module_target_dispatch(self):
+        reg = _reg()
+        im = impact_of_change(reg, "M55")
+        self.assertIn("module_id", im)
+        self.assertEqual([r["protocol"] for r in im["referenced_by"]],
+                         ["校园西幻轻混组合包"])
+
+    def test_unknown_target_error(self):
+        reg = _reg()
+        im = impact_of_change(reg, "幽灵:M99")
+        self.assertIn("error", im)
+        self.assertIn("miss", im["error"])
+
+    def test_destructive_module_has_referrers(self):
+        # M55 被轻混引用 → --check 门禁应判破坏性
+        reg = _reg()
+        im = impact_of_change(reg, "M55")
+        self.assertTrue(im["referenced_by"])
 
 
 class TestCheckRegistryFile(unittest.TestCase):

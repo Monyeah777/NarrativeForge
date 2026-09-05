@@ -121,8 +121,70 @@ def removal_impact(registry: Any, module_id: str) -> Dict[str, Any]:
     }
 
 
+def removal_impact_protocol(registry: Any, protocol_id: str) -> Dict[str, Any]:
+    """拟删除整包（protocol id）的影响面：包自身引用 + 谁引用该包的模块。
+
+    变更前置查询（不写盘）：返回 {protocol_id, module_ids, referenced_by_packages,
+    referenced_modules}。包删除破坏性判定 = 有其它包 references 引用该包任意
+    module_ids（referenced_by_packages 非空）——先看清单再落盘（02 §8.4 组合
+    依赖会断裂）。
+    """
+    pid = str(protocol_id)
+    entry = None
+    for p in registry.protocols or []:
+        if p.get("id") == pid:
+            entry = p
+            break
+    if entry is None:
+        return {
+            "protocol_id": protocol_id,
+            "error": f"protocol 不在 registry protocols[] 在册: {protocol_id!r}",
+            "module_ids": [],
+            "referenced_by_packages": [],
+            "referenced_modules": [],
+        }
+    mids = list(entry.get("module_ids") or [])
+    # 包内各 module 被其它包 references 引用的并集（去掉本包自身声明——删本包
+    # 时自身 references 一并消失，不算破坏）
+    ref_pkgs: List[dict] = []
+    ref_mods: List[str] = []
+    for mid in mids:
+        for r in referenced_by_packages(registry, mid):
+            if r["protocol"] == pid:
+                continue
+            ref_pkgs.append(r)
+            ref_mods.append(mid)
+    return {
+        "protocol_id": protocol_id,
+        "module_ids": mids,
+        "referenced_by_packages": ref_pkgs,
+        "referenced_modules": ref_mods,
+    }
+
+
 def check_registry(path: Optional[str] = None) -> List[str]:
     """文件级便捷入口：读 registry.json → integrity issues（verify check21 接线）。"""
     from .registry_loader import load_registry
     reg = load_registry(path)
     return registry_integrity_issues(reg)
+
+
+def impact_of_change(registry: Any, target: str) -> Dict[str, Any]:
+    """统一变更影响面入口：自动判别 target 是 protocol id 还是 module id。
+
+    判别顺序：先精确匹配 protocol id（整包删除）；miss 再按 module id（裸号/
+    限定/长类别前缀归一）匹配任一 protocol module_ids 或官方 modules。返回
+    removal_impact_protocol / removal_impact 的结果；两者都 miss → error。
+    """
+    pid = str(target)
+    in_protocols = any(p.get("id") == pid for p in (registry.protocols or []))
+    if in_protocols:
+        return removal_impact_protocol(registry, target)
+    # module 判别：裸号归一后须真实存在（官方 core 或某包 module_ids）才往下走
+    n = _norm(target)
+    exists = any(_norm(m.get("id")) == n for m in (registry.modules or [])) or any(
+        n in {_norm(m) for m in (p.get("module_ids") or [])}
+        for p in (registry.protocols or []))
+    if exists:
+        return removal_impact(registry, target)
+    return {"target": target, "error": f"registry 无该目标（protocol/module 均 miss）: {target!r}"}
