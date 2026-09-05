@@ -1,3 +1,11 @@
+## [Unreleased]（v2.3.0 草案：34 方案 A4 双向读入——外部→NF 反向解析层）
+### Added
+- **v2.3.0-A4 双向读入反向解析适配器（方案 34，本批）**：新增 `desktop/src/core/import_adapter.py`（17481B/404 行）——parse_skill 双层设计：结构层 NF 导出 frontmatter/层级逐字节还原（mode='nf'）；宽容层外部 SKILL.md 降级 tolerant 解析（external + ir=None，非 NF 导出层级结构 warning，外部 description/许可透传不改写）；parse_ccv3 结构还原（chara_card_v3/world.json → IR，chara+world 同源去重不重复入 IR，ccv3 export 往返 description 逐字/entries 逐字段一致）；复用 parser.parse_module/parse_asset_entries_from_text；IR meta 记 adapter_in（"parse_skill"/"parse_ccv3" 字符串标记）供消费方识别读入来源。单测 19 用例全绿（含自举 SKILL.md 428B 逐字节 round-trip 闭环）。
+- **v2.3.0-A4 解锁样例双保险（方案 34，本批）**：自举主样例三件套（`技术文档装配战例/SKILL.md` 428B 无末尾换行 + chara.json 1929B + world.json 839B，经 NF 导出自举 round-trip）+ Anthropic 官方次样例两份（skill-creator.SKILL.md 33168B + docx.SKILL.md 6911B，宽容层外部兼容锚点 + 外部 spec 真实性锚点）。
+### Changed
+- exporter.py 补读入反向符号（34 方案 A4）：import 接线 parse_skill/parse_ccv3（`from .import_adapter import ...`，import 依赖干净无循环依赖）+ `_REGISTRY_IN` 反向注册表（格式→解析函数，与 export-only 五出口 `_REGISTRY` 对称）只挂已交付 skill/ccv3 两格——范围纪律（未启用不出厂）：agents/claude/mcp 暂无读入适配器不登记，防消费方误以为可 round-trip 未交付格式。
+- test_import_adapter.py 19→21 用例全绿（0.018s）：新增 TestExporterReverseRegistry——反向登记范围纪律锚点（set(_REGISTRY_IN)=={skill,ccv3} 精确两格 + agents/claude/mcp assertNotIn + assertIs 同对象引用非复制）+ skill 格 parse→export 逐字节 205B 闭环（登记不是摆设）；verify.sh PASS 维持 29 全绿（不开新 check 不膨胀，check12 discover 自动收编新用例）。
+- ROADMAP §7.5 A4「双向适配补全」🔒 暂缓 → ✅ 已实现（34 方案落地，原三重阻碍随样例与测试闭环解除）；34 方案文档状态位 待批准 → 已批准。
 ## [2.2.0] - 2026-09-05（v2.2.0 外部吸收首波：verify 验证纵深 A1-A5 + 方案模板纪律 B1-B2）
 ### Added
 - **v2.2.0-A1 导出产物 schema 合规（方案 33 Wave1，cc3106e）**：verify 新 check19——新增 `desktop/src/core/export_schema.py`（5 导出格式 ccv3/skill/agents/claude/mcp 各建逐键 shape 自检）+ `desktop/tests/test_export_schema.py`（合法产物 PASS、篡改 FAIL）。verify PASS 24→26。
