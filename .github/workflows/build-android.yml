@@ -1,14 +1,14 @@
 name: build-android
 # 叙事工坊 · Android 版 APK 构建（Kivy/KivyMD 壳 + 复用 desktop core/seed）。
-# 前置：android/app/{core,seed} 为 .gitignore 生成物，必须先在 CI 中执行
-#   scripts/sync_android.sh 从仓库根单一事实源同步，再跑逻辑冒烟自测。
+# ⚠ L3 端壳冻结（23 方案分层治理）：android 侧已移出主仓库演进主线，本 workflow
+#   随 L3 冻结退役——仅 v* 标签或手动 dispatch 触发（最后一公里一次性产出时启用）。
+#   前置：android/app/{core,seed} 为 .gitignore 生成物，须先 scripts/sync_android.sh。
 # 构建：不依赖第三方 docker action（其自定义 Dockerfile 构建层易碎），
 #   直接在 ubuntu-latest 上 apt 装 JDK17、从 GitHub 拉取 buildozer master，
 #   buildozer 自动下载 Android SDK/NDK（~/.buildozer 做 cache 加速）。
 # 产出：推送 v* 标签时自动发布 APK 到 GitHub Releases（与 build-desktop 同模式）。
 on:
   push:
-    branches: [main]
     tags: ['v*']
   workflow_dispatch:
 

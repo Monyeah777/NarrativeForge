@@ -2,10 +2,11 @@ name: build-desktop
 
 # 替代原 build_windows.bat：三平台自动构建桌面工具，产出上传 Artifacts；
 # 推送 v* 标签时自动发布到 GitHub Releases（社区版用户从这里下载成品 exe/dmg/AppImage 单文件产物）。
+# ⚠ L3 端壳冻结（23 方案分层治理）：desktop GUI 已移出主仓库演进主线，本 workflow
+#   随 L3 冻结退役——仅 v* 标签或手动 dispatch 触发（最后一公里一次性产出时启用）。
 
 on:
   push:
-    branches: [main]
     tags: ['v*']
   workflow_dispatch:
 

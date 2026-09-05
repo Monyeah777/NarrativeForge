@@ -1,0 +1,19 @@
+name: ci-verify
+# 23 方案分层治理：基础层唯一自动闸门——checkout → verify.sh（L0-L2 分层门禁，
+# clone 即绿、零前置；无 sync、无 android 依赖，L3 端壳已冻结移出）。
+# PASS=24 0 WARN 0 FAIL 为绿；任一 FAIL → exit 1 → CI 红（发布铁律 ROADMAP §8.4 门禁）。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  verify:
+    name: verify-sh-l0-l2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 分层门禁（verify.sh v2.9，L0-L2 默认锁）
+        run: bash verify.sh
