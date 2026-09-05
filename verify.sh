@@ -626,7 +626,9 @@ for d in PKGS:
         for x in cms:
             if x not in OFFICIAL13:
                 errs.append('②%s 依赖闭包叶节点越界官方核心 13 件: %s（源包 %s core_modules）' % (pid, x, sp))
-        if deps.get('references'):
+        # 源包嵌套 references（package 层——references 与 dependencies 平级，见
+        # protocol.yaml 结构；原取 deps.get('references') 恒空 = 死检查，31 方案瑶光发现修复）
+        if pkg2.get('references'):
             errs.append('②%s 依赖闭包检测到源包 %s 嵌套 references（当前不支持多层组合，须闭合官方核心）' % (pid, sp))
     # ③ 挂载层冲突：组合包各层 default 与源包同层 default 取交集非空即冲突
     ml = data[d]['package'].get('mount_layers', {})
