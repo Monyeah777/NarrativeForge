@@ -1,0 +1,53 @@
+{
+  "spec": "chara_card_v3",
+  "spec_version": "v3",
+  "name": "技术文档装配战例",
+  "description": "技术文档题材装配流（P06）装配产物 · 2 个规则模块 + 0 项资产素材。由叙事工坊 2.0 导出层生成。",
+  "personality": "（主角占位）此装配是世界观设定，非单一角色定义——主角由你在叙事前端创建/选择，此卡提供世界规则上下文。",
+  "scenario": "技术文档结构：结构骨架与模板装载规则：文档 = 骨架 + 装载规则。\n\n（叙事世界「技术文档装配战例」已就绪，故事由此展开）",
+  "first_mes": "你来到了「技术文档装配战例」。世界规则已加载，故事开始了……",
+  "mes_example": "",
+  "creator_notes": "由 NarrativeForge 2.0 导出层生成（P06）",
+  "system_prompt": "",
+  "post_history_instructions": "",
+  "alternate_greetings": [],
+  "character_book": {
+    "name": "技术文档装配战例 · 世界书",
+    "entries": [
+      {
+        "name": "技术文档结构",
+        "keys": [
+          "M90",
+          "技术文档结构"
+        ],
+        "content": "结构骨架与模板装载规则：文档 = 骨架 + 装载规则。",
+        "enabled": true,
+        "insertion_order": 0,
+        "case_sensitive": false,
+        "priority": 10,
+        "id": 0,
+        "comment": "NF 层 P90 · 技术文档生成"
+      },
+      {
+        "name": "术语管理",
+        "keys": [
+          "M97",
+          "术语管理"
+        ],
+        "content": "术语表：新词先定义后使用，术语条目 = 原文 + 译名 + 上下文约束。",
+        "enabled": true,
+        "insertion_order": 1,
+        "case_sensitive": false,
+        "priority": 10,
+        "id": 1,
+        "comment": "NF 层 P90 · 技术文档生成"
+      }
+    ]
+  },
+  "tags": [
+    "P06"
+  ],
+  "creator": "NarrativeForge",
+  "character_version": "2.0.0",
+  "extensions": {}
+}
