@@ -159,8 +159,9 @@ class MainWindow(QtWidgets.QMainWindow):
                     else "当前管线：无")
 
     def on_selection_changed(self) -> None:
-        """勾选集合变化后：④ 统计/提示刷新（②③ 自身勾选即状态源）。"""
+        """勾选集合变化后：④ 统计/提示 + ⑦ 装配态标记刷新（②③ 勾选即状态源）。"""
         self.zone_d.refresh()
+        self.zone_g.refresh_flags()
 
     # ---------- 预设应用（⑥ 区委托的统一入口） ----------
     def apply_preset_state(self, result: dict) -> None:
@@ -204,6 +205,47 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.status(f"已应用预设：{len(self.selected)} 个模块参与装配。",
                     6000)
+
+    # ---------- E4 资源装配协调（⑦ 区检索视图委托的统一入口） ----------
+    def add_module_to_assembly(self, full_id: str) -> bool:
+        """把单个模块追加进装配集（E4：从搜索结果加入装配）。
+
+        与 apply_preset_state 的「重填」语义区分——保留现有勾选，追加并
+        联动刷新 ②③④。已在装配集内则幂等返回 True；模块不存在返回 False。
+        """
+        m = self.store.get_module(full_id)
+        if m is None:
+            return False
+        if full_id not in self.selected:
+            self.selected.add(full_id)
+            # ③ 层树勾选同步 + ② 表格勾选同步 + ④ 生成统计联动
+            self.zone_c.refresh()
+            self.zone_b.refresh()
+            self.zone_d.refresh()
+        self.status(
+            f"已加入装配：{m.full_id} · {m.name}"
+            f"（当前共 {len(self.selected)} 个模块）", 4000)
+        return True
+
+    def set_current_pipeline(self, pipeline_id: str) -> bool:
+        """切换当前管线（E4：从搜索结果选用管线；③ 下拉切换同路径）。
+
+        与 apply_preset_state 的管线切换子序列一致：写配置 → ③ 重建层树
+        → ②/④ 联动刷新。目标管线不在库中返回 False。
+        """
+        ids = [p.id for p in self.pipelines]
+        if pipeline_id not in ids:
+            return False
+        self.current_pipeline_id = pipeline_id
+        self.store.set_config("pipeline", pipeline_id)
+        self.zone_c.refresh_pipes(keep=pipeline_id)
+        self.zone_b.refresh()
+        self.zone_d.refresh()
+        pipe = self.current_pipeline
+        self.status(
+            f"当前管线：{pipe.id} · {pipe.name}" if pipe
+            else f"当前管线：{pipeline_id}", 4000)
+        return True
 
     # ---------- 拖放 ----------
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent) -> None:  # noqa: N802

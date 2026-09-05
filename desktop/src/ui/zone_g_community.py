@@ -1,23 +1,33 @@
-"""功能区 G · 社区拉取：模块库导入（MVP 以本地导入代替 GitHub 拉取）。
+"""功能区 G · 本地资源发现与装配中心（E4 模块市场雏形·本地版）。
 
-阶段①（MVP）：目录批量导入 module.json 模块 / 单个模板文件导入。
-阶段②（规划）：接入 NarrativeForge 社区索引（GitHub）实现拉取/更新，
-            届时替换下方「从 GitHub 拉取（占位）」按钮为真实下载逻辑。
+阶段①（E4，2.0 收口目标）：检索驱动一站式视图——消费 retriever.search 四类
+（module/asset_pack/pipeline/protocol，本地已装/在册），结果可直接加入装配
+（module 追加进 app.selected）、设为当前管线（pipeline）、选用资产包
+（asset_pack）、查看协议详情（protocol）；导入/E2 向导能力收进底部工具区。
+阶段②（规划）：接入 NarrativeForge 社区索引（GitHub）实现在线拉取/更新，
+            届时替换「从 GitHub 拉取（占位）」按钮为真实下载逻辑。
 """
 from __future__ import annotations
+
 import json
 from pathlib import Path
 from PySide6 import QtCore, QtWidgets
 from ..core.models import Module
 from ..core.parser import parse_module
+from ..core.retriever import search
 from . import common
+
+KIND_LABELS = [("全部", None), ("模块", "module"), ("资产包", "asset_pack"),
+               ("管线", "pipeline"), ("协议", "protocol")]
 
 
 class ZoneGCommunity(QtWidgets.QWidget):
-    """⑦ 社区拉取：批量导入本地模块仓库 / 单文件模板入库。"""
+    """⑦ 本地资源发现与装配：检索四类资源 → 从结果加入装配/切换管线/选用资产。"""
     def __init__(self, app, parent=None):
         super().__init__(parent)
         self.app = app
+        self._hits = []          # 最近一次检索结果（Hit 列表，行 UserRole 同源）
+        self._busy = False
         self._build_ui()
 
     # ---------- UI ----------
@@ -25,47 +35,277 @@ class ZoneGCommunity(QtWidgets.QWidget):
         root = QtWidgets.QVBoxLayout(self)
 
         desc = QtWidgets.QLabel(
-            "社区拉取：把他人发布的模块（module.json 目录结构）或"
-            "单份规范模板批量导入本地模块库。\n"
-            "阶段②将接入 NarrativeForge 社区索引（GitHub）实现在线拉取与更新。")
+            "本地资源发现与装配：一键检索已安装模块 / 本地资产包 / 缓存管线 / "
+            "在册协议，从结果直接加入装配、切换管线或选用资产包。\n"
+            "（检索范围 = 本地资源；在线社区拉取为阶段②规划，未接入。）")
         desc.setWordWrap(True)
         root.addWidget(desc)
 
-        grp_dir = QtWidgets.QGroupBox("① 批量导入：模块仓库目录（内含 module.json）")
-        gd = QtWidgets.QVBoxLayout(grp_dir)
-        row = QtWidgets.QHBoxLayout()
-        b_dir = QtWidgets.QPushButton("选择目录并导入…")
-        b_dir.clicked.connect(self.do_import_dir)
-        row.addWidget(b_dir)
-        row.addStretch(1)
-        self.dir_label = QtWidgets.QLabel("（尚未导入）")
-        self.dir_label.setWordWrap(True)
-        row.addWidget(self.dir_label, 1)
-        gd.addLayout(row)
-        root.addWidget(grp_dir)
+        # 检索行
+        bar = QtWidgets.QHBoxLayout()
+        bar.addWidget(QtWidgets.QLabel("类型:"))
+        self.kind_combo = QtWidgets.QComboBox()
+        for label, val in KIND_LABELS:
+            self.kind_combo.addItem(label, val)
+        bar.addWidget(self.kind_combo)
+        self.query_edit = QtWidgets.QLineEdit()
+        self.query_edit.setPlaceholderText("检索关键词（留空 = 列出该类型全部）")
+        self.query_edit.setClearButtonEnabled(True)
+        self.query_edit.returnPressed.connect(self.do_search)
+        bar.addWidget(self.query_edit, 1)
+        b_search = QtWidgets.QPushButton("搜索")
+        b_search.clicked.connect(self.do_search)
+        bar.addWidget(b_search)
+        root.addLayout(bar)
 
-        grp_file = QtWidgets.QGroupBox("② 单文件导入：规范模板 .md / module.json")
-        gf = QtWidgets.QHBoxLayout(grp_file)
-        b_file = QtWidgets.QPushButton("选择文件并导入…")
-        b_file.clicked.connect(self.do_import_file)
-        gf.addWidget(b_file)
-        gf.addStretch(1)
-        root.addWidget(grp_file)
+        # 结果表：类型 | 引用(ref) | 名称 | 信息
+        self.table = QtWidgets.QTableWidget(0, 4)
+        self.table.setHorizontalHeaderLabels(["类型", "引用", "名称", "信息"])
+        self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table.verticalHeader().setVisible(False)
+        hh = self.table.horizontalHeader()
+        hh.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        hh.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        self.table.itemSelectionChanged.connect(self._on_selection)
+        self.table.itemDoubleClicked.connect(self._on_double)
+        self.table.setMinimumHeight(140)
+        root.addWidget(self.table, 1)
 
-        grp_gh = QtWidgets.QGroupBox("③ 创建自定义协议（E2 协议定义向导）")
-        gg = QtWidgets.QHBoxLayout(grp_gh)
-        b_wizard = QtWidgets.QPushButton("创建自定义协议…")
-        b_wizard.clicked.connect(self.do_open_wizard)
-        b_wizard.setToolTip("v2.0.x-E2：填表生成合规 protocol.yaml（不懂 Schema 也能定义第三方协议）")
-        gg.addWidget(b_wizard)
-        gg.addStretch(1)
-        root.addWidget(grp_gh)
+        # 动作行（按钮文案/启停随选中行 kind 变化）
+        acts = QtWidgets.QHBoxLayout()
+        self.act_hint = QtWidgets.QLabel("检索后选中一行执行动作（模块可双击看详情）")
+        self.act_hint.setWordWrap(True)
+        acts.addWidget(self.act_hint, 1)
+        self.b_action = QtWidgets.QPushButton("执行动作")
+        self.b_action.setEnabled(False)
+        self.b_action.clicked.connect(self.do_action)
+        acts.addWidget(self.b_action)
+        root.addLayout(acts)
 
         self.result = QtWidgets.QLabel("")
         self.result.setWordWrap(True)
         self.result.setStyleSheet("color: #1a6e2a;")
         root.addWidget(self.result)
-        root.addStretch(1)
+
+        # 底部工具区（保留导入/E2 向导能力）
+        grp_tools = QtWidgets.QGroupBox("工具区：批量导入 / 单文件导入 / 创建自定义协议（E2）")
+        gt = QtWidgets.QVBoxLayout(grp_tools)
+        row1 = QtWidgets.QHBoxLayout()
+        b_dir = QtWidgets.QPushButton("① 批量导入模块目录…")
+        b_dir.clicked.connect(self.do_import_dir)
+        row1.addWidget(b_dir)
+        self.dir_label = QtWidgets.QLabel("（尚未导入）")
+        self.dir_label.setWordWrap(True)
+        row1.addWidget(self.dir_label, 1)
+        gt.addLayout(row1)
+        row2 = QtWidgets.QHBoxLayout()
+        b_file = QtWidgets.QPushButton("② 单文件导入模块…")
+        b_file.clicked.connect(self.do_import_file)
+        row2.addWidget(b_file)
+        b_wizard = QtWidgets.QPushButton("③ 创建自定义协议（协议定义向导）…")
+        b_wizard.clicked.connect(self.do_open_wizard)
+        b_wizard.setToolTip("v2.0.x-E2：填表生成合规 protocol.yaml（不懂 Schema 也能定义第三方协议）")
+        row2.addWidget(b_wizard)
+        row2.addStretch(1)
+        gt.addLayout(row2)
+        root.addWidget(grp_tools)
+
+    # ---------- 检索 ----------
+    def do_search(self):
+        """按 kind+关键词检索四类本地资源，填入结果表。"""
+        kind = self.kind_combo.currentData()
+        query = self.query_edit.text().strip()
+        self._busy = True
+        self.table.setRowCount(0)
+        hits = search(self.app.store, kind, query, limit=100)
+        self._hits = list(hits)
+        selected = self.app.selected
+        for i, hit in enumerate(self._hits):
+            self.table.insertRow(i)
+            kind_label = dict((v, k) for k, v in KIND_LABELS).get(
+                hit.kind, hit.kind)
+            cell_kind = QtWidgets.QTableWidgetItem(kind_label)
+            cell_kind.setData(QtCore.Qt.UserRole, hit)
+            cell_ref = QtWidgets.QTableWidgetItem(hit.ref)
+            cell_name = QtWidgets.QTableWidgetItem(hit.name)
+            info = self._hit_info(hit, in_selected=hit.ref in selected)
+            cell_info = QtWidgets.QTableWidgetItem(info)
+            self.table.setItem(i, 0, cell_kind)
+            self.table.setItem(i, 1, cell_ref)
+            self.table.setItem(i, 2, cell_name)
+            self.table.setItem(i, 3, cell_info)
+        self._busy = False
+        self._update_selection()
+        if not hits:
+            self.result.setText("（无命中：换关键词或换类型；留空关键词列出该类型全部）")
+            self.result.setStyleSheet("color: #8a6d1a;")
+        else:
+            self.result.setText(f"✓ 命中 {len(hits)} 项（范围：本地资源）")
+            self.result.setStyleSheet("color: #1a6e2a;")
+
+    def _hit_info(self, hit, in_selected: bool) -> str:
+        """结果信息列：module 层位/分类 + 装配态标记，其它类型按 tags。"""
+        if hit.kind == "module":
+            tag = hit.tags[0] if hit.tags else ""
+            mark = " · ✓ 已装配" if in_selected else ""
+            return f"层 {hit.layer} · {tag}{mark}"
+        return " · ".join(hit.tags or [])
+
+    def refresh_flags(self):
+        """装配集变化后重标 module 行的「已装配」标记（②③ 勾选联动触发）。"""
+        if self._busy or self.table.rowCount() == 0:
+            return
+        selected = self.app.selected
+        for r in range(self.table.rowCount()):
+            item = self.table.item(r, 0)
+            if item is None:
+                continue
+            hit = item.data(QtCore.Qt.UserRole)
+            if hit is None or hit.kind != "module":
+                continue
+            info = self._hit_info(hit, in_selected=hit.ref in selected)
+            it = self.table.item(r, 3)
+            if it is not None:
+                it.setText(info)
+
+    # ---------- 动作 ----------
+    def _update_selection(self):
+        """选中行变化 → 更新动作按钮文案/启停。"""
+        rows = self.table.selectionModel().selectedRows()
+        if not rows:
+            self.b_action.setEnabled(False)
+            self.b_action.setText("执行动作")
+            self.act_hint.setText("检索后选中一行执行动作（模块可双击看详情）")
+            return
+        row = rows[0].row()
+        item = self.table.item(row, 0)
+        hit = item.data(QtCore.Qt.UserRole) if item else None
+        if hit is None:
+            self.b_action.setEnabled(False)
+            self.b_action.setText("执行动作")
+            self.act_hint.setText("")
+            return
+        kind = hit.kind
+        if kind == "module":
+            self.b_action.setText("加入装配")
+            self.act_hint.setText(
+                f"把模块 {hit.ref} 追加进装配集（保留现有勾选，参与 ③装配/④生成）")
+        elif kind == "pipeline":
+            self.b_action.setText("设为当前管线")
+            self.act_hint.setText(f"切换到管线 {hit.ref}（③ 层树随管线重建）")
+        elif kind == "asset_pack":
+            self.b_action.setText("选用资产包")
+            self.act_hint.setText(f"在 ④生成 中选用资产包 {hit.ref}")
+        elif kind == "protocol":
+            self.b_action.setText("查看协议详情")
+            self.act_hint.setText(f"查看协议 {hit.ref} 的声明（管线/模块/层挂载/引用）")
+        else:
+            self.b_action.setEnabled(False)
+            self.b_action.setText("执行动作")
+            self.act_hint.setText("")
+            return
+        self.b_action.setEnabled(True)
+
+    def _on_selection(self):
+        if not self._busy:
+            self._update_selection()
+
+    def _selected_hit(self):
+        rows = self.table.selectionModel().selectedRows()
+        if not rows:
+            return None
+        item = self.table.item(rows[0].row(), 0)
+        return item.data(QtCore.Qt.UserRole) if item else None
+
+    def do_action(self):
+        """按选中行 kind 分流执行动作。"""
+        hit = self._selected_hit()
+        if hit is None:
+            return
+        kind = hit.kind
+        if kind == "module":
+            if self.app.add_module_to_assembly(hit.ref):
+                self.refresh_flags()
+        elif kind == "pipeline":
+            if not self.app.set_current_pipeline(hit.ref):
+                common.warn(self, f"管线 {hit.ref} 不在当前管线库中，"
+                                  "可先在 ③管线装配 加载管线库目录。")
+        elif kind == "asset_pack":
+            cb = self.app.zone_d.asset_combo
+            idx = cb.findData(hit.ref)
+            if idx >= 0:
+                cb.setCurrentIndex(idx)
+                self.app.zone_d.refresh()
+                self.app.status(f"已选用资产包：{hit.ref}（④生成 生效）", 4000)
+            else:
+                common.warn(self, f"资产包 {hit.ref} 未安装（检索源已装资产包，"
+                                  "正常不应触发）。")
+        elif kind == "protocol":
+            self._show_protocol_detail(hit.ref)
+
+    def _on_double(self, item):
+        if item is None:
+            return
+        hit = item.data(QtCore.Qt.UserRole)
+        if hit is None:
+            return
+        if hit.kind == "module":
+            m = self.app.store.get_module(hit.ref)
+            if m:
+                common.module_detail_dialog(self, m)
+        elif hit.kind == "protocol":
+            self._show_protocol_detail(hit.ref)
+
+    # ---------- 协议详情 ----------
+    def _protocol_entry(self, pid: str):
+        try:
+            from ..core.registry_loader import load_registry
+            reg = load_registry()
+            for p in (reg.protocols or []):
+                if p.get("id") == pid:
+                    return p
+        except Exception:
+            pass
+        return None
+
+    def _show_protocol_detail(self, pid: str):
+        entry = self._protocol_entry(pid)
+        if entry is None:
+            common.warn(self, f"未找到协议 {pid} 的在册声明。")
+            return
+        lines = [f"协议 : {entry.get('id', '')}",
+                 f"名称 : {entry.get('name', '')}",
+                 f"管线 : {entry.get('pipeline', '')}",
+                 f"分类 : {', '.join(entry.get('categories') or []) or '(空)'}",
+                 f"模块 : {', '.join(entry.get('module_ids') or []) or '(空)'}",
+                 "层挂载:"]
+        ml = entry.get("mount_layers") or {}
+        for lid, info in sorted(ml.items()):
+            dft = ", ".join(info.get("default") or []) or "(无)"
+            lines.append(f"  {lid} {info.get('name', '')}: 默认 {dft}")
+        refs = entry.get("references") or []
+        if refs:
+            lines.append("跨包引用:")
+            for ref in refs:
+                lines.append(f"  · {ref.get('module_id')}"
+                             f" ← {ref.get('source_package')}"
+                             + ("（资产只读）" if ref.get("asset_readonly") else ""))
+        else:
+            lines.append("跨包引用: （无）")
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle(f"协议详情 · {pid}")
+        dlg.resize(680, 480)
+        lay = QtWidgets.QVBoxLayout(dlg)
+        view = QtWidgets.QPlainTextEdit()
+        view.setReadOnly(True)
+        view.setPlainText("\n".join(lines))
+        lay.addWidget(view)
+        btn = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Close)
+        btn.rejected.connect(dlg.reject)
+        lay.addWidget(btn)
+        dlg.exec()
 
     # ---------- E2 协议定义向导 ----------
     def do_open_wizard(self):
