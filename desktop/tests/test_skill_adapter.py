@@ -78,3 +78,27 @@ class TestSkillAdapter(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRealTechdocIR(unittest.TestCase):
+    """真实战例：P90 管线(structure=techdoc) + M90 官方模块 → techdoc IR → SKILL。"""
+
+    def setUp(self):
+        self.dest = Path(tempfile.mkdtemp(prefix="nf_skill_real_"))
+
+    def test_p90_m90_export_skill_contains_module(self):
+        import sys as _s
+        _s.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+        from core.parser import parse_module
+        from core.pipeline_loader import load_pipeline_file
+        repo = Path(__file__).resolve().parents[2]   # 仓库根
+        p90 = load_pipeline_file(repo / "03_管线库" / "P90_技术文档生成管线.md")
+        self.assertIsNotNone(p90)
+        m90 = parse_module((repo / "04_模块库" / "技术文档类"
+                            / "M90_技术文档结构.md").read_text(encoding="utf-8"))
+        from core.generator import render_ir
+        ir = render_ir(p90, [m90], title="技术文档结构规范")
+        self.assertEqual(ir.type, "techdoc")     # P90 structure=techdoc → techdoc IR
+        res = export(ir, "skill", dest_dir=self.dest)
+        text = Path(res.files[0]).read_text(encoding="utf-8")
+        self.assertIn("M90", text)                # 层外 M90 也入正文（不静默丢弃）

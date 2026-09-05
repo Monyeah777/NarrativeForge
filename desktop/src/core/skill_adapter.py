@@ -26,14 +26,24 @@ def _slug(name: str) -> str:
 
 def _build_skill_md(ir: IRDocument) -> str:
     """techdoc IR → SKILL.md 文本（frontmatter + 层序操作说明）。"""
-    desc = (f"{ir.pipeline_name}（{ir.pipeline_id}）生成："
-            f"协议/文档操作规格，共 {sum(len(l.modules) for l in ir.layers)} 个规则块。")
     body_parts = [f"# {ir.title}", ""]
+    n_blocks = 0
     for layer in ir.layers:
         body_parts.append(f"## 层 {layer.id} · {layer.name}")
         for m in layer.modules:
             body_parts.append(f"### {m.full_id} · {m.name}")
             body_parts.append(m.content or "（无正文）")
+            n_blocks += 1
+    if ir.extra_modules:
+        # techdoc 装配的层外模块（如 P90 管线装配 M90——M90 层位=P90 管线 id
+        # 非九层，落入 extra）也是技能正文，不得丢弃（不静默丢内容不变式）
+        body_parts.append("## 附加规则")
+        for m in ir.extra_modules:
+            body_parts.append(f"### {m.full_id} · {m.name}")
+            body_parts.append(m.content or "（无正文）")
+            n_blocks += 1
+    desc = (f"{ir.pipeline_name}（{ir.pipeline_id}）生成："
+            f"协议/文档操作规格，共 {n_blocks} 个规则块。")
     frontmatter = (
         "---\n"
         f"name: {_slug(ir.title)}\n"
