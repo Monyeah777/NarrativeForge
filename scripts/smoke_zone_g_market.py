@@ -190,9 +190,67 @@ if row_pipe is not None:
           win.zone_c.pipe_combo.currentData() == "P00",
           f"combo={win.zone_c.pipe_combo.currentData()}")
 
+# ---- ⑦ E5：community 社区模块盘点 → 一键装载入库 ----
+print("[7] community 社区模块盘点 → 装载（M55）")
+win.zone_g.kind_combo.setCurrentIndex(5)      # 社区模块
+win.zone_g.query_edit.setText("M55")
+win.zone_g.do_search()
+tbl = win.zone_g.table
+row_m55 = None
+for r in range(tbl.rowCount()):
+    ref_item = tbl.item(r, 1)
+    if ref_item and ref_item.text() == "情感类:M55":
+        row_m55 = r
+        break
+check("社区模块检索命中 情感类:M55", row_m55 is not None,
+      f"总 {tbl.rowCount()} 行")
+if row_m55 is not None:
+    info_item = tbl.item(row_m55, 3)
+    check("装载前标记为「可装载」",
+          info_item is not None and "可装载" in info_item.text(),
+          f"info={info_item.text() if info_item else None}")
+    tbl.selectRow(row_m55)
+    win.zone_g.do_action()
+    m55_local = store.get_module("情感类:M55")
+    check("装载后 store 命中 情感类:M55", m55_local is not None,
+          f"get_module={m55_local}")
+    info_item = tbl.item(row_m55, 3)
+    check("装载后标记转「已装」",
+          info_item is not None and "✓已装" in info_item.text(),
+          f"info={info_item.text() if info_item else None}")
+    check("装载动作不污染既有装配（M00 仍在 selected）",
+          "通用类:M00" in win.selected,
+          f"selected={sorted(win.selected)}")
+
+# ---- ⑧ E5：community 社区管线盘点 → 装载入 cache ----
+print("[8] community 社区管线盘点 → 装载（P04）")
+win.zone_g.kind_combo.setCurrentIndex(6)      # 社区管线
+win.zone_g.query_edit.setText("P04")
+win.zone_g.do_search()
+tbl = win.zone_g.table
+row_p04 = None
+for r in range(tbl.rowCount()):
+    ref_item = tbl.item(r, 1)
+    if ref_item and ref_item.text() == "P04":
+        row_p04 = r
+        break
+check("社区管线检索命中 P04", row_p04 is not None,
+      f"总 {tbl.rowCount()} 行")
+if row_p04 is not None:
+    tbl.selectRow(row_p04)
+    win.zone_g.do_action()
+    raw = store.load_cache("pipelines")
+    ids = [d.get("id") for d in raw] if isinstance(raw, list) else []
+    check("管线 cache 已含 P04（merge 装载）", "P04" in ids,
+          f"cache ids={ids}")
+    check("③ 管线下拉含 P04（reload 后）",
+          any(win.zone_c.pipe_combo.itemData(i) == "P04"
+              for i in range(win.zone_c.pipe_combo.count())),
+          "P04 应在下拉列表")
+
 print(f"\n[统计] 模块 {len(store.list_modules())} · 管线 {len(pipes)}")
 if failures:
     print(f"\n✗ SMOKE ZONE_G FAILED（{len(failures)} 项）：{failures}")
     sys.exit(1)
-print("\n★ SMOKE ZONE_G PASSED ✓（检索命中 → 加入装配 → 装配态标记 → 层树联动）")
+print("\n★ SMOKE ZONE_G PASSED ✓（检索命中 → 加入装配 → 装配态标记 → 层树联动 → 社区装载）")
 sys.exit(0)

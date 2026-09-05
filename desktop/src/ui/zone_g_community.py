@@ -1,9 +1,9 @@
-"""功能区 G · 本地资源发现与装配中心（E4 模块市场雏形·本地版）。
+"""功能区 G · 本地资源发现与装配中心（E4 模块市场雏形 + E5 社区仓库盘点）。
 
-阶段①（E4，2.0 收口目标）：检索驱动一站式视图——消费 retriever.search 四类
-（module/asset_pack/pipeline/protocol，本地已装/在册），结果可直接加入装配
-（module 追加进 app.selected）、设为当前管线（pipeline）、选用资产包
-（asset_pack）、查看协议详情（protocol）；导入/E2 向导能力收进底部工具区。
+阶段①（E4 + E5，2.0 收口）：检索驱动一站式视图——消费 retriever.search
+module/asset_pack/pipeline/protocol（本地已装/在册）+ community_module /
+community_pipeline（community 仓库盘点：可发现 → 一键装载入库）；module
+可追加进装配集、pipeline 可设为当前管线、社区项可装载入库后转装配/选用。
 阶段②（规划）：接入 NarrativeForge 社区索引（GitHub）实现在线拉取/更新，
             届时替换「从 GitHub 拉取（占位）」按钮为真实下载逻辑。
 """
@@ -18,7 +18,8 @@ from ..core.retriever import search
 from . import common
 
 KIND_LABELS = [("全部", None), ("模块", "module"), ("资产包", "asset_pack"),
-               ("管线", "pipeline"), ("协议", "protocol")]
+               ("管线", "pipeline"), ("协议", "protocol"),
+               ("社区模块", "community_module"), ("社区管线", "community_pipeline")]
 
 
 class ZoneGCommunity(QtWidgets.QWidget):
@@ -35,9 +36,10 @@ class ZoneGCommunity(QtWidgets.QWidget):
         root = QtWidgets.QVBoxLayout(self)
 
         desc = QtWidgets.QLabel(
-            "本地资源发现与装配：一键检索已安装模块 / 本地资产包 / 缓存管线 / "
-            "在册协议，从结果直接加入装配、切换管线或选用资产包。\n"
-            "（检索范围 = 本地资源；在线社区拉取为阶段②规划，未接入。）")
+            "资源发现与装配中心：检索已安装模块 / 资产包 / 管线 / 在册协议，"
+            "以及 community 社区仓库可装载模块 / 管线。\n"
+            "本地资源可直接加入装配、切管线、选资产；社区项未装可一键装载入库，"
+            "已装则转装配。在线社区拉取为阶段②规划，未接入。")
         desc.setWordWrap(True)
         root.addWidget(desc)
 
@@ -146,15 +148,23 @@ class ZoneGCommunity(QtWidgets.QWidget):
             self.result.setStyleSheet("color: #1a6e2a;")
 
     def _hit_info(self, hit, in_selected: bool) -> str:
-        """结果信息列：module 层位/分类 + 装配态标记，其它类型按 tags。"""
+        """结果信息列：module 层位/分类 + 装配态；community 项来源包+装载态。"""
         if hit.kind == "module":
             tag = hit.tags[0] if hit.tags else ""
             mark = " · ✓ 已装配" if in_selected else ""
             return f"层 {hit.layer} · {tag}{mark}"
+        if hit.kind in ("community_module", "community_pipeline"):
+            # tags = [来源包, "✓已装"/"可装载"]（retriever._community_hits）
+            pkg = hit.tags[0] if hit.tags else ""
+            state = hit.tags[1] if len(hit.tags) > 1 else ""
+            if hit.kind == "community_module":
+                in_asm = " · ✓ 已装配" if in_selected else ""
+                return f"{pkg} · 层 {hit.layer} · {state}{in_asm}"
+            return f"{pkg} · {state}"
         return " · ".join(hit.tags or [])
 
     def refresh_flags(self):
-        """装配集变化后重标 module 行的「已装配」标记（②③ 勾选联动触发）。"""
+        """装配集变化后重标 module / community_module 行的标记（②③ 联动触发）。"""
         if self._busy or self.table.rowCount() == 0:
             return
         selected = self.app.selected
@@ -163,7 +173,7 @@ class ZoneGCommunity(QtWidgets.QWidget):
             if item is None:
                 continue
             hit = item.data(QtCore.Qt.UserRole)
-            if hit is None or hit.kind != "module":
+            if hit is None or hit.kind not in ("module", "community_module"):
                 continue
             info = self._hit_info(hit, in_selected=hit.ref in selected)
             it = self.table.item(r, 3)
@@ -201,6 +211,28 @@ class ZoneGCommunity(QtWidgets.QWidget):
         elif kind == "protocol":
             self.b_action.setText("查看协议详情")
             self.act_hint.setText(f"查看协议 {hit.ref} 的声明（管线/模块/层挂载/引用）")
+        elif kind == "community_module":
+            installed = len(hit.tags) > 1 and hit.tags[1] == "✓已装"
+            if installed:
+                self.b_action.setText("加入装配")
+                self.act_hint.setText(
+                    f"模块 {hit.ref} 已装载（来源 {hit.tags[0]}）——加入装配参与 ③/④")
+            else:
+                self.b_action.setText("一键装载入库")
+                self.act_hint.setText(
+                    f"把社区模块 {hit.ref}（来源 {hit.tags[0]}）安装进本地模块库，"
+                    "装载后即可勾选装配")
+        elif kind == "community_pipeline":
+            installed = len(hit.tags) > 1 and hit.tags[1] == "✓已装"
+            if installed:
+                self.b_action.setText("设为当前管线")
+                self.act_hint.setText(
+                    f"管线 {hit.ref}（来源 {hit.tags[0]}）已装载——设为当前管线")
+            else:
+                self.b_action.setText("装载管线到本地")
+                self.act_hint.setText(
+                    f"把社区管线 {hit.ref}（来源 {hit.tags[0]}）并入本地管线库，"
+                    "装载后 ③ 下拉可选用")
         else:
             self.b_action.setEnabled(False)
             self.b_action.setText("执行动作")
@@ -244,6 +276,86 @@ class ZoneGCommunity(QtWidgets.QWidget):
                                   "正常不应触发）。")
         elif kind == "protocol":
             self._show_protocol_detail(hit.ref)
+        elif kind in ("community_module", "community_pipeline"):
+            self._do_community_action(hit)
+
+    def _do_community_action(self, hit):
+        """E5：社区盘点项动作——未装装载入库，已装转装配/切管线。
+
+        hit.tags = [来源包, "✓已装"/"可装载"]（retriever._community_hits）。
+        """
+        from ..core.community_inventory import (CommunityItem,
+                                                install_module,
+                                                install_pipeline)
+        pkg = hit.tags[0] if hit.tags else ""
+        installed = len(hit.tags) > 1 and hit.tags[1] == "✓已装"
+        item = CommunityItem(kind=hit.kind, pkg=pkg, ref=hit.ref,
+                             name=hit.name, layer=hit.layer,
+                             installed=installed)
+        if hit.kind == "community_module":
+            if not installed:
+                if not install_module(self.app.store, item):
+                    common.error(self,
+                                 f"装载失败：{hit.ref}（来源 {pkg}）"
+                                 "——源文件缺失或解析失败。")
+                    return
+                # 装载成功：刷新 ②③④ 模块库 + 重标结果（可装载 → ✓已装）
+                self.app.on_modules_changed()
+                self._reload_community_flags()
+                self.app.status(
+                    f"✓ 已装载社区模块 {hit.ref}（{pkg}）——"
+                    "可在 ②③ 勾选参与装配", 5000)
+            else:
+                if self.app.add_module_to_assembly(hit.ref):
+                    self.refresh_flags()
+        elif hit.kind == "community_pipeline":
+            if not installed:
+                if not install_pipeline(self.app.store, item):
+                    common.error(self, f"装载失败：管线 {hit.ref}"
+                                       f"（来源 {pkg}）——源文件缺失或解析失败。")
+                    return
+                self.app.reload_pipelines()
+                self._reload_community_flags()
+                self.app.status(f"✓ 已装载社区管线 {hit.ref}（{pkg}）——"
+                                "③ 下拉可选用", 5000)
+            else:
+                if not self.app.set_current_pipeline(hit.ref):
+                    common.warn(self, f"管线 {hit.ref} 不在当前管线库中。")
+
+    def _reload_community_flags(self):
+        """装载动作后重跑当前检索，刷新结果行装载态标记。"""
+        if self._busy or self.table.rowCount() == 0:
+            return
+        q = self.query_edit.text().strip()
+        kind = self.kind_combo.currentData()
+        if kind not in ("community_module", "community_pipeline"):
+            return
+        selected = self.app.selected
+        for r in range(self.table.rowCount()):
+            item = self.table.item(r, 0)
+            if item is None:
+                continue
+            hit = item.data(QtCore.Qt.UserRole)
+            if hit is None or hit.kind not in ("community_module",
+                                               "community_pipeline"):
+                continue
+            # 重查该 ref 的 installed 状态（重新 search 单条）
+            from ..core.community_inventory import catalog
+            cur = None
+            for it in catalog(self.app.store):
+                if it.kind == hit.kind and it.ref == hit.ref:
+                    cur = it
+                    break
+            if cur is None:
+                continue
+            state = "✓已装" if cur.installed else "可装载"
+            hit.tags = [cur.pkg, state] if len(hit.tags) >= 1 \
+                else [state]
+            info = self._hit_info(
+                hit, in_selected=hit.ref in selected)
+            info_item = self.table.item(r, 3)
+            if info_item is not None:
+                info_item.setText(info)
 
     def _on_double(self, item):
         if item is None:
@@ -255,6 +367,13 @@ class ZoneGCommunity(QtWidgets.QWidget):
             m = self.app.store.get_module(hit.ref)
             if m:
                 common.module_detail_dialog(self, m)
+        elif hit.kind == "community_module":
+            m = self.app.store.get_module(hit.ref)
+            if m:
+                common.module_detail_dialog(self, m)
+            else:
+                common.info(self, f"社区模块 {hit.ref}（来源 {hit.tags[0] if hit.tags else ''}）"
+                                  "尚未装载——点「一键装载入库」安装后即可查看详情并参与装配。")
         elif hit.kind == "protocol":
             self._show_protocol_detail(hit.ref)
 
