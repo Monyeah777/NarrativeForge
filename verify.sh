@@ -358,7 +358,7 @@ PYEOF
   else
     wn 'python3 不在 PATH（跳过 check13 模块逐条比对）'
   fi
-  if [ "$err" -eq 0 ]; then ok '协议版本一致性 + 迁移完整性全绿（check13：三处版本一致 + §9.3 四步在场 + 13 件模块全等）'
+  if [ "$err" -eq 0 ]; then ok '协议版本一致性 + 迁移完整性全绿（check13：两处版本一致 + §9.3 四步在场 + 13 件模块全等）'
   fi
 }
 check14(){
