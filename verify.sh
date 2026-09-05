@@ -919,6 +919,83 @@ check19(){
   if [ "$err" -eq 0 ]; then ok '导出产物 schema 合规门禁全绿（check19：A1 外部吸收——产物 shape 不漂移）'
   fi
 }
+check20(){
+  echo '== [20/段C] 文档完整性门禁（v2.2.0 A3：模块文档必填项——对齐 check16 过渡策略分层）=='
+  local err=0 PYOK=0
+  [ -n "$PY3" ] && PYOK=1
+  if [ "$PYOK" -eq 1 ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check20.log 2>&1
+import glob, os, re, sys
+
+# A3 文档完整性（v2.2.0 外部吸收）：模块文档硬性必填项，缺即 fail。
+# 分层判据（对齐 check16 过渡策略——13 方案 §6 开放问题 1）：
+#   - 官方核心 13 件（04_模块库）：机读完备（machine_contract 必含）+ 元数据行必填；
+#   - 社区模块（community/*/modules）：机读完备者同结构强校验；未完备存量
+#     WARN+统计不阻断（存量 retro-fit 随社区演进，不破既有 PASS）。
+REQ_META = ('类别', '来源', '挂载点', '依赖')
+errs = []
+incomplete = []   # 社区未完备模块（WARN 统计）
+scanned = 0
+
+def check_file(path, strict):
+    """strict=True 机读完备须含 machine_contract + 元数据；否则仅元数据行提示。"""
+    global scanned
+    scanned += 1
+    txt = open(path, encoding='utf-8').read()
+    issues = []
+    has_mc = 'machine_contract' in txt
+    if strict and not has_mc:
+        issues.append('%s 缺 machine_contract（01 §1.1 机读契约，官方模块必含）' % os.path.basename(path))
+    head = txt.split('\n', 1)[0] if txt else ''
+    if not re.match(r'^# (模块|M\d+|情感:|生存:|事件:|通用:)[^#]*', head):
+        issues.append('%s 标题格式异常（应 # 模块 Mxx · 名称）' % os.path.basename(path))
+    # 元数据行：标题下多行 > 引用（类别/来源/挂载点/依赖可分布多行）；取前 6 行合查
+    meta_block = '\n'.join(txt.split('\n')[:6])
+    for k in REQ_META:
+        if k not in meta_block:
+            issues.append('%s 元数据缺 %s（标题下应含 > 类别/来源/挂载点/依赖 行）' % (os.path.basename(path), k))
+    if ('## 职责' not in txt and '## 核心逻辑' not in txt
+            and '## 1. 职责' not in txt and '## 1 职责' not in txt
+            and '## 2 输入输出' not in txt):
+        issues.append('%s 缺 职责/核心逻辑 章节' % os.path.basename(path))
+    return issues, has_mc
+
+# 官方核心 13 件（04_模块库）
+core_files = sorted(glob.glob('04_模块库/*/*.md'))
+for f in core_files:
+    issues, _ = check_file(f, strict=True)
+    for i in issues:
+        errs.append('[官方] ' + i)
+# 社区模块（community/*/modules）
+comm_files = sorted(glob.glob('community/*/modules/*.md'))
+for f in comm_files:
+    issues, has_mc = check_file(f, strict=False)
+    if has_mc:
+        for i in issues:
+            errs.append('[社区] ' + i)   # 机读完备社区模块强校验
+    elif issues:
+        incomplete.append((os.path.basename(f), issues))
+print('文档完整性扫描：官方 %d 件 + 社区 %d 件（社区机读完备强校验；未完备存量 WARN 统计 %d 件）'
+      % (len(core_files), len(comm_files), len(incomplete)))
+for base, iss in incomplete:
+    print(' [WARN] 社区未完备存量（过渡期不阻断，随 retro-fit）：%s %s' % (base, '；'.join(iss[:2])))
+for e in errs:
+    print(' [FAIL] ' + e)
+if incomplete:
+    print(' [STAT] 社区未完备 %d 件（WARN 统计，随 13 方案过渡策略演进）' % len(incomplete))
+sys.exit(1 if errs else 0)
+PYEOF
+    then
+      :
+    else
+      no "check20 文档完整性校验失败——$(head -5 /tmp/nf_check20.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check20）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '文档完整性门禁全绿（check20：A3 模块必填项——官方强校验 + 社区机读完备强校验，未完备 WARN 统计）'
+  fi
+}
 # ================= 主执行体（三段式） =================
 echo '=================================================='
 echo ' NarrativeForge 三段式验收门禁  v2.9（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
@@ -942,6 +1019,7 @@ check16
 check17
 check18
 check19
+check20
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
