@@ -1,3 +1,15 @@
+## [Unreleased]（v2.2.0 外部吸收首波，方案 33 执行中）
+### Added
+- **v2.2.0-A1 导出产物 schema 合规（方案 33 Wave1，cc3106e）**：verify 新 check19——新增 `desktop/src/core/export_schema.py`（5 导出格式 ccv3/skill/agents/claude/mcp 各建逐键 shape 自检）+ `desktop/tests/test_export_schema.py`（合法产物 PASS、篡改 FAIL）。verify PASS 24→26。
+- **v2.2.0-A2 引用反查（方案 33 Wave2，c13fb95）**：`retriever.referenced_by(module_id, path)` 反向引用查询（遍历 registry protocols[].references，裸号 M55 ↔ 限定 id 情感:M55 双向命中）+ `nf who-refers <module_id>` CLI（--registry 可指路径；单测 +6）。
+- **v2.2.0-A3 文档完整性门禁（方案 33 Wave2，14e47dc）**：verify 新 check20——模块文档必填项分层校验（官方 13 件强校验 machine_contract/元数据/职责章节；社区机读完备者强校验、未完备存量 WARN 统计，对齐 check16 过渡策略）。verify PASS 26→27。
+- **v2.2.0-A4 registry 引用图闭合门禁（方案 33 Wave3，d0dc61b）**：verify 新 check21——新增 `desktop/src/core/impact_check.py`（registry 自洽纯 JSON 门禁：references.source_package 在册 / module_id 裸号归一在源包在列 / 同包无裸号重复 + removal_impact 变更前置影响面查询；15 单测含真源自洽 smoke）。verify PASS 27→29。
+- **v2.2.0-A5 MCP 规范差距核查（方案 33 Wave3，181de51）**：一次性核查报告落盘 `33_v2.2.0_A5-MCP规范差距核查报告.md`——mcp.json（27 方案产物）对照 MCP 规范 2025-11-25 schema.ts 实证：G1 形态级（静态快照 vs JSON-RPC 会话，非缺陷）/ G2 Resource.text 属 read 响应非 list 元数据 / G3-G8 合法无返工；check19 边界声明 + C1 MCP Server 立项差距基线。
+- **v2.2.0-B1/B2 方案模板纪律（方案 33 Wave4，e68718b）**：CONTRIBUTING 新增 §4.5——NN_ 方案模板必填两段：B1 五问自检（谁消费/何时验证被消费/与非目标边界/与现存协议关系/失败定义）+ B2 消费方声明（功能→谁消费→怎么验证被消费，空消费方不得入方案），防 C-a 无消费方能力重演。
+### Changed
+- verify.sh v2.9→v2.10（check19/20/21 入段 C，头部/统计配套说明同步；单测 199 OK、PASS=29 全绿）。
+- README 协议链追加 33 + v2.2.0 主线块（治理指针 2）；ROADMAP §7.6 条件池（C/D 族，af3d191）+ 执行状态更新；CONTRIBUTING §4.5（B1/B2）；方案真相源 33_v2.2.0_外部吸收首波方案.md 落盘。
+
 ## [2.0.x] - 2026-09-05（2.0 E2-E5 收口：协议向导 + 组合运行时 + 模块市场雏形 + 仓库盘点）
 ### Added
 - **v2.0.x-E2 协议定义向导（方案 19，031f543 docs + 9bf5055 feat）**：自定义协议 GUI 化落地——`desktop/src/core/protocol_wizard.py`（ProtocolForm + build_protocol_yaml 生成合规 protocol.yaml v2 + self_check）+ `desktop/src/ui/protocol_wizard_dialog.py`（向导 QDialog）+ zone_g「创建自定义协议…」入口（协议定义从手写 Schema 门槛降为填表生成）。

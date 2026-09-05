@@ -182,18 +182,19 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 
 > **来源**：外部两批 28 项筛选（SpecForge/OpenSpec/MCP 等方法论外部输入）——真正「现在该做」收敛为「verify 从协议一致性加深到产物与语义完整性」+「方案模板纪律」。方案 33 已批准（A 族 5 项 + B 族 2 项，四波）。
 
-### 执行中（方案 33，Wave1 已完成）
-- ✅ **Wave1 A1 导出产物 schema 合规**（cc3106e）：export_schema 5 格式 shape 校验 + check19，verify PASS 24→26。
-- 🔄 **Wave2 A3 文档完整性门禁 + A2 引用反查**：check20（模块必填清单缺即 fail）+ retriever.referenced_by「谁引用 Mxx」。
-- 🔄 **Wave3 A4 变更影响面 + A5 MCP 规范核查**：impact_check.py + 一次性 MCP 规范差距报告。
-- 🔄 **Wave4 B 族 + C/D 族 + 收口**：方案模板五问 + 消费方声明（防无消费方能力重演）；33 真相源/README/CHANGELOG。
+### 执行中（方案 33，四波全完成）
+- ✅ **Wave1 A1 导出产物 schema 合规**（cc3106e）：export_schema 5 格式 shape 校验 + check19。
+- ✅ **Wave2 A3 文档完整性门禁 + A2 引用反查**（14e47dc + c13fb95）：check20（模块必填清单缺即 fail）+ retriever.referenced_by「谁引用 Mxx」+ nf who-refers CLI。
+- ✅ **Wave3 A4 变更影响面 + A5 MCP 规范核查**（d0dc61b + 181de51）：impact_check.py + check21（registry 引用图闭合）+ 一次性 MCP 规范差距报告落盘。
+- ✅ **Wave4 B 族 + C/D 族 + 收口**（e68718b）：CONTRIBUTING §4.5 方案模板五问 + 消费方声明（防无消费方能力重演）；33 真相源/README/CHANGELOG 已同步。verify PASS=29 全绿。
+- ⏭ **v2.2.0 发布收口**（待：三件套归档 tag v2.2.0）。
 
 ### C/D 族条件池（本版只记录不实现）
 - **C 族（端壳/生态，绑三问①终点形态 + F2 形态决策）**：C1 MCP Server / C2 MCP 运行时安全层 / C3 Spec Registry（= B4 遗留） / C4 审批变更工作流 / C5 OpenSDD 双模式 / C6 M3E Canvas / C7 Agent 检索触发模式。三问①选工具链/AI 消费路线或社区路线时立项；C2 随 C1、C3-C4 随社区路线、C5-C7 随 F2 产品设计。
 - **D 族（F3 内容资产 AI 化，条件触发冻结）**：D1 BNF/Outlines 约束生成（触发：F3 AI 写模块格式不稳） / D2 STORM 调研生成（F3 扩充题材包） / D3 多 Agent 分工（F3 批量产内容） / D4 Docling 素材解析（dogfooding 暴露素材进不来） / D5 LiteFlow 条件路由（流程级动态分支出现）。D1 优先「模板+parser 强校验」，约束解码为备选。
 
 ### 后续候选（33 后）
-- 方案 33 四波全完后 v2.2.0 三件套收口 + tag v2.2.0。
+- v2.2.0 三件套发布收口（方案 33 四波已全完成：verify v2.10 PASS=29；发布动作 = CHANGELOG 归档 + tag v2.2.0，按治理指针 3）。
 - 备忘排除（不吸收）：OpenSDD 文档先于代码 / codex-spec 意图→spec（协议栈已走更深）/ 渐进式加载（已实现）/ FSM 约束生成（映射错误）/ machine_rules YAML（负资产）。
 
 
