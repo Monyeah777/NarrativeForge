@@ -113,12 +113,15 @@ def load_community_pipeline(pkg: str, pid: str) -> Optional[Pipeline]:
 def catalog(store: Store) -> List[CommunityItem]:
     """盘点 community 四包全部模块 + 管线，附已装判定。
 
-    module 已装 = store.get_module(full_id) 命中；pipeline 已装 =
+    module 已装 = 本地已装模块中存在同 full_id（一次 list_modules 建索引
+    O(N)，避免逐件 get_module 的内部全目录列举 O(N²)）；pipeline 已装 =
     pipelines cache 含该 id。parse 失败的单件跳过（不静默吞——catalog 不抛，
     坏文件只影响自身；合规包不应触发，若出现需人工查）。
     """
+    from .models import fid_key
     items: List[CommunityItem] = []
     installed_pipes = _pipeline_ids_in_cache(store)
+    installed_mods = {fid_key(m.full_id) for m in store.list_modules()}
     for pkg_dir in _package_dirs():
         pkg = pkg_dir.name
         mod_dir = pkg_dir / "modules"
@@ -135,7 +138,7 @@ def catalog(store: Store) -> List[CommunityItem]:
                         m = parse_module(f.read_text(encoding="utf-8"))
                     except Exception:
                         continue
-                installed = store.get_module(m.full_id) is not None
+                installed = fid_key(m.full_id) in installed_mods
                 items.append(CommunityItem(
                     kind="community_module", pkg=pkg, ref=m.full_id,
                     name=m.name, layer=m.layer, installed=installed))

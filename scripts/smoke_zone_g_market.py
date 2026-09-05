@@ -221,6 +221,9 @@ if row_m55 is not None:
     check("装载动作不污染既有装配（M00 仍在 selected）",
           "通用类:M00" in win.selected,
           f"selected={sorted(win.selected)}")
+    check("F1: 装载后动作按钮文案翻转为「加入装配」",
+          win.zone_g.b_action.text() == "加入装配",
+          f"button={win.zone_g.b_action.text()}")
 
 # ---- ⑧ E5：community 社区管线盘点 → 装载入 cache ----
 print("[8] community 社区管线盘点 → 装载（P04）")
@@ -247,6 +250,9 @@ if row_p04 is not None:
           any(win.zone_c.pipe_combo.itemData(i) == "P04"
               for i in range(win.zone_c.pipe_combo.count())),
           "P04 应在下拉列表")
+    check("F1: 管线装载后动作按钮翻转为「设为当前管线」",
+          win.zone_g.b_action.text() == "设为当前管线",
+          f"button={win.zone_g.b_action.text()}")
 
 print(f"\n[统计] 模块 {len(store.list_modules())} · 管线 {len(pipes)}")
 if failures:

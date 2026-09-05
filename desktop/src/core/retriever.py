@@ -23,6 +23,11 @@ from typing import List, Optional
 from .models import Module, AssetPack
 from .storage import Store
 
+#: 社区盘点装载态标签（单一真源：retriever 生产、zone_g/测试消费同此常量，
+#: tags[1] 即此值；勿在消费端硬编码字面量）。
+STATE_INSTALLED = "✓已装"
+STATE_AVAILABLE = "可装载"
+
 
 @dataclass
 class Hit:
@@ -114,7 +119,7 @@ def _community_hits(store: Store, kind: str, q: str, limit: int) -> List[Hit]:
                 continue
             if not _match(q, it.ref, it.name, it.pkg, it.layer):
                 continue
-            state = "✓已装" if it.installed else "可装载"
+            state = STATE_INSTALLED if it.installed else STATE_AVAILABLE
             tags = [it.pkg, state]
             out.append(Hit(kind=kind, ref=it.ref, name=it.name,
                            tags=tags, layer=it.layer))

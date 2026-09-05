@@ -14,7 +14,7 @@ from pathlib import Path
 from PySide6 import QtCore, QtWidgets
 from ..core.models import Module
 from ..core.parser import parse_module
-from ..core.retriever import search
+from ..core.retriever import search, STATE_INSTALLED, STATE_AVAILABLE
 from . import common
 
 KIND_LABELS = [("全部", None), ("模块", "module"), ("资产包", "asset_pack"),
@@ -154,7 +154,7 @@ class ZoneGCommunity(QtWidgets.QWidget):
             mark = " · ✓ 已装配" if in_selected else ""
             return f"层 {hit.layer} · {tag}{mark}"
         if hit.kind in ("community_module", "community_pipeline"):
-            # tags = [来源包, "✓已装"/"可装载"]（retriever._community_hits）
+            # tags = [来源包, 装载态]（STATE_INSTALLED/STATE_AVAILABLE）
             pkg = hit.tags[0] if hit.tags else ""
             state = hit.tags[1] if len(hit.tags) > 1 else ""
             if hit.kind == "community_module":
@@ -212,7 +212,7 @@ class ZoneGCommunity(QtWidgets.QWidget):
             self.b_action.setText("查看协议详情")
             self.act_hint.setText(f"查看协议 {hit.ref} 的声明（管线/模块/层挂载/引用）")
         elif kind == "community_module":
-            installed = len(hit.tags) > 1 and hit.tags[1] == "✓已装"
+            installed = len(hit.tags) > 1 and hit.tags[1] == STATE_INSTALLED
             if installed:
                 self.b_action.setText("加入装配")
                 self.act_hint.setText(
@@ -223,7 +223,7 @@ class ZoneGCommunity(QtWidgets.QWidget):
                     f"把社区模块 {hit.ref}（来源 {hit.tags[0]}）安装进本地模块库，"
                     "装载后即可勾选装配")
         elif kind == "community_pipeline":
-            installed = len(hit.tags) > 1 and hit.tags[1] == "✓已装"
+            installed = len(hit.tags) > 1 and hit.tags[1] == STATE_INSTALLED
             if installed:
                 self.b_action.setText("设为当前管线")
                 self.act_hint.setText(
@@ -282,13 +282,13 @@ class ZoneGCommunity(QtWidgets.QWidget):
     def _do_community_action(self, hit):
         """E5：社区盘点项动作——未装装载入库，已装转装配/切管线。
 
-        hit.tags = [来源包, "✓已装"/"可装载"]（retriever._community_hits）。
+        hit.tags = [来源包, STATE_INSTALLED/STATE_AVAILABLE]（retriever._community_hits 以 STATE_* 常量生产）。
         """
         from ..core.community_inventory import (CommunityItem,
                                                 install_module,
                                                 install_pipeline)
         pkg = hit.tags[0] if hit.tags else ""
-        installed = len(hit.tags) > 1 and hit.tags[1] == "✓已装"
+        installed = len(hit.tags) > 1 and hit.tags[1] == STATE_INSTALLED
         item = CommunityItem(kind=hit.kind, pkg=pkg, ref=hit.ref,
                              name=hit.name, layer=hit.layer,
                              installed=installed)
@@ -302,6 +302,7 @@ class ZoneGCommunity(QtWidgets.QWidget):
                 # 装载成功：刷新 ②③④ 模块库 + 重标结果（可装载 → ✓已装）
                 self.app.on_modules_changed()
                 self._reload_community_flags()
+                self._update_selection()   # F1：按钮文案随装载态翻转
                 self.app.status(
                     f"✓ 已装载社区模块 {hit.ref}（{pkg}）——"
                     "可在 ②③ 勾选参与装配", 5000)
@@ -316,11 +317,33 @@ class ZoneGCommunity(QtWidgets.QWidget):
                     return
                 self.app.reload_pipelines()
                 self._reload_community_flags()
+                self._update_selection()   # F1：按钮文案随装载态翻转
+                # F2：引导——管线层位默认模块若来自同包需另行装载才可装配
+                missing = self._pkg_modules_unloaded(hit)
+                hint = (f"；注意：{missing} 个同包模块尚未装载，"
+                        "切到「社区模块」档装载后 ③ 层树才会出现"
+                        if missing else "")
                 self.app.status(f"✓ 已装载社区管线 {hit.ref}（{pkg}）——"
-                                "③ 下拉可选用", 5000)
+                                "③ 下拉可选用" + hint, 6000)
             else:
                 if not self.app.set_current_pipeline(hit.ref):
                     common.warn(self, f"管线 {hit.ref} 不在当前管线库中。")
+
+    def _pkg_modules_unloaded(self, hit) -> int:
+        """F2：同来源包下尚未装载的模块数（管线装载后装配完整性引导）。"""
+        try:
+            from ..core.community_inventory import catalog
+        except Exception:
+            return 0
+        pkg = hit.tags[0] if hit.tags else ""
+        if not pkg:
+            return 0
+        n = 0
+        for it in catalog(self.app.store):
+            if (it.kind == "community_module" and it.pkg == pkg
+                    and not it.installed):
+                n += 1
+        return n
 
     def _reload_community_flags(self):
         """装载动作后重跑当前检索，刷新结果行装载态标记。"""
@@ -348,7 +371,7 @@ class ZoneGCommunity(QtWidgets.QWidget):
                     break
             if cur is None:
                 continue
-            state = "✓已装" if cur.installed else "可装载"
+            state = STATE_INSTALLED if cur.installed else STATE_AVAILABLE
             hit.tags = [cur.pkg, state] if len(hit.tags) >= 1 \
                 else [state]
             info = self._hit_info(
