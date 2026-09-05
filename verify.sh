@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.9  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）
+# 版本 : v2.10  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
-#        [段 C] 代码层门禁（check12-check18，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
-#        段 A/B = L0/L1（协议一致性 + 内容对账），check12-18 = L2 core（unittest/py_compile/协议投影/
-#        组合/契约/质量/导出门）；android 相关 check 已随 L3 端壳冻结移出（见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门）
+#        [段 C] 代码层门禁（check12-check21，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
+#        段 A/B = L0/L1（协议一致性 + 内容对账），check12-21 = L2 core（unittest/py_compile/协议投影/
+#        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门）；android 相关 check 已随 L3 端壳冻结移出（见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4））
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
@@ -996,9 +996,24 @@ PYEOF
   if [ "$err" -eq 0 ]; then ok '文档完整性门禁全绿（check20：A3 模块必填项——官方强校验 + 社区机读完备强校验，未完备 WARN 统计）'
   fi
 }
+check21(){
+  echo '== [21/段C] registry 引用图闭合门禁（v2.2.0 A4：impact_check 变更影响面——registry 自洽无悬空引用/无裸号重复）=='
+  local err=0
+  if [ -d desktop/tests ]; then
+    if ( cd desktop && "$PY3" -m unittest tests.test_impact_check -q >/tmp/nf_check21_unittest.log 2>&1 ); then
+      ok 'registry 引用图闭合校验全绿（A4 impact_check：隔离构造悬空引用/重复检出 + registry.json 真源自洽 smoke）'
+    else
+      no "registry 引用图闭合校验失败——见 /tmp/nf_check21_unittest.log"; err=1
+    fi
+  else
+    wn 'desktop/tests 不在场（跳过 check21）'
+  fi
+  if [ "$err" -eq 0 ]; then ok 'registry 引用图闭合门禁全绿（check21：A4 外部吸收——registry 自洽无悬空 source_package/module_id、无同包裸号重复）'
+  fi
+}
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.9（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.10（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -1010,7 +1025,7 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁（L2 core：check12-check18 无条件执行；android 相关已随 L3 冻结移出）——'
+echo '—— 段 C：代码层门禁（L2 core：check12-check21 无条件执行；android 相关已随 L3 冻结移出）——'
 check12
 check13
 check14
@@ -1020,6 +1035,7 @@ check17
 check18
 check19
 check20
+check21
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
