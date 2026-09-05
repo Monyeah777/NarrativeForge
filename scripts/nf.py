@@ -61,6 +61,12 @@ def _build_parser() -> argparse.ArgumentParser:
     reg.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
     reg.set_defaults(mode="check")
+
+    mkt = sub.add_parser("market",
+                         help="市场协议查询（B4：依赖闭包 + 挂载冲突预检）")
+    mkt.add_argument("pkg_dir", help="包目录（如 community/校园西幻轻混组合包）")
+    mkt.add_argument("--registry", default=None,
+                     help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
     return p
 
 
@@ -144,10 +150,63 @@ def _cmd_register(args) -> int:
     return 0
 
 
+def _cmd_market(args) -> int:
+    """nf market：依赖闭包 + 挂载冲突预检（B4 CLI 先行；信息查询，冲突不阻断）。"""
+    import json
+    from core.market_analyzer import conflicts, dependencies
+    from core.registry_sync import check_registerable
+
+    reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    doc_path = os.path.join(ROOT, "02_联动注册表.md")
+
+    pkg_id = os.path.basename(args.pkg_dir.rstrip("/\\"))
+
+    with open(reg_path, encoding="utf-8") as f:
+        reg = json.load(f)
+    prots = {p["id"]: p for p in reg.get("protocols", [])}
+    with open(doc_path, encoding="utf-8") as f:
+        doc = f.read()
+
+    # 登记状态（复用 registry_sync 三要件校验；issue 即未就绪提示，不阻断查询）
+    reg_issues = check_registerable(args.pkg_dir, doc)
+    print(f"== nf market {pkg_id} ==")
+    print("  登记状态: %s" % ("在册（02 §8 + registry protocols[]）"
+                              if not reg_issues else "; ".join(reg_issues)))
+    if pkg_id not in prots:
+        print("  registry protocols[] 无条目——无 references 可查")
+        return 2 if reg_issues else 0
+
+    # 加载各包 protocol.yaml 内容（data 供 dependencies/conflicts 用）
+    import glob
+    import yaml
+    data = {}
+    for pf in sorted(glob.glob(os.path.join(ROOT, "community", "*", "protocol.yaml"))):
+        try:
+            with open(pf, encoding="utf-8") as f:
+                raw = yaml.safe_load(f)
+            data[raw["package"]["id"]] = raw
+        except Exception:
+            continue
+
+    seen, dep_issues = dependencies(pkg_id, prots, data)
+    cfl = conflicts(pkg_id, prots, data)
+    print("  依赖闭包: %s" % (", ".join(sorted(seen)) if seen else "无跨包引用"))
+    for i in dep_issues:
+        print(f"  [依赖] {i}")
+    if cfl:
+        for i in cfl:
+            print(f"  [冲突] {i}")
+    else:
+        print("  挂载冲突: 无")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
         return _cmd_register(args)
+    if args.cmd == "market":
+        return _cmd_market(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2
