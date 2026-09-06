@@ -9,6 +9,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   verify:
     name: verify-sh-l0-l2

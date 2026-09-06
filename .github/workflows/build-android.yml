@@ -13,6 +13,8 @@ on:
   push:
     tags: ['shells-v*']
   workflow_dispatch:
+permissions:
+  contents: read
 
 jobs:
   build-android:
@@ -282,12 +284,21 @@ jobs:
           name: narrativeforge-android-apk
           path: android/bin/*.apk
 
-      - name: 发布到 GitHub Releases（仅推送 v* 标签时触发）
+      - name: 生成 APK sha256 校验和（S8 安全纪律）
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          cd android/bin
+          for f in *.apk; do sha256sum "$f" > "$f.sha256"; done
+          ls -la *.sha256
+
+      - name: 发布到 GitHub Releases（仅推送 shells-v* 标签时触发）
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           allowUpdates: true
-          files: android/bin/*.apk
+          files: |
+            android/bin/*.apk
+            android/bin/*.apk.sha256
   # ============ C7 · T3-1 端到端测试入 CI（缺口⑩闭环）：Android 模拟器启动冒烟最小集 ============
   # 复用 build-android job 构建产物（debug APK），模拟器 boot → 安装 x86_64 ABI APK →
   # am start 真实启动 → pidof 存活断言（不闪退冒烟）。独立 job 容错：冒烟失败不影响主构建产物上传。

@@ -1,3 +1,9 @@
+## [Unreleased] - 波 0 治理修订（40 总纲，2026-09-06；不产版本 tag）
+### Security
+- **旧 token 弃用记录（40 总纲 S8）**：2026-09-06 会话中使用的 GitHub PAT（`ghp_` 前缀，用于 dispatch 验证）已明文出现在会话记录——**已弃用，不再使用**。轮换 SOP：任何出现在对话/日志/文档中的 token 立即到 GitHub → Settings → Developer settings → Personal access tokens 撤销重建；新 token 仅经环境变量注入，不写入文件/提交/对话。后续 CI/workflow 一律用 `GITHUB_TOKEN`（最小权限，见权限最小化条目），不再使用个人 PAT 触发。
+### Changed
+- **40 总纲波 0 治理修订**：S6 壳分离触发（build-desktop/build-android `push.tags` v* → `shells-v*`，普通基础层 tag 不产壳，v2.7 = 首个无壳发布）；S8 workflow permissions 最小化（ci-verify/e2e-desktop/build×2 顶层 `contents: read`，需写 job 单独提权）+ Release 资产 sha256 校验和随行；S9 执行对账模板落 `.rivet/reconcile-template.md`（三段式：fetch 核对→规划对照→差异说明，波次完成时填）；S11 40 总纲落盘根目录 + ROADMAP §9「未来计划」节 + CONTRIBUTING §6 安全章程小节 + README L3 段触发口径同步。**端壳待接线项：0**（壳线冻结持续，脉冲触发条件重计，见 L3_FROZEN）。
+
 ## [2.6.0] - 2026-09-06（v2.6.0 端壳接线波第 1 波：L3 冻结快照恢复 + W1-W9 接线 + Release 产线修复——脉冲式治理首波兑现）
 ### Added
 - **v2.6.0-L3 冻结快照恢复（38 方案 Stage 2.1，51f7130）**：35 个 L3 端壳文件自 5ae202b^ 单 commit 回接——android/（bootstrap/config/controller/ui/screens/main/buildozer/p4a 三补丁）+ desktop/src/ui/（11 py：common/main_window/protocol_wizard_dialog/zone_a-g）+ main.py/src/__main__.py/packaging/smoke_gui/bench/smoke_zone_g_market/selftest_android/sync_android（可整体 revert 回冻）。
