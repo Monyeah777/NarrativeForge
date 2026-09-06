@@ -9,7 +9,7 @@
 - **v2.5.0-B3 CCV3 资产条目 id 修复（方案 36 Wave1，c1d310f）**：`ccv3_adapter._asset_entries` 资产条目缺 `id` 字段 → 含 asset_refs 的装配导出后 `check_ccv3_world` 报「缺键: id」（测试盲区静默 bug）。修复 = `_asset_entries` 加 `start` 参数续号（id/insertion_order 连续编号，去固定 1000 魔法数）+ `world_entries` 衔接；补 `_narrative_ir_with_assets` 回归用例（RED→GREEN）。单测 267→268。
 ### Changed
 - 34 方案「非目标」persona 表述修订：从「标记占位非真实角色定义」改为「仅透传 chara_meta 不判占位」（对齐 parse_ccv3 源码实际行为）；README 协议链补 36 + v2.5.0 块 + 方案真相源 36_v2.5.0_基础层深化续方案.md 落盘。
-- **v2.5.0 发布收口**：verify.sh PASS=31 全绿（Wave1-5 单测收编 check12 discover：268→291）+ README v2.5.0 块切「✅ 已发布」+ ROADMAP §1 v2.5.0 行归位 + §7.5 挂账勾销（A3 多出口渲染 / B2 条件组合 / B4 版本槽位 + Spec Registry / C-a 分级消费方 / C1 MCP 运行时化 + C2 安全层 全 ✅；34 遗留关 2 留 2——skill 资源随行装载 + 读入自动登记已关，CCV3 persona 语义还原 + GUI 接线（F2）留）+ tag v2.5.0（治理指针 3）。
+- **v2.5.0 发布收口**：verify.sh PASS=31 全绿（Wave1-5 单测收编 check12 discover：268→291）+ README v2.5.0 块切「✅ 已发布」+ ROADMAP §1 v2.5.0 行归位 + §7.5 挂账勾销（A3 多出口渲染 / B2 条件组合 / B4 版本槽位 + Spec Registry / C-a 分级消费方 / C1 MCP 运行时化 + C2 安全层 全 ✅；34 遗留关 2 留 2——skill 资源随行装载 + 读入自动登记已关，CCV3 persona 语义还原 + GUI 接线（F2）留）+ tag v2.5.0（治理指针 3）。**端壳待接线项：9**（38 方案接线账——5 格式导出+体检 / 双向读入+资源随行+登记 / 质量门建议 / 引用反查+rename+impact / 市场深化 / 变体+条件组合 / rules 多出口 / 全链 run / MCP serve；脉冲触发条件 ≥6 已达成，v2.6 = 第 1 波接线）。
 
 ## [2.4.0] - 2026-09-06（v2.4.0 外部吸收大包：规范核查三连 + 实现四件）
 ### Added
