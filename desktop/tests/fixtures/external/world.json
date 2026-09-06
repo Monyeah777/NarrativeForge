@@ -1,0 +1,33 @@
+{
+  "name": "技术文档装配战例 · 世界书",
+  "entries": [
+    {
+      "name": "技术文档结构",
+      "keys": [
+        "M90",
+        "技术文档结构"
+      ],
+      "content": "结构骨架与模板装载规则：文档 = 骨架 + 装载规则。",
+      "enabled": true,
+      "insertion_order": 0,
+      "case_sensitive": false,
+      "priority": 10,
+      "id": 0,
+      "comment": "NF 层 P90 · 技术文档生成"
+    },
+    {
+      "name": "术语管理",
+      "keys": [
+        "M97",
+        "术语管理"
+      ],
+      "content": "术语表：新词先定义后使用，术语条目 = 原文 + 译名 + 上下文约束。",
+      "enabled": true,
+      "insertion_order": 1,
+      "case_sensitive": false,
+      "priority": 10,
+      "id": 1,
+      "comment": "NF 层 P90 · 技术文档生成"
+    }
+  ]
+}

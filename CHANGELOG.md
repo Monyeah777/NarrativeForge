@@ -1,10 +1,13 @@
-## [2.3.0] - 2026-09-05（v2.3.0 基础层深化首波：A3 规则出口打通 + B2 变体装配 + B3 文档 retro-fit）
+## [2.3.0] - 2026-09-05（v2.3.0 基础层深化首波：A3 规则出口打通 + B2 变体装配 + B3 文档 retro-fit + A4 双向读入）
 ### Added
 - **v2.3.0-A3 规则出口打通（方案 34 Wave1，3b132bb）**：doc_semantics 三层透传（render_ir/pipe/nf run `--doc-semantics {project_rules,skill}`）——techdoc 规则装配可显式声明 project_rules → AGENTS.md/CLAUDE.md 出口（修复断链：render_ir 原不写 IR.meta['doc_semantics'] → classify 回退 skill 拒出）。P90 战例 `nf run --fmt agents --doc-semantics project_rules` 产 AGENTS.md。测试 +4。
 - **v2.3.0-B2 变体装配（方案 34 Wave2，ff73f2e）**：新增 `desktop/src/core/variants.py`——apply_variant（base+add−remove 幂等）+ variant_assemblies（全变体展开 + 跨变体重叠仲裁报告，声明级不阻断）+ nf run `--variant-add/--variant-remove`（P04 冒烟 PASSED）。裁决：不扩展 references schema（composer freeze），变体 = 装配层模板选择。测试 11。
 - **v2.3.0-B3 文档 retro-fit（方案 34 Wave3，0a1f00c）**：M93/M96（通用核心包）补「## 6 不变式遵守（01 §5）」边界段（I1-I5 对齐 M97/M98 形态，内容不造假）；实测修正 M97/M98 已有该段故不动。verify PASS=29 保持。
+- **v2.3.0-A4 双向读入反向解析适配器（方案 34，b8409d0）**：新增 `desktop/src/core/import_adapter.py`——parse_skill 双层设计（结构层 NF 导出 frontmatter/层级逐字节还原 mode='nf'；宽容层外部 SKILL.md 降级 tolerant 解析 external + ir=None）+ parse_ccv3 结构还原（chara_card_v3/world.json → IR，同源去重）；IR meta 记 adapter_in 供消费方识别读入来源。单测 19 用例全绿（含自举 SKILL.md 428B 逐字节 round-trip 闭环）。
+- **v2.3.0-A4 解锁样例双保险（方案 34，b8409d0）**：自举主样例三件套（技术文档装配战例 SKILL.md + chara.json + world.json）+ Anthropic 官方次样例两份（skill-creator/docx.SKILL.md，宽容层外部兼容锚点 + 外部 spec 真实性锚点）。
 ### Changed
-- ROADMAP §1 v2.3.0 行 + §7.5 A3/B2 子项标注落地；README 协议链补 34 + v2.3.0 块；方案真相源 34_v2.3.0_基础层深化首波方案.md 落盘。
+- exporter.py 补读入反向符号（34 方案 A4）：`_REGISTRY_IN` 反向注册表（格式→解析函数，与 export-only 五出口对称）只挂已交付 skill/ccv3 两格——范围纪律（未启用不出厂）：agents/claude/mcp 暂无读入适配器不登记。
+- ROADMAP §1 v2.3.0 行 + §7.5 A3/B2/A4 子项标注落地（A3/B2 本批、A4 双向读入 ✅ 已实现）；README 协议链补 34 + v2.3.0 块；方案真相源 34_v2.3.0_基础层深化首波方案.md + 34_v2.3.0_A4双向读入方案.md 落盘。
 - **v2.3.0 发布收口**：CHANGELOG [Unreleased] → [2.3.0] 归档 + README v2.3.0 块切「✅ 已发布」+ tag v2.3.0（治理指针 3）；一并推送 v2.2.0 后 3 补遗（7f73da8/0b7c4e4/931f81e，registry 变更前置机读化 + check22 裁决）。
 
 ## [2.2.0] - 2026-09-05（v2.2.0 外部吸收首波：verify 验证纵深 A1-A5 + 方案模板纪律 B1-B2）

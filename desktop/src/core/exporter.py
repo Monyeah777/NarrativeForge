@@ -25,6 +25,7 @@ from .ccv3_adapter import map_ir_to_ccv3, world_entries
 from .skill_adapter import export_skill
 from .agent_rules_adapter import export_agents, export_claude
 from .mcp_adapter import export_mcp
+from .import_adapter import parse_skill, parse_ccv3   # 读入反向符号（34 方案 A4）
 
 
 @dataclass
@@ -66,6 +67,15 @@ _REGISTRY = {
     "agents": export_agents,
     "claude": export_claude,
     "mcp": export_mcp,
+}
+
+# 读入反向符号登记（v2.3.0 34 方案：A4 双向读入——外部→NF 反向解析层）。
+# 与上方 export-only 五出口对称：格式 → 解析函数。范围纪律（未启用不出厂）：
+# 只挂已交付的 skill/ccv3 两格——agents/claude/mcp 暂无读入适配器，不登记，
+# 防止消费方误以为可 round-trip 未交付格式。
+_REGISTRY_IN = {
+    "skill": parse_skill,
+    "ccv3": parse_ccv3,
 }
 
 
