@@ -318,7 +318,7 @@ jobs:
           profile: pixel_4
           disable-animations: true
           script: |
-            # emulator-runner 把 script 逐行拆成独立 `sh -c` 执行（run 34025231358
-            # 日志实证：APK= 赋值行与 echo $APK 行是不同进程，变量跨行丢失 →
-            # 恒 <none>）。修复：整段逻辑合并为单行串联（同一 sh -c 内变量共享）。
-            APK=$(find "$GITHUB_WORKSPACE/android/bin" -name '*.apk' 2>/dev/null | head -1) && echo "x86_64 APK: ${APK}" && adb install -r "$APK" && adb shell am start -W -n org.narrativeforge.narrativeforge/org.kivy.android.PythonActivity && sleep 20 && PID=$(adb shell pidof org.narrativeforge.narrativeforge) && echo "narrativeforge pid = [${PID}]" && test -n "$PID"
+            # 单行串联（emulator-runner 逐行拆 sh -c，变量须同进程共享）。
+            # logcat 抓取：am start 崩溃（Broken pipe）不阻断，用 ; 分隔保证
+            # 崩溃后仍 dump logcat 定位 AndroidRuntime FATAL。
+            adb logcat -c; APK=$(find "$GITHUB_WORKSPACE/android/bin" -name '*.apk' 2>/dev/null | head -1) && echo "x86_64 APK: ${APK}" && adb install -r "$APK" && (adb shell am start -n org.narrativeforge.narrativeforge/org.kivy.android.PythonActivity; sleep 15); adb logcat -d > /tmp/crash.txt 2>&1; echo "=== FATAL/err 段 ==="; grep -nE "FATAL|AndroidRuntime|Process.*died|python|kivy|libc|SIGSEGV|SIGABRT|dlopen|cannot|No such|Traceback|System.err" /tmp/crash.txt | tail -80; PID=$(adb shell pidof org.narrativeforge.narrativeforge); echo "narrativeforge pid = [${PID}]"; test -n "$PID"
