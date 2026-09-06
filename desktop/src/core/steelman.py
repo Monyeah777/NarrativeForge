@@ -16,6 +16,10 @@ schema（steelman.md）：
         4 核心变量 / 5 判断与理由 / 6 回退路径
   init 产物含三套引导模板（Prompt A 路线决策 / B 需求收敛 / C 设计评审）。
 
+单一来源纪律：六节标题 = STEELMAN_SECTIONS（init 生成与 check 校验同源，
+改常量两端同步）；2/3 节占位条目 = ARG_PLACEHOLDERS（init 预置与 check
+精确剔除同源，整行括号包裹的真实内容不会被误判为占位）。
+
 范围纪律：纯零依赖（L2 惯例，同 variants.py/market_analyzer.py）；
 不接 verify（不开新 check）；声明制（steelman_ref）v2.6 不做强制。
 
@@ -29,9 +33,9 @@ from __future__ import annotations
 import datetime as _dt
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
-#: 六段节标题（顺序即 schema 顺序）
+#: 六节标题（顺序即 schema 顺序）——init/check 的单一来源
 STEELMAN_SECTIONS: List[str] = [
     "1. 问题重述",
     "2. 支持侧最强论据",
@@ -41,12 +45,25 @@ STEELMAN_SECTIONS: List[str] = [
     "6. 回退路径",
 ]
 
+#: 2/3 节 init 预置的占位 bullet（按节号）——check 只按这些精确文本判“未填”
+ARG_PLACEHOLDERS: Dict[int, List[str]] = {
+    2: ["（论据一：独立成立、不可轻易驳倒）", "（论据二）", "（论据三）"],
+    3: ["（论据一：独立成立、不可软化）", "（论据二）", "（论据三）"],
+}
+_PLACEHOLDER_SET = frozenset(
+    p for ph in ARG_PLACEHOLDERS.values() for p in ph)
+
 #: init 引导模板三套（Prompt A 路线决策 / B 需求收敛 / C 设计评审）
 PROMPT_TEMPLATES = {
     "A": "路线决策：两三条路线各列最强论据，再比较核心变量。",
     "B": "需求收敛：重述真实问题（剥离方案），支持=为什么现在做，反对=为什么可缓。",
     "C": "设计评审：支持=该设计不可替代处，反对=耦合/维护/边界风险。",
 }
+
+
+def _heading(num: int) -> str:
+    """由 STEELMAN_SECTIONS 生成 '## <序号>. <标题>' 标题行（num 从 1 起）。"""
+    return f"## {STEELMAN_SECTIONS[num - 1]}"
 
 
 def _frontmatter(question: str, context: str, decider: str) -> str:
@@ -77,22 +94,20 @@ def init_worksheet(question: str, context: str = "",
     )
     body = []
     # 1. 问题重述（预填问题，待展开）
-    body.append(f"## 1. 问题重述\n\n{question}\n\n"
+    body.append(f"{_heading(1)}\n\n{question}\n\n"
                 "> 用最完整方式重述真正要解决的问题（1-3段，不含判断）\n")
-    # 2/3. 正反论据各 3 个占位
-    body.append("## 2. 支持侧最强论据\n\n"
-                "- （论据一：独立成立、不可轻易驳倒）\n"
-                "- （论据二）\n"
-                "- （论据三）\n")
-    body.append("## 3. 反对侧最强论据\n\n"
-                "- （论据一：独立成立、不可软化）\n"
-                "- （论据二）\n"
-                "- （论据三）\n")
-    body.append("## 4. 核心变量\n\n<改变结论的那个变量>\n")
-    body.append("## 5. 判断与理由\n\n"
+    # 2/3. 正反论据各 3 个占位（与 check 精确剔除同源：ARG_PLACEHOLDERS）
+    for num in (2, 3):
+        items = "\n".join(f"- {t}" for t in ARG_PLACEHOLDERS[num])
+        body.append(f"{_heading(num)}\n\n{items}\n")
+    # 4. 核心变量
+    body.append(f"{_heading(4)}\n\n<改变结论的那个变量>\n")
+    # 5. 判断与理由
+    body.append(f"{_heading(5)}\n\n"
                 "**判断**：<一句话判断>\n\n"
                 "**理由**：\n1. \n2. \n3. \n")
-    body.append("## 6. 回退路径\n\n"
+    # 6. 回退路径
+    body.append(f"{_heading(6)}\n\n"
                 "<判断错了怎么回退>（可选但对 NF 有用）\n")
     templates = "\n".join(
         f"--- Prompt {k} ---\n{v}\n" for k, v in PROMPT_TEMPLATES.items())
@@ -123,18 +138,18 @@ def _section_text(text: str, sec_title: str) -> str:
 
 
 def _count_bullets(sec_text: str) -> int:
-    """节内有效 bullet（- /*）条目数（排除引导注释与占位（论据X）模板）。"""
+    """节内有效 bullet（- /*）条目数。
+
+    只把 init 预置占位（ARG_PLACEHOLDERS 精确文本，见 _PLACEHOLDER_SET）
+    排除在外——整行括号包裹的真实内容照常计数，不会误报缺项。
+    """
     n = 0
     for ln in sec_text.splitlines():
         s = ln.strip()
         if not s or s.startswith(">") or s.startswith("#"):
             continue
         if s.startswith("- ") or s.startswith("* "):
-            body = s[2:].strip()
-            # 占位条目（（论据一）/（...）模板）不算有效论据
-            if body.startswith("（") and body.endswith("）"):
-                continue
-            if re.match(r"^\([^)]*\)$", body):
+            if s[2:].strip() in _PLACEHOLDER_SET:
                 continue
             n += 1
     return n
@@ -143,47 +158,48 @@ def _count_bullets(sec_text: str) -> int:
 def check_worksheet(text: str) -> List[str]:
     """结构自检：返回缺项 warn 列表（空 = 通过）。
 
-    判据（对齐 schema）：frontmatter decision/date/decider 在场；问题重述非空；
-    正反论据各 ≥3（去引导注释后计数）；核心变量非空；判断含理由（≥1 理由行）；
-    回退路径非空。
+    判据（六节标题单一来源 STEELMAN_SECTIONS，占位单一来源
+    ARG_PLACEHOLDERS）：frontmatter decision/date/decider/context 在场；
+    六节标题齐全；问题重述非空；正反论据各 ≥3（剔除 init 占位后计数）；
+    核心变量非空；判断含理由（≥1 理由行）；回退路径非空。
     """
     warns: List[str] = []
     fm = text.split("---")[1] if text.startswith("---") else ""
     for key in ("decision:", "date:", "decider:", "context:"):
         if f"{key} " not in fm and key not in fm:
             warns.append(f"frontmatter 缺 {key.strip(':')}")
-    # 1 问题重述非空（去掉预填的引导注释行后仍有实质内容）
-    q = _section_text(text, "1. 问题重述")
-    real = [ln for ln in q.splitlines()
-            if ln.strip() and not ln.strip().startswith(">")
-            and not ln.strip().startswith("## ")]
-    if not real:
-        warns.append("问题重述未填（1 节需完整重述问题）")
-    # 2/3 正反论据各 ≥3
-    pro = _section_text(text, "2. 支持侧最强论据")
-    if _count_bullets(pro) < 3:
-        warns.append("支持侧论据 <3 条（2 节至少 3 条独立论据）")
-    con = _section_text(text, "3. 反对侧最强论据")
-    if _count_bullets(con) < 3:
-        warns.append("反对侧论据 <3 条（3 节至少 3 条独立论据）")
-    # 4 核心变量非空
-    cv = _section_text(text, "4. 核心变量")
-    if not [ln for ln in cv.splitlines() if ln.strip()
-            and not ln.strip().startswith("<")
-            and not ln.strip().startswith(">")]:
-        warns.append("核心变量未填（4 节：改变结论的那个变量）")
-    # 5 判断含理由
-    judge = _section_text(text, "5. 判断与理由")
-    if "**判断**" not in judge:
-        warns.append("判断缺失（5 节需一句话判断）")
-    elif not re.search(r"^\s*\d+\.\s*\S", judge, re.M):
-        warns.append("判断无理由（5 节需 ≥1 条编号理由）")
-    # 6 回退路径非空
-    rb = _section_text(text, "6. 回退路径")
-    if not [ln for ln in rb.splitlines() if ln.strip()
-            and not ln.strip().startswith("<")
-            and not ln.strip().startswith(">")]:
-        warns.append("回退路径未填（6 节）")
+    lines = text.splitlines()
+    for sec in STEELMAN_SECTIONS:
+        num = int(sec.split(".", 1)[0])
+        if not any(ln.strip().startswith(f"## {sec}") for ln in lines):
+            warns.append(f"缺节：{sec}")
+            continue
+        body = _section_text(text, sec)
+        if num == 1:
+            real = [ln for ln in body.splitlines()
+                    if ln.strip() and not ln.strip().startswith(">")
+                    and not ln.strip().startswith("## ")]
+            if not real:
+                warns.append("问题重述未填（1 节需完整重述问题）")
+        elif num in (2, 3):
+            if _count_bullets(body) < 3:
+                label = "支持侧" if num == 2 else "反对侧"
+                warns.append(f"{label}论据 <3 条（{sec} 至少 3 条独立论据）")
+        elif num == 4:
+            if not [ln for ln in body.splitlines() if ln.strip()
+                    and not ln.strip().startswith("<")
+                    and not ln.strip().startswith(">")]:
+                warns.append("核心变量未填（4 节：改变结论的那个变量）")
+        elif num == 5:
+            if "**判断**" not in body:
+                warns.append("判断缺失（5 节需一句话判断）")
+            elif not re.search(r"^\s*\d+\.\s*\S", body, re.M):
+                warns.append("判断无理由（5 节需 ≥1 条编号理由）")
+        elif num == 6:
+            if not [ln for ln in body.splitlines() if ln.strip()
+                    and not ln.strip().startswith("<")
+                    and not ln.strip().startswith(">")]:
+                warns.append("回退路径未填（6 节）")
     return warns
 
 

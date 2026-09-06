@@ -51,6 +51,15 @@ def _err(code: int, message: str) -> dict:
                                                               "message": message}}
 
 
+class UnknownUriError(KeyError):
+    """resources/read 白名单外 uri 的专用信号（C2 只读拒绝）。
+
+    从 KeyError 分化而非复用裸 KeyError：未来任何方法内部抛出的普通
+    KeyError（真实 bug）不会被 handle() 误吞成「未知资源 uri」(-32602)——
+    白名单拒绝只认本专用异常，其余内部错误归 INTERNAL_ERROR 面。
+    """
+
+
 class McpRuntime:
     """快照 → MCP 资源型 server 运行时。
 
@@ -97,8 +106,8 @@ class McpRuntime:
 
         try:
             result = self._dispatch(method, params)
-        except KeyError:
-            # uri 白名单外（read）——由 _dispatch 内显式抛，见 _read
+        except UnknownUriError:
+            # uri 白名单外（read）——仅 _read 抛的专用信号才归 -32602
             if is_request:
                 return {"jsonrpc": JSONRPC_VERSION, "id": rid,
                         "error": {"code": INVALID_PARAMS, "message": "未知资源 uri"}}
@@ -142,7 +151,7 @@ class McpRuntime:
         uri = params.get("uri") if isinstance(params, dict) else None
         if not isinstance(uri, str) or uri not in self._text:
             # C2 白名单：未知 uri 拒绝（schema 无 not-found 码，参数级拒绝）
-            raise KeyError(uri)
+            raise UnknownUriError(uri)
         return {"contents": [{
             "uri": uri,
             "mimeType": self._meta[uri]["mimeType"],
@@ -170,24 +179,31 @@ class McpRuntime:
                     reconfigure(encoding="utf-8")
                 except (ValueError, OSError):
                     pass
-        for line in stdin:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                msg = json.loads(line)
-            except json.JSONDecodeError:
-                out = _err(PARSE_ERROR, "Parse error")
-                stdout.write(json.dumps(out, ensure_ascii=False) + "\n")
-                stdout.flush()
-                continue
-            try:
-                resp = self.handle(msg)
-            except Exception as exc:  # 防御：单条消息异常不杀循环
-                resp = _err(INTERNAL_ERROR, f"Internal error: {exc}")
-            if resp is not None:
-                stdout.write(json.dumps(resp, ensure_ascii=False) + "\n")
-                stdout.flush()
+        try:
+            for line in stdin:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    msg = json.loads(line)
+                except json.JSONDecodeError:
+                    out = _err(PARSE_ERROR, "Parse error")
+                    stdout.write(json.dumps(out, ensure_ascii=False) + "\n")
+                    stdout.flush()
+                    continue
+                try:
+                    resp = self.handle(msg)
+                except Exception as exc:  # 防御：单条消息异常不杀循环
+                    resp = _err(INTERNAL_ERROR, f"Internal error: {exc}")
+                if resp is not None:
+                    stdout.write(json.dumps(resp, ensure_ascii=False) + "\n")
+                    stdout.flush()
+        except KeyboardInterrupt:
+            # Ctrl+C：会话正常终止——静默退出，不打印 traceback
+            return 130
+        except BrokenPipeError:
+            # client 已断开（管道破裂）：stdio 会话正常终止——静默退出
+            return 0
         return 0
 
 

@@ -167,7 +167,7 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 
 ✅ **C 内容库资产化**：题材/行业域包广度扩展（techdoc 域 = 新领域三步自然延伸）+ 模块质量分级（官方核心/社区/实验）+ 版本化；**内容由 A/B 工具链自动生成/校验**（内容=产物，非手工艺品），不逐包手写。🔵 **techdoc 域包战例已落地（方案 32）**：community 第 5 包「技术文档域包」——第一个非叙事题材域包（自带 M97 术语管理/M98 修订记录落 M91-99 社区段 + core_modules 引官方含 M90 + P06 派生管线），02 §8 登记 + registry protocols[] 第 5 条（nf register 工具链实战走通），verify ③ R2 扩域 ALL_PKGS 全两两。遗留：模块质量分级（C-a 无消费方待用途）+ 版本化（B4 协议层 V2 遗留）。✅ **C-a 消费方已落地（方案 37 Wave3，v2.5.0）**：`nf market list --tier=official|community|experimental` 消费 35-A6 分级字段——模块质量分级从「无消费方」到目录视图 CLI 消费方闭环（GUI 视图留 L3）。
 
-✅ **D 验证/治理基础设施**：verify 分层门禁（L0-L2 默认全绿，**已完成 23 方案 v2.9**）+ CI 收敛基础层闸门（ci-verify + e2e-desktop，**已完成 23 方案**）；本段即 ROADMAP 空位补正文。
+✅ **D 验证/治理基础设施**：verify 分层门禁（L0-L2 默认全绿，**23 方案 v2.9 立基 → 现行 v2.11 check1-22 全绿**）+ CI 收敛基础层闸门（ci-verify + e2e-desktop，**已完成 23 方案**）；本段即 ROADMAP 空位补正文。
 
 ❌ **三不做**（本阶段边界）：
 1. 端壳逐功能跟进（GUI 不加按钮、Android 不加能力——L3_FROZEN.md 冻结契约；仅基础层里程碑收敛点一次性全量接线）。
@@ -180,7 +180,7 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 - A1（AGENTS/CLAUDE 适配器）与 B2 并列优先：A 线最实一格 + B 线地基。
 
 ### 版本内提交约定
-沿用历版：每批次独立 commit；verify.sh（v2.9 分层门禁，PASS=24）全绿方可提交；GUI 大 feature 先落方案审批再实现。
+沿用历版：每批次独立 commit；verify.sh（v2.11 分层门禁，check1-22 全绿 PASS=31）全绿方可提交；GUI 大 feature 先落方案审批再实现。
 
 ## 7.6 v2.2.0 短期 roadmap（外部吸收首波，✅ 已发布 2026-09-05，tag v2.2.0）
 
@@ -207,5 +207,5 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 1. **README 版本块指针**：README 协议链后随发布插入「> **vX.Y.Z …（✅ 已发布 …）**」版本块（L33 起，每版一条；最新版置顶于序列块上方），随发布更新。
 2. **协议链随方案文档追加**：README L32 协议链每新增方案文档（08→09→…）追加一行。
 3. **CHANGELOG 发布归档**：每次发布把 [Unreleased] 归档为 [版本号] + 日期段，并同步打 annotated tag。
-4. **门禁全绿铁律**：verify.sh（v2.9 分层门禁，含 check12 代码层 unittest）0 WARN 0 FAIL 方可提交；任一 FAIL = 协议事故，回滚再改。基础层提交以 `bash verify.sh` 全绿为唯一标尺（clone 即绿，零前置）。
+4. **门禁全绿铁律**：verify.sh（v2.11 分层门禁，段 C check12-22 含 check12 代码层 unittest）0 WARN 0 FAIL 方可提交；任一 FAIL = 协议事故，回滚再改。基础层提交以 `bash verify.sh` 全绿为唯一标尺（clone 即绿，零前置）。
 5. **分层治理（23 方案）**：L3 端壳（android/ + desktop/src/ui 等）冻结移出主仓库演进主线，见 `L3_FROZEN.md`——端壳改动不随基础层演进；verify/CI 只锁 L0-L2；未来一次性产出从 git 历史恢复 + 触发 v* tag workflow。

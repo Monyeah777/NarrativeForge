@@ -2,7 +2,7 @@
 
 **Narrative Forge 是一台规范驱动的结构化文档生成器（元工具/文档工厂）**。它按协议校验结构，与文体无关：小说、技术文档、设定集都适用。叙事世界（P01/P02/P03）目前应用最成熟。
 
-**生成路径**：自然语言意图 → 按协议模板填充（模块/管线/资产三正交装配）→ `bash verify.sh` 结构校验（十三项门禁，check1-13）→ 输出结构化文档/可运行世界。
+**生成路径**：自然语言意图 → 按协议模板填充（模块/管线/资产三正交装配）→ `bash verify.sh` 结构校验（分层门禁 check1-22，v2.11）→ 输出结构化文档/可运行世界。
 
 **三个正交维度（均可增删改）**：
 - 模块（04_模块库）：领域能力原语，按 01 §2 声明接口后登记即被调度。
@@ -15,7 +15,7 @@
 
 端壳源码已移出主仓库演进主线（git 历史保留），产出时从冻结快照恢复并触发构建 workflow（仅 v* 标签 / 手动触发）：Release 页可下载 `NarrativeForge.exe` / macOS / Linux 成品（`.github/workflows/build-desktop.yml`），APK 由 `.github/workflows/build-android.yml` 产出。
 
-基础层验证不依赖端壳：`bash verify.sh`（v2.9，L0-L2 分层门禁，clone 即绿）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
+基础层验证不依赖端壳：`bash verify.sh`（v2.11，L0-L2 分层门禁，clone 即绿）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
 
 ## 社区版模板闭环（自制模板 → 组装 → 输出 MD）
 
@@ -56,7 +56,7 @@
 
 基础层真身：纯 Python 零第三方依赖的装配/IR/质检/导出/检索逻辑，被端壳（桌面 GUI / android）复用。L0-L2 验证入口：
 
-- 分层门禁：`bash verify.sh`（v2.9，check1-18 全绿 PASS=24，clone 即绿）
+- 分层门禁：`bash verify.sh`（v2.11，check1-22 全绿 PASS=31，clone 即绿）
 - 单元测试：`cd desktop && python -m unittest discover -s tests`
 - 端到端：`python scripts/e2e_desktop_headless.py`（直驱 core，无需 GUI/端壳）
 

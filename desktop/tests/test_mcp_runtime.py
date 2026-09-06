@@ -151,6 +151,65 @@ class TestMcpRuntime(unittest.TestCase):
         errs = [m for m in msgs if "error" in m]
         self.assertTrue(errs and errs[0]["error"]["code"] == -32700)
 
+    def test_serve_stdio_client_disconnect_silent(self):
+        """client 断开（stdout BrokenPipeError）→ serve_stdio 静默退出，不 traceback。"""
+        from io import StringIO
+
+        class _BrokenStdout(StringIO):
+            def write(self, *a, **kw):
+                raise BrokenPipeError("Broken pipe")
+
+        out = _BrokenStdout()
+        rc = self.srv.serve_stdio(
+            stdin=StringIO(json.dumps({"jsonrpc": "2.0", "id": 1,
+                                       "method": "ping"}) + "\n"),
+            stdout=out)
+        self.assertEqual(rc, 0)
+
+    def test_serve_stdio_keyboard_interrupt_silent(self):
+        """Ctrl+C（KeyboardInterrupt）→ serve_stdio 静默退出，不 traceback。"""
+
+        class _IntrIn:
+            def __init__(self):
+                self._sent = False
+            def reconfigure(self, *a, **kw):
+                pass
+            def __iter__(self):
+                return self
+            def __next__(self):
+                if not self._sent:
+                    self._sent = True
+                    return json.dumps({"jsonrpc": "2.0", "id": 1,
+                                       "method": "ping"})
+                raise KeyboardInterrupt()
+
+        from io import StringIO
+        rc = self.srv.serve_stdio(stdin=_IntrIn(), stdout=StringIO())
+        self.assertEqual(rc, 130)
+
+    def test_internal_keyerror_not_masked_as_unknown_uri(self):
+        """未来新方法抛 KeyError 不得被 handle 吞成「未知资源 uri」(-32602)。
+
+        白名单拒绝信号须专用化：仅 resources/read 的 C2 拒绝才标 -32602；
+        其它内部 KeyError（真实 bug）须走 INTERNAL_ERROR 面而非伪装成
+        参数错误。RED 版（修复前）：except KeyError 把任意 KeyError 归为
+        -32602，本测试断言应失败。
+        """
+        from io import StringIO
+
+        class _BoomSrv(McpRuntime):
+            def _dispatch(self, method, params):
+                if method == "boom":
+                    raise KeyError("内部真实 bug：字典缺键")
+                return super()._dispatch(method, params)
+
+        srv = _BoomSrv(self.snap)
+        out = StringIO()
+        srv.serve_stdio(stdin=StringIO(json.dumps(
+            {"jsonrpc": "2.0", "id": 9, "method": "boom"}) + "\n"), stdout=out)
+        msg = json.loads(out.getvalue().strip())
+        self.assertEqual(msg["error"]["code"], -32603)
+
 
 if __name__ == "__main__":
     unittest.main()

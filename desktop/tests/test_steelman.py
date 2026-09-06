@@ -21,6 +21,7 @@ from core.steelman import (  # noqa: E402
     scan_steelman,
     STEELMAN_SECTIONS,
 )
+from core import steelman as sm  # noqa: E402
 
 
 class TestSteelmanInit(unittest.TestCase):
@@ -107,6 +108,44 @@ class TestSteelmanScan(unittest.TestCase):
     def test_scan_empty_dir(self):
         d = Path(tempfile.mkdtemp(prefix="nf_steelman_empty_"))
         self.assertEqual(scan_steelman(d), [])
+
+
+class TestSteelmanConstantDriven(unittest.TestCase):
+    """回归：check/init 的六节标题与 STEELMAN_SECTIONS 单一来源——
+    改常量（标题文案）须同时作用于 init 生成与 check 校验，不得硬编码字面量。"""
+
+    def test_renamed_section_title_propagates_to_init_and_check(self):
+        orig = list(sm.STEELMAN_SECTIONS)
+        renamed = [t.replace("最强论据", "论据") if "最强论据" in t else t
+                   for t in orig]
+        self.assertNotEqual(orig, renamed)
+        try:
+            sm.STEELMAN_SECTIONS = renamed
+            # init 写出的是常量里的新标题
+            emitted = init_worksheet("常量驱动测试", context="38")
+            for new in renamed:
+                self.assertIn(f"## {new}", emitted)
+            self.assertNotIn("## 2. 支持侧最强论据", emitted)
+            # check 按新标题定位节——用新标题写的完整工作单应零缺项
+            full = _make_complete()
+            for old, new in zip(orig, renamed):
+                if old != new:
+                    full = full.replace(f"## {old}", f"## {new}")
+            self.assertEqual(check_worksheet(full), [])
+        finally:
+            sm.STEELMAN_SECTIONS = orig
+
+
+class TestSteelmanPlaceholder(unittest.TestCase):
+    """回归：占位判定只认 init 预置模板的精确文本——
+    整行括号包裹的真实论据不得被误判为占位（避免误报缺项）。"""
+
+    def test_parenthesized_real_bullet_is_counted(self):
+        full = _make_complete()
+        full = full.replace(
+            "- 支持论据二",
+            "- （真实论据：需在括号内完整陈述，见 38 方案社区路线约束）")
+        self.assertEqual(check_worksheet(full), [])
 
 
 if __name__ == "__main__":
