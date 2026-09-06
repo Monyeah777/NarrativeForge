@@ -76,9 +76,9 @@ class TestSteelmanCheck(unittest.TestCase):
         self.assertIn("回退路径", joined)
 
 
-def _make_complete() -> str:
-    """构造一份 check 全过的工作单（六段齐备 + 正反论据各 3 + 核心变量 + 判断 + 回退）。"""
-    lines = [
+def _complete_lines():
+    """构造一份 check 全过工作单的行列表（六段齐备 + 正反论据各 3 + 核心变量 + 判断 + 回退）。"""
+    return [
         "---", "decision: 做", "date: 2026-09-06", "decider: 测试者",
         "context: 38 方案", "related: []", "---",
         "## 1. 问题重述", "这是完整重述，足够长的一段话说明真正要解决的问题及其背景约束。",
@@ -92,7 +92,11 @@ def _make_complete() -> str:
         "**理由**：", "1. 理由一", "2. 理由二", "3. 理由三",
         "## 6. 回退路径", "回退到薄壳接线交付",
     ]
-    return "\n".join(lines) + "\n"
+
+
+def _make_complete() -> str:
+    """构造一份 check 全过的工作单（_complete_lines 行列表 + 结尾换行）。"""
+    return "\n".join(_complete_lines()) + "\n"
 
 
 class TestSteelmanScan(unittest.TestCase):
@@ -164,6 +168,72 @@ class TestSteelmanPlaceholder(unittest.TestCase):
             "- 支持论据二",
             "- （真实论据：需在括号内完整陈述，见 38 方案社区路线约束）")
         self.assertEqual(check_worksheet(full), [])
+
+
+class TestSteelmanRealContentForms(unittest.TestCase):
+    """回归（本批 RED→GREEN）：check 判据不得把「列表形态 / 尖括号形态」
+    当内容代理——真实内容形态多样（尖括号术语、中文/括号编号、编号而非
+    项目符号），只要不是 init 精确占位、不是空条目，就不应误报缺项。"""
+
+    def _lines_with_reasons(self, reasons):
+        lines = _complete_lines()
+        i = lines.index("**理由**：")
+        lines[i + 1:i + 4] = list(reasons)
+        return lines
+
+    def test_angle_bracket_term_in_section_4_and_6_is_filled(self):
+        """4/6 节用尖括号包裹术语（<成本敏感度>）作真实内容——旧判据用
+        startswith('<') 前缀代理剔除，误报「核心变量/回退路径未填」。"""
+        lines = _complete_lines()
+        lines[lines.index("## 4. 核心变量") + 1] = "<成本敏感度>"
+        lines[lines.index("## 6. 回退路径") + 1] = "<回退到薄壳接线>"
+        warns = check_worksheet("\n".join(lines))
+        self.assertEqual(warns, [], "尖括号真实内容被误报：%s" % warns)
+
+    def test_chinese_numbered_reasons_pass(self):
+        """5 节理由用中文编号（一、二、三）——旧判据只认「行首数字加点」，
+        中文编号真实理由被误报「判断无理由」。"""
+        lines = self._lines_with_reasons(
+            ["一、理由一", "二、理由二", "三、理由三"])
+        warns = check_worksheet("\n".join(lines))
+        self.assertEqual(warns, [], "中文编号理由被误报：%s" % warns)
+
+    def test_paren_numbered_reasons_pass(self):
+        """5 节理由用括号编号（（1）（2））——同属编号形态，不得误报。"""
+        lines = self._lines_with_reasons(
+            ["（1）理由一", "（2）理由二", "（3）理由三"])
+        warns = check_worksheet("\n".join(lines))
+        self.assertEqual(warns, [], "括号编号理由被误报：%s" % warns)
+
+    def test_numbered_arguments_in_sections_2_and_3_pass(self):
+        """2/3 节论据用编号（1. / 一、）而非项目符号——旧判据只数
+        '- '/'* ' 条目，编号形态真实论据被误报「论据 <3」。"""
+        lines = _complete_lines()
+        i = lines.index("## 2. 支持侧最强论据") + 1
+        lines[i:i + 3] = ["1. 支持论据一", "2. 支持论据二", "3. 支持论据三"]
+        j = lines.index("## 3. 反对侧最强论据") + 1
+        lines[j:j + 3] = ["一、反对论据一", "二、反对论据二", "三、反对论据三"]
+        warns = check_worksheet("\n".join(lines))
+        self.assertEqual(warns, [], "编号形态论据被误报：%s" % warns)
+
+    def test_blank_chinese_reasons_still_warn(self):
+        """占位守卫不回退：中文编号但无实质内容的空理由（一、 空行）仍应 warn。"""
+        lines = self._lines_with_reasons(["一、 ", "二、 ", "三、 "])
+        warns = check_worksheet("\n".join(lines))
+        self.assertTrue(any("判断无理由" in w for w in warns),
+                        "空中文理由未报缺：%s" % warns)
+
+    def test_decimal_paragraph_not_counted_as_argument(self):
+        """对抗验证（RED→GREEN）：行首代理不得把正文段 '1.5 倍成本风险…'
+        （数字+点+数字）误判为编号列表条目——修复前 2 条真实论据 + 1 条小数
+        行被计为 3 条假绿通过；修复后小数行不计，应报「支持侧论据 <3」。"""
+        lines = _complete_lines()
+        i = lines.index("## 2. 支持侧最强论据") + 1
+        lines[i:i + 3] = ["1.5 倍成本风险会放大预算",
+                          "2. 支持论据二", "3. 支持论据三"]
+        warns = check_worksheet("\n".join(lines))
+        self.assertTrue(any("支持侧论据" in w and "<3" in w for w in warns),
+                        "小数正文行被计为支持侧论据（假绿）：%s" % warns)
 
 
 if __name__ == "__main__":

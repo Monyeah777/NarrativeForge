@@ -39,13 +39,12 @@ from __future__ import annotations
 import datetime as _dt
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
-from .steelman import (  # 升格合并裁决：复用而非复制（防双源漂移）
-    STEELMAN_SECTIONS,
-    init_worksheet as _steelman_init,
-    check_worksheet as _steelman_check,
-    scan_steelman as _steelman_scan,
+from .steelman import (  # 升格合并裁决：钢人节判据单一来源——占位文本与条目
+    ARG_PLACEHOLDERS,    # 计数（内部走 steelman 的 _LIST_ITEM_RE）全部 import
+    SECTION_PLACEHOLDERS,        # core.steelman 复用，不自持正则/占位副本，
+    count_list_entries,          # 杜绝双源漂移
 )
 
 #: 三种审计模式
@@ -82,6 +81,24 @@ _MODE_SECTIONS = {
     "full": [1, 2, 3, 4, 5, 6, 7, 8],
 }
 
+#: 各节 init 预置的占位条目文本（不含 "- " 前缀）——init 骨架生成与 check
+#: 精确剔除**同源**（单一来源：占位判定只认这里列的精确文本，不用 startswith
+#: '（' 形状代理——整行括号包裹的真实内容不会被误剔，编号/项目符号形态的
+#: 真实条目照常计数）。节 2/3/4（钢人节）**逐字别名** core.steelman 常量
+#: （ARG_PLACEHOLDERS / SECTION_PLACEHOLDERS，同文单源而非同义副本）——
+#: 跨模块 init 骨架互换/交 core.steelman.check 复核时，同一份占位文本两侧
+#: 判定一致，杜绝「audit 计为真实论据 / steelman 计为真实论据」的假绿；节
+#: 5/6（盲区清单）为 audit 专属占位。形态正则 _LIST_ITEM_RE 与条目计数
+#: count_list_entries 同样来自 core.steelman（见文件头 import）。
+_SECTION_PLACEHOLDERS: Dict[int, List[str]] = {
+    2: list(ARG_PLACEHOLDERS[2]),
+    3: list(ARG_PLACEHOLDERS[3]),
+    4: [SECTION_PLACEHOLDERS[4]],
+    5: ["（低置信度一：附影响面）", "（低置信度二）", "（低置信度三）"],
+    6: ["（遗漏一：没问出口的假设/没考虑到的场景）",
+        "（遗漏二）", "（遗漏三）"],
+}
+
 
 def _heading(num: int) -> str:
     return f"## {AUDIT_SECTIONS[num - 1]}"
@@ -102,31 +119,37 @@ def _frontmatter(mode: str, target: str, context: str) -> str:
 
 
 def _section_body(num: int) -> str:
-    """各节 init 骨架（full/裁剪通用）。"""
+    """各节 init 骨架（full/裁剪通用）。
+
+    占位条目由 _SECTION_PLACEHOLDERS 生成（与 check 精确剔除同源——单一来源，
+    避免 init 预置文本与 check 占位判定双源漂移）。
+    """
     if num == 1:
         return ("用最完整方式重述真正要解决的问题（1-3段，不含判断）。\n"
                 "> Step1 重写问题：若重述后问题变了，说明初始问题质量低（先修"
                 "问题再审方案）。")
     if num == 2:
-        return ("- （论据一：支持侧最强形态，独立成立不可轻易驳倒）\n"
-                "- （论据二）\n- （论据三）\n"
+        items = "\n".join(f"- {t}" for t in _SECTION_PLACEHOLDERS[2])
+        return (items + "\n"
                 "> 禁'如果…也许…'弱表述、禁'虽然但是'软化表述。")
     if num == 3:
-        return ("- （论据一：反对侧最强形态，独立成立不可软化）\n"
-                "- （论据二）\n- （论据三）\n"
+        items = "\n".join(f"- {t}" for t in _SECTION_PLACEHOLDERS[3])
+        return (items + "\n"
                 "> 反对侧论据不得软化为'只是有点担心'。")
     if num == 4:
-        return ("<改变结论的那个变量>（Step3：变了结论就该翻转的变量，非影响"
-                "因素清单；列不出 = 判断未收敛）")
+        return (_SECTION_PLACEHOLDERS[4][0] + "\n"
+                "> Step3：变了结论就该翻转的变量，非影响因素清单；列不出 = "
+                "判断未收敛")
     if num == 5:
+        items = "\n".join(f"- {t}" for t in _SECTION_PLACEHOLDERS[5])
         return ("**Q1「你最没有把握的事情是什么？」——反幻觉**\n"
                 "低置信度清单（3-7 项，少于 3 = 敷衍，多于 7 = 未收敛）：\n"
-                "- （低置信度一：附影响面）\n- （低置信度二）\n- （低置信度三）")
+                + items)
     if num == 6:
+        items = "\n".join(f"- {t}" for t in _SECTION_PLACEHOLDERS[6])
         return ("**Q2「我最大的遗漏是什么？我没有意识到什么？」——反思维惯性**\n"
                 "遗漏清单（3-7 项，每项标注若不处理会怎样）：\n"
-                "- （遗漏一：没问出口的假设/没考虑到的场景）\n"
-                "- （遗漏二）\n- （遗漏三）")
+                + items)
     if num == 7:
         return ("**评估结论（三态）**：<通过 / 需补充以下信息 / 需重做>\n\n"
                 "**一句话理由**：<结论依据>")
@@ -195,19 +218,16 @@ def _sec_text(text: str, sec_title: str) -> str:
     return "\n".join(out)
 
 
-def _bullet_count(sec_text: str) -> int:
-    """节内有效 bullet 条目数（排除引导注释行与（占位）模板）。"""
-    n = 0
+def _has_content(sec_text: str, placeholder: str) -> bool:
+    """节内是否有真实内容行（非空、非引用注释、且不等于该节占位精确文本）。"""
     for ln in sec_text.splitlines():
         s = ln.strip()
         if not s or s.startswith(">") or s.startswith("#"):
             continue
-        if s.startswith("- ") or s.startswith("* ") or s.startswith("• "):
-            body = s[2:].strip()
-            if body.startswith("（") and body.endswith("）"):
-                continue
-            n += 1
-    return n
+        if s == placeholder:
+            continue
+        return True
+    return False
 
 
 def validate_list_count(n: int) -> bool:
@@ -259,8 +279,20 @@ def check_audit(path) -> List[str]:
             warns.append(f"缺节：{sec}")
             continue
         body = _sec_text(text, sec)
-        if num in (5, 6) and mode in ("blindspot", "full", None):
-            n = _bullet_count(body)
+        if num in (2, 3) and mode in ("steelman", "full"):
+            # 钢人论据判据（复用 core.steelman check 语义：剔除 init 精确占位
+            # 后 ≥3 条真实论据；编号/项目符号形态均计入——不做内容形态代理）
+            n = count_list_entries(body, _SECTION_PLACEHOLDERS.get(num, ()))
+            if n < 3:
+                label = "支持侧" if num == 2 else "反对侧"
+                warns.append(f"{label}论据不足：{sec} 至少 3 条真实论据"
+                             f"（当前 {n} 条）")
+        elif num == 4 and mode in ("steelman", "full"):
+            # 核心变量判据：非空（剔除 init 精确占位文本，不用尖括号形状代理）
+            if not _has_content(body, _SECTION_PLACEHOLDERS[4][0]):
+                warns.append("核心变量未填（4 节：改变结论的那个变量）")
+        elif num in (5, 6) and mode in ("blindspot", "full", None):
+            n = count_list_entries(body, _SECTION_PLACEHOLDERS.get(num, ()))
             if not validate_list_count(n):
                 warns.append(f"{'低置信度' if num == 5 else '遗漏'}清单条目"
                              f" {n} 条越界（需 {LIST_MIN}-{LIST_MAX}）")

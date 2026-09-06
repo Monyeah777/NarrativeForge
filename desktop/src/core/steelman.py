@@ -18,7 +18,12 @@ schema（steelman.md）：
 
 单一来源纪律：六节标题 = STEELMAN_SECTIONS（init 生成与 check 校验同源，
 改常量两端同步）；2/3 节占位条目 = ARG_PLACEHOLDERS（init 预置与 check
-精确剔除同源，整行括号包裹的真实内容不会被误判为占位）。
+精确剔除同源，整行括号包裹的真实内容不会被误判为占位）；4/6 节整行占位 =
+SECTION_PLACEHOLDERS（init 预置与 check 精确剔除同源——占位判定只认精确
+文本，不用 startswith('<') 前缀代理，尖括号包裹术语的真实内容不会被误判为
+未填）。判据导出复用：_LIST_ITEM_RE / count_list_entries / ARG_PLACEHOLDERS
+/ SECTION_PLACEHOLDERS 供 core.audit 直接 import（钢人节同文单源），audit
+不自持正则或占位副本，跨模块 init 骨架互换/check 复核判定一致。
 
 范围纪律：纯零依赖（L2 惯例，同 variants.py/market_analyzer.py）；
 不接 verify（不开新 check）；声明制（steelman_ref）v2.6 不做强制。
@@ -52,6 +57,33 @@ ARG_PLACEHOLDERS: Dict[int, List[str]] = {
 }
 _PLACEHOLDER_SET = frozenset(
     p for ph in ARG_PLACEHOLDERS.values() for p in ph)
+
+#: 4/6 节 init 预置的整行占位（按节号）——init 生成与 check 精确剔除同源。
+#: 占位判定只认这里列出的精确文本：第 4 节填 `<成本敏感度>` 这类尖括号包裹
+#: 的真实内容（≠占位）即视为已填，不会被 startswith('<') 前缀代理误剔。
+SECTION_PLACEHOLDERS: Dict[int, str] = {
+    4: "<改变结论的那个变量>",
+    6: "<判断错了怎么回退>（可选但对 NF 有用）",
+}
+
+#: 列表条目形态识别（2/3/5 节内容判据共用）：项目符号（-/*/•）、阿拉伯或
+#: 中文数字 + 分隔符（. 、 ． ) ））、括号编号（(1)（一））。「形态」只用来
+#: 判断某行是不是列表条目，不参与“是否有实质内容”的判据——空条目（只有
+#: 编号/符号、无内容）不计，顿号/中文编号等真实形态照常计入。
+#: 小数守卫（对抗验证 RED→GREEN）：阿拉伯数字 + 点号须后随非数字——正文段
+#: 如 '1.5 倍成本风险…'（数字+点+数字）是小数，不是编号列表条目，不得误计。
+_LIST_ITEM_RE = re.compile(
+    r"^(?:"
+    r"[-*•]\s+"
+    # 中文数字：可接任意分隔符（小数点不会跟在中文数字后，无小数误判）
+    r"|(?:[一二三四五六七八九十百]+)\s*[.、．)）]\s*"
+    # 阿拉伯数字 + 非点分隔符（、．)）——无小数形态
+    r"|(?:\d+)\s*[、．)）]\s*"
+    # 阿拉伯数字 + 点号：须后随非数字（排除 '1.5' 类小数/序数点）
+    r"|(?:\d+)\s*\.(?!\d)\s*"
+    r"|[（(]\s*(?:\d+|[一二三四五六七八九十百]+)\s*[）)]\s*"
+    r")(.*)$"
+)
 
 #: init 引导模板三套（Prompt A 路线决策 / B 需求收敛 / C 设计评审）
 PROMPT_TEMPLATES = {
@@ -100,15 +132,14 @@ def init_worksheet(question: str, context: str = "",
     for num in (2, 3):
         items = "\n".join(f"- {t}" for t in ARG_PLACEHOLDERS[num])
         body.append(f"{_heading(num)}\n\n{items}\n")
-    # 4. 核心变量
-    body.append(f"{_heading(4)}\n\n<改变结论的那个变量>\n")
+    # 4. 核心变量（占位 = SECTION_PLACEHOLDERS[4]，check 精确剔除同源）
+    body.append(f"{_heading(4)}\n\n{SECTION_PLACEHOLDERS[4]}\n")
     # 5. 判断与理由
     body.append(f"{_heading(5)}\n\n"
                 "**判断**：<一句话判断>\n\n"
                 "**理由**：\n1. \n2. \n3. \n")
-    # 6. 回退路径
-    body.append(f"{_heading(6)}\n\n"
-                "<判断错了怎么回退>（可选但对 NF 有用）\n")
+    # 6. 回退路径（占位 = SECTION_PLACEHOLDERS[6]，check 精确剔除同源）
+    body.append(f"{_heading(6)}\n\n{SECTION_PLACEHOLDERS[6]}\n")
     templates = "\n".join(
         f"--- Prompt {k} ---\n{v}\n" for k, v in PROMPT_TEMPLATES.items())
     txt = _frontmatter(question, context, decider) + head + "\n".join(body)
@@ -137,31 +168,57 @@ def _section_text(text: str, sec_title: str) -> str:
     return "\n".join(out)
 
 
-def _count_bullets(sec_text: str) -> int:
-    """节内有效 bullet（- /*）条目数。
+def count_list_entries(sec_text: str, placeholders=()) -> int:
+    """节内有效列表条目数（项目符号/编号均可，_LIST_ITEM_RE 统一识别）。
 
-    只把 init 预置占位（ARG_PLACEHOLDERS 精确文本，见 _PLACEHOLDER_SET）
-    排除在外——整行括号包裹的真实内容照常计数，不会误报缺项。
+    单一来源导出（steelman 自身与 core.audit 共用同一实现，防判据双源
+    漂移）：只把 placeholders 中的精确占位文本与空条目（只有编号/符号无
+    内容）排除在外——列表形态不参与判据：顿号/中文编号/括号编号等真实
+    形态照常计数；'1.5 倍' 类小数正文行（非编号条目）不计。
     """
+    ph = frozenset(placeholders)
     n = 0
+    for ln in sec_text.splitlines():
+        m = _LIST_ITEM_RE.match(ln.strip())
+        if not m:
+            continue
+        content = m.group(1).strip()
+        if content and content not in ph:
+            n += 1
+    return n
+
+
+def _count_list_items(sec_text: str) -> int:
+    """2/3 节论据计数（占位剔除 = ARG_PLACEHOLDERS 全集，见 _PLACEHOLDER_SET）。"""
+    return count_list_entries(sec_text, _PLACEHOLDER_SET)
+
+
+def _real_lines(sec_text: str, placeholder: str) -> List[str]:
+    """节内「真实内容行」：非空、非引用注释、且不等于该节 init 占位精确文本。
+
+    占位判定只认精确文本（SECTION_PLACEHOLDERS 单一来源）——不用
+    startswith('<') 前缀代理：尖括号包裹术语（如 <成本敏感度>）是真实内容，
+    不得被误判为该节未填。
+    """
+    real = []
     for ln in sec_text.splitlines():
         s = ln.strip()
         if not s or s.startswith(">") or s.startswith("#"):
             continue
-        if s.startswith("- ") or s.startswith("* "):
-            if s[2:].strip() in _PLACEHOLDER_SET:
-                continue
-            n += 1
-    return n
+        if s == placeholder:
+            continue
+        real.append(s)
+    return real
 
 
 def check_worksheet(text: str) -> List[str]:
     """结构自检：返回缺项 warn 列表（空 = 通过）。
 
     判据（六节标题单一来源 STEELMAN_SECTIONS，占位单一来源
-    ARG_PLACEHOLDERS）：frontmatter decision/date/decider/context 在场；
-    六节标题齐全；问题重述非空；正反论据各 ≥3（剔除 init 占位后计数）；
-    核心变量非空；判断含理由（≥1 理由行）；回退路径非空。
+    ARG_PLACEHOLDERS / SECTION_PLACEHOLDERS）：frontmatter decision/date/
+    decider/context 在场；六节标题齐全；问题重述非空；正反论据各 ≥3（剔除
+    init 占位后计数）；核心变量非空（占位精确剔除）；判断含理由（≥1 实质
+    列表条目理由）；回退路径非空（占位精确剔除）。
     """
     warns: List[str] = []
     fm = text.split("---")[1] if text.startswith("---") else ""
@@ -182,41 +239,39 @@ def check_worksheet(text: str) -> List[str]:
             if not real:
                 warns.append("问题重述未填（1 节需完整重述问题）")
         elif num in (2, 3):
-            if _count_bullets(body) < 3:
+            if _count_list_items(body) < 3:
                 label = "支持侧" if num == 2 else "反对侧"
                 warns.append(f"{label}论据 <3 条（{sec} 至少 3 条独立论据）")
-        elif num == 4:
-            if not [ln for ln in body.splitlines() if ln.strip()
-                    and not ln.strip().startswith("<")
-                    and not ln.strip().startswith(">")]:
-                warns.append("核心变量未填（4 节：改变结论的那个变量）")
+        elif num in (4, 6):
+            if not _real_lines(body, SECTION_PLACEHOLDERS[num]):
+                if num == 4:
+                    warns.append("核心变量未填（4 节：改变结论的那个变量）")
+                else:
+                    warns.append("回退路径未填（6 节）")
         elif num == 5:
             if "**判断**" not in body:
                 warns.append("判断缺失（5 节需一句话判断）")
             elif not _has_numbered_reason(body):
                 warns.append("判断无理由（5 节需 ≥1 条编号理由）")
-        elif num == 6:
-            if not [ln for ln in body.splitlines() if ln.strip()
-                    and not ln.strip().startswith("<")
-                    and not ln.strip().startswith(">")]:
-                warns.append("回退路径未填（6 节）")
     return warns
 
 
 def _has_numbered_reason(body: str) -> bool:
-    """5 节是否有实质编号理由：逐行判 `N. <内容>`，行内空白不跨行。
+    """5 节是否有实质编号理由：逐行判「列表条目 + 实质内容」，行内空白不跨行。
 
-    缺陷修正（RED→GREEN）：原 `re.search(r"^\\s*\\d+\\.\\s*\\S", body, re.M)`
-    的 `\\s*` 可跨行——`1. \\n2. `（空理由占位）被误判为有理由。改为逐行：
-    编号行后须紧跟实质内容（含中文/字母/数字，非纯空白、非占位）。
+    缺陷修正一（RED→GREEN，6df32bc）：原 `re.search(r"^\s*\d+\.\s*\S", body,
+    re.M)` 的 `\s*` 可跨行——`1. \n2. `（空理由占位）被误判为有理由。改逐行。
+    缺陷修正二（本批）：原判据只认「行首阿拉伯数字加点」一种形态——中文编号
+    （一、二、三）、括号编号（（1））、项目符号等真实形态的理由被误报「判断无
+    理由」。统一走 _LIST_ITEM_RE：形态只判“是不是条目”，占位守卫不回退——
+    仅编号无实质内容（1. / 一、 空行）仍判无理由；内容为 init 占位文本不计。
     """
     for ln in body.splitlines():
-        s = ln.strip()
-        m = re.match(r"^\d+\.\s*(.*)$", s)
+        m = _LIST_ITEM_RE.match(ln.strip())
         if not m:
             continue
         content = m.group(1).strip()
-        if content and not content.startswith("（"):
+        if content and content not in _PLACEHOLDER_SET:
             return True
     return False
 
