@@ -127,12 +127,15 @@ class ZoneDGenerate(QtWidgets.QWidget):
         self.preview.setPlainText(md)
         # 质量治理门（v1.4.0）：IR 层三态质检，装配/导出前可见
         gate = run_gate(ir)
+        # W7（38 方案）：warn/fail 逐条展示 actionable 建议（v2.5 suggestion 字段）
         gate_lines = (["", "—— 质量门 ——",
                        f"PASS {gate.n_pass} · WARN {gate.n_warn}"
                        f" · FAIL {gate.n_fail}"
                        + ("（可产出）" if gate.ok()
                           else "（存在 FAIL——建议修复后重生成）")]
                       + [f"  [{i.level.upper()}] {i.message}"
+                         + (f"\n      建议：{i.suggestion}" if i.suggestion
+                            else "")
                          for i in gate.issues])
         warns = (["—— 装配检查 ——"] + issues +
                  ["", "—— 生成器提示 ——"] + (gen_warns or ["（无）"]) +
