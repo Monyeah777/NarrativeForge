@@ -16,7 +16,7 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from .models import Module, Pipeline, fid_key
 from .storage import Store
@@ -95,18 +95,35 @@ def resolve_combination(store: Store, pipeline: Pipeline) -> Combination:
 
 def build_assembly(store: Store, pipeline: Pipeline,
                    selected: List[Module],
-                   include_references: bool = True) -> List[Module]:
+                   include_references: bool = True,
+                   conditions: Optional[Dict[str, bool]] = None) -> List[Module]:
     """render_ir 前合并：selected(own) + references 引用模块 → 完整装配集。
 
     include_references=False：仅 selected（现行行为，供不需要组合的调用）。
+    conditions（v2.5.0 Wave2 2b 条件组合运行时）：模块 full_id/裸号 → 是否包含
+    （False 剔除）——运行时按条件动态裁剪装配集，不扩展 references schema
+    （条件作装配选择参数，同 34 变体纪律）。未声明的模块默认包含。
     """
-    mods = list(selected)
+    def _included(m: Module) -> bool:
+        if not conditions:
+            return True
+        num = m.id.split(":")[-1] if ":" in m.id else m.id
+        if m.full_id in conditions:
+            return bool(conditions[m.full_id])
+        if num in conditions:
+            return bool(conditions[num])
+        return True
+
+    mods = [m for m in selected if _included(m)]
     if not include_references:
         return mods
     combo = resolve_combination(store, pipeline)
     seen = {fid_key(m.full_id) for m in mods}
     for rm in combo.reference_modules:
-        if fid_key(rm.full_id) not in seen:
-            mods.append(rm)
-            seen.add(fid_key(rm.full_id))
+        if fid_key(rm.full_id) in seen:
+            continue
+        if not _included(rm):
+            continue
+        mods.append(rm)
+        seen.add(fid_key(rm.full_id))
     return mods

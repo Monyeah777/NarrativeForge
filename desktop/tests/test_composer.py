@@ -94,6 +94,32 @@ class TestBuildAssembly(unittest.TestCase):
         full = {m.full_id for m in mods}
         self.assertFalse(any("M55" in f for f in full))
 
+    def test_conditions_exclude_selected(self):
+        # v2.5.0 Wave2 2b 条件组合：conditions 剔除 selected 中的模块
+        sel = [m for m in self.store.list_modules()]
+        mods = build_assembly(self.store, self.p04, sel,
+                              conditions={"M92": False})
+        full = {m.full_id for m in mods}
+        self.assertFalse(any("M92" in f for f in full),
+                         f"M92 应被条件剔除：{sorted(full)}")
+
+    def test_conditions_exclude_reference(self):
+        # 条件剔除 references 引用模块（M55）
+        sel = [m for m in self.store.list_modules()]
+        mods = build_assembly(self.store, self.p04, sel,
+                              conditions={"M55": False})
+        full = {m.full_id for m in mods}
+        self.assertFalse(any("M55" in f for f in full),
+                         f"引用 M55 应被条件剔除：{sorted(full)}")
+
+    def test_conditions_undeclared_included(self):
+        # 未声明的模块默认包含（不误伤）
+        sel = [m for m in self.store.list_modules()]
+        mods = build_assembly(self.store, self.p04, sel,
+                              conditions={"M55": False})
+        full = {m.full_id for m in mods}
+        self.assertTrue(any("M91" in f for f in full), "未声明 M91 应保留")
+
 
 if __name__ == "__main__":
     unittest.main()
