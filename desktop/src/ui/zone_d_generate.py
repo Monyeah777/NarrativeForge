@@ -44,6 +44,19 @@ class ZoneDGenerate(QtWidgets.QWidget):
                           "（.json/.world，可导入 SillyTavern）")
         b_ccv3.clicked.connect(self.do_export_ccv3)
         bar.addWidget(b_ccv3)
+        # W6（38 方案）：导出格式对齐 exporter 五格式（17/34——GUI 补全其余格）
+        bar.addWidget(QtWidgets.QLabel("导出为:"))
+        self.fmt_combo = QtWidgets.QComboBox()
+        for fmt, label in (("ccv3", "CCV3 角色卡"),
+                           ("skill", "SKILL 能力包"),
+                           ("agents", "AGENTS.md 规则"),
+                           ("claude", "CLAUDE.md 规则"),
+                           ("mcp", "MCP 资源定义")):
+            self.fmt_combo.addItem(label, fmt)
+        bar.addWidget(self.fmt_combo)
+        b_fmt = QtWidgets.QPushButton("导出…")
+        b_fmt.clicked.connect(self.do_export_fmt)
+        bar.addWidget(b_fmt)
         root.addLayout(bar)
 
         split = QtWidgets.QSplitter(QtCore.Qt.Vertical)
@@ -182,6 +195,48 @@ class ZoneDGenerate(QtWidgets.QWidget):
                 tail = "\n警告：" + "；".join(res.warnings[:3])
             common.info(self, f"✓ 已导出 CCV3：{names}\n"
                               f"（可导入 SillyTavern 的角色卡/世界书）{tail}")
+        except Exception as exc:  # noqa: BLE001
+            common.error(self, f"导出失败：{exc}")
+
+    def do_export_fmt(self):
+        """W6（38 方案）：按格式下拉导出（exporter 五格式全可达）。
+
+        与 do_export_ccv3 同路径（render_ir→质量门→export），fmt 取自下拉；
+        格式适配器由 core.exporter 提供（CLI nf run --fmt 同库，杜绝行为分叉）。
+        """
+        pipe = self.app.current_pipeline
+        fmt = self.fmt_combo.currentData() or "ccv3"
+        if pipe is None:
+            common.warn(self, "暂无管线。")
+            return
+        mods = []
+        for fid in sorted(self.app.selected):
+            m = self.app.store.get_module(fid)
+            if m is not None:
+                mods.append(m)
+        if not mods:
+            common.warn(self, "未选择任何模块——先装配再导出。")
+            return
+        try:
+            from ..core.generator import render_ir
+            from ..core.quality_gate import run_gate
+            from ..core.exporter import export
+            ir = render_ir(pipe, mods, asset_pack=None,
+                           title=self.title_edit.text().strip())
+            gate = run_gate(ir)
+            if not gate.ok():
+                common.error(self, f"质量门 FAIL（{gate.n_fail}）——先修复装配再导出。")
+                return
+            dest = QtWidgets.QFileDialog.getExistingDirectory(
+                self, "选择导出目录", str(Path.home() / "Documents"))
+            if not dest:
+                return
+            res = export(ir, fmt, dest_dir=dest)
+            names = "、".join(Path(f).name for f in res.files)
+            tail = ""
+            if res.warnings:
+                tail = "\n警告：" + "；".join(res.warnings[:3])
+            common.info(self, f"✓ 已导出 {fmt}：{names}{tail}")
         except Exception as exc:  # noqa: BLE001
             common.error(self, f"导出失败：{exc}")
 
