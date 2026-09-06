@@ -88,6 +88,17 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="门禁模式：破坏性变更（有引用方/官方在册）exit 1，无破坏 exit 0")
     imp.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+
+    ren = sub.add_parser("rename",
+                         help="模块改名引用重链（A5：references 中引用该模块的条目批量更新）")
+    ren.add_argument("old_id", help="旧模块 id（如 M55 或 情感:M55）")
+    ren.add_argument("new_id", help="新模块 id（如 M99 或 情感:M99）")
+    ren.add_argument("--check", dest="mode", action="store_const", const="check",
+                     help="只列受影响引用清单不写盘（缺省）")
+    ren.add_argument("--apply", dest="mode", action="store_const", const="apply",
+                     help="批量重链 references 后合并写 registry protocols[]（只改引用不改其它）")
+    ren.add_argument("--registry", default=None,
+                     help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
     return p
 
 
@@ -280,6 +291,42 @@ def _cmd_impact(args) -> int:
     return 1 if args.mode == "check" else 0
 
 
+def _cmd_rename(args) -> int:
+    """nf rename <old> <new>：模块改名引用重链（A5 变更助手）。
+
+    --check（缺省）只列受影响引用；--apply 批量重链 references[].module_id 后
+    合并写 registry protocols[]（只改引用目标，不动其它字段，V1 只增不删语义）。
+    """
+    import json
+    from core.impact_check import rename_module_plan
+    from core.registry_loader import load_registry
+
+    reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    reg = load_registry(reg_path)
+    plan = rename_module_plan(reg, args.old_id, args.new_id)
+    print(f"== 改名引用重链: {args.old_id} → {args.new_id} ==")
+    if not plan["affected"]:
+        print("  无引用方（registry references 中无引用该模块——安全改名，无需重链）")
+        return 0
+    for a in plan["affected"]:
+        print(f"  重链: {a['protocol']} references {a['old_module_id']} → "
+              f"{a['new_module_id']}（源 {a['source_package']}）")
+
+    if args.mode != "apply":
+        print(f"  [{args.mode or 'check'}] 未写盘（--apply 才合并写 registry protocols[]）")
+        return 0
+
+    import json as _json
+    with open(reg_path, encoding="utf-8") as f:
+        raw = _json.load(f)
+    raw["protocols"] = plan["updated_protocols"]
+    with open(reg_path, "w", encoding="utf-8") as f:
+        _json.dump(raw, f, ensure_ascii=False, indent=2)
+    print(f"  ✓ 已重链 {len(plan['affected'])} 处引用并写盘 {reg_path}")
+    print("  下一步：跑 `bash verify.sh` 由 check14 ⑦/check15 ① 元素级断言自证")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -290,6 +337,8 @@ def main(argv=None) -> int:
         return _cmd_who_refers(args)
     if args.cmd == "impact":
         return _cmd_impact(args)
+    if args.cmd == "rename":
+        return _cmd_rename(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2

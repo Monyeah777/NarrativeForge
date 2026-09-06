@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 from core.impact_check import (  # noqa: E402
     check_registry, impact_of_change, referenced_by_packages,
     registry_integrity_issues, removal_impact, removal_impact_protocol,
+    rename_module_plan,
 )
 from core.registry_loader import Registry  # noqa: E402
 
@@ -179,6 +180,40 @@ class TestImpactOfChange(unittest.TestCase):
         reg = _reg()
         im = impact_of_change(reg, "M55")
         self.assertTrue(im["referenced_by"])
+
+
+class TestRenameModulePlan(unittest.TestCase):
+    """v2.4.0 A5：模块改名引用重链闭环（rename_module_plan）。"""
+
+    def test_rename_referenced_module_relinks(self):
+        reg = _reg()
+        plan = rename_module_plan(reg, "M55", "M99")
+        self.assertEqual(len(plan["affected"]), 1)
+        a = plan["affected"][0]
+        self.assertEqual(a["protocol"], "校园西幻轻混组合包")
+        self.assertEqual(a["old_module_id"], "M55")
+        self.assertEqual(a["new_module_id"], "M99")
+        # updated_protocols 中该引用已重链为 M99
+        updated_refs = plan["updated_protocols"][1]["references"]
+        self.assertEqual(updated_refs[0]["module_id"], "M99")
+
+    def test_rename_unreferenced_module_clean(self):
+        reg = _reg()
+        plan = rename_module_plan(reg, "M91", "M99")
+        self.assertEqual(plan["affected"], [])
+
+    def test_rename_qualified_id_matches_bare(self):
+        # 引用方写裸号 M55，改名前用限定 id 情感:M55 也能命中（裸号归一）
+        reg = _reg()
+        plan = rename_module_plan(reg, "情感:M55", "M99")
+        self.assertEqual(len(plan["affected"]), 1)
+
+    def test_rename_does_not_mutate_original(self):
+        # 不写盘：原 registry 的 references 不被就地修改
+        reg = _reg()
+        rename_module_plan(reg, "M55", "M99")
+        self.assertEqual(reg.protocols[1]["references"][0]["module_id"], "M55",
+                         "原 registry 不应被就地修改")
 
 
 class TestCheckRegistryFile(unittest.TestCase):

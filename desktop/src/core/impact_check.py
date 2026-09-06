@@ -188,3 +188,36 @@ def impact_of_change(registry: Any, target: str) -> Dict[str, Any]:
     if exists:
         return removal_impact(registry, target)
     return {"target": target, "error": f"registry 无该目标（protocol/module 均 miss）: {target!r}"}
+
+
+def rename_module_plan(registry: Any, old_id: str, new_id: str) -> Dict[str, Any]:
+    """模块改名影响面 + 引用重链计划（v2.4.0 A5：变更助手引用重链闭环）。
+
+    registry 内 references[].module_id 引用 old_id（裸号归一）的条目，拟改为
+    new_id——返回受影响清单 + 更新后的 protocols[] 副本（不写盘，由 nf CLI
+    消费 --apply 才落盘）。裸号归一匹配（M55 ↔ 情感:M55 同号段）。
+
+    返回 {old_id, new_id, affected: [{protocol, source_package, old_module_id,
+    new_module_id}], updated_protocols}——affected 空 = 无引用方需重链（安全改名）。
+    """
+    n_old = _norm(old_id)
+    affected: List[dict] = []
+    import copy
+    updated = copy.deepcopy(list(registry.protocols or []))
+    for p in updated:
+        for r in p.get("references") or []:
+            if _norm(r.get("module_id")) != n_old:
+                continue
+            affected.append({
+                "protocol": p.get("id"),
+                "source_package": r.get("source_package"),
+                "old_module_id": r.get("module_id"),
+                "new_module_id": new_id,
+            })
+            r["module_id"] = new_id   # 引用重链
+    return {
+        "old_id": old_id,
+        "new_id": new_id,
+        "affected": affected,
+        "updated_protocols": updated,
+    }
