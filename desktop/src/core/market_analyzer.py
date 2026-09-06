@@ -18,6 +18,46 @@ OFFICIAL13: List[str] = [
     "事件:M22", "M06", "M12", "M13", "M20", "M90",
 ]
 
+#: 质量分级（v2.4.0 A6：模块/包分级徽章——官方核心 / 社区 / 实验）
+GRADE_OFFICIAL = "official"
+GRADE_COMMUNITY = "community"
+GRADE_EXPERIMENTAL = "experimental"
+VALID_GRADES = (GRADE_OFFICIAL, GRADE_COMMUNITY, GRADE_EXPERIMENTAL)
+
+#: M91-M99 社区预留段（02 §8 编号规则：第三方段，实验级默认）
+_EXPERIMENTAL_NUMS = {"M91", "M92", "M93", "M94", "M95", "M96", "M97", "M98", "M99"}
+
+
+def _norm_num(mid: Any) -> str:
+    """模块 id 裸号（M55 / 情感:M55 → M55）。"""
+    return str(mid).split(":")[-1]
+
+
+def grade_of_module(module_id: str) -> str:
+    """模块质量分级（A6）：官方核心 13 件 → official；M91-M99 段 → experimental；
+    其余（社区自带模块）→ community。
+
+    官方判定匹配**完整 id**（含前缀，如 事件:M22 官方 vs 情感:M22 社区重号段——
+    裸号 M22 无法区分，必须比完整 id）；M91-M99 段按裸号（该段全局唯一）。
+    """
+    mid = str(module_id)
+    # 官方核心 13 件完整 id 命中（含前缀，防 M22 重号段误判）
+    if mid in set(OFFICIAL13):
+        return GRADE_OFFICIAL
+    n = _norm_num(mid)
+    if n in _EXPERIMENTAL_NUMS:
+        return GRADE_EXPERIMENTAL
+    return GRADE_COMMUNITY
+
+
+def grades_of_package(prots: Dict[str, Dict[str, Any]], pkg_id: str) -> Dict[str, str]:
+    """包内各 module_id → grade 映射（A6 查询，供 nf market 徽章输出）。"""
+    entry = prots.get(pkg_id) or {}
+    out: Dict[str, str] = {}
+    for mid in entry.get("module_ids") or []:
+        out[str(mid)] = grade_of_module(str(mid))
+    return out
+
 
 def layer_key(key: Any) -> str:
     """挂载层键归一：protocol 长键（'P40 行为决策'）→ Pxx 短键（同 check15 ③）。"""

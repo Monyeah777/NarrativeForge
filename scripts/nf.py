@@ -185,7 +185,7 @@ def _cmd_register(args) -> int:
 def _cmd_market(args) -> int:
     """nf market：依赖闭包 + 挂载冲突预检（B4 CLI 先行；信息查询，冲突不阻断）。"""
     import json
-    from core.market_analyzer import conflicts, dependencies
+    from core.market_analyzer import conflicts, dependencies, grades_of_package
     from core.registry_sync import check_registerable
 
     reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
@@ -222,6 +222,12 @@ def _cmd_market(args) -> int:
 
     seen, dep_issues = dependencies(pkg_id, prots, data)
     cfl = conflicts(pkg_id, prots, data)
+    # A6 质量分级徽章（v2.4.0）：官方核心/社区/实验
+    grades = grades_of_package(prots, pkg_id)
+    if grades:
+        _badge = {"official": "🏛官方", "community": "🌐社区", "experimental": "🧪实验"}
+        badge_line = ", ".join(f"{m}({_badge[g]})" for m, g in grades.items())
+        print(f"  分级徽章: {badge_line}")
     print("  依赖闭包: %s" % (", ".join(sorted(seen)) if seen else "无跨包引用"))
     for i in dep_issues:
         print(f"  [依赖] {i}")

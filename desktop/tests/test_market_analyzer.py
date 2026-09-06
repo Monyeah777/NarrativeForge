@@ -124,5 +124,40 @@ class OfficialAnchorTest(unittest.TestCase):
         self.assertIn("事件:M22", OFFICIAL13)
 
 
+class GradeTest(unittest.TestCase):
+    """v2.4.0 A6：模块/包质量分级徽章（官方核心/社区/实验）。"""
+
+    def test_official_module_grade(self):
+        self.assertEqual(market_analyzer.grade_of_module("M00"), "official")
+        self.assertEqual(market_analyzer.grade_of_module("通用:M10"), "official")
+        self.assertEqual(market_analyzer.grade_of_module("事件:M22"), "official")
+
+    def test_experimental_module_grade(self):
+        # M91-M99 社区预留段 → experimental
+        self.assertEqual(market_analyzer.grade_of_module("M91"), "experimental")
+        self.assertEqual(market_analyzer.grade_of_module("M97"), "experimental")
+        self.assertEqual(market_analyzer.grade_of_module("M99"), "experimental")
+
+    def test_community_module_grade(self):
+        # 社区自带非 M91-M99 段模块（如 M40/M55）→ community
+        self.assertEqual(market_analyzer.grade_of_module("M40"), "community")
+        self.assertEqual(market_analyzer.grade_of_module("M55"), "community")
+        self.assertEqual(market_analyzer.grade_of_module("情感:M22"), "community")
+
+    def test_grades_of_package(self):
+        prots = {"校园情感领域包": {"module_ids": ["情感:M22", "M40", "M55"]}}
+        grades = market_analyzer.grades_of_package(prots, "校园情感领域包")
+        self.assertEqual(grades["情感:M22"], "community")
+        self.assertEqual(grades["M40"], "community")
+        self.assertEqual(grades["M55"], "community")
+
+    def test_grades_of_package_mixed(self):
+        prots = {"测试包": {"module_ids": ["M00", "M91", "M40"]}}
+        grades = market_analyzer.grades_of_package(prots, "测试包")
+        self.assertEqual(grades["M00"], "official")
+        self.assertEqual(grades["M91"], "experimental")
+        self.assertEqual(grades["M40"], "community")
+
+
 if __name__ == "__main__":
     unittest.main()
