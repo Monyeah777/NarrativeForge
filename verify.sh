@@ -277,6 +277,8 @@ check12(){
       ok 'desktop core 单元测试全绿（desktop/tests 全量 discover，纯 unittest 内置）'
     else
       no 'desktop core 单元测试失败——见 /tmp/nf_check12_unittest.log'; err=1
+      echo "  ── unittest log 尾部（诊断回显）──"
+      tail -40 /tmp/nf_check12_unittest.log 2>/dev/null | sed 's/^/    /'
     fi
   else
     wn 'desktop/tests 不在场（跳过代码层 unittest）'
@@ -288,6 +290,8 @@ check12(){
       ok '全量 py_compile 语法抽查通过（desktop/src scripts）'
     else
       no 'py_compile 语法抽查失败——见 /tmp/nf_check12_pyc.log'; err=1
+      echo "  ── py_compile log 尾部（诊断回显）──"
+      tail -30 /tmp/nf_check12_pyc.log 2>/dev/null | sed 's/^/    /'
     fi
   else
     wn 'python3 不在 PATH（跳过 py_compile）'
@@ -903,6 +907,8 @@ check18(){
       ok '导出契约 unittest 全绿（ccv3_adapter：映射层引擎锚点排除/资产条目/无静默丢弃；exporter：chara spec 锚点/world 条目/PNG tEXt 回读）'
     else
       no "导出契约 unittest 失败——见 /tmp/nf_check18_unittest.log"; err=1
+      echo "  ── unittest log 尾部（诊断回显）──"
+      tail -40 /tmp/nf_check18_unittest.log 2>/dev/null | sed 's/^/    /'
     fi
   else
     wn 'desktop/tests 不在场（跳过 check18）'
