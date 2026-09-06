@@ -1,3 +1,26 @@
+## [2.6.0] - 2026-09-06（v2.6.0 端壳接线波第 1 波：L3 冻结快照恢复 + W1-W9 接线 + Release 产线修复——脉冲式治理首波兑现）
+### Added
+- **v2.6.0-L3 冻结快照恢复（38 方案 Stage 2.1，51f7130）**：35 个 L3 端壳文件自 5ae202b^ 单 commit 回接——android/（bootstrap/config/controller/ui/screens/main/buildozer/p4a 三补丁）+ desktop/src/ui/（11 py：common/main_window/protocol_wizard_dialog/zone_a-g）+ main.py/src/__main__.py/packaging/smoke_gui/bench/smoke_zone_g_market/selftest_android/sync_android（可整体 revert 回冻）。
+- **v2.6.0-W0 漂移扫描（38 方案，476658d）**：`scripts/check_ui_core_links.py`（UI↔core 符号存在性自动盘点，脉冲式接线波基础设施——每波触发先跑它，不入 verify）+ 6 单测；实测 ui+controller 对 v2.5 core 无硬断。
+- **v2.6.0-W1 zone_a 读入入口（38 方案，a95ba7e + 368e7ba）**：外部产物读入 GUI 化（34 遗留 F2 · ROADMAP A4）——SKILL.md/chara.json 宽容层解析 → IR 预览 → 登记（调 import_adapter + 类别短名→长名契约归一，防 fid_key 双目录击穿幂等）。9 回归用例。
+- **v2.6.0-W2 protocol_wizard doc_semantics 声明（38 方案，8b9a4a1）**：向导加三选一（不声明/project_rules/skill）——34 A3 遗留 GUI 声明 UI 补齐。
+- **v2.6.0-W3 zone_c 一键全链执行（38 方案，a79ec1f）**：selected → pipe()（retrieve→compose→gate→export 与 nf run 同路径）→ 结果到质量门/预览区——CLI 优先原则杜绝行为分叉。
+- **v2.6.0-W4 zone_c 变体/条件选项（38 方案，6376872）**：装配变体变换入一键执行（apply_variant 前置，与 nf run --variant-add/remove 等价）。
+- **v2.6.0-W5 协议包 rules 渲染出口（38 方案，78c18d6）**：协议详情加「渲染 rules…」（agents/claude/skill 三格式，render_protocol 同库 CLI nf render）。
+- **v2.6.0-W6 zone_d 导出格式对齐（38 方案，2c64e93）**：五格式下拉（ccv3/skill/agents/claude/mcp）+ do_export_fmt 通用导出（exporter._REGISTRY 全可达，与 CLI nf run --fmt 同库）。
+- **v2.6.0-W7 zone_d 质量门可解释面板（38 方案，a42592d）**：warn/fail 逐条展示 actionable 建议（26 方案 B1 suggestion 字段 GUI 化，纯展示层不动门禁语义）。
+- **v2.6.0-W8 zone_g 市场目录视图（38 方案，786d96c）**：tier 分级列表（official/community/experimental，list_market 同库 CLI nf market list --tier，B4/C-a GUI 化）。
+- **v2.6.0-W9 main_window MCP serve 入口（38 方案，5a3c0e4）**：QProcess 拉起 nf serve（选 mcp.json 快照 → stdio JSON-RPC 子进程，不可线程内嵌；Stage 4 POC 底座）。
+- **v2.6.0-G1 ci-verify 修复（38 方案，e01d9a7/ae1c62d/fb2a95a）**：verify.sh check12/18/19 失败回显诊断增强 + CI 干净环境缺 yaml/PySide6 依赖修复 + PySide6 无头 Linux EGL 系统库（libegl1/libgl1）。
+- **v2.6.0-G2 Release 产线修复（38 方案）**：build-desktop 干跑三平台全绿（dispatch 34021426960）+ build-android 干跑恢复（APK 构建 34022367652 起稳定 success）——v2.1-v2.5 全 failure 的产线恢复可产出资产。
+- **v2.6.0-APK 启动崩溃修复（38 方案，cf33929）**：KivyMD 1.2.0 BaseSnackbar→MDSnackbar 改名 + 文本改 MDLabel children 构造（旧 Snackbar(text=) 启动即崩——emulator logcat 实证 TypeError）——v0.9.0 闪退痛点同类在 x86_64 模拟器的漏网，修复后 emulator 启动冒烟（install→am start→pidof 存活）全绿。
+- **v2.6.0-smoke 断言自校准（9cb05a7）**：smoke_gui 内容量断言（≥30/≥2 固定下限）改自校准（模块>0 + 表格一致性、资产包 store↔GUI 一致）——与 v2.6 官方内容面（13 模块/0 官方资产包）漂移假红消除；空 home 反例仍 FAIL 保检出力。本地 offscreen 22/22 全绿。
+- **v2.6.0-audit/steelman 判据单一来源（693d52e）**：SECTION_PLACEHOLDERS 占位精确文本 + count_list_entries 导出复用（audit/steelman 跨模块同文单源，骨架假绿锁死回归 55 用例全绿）。
+### Fixed
+- **v2.6.0-emulator-smoke 环境链（38 方案，d25dade/ae16c92/8533376/23d2b09/ddae6db）**：ubuntu-latest runner 无 /dev/kvm 权限（kvm4all udev 规则）→ APK 相对路径定位失败（$GITHUB_WORKSPACE 绝对路径）→ emulator-runner 逐行 sh -c 变量跨行丢失（单行串联）→ logcat 抓取定位 app 崩溃。
+### Changed
+- **v2.6.0 发布收口**：L3_FROZEN.md 状态升级「第 1 波完成 → 回冻结」+ 第 1 波记录；ROADMAP §1 v2.6.0 行 + §7.5 A3/A4/B4/C-a GUI 挂账勾销 + §8 指针 6 执行标记；README v2.6.0 块；tag v2.6.0。**端壳待接线项：0**（v2.6 = 第 1 波接线全部兑现，积压清零回冻结；脉冲触发条件重计）。
+
 ## [2.5.0] - 2026-09-06（v2.5.0 基础层深化续：A 矩阵补全 + B 挂账 + MCP 运行时化——主线收口）
 ### Added
 - **v2.5.0-Wave1 读入入册（方案 37，ea1a5d1）**：`import_adapter` parse_skill 宽容层资源随行装载（`bundled_resources` 扫描 scripts/references/assets 相对路径 → IR meta 资源清单，供导出随行复制/消费方装载）+ `nf import <file> --register` 内容库登记（parse → 结构校验 → 幂等装载 registry 同源去重，同 30 方案 merge 只增不删纪律）。34 方案遗留「skill 资源随行装载 + 读入→内容库自动登记」关 2。单测 +6（test_import_adapter）。
