@@ -5,8 +5,42 @@ from pathlib import Path
 
 from PySide6 import QtCore, QtWidgets
 
+from ..core.models import CATEGORIES
 from ..core.parser import parse_module
 from . import common
+
+
+def _canon_category(cat: str) -> str:
+    """类别段归一：短类别 → 存储层长类别契约（情感 → 情感类）。
+
+    存储层契约（models.CATEGORIES / fid_key docstring）：category 落盘为长名
+    （情感类），而管线/标题/IR full_id 引用为短名（情感:M22）。parser 编辑器
+    路径已做同款 cat_map 归一；_install_external_ir 原先直接拿短类别落盘，
+    会与 canonical modules/情感类/M22_x 双目录并存（fid_key 相同 → 双模块）。
+    """
+    cat = (cat or "").strip()
+    if not cat:
+        return "通用类"
+    long_map = {c.rstrip("类"): c for c in CATEGORIES}
+    return long_map.get(cat, cat)
+
+
+def _external_ir_modules(ir) -> list:
+    """外部 IR → 待落盘 Module 列表（full_id 拆 cat:num + 类别长名归一）。
+
+    与 _install_external_ir 共用同一转换，便于单测直接断言类别契约。
+    """
+    from ..core.models import Module
+    mods = [m for lay in ir.layers for m in lay.modules] \
+        + list(ir.extra_modules)
+    out = []
+    for im in mods:
+        fid = im.full_id or ""
+        cat, num = fid.rsplit(":", 1) if ":" in fid else ("通用类", fid)
+        out.append(Module(id=num, name=im.name,
+                          category=_canon_category(cat),
+                          layer=im.layer, source_md=im.content))
+    return out
 
 
 class ZoneAImport(QtWidgets.QWidget):
@@ -161,8 +195,7 @@ class ZoneAImport(QtWidgets.QWidget):
         """SKILL 解析结果 → 结果区（nf 模式 IR 预览 + 登记入口）。"""
         if res.mode == "nf" and res.ir is not None:
             ir = res.ir
-            mods = [m for lay in ir.layers for m in lay.modules] \
-                + list(ir.extra_modules)
+            mods = _external_ir_modules(ir)
             body = f"【外部 SKILL 读入 · nf 结构】{path.name}\n\n" \
                 f"管线：{ir.pipeline_id or '-'} · 模块 {len(mods)} 个"
             if getattr(res, "bundled_resources", None):
@@ -171,7 +204,8 @@ class ZoneAImport(QtWidgets.QWidget):
                 body += f"\n  · {m.full_id} {m.name}"
             if len(mods) > 8:
                 body += f"\n  … 共 {len(mods)} 个"
-            self._external_ir = ir
+            # 仅在有模块条目时登记（空 IR 不启用②，防空操作）
+            self._external_ir = ir if mods else None
         else:
             self._external_ir = None
             body = f"【外部 SKILL 读入 · 宽容层】{path.name}\n\n" \
@@ -188,15 +222,15 @@ class ZoneAImport(QtWidgets.QWidget):
 
     def _render_external_ccv3(self, res, path: Path) -> None:
         """CCV3 解析结果 → 结果区（IR 模块预览 + 登记入口）。"""
-        mods = [m for lay in res.ir.layers for m in lay.modules] \
-            + list(res.ir.extra_modules) if res.ir is not None else []
+        mods = _external_ir_modules(res.ir) if res.ir is not None else []
         if res.ir is not None:
-            self._external_ir = res.ir
+            # 仅在有模块条目时登记（0 条目 IR 不启用②，防空操作噪音）
+            self._external_ir = res.ir if mods else None
             body = f"【外部 CCV3 读入】{path.name}\n\n" \
                 f"管线：{res.ir.pipeline_id or '-'} · 模块 {len(mods)} 个"
             for m in mods[:8]:
                 body += f"\n  · {m.full_id} {m.name}"
-            self.b_install.setEnabled(True)
+            self.b_install.setEnabled(bool(mods))
         else:
             self._external_ir = None
             body = f"【外部 CCV3 读入 · 宽容层】{path.name}\n" \
@@ -226,27 +260,27 @@ class ZoneAImport(QtWidgets.QWidget):
     def _install_external_ir(self, ir) -> None:
         """登记外部产物 IR 模块入 store（与 nf import --register 同源语义）。
 
-        IRModule → Module 显式转换（full_id 拆 cat:num，同 scripts/nf.py
-        _cmd_import 既有接法）；幂等：save_module 覆盖同名（只增不删纪律）。
+        IRModule → Module 显式转换走 _external_ir_modules（类别短名→长名
+        归一，对齐存储层契约，防 modules/短类/ 与 modules/长类/ 双目录）；
+        幂等：save_module 覆盖同名（只增不删纪律）。空 IR（0 模块）不登记、
+        不发信号不刷新——避免空操作副作用噪音。
         """
-        from ..core.models import Module
-        mods = [m for lay in ir.layers for m in lay.modules] \
-            + list(ir.extra_modules)
+        mods = _external_ir_modules(ir)
+        if not mods:
+            common.warn(self, "外部产物 IR 不含任何模块条目，无需登记。")
+            return
         n = 0
-        for im in mods:
+        for m in mods:
             try:
-                fid = im.full_id
-                cat, num = fid.rsplit(":", 1) if ":" in fid else ("通用类", fid)
-                self.app.store.save_module(Module(
-                    id=num, name=im.name, category=cat,
-                    layer=im.layer, source_md=im.content))
+                self.app.store.save_module(m)
                 n += 1
             except Exception as exc:      # noqa: BLE001
-                common.error(self, f"登记 {im.full_id} 失败：{exc}")
+                common.error(self, f"登记 {m.full_id} 失败：{exc}")
         self.result_view.appendPlainText(
             f"\n✓ 已登记外部产物模块 {n} 个（store 幂等装载）")
-        self.module_installed.emit()
-        self.app.on_modules_changed()
+        if n:
+            self.module_installed.emit()
+            self.app.on_modules_changed()
         self._external_ir = None
         self.b_install.setEnabled(False)
 
