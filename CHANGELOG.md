@@ -1,4 +1,4 @@
-## [Unreleased]（v2.4.0 外部吸收大包，方案 35 执行中）
+## [2.4.0] - 2026-09-06（v2.4.0 外部吸收大包：规范核查三连 + 实现四件）
 ### Added
 - **v2.4.0-A1/A2/A3 规范同步核查三连（方案 35 Wave1，672029e）**：一次性核查报告 `35_v2.4.0_外部规范同步核查报告.md`——SKILL（agentskills.io 实抓）/ CCV3 v3（SillyTavern 官方 validator SSH 实读）/ AGENTS.md（openai/agents.md 官方仓库）三对照 + 差距裁决；发现 A2 spec_version "v3" 为 bug 级差距（ST 导入 fail）。
 - **v2.4.0-A4 导出物规范体检 check22（方案 35 Wave2，fbcae71）**：ccv3 spec_version "v3"→"3.0"（修复 ST validator Number("v3")=NaN fail）+ skill name 改 pipeline_id ASCII slug（对齐 name 仅 a-z0-9- 约束）+ license 字段 + export_schema 硬约束（spec_version 数值/skill name 规范/description ≤1024）+ verify check22（PASS 29→31）。
@@ -7,6 +7,7 @@
 - **v2.4.0-A7 上架元数据模板（方案 35 Wave2，84aaa75）**：02 §8.3 登记三要件补上架元数据四元组（版本/作者/兼容/说明，V1 只增不删）+ 模板制作指令包交付自检第 4 条。
 ### Changed
 - verify.sh v2.10→v2.11（check22 入段 C）；单测 258→267（A5 +4、A6 +5、A4 语义）；ROADMAP §7.5 A3-A7 收口 + README 协议链补 35 + 方案真相源 35_v2.4.0_外部吸收大包方案.md 落盘。
+- **v2.4.0 发布收口**：CHANGELOG [Unreleased] → [2.4.0] 归档 + README v2.4.0 块切「✅ 已发布」+ tag v2.4.0（治理指针 3）。
 
 ## [2.3.0] - 2026-09-05（v2.3.0 基础层深化首波：A3 规则出口打通 + B2 变体装配 + B3 文档 retro-fit + A4 双向读入）
 ### Added
