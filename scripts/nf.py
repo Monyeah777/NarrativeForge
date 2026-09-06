@@ -88,6 +88,13 @@ def _build_parser() -> argparse.ArgumentParser:
     spc.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
 
+    rnd = sub.add_parser("render",
+                         help="协议多出口渲染（A3：protocol.yaml → agents/claude/skill rules）")
+    rnd.add_argument("pkg_dir", help="包目录（如 community/技术文档域包）")
+    rnd.add_argument("--fmt", default="agents", choices=["agents", "claude", "skill"],
+                     help="目标格式（agents/claude/skill）")
+    rnd.add_argument("--dest", default=None, help="输出目录（缺省=当前目录）")
+
     whr = sub.add_parser("who-refers",
                          help="引用反查（A2：谁引用了某模块，遍历 registry references）")
     whr.add_argument("module_id", help="模块 id（如 M91 或 情感:M55）")
@@ -454,6 +461,23 @@ def _cmd_spec(args) -> int:
     return 0
 
 
+def _cmd_render(args) -> int:
+    """nf render <pkg_dir> --fmt：协议多出口渲染（A3：protocol.yaml → rules）。"""
+    from pathlib import Path
+    from core.rules_render import render_protocol
+
+    txt = render_protocol(args.pkg_dir, args.fmt)
+    out_name = {"agents": "AGENTS.md", "claude": "CLAUDE.md", "skill": "SKILL.md"}[args.fmt]
+    dest = Path(args.dest) if args.dest else Path.cwd()
+    dest.mkdir(parents=True, exist_ok=True)
+    out_path = dest / out_name
+    out_path.write_text(txt, encoding="utf-8")
+    pkg_basename = os.path.basename(args.pkg_dir.rstrip("/\\"))
+    print(f"== nf render {pkg_basename} → {args.fmt} ==")
+    print(f"  ✓ {out_path}")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -470,6 +494,8 @@ def main(argv=None) -> int:
         return _cmd_import(args)
     if args.cmd == "spec":
         return _cmd_spec(args)
+    if args.cmd == "render":
+        return _cmd_render(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2
