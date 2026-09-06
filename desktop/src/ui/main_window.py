@@ -68,11 +68,68 @@ class MainWindow(QtWidgets.QMainWindow):
         tabs.addTab(self.zone_f, "⑥ 预设")
         tabs.addTab(self.zone_g, "⑦ 社区拉取")
         self.tabs = tabs
-        self.setCentralWidget(tabs)
+        # W9（38 方案）：MCP serve 入口——QProcess 拉起 nf serve（stdio JSON-RPC）。
+        # 架构约束（合并稿）：不可线程内嵌 stdio server（GUI stdout 冲突+生命周期
+        # 纠缠）——QProcess 子进程隔离是唯一干净解；快照选 mcp.json（W6 mcp 格式导出）。
+        serve_row = QtWidgets.QHBoxLayout()
+        serve_row.addWidget(QtWidgets.QLabel("内容库即服务:"))
+        self.btn_serve = QtWidgets.QPushButton("启动 MCP serve…")
+        self.btn_serve.setToolTip(
+            "v2.5.0 Wave5：选 mcp.json 快照 → 子进程 nf serve（stdio JSON-RPC，"
+            "MCP 客户端可读当前内容——38 Stage 4 POC 底座）")
+        self.btn_serve.clicked.connect(self.toggle_mcp_serve)
+        serve_row.addWidget(self.btn_serve)
+        self.serve_state = QtWidgets.QLabel("（未启动）")
+        serve_row.addWidget(self.serve_state)
+        serve_row.addStretch(1)
+        # 容器：serve 行 + tabs
+        container = QtWidgets.QWidget()
+        cv = QtWidgets.QVBoxLayout(container)
+        cv.setContentsMargins(6, 6, 6, 0)
+        cv.addLayout(serve_row)
+        cv.addWidget(tabs)
+        self.setCentralWidget(container)
 
         self.statusBar().showMessage("就绪")
         # 拖放入口：文件拖入窗口 → 交给 ① 解析
         self.setAcceptDrops(True)
+        self._serve_proc = None
+
+    def toggle_mcp_serve(self):
+        """启动/停止 MCP serve（QProcess 子进程拉 nf serve <snapshot>）。"""
+        from PySide6 import QtCore
+        if self._serve_proc is not None and \
+                self._serve_proc.state() != QtCore.QProcess.NotRunning:
+            # 停止
+            self._serve_proc.terminate()
+            if not self._serve_proc.waitForFinished(3000):
+                self._serve_proc.kill()
+            self._serve_proc = None
+            self.btn_serve.setText("启动 MCP serve…")
+            self.serve_state.setText("（已停止）")
+            return
+        snap, _ = QtWidgets.QFileDialog.getOpenFileName(
+            self, "选 mcp.json 快照", str(Path.home() / "Documents"),
+            "mcp.json (*.json);;所有文件 (*)")
+        if not snap:
+            return
+        # 定位仓库根（main_window → desktop/src/ui → 根 3 级）
+        ui_dir = Path(__file__).resolve().parent
+        root = ui_dir.parent.parent.parent
+        proc = QtCore.QProcess(self)
+        proc.setProcessChannelMode(QtCore.QProcess.ForwardedChannels)
+        proc.finished.connect(lambda *_: self._serve_finished())
+        proc.start(sys.executable,
+                   [str(root / "scripts" / "nf.py"), "serve", snap])
+        self._serve_proc = proc
+        self.btn_serve.setText("停止 MCP serve")
+        self.serve_state.setText(f"运行中：nf serve {Path(snap).name}"
+                                f"（stdio，agent 可读）")
+
+    def _serve_finished(self):
+        self._serve_proc = None
+        self.btn_serve.setText("启动 MCP serve…")
+        self.serve_state.setText("（已退出）")
 
     # ---------- 属性 ----------
     @property
