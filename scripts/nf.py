@@ -99,6 +99,27 @@ def _build_parser() -> argparse.ArgumentParser:
                          help="MCP 运行时服务（C1：mcp.json 快照 → stdio JSON-RPC，供 MCP client 拉起）")
     srv.add_argument("snapshot", help="mcp.json 快照路径（如 nf run --fmt mcp 产物）")
 
+    dsn = sub.add_parser("design",
+                         help="决策辅助工具族（v2.6-A：可选装载——钢人论证工作单）")
+    dsub = dsn.add_subparsers(dest="design_cmd", required=True)
+    stl = dsub.add_parser("steelman",
+                          help="钢人论证工作单：init/--check/ls（默认缺席，按需自检）")
+    stl.add_argument("action", nargs="?", default="ls",
+                     choices=["init", "ls"],
+                     help="动作（init 生成工作单 / ls 列决策档案索引；缺省 ls）")
+    stl.add_argument("question", nargs="?",
+                     help="init：问题描述（引号包裹，如 \"是否立项？\"）")
+    stl.add_argument("--context", default="",
+                     help="init：context 字段（方案号/域包名/触发场景）")
+    stl.add_argument("--decider", default="",
+                     help="init：decider 字段（决策人，缺省留空待填）")
+    stl.add_argument("--out", default=None,
+                     help="init：输出路径（缺省 = 当前目录 steelman.md）")
+    stl.add_argument("--check", dest="check_file", metavar="FILE",
+                     help="check：结构自检指定 steelman.md（输出缺项 warn）")
+    stl.add_argument("--root", default=".",
+                     help="ls：扫描目录（缺省 = 当前目录）")
+
     whr = sub.add_parser("who-refers",
                          help="引用反查（A2：谁引用了某模块，遍历 registry references）")
     whr.add_argument("module_id", help="模块 id（如 M91 或 情感:M55）")
@@ -494,6 +515,59 @@ def _cmd_serve(args) -> int:
     return McpRuntime(load_snapshot(args.snapshot)).serve_stdio()
 
 
+def _cmd_design(args) -> int:
+    """nf design steelman：钢人论证工作单（v2.6-A，可选决策辅助）。
+
+    init "<问题>"            → 生成空白工作单（frontmatter + 六段 + 引导模板）
+    steelman --check <file>  → 结构自检（缺项 warn 列表，空 = 通过）
+    steelman ls [--root]     → 列决策档案索引（已有 steelman.md）
+    """
+    from pathlib import Path
+    from core.steelman import (init_worksheet, check_worksheet,
+                               scan_steelman)
+
+    if args.check_file:
+        p = Path(args.check_file)
+        if not p.exists():
+            print(f"  ✗ 文件不存在: {p}")
+            return 1
+        warns = check_worksheet(p.read_text(encoding="utf-8"))
+        if not warns:
+            print(f"  ✓ 结构自检通过（四步齐备 + meta 在场）: {p}")
+            return 0
+        print(f"== nf design steelman --check {p} ==")
+        for w in warns:
+            print(f"  ⚠ {w}")
+        print(f"  → 缺项 {len(warns)} 条（补齐后重跑 --check）")
+        return 1
+    if args.action == "init":
+        if not args.question:
+            print("  ✗ init 需要问题描述: nf design steelman init \"<问题>\"")
+            return 2
+        out = Path(args.out) if args.out else Path.cwd() / "steelman.md"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        init_worksheet(args.question, context=args.context,
+                       decider=args.decider, path=out)
+        print(f"== nf design steelman init ==")
+        print(f"  ✓ 工作单已生成: {out}")
+        print(f"    用三套引导模板之一填充六段，然后跑 --check 自检")
+        return 0
+    # ls
+    root = Path(args.root)
+    if not root.is_dir():
+        print(f"  ✗ 目录不存在: {root}")
+        return 1
+    hits = scan_steelman(root)
+    print("== nf design steelman ls ==")
+    if not hits:
+        print("  （无 steelman 工作单——nf design steelman init 生成第一份）")
+        return 0
+    print(f"  决策档案 {len(hits)} 份:")
+    for h in hits:
+        print(f"  · {h}")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -514,6 +588,8 @@ def main(argv=None) -> int:
         return _cmd_render(args)
     if args.cmd == "serve":
         return _cmd_serve(args)
+    if args.cmd == "design":
+        return _cmd_design(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2

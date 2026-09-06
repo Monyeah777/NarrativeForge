@@ -1,0 +1,209 @@
+"""钢人论证模块（v2.6-A：nf design steelman——可选决策辅助）。
+
+NF 内部**可选装载**模块（默认缺席、零常驻成本）：为决策提供结构化正反论证
+工作单（steelman.md）产物 + init/check/ls 工具。论证内容由人/任意 AI 填充
+（NF 不接模型）——模块只提供骨架与记录，正是社区版工作流。
+
+设计原则（四原则）：
+① 默认缺席——不装不感知、零常驻成本；
+② 产物化——论证输出 = 文件 steelman.md，可入库、可追溯、可被未来 AI 重读；
+③ 渐进增强——先工具，用出价值再谈机制；
+④ LLM 协作友好——骨架 + 记录，内容由人/任意 AI 填充。
+
+schema（steelman.md）：
+  frontmatter: decision/date/decider/context/related
+  六段: 1 问题重述 / 2 支持侧最强论据 / 3 反对侧最强论据 /
+        4 核心变量 / 5 判断与理由 / 6 回退路径
+  init 产物含三套引导模板（Prompt A 路线决策 / B 需求收敛 / C 设计评审）。
+
+范围纪律：纯零依赖（L2 惯例，同 variants.py/market_analyzer.py）；
+不接 verify（不开新 check）；声明制（steelman_ref）v2.6 不做强制。
+
+用法：
+    init_worksheet("是否立项？", context="38 方案")      # → 工作单文本
+    check_worksheet(text)                               # → 缺项 warn 列表
+    scan_steelman(root)                                 # → 工作单索引
+"""
+from __future__ import annotations
+
+import datetime as _dt
+import re
+from pathlib import Path
+from typing import List, Optional
+
+#: 六段节标题（顺序即 schema 顺序）
+STEELMAN_SECTIONS: List[str] = [
+    "1. 问题重述",
+    "2. 支持侧最强论据",
+    "3. 反对侧最强论据",
+    "4. 核心变量",
+    "5. 判断与理由",
+    "6. 回退路径",
+]
+
+#: init 引导模板三套（Prompt A 路线决策 / B 需求收敛 / C 设计评审）
+PROMPT_TEMPLATES = {
+    "A": "路线决策：两三条路线各列最强论据，再比较核心变量。",
+    "B": "需求收敛：重述真实问题（剥离方案），支持=为什么现在做，反对=为什么可缓。",
+    "C": "设计评审：支持=该设计不可替代处，反对=耦合/维护/边界风险。",
+}
+
+
+def _frontmatter(question: str, context: str, decider: str) -> str:
+    return (
+        "---\n"
+        f"decision: <一句话判断>\n"
+        f"date: {_dt.date.today().isoformat()}\n"
+        f"decider: {decider or '<人>'}\n"
+        f"context: {context or '<方案号/域包名/触发场景>'}\n"
+        "related: []\n"
+        "---\n"
+    )
+
+
+def init_worksheet(question: str, context: str = "",
+                   decider: str = "", path: Optional[Path] = None) -> str:
+    """生成空白钢人工作单（含问题重述 + 六段骨架 + 引导模板注释）。
+
+    path 给定时写盘并返回内容；否则仅返回文本（供测试/管道）。
+    """
+    head = (
+        "# 钢人论证工作单\n\n"
+        f"> **问题**：{question}\n\n"
+        "> 使用引导（三选一，Prompt 原文见文末）：\n"
+        "> - Prompt A 路线决策（多路线取舍）\n"
+        "> - Prompt B 需求收敛（做不做/何时做）\n"
+        "> - Prompt C 设计评审（方案评审）\n\n"
+    )
+    body = []
+    # 1. 问题重述（预填问题，待展开）
+    body.append(f"## 1. 问题重述\n\n{question}\n\n"
+                "> 用最完整方式重述真正要解决的问题（1-3段，不含判断）\n")
+    # 2/3. 正反论据各 3 个占位
+    body.append("## 2. 支持侧最强论据\n\n"
+                "- （论据一：独立成立、不可轻易驳倒）\n"
+                "- （论据二）\n"
+                "- （论据三）\n")
+    body.append("## 3. 反对侧最强论据\n\n"
+                "- （论据一：独立成立、不可软化）\n"
+                "- （论据二）\n"
+                "- （论据三）\n")
+    body.append("## 4. 核心变量\n\n<改变结论的那个变量>\n")
+    body.append("## 5. 判断与理由\n\n"
+                "**判断**：<一句话判断>\n\n"
+                "**理由**：\n1. \n2. \n3. \n")
+    body.append("## 6. 回退路径\n\n"
+                "<判断错了怎么回退>（可选但对 NF 有用）\n")
+    templates = "\n".join(
+        f"--- Prompt {k} ---\n{v}\n" for k, v in PROMPT_TEMPLATES.items())
+    txt = _frontmatter(question, context, decider) + head + "\n".join(body)
+    txt += "\n\n## 引导模板（填充后删除本段）\n\n" + templates
+    if path is not None:
+        path.write_text(txt, encoding="utf-8")
+    return txt
+
+
+def _section_text(text: str, sec_title: str) -> str:
+    """取某节标题之后到下一节/EOF 的正文（不含引导注释行与模板段）。"""
+    lines = text.splitlines()
+    start = None
+    for i, ln in enumerate(lines):
+        if ln.strip().startswith(f"## {sec_title}"):
+            start = i + 1
+            break
+    if start is None:
+        return ""
+    out = []
+    for ln in lines[start:]:
+        s = ln.strip()
+        if s.startswith("## ") or s.startswith("--- Prompt"):
+            break
+        out.append(ln)
+    return "\n".join(out)
+
+
+def _count_bullets(sec_text: str) -> int:
+    """节内有效 bullet（- /*）条目数（排除引导注释与占位（论据X）模板）。"""
+    n = 0
+    for ln in sec_text.splitlines():
+        s = ln.strip()
+        if not s or s.startswith(">") or s.startswith("#"):
+            continue
+        if s.startswith("- ") or s.startswith("* "):
+            body = s[2:].strip()
+            # 占位条目（（论据一）/（...）模板）不算有效论据
+            if body.startswith("（") and body.endswith("）"):
+                continue
+            if re.match(r"^\([^)]*\)$", body):
+                continue
+            n += 1
+    return n
+
+
+def check_worksheet(text: str) -> List[str]:
+    """结构自检：返回缺项 warn 列表（空 = 通过）。
+
+    判据（对齐 schema）：frontmatter decision/date/decider 在场；问题重述非空；
+    正反论据各 ≥3（去引导注释后计数）；核心变量非空；判断含理由（≥1 理由行）；
+    回退路径非空。
+    """
+    warns: List[str] = []
+    fm = text.split("---")[1] if text.startswith("---") else ""
+    for key in ("decision:", "date:", "decider:", "context:"):
+        if f"{key} " not in fm and key not in fm:
+            warns.append(f"frontmatter 缺 {key.strip(':')}")
+    # 1 问题重述非空（去掉预填的引导注释行后仍有实质内容）
+    q = _section_text(text, "1. 问题重述")
+    real = [ln for ln in q.splitlines()
+            if ln.strip() and not ln.strip().startswith(">")
+            and not ln.strip().startswith("## ")]
+    if not real:
+        warns.append("问题重述未填（1 节需完整重述问题）")
+    # 2/3 正反论据各 ≥3
+    pro = _section_text(text, "2. 支持侧最强论据")
+    if _count_bullets(pro) < 3:
+        warns.append("支持侧论据 <3 条（2 节至少 3 条独立论据）")
+    con = _section_text(text, "3. 反对侧最强论据")
+    if _count_bullets(con) < 3:
+        warns.append("反对侧论据 <3 条（3 节至少 3 条独立论据）")
+    # 4 核心变量非空
+    cv = _section_text(text, "4. 核心变量")
+    if not [ln for ln in cv.splitlines() if ln.strip()
+            and not ln.strip().startswith("<")
+            and not ln.strip().startswith(">")]:
+        warns.append("核心变量未填（4 节：改变结论的那个变量）")
+    # 5 判断含理由
+    judge = _section_text(text, "5. 判断与理由")
+    if "**判断**" not in judge:
+        warns.append("判断缺失（5 节需一句话判断）")
+    elif not re.search(r"^\s*\d+\.\s*\S", judge, re.M):
+        warns.append("判断无理由（5 节需 ≥1 条编号理由）")
+    # 6 回退路径非空
+    rb = _section_text(text, "6. 回退路径")
+    if not [ln for ln in rb.splitlines() if ln.strip()
+            and not ln.strip().startswith("<")
+            and not ln.strip().startswith(">")]:
+        warns.append("回退路径未填（6 节）")
+    return warns
+
+
+def scan_steelman(root) -> List[str]:
+    """列出目录下已有钢人工作单（含钢人 frontmatter 的 .md 文件）。返回描述行。"""
+    base = Path(root)
+    hits = []
+    for p in sorted(base.glob("*.md")):
+        try:
+            head = p.read_text(encoding="utf-8")[:500]
+        except OSError:
+            continue
+        if head.startswith("---") and "decision:" in head and "date:" in head:
+            # 提取 context 简述
+            m = re.search(r"^context:\s*(.+)$", head, re.M)
+            ctx = m.group(1).strip() if m else "-"
+            m2 = re.search(r"^decision:\s*(.+)$", head, re.M)
+            dec = m2.group(1).strip() if m2 else "-"
+            m3 = re.search(r"\*\*问题\*\*：(.+)$", head, re.M)
+            q = m3.group(1).strip() if m3 else "-"
+            hits.append(f"{p.name}  [context={ctx}]  [decision={dec}]"
+                        f"\n    └ 问题: {q}")
+    return hits

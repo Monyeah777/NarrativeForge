@@ -98,6 +98,8 @@ python3 -m compileall -q desktop/src android/app scripts
 
 > 反例（C-a 教训）：模块质量分级曾因无消费方搁置——五问 ① 答不出「谁消费」即方案未成熟。正面示例见方案 33（A2 消费方 = nf who-refers CLI + retriever 库；A4 = verify check21）。
 
+**推荐段（可选，非门禁——v2.6-A 钢人论证模块）**：重大方向性决策（端壳功能集取舍 / 域包立项 / 协议设计前置）可选用钢人论证工作单理清正反论据与核心变量——`nf design steelman init "<问题>"` 生成，`--check` 结构自检（四步齐备/论据各 ≥3/meta 在场），`ls` 列决策档案索引。**措辞为推荐非必做**：默认缺席、按需装载，不强制任何决策走工作单（「也许有人需要而有人不需要」）。
+
 ## 5. Issue / PR 规范
 - **缺陷上报**：使用 .github/ISSUE_TEMPLATE/bug_report.md——APK 闪退必填：设备型号 / 系统版本 / App 版本 / 复现步骤 / 日志。
 - **功能请求**：使用 .github/ISSUE_TEMPLATE/feature_request.md。
