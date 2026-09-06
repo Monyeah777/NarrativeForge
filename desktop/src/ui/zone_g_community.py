@@ -444,10 +444,70 @@ class ZoneGCommunity(QtWidgets.QWidget):
         view.setReadOnly(True)
         view.setPlainText("\n".join(lines))
         lay.addWidget(view)
-        btn = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Close)
+        btn = QtWidgets.QDialogButtonBox()
+        b_render = btn.addButton("渲染 rules…",
+                                 QtWidgets.QDialogButtonBox.ActionRole)
+        btn.addButton(QtWidgets.QDialogButtonBox.Close)
+        b_render.clicked.connect(
+            lambda: self._render_protocol_rules(pid))
         btn.rejected.connect(dlg.reject)
         lay.addWidget(btn)
         dlg.exec()
+
+    def _render_protocol_rules(self, pid: str):
+        """W5（38 方案）：协议包 → rules 多出口渲染（rules_render 三格式）。
+
+        按协议 id 定位 community/<id>/protocol.yaml → render_protocol(fmt)，
+        fmt 下拉 agents/claude/skill——与 CLI nf render --fmt 同库（37 Wave4）。
+        """
+        from ..core.rules_render import render_protocol
+        # 仓库根 = ui/zone_g_community.py → ../../.. 到根（desktop/src/ui → 根）
+        ui_dir = Path(__file__).resolve().parent           # desktop/src/ui
+        root = ui_dir.parent.parent.parent                  # 仓库根
+        pkg_dir = root / "community" / pid
+        proto = pkg_dir / "protocol.yaml"
+        if not proto.exists():
+            common.warn(self, f"未找到协议包目录 community/{pid}/protocol.yaml"
+                              f"（仅在册登记但无本地协议文件？）")
+            return
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle(f"渲染 rules · {pid}")
+        dlg.resize(680, 520)
+        lay = QtWidgets.QVBoxLayout(dlg)
+        bar = QtWidgets.QHBoxLayout()
+        bar.addWidget(QtWidgets.QLabel("目标格式:"))
+        cb = QtWidgets.QComboBox()
+        for fmt, label in (("agents", "AGENTS.md"),
+                           ("claude", "CLAUDE.md"),
+                           ("skill", "SKILL.md")):
+            cb.addItem(label, fmt)
+        bar.addWidget(cb)
+        view = QtWidgets.QPlainTextEdit()
+        view.setReadOnly(True)
+        b_render = QtWidgets.QPushButton("渲染")
+        b_save = QtWidgets.QPushButton("保存…")
+        b_render.clicked.connect(lambda: view.setPlainText(
+            render_protocol(str(pkg_dir), cb.currentData())))
+        bar.addWidget(b_render)
+        b_save.clicked.connect(lambda: self._save_rules_text(
+            view.toPlainText(), pid, cb.currentData()))
+        bar.addWidget(b_save)
+        lay.addLayout(bar)
+        lay.addWidget(view, 1)
+        dlg.exec()
+
+    def _save_rules_text(self, text: str, pid: str, fmt: str):
+        if not text.strip():
+            common.warn(self, "先点「渲染」生成内容再保存。")
+            return
+        name = {"agents": "AGENTS.md", "claude": "CLAUDE.md",
+                "skill": "SKILL.md"}.get(fmt, fmt)
+        path, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self, "保存 rules", str(Path.home() / f"{pid}_{name}"),
+            f"Markdown (*.md);;所有文件 (*)")
+        if path:
+            Path(path).write_text(text, encoding="utf-8")
+            common.info(self, f"✓ 已保存 {name}：{path}")
 
     # ---------- E2 协议定义向导 ----------
     def do_open_wizard(self):
