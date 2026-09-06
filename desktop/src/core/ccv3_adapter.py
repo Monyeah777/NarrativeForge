@@ -103,7 +103,7 @@ def map_ir_to_ccv3(ir: IRDocument) -> dict:
     entries = world_entries(ir)
     return {
         "spec": "chara_card_v3",
-        "spec_version": "v3",
+        "spec_version": "3.0",
         "name": ir.title,
         "description": description,
         "personality": "（主角占位）此装配是世界观设定，非单一角色定义——"

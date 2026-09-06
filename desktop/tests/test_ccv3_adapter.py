@@ -47,7 +47,9 @@ class TestMapIRToCCV3(unittest.TestCase):
     def test_spec_anchor_and_name(self):
         chara = map_ir_to_ccv3(self.ir)
         self.assertEqual(chara.get("spec"), "chara_card_v3")
-        self.assertEqual(chara.get("spec_version"), "v3")
+        # v2.4.0 A2 核查：SillyTavern validator 要求 Number(spec_version) ∈ [3.0,4.0)
+        # ——"v3" 字符串经 Number() 得 NaN 校验 fail，须为数值字符串 "3.0"
+        self.assertEqual(chara.get("spec_version"), "3.0")
         self.assertEqual(chara.get("name"), "校园试炼")
 
     def test_persona_placeholder_semantics(self):

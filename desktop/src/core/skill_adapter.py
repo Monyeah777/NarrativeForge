@@ -20,8 +20,17 @@ from .ir import IRDocument
 
 
 def _slug(name: str) -> str:
-    s = re.sub(r"[^\w\u4e00-\u9fff-]+", "-", name).strip("-") or "skill"
-    return s.lower()
+    """任意串 → 合规 skill name（v2.4.0 A1 核查：对齐 agentskills.io name 约束）。
+
+    规范要求 name 仅小写字母/数字/连字符（a-z 0-9 -）、≤64 字符、不得首尾连字符、
+    禁连续 --。中文 title 无法 ASCII 化——故 name 主源用 pipeline_id（ASCII 稳定），
+    description 保留中文 title 全文（description 无字符集限制）。name 与目录名
+    （export_skill 用同一 _slug 建 skill_dir）必一致，满足「name 匹配父目录」。
+    """
+    s = re.sub(r"[^a-z0-9-]+", "-", str(name).lower()).strip("-")
+    s = re.sub(r"-{2,}", "-", s)          # 禁连续连字符
+    s = s[:64].strip("-")                  # ≤64 且不得尾连字符
+    return s or "skill"
 
 
 def _build_skill_md(ir: IRDocument) -> str:
@@ -44,10 +53,13 @@ def _build_skill_md(ir: IRDocument) -> str:
             n_blocks += 1
     desc = (f"{ir.pipeline_name}（{ir.pipeline_id}）生成："
             f"协议/文档操作规格，共 {n_blocks} 个规则块。")
+    # name 主源 = pipeline_id（ASCII 稳定，合规）；title 中文保留进 description/body
+    skill_name = _slug(ir.pipeline_id or ir.title)
     frontmatter = (
         "---\n"
-        f"name: {_slug(ir.title)}\n"
+        f"name: {skill_name}\n"
         f"description: {desc}\n"
+        "license: Proprietary. LICENSE.txt has complete terms\n"
         "---\n")
     return frontmatter + "\n\n".join(body_parts)
 
@@ -60,7 +72,7 @@ def export_skill(ir: IRDocument, dest_dir: Path, res) -> None:
             "叙事类产物，请用 CCV3 / 原生 MD 导出（产物×出口适配矩阵）")
         return
     dest_dir = Path(dest_dir)
-    skill_dir = dest_dir / _slug(ir.title)
+    skill_dir = dest_dir / _slug(ir.pipeline_id or ir.title)
     skill_dir.mkdir(parents=True, exist_ok=True)
     skill_path = skill_dir / "SKILL.md"
     skill_path.write_text(_build_skill_md(ir), encoding="utf-8")

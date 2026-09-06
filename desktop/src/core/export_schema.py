@@ -48,6 +48,16 @@ def check_ccv3_chara(path: str) -> List[str]:
     for k in CCV3_CHARA_KEYS:
         if k not in data:
             issues.append(f"ccv3 chara 缺必填键: {k}")
+    # v2.4.0 A2 核查：SillyTavern validator 要求 Number(spec_version) ∈ [3.0,4.0)
+    # ——"v3" 字符串经 Number() 得 NaN 校验 fail，须为数值字符串 "3.0"（bug 级差距机读化）
+    sv = data.get("spec_version")
+    if sv is not None:
+        try:
+            n = float(sv)
+        except (TypeError, ValueError):
+            n = float("nan")
+        if not (3.0 <= n < 4.0):
+            issues.append(f"ccv3 chara spec_version 非数值字符串 3.0-4.0: {sv!r}")
     book = data.get("character_book") if isinstance(data, dict) else None
     if book is not None:
         entries = book.get("entries") if isinstance(book, dict) else None
@@ -104,7 +114,34 @@ def _check_md_frontmatter(path: str, required: tuple) -> List[str]:
 
 
 def check_skill_md(path: str) -> List[str]:
-    return _check_md_frontmatter(path, ("name", "description"))
+    issues = _check_md_frontmatter(path, ("name", "description"))
+    if not os.path.isfile(path):
+        return issues
+    with open(path, encoding="utf-8") as f:
+        txt = f.read()
+    # v2.4.0 A1 核查：agentskills.io name 硬约束（仅 a-z0-9- / ≤64 / 非首尾连字符 /
+    # 禁连续 -- / 匹配父目录）+ description ≤1024
+    end = txt.find("\n---", 4)
+    fm = txt[4:end] if end > 0 else ""
+    m = re.search(r"^name:\s*(.+?)\s*$", fm, re.M)
+    if m:
+        name = m.group(1)
+        if len(name) > 64:
+            issues.append(f"skill name 超 64 字符: {len(name)}")
+        if not re.fullmatch(r"[a-z0-9-]+", name):
+            issues.append(f"skill name 含非法字符（仅 a-z/0-9/-）: {name!r}")
+        if name.startswith("-") or name.endswith("-"):
+            issues.append(f"skill name 首尾连字符非法: {name!r}")
+        if "--" in name:
+            issues.append(f"skill name 连续连字符非法: {name!r}")
+        # 匹配父目录（skill 产物在 dest/<name>/SKILL.md）
+        parent = os.path.basename(os.path.dirname(os.path.abspath(path)))
+        if parent != name:
+            issues.append(f"skill name 与父目录不匹配: name={name!r} dir={parent!r}")
+    d = re.search(r"^description:\s*(.+?)\s*$", fm, re.M)
+    if d and len(d.group(1)) > 1024:
+        issues.append(f"skill description 超 1024 字符: {len(d.group(1))}")
+    return issues
 
 
 def check_agents_md(path: str) -> List[str]:

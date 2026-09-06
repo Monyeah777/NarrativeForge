@@ -1,6 +1,7 @@
 ---
-name: 技术文档装配战例
+name: p06
 description: 技术文档题材装配流（P06）生成：协议/文档操作规格，共 2 个规则块。
+license: Proprietary. LICENSE.txt has complete terms
 ---
 # 技术文档装配战例
 
