@@ -1,7 +1,10 @@
 name: ci-verify
 # 23 方案分层治理：基础层唯一自动闸门——checkout → verify.sh（L0-L2 分层门禁，
 # clone 即绿、零前置；无 sync、无 android 依赖，L3 端壳已冻结移出）。
-# PASS=24 0 WARN 0 FAIL 为绿；任一 FAIL → exit 1 → CI 红（发布铁律 ROADMAP §8.4 门禁）。
+# PASS=31 0 WARN 0 FAIL 为绿；任一 FAIL → exit 1 → CI 红（发布铁律 ROADMAP §8.4 门禁）。
+# G1 修复（38 方案，2026-09-06）：7 连红根因 = check12/check18 unittest 需
+# yaml + PySide6（本地有、CI 干净环境缺）——setup-python 后 pip 安装再跑 verify.sh；
+# verify.sh 失败分支已加 log 回显（诊断可溯）。
 on:
   push:
     branches: [main]
@@ -15,5 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: 安装测试依赖（pyyaml + PySide6——check12/check18 unittest 必要，G1 修复）
+        run: pip install pyyaml PySide6
       - name: 分层门禁（verify.sh v2.9，L0-L2 默认锁）
         run: bash verify.sh
