@@ -47,6 +47,15 @@ def _narrative_ir() -> IRDocument:
     return IRDocument(type="narrative", title="校园叙事例", layers=[layer])
 
 
+def _narrative_ir_with_assets() -> IRDocument:
+    """narrative IR 含 asset_refs（资产条目——覆盖 B3 资产条目 id 路径）。"""
+    m = IRModule(full_id="M55", name="匿名情书", layer="P40",
+                 content="情书匿名投递与回应。")
+    layer = IRLayer(id="P40", name="行为决策", modules=[m])
+    return IRDocument(type="narrative", title="校园叙事例", layers=[layer],
+                      asset_refs={"毕业纪念册": "校徽胸针；空白同学录；旧操场照片"})
+
+
 class ExportSchemaValidTest(unittest.TestCase):
     """合法产物：export() 产出后 validate_export 应零 issue。"""
 
@@ -61,6 +70,13 @@ class ExportSchemaValidTest(unittest.TestCase):
 
     def test_ccv3_narrative_passes(self):
         res, issues = self._export_and_validate(_narrative_ir(), "ccv3")
+        self.assertEqual(res.warnings, [], res.warnings)
+        self.assertEqual(issues, [], issues)
+
+    def test_ccv3_narrative_with_assets_passes(self):
+        # v2.5.0 B3 回归：含 asset_refs 的装配导出，资产条目须含 id 字段
+        # （RED：修复前资产条目缺 id → check_ccv3_world 报「缺键: id」）
+        res, issues = self._export_and_validate(_narrative_ir_with_assets(), "ccv3")
         self.assertEqual(res.warnings, [], res.warnings)
         self.assertEqual(issues, [], issues)
 

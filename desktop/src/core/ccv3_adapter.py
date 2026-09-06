@@ -58,24 +58,33 @@ def _module_entries(ir: IRDocument) -> List[dict]:
     return entries
 
 
-def _asset_entries(ir: IRDocument) -> List[dict]:
-    """资产 refs → 独立条目（素材；缺失键不导，已在 IR.asset_missing 明示）。"""
+def _asset_entries(ir: IRDocument, start: int = 0) -> List[dict]:
+    """资产 refs → 独立条目（素材；缺失键不导，已在 IR.asset_missing 明示）。
+
+    v2.5.0 B3 修复：资产条目补 id 字段（与模块条目连续编号——start 为模块
+    条目数，资产条目 id/insertion_order 从 start 续号，非固定 1000 魔法数），
+    满足 export_schema.WORLD_ENTRY_KEYS 的 id 必填。
+    """
     entries: List[dict] = []
+    order = start
     for key, val in (ir.asset_refs or {}).items():
         if val is None:
             continue
         content = val if isinstance(val, str) else str(val)
         entries.append({
             "name": key, "keys": [key], "content": content,
-            "enabled": True, "insertion_order": 1000,
+            "enabled": True, "insertion_order": order,
             "case_sensitive": False, "priority": 10,
+            "id": order,
             "comment": "NF 资产素材", })
+        order += 1
     return entries
 
 
 def world_entries(ir: IRDocument) -> List[dict]:
     """装配 → lorebook 条目列表（规则模块 + 资产）。"""
-    return _module_entries(ir) + _asset_entries(ir)
+    mods = _module_entries(ir)
+    return mods + _asset_entries(ir, start=len(mods))
 
 
 def _scenario_text(ir: IRDocument) -> str:
