@@ -159,5 +159,42 @@ class GradeTest(unittest.TestCase):
         self.assertEqual(grades["M40"], "community")
 
 
+class ListMarketTest(unittest.TestCase):
+    """v2.5.0 Wave3：市场目录视图（list_market / package_grade）。"""
+
+    def _reg(self):
+        from core.registry_loader import Registry
+        return Registry(
+            registry_schema_version="2",
+            modules=[{"id": "M00", "name": "数据结构"}],
+            protocols=[
+                {"id": "校园情感领域包", "module_ids": ["情感:M22", "M40", "M55"]},
+                {"id": "通用核心基础包", "module_ids": ["M93", "M94", "M95", "M96"]},
+            ])
+
+    def test_package_grade_community_vs_experimental(self):
+        reg = self._reg()
+        prots = {p["id"]: p for p in reg.protocols}
+        self.assertEqual(market_analyzer.package_grade(prots, "校园情感领域包"),
+                         "community")
+        self.assertEqual(market_analyzer.package_grade(prots, "通用核心基础包"),
+                         "experimental")
+
+    def test_list_market_includes_official_and_packages(self):
+        reg = self._reg()
+        items = market_analyzer.list_market(reg)
+        kinds = {i["kind"] for i in items}
+        self.assertIn("module", kinds)
+        self.assertIn("package", kinds)
+        official = [i for i in items if i["kind"] == "module"]
+        self.assertEqual(official[0]["grade"], "official")
+
+    def test_list_market_tier_filter(self):
+        reg = self._reg()
+        items = market_analyzer.list_market(reg, tier="experimental")
+        self.assertTrue(all(i["grade"] == "experimental" for i in items))
+        self.assertEqual([i["id"] for i in items], ["通用核心基础包"])
+
+
 if __name__ == "__main__":
     unittest.main()

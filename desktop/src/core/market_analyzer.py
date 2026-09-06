@@ -59,6 +59,43 @@ def grades_of_package(prots: Dict[str, Dict[str, Any]], pkg_id: str) -> Dict[str
     return out
 
 
+def package_grade(prots: Dict[str, Dict[str, Any]], pkg_id: str) -> str:
+    """包级分级（v2.5.0 Wave3）：模块全 experimental → experimental；
+    否则 community（官方核心不在 protocols[]，由 list_market 单列）。"""
+    grades = grades_of_package(prots, pkg_id)
+    if not grades:
+        return GRADE_COMMUNITY
+    if all(g == GRADE_EXPERIMENTAL for g in grades.values()):
+        return GRADE_EXPERIMENTAL
+    return GRADE_COMMUNITY
+
+
+def list_market(reg: Any, tier: Optional[str] = None) -> List[dict]:
+    """市场目录（v2.5.0 Wave3）：官方核心 13 件 + community 包，各带 grade。
+
+    tier 筛选（official/community/experimental）；None 返回全量。
+    消费 35-A6 grade_of_module 分级字段做目录视图（C-a 消费方兑现）。
+    """
+    out: List[dict] = []
+    # 官方核心（registry modules[] 13 件 → official）
+    for m in (reg.modules or []):
+        out.append({"kind": "module", "id": m.get("id"), "name": m.get("name"),
+                    "grade": GRADE_OFFICIAL})
+    # 社区包（registry protocols[] → community/experimental）
+    prots = {p.get("id"): p for p in (reg.protocols or []) if p.get("id")}
+    for p in (reg.protocols or []):
+        pid = p.get("id")
+        if not pid:
+            continue
+        out.append({"kind": "package", "id": pid, "name": p.get("name", pid),
+                    "grade": package_grade(prots, pid),
+                    "version": str(p.get("version") or "1.0.0"),
+                    "modules": len(p.get("module_ids") or [])})
+    if tier:
+        out = [x for x in out if x["grade"] == tier]
+    return out
+
+
 def layer_key(key: Any) -> str:
     """挂载层键归一：protocol 长键（'P40 行为决策'）→ Pxx 短键（同 check15 ③）。"""
     s = str(key)

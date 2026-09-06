@@ -70,9 +70,22 @@ def _build_parser() -> argparse.ArgumentParser:
     reg.set_defaults(mode="check")
 
     mkt = sub.add_parser("market",
-                         help="市场协议查询（B4：依赖闭包 + 挂载冲突预检）")
-    mkt.add_argument("pkg_dir", help="包目录（如 community/校园西幻轻混组合包）")
+                         help="市场协议查询（B4：依赖闭包 + 挂载冲突预检；list 目录视图）")
+    mkt.add_argument("pkg_dir", nargs="?", default=None,
+                     help="包目录（如 community/校园西幻轻混组合包）；缺省 + --list 列目录")
+    mkt.add_argument("--list", action="store_true",
+                     help="列市场目录（官方核心 + 社区包，各带分级徽章）")
+    mkt.add_argument("--tier", default=None,
+                     choices=["official", "community", "experimental"],
+                     help="按分级筛选（v2.5.0 Wave3：官方/社区/实验）")
     mkt.add_argument("--registry", default=None,
+                     help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+
+    spc = sub.add_parser("spec",
+                         help="Spec Registry 查询（v2.5.0 Wave3：版本化 spec 查询）")
+    spc.add_argument("action", nargs="?", default="ls", choices=["ls"],
+                     help="动作（ls 列 spec 版本清单）")
+    spc.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
 
     whr = sub.add_parser("who-refers",
@@ -193,12 +206,31 @@ def _cmd_register(args) -> int:
 def _cmd_market(args) -> int:
     """nf market：依赖闭包 + 挂载冲突预检（B4 CLI 先行；信息查询，冲突不阻断）。"""
     import json
-    from core.market_analyzer import conflicts, dependencies, grades_of_package
+    from core.market_analyzer import (conflicts, dependencies, grades_of_package,
+                                      list_market)
     from core.registry_sync import check_registerable
+    from core.registry_loader import load_registry
 
     reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
     doc_path = os.path.join(ROOT, "02_联动注册表.md")
 
+    # ---- list 目录视图（v2.5.0 Wave3）----
+    if args.list:
+        reg = load_registry(reg_path)
+        items = list_market(reg, tier=args.tier)
+        print(f"== nf market list{'（tier=' + args.tier + '）' if args.tier else ''} ==")
+        _badge = {"official": "🏛官方", "community": "🌐社区", "experimental": "🧪实验"}
+        for it in items:
+            if it["kind"] == "module":
+                print(f"  [{_badge[it['grade']]}] 模块 {it['id']} · {it['name']}")
+            else:
+                print(f"  [{_badge[it['grade']]}] 包 {it['id']} v{it['version']}"
+                      f"（{it['modules']} 模块）")
+        return 0
+
+    if not args.pkg_dir:
+        print("✗ 缺 pkg_dir（或加 --list 列目录）", file=sys.stderr)
+        return 2
     pkg_id = os.path.basename(args.pkg_dir.rstrip("/\\"))
 
     with open(reg_path, encoding="utf-8") as f:
@@ -406,6 +438,22 @@ def _cmd_import(args) -> int:
     return 0
 
 
+def _cmd_spec(args) -> int:
+    """nf spec ls：Spec Registry 查询（v2.5.0 Wave3：版本化 spec 清单）。"""
+    from core.registry_loader import load_registry
+
+    reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    reg = load_registry(reg_path)
+    print("== nf spec ls ==")
+    print(f"  registry_schema_version: {reg.registry_schema_version}")
+    print(f"  官方核心模块: {len(reg.modules)} 件")
+    for p in reg.protocols or []:
+        print(f"  {p.get('id')}: schema v{p.get('schema_version')}"
+              f" · version {p.get('version') or '1.0.0'}"
+              f" · {len(p.get('module_ids') or [])} 模块")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -420,6 +468,8 @@ def main(argv=None) -> int:
         return _cmd_rename(args)
     if args.cmd == "import":
         return _cmd_import(args)
+    if args.cmd == "spec":
+        return _cmd_spec(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2
