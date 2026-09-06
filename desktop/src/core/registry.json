@@ -346,7 +346,8 @@
         }
       },
       "references": [],
-      "schema_version": "2"
+      "schema_version": "2",
+      "version": "1.0.0"
     },
     {
       "id": "西幻生存领域包",
@@ -428,7 +429,8 @@
         }
       },
       "references": [],
-      "schema_version": "2"
+      "schema_version": "2",
+      "version": "1.0.0"
     },
     {
       "assets": {
@@ -475,7 +477,8 @@
           "asset_readonly": true
         }
       ],
-      "schema_version": "2"
+      "schema_version": "2",
+      "version": "1.0.0"
     },
     {
       "assets": {
@@ -525,7 +528,8 @@
       "name": "通用核心基础包",
       "pipeline": "P05",
       "references": [],
-      "schema_version": "2"
+      "schema_version": "2",
+      "version": "1.0.0"
     },
     {
       "id": "技术文档域包",
@@ -559,7 +563,8 @@
         }
       },
       "references": [],
-      "schema_version": "2"
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

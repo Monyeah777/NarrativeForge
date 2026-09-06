@@ -74,6 +74,8 @@ def project_entry(pkg_dir: str) -> Dict[str, Any]:
         "mount_layers": mount_layers,
         "references": list(pkg.get("references") or []),
         "schema_version": proto.get("schema_version", ""),
+        # v2.5.0 Wave2 版本槽位（V1 只增不删）：package.version 投影
+        "version": str(pkg.get("version") or "1.0.0"),
     }
 
 

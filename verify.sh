@@ -480,6 +480,10 @@ if not errs:
         if p['pipeline'] != pkg['pipeline']: errs.append('⑦%s pipeline 不一致' % pid)
         if sorted(p['categories']) != sorted(pkg['categories']): errs.append('⑦%s categories 不一致' % pid)
         if p['schema_version'] != data[d]['protocol']['schema_version']: errs.append('⑦%s schema_version 不一致' % pid)
+        # v2.5.0 Wave2 版本槽位：package.version 双源一致（缺省等价 1.0.0，V1 只增不删）
+        _reg_ver = str(p.get('version') or '1.0.0')
+        _proto_ver = str(pkg.get('version') or '1.0.0')
+        if _reg_ver != _proto_ver: errs.append('⑦%s version 不一致: reg=%s proto=%s' % (pid, _reg_ver, _proto_ver))
         # ⑦ 升级（29 方案 B3-C）：module_ids / mount_layers 从长度比对 → 元素级全序
         reg_ids = [str(x) for x in p.get('module_ids', [])]
         proto_ids = [str(x) for x in pkg.get('module_id_range', [])]
