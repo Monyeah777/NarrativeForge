@@ -120,6 +120,29 @@ def _build_parser() -> argparse.ArgumentParser:
     stl.add_argument("--root", default=".",
                      help="ls：扫描目录（缺省 = 当前目录）")
 
+    # nf design audit（M_AUDIT，升格合并后 design 家族统一入口；steelman 语义
+    # 由 audit steelman mode 承载，nf design steelman 保留为兼容别名）
+    aud = dsub.add_parser("audit",
+                          help="协议设计审计（M_AUDIT：决策过程质量——钢人/blindspot/full）")
+    aud.add_argument("action", nargs="?", default="ls",
+                     choices=["init", "ls"],
+                     help="动作（init 生成 audit.md / ls 列审计索引；缺省 ls）")
+    aud.add_argument("question", nargs="?",
+                     help="init：审计问题描述（引号包裹）")
+    aud.add_argument("--target", default="",
+                     help="init：被审计对象（方案/决策/协议设计引用）")
+    aud.add_argument("--mode", default="full",
+                     choices=["steelman", "blindspot", "full"],
+                     help="审计模式（默认 full：钢人 + 双盲区 + 结论 + 行动）")
+    aud.add_argument("--context", default="",
+                     help="init：related 字段（关联方案文档）")
+    aud.add_argument("--out", default=None,
+                     help="init：输出路径（缺省 = 当前目录 audit.md）")
+    aud.add_argument("--check", dest="check_file", metavar="FILE",
+                     help="check：结构自检指定 audit.md（缺文件返回提示非红）")
+    aud.add_argument("--root", default=".",
+                     help="ls：扫描目录（缺省 = 当前目录）")
+
     whr = sub.add_parser("who-refers",
                          help="引用反查（A2：谁引用了某模块，遍历 registry references）")
     whr.add_argument("module_id", help="模块 id（如 M91 或 情感:M55）")
@@ -568,6 +591,57 @@ def _cmd_design(args) -> int:
     return 0
 
 
+def _cmd_audit(args) -> int:
+    """nf design audit：M_AUDIT 协议设计审计（决策过程质量）。
+
+    audit init <question> --target T --mode {steelman,blindspot,full}
+    audit --check <file>    # schema/verdict/清单边界；缺文件提示非红
+    audit ls [--root]       # 审计记录索引
+    """
+    from pathlib import Path
+    from core.audit import init_audit, check_audit, scan_audit
+
+    if args.check_file:
+        p = Path(args.check_file)
+        warns = check_audit(p)
+        if not warns:
+            print(f"  ✓ 审计结构自检通过: {p}")
+            return 0
+        print(f"== nf design audit --check {p} ==")
+        for w in warns:
+            print(f"  ⚠ {w}")
+        return 1
+    if args.action == "init":
+        if not args.question:
+            print('  ✗ init 需要审计问题: nf design audit init "<问题>" --target T')
+            return 2
+        if not args.target:
+            print('  ✗ init 需要 --target（被审计对象）: 如 --target "38 方案"')
+            return 2
+        out = Path(args.out) if args.out else Path.cwd() / "audit.md"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        init_audit(args.question, target=args.target, mode=args.mode,
+                   context=args.context, path=out)
+        print(f"== nf design audit init（mode={args.mode}）==")
+        print(f"  ✓ audit.md 已生成: {out}")
+        print(f"    按引导问卷完成各节回填，然后 --check 自检")
+        return 0
+    # ls
+    root = Path(args.root)
+    if not root.is_dir():
+        print(f"  ✗ 目录不存在: {root}")
+        return 1
+    hits = scan_audit(root)
+    print("== nf design audit ls ==")
+    if not hits:
+        print("  （无 audit.md——nf design audit init 生成第一份）")
+        return 0
+    print(f"  审计记录 {len(hits)} 份:")
+    for h in hits:
+        print(f"  · {h}")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -589,6 +663,8 @@ def main(argv=None) -> int:
     if args.cmd == "serve":
         return _cmd_serve(args)
     if args.cmd == "design":
+        if args.design_cmd == "audit":
+            return _cmd_audit(args)
         return _cmd_design(args)
     if args.cmd != "run":
         _build_parser().print_help()
