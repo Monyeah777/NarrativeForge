@@ -13,7 +13,7 @@
 
 本项目分四层治理（23 方案 + 38 方案脉冲升级）：L0 协议层 / L1 内容层 / L2 核心逻辑层（`desktop/src/core`，纯 Python 零依赖，**高频迭代主战场**）/ L3 端壳层。端壳（桌面 GUI / Android APK）是包络层——**默认冻结，触发条件达成时执行脉冲式接线波**（未接线新能力 ≥6 项或用户/消费方必须项），波后回冻结，不随基础层逐功能演进（详见 `L3_FROZEN.md`）。
 
-端壳源码已移出主仓库演进主线（git 历史保留），产出时从冻结快照恢复并触发构建 workflow（仅 v* 标签 / 手动触发）：Release 页可下载 `NarrativeForge.exe` / macOS / Linux 成品（`.github/workflows/build-desktop.yml`），APK 由 `.github/workflows/build-android.yml` 产出。
+端壳源码已移出主仓库演进主线（git 历史保留），产出时从冻结快照恢复并触发构建 workflow（壳线专用：仅 `shells-v*` 标签 / 手动触发——40 总纲 S6，基础层 v* 不再产壳）：Release 页可下载 `NarrativeForge.exe` / macOS / Linux 成品（`.github/workflows/build-desktop.yml`），APK 由 `.github/workflows/build-android.yml` 产出。
 
 基础层验证不依赖端壳：`bash verify.sh`（v2.11，L0-L2 分层门禁，clone 即绿）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
 
