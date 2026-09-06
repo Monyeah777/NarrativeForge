@@ -104,3 +104,11 @@ python3 -m compileall -q desktop/src android/app scripts
 - **缺陷上报**：使用 .github/ISSUE_TEMPLATE/bug_report.md——APK 闪退必填：设备型号 / 系统版本 / App 版本 / 复现步骤 / 日志。
 - **功能请求**：使用 .github/ISSUE_TEMPLATE/feature_request.md。
 - **PR**：使用 .github/PULL_REQUEST_TEMPLATE.md，勾选改动域（协议层 / 代码层 / 社区包）+ 门禁自检清单（verify.sh 全绿 / unittest 40 用例 / 是否改 core 已 sync / py_compile 通过）。
+
+## 6. 安全章程（40 总纲 S8，2026-09-06）
+- **密钥零落盘**：不提交/不 cat/不 read `.env`、`credentials.*`、`*token*`、`*secret*` 等文件；发现即警告并中止（项目硬性闸门）。
+- **Token 轮换 SOP**：任何出现在对话/日志/文档/commit 中的 token 视为已泄露——立即到 GitHub → Settings → Developer settings → Personal access tokens 撤销重建；新 token 仅经环境变量注入，不写入文件/提交。CI 一律用 `GITHUB_TOKEN`（workflow 内最小权限），不使用个人 PAT。
+- **workflow 最小权限**：顶层默认 `contents: read`；需要写 Release/推送的 job 单独声明 `contents: write`——新增 workflow 或步骤前对照现有 permissions 模式（ci-verify/e2e 只读、build job 单提权）。
+- **Release 校验和**：发布资产随行 `sha256sum` 校验和文件（用户下载后可验完整性）。
+- **secret 扫描**：提交前自查常见 token 前缀（`ghp_` / `gho_` / `sk-` 等）；完整自动扫描入 ci-verify 为波 A 项（40 总纲 S8 全量，v2.7）。
+- **沙箱意识**：工具执行限项目目录内；路径逃逸被 validatePath 拦截，不得绕过。
