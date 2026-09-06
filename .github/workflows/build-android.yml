@@ -319,13 +319,10 @@ jobs:
           disable-animations: true
           script: |
             set -e
-            # emulator-runner 的 script 执行 cwd 不保证是仓库根：先显式 cd +
-            # 打印现场（run 34023501206 失败实证：APK 下载成功但相对 glob 空）
-            cd "$GITHUB_WORKSPACE"
-            echo "=== pwd ==="; pwd
-            echo "=== android/bin 内容 ==="
-            ls -la android/bin/ 2>&1 || echo "<android/bin 不存在>"
-            APK=$(find android/bin -name '*.apk' 2>/dev/null | head -1)
+            # emulator-runner 逐行拆 sh -c 执行且不保留 cd（run 34024534105 实证：
+            # 上一行 cd 到 workspace，下一行 find 仍在原 cwd → APK 相对路径找不到）。
+            # 修复：定位与使用合并进同一 sh -c，或用 $GITHUB_WORKSPACE 绝对路径。
+            APK=$(find "$GITHUB_WORKSPACE/android/bin" -name '*.apk' 2>/dev/null | head -1)
             echo "x86_64 APK: ${APK:-<none>}"
             test -n "$APK"
             adb install -r "$APK"
