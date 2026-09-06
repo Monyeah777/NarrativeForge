@@ -83,6 +83,13 @@ class ProtocolWizardDialog(QtWidgets.QDialog):
         f.addRow("管线:", self.ed_pipe)
         f.addRow("编号清单:", self.ed_range)
         f.addRow("类别:", self.ed_cat)
+        # W2（38 方案）：doc_semantics 声明（34 A3 遗留——rules 出口选择）
+        self.cb_semantics = QtWidgets.QComboBox()
+        self.cb_semantics.addItem("不声明", "")
+        self.cb_semantics.addItem("project_rules（规则类 → AGENTS/CLAUDE 出口）",
+                                  "project_rules")
+        self.cb_semantics.addItem("skill（能力类 → SKILL 出口）", "skill")
+        f.addRow("文档语义:", self.cb_semantics)
         root.addLayout(f)
 
         self.ck_core = QtWidgets.QCheckBox("只依赖官方核心层（core_only，推荐）")
@@ -127,6 +134,7 @@ class ProtocolWizardDialog(QtWidgets.QDialog):
             module_id_range=_parse_csv(self.ed_range.text()),
             categories=_parse_csv(self.ed_cat.text()),
             core_only=self.ck_core.isChecked(),
+            doc_semantics=self.cb_semantics.currentData() or "",
             modules=_parse_module_lines(self.ed_mods.toPlainText()),
             mount_layers=_parse_mount_lines(self.ed_mount.toPlainText()),
         )
