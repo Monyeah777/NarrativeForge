@@ -95,6 +95,10 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="目标格式（agents/claude/skill）")
     rnd.add_argument("--dest", default=None, help="输出目录（缺省=当前目录）")
 
+    srv = sub.add_parser("serve",
+                         help="MCP 运行时服务（C1：mcp.json 快照 → stdio JSON-RPC，供 MCP client 拉起）")
+    srv.add_argument("snapshot", help="mcp.json 快照路径（如 nf run --fmt mcp 产物）")
+
     whr = sub.add_parser("who-refers",
                          help="引用反查（A2：谁引用了某模块，遍历 registry references）")
     whr.add_argument("module_id", help="模块 id（如 M91 或 情感:M55）")
@@ -478,6 +482,18 @@ def _cmd_render(args) -> int:
     return 0
 
 
+def _cmd_serve(args) -> int:
+    """nf serve <mcp.json>：快照烧成 stdio JSON-RPC 服务（C1，MCP client 拉起）。
+
+    transport 纪律：stdout 只写 MCP 消息（换行分隔 JSON-RPC）——初始化说明走 stderr。
+    """
+    from core.mcp_runtime import load_snapshot, McpRuntime
+
+    print(f"== nf serve {os.path.basename(args.snapshot)} =="
+          f"（stdio JSON-RPC，Ctrl+C 退出）", file=sys.stderr)
+    return McpRuntime(load_snapshot(args.snapshot)).serve_stdio()
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -496,6 +512,8 @@ def main(argv=None) -> int:
         return _cmd_spec(args)
     if args.cmd == "render":
         return _cmd_render(args)
+    if args.cmd == "serve":
+        return _cmd_serve(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2
