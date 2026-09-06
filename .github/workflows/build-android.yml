@@ -318,16 +318,7 @@ jobs:
           profile: pixel_4
           disable-animations: true
           script: |
-            set -e
-            # emulator-runner 逐行拆 sh -c 执行且不保留 cd（run 34024534105 实证：
-            # 上一行 cd 到 workspace，下一行 find 仍在原 cwd → APK 相对路径找不到）。
-            # 修复：定位与使用合并进同一 sh -c，或用 $GITHUB_WORKSPACE 绝对路径。
-            APK=$(find "$GITHUB_WORKSPACE/android/bin" -name '*.apk' 2>/dev/null | head -1)
-            echo "x86_64 APK: ${APK:-<none>}"
-            test -n "$APK"
-            adb install -r "$APK"
-            adb shell am start -W -n org.narrativeforge.narrativeforge/org.kivy.android.PythonActivity
-            sleep 20
-            PID=$(adb shell pidof org.narrativeforge.narrativeforge)
-            echo "narrativeforge pid = [${PID}]"
-            test -n "$PID"
+            # emulator-runner 把 script 逐行拆成独立 `sh -c` 执行（run 34025231358
+            # 日志实证：APK= 赋值行与 echo $APK 行是不同进程，变量跨行丢失 →
+            # 恒 <none>）。修复：整段逻辑合并为单行串联（同一 sh -c 内变量共享）。
+            APK=$(find "$GITHUB_WORKSPACE/android/bin" -name '*.apk' 2>/dev/null | head -1) && echo "x86_64 APK: ${APK}" && adb install -r "$APK" && adb shell am start -W -n org.narrativeforge.narrativeforge/org.kivy.android.PythonActivity && sleep 20 && PID=$(adb shell pidof org.narrativeforge.narrativeforge) && echo "narrativeforge pid = [${PID}]" && test -n "$PID"
