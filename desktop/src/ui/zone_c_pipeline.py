@@ -53,8 +53,12 @@ class ZoneCPipeline(QtWidgets.QWidget):
         b_default.clicked.connect(self.apply_defaults)
         b_clear = QtWidgets.QPushButton("清空勾选")
         b_clear.clicked.connect(self.clear_selection)
+        # W3（38 方案）：一键全链执行（retrieve→compose→gate→export，CLI nf run 同路径）
+        b_run = QtWidgets.QPushButton("一键执行（全链）")
+        b_run.clicked.connect(self.run_pipeline)
         bottom.addWidget(b_default)
         bottom.addWidget(b_clear)
+        bottom.addWidget(b_run)
         bottom.addStretch(1)
         self.stat_label = QtWidgets.QLabel("已选 0 个模块")
         bottom.addWidget(self.stat_label)
@@ -198,3 +202,53 @@ class ZoneCPipeline(QtWidgets.QWidget):
         self.app.selected.clear()
         self.refresh()
         self.app.on_selection_changed()
+
+    def run_pipeline(self):
+        """一键执行全链（38 W3）：selected → pipe() → 结果到 zone_d。
+
+        CLI 优先原则：与 nf run 同走 core.pipeline.pipe 单一路径（杜绝
+        GUI/CLI 行为分叉）；结果显示复用 zone_d 的质量门/预览区。
+        """
+        from ..core.pipeline import pipe
+        pipe_obj = self.app.current_pipeline
+        if pipe_obj is None:
+            from . import common
+            common.warn(self, "暂无管线，请先在③管线装配加载管线库。")
+            return
+        selected = sorted(self.app.selected)
+        if not selected:
+            from . import common
+            common.warn(self, "未勾选任何模块——先按管线默认勾选或手动勾选。")
+            return
+        try:
+            res = pipe(self.app.store, pipe_obj, selected,
+                       include_references=True, fmt="ccv3",
+                       dest_dir=str(Path.home() / "Documents"))
+        except Exception as exc:      # noqa: BLE001
+            from . import common
+            common.error(self, f"全链执行失败：{exc}")
+            return
+        # 结果 → zone_d 展示（质量门 + 预览 + 产物提示）
+        zd = getattr(self.app, "zone_d", None)
+        g = res.gate
+        summary = (f"—— 全链执行（{len(selected)} 模块）——\n"
+                   f"质量门：PASS {g.n_pass} · WARN {g.n_warn}"
+                   f" · FAIL {g.n_fail}"
+                   + ("（可产出）" if res.ok else "（FAIL——建议修复后重跑）")
+                   + ("" if not res.warnings
+                      else "\n警告：\n" + "\n".join(
+                          f"  ⚠ {w}" for w in res.warnings[:6])))
+        if res.export is not None and res.export.files:
+            names = "、".join(Path(f).name for f in res.export.files)
+            summary += f"\n✓ 已导出：{names}"
+        if zd is not None:
+            zd.warn_view.appendPlainText(summary)
+            if res.ir is not None:
+                from ..core.ir import ir_to_md
+                zd.preview.setPlainText(ir_to_md(res.ir))
+            from . import common
+            common.info(self, f"全链完成：{'通过' if res.ok else 'FAIL'}，"
+                              f"产物见 ④生成 输出区")
+        else:
+            from . import common
+            common.info(self, summary)
