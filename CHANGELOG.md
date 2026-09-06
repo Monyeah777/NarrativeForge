@@ -1,8 +1,15 @@
-## [Unreleased]（v2.5.0 基础层深化续，方案 36 执行中）
+## [2.5.0] - 2026-09-06（v2.5.0 基础层深化续：A 矩阵补全 + B 挂账 + MCP 运行时化——主线收口）
+### Added
+- **v2.5.0-Wave1 读入入册（方案 37，ea1a5d1）**：`import_adapter` parse_skill 宽容层资源随行装载（`bundled_resources` 扫描 scripts/references/assets 相对路径 → IR meta 资源清单，供导出随行复制/消费方装载）+ `nf import <file> --register` 内容库登记（parse → 结构校验 → 幂等装载 registry 同源去重，同 30 方案 merge 只增不删纪律）。34 方案遗留「skill 资源随行装载 + 读入→内容库自动登记」关 2。单测 +6（test_import_adapter）。
+- **v2.5.0-Wave2 协议层 V2（方案 37，0b0db5f + fed97bd）**：①包版本槽位——protocol.yaml `package.version` 机读字段 + registry protocols[] 条目 version 投影 + 02 §8 登记字段 + check14 ⑦ 元素级比对含版本声明合法性、引用钉扎复核（B4 版本槽位遗留兑现）；②条件组合运行时——`composer.build_assembly` 增 `conditions` 参数（module 声明 variant/condition → 组合时按条件动态裁剪，B2 上半段）。check14/check15 扩展用例 + 变体组合 RED→GREEN 反证。
+- **v2.5.0-Wave3 市场本体化收口（方案 37，003d60b）**：`market_analyzer` 上架规则化（消费 35-A7 分级字段——必填/版本/依赖/分级声明规则）+ `list_market/package_grade` + `nf market list --tier=official|community|experimental` 目录视图 CLI 先行 + `nf spec ls`（Spec Registry = C3 并入 B4，版本化 spec 查询）。C-a 模块质量分级消费方闭环。GUI 目录视图仍冻结（L3）。
+- **v2.5.0-Wave4 协议多出口渲染（方案 37，6cc3b84）**：新增 `desktop/src/core/rules_render.py`——protocol.yaml（E2 协议向导产物/社区包协议声明）→ agents/claude/skill 三格 rules 渲染（`_RULES_RENDERERS` 注册表，仿 exporter._REGISTRY 模式 + 范围纪律只挂已交付三格）+ `nf render <pkg_dir> --fmt {agents,claude,skill}`。A3 适配矩阵补格：协议定义 → agent rules / SKILL。单测 5 用例全绿（含 round-trip + 范围纪律 + 未登记格式拒出）。
+- **v2.5.0-Wave5 MCP 运行时化（方案 37，2851b74）**：新增 `desktop/src/core/mcp_runtime.py`——快照烧成服务：mcp.json（mcp_adapter 静态快照）→ stdio JSON-RPC 运行时。33-A5 报告三差距勾销：G1 形态级（静态文件 → JSON-RPC 会话协议，换行分隔 UTF-8 transport）+ G2 字段级（resources/list 返去 text 纯元数据、正文经 resources/read contents[].text 两段式）+ G4 归属层（name/version 入 initialize 握手 serverInfo）。C2 最小安全层随行：只读（tools/prompts 未实现 → -32601）+ uri 白名单（未知 uri → -32602）。`nf serve <mcp.json>` CLI。单测 9 用例 + stdio 子进程 e2e 冒烟（握手/list/read/白名单/只读五连全过）。
 ### Fixed
 - **v2.5.0-B3 CCV3 资产条目 id 修复（方案 36 Wave1，c1d310f）**：`ccv3_adapter._asset_entries` 资产条目缺 `id` 字段 → 含 asset_refs 的装配导出后 `check_ccv3_world` 报「缺键: id」（测试盲区静默 bug）。修复 = `_asset_entries` 加 `start` 参数续号（id/insertion_order 连续编号，去固定 1000 魔法数）+ `world_entries` 衔接；补 `_narrative_ir_with_assets` 回归用例（RED→GREEN）。单测 267→268。
 ### Changed
 - 34 方案「非目标」persona 表述修订：从「标记占位非真实角色定义」改为「仅透传 chara_meta 不判占位」（对齐 parse_ccv3 源码实际行为）；README 协议链补 36 + v2.5.0 块 + 方案真相源 36_v2.5.0_基础层深化续方案.md 落盘。
+- **v2.5.0 发布收口**：verify.sh PASS=31 全绿（Wave1-5 单测收编 check12 discover：268→291）+ README v2.5.0 块切「✅ 已发布」+ ROADMAP §1 v2.5.0 行归位 + §7.5 挂账勾销（A3 多出口渲染 / B2 条件组合 / B4 版本槽位 + Spec Registry / C-a 分级消费方 / C1 MCP 运行时化 + C2 安全层 全 ✅；34 遗留关 2 留 2——skill 资源随行装载 + 读入自动登记已关，CCV3 persona 语义还原 + GUI 接线（F2）留）+ tag v2.5.0（治理指针 3）。
 
 ## [2.4.0] - 2026-09-06（v2.4.0 外部吸收大包：规范核查三连 + 实现四件）
 ### Added
