@@ -122,15 +122,22 @@ class MainApp(MDApp):
     def on_start(self):
         st = getattr(self, "_seed_message", None) or {}
         if st.get("errors"):
-            from kivymd.uix.snackbar import Snackbar
-            Snackbar(text="种子导入出错：" + "；".join(st["errors"][:3]),
-                     duration=5).open()
+            from kivymd.uix.snackbar import MDSnackbar
+            from kivymd.uix.label import MDLabel
+            MDSnackbar(
+                MDLabel(
+                    text="种子导入出错：" + "；".join(st["errors"][:3]),
+                    theme_text_color="Custom", text_color="white"),
+                duration=5).open()
         elif not st.get("skipped"):
-            from kivymd.uix.snackbar import Snackbar
-            Snackbar(
-                text=f"已装载 {st.get('pipelines', 0)} 管线 · "
-                     f"{st.get('modules', 0)} 模块 · "
-                     f"{st.get('asset_packs', 0)} 资产包",
+            from kivymd.uix.snackbar import MDSnackbar
+            from kivymd.uix.label import MDLabel
+            MDSnackbar(
+                MDLabel(
+                    text=f"已装载 {st.get('pipelines', 0)} 管线 · "
+                         f"{st.get('modules', 0)} 模块 · "
+                         f"{st.get('asset_packs', 0)} 资产包",
+                    theme_text_color="Custom", text_color="white"),
                 duration=3).open()
         # 初始数据视图
         self.tab_modules.refresh()

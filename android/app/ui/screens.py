@@ -19,7 +19,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.list import MDList
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.selectioncontrol import MDCheckbox
-from kivymd.uix.snackbar import Snackbar
+from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.textfield import MDTextField
 
 from app.controller import Controller
@@ -29,7 +29,12 @@ TEXT_HINT = "# 模块 情感:M22 · 三冲动驱动\n\n分类：情感类\n挂�
 
 
 def _snack(text: str, duration: float = 3.0) -> None:
-    Snackbar(text=text, duration=duration).open()
+    # KivyMD 1.2.0：BaseSnackbar/Snackbar 已改名 MDSnackbar，文本经 children
+    # MDLabel 传入（旧 text= kwarg 在 1.2.0 抛 TypeError——emulator 冒烟实证）。
+    MDSnackbar(
+        MDLabel(text=text, theme_text_color="Custom", text_color="white"),
+        duration=duration,
+    ).open()
 
 
 def _scroll_with(list_widget: MDList) -> MDScrollView:
