@@ -42,6 +42,18 @@ class ZoneCPipeline(QtWidgets.QWidget):
         self.desc_label.setWordWrap(True)
         root.addWidget(self.desc_label)
 
+        # W4（38 方案）：变体 add/remove（B2——与 nf run --variant-add/remove 等价）
+        vbar = QtWidgets.QHBoxLayout()
+        vbar.addWidget(QtWidgets.QLabel("变体+:"))
+        self.ed_var_add = QtWidgets.QLineEdit()
+        self.ed_var_add.setPlaceholderText("增量模块 full_id，逗号分隔（如 M91,M92）")
+        vbar.addWidget(self.ed_var_add, 1)
+        vbar.addWidget(QtWidgets.QLabel("−:"))
+        self.ed_var_remove = QtWidgets.QLineEdit()
+        self.ed_var_remove.setPlaceholderText("移除 full_id（与 + 同用则移除优先）")
+        vbar.addWidget(self.ed_var_remove, 1)
+        root.addLayout(vbar)
+
         self.tree = QtWidgets.QTreeWidget()
         self.tree.setHeaderLabels(["层 / 模块（勾选 = 参与装配）", "说明"])
         self.tree.setColumnWidth(0, 420)
@@ -220,6 +232,22 @@ class ZoneCPipeline(QtWidgets.QWidget):
             from . import common
             common.warn(self, "未勾选任何模块——先按管线默认勾选或手动勾选。")
             return
+        # W4（38 方案）：变体 add/remove 变换（与 nf run --variant-add/remove 等价）
+        var_add = [x.strip() for x in self.ed_var_add.text().split(",")
+                   if x.strip()]
+        var_remove = [x.strip() for x in self.ed_var_remove.text().split(",")
+                      if x.strip()]
+        if var_add or var_remove:
+            from ..core.variants import apply_variant
+            try:
+                v = apply_variant(selected, {"add": var_add,
+                                             "remove": var_remove})
+                if v.selected:
+                    selected = list(v.selected)
+            except Exception as exc:      # noqa: BLE001
+                from . import common
+                common.error(self, f"变体应用失败：{exc}")
+                return
         try:
             res = pipe(self.app.store, pipe_obj, selected,
                        include_references=True, fmt="ccv3",
