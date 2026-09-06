@@ -99,6 +99,14 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="批量重链 references 后合并写 registry protocols[]（只改引用不改其它）")
     ren.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+
+    imp2 = sub.add_parser("import",
+                          help="读入外部产物（SKILL.md/chara.json）→ parse + 可选内容库登记（A4 遗留闭环）")
+    imp2.add_argument("file", help="外部产物文件（SKILL.md 或 chara.json）")
+    imp2.add_argument("--register", action="store_true",
+                      help="解析出的 IR 模块幂等装载进 Store 内容库（save_module 覆盖式幂等）")
+    imp2.add_argument("--store", default=None,
+                      help="Store 工作区目录（缺省=临时）")
     return p
 
 
@@ -333,6 +341,71 @@ def _cmd_rename(args) -> int:
     return 0
 
 
+def _cmd_import(args) -> int:
+    """nf import <file> [--register]：读入外部产物（A4 遗留闭环）。
+
+    SKILL.md → parse_skill（含 skill_dir 随行资源扫描）；chara.json →
+    parse_ccv3。--register 把 IR 模块幂等装载进 Store（save_module 覆盖式幂等，
+    同 seed_from_repo 模式）。
+    """
+    import json
+    from pathlib import Path
+    from core.import_adapter import parse_skill, parse_ccv3
+    from core.storage import Store
+    from core.models import Module
+
+    p = Path(args.file)
+    if not p.is_file():
+        print(f"✗ 文件不存在: {p}", file=sys.stderr)
+        return 2
+
+    is_ccv3 = p.suffix.lower() == ".json" or "chara" in p.stem.lower()
+    print(f"== nf import {p.name} ==")
+    if is_ccv3:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        res = parse_ccv3(data)
+        kind = "CCV3 chara"
+        bundled = []
+    else:
+        text = p.read_text(encoding="utf-8")
+        res = parse_skill(text, skill_dir=p.parent)
+        kind = "SKILL"
+        bundled = res.bundled_resources
+
+    print(f"  类型: {kind} | 解析: {'ok' if res.ok else 'fail'} | mode: {res.mode}")
+    if res.ir is not None:
+        n_mod = sum(len(l.modules) for l in res.ir.layers) + len(res.ir.extra_modules)
+        print(f"  IR: {res.ir.type} · {res.ir.title} · 管线 {res.ir.pipeline_id} · {n_mod} 模块")
+    if bundled:
+        print(f"  随行资源: {', '.join(bundled)}")
+    for w in res.warnings:
+        print(f"  [警告] {w}")
+
+    if not args.register:
+        return 0
+    if res.ir is None:
+        print("✗ 无 IR 可登记（external 模式未升 IR）", file=sys.stderr)
+        return 2
+
+    store = Store(home=args.store) if args.store else Store()
+    n = 0
+    for layer in res.ir.layers:
+        for im in layer.modules:
+            fid = im.full_id
+            cat, num = fid.rsplit(":", 1) if ":" in fid else ("通用类", fid)
+            store.save_module(Module(id=num, name=im.name, category=cat,
+                                    layer=im.layer, source_md=im.content))
+            n += 1
+    for im in res.ir.extra_modules:
+        fid = im.full_id
+        cat, num = fid.rsplit(":", 1) if ":" in fid else ("通用类", fid)
+        store.save_module(Module(id=num, name=im.name, category=cat,
+                                layer=im.layer, source_md=im.content))
+        n += 1
+    print(f"  ✓ 已幂等装载 {n} 模块 → {store.home}")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -345,6 +418,8 @@ def main(argv=None) -> int:
         return _cmd_impact(args)
     if args.cmd == "rename":
         return _cmd_rename(args)
+    if args.cmd == "import":
+        return _cmd_import(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2

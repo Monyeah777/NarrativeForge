@@ -276,5 +276,49 @@ class TestExporterReverseRegistry(unittest.TestCase):
         self.assertEqual(out_text, text)
 
 
+class TestSkillResourceScan(unittest.TestCase):
+    """v2.5.0 Wave1：parse_skill skill_dir 随行资源装载（bundled_resources）。"""
+
+    def _mk_skill_dir(self, with_resources=True):
+        d = Path(tempfile.mkdtemp(prefix="nf_skill_res_"))
+        (d / "SKILL.md").write_text(
+            "---\nname: demo\n"
+            "description: 演示技能（P06）生成：协议/文档操作规格，共 1 个规则块。\n"
+            "license: Proprietary\n---\n# 演示技能\n\n"
+            "## 层 P90 · 技术文档生成\n\n### M90 · 结构\n\n正文。\n",
+            encoding="utf-8")
+        if with_resources:
+            (d / "scripts").mkdir()
+            (d / "scripts" / "run.py").write_text("print(1)", encoding="utf-8")
+            (d / "references").mkdir()
+            (d / "references" / "guide.md").write_text("# guide", encoding="utf-8")
+            (d / "assets").mkdir()
+            (d / "assets" / "tpl.txt").write_text("t", encoding="utf-8")
+        return d
+
+    def test_scan_bundled_resources(self):
+        d = self._mk_skill_dir()
+        text = (d / "SKILL.md").read_text(encoding="utf-8")
+        res = parse_skill(text, skill_dir=d)
+        self.assertTrue(res.ok)
+        self.assertEqual(set(res.bundled_resources),
+                         {"scripts/run.py", "references/guide.md", "assets/tpl.txt"})
+        # IR.meta 也承载资源清单（消费方识别读入来源）
+        self.assertEqual(set(res.ir.meta.get("bundled_resources", [])),
+                         {"scripts/run.py", "references/guide.md", "assets/tpl.txt"})
+
+    def test_no_resources_empty_list(self):
+        d = self._mk_skill_dir(with_resources=False)
+        text = (d / "SKILL.md").read_text(encoding="utf-8")
+        res = parse_skill(text, skill_dir=d)
+        self.assertEqual(res.bundled_resources, [])
+
+    def test_no_skill_dir_returns_empty(self):
+        d = self._mk_skill_dir()
+        text = (d / "SKILL.md").read_text(encoding="utf-8")
+        res = parse_skill(text)   # 不传 skill_dir → 空清单，不崩
+        self.assertEqual(res.bundled_resources, [])
+
+
 if __name__ == "__main__":
     unittest.main()

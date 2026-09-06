@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Optional
 
 from .ir import IRDocument, IRLayer, IRModule
@@ -86,6 +87,9 @@ class SkillParseResult:
     frontmatter: dict = field(default_factory=dict)
     body: str = ""
     warnings: List[str] = field(default_factory=list)
+    #: v2.5.0 Wave1：skill 资源随行装载清单（scripts/references/assets 子目录
+    #: 相对路径，供导出随行复制/消费方装载；缺省空列表 = 无资源目录）。
+    bundled_resources: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -183,8 +187,35 @@ def _parse_nf_body(body: str) -> tuple[Optional[str], List[IRLayer], List[IRModu
     return title, layers, extra, warnings
 
 
-def parse_skill(text: str) -> SkillParseResult:
-    """SKILL.md 文本 → SkillParseResult（结构层高保真重建 / 宽容层保留）。"""
+#: skill 资源随行装载目录（Agent Skills 目录约定：scripts/references/assets）
+_BUNDLED_DIRS = ("scripts", "references", "assets")
+
+
+def _scan_resources(skill_dir: Path) -> List[str]:
+    """扫描 skill 目录下 scripts/references/assets 子目录文件 → 相对路径清单。
+
+    v2.5.0 Wave1：读入侧资源随行装载（对称面 export_skill 仅产单 SKILL.md，
+    资源由外部 skill 携带；本函数把同目录资源登记进 bundled_resources 供消费方
+    装载/复制）。目录不存在 → 空清单（不报错，资源可缺省）。
+    """
+    out: List[str] = []
+    for d in _BUNDLED_DIRS:
+        sub = skill_dir / d
+        if not sub.is_dir():
+            continue
+        for f in sorted(sub.rglob("*")):
+            if f.is_file():
+                out.append(str(f.relative_to(skill_dir)).replace("\\", "/"))
+    return out
+
+
+def parse_skill(text: str, skill_dir: Optional[Path] = None) -> SkillParseResult:
+    """SKILL.md 文本 → SkillParseResult（结构层高保真重建 / 宽容层保留）。
+
+    skill_dir（v2.5.0 Wave1）：传入 SKILL.md 所在目录时，扫描 scripts/
+    references/assets 子目录随行资源 → bundled_resources 清单。
+    """
+    bundled = _scan_resources(skill_dir) if skill_dir else []
     if not text or not text.strip():
         raise ValueError("SKILL.md 内容为空")
     fm, body = parse_frontmatter(text)
@@ -206,6 +237,7 @@ def parse_skill(text: str) -> SkillParseResult:
         return SkillParseResult(
             ok=True, mode="external", ir=None,
             frontmatter=fm, body=body,
+            bundled_resources=bundled,
             warnings=["正文非 NF 导出层级结构（`## 层`/`## 附加规则` 未命中），"
                       "按宽容层保留 frontmatter 与正文；是否升 IR 由消费方判定"])
 
@@ -239,10 +271,12 @@ def parse_skill(text: str) -> SkillParseResult:
         warnings=warnings,
         meta={"adapter_in": "parse_skill",
               "source": "SKILL.md",
-              "frontmatter": fm},
+              "frontmatter": fm,
+              "bundled_resources": bundled},
     )
     return SkillParseResult(ok=True, mode="nf", ir=ir,
-                            frontmatter=fm, body=body, warnings=warnings)
+                            frontmatter=fm, body=body, warnings=warnings,
+                            bundled_resources=bundled)
 
 
 # ============================================================== parse_ccv3
