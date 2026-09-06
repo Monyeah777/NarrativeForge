@@ -110,6 +110,12 @@ class ZoneGCommunity(QtWidgets.QWidget):
         b_wizard.clicked.connect(self.do_open_wizard)
         b_wizard.setToolTip("v2.0.x-E2：填表生成合规 protocol.yaml（不懂 Schema 也能定义第三方协议）")
         row2.addWidget(b_wizard)
+        # W8（38 方案）：市场目录视图（B4/C-a——market_analyzer 分级列表 GUI 化）
+        b_market = QtWidgets.QPushButton("市场目录…")
+        b_market.clicked.connect(self.do_show_market)
+        b_market.setToolTip("v2.5.0 Wave3：official/community/experimental 分级市场目录"
+                            "（同 CLI nf market list --tier）")
+        row2.addWidget(b_market)
         row2.addStretch(1)
         gt.addLayout(row2)
         root.addWidget(grp_tools)
@@ -452,6 +458,56 @@ class ZoneGCommunity(QtWidgets.QWidget):
             lambda: self._render_protocol_rules(pid))
         btn.rejected.connect(dlg.reject)
         lay.addWidget(btn)
+        dlg.exec()
+
+    def do_show_market(self):
+        """W8（38 方案）：市场目录视图（B4/C-a——market_analyzer 分级列表 GUI 化）。
+
+        tier 下拉 official/community/experimental → list_market 目录列表，
+        与 CLI nf market list --tier 同库（31/37 Wave3）。
+        """
+        from ..core.market_analyzer import list_market
+        from ..core.registry_loader import load_registry
+        try:
+            reg = load_registry()
+        except Exception as exc:      # noqa: BLE001
+            common.error(self, f"加载 registry 失败：{exc}")
+            return
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle("市场目录（分级）")
+        dlg.resize(560, 460)
+        lay = QtWidgets.QVBoxLayout(dlg)
+        bar = QtWidgets.QHBoxLayout()
+        bar.addWidget(QtWidgets.QLabel("分级:"))
+        cb = QtWidgets.QComboBox()
+        cb.addItem("全部", None)
+        cb.addItem("官方核心", "official")
+        cb.addItem("社区", "community")
+        cb.addItem("实验", "experimental")
+        bar.addWidget(cb)
+        view = QtWidgets.QPlainTextEdit()
+        view.setReadOnly(True)
+        b_ref = QtWidgets.QPushButton("刷新")
+
+        def _refresh():
+            tier = cb.currentData()
+            items = list_market(reg, tier=tier)
+            lines = [f"—— 市场目录{f'（{tier}）' if tier else ''}"
+                     f"：{len(items)} 项 ——"]
+            for x in items:
+                if x["kind"] == "module":
+                    lines.append(f"  [module] {x['id']} {x['name']}"
+                                 f"（{x['grade']}）")
+                else:
+                    lines.append(f"  [package] {x['id']} v{x['version']} "
+                                 f"{x['name']}（{x['grade']}）"
+                                 f" · {x['modules']} 模块")
+            view.setPlainText("\n".join(lines))
+        b_ref.clicked.connect(_refresh)
+        bar.addWidget(b_ref)
+        lay.addLayout(bar)
+        lay.addWidget(view, 1)
+        _refresh()
         dlg.exec()
 
     def _render_protocol_rules(self, pid: str):
