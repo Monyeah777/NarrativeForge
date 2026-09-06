@@ -1,3 +1,9 @@
+## [Unreleased]（v2.5.0 基础层深化续，方案 36 执行中）
+### Fixed
+- **v2.5.0-B3 CCV3 资产条目 id 修复（方案 36 Wave1，c1d310f）**：`ccv3_adapter._asset_entries` 资产条目缺 `id` 字段 → 含 asset_refs 的装配导出后 `check_ccv3_world` 报「缺键: id」（测试盲区静默 bug）。修复 = `_asset_entries` 加 `start` 参数续号（id/insertion_order 连续编号，去固定 1000 魔法数）+ `world_entries` 衔接；补 `_narrative_ir_with_assets` 回归用例（RED→GREEN）。单测 267→268。
+### Changed
+- 34 方案「非目标」persona 表述修订：从「标记占位非真实角色定义」改为「仅透传 chara_meta 不判占位」（对齐 parse_ccv3 源码实际行为）；README 协议链补 36 + v2.5.0 块 + 方案真相源 36_v2.5.0_基础层深化续方案.md 落盘。
+
 ## [2.4.0] - 2026-09-06（v2.4.0 外部吸收大包：规范核查三连 + 实现四件）
 ### Added
 - **v2.4.0-A1/A2/A3 规范同步核查三连（方案 35 Wave1，672029e）**：一次性核查报告 `35_v2.4.0_外部规范同步核查报告.md`——SKILL（agentskills.io 实抓）/ CCV3 v3（SillyTavern 官方 validator SSH 实读）/ AGENTS.md（openai/agents.md 官方仓库）三对照 + 差距裁决；发现 A2 spec_version "v3" 为 bug 级差距（ST 导入 fail）。
