@@ -1,0 +1,20 @@
+--- a/pythonforandroid/build.py
++++ b/pythonforandroid/build.py
+@@ -709,7 +709,17 @@
+         # Install Cython in case modules need it to build:
+         info('Install Cython in case one of the modules needs it to build')
+         shprint(sh.bash, '-c', (
+             "venv/bin/pip install Cython"
+         ), _env=copy.copy(base_env))
++        # PEP517 wheel builds need setuptools: several pure-Python sdists
++        # (e.g. kivymd 1.2.0) ship a pyproject.toml WITHOUT a
++        # [build-system] table, so pip imports the default build backend
++        # (setuptools.build_meta) from the *current* environment. If
++        # setuptools is missing there, pip aborts with:
++        #   BackendUnavailable: Cannot import 'setuptools.build_meta'
++        info('Install setuptools & wheel for PEP517 wheel builds')
++        shprint(sh.bash, '-c', (
++            "venv/bin/pip install setuptools wheel"
++        ), _env=copy.copy(base_env))
+ 
+         # Get environment variables for build (with CC/compiler set):
