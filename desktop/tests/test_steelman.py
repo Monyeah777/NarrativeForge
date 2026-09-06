@@ -96,6 +96,24 @@ def _make_complete() -> str:
 
 
 class TestSteelmanScan(unittest.TestCase):
+    def test_blank_numbered_reasons_warn(self):
+        """回归（RED→GREEN）：理由行仅编号无内容（1. 空行）应 warn。
+
+        缺陷：原 regex `^\\s*\\d+\\.\\s*\\S` 的 `\\s*` 跨行，`1. \\n2. `
+        空理由占位被误判为有理由——逐行判据修复。
+        """
+        lines = ["---", "decision: 做", "date: 2026-09-06", "decider: 甲",
+                 "context: t", "---",
+                 "## 1. 问题重述", "完整问题重述内容。",
+                 "## 2. 支持侧最强论据", "- 支持一", "- 支持二", "- 支持三",
+                 "## 3. 反对侧最强论据", "- 反对一", "- 反对二", "- 反对三",
+                 "## 4. 核心变量", "变量X",
+                 "## 5. 判断与理由", "**判断**：做", "**理由**：",
+                 "1. ", "2. ", "3. ",
+                 "## 6. 回退路径", "回退A"]
+        warns = check_worksheet("\n".join(lines))
+        self.assertTrue(any("判断无理由" in w for w in warns))
+
     def test_scan_finds_md_files_with_frontmatter(self):
         d = Path(tempfile.mkdtemp(prefix="nf_steelman_scan_"))
         (d / "a.md").write_text(init_worksheet("决策甲", context="x"),

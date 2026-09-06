@@ -193,7 +193,7 @@ def check_worksheet(text: str) -> List[str]:
         elif num == 5:
             if "**判断**" not in body:
                 warns.append("判断缺失（5 节需一句话判断）")
-            elif not re.search(r"^\s*\d+\.\s*\S", body, re.M):
+            elif not _has_numbered_reason(body):
                 warns.append("判断无理由（5 节需 ≥1 条编号理由）")
         elif num == 6:
             if not [ln for ln in body.splitlines() if ln.strip()
@@ -201,6 +201,24 @@ def check_worksheet(text: str) -> List[str]:
                     and not ln.strip().startswith(">")]:
                 warns.append("回退路径未填（6 节）")
     return warns
+
+
+def _has_numbered_reason(body: str) -> bool:
+    """5 节是否有实质编号理由：逐行判 `N. <内容>`，行内空白不跨行。
+
+    缺陷修正（RED→GREEN）：原 `re.search(r"^\\s*\\d+\\.\\s*\\S", body, re.M)`
+    的 `\\s*` 可跨行——`1. \\n2. `（空理由占位）被误判为有理由。改为逐行：
+    编号行后须紧跟实质内容（含中文/字母/数字，非纯空白、非占位）。
+    """
+    for ln in body.splitlines():
+        s = ln.strip()
+        m = re.match(r"^\d+\.\s*(.*)$", s)
+        if not m:
+            continue
+        content = m.group(1).strip()
+        if content and not content.startswith("（"):
+            return True
+    return False
 
 
 def scan_steelman(root) -> List[str]:
