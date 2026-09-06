@@ -47,21 +47,22 @@ def main() -> int:
     check("当前管线已选定", win.current_pipeline is not None,
           win.current_pipeline_id or "None")
     n_mod = len(win.store.list_modules())
-    check("模块库已装载", n_mod >= 30, f"{n_mod} 个模块")
-    n_pack = len(win.store.list_asset_packs())
-    check("资产包已装载", n_pack >= 2, f"{n_pack} 个资产包")
+    check("模块库已装载", n_mod > 0, f"{n_mod} 个模块")
     check("② 表格已填充", win.zone_b.table.rowCount() == n_mod,
           f"rows={win.zone_b.table.rowCount()}")
     top_count = win.zone_c.tree.topLevelItemCount()
     check("③ 层树已填充", top_count == len(win.current_pipeline.layers),
           f"top={top_count}")
-    # zone_d 下拉固定含「（无资产包）」占位项，故 count = 资产包数 + 1
-    check("④ 资产下拉已填充",
+    # 资产包自校准断言（v2.6 起官方 05_资产库无实物资产包，store 允许 0）：
+    # 验「store ↔ GUI 一致性」而非固定下限——store 有 N 个，下拉/列表必须
+    # 反映 N（下拉含「（无资产包）」占位项故 +1），不随内容量假红。
+    n_pack = len(win.store.list_asset_packs())
+    check("④ 资产下拉与 store 一致",
           win.zone_d.asset_combo.count() == n_pack + 1,
-          f"count={win.zone_d.asset_combo.count()}")
-    check("⑤ 资产列表已填充",
+          f"store={n_pack} count={win.zone_d.asset_combo.count()}")
+    check("⑤ 资产列表与 store 一致",
           win.zone_e.pack_list.count() == n_pack,
-          f"count={win.zone_e.pack_list.count()}")
+          f"store={n_pack} count={win.zone_e.pack_list.count()}")
 
     # ---------- 2. 勾选联动 ----------
     # 取当前管线第一个模块勾选 → 验证 selected 与 ④ 提示刷新
