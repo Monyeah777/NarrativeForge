@@ -20,8 +20,9 @@
 
 ```
 用户：「运行 NF-0001」
-→ AI 拼链接：https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-0001.md
-→（国内镜像：Gitee 链接建设中）→ 读取 → 按 ##6 装载指引开跑
+→ AI 拼链接（GitHub）：https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-0001.md
+→ AI 拼链接（国内镜像 Gitee）：https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-0001.md
+→ 读取 → 按 ##6 装载指引开跑
 ```
 
 > 💡 找题材：让 AI 读本 INDEX 筛选（如「我要校园悬疑的」），再报编号取用。

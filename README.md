@@ -126,7 +126,8 @@
 NarrativeForge（NF）有一个**云端公共图书馆**（`library/`）：任何人产出的《叙事世界完整版》经审核后按 **NF-编号** 归档，全馆开放——**任何 AI 仅凭编号即可通过链接调用运行，一次生成、永久召回**。
 
 - 目录（AI 导购/取阅入口）：`library/INDEX.md`（编号 | 标题 | 题材 | 档位 | 一句话）
-- 取件基底：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/`（后接 `NF-编号.md`；国内镜像 Gitee 建设中）
+- 取件基底（GitHub）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/`（后接 `NF-编号.md`）
+- 取件基底（国内镜像 Gitee · 无需梯子）：`https://gitee.com/monyeah777/narrative-forge/raw/main/library/`（同规则）
 
 **对用户**：想玩现成的世界 → 对任意 AI 说「运行 NF-编号」或「帮我找 XX 题材的世界」；想把成品永久存档 → 投稿审核后获得编号，以后随时报号召回，无需重新生成。
 
