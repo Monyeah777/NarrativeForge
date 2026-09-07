@@ -1,0 +1,28 @@
+name: library-ingest
+# 📚 云端代收站（Y12 · 2026-09-07）
+# 痛点闭环：聊天 AI「会读不会写」——无法上传云端。
+# 解法：作者在 Issues 开题（标题【NF投稿】+ 粘贴产物全文）→ 本机器人自动
+#   分配 NF-编号 → 入库 library/NF-XXXX.md → 更新 INDEX → 推送 → 回评双端链接。
+# 「AI 不写，人只粘贴一次，剩下全自动」。
+# 注意：仅标题以【NF投稿】开头触发；作者白名单在脚本内校验（防公开仓库滥用）。
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: write
+  issues: write
+jobs:
+  ingest:
+    if: startsWith(github.event.issue.title, '【NF投稿】')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 自动入库（解析 → 编号 → 写文件 → 更新 INDEX → 推送 → 回评）
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: python3 .github/scripts/library_ingest.py
