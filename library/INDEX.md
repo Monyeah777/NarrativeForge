@@ -1,29 +1,30 @@
 # 📚 NF 云端图书馆 · 目录（INDEX）
 
-> **NarrativeForge（NF）** 云端公共图书馆——所有人产出的「叙事世界完整版」按编号归档，任何 AI 仅凭编号即可通过链接调用运行。
-> 入口：把**本文件 raw 链接**发给任意 AI（实测：AI 抓 raw 直链可靠，抓仓库主页 HTML 不可靠）——`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/INDEX.md`（国内：`https://gitee.com/monyeah777/narrative-forge/raw/main/library/INDEX.md`），说「运行 NF-编号」或「帮我找 XX 题材」，AI 即按下方目录取阅/推荐。
+> **NarrativeForge（NF）** 云端公共图书馆——建构件与成品（世界 / CCV3 / 协议 / 管线 / 模板 / 域包…任何形态与领域）按 **NF 编号**归档，任何 AI 仅凭编号即可通过链接调用。
+> **编号四级制**：`NF - 档位段 - 自定义段 - 36进制序号`——档位段 = 建构件/成品类型（WORLD / CCV3 / PKG / PROTO…可自由复合如 WORLDCAMPUS）；自定义段 = 用途或署名（Monyeah777 / CAMPUS…）；序号 = 每位 0-9 → A-Z 递增（1,2,…9,A,…Z,10…），同前缀各自计数；不填档位/自定义 = 默认形（如 `NF-1`）。
+> 入口：把**本文件 raw 链接**发给任意 AI（实测：AI 抓 raw 直链可靠，抓仓库主页 HTML 不可靠）——`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/INDEX.md`（国内：`https://gitee.com/monyeah777/narrative-forge/raw/main/library/INDEX.md`），说「运行 NF 编号」或「帮我找 XX」，AI 即按下方目录取阅/推荐。
+> **AI 大小写拿不准？** 读 `library/ALIAS.md`（大小写转译表）——把编号全小写化后在表里匹配，用「真实编号」列拼链接。
 
 ## 投稿须知（入库前必读）
 
 1. **原创声明**：投稿即声明内容为本人原创或已获授权，同意公开共享（MIT 精神）；第三方未授权作品（如他人小说/设定）**严禁投稿**——侵权内容公开传播责任在投稿人。
-2. **入库标准**：八段齐全（##0–##7 + 自检）、可装载运行；档位二选一——「自包含」（单文件可跑）或「轻量引用式」（需仓库配套，INDEX 标注）。
-3. **编号**：投稿经作者审核后分配 NF-XXXX 流水号（= 文件名 = 链接一部分）。
+2. **入库唯一硬标准 = 自包含可召回**：文件自带「是什么 + 怎么用」，AI 单文件即正确使用；引用式（运行需仓库配套的公开件）不再收（历史样本除外）。
+3. **编号**：投稿可选填档位词 + 自定义段（要填就都填，否则默认形）；序号由机器人按同前缀 36 进制自动分配（= 文件名 = 链接一部分，同前缀各自从 1 起）。
 4. **署名**：INDEX 每件标注投稿人；投稿人自创版权保留署名。
 5. **投稿通道**：人工通道 = 产物交给作者身边助手（Operit）入库；自动通道（云端代收站）= 在仓库 Issues 开题，标题 `【NF投稿】作品名`，正文按模板粘贴全文 → 机器人自动编号入库并回评双端链接（全文 ≤ 约 6 万字符，超长走人工通道；当前仅作者本人可自动入库，外部开放待作者解锁）。
 
 ## 登记表
 
-| 编号 | 标题 | 题材标签 | 档位 | 投稿人 | 入库日期 | 一句话 |
-|---|---|---|---|---|---|---|
-| **NF-0001** | 校园情感流（高二 · 毕业遗憾线） | 校园/情感/遗憾 | 轻量引用式（运行需仓库配套） | NarrativeForge（NF）作者 | 2026-09-07 | 官方装配样本：毕业季未说出口的心意，P02 管线 + 幽灵遗憾模块 |
+| 编号 | 标题 | 形态/领域 | 投稿人 | 入库日期 | 一句话 |
+|---|---|---|---|---|---|
+| NF-1 | 校园情感流（高二 · 毕业遗憾线） | 世界（校园情感装配样本） | NarrativeForge（NF）作者 | 2026-09-07 | 官方装配样本（引用式示范诚实纪律）：P02 管线 + 幽灵遗憾模块 |
 
 ## 调用方式
 
 ```
-用户：「运行 NF-0001」
-→ AI 拼链接（GitHub）：https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-0001.md
-→ AI 拼链接（国内镜像 Gitee）：https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-0001.md
-→ 读取 → 按 ##6 装载指引开跑
+→ AI 拼链接（GitHub）：https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-1.md
+→ AI 拼链接（国内镜像 Gitee）：https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-1.md
+→ 读取 → 按 ##6 装载指引开跑（大小写拿不准 → 先读 ALIAS.md 转译）
 ```
 
-> 💡 找题材：让 AI 读本 INDEX 筛选（如「我要校园悬疑的」），再报编号取用。
+> 💡 找类型：让 AI 读本 INDEX 筛选（如「我要校园情感的」），再报编号取用。
