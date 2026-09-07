@@ -1,3 +1,4 @@
+<!-- nf-asset: key="TECH_TEMPLATES" version="1.0" status="active" -->
 # 资产键 TECH_TEMPLATES · 技术文档章节骨架模板
 > 05_资产库/用户自定义 扩展资产（P90 技术文档演示，asset_register 登记于 2026-09-03）
 

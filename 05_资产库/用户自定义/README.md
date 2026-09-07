@@ -13,3 +13,4 @@
 
 ## 3. 三原则（05_资产库/README §5）
 不覆盖官方条目 / 不污染官方命名空间 / 可追溯（本 README 即溯源记录）。
+- **机器台账（40 总纲 v2.7 波A S2）**：本资产根 `05_资产库/provenance.json` 为溯源键表 + version/status 位的机读真相，由 `nf asset add` 建档维护、`nf asset verify` / verify check23 逐次自证；本目录 TECH_RULES / TECH_TEMPLATES 为首批入库战例。

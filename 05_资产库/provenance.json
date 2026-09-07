@@ -1,0 +1,25 @@
+{
+  "schema_version": "1",
+  "tier": "official",
+  "assets": [
+    {
+      "file": "用户自定义/TECH_RULES.md",
+      "key": "TECH_RULES",
+      "source": "05_资产库/用户自定义 §3 登记记录（asset_register 2026-09-03）；P90 技术文档域演示资产（官方作者侧首批供应链托管）",
+      "version": "1.0",
+      "status": "active",
+      "module": "M90",
+      "added": "2026-09-07"
+    },
+    {
+      "file": "用户自定义/TECH_TEMPLATES.md",
+      "key": "TECH_TEMPLATES",
+      "source": "05_资产库/用户自定义 §3 登记记录（asset_register 2026-09-03）；P90 技术文档域演示资产（官方作者侧首批供应链托管）",
+      "version": "1.0",
+      "status": "active",
+      "module": "M90",
+      "added": "2026-09-07"
+    }
+  ],
+  "package": "官方核心资产集"
+}

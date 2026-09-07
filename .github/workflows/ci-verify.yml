@@ -1,7 +1,7 @@
 name: ci-verify
 # 23 方案分层治理：基础层唯一自动闸门——checkout → verify.sh（L0-L2 分层门禁，
 # clone 即绿、零前置；无 sync、无 android 依赖，L3 端壳已冻结移出）。
-# PASS=31 0 WARN 0 FAIL 为绿；任一 FAIL → exit 1 → CI 红（发布铁律 ROADMAP §8.4 门禁）。
+# PASS=33 0 WARN 0 FAIL 为绿；任一 FAIL → exit 1 → CI 红（发布铁律 ROADMAP §8.4 门禁）。
 # G1 修复（38 方案，2026-09-06）：7 连红根因 = check12/check18 unittest 需
 # yaml + PySide6（本地有、CI 干净环境缺）——setup-python 后 pip 安装再跑 verify.sh；
 # verify.sh 失败分支已加 log 回显（诊断可溯）。
@@ -17,6 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: 密钥明文扫描（40 总纲 S8：常见 token 前缀全量正则，命中即红）
+        run: |
+          if grep -rnEI --exclude-dir=.git --exclude-dir=.gitee 'ghp_[0-9A-Za-z]{36}|github_pat_[0-9A-Za-z_]{22,}|gho_[0-9A-Za-z]{36}|sk-[0-9A-Za-z]{20,}|AIza[0-9A-Za-z_-]{35}|AKIA[0-9A-Z]{16}|xox[baprs]-[0-9A-Za-z-]{10,}' .; then
+            echo "::error::检测到疑似明文密钥——立即撤销该 token 并改用 secrets 注入"
+            exit 1
+          fi
+          echo '密钥扫描通过（无常见 token 前缀命中）'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -25,5 +32,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
           pip install pyyaml PySide6
-      - name: 分层门禁（verify.sh v2.11，L0-L2 默认锁）
+      - name: 分层门禁（verify.sh v2.12，L0-L2 默认锁）
         run: bash verify.sh

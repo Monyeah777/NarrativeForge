@@ -175,6 +175,50 @@ def _build_parser() -> argparse.ArgumentParser:
                       help="解析出的 IR 模块幂等装载进 Store 内容库（save_module 覆盖式幂等）")
     imp2.add_argument("--store", default=None,
                       help="Store 工作区目录（缺省=临时）")
+
+    # nf asset：资产供应链台账（40 总纲 v2.7 波 A S2——add/verify/inventory/ls/rm/deprecate/restore）
+    ast = sub.add_parser("asset",
+                         help="资产供应链台账（S2：add 入库 / verify 闭合 / inventory 盘点 / ls 浏览 / rm 摘除 / deprecate·restore 流转）")
+    asub = ast.add_subparsers(dest="asset_cmd", required=True)
+
+    a_add = asub.add_parser("add",
+                            help="入库资产：资产文件头写 nf-asset 头 + 台账 append（溯源键表自动生成）")
+    a_add.add_argument("file", help="资产文件路径（相对 --root，如 用户自定义/TECH_RULES.md）")
+    a_add.add_argument("--key", required=True, help="溯源键（台账内唯一，键无孤儿前提）")
+    a_add.add_argument("--source", required=True,
+                       help="溯源说明（源文件/区间/登记日期——每资产必须可溯源）")
+    a_add.add_argument("--root", default=None,
+                       help="资产根目录 = 台账所在目录（如 05_资产库；add 必填）")
+    a_add.add_argument("--module", default="", help="消费模块 id（如 M90/M93/M96，可空）")
+    a_add.add_argument("--version", default="1.0", help="资产版本位（默认 1.0）")
+    a_add.add_argument("--status", default="active",
+                       choices=("active", "deprecated", "retired"))
+    a_add.add_argument("--tier", default=None,
+                       choices=("official", "community", "experimental"),
+                       help="货架分级（首次建档落台账级；缺省 official）")
+    a_add.add_argument("--package", default="", help="归属包名（台账级，如 官方核心资产集）")
+
+    a_vrf = asub.add_parser("verify", help="台账闭合校验（与 verify.sh check23 同语义）")
+    a_vrf.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+
+    a_inv = asub.add_parser("inventory", help="库存盘点（台账摘要 + 未托管/孤儿统计）")
+    a_inv.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+
+    a_ls = asub.add_parser("ls", help="货架浏览（--pkg / --tier / --status 过滤）")
+    a_ls.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_ls.add_argument("--pkg", default="", help="台账 package 过滤")
+    a_ls.add_argument("--tier", default="",
+                      choices=("official", "community", "experimental"))
+    a_ls.add_argument("--status", default="",
+                      choices=("active", "deprecated", "retired"))
+
+    for _name, _desc in (("rm", "从台账摘除条目（不删资产文件，残留头由 check23 报孤儿）"),
+                         ("deprecate", "状态流转 → deprecated"),
+                         ("restore", "状态流转 → active（deprecated 回退）")):
+        _sp = asub.add_parser(_name, help=_desc)
+        _sp.add_argument("--ledger", required=True,
+                         help="provenance.json 路径（如 05_资产库/provenance.json）")
+        _sp.add_argument("--key", required=True, help="溯源键")
     return p
 
 
@@ -642,10 +686,91 @@ def _cmd_audit(args) -> int:
     return 0
 
 
+def _cmd_asset(args) -> int:
+    """nf asset：资产供应链台账族（40 总纲 S2）。纯信息命令缺省只读，写操作显式子命令。"""
+    from core import asset_ledger as al
+
+    try:
+        if args.asset_cmd == "add":
+            if not args.root:
+                print("  ✗ add 需要 --root（台账所在资产根目录，如 05_资产库）", file=sys.stderr)
+                return 2
+            entry = al.add_asset(args.root, args.file, args.key, args.source,
+                                 module=args.module, version=args.version,
+                                 status=args.status, tier=args.tier,
+                                 package=args.package)
+            print("== nf asset add ==")
+            print("  ✓ 已入库：%s（key=%s · version=%s · status=%s）"
+                  % (entry["file"], entry["key"], entry["version"], entry["status"]))
+            print("    台账：%s" % al.default_ledger_path(args.root))
+            print("    下一步：`bash verify.sh` 由 check23 自证供应链闭合")
+            return 0
+        if args.asset_cmd == "verify":
+            issues, stats = al.verify_root(args.root)
+            print("== nf asset verify（扫描根：%s）==" % args.root)
+            print("  台账 %d · 托管资产 %d · 存量未托管 %d · 孤儿头 %d"
+                  % (stats["ledgers"], stats["assets"],
+                     stats["untracked"], stats["orphans"]))
+            for i in issues:
+                print("  [FAIL] %s" % i)
+            if issues:
+                print("  ✗ 供应链台账存在缺口——修复后重跑（verify.sh check23 同语义）", file=sys.stderr)
+                return 1
+            print("  ✓ 台账闭合：每资产可溯源 / 可发现 / 键无孤儿")
+            return 0
+        if args.asset_cmd == "inventory":
+            rows = al.inventory_root(args.root)
+            print("== nf asset inventory（扫描根：%s）==" % args.root)
+            if not rows:
+                print("  （无 provenance.json 台账——nf asset add 建档首个资产集）")
+                return 0
+            for r in rows:
+                err = ("（读取失败：%s）" % r["error"]) if r.get("error") else ""
+                print("  · %-28s pkg=%-10s tier=%-12s 在册=%d 未托管=%d 孤儿=%d%s"
+                      % (r["dir"], r["package"], r["tier"],
+                         r["assets"], r["untracked"], r["orphans"], err))
+            return 0
+        if args.asset_cmd == "ls":
+            rows = al.filter_rows(al.iter_assets(args.root),
+                                  pkg=args.pkg, tier=args.tier, status=args.status)
+            print("== nf asset ls%s%s%s ==" % (
+                "（pkg=" + args.pkg + "）" if args.pkg else "",
+                "（tier=" + args.tier + "）" if args.tier else "",
+                "（status=" + args.status + "）" if args.status else ""))
+            if not rows:
+                print("  （货架为空——nf asset add 入库首批资产）")
+                return 0
+            for r in rows:
+                print("  · %-8s %-14s v%-6s %-10s %s -> %s"
+                      % (r["tier"], r["key"], r["version"], r["status"],
+                         r["file"], r["source"]))
+            return 0
+        # rm / deprecate / restore：写操作，需显式 --ledger + --key
+        ledger_path = args.ledger
+        assets_root = os.path.dirname(os.path.abspath(ledger_path))
+        if args.asset_cmd == "rm":
+            removed = al.remove_entry(assets_root, args.key, ledger_path=ledger_path)
+            print("== nf asset rm ==")
+            print("  ✓ 已从台账摘除：%s（%s）" % (removed["key"], removed["file"]))
+            print("    资产文件保留；若残留文件头，verify check23 将报孤儿——确认不再使用后手动清理旧头")
+            return 0
+        status = "deprecated" if args.asset_cmd == "deprecate" else "active"
+        updated = al.set_status(assets_root, args.key, status, ledger_path=ledger_path)
+        print("== nf asset %s ==" % args.asset_cmd)
+        print("  ✓ 状态流转：%s -> %s（文件头已同步）"
+              % (updated["key"], updated["status"]))
+        return 0
+    except al.AssetLedgerError as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 2
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
         return _cmd_register(args)
+    if args.cmd == "asset":
+        return _cmd_asset(args)
     if args.cmd == "market":
         return _cmd_market(args)
     if args.cmd == "who-refers":

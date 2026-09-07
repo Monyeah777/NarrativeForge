@@ -1,3 +1,38 @@
+## [Unreleased · v2.7 波A W4] - 2026-09-07（40 总纲实施 W4：S1 外部验证实证档建档 + E1 准备材料实导 + ROADMAP 状态同步）
+### Added
+- **`docs_external-validation-v2.7.md`（S1 实证报告 · 建档稿非转正稿）**：四项出口（E1 CCV3→SillyTavern / E2 SKILL+AGENTS→Claude Code / E3 nf serve→标准 MCP 客户端 / Y5 完整版样本→免费 AI 复测）各带四要素表（环境/步骤/结果/差距修复）+ 汇总转正门——未实测不宣称转正（S13 门未开，验收未达成如实标注）。
+- **E1 准备材料实导落位 `docs/external-validation-assets/`**：`nf run --fmt ccv3` 实导轻混 P04 导出件（chara.json + world.json，质量门 PASS 0 WARN 0 FAIL 0，check19/22 覆盖）——供真实 SillyTavern 装载实测直接取用。
+- **ROADMAP §9 波 A 状态同步**：行内状态 🔮 规划 → 🚧 实施中（W1–W4 已提交 2026-09-07），表尾补实施进度注记（外部实测回填 → S13 转正 → tag v2.7.0）。
+### Notes
+- 本波 W1–W4 的对外转正仍缺最后一环：E1–E3 / Y5 真实外部实测（需有 SillyTavern / Claude Code / MCP 客户端 / 免费 AI 的机器，本工作台不可代跑）。
+
+## [Unreleased · v2.7 波A W3] - 2026-09-07（40 总纲实施 W3：Y4 完整版样本实证（P03 西幻）+ Y5 复测待外部档位）
+### Added
+- **Y4 实证（对话内组装）落盘 `docs/完整版样本_西幻生存流P03.md`**：装配师 Codex 扮演「仅知仓库地址的外部 agent」，按 `agent_组装指令包_v0.1.md` 取货顺序（07 → 02 → 01/06 → 西幻包）组装**预设 B · 西幻生存流完整版**——P03 管线，26 模块在册（default 24 = 核心 11 + 题材 13，M03/M23 为 P20 allowed 备选）；八段骨架（## 0–## 7）齐，自检 7 项全过；与馆藏 NF-1（预设 A · 校园）配对，装配链在**两个官方预设**均实证走通。
+- **样本诚实纪律随行**：引用式档位（规格自包含、正文引用式）；来源清单逐文件可追溯；已知缺口如实声明（23 内容资产未内嵌正文 / 订阅侧逐事件合并表未穷举 / 回合顺序为 06 §3 指导骨架，最终以注册表合并为准 I5）。
+- **verify 复核**：PASS=33 / WARN=0 / FAIL=0 全绿（纯新增文档层，未动协议/门禁/代码）。
+### Notes
+- **Y5 用户复测（待外部执行）**：本样本须交**真实免费 AI** 装载开跑或继续扩展（第一个「agent 用户」外部验证锚点）；本工作台无法代跑外部 AI——复测结果记录位 = `docs_external-validation-v2.7.md`（S1 实证报告，收口 W 建档后回填）。
+- **S1 E1–E3（同待外部环境）**：SillyTavern 装载 / Claude Code 装载 / MCP 客户端连接三项实测需真实外部工具，本机无现成环境——下一步为出准备材料与占位报告，不宣称转正。
+
+## [Unreleased · v2.7 波A W2] - 2026-09-07（40 总纲实施 W2：Y 线入口补齐 + X2 MCP 接入文档 + X3 第三方贡献者入口）
+### Added
+- **Y2 AGENT_START.md（根目录）**：装配师三句话开场（角色 → 取货规范 → 出口自检）+ 能读/不能读仓库分流（B1 自主 / 纯粘贴如实标注）+ 免编造铁律；与 AGENTS.md（开发者纪律）分置不混。
+- **Y1 07 §8「Agent 自助组装入口」（完整版规格消费侧引用）**：入口顺序 / 完整版定义 / B1 取货顺序 / 选件铁律 / 自检清单真相源全部指向 `agent_组装指令包_v0.1.md` 与 06，防双源漂移。
+- **X2 `docs/mcp.md`（nf serve 接入文档）**：快照导出 → 服务启动 → 标准客户端配置样例 → 能力表（只读 resources/list+read、无 tools/prompts 写路径、uri 白名单）→ 错误码 → **E3 实测记录预留占位**（未实测不宣称转正）。
+- **X3 community/README「第三方贡献者入口」**：第一个第三方做什么 / 怎么提交（CONTRIBUTING §4.4 五步 + `nf register`）/ 验收什么（verify PASS≥33：check14/15/23）。
+### Changed
+- README：A 线单元格指向 `docs/mcp.md`；⚡ 段补 AGENT_START 三句话开场指引；B1 取件清单修正文件名笔误（`07_导航.md` → `07_官方核心出厂与社区预设导航.md`）。
+
+## [Unreleased · v2.7 波A W1] - 2026-09-07（40 总纲实施 W1：S2 资产供应链族 + S3 首批官方资产集入库战例 + S8 密钥扫描入 CI）
+### Added
+- **S2 nf asset 供应链台账族（40 总纲波A 机制主产出）**：`desktop/src/core/asset_ledger.py`（纯标准库零依赖）+ `scripts/nf.py asset` 子命令族（add / verify / inventory / ls / rm / deprecate / restore）——溯源键表 `provenance.json` 随 add 自动生成；资产文件头 `nf-asset`（key/version/status）与台账双源一致；生命周期 active→deprecated→retired；同键/同文件去重、路径逃逸拒绝。
+- **verify check23 资产供应链闭合门禁（verify.sh v2.11→v2.12）**：每资产可溯源（source 必填）/ 可发现（文件在册）/ 键无孤儿（文件头键 ∈ 台账）；存量未托管计 STAT 不阻断；`desktop/tests/test_asset_ledger.py` 15 用例全绿；PASS 31→33。
+- **S3 首批官方资产集入库战例**：官方核心资产集（TECH_RULES / TECH_TEMPLATES，module=M90，tier=official）经 `nf asset add` 入库 `05_资产库/provenance.json`——工具链首次实测（verify/inventory/ls 全通，check23 实测）。
+- **S8 密钥明文扫描入 ci-verify**：checkout 后全量正则扫常见 token 前缀（ghp_/github_pat_/gho_/sk-/AIza/AKIA/xox*），命中即红；仓库实测零误报（CHANGELOG 弃用记录仅含 `ghp_` 前缀字样、无完整 token，不触发）。
+### Changed
+- verify.sh 版本 v2.11→v2.12（check23 新增）；ci-verify PASS 绿线 31→33。
+
 ## [Unreleased · APK 线移除] - 2026-09-07（作者裁决 #16：Android APK 线彻底移除）
 ### Removed
 - **android/ 全目录**（app bootstrap/config/controller/ui/screens + main.py + buildozer.spec + p4a 补丁等）——彻底 `git rm`，不再恢复（裁决 #16：包络负资产——首次构建 10h+、v0.8/v0.9/v2.6 三轮闪退修复、CI 绿 ≠ 真机不闪退、学生预算月投入数百；浏览/预览/轻导出三大功能已被 AI 线 A/B1 全覆盖）。

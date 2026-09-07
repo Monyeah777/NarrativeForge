@@ -18,6 +18,8 @@
 > 🔗 **给 AI 的入口请用 raw 链接**（实测：部分 AI 能抓 raw.githubusercontent.com / gitee.com 的 raw 直链，但抓不了 Gitee 仓库主页 HTML）——把下方 raw 链接发给 AI 而非网页地址：
 > - 规则总入口：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/README.md`（国内镜像：`https://gitee.com/monyeah777/narrative-forge/raw/main/README.md`）
 
+> 🔗 代理式 agent 若被要求「作为装配师开工」，先读根目录 `AGENT_START.md`（三句话开场：角色 / 取货规范 / 出口自检）——本 ⚡ 段为完整路由，二者同源不冲突。
+
 **先按用户意图开局**：
 1. **组装「完整版」**（把用户需求变成可直接开跑的世界文档）→ 按下方能力表选线：A 线（agent）/ B1 线（免费客户端）
 2. **运行一份现成完整版** → 请用户提供完整版 md，按其 `##6. 装载指引` 执行
@@ -28,7 +30,7 @@
 
 | 你的身份 | 能力边界（实测） | 执行通道 |
 |---|---|---|
-| **Agent**（Operit、Claude 等 · 有 API / 能执行代码） | clone 仓库、跑 verify、可接 MCP | → **A 线**：`nf serve` MCP 深度集成（检索/装配/登记全能力；mcp_runtime 已落地，公开化文档随基础层 v2.7 S1-E3） |
+| **Agent**（Operit、Claude 等 · 有 API / 能执行代码） | clone 仓库、跑 verify、可接 MCP | → **A 线**：`nf serve` MCP 深度集成（检索/装配/登记全能力；接入文档见 `docs/mcp.md`——随基础层 v2.7 S1-E3，E3 实测记录待回填） |
 | **免费客户端 AI**（DeepSeek / 千问 / Kimi · 非 API） | 能读 raw 直链、能下载文件（产物另存 .md 仅几分钟） | → **B1 线**：非 API 主推大众盘（下方 B1 · 完整装配） |
 | **纯粘贴客户端**（豆包 / 本地模型） | 只能读用户粘贴的文本 | → ~~B2~~ **已免除**（2026-09-07 用户裁决）：自取 `paste_card.md`，不推不维护 |
 
@@ -41,7 +43,7 @@
 取件基底：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`（后接文件名）。
 
 1. 读装配指令包（取货顺序 + 选件铁律 + 骨架 + 三重对账）：`agent_组装指令包_v0.1.md`
-2. 按指令包取件：`01_核心协议.md`（模块/管线/资产契约）→ `02_联动注册表.md` → `06_Agent执行协议.md` → `07_导航.md` → 用户所需 `community/<领域包>/`（含包内 README 装配清单）
+2. 按指令包取件：`01_核心协议.md`（模块/管线/资产契约）→ `02_联动注册表.md` → `06_Agent执行协议.md` → `07_官方核心出厂与社区预设导航.md` → 用户所需 `community/<领域包>/`（含包内 README 装配清单）
 3. 选件 → 按骨架组装 → 过 `##7. 自检清单` → 输出完整版 md（引用式档位：契约摘要 + 缺口如实声明，禁止编造未读内容）
 
 ### ~~B2 · 纯粘贴创作~~（已免除 · 2026-09-07 用户裁决）

@@ -44,6 +44,7 @@
 2. **schema 必填**：新增条目须满足对应资产键的 required_fields 与 field_types（键表见 community/两包 assets/README.md 与源框架第 3 章 3.1.1）。
 3. **注册登记**：经 asset_register 登记后写入 05_资产库/用户自定义/，禁止改写官方资产与 community 领域包资产。
 4. **三原则**：不覆盖官方条目 / 不污染官方命名空间 / 可追溯（注明创建时间与用途）。
+5. **机器台账（40 总纲 v2.7 波A S2）**：本库资产供应链托管于根目录 `provenance.json`（溯源键表 + version/status 位，`nf asset add` 自动建档维护，verify check23 闭合自证）；官方作者侧资产（`用户自定义/` TECH_RULES / TECH_TEMPLATES）为首批入库战例（tier=official）。
 ## 6. 模块-资产引用映射（核准结论）
 - 领域题材模块（community 两包 modules/）与官方核心配合模块引用资产键：键表见 community/两包 assets/README.md（校园键 28 + 附机制 2；西幻 23 文件含 EXT 段）。
 - 官方核心 13 件：M00 数据结构自洽无外部资产引用；其余核心模块不依赖 05 散文件，资产引用均落在 community 包键表内、经五接口寻址。

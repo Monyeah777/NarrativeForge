@@ -50,6 +50,16 @@
 | `desktop/` | 桌面工具源码（PySide6）；构建见 `.github/workflows/build-desktop.yml` |
 | `.github/workflows/build-desktop.yml` | 三平台自动打包（替代原 build_windows.bat），tag `v*` 自动发 Release |
 
+## 第三方贡献者入口（40 总纲 v2.7 波A S3/X3 · 第一个第三方）
+
+想往货架上架东西（题材领域包 / 模块 / 资产 / 管线 / 协议登记）？按「做什么 → 怎么提交 → 验收什么」三步走：
+
+1. **做什么**：按 `community/模板制作指令包.md` 产出你的包（protocol.yaml + modules/ + assets/ + pipelines/ + README 装载手册），题材模块用预留号段 M91–M99，资产经 `nf asset add` 走供应链台账入库（溯源/版本/状态齐备，见 `05_资产库/provenance.json` 战例）。
+2. **怎么提交**：完整流程见 `CONTRIBUTING.md §4.4`（社区包协作流程五步）——声明协议（protocol.yaml）→ 登记 02 §8 社区登记表 → registry protocols[] 投影（`nf register --check/--apply`）→ 提 Issue/PR。
+3. **验收什么**：`bash verify.sh` 全绿（PASS≥33：check14 协议登记 / check15 组合引用 / check23 资产供应链闭合 逐项自证）——任一 FAIL 即协议事故，先修再交。
+
+> 货架分级（tier）：official / community / experimental；第三方上架默认 `community` 起步，实战验证后再议升级。机制按「内容货架」设计——不照搬代码市场模式（40 总纲 X3 筛选结论）。
+
 ## 双版本说明
 
 - **社区版（本指南）**：免费轻量，勾选组装 → 输出 MD。模板由你自己用任意客户端 AI 生成后导入。

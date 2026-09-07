@@ -1,0 +1,81 @@
+{
+  "spec": "chara_card_v3",
+  "spec_version": "3.0",
+  "name": "轻混装配流管线 · 叙事输出",
+  "description": "轻混装配流管线（P04）装配产物 · 4 个规则模块 + 0 项资产素材。由叙事工坊 2.0 导出层生成。",
+  "personality": "（主角占位）此装配是世界观设定，非单一角色定义——主角由你在叙事前端创建/选择，此卡提供世界规则上下文。",
+  "scenario": "异界身份桥：### 模块 M91 · 异界身份桥\n\n> 类别：轻混｜来源：校园西幻轻混组合包｜挂载点：P40 行为决策（active）｜编号段：M91-M99 社区预留\n> 依赖：M00（数据结构）、M08（季节天气）、M23（认知边界）——官方核心（R1 core_only）\n> 发布：`campus_gift_intent`｜订阅：`relationship_change`、`confession_event`、`npc_action`\n> 引用装配：校园 M55 匿名情书（confession_event 上游）/ 西幻 M17 生产制造（经 M92 中转收口）\n> 对应 protocol.yaml modules[0].id=M91｜模板制作指令包 格式一（八要素）示例落盘\n\n```yaml\nmachine_contract:\n  schema: \"1\"\n  id: M91\n  name: 异\n\n（叙事世界「轻混装配流管线 · 叙事输出」已就绪，故事由此展开）",
+  "first_mes": "你来到了「轻混装配流管线 · 叙事输出」。世界规则已加载，故事开始了……",
+  "mes_example": "",
+  "creator_notes": "由 NarrativeForge 2.0 导出层生成（P04）",
+  "system_prompt": "",
+  "post_history_instructions": "",
+  "alternate_greetings": [],
+  "character_book": {
+    "name": "轻混装配流管线 · 叙事输出 · 世界书",
+    "entries": [
+      {
+        "name": "异界身份桥",
+        "keys": [
+          "轻混类:M91",
+          "异界身份桥"
+        ],
+        "content": "### 模块 M91 · 异界身份桥\n\n> 类别：轻混｜来源：校园西幻轻混组合包｜挂载点：P40 行为决策（active）｜编号段：M91-M99 社区预留\n> 依赖：M00（数据结构）、M08（季节天气）、M23（认知边界）——官方核心（R1 core_only）\n> 发布：`campus_gift_intent`｜订阅：`relationship_change`、`confession_event`、`npc_action`\n> 引用装配：校园 M55 匿名情书（confession_event 上游）/ 西幻 M17 生产制造（经 M92 中转收口）\n> 对应 protocol.yaml modules[0].id=M91｜模板制作指令包 格式一（八要素）示例落盘\n\n```yaml\nmachine_contract:\n  schema: \"1\"\n  id: M91\n  name: 异界身份桥\n  category: 轻混\n  layer: P40\n  inputs: []\n  outputs: []\n  events:\n    publish:\n      - campus_gift_intent\n    subscribe:\n      - relationship_change\n      - confession_event\n      - npc_action\n  interfaces: []\n```\n\n#### 1 职责\n\n轻混决策层（P40）装配模块：在「校园情感表达通道」与「西幻身份秘密」两条语境之间架桥。角色以异界身份生活在校园，情感表达（M55 情书链）与异界身份暴露风险（西幻面 npc_action / 生产痕迹）互相牵制——本模块把冲突转译为**校园语境可执行的馈赠意图** `campus_gift_intent`，交 P50 执行层 M92 装配落地。\n\n#### 2 输入输出（八要素）\n\n- 编号：M91（社区预留段，protocol.yaml module_id_range 在册）\n- 名称：异界身份桥\n- 类别：轻混（组合包独占类别，与源包 [情感]/[生存] 无交集——R2）\n- 层：P40 行为决策（active，mount_layers.P40.default=[M91]）\n- 输入（订阅）：relationship_change / confession_event（校园面）；npc_action（西幻面）\n- 输出（发布）：campus_gift_intent\n- 可替换：是（组合包装配位；卸载后 P40 回落源包 M55 单语境决策，不影响源包独立运行）\n- 核心逻辑：见 §3\n\n#### 3 核心逻辑：三段式轻混决策\n\n```yaml\n### 三段式：语境识别 → 身份秘密权衡 → 意图转译\nm91_decision:\n  step1_context_id:        # 语境识别（事件来源面）\n    - source: 校园面         # relationship_change / confession_event\n      target: 直通馈赠意图\n    - source: 西幻面         # npc_action（身份秘密压力）\n      target: 先做暴露风险评估\n  step2_secret_tradeoff:   # 身份秘密 × 情感表达（M23 认知边界约束）\n    exposure_risk: [低, 中, 高]      # npc_action 越界频度 → 风险档\n    expression_gain: [低, 中, 高]    # 关系阶段 × confession_event 强度\n    rule: |\n      风险=高 且 收益=低 → 压回（不发布，仅记 relationship_change 观察）\n      其余 → 转译意图（收益≥风险 或 匿名通道可消化）\n  step3_translate:         # 意图转译（西幻动作意图 → 校园匿名馈赠意图）\n    produce: campus_gift_intent\n    payload: { intent: 馈赠, secret_mode: true, origin: M91, source_event: <原事件> }\n```\n\n#### 4 事件契约\n\n- subscribe `relationship_change`：校园关系变化（M55 情书链上游），刷新表达收益档\n- subscribe `confession_event`：M55 匿名情书事件到达，触发 step2 权衡\n- subscribe `npc_action`：西幻 NPC 行动（身份秘密压力面），抬升暴露风险档\n- publish `campus_gift_intent`：馈赠意图（携带 secret_mode），P50 层 M92 订阅装配\n\n#### 5 引用的资产（asset_readonly 借阅，不复制）\n\n本模块无自有资产（assets.count=0）。运行时经 asset_get 借阅源包资产：\n\n- 校园情感领域包：情书事件链素材（M55 关联资产）\n- 西幻生存领域包：身份秘密/异界线索素材（经 npc_action 面）",
+        "enabled": true,
+        "insertion_order": 0,
+        "case_sensitive": false,
+        "priority": 10,
+        "id": 0,
+        "comment": "NF 层 P40 · 行为决策"
+      },
+      {
+        "name": "匿名情书",
+        "keys": [
+          "情感类:M55",
+          "匿名情书"
+        ],
+        "content": "### 模块 M55 · 匿名情书\n\n> 类别：情感｜来源：校园｜挂载点：P40 行为决策（active）｜依赖：M40、M43｜发布：无（叙事素材交事件:M22）\n\n```yaml\nmachine_contract:\n  schema: \"1\"\n  id: M55\n  name: 匿名情书\n  category: 情感\n  layer: P40\n  inputs: []\n  outputs: []\n  events:\n    publish: []\n    subscribe: [relationship_change, confession_event, npc_action]\n  interfaces: []\n```\n\n#### 1. 职责\n\n承载校园经典的**匿名情书**事件链：写→投→收→（误）→回。情书的匿名性天然制造认知偏差与误会空间，是 M23 认知边界的经典应用场景。\n\n#### 2. 情书事件链\n\n```yaml\nlove_letter_chain:\n  write:    主角选择写信对象与署名方式（实名/匿名/冒名）\n  deliver:  投递通道：鞋柜/书桌/信箱（资产 LOCATIONS 30 条中取样）\n  receive:  收信人判定：默认目标NPC；可被情敌事件/误放篡改（认知偏差）\n  respond:  收信人按 M40 关系深度 + 大五人格决定反应（惊喜/困惑/回避）\n  reveal:   匿名揭晓窗口：由事件:M22 安排（直接揭晓/拖长悬念/永不揭晓→M65 遗憾）\n```\n\n#### 3. 匿名性规则\n\n```yaml\nanonymity:\n  系统真知: 谁写的、写给谁，系统层完整保留（真相唯一 I5）\n  角色认知: 收信人只能推断（依据笔迹/内容/时机等证据），推断错误合法\n  冒名风险: 情敌/第三方可冒名投递 → 引发误会事件（须过 M23 后才可呈现）\n  揭晓限制: 揭晓前，主角与收信人的\"真相对齐\"属隐藏域\n```\n\n#### 4. 事件契约\n\n```yaml\nsubscribe:\n  relationship_change:   # 关系档位变化 → 情书反应基线更新\n  confession_event:      # 告白竞争时情书可成为关键证据/信物\n  npc_action:            # 冲动行为可能触发\"冲动回信\"\n输出: 情书事件素材写入 EventState.pending_narratives，交事件:M22 编排\n```\n\n#### 5. 违例与边界\n\n- 情书文本生成受写作 DNA8（对话极简）约束：信件正文短、口语、带潜台词。\n- 禁止系统在揭晓窗口前向玩家输出\"这是某某写的情书\"式直述。",
+        "enabled": true,
+        "insertion_order": 1,
+        "case_sensitive": false,
+        "priority": 10,
+        "id": 1,
+        "comment": "NF 层 P40 · 行为决策"
+      },
+      {
+        "name": "轻混装配执行",
+        "keys": [
+          "轻混类:M92",
+          "轻混装配执行"
+        ],
+        "content": "### 模块 M92 · 轻混装配执行\n\n> 类别：轻混｜来源：校园西幻轻混组合包｜挂载点：P50 交互执行（active）｜编号段：M91-M99 社区预留\n> 依赖：M00（数据结构）、M50（主循环）、M80（输出生成器）——官方核心（R1 core_only）\n> 发布：`campus_anonymous_gift`｜订阅：`production_output`\n> 引用装配：西幻 M17 生产制造（production_output 上游）/ 校园 M55 情书链（confession_event 由 M91 转译后经本模块收口）\n> 对应 protocol.yaml modules[1].id=M92｜模板制作指令包 格式一（八要素）示例落盘\n\n```yaml\nmachine_contract:\n  schema: \"1\"\n  id: M92\n  name: 轻混装配执行\n  category: 轻混\n  layer: P50\n  inputs: []\n  outputs: []\n  events:\n    publish:\n      - campus_anonymous_gift\n    subscribe:\n      - production_output\n  interfaces: []\n```\n\n#### 1 职责\n\n轻混执行层（P50）装配模块：把西幻侧生产输出（M17 `production_output`）与校园侧馈赠意图（M91 `campus_gift_intent`）**跨语境再包装**为校园可落地的匿名礼物动作 `campus_anonymous_gift`。它是轻混装配的「最后一段管道」——订阅源包事件、装配为本包事件，不搬移 M17 本体（M17 仍驻西幻包 P50 default）。\n\n#### 2 输入输出（八要素）\n\n- 编号：M92（社区预留段，protocol.yaml module_id_range 在册）\n- 名称：轻混装配执行\n- 类别：轻混（组合包独占类别，与源包 [情感]/[生存] 无交集——R2）\n- 层：P50 交互执行（active，mount_layers.P50.default=[M92]）\n- 输入（订阅）：production_output（西幻 M17）\n- 输出（发布）：campus_anonymous_gift\n- 可替换：是（组合包装配位；卸载后 P50 回落源包 M17 单语境产出，不影响源包独立运行）\n- 核心逻辑：见 §3\n\n#### 3 核心逻辑：跨语境再包装\n\n```yaml\n### production_output 到达 → 意图匹配 → 物品语境映射 → 匿名馈赠发布\nm92_assembly:\n  step1_match_intent:      # 意图匹配（M91 campus_gift_intent 缓存 / 直通）\n    - intent: 馈赠\n      condition: campus_gift_intent.secret_mode = true\n  step2_map_item:          # 物品语境映射（西幻产出物 → 校园匿名馈赠物）\n    - from: production_output.item   # M17 payload {recipe_id, item, qty, quality, cost, tick}\n      map: 校园等价物（匿名可递送、不暴露异界来源）\n      secret: true                   # 去来源化包装（M23 认知边界：校园侧只见馈赠，不见生产链）\n  step3_publish:           # 装配完成 → 发布校园匿名礼物事件\n    produce: campus_anonymous_gift\n    payload: { item: <映射物>, qty: <M17.qty>, quality: <M17.quality>, source_package: 西幻生存领域包, origin: M17->M92, tick: <M17.tick> }\n```\n\n#### 4 事件契约\n\n- subscribe `production_output`：西幻 M17 生产输出（{recipe_id, item, qty, quality, cost, tick}）→ 触发装配\n- publish `campus_anonymous_gift`：校园匿名礼物事件（去来源化 payload），供 P50 交互面/输出生成器消费\n- 契约闭合：本模块 subscribe 覆盖 M17 publish（production_output），check16-A ③ 仲裁 pub⊆nsub 无越界\n\n#### 5 引用的资产（asset_readonly 借阅，不复制）\n\n本模块无自有资产（assets.count=0）。运行时经 asset_get 借阅源包资产：\n\n- 西幻生存领域包：生产制造素材（M17 关联资产）\n- 校园情感领域包：馈赠/匿名礼物呈现素材（经校园面呈现）",
+        "enabled": true,
+        "insertion_order": 2,
+        "case_sensitive": false,
+        "priority": 10,
+        "id": 2,
+        "comment": "NF 层 P50 · 交互执行"
+      },
+      {
+        "name": "生产制造",
+        "keys": [
+          "生存类:M17",
+          "生产制造"
+        ],
+        "content": "### 模块 M17 · 生产制造\n\n> 类别：生存｜来源：西幻｜挂载点：P50 交互执行（active）｜依赖：M00、M09｜发布：`production_output`\n\n```yaml\nmachine_contract:\n  schema: \"1\"\n  id: M17\n  name: 生产制造\n  category: 生存\n  layer: P50\n  inputs: []\n  outputs: []\n  events:\n    publish: [production_output]\n    subscribe: [market_event]\n  interfaces: []\n```\n\n#### 1. 职责\n\n管理**采集、制造与产出**：以 ProductionRecipe 配方表驱动食物/材料/武器/炼金/锻造等生产链路，产出进入经济系统（M09）（对应骨架 M17）。\n\n#### 2. 配方数据结构（ProductionRecipe）\n\n```yaml\nProductionRecipe:\n  id: 唯一配方号\n  category: [食物, 材料, 武器, 防具, 药水, 炼金, 锻造, 建筑]\n  inputs: {材料A: 数量, 材料B: 数量}\n  output: {物品, 数量}\n  requirements: {技能等级, 工具, 据点设施(M16), 配方书}\n  duration: 生产耗时（分钟制 tick）\n```\n\n#### 3. 配方库（节选，完整见资产库西幻包）\n\n```yaml\nfood_recipes:    5+（面包/炖肉/药膳…）      → 恢复 vitals（M01 消费）\nmaterial_recipes: 8+（皮革/铁锭/魔晶碎…）   → 中间材料\nweapon_recipes:  6+（铁剑/长弓/法杖…）      → M04 战斗装备\nspecial:         炼金/附魔配方（联动 M11 元素/词根）\n```\n\n#### 4. 生产流程\n\n```yaml\nproduce(player, recipe_id):\n  1. 校验材料/工具/技能/设施（M16 据点设施加成）\n  2. 扣除材料 → 进入生产队列（duration 倒计时，M10 分钟制结算）\n  3. 完成 → 产出物品（进背包/仓库）→ 发布 production_output\n  4. 技能熟练度+（M03）；品质波动（成功/大成功/失败）\n```\n\n#### 5. 经济联动\n\n```yaml\nsubscribe: [market_event]      # M09 市场价格波动 → 调整生产成本/售价\npublish: production_output\n  payload: {recipe_id, item, qty, quality, cost, tick}\n  subscribers: [M09, 事件:M22]\n产出去向: 自用 / 商店出售（M09）/ 委托交付（M06 任务）/ 据点建设（M16）\n```\n\n#### 6. 违例与边界\n\n- 无配方条目禁止凭空产出（防刷）；配方的材料/产出比由 M09 经济模型校准。\n- 生产行为属玩家可控操作，NPC 生产走 M13 日程（不占用玩家队列）。",
+        "enabled": true,
+        "insertion_order": 3,
+        "case_sensitive": false,
+        "priority": 10,
+        "id": 3,
+        "comment": "NF 层 P50 · 交互执行"
+      }
+    ]
+  },
+  "tags": [
+    "P04"
+  ],
+  "creator": "NarrativeForge",
+  "character_version": "2.0.0",
+  "extensions": {}
+}
