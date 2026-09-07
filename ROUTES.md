@@ -25,6 +25,8 @@
 | 读协议规则入口 | `README.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/README.md` |
 | 读本路由表 | `ROUTES.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/ROUTES.md` |
 
+> **实测备注（2026-09-07）**：raw 形态双镜像全 200（AI 通道可靠）；Gitee 网页形态（blob/tree/issues 页）对程序化访问返回 405/401（反爬/登录策略）——**网页形态仅供人用浏览器打开，程序/AI 一律走 raw**。
+
 > GitHub 投稿开题可带模板直达：`https://github.com/Monyeah777/NarrativeForge/issues/new?template=library_submission.md`（仅 GitHub 支持该参数；Gitee 不支持，开题后选模板即可）。
 
 ## 三、接待菜单（用户贴地址后，开场回复的结构）
