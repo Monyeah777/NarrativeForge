@@ -15,7 +15,6 @@ assignees: ''
 ## 影响范围（勾选）
 - [ ] 协议层（01–07 / 08 / 09 方案）
 - [ ] 代码层 desktop/（core / ui）
-- [ ] 代码层 android/
 - [ ] 社区领域包 community/
 - [ ] 工程治理（verify.sh / CI / 文档）
 

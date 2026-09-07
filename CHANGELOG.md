@@ -1,3 +1,12 @@
+## [Unreleased · APK 线移除] - 2026-09-07（作者裁决 #16：Android APK 线彻底移除）
+### Removed
+- **android/ 全目录**（app bootstrap/config/controller/ui/screens + main.py + buildozer.spec + p4a 补丁等）——彻底 `git rm`，不再恢复（裁决 #16：包络负资产——首次构建 10h+、v0.8/v0.9/v2.6 三轮闪退修复、CI 绿 ≠ 真机不闪退、学生预算月投入数百；浏览/预览/轻导出三大功能已被 AI 线 A/B1 全覆盖）。
+- **build-android.yml / selftest_android.py / sync_android.sh**——APK 构建与自测链随线移除。
+- **check_ui_core_links 去 android 化**：脚本 + 单测改桌面 UI-only 引用面（15 用例全绿，verify PASS=31 不变）。
+- **文档同步**：README（端壳段/Release 描述/端壳注记）、L3_FROZEN（APK 线移除记录 + 冻结区清单更新）、.github 模板（bug/feature/PR 去 android）、registry_loader 与 e2e-desktop.yml 注释清理。
+### Changed
+- **移动端产品叙事**：手机用户入口 = 任意 AI 客户端（B1 线：读 raw / 下载文件），不再提供专用 App；桌面 GUI（exe/macOS/Linux）保留冻结-脉冲契约。
+
 ## [Unreleased] - 波 0 治理修订（40 总纲，2026-09-06；不产版本 tag）
 ### Security
 - **旧 token 弃用记录（40 总纲 S8）**：2026-09-06 会话中使用的 GitHub PAT（`ghp_` 前缀，用于 dispatch 验证）已明文出现在会话记录——**已弃用，不再使用**。轮换 SOP：任何出现在对话/日志/文档中的 token 立即到 GitHub → Settings → Developer settings → Personal access tokens 撤销重建；新 token 仅经环境变量注入，不写入文件/提交/对话。后续 CI/workflow 一律用 `GITHUB_TOKEN`（最小权限，见权限最小化条目），不再使用个人 PAT 触发。

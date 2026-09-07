@@ -2,10 +2,10 @@
 """check_ui_core_links 单测（38 W0：UI↔core 漂移扫描逻辑）。
 
 运行：cd desktop && python -m unittest tests.test_check_ui_core_links -v
-覆盖：extract_imports 识别 ui（..core level2）、android controller/bootstrap
-（.core level1）与 android ui/screens（app.core level0 绝对导入）形态及
-import core.* 模块级引用；scan 对缺失符号报硬断、存在符号报可用；引用面
-收集含 android 全引用层；空扫描面 fail-closed（main 返回 2）；main 退出码。
+覆盖：extract_imports 识别多层级引用形态（..core level2 / .core level1 /
+app.core level0 绝对导入）及 import core.* 模块级引用；scan 对缺失符号报
+硬断、存在符号报可用；引用面收集含 ui 全引用层；空扫描面 fail-closed
+（main 返回 2）；main 退出码。
 """
 from __future__ import annotations
 
@@ -59,7 +59,7 @@ class TestExtractImports(unittest.TestCase):
             self.assertEqual(refs["core.generator"], ["default_filename"])
 
     def test_screens_level0_absolute(self):
-        """android/ui/screens.py 形态：from app.core.*（level=0）不被丢弃。"""
+        """app.core.* 形态（level=0 绝对导入）不被丢弃。"""
         with tempfile.TemporaryDirectory() as td:
             d = Path(td)
             f = _mk_file(d, "screens.py",
@@ -114,23 +114,19 @@ class TestModuleHasAttr(unittest.TestCase):
 
 
 class TestCollectScanPaths(unittest.TestCase):
-    def test_android_full_reference_surface(self):
-        """引用面含 android 全引用层：controller/bootstrap/screens 皆在列。"""
+    def test_ui_full_reference_surface(self):
+        """引用面含 ui 全引用层（APK 线移除后仅 desktop ui）。"""
         ui = ROOT / "desktop" / "src" / "ui"
-        android = ROOT / "android" / "app"
-        paths = collect_scan_paths(ui, android)
+        paths = collect_scan_paths(ui)
         names = {p.name for p in paths}
-        self.assertIn("bootstrap.py", names)
-        self.assertIn("controller.py", names)
-        self.assertIn("screens.py", names)
-        # ui 顶层引用文件也在面内
         self.assertIn("zone_g_community.py", names)
+        self.assertIn("main_window.py", names)
+        self.assertEqual(len(paths), 10)  # ui 顶层引用文件全集
 
     def test_empty_dirs_yield_empty(self):
         with tempfile.TemporaryDirectory() as td:
             d = Path(td)
-            self.assertEqual(collect_scan_paths(d / "no_ui",
-                                                d / "no_android"), [])
+            self.assertEqual(collect_scan_paths(d / "no_ui"), [])
 
 
 class TestScan(unittest.TestCase):
@@ -163,7 +159,7 @@ class TestScan(unittest.TestCase):
             self.assertTrue(any("core.ghost" in x for x in res["missing"]))
 
     def test_screens_level0_no_hard_break(self):
-        """level=0 绝对导入在 scan 全链路可解析（screens.py 形态回归）。"""
+        """level=0 绝对导入在 scan 全链路可解析（app.core 形态回归）。"""
         with tempfile.TemporaryDirectory() as td:
             d = Path(td)
             ui = d / "ui"
@@ -178,16 +174,15 @@ class TestScan(unittest.TestCase):
             self.assertTrue(any("core.models:Module" in x for x in res["ok"]))
 
     def test_real_core_no_hard_breaks(self):
-        """真实引用面（desktop ui + android 全引用层）对 v2.5 core 无硬断。
+        """真实引用面（desktop ui 引用层）对 v2.5 core 无硬断。
 
-        38 W0 主断言：引用面经 collect_scan_paths 构建，覆盖 ui 顶层 + android
-        controller/bootstrap/ui/screens——空面/半面不能令本断言变绿。
+        38 W0 主断言：引用面经 collect_scan_paths 构建，覆盖 ui 顶层——空面/
+        半面不能令本断言变绿。（APK 线 2026-09-07 移除后引用面 = desktop ui）
         """
         ui = ROOT / "desktop" / "src" / "ui"
-        android = ROOT / "android" / "app"
         core = ROOT / "desktop" / "src" / "core"
-        paths = collect_scan_paths(ui, android)
-        self.assertGreaterEqual(len(paths), 13,
+        paths = collect_scan_paths(ui)
+        self.assertGreaterEqual(len(paths), 10,
                                 f"引用面过小（{len(paths)} 文件），"
                                 "疑似覆盖回退")
         res = scan(paths, core)
@@ -203,7 +198,6 @@ class TestMain(unittest.TestCase):
             core.mkdir()
             with contextlib.redirect_stdout(io.StringIO()):
                 code = main(["--ui-dir", str(d / "no_ui"),
-                             "--android-dir", str(d / "no_android"),
                              "--core-dir", str(core)])
             self.assertEqual(code, 2)
 

@@ -1,7 +1,0 @@
-# 构建产物与同步生成目录（单一事实源在仓库根 desktop/src/core 与 03/04/05）
-core/
-seed/
-.buildozer/
-bin/
-__pycache__/
-*.pyc

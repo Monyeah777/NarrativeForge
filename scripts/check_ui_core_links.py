@@ -2,16 +2,15 @@
 """UI↔core 接线漂移扫描（38 方案 W0：check_ui_core_links）。
 
 脉冲式接线波基础设施（合并稿交付物 #1）：冻结快照恢复后，UI 层
-（desktop/src/ui）与 Android 引用层（android/app：controller/bootstrap/
-ui/screens）引用的 core 符号须在 v2.5 core 中仍存在——冻结快照接的是
-v2.0-era core，core 已演进至 v2.5（30 模块），引用面可能漂移。本脚本 AST
-解析引用面 → 对 v2.5 core 逐一做符号存在性检查 → 输出三类清单：
+（desktop/src/ui）引用的 core 符号须在 v2.5 core 中仍存在——冻结快照接的
+是 v2.0-era core，core 已演进至 v2.5（30 模块），引用面可能漂移。本脚本
+AST 解析引用面 → 对 v2.5 core 逐一做符号存在性检查 → 输出三类清单：
 
   1. 符号缺失（硬断）：import 的 module/attr 在 core 中不存在 → 接线必须先修
   2. 软漂移：符号存在但签名可能变（本脚本只报存在性，签名比对靠冒烟断言）
   3. 可用：符号存在 → 无需处理
 
-用法：python scripts/check_ui_core_links.py [--ui-dir ...] [--android-dir ...]
+用法：python scripts/check_ui_core_links.py [--ui-dir ...]
       [--controller ...] [--core-dir ...]
 
 范围纪律：本脚本属 L3 接线工具，不参与 verify（L3 豁免纪律），作 smoke_gui
@@ -35,12 +34,10 @@ MODULE_REF = "<module>"
 def _normalize_core_mod(mod: str) -> Optional[str]:
     """把任意引用形态归一为 core 模块路径；非 core 引用返回 None。
 
-    支持的真实形态：
+    支持的真实形态（包前缀/层级多样，归一逻辑统一处理）：
       from ..core.models import X      → level=2, module="core.models"（desktop ui）
       from .core.generator import X    → level=1, module="core.generator"
-                                        （android controller/bootstrap 相对导入）
       from app.core.models import X    → level=0, module="app.core.models"
-                                        （android ui/screens 绝对导入）
       import core.models / import app.core.models → 模块级引用（同上归一）
 
     归一判据不看 level 与包前缀：只要模块路径里有一个段恰为 "core"，即取
@@ -131,18 +128,16 @@ def _module_has_attr(module_path: Path, attr: str) -> bool:
     return False
 
 
-def collect_scan_paths(ui_root, android_root,
-                       controller=None) -> List[Path]:
-    """构建引用面文件清单（desktop ui + android 引用层）。
+def collect_scan_paths(ui_root, controller=None) -> List[Path]:
+    """构建引用面文件清单（desktop ui 引用层）。
 
-    递归收集两棵引用树下的 .py：排除 __init__.py，并跳过路径中含 core 段
+    递归收集 ui 引用树下的 .py：排除 __init__.py，并跳过路径中含 core 段
     的目录（core 是被检查的镜像/目标，不是引用面）。controller 为兼容参数，
-    单独传入的文件仍会被加入（android 根下已含时幂等去重）。结果排序。
+    单独传入的文件仍会被加入（已含时幂等去重）。结果排序。
     """
     files: List[Path] = []
-    for root in (Path(ui_root), Path(android_root)):
-        if not root.is_dir():
-            continue
+    root = Path(ui_root)
+    if root.is_dir():
         for p in root.rglob("*.py"):
             if p.name == "__init__.py":
                 continue
@@ -204,23 +199,19 @@ def main(argv=None) -> int:
         description="UI↔core 接线漂移扫描（38 W0）")
     ap.add_argument("--ui-dir", default=str(ROOT / "desktop" / "src" / "ui"),
                     help="UI 层目录（缺省 desktop/src/ui）")
-    ap.add_argument("--android-dir",
-                    default=str(ROOT / "android" / "app"),
-                    help="Android 引用层根目录（缺省 android/app，递归收集）")
     ap.add_argument("--controller", default=None,
-                    help="额外单文件（已含于 --android-dir 时无需传）")
+                    help="额外单文件（已含于 --ui-dir 时无需传）")
     ap.add_argument("--core-dir", default=str(ROOT / "desktop" / "src" / "core"),
                     help="core 目录（缺省 desktop/src/core）")
     args = ap.parse_args(argv)
 
-    ui_paths = collect_scan_paths(args.ui_dir, args.android_dir,
-                                  args.controller)
+    ui_paths = collect_scan_paths(args.ui_dir, args.controller)
     core_root = Path(args.core_dir)
 
     if not ui_paths:
-        print(">>> 扫描面为空：ui/android 引用目录下找不到可扫描的 .py 文件",
+        print(">>> 扫描面为空：ui 引用目录下找不到可扫描的 .py 文件",
               file=sys.stderr)
-        print("    （ui_dir/android_dir 是否存在？空面 ≠ 干净面——拒绝放行）",
+        print("    （ui_dir 是否存在？空面 ≠ 干净面——拒绝放行）",
               file=sys.stderr)
         return 2
     if not core_root.is_dir():
