@@ -1,0 +1,28 @@
+name: gitee-poll
+# 📚 云端代收站 · Gitee 前端轮询（Y12′ 扩展 · 2026-09-07 · 零治理开放投稿）
+# 背景：投稿写入口原只在 GitHub Issues（国内进不去）；Gitee Issues 国内可达。
+# 流程：每 10 分钟醒来 → gitee_ingest.py 拉 Gitee open 投稿（标题【NF投稿】）
+#   → 同一入库核心（净化/空壳拒收/36进制编号/小写键查重/ALIAS 重建）
+#   → git 提交推双端（gitee 子令牌 + origin）→ Gitee Issue 回评双端链接 → 关闭
+# 依赖 Secrets：GITEE_TOKEN（Gitee 子令牌：issues 读写 + 仓库推送权限，作者在
+#   Gitee 设置生成——主令牌绝不共享，子令牌泄露可控）
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gitee 投稿轮询入库（拉取 → 入库 → 双端推送 → 回评关闭）
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: python3 .github/scripts/gitee_ingest.py
