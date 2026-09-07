@@ -1,7 +1,7 @@
 # 📚 NF 云端图书馆 · 目录（INDEX）
 
 > **NarrativeForge（NF）** 云端公共图书馆——所有人产出的「叙事世界完整版」按编号归档，任何 AI 仅凭编号即可通过链接调用运行。
-> 入口：把本仓库链接（或本文件）发给任意 AI，说「运行 NF-编号」或「帮我找 XX 题材」，AI 即按下方目录取阅/推荐。
+> 入口：把**本文件 raw 链接**发给任意 AI（实测：AI 抓 raw 直链可靠，抓仓库主页 HTML 不可靠）——`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/INDEX.md`（国内：`https://gitee.com/monyeah777/narrative-forge/raw/main/library/INDEX.md`），说「运行 NF-编号」或「帮我找 XX 题材」，AI 即按下方目录取阅/推荐。
 
 ## 投稿须知（入库前必读）
 

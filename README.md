@@ -15,6 +15,9 @@
 
 本仓库同时是 **NF 协议的「AI 自适配入口」**：无论你能不能访问 GitHub、会不会用工具，只要**能读文本**，就能按协议组装 / 运行叙事世界。先按下方路由表自检能力边界，再走对应路径——路由表基于多模型实测（2026-09-06：豆包 / Kimi / 千问 / DeepSeek / 本地模型）。
 
+> 🔗 **给 AI 的入口请用 raw 链接**（实测：部分 AI 能抓 raw.githubusercontent.com / gitee.com 的 raw 直链，但抓不了 Gitee 仓库主页 HTML）——把下方 raw 链接发给 AI 而非网页地址：
+> - 规则总入口：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/README.md`（国内镜像：`https://gitee.com/monyeah777/narrative-forge/raw/main/README.md`）
+
 **先对号入座（三种用法）**：
 1. **组装「完整版」**（把用户需求变成可直接开跑的世界文档）→ 走下方 **B1 / B2**
 2. **运行一份现成完整版** → 请用户提供完整版 md，按其 `##6. 装载指引` 执行
