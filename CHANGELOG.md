@@ -1,3 +1,12 @@
+## [Unreleased · v2.8 波B] - 2026-09-07（40 总纲实施波B：S4 管线脚手架 + S5 模块生命周期 + S7 近端引导）
+### Added
+- **S4 `nf pipeline new`（`desktop/src/core/pipeline_scaffold.py`）**：自 P00 通用骨架派生新管线文档（标题 / 顶层 id / name / tags 领域标签替换；层位 id 守住不动；坏 id / 缺键 / 目标已存在均拒绝写盘不产坏档）+ `scripts/nf.py pipeline new --id --name --from --domain --dest`；单测 5 例全绿。
+- **S5 模块生命周期（`desktop/src/core/module_lifecycle.py` + `nf module ls/status/deprecate/restore/verify`）**：04_模块库 + community 模块 status 位解析/写回（缺省 active，元信息行 `状态：…`）；deprecated/retired 被引用（模块依赖/订阅或 community protocol.yaml 命中）→ 引用门禁 FAIL；verify.sh v2.13 新增 check24；全库 44 模块扫描全 active 无违约；单测 7 例全绿。
+- **S7 近端引导**：`nf demo` 一键演示世界（P04 轻混全链 → CCV3 chara.json/world.json，质量门 PASS 0/WARN 0/FAIL 0，实测 0.1 s）；`nf --help` 作者/开发者分层引导文案；README 新增「五分钟快速开始」。
+- **verify 复核**：PASS=35 / WARN=0 / FAIL=0 全绿（verify.sh v2.12→v2.13，check23→check24，ci-verify 绿线 PASS=34→35）。
+### Notes
+- 波 B 冒烟记录（本工作台实测、产物不入库）：`nf pipeline new --id P07 --name 演示领域管线 --domain 悬疑` → 派生档结构正确（标题/P07/悬疑领域 tag，层位 P00 未动）；派生 P07 以轻混模块装配 run 可跑 PASSED；module deprecate→status→restore 在 /tmp 副本流转全通过、`nf module verify` 全绿。
+- 波 B 收口项仍挂账：S3 续（第二个官方题材包或第三方首例上架，按货架 tier 标准补种）待排；tag v2.8.0（含 audit 建档）须排在波 A 转正链（E1–E3/Y5 外部实测回填 → tag v2.7.0）之后。
 ## [Unreleased · v2.7 波A W4] - 2026-09-07（40 总纲实施 W4：S1 外部验证实证档建档 + E1 准备材料实导 + ROADMAP 状态同步）
 ### Added
 - **`docs_external-validation-v2.7.md`（S1 实证报告 · 建档稿非转正稿）**：四项出口（E1 CCV3→SillyTavern / E2 SKILL+AGENTS→Claude Code / E3 nf serve→标准 MCP 客户端 / Y5 完整版样本→免费 AI 复测）各带四要素表（环境/步骤/结果/差距修复）+ 汇总转正门——未实测不宣称转正（S13 门未开，验收未达成如实标注）。

@@ -4,7 +4,7 @@
 
 **Narrative Forge 是一台规范驱动的结构化文档生成器（元工具/文档工厂）**。它按协议校验结构，与文体无关：小说、技术文档、设定集都适用。叙事世界（P01/P02/P03）目前应用最成熟。
 
-**生成路径**：自然语言意图 → 按协议模板填充（模块/管线/资产三正交装配）→ `bash verify.sh` 结构校验（分层门禁 check1-22，v2.11）→ 输出结构化文档/可运行世界。
+**生成路径**：自然语言意图 → 按协议模板填充（模块/管线/资产三正交装配）→ `bash verify.sh` 结构校验（分层门禁 check1-24，v2.13）→ 输出结构化文档/可运行世界。
 
 **三个正交维度（均可增删改）**：
 - 模块（04_模块库）：领域能力原语，按 01 §2 声明接口后登记即被调度。
@@ -68,13 +68,26 @@
 
 **通用流程**：把需求发给所选模型（B1：直读 raw 取件装配；纯粘贴：自取 `paste_card.md`）→ 收产物另存 `.md` → 交给任意叙事 AI 按 `##6. 装载指引` 开跑。四模型实测报告见社区实测记录（.rivet 协作区，不随仓库分发）。
 
+## 五分钟快速开始（CLI · 作者向）
+
+仓库零第三方依赖、clone 即跑（Windows 建议 Git Bash；无需桌面壳）。以下几步五分钟走通「验证 → 演示 → 跑管线 → 派生新领域」：
+
+1. **跑全量验证（改任何库先过这关）**：`bash verify.sh` —— L0-L2 分层门禁 v2.13（check1-24）全绿 PASS=35 才可提交。
+2. **一键演示世界**：`python scripts/nf.py demo` —— 自动装载社区「校园 × 西幻轻混」P04 管线全链跑通并导出 CCV3 成品（chara.json + world.json），产物路径与质量门（PASS/WARN/FAIL）直接打印。
+3. **看帮助分层引导**：`python scripts/nf.py --help` —— 作者命令（run / demo / pipeline new）与开发者治理工具族分列说明；逐条用法看各子命令 `--help`。
+4. **跑一条自己的管线**：`python scripts/nf.py run --pipeline community/校园西幻轻混组合包/pipelines/P04_轻混装配流管线.md --modules 通用类:M00,轻混类:M91,轻混类:M92,通用类:M80 --seed --fmt ccv3 --dest <输出目录>`
+5. **新领域派生管线**：`python scripts/nf.py pipeline new --id P07 --name 演示领域管线 --domain 悬疑`（自 P00 骨架派生 → 按 01 §2 填层名/挂载 → 登记 02 联动注册表 → run 即调度，引擎不改一行）。
+6. **模块状态与弃用流转**：`python scripts/nf.py module ls` / `module status <模块md>` / `module deprecate <模块md> --reason <原因>` / `module restore <模块md>` / `module verify`（引用门禁，与 verify check24 同语义）。
+
+> 详细装配规格见 `agent_组装指令包_v0.1.md`；模块 / 资产怎么写见 `community/模板制作指令包.md`。
+
 ## 分层与端壳（L3 冻结）
 
 本项目分四层治理（23 方案 + 38 方案脉冲升级）：L0 协议层 / L1 内容层 / L2 核心逻辑层（`desktop/src/core`，纯 Python 零依赖，**高频迭代主战场**）/ L3 端壳层。端壳（桌面 GUI）是包络层——**默认冻结，触发条件达成时执行脉冲式接线波**（**Android APK 线已整体移除**，2026-09-07 裁决 #16，见 L3_FROZEN）（未接线新能力 ≥6 项或用户/消费方必须项），波后回冻结，不随基础层逐功能演进（详见 `L3_FROZEN.md`）。
 
 端壳源码已移出主仓库演进主线（git 历史保留），产出时从冻结快照恢复并触发构建 workflow（壳线专用：仅 `shells-v*` 标签 / 手动触发——40 总纲 S6，基础层 v* 不再产壳）：Release 页可下载 `NarrativeForge.exe` / macOS / Linux 成品（`.github/workflows/build-desktop.yml`）。**Android APK 已不再产出（2026-09-07 裁决 #16）**——手机用户入口 = 任意 AI 客户端（B1 线：读 raw / 下载文件），无需专用 App。
 
-基础层验证不依赖端壳：`bash verify.sh`（v2.11，L0-L2 分层门禁，clone 即绿）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
+基础层验证不依赖端壳：`bash verify.sh`（v2.13，L0-L2 分层门禁 check1-24，clone 即绿 PASS=35）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
 
 ## 社区版模板闭环（自制模板 → 组装 → 输出 MD）
 
@@ -135,7 +148,7 @@ NarrativeForge（NF）有一个**云端公共图书馆**（`library/`）：建�
 
 基础层真身：纯 Python 零第三方依赖的装配/IR/质检/导出/检索逻辑，被端壳（桌面 GUI / android）复用。L0-L2 验证入口：
 
-- 分层门禁：`bash verify.sh`（v2.11，check1-22 全绿 PASS=31，clone 即绿）
+- 分层门禁：`bash verify.sh`（v2.13，check1-24 全绿 PASS=35，clone 即绿）
 - 单元测试：`cd desktop && python -m unittest discover -s tests`
 - 端到端：`python scripts/e2e_desktop_headless.py`（直驱 core，无需 GUI/端壳）
 

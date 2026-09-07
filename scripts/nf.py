@@ -30,7 +30,13 @@ sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="nf", description="NarrativeForge 全链管道（B2：retrieve→compose→gate→export）")
+        prog="nf", description=(
+            "NarrativeForge 全链管道（B2：retrieve→compose→gate→export）。"
+            "分层引导（40 总纲 v2.8 波B S7）：作者五分钟上手 = run / demo / pipeline new；"
+            "开发者与仓库治理工具族 = asset / module / register / market / spec / render / serve / "
+            "design / audit / who-refers / impact / rename / import——README「五分钟快速开始」"
+            "含逐条示例。"),
+    )
     sub = p.add_subparsers(dest="cmd", required=True)
 
     run = sub.add_parser("run", help="跑全链管道：模块选择→装配→质检→导出")
@@ -219,6 +225,41 @@ def _build_parser() -> argparse.ArgumentParser:
         _sp.add_argument("--ledger", required=True,
                          help="provenance.json 路径（如 05_资产库/provenance.json）")
         _sp.add_argument("--key", required=True, help="溯源键")
+    # ---- v2.8.0 波B S4：管线脚手架 ----
+    pln = sub.add_parser("pipeline",
+                         help="管线脚手架（v2.8 波B S4：pipeline new——自 P00 骨架派生新管线）")
+    psub = pln.add_subparsers(dest="pipeline_cmd", required=True)
+    p_new = psub.add_parser("new", help="派生新管线：复制模板 → 改 id/name/领域标签（登记 02 / 填层名挂载按 README 三步）")
+    p_new.add_argument("--id", required=True, help="新管线 id（如 P07）")
+    p_new.add_argument("--name", required=True, help="新管线显示名（如 演示领域管线）")
+    p_new.add_argument("--from", dest="template", default=None,
+                       help="模板管线 md（缺省 = 03_管线库/P00_通用文档生成管线.md）")
+    p_new.add_argument("--domain", default="",
+                       help="领域标签（如 悬疑 → tags 追加「悬疑领域」）")
+    p_new.add_argument("--dest", default="",
+                       help="输出 md 路径（缺省 = 03_管线库/<id>_<name>.md 官方管线位）")
+
+    # ---- v2.8.0 波B S5：模块生命周期 ----
+    mds = sub.add_parser("module",
+                         help="模块生命周期（v2.8 波B S5：status 位 + deprecate/restore + 引用门禁 verify）")
+    msub = mds.add_subparsers(dest="module_cmd", required=True)
+    m_ls = msub.add_parser("ls", help="浏览模块状态（--status 过滤；缺省全量）")
+    m_ls.add_argument("--status", default="", choices=("active", "deprecated", "retired"))
+    m_ls.add_argument("--root", default=ROOT, help="扫描根（缺省 = 仓库根）")
+    m_st = msub.add_parser("status", help="查看单个模块文件状态位")
+    m_st.add_argument("file", help="模块 md 路径（如 community/<包>/modules/Mxx_….md）")
+    m_dp = msub.add_parser("deprecate", help="状态流转 → deprecated（写文件元信息行状态位）")
+    m_dp.add_argument("file", help="模块 md 路径")
+    m_dp.add_argument("--reason", default="", help="弃用原因（写入状态位）")
+    m_rs = msub.add_parser("restore", help="状态流转 → active（deprecated/retired 回退）")
+    m_rs.add_argument("file", help="模块 md 路径")
+    m_vf = msub.add_parser("verify", help="引用门禁扫描（与 verify.sh check24 同语义）")
+    m_vf.add_argument("--root", default=ROOT, help="扫描根（缺省 = 仓库根）")
+
+    # ---- v2.8.0 波B S7：一键演示世界 ----
+    dm = sub.add_parser("demo",
+                        help="一键演示世界（v2.8 波B S7：P04 轻混全链 → CCV3 导出）")
+    dm.add_argument("--dest", default="", help="导出目录（缺省 = 系统临时目录并打印路径）")
     return p
 
 
@@ -765,12 +806,137 @@ def _cmd_asset(args) -> int:
         return 2
 
 
+def _cmd_pipeline(args) -> int:
+    """nf pipeline new：P00 骨架派生新管线（v2.8.0 波B S4）。"""
+    from core.pipeline_scaffold import scaffold_pipeline, default_filename
+    tmpl = args.template or os.path.join(ROOT, "03_管线库",
+                                         "P00_通用文档生成管线.md")
+    try:
+        with open(tmpl, encoding="utf-8") as fh:
+            template = fh.read()
+        new_text = scaffold_pipeline(template, args.id, args.name,
+                                     domain=args.domain)
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 2
+    dest = args.dest or os.path.join(ROOT, "03_管线库",
+                                     default_filename(args.id.upper(), args.name))
+    dest = os.path.abspath(dest)
+    if os.path.exists(dest):
+        print("  ✗ 目标已存在，不覆盖：%s" % dest, file=sys.stderr)
+        return 2
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    with open(dest, "w", encoding="utf-8") as fh:
+        fh.write(new_text)
+    print("== nf pipeline new ==")
+    print("  ✓ 派生管线落盘：%s" % dest)
+    print("  后续三步：① 按 01 §2 填层名 / default / allowed；② 新模块落 04_模块库 或复用通用件；")
+    print("            ③ 登记 02_联动注册表 → Agent 即调度（I5，引擎不改）")
+    print("  试跑：python scripts/nf.py run --pipeline %s"
+          " --modules <领域模块 full_id> --seed --fmt ccv3" % dest)
+    return 0
+
+
+def _cmd_module(args) -> int:
+    """nf module：模块生命周期（v2.8.0 波B S5）。ls/verify 只读；deprecate/restore 写文件状态位。"""
+    from core import module_lifecycle as ml
+    try:
+        if args.module_cmd == "verify":
+            issues, stats = ml.verify_modules(args.root)
+            print("== nf module verify ==")
+            print("  统计：模块 %d / active %d / deprecated %d / retired %d"
+                  % (stats["modules"], stats["active"],
+                     stats["deprecated"], stats["retired"]))
+            if issues:
+                for issue in issues:
+                    print("  [FAIL] %s" % issue, file=sys.stderr)
+                return 1
+            print("  ✓ 无 deprecated/retired 模块被引用（引用门禁全绿）")
+            return 0
+        if args.module_cmd == "ls":
+            rows = []
+            for rel in ml.iter_module_files(args.root):
+                txt = ml.read_text(args.root, rel)
+                status, _ = ml.get_status(txt)
+                if args.status and status != args.status:
+                    continue
+                rows.append((status, rel))
+            print("== nf module ls ==")
+            for status, rel in rows:
+                print("  %-10s %s" % (status, rel))
+            print("  合计 %d" % len(rows))
+            return 0
+        # 单文件操作：status / deprecate / restore
+        fpath = args.file
+        with open(fpath, encoding="utf-8") as fh:
+            txt = fh.read()
+        before, _ = ml.get_status(txt)
+        if args.module_cmd == "status":
+            print("== nf module status ==")
+            print("  %s → %s" % (fpath, before))
+            return 0
+        target = "deprecated" if args.module_cmd == "deprecate" else "active"
+        new_txt = ml.set_status(txt, target,
+                                reason=getattr(args, "reason", ""),
+                                module_file=fpath)
+        if new_txt != txt:
+            with open(fpath, "w", encoding="utf-8") as fh:
+                fh.write(new_txt)
+        print("== nf module %s ==" % args.module_cmd)
+        print("  ✓ 状态流转：%s → %s（%s）" % (before, target, fpath))
+        print("  复核：python scripts/nf.py module verify（引用门禁，verify check24 同语义）")
+        return 0
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 2
+
+
+def _cmd_demo(args) -> int:
+    """nf demo：一键演示世界（v2.8.0 波B S7）——P04 轻混全链 → CCV3。"""
+    import tempfile
+    import time
+    from core.pipeline import pipe
+    from core.pipeline_loader import load_pipeline_file
+    from core.storage import Store
+    pipeline_path = os.path.join(ROOT, "community", "校园西幻轻混组合包",
+                                 "pipelines", "P04_轻混装配流管线.md")
+    pipeline = load_pipeline_file(pipeline_path)
+    if pipeline is None:
+        print("  ✗ 演示管线解析失败：%s" % pipeline_path, file=sys.stderr)
+        return 2
+    store = Store()
+    stats = _seed_store(store)
+    dest = args.dest or tempfile.mkdtemp(prefix="nf_demo_")
+    t0 = time.time()
+    selected = ["通用类:M00", "轻混类:M91", "轻混类:M92", "通用类:M80"]
+    r = pipe(store, pipeline, selected, include_references=True,
+             fmt="ccv3", dest_dir=dest)
+    elapsed = time.time() - t0
+    print("== nf demo（一键演示世界 · P04 轻混）==")
+    print("  seed 装载：官方核心 %d 件 + 轻混组合包 %d 件"
+          % (stats["core"], stats["combo"]))
+    print("  全链计时：%.1f s（retrieve→compose→gate→export）" % elapsed)
+    print("  质量门：PASS %d · WARN %d · FAIL %d"
+          % (r.gate.n_pass, r.gate.n_warn, r.gate.n_fail))
+    if r.export is not None and r.export.files:
+        for f in r.export.files:
+            print("  产物：%s" % f)
+        print("  装载：把上述 chara.json 导入任意 AI 前端 / SillyTavern 即可开跑")
+    return 0 if r.ok else 1
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "asset":
         return _cmd_asset(args)
+    if args.cmd == "pipeline":
+        return _cmd_pipeline(args)
+    if args.cmd == "module":
+        return _cmd_module(args)
+    if args.cmd == "demo":
+        return _cmd_demo(args)
     if args.cmd == "market":
         return _cmd_market(args)
     if args.cmd == "who-refers":
