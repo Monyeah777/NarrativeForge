@@ -4,7 +4,7 @@
 
 CI 用法：python3 scripts/e2e_desktop_headless.py
 前置：仓库完整 checkout（04_模块库 / 03_管线库 / community 在库）；无需 GUI、
-      无需 android/app 生成物——本脚本直驱 desktop core 层真实链路
+      无需任何端壳生成物——本脚本直驱 desktop core 层真实链路
       （Store / parser / validator / generator / pipeline_loader，与 GUI 共用同一 core）。
 
 覆盖真实链路：

@@ -284,7 +284,7 @@ check12(){
     wn 'desktop/tests 不在场（跳过代码层 unittest）'
   fi
   # ② 全量 py_compile 语法抽查（desktop/src scripts——L2 core 域；android/app
-  #    已随 L3 端壳冻结移出，不再编译，见 23 方案 / L3_FROZEN.md）
+  #    已彻底移除（裁决 #16），不再编译，见 L3_FROZEN.md）
   if [ -n "$PY3" ]; then
     if "$PY3" -m compileall -q desktop/src scripts >/tmp/nf_check12_pyc.log 2>&1; then
       ok '全量 py_compile 语法抽查通过（desktop/src scripts）'
@@ -303,8 +303,7 @@ check13(){
   echo '== [13/段C] 协议版本一致性 + 迁移完整性（09 方案 T2.3）=='
   local err=0
   # ① 版本一致性：02 头部 registry_schema_version == desktop registry.json 版本
-  #    （两处同源。android/app/core 为 L3 端壳 sync 生成物，已随分层治理冻结
-  #    移出主仓库演进主线——不再参与比对，见 23 方案 / L3_FROZEN.md）
+  #    （两处同源。android/app/core 已彻底移除（裁决 #16）——不再参与比对，见 L3_FROZEN.md）
   local v02 vdesk
   v02=$(grep -o 'registry_schema_version: *"[^"]*"' 02_联动注册表.md | head -1 | sed 's/.*"\([^"]*\)"/\1/')
   vdesk=$("$PY3" -c "import json;print(json.load(open('desktop/src/core/registry.json', encoding='utf-8'))['registry_schema_version'])" 2>/dev/null)

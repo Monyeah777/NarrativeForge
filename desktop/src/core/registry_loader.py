@@ -190,9 +190,9 @@ class Registry:
     # ---- T1-3 cross-package readonly asset addressing ----
     @staticmethod
     def _community_root() -> Optional[Path]:
-        '''Locate community assets root (T1-3). desktop/src/core or
-        android/app/core both reach repo root at parents[3]; probe each
-        ancestor for community/ dir. None if absent.'''
+        '''Locate community assets root (T1-3). desktop/src/core reaches repo
+        root at parents[3]; probe each ancestor for community/ dir. None if
+        absent.'''
         for anc in Path(__file__).resolve().parents:
             cand = anc / "community"
             if cand.is_dir():
@@ -237,8 +237,8 @@ class Registry:
 def load_registry(path: Optional[Union[str, Path]] = None) -> Registry:
     """读取 registry.json → Registry（进程内缓存，只读不写）。
 
-    path 缺省 = 本文件同目录 registry.json（desktop 与 android/app/core 经 sync
-    整目录拷贝后同构，两端共用同一相对定位）。文件缺失 / JSON 损坏视为协议事故
+    path 缺省 = 本文件同目录 registry.json（desktop/src/core 即唯一真相源，
+    无端侧副本——APK 线已移除见裁决 #16）。文件缺失 / JSON 损坏视为协议事故
     （I5 真相源投影缺失），原样抛 FileNotFoundError / JSONDecodeError——装配路径
     显式暴露，不静默回退硬编码。
     """
