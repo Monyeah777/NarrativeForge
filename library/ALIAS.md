@@ -8,3 +8,4 @@
 |---|---|---|
 | nf-1 | NF-1 | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-1.md |
 | nf-2 | NF-2 | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-2.md |
+| nf-worldcampus-monyeah777-1 | NF-WORLDCAMPUS-Monyeah777-1 | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-WORLDCAMPUS-Monyeah777-1.md |
