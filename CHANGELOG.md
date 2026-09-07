@@ -4,6 +4,14 @@
 ### Changed
 - **40 总纲波 0 治理修订**：S6 壳分离触发（build-desktop/build-android `push.tags` v* → `shells-v*`，普通基础层 tag 不产壳，v2.7 = 首个无壳发布）；S8 workflow permissions 最小化（ci-verify/e2e-desktop/build×2 顶层 `contents: read`，需写 job 单独提权）+ Release 资产 sha256 校验和随行；S9 执行对账模板落 `.rivet/reconcile-template.md`（三段式：fetch 核对→规划对照→差异说明，波次完成时填）；S11 40 总纲落盘根目录 + ROADMAP §9「未来计划」节 + CONTRIBUTING §6 安全章程小节 + README L3 段触发口径同步。**端壳待接线项：0**（壳线冻结持续，脉冲触发条件重计，见 L3_FROZEN）。
 
+## [Unreleased · 云端公共线] - Y9′–Y12′ 云端公共线（40 总纲增补 v1.4，2026-09-07；随 main 直接推送，不产版本 tag）
+### Added
+- **Y11′ 云端公共产物馆 · 编号制式 v0.4 上线（90ab277）**：四级编号 `NF-档位段-自定义段-36进制序号`——档位段 = 建构件/成品类型（自由复合拼写、不依赖词表）；序号 = 36 进制（每位 0-9 → A-Z、1 起、无前导零、不定长、同前缀各自计数）；段长 ≤16、前缀小写键全馆唯一；默认形 `NF-1`；入馆唯一硬标准 = 自包含可召回（引用式公开档不再收，历史样本在馆注明）。
+- **ALIAS.md 大小写转译站（90ab277）**：机器人每次入库全量重建；AI 大小写拿不准 → 编号全小写化 → 表内匹配真实编号 → 拼 raw（AI 识别协议三路径：快 / 转译 / 慢）。
+- **Y12′ 云端代收站 V2（90ab277）**：入库脚本支持四段编号分配（同前缀 36 进制递推）+ 段位校验（配对 / 字符 / 长度）+ 前缀小写键查重拒稿；投稿模板新增档位词/自定义段字段 + 自包含声明；白名单维持仅作者本人（S3 第三方实战前不开放）。
+- **40 总纲增补 v1.4（本提交）**：Y9′–Y12′ 云端公共线入总纲（= 双 agent 共享真相源，替代 .rivet/plans 不可见档案）+ 裁决记录 12/13；Y9′ 连通协议设计文档落 `.rivet/plans`（登记面随基础层排期窗口）。
+### Changed
+- **NF-0001 → NF-1（90ab277）**：默认形迁移（INDEX 登记表 / 文件注记头 / README 示例同步）；README 📚 段与 INDEX 全量泛化去叙事化（建构件 + 成品同馆同档、形态/领域自述）；verify PASS=31 不变（公共层零协议层改动，实测全绿）。
 ## [2.6.0] - 2026-09-06（v2.6.0 端壳接线波第 1 波：L3 冻结快照恢复 + W1-W9 接线 + Release 产线修复——脉冲式治理首波兑现）
 ### Added
 - **v2.6.0-L3 冻结快照恢复（38 方案 Stage 2.1，51f7130）**：35 个 L3 端壳文件自 5ae202b^ 单 commit 回接——android/（bootstrap/config/controller/ui/screens/main/buildozer/p4a 三补丁）+ desktop/src/ui/（11 py：common/main_window/protocol_wizard_dialog/zone_a-g）+ main.py/src/__main__.py/packaging/smoke_gui/bench/smoke_zone_g_market/selftest_android/sync_android（可整体 revert 回冻）。
