@@ -219,11 +219,11 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 | 波 | 版本 | 内容 | 状态 |
 |---|---|---|---|
 | 波 0 | 治理修订（不产 tag） | S6 壳分离 / S8 安全 / S9 对账 / S11 收口 | ✅ 已完成（2026-09-06） |
-| 波 A | v2.7.0（首个无壳） | S1 外部验证 / S2 nf asset 族 / S3 首批商品 / X1-3 / Y1-5 Agent 自主组装线（B2 粘贴档已免除，2026-09-07 裁决） | 🚧 实施中（W1–W4 已提交 2026-09-07） |
-| 波 B | v2.8.0（无壳） | S4 pipeline new / S5 模块流转 / S7 近端 / S3 续 | 🚧 实施中（S4/S5/S7近端 已提交 2026-09-07，S3 续挂账） |
+| 波 A | v2.7.0（首个无壳） | S1 外部验证 / S2 nf asset 族 / S3 首批商品 / X1-3 / Y1-5 Agent 自主组装线（B2 粘贴档已免除，2026-09-07 裁决） | ✅ 已发布（2026-09-07，tag v2.7.0——与波 B 整合发布） |
+| 波 B | 并入 v2.7.0（原 v2.8.0 顺延） | S4 pipeline new / S5 模块流转 / S7 近端 / S3 续 | ✅ 已发布（2026-09-07，并入 v2.7.0；S3 续挂账） |
 | 波 Σ | 壳集中波（shells-v*） | 38 方案五 Stage（W1-W9 + APK 降级 + MCP POC） | ⏸️ P3 触发 |
 | 波 C–N | 常态（P∞） | 审计 + 对账 + 回冻结 + 外部评审窗 | 脉冲式 |
 
-> **波 A 实施进度（2026-09-07）**：W1（S2 nf asset 族 + S3 首批资产入库 + S8 密钥扫描入 CI + check23）/ W2（Y1/Y2 入口 + X2 docs/mcp.md + X3 第三方入口）/ W3（Y4 完整版样本 P03 西幻实证）/ W4（S1 docs_external-validation-v2.7.md 实证档建档 + E1 CCV3 实导材料）已提交。外部实测（E1–E3 / Y5）待真实工具环境回填——本工作台不可代跑外部客户端；回填后按实证报告执行 S13（README 宣称逐项转正）并 tag v2.7.0（首个无壳版本）。
+> **波 A 实施进度（2026-09-07）**：W1（S2 nf asset 族 + S3 首批资产入库 + S8 密钥扫描入 CI + check23）/ W2（Y1/Y2 入口 + X2 docs/mcp.md + X3 第三方入口）/ W3（Y4 完整版样本 P03 西幻实证）/ W4（S1 docs_external-validation-v2.7.md 实证档建档 + E1 CCV3 实导材料）已提交。外部实测（E1–E3 / Y5）待真实工具环境回填——本工作台不可代跑外部客户端；回填后按实证报告执行 S13（README 宣称逐项转正）追补转正（**2026-09-07 用户拍板：先行整合发布 v2.7.0，转正待实测回填后补记**）。
 
-> **波 B 实施进度（2026-09-07）**：S4 `nf pipeline new`（P00 派生脚手架，pipeline_scaffold.py + 单测）/ S5 模块生命周期（module_lifecycle.py + `nf module ls/status/deprecate/restore/verify`，check24 入 verify.sh v2.13 + 单测）/ S7 近端（`nf demo` 一键演示世界 + `nf --help` 作者/开发者分层引导 + README「五分钟快速开始」）已提交；verify v2.13 PASS=35 全绿。收口挂账：S3 续（第二个官方题材包/第三方首例）与 tag v2.8.0（audit 建档）排在波 A 转正链（E1–E3/Y5 外部实测回填 → tag v2.7.0）之后。
+> **波 B 实施进度（2026-09-07）**：S4 `nf pipeline new`（P00 派生脚手架，pipeline_scaffold.py + 单测）/ S5 模块生命周期（module_lifecycle.py + `nf module ls/status/deprecate/restore/verify`，check24 入 verify.sh v2.13 + 单测）/ S7 近端（`nf demo` 一键演示世界 + `nf --help` 作者/开发者分层引导 + README「五分钟快速开始」）已提交；verify v2.13 PASS=35 全绿。收口（2026-09-07 用户拍板）：波 A + 波 B 整合为单一 v2.7.0 发布（README 版本块 + CHANGELOG [2.7.0] 归档 + `docs_audit-40-v2.7.md` 建档 + annotated tag v2.7.0）；v2.8.0 版本号顺延给后续常态内容波；S3 续（第二个官方题材包/第三方首例）继续挂账；E1–E3/Y5 外部实测回填后追补 S13 转正。

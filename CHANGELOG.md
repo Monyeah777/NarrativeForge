@@ -1,4 +1,22 @@
-## [Unreleased · v2.8 波B] - 2026-09-07（40 总纲实施波B：S4 管线脚手架 + S5 模块生命周期 + S7 近端引导）
+## [2.7.0] - 2026-09-07（40 总纲波 A + 波 B 整合发布 · 首个无壳基础层版本）
+### Added
+- **发布整合（用户 2026-09-07 拍板「整合到 v2.7」）**：40 总纲波 A（原计划 v2.7.0）与波 B（原计划 v2.8.0）**整合为单一 v2.7.0 发布**；版本号 v2.8.0 顺延给后续常态内容波。首个无壳基础层 tag（分离节奏发布线首验，普通基础层 tag 不产壳）。
+- **发布摘要**：波 A = S1 外部验证实证档（`docs_external-validation-v2.7.md`）+ S2 资产供应链台账（`nf asset` + check23）+ S3 首批官方资产集入库 + S8 密钥扫描入 CI + X/Y 线（Y1-Y5 Agent 自助组装 / X2 `docs/mcp.md` / Y9′-Y12′ 云端公共线）+ APK 线彻底移除（裁决 #16）；波 B = S4 管线脚手架（`nf pipeline new`）+ S5 模块生命周期（`nf module` + check24）+ S7 近端（`nf demo` / `nf --help` 分层 / README 五分钟快速开始）。
+- **verify 复核**：verify.sh v2.12→v2.13（check23→check24），PASS=35 / WARN=0 / FAIL=0 全绿；ci-verify 绿线 PASS=35。
+### 对账表（40 总纲收口：计划项 vs 实际提交）
+| 计划项 | 实际提交 | 状态 |
+|---|---|---|
+| 波 0 治理修订（S6/S8/S9/S11，不产 tag） | 随 main 直接推送（含 docs_audit-38-stage1.md / ROADMAP §9 / CONTRIBUTING §6 / README L3 段） | ✅ 已完成 |
+| APK 线彻底移除（裁决 #16） | commit `6663557` + 文档 6 文件同步 | ✅ 已完成 |
+| 云端公共线 Y9′–Y12′（不产独立 tag，随 main） | 线上 commit `90ab277` / `43b5d45` / `e4b1fdd` / `088554f` / `984871d` 等 | ✅ 已完成 |
+| 波 A W1–W4（S1/S2/S3/X1-3/Y1-5） | commit `947918f` | ✅ 已完成 |
+| 波 B S4/S5/S7 近端 | commit `7d9d6b5` | ✅ 已完成 |
+| 整合发布 v2.7.0（README 版本块 + CHANGELOG 归档 + audit 建档 + tag） | 本归档条目 + `docs_audit-40-v2.7.md` + annotated tag `v2.7.0` | ✅ 已完成 |
+### Notes
+- **端壳待接线项：4**（冻结期未接线的 L2 新增能力：资产供应链台账 CLI / 管线脚手架 / 模块生命周期 / 一键演示世界——计数 < 6，壳线冻结持续不触发接线波；脉冲触发条件重计见 L3_FROZEN）。
+- **外部实证 E1–E3 / Y5 仍未回填**（需真实 SillyTavern / Claude Code / MCP 客户端 / 免费 AI 机器，本工作台不可代跑）——v2.7.0 版本发布**不等同** S13 宣称转正；回填后按 `docs_external-validation-v2.7.md` 更新 README 相关宣称并追补转正记录。
+- 原 [Unreleased] 各波/线实施明细随本版归档为下辖小节（标题保留波 W/线标记，正文原样归档；个别时序性挂账注记以〔修订〕标注收口实况）。
+## [2.7.0 · 波B] - 2026-09-07（40 总纲实施波B：S4 管线脚手架 + S5 模块生命周期 + S7 近端引导）
 ### Added
 - **S4 `nf pipeline new`（`desktop/src/core/pipeline_scaffold.py`）**：自 P00 通用骨架派生新管线文档（标题 / 顶层 id / name / tags 领域标签替换；层位 id 守住不动；坏 id / 缺键 / 目标已存在均拒绝写盘不产坏档）+ `scripts/nf.py pipeline new --id --name --from --domain --dest`；单测 5 例全绿。
 - **S5 模块生命周期（`desktop/src/core/module_lifecycle.py` + `nf module ls/status/deprecate/restore/verify`）**：04_模块库 + community 模块 status 位解析/写回（缺省 active，元信息行 `状态：…`）；deprecated/retired 被引用（模块依赖/订阅或 community protocol.yaml 命中）→ 引用门禁 FAIL；verify.sh v2.13 新增 check24；全库 44 模块扫描全 active 无违约；单测 7 例全绿。
@@ -6,8 +24,8 @@
 - **verify 复核**：PASS=35 / WARN=0 / FAIL=0 全绿（verify.sh v2.12→v2.13，check23→check24，ci-verify 绿线 PASS=34→35）。
 ### Notes
 - 波 B 冒烟记录（本工作台实测、产物不入库）：`nf pipeline new --id P07 --name 演示领域管线 --domain 悬疑` → 派生档结构正确（标题/P07/悬疑领域 tag，层位 P00 未动）；派生 P07 以轻混模块装配 run 可跑 PASSED；module deprecate→status→restore 在 /tmp 副本流转全通过、`nf module verify` 全绿。
-- 波 B 收口项仍挂账：S3 续（第二个官方题材包或第三方首例上架，按货架 tier 标准补种）待排；tag v2.8.0（含 audit 建档）须排在波 A 转正链（E1–E3/Y5 外部实测回填 → tag v2.7.0）之后。
-## [Unreleased · v2.7 波A W4] - 2026-09-07（40 总纲实施 W4：S1 外部验证实证档建档 + E1 准备材料实导 + ROADMAP 状态同步）
+- 波 B 收口项仍挂账：S3 续（第二个官方题材包或第三方首例上架，按货架 tier 标准补种）待排。**〔修订·2026-09-07〕**：用户拍板波 A + 波 B 整合为单一 v2.7.0 发布（tag v2.7.0），不再单独产 tag v2.8.0；外部实证 E1–E3/Y5 回填后追补 S13 转正——见本段上方 [2.7.0] 发布归档。
+## [2.7.0 · 波A W4] - 2026-09-07（40 总纲实施 W4：S1 外部验证实证档建档 + E1 准备材料实导 + ROADMAP 状态同步）
 ### Added
 - **`docs_external-validation-v2.7.md`（S1 实证报告 · 建档稿非转正稿）**：四项出口（E1 CCV3→SillyTavern / E2 SKILL+AGENTS→Claude Code / E3 nf serve→标准 MCP 客户端 / Y5 完整版样本→免费 AI 复测）各带四要素表（环境/步骤/结果/差距修复）+ 汇总转正门——未实测不宣称转正（S13 门未开，验收未达成如实标注）。
 - **E1 准备材料实导落位 `docs/external-validation-assets/`**：`nf run --fmt ccv3` 实导轻混 P04 导出件（chara.json + world.json，质量门 PASS 0 WARN 0 FAIL 0，check19/22 覆盖）——供真实 SillyTavern 装载实测直接取用。
@@ -15,7 +33,7 @@
 ### Notes
 - 本波 W1–W4 的对外转正仍缺最后一环：E1–E3 / Y5 真实外部实测（需有 SillyTavern / Claude Code / MCP 客户端 / 免费 AI 的机器，本工作台不可代跑）。
 
-## [Unreleased · v2.7 波A W3] - 2026-09-07（40 总纲实施 W3：Y4 完整版样本实证（P03 西幻）+ Y5 复测待外部档位）
+## [2.7.0 · 波A W3] - 2026-09-07（40 总纲实施 W3：Y4 完整版样本实证（P03 西幻）+ Y5 复测待外部档位）
 ### Added
 - **Y4 实证（对话内组装）落盘 `docs/完整版样本_西幻生存流P03.md`**：装配师 Codex 扮演「仅知仓库地址的外部 agent」，按 `agent_组装指令包_v0.1.md` 取货顺序（07 → 02 → 01/06 → 西幻包）组装**预设 B · 西幻生存流完整版**——P03 管线，26 模块在册（default 24 = 核心 11 + 题材 13，M03/M23 为 P20 allowed 备选）；八段骨架（## 0–## 7）齐，自检 7 项全过；与馆藏 NF-1（预设 A · 校园）配对，装配链在**两个官方预设**均实证走通。
 - **样本诚实纪律随行**：引用式档位（规格自包含、正文引用式）；来源清单逐文件可追溯；已知缺口如实声明（23 内容资产未内嵌正文 / 订阅侧逐事件合并表未穷举 / 回合顺序为 06 §3 指导骨架，最终以注册表合并为准 I5）。
@@ -24,7 +42,7 @@
 - **Y5 用户复测（待外部执行）**：本样本须交**真实免费 AI** 装载开跑或继续扩展（第一个「agent 用户」外部验证锚点）；本工作台无法代跑外部 AI——复测结果记录位 = `docs_external-validation-v2.7.md`（S1 实证报告，收口 W 建档后回填）。
 - **S1 E1–E3（同待外部环境）**：SillyTavern 装载 / Claude Code 装载 / MCP 客户端连接三项实测需真实外部工具，本机无现成环境——下一步为出准备材料与占位报告，不宣称转正。
 
-## [Unreleased · v2.7 波A W2] - 2026-09-07（40 总纲实施 W2：Y 线入口补齐 + X2 MCP 接入文档 + X3 第三方贡献者入口）
+## [2.7.0 · 波A W2] - 2026-09-07（40 总纲实施 W2：Y 线入口补齐 + X2 MCP 接入文档 + X3 第三方贡献者入口）
 ### Added
 - **Y2 AGENT_START.md（根目录）**：装配师三句话开场（角色 → 取货规范 → 出口自检）+ 能读/不能读仓库分流（B1 自主 / 纯粘贴如实标注）+ 免编造铁律；与 AGENTS.md（开发者纪律）分置不混。
 - **Y1 07 §8「Agent 自助组装入口」（完整版规格消费侧引用）**：入口顺序 / 完整版定义 / B1 取货顺序 / 选件铁律 / 自检清单真相源全部指向 `agent_组装指令包_v0.1.md` 与 06，防双源漂移。
@@ -33,7 +51,7 @@
 ### Changed
 - README：A 线单元格指向 `docs/mcp.md`；⚡ 段补 AGENT_START 三句话开场指引；B1 取件清单修正文件名笔误（`07_导航.md` → `07_官方核心出厂与社区预设导航.md`）。
 
-## [Unreleased · v2.7 波A W1] - 2026-09-07（40 总纲实施 W1：S2 资产供应链族 + S3 首批官方资产集入库战例 + S8 密钥扫描入 CI）
+## [2.7.0 · 波A W1] - 2026-09-07（40 总纲实施 W1：S2 资产供应链族 + S3 首批官方资产集入库战例 + S8 密钥扫描入 CI）
 ### Added
 - **S2 nf asset 供应链台账族（40 总纲波A 机制主产出）**：`desktop/src/core/asset_ledger.py`（纯标准库零依赖）+ `scripts/nf.py asset` 子命令族（add / verify / inventory / ls / rm / deprecate / restore）——溯源键表 `provenance.json` 随 add 自动生成；资产文件头 `nf-asset`（key/version/status）与台账双源一致；生命周期 active→deprecated→retired；同键/同文件去重、路径逃逸拒绝。
 - **verify check23 资产供应链闭合门禁（verify.sh v2.11→v2.12）**：每资产可溯源（source 必填）/ 可发现（文件在册）/ 键无孤儿（文件头键 ∈ 台账）；存量未托管计 STAT 不阻断；`desktop/tests/test_asset_ledger.py` 15 用例全绿；PASS 31→33。
@@ -42,7 +60,7 @@
 ### Changed
 - verify.sh 版本 v2.11→v2.12（check23 新增）；ci-verify PASS 绿线 31→33。
 
-## [Unreleased · APK 线移除] - 2026-09-07（作者裁决 #16：Android APK 线彻底移除）
+## [2.7.0 · APK 线移除] - 2026-09-07（作者裁决 #16：Android APK 线彻底移除）
 ### Removed
 - **android/ 全目录**（app bootstrap/config/controller/ui/screens + main.py + buildozer.spec + p4a 补丁等）——彻底 `git rm`，不再恢复（裁决 #16：包络负资产——首次构建 10h+、v0.8/v0.9/v2.6 三轮闪退修复、CI 绿 ≠ 真机不闪退、学生预算月投入数百；浏览/预览/轻导出三大功能已被 AI 线 A/B1 全覆盖）。
 - **build-android.yml / selftest_android.py / sync_android.sh**——APK 构建与自测链随线移除。
@@ -51,13 +69,13 @@
 ### Changed
 - **移动端产品叙事**：手机用户入口 = 任意 AI 客户端（B1 线：读 raw / 下载文件），不再提供专用 App；桌面 GUI（exe/macOS/Linux）保留冻结-脉冲契约。
 
-## [Unreleased] - 波 0 治理修订（40 总纲，2026-09-06；不产版本 tag）
+## [2.7.0 · 波 0 治理修订] - 2026-09-06（40 总纲；不产独立 tag，随 v2.7.0 发布）
 ### Security
 - **旧 token 弃用记录（40 总纲 S8）**：2026-09-06 会话中使用的 GitHub PAT（`ghp_` 前缀，用于 dispatch 验证）已明文出现在会话记录——**已弃用，不再使用**。轮换 SOP：任何出现在对话/日志/文档中的 token 立即到 GitHub → Settings → Developer settings → Personal access tokens 撤销重建；新 token 仅经环境变量注入，不写入文件/提交/对话。后续 CI/workflow 一律用 `GITHUB_TOKEN`（最小权限，见权限最小化条目），不再使用个人 PAT 触发。
 ### Changed
 - **40 总纲波 0 治理修订**：S6 壳分离触发（build-desktop/build-android `push.tags` v* → `shells-v*`，普通基础层 tag 不产壳，v2.7 = 首个无壳发布）；S8 workflow permissions 最小化（ci-verify/e2e-desktop/build×2 顶层 `contents: read`，需写 job 单独提权）+ Release 资产 sha256 校验和随行；S9 执行对账模板落 `.rivet/reconcile-template.md`（三段式：fetch 核对→规划对照→差异说明，波次完成时填）；S11 40 总纲落盘根目录 + ROADMAP §9「未来计划」节 + CONTRIBUTING §6 安全章程小节 + README L3 段触发口径同步。**端壳待接线项：0**（壳线冻结持续，脉冲触发条件重计，见 L3_FROZEN）。
 
-## [Unreleased · 云端公共线] - Y9′–Y12′ 云端公共线（40 总纲增补 v1.4，2026-09-07；随 main 直接推送，不产版本 tag）
+## [2.7.0 · 云端公共线] - Y9′–Y12′ 云端公共线（40 总纲增补 v1.4，2026-09-07；随 main 直接推送，不产独立 tag，已随 v2.7.0 发布）
 ### Added
 - **Y11′ 云端公共产物馆 · 编号制式 v0.4 上线（90ab277）**：四级编号 `NF-档位段-自定义段-36进制序号`——档位段 = 建构件/成品类型（自由复合拼写、不依赖词表）；序号 = 36 进制（每位 0-9 → A-Z、1 起、无前导零、不定长、同前缀各自计数）；段长 ≤16、前缀小写键全馆唯一；默认形 `NF-1`；入馆唯一硬标准 = 自包含可召回（引用式公开档不再收，历史样本在馆注明）。
 - **ALIAS.md 大小写转译站（90ab277）**：机器人每次入库全量重建；AI 大小写拿不准 → 编号全小写化 → 表内匹配真实编号 → 拼 raw（AI 识别协议三路径：快 / 转译 / 慢）。
