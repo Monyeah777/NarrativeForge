@@ -174,6 +174,19 @@ def main():
         sys.exit(0)
 
     # ---- 2. 解析元信息（--- 之前为元信息区，之后为产物全文）----
+    def clean_val(v):
+        """模板残留净化：说明文字/括号示例一律视为未填（投稿人 = 蠢用户，机器兜底）。"""
+        v = v.strip()
+        if not v:
+            return ''
+        if v.startswith(('（', '(')):
+            return ''
+        for pat in ('如 校园情感世界', '作品名，同时', '可选，一句话', '可选，编号',
+                    '编号规则', '从这里开始粘贴', '两者都填', '填了就必须'):
+            if v.startswith(pat):
+                return ''
+        return v
+
     meta = {}
     body_main = BODY
     if '\n---' in BODY:
@@ -191,16 +204,21 @@ def main():
         if m:
             meta['标题'] = m.group(1).strip()
 
-    title = meta.get('标题') or re.sub(r'^【NF投稿】\s*', '', TITLE).strip() or f'投稿 #{N}'
-    topic = meta.get('形态/领域自述') or meta.get('形态') or '未标注'
-    one_line = meta.get('一句话') or '（见文件）'
-    seg1 = meta.get('档位词', '').strip()
-    seg2 = meta.get('自定义段', '').strip()
-    # 模板残留说明文案（以（开头）视为未填
-    if seg1.startswith('（') or seg1.startswith('('):
-        seg1 = ''
-    if seg2.startswith('（') or seg2.startswith('('):
-        seg2 = ''
+    # 空壳检测：正文区残留模板占位提示行 = 没清理模板/没粘产物全文（Issue #1 实测翻车现场）
+    if ('从这里开始粘贴产物全文' in body_main
+            or '把 AI 产物全文整篇粘贴到这条线下面' in body_main
+            or '此占位行务必删掉' in body_main):
+        comment('⚠️ 正文里还留着模板的占位提示行「（从这里开始粘贴产物全文…）」——请删掉它，并把 AI 产出的完整内容整篇粘贴进来，重新开题提交。')
+        close_issue()
+        print('正文区空壳（残留模板占位行），已拒绝并关闭')
+        sys.exit(0)
+
+    raw_title = clean_val(meta.get('标题', ''))
+    title = raw_title or re.sub(r'^【NF投稿】\s*', '', TITLE).strip() or f'投稿 #{N}'
+    topic = clean_val(meta.get('形态/领域自述') or meta.get('形态') or '') or '未标注'
+    one_line = clean_val(meta.get('一句话') or '') or '（见文件）'
+    seg1 = clean_val(meta.get('档位词', ''))
+    seg2 = clean_val(meta.get('自定义段', ''))
 
     # ---- 3. 校验档位/自定义段 + 分配编号 ----
     if bool(seg1) != bool(seg2):
