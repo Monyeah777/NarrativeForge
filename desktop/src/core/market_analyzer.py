@@ -198,3 +198,83 @@ def conflicts(pkg_id: str,
                 issues.append(
                     f"挂载层 {key} default 冲突: {pkg_id}∩{sp}={sorted(inter)}")
     return issues
+
+
+def related_of(target: str, prots: Dict[str, Dict[str, Any]],
+               module_graph: Optional[Dict[str, set]] = None,
+               owner_map: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+    """C4 See-Also：图书馆/市场条目的人读关联层（41 波C C4）。
+
+    以 registry protocols[] 为图：目标 = 包 id 或模块 id → 返回
+    ① references.source_package 关联源包（目标包引用了谁）；
+    ② 反向引用方（谁引用了目标包/包含目标模块的包）；
+    ③ 相关模块互见（反向引用方与目标包共享的模块视野）。
+    module_graph/owner_map（可选）注入模块级依赖（machine_contract inputs →
+    官方核心 / 归属包），使 techdoc↔官方核心 之类跨层互见可人读暴露。
+    references/who-refers 机读基底不变，本函数只做人读暴露（不新增图数据）。
+    """
+    pkgs = {}
+    for pid, p in prots.items():
+        if isinstance(p, dict) and p.get("module_ids") is not None:
+            pkgs[pid] = p
+    mod2pkgs = {}
+    for pid, p in pkgs.items():
+        for m in p.get("module_ids") or []:
+            mod2pkgs.setdefault(m, set()).add(pid)
+
+    def _refs_of(pid: str) -> set:
+        return {r.get("source_package") for r in (pkgs[pid].get("references") or [])
+                if r.get("source_package")}
+
+    pkg_modules = {pid: set(p.get("module_ids") or []) for pid, p in pkgs.items()}
+    graph = module_graph or {}
+    owner = owner_map or {}
+
+    def _owner_label(mid: str) -> str:
+        return owner.get(mid, "官方核心")
+
+    refs = set()
+    referenced_by = set()
+    related_modules = set()
+    kind = "package"
+    if target in pkgs:
+        refs = _refs_of(target)
+        own = pkg_modules[target]
+        deps = set()
+        for m in own:
+            deps |= set(graph.get(m) or [])
+        deps -= own
+        refs |= {_owner_label(m) for m in deps}
+        related_modules |= deps
+        for pid in pkgs:
+            if pid == target:
+                continue
+            shared = pkg_modules[pid] & own
+            dep_hit = any(set(graph.get(m) or []) & own for m in pkg_modules[pid])
+            if target in _refs_of(pid) or dep_hit or shared:
+                referenced_by.add(pid)
+                related_modules |= pkg_modules[pid]
+    else:
+        kind = "module"
+        owners = mod2pkgs.get(target, set())
+        deps = set(graph.get(target) or [])
+        refs |= {_owner_label(m) for m in deps}
+        related_modules |= deps
+        for pid in owners:
+            refs |= _refs_of(pid)
+        for pid in pkgs:
+            if pid in owners:
+                continue
+            dep_hit = any(target in set(graph.get(m) or []) for m in pkg_modules[pid])
+            if target in pkg_modules[pid] or dep_hit:
+                referenced_by.add(pid)
+                related_modules |= pkg_modules[pid]
+        if not related_modules and owners:
+            related_modules = owners
+    return {
+        "kind": kind,
+        "target": target,
+        "refs": sorted(refs - {target}),
+        "referenced_by": sorted(referenced_by),
+        "related_modules": sorted(related_modules),
+    }

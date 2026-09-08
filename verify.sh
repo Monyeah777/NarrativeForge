@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.14  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁）
+# 版本 : v2.15  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
-#        [段 C] 代码层门禁（check12-check25，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
+#        [段 C] 代码层门禁（check12-check26，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
 #        段 A/B = L0/L1（协议一致性 + 内容对账），check12-22 = L2 core（unittest/py_compile/协议投影/
-#        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳冻结移出（见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备））
+#        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳冻结移出（见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备）；check26 = 语义矛盾扫描门禁（41 波C C3：techdoc 链 machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移））
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
@@ -1125,9 +1125,39 @@ PYEOF
   if [ "$err" -eq 0 ]; then ok '协议知识签名门禁全绿（check25：41 波C C2——01-36 签名可复现，签名 = 新增可计算摘要）'
   fi
 }
+check26(){
+  echo '== [26/段C] 语义矛盾扫描门禁（41 波C C3：techdoc 链事件契约断链 + 挂载点/类别漂移——补 check15/21 结构自洽之上的语义空白）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check26.log 2>&1
+import os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+try:
+    from core import semantic_conflict as sc
+except Exception as exc:
+    print('import 失败：%s' % exc)
+    sys.exit(1)
+issues, stats = sc.scan('.')
+for i in issues:
+    print('[FAIL] %s' % i)
+print('语义扫描统计：模块 %d / 发布事件方 %d / techdoc 链 %d'
+      % (stats['modules'], stats['publishers'], stats['techdoc_chain']))
+sys.exit(1 if issues else 0)
+PYEOF
+    then
+      ok '语义矛盾扫描通过（C3：techdoc 链事件契约闭合，无挂载点/类别漂移）'
+    else
+      no "语义矛盾扫描异常——$(tail -2 /tmp/nf_check26.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check26）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '语义矛盾扫描门禁全绿（check26：41 波C C3——事件契约断链/漂移为零，编译期矛盾拦截）'
+  fi
+}
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.14（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.15（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -1139,7 +1169,7 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁（L2 core：check12-check25 无条件执行；android 相关已随 L3 冻结移出）——'
+echo '—— 段 C：代码层门禁（L2 core：check12-check26 无条件执行；android 相关已随 L3 冻结移出）——'
 check12
 check13
 check14
@@ -1154,6 +1184,7 @@ check22
 check23
 check24
 check25
+check26
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then

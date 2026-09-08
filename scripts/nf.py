@@ -276,6 +276,12 @@ def _build_parser() -> argparse.ArgumentParser:
     ex = sub.add_parser("explain",
                         help="check 修复指引（41 波C C5：缺什么/补什么/示例 三段式）")
     ex.add_argument("check", help="check 编号（如 25；all = 全量清单）")
+    rel = sub.add_parser("related",
+                        help="See-Also 关联查询（41 波C C4：market/图书馆条目人读引用链）")
+    rel.add_argument("target",
+                    help="目标 = 包 id（如 技术文档域包）或模块 id（如 M90 / 技术文档:M90）")
+    rel.add_argument("--registry", default=None,
+                    help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
     return p
 
 
@@ -1039,6 +1045,52 @@ def _cmd_explain(args):
     print("== nf explain check%s ==" % key)
     print("  %s" % guide); return 0
 
+def _cmd_related(args):
+    """nf related：41 波C C4 —— 图书馆 See-Also 人读引用链（含模块级依赖图）。"""
+    import json as _json
+    import re as _re
+    from core.market_analyzer import related_of
+    from core import module_lifecycle as ml
+    reg_path = args.registry or os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    try:
+        with open(reg_path, encoding="utf-8") as fh:
+            reg = _json.load(fh)
+        prots = {p["id"]: p for p in reg.get("protocols", [])}
+        owner = {}
+        for pid in reg.get("protocols", []):
+            for m in pid.get("module_ids") or []:
+                owner.setdefault(m, pid.get("id"))
+        for m in reg.get("modules", []):
+            owner.setdefault(m.get("id"), "官方核心")
+        fence_re = _re.compile(r"```yaml(.*?)```", _re.S)
+        id_re = _re.compile(r"(?m)^\s*id:\s*(M\d+)")
+        inp_re = _re.compile(r"(?ms)^\s*inputs:\s*\[(.*?)\]")
+        graph = {}
+        for rel in ml.iter_module_files(ROOT):
+            txt = ml.read_text(ROOT, rel)
+            for fence in fence_re.findall(txt):
+                if "machine_contract:" not in fence:
+                    continue
+                im = id_re.search(fence)
+                if not im:
+                    continue
+                iv = inp_re.search(fence)
+                ins = set()
+                if iv:
+                    for x in _re.split(r"[,\s]+", iv.group(1).strip()):
+                        if x and not x.startswith("#"):
+                            ins.add(x)
+                graph.setdefault(im.group(1), set()).update(ins)
+        r = related_of(args.target, prots, module_graph=graph, owner_map=owner)
+        print("== nf related（See-Also · 相关条目 + 引用链）==")
+        print("  目标：%s（%s）" % (r["target"], r["kind"]))
+        print("  关联条目（引用了谁 / 依赖链）：%s" % ("、".join(r["refs"]) or "—"))
+        print("  反向引用方（谁引用我）：%s" % ("、".join(r["referenced_by"]) or "—"))
+        print("  相关模块互见：%s" % ("、".join(r["related_modules"]) or "—"))
+        return 0
+    except (OSError, ValueError, KeyError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr); return 2
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -1053,6 +1105,8 @@ def main(argv=None) -> int:
         return _cmd_sig(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
+    if args.cmd == "related":
+        return _cmd_related(args)
     if args.cmd == "explain":
         return _cmd_explain(args)
     if args.cmd == "demo":

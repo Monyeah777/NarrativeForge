@@ -1,11 +1,14 @@
-## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化立项 + W1：C1/C2/C5 落地）
+## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W2 = 立项 + C1/C2/C5 + C3/C4 落地）
 ### Added
 - **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。
 - **C1 协议知识签名 `nf sig`（`desktop/src/core/knowledge_sig.py`）**：01-36 编号方案文档/协议/管线/模块 → 结构化签名（标题/编号/版本/章节/引用集/正文哈希，知识指纹）；试点 01/24/36 签名已生成，全量 35 文档两遍生成逐字节一致；单测 5 例全绿。
 - **C2 版本差异检测 `nf diff` + verify check25**：任意两份签名 → 字段级差异 + 兼容判定（破坏/需评审/兼容）；verify.sh v2.13→v2.14 新增 check25（全量 01-36 签名可复现门禁），PASS 35→37；01 vs 36 实测差异清单可复现。
-- **C5 `nf explain`**：check12–check25 修复指引（缺什么/补什么/示例 三段式），`nf explain <check>` / `nf explain all`。
+- **C5 `nf explain`**：check12–check26 修复指引（缺什么/补什么/示例 三段式），`nf explain <check>` / `nf explain all`。
+- **C3 语义矛盾扫描（`desktop/src/core/semantic_conflict.py` + verify check26，v2.15）**：techdoc 链（M90/M97/M98）machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移扫描；**扫出并修复 3 例真实矛盾**——M50 发布 `intent_received`（P90 装载输入闭环）/ M90 发布 `doc_delta_committed`（供 M98）/ M97 发布 `term_conflict_detected`（自检广播）；verify PASS 37→39，全库 44 模块零 issue。
+- **C4 图书馆 See-Also（`market_analyzer.related_of` + `nf related`）**：registry 引用图人读化——关联条目（依赖链/官方核心归属）+ 反向引用方 + 相关模块互见；实测「技术文档域包 ↔ 官方核心（M00/M90）互见」「M90 ↔ 技术文档域包互见」。
+- **回归与绿线**：单测 390→396 全绿（test_semantic_conflict 3 + test_related_of 3）；verify.sh v2.14→v2.15（check25→check26），check1-26 PASS=39 全绿；ci-verify/README 绿线同步 PASS=39。
 ### Notes
-- 波 C 节奏：基础层高频（1–2 天/波段），每任务独立验收分 commit；W1 = 立项 + C1/C2/C5；C3（语义矛盾 check26）/ C4（See-Also）/ C6（Y5 回填全链首例）/ C7（MCP 只读 tools/prompts）/ C8（transport 评估）/ C9（回合装载指针）/ D 组逐项推进中。
+- 波 C 推进面：W1 = 立项 + C1/C2/C5；W2 = C3/C4 已落地；C6-C9 + D 组逐项推进中（C7 需 E3 标准 MCP 客户端回填；C6 首例需 NF-FIELD-001 回执素材）。
 - 外部依赖挂账（需作者/外部环境）：B1 菜单 v0.2 第 2 次实测、Gitee 子令牌轮换、E3 标准 MCP 客户端实测、C6 首例 NF-FIELD-001 实测回执素材待作者提供入仓。
 ## [2.7.0] - 2026-09-07（40 总纲波 A + 波 B 整合发布 · 首个无壳基础层版本）
 ### Added
