@@ -359,7 +359,8 @@ def _prompt_assemble_guide() -> str:
     return (
         "你是 NarrativeForge 装配师。取件顺序：07_官方核心出厂与社区预设导航.md（包索引）→ "
         "02_联动注册表.md（登记/依赖真相源）→ 01_核心协议.md（契约）→ 06_Agent执行协议.md。"
-        "选装配包：community/<领域包>/README.md（含装载清单/资产/验收）。输出完整版 md 自检过 "
+        "选装配包：community/<领域包>/README.md（含装载清单/资产/验收）。装配主规范："
+        "agent_组装指令包_v0.2.md。输出完整版 md 自检过 "
         "「##7. 自检清单」；引用式档位须如实标注缺口，禁止编造未读内容。仓库验证：bash verify.sh。"
         "取实质内容用内容工具：module_read <模块 id>（模块正文）/ pipeline_read <Pxx 或路径>"
         "（管线正文）/ asset_get <资产键>（资产正文）——禁止凭记忆写未读取的模块/资产内容。"

@@ -42,7 +42,7 @@
 
 取件基底：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`（后接文件名）。
 
-1. 读装配指令包（取货顺序 + 选件铁律 + 骨架 + 三重对账）：`agent_组装指令包_v0.1.md`
+1. 读装配指令包（内容通道取货顺序 + 选件铁律 + 骨架 + 自检）：`agent_组装指令包_v0.2.md`
 2. 按指令包取件：`01_核心协议.md`（模块/管线/资产契约）→ `02_联动注册表.md` → `06_Agent执行协议.md` → `07_官方核心出厂与社区预设导航.md` → 用户所需 `community/<领域包>/`（含包内 README 装配清单）
 3. 选件 → 按骨架组装 → 过 `##7. 自检清单` → 输出完整版 md（引用式档位：契约摘要 + 缺口如实声明，禁止编造未读内容）
 
@@ -81,7 +81,7 @@
 
 7. **CLI 健康与补全**：`python scripts/nf.py doctor`（环境自检）`/ help <子命令>`（单命令帮助）`/ completion bash`（shell 补全，zsh/fish 同）`/ --version`；数据命令（`sig`/`diff`/`market --list`/`asset ls`/`asset inventory`/`module ls`/`related`/`doctor`）加 `--json` 输出结构化结果。
 
-> 详细装配规格见 `agent_组装指令包_v0.1.md`；模块 / 资产怎么写见 `community/模板制作指令包.md`。
+> 详细装配规格见 `agent_组装指令包_v0.2.md`；模块 / 资产怎么写见 `community/模板制作指令包.md`。
 
 ## 分层与端壳（L3 冻结）
 
