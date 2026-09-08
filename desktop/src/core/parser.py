@@ -50,7 +50,7 @@ def _extract_yaml_list(text: str) -> list:
 def parse_module(content: str, category_hint: str = "") -> Module:
     """从文本解析模块。解析失败时抛 ValueError（附原因）。"""
     if not content or not content.strip():
-        raise ValueError("内容为空，无法解析")
+        raise ValueError("内容为空，无法解析——请先填充模块内容再解析")
 
     m = Module()
     m.source_md = content.strip()
@@ -97,7 +97,7 @@ def parse_module(content: str, category_hint: str = "") -> Module:
             m.category = "通用类"
         return _parse_directive_style(m, lines)
 
-    raise ValueError("无法识别模块标题（期望 `# M44：名称` 或 `# 模块 情感:M22 · 名称`）")
+    raise ValueError("无法识别模块标题——请按 `# M44：名称` 或 `# 模块 情感:M22 · 名称` 修正后重试")
 
 
 def _parse_directive_style(m: Module, lines: list) -> Module:

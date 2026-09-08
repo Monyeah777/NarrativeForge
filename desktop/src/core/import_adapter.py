@@ -56,7 +56,7 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
             continue
         m = re.match(r"^([A-Za-z_][\w-]*):\s*(.*)$", s)
         if not m:
-            raise ValueError(f"frontmatter 行无法解析：{ln!r}")
+            raise ValueError(f"frontmatter 行无法解析：{ln!r}——请按 `key: value` 格式修正该行")
         key, val = m.group(1), m.group(2)
         fm[key] = _unquote_yaml_value(val)
     body = "\n".join(lines[end + 1:])
@@ -217,7 +217,7 @@ def parse_skill(text: str, skill_dir: Optional[Path] = None) -> SkillParseResult
     """
     bundled = _scan_resources(skill_dir) if skill_dir else []
     if not text or not text.strip():
-        raise ValueError("SKILL.md 内容为空")
+        raise ValueError("SKILL.md 内容为空——请先填充正文再解析")
     fm, body = parse_frontmatter(text)
     name = fm.get("name", "").strip()
     desc = fm.get("description", "").strip()
@@ -226,7 +226,7 @@ def parse_skill(text: str, skill_dir: Optional[Path] = None) -> SkillParseResult
     if not desc:
         raise ValueError("frontmatter 缺少必填字段 description")
     if not body.strip():
-        raise ValueError("SKILL.md 正文为空")
+        raise ValueError("SKILL.md 正文为空——请先补正文（非空）再解析")
 
     # ---- 宽容层判定：body 无 NF 层级模式（官方技能自由说明文）→ 不套层级
     # 注意：正则无 re.MULTILINE，`^` 只锚定串首——须逐行 match 而非整串 search

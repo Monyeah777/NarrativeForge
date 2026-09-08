@@ -113,7 +113,7 @@ class Store:
     def save_module(self, m: Module) -> Path:
         """保存/更新一个模块。目录: modules/<分类>/<id>_<名称>/"""
         if not m.id:
-            raise ValueError("模块 id 不能为空")
+            raise ValueError("模块 id 不能为空——请先补模块 id 再保存")
         if ":" in m.id:  # 兼容带前缀传入
             cat, num = m.id.split(":", 1)
             m.category = m.category or cat

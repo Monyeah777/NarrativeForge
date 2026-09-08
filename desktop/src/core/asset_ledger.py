@@ -84,9 +84,9 @@ def make_entry(file_rel: str, key: str, source: str, module: str = "",
                added: str = None) -> dict:
     """构造条目并做字段级校验（源头拦截，CLI/测试共用）。"""
     if not key or not str(key).strip():
-        raise AssetLedgerError("溯源键 key 不能为空")
+        raise AssetLedgerError("溯源键 key 不能为空——请先填溯源键再入库")
     if not file_rel or not str(file_rel).strip():
-        raise AssetLedgerError("file 不能为空")
+        raise AssetLedgerError("file 不能为空——请先填相对文件路径再入库")
     if not source or not str(source).strip():
         raise AssetLedgerError("source（溯源说明）不能为空——每资产必须可溯源")
     if not version or not str(version).strip():

@@ -104,5 +104,5 @@ def write_png_card(ir: IRDocument, path: Optional[str | Path] = None) -> str:
     if not dest.suffix:
         dest = dest.with_suffix(".png")
     if not img.save(str(dest)):
-        raise OSError(f"PNG 写入失败：{dest}")
+        raise OSError(f"PNG 写入失败：{dest}——请先检查输出目录可写/磁盘空间后重试")
     return str(dest)
