@@ -3,6 +3,7 @@
 
 ```yaml
 machine_contract:
+  conformance: "L2"
   schema: "1"
   id: M12
   name: NPC 对话

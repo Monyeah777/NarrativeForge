@@ -4,12 +4,17 @@
   "title": "模块头 machine_contract 机读契约块（01 §1.1 九键）",
   "description": "模块文档内 machine_contract yaml 围栏的 IDL 定义；check16/26 消费的机读真相。",
   "type": "object",
-  "required": ["schema", "id", "name", "category", "layer", "inputs", "outputs", "events", "interfaces"],
+  "required": ["schema", "id", "name", "category", "layer", "inputs", "outputs", "events", "interfaces", "conformance"],
   "properties": {
     "schema": {
       "type": "string",
       "enum": ["1"],
       "description": "机读契约 schema 版本（独立演进，01 §7 V3）"
+    },
+    "conformance": {
+      "type": "string",
+      "enum": ["L1", "L2", "L3"],
+      "description": "一致性分级声明（01 §1.2）；声明 ≤ 可证级别，check29 防虚标"
     },
     "id": {
       "type": "string",

@@ -1,0 +1,34 @@
+{
+  "conformance_version": "1",
+  "surface": "导出契约面（01 §1.2 L3）：面向平台外消费方的机器契约，经导出门禁锁定",
+  "items": [
+    {
+      "id": "ccv3",
+      "family": "CCV3",
+      "conformance": "L3",
+      "evidence": ["desktop/src/core/export_schema.py", "desktop/tests/fixtures/external/chara.json", "desktop/tests/fixtures/external/world.json"],
+      "gates": ["check18", "check22"]
+    },
+    {
+      "id": "skill",
+      "family": "SKILL",
+      "conformance": "L3",
+      "evidence": ["desktop/src/core/export_schema.py", "desktop/tests/fixtures/external/anthropic-official/skill-creator.SKILL.md"],
+      "gates": ["check18", "check22"]
+    },
+    {
+      "id": "agents",
+      "family": "AGENTS",
+      "conformance": "L3",
+      "evidence": ["desktop/src/core/export_schema.py", "AGENTS.md"],
+      "gates": ["check18", "check22"]
+    },
+    {
+      "id": "mcp",
+      "family": "MCP",
+      "conformance": "L3",
+      "evidence": ["desktop/src/core/mcp_runtime.py", "docs/mcp.md"],
+      "gates": ["check18", "check22"]
+    }
+  ]
+}

@@ -3,6 +3,7 @@
 protocol:
   schema_version: "2"          # 组合引用 Schema 版本，v2 起支持 references；bump 走 01 §7 V1/V2/V3
 package:
+  conformance: "L2"
   id: 校园西幻轻混组合包         # 包目录名（机读唯一标识，与 02 §8.4 在册一致）
   name: 校园西幻轻混组合包       # 显示名（与 README 标题一致）
   version: "1.0.0"    # 包内容版本（v2.5.0 Wave2 版本槽位，V1 只增不删）
