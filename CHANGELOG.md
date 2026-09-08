@@ -1,5 +1,6 @@
-## [Unreleased]
+## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added
+- **发布摘要**：STRATEGY 战略层建立（目标/质量唯一/内部质量法官/计划内部消化）；43 协议层元工具 A1-A5（IDL schema/Conformance/EXTENSION/golden + schema 子集自洽/事件闭包进 golden）；44 CLI 工具链顶尖化（骨架/机器可读/补全/语义归一/自洽矩阵）+ 动态执行 drill（7 条可执行主线）+ AI 通道（内容通道/需求→自组装/用户自定义/需求档案）；verify v2.20 check1-31 PASS=49。
 - **STRATEGY 战略文件建立（治理 · 2026-09-08）**：仓库根新增 `STRATEGY.md`——目标与质量准绳（NF = 内容契约层（域中立、模型无关）/ 验收函数 = 质量单变量 / 质量法官 = 内部验证链（verify→audit→五维自评→战例；外部仅机制借鉴、不背书不裁判）/ 仓库发布边界 = 计划内部消化（计划类文档不发布公开仓库，落地后以结果形态入库））；`AGENTS.md` 增「NF 方向与发布纪律」节（开工必读链 / 质量法官内部 / 计划不发布 / 公开文案纪律）；`40_未来计划总纲` 头部挂 STRATEGY 上层引用。verify 保持 PASS=49。
 - **43 协议层顶尖化工程规划（立项入库）**：`43_协议层顶尖化工程规划.md` 落根目录——承接 41/42 工具族之上的协议层顶尖化（目标：把 01/02/06/07 + registry + machine_contract 从「机检闭环」提到「顶尖」：A1 协议 IDL schema 单一真相 / A2 Conformance 一致性分级 / A3 扩展策略 + 变更影响分层自动化 / A4 生成物同仓 golden / A5 全量收口）；ROADMAP §9 + 40 总纲波 C–N 注记 + VERSION-MATRIX 同步。灵感来源 = GitHub 开源项目（OpenSpec/spec-kit/Glyph/peacprotocol 等），逐条过仓库实证后净吸收 4 真空白。
 - **43 A1 协议层 IDL（落地）**：`protocol/schema/*.json` 五定义（contract/module/pipeline/protocol/asset）+ `desktop/src/core/schema_lint.py`（自实现 JSON-schema 子集校验器，零第三方）+ verify check28（v2.17，PASS 41→43）；首轮扫描暴露并收口 01 §2 `techdoc` 值域漂移（值域文档化扩展非 bump）。
