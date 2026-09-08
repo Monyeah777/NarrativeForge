@@ -1,4 +1,4 @@
-## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W3 推进——C1-C5 落地 + C6 模板/C8 评估/C9 指针 + D2/D5/D6）
+## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W4 推进——C1-C7 落地 + C8 评估/C9 指针 + D2/D5/D6）
 ### Added
 - **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。
 - **C1 协议知识签名 `nf sig`（`desktop/src/core/knowledge_sig.py`）**：01-36 编号方案文档/协议/管线/模块 → 结构化签名（标题/编号/版本/章节/引用集/正文哈希，知识指纹）；试点 01/24/36 签名已生成，全量 35 文档两遍生成逐字节一致；单测 5 例全绿。
@@ -11,10 +11,12 @@
 - **C8 MCP transport 扩展评估**：`docs/41_波C_C8_transport评估.md`——评估 streamable HTTP/SSE 差距后**结论暂不做**（无消费方 + 安全面 + stdio 已覆盖本机场景），回冻结条件 = E3 标准客户端回填且出现真实远程装载需求。
 - **C9 回合装载指针 v0**：`docs/41_波C_C9_回合装载指针_v0.md`——指针格式定义（常驻/热区/冷区）+ P03 西幻第 5 回合样例；分级不进协议正文（01/02 零改动），verify 不破。
 - **D 组**：D5 迁移指南（`docs/迁移指南-基于nf-sig-diff.md`）/ D6 Windows 说明（README：Git Bash / WSL 跑 `bash`）/ **D2 CLI 层自动化测试**（`desktop/tests/test_nf_cli.py` 5 例：子命令面 + sig/diff/explain/market/related smoke）。
+- **C7 agent 工具面（MCP tools/prompts 只读，`mcp_runtime.py`）**：tools/list+call 开放 4 只读检索工具（`library_search` / `registry_query` / `pipeline_ls` / `spec_ls`，inputSchema 真实存在）+ prompts/list+get（`assemble_guide` 装载引导）；initialize capabilities 含 tools/prompts；数据源 = 仓库只读扫描，无写路径（未知工具 → -32602 / 未知方法 → -32601）；docs/mcp.md 能力表同步。本机 stdio 冒烟通过（≥3 tools + 1 prompt 可调），**E3 标准 MCP 客户端实测待回填**。
 ### Notes
-- 波 C 推进面：W1 = 立项 + C1/C2/C5；W2 = C3/C4 已落地；C6-C9 + D 组逐项推进中（C7 需 E3 标准 MCP 客户端回填；C6 首例需 NF-FIELD-001 回执素材）。
+
+- 波 C 推进面：W1 = 立项 + C1/C2/C5；W2 = C3/C4；W3 = C6 模板/C8/C9/D2/D5/D6；W4 = C7（E3 标准客户端实测待回填）；D1/D3/D4/D7 与 C6 首例素材仍挂账。
 - 外部依赖挂账（需作者/外部环境）：B1 菜单 v0.2 第 2 次实测、Gitee 子令牌轮换、E3 标准 MCP 客户端实测、C6 首例 NF-FIELD-001 实测回执素材待作者提供入仓。
-- W3 回归：单测 396→401 全绿（test_nf_cli +5）；verify 复核 check1-26 PASS=39 不破（纯文档 + 测试新增）。C7（MCP 只读 tools/prompts）待 E3 标准客户端实测回填后收口。
+- 回归累计：单测 390→406 全绿（W2 +6 / W3 +5 / W4 test_mcp_runtime +5）；verify 复核 check1-26 PASS=39 不破（W4 为代码层新增未动协议/门禁）。
 ## [2.7.0] - 2026-09-07（40 总纲波 A + 波 B 整合发布 · 首个无壳基础层版本）
 ### Added
 - **发布整合（用户 2026-09-07 拍板「整合到 v2.7」）**：40 总纲波 A（原计划 v2.7.0）与波 B（原计划 v2.8.0）**整合为单一 v2.7.0 发布**；版本号 v2.8.0 顺延给后续常态内容波。首个无壳基础层 tag（分离节奏发布线首验，普通基础层 tag 不产壳）。

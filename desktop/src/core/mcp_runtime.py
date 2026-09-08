@@ -9,10 +9,17 @@
   快照文件仅作数据源，运行时自述经握手。
 
 C2 最小安全层（Wave5 随 C1）：
-- 只读：本运行时只实现 resources 只读面（list/read），无 tools/prompts 写路径——
-  未实现方法一律 -32601 METHOD_NOT_FOUND（tools/call 等写请求天然被拒）。
+- 只读：本运行时只实现只读面（resources list/read + 41 波C C7 只读 tools/prompts），
+  写路径工具一律不实现（-32601 METHOD_NOT_FOUND / 未知工具 -32602 天然被拒）。
 - uri 白名单：resources/read 只接受快照内已登记 uri，未知 uri → -32602 INVALID_PARAMS
   （schema.ts 无 resource-not-found 专用码，参数级拒绝为最小面裁决，不泄露目录结构）。
+
+C7 只读工具面（41_v2.8.0_波C质量编译深化规划，2026-09-08）：
+- tools（检索类结构化工具，inputSchema 真实存在）：library_search（仓库侧知识库检索）/
+  registry_query（registry 模块+协议查询）/ pipeline_ls（管线清单）/ spec_ls（协议包清单）。
+- prompts：assemble_guide 装载引导模板（1 条）。
+- 数据源 = 本仓库只读扫描（03_管线库/04_模块库/community/*/docs/registry.json），
+  不改 C2 只读安全层（全部只读，无 tools 写路径）。
 
 协议事实（schema.ts 2025-11-25 权威）：
 - LATEST_PROTOCOL_VERSION = "2025-11-25"；JSONRPC_VERSION = "2.0"
@@ -49,6 +56,145 @@ INTERNAL_ERROR = -32603
 def _err(code: int, message: str) -> dict:
     return {"jsonrpc": JSONRPC_VERSION, "id": None, "error": {"code": code,
                                                               "message": message}}
+
+
+def _repo_root() -> "Path":
+    """仓库根 = desktop/src/core 向上三级（mcp_runtime 常驻仓库内）。"""
+    return Path(__file__).resolve().parents[3]
+
+
+def _read_json_rel(rel: str) -> dict:
+    return json.loads((_repo_root() / rel).read_text(encoding="utf-8"))
+
+
+def _md_title(text: str) -> str:
+    for ln in text.splitlines():
+        if ln.startswith("#"):
+            return ln.lstrip("# ").strip()
+    return ""
+
+
+TOOL_DEFS = [
+    {
+        "name": "pipeline_ls",
+        "description": "列出 NF 管线清单（03_管线库 + community 包 pipelines）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"query": {"type": "string", "description": "可选过滤串（匹配 id/标题）"}},
+        },
+    },
+    {
+        "name": "spec_ls",
+        "description": "列出 registry protocols 协议包清单（id/version/模块数/类别）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"tier": {"type": "string", "description": "可选按分级过滤"}},
+        },
+    },
+    {
+        "name": "registry_query",
+        "description": "查询 registry 模块/协议（按 id/name/包 id 子串匹配，只读）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"query": {"type": "string", "description": "检索串（如 M90 或 域包 id）"}},
+            "required": ["query"],
+        },
+    },
+    {
+        "name": "library_search",
+        "description": "仓库侧知识库检索（docs + community README + 编号方案文档），按标题/路径匹配。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"query": {"type": "string", "description": "检索串"}},
+            "required": ["query"],
+        },
+    },
+]
+
+PROMPT_DEFS = [
+    {
+        "name": "assemble_guide",
+        "description": "NF 世界装配引导（作者/agent 五分钟上手 + 取件顺序）。",
+    },
+]
+
+
+def _tool_pipeline_ls(query: str = "") -> list:
+    root = _repo_root()
+    out = []
+    for pat in ("03_管线库/*.md", "community/*/pipelines/*.md"):
+        for p in sorted(root.glob(pat)):
+            text = p.read_text(encoding="utf-8")
+            title = _md_title(text)
+            rel = p.relative_to(root).as_posix()
+            if query and query not in rel and query not in title:
+                continue
+            out.append({"path": rel, "title": title})
+    return out
+
+
+def _tool_spec_ls() -> list:
+    reg = _read_json_rel("desktop/src/core/registry.json")
+    return [{
+        "id": p.get("id"), "version": p.get("version"),
+        "modules": len(p.get("module_ids") or []),
+        "categories": p.get("categories") or [],
+    } for p in reg.get("protocols", [])]
+
+
+def _tool_registry_query(query: str) -> dict:
+    reg = _read_json_rel("desktop/src/core/registry.json")
+    q = query.strip()
+    modules = [m for m in reg.get("modules", [])
+               if q in str(m.get("id")) or q in str(m.get("name"))]
+    protos = [p for p in reg.get("protocols", [])
+              if q in str(p.get("id")) or q in str(p.get("name"))]
+    return {
+        "modules": [{"id": m.get("id"), "name": m.get("name")} for m in modules],
+        "protocols": [{"id": p.get("id"), "version": p.get("version"),
+                       "modules": len(p.get("module_ids") or [])} for p in protos],
+    }
+
+
+def _tool_library_search(query: str, limit: int = 10) -> list:
+    root = _repo_root()
+    q = query.strip()
+    hits = []
+    for p in sorted(root.glob("*.md")):
+        if p.name.startswith(("0", "4")) is False and not p.name[:2].isdigit():
+            continue
+        text = p.read_text(encoding="utf-8")
+        title = _md_title(text)
+        if q in p.name or q in title:
+            hits.append({"path": p.name, "title": title})
+    for p in sorted((root / "docs").glob("*.md")):
+        text = p.read_text(encoding="utf-8")
+        title = _md_title(text)
+        if q in p.name or q in title:
+            hits.append({"path": p.relative_to(root).as_posix(), "title": title})
+    for p in sorted((root / "community").glob("*/README.md")):
+        text = p.read_text(encoding="utf-8")
+        title = _md_title(text)
+        if q in p.name or q in title:
+            hits.append({"path": p.relative_to(root).as_posix(), "title": title})
+    return hits[:limit]
+
+
+TOOL_HANDLERS = {
+    "pipeline_ls": lambda a: _tool_pipeline_ls((a or {}).get("query", "")),
+    "spec_ls": lambda a: _tool_spec_ls(),
+    "registry_query": lambda a: _tool_registry_query((a or {}).get("query", "")),
+    "library_search": lambda a: _tool_library_search((a or {}).get("query", "")),
+}
+
+
+def _prompt_assemble_guide() -> str:
+    return (
+        "你是 NarrativeForge 装配师。取件顺序：07_官方核心出厂与社区预设导航.md（包索引）→ "
+        "02_联动注册表.md（登记/依赖真相源）→ 01_核心协议.md（契约）→ 06_Agent执行协议.md。"
+        "选装配包：community/<领域包>/README.md（含装载清单/资产/验收）。输出完整版 md 自检过 "
+        "「##7. 自检清单」；引用式档位须如实标注缺口，禁止编造未读内容。仓库验证：bash verify.sh。"
+    )
 
 
 class UnknownUriError(KeyError):
@@ -135,6 +281,15 @@ class McpRuntime:
             return {"resources": list(self._meta.values())}
         if method == "resources/read":
             return self._read(params)
+        if method == "tools/list":
+            return {"tools": TOOL_DEFS}
+        if method == "tools/call":
+            return self._call_tool(params)
+        if method == "prompts/list":
+            return {"prompts": [{"name": d["name"], "description": d["description"]}
+                                for d in PROMPT_DEFS]}
+        if method == "prompts/get":
+            return self._prompt_get(params)
         if method == "ping":
             return {}
         return _NOT_IMPLEMENTED
@@ -143,8 +298,36 @@ class McpRuntime:
     def _initialize(self, params: dict) -> dict:
         return {
             "protocolVersion": PROTOCOL_VERSION,
-            "capabilities": {"resources": {}},
+            "capabilities": {"resources": {}, "tools": {}, "prompts": {}},
             "serverInfo": {"name": self.server_name, "version": self.server_version},
+        }
+
+    # ---- C7 只读 tools/prompts（41 波C；无写路径）----
+    def _call_tool(self, params: Any) -> dict:
+        if not isinstance(params, dict) or not isinstance(params.get("name"), str):
+            raise ValueError("tools/call 需 params{name, arguments}")
+        name = params["name"]
+        args = params.get("arguments") or {}
+        if not isinstance(args, dict):
+            raise ValueError("arguments 须为对象")
+        handler = TOOL_HANDLERS.get(name)
+        if handler is None:
+            raise ValueError("未知工具：%s（只读工具面 = %s）"
+                             % (name, "、".join(sorted(TOOL_HANDLERS))))
+        result = handler(args)
+        return {"content": [{"type": "text",
+                             "text": json.dumps(result, ensure_ascii=False,
+                                                indent=2, sort_keys=True)}]}
+
+    def _prompt_get(self, params: Any) -> dict:
+        name = params.get("name") if isinstance(params, dict) else None
+        if name != "assemble_guide":
+            raise ValueError("未知 prompt：%s（prompts/list 可枚举）" % name)
+        return {
+            "description": "NF 世界装配引导（只读模板）",
+            "messages": [{"role": "user",
+                          "content": {"type": "text",
+                                      "text": _prompt_assemble_guide()}}],
         }
 
     def _read(self, params: dict) -> dict:

@@ -6,7 +6,8 @@
 - G1 形态级：mcp.json 静态快照 → 运行时 JSON-RPC 会话（handle 逐消息应答）
 - G2 字段级：resources/list 返回去 text 元数据；正文经 resources/read contents[].text
 - G4 归属层：name/version 入 initialize 握手 serverInfo（快照顶层仅作数据源）
-- C2 最小安全层：只读（无 tools/prompts）+ uri 白名单（未知 uri → -32602）
+- C2 最小安全层：只读 + uri 白名单（未知 uri → -32602）；41 波C C7 开放只读
+  tools/prompts 面（无写路径工具，未知工具/方法仍拒出）
 数据源 = mcp_adapter 真实产出（export(ir,'mcp') → mcp.json 快照）。
 """
 from __future__ import annotations
@@ -68,6 +69,8 @@ class TestMcpRuntime(unittest.TestCase):
         result = resp["result"]
         self.assertEqual(result["protocolVersion"], "2025-11-25")
         self.assertEqual(result["capabilities"]["resources"], {})
+        self.assertIn("tools", result["capabilities"])
+        self.assertIn("prompts", result["capabilities"])
         self.assertEqual(result["serverInfo"]["name"], "P90-mcp")
         self.assertTrue(result["serverInfo"]["version"])
 
@@ -105,9 +108,41 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertEqual(resp["error"]["code"], -32602)
 
     def test_unknown_method_not_found(self):
-        """未实现方法（含 tools/call 写路径）→ -32601 METHOD_NOT_FOUND（只读纪律）。"""
-        resp = self.srv.handle(_req(5, "tools/call", {"name": "x"}))
+        """未实现方法（非只读面方法）→ -32601 METHOD_NOT_FOUND。"""
+        resp = self.srv.handle(_req(5, "bogus/method", {}))
         self.assertEqual(resp["error"]["code"], -32601)
+
+    def test_tools_list_exposes_read_tools_c7(self):
+        """41 波C C7：tools/list 暴露 4 个只读检索工具（真实 inputSchema）。"""
+        resp = self.srv.handle(_req(20, "tools/list"))
+        tools = resp["result"]["tools"]
+        names = {t["name"] for t in tools}
+        self.assertEqual(names,
+                         {"library_search", "registry_query",
+                          "pipeline_ls", "spec_ls"})
+        for t in tools:
+            self.assertIn("inputSchema", t)
+
+    def test_prompts_list_exposes_guide_c7(self):
+        resp = self.srv.handle(_req(21, "prompts/list"))
+        self.assertEqual(resp["result"]["prompts"][0]["name"], "assemble_guide")
+
+    def test_tools_call_registry_query(self):
+        resp = self.srv.handle(_req(22, "tools/call", {
+            "name": "registry_query", "arguments": {"query": "M90"}}))
+        text = resp["result"]["content"][0]["text"]
+        self.assertIn("M90", text)
+
+    def test_tools_call_unknown_tool_rejected(self):
+        resp = self.srv.handle(_req(23, "tools/call", {"name": "evil_write"}))
+        self.assertEqual(resp["error"]["code"], -32602)
+
+    def test_prompts_get_guide(self):
+        resp = self.srv.handle(_req(24, "prompts/get",
+                                    {"name": "assemble_guide"}))
+        msg = resp["result"]["messages"][0]
+        self.assertEqual(msg["role"], "user")
+        self.assertIn("装配师", msg["content"]["text"])
 
     def test_ping_empty_result(self):
         resp = self.srv.handle(_req(6, "ping"))

@@ -1,13 +1,13 @@
 # NarrativeForge MCP 接入（`nf serve` · 40 总纲 v2.7 波A S1-E3 / X2）
 
-> **状态**：公开化文档已随基础层 v2.7 落地；**连接实证（E3：标准 MCP 客户端装载实测）尚未执行**——文末「E3 实测记录」为预留占位，回填前不宣称「转正」。README 能力宣告以本文件状态为准。
+> **状态**：公开化文档已随基础层 v2.7 落地；41 波C C7（2026-09-08）开放只读 tools/prompts（本机 stdio 冒烟通过，见 docs/41_波C_C7_实测记录.md）。**连接实证（E3：标准 MCP 客户端装载实测）尚未执行**——文末「E3 实测记录」为预留占位，回填前不宣称「转正」。
 
 ## 这是什么
 
 NF 提供 MCP（Model Context Protocol）stdio 服务 `nf serve`：
 
 - 把「MCP 快照」（`nf run --fmt mcp` 导出的 `.json`）烧成 JSON-RPC stdio 会话（换行分隔 UTF-8 消息）；
-- **只读面**：实现 `resources/list` + `resources/read`，无 `tools`/`prompts` 写路径——写请求一律 `-32601 METHOD_NOT_FOUND`；
+- **只读面**：`resources/list` + `resources/read`；41 波C C7（2026-09-08 裁决）开放**只读 tools/prompts**——`tools/list`+`tools/call`（library_search / registry_query / pipeline_ls / spec_ls）与 `prompts/list`+`prompts/get`（assemble_guide 装载引导）；写路径工具不实现，未知工具/方法拒出；
 - **uri 白名单**：`resources/read` 只接受快照内已登记 uri，未知 uri 返回 `-32602 INVALID_PARAMS`（不泄露目录结构）；
 - 协议版本对齐 `2025-11-25`（逐条实证对照见 33 号 A5 核查报告，G1/G2/G4 已勾销）。
 
@@ -52,6 +52,7 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 ```
 
 连接后 agent 可调用：`resources/list` 枚举快照内已登记资源 → `resources/read` 按 uri 取正文。具体资源 uri 集以实际快照的 `resources/list` 返回为准。
+41 波C C7 起 agent 还可调用只读检索工具：`pipeline_ls`（管线清单）/ `spec_ls`（协议包清单）/ `registry_query`（模块+协议查询）/ `library_search`（仓库侧知识库检索），及装载引导 prompt `assemble_guide`。数据源 = 仓库只读扫描（03/04/community/docs/registry.json），全部只读、无写面。
 
 ## 能力表（与 mcp_runtime 实现一一对应）
 
@@ -62,7 +63,9 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 | `ping` | ✅ | 返回 `{}` |
 | `resources/list` | ✅ | 快照登记资源纯元数据（无 text 字段） |
 | `resources/read` | ✅ | 白名单 uri → `contents[].text`；未知 uri → `-32602` |
-| `tools/*` / `prompts/*` 等写路径 | ❌ | `-32601 METHOD_NOT_FOUND`（只读安全层，天然拒写） |
+| `tools/list` / `tools/call`（只读） | ✅ | 41 波C C7：library_search / registry_query / pipeline_ls / spec_ls（inputSchema 真实存在，全只读） |
+| `prompts/list` / `prompts/get` | ✅ | 41 波C C7：assemble_guide 装载引导模板（只读） |
+| 写路径工具（未实现） | ❌ | 未知工具 → `-32602`；未知方法 → `-32601`（只读安全层天然拒写） |
 
 标准错误码：`-32700` 解析错误 / `-32600` 非法请求 / `-32601` 方法不存在 / `-32602` 参数非法 / `-32603` 内部错误。
 
