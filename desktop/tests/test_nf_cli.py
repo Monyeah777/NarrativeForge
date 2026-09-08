@@ -134,6 +134,13 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn("用户自定义流", out)
         self.assertIn("M91-M99", out)
 
+    def test_assemble_clarify_when_underspecified(self):
+        """需求收敛漏斗：信息不足（无题材线索）→ 抛澄清问句，不硬猜。"""
+        code, out = self._run(["assemble", "给我做一个世界"])
+        self.assertEqual(code, 0)
+        self.assertIn("需求澄清", out)
+        self.assertIn("题材方向", out)
+
     def test_assemble_check_ok_and_reject(self):
         """nf assemble --check：合格成品过、编造编号成品拒。"""
         def _write(text):

@@ -27,6 +27,12 @@ DOMAIN_MAP = [
     (["技术文档", "techdoc", "文档工厂"], ("技术文档域包", "P06")),
 ]
 
+#: 未命中官方预设但足以判定“用户有具体自定义题材”的内容线索
+CUSTOM_CUES = [
+    "自定义", "权谋", "宫廷", "科幻", "都市", "悬疑", "恐怖",
+    "修仙", "机甲", "冒险", "武侠", "末日", "星际", "盗墓", "权斗",
+]
+
 _SEG = re.compile(r"^##\s*([0-7])\s*\.", re.M)
 _MODULE = re.compile(r"(?:[\u4e00-\u9fff]+:)?M\d{2,3}")
 _DECISION = re.compile(r"(应|应该|必须|禁止|不得|下一步|输出|结论)")
@@ -53,6 +59,27 @@ def _package_module_sets() -> Dict[str, List[str]]:
         except Exception:
             continue
     return sets
+
+
+def clarify(requirement: str) -> Dict[str, Any]:
+    """需求收敛漏斗：信息不足 → 澄清问句；足够 → 直接进 plan。"""
+    req = requirement.strip()
+    if not req:
+        return {"status": "clarify", "requirement": req,
+                "questions": ["请描述你要的世界：题材方向（如 西幻生存/校园情感/自定义）？"]}
+    p = plan(req)
+    if p["matched"] or any(cue in req for cue in CUSTOM_CUES):
+        return {"status": "ready", "requirement": req, "plan": p,
+                "questions": []}
+    return {
+        "status": "clarify",
+        "requirement": req,
+        "questions": [
+            "① 题材方向：官方预设（西幻生存/校园情感/技术文档/轻混/通用核心）还是你的自定义题材？",
+            "② 玩法主轴：生存/关系/成长/任务/探索……哪个是推进核心？",
+            "③ 世界尺度：单个完整版世界，还是要跨预设组合？",
+        ],
+    }
 
 
 def plan(requirement: str) -> Dict[str, Any]:

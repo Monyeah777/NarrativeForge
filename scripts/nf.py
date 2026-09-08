@@ -1409,10 +1409,18 @@ def _cmd_completion(args):
 
 
 def _cmd_assemble(args):
-    """nf assemble：需求 → 装配计划；--check 对成品完整版做机器验收。"""
+    """nf assemble：需求 → 澄清漏斗 → 装配计划；--check 对成品完整版做机器验收。"""
     from core import assemble_plan as ap
 
-    plan_ = ap.plan(args.requirement)
+    funnel = ap.clarify(args.requirement)
+    if funnel["status"] == "clarify":
+        print("== nf assemble（需求澄清）==")
+        print("  你的需求信息还不够直接编排，先补三点（缺一不可）：")
+        for q in funnel["questions"]:
+            print("  · %s" % q)
+        print("  补充后再跑：nf assemble \"题材+主轴+尺度的一句话\" --check <out.md>")
+        return 0
+    plan_ = funnel["plan"]
     if args.check_md:
         try:
             with open(args.check_md, encoding="utf-8") as fh:
