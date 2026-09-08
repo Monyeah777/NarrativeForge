@@ -2,7 +2,7 @@
 
 > **定位**：把协议层契约字段从「正文 yaml 示例 + 各 parse 自行半解析」升为**正式 schema 定义（IDL 单一真相）**——契约「长什么样、哪些必填、值域如何」由一个可机检的定义文件说了算；正文示例/机读块/投影均由校验器按 schema 验收。
 > **红线**：零第三方 JSON-schema 实现——校验器为自实现 JSON-schema 子集（见 `desktop/src/core/schema_lint.py`），不引 `jsonschema`；YAML 解析复用仓库既有 PyYAML 依赖（verify check16 已用）。
-> **承接**：43 A1（IDL）/ A2（Conformance 分级）/ A3（扩展策略 + 影响分层）/ A4（生成物同仓 golden）。本目录为 A1 首落物；A2 起的 conformance / EXTENSION / generated 见各里程碑。
+> **承接**：43 A1（IDL schema，`schema/`）/ A2（Conformance 分级，`export_conformance.json` + 01 §1.2）/ A3（扩展策略 + 影响分层，`EXTENSION.md`）/ A4（生成物同仓 golden，`generated/`）。四个里程碑的产物均已随 check28-31 常驻。
 
 ## schema/ · 五份契约定义（本层机器真相）
 
