@@ -33,6 +33,7 @@ NF_CLI_EPILOG = (
     "  nf --help             # 全命令总览\n"
     "  nf help <cmd>         # 查看任意子命令帮助\n"
     "  nf doctor             # 环境自检（快速只读体检）\n"
+    "  nf completion bash    # 生成 shell 补全（>> ~/.bashrc）\n"
     "  nf run / nf demo      # 作者五分钟上手（README「五分钟快速开始」含逐条示例）\n"
     "退出码：0 成功 · 1 运行/校验失败 · 2 用法错误（argparse 约定）。"
 )
@@ -315,6 +316,10 @@ def _build_parser() -> argparse.ArgumentParser:
                          help="环境自检（快速只读体检：关键文件/registry/schema/核心库——不开 verify 慢跑）", description="环境自检（快速只读体检：关键文件/registry/schema/核心库——不开 verify 慢跑）")
     doc.add_argument("--json", action="store_true",
                      help="输出结构化 JSON 报告")
+    cmp = sub.add_parser("completion",
+                         help="生成 shell 补全脚本（bash/zsh/fish；用法：nf completion bash >> ~/.bashrc）")
+    cmp.add_argument("shell", choices=("bash", "zsh", "fish"),
+                     help="目标 shell")
     return p
 
 
@@ -1256,6 +1261,127 @@ def _cmd_doctor(args):
     return 0 if n_pass == len(checks) else 1
 
 
+def _collect_cli_tree():
+    """自省 argparse 命令面：命令 × 顶层 flags × 二级子命令（供 completion 生成）。"""
+    root = _build_parser()
+
+    def flags(parser):
+        out = []
+        for act in parser._actions:
+            if isinstance(act, argparse._SubParsersAction):
+                continue
+            out += list(act.option_strings)
+        return sorted(set(out))
+
+    tree = {}
+    for act in root._actions:
+        if not isinstance(act, argparse._SubParsersAction):
+            continue
+        for name, sp in act.choices.items():
+            nested = {}
+            for act2 in sp._actions:
+                if isinstance(act2, argparse._SubParsersAction):
+                    for n2, sp2 in act2.choices.items():
+                        nested[n2] = flags(sp2)
+            tree[name] = {"flags": flags(sp), "nested": nested}
+    return {
+        "commands": sorted(tree),
+        "root_flags": flags(root),
+        "tree": tree,
+    }
+
+
+def _cmd_completion(args):
+    """nf completion <bash|zsh|fish>：从 argparse 命令面生成 shell 补全脚本。"""
+    data = _collect_cli_tree()
+    cmds = data["commands"]
+    root_flags = data["root_flags"]
+    tree = data["tree"]
+    words = lambda xs: " ".join(xs)  # noqa: E731
+
+    def var(cmd):
+        return cmd.replace("-", "_")
+
+    if args.shell == "bash":
+        lines = [
+            "# nf bash completion（自动生成 · 追加到 ~/.bashrc 后 source）",
+            "_nf_cmds=\"%s\"" % words(cmds),
+            "_nf_root_flags=\"%s\"" % words(root_flags),
+        ]
+        for c in cmds:
+            lines.append("_nf_flags_%s=\"%s\"" % (var(c), words(tree[c]["flags"])))
+            if tree[c]["nested"]:
+                lines.append("_nf_nested_%s=\"%s\""
+                             % (var(c), words(sorted(tree[c]["nested"]))))
+        lines += [
+            "_nf_completions(){",
+            "  local cur cmd",
+            "  cur=\"${COMP_WORDS[COMP_CWORD]}\"",
+            "  if [ \"$COMP_CWORD\" -eq 1 ]; then",
+            "    COMPREPLY=( $(compgen -W \"$_nf_cmds $_nf_root_flags\" -- \"$cur\") )",
+            "    return",
+            "  fi",
+            "  cmd=\"${COMP_WORDS[1]}\"",
+            "  case \"$cmd\" in",
+        ]
+        for c in cmds:
+            if tree[c]["nested"]:
+                lines.append(
+                    "    %s) if [ \"$COMP_CWORD\" -eq 2 ]; then"
+                    " eval nest=\"$_nf_nested_%s\";"
+                    " COMPREPLY=( $(compgen -W \"$nest\" -- \"$cur\") ); return; fi ;;" % (c, var(c)))
+        lines += [
+            "  esac",
+            "  eval fl=\"$_nf_flags_${cmd//-/_}\"; fl=\"${fl:-}\"",
+            "  COMPREPLY=( $(compgen -W \"$fl\" -- \"$cur\") $(compgen -f -- \"$cur\") )",
+            "}",
+            "complete -F _nf_completions nf",
+            "",
+        ]
+        print("\n".join(lines))
+        return 0
+
+    if args.shell == "zsh":
+        lines = [
+            "#compdef nf",
+            "# nf zsh completion（自动生成）",
+            "_nf_cmds=(%s)" % " ".join(cmds),
+            "_nf() {",
+            "  local -a cmds",
+            "  cmds=(%s)" % " ".join(cmds),
+            "  if (( CURRENT == 2 )); then",
+            "    _describe -t commands 'nf command' cmds",
+            "  else",
+            "    _files",
+            "  fi",
+            "}",
+            "compdef _nf nf",
+            "",
+        ]
+        print("\n".join(lines))
+        return 0
+
+    # fish
+    lines = [
+        "# nf fish completion（自动生成 · nf completion fish | source）",
+        "complete -c nf -f",
+        "complete -c nf -n '__fish_use_subcommand' -a '%s'" % " ".join(cmds),
+    ]
+    for c in cmds:
+        for f in tree[c]["flags"]:
+            if f.startswith("--"):
+                lines.append("complete -c nf -n '__fish_seen_subcommand_from %s' -l %s"
+                             % (c, f[2:]))
+            elif f.startswith("-") and len(f) == 2:
+                lines.append("complete -c nf -n '__fish_seen_subcommand_from %s' -s %s"
+                             % (c, f[1:]))
+        for n2 in tree[c]["nested"]:
+            lines.append("complete -c nf -n '__fish_seen_subcommand_from %s' -a '%s'"
+                         % (c, n2))
+    print("\n".join(lines))
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd is None:
@@ -1265,6 +1391,8 @@ def main(argv=None) -> int:
         return _cmd_help(args)
     if args.cmd == "doctor":
         return _cmd_doctor(args)
+    if args.cmd == "completion":
+        return _cmd_completion(args)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "asset":

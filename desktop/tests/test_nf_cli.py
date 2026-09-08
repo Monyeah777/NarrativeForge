@@ -101,6 +101,23 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn('"kind": "module-ls"', out)
         self.assertIn('"file"', out)
 
+    def test_completion_bash(self):
+        code, out = self._run(["completion", "bash"])
+        self.assertEqual(code, 0)
+        self.assertIn("complete -F _nf_completions nf", out)
+        self.assertIn("sig", out)
+
+    def test_completion_zsh(self):
+        code, out = self._run(["completion", "zsh"])
+        self.assertEqual(code, 0)
+        self.assertIn("compdef _nf nf", out)
+
+    def test_completion_fish(self):
+        code, out = self._run(["completion", "fish"])
+        self.assertEqual(code, 0)
+        self.assertIn("__fish_use_subcommand", out)
+        self.assertIn("doctor", out)
+
     # ---- 44 波：CLI 工具链顶尖化（骨架约定：无参 help / help 子命令 / doctor / version）----
     def test_no_args_shows_help(self):
         code, out = self._run([])
