@@ -299,6 +299,21 @@ def _asset_key_candidates(name: str) -> list:
     return re.findall(r"[A-Z][A-Z0-9_]*", name)
 
 
+def _asset_keys_of_file(path: Path) -> list:
+    """资产文件内登记的键集：文件名令牌 ∪ 正文键声明（`KEY` / "KEY": / ## KEY）。"""
+    import re
+
+    keys = set(_asset_key_candidates(path.stem))
+    try:
+        head = path.read_text(encoding="utf-8")[:6000]
+    except OSError:
+        return sorted(keys)
+    keys.update(re.findall(r"`([A-Z][A-Z0-9_]{2,})`", head))
+    keys.update(re.findall(r"\"([A-Z][A-Z0-9_]{2,})\"\s*:", head))
+    keys.update(re.findall(r"##\s*([A-Z][A-Z0-9_]{2,})", head))
+    return sorted(keys)
+
+
 def _tool_asset_get(key: str, package: str = "") -> dict:
     root = _repo_root()
     req = key.strip()
@@ -312,7 +327,7 @@ def _tool_asset_get(key: str, package: str = "") -> dict:
         for p in sorted(root.glob(pat)):
             if p.name == "README.md":
                 continue
-            if req not in _asset_key_candidates(p.stem):
+            if req not in _asset_keys_of_file(p):
                 continue
             rel = p.relative_to(root).as_posix()
             hits.append({"package": rel.split("/")[1] if rel.startswith("community") else "官方",
@@ -376,12 +391,12 @@ def _repo_resource_metas() -> list:
         for p in sorted(root.glob(pat)):
             if p.name == "README.md":
                 continue
-            keys = _asset_key_candidates(p.stem)
+            keys = _asset_keys_of_file(p)
             if not keys:
                 continue
             rel = p.relative_to(root).as_posix()
             package = rel.split("/")[1] if rel.startswith("community") else "官方"
-            for k in keys[:1]:
+            for k in keys:
                 uri = "nf://repo/asset/" + up.quote(package, safe="") + "/" + up.quote(k, safe="")
                 metas.append({"uri": uri, "name": "资产 %s/%s" % (package, k),
                               "mimeType": "text/markdown"})
@@ -417,7 +432,7 @@ def _repo_read_uri(uri: str) -> str:
             for p in sorted(root.glob(pat)):
                 if p.name == "README.md":
                     continue
-                if key in _asset_key_candidates(p.stem):
+                if key in _asset_keys_of_file(p):
                     return p.read_text(encoding="utf-8")
         raise KeyError(uri)
     raise KeyError(uri)

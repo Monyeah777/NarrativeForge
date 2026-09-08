@@ -99,6 +99,25 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertEqual(len(contents), 1)
         self.assertIn("machine_contract", contents[0]["text"])
 
+    def test_channel_surface_end_to_end_deep(self):
+        """44 深化：资源面与内容工具端到端自检（模块/管线/资产三类代表件全可读）。"""
+        listed = self.srv.handle(_req(40, "resources/list"))["result"]["resources"]
+        uris = {r["uri"] for r in listed}
+        self.assertTrue(any(u.endswith("/repo/module/M90") for u in uris))
+        self.assertTrue(any(u.endswith("/repo/pipeline/P90") for u in uris))
+        self.assertTrue(any(u.endswith("/TECH_RULES") for u in uris))
+        for u in ("nf://repo/module/M90", "nf://repo/pipeline/P90"):
+            resp = self.srv.handle(_req(41, "resources/read", {"uri": u}))
+            self.assertIn("text", resp["result"]["contents"][0])
+            self.assertNotIn("error", resp)
+        # 资产：包内社区键也可经 asset_get 取正文
+        resp = self.srv.handle(_req(42, "tools/call", {
+            "name": "asset_get",
+            "arguments": {"key": "EMOTION_WHEEL", "package": "校园情感领域包"}}))
+        payload = json.loads(resp["result"]["content"][0]["text"])
+        self.assertTrue(payload["found"])
+        self.assertGreater(len(payload["matches"][0]["text"]), 100)
+
     def test_read_resource_returns_text_g2(self):
         """G2 勾销：正文经 resources/read → contents[].text（TextResourceContents）。"""
         listed = self.srv.handle(_req(2, "resources/list"))["result"]["resources"]
