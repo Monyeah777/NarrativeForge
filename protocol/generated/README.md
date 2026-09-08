@@ -6,7 +6,7 @@
 
 | 文件 | 内容 | 刷新命令 |
 |---|---|---|
-| `idl_report.json` | 校验摘要（schema 清单 + 覆盖统计 + registry 模块投影 + 机读契约/管线/协议/台账行） | `PYTHONPATH=desktop/src python desktop/src/core/protocol_golden.py .` |
+| `idl_report.json` | 校验摘要（schema 清单 + 覆盖统计 + registry 模块投影 + 机读契约/管线/协议/台账行 + 事件闭包统计） | `PYTHONPATH=desktop/src python desktop/src/core/protocol_golden.py .` |
 | `idl_summary.md` | 人读摘要（同一 canonical 数据渲染，逐字节可复现） | 同上 |
 
 ## 纪律

@@ -27,6 +27,8 @@ class ProtocolGoldenTest(unittest.TestCase):
         data = json.load(open(os.path.join(ROOT, "protocol", "generated", "idl_report.json"), encoding="utf-8"))
         self.assertEqual(len(data["schema_ids"]), 5)
         self.assertGreaterEqual(data["coverage"]["contract_covered"], 20)
+        self.assertIn("event_closure", data)
+        self.assertGreaterEqual(len(data["event_closure"]["linked_events"]), 10)
 
 
 if __name__ == "__main__":

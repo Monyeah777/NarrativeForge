@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Tuple
 
 from core import conformance_scan as _csc
 from core import schema_lint as _sl
+from core import closure_scan as _clos
 
 GENERATED_DIR = os.path.join("protocol", "generated")
 REPORT_NAME = "idl_report.json"
@@ -72,6 +73,7 @@ def collect(root: str) -> Dict[str, Any]:
     registry_modules.sort(key=lambda x: str(x["id"]))
     prov, _ = _sl._read_json(os.path.join(root, "05_资产库", "provenance.json"))
     asset_keys = sorted(a.get("key") for a in (prov or {}).get("assets") or [])
+    _, closure_stats = _clos.scan(root)
 
     return {
         "generated_by": "43 A4 protocol_golden（schema 定义 → 校验摘要，确定性渲染）",
@@ -90,6 +92,7 @@ def collect(root: str) -> Dict[str, Any]:
         "pipeline_files": pipelines,
         "protocol_files": packages,
         "asset_keys": asset_keys,
+        "event_closure": closure_stats,
     }
 
 

@@ -174,6 +174,106 @@
     "protocols": 5,
     "schema_issues": 0
   },
+  "event_closure": {
+    "linked_events": [
+      "beat_tick",
+      "decision_brief",
+      "doc_delta_committed",
+      "doc_structure_ready",
+      "intent_received",
+      "interaction_update",
+      "minute_tick",
+      "narrative_event",
+      "production_output",
+      "quest_state",
+      "state_snapshot",
+      "term_conflict_detected",
+      "tick_day"
+    ],
+    "modules": 23,
+    "pub_only_by_module": {
+      "campus_anonymous_gift": [
+        "M92"
+      ],
+      "campus_gift_intent": [
+        "M91"
+      ],
+      "polished_output": [
+        "M96"
+      ],
+      "revision_recorded": [
+        "M98"
+      ],
+      "term_synced": [
+        "M97"
+      ],
+      "weather_state": [
+        "M08"
+      ]
+    },
+    "pub_only_events": [
+      "campus_anonymous_gift",
+      "campus_gift_intent",
+      "polished_output",
+      "revision_recorded",
+      "term_synced",
+      "weather_state"
+    ],
+    "sub_only_by_module": {
+      "chaos_event": [
+        "M06",
+        "事件:M22"
+      ],
+      "combat_result": [
+        "M06"
+      ],
+      "confession_event": [
+        "M55",
+        "M91"
+      ],
+      "death_trigger": [
+        "事件:M22"
+      ],
+      "ghost_event": [
+        "事件:M22"
+      ],
+      "level_up": [
+        "M13"
+      ],
+      "market_event": [
+        "M17",
+        "事件:M22"
+      ],
+      "npc_action": [
+        "M55",
+        "M91"
+      ],
+      "relationship_change": [
+        "M55",
+        "M91",
+        "事件:M22"
+      ],
+      "reputation_change": [
+        "M06"
+      ],
+      "travel_event": [
+        "M06"
+      ]
+    },
+    "sub_only_events": [
+      "chaos_event",
+      "combat_result",
+      "confession_event",
+      "death_trigger",
+      "ghost_event",
+      "level_up",
+      "market_event",
+      "npc_action",
+      "relationship_change",
+      "reputation_change",
+      "travel_event"
+    ]
+  },
   "evidence_ids": [
     "M00",
     "M01",
