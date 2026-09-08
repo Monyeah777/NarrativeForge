@@ -31,13 +31,13 @@
 | P40 行为决策 | **M91** | 异界身份桥：订阅 relationship_change / confession_event / npc_action，做「情感表达 × 身份秘密」权衡，发布 campus_gift_intent | 本包 |
 | P50 交互执行 | **M92** | 轻混装配执行：订阅 production_output（西幻 M17）+ campus_gift_intent（M91），跨语境再包装为 campus_anonymous_gift | 本包 |
 | P60 长期演变 | M40、M65 | 轻混关系演变沿用源包（校园遗憾沉淀 / 西幻世界演变），不重复结算 | 核心 + 源包 |
-| P70 叙事素材 | M20、M24 | 世界知识库 + 写作 DNA/组合校验（源包资产经 asset_readonly 借阅） | 核心 |
+| P70 叙事素材 | M20、M24 | 世界知识库 + 组合校验（风格资产经 asset_readonly 借阅：校园 WRITING_STYLE） | 核心 |
 | P80 输出呈现 | M80 | 官方核心输出生成器承载；叠加「匿名馈赠」呈现面 | 核心 |
 | 全局 | M50 | 主循环调度（读注册表） | 核心 |
 
 ## 3. 资产包挂载（0 文件）
 - 本包 **不自建资产**（assets.count = 0）；题材所需资产经 **asset_readonly 借阅**（02 §8.4 登记判定四规则）自源包按需读取：
-  - 校园侧：WRITING_STYLE（写作 DNA）/ GIFT_PREFS（馈赠偏好）/ LOCATIONS（场景）等键，源键名直读。
+  - 校园侧：WRITING_STYLE（风格档）/ GIFT_PREFS（馈赠偏好）/ LOCATIONS（场景）等键，源键名直读。
   - 西幻侧：PRODUCTION_RULES（生产规则，M17 依赖）等键，源键名直读。
 - 借阅不复制：本包 modules/ 与 assets/ 均无源资产副本；卸载本包不影响源包资产完整性。
 > 调用示例：asset_get('GIFT_PREFS', 键) 取校园馈赠偏好；asset_get('PRODUCTION_RULES', 键) 取西幻生产规则——均经 references 协议级通道（asset_readonly true）。

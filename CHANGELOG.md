@@ -46,7 +46,7 @@
 - **verify 复核**：PASS=35 / WARN=0 / FAIL=0 全绿（verify.sh v2.12→v2.13，check23→check24，ci-verify 绿线 PASS=34→35）。
 ### Notes
 - 波 B 冒烟记录（本工作台实测、产物不入库）：`nf pipeline new --id P07 --name 演示领域管线 --domain 悬疑` → 派生档结构正确（标题/P07/悬疑领域 tag，层位 P00 未动）；派生 P07 以轻混模块装配 run 可跑 PASSED；module deprecate→status→restore 在 /tmp 副本流转全通过、`nf module verify` 全绿。
-- 波 B 收口项仍挂账：S3 续（第二个官方题材包或第三方首例上架，按货架 tier 标准补种）待排。**〔修订·2026-09-07〕**：用户拍板波 A + 波 B 整合为单一 v2.7.0 发布（tag v2.7.0），不再单独产 tag v2.8.0；外部实证 E1–E3/Y5 回填后追补 S13 转正——见本段上方 [2.7.0] 发布归档。
+- 波 B 收口项仍挂账：S3 续（第二个官方题材包或第三方首例上架，按货架 tier 标准补种）待排。**〔修订·2026-09-07〕**：作者拍板波 A + 波 B 整合为单一 v2.7.0 发布（tag v2.7.0），不再单独产 tag v2.8.0；外部实证 E1–E3/Y5 回填后追补 S13 转正——见本段上方 [2.7.0] 发布归档。
 ## [2.7.0 · 波A W4] - 2026-09-07（40 总纲实施 W4：S1 外部验证实证档建档 + E1 准备材料实导 + ROADMAP 状态同步）
 ### Added
 - **`docs_external-validation-v2.7.md`（S1 实证报告 · 建档稿非转正稿）**：四项出口（E1 CCV3→SillyTavern / E2 SKILL+AGENTS→Claude Code / E3 nf serve→标准 MCP 客户端 / Y5 完整版样本→免费 AI 复测）各带四要素表（环境/步骤/结果/差距修复）+ 汇总转正门——未实测不宣称转正（S13 门未开，验收未达成如实标注）。
@@ -105,9 +105,9 @@
 - **40 总纲增补 v1.4（本提交）**：Y9′–Y12′ 云端公共线入总纲（= 双 agent 共享真相源，替代 .rivet/plans 不可见档案）+ 裁决记录 12/13；Y9′ 连通协议设计文档落 `.rivet/plans`（登记面随基础层排期窗口）。
 ### Changed
 - **NF-0001 → NF-1（90ab277）**：默认形迁移（INDEX 登记表 / 文件注记头 / README 示例同步）；README 📚 段与 INDEX 全量泛化去叙事化（建构件 + 成品同馆同档、形态/领域自述）；verify PASS=31 不变（公共层零协议层改动，实测全绿）。
-- **入库机器人蠢用户防御 V2.1（e4b1fdd）**：模板残留净化（字段值以「（」开头或命中说明短语 → 视为未填回退标题/形态/一句话/档位词）+ 空壳拒收（正文残留模板占位行 → 回评提示并关闭）；实测 Issue #1 模板原样提交曾污染入库 NF-2（空壳件已下架）；投稿模板新增懒人模式指引。
+- **入库机器人滥用防御 V2.1（e4b1fdd）**：模板残留净化（字段值以「（」开头或命中说明短语 → 视为未填回退标题/形态/一句话/档位词）+ 空壳拒收（正文残留模板占位行 → 回评提示并关闭）；实测 Issue #1 模板原样提交曾污染入库 NF-2（空壳件已下架）；投稿模板新增懒人模式指引。
 - **Gitee 开放投稿前端（43b5d45）**：写入口搬到 Gitee Issues（国内直连，面向所有人开放——零治理：取消白名单、不设审核，滥用出事拉黑/下架）；GitHub Actions 每 10 分钟轮询（gitee_ingest.py + gitee-poll.yml），同一入库核心 → 双端推送 → Gitee 回评双端链接 → 关题（state=closed 幂等 + 注记头「来源：Gitee Issue #N」防重）；依赖 `GITEE_TOKEN` secret（Gitee 专用子令牌：issues 读写 + 推送最小权限，作者主令牌不共享）。
-- **40 总纲 v1.5 + INDEX 投稿通道公开化（本提交）**：Y12′ 双前端 + 蠢用户防御 + 裁决 #14 入总纲（共享真相源同步）；INDEX 投稿须知更新公开投稿指引（Gitee 主入口 + 模板可全不删 + GitHub 仅作者自投）；Gitee 侧投稿模板落 `.gitee/ISSUE_TEMPLATE/NF投稿.md`。
+- **40 总纲 v1.5 + INDEX 投稿通道公开化（本提交）**：Y12′ 双前端 + 滥用防御 + 裁决 #14 入总纲（共享真相源同步）；INDEX 投稿须知更新公开投稿指引（Gitee 主入口 + 模板可全不删 + GitHub 仅作者自投）；Gitee 侧投稿模板落 `.gitee/ISSUE_TEMPLATE/NF投稿.md`。
 ## [2.6.0] - 2026-09-06（v2.6.0 端壳接线波第 1 波：L3 冻结快照恢复 + W1-W9 接线 + Release 产线修复——脉冲式治理首波兑现）
 ### Added
 - **v2.6.0-L3 冻结快照恢复（38 方案 Stage 2.1，51f7130）**：35 个 L3 端壳文件自 5ae202b^ 单 commit 回接——android/（bootstrap/config/controller/ui/screens/main/buildozer/p4a 三补丁）+ desktop/src/ui/（11 py：common/main_window/protocol_wizard_dialog/zone_a-g）+ main.py/src/__main__.py/packaging/smoke_gui/bench/smoke_zone_g_market/selftest_android/sync_android（可整体 revert 回冻）。
