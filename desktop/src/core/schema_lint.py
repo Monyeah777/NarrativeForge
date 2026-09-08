@@ -249,7 +249,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for doc in module_docs:
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
-            text = open(doc, encoding="utf-8").read()
+            with open(doc, encoding="utf-8") as fh:
+                text = fh.read()
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
@@ -282,7 +283,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for doc in pipeline_docs:
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
-            text = open(doc, encoding="utf-8").read()
+            with open(doc, encoding="utf-8") as fh:
+                text = fh.read()
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
@@ -299,7 +301,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for proto in protocol_files:
         rel = os.path.relpath(proto, root).replace(os.sep, "/")
         try:
-            data = yaml.safe_load(open(proto, encoding="utf-8").read())
+            with open(proto, encoding="utf-8") as fh:
+                data = yaml.safe_load(fh.read())
         except Exception as exc:
             issues.append(f"{rel}: protocol.yaml 解析失败 {exc}")
             continue

@@ -92,7 +92,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for doc in _module_docs(root):
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
-            text = open(doc, encoding="utf-8").read()
+            with open(doc, encoding="utf-8") as fh:
+                text = fh.read()
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
@@ -119,7 +120,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for proto in sorted(glob.glob(os.path.join(root, "community", "*", "protocol.yaml"))):
         rel = os.path.relpath(proto, root).replace(os.sep, "/")
         try:
-            data = yaml.safe_load(open(proto, encoding="utf-8").read())
+            with open(proto, encoding="utf-8") as fh:
+                data = yaml.safe_load(fh.read())
         except Exception as exc:
             issues.append(f"{rel}: protocol.yaml 解析失败 {exc}")
             continue
@@ -147,7 +149,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         verify_txt = ""
         verify_path = os.path.join(root, "verify.sh")
         if os.path.isfile(verify_path):
-            verify_txt = open(verify_path, encoding="utf-8").read()
+            with open(verify_path, encoding="utf-8") as fh:
+                verify_txt = fh.read()
         for item in manifest.get("items") or []:
             export_items += 1
             if not isinstance(item, dict):
