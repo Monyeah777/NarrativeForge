@@ -1,5 +1,6 @@
 ## [Unreleased]
 ### Added
+- **STRATEGY 战略文件建立（治理 · 2026-09-08）**：仓库根新增 `STRATEGY.md`——目标与质量准绳（NF = 内容契约层（域中立、模型无关）/ 验收函数 = 质量单变量 / 质量法官 = 内部验证链（verify→audit→五维自评→战例；外部仅机制借鉴、不背书不裁判）/ 仓库发布边界 = 计划内部消化（计划类文档不发布公开仓库，落地后以结果形态入库））；`AGENTS.md` 增「NF 方向与发布纪律」节（开工必读链 / 质量法官内部 / 计划不发布 / 公开文案纪律）；`40_未来计划总纲` 头部挂 STRATEGY 上层引用。verify 保持 PASS=49。
 - **43 协议层顶尖化工程规划（立项入库）**：`43_协议层顶尖化工程规划.md` 落根目录——承接 41/42 工具族之上的协议层顶尖化（目标：把 01/02/06/07 + registry + machine_contract 从「机检闭环」提到「顶尖」：A1 协议 IDL schema 单一真相 / A2 Conformance 一致性分级 / A3 扩展策略 + 变更影响分层自动化 / A4 生成物同仓 golden / A5 全量收口）；ROADMAP §9 + 40 总纲波 C–N 注记 + VERSION-MATRIX 同步。灵感来源 = GitHub 开源项目（OpenSpec/spec-kit/Glyph/peacprotocol 等），逐条过仓库实证后净吸收 4 真空白。
 - **43 A1 协议层 IDL（落地）**：`protocol/schema/*.json` 五定义（contract/module/pipeline/protocol/asset）+ `desktop/src/core/schema_lint.py`（自实现 JSON-schema 子集校验器，零第三方）+ verify check28（v2.17，PASS 41→43）；首轮扫描暴露并收口 01 §2 `techdoc` 值域漂移（值域文档化扩展非 bump）。
 - **43 A2 Conformance 一致性分级（落地）**：01 §1.2 分级段 + `machine_contract`/`protocol.yaml` 声明位（23 件机读块 + 5 协议包 retro-fit L2）+ `protocol/export_conformance.json`（4 导出面 L3）+ `conformance_scan.py` + verify check29（v2.18，PASS 43→45，零虚标）。
