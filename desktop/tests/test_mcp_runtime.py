@@ -80,15 +80,24 @@ class TestMcpRuntime(unittest.TestCase):
             {"jsonrpc": "2.0", "method": "notifications/initialized"}))
 
     def test_list_resources_no_text_g2(self):
-        """G2 勾销：resources/list 返回纯元数据——Resource 条目绝无 text。"""
+        """G2 + 44：resources/list 返回快照 + 仓库内容资源纯元数据——条目绝无 text。"""
         resp = self.srv.handle(_req(2, "resources/list"))
         resources = resp["result"]["resources"]
-        self.assertEqual(len(resources), 2)
+        self.assertGreaterEqual(len(resources), 2)
+        self.assertTrue(any(r["uri"].startswith("nf://repo/module/")
+                            for r in resources))
         for r in resources:
             self.assertIn("uri", r)
             self.assertIn("name", r)
             self.assertNotIn("text", r, f"list 元数据不得内嵌正文（G2）：{r}")
-            self.assertTrue(r["uri"].startswith("nf://P90/"))
+
+    def test_read_repo_module_resource_content(self):
+        """44 深化：resources/read 经 nf://repo/… 取模块正文实质内容。"""
+        resp = self.srv.handle(_req(31, "resources/read",
+                                    {"uri": "nf://repo/module/M90"}))
+        contents = resp["result"]["contents"]
+        self.assertEqual(len(contents), 1)
+        self.assertIn("machine_contract", contents[0]["text"])
 
     def test_read_resource_returns_text_g2(self):
         """G2 勾销：正文经 resources/read → contents[].text（TextResourceContents）。"""
@@ -132,6 +141,15 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertTrue(payload["found"])
         self.assertTrue(payload["bytes"] > 200)
         self.assertIn("machine_contract", payload["text"])
+
+    def test_tools_call_module_read_content_only_module(self):
+        """44 深化：存量内容模块（无机读块）也可按 id 读取正文。"""
+        resp = self.srv.handle(_req(32, "tools/call", {
+            "name": "module_read", "arguments": {"module_id": "M40"}}))
+        payload = json.loads(resp["result"]["content"][0]["text"])
+        self.assertTrue(payload["found"])
+        self.assertFalse(payload["has_machine_contract"])
+        self.assertIn("关系深度", payload["text"])
 
     def test_tools_call_pipeline_read_content(self):
         """44 内容通道：pipeline_read 按 id 返回管线正文。"""

@@ -210,39 +210,61 @@ def _tool_library_search(query: str, limit: int = 10) -> list:
     return hits[:limit]
 
 
-def _tool_module_read(module_id: str) -> dict:
+def _repo_module_index() -> list:
     from core import conformance_scan as csc
+    import re
 
     root = _repo_root()
-    req = module_id.strip()
-    exact, suffix = [], []
+    out = []
     for doc in csc._module_docs(str(root)):
         text = Path(doc).read_text(encoding="utf-8")
         parsed = csc._fence_yaml(text, "machine_contract")
         mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
         mid = mc.get("id") if isinstance(mc, dict) else None
-        if mid == req:
-            exact.append(doc)
-        elif isinstance(mid, str) and mid.split(":", 1)[-1] == req:
-            suffix.append(doc)
-    hit = None
+        m = re.search(r"#\s*模块\s+([^\s·]+)", text)
+        title_id = m.group(1).strip() if m else None
+        rel = Path(doc).relative_to(root).as_posix()
+        out.append({"mc_id": mid, "title_id": title_id, "rel": rel,
+                    "text": text, "has_contract": bool(mid)})
+    out.sort(key=lambda x: x["rel"])
+    return out
+
+
+def _resolve_module(index: list, module_id: str) -> dict:
+    import re
+
+    req = module_id.strip()
+    exact, suffix = [], []
+    for it in index:
+        ids = [x for x in (it["mc_id"], it["title_id"]) if x]
+        if req in ids:
+            exact.append(it)
+        elif req.isdigit() and any(
+                isinstance(x, str) and x.split(":", 1)[-1] == req for x in ids):
+            suffix.append(it)
     if exact:
-        hit = exact[0]
-    elif len(suffix) == 1:
-        hit = suffix[0]
-    elif len(suffix) > 1:
+        return dict(exact[0])
+    if len(suffix) == 1:
+        return dict(suffix[0])
+    if len(suffix) > 1:
         raise ValueError(
             "module_id 存在多个同号限定（如 通用:M10 / 生存:M10）——请用限定 id"
             "（修复指引：先 registry_query 查全限定 id 再重试）")
-    if hit is None:
-        raise ValueError("模块未找到：%s（module ls / registry_query 可枚举）"
-                         "（修复指引：用仓库内真实模块 id，如 M90 或 通用:M10）" % module_id)
-    text = Path(hit).read_text(encoding="utf-8")
-    rel = Path(hit).relative_to(root).as_posix()
-    parsed = csc._fence_yaml(text, "machine_contract")
-    mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
-    return {"found": True, "id": (mc or {}).get("id") or module_id,
-            "path": rel, "bytes": len(text.encode("utf-8")), "text": text}
+    raise ValueError("模块未找到：%s（module ls / registry_query 可枚举）"
+                     "（修复指引：用仓库内真实模块 id，如 M90、M40 或 通用:M10）"
+                     % module_id)
+
+
+def _tool_module_read(module_id: str) -> dict:
+    root = _repo_root()
+    hit = _resolve_module(_repo_module_index(), module_id)
+    text = Path(root, hit["rel"]).read_text(encoding="utf-8")
+    return {"found": True,
+            "id": hit["mc_id"] or hit["title_id"] or module_id,
+            "path": hit["rel"],
+            "has_machine_contract": hit["has_contract"],
+            "bytes": len(text.encode("utf-8")),
+            "text": text}
 
 
 def _tool_pipeline_read(pipeline: str) -> dict:
@@ -326,7 +348,79 @@ def _prompt_assemble_guide() -> str:
         "「##7. 自检清单」；引用式档位须如实标注缺口，禁止编造未读内容。仓库验证：bash verify.sh。"
         "取实质内容用内容工具：module_read <模块 id>（模块正文）/ pipeline_read <Pxx 或路径>"
         "（管线正文）/ asset_get <资产键>（资产正文）——禁止凭记忆写未读取的模块/资产内容。"
+        "标准资源面亦可取正文：resources/read nf://repo/module/<id> / nf://repo/pipeline/<Pxx> "
+        "/ nf://repo/asset/<包>/<键>。"
     )
+
+
+def _repo_resource_metas() -> list:
+    """仓库内容资源元数据（nf://repo/…）：模块/管线/资产，纯元数据不含正文。"""
+    import urllib.parse as up
+
+    root = _repo_root()
+    metas = []
+    for it in _repo_module_index():
+        mid = it["mc_id"] or it["title_id"]
+        if not mid:
+            continue
+        uri = "nf://repo/module/" + up.quote(str(mid), safe="")
+        metas.append({"uri": uri, "name": "模块 %s" % mid,
+                      "mimeType": "text/markdown"})
+    for pat in ("03_管线库/*.md", "community/*/pipelines/*.md"):
+        for p in sorted(root.glob(pat)):
+            stem = p.name.split("_", 1)[0]
+            uri = "nf://repo/pipeline/" + up.quote(stem, safe="")
+            metas.append({"uri": uri, "name": "管线 %s" % stem,
+                          "mimeType": "text/markdown"})
+    for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
+        for p in sorted(root.glob(pat)):
+            if p.name == "README.md":
+                continue
+            keys = _asset_key_candidates(p.stem)
+            if not keys:
+                continue
+            rel = p.relative_to(root).as_posix()
+            package = rel.split("/")[1] if rel.startswith("community") else "官方"
+            for k in keys[:1]:
+                uri = "nf://repo/asset/" + up.quote(package, safe="") + "/" + up.quote(k, safe="")
+                metas.append({"uri": uri, "name": "资产 %s/%s" % (package, k),
+                              "mimeType": "text/markdown"})
+    metas.sort(key=lambda m: m["uri"])
+    return metas
+
+
+def _repo_read_uri(uri: str) -> str:
+    """nf://repo/<kind>/… → 仓库正文（只读）。未知结构抛 KeyError → 调用方转白名单拒绝。"""
+    import urllib.parse as up
+
+    root = _repo_root()
+    parts = uri.split("/")
+    if len(parts) < 4 or parts[0] != "nf:" or parts[2] != "repo":
+        raise KeyError(uri)
+    kind = parts[3]
+    if kind == "module":
+        mid = up.unquote(parts[4])
+        hit = _resolve_module(_repo_module_index(), mid)
+        return Path(root, hit["rel"]).read_text(encoding="utf-8")
+    if kind == "pipeline":
+        pid = up.unquote(parts[4])
+        for pat in ("03_管线库/*.md", "community/*/pipelines/*.md"):
+            for p in sorted(root.glob(pat)):
+                if p.name.split("_", 1)[0] == pid:
+                    return p.read_text(encoding="utf-8")
+        raise KeyError(uri)
+    if kind == "asset":
+        package = up.unquote(parts[4])
+        key = up.unquote(parts[5])
+        for pat in ("community/%s/assets/*.md" % package,
+                    "05_资产库/用户自定义/*.md"):
+            for p in sorted(root.glob(pat)):
+                if p.name == "README.md":
+                    continue
+                if key in _asset_key_candidates(p.stem):
+                    return p.read_text(encoding="utf-8")
+        raise KeyError(uri)
+    raise KeyError(uri)
 
 
 class UnknownUriError(KeyError):
@@ -353,6 +447,13 @@ class McpRuntime:
         self._meta: Dict[str, Dict[str, Any]] = {}
         #: uri → 正文（read 专用，G2 两段式）
         self._text: Dict[str, str] = {}
+        #: 仓库实时内容资源（nf://repo/…，44 深化：标准资源面可取实质内容）
+        self._repo_meta: Dict[str, Dict[str, str]] = {}
+        try:
+            for meta in _repo_resource_metas():
+                self._repo_meta[meta["uri"]] = meta
+        except Exception:
+            self._repo_meta = {}
         for r in mcp.get("resources") or []:
             uri = r.get("uri")
             if not uri:
@@ -410,7 +511,8 @@ class McpRuntime:
         if method == "initialize":
             return self._initialize(params)
         if method == "resources/list":
-            return {"resources": list(self._meta.values())}
+            return {"resources": list(self._meta.values())
+                    + list(self._repo_meta.values())}
         if method == "resources/read":
             return self._read(params)
         if method == "tools/list":
@@ -464,6 +566,13 @@ class McpRuntime:
 
     def _read(self, params: dict) -> dict:
         uri = params.get("uri") if isinstance(params, dict) else None
+        if isinstance(uri, str) and uri in self._repo_meta:
+            try:
+                text = _repo_read_uri(uri)
+            except (KeyError, OSError):
+                raise UnknownUriError(uri)
+            return {"contents": [{"uri": uri, "mimeType": "text/markdown",
+                                  "text": text}]}
         if not isinstance(uri, str) or uri not in self._text:
             # C2 白名单：未知 uri 拒绝（schema 无 not-found 码，参数级拒绝）
             raise UnknownUriError(uri)
