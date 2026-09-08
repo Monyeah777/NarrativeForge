@@ -1,0 +1,72 @@
+{
+  "schema": "nf-execution-drill/1",
+  "pipeline": "P06",
+  "source_note": "样本为推断构造（据已观察失范类别：浏览-复述 / 编号真实语义错位 / 无引用凭印象 / 编造编号），来源诚实标注 inferred；NF-FIELD-001 回执原件入仓后统一按 field001 增补。",
+  "source_text": "技术文档题材装配流 P06 · 装载：M90 技术文档结构按意图产出 DocState；推进：M97 术语管理维护术语表、M98 修订记录维护修订日志。",
+  "real_ids": ["M00", "M90", "M97", "M98", "M80"],
+  "semantics": {
+    "M90": ["DocState", "doc_delta", "结构骨架"],
+    "M97": ["术语表", "术语", "term"],
+    "M98": ["revision", "变更日志", "日志", "追加修订"],
+    "M00": ["数据槽", "数据结构"],
+    "M80": ["输出", "渲染"]
+  },
+  "cases": [
+    {
+      "id": "P06-pos-advance",
+      "note": "正例：引用 + 真实编号 + 职责自洽 + 推进信号",
+      "output": "回合推进：引用 06 §3 后，由 M90 技术文档结构 产出 DocState；M97 术语管理 维护术语表，M98 修订记录 追加 revision 日志。",
+      "expect_captured": [],
+      "guard": true
+    },
+    {
+      "id": "P06-dev-browse-repeat",
+      "note": "失范：浏览-复述（原文复制、无推进信号）",
+      "output": "技术文档题材装配流 P06 · 装载：M90 技术文档结构按意图产出 DocState；推进：M97 术语管理维护术语表、M98 修订记录维护修订日志。 就到这里。",
+      "expect_captured": ["browse_repeat"],
+      "guard": false
+    },
+    {
+      "id": "P06-pos-browse-progress",
+      "note": "变异对照：复制 + 推进信号 → 不应误捕获",
+      "output": "技术文档题材装配流 P06 · 装载：M90 技术文档结构按意图产出 DocState；推进：M97 术语管理维护术语表。回合推进：已进入第 3 回合。",
+      "expect_captured": [],
+      "guard": true
+    },
+    {
+      "id": "P06-dev-fabricated-id",
+      "note": "失范：编造编号（M99 不在 P06 装配真实编号集）",
+      "output": "由 M99 修订归档模块 记录变更。",
+      "expect_captured": ["fabricated_id"],
+      "guard": false
+    },
+    {
+      "id": "P06-dev-no-citation",
+      "note": "失范：无引用凭印象（决策句无 §/编号）",
+      "output": "下一步应该把术语表章节并入修订日志。",
+      "expect_captured": ["no_citation"],
+      "guard": false
+    },
+    {
+      "id": "P06-pos-cited-decision",
+      "note": "变异对照：带 § 引用 → 不应误捕获",
+      "output": "下一步应该把术语表章节并入修订日志（依据 02 §7 章节装配）。",
+      "expect_captured": [],
+      "guard": true
+    },
+    {
+      "id": "P06-dev-semantic-misalign",
+      "note": "失范：编号真实语义错位（M98 被描述为维护术语表——职责属 M97）",
+      "output": "由 M98 修订记录 维护术语表一致性。",
+      "expect_captured": ["semantic_misalignment"],
+      "guard": false
+    },
+    {
+      "id": "P06-pos-semantic-aligned",
+      "note": "变异对照：职责自洽 → 不应误捕获",
+      "output": "由 M97 术语管理 维护术语表一致性。",
+      "expect_captured": [],
+      "guard": true
+    }
+  ]
+}

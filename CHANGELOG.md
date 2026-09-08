@@ -14,6 +14,7 @@
 - M4 验收：普查表落档；指令类 100% 带标识（机检零缺漏）；last-updated 覆盖 + 过期告警常驻（当前零过期）；内容边界段入 06 §12 + INDEX 读取须知；资产评估报告 1 份（当前无应淘汰低密度键）。verify check1-27 PASS=41 不破（M4 未增 verify check，机检经 unittest 常驻）。
 - M5 验收：覆盖率 CI 门槛就绪（core 85% ≥80%）；映射矩阵 + 常驻校验绿；e2e+verify 一键入口在；自查清单 + Release checklist 落档（随下个 tag 首用）。42 M1-M5 全交付（纯内部），verify check1-27 PASS=41 不破。
 - **42 收口 audit（docs_audit-42-quality.md，verdict 通过）**：M1-M5 逐项核验 + 五维自评段；带状态头执行口径固化（RULE_LAW ↔ L1-L4，硬断言不越级）；M1「8 条失范明细」与 M3「连续 2 波零命中」等口径显式标注待素材/下波；单测 424→425。
+- **M1 演练集扩展（第 2 份）**：P06 技术文档演练集（`desktop/tests/fixtures/execution/p06_drill_cases.json`，8 例）+ `docs/42_M1_P06_演练集.md`；`test_execution_drill` 参数化覆盖 P03+P06（捕获/guard/捕获率逐管线）；语义词 = 功能词（显示名作标签不作判据）。
 ## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W6 实施完成待 tag——C1-C9 + D2-D6）
 ### Added
 - **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。
