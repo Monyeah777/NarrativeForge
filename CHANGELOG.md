@@ -1,4 +1,4 @@
-## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W2 = 立项 + C1/C2/C5 + C3/C4 落地）
+## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W3 推进——C1-C5 落地 + C6 模板/C8 评估/C9 指针 + D2/D5/D6）
 ### Added
 - **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。
 - **C1 协议知识签名 `nf sig`（`desktop/src/core/knowledge_sig.py`）**：01-36 编号方案文档/协议/管线/模块 → 结构化签名（标题/编号/版本/章节/引用集/正文哈希，知识指纹）；试点 01/24/36 签名已生成，全量 35 文档两遍生成逐字节一致；单测 5 例全绿。
@@ -7,9 +7,14 @@
 - **C3 语义矛盾扫描（`desktop/src/core/semantic_conflict.py` + verify check26，v2.15）**：techdoc 链（M90/M97/M98）machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移扫描；**扫出并修复 3 例真实矛盾**——M50 发布 `intent_received`（P90 装载输入闭环）/ M90 发布 `doc_delta_committed`（供 M98）/ M97 发布 `term_conflict_detected`（自检广播）；verify PASS 37→39，全库 44 模块零 issue。
 - **C4 图书馆 See-Also（`market_analyzer.related_of` + `nf related`）**：registry 引用图人读化——关联条目（依赖链/官方核心归属）+ 反向引用方 + 相关模块互见；实测「技术文档域包 ↔ 官方核心（M00/M90）互见」「M90 ↔ 技术文档域包互见」。
 - **回归与绿线**：单测 390→396 全绿（test_semantic_conflict 3 + test_related_of 3）；verify.sh v2.14→v2.15（check25→check26），check1-26 PASS=39 全绿；ci-verify/README 绿线同步 PASS=39。
+- **C6 需求收敛衔接（部分）**：`docs/需求收敛模板.md`（8 字段澄清稿 + 自动流转链：回填稿 → `nf design steelman init` → `audit init` → 草案留档）；首例 NF-FIELD-001 回填全链**待作者提供回执原件**后走通。
+- **C8 MCP transport 扩展评估**：`docs/41_波C_C8_transport评估.md`——评估 streamable HTTP/SSE 差距后**结论暂不做**（无消费方 + 安全面 + stdio 已覆盖本机场景），回冻结条件 = E3 标准客户端回填且出现真实远程装载需求。
+- **C9 回合装载指针 v0**：`docs/41_波C_C9_回合装载指针_v0.md`——指针格式定义（常驻/热区/冷区）+ P03 西幻第 5 回合样例；分级不进协议正文（01/02 零改动），verify 不破。
+- **D 组**：D5 迁移指南（`docs/迁移指南-基于nf-sig-diff.md`）/ D6 Windows 说明（README：Git Bash / WSL 跑 `bash`）/ **D2 CLI 层自动化测试**（`desktop/tests/test_nf_cli.py` 5 例：子命令面 + sig/diff/explain/market/related smoke）。
 ### Notes
 - 波 C 推进面：W1 = 立项 + C1/C2/C5；W2 = C3/C4 已落地；C6-C9 + D 组逐项推进中（C7 需 E3 标准 MCP 客户端回填；C6 首例需 NF-FIELD-001 回执素材）。
 - 外部依赖挂账（需作者/外部环境）：B1 菜单 v0.2 第 2 次实测、Gitee 子令牌轮换、E3 标准 MCP 客户端实测、C6 首例 NF-FIELD-001 实测回执素材待作者提供入仓。
+- W3 回归：单测 396→401 全绿（test_nf_cli +5）；verify 复核 check1-26 PASS=39 不破（纯文档 + 测试新增）。C7（MCP 只读 tools/prompts）待 E3 标准客户端实测回填后收口。
 ## [2.7.0] - 2026-09-07（40 总纲波 A + 波 B 整合发布 · 首个无壳基础层版本）
 ### Added
 - **发布整合（用户 2026-09-07 拍板「整合到 v2.7」）**：40 总纲波 A（原计划 v2.7.0）与波 B（原计划 v2.8.0）**整合为单一 v2.7.0 发布**；版本号 v2.8.0 顺延给后续常态内容波。首个无壳基础层 tag（分离节奏发布线首验，普通基础层 tag 不产壳）。

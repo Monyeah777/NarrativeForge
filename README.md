@@ -149,7 +149,7 @@ NarrativeForge（NF）有一个**云端公共图书馆**（`library/`）：建�
 
 基础层真身：纯 Python 零第三方依赖的装配/IR/质检/导出/检索逻辑，被端壳（桌面 GUI / android）复用。L0-L2 验证入口：
 
-- 分层门禁：`bash verify.sh`（v2.15，check1-26 全绿 PASS=39，clone 即绿）
+- 分层门禁：`bash verify.sh`（v2.15，check1-26 全绿 PASS=39，clone 即绿；Windows 用 Git Bash / WSL 跑 `bash`）
 - 单元测试：`cd desktop && python -m unittest discover -s tests`
 - 端到端：`python scripts/e2e_desktop_headless.py`（直驱 core，无需 GUI/端壳）
 
