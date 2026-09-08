@@ -127,6 +127,13 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn("西幻生存领域包", out)
         self.assertIn("P03", out)
 
+    def test_assemble_plan_custom_flow(self):
+        """nf assemble：未命中关键词 → 用户自定义流（不复位为死路）。"""
+        code, out = self._run(["assemble", "做一个古代宫廷权谋世界的完整版"])
+        self.assertEqual(code, 0)
+        self.assertIn("用户自定义流", out)
+        self.assertIn("M91-M99", out)
+
     def test_assemble_check_ok_and_reject(self):
         """nf assemble --check：合格成品过、编造编号成品拒。"""
         def _write(text):

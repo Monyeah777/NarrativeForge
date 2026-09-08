@@ -39,6 +39,22 @@ def _official_core_ids() -> List[str]:
     return [str(m["id"]) for m in reg.get("modules", [])]
 
 
+def _package_module_sets() -> Dict[str, List[str]]:
+    import yaml
+
+    sets: Dict[str, List[str]] = {}
+    for proto in sorted((_ROOT / "community").glob("*/protocol.yaml")):
+        try:
+            data = yaml.safe_load(proto.read_text(encoding="utf-8"))
+            pkg = (data.get("package") or {}).get("id")
+            mids = [(data.get("package") or {}).get("module_id_range") or []]
+            if pkg:
+                sets[str(pkg)] = [str(x) for x in mids[0]]
+        except Exception:
+            continue
+    return sets
+
+
 def plan(requirement: str) -> Dict[str, Any]:
     """需求 → 装配计划（预设包 + 取件清单）。"""
     req = requirement.strip()
@@ -48,6 +64,7 @@ def plan(requirement: str) -> Dict[str, Any]:
             pkg, pipeline = hit
             break
     modules: List[str] = []
+    matched = bool(pkg)
     if pkg:
         proto = _ROOT / "community" / pkg / "protocol.yaml"
         if proto.is_file():
@@ -57,6 +74,16 @@ def plan(requirement: str) -> Dict[str, Any]:
                 modules = [str(x) for x in (data.get("package") or {}).get("module_id_range") or []]
             except Exception:
                 modules = []
+    packages = _package_module_sets()
+    if not matched:
+        # 用户自定义/未命中：允许全域已登记模块（官方核心 + 各社区包），
+        # 并给出自定义预留槽位；自定义件须先按模板落库登记，验收才认。
+        for mids in packages.values():
+            modules += mids
+        modules = sorted(set(modules))
+        known = sorted(packages)
+    else:
+        known = [pkg]
     allowed = sorted(set(_official_core_ids() + modules))
     if pipeline and pkg:
         pipeline_path = (_ROOT / "community" / pkg / "pipelines").glob("%s*.md" % pipeline)
@@ -65,13 +92,14 @@ def plan(requirement: str) -> Dict[str, Any]:
         pipe_files = []
     return {
         "requirement": req,
-        "matched": bool(pkg),
+        "matched": matched,
         "package": pkg,
         "pipeline": pipeline,
         "pipeline_files": pipe_files,
-        "fetch_modules": sorted(modules) or allowed,
+        "fetch_modules": modules or [str(x) for x in _official_core_ids()],
         "allowed_module_ids": allowed,
-        "status": "preset" if pkg else "open",
+        "known_packages": known,
+        "status": "preset" if matched else "custom",
     }
 
 

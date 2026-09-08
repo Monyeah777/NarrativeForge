@@ -1439,11 +1439,20 @@ def _cmd_assemble(args):
         print("  取件模块：%s" % "、".join(plan_["fetch_modules"]))
         print("  装配允许集（官方核心 + 包模块）：%d"
               % len(plan_["allowed_module_ids"]))
+        print("  下一步：读 agent_组装指令包_v0.2.md → 取件 → 输出完整版 → "
+              "nf assemble \"%s\" --check <out.md> 验收" % args.requirement)
     else:
-        print("  未命中预设（open）：请给领域关键词（西幻/校园/技术文档/轻混/通用核心）")
-    print("  下一步：读 agent_组装指令包_v0.2.md → 取件 → 输出完整版 → "
-          "nf assemble \"%s\" --check <out.md> 验收" % args.requirement)
-    return 0 if plan_["matched"] else 2
+        print("  未命中预设 → 用户自定义流（custom）")
+        print("  可借用已登记包：%s"
+              % ("、".join(plan_["known_packages"]) or "—"))
+        print("  装配允许集（官方核心 + 全部已登记社区模块）：%d"
+              % len(plan_["allowed_module_ids"]))
+        print("  自定义预留槽位：模块 M91-M99 · 资产 900+ 命名空间 · 新管线 Pxx（不占用既有）")
+        print("  建件：按 community/模板制作指令包.md 做自定义模块/资产 → "
+              "protocol.yaml 登记（nf register）→ 成品里即可引用 → 验收")
+        print("  验收：nf assemble \"%s\" --check <out.md>"
+              % args.requirement)
+    return 0
 
 
 def main(argv=None) -> int:
