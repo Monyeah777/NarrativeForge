@@ -118,6 +118,21 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn("__fish_use_subcommand", out)
         self.assertIn("doctor", out)
 
+    def test_exit_code_matrix(self):
+        """退出码矩阵（子进程）：0 成功 / 2 用法·未知命令·校验失败 / 未知子命令。"""
+        cases = (
+            (["bogus"], 2),
+            (["run"], 2),
+            (["explain", "no-such-check"], 2),
+            (["doctor"], 0),
+        )
+        for argv, expected in cases:
+            proc = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "nf.py")] + argv,
+                capture_output=True, text=True, encoding="utf-8", timeout=120,
+            )
+            self.assertEqual(proc.returncode, expected, "argv=%s" % argv)
+
     # ---- 44 波：CLI 工具链顶尖化（骨架约定：无参 help / help 子命令 / doctor / version）----
     def test_no_args_shows_help(self):
         code, out = self._run([])

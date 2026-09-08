@@ -79,6 +79,8 @@
 5. **新领域派生管线**：`python scripts/nf.py pipeline new --id P07 --name 演示领域管线 --domain 悬疑`（自 P00 骨架派生 → 按 01 §2 填层名/挂载 → 登记 02 联动注册表 → run 即调度，引擎不改一行）。
 6. **模块状态与弃用流转**：`python scripts/nf.py module ls` / `module status <模块md>` / `module deprecate <模块md> --reason <原因>` / `module restore <模块md>` / `module verify`（引用门禁，与 verify check24 同语义）。
 
+7. **CLI 健康与补全**：`python scripts/nf.py doctor`（环境自检）`/ help <子命令>`（单命令帮助）`/ completion bash`（shell 补全，zsh/fish 同）`/ --version`；数据命令（`sig`/`diff`/`market --list`/`asset ls`/`asset inventory`/`module ls`/`related`/`doctor`）加 `--json` 输出结构化结果。
+
 > 详细装配规格见 `agent_组装指令包_v0.1.md`；模块 / 资产怎么写见 `community/模板制作指令包.md`。
 
 ## 分层与端壳（L3 冻结）
