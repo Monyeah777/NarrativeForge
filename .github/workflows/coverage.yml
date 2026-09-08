@@ -1,0 +1,25 @@
+name: coverage
+# 42 M5.1：核心层代码覆盖率量化（独立 job，不碰 verify.sh 零依赖红线）。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core-coverage:
+    name: core-coverage-ge-80
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 安装 coverage
+        run: pip install coverage
+      - name: 核心层覆盖率门槛（desktop/src/core ≥80%）
+        run: |
+          coverage run --source=desktop/src/core -m unittest discover -s desktop/tests
+          coverage report --fail-under=80 --include="desktop/src/core/*"
