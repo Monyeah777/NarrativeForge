@@ -1025,6 +1025,11 @@ def _cmd_diff(args):
             for c in diff["changes"]:
                 print("  [%s] %s  %r → %r" % (c["kind"], c["field"], c["from"], c["to"]))
             print("  判定：%s" % diff["verdict"])
+            impact = diff.get("impact", "editorial")
+            label = {"bump": "结构性（须 bump + 迁移记录）",
+                     "additive": "字段级新增（V1 只增不删）",
+                     "editorial": "措辞/编辑（无契约影响）"}.get(impact, impact)
+            print("  影响度：%s（%s）" % (impact, label))
         return 0
     except (OSError, ValueError) as exc:
         print("  ✗ %s" % exc, file=sys.stderr); return 2

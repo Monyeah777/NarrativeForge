@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.18  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁）
+# 版本 : v2.19  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
 # 结构 : [段 A] 官方核心出厂（check1-6，无 community 亦须通过）
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
-#        [段 C] 代码层门禁（check12-check29，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
+#        [段 C] 代码层门禁（check12-check30，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
 #        段 A/B = L0/L1（协议一致性 + 内容对账），check12-22 = L2 core（unittest/py_compile/协议投影/
 #        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳冻结移出（见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备）；check26 = 语义矛盾扫描门禁（41 波C C3：techdoc 链 machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移）；check27 = 架构纯度体检门禁（42 M3：协议层端壳残留/私货可变物/重复标题 grep + core raise 消息修复指引审计））
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
@@ -1247,9 +1247,75 @@ PYEOF
   fi
 }
 
+check30(){
+  echo '== [30/段C] 扩展策略 + bump 迁移门禁（43 A3：EXTENSION 判据在场 + 版本字段结构性变更须带 01 §7/02 §9.3 迁移记录）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check30.log 2>&1
+import os, re, subprocess, sys
+issues = []
+ext = ''
+if os.path.isfile('protocol/EXTENSION.md'):
+    ext = open('protocol/EXTENSION.md', encoding='utf-8').read()
+need = ['字段级新增', '迁移记录', 'bump', 'additive', 'editorial', '结构 bump']
+miss = [m for m in need if m not in ext]
+if miss:
+    issues.append('EXTENSION.md 缺判据词：' + ','.join(miss))
+files = ['01_核心协议.md', '02_联动注册表.md', 'desktop/src/core/registry.json']
+sdir = 'protocol/schema'
+if os.path.isdir(sdir):
+    files += [os.path.join(sdir, f) for f in sorted(os.listdir(sdir)) if f.endswith('.json')]
+import glob
+files += sorted(glob.glob('community/*/protocol.yaml'))
+tok = re.compile(r'\b(?:registry_schema_version|schema_version)\b\s*[:=]\s*"?[0-9][0-9.]*"?')
+def parse_version(line):
+    m = re.search(r'[:=]\s*"?([0-9][0-9.]*)"?', line)
+    return m.group(1) if m else None
+bumps = 0
+for f in files:
+    r = subprocess.run(['git', 'diff', 'HEAD', '--', f], capture_output=True, text=True)
+    if r.returncode != 0:
+        continue
+    diff = r.stdout
+    old = {}; new = {}
+    for ln in diff.splitlines():
+        if ln.startswith('---') or ln.startswith('+++'):
+            continue
+        if ln.startswith('-') and not ln.startswith('---'):
+            v = parse_version(ln[1:])
+            if v is not None:
+                old.setdefault(v, 0)
+        if ln.startswith('+') and not ln.startswith('+++'):
+            v = parse_version(ln[1:])
+            if v is not None:
+                new.setdefault(v, 0)
+    if old and new and set(old) != set(new):
+        bumps += 1
+        markers = ['现状快照', 'bump 声明', '迁移说明', '校验回读']
+        present = [m for m in markers if m in diff]
+        if len(present) < 4:
+            issues.append('%s: 版本字段结构性变更（bump）但无四步迁移记录（缺：%s）'
+                          % (f, ','.join(set(markers) - set(present))))
+print('扩展策略统计：判据词缺 %d / bump diff %d' % (len(miss), bumps))
+for i in issues:
+    print('[FAIL] %s' % i)
+sys.exit(1 if issues else 0)
+PYEOF
+    then
+      ok '扩展策略 + bump 迁移门禁通过（A3：EXTENSION 判据在场，版本 bump 均带迁移四步）'
+    else
+      no "扩展策略/bump 迁移扫描异常——$(tail -2 /tmp/nf_check30.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check30）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '扩展策略 + bump 迁移门禁全绿（check30：43 A3——EXTENSION 判据常驻，PASS 45→47）'
+  fi
+}
+
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.18（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.19（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -1261,7 +1327,7 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁（L2 core：check12-check29 无条件执行；android 相关已随 L3 冻结移出）——'
+echo '—— 段 C：代码层门禁（L2 core：check12-check30 无条件执行；android 相关已随 L3 冻结移出）——'
 check12
 check13
 check14
@@ -1280,6 +1346,7 @@ check26
 check27
 check28
 check29
+check30
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then

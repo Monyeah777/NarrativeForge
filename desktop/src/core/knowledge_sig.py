@@ -193,6 +193,8 @@ def diff_signatures(a: dict, b: dict) -> dict:
         for x in sorted(sb - sa):
             changes.append({"field": f, "from": None, "to": x, "kind": "新增"})
     removed = [c for c in changes if c["kind"] == "移除" and c["field"] in ("refs", "headings")]
+    removed_any = [c for c in changes if c["kind"] == "移除"]
+    added_any = [c for c in changes if c["kind"] == "新增"]
     if a.get("doc_id") and b.get("doc_id") and a["doc_id"] != b["doc_id"]:
         verdict = "破坏（文档编号变更）"
     elif removed:
@@ -201,5 +203,13 @@ def diff_signatures(a: dict, b: dict) -> dict:
         verdict = "兼容（版本演进）"
     else:
         verdict = "兼容"
+    # 43 A3 —— 影响度三档：bump > additive > editorial（protocol/EXTENSION.md 判据表）
+    version_bump = a.get("version") != b.get("version")
+    if a.get("doc_id") != b.get("doc_id") or removed_any or version_bump:
+        impact = "bump"
+    elif added_any:
+        impact = "additive"
+    else:
+        impact = "editorial"
     return {"from": a.get("path"), "to": b.get("path"),
-            "verdict": verdict, "changes": changes}
+            "verdict": verdict, "impact": impact, "changes": changes}
