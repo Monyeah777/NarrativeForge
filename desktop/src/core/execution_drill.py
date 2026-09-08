@@ -26,6 +26,14 @@ _CITATION = re.compile(r"(§\s*\d+(?:[.-]\d+)*|第\s*\d+\s*(?:节|步|章)|L\d+|
 _PROGRESS = ("回合推进", "进入回合", "已进入第", "时间推进", "推进至", "进入下一回合")
 _SPLIT = re.compile(r"[。！？；\n]+")
 
+#: 硬断言 ↔ 判级器（06 §11 / round_header.LAWS）映射（带状态头执行口径）
+RULE_LAW = {
+    "no_citation": "L1",            # 引用后执行（必须）
+    "fabricated_id": "L2",          # 禁止编造编号
+    "browse_repeat": "L3",          # 禁止浏览-复述
+    "semantic_misalignment": "L4",  # 职责自洽（必须）
+}
+
 
 def _bigrams(text: str) -> set:
     flat = re.sub(r"\s+", "", text)

@@ -55,6 +55,15 @@ class ExecutionDrillTest(unittest.TestCase):
         self.assertGreaterEqual(captured, len(dev))
         self.assertGreaterEqual(captured / max(1, len(dev)), 2 / 3)
 
+    def test_state_header_acceptance_rule_law_mapping(self):
+        """带状态头执行口径：硬断言须一一映射到判级器必须/禁止铁律（无越级）。"""
+        from core import round_header as rh
+        for rule, law_id in drill.RULE_LAW.items():
+            law = rh.LAW_INDEX[law_id]
+            self.assertIn(law["level"], ("必须", "禁止"),
+                          "%s 不得映射到软级/自由级" % rule)
+        self.assertEqual(len(drill.RULE_LAW), 4)
+
 
 if __name__ == "__main__":
     unittest.main()
