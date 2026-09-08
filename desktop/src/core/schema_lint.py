@@ -30,6 +30,38 @@ except Exception:  # pragma: no cover - 环境缺依赖时由调用方提示
 FENCE = re.compile(r"(?ms)```yaml\s*(.*?)```")
 SCHEMA_DIR = os.path.join("protocol", "schema")
 
+# 校验器已实现的关键字白名单（子集边界显式化）：
+# schema 定义若使用白名单之外的关键字（oneOf/$ref/patternProperties/format…），
+# check28 将 FAIL——防止「校验器声称子集却静默忽略语义」的假绿。
+SUBSET_ALLOWED_KEYS = {
+    "$schema", "$id", "title", "description", "type",
+    "required", "properties", "additionalProperties", "items",
+    "enum", "pattern", "minLength", "minimum", "minItems", "maxItems",
+}
+
+
+def subset_key_violations(schema: Any, path: str = "schema") -> List[str]:
+    """递归扫描 schema 定义里校验器未实现的关键字（越界即 FAIL）。"""
+    if not isinstance(schema, dict):
+        return []
+    out = [
+        f"{path}: 使用了校验器未实现的关键字 {key}（JSON-schema 子集越界——"
+        "check28 无法兑现该语义；须扩展校验器或删除该关键字）"
+        for key in schema
+        if key not in SUBSET_ALLOWED_KEYS
+    ]
+    props = schema.get("properties")
+    if isinstance(props, dict):
+        for pname, sub in props.items():
+            out += subset_key_violations(sub, f"{path}/properties/{pname}")
+    items = schema.get("items")
+    if isinstance(items, dict):
+        out += subset_key_violations(items, f"{path}/items")
+    extra = schema.get("additionalProperties")
+    if isinstance(extra, dict):
+        out += subset_key_violations(extra, f"{path}/additionalProperties")
+    return out
+
 
 # ---------------------------------------------------------------- 子集校验器
 def subset_validate(
@@ -140,6 +172,7 @@ def check_schema_files(root: str) -> Tuple[List[str], List[Dict[str, Any]]]:
             issues.append(f"{name}: schema.properties 缺失/非对象")
         if "required" in data and not isinstance(data.get("required"), list):
             issues.append(f"{name}: schema.required 非数组")
+        issues += subset_key_violations(data, name)
         schemas.append(data)
     return issues, schemas
 

@@ -83,6 +83,22 @@ class SchemaScanTest(unittest.TestCase):
         self.assertGreaterEqual(stats["asset_entries"], 2)
         self.assertEqual(stats["schema_files"], 5)
 
+    def test_unsupported_keyword_rejected(self):
+        """子集边界自洽：校验器未实现的关键字出现在 schema 定义即 FAIL（防假绿）。"""
+        bad = sl.subset_key_violations({
+            "type": "object",
+            "properties": {"a": {"type": "string", "oneOf": []}},
+            "items": {"$ref": "#/definitions/x"},
+        })
+        joined = "\n".join(bad)
+        self.assertIn("oneOf", joined)
+        self.assertIn("$ref", joined)
+
+    def test_repo_schemas_within_subset(self):
+        """仓库五份 schema 全在子集白名单内（零越界 = 校验器无静默忽略面）。"""
+        for s in sl.check_schema_files(ROOT)[1]:
+            self.assertEqual(sl.subset_key_violations(s), [])
+
 
 if __name__ == "__main__":
     unittest.main()

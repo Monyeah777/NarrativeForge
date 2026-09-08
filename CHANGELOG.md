@@ -13,6 +13,7 @@
 - **CLI 工具链顶尖化（内部工程波次 5 · 收口）**：退出码矩阵测试（子进程 0/2 语义）+ README 命令速查第 7 步 + `docs_audit-44-cli.md` 建档（阶段收口，挂账明示，不宣称全量顶尖）；verify PASS=49 保持。
 - **CLI 工具链顶尖化（内部工程波次 6 · 语义归一）**：`market <pkg> --json`；退出码逐命令归一（校验/运行失败 = 1，用法 = 2）；`cli()` 未预期异常一句式兜底（`NF_DEBUG=1` 透出堆栈）；audit §3 挂账同步收敛；verify PASS=49 保持。
 - **CLI 工具链顶尖化（内部工程波次 7 · 自洽矩阵机检化）**：命令面自洽矩阵测试（全子命令 description/help + JSON 面逐点 + `--version`）——逐命令穷举由手写转机检；audit 结论 = 通过（CLI 内部验收线，外部实测类按封闭期冻结）；verify PASS=49 保持。
+- **协议层元工具自洽（43 追加）**：schema 子集关键字白名单显式化——定义中出现校验器未实现的关键字即 check28 FAIL（防「声称子集却静默忽略」假绿）；`test_schema_reference.py` 标准实现交叉对照（可选依赖，装了才跑）；元工具定位入档（域包内容 retro-fit 不计元工具缺口）；verify PASS=49 保持。
 ## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
 ### Added
 - **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。

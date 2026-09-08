@@ -1,7 +1,8 @@
 # protocol/ · 协议层 IDL（43 协议层顶尖化 A1）
 
 > **定位**：把协议层契约字段从「正文 yaml 示例 + 各 parse 自行半解析」升为**正式 schema 定义（IDL 单一真相）**——契约「长什么样、哪些必填、值域如何」由一个可机检的定义文件说了算；正文示例/机读块/投影均由校验器按 schema 验收。
-> **红线**：零第三方 JSON-schema 实现——校验器为自实现 JSON-schema 子集（见 `desktop/src/core/schema_lint.py`），不引 `jsonschema`；YAML 解析复用仓库既有 PyYAML 依赖（verify check16 已用）。
+> **红线**：零第三方 JSON-schema 实现——校验器为自实现 JSON-schema 子集（见 `desktop/src/core/schema_lint.py`），不引 `jsonschema`；YAML 解析复用仓库既有 PyYAML 依赖（verify check16 已用）。**子集边界显式化**：schema 定义若使用白名单外关键字（oneOf/$ref/patternProperties/format…）即 check28 FAIL——校验器不自欺；标准实现交叉对照见 `desktop/tests/test_schema_reference.py`（可选依赖，装了才跑）。
+> **元工具定位**：本层验收对象 = IDL/门禁/生成物/一致性机制自身的正确性；存量域包内容缺机读块（L0 过渡态）由 check16 过渡策略承接，不计入元工具质量缺口。
 > **承接**：43 A1（IDL schema，`schema/`）/ A2（Conformance 分级，`export_conformance.json` + 01 §1.2）/ A3（扩展策略 + 影响分层，`EXTENSION.md`）/ A4（生成物同仓 golden，`generated/`）。四个里程碑的产物均已随 check28-31 常驻。
 
 ## schema/ · 五份契约定义（本层机器真相）
