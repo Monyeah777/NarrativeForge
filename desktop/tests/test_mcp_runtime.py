@@ -113,15 +113,48 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertEqual(resp["error"]["code"], -32601)
 
     def test_tools_list_exposes_read_tools_c7(self):
-        """41 波C C7：tools/list 暴露 4 个只读检索工具（真实 inputSchema）。"""
+        """41 波C C7 + 44：tools/list 暴露只读检索工具与内容通道工具（真实 inputSchema）。"""
         resp = self.srv.handle(_req(20, "tools/list"))
         tools = resp["result"]["tools"]
         names = {t["name"] for t in tools}
         self.assertEqual(names,
                          {"library_search", "registry_query",
-                          "pipeline_ls", "spec_ls"})
+                          "pipeline_ls", "spec_ls",
+                          "module_read", "pipeline_read", "asset_get"})
         for t in tools:
             self.assertIn("inputSchema", t)
+
+    def test_tools_call_module_read_content(self):
+        """44 内容通道：module_read 返回模块正文实质内容（非仅元数据）。"""
+        resp = self.srv.handle(_req(25, "tools/call", {
+            "name": "module_read", "arguments": {"module_id": "M90"}}))
+        payload = json.loads(resp["result"]["content"][0]["text"])
+        self.assertTrue(payload["found"])
+        self.assertTrue(payload["bytes"] > 200)
+        self.assertIn("machine_contract", payload["text"])
+
+    def test_tools_call_pipeline_read_content(self):
+        """44 内容通道：pipeline_read 按 id 返回管线正文。"""
+        resp = self.srv.handle(_req(26, "tools/call", {
+            "name": "pipeline_read", "arguments": {"pipeline": "P90"}}))
+        payload = json.loads(resp["result"]["content"][0]["text"])
+        self.assertTrue(payload["found"])
+        self.assertIn("P90", payload["text"])
+
+    def test_tools_call_asset_get_content(self):
+        """44 内容通道：asset_get 返回资产正文（官方用户自定义 TECH_RULES）。"""
+        resp = self.srv.handle(_req(27, "tools/call", {
+            "name": "asset_get", "arguments": {"key": "TECH_RULES"}}))
+        payload = json.loads(resp["result"]["content"][0]["text"])
+        self.assertTrue(payload["found"])
+        self.assertEqual(payload["matches"][0]["package"], "官方")
+        self.assertIn("text", payload["matches"][0])
+
+    def test_tools_call_content_unknown_rejected(self):
+        """44 内容通道：未知模块/资产 → -32602（参数级拒绝，不泄露）。"""
+        resp = self.srv.handle(_req(28, "tools/call", {
+            "name": "module_read", "arguments": {"module_id": "M99-X"}}))
+        self.assertEqual(resp["error"]["code"], -32602)
 
     def test_prompts_list_exposes_guide_c7(self):
         resp = self.srv.handle(_req(21, "prompts/list"))

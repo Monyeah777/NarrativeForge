@@ -70,7 +70,7 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 ```
 
 连接后 agent 可调用：`resources/list` 枚举快照内已登记资源 → `resources/read` 按 uri 取正文。具体资源 uri 集以实际快照的 `resources/list` 返回为准。
-41 波C C7 起 agent 还可调用只读检索工具：`pipeline_ls`（管线清单）/ `spec_ls`（协议包清单）/ `registry_query`（模块+协议查询）/ `library_search`（仓库侧知识库检索），及装载引导 prompt `assemble_guide`。数据源 = 仓库只读扫描（03/04/community/docs/registry.json），全部只读、无写面。
+41 波C C7 起 agent 还可调用只读检索工具：`pipeline_ls`（管线清单）/ `spec_ls`（协议包清单）/ `registry_query`（模块+协议查询）/ `library_search`（仓库侧知识库检索），及装载引导 prompt `assemble_guide`。44 起再开放**内容通道工具**：`module_read`（模块正文）/ `pipeline_read`（管线正文）/ `asset_get`（资产正文）——从「元数据检索」升级为「实质内容取用」（机制借鉴 MCP resource/content 两段式实证适配，仍全只读）。数据源 = 仓库只读扫描（03/04/community/docs/registry.json），全部只读、无写面。
 
 ## 能力表（与 mcp_runtime 实现一一对应）
 
@@ -81,7 +81,8 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 | `ping` | ✅ | 返回 `{}` |
 | `resources/list` | ✅ | 快照登记资源纯元数据（无 text 字段） |
 | `resources/read` | ✅ | 白名单 uri → `contents[].text`；未知 uri → `-32602` |
-| `tools/list` / `tools/call`（只读） | ✅ | 41 波C C7：library_search / registry_query / pipeline_ls / spec_ls（inputSchema 真实存在，全只读） |
+| `tools/list` / `tools/call`（只读 · 检索面） | ✅ | 41 波C C7：library_search / registry_query / pipeline_ls / spec_ls（inputSchema 真实存在，全只读） |
+| `tools/list` / `tools/call`（只读 · 内容通道） | ✅ | 44：module_read / pipeline_read / asset_get——返回模块/管线/资产正文实质内容（不只元数据） |
 | `prompts/list` / `prompts/get` | ✅ | 41 波C C7：assemble_guide 装载引导模板（只读） |
 | 写路径工具（未实现） | ❌ | 未知工具 → `-32602`；未知方法 → `-32601`（只读安全层天然拒写） |
 

@@ -109,6 +109,36 @@ TOOL_DEFS = [
             "required": ["query"],
         },
     },
+    {
+        "name": "module_read",
+        "description": "取模块正文实质内容（04_模块库 + community modules，按 id 或限定 id 解析）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"module_id": {"type": "string", "description": "如 M90 或 通用:M10"}},
+            "required": ["module_id"],
+        },
+    },
+    {
+        "name": "pipeline_read",
+        "description": "取管线正文实质内容（03_管线库 + community pipelines，按 id 或相对路径）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"pipeline": {"type": "string", "description": "如 P90 或 community/…/P04….md"}},
+            "required": ["pipeline"],
+        },
+    },
+    {
+        "name": "asset_get",
+        "description": "取资产正文实质内容（community/*/assets + 05 用户自定义，按键/包定位）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "key": {"type": "string", "description": "资产键（如 EMOTION_WHEEL / JOB / TECH_RULES）"},
+                "package": {"type": "string", "description": "可选包过滤（如 校园情感领域包）"},
+            },
+            "required": ["key"],
+        },
+    },
 ]
 
 PROMPT_DEFS = [
@@ -180,11 +210,111 @@ def _tool_library_search(query: str, limit: int = 10) -> list:
     return hits[:limit]
 
 
+def _tool_module_read(module_id: str) -> dict:
+    from core import conformance_scan as csc
+
+    root = _repo_root()
+    req = module_id.strip()
+    exact, suffix = [], []
+    for doc in csc._module_docs(str(root)):
+        text = Path(doc).read_text(encoding="utf-8")
+        parsed = csc._fence_yaml(text, "machine_contract")
+        mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
+        mid = mc.get("id") if isinstance(mc, dict) else None
+        if mid == req:
+            exact.append(doc)
+        elif isinstance(mid, str) and mid.split(":", 1)[-1] == req:
+            suffix.append(doc)
+    hit = None
+    if exact:
+        hit = exact[0]
+    elif len(suffix) == 1:
+        hit = suffix[0]
+    elif len(suffix) > 1:
+        raise ValueError(
+            "module_id 存在多个同号限定（如 通用:M10 / 生存:M10）——请用限定 id"
+            "（修复指引：先 registry_query 查全限定 id 再重试）")
+    if hit is None:
+        raise ValueError("模块未找到：%s（module ls / registry_query 可枚举）"
+                         "（修复指引：用仓库内真实模块 id，如 M90 或 通用:M10）" % module_id)
+    text = Path(hit).read_text(encoding="utf-8")
+    rel = Path(hit).relative_to(root).as_posix()
+    parsed = csc._fence_yaml(text, "machine_contract")
+    mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
+    return {"found": True, "id": (mc or {}).get("id") or module_id,
+            "path": rel, "bytes": len(text.encode("utf-8")), "text": text}
+
+
+def _tool_pipeline_read(pipeline: str) -> dict:
+    root = _repo_root()
+    req = pipeline.strip()
+    path = root / req
+    if req.endswith(".md") and path.is_file():
+        allowed = req.startswith("03_管线库/") or "/pipelines/" in req
+        if not allowed:
+            raise ValueError("管线路径越界：只读 03_管线库 与 community/*/pipelines"
+                             "（修复指引：路径须指向仓库内管线件，如 03_管线库/P90….md）")
+        text = path.read_text(encoding="utf-8")
+        return {"found": True, "path": req, "bytes": len(text.encode("utf-8")),
+                "text": text}
+    hits = []
+    for pat in ("03_管线库/*.md", "community/*/pipelines/*.md"):
+        for p in sorted(root.glob(pat)):
+            stem = p.name.split("_", 1)[0]
+            if stem == req:
+                hits.append(p)
+    if not hits:
+        raise ValueError("管线未找到：%s（pipeline_ls 可枚举）"
+                         "（修复指引：用 Pxx 编号或仓库内相对路径）" % pipeline)
+    hit = hits[0]
+    text = hit.read_text(encoding="utf-8")
+    return {"found": True, "path": hit.relative_to(root).as_posix(),
+            "bytes": len(text.encode("utf-8")), "text": text}
+
+
+def _asset_key_candidates(name: str) -> list:
+    import re
+    return re.findall(r"[A-Z][A-Z0-9_]*", name)
+
+
+def _tool_asset_get(key: str, package: str = "") -> dict:
+    root = _repo_root()
+    req = key.strip()
+    hits = []
+    patterns = []
+    if package:
+        patterns.append("community/%s/assets/*.md" % package)
+    else:
+        patterns += ["community/*/assets/*.md", "05_资产库/用户自定义/*.md"]
+    for pat in patterns:
+        for p in sorted(root.glob(pat)):
+            if p.name == "README.md":
+                continue
+            if req not in _asset_key_candidates(p.stem):
+                continue
+            rel = p.relative_to(root).as_posix()
+            hits.append({"package": rel.split("/")[1] if rel.startswith("community") else "官方",
+                         "file": rel, "key": req})
+    if not hits:
+        raise ValueError("资产键未找到：%s（asset ls / 包 assets/README.md 可枚举）"
+                         "（修复指引：用包内资产键表登记的键名重试）" % key)
+    out = []
+    for h in hits:
+        text = (root / h["file"]).read_text(encoding="utf-8")
+        out.append({"package": h["package"], "file": h["file"],
+                    "bytes": len(text.encode("utf-8")), "text": text})
+    return {"found": True, "key": req, "matches": out}
+
+
 TOOL_HANDLERS = {
     "pipeline_ls": lambda a: _tool_pipeline_ls((a or {}).get("query", "")),
     "spec_ls": lambda a: _tool_spec_ls(),
     "registry_query": lambda a: _tool_registry_query((a or {}).get("query", "")),
     "library_search": lambda a: _tool_library_search((a or {}).get("query", "")),
+    "module_read": lambda a: _tool_module_read((a or {}).get("module_id", "")),
+    "pipeline_read": lambda a: _tool_pipeline_read((a or {}).get("pipeline", "")),
+    "asset_get": lambda a: _tool_asset_get((a or {}).get("key", ""),
+                                           (a or {}).get("package", "")),
 }
 
 
@@ -194,6 +324,8 @@ def _prompt_assemble_guide() -> str:
         "02_联动注册表.md（登记/依赖真相源）→ 01_核心协议.md（契约）→ 06_Agent执行协议.md。"
         "选装配包：community/<领域包>/README.md（含装载清单/资产/验收）。输出完整版 md 自检过 "
         "「##7. 自检清单」；引用式档位须如实标注缺口，禁止编造未读内容。仓库验证：bash verify.sh。"
+        "取实质内容用内容工具：module_read <模块 id>（模块正文）/ pipeline_read <Pxx 或路径>"
+        "（管线正文）/ asset_get <资产键>（资产正文）——禁止凭记忆写未读取的模块/资产内容。"
     )
 
 
