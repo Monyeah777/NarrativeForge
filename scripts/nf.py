@@ -317,7 +317,7 @@ def _build_parser() -> argparse.ArgumentParser:
     doc.add_argument("--json", action="store_true",
                      help="输出结构化 JSON 报告")
     cmp = sub.add_parser("completion",
-                         help="生成 shell 补全脚本（bash/zsh/fish；用法：nf completion bash >> ~/.bashrc）")
+                         help="生成 shell 补全脚本（bash/zsh/fish；用法：nf completion bash >> ~/.bashrc）", description="生成 shell 补全脚本（bash/zsh/fish；用法：nf completion bash >> ~/.bashrc）")
     cmp.add_argument("shell", choices=("bash", "zsh", "fish"),
                      help="目标 shell")
     return p
