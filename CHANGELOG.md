@@ -25,6 +25,7 @@
 - **用户自定义流（44 追加）**：`nf assemble` 未命中关键词不再死路——转 **custom 用户自定义流**：允许集扩到官方核心 + 全部已登记社区模块，给出可借用包清单 + 自定义预留槽（模块 M91-M99 / 资产 900+ / 新 Pxx）+ 建件登记路径（模板制作指令包 → protocol.yaml 登记 → 验收）；verify PASS=49 保持。
 - **需求收敛漏斗（44 追加）**：`nf assemble` 信息不足（无题材/自定义线索）→ 先抛澄清问句（题材方向/玩法主轴/世界尺度）不硬猜，补足后进预设或 custom 计划；对齐需求收敛模板口径；verify PASS=49 保持。
 - **需求档案（44 追加）**：`nf assemble "<需求>" --save <file.md>` 把澄清/计划落成八字段需求档案（一句话需求/背景/消费方/边界/验收断言/风险/涉及文件/素材），未定项如实留空待回填——可直接接 `docs/需求收敛模板.md` 自动流转链（steelman/audit）；verify PASS=49 保持。
+- **AI 通道收口 audit（44）**：`docs_audit-44-ai-channel.md` 建档——verdict 通过（内部验收线）；四层贯通机检常驻、用户自定义一等公民；外部语义（实测/创作质量）按封闭期冻结不宣称；行动挂账（对话记忆/资源分页/真实样本回归/E3 补测）；verify PASS=49 + coverage 85% 保持。
 ## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
 ### Added
 - **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。
