@@ -390,7 +390,7 @@ class McpRuntime:
         return 0
 
 
-#: 哨兵：方法存在但本运行时未实现（只读纪律——tools/prompts 一律拒出）
+#: 哨兵：方法存在但本运行时未实现（只读纪律——写路径/未知方法一律拒出）
 _NOT_IMPLEMENTED = object()
 
 
@@ -405,13 +405,19 @@ def load_snapshot(path: str) -> Dict[str, Any]:
 
 def main(argv: Optional[List[str]] = None) -> int:
     """CLI 入口：python -m core.mcp_runtime <mcp.json>（stdio 服务）。"""
+    from core import plog
+    log = plog.get_logger("mcp_runtime")
     args = list(argv) if argv is not None else sys.argv[1:]
     if not args:
-        print("用法: python -m core.mcp_runtime <mcp.json>  （stdio MCP 服务）",
-              file=sys.stderr)
+        log.error("用法: python -m core.mcp_runtime <mcp.json>  （stdio MCP 服务）")
         return 2
     snap = load_snapshot(args[0])
-    return McpRuntime(snap).serve_stdio()
+    srv = McpRuntime(snap)
+    log.info("MCP server 启动：%s v%s（stdio · 只读 resources/tools/prompts）",
+             srv.server_name, srv.server_version)
+    rc = srv.serve_stdio()
+    log.info("MCP server 退出：rc=%s", rc)
+    return rc
 
 
 if __name__ == "__main__":

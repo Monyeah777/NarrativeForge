@@ -1,0 +1,24 @@
+name: lint
+# 41 波C D3：ruff 语法级静态检查（独立 job，不碰 verify.sh 零依赖红线——
+# verify 用纯 unittest/stdlib；本 job 仅 CI 环境装 ruff）。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ruff-syntax:
+    name: ruff-check-e9-f63-f7-f82
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 安装 ruff
+        run: pip install ruff
+      - name: ruff 语法级静态检查（ruff.toml：E9/F63/F7/F82）
+        run: ruff check desktop/src scripts

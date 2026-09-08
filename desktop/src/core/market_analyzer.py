@@ -10,7 +10,7 @@ default 交集冲突）提为可 import 纯函数——登记前可查（门禁�
 """
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 #: 官方核心 13 件（对齐 verify check14/check15 硬编码 + 01 §6 官方核心）
 OFFICIAL13: List[str] = [

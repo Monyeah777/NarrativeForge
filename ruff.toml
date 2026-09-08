@@ -1,0 +1,8 @@
+line-length = 100
+target-version = "py311"
+exclude = [".git", ".rivet", "docs", "community", "desktop/tests/fixtures"]
+
+[lint]
+# 41 波C D3：语法级 + 未定义名静态检查（E9 语法 / F63 断言 / F7 流程错误 / F82 未定义名）。
+# 有意保守：不启用全库风格规则（ruff format / style 另议），不碰 verify 零依赖红线。
+select = ["E9", "F63", "F7", "F82"]
