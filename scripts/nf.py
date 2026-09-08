@@ -320,6 +320,12 @@ def _build_parser() -> argparse.ArgumentParser:
                          help="生成 shell 补全脚本（bash/zsh/fish；用法：nf completion bash >> ~/.bashrc）", description="生成 shell 补全脚本（bash/zsh/fish；用法：nf completion bash >> ~/.bashrc）")
     cmp.add_argument("shell", choices=("bash", "zsh", "fish"),
                      help="目标 shell")
+    asm = sub.add_parser("assemble",
+                         help="需求 → 自组装编排（44：一句话需求 → 装配计划；--check 对成品机器验收）", description="需求 → 自组装编排（44：一句话需求 → 装配计划；--check 对成品机器验收）")
+    asm.add_argument("requirement",
+                     help="用户需求一句话（如：帮我组装一个西幻生存世界的完整版）")
+    asm.add_argument("--check", dest="check_md", metavar="OUT.md",
+                     help="对成品完整版 md 做机器验收（骨架/编号/引用）")
     return p
 
 
@@ -1402,6 +1408,44 @@ def _cmd_completion(args):
     return 0
 
 
+def _cmd_assemble(args):
+    """nf assemble：需求 → 装配计划；--check 对成品完整版做机器验收。"""
+    from core import assemble_plan as ap
+
+    plan_ = ap.plan(args.requirement)
+    if args.check_md:
+        try:
+            with open(args.check_md, encoding="utf-8") as fh:
+                out_md = fh.read()
+        except OSError as exc:
+            print("  ✗ 读取成品失败：%s（修复指引：给出仓库内完整版 md 路径）" % exc,
+                  file=sys.stderr)
+            return 1
+        issues, stats = ap.check(out_md, plan_)
+        print("== nf assemble --check（需求 → 成品机器验收）==")
+        print("  需求：%s → %s/%s（模块提及 %d · 允许集 %d）"
+              % (args.requirement, plan_["package"] or "？",
+                 plan_["pipeline"] or "？", stats["modules_mentioned"],
+                 stats["allowed"]))
+        for issue in issues:
+            print("  [FAIL] %s" % issue, file=sys.stderr)
+        if not issues:
+            print("  ✓ 成品通过自组装机器验收（八段骨架 + 编号允许集 + 决策引用）")
+        return 1 if issues else 0
+    print("== nf assemble（需求 → 装配计划）==")
+    if plan_["matched"]:
+        print("  匹配预设：%s · 管线 %s" % (plan_["package"], plan_["pipeline"]))
+        print("  管线件：%s" % ("、".join(plan_["pipeline_files"]) or "—"))
+        print("  取件模块：%s" % "、".join(plan_["fetch_modules"]))
+        print("  装配允许集（官方核心 + 包模块）：%d"
+              % len(plan_["allowed_module_ids"]))
+    else:
+        print("  未命中预设（open）：请给领域关键词（西幻/校园/技术文档/轻混/通用核心）")
+    print("  下一步：读 agent_组装指令包_v0.2.md → 取件 → 输出完整版 → "
+          "nf assemble \"%s\" --check <out.md> 验收" % args.requirement)
+    return 0 if plan_["matched"] else 2
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd is None:
@@ -1413,6 +1457,8 @@ def main(argv=None) -> int:
         return _cmd_doctor(args)
     if args.cmd == "completion":
         return _cmd_completion(args)
+    if args.cmd == "assemble":
+        return _cmd_assemble(args)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "asset":

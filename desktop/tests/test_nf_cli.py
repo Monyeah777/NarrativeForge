@@ -8,8 +8,10 @@ import argparse
 import contextlib
 import importlib.util
 import io
+import os
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -117,6 +119,38 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("__fish_use_subcommand", out)
         self.assertIn("doctor", out)
+
+    def test_assemble_plan_match(self):
+        """nf assemble：需求 → 装配计划（西幻关键词命中 P03 预设包）。"""
+        code, out = self._run(["assemble", "帮我组装一个西幻生存世界的完整版"])
+        self.assertEqual(code, 0)
+        self.assertIn("西幻生存领域包", out)
+        self.assertIn("P03", out)
+
+    def test_assemble_check_ok_and_reject(self):
+        """nf assemble --check：合格成品过、编造编号成品拒。"""
+        def _write(text):
+            fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+            os.write(fd, text.encode("utf-8"))
+            os.close(fd)
+            return path
+
+        try:
+            ok_md = "\n".join("## %d. 段" % i for i in range(8)) + "\n由 M00 数据槽 记录。\n"
+            path = _write(ok_md)
+            code, out = self._run(["assemble", "西幻生存",
+                                   "--check", path])
+            self.assertEqual(code, 0, out)
+            self.assertIn("通过", out)
+
+            bad_md = ok_md + "由 M99 推进 回合。\n"
+            path2 = _write(bad_md)
+            code, _ = self._run(["assemble", "西幻生存", "--check", path2])
+            self.assertEqual(code, 1)
+        finally:
+            for p in (path, path2):
+                if os.path.exists(p):
+                    os.remove(p)
 
     def test_exit_code_matrix(self):
         """退出码矩阵（子进程）：0 成功 / 1 运行·校验失败 / 2 用法（argparse）。"""

@@ -21,6 +21,7 @@
 - **AI 通道全面深化（44 追加）**：标准资源面 `resources/list`+`resources/read` 开放仓库内容资源（`nf://repo/module|pipeline|asset/…`，纯元数据/正文两段式）；`module_read` 覆盖全部 44 模块（含无机读块存量内容模块，`has_machine_contract` 如实标注）；`docs/44_M2_AI通道内容规范.md` 定 URI 约定与取用纪律；verify PASS=49 保持。
 - **AI 通道继续深化（44 追加）**：资产资源多键登记（文件名令牌 ∪ 正文键声明双源），每键独立 `nf://repo/asset/<包>/<键>` 条目；`asset_get`/资源读同步支持正文声明键；端到端自检断言（模块/管线/资产三类代表件资源面+工具面全可读）；verify PASS=49 保持。
 - **装配指令包 v0.2（内容通道版）**：`agent_组装指令包_v0.1.md` → `v0.2.md`——新增内容通道取货协议（工具/标准资源面取实质正文、先读后写禁止凭记忆）+ 自检硬断言（引用件须真读过或标注缺口，对齐 drill R1-R4）；AGENT_START/README/assemble_guide 引用同步；verify PASS=49 保持。
+- **需求 → 自组装编排（44 追加）**：`nf assemble "<需求>"`——需求关键词 → 预设包/管线 + 取件模块清单 + 装配允许集；`nf assemble "<需求>" --check <out.md>` 对成品机器验收（八段骨架 / 编号在允许集 / 决策句带引用）；验收样本对齐 drill R1/R3/R4；verify PASS=49 保持。
 ## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
 ### Added
 - **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。
