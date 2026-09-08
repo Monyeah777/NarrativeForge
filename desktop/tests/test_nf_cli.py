@@ -84,6 +84,23 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn('"target": "M90"', out)
         self.assertIn('"kind"', out)
 
+    def test_asset_ls_json(self):
+        code, out = self._run(["asset", "ls", "--json", "--root", str(ROOT)])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "asset-ls"', out)
+        self.assertIn('"rows"', out)
+
+    def test_asset_inventory_json(self):
+        code, out = self._run(["asset", "inventory", "--json", "--root", str(ROOT)])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "asset-inventory"', out)
+
+    def test_module_ls_json(self):
+        code, out = self._run(["module", "ls", "--json", "--root", str(ROOT)])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "module-ls"', out)
+        self.assertIn('"file"', out)
+
     # ---- 44 波：CLI 工具链顶尖化（骨架约定：无参 help / help 子命令 / doctor / version）----
     def test_no_args_shows_help(self):
         code, out = self._run([])
@@ -94,6 +111,7 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["help", "sig"])
         self.assertEqual(code, 0)
         self.assertIn("usage: nf sig", out)
+        self.assertIn("知识签名", out)
         self.assertIn("target", out)
         code2, _ = self._run(["help", "no-such"])
         self.assertEqual(code2, 2)

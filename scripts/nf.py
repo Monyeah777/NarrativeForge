@@ -53,7 +53,7 @@ def _build_parser() -> argparse.ArgumentParser:
                    help="显示版本号后退出")
     sub = p.add_subparsers(dest="cmd", required=False)
 
-    run = sub.add_parser("run", help="跑全链管道：模块选择→装配→质检→导出")
+    run = sub.add_parser("run", help="跑全链管道：模块选择→装配→质检→导出", description="跑全链管道：模块选择→装配→质检→导出")
     run.add_argument("--pipeline", required=True,
                      help="管线 md 文件路径（如 community/校园西幻轻混组合包/pipelines/P04_轻混装配流管线.md）")
     run.add_argument("--modules", required=True,
@@ -79,7 +79,7 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="质量门 FAIL 也导出（诊断用；ok 仍 False）")
 
     reg = sub.add_parser("register",
-                         help="协议登记本地助手（B3-B：protocol.yaml → registry protocols[]）")
+                         help="协议登记本地助手（B3-B：protocol.yaml → registry protocols[]）", description="协议登记本地助手（B3-B：protocol.yaml → registry protocols[]）")
     reg.add_argument("pkg_dir", help="包目录（如 community/校园西幻轻混组合包）")
     reg.add_argument("--check", dest="mode", action="store_const", const="check",
                      help="只校验三要件 + 打印投影 diff（缺省，不写盘）")
@@ -90,7 +90,7 @@ def _build_parser() -> argparse.ArgumentParser:
     reg.set_defaults(mode="check")
 
     mkt = sub.add_parser("market",
-                         help="市场协议查询（B4：依赖闭包 + 挂载冲突预检；list 目录视图）")
+                         help="市场协议查询（B4：依赖闭包 + 挂载冲突预检；list 目录视图）", description="市场协议查询（B4：依赖闭包 + 挂载冲突预检；list 目录视图）")
     mkt.add_argument("pkg_dir", nargs="?", default=None,
                      help="包目录（如 community/校园西幻轻混组合包）；缺省 + --list 列目录")
     mkt.add_argument("--list", action="store_true",
@@ -104,28 +104,28 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
 
     spc = sub.add_parser("spec",
-                         help="Spec Registry 查询（v2.5.0 Wave3：版本化 spec 查询）")
+                         help="Spec Registry 查询（v2.5.0 Wave3：版本化 spec 查询）", description="Spec Registry 查询（v2.5.0 Wave3：版本化 spec 查询）")
     spc.add_argument("action", nargs="?", default="ls", choices=["ls"],
                      help="动作（ls 列 spec 版本清单）")
     spc.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
 
     rnd = sub.add_parser("render",
-                         help="协议多出口渲染（A3：protocol.yaml → agents/claude/skill rules）")
+                         help="协议多出口渲染（A3：protocol.yaml → agents/claude/skill rules）", description="协议多出口渲染（A3：protocol.yaml → agents/claude/skill rules）")
     rnd.add_argument("pkg_dir", help="包目录（如 community/技术文档域包）")
     rnd.add_argument("--fmt", default="agents", choices=["agents", "claude", "skill"],
                      help="目标格式（agents/claude/skill）")
     rnd.add_argument("--dest", default=None, help="输出目录（缺省=当前目录）")
 
     srv = sub.add_parser("serve",
-                         help="MCP 运行时服务（C1：mcp.json 快照 → stdio JSON-RPC，供 MCP client 拉起）")
+                         help="MCP 运行时服务（C1：mcp.json 快照 → stdio JSON-RPC，供 MCP client 拉起）", description="MCP 运行时服务（C1：mcp.json 快照 → stdio JSON-RPC，供 MCP client 拉起）")
     srv.add_argument("snapshot", help="mcp.json 快照路径（如 nf run --fmt mcp 产物）")
 
     dsn = sub.add_parser("design",
-                         help="决策辅助工具族（v2.6-A：可选装载——钢人论证工作单）")
+                         help="决策辅助工具族（v2.6-A：可选装载——钢人论证工作单）", description="决策辅助工具族（v2.6-A：可选装载——钢人论证工作单）")
     dsub = dsn.add_subparsers(dest="design_cmd", required=True)
     stl = dsub.add_parser("steelman",
-                          help="钢人论证工作单：init/--check/ls（默认缺席，按需自检）")
+                          help="钢人论证工作单：init/--check/ls（默认缺席，按需自检）", description="钢人论证工作单：init/--check/ls（默认缺席，按需自检）")
     stl.add_argument("action", nargs="?", default="ls",
                      choices=["init", "ls"],
                      help="动作（init 生成工作单 / ls 列决策档案索引；缺省 ls）")
@@ -145,7 +145,7 @@ def _build_parser() -> argparse.ArgumentParser:
     # nf design audit（M_AUDIT，升格合并后 design 家族统一入口；steelman 语义
     # 由 audit steelman mode 承载，nf design steelman 保留为兼容别名）
     aud = dsub.add_parser("audit",
-                          help="协议设计审计（M_AUDIT：决策过程质量——钢人/blindspot/full）")
+                          help="协议设计审计（M_AUDIT：决策过程质量——钢人/blindspot/full）", description="协议设计审计（M_AUDIT：决策过程质量——钢人/blindspot/full）")
     aud.add_argument("action", nargs="?", default="ls",
                      choices=["init", "ls"],
                      help="动作（init 生成 audit.md / ls 列审计索引；缺省 ls）")
@@ -166,13 +166,13 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="ls：扫描目录（缺省 = 当前目录）")
 
     whr = sub.add_parser("who-refers",
-                         help="引用反查（A2：谁引用了某模块，遍历 registry references）")
+                         help="引用反查（A2：谁引用了某模块，遍历 registry references）", description="引用反查（A2：谁引用了某模块，遍历 registry references）")
     whr.add_argument("module_id", help="模块 id（如 M91 或 情感:M55）")
     whr.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
 
     imp = sub.add_parser("impact",
-                         help="变更影响面预检（A4 前置：拟删除 module/protocol 前查破坏性影响）")
+                         help="变更影响面预检（A4 前置：拟删除 module/protocol 前查破坏性影响）", description="变更影响面预检（A4 前置：拟删除 module/protocol 前查破坏性影响）")
     imp.add_argument("target", help="目标（protocol id 如 校园情感领域包，或 module id 如 M55 / 情感:M55）")
     imp.add_argument("--check", dest="mode", action="store_const", const="check",
                      help="门禁模式：破坏性变更（有引用方/官方在册）exit 1，无破坏 exit 0")
@@ -180,7 +180,7 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
 
     ren = sub.add_parser("rename",
-                         help="模块改名引用重链（A5：references 中引用该模块的条目批量更新）")
+                         help="模块改名引用重链（A5：references 中引用该模块的条目批量更新）", description="模块改名引用重链（A5：references 中引用该模块的条目批量更新）")
     ren.add_argument("old_id", help="旧模块 id（如 M55 或 情感:M55）")
     ren.add_argument("new_id", help="新模块 id（如 M99 或 情感:M99）")
     ren.add_argument("--check", dest="mode", action="store_const", const="check",
@@ -191,7 +191,7 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
 
     imp2 = sub.add_parser("import",
-                          help="读入外部产物（SKILL.md/chara.json）→ parse + 可选内容库登记（A4 遗留闭环）")
+                          help="读入外部产物（SKILL.md/chara.json）→ parse + 可选内容库登记（A4 遗留闭环）", description="读入外部产物（SKILL.md/chara.json）→ parse + 可选内容库登记（A4 遗留闭环）")
     imp2.add_argument("file", help="外部产物文件（SKILL.md 或 chara.json）")
     imp2.add_argument("--register", action="store_true",
                       help="解析出的 IR 模块幂等装载进 Store 内容库（save_module 覆盖式幂等）")
@@ -200,11 +200,11 @@ def _build_parser() -> argparse.ArgumentParser:
 
     # nf asset：资产供应链台账（40 总纲 v2.7 波 A S2——add/verify/inventory/ls/rm/deprecate/restore）
     ast = sub.add_parser("asset",
-                         help="资产供应链台账（S2：add 入库 / verify 闭合 / inventory 盘点 / ls 浏览 / rm 摘除 / deprecate·restore 流转）")
+                         help="资产供应链台账（S2：add 入库 / verify 闭合 / inventory 盘点 / ls 浏览 / rm 摘除 / deprecate·restore 流转）", description="资产供应链台账（S2：add 入库 / verify 闭合 / inventory 盘点 / ls 浏览 / rm 摘除 / deprecate·restore 流转）")
     asub = ast.add_subparsers(dest="asset_cmd", required=True)
 
     a_add = asub.add_parser("add",
-                            help="入库资产：资产文件头写 nf-asset 头 + 台账 append（溯源键表自动生成）")
+                            help="入库资产：资产文件头写 nf-asset 头 + 台账 append（溯源键表自动生成）", description="入库资产：资产文件头写 nf-asset 头 + 台账 append（溯源键表自动生成）")
     a_add.add_argument("file", help="资产文件路径（相对 --root，如 用户自定义/TECH_RULES.md）")
     a_add.add_argument("--key", required=True, help="溯源键（台账内唯一，键无孤儿前提）")
     a_add.add_argument("--source", required=True,
@@ -220,14 +220,18 @@ def _build_parser() -> argparse.ArgumentParser:
                        help="货架分级（首次建档落台账级；缺省 official）")
     a_add.add_argument("--package", default="", help="归属包名（台账级，如 官方核心资产集）")
 
-    a_vrf = asub.add_parser("verify", help="台账闭合校验（与 verify.sh check23 同语义）")
+    a_vrf = asub.add_parser("verify", help="台账闭合校验（与 verify.sh check23 同语义）", description="台账闭合校验（与 verify.sh check23 同语义）")
     a_vrf.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
 
-    a_inv = asub.add_parser("inventory", help="库存盘点（台账摘要 + 未托管/孤儿统计）")
+    a_inv = asub.add_parser("inventory", help="库存盘点（台账摘要 + 未托管/孤儿统计）", description="库存盘点（台账摘要 + 未托管/孤儿统计）")
     a_inv.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_inv.add_argument("--json", action="store_true",
+                       help="输出结构化 JSON（盘点行）")
 
-    a_ls = asub.add_parser("ls", help="货架浏览（--pkg / --tier / --status 过滤）")
+    a_ls = asub.add_parser("ls", help="货架浏览（--pkg / --tier / --status 过滤）", description="货架浏览（--pkg / --tier / --status 过滤）")
     a_ls.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_ls.add_argument("--json", action="store_true",
+                      help="输出结构化 JSON（货架条目）")
     a_ls.add_argument("--pkg", default="", help="台账 package 过滤")
     a_ls.add_argument("--tier", default="",
                       choices=("official", "community", "experimental"))
@@ -238,14 +242,15 @@ def _build_parser() -> argparse.ArgumentParser:
                          ("deprecate", "状态流转 → deprecated"),
                          ("restore", "状态流转 → active（deprecated 回退）")):
         _sp = asub.add_parser(_name, help=_desc)
+        _sp.description = _desc
         _sp.add_argument("--ledger", required=True,
                          help="provenance.json 路径（如 05_资产库/provenance.json）")
         _sp.add_argument("--key", required=True, help="溯源键")
     # ---- v2.8.0 波B S4：管线脚手架 ----
     pln = sub.add_parser("pipeline",
-                         help="管线脚手架（v2.8 波B S4：pipeline new——自 P00 骨架派生新管线）")
+                         help="管线脚手架（v2.8 波B S4：pipeline new——自 P00 骨架派生新管线）", description="管线脚手架（v2.8 波B S4：pipeline new——自 P00 骨架派生新管线）")
     psub = pln.add_subparsers(dest="pipeline_cmd", required=True)
-    p_new = psub.add_parser("new", help="派生新管线：复制模板 → 改 id/name/领域标签（登记 02 / 填层名挂载按 README 三步）")
+    p_new = psub.add_parser("new", help="派生新管线：复制模板 → 改 id/name/领域标签（登记 02 / 填层名挂载按 README 三步）", description="派生新管线：复制模板 → 改 id/name/领域标签（登记 02 / 填层名挂载按 README 三步）")
     p_new.add_argument("--id", required=True, help="新管线 id（如 P07）")
     p_new.add_argument("--name", required=True, help="新管线显示名（如 演示领域管线）")
     p_new.add_argument("--from", dest="template", default=None,
@@ -257,43 +262,45 @@ def _build_parser() -> argparse.ArgumentParser:
 
     # ---- v2.8.0 波B S5：模块生命周期 ----
     mds = sub.add_parser("module",
-                         help="模块生命周期（v2.8 波B S5：status 位 + deprecate/restore + 引用门禁 verify）")
+                         help="模块生命周期（v2.8 波B S5：status 位 + deprecate/restore + 引用门禁 verify）", description="模块生命周期（v2.8 波B S5：status 位 + deprecate/restore + 引用门禁 verify）")
     msub = mds.add_subparsers(dest="module_cmd", required=True)
-    m_ls = msub.add_parser("ls", help="浏览模块状态（--status 过滤；缺省全量）")
+    m_ls = msub.add_parser("ls", help="浏览模块状态（--status 过滤；缺省全量）", description="浏览模块状态（--status 过滤；缺省全量）")
     m_ls.add_argument("--status", default="", choices=("active", "deprecated", "retired"))
     m_ls.add_argument("--root", default=ROOT, help="扫描根（缺省 = 仓库根）")
-    m_st = msub.add_parser("status", help="查看单个模块文件状态位")
+    m_ls.add_argument("--json", action="store_true",
+                      help="输出结构化 JSON（模块状态清单）")
+    m_st = msub.add_parser("status", help="查看单个模块文件状态位", description="查看单个模块文件状态位")
     m_st.add_argument("file", help="模块 md 路径（如 community/<包>/modules/Mxx_….md）")
-    m_dp = msub.add_parser("deprecate", help="状态流转 → deprecated（写文件元信息行状态位）")
+    m_dp = msub.add_parser("deprecate", help="状态流转 → deprecated（写文件元信息行状态位）", description="状态流转 → deprecated（写文件元信息行状态位）")
     m_dp.add_argument("file", help="模块 md 路径")
     m_dp.add_argument("--reason", default="", help="弃用原因（写入状态位）")
-    m_rs = msub.add_parser("restore", help="状态流转 → active（deprecated/retired 回退）")
+    m_rs = msub.add_parser("restore", help="状态流转 → active（deprecated/retired 回退）", description="状态流转 → active（deprecated/retired 回退）")
     m_rs.add_argument("file", help="模块 md 路径")
-    m_vf = msub.add_parser("verify", help="引用门禁扫描（与 verify.sh check24 同语义）")
+    m_vf = msub.add_parser("verify", help="引用门禁扫描（与 verify.sh check24 同语义）", description="引用门禁扫描（与 verify.sh check24 同语义）")
     m_vf.add_argument("--root", default=ROOT, help="扫描根（缺省 = 仓库根）")
 
     # ---- v2.8.0 波B S7：一键演示世界 ----
     dm = sub.add_parser("demo",
-                        help="一键演示世界（v2.8 波B S7：P04 轻混全链 → CCV3 导出）")
+                        help="一键演示世界（v2.8 波B S7：P04 轻混全链 → CCV3 导出）", description="一键演示世界（v2.8 波B S7：P04 轻混全链 → CCV3 导出）")
     dm.add_argument("--dest", default="", help="导出目录（缺省 = 系统临时目录并打印路径）")
     # ---- v2.8.0 波C C1/C2/C5：知识签名 / 版本差异 / 修复指引（41 规划）----
     sg = sub.add_parser("sig",
-                        help="协议知识签名（41 波C C1：01-36 文档/管线/模块 → 结构化签名，知识指纹）")
+                        help="协议知识签名（41 波C C1：01-36 文档/管线/模块 → 结构化签名，知识指纹）", description="协议知识签名（41 波C C1：01-36 文档/管线/模块 → 结构化签名，知识指纹）")
     sg.add_argument("target", nargs="*", default=None,
                     help="目标 md 或目录；缺省 = 全量 01-36 编号方案文档")
     sg.add_argument("--json", action="store_true", help="输出完整 canonical JSON 记录")
     sg.add_argument("--verify", action="store_true",
                     help="check25 同语义：两遍生成一致性校验（可复现门禁）")
     df = sub.add_parser("diff",
-                        help="版本差异检测（41 波C C2：两份签名/文档 → 字段级差异 + 兼容判定）")
+                        help="版本差异检测（41 波C C2：两份签名/文档 → 字段级差异 + 兼容判定）", description="版本差异检测（41 波C C2：两份签名/文档 → 字段级差异 + 兼容判定）")
     df.add_argument("a", help="签名 A 的文档 md 路径")
     df.add_argument("b", help="签名 B 的文档 md 路径")
     df.add_argument("--json", action="store_true", help="输出结构化差异 JSON")
     ex = sub.add_parser("explain",
-                        help="check 修复指引（41 波C C5：缺什么/补什么/示例 三段式）")
+                        help="check 修复指引（41 波C C5：缺什么/补什么/示例 三段式）", description="check 修复指引（41 波C C5：缺什么/补什么/示例 三段式）")
     ex.add_argument("check", help="check 编号（如 25；all = 全量清单）")
     rel = sub.add_parser("related",
-                        help="See-Also 关联查询（41 波C C4：market/图书馆条目人读引用链）")
+                        help="See-Also 关联查询（41 波C C4：market/图书馆条目人读引用链）", description="See-Also 关联查询（41 波C C4：market/图书馆条目人读引用链）")
     rel.add_argument("target",
                     help="目标 = 包 id（如 技术文档域包）或模块 id（如 M90 / 技术文档:M90）")
     rel.add_argument("--registry", default=None,
@@ -301,11 +308,11 @@ def _build_parser() -> argparse.ArgumentParser:
     rel.add_argument("--json", action="store_true",
                      help="输出结构化 JSON（See-Also 关联结果）")
     hep = sub.add_parser("help",
-                         help="显示 nf 或指定子命令的帮助")
+                         help="显示 nf 或指定子命令的帮助", description="显示 nf 或指定子命令的帮助")
     hep.add_argument("command", nargs="?", metavar="COMMAND",
                      help="子命令名；缺省 = 显示 nf 总帮助")
     doc = sub.add_parser("doctor",
-                         help="环境自检（快速只读体检：关键文件/registry/schema/核心库——不开 verify 慢跑）")
+                         help="环境自检（快速只读体检：关键文件/registry/schema/核心库——不开 verify 慢跑）", description="环境自检（快速只读体检：关键文件/registry/schema/核心库——不开 verify 慢跑）")
     doc.add_argument("--json", action="store_true",
                      help="输出结构化 JSON 报告")
     return p
@@ -785,6 +792,7 @@ def _cmd_audit(args) -> int:
 
 def _cmd_asset(args) -> int:
     """nf asset：资产供应链台账族（40 总纲 S2）。纯信息命令缺省只读，写操作显式子命令。"""
+    import json as _json
     from core import asset_ledger as al
 
     try:
@@ -817,6 +825,10 @@ def _cmd_asset(args) -> int:
             return 0
         if args.asset_cmd == "inventory":
             rows = al.inventory_root(args.root)
+            if args.json:
+                print(_json.dumps({"kind": "asset-inventory", "rows": rows},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+                return 0
             print("== nf asset inventory（扫描根：%s）==" % args.root)
             if not rows:
                 print("  （无 provenance.json 台账——nf asset add 建档首个资产集）")
@@ -830,6 +842,10 @@ def _cmd_asset(args) -> int:
         if args.asset_cmd == "ls":
             rows = al.filter_rows(al.iter_assets(args.root),
                                   pkg=args.pkg, tier=args.tier, status=args.status)
+            if args.json:
+                print(_json.dumps({"kind": "asset-ls", "rows": rows},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+                return 0
             print("== nf asset ls%s%s%s ==" % (
                 "（pkg=" + args.pkg + "）" if args.pkg else "",
                 "（tier=" + args.tier + "）" if args.tier else "",
@@ -895,6 +911,7 @@ def _cmd_pipeline(args) -> int:
 
 def _cmd_module(args) -> int:
     """nf module：模块生命周期（v2.8.0 波B S5）。ls/verify 只读；deprecate/restore 写文件状态位。"""
+    import json as _json
     from core import module_lifecycle as ml
     try:
         if args.module_cmd == "verify":
@@ -917,6 +934,13 @@ def _cmd_module(args) -> int:
                 if args.status and status != args.status:
                     continue
                 rows.append((status, rel))
+            if args.json:
+                print(_json.dumps({
+                    "kind": "module-ls",
+                    "status": args.status or None,
+                    "rows": [{"status": s, "file": f} for s, f in sorted(rows)],
+                }, ensure_ascii=False, indent=2, sort_keys=True))
+                return 0
             print("== nf module ls ==")
             for status, rel in rows:
                 print("  %-10s %s" % (status, rel))
