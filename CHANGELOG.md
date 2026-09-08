@@ -1,4 +1,12 @@
-## [Unreleased · 42 质量纵深工程] - 2026-09-08（42 立项 + 开工：质量五维 M1-M5，M1 起步）
+## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
+### Added
+- **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。
+- **verify 复核**：verify.sh v2.16（check1-27）PASS=41 / WARN=0 / FAIL=0 全绿；core 覆盖率 85%（CI coverage job ≥80%）；单测 427 OK。
+### Notes
+- **端壳待接线项：4**（延续 v2.7 口径：资产供应链台账 CLI / 管线脚手架 / 模块生命周期 / 一键演示世界——波 C/42 为开发与验证工具面 + A 线 MCP 只读面，不计 GUI 待接线；计数 <6，壳线冻结持续，脉冲触发条件重计见 L3_FROZEN）。
+- **外部实测线仍冻结**（41 封存注记契约，2026-09-08）：E3/B1/NF-FIELD-001 封存挂账，重启触发 = 作者拍板；本版发布**不等同** S13 宣称转正。
+- 原 [Unreleased] 两段（41 波 C / 42 质量纵深）归档为下辖小节（标题保留原编号，内容原样未增删）。
+## [2.8.0 · 42 质量纵深工程（随 v2.8.0 发布）] - 2026-09-08（质量五维 M1-M5）
 ### Added
 - **42 规划入库**：`42_顶尖质量纵深工程规划.md` 落根目录（40 波 C–N 常态线之上的质量纵深工程，承接 41 波 C 工具族；质量唯一论验收函数）；ROADMAP §9 质量纵深行 + 40 总纲波 C–N 第二例注记同步。
 - **M1 起步（动态质量基建）**：`docs/42_M1_协议可执行性自测规范.md` + `docs/42_M1_P03_演练集.md` + `desktop/src/core/execution_drill.py` 捕获器（browse_repeat / no_citation / fabricated_id / semantic_misalignment 四类失范硬断言）+ `desktop/tests/fixtures/execution/p03_drill_cases.json`（8 例：4 失范 + 3 guard 变异对照 + 1 推进正例）+ 变异自检/捕获率验收（失范 4/4 捕获 ≥2/3，guard 3/3 零误报；单测 406→409）。
@@ -15,7 +23,7 @@
 - M5 验收：覆盖率 CI 门槛就绪（core 85% ≥80%）；映射矩阵 + 常驻校验绿；e2e+verify 一键入口在；自查清单 + Release checklist 落档（随下个 tag 首用）。42 M1-M5 全交付（纯内部），verify check1-27 PASS=41 不破。
 - **42 收口 audit（docs_audit-42-quality.md，verdict 通过）**：M1-M5 逐项核验 + 五维自评段；带状态头执行口径固化（RULE_LAW ↔ L1-L4，硬断言不越级）；M1「8 条失范明细」与 M3「连续 2 波零命中」等口径显式标注待素材/下波；单测 424→425。
 - **M1 演练集扩展（第 2 份）**：P06 技术文档演练集（`desktop/tests/fixtures/execution/p06_drill_cases.json`，8 例）+ `docs/42_M1_P06_演练集.md`；`test_execution_drill` 参数化覆盖 P03+P06（捕获/guard/捕获率逐管线）；语义词 = 功能词（显示名作标签不作判据）。
-## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W6 实施完成待 tag——C1-C9 + D2-D6）
+## [2.8.0 · 41 波C] - 2026-09-08（41 波C 质量编译深化：W1-W6——C1-C9 + D2-D6）
 ### Added
 - **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。
 - **C1 协议知识签名 `nf sig`（`desktop/src/core/knowledge_sig.py`）**：01-36 编号方案文档/协议/管线/模块 → 结构化签名（标题/编号/版本/章节/引用集/正文哈希，知识指纹）；试点 01/24/36 签名已生成，全量 35 文档两遍生成逐字节一致；单测 5 例全绿。
