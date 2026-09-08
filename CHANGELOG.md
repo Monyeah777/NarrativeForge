@@ -4,11 +4,13 @@
 - **M1 起步（动态质量基建）**：`docs/42_M1_协议可执行性自测规范.md` + `docs/42_M1_P03_演练集.md` + `desktop/src/core/execution_drill.py` 捕获器（browse_repeat / no_citation / fabricated_id / semantic_misalignment 四类失范硬断言）+ `desktop/tests/fixtures/execution/p03_drill_cases.json`（8 例：4 失范 + 3 guard 变异对照 + 1 推进正例）+ 变异自检/捕获率验收（失范 4/4 捕获 ≥2/3，guard 3/3 零误报；单测 406→409）。
 - **M2 协议可执行性改造**：06 §11 判级器段（RFC2119/8174 NF 化：必须/禁止 = 硬约束回滚+记失范；应 = WARN 可豁免；可 = 自由区；判级 ↔ verify/演练断言对齐）+ `desktop/src/core/round_header.py` 回合状态头 v1（= C9 指针运行态实例：管线路径/已执行段/本回合铁律 L1-L5）+ 引用后执行（= execution_drill R3 no_citation）+ 中断重入/幂等断言（`replay_identity`：中断重入输出与连续执行一致）；`docs/42_M2_回合状态头_v1.md` + P03 实例；单测 409→412。
 - **M3 架构纯度体检（check27 · v2.16）**：`desktop/src/core/purity_scan.py` 四规则（R1 端壳/APK 残留 / R2 私货可变物 / R3 重复标题 / R4 raise 消息修复指引 ast 审计）+ verify check27（PASS 39→41）；首轮修复 02 端壳残留 2 处 + core raise 指引缺失 9 处（asset_ledger/exporter/import_adapter/parser/storage）；`docs/42_M3_纯度体检.md`；变异自检 test_purity_scan 5 例；单测 412→417。
+- **M4 文档可执行性普查 + 内容边界**：`desktop/src/core/doc_hygiene.py`（指令/资料分类清单 + ⛔ 标识 + last-updated + 过期告警）+ 指令类文档 8 件全带标识头 + 关键文档 14 件全带「最后更新」位 + 06 §12 内容安全边界（投稿=数据≠指令、内嵌注入忽略记档、指令来源唯一）+ library/INDEX 读取须知 + `docs/42_M4_文档分类普查.md` + `docs/42_M4_资产评估报告.md`；单测 417→421。
 ### Notes
 - 42 执行约束：纯内部可做（M1 用内部演练替代外部实测，不重启外部线）；每件产出附五维自评；门禁绿不构成质量宣称。
 - 素材缺口挂账：NF-FIELD-001 回执原件（3 通过 + 8 失范明细）仍未入仓——M1 fixtures 先用「推断构造 + 来源诚实标注」样本，原件到位后按 field001 补替。
 - M2 验收：状态头确定性/幂等 + 中断重入断言 PASS（1 例重入与连续执行切片一致）；判级器段已落档 06 §11（01 Schema 零改动）；P03 演练集断言分级与判级器对齐（四规则 ≤ 必须/禁止语义，自由区未硬编码）。
 - M3 验收：check27 入库（verify v2.16 check1-27 PASS=41）；首轮体检零命中（修复后）；错误信息审计零缺失；R1-R4 变异注入捕获力由单测常驻。
+- M4 验收：普查表落档；指令类 100% 带标识（机检零缺漏）；last-updated 覆盖 + 过期告警常驻（当前零过期）；内容边界段入 06 §12 + INDEX 读取须知；资产评估报告 1 份（当前无应淘汰低密度键）。verify check1-27 PASS=41 不破（M4 未增 verify check，机检经 unittest 常驻）。
 ## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W6 实施完成待 tag——C1-C9 + D2-D6）
 ### Added
 - **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。

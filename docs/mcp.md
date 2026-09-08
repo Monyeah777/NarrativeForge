@@ -1,4 +1,5 @@
 # NarrativeForge MCP 接入（`nf serve` · 40 总纲 v2.7 波A S1-E3 / X2）
+> 最后更新：2026-09-08
 
 > **状态**：公开化文档已随基础层 v2.7 落地；**E3 协议级装载实测已于 2026-09-08 通过**（stdio JSON-RPC 帧序列直测五方法全绿，见文末记录；修复 P06 管线两缺口——缺闭合 ``` / 缺 techdoc 声明）。41 波C C7（2026-09-08）开放只读 tools/prompts（本机 stdio 冒烟通过，见 docs/41_波C_C7_实测记录.md）。**宿主类客户端（Claude Desktop 等 GUI 装载）仍建议用户侧补录**——README 对 MCP 的宣告维持现状（S13 门按 docs_external-validation-v2.7.md 规则开），回填后补「转正」。
 
