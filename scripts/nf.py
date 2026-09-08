@@ -326,6 +326,8 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="用户需求一句话（如：帮我组装一个西幻生存世界的完整版）")
     asm.add_argument("--check", dest="check_md", metavar="OUT.md",
                      help="对成品完整版 md 做机器验收（骨架/编号/引用）")
+    asm.add_argument("--save", dest="save_path", metavar="FILE.md",
+                     help="把澄清/计划落成需求档案（八字段回填稿）")
     return p
 
 
@@ -1413,6 +1415,22 @@ def _cmd_assemble(args):
     from core import assemble_plan as ap
 
     funnel = ap.clarify(args.requirement)
+    plan_ = funnel.get("plan") or ap.plan(args.requirement)
+    if args.save_path:
+        text = ap.dossier(args.requirement, plan_,
+                          funnel.get("questions") or [])
+        try:
+            parent = os.path.dirname(os.path.abspath(args.save_path))
+            if parent:
+                os.makedirs(parent, exist_ok=True)
+            with open(args.save_path, "w", encoding="utf-8",
+                      newline="\n") as fh:
+                fh.write(text)
+        except OSError as exc:
+            print("  ✗ 写需求档案失败：%s（修复指引：给可写路径）" % exc,
+                  file=sys.stderr)
+            return 1
+        print("  ✓ 需求档案已存：%s" % args.save_path)
     if funnel["status"] == "clarify":
         print("== nf assemble（需求澄清）==")
         print("  你的需求信息还不够直接编排，先补三点（缺一不可）：")
@@ -1420,7 +1438,6 @@ def _cmd_assemble(args):
             print("  · %s" % q)
         print("  补充后再跑：nf assemble \"题材+主轴+尺度的一句话\" --check <out.md>")
         return 0
-    plan_ = funnel["plan"]
     if args.check_md:
         try:
             with open(args.check_md, encoding="utf-8") as fh:

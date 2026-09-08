@@ -82,6 +82,41 @@ def clarify(requirement: str) -> Dict[str, Any]:
     }
 
 
+def dossier(requirement: str, plan_: Dict[str, Any],
+            questions: List[str] = ()) -> str:
+    """漏斗产出 → 需求档案（对齐 docs/需求收敛模板.md 八字段回填稿）。"""
+    req = requirement.strip()
+    status = "澄清中（nf assemble 已抛问句，待回填）" if questions else (
+        "custom 用户自定义流" if not plan_.get("matched") else "preset 预设匹配")
+    lines = [
+        "需求澄清稿",
+        "1. 一句话需求：%s" % req,
+        "2. 背景与痛点：（待回填——为什么现在做 / 现有哪一环断了）",
+        "3. 谁消费（决策人 / 外部方）：（待确认——作者 / agent 用户）",
+        "4. 范围边界（做 / 不做）：%s" % status,
+        "   领域判定：%s" % (
+            "%s/%s" % (plan_.get("package"), plan_.get("pipeline"))
+            if plan_.get("matched") else
+            "未命中官方预设 → 用户自定义（可借用包：%s）"
+            % ("、".join(plan_.get("known_packages") or []) or "—")),
+        "   取件模块：%s" % "、".join(plan_.get("fetch_modules") or []),
+        "5. 验收标准（可测断言）：nf assemble \"%s\" --check <out.md> 期望 PASS"
+        "（八段骨架 / 编号在装配允许集 / 决策句带引用）" % req,
+        "6. 风险与未知：关键词识别有界（未命中 ≠ 不适配，需回填确认）；"
+        "用户自定义件须先落库登记（M91-M99 / 资产 900+ / 新 Pxx）验收才认；"
+        "外部实证按 STRATEGY 封闭期冻结（NF-FIELD-001 素材缺位）",
+        "7. 涉及协议 / 文件：agent_组装指令包_v0.2.md；%s 管线件；"
+        "装配计划允许集 %d 模块；community/模板制作指令包.md（如需建自定义件）"
+        % ("、".join(plan_.get("pipeline_files") or []) or "（待定）",
+           len(plan_.get("allowed_module_ids") or [])),
+        "8. 素材引用：仓库内完整版样本 / 资产键表；外部素材无则如实声明",
+    ]
+    if questions:
+        lines.append("待澄清（nf assemble 问句）：")
+        lines += ["  · %s" % q for q in questions]
+    return "\n".join(lines) + "\n"
+
+
 def plan(requirement: str) -> Dict[str, Any]:
     """需求 → 装配计划（预设包 + 取件清单）。"""
     req = requirement.strip()

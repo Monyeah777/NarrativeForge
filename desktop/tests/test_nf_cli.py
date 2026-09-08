@@ -141,6 +141,23 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn("需求澄清", out)
         self.assertIn("题材方向", out)
 
+    def test_assemble_save_dossier(self):
+        """需求档案：--save 把澄清/计划落成八字段回填稿。"""
+        fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+        os.close(fd)
+        try:
+            code, out = self._run(["assemble", "西幻生存",
+                                   "--save", path])
+            self.assertEqual(code, 0, out)
+            with open(path, encoding="utf-8") as fh:
+                text = fh.read()
+            self.assertIn("需求澄清稿", text)
+            self.assertIn("1. 一句话需求：西幻生存", text)
+            self.assertIn("验收标准", text)
+        finally:
+            if os.path.exists(path):
+                os.remove(path)
+
     def test_assemble_check_ok_and_reject(self):
         """nf assemble --check：合格成品过、编造编号成品拒。"""
         def _write(text):
