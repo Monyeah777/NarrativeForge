@@ -58,6 +58,19 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("官方核心", out)
 
+    def test_diff_01_vs_36(self):
+        """nf diff 冒烟：01 核心协议 vs 36 方案 → 判定行在场（C2 差异检测）。"""
+        code, out = self._run(["diff", "01_核心协议.md",
+                               "36_v2.5.0_基础层深化续方案.md"])
+        self.assertEqual(code, 0)
+        self.assertIn("判定", out)
+
+    def test_related_m90_reverse(self):
+        """nf related 冒烟：M90 反向引用方（M2 校验 P03 drill 之外的人读链）。"""
+        code, out = self._run(["related", "M90"])
+        self.assertEqual(code, 0)
+        self.assertIn("技术文档域包", out)
+
 
 if __name__ == "__main__":
     unittest.main()
