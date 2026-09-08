@@ -1,0 +1,101 @@
+{
+ "schema": "nf-execution-drill/1",
+ "pipeline": "P04",
+ "source_note": "样本为推断构造（44 drill 波扩展；依据 42 已观察失范类别）。来源诚实标注：inferred。NF-FIELD-001 回执原件入仓后按 field001 补替/增补。",
+ "source_text": "轻混装配流 P04：M91 异界身份桥 决策后由 M92 装配执行 再包装馈赠。",
+ "real_ids": [
+  "M00",
+  "通用:M10",
+  "M91",
+  "M92",
+  "M80"
+ ],
+ "semantics": {
+  "M00": [
+   "数据槽",
+   "数据结构"
+  ],
+  "通用:M10": [
+   "时间推进",
+   "节拍"
+  ],
+  "M91": [
+   "异界身份桥",
+   "轻混决策"
+  ],
+  "M92": [
+   "装配执行",
+   "再包装"
+  ],
+  "M80": [
+   "输出",
+   "渲染"
+  ]
+ },
+ "cases": [
+  {
+   "id": "P04-pos-advance",
+   "note": "正例：引用 + 真实编号 + 职责自洽 + 推进信号",
+   "output": "回合推进：引用 06 §3 后进入下一回合，并写回状态槽。",
+   "expect_captured": [],
+   "guard": true
+  },
+  {
+   "id": "P04-dev-browse-repeat",
+   "note": "失范：浏览-复述（原文复制、无推进信号）",
+   "output": "轻混装配流 P04：M91 异界身份桥 决策后由 M92 装配执行 再包装馈赠。 就到这里。",
+   "expect_captured": [
+    "browse_repeat"
+   ],
+   "guard": false
+  },
+  {
+   "id": "P04-pos-browse-progress",
+   "note": "变异对照：同原文复制但带推进信号 → 不应被 browse_repeat 误捕获",
+   "output": "轻混装配流 P04：M91 异界身份桥 决策后由 M92 装配执行 再包装馈赠。回合推进：已进入第 5 回合。",
+   "expect_captured": [],
+   "guard": true
+  },
+  {
+   "id": "P04-dev-fabricated-id",
+   "note": "失范：编造编号（M99 不在本管线装配真实编号集）",
+   "output": "由 M99 完成本条产物推进。",
+   "expect_captured": [
+    "fabricated_id"
+   ],
+   "guard": false
+  },
+  {
+   "id": "P04-dev-no-citation",
+   "note": "失范：无引用凭印象（决策词却无 §/编号/行号引用）",
+   "output": "下一步应该进入结算阶段。",
+   "expect_captured": [
+    "no_citation"
+   ],
+   "guard": false
+  },
+  {
+   "id": "P04-pos-cited-decision",
+   "note": "变异对照：带 § 引用的决策句 → 不应被 no_citation 误捕获",
+   "output": "下一步应该进入结算阶段（依据 06 §3 规则）。",
+   "expect_captured": [],
+   "guard": true
+  },
+  {
+   "id": "P04-dev-semantic-misalign",
+   "note": "失范：编号真实但语义错位（M00 被描述为 时间推进 职责——属 通用:M10）",
+   "output": "本回合由 M00 时间推进。",
+   "expect_captured": [
+    "semantic_misalignment"
+   ],
+   "guard": false
+  },
+  {
+   "id": "P04-pos-semantic-aligned",
+   "note": "变异对照：编号职责自洽 → 不应被 semantic_misalignment 误捕获",
+   "output": "本回合由 M00 数据槽。",
+   "expect_captured": [],
+   "guard": true
+  }
+ ]
+}

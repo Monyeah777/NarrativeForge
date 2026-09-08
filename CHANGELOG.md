@@ -15,6 +15,7 @@
 - **CLI 工具链顶尖化（内部工程波次 7 · 自洽矩阵机检化）**：命令面自洽矩阵测试（全子命令 description/help + JSON 面逐点 + `--version`）——逐命令穷举由手写转机检；audit 结论 = 通过（CLI 内部验收线，外部实测类按封闭期冻结）；verify PASS=49 保持。
 - **协议层元工具自洽（43 追加）**：schema 子集关键字白名单显式化——定义中出现校验器未实现的关键字即 check28 FAIL（防「声称子集却静默忽略」假绿）；`test_schema_reference.py` 标准实现交叉对照（可选依赖，装了才跑）；元工具定位入档（域包内容 retro-fit 不计元工具缺口）；verify PASS=49 保持。
 - **协议层元工具·事件闭包可见性（44 追加）**：`closure_scan.py` 只报告不设闸——machine 链 linked/sub-only/pub-only 统计 + 孤儿侧所在模块；进 `protocol/generated/idl_report.json`（check31 双源，漂移即过期红）；内容面孤儿不 FAIL、不计元工具缺口；verify PASS=49 保持。
+- **动态执行保真 drill 波（44 追加）**：执行失范捕获器铺满全部可执行主线——新增 P01/P02/P04/P05/P90 五演练集（+42 已有 P03/P06 = 7 集），每集 8 例（4 失范 + 4 变异对照）参数化常驻；逐管线失范全捕获、guard 零误报；verify PASS=49 保持。
 ## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
 ### Added
 - **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。

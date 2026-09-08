@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""42 M1 —— 执行失范捕获器单测（多管线演练集：P03/P06 + 变异自检/捕获率验收）。"""
+"""42 M1 + 44 扩展 —— 执行失范捕获器单测（多管线演练集 P01-P06/P90 + 变异自检/捕获率验收）。"""
 import json
 import sys
 import unittest
@@ -12,8 +12,11 @@ if str(Path(__file__).resolve().parent.parent / "src") not in sys.path:
 from core import execution_drill as drill  # noqa: E402
 
 FIX_DIR = Path(__file__).resolve().parent / "fixtures" / "execution"
-FIXTURES = [FIX_DIR / "p03_drill_cases.json",
-            FIX_DIR / "p06_drill_cases.json"]
+FIXTURES = [FIX_DIR / n
+            for n in ("p01_drill_cases.json", "p02_drill_cases.json",
+                      "p03_drill_cases.json", "p04_drill_cases.json",
+                      "p05_drill_cases.json", "p06_drill_cases.json",
+                      "p90_drill_cases.json")]
 
 
 class ExecutionDrillTest(unittest.TestCase):
