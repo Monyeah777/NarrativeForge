@@ -260,6 +260,22 @@ def _build_parser() -> argparse.ArgumentParser:
     dm = sub.add_parser("demo",
                         help="一键演示世界（v2.8 波B S7：P04 轻混全链 → CCV3 导出）")
     dm.add_argument("--dest", default="", help="导出目录（缺省 = 系统临时目录并打印路径）")
+    # ---- v2.8.0 波C C1/C2/C5：知识签名 / 版本差异 / 修复指引（41 规划）----
+    sg = sub.add_parser("sig",
+                        help="协议知识签名（41 波C C1：01-36 文档/管线/模块 → 结构化签名，知识指纹）")
+    sg.add_argument("target", nargs="*", default=None,
+                    help="目标 md 或目录；缺省 = 全量 01-36 编号方案文档")
+    sg.add_argument("--json", action="store_true", help="输出完整 canonical JSON 记录")
+    sg.add_argument("--verify", action="store_true",
+                    help="check25 同语义：两遍生成一致性校验（可复现门禁）")
+    df = sub.add_parser("diff",
+                        help="版本差异检测（41 波C C2：两份签名/文档 → 字段级差异 + 兼容判定）")
+    df.add_argument("a", help="签名 A 的文档 md 路径")
+    df.add_argument("b", help="签名 B 的文档 md 路径")
+    df.add_argument("--json", action="store_true", help="输出结构化差异 JSON")
+    ex = sub.add_parser("explain",
+                        help="check 修复指引（41 波C C5：缺什么/补什么/示例 三段式）")
+    ex.add_argument("check", help="check 编号（如 25；all = 全量清单）")
     return p
 
 
@@ -925,6 +941,104 @@ def _cmd_demo(args) -> int:
     return 0 if r.ok else 1
 
 
+def _rel_to_root(target):
+    """把调用方给的路径归一化为仓库相对路径（不存在则报错）。"""
+    t = os.path.abspath(target)
+    if not os.path.exists(t):
+        raise ValueError("目标不存在：%s" % target)
+    return os.path.relpath(t, ROOT)
+
+CHECK_GUIDE = {
+    "12": "缺什么：desktop/src 或 scripts 语法/单测失败。补什么：跑 python -m unittest discover -s desktop/tests 修到全绿；示例：新模块未补测试→先写测试再实现。",
+    "13": "缺什么：02 头部与 registry.json 协议版本不一致或迁移记录不全。补什么：版本改动需 02 §9.3 四步（快照/bump/迁移说明/回读）。",
+    "14": "缺什么：社区协议登记缺 protocol.yaml/Schema 12 字段/登记三要件。补什么：01 §6.1 + 02 §8.3 补齐并保持 registry protocols[] 一致。",
+    "15": "缺什么：组合引用 references 违约（不在册/闭包未闭合/层冲突/schema 不兼容/双源不一致）。补什么：按 02 §8.4 五断言核对。",
+    "16": "缺什么：machine_contract 机读结构或装配 publish⊆subscribe 违约。补什么：01 §1.1 契约字段 + 运行时寻址授权一致。",
+    "17": "缺什么：质量门 unittest 失败。补什么：装配/锚点/资产悬空需过 quality_gate 语义。",
+    "18": "缺什么：导出契约 unittest 失败。补什么：ccv3_adapter/exporter 映射层检查锚点与条目。",
+    "19": "缺什么：导出产物 shape 与 schema 不符。补什么：对照 export_schema 5 格式自检。",
+    "20": "缺什么：模块文档必填项缺失。补什么：按文档完整性清单补必填字段。",
+    "21": "缺什么：registry 引用图悬空/裸号重复。补什么：清理 source_package/module_id 引用。",
+    "22": "缺什么：导出物规范体检失败（spec_version/name/description 超限）。补什么：按 export_schema 硬约束修正。",
+    "23": "缺什么：资产供应链台账违约（不可溯源/不可发现/键孤儿）。补什么：05_资产库/provenance.json + 文件头双源一致。",
+    "24": "缺什么：模块状态位异常或 deprecated/retired 被引用。补什么：module deprecate/restore 流转或移除引用方。",
+    "25": "缺什么：01-36 编号方案文档签名不可复现/结构缺标题。补什么：文档须 UTF-8 且含 # 标题，同一内容重复生成须逐字节一致；示例：nf sig --verify。",
+}
+
+def _cmd_sig(args):
+    """nf sig：41 波C C1 —— 结构化签名（知识指纹）。"""
+    from core import knowledge_sig as ks
+    import json as _json
+    try:
+        if args.verify:
+            issues, stats = ks.verify_reproducible(ROOT)
+            print("== nf sig --verify（check25 同语义）==")
+            print("  文档 %d · 可复现 %d" % (stats["docs"], stats["reproducible"]))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 01-36 全量签名两遍一致（知识指纹稳定）"); return 0
+            return 1
+        targets = list(args.target) if args.target else ks.discover_docs(ROOT)
+        if not targets:
+            print("  ✗ 未找到签名目标（缺省 = 根目录 01-36 编号方案文档）", file=sys.stderr); return 2
+        out = []
+        for t in targets:
+            rel = _rel_to_root(t)
+            sig = ks.build_signature(rel, ROOT)
+            out.append({"digest": ks.signature_digest(sig), "sig": sig})
+        if args.json:
+            print(_json.dumps(out, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf sig（%d 文档）==" % len(out))
+            for r in out:
+                s = r["sig"]
+                print("  %s  %-10s %-8s %s  refs=%d" %
+                      (r["digest"][:12], s["path"], s["doc_id"],
+                       s["title"][:28], len(s["refs"])))
+        return 0
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr); return 2
+
+def _cmd_diff(args):
+    """nf diff：41 波C C2 —— 结构化差异 + 兼容判定。"""
+    from core import knowledge_sig as ks
+    import json as _json
+    try:
+        ra = _rel_to_root(args.a)
+        rb = _rel_to_root(args.b)
+        diff = ks.diff_signatures(ks.build_signature(ra, ROOT),
+                                 ks.build_signature(rb, ROOT))
+        if args.json:
+            print(_json.dumps(diff, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf diff ==")
+            print("  %s  →  %s" % (diff["from"], diff["to"]))
+            if not diff["changes"]:
+                print("  无字段差异（两份签名一致）")
+            for c in diff["changes"]:
+                print("  [%s] %s  %r → %r" % (c["kind"], c["field"], c["from"], c["to"]))
+            print("  判定：%s" % diff["verdict"])
+        return 0
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr); return 2
+
+def _cmd_explain(args):
+    """nf explain：41 波C C5 —— check 修复指引（缺什么/补什么/示例）。"""
+    key = args.check.strip().lower()
+    if key in ("all", ""):
+        print("== nf explain all（check 修复指引全量）==")
+        for k in sorted(CHECK_GUIDE):
+            print("  check%s：%s" % (k, CHECK_GUIDE[k]))
+        return 0
+    if key.startswith("check"):
+        key = key[5:]
+    guide = CHECK_GUIDE.get(key)
+    if not guide:
+        print("  ✗ 未知 check：%s（可用 all 看全量）" % args.check, file=sys.stderr); return 2
+    print("== nf explain check%s ==" % key)
+    print("  %s" % guide); return 0
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd == "register":
@@ -935,6 +1049,12 @@ def main(argv=None) -> int:
         return _cmd_pipeline(args)
     if args.cmd == "module":
         return _cmd_module(args)
+    if args.cmd == "sig":
+        return _cmd_sig(args)
+    if args.cmd == "diff":
+        return _cmd_diff(args)
+    if args.cmd == "explain":
+        return _cmd_explain(args)
     if args.cmd == "demo":
         return _cmd_demo(args)
     if args.cmd == "market":
