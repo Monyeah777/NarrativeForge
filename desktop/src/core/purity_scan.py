@@ -53,7 +53,8 @@ def scan(root: str = ".") -> tuple:
         path = os.path.join(root, name)
         if not os.path.exists(path):
             continue
-        text = open(path, encoding="utf-8").read()
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
         stats["docs"] += 1
         if name in ("01_核心协议.md", "02_联动注册表.md"):
             for i, ln in enumerate(text.splitlines(), 1):
@@ -83,7 +84,8 @@ def scan(root: str = ".") -> tuple:
                 continue
             fpath = os.path.join(core_dir, fname)
             try:
-                tree = ast.parse(open(fpath, encoding="utf-8").read())
+                with open(fpath, encoding="utf-8") as fh:
+                    tree = ast.parse(fh.read())
             except (OSError, SyntaxError):
                 continue
             for lineno, msg in _iter_raise_messages(tree):
