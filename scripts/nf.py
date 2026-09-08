@@ -27,6 +27,16 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 
+NF_CLI_VERSION = "1.0.0"
+NF_CLI_EPILOG = (
+    "入门：\n"
+    "  nf --help             # 全命令总览\n"
+    "  nf help <cmd>         # 查看任意子命令帮助\n"
+    "  nf doctor             # 环境自检（快速只读体检）\n"
+    "  nf run / nf demo      # 作者五分钟上手（README「五分钟快速开始」含逐条示例）\n"
+    "退出码：0 成功 · 1 运行/校验失败 · 2 用法错误（argparse 约定）。"
+)
+
 
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
@@ -36,8 +46,12 @@ def _build_parser() -> argparse.ArgumentParser:
             "开发者与仓库治理工具族 = asset / module / register / market / spec / render / serve / "
             "design / audit / who-refers / impact / rename / import——README「五分钟快速开始」"
             "含逐条示例。"),
+        epilog=NF_CLI_EPILOG,
     )
-    sub = p.add_subparsers(dest="cmd", required=True)
+    p.add_argument("--version", action="version",
+                   version="nf %s" % NF_CLI_VERSION,
+                   help="显示版本号后退出")
+    sub = p.add_subparsers(dest="cmd", required=False)
 
     run = sub.add_parser("run", help="跑全链管道：模块选择→装配→质检→导出")
     run.add_argument("--pipeline", required=True,
@@ -281,7 +295,15 @@ def _build_parser() -> argparse.ArgumentParser:
     rel.add_argument("target",
                     help="目标 = 包 id（如 技术文档域包）或模块 id（如 M90 / 技术文档:M90）")
     rel.add_argument("--registry", default=None,
-                    help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+                     help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+    hep = sub.add_parser("help",
+                         help="显示 nf 或指定子命令的帮助")
+    hep.add_argument("command", nargs="?", metavar="COMMAND",
+                     help="子命令名；缺省 = 显示 nf 总帮助")
+    doc = sub.add_parser("doctor",
+                         help="环境自检（快速只读体检：关键文件/registry/schema/核心库——不开 verify 慢跑）")
+    doc.add_argument("--json", action="store_true",
+                     help="输出结构化 JSON 报告")
     return p
 
 
@@ -955,6 +977,17 @@ def _rel_to_root(target):
     return os.path.relpath(t, ROOT)
 
 CHECK_GUIDE = {
+    "1": "缺什么：官方核心目录结构件缺失（01/02/06/07/README/LICENSE + 官方管线 P00/P01/P90）。补什么：按 07 §7 项1 清单补齐根级文件与 03_管线库 官方管线。",
+    "2": "缺什么：重号 ID 未全限定（官方层裸号重复）。补什么：官方核心层模块引用一律全限定（通用:M10/事件:M22），07 §7 项5。",
+    "3": "缺什么：五条不变式落点缺失或错位。补什么：核对 01 §5 ↔ 07 §7 项6 的逐条落点声明。",
+    "4": "缺什么：认知边界断链（06 §4 管线 ↔ M23 认知域不一致）。补什么：对齐执行协议与 M23 的裁剪/过滤口径。",
+    "5": "缺什么：质检门流水线违约（M80 gate_action ↔ 06 §5）。补什么：核对输出生成器的 gate_action 三态与执行协议一致。",
+    "6": "缺什么：入口导航断链（README → 07 → 协议链/官方目录）。补什么：按 07 §7 项6 修 README 路由。",
+    "7": "缺什么：社区两包结构完整度违约。补什么：校园/西幻包 modules/pipelines/protocol.yaml/README 与 02 §8 在册数一致。",
+    "8": "缺什么：社区资产行数溯源不符。补什么：核对资产切片行号区间（07 §7 项3）。",
+    "9": "缺什么：模块-资产引用不可寻址或社区 README 重号未限定。补什么：资产键真实可寻址 + 社区重号限定引用。",
+    "10": "缺什么：EXT 闭合违约或社区红线未落地。补什么：EXT 实体闭合 + 红线条目对齐 07 §7 项2/8。",
+    "11": "缺什么：资产-模块三方对账不一致（02 §8.1 ↔ modules/ ↔ assets/README）。补什么：三方条目对齐（08 方案 T5 A5）。",
     "12": "缺什么：desktop/src 或 scripts 语法/单测失败。补什么：跑 python -m unittest discover -s desktop/tests 修到全绿；示例：新模块未补测试→先写测试再实现。",
     "13": "缺什么：02 头部与 registry.json 协议版本不一致或迁移记录不全。补什么：版本改动需 02 §9.3 四步（快照/bump/迁移说明/回读）。",
     "14": "缺什么：社区协议登记缺 protocol.yaml/Schema 12 字段/登记三要件。补什么：01 §6.1 + 02 §8.3 补齐并保持 registry protocols[] 一致。",
@@ -969,6 +1002,12 @@ CHECK_GUIDE = {
     "23": "缺什么：资产供应链台账违约（不可溯源/不可发现/键孤儿）。补什么：05_资产库/provenance.json + 文件头双源一致。",
     "24": "缺什么：模块状态位异常或 deprecated/retired 被引用。补什么：module deprecate/restore 流转或移除引用方。",
     "25": "缺什么：01-36 编号方案文档签名不可复现/结构缺标题。补什么：文档须 UTF-8 且含 # 标题，同一内容重复生成须逐字节一致；示例：nf sig --verify。",
+    "26": "缺什么：语义矛盾（techdoc 链订阅事件无发布方 / 挂载点或类别漂移）。补什么：全库补发布方或修正漂移；示例：nf related 反查 + semantic_conflict.scan。",
+    "27": "缺什么：架构纯度违约（端壳残留/私货可变物/重复标题/raise 消息缺修复指引）。补什么：purity_scan 四规则逐条修；示例：R1 端壳关键词残留清理。",
+    "28": "缺什么：协议层 IDL 违约（schema 定义缺失或协议件字段漂移）。补什么：protocol/schema 五定义在场 + 在场 machine_contract/管线/协议包/台账过 schema；示例：nf doctor 看 schema 在场。",
+    "29": "缺什么：Conformance 虚标或声明缺失（声明级别 > 可证级别）。补什么：按 01 §1.2 与 conformance_scan 提示降级或补证据。",
+    "30": "缺什么：扩展判据缺失或版本字段 bump 无迁移记录。补什么：protocol/EXTENSION.md 判据 + bump 变更带 01 §7/02 §9.3 四步迁移记录。",
+    "31": "缺什么：生成物过期（protocol/generated 与当前 schema/协议件不一致）。补什么：重跑 protocol_golden.write_golden 并随变更一并提交。",
 }
 
 def _cmd_sig(args):
@@ -1096,8 +1135,97 @@ def _cmd_related(args):
     except (OSError, ValueError, KeyError) as exc:
         print("  ✗ %s" % exc, file=sys.stderr); return 2
 
+
+def _cmd_help(args):
+    """nf help [COMMAND]：显示 nf 总帮助或指定子命令帮助。"""
+    root = _build_parser()
+    command = getattr(args, "command", None)
+    if command:
+        for action in root._actions:
+            if isinstance(action, argparse._SubParsersAction):
+                choice = action.choices.get(command)
+                if choice is not None:
+                    choice.print_help()
+                    return 0
+        print("  ✗ 未知子命令：%s（nf --help 看全量）" % command, file=sys.stderr)
+        return 2
+    root.print_help()
+    return 0
+
+
+def _cmd_doctor(args):
+    """nf doctor：环境自检（快速只读体检；不开 verify 慢跑）。
+
+    检查项：关键文件在场 / registry 可解析且模块在册 / IDL schema 定义在场 /
+    核心库可导入。exit 0 = 全部通过；任一 FAIL = 1。
+    """
+    import json as _json
+
+    checks = []
+
+    def chk(name, ok, detail):
+        checks.append({"name": name, "ok": bool(ok), "detail": str(detail)})
+
+    for rel in ("README.md", "01_核心协议.md", "02_联动注册表.md",
+                "06_Agent执行协议.md", "07_官方核心出厂与社区预设导航.md",
+                "AGENTS.md", "STRATEGY.md", "verify.sh"):
+        chk("文件在场 %s" % rel, os.path.isfile(os.path.join(ROOT, rel)), rel)
+
+    reg_path = os.path.join(ROOT, "desktop", "src", "core", "registry.json")
+    try:
+        with open(reg_path, encoding="utf-8") as fh:
+            reg = _json.load(fh)
+        n_modules = len(reg.get("modules") or [])
+        n_prots = len(reg.get("protocols") or [])
+        chk("registry 可解析（modules=%d protocols=%d）" % (n_modules, n_prots),
+            n_modules >= 13 and n_prots >= 5,
+            "desktop/src/core/registry.json")
+    except Exception as exc:
+        chk("registry 可解析", False, "desktop/src/core/registry.json: %s" % exc)
+
+    sdir = os.path.join(ROOT, "protocol", "schema")
+    try:
+        n_schema = len([f for f in os.listdir(sdir) if f.endswith(".json")])
+    except OSError as exc:
+        n_schema = 0
+        chk("IDL schema 定义在场", False, str(exc))
+    if os.path.isdir(sdir):
+        chk("IDL schema 定义在场（%d 份）" % n_schema, n_schema == 5, sdir)
+
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
+        from core import schema_lint  # noqa: F401
+        chk("核心库可导入（schema_lint）", True, "desktop/src/core")
+    except Exception as exc:
+        chk("核心库可导入（schema_lint）", False, str(exc))
+
+    n_pass = sum(1 for c in checks if c["ok"])
+    if args.json:
+        print(_json.dumps({
+            "version": NF_CLI_VERSION,
+            "ok": n_pass == len(checks),
+            "passed": n_pass,
+            "total": len(checks),
+            "checks": checks,
+        }, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf doctor（nf %s）==" % NF_CLI_VERSION)
+        for c in checks:
+            print("  [%s] %s（%s）" % ("PASS" if c["ok"] else "FAIL",
+                                       c["name"], c["detail"]))
+        print("  体检：%d/%d 通过" % (n_pass, len(checks)))
+    return 0 if n_pass == len(checks) else 1
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
+    if args.cmd is None:
+        _build_parser().print_help()
+        return 0
+    if args.cmd == "help":
+        return _cmd_help(args)
+    if args.cmd == "doctor":
+        return _cmd_doctor(args)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "asset":
@@ -1202,5 +1330,31 @@ def main(argv=None) -> int:
     return 0
 
 
+def cli(argv=None) -> int:
+    """CLI 运行时封装：SIGPIPE 语义 + 断管/中断兜底 + 退出码归一。
+
+    - POSIX：恢复 SIGPIPE 默认动作（`nf ... | head` 静默截断，无 traceback）；
+    - 断管兜底（Windows 无 SIGPIPE 场景）；
+    - Ctrl-C → 130；返回非 int（如 None）按 0 处理。
+    """
+    try:
+        import signal
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+    except Exception:
+        pass
+    try:
+        code = main(argv)
+    except BrokenPipeError:
+        try:
+            devnull = os.open(os.devnull, os.O_WRONLY)
+            os.dup2(devnull, sys.stdout.fileno())
+        except Exception:
+            pass
+        code = 0
+    except KeyboardInterrupt:
+        code = 130
+    return code if isinstance(code, int) else 0
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(cli())

@@ -8,6 +8,7 @@ import argparse
 import contextlib
 import importlib.util
 import io
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -70,6 +71,40 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["related", "M90"])
         self.assertEqual(code, 0)
         self.assertIn("技术文档域包", out)
+
+    # ---- 44 波：CLI 工具链顶尖化（骨架约定：无参 help / help 子命令 / doctor / version）----
+    def test_no_args_shows_help(self):
+        code, out = self._run([])
+        self.assertEqual(code, 0)
+        self.assertIn("usage", out)
+
+    def test_help_subcommand(self):
+        code, out = self._run(["help", "sig"])
+        self.assertEqual(code, 0)
+        self.assertIn("usage: nf sig", out)
+        self.assertIn("target", out)
+        code2, _ = self._run(["help", "no-such"])
+        self.assertEqual(code2, 2)
+
+    def test_doctor_ok(self):
+        code, out = self._run(["doctor"])
+        self.assertEqual(code, 0)
+        self.assertIn("体检", out)
+        self.assertIn("[PASS]", out)
+
+    def test_doctor_json(self):
+        code, out = self._run(["doctor", "--json"])
+        self.assertEqual(code, 0)
+        self.assertIn('"ok": true', out)
+        self.assertIn('"version"', out)
+
+    def test_cli_version_flag(self):
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "nf.py"), "--version"],
+            capture_output=True, text=True, encoding="utf-8", timeout=60,
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertIn("nf 1.0.0", proc.stdout)
 
 
 if __name__ == "__main__":
