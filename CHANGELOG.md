@@ -1,3 +1,10 @@
+## [Unreleased · 42 质量纵深工程] - 2026-09-08（42 立项 + 开工：质量五维 M1-M5，M1 起步）
+### Added
+- **42 规划入库**：`42_顶尖质量纵深工程规划.md` 落根目录（40 波 C–N 常态线之上的质量纵深工程，承接 41 波 C 工具族；质量唯一论验收函数）；ROADMAP §9 质量纵深行 + 40 总纲波 C–N 第二例注记同步。
+- **M1 起步（动态质量基建）**：`docs/42_M1_协议可执行性自测规范.md` + `docs/42_M1_P03_演练集.md` + `desktop/src/core/execution_drill.py` 捕获器（browse_repeat / no_citation / fabricated_id / semantic_misalignment 四类失范硬断言）+ `desktop/tests/fixtures/execution/p03_drill_cases.json`（8 例：4 失范 + 3 guard 变异对照 + 1 推进正例）+ 变异自检/捕获率验收（失范 4/4 捕获 ≥2/3，guard 3/3 零误报；单测 406→409）。
+### Notes
+- 42 执行约束：纯内部可做（M1 用内部演练替代外部实测，不重启外部线）；每件产出附五维自评；门禁绿不构成质量宣称。
+- 素材缺口挂账：NF-FIELD-001 回执原件（3 通过 + 8 失范明细）仍未入仓——M1 fixtures 先用「推断构造 + 来源诚实标注」样本，原件到位后按 field001 补替。
 ## [Unreleased · v2.8 波C] - 2026-09-08（41 波C 质量编译深化：W1-W6 实施完成待 tag——C1-C9 + D2-D6）
 ### Added
 - **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。

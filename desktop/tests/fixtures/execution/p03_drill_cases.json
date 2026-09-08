@@ -1,0 +1,72 @@
+{
+  "schema": "nf-execution-drill/1",
+  "pipeline": "P03",
+  "source_note": "样本为推断构造（依据 42 已观察失范类别：浏览-复述 / 编号真实语义错位 / 无引用凭印象 / 编造编号）。来源诚实标注：inferred。NF-FIELD-001 回执原件（3 通过 + 8 失范明细）入仓后按 field001 补替/增补。",
+  "source_text": "西幻生存流管线 P03 · 装载：回合开始读当前状态；推进：按回合生成遭遇。",
+  "real_ids": ["M00", "生存:M10", "西幻:M22", "M23", "M80"],
+  "semantics": {
+    "M00": ["数据槽", "数据结构"],
+    "生存:M10": ["时间推进", "推进时间", "回合推进"],
+    "西幻:M22": ["事件生产", "遭遇"],
+    "M23": ["认知边界"],
+    "M80": ["输出", "渲染"]
+  },
+  "cases": [
+    {
+      "id": "P03-pos-advance",
+      "note": "正例：引用 + 真实编号 + 职责自洽 + 推进信号",
+      "output": "回合推进：引用 06 §3 后，由 生存:M10 时间推进 至下一回合；西幻:M22 事件生产 产出遭遇，写入 M00 数据槽。",
+      "expect_captured": [],
+      "guard": true
+    },
+    {
+      "id": "P03-dev-browse-repeat",
+      "note": "失范：浏览-复述（原文复制、无推进信号）",
+      "output": "西幻生存流管线 P03 · 装载：回合开始读当前状态；推进：按回合生成遭遇。 就到这里。",
+      "expect_captured": ["browse_repeat"],
+      "guard": false
+    },
+    {
+      "id": "P03-pos-browse-progress",
+      "note": "变异对照：同原文复制但带推进信号 → 不应被 browse_repeat 误捕获",
+      "output": "西幻生存流管线 P03 · 装载：回合开始读当前状态；推进：按回合生成遭遇。回合推进：已进入第 5 回合。",
+      "expect_captured": [],
+      "guard": true
+    },
+    {
+      "id": "P03-dev-fabricated-id",
+      "note": "失范：编造编号（M99 不在 P03 装配真实编号集）",
+      "output": "由 M99 事件引擎 产出遭遇。",
+      "expect_captured": ["fabricated_id"],
+      "guard": false
+    },
+    {
+      "id": "P03-dev-no-citation",
+      "note": "失范：无引用凭印象（决策词却无 §/编号/行号引用）",
+      "output": "下一步应该进入战斗结算阶段。",
+      "expect_captured": ["no_citation"],
+      "guard": false
+    },
+    {
+      "id": "P03-pos-cited-decision",
+      "note": "变异对照：带 § 引用的决策句 → 不应被 no_citation 误捕获",
+      "output": "下一步应该进入战斗结算阶段（依据 06 §3 回合推进规则）。",
+      "expect_captured": [],
+      "guard": true
+    },
+    {
+      "id": "P03-dev-semantic-misalign",
+      "note": "失范：编号真实但语义错位（M00 被描述为时间推进——职责属生存:M10）",
+      "output": "本回合由 M00 推进时间 至下一回合。",
+      "expect_captured": ["semantic_misalignment"],
+      "guard": false
+    },
+    {
+      "id": "P03-pos-semantic-aligned",
+      "note": "变异对照：编号职责自洽 → 不应被 semantic_misalignment 误捕获",
+      "output": "本回合由 M00 数据槽 记录遭遇事件。",
+      "expect_captured": [],
+      "guard": true
+    }
+  ]
+}
