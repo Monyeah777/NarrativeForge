@@ -97,7 +97,7 @@ def _build_parser() -> argparse.ArgumentParser:
     mkt.add_argument("--list", action="store_true",
                      help="列市场目录（官方核心 + 社区包，各带分级徽章）")
     mkt.add_argument("--json", action="store_true",
-                     help="输出结构化 JSON（目录视图）")
+                     help="输出结构化 JSON（目录 / 包视图）")
     mkt.add_argument("--tier", default=None,
                      choices=["official", "community", "experimental"],
                      help="按分级筛选（v2.5.0 Wave3：官方/社区/实验）")
@@ -361,7 +361,7 @@ def _cmd_register(args) -> int:
         for msg in issues:
             print(f"  [拒绝] {msg}", file=sys.stderr)
         print("✗ 校验未通过——须先满足登记三要件（02 §8.3）；详见 02 §9.2 同步纪律", file=sys.stderr)
-        return 2
+        return 1
 
     entry = project_entry(args.pkg_dir)
 
@@ -371,7 +371,7 @@ def _cmd_register(args) -> int:
     cur = reg.get("protocols")
     if not isinstance(cur, list):
         print("✗ registry protocols[] 缺失或非列表", file=sys.stderr)
-        return 2
+        return 1
 
     # 键序无关比较：merge 结果与现状在规范化（sorted keys）意义上相等 → 无实质变化
     def _canon(prots):
@@ -449,12 +449,17 @@ def _cmd_market(args) -> int:
 
     # 登记状态（复用 registry_sync 三要件校验；issue 即未就绪提示，不阻断查询）
     reg_issues = check_registerable(args.pkg_dir, doc)
-    print(f"== nf market {pkg_id} ==")
-    print("  登记状态: %s" % ("在册（02 §8 + registry protocols[]）"
-                              if not reg_issues else "; ".join(reg_issues)))
     if pkg_id not in prots:
+        if args.json:
+            print(json.dumps({
+                "kind": "market-package",
+                "pkg_id": pkg_id,
+                "registered": False,
+                "issues": reg_issues,
+            }, ensure_ascii=False, indent=2, sort_keys=True))
+            return 1 if reg_issues else 0
         print("  registry protocols[] 无条目——无 references 可查")
-        return 2 if reg_issues else 0
+        return 1 if reg_issues else 0
 
     # 加载各包 protocol.yaml 内容（data 供 dependencies/conflicts 用）
     import glob
@@ -472,6 +477,21 @@ def _cmd_market(args) -> int:
     cfl = conflicts(pkg_id, prots, data)
     # A6 质量分级徽章（v2.4.0）：官方核心/社区/实验
     grades = grades_of_package(prots, pkg_id)
+    if args.json:
+        print(json.dumps({
+            "kind": "market-package",
+            "pkg_id": pkg_id,
+            "registered": True,
+            "issues": reg_issues,
+            "dependencies": sorted(seen),
+            "dependency_issues": dep_issues,
+            "conflicts": cfl,
+            "grades": grades,
+        }, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
+    print(f"== nf market {pkg_id} ==")
+    print("  登记状态: %s" % ("在册（02 §8 + registry protocols[]）"
+                              if not reg_issues else "; ".join(reg_issues)))
     if grades:
         _badge = {"official": "🏛官方", "community": "🌐社区", "experimental": "🧪实验"}
         badge_line = ", ".join(f"{m}({_badge[g]})" for m, g in grades.items())
@@ -518,7 +538,7 @@ def _cmd_impact(args) -> int:
     print(f"== 删除影响面预检: {args.target} ==")
     if im.get("error"):
         print(f"  [拒绝] {im['error']}")
-        return 2
+        return 1
 
     if "module_id" in im:                     # module 级
         refs = im["referenced_by"]
@@ -625,7 +645,7 @@ def _cmd_import(args) -> int:
         return 0
     if res.ir is None:
         print("✗ 无 IR 可登记（external 模式未升 IR）", file=sys.stderr)
-        return 2
+        return 1
 
     store = Store(home=args.store) if args.store else Store()
     n = 0
@@ -880,7 +900,7 @@ def _cmd_asset(args) -> int:
         return 0
     except al.AssetLedgerError as exc:
         print("  ✗ %s" % exc, file=sys.stderr)
-        return 2
+        return 1
 
 
 def _cmd_pipeline(args) -> int:
@@ -895,13 +915,13 @@ def _cmd_pipeline(args) -> int:
                                      domain=args.domain)
     except (OSError, ValueError) as exc:
         print("  ✗ %s" % exc, file=sys.stderr)
-        return 2
+        return 1
     dest = args.dest or os.path.join(ROOT, "03_管线库",
                                      default_filename(args.id.upper(), args.name))
     dest = os.path.abspath(dest)
     if os.path.exists(dest):
         print("  ✗ 目标已存在，不覆盖：%s" % dest, file=sys.stderr)
-        return 2
+        return 1
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     with open(dest, "w", encoding="utf-8") as fh:
         fh.write(new_text)
@@ -973,7 +993,7 @@ def _cmd_module(args) -> int:
         return 0
     except (OSError, ValueError) as exc:
         print("  ✗ %s" % exc, file=sys.stderr)
-        return 2
+        return 1
 
 
 def _cmd_demo(args) -> int:
@@ -988,7 +1008,7 @@ def _cmd_demo(args) -> int:
     pipeline = load_pipeline_file(pipeline_path)
     if pipeline is None:
         print("  ✗ 演示管线解析失败：%s" % pipeline_path, file=sys.stderr)
-        return 2
+        return 1
     store = Store()
     stats = _seed_store(store)
     dest = args.dest or tempfile.mkdtemp(prefix="nf_demo_")
@@ -1067,7 +1087,7 @@ def _cmd_sig(args):
             return 1
         targets = list(args.target) if args.target else ks.discover_docs(ROOT)
         if not targets:
-            print("  ✗ 未找到签名目标（缺省 = 根目录 01-36 编号方案文档）", file=sys.stderr); return 2
+            print("  ✗ 未找到签名目标（缺省 = 根目录 01-36 编号方案文档）", file=sys.stderr); return 1
         out = []
         for t in targets:
             rel = _rel_to_root(t)
@@ -1084,7 +1104,7 @@ def _cmd_sig(args):
                        s["title"][:28], len(s["refs"])))
         return 0
     except (OSError, ValueError) as exc:
-        print("  ✗ %s" % exc, file=sys.stderr); return 2
+        print("  ✗ %s" % exc, file=sys.stderr); return 1
 
 def _cmd_diff(args):
     """nf diff：41 波C C2 —— 结构化差异 + 兼容判定。"""
@@ -1112,7 +1132,7 @@ def _cmd_diff(args):
             print("  影响度：%s（%s）" % (impact, label))
         return 0
     except (OSError, ValueError) as exc:
-        print("  ✗ %s" % exc, file=sys.stderr); return 2
+        print("  ✗ %s" % exc, file=sys.stderr); return 1
 
 def _cmd_explain(args):
     """nf explain：41 波C C5 —— check 修复指引（缺什么/补什么/示例）。"""
@@ -1177,7 +1197,7 @@ def _cmd_related(args):
         print("  相关模块互见：%s" % ("、".join(r["related_modules"]) or "—"))
         return 0
     except (OSError, ValueError, KeyError) as exc:
-        print("  ✗ %s" % exc, file=sys.stderr); return 2
+        print("  ✗ %s" % exc, file=sys.stderr); return 1
 
 
 def _cmd_help(args):
@@ -1442,7 +1462,7 @@ def main(argv=None) -> int:
     pipeline = load_pipeline_file(args.pipeline)
     if pipeline is None:
         print(f"✗ 管线解析失败：{args.pipeline}", file=sys.stderr)
-        return 2
+        return 1
 
     store = Store(home=args.store) if args.store else Store()
     if args.seed:
@@ -1503,6 +1523,7 @@ def cli(argv=None) -> int:
     - POSIX：恢复 SIGPIPE 默认动作（`nf ... | head` 静默截断，无 traceback）；
     - 断管兜底（Windows 无 SIGPIPE 场景）；
     - Ctrl-C → 130；返回非 int（如 None）按 0 处理。
+    - 未预期异常：默认一句错误 + 提示（NF_DEBUG=1 时透出堆栈），不裸刷 traceback。
     """
     try:
         import signal
@@ -1520,6 +1541,12 @@ def cli(argv=None) -> int:
         code = 0
     except KeyboardInterrupt:
         code = 130
+    except Exception as exc:
+        if os.environ.get("NF_DEBUG"):
+            raise
+        print("  ✗ 内部错误：%s（重跑 NF_DEBUG=1 nf ... 看堆栈）" % exc,
+              file=sys.stderr)
+        code = 1
     return code if isinstance(code, int) else 0
 
 

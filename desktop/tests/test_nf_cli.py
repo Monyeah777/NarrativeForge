@@ -119,7 +119,7 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn("doctor", out)
 
     def test_exit_code_matrix(self):
-        """退出码矩阵（子进程）：0 成功 / 2 用法·未知命令·校验失败 / 未知子命令。"""
+        """退出码矩阵（子进程）：0 成功 / 1 运行·校验失败 / 2 用法（argparse）。"""
         cases = (
             (["bogus"], 2),
             (["run"], 2),
@@ -132,6 +132,30 @@ class NfCliSmokeTest(unittest.TestCase):
                 capture_output=True, text=True, encoding="utf-8", timeout=120,
             )
             self.assertEqual(proc.returncode, expected, "argv=%s" % argv)
+
+    def test_market_package_json(self):
+        code, out = self._run(["market", str(ROOT / "community" / "技术文档域包"), "--json"])
+        self.assertEqual(code, 0)
+        self.assertIn('"registered": true', out)
+        self.assertIn('"kind": "market-package"', out)
+
+    def test_cli_catch_all_hides_traceback(self):
+        """未预期异常：一句错误 + 退出 1，不裸刷 traceback（NF_DEBUG 时透出）。"""
+        orig = nf.main
+
+        def boom(argv=None):
+            raise RuntimeError("boom")
+
+        nf.main = boom
+        try:
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+                code = nf.cli([])
+        finally:
+            nf.main = orig
+        self.assertEqual(code, 1)
+        self.assertIn("内部错误", err.getvalue())
+        self.assertNotIn("Traceback", err.getvalue())
 
     # ---- 44 波：CLI 工具链顶尖化（骨架约定：无参 help / help 子命令 / doctor / version）----
     def test_no_args_shows_help(self):
