@@ -32,7 +32,7 @@
 |---|---|---|
 | **Agent**（Operit、Claude 等 · 有 API / 能执行代码） | clone 仓库、跑 verify、可接 MCP | → **A 线**：`nf serve` MCP 深度集成（检索/装配/登记全能力；接入文档见 `docs/mcp.md`——随基础层 v2.7 S1-E3，E3 实测记录待回填） |
 | **免费客户端 AI**（DeepSeek / 千问 / Kimi · 非 API） | 能读 raw 直链、能下载文件（产物另存 .md 仅几分钟） | → **B1 线**：非 API 主推大众盘（下方 B1 · 完整装配） |
-| **纯粘贴客户端**（豆包 / 本地模型） | 只能读用户粘贴的文本 | → ~~B2~~ **已免除**（2026-09-07 用户裁决）：自取 `paste_card.md`，不推不维护 |
+| **纯粘贴客户端**（豆包 / 本地模型） | 只能读用户粘贴的文本 | → ~~B2~~ **已免除**（2026-09-07 作者裁决）：自取 `paste_card.md`，不推不维护 |
 
 > ⚖️ **A 线与 B 线同等级**：agent 与非 API 用户都是服务对象、无高下之分——只是非 API 体量大得多、是主要盘；B 线内以 B1（能读 raw / 能下载）为主推，按连接能力选线即可，选到哪条都是完整通道。
 
@@ -46,7 +46,7 @@
 2. 按指令包取件：`01_核心协议.md`（模块/管线/资产契约）→ `02_联动注册表.md` → `06_Agent执行协议.md` → `07_官方核心出厂与社区预设导航.md` → 用户所需 `community/<领域包>/`（含包内 README 装配清单）
 3. 选件 → 按骨架组装 → 过 `##7. 自检清单` → 输出完整版 md（引用式档位：契约摘要 + 缺口如实声明，禁止编造未读内容）
 
-### ~~B2 · 纯粘贴创作~~（已免除 · 2026-09-07 用户裁决）
+### ~~B2 · 纯粘贴创作~~（已免除 · 2026-09-07 作者裁决）
 
 纯粘贴通道**不再维护**——「用户非得用豆包那是用户的问题」：能下载文件的客户端（DeepSeek / 千问 / Kimi）产物另存 `.md` 仅几分钟，无需为极端受限场景养专门通道。
 
@@ -66,7 +66,7 @@
 | 最严谨的终稿 / 查漏补缺 | **Kimi** | 最长最细、自检最严（9 项），适合终审把关 |
 | ~~豆包（纯粘贴）~~ | ~~B2 已免除~~ | 自取 `paste_card.md`，产物质量自担——不推不维护（2026-09-07 裁决） |
 
-**通用流程**：把需求发给所选模型（B1：直读 raw 取件装配；纯粘贴：自取 `paste_card.md`）→ 收产物另存 `.md` → 交给任意叙事 AI 按 `##6. 装载指引` 开跑。四模型实测报告见社区实测记录（.rivet 协作区，不随仓库分发）。
+**通用流程**：把需求发给所选模型（B1：直读 raw 取件装配；纯粘贴：自取 `paste_card.md`）→ 收产物另存 `.md` → 交给任意叙事 AI 按 `##6. 装载指引` 开跑。四模型实测报告见社区实测记录（本地归档，不随仓库分发）。
 
 ## 五分钟快速开始（CLI · 作者向）
 
@@ -109,7 +109,7 @@
 > **v2.3.0 基础层深化首波**（✅ 已发布 2026-09-05，tag v2.3.0）：A3 规则出口打通（doc_semantics 三层透传 → AGENTS/CLAUDE）+ B2 变体装配（variants.py + nf --variant）+ B3 文档 retro-fit（M93/M96 补不变式遵守段）。verify v2.10 PASS=29。方案真相源见 34。
 > **v2.2.0 外部吸收首波**（✅ 已发布 2026-09-05，tag v2.2.0）：verify 从协议一致性加深到产物与语义完整性——A1 导出 schema 合规（check19）/ A2 引用反查（referenced_by + nf who-refers）/ A3 文档完整性门禁（check20）/ A4 registry 引用图闭合门禁（check21）/ A5 MCP 规范差距核查（报告落盘）；B1/B2 方案模板纪律（CONTRIBUTING §4.5 五问 + 消费方声明）。verify v2.10 PASS=29。方案真相源见 33。
 > **v2.1.0 基础层深化**（✅ 已发布 2026-09-05，tag v2.1.0）：A 适配面 + B 生成器 + C 内容资产化 CLI/库先行首波——A1 AGENTS/CLAUDE 适配器（semantics 裁决）+ A2 MCP server 导出 + A1 补遗（doc_semantics 接通）；B1 质量门可解释化 / B2 全链管道化（pipe() + nf CLI）/ B3 协议自举（check14 ⑦ 元素级 + glob 化 + 投影生成器）/ B3-B 登记助手（nf register）/ B4 market CLI 先行（依赖/冲突可查）；C-b techdoc 域包战例（第 5 包非叙事域包）；+ 23 分层治理（L3 端壳冻结）。verify v2.9 PASS=24。方案真相源见 23–32。
-> **2.0 导出层序列（v1.2.0–v2.0.x，✅ 已归位 2026-09-05）**：从「叙事工具」到「所有 AI 协议标准的上游生成器」——v1.2 协议中转站 v2（IR 内容归一化）/ v1.3 Agentic 检索（四类统一 search）/ v1.4 质量治理闭环（quality_gate + check17）/ v2.0.0 CCV3 导出（映射层+exporter+PNG+check18+GUI 导出）/ v2.0.x SKILL 出口插件（产物×适配矩阵：techdoc→SKILL、narrative→CCV3）/ v2.0.x-E2 协议定义向导（自定义协议 GUI 化）/ v2.0.x-E3 组合运行时调度引擎（references 跨包运行时消费）/ v2.0.x-E4 模块市场雏形（zone_g 检索驱动一站式视图）/ v2.0.x-E5 模块市场雏形深化（community 仓库盘点：可发现 → 可装载）。verify v2.8 PASS=24。方案真相源见 14–22。
+> **2.0 导出层序列（v1.2.0–v2.0.x，✅ 已归位 2026-09-05）**：从「叙事工具」到「多协议导出层」（CCV3/SKILL/MCP 等格式适配）——v1.2 协议中转站 v2（IR 内容归一化）/ v1.3 Agentic 检索（四类统一 search）/ v1.4 质量治理闭环（quality_gate + check17）/ v2.0.0 CCV3 导出（映射层+exporter+PNG+check18+GUI 导出）/ v2.0.x SKILL 出口插件（产物×适配矩阵：techdoc→SKILL、narrative→CCV3）/ v2.0.x-E2 协议定义向导（自定义协议 GUI 化）/ v2.0.x-E3 组合运行时调度引擎（references 跨包运行时消费）/ v2.0.x-E4 模块市场雏形（zone_g 检索驱动一站式视图）/ v2.0.x-E5 模块市场雏形深化（community 仓库盘点：可发现 → 可装载）。verify v2.8 PASS=24。方案真相源见 14–22。
 > > **v1.1.0 社区通用核心基础包**（✅ 已发布 2026-09-04）：T4-1 通用核心基础包战例落盘（C=395e59a）——community 第 4 包「P05 核心基础流」：protocol.yaml schema v2（core_only 12 件、references 零跨包、0 资产）+ M93–M96 四模块（machine_contract）+ registry protocols[] 第 4 条投影；verify.sh check14/check15 扩容 3→4 目录、复验 PASS=22 全绿。版本演进与任务记录见 ROADMAP 与 CHANGELOG。
 > **v1.0.0 全平台正式版**（✅ 已发布 2026-09-04）：全平台正式版·打好地基——一次兑现历版方案 §6 开放问题与范围外声明累计 6+ 条「明示留待 v1.0.0」收口项：①协议层收口（02 §8.4 规则④契约 WARN→FAIL 强校验 + 模块头契约机读化 + desktop Runtime asset_get 跨包只读寻址，check16 入段 C、verify.sh v2.6 PASS 20→22）；②社区生态收口（CONTRIBUTING「提交→PR 评审→登记→发布」协作流程五步 + community/「校园 × 西幻轻混」完整可玩组合包战例）；③双端发布质量收口（端到端测试入 CI 缺口⑩闭环：桌面 headless 断言 + Android 模拟器启动冒烟最小集 + 正式发布仪式三件套终态收口 + tag v1.0.0）；方案真相源见 13_v1.0.0_全平台正式版方案.md；版本演进与任务记录见 ROADMAP 与 CHANGELOG。
 > **v0.9.0 Android 同步门禁 + APK 闪退修复**（✅ 已发布 2026-09-04）：闪退修复代码（MDRadioButton→MDCheckbox / MDTopAppBar 去 subtitle / CJK 字体注册）已含于 v0.8.0 历史（git merge-base 实证），本版对其做验证归档 + 回归断言入冒烟（selftest_android.py UI 启动安全静态断言三断言），并把 Android↔真源同步差异校验接入 CI（build-android.yml sync 步骤后追加 sync_android.sh --check 自证闸门，缺口⑦闭环）；方案真相源见 12_v0.9.0_Android同步门禁与APK闪退修复方案.md；版本演进与任务记录见 ROADMAP 与 CHANGELOG。
