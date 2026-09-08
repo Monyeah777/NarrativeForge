@@ -54,6 +54,12 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("包", out)
 
+    def test_market_list_json(self):
+        code, out = self._run(["market", "--list", "--json"])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "market-list"', out)
+        self.assertIn('"grade"', out)
+
     def test_related_techdoc(self):
         code, out = self._run(["related", "技术文档域包"])
         self.assertEqual(code, 0)
@@ -71,6 +77,12 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["related", "M90"])
         self.assertEqual(code, 0)
         self.assertIn("技术文档域包", out)
+
+    def test_related_json(self):
+        code, out = self._run(["related", "M90", "--json"])
+        self.assertEqual(code, 0)
+        self.assertIn('"target": "M90"', out)
+        self.assertIn('"kind"', out)
 
     # ---- 44 波：CLI 工具链顶尖化（骨架约定：无参 help / help 子命令 / doctor / version）----
     def test_no_args_shows_help(self):

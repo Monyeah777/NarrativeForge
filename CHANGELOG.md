@@ -7,6 +7,7 @@
 - **43 A4 生成物同仓 golden（落地）**：`protocol_golden.py` 确定性渲染 → `protocol/generated/idl_report.json` + `idl_summary.md` + verify check31 双源一致（v2.20，PASS 47→49，过期即红）。
 - **43 A5 收口 audit（落地）**：`docs_audit-43-protocol.md`（verdict 通过 + 五维自评段）+ 本 [Unreleased] 收口注记 + ROADMAP §9/VERSION-MATRIX/40 总纲状态归位。verify v2.20 check1-31 PASS=49 全绿；随下个内容波发布（无独立 tag）。
 - **CLI 工具链顶尖化（内部工程波次 1 · 骨架收敛）**：`nf --version` / 无参显示帮助 / `nf help [cmd]` / `nf doctor` 自检（含 `--json`）/ SIGPIPE 断管安全（`nf ... | head` 无 traceback）/ `nf explain` 指引补全 check1-11 + 26-31——机制借鉴经内部差距审计实证后吸收；verify PASS=49 保持。
+- **CLI 工具链顶尖化（内部工程波次 2 · 机器可读面）**：`market --list` / `related` 增 `--json` 结构化输出（与 sig/diff/doctor 对齐，机器消费一致性）；verify PASS=49 保持。
 ## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
 ### Added
 - **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。

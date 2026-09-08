@@ -95,6 +95,8 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="包目录（如 community/校园西幻轻混组合包）；缺省 + --list 列目录")
     mkt.add_argument("--list", action="store_true",
                      help="列市场目录（官方核心 + 社区包，各带分级徽章）")
+    mkt.add_argument("--json", action="store_true",
+                     help="输出结构化 JSON（目录视图）")
     mkt.add_argument("--tier", default=None,
                      choices=["official", "community", "experimental"],
                      help="按分级筛选（v2.5.0 Wave3：官方/社区/实验）")
@@ -296,6 +298,8 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="目标 = 包 id（如 技术文档域包）或模块 id（如 M90 / 技术文档:M90）")
     rel.add_argument("--registry", default=None,
                      help="registry.json 路径（缺省 = desktop/src/core/registry.json）")
+    rel.add_argument("--json", action="store_true",
+                     help="输出结构化 JSON（See-Also 关联结果）")
     hep = sub.add_parser("help",
                          help="显示 nf 或指定子命令的帮助")
     hep.add_argument("command", nargs="?", metavar="COMMAND",
@@ -402,6 +406,14 @@ def _cmd_market(args) -> int:
     if args.list:
         reg = load_registry(reg_path)
         items = list_market(reg, tier=args.tier)
+        if args.json:
+            import json as _json
+            print(_json.dumps({
+                "kind": "market-list",
+                "tier": args.tier,
+                "items": items,
+            }, ensure_ascii=False, indent=2, sort_keys=True))
+            return 0
         print(f"== nf market list{'（tier=' + args.tier + '）' if args.tier else ''} ==")
         _badge = {"official": "🏛官方", "community": "🌐社区", "experimental": "🧪实验"}
         for it in items:
@@ -1126,6 +1138,9 @@ def _cmd_related(args):
                             ins.add(x)
                 graph.setdefault(im.group(1), set()).update(ins)
         r = related_of(args.target, prots, module_graph=graph, owner_map=owner)
+        if args.json:
+            print(_json.dumps(r, ensure_ascii=False, indent=2, sort_keys=True))
+            return 0
         print("== nf related（See-Also · 相关条目 + 引用链）==")
         print("  目标：%s（%s）" % (r["target"], r["kind"]))
         print("  关联条目（引用了谁 / 依赖链）：%s" % ("、".join(r["refs"]) or "—"))
