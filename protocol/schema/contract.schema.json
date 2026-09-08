@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contract.schema.json",
+  "title": "模块头 machine_contract 机读契约块（01 §1.1 九键）",
+  "description": "模块文档内 machine_contract yaml 围栏的 IDL 定义；check16/26 消费的机读真相。",
+  "type": "object",
+  "required": ["schema", "id", "name", "category", "layer", "inputs", "outputs", "events", "interfaces"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": ["1"],
+      "description": "机读契约 schema 版本（独立演进，01 §7 V3）"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^([^:]*:)?M[0-9]{2}$",
+      "description": "与标题 # 模块 一致；官方限定写法如 通用:M10"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "category": { "type": "string", "minLength": 1 },
+    "layer": {
+      "type": "string",
+      "pattern": "^(P[0-9]{2}|调度器)$",
+      "description": "挂载层 Pxx 或全局调度器"
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "依赖前置模块（跨包限定 id）"
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "events": {
+      "type": "object",
+      "required": ["publish", "subscribe"],
+      "properties": {
+        "publish": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "subscribe": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "interfaces": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "对外查询接口面；零事件模块不得以空契约隐式脱离联动面"
+    }
+  },
+  "additionalProperties": true
+}

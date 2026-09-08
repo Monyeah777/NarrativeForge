@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "module.schema.json",
+  "title": "注册表模块条目（02 §2 / registry.json modules[] 投影）",
+  "description": "registry.json modules[] 单条的 IDL 定义；编号/类别/来源/挂载点位。",
+  "type": "object",
+  "required": ["id", "name", "category", "source"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 3,
+      "pattern": "^([^:]*:)?M[0-9]{2}$",
+      "description": "模块编号；跨类别限定写法如 通用:M10 / 事件:M22"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "category": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "scheduler": { "type": "boolean" },
+    "mounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layer", "status"],
+        "properties": {
+          "layer": { "type": "string", "pattern": "^P[0-9]{2}$" },
+          "status": {
+            "type": "string",
+            "enum": ["active", "available", "deprecated", "retired"]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
