@@ -1,6 +1,11 @@
 ## [Unreleased]
 ### Added
 - **43 协议层顶尖化工程规划（立项入库）**：`43_协议层顶尖化工程规划.md` 落根目录——承接 41/42 工具族之上的协议层顶尖化（目标：把 01/02/06/07 + registry + machine_contract 从「机检闭环」提到「顶尖」：A1 协议 IDL schema 单一真相 / A2 Conformance 一致性分级 / A3 扩展策略 + 变更影响分层自动化 / A4 生成物同仓 golden / A5 全量收口）；ROADMAP §9 + 40 总纲波 C–N 注记 + VERSION-MATRIX 同步。灵感来源 = GitHub 开源项目（OpenSpec/spec-kit/Glyph/peacprotocol 等），逐条过仓库实证后净吸收 4 真空白。
+- **43 A1 协议层 IDL（落地）**：`protocol/schema/*.json` 五定义（contract/module/pipeline/protocol/asset）+ `desktop/src/core/schema_lint.py`（自实现 JSON-schema 子集校验器，零第三方）+ verify check28（v2.17，PASS 41→43）；首轮扫描暴露并收口 01 §2 `techdoc` 值域漂移（值域文档化扩展非 bump）。
+- **43 A2 Conformance 一致性分级（落地）**：01 §1.2 分级段 + `machine_contract`/`protocol.yaml` 声明位（23 件机读块 + 5 协议包 retro-fit L2）+ `protocol/export_conformance.json`（4 导出面 L3）+ `conformance_scan.py` + verify check29（v2.18，PASS 43→45，零虚标）。
+- **43 A3 扩展策略 + 变更影响分层（落地）**：`protocol/EXTENSION.md` 判据表（editorial/additive/bump）+ `nf diff` verdict 增 `impact` 三档（CLI 打印）+ verify check30 bump 迁移门禁（v2.19，PASS 45→47）。
+- **43 A4 生成物同仓 golden（落地）**：`protocol_golden.py` 确定性渲染 → `protocol/generated/idl_report.json` + `idl_summary.md` + verify check31 双源一致（v2.20，PASS 47→49，过期即红）。
+- **43 A5 收口 audit（落地）**：`docs_audit-43-protocol.md`（verdict 通过 + 五维自评段）+ 本 [Unreleased] 收口注记 + ROADMAP §9/VERSION-MATRIX/40 总纲状态归位。verify v2.20 check1-31 PASS=49 全绿；随下个内容波发布（无独立 tag）。
 ## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
 ### Added
 - **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。
