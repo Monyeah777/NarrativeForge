@@ -1,3 +1,6 @@
+## [Unreleased]
+### Added
+- **43 协议层顶尖化工程规划（立项入库）**：`43_协议层顶尖化工程规划.md` 落根目录——承接 41/42 工具族之上的协议层顶尖化（目标：把 01/02/06/07 + registry + machine_contract 从「机检闭环」提到「顶尖」：A1 协议 IDL schema 单一真相 / A2 Conformance 一致性分级 / A3 扩展策略 + 变更影响分层自动化 / A4 生成物同仓 golden / A5 全量收口）；ROADMAP §9 + 40 总纲波 C–N 注记 + VERSION-MATRIX 同步。灵感来源 = GitHub 开源项目（OpenSpec/spec-kit/Glyph/peacprotocol 等），逐条过仓库实证后净吸收 4 真空白。
 ## [2.8.0] - 2026-09-08（v2.8.0 波 C 首个内容波：41 质量编译深化 + 42 质量纵深随波收口 · tag v2.8.0）
 ### Added
 - **发布摘要**：41 波 C = 质量编译深化（C1-C9 + D2-D6：nf sig/diff/check25、语义矛盾 check26、See-Also、explain、回合指针、MCP 只读 tools、ruff/logging 等）；42 质量纵深 = M1-M5 随波收口（执行失范 drill + 判级器/状态头 + check27 + doc_hygiene/内容边界 + VERSION-MATRIX + coverage/lint CI + Release checklist）。
