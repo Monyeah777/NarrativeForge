@@ -37,6 +37,17 @@ class PipelineLoaderTest(unittest.TestCase):
                 fh.write("not a pipeline yaml at all\n")
             self.assertIsNone(pl.load_pipeline_file(bad))
 
+    def test_load_all_repo_pipelines(self):
+        """全量装载：03 官方 + community 每份管线都可解析且 id 合法。"""
+        docs = sorted((ROOT / "03_管线库").glob("*.md"))
+        for pkg in sorted((ROOT / "community").iterdir()):
+            docs += sorted((pkg / "pipelines").glob("*.md"))
+        self.assertGreaterEqual(len(docs), 8)
+        for doc in docs:
+            pipe = pl.load_pipeline_file(str(doc))
+            self.assertIsNotNone(pipe, str(doc))
+            self.assertTrue(pipe.id.startswith("P"), doc.name)
+
 
 if __name__ == "__main__":
     unittest.main()
