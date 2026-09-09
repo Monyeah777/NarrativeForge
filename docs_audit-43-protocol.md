@@ -4,7 +4,7 @@ target: 43 协议层顶尖化工程（A1-A5）收口
 verdict: 通过
 date: 2026-09-08
 auditor: 天枢（基于项目现状取证）
-related: [43_协议层顶尖化工程规划.md, protocol/README.md, ROADMAP §9 协议层顶尖行, VERSION-MATRIX.md]
+related: [protocol/README.md, ROADMAP §9 协议层顶尖行, VERSION-MATRIX.md]
 ---
 
 # M_AUDIT 协议设计审计（43 · 五维自评段随行）
