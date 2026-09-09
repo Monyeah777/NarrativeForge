@@ -190,6 +190,11 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn('"kind": "asset-usage"', out)
         self.assertIn('"total_refs"', out)
 
+    def test_asset_usage_strict_passes_repo(self):
+        code, out = self._run(["asset", "usage", "--strict",
+                               "--root", str(ROOT)])
+        self.assertEqual(code, 0, out)
+
     def test_release_check_fast(self):
         code, out = self._run(["release", "--fast"])
         self.assertEqual(code, 0, out)
@@ -217,6 +222,23 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("西幻生存领域包", out)
         self.assertNotIn("需求澄清", out)
+
+    def test_assemble_session_memory(self):
+        """会话存储：第一轮回填被记忆，第二轮无需重复 --answer。"""
+        fd, sess = tempfile.mkstemp(suffix=".json", dir=str(ROOT))
+        os.close(fd)
+        try:
+            code, _ = self._run(["assemble", "给我做一个世界",
+                                 "--answer", "题材：西幻生存",
+                                 "--session", sess])
+            self.assertEqual(code, 0)
+            code, out = self._run(["assemble", "给我做一个世界",
+                                   "--session", sess])
+            self.assertEqual(code, 0, out)
+            self.assertIn("西幻生存领域包", out)
+        finally:
+            if os.path.exists(sess):
+                os.remove(sess)
 
     def test_assemble_trace(self):
         fd, path = tempfile.mkstemp(suffix=".json", dir=str(ROOT))

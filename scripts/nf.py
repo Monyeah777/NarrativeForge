@@ -243,6 +243,8 @@ def _build_parser() -> argparse.ArgumentParser:
     a_use.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
     a_use.add_argument("--json", action="store_true",
                        help="输出结构化 JSON（引用度统计）")
+    a_use.add_argument("--strict", action="store_true",
+                       help="零引用键存在即 exit 1（键消费证明进门禁）")
     a_thk = asub.add_parser("thickness",
                             help="资产语义厚度体检（45：字符/键/小节/表格 + 低信息档候选）", description="资产语义厚度体检（45：字符/键/小节/表格 + 低信息档候选）")
     a_thk.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
@@ -357,6 +359,8 @@ def _build_parser() -> argparse.ArgumentParser:
     asm.add_argument("--answer", action="append", default=None,
                      metavar="问答",
                      help="澄清回填（可多次，如 --answer \"题材：西幻生存\" --answer \"主轴：生存\"）")
+    asm.add_argument("--session", dest="session_path", metavar="SESSION.json",
+                     help="会话存储：多次调用间保留已回填澄清（多轮记忆落盘）")
     rel = sub.add_parser("release",
                          help="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）", description="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）")
     rel.add_argument("--fast", action="store_true",
@@ -959,7 +963,7 @@ def _cmd_asset(args) -> int:
                 if stats["zero_keys"]:
                     print("  零引用键（低信息候选，不自动删）：%s"
                           % "、".join(stats["zero_keys"][:20]))
-            return 1 if issues else 0
+            return 1 if (issues or (args.strict and stats["zero_usage"] > 0)) else 0
         if args.asset_cmd == "thickness":
             from core import asset_density as ad
             issues, stats = ad.thickness_scan(args.root)
@@ -1387,6 +1391,19 @@ def _cmd_doctor(args):
     except Exception as exc:
         chk("基线自描述一致", False, str(exc))
 
+    try:
+        import json as _j
+        from jsonschema import Draft202012Validator
+        for f in sorted(os.listdir(os.path.join(ROOT, "protocol", "schema"))):
+            if f.endswith(".json"):
+                with open(os.path.join(ROOT, "protocol", "schema", f),
+                          encoding="utf-8") as fh:
+                    Draft202012Validator.check_schema(_j.load(fh))
+        chk("schema 标准对照（jsonschema）", True, "CI 与本地同跑")
+    except Exception as exc:
+        chk("schema 标准对照（jsonschema）", True,
+            "可选依赖未装（CI 已装真跑）：%s" % exc)
+
     n_pass = sum(1 for c in checks if c["ok"])
     if args.json:
         print(_json.dumps({
@@ -1533,6 +1550,9 @@ def _cmd_assemble(args):
 
     req_text = args.requirement
     answers = getattr(args, "answer", None) or []
+    if args.session_path:
+        prior = _session_load(args.session_path)
+        answers = prior + [a for a in answers if a not in prior]
     if answers:
         req_text = req_text + "（" + "；".join(answers) + "）"
     funnel = ap.clarify(req_text)
@@ -1553,6 +1573,8 @@ def _cmd_assemble(args):
             return 1
         print("  ✓ 需求档案已存：%s" % args.save_path)
     if funnel["status"] == "clarify":
+        if args.session_path:
+            _session_write(args.session_path, args.requirement, answers)
         if args.trace_path:
             _write_trace_file(args.trace_path, {
                 "tool": "nf assemble", "phase": "clarify",
@@ -1629,6 +1651,8 @@ def _cmd_assemble(args):
               "protocol.yaml 登记（nf register）→ 成品里即可引用 → 验收")
         print("  验收：nf assemble \"%s\" --check <out.md>"
               % args.requirement)
+    if args.session_path:
+        _session_write(args.session_path, args.requirement, answers)
     if args.trace_path:
         _write_trace_file(args.trace_path, {
             "tool": "nf assemble", "phase": "plan",
@@ -1699,6 +1723,25 @@ def _write_trace_file(path, payload):
         return False
     print("  ✓ trace 已存：%s" % path)
     return True
+
+
+def _session_load(path):
+    import json as _json
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return list((_json.load(fh).get("answers") or []))
+    except (OSError, ValueError):
+        return []
+
+
+def _session_write(path, requirement, answers):
+    import json as _json
+    try:
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            _json.dump({"requirement": requirement, "answers": list(answers)},
+                       fh, ensure_ascii=False, indent=2)
+    except OSError:
+        pass
 
 
 def main(argv=None) -> int:
