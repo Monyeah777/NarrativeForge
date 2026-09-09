@@ -71,7 +71,7 @@ class NfCliSmokeTest(unittest.TestCase):
     def test_diff_01_vs_36(self):
         """nf diff 冒烟：01 核心协议 vs 36 方案 → 判定行在场（C2 差异检测）。"""
         code, out = self._run(["diff", str(ROOT / "01_核心协议.md"),
-                               str(ROOT / "36_v2.5.0_基础层深化续方案.md")])
+                               str(ROOT / "02_联动注册表.md")])
         self.assertEqual(code, 0)
         self.assertIn("判定", out)
 
