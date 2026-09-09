@@ -1409,6 +1409,17 @@ def _cmd_doctor(args):
         chk("schema 标准对照（jsonschema）", True,
             "可选依赖未装（CI 已装真跑）：%s" % exc)
 
+    try:
+        from core import tool_face as tf
+        tf_issues, tf_stats = tf.scan(ROOT)
+        chk("模块工具面（tool_face）",
+            not tf_issues,
+            "模块 %d · 条目 %d · 候选 %d"
+            % (tf_stats["modules"], tf_stats["entries"],
+               tf_stats["candidates"]))
+    except Exception as exc:
+        chk("模块工具面（tool_face）", False, str(exc))
+
     n_pass = sum(1 for c in checks if c["ok"])
     if args.json:
         print(_json.dumps({
