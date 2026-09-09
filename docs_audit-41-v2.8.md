@@ -4,7 +4,7 @@ target: 41 波C v2.8.0「质量编译深化」收口
 verdict: 通过
 date: 2026-09-08
 auditor: 天枢（基于项目现状取证）
-related: [41_v2.8.0_波C质量编译深化规划.md, ROADMAP §9, CHANGELOG [Unreleased · v2.8 波C]]
+related: [ROADMAP §9, CHANGELOG [Unreleased · v2.8 波C]]
 ---
 
 # M_AUDIT 协议设计审计

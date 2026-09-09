@@ -36,7 +36,7 @@
 ### Added
 - **发布摘要**：STRATEGY 战略层建立（目标/质量唯一/内部质量法官/计划内部消化）；43 协议层元工具 A1-A5（IDL schema/Conformance/EXTENSION/golden + schema 子集自洽/事件闭包进 golden）；44 CLI 工具链顶尖化（骨架/机器可读/补全/语义归一/自洽矩阵）+ 动态执行 drill（7 条可执行主线）+ AI 通道（内容通道/需求→自组装/用户自定义/需求档案）；verify v2.20 check1-31 PASS=49。
 - **STRATEGY 战略文件建立（治理 · 2026-09-08）**：仓库根新增 `STRATEGY.md`——目标与质量准绳（NF = 内容契约层（域中立、模型无关）/ 验收函数 = 质量单变量 / 质量法官 = 内部验证链（verify→audit→五维自评→战例；外部仅机制借鉴、不背书不裁判）/ 仓库发布边界 = 计划内部消化（计划类文档不发布公开仓库，落地后以结果形态入库））；`AGENTS.md` 增「NF 方向与发布纪律」节（开工必读链 / 质量法官内部 / 计划不发布 / 公开文案纪律）；`40_未来计划总纲` 头部挂 STRATEGY 上层引用。verify 保持 PASS=49。
-- **43 协议层顶尖化工程规划（立项入库）**：`43_协议层顶尖化工程规划.md` 落根目录——承接 41/42 工具族之上的协议层顶尖化（目标：把 01/02/06/07 + registry + machine_contract 从「机检闭环」提到「顶尖」：A1 协议 IDL schema 单一真相 / A2 Conformance 一致性分级 / A3 扩展策略 + 变更影响分层自动化 / A4 生成物同仓 golden / A5 全量收口）；ROADMAP §9 + 40 总纲波 C–N 注记 + VERSION-MATRIX 同步。灵感来源 = GitHub 开源项目（OpenSpec/spec-kit/Glyph/peacprotocol 等），逐条过仓库实证后净吸收 4 真空白。
+- **43 协议层顶尖化工程说明**：承接 41/42 工具族之上的协议层顶尖化（目标：把 01/02/06/07 + registry + machine_contract 从「机检闭环」提到「顶尖」：A1 协议 IDL schema 单一真相 / A2 Conformance 一致性分级 / A3 扩展策略 + 变更影响分层自动化 / A4 生成物同仓 golden / A5 全量收口）；A1-A5 落地见本版下辖条目；规划按作者裁决内部消化（2026-09-09）。
 - **43 A1 协议层 IDL（落地）**：`protocol/schema/*.json` 五定义（contract/module/pipeline/protocol/asset）+ `desktop/src/core/schema_lint.py`（自实现 JSON-schema 子集校验器，零第三方）+ verify check28（v2.17，PASS 41→43）；首轮扫描暴露并收口 01 §2 `techdoc` 值域漂移（值域文档化扩展非 bump）。
 - **43 A2 Conformance 一致性分级（落地）**：01 §1.2 分级段 + `machine_contract`/`protocol.yaml` 声明位（23 件机读块 + 5 协议包 retro-fit L2）+ `protocol/export_conformance.json`（4 导出面 L3）+ `conformance_scan.py` + verify check29（v2.18，PASS 43→45，零虚标）。
 - **43 A3 扩展策略 + 变更影响分层（落地）**：`protocol/EXTENSION.md` 判据表（editorial/additive/bump）+ `nf diff` verdict 增 `impact` 三档（CLI 打印）+ verify check30 bump 迁移门禁（v2.19，PASS 45→47）。
@@ -71,7 +71,7 @@
 - 原 [Unreleased] 两段（41 波 C / 42 质量纵深）归档为下辖小节（标题保留原编号，内容原样未增删）。
 ## [2.8.0 · 42 质量纵深工程（随 v2.8.0 发布）] - 2026-09-08（质量五维 M1-M5）
 ### Added
-- **42 规划入库**：`42_顶尖质量纵深工程规划.md` 落根目录（40 波 C–N 常态线之上的质量纵深工程，承接 41 波 C 工具族；质量唯一论验收函数）；ROADMAP §9 质量纵深行 + 40 总纲波 C–N 第二例注记同步。
+- **42 质量纵深工程（随 v2.8.0 收口）**：40 波 C–N 常态线之上的质量纵深工程，承接 41 波 C 工具族（质量唯一论验收函数）；M1-M5 落地见本版下辖条目；规划按作者裁决内部消化（2026-09-09）。
 - **M1 起步（动态质量基建）**：`docs/42_M1_协议可执行性自测规范.md` + `docs/42_M1_P03_演练集.md` + `desktop/src/core/execution_drill.py` 捕获器（browse_repeat / no_citation / fabricated_id / semantic_misalignment 四类失范硬断言）+ `desktop/tests/fixtures/execution/p03_drill_cases.json`（8 例：4 失范 + 3 guard 变异对照 + 1 推进正例）+ 变异自检/捕获率验收（失范 4/4 捕获 ≥2/3，guard 3/3 零误报；单测 406→409）。
 - **M2 协议可执行性改造**：06 §11 判级器段（RFC2119/8174 NF 化：必须/禁止 = 硬约束回滚+记失范；应 = WARN 可豁免；可 = 自由区；判级 ↔ verify/演练断言对齐）+ `desktop/src/core/round_header.py` 回合状态头 v1（= C9 指针运行态实例：管线路径/已执行段/本回合铁律 L1-L5）+ 引用后执行（= execution_drill R3 no_citation）+ 中断重入/幂等断言（`replay_identity`：中断重入输出与连续执行一致）；`docs/42_M2_回合状态头_v1.md` + P03 实例；单测 409→412。
 - **M3 架构纯度体检（check27 · v2.16）**：`desktop/src/core/purity_scan.py` 四规则（R1 端壳/APK 残留 / R2 私货可变物 / R3 重复标题 / R4 raise 消息修复指引 ast 审计）+ verify check27（PASS 39→41）；首轮修复 02 端壳残留 2 处 + core raise 指引缺失 9 处（asset_ledger/exporter/import_adapter/parser/storage）；`docs/42_M3_纯度体检.md`；变异自检 test_purity_scan 5 例；单测 412→417。
@@ -88,7 +88,7 @@
 - **M1 演练集扩展（第 2 份）**：P06 技术文档演练集（`desktop/tests/fixtures/execution/p06_drill_cases.json`，8 例）+ `docs/42_M1_P06_演练集.md`；`test_execution_drill` 参数化覆盖 P03+P06（捕获/guard/捕获率逐管线）；语义词 = 功能词（显示名作标签不作判据）。
 ## [2.8.0 · 41 波C] - 2026-09-08（41 波C 质量编译深化：W1-W6——C1-C9 + D2-D6）
 ### Added
-- **41 规划入库**：`41_v2.8.0_波C质量编译深化规划.md` 落根目录（40 总纲波 C–N 常态线首例内容波，版本去向 v2.8.0——承接波 B 整合裁决顺延）；ROADMAP §9 波 C 行 + 40 总纲波 C–N 首例注记同步。
+- **41 波 C 质量编译深化工程（随 v2.8.0 收口）**：40 总纲波 C–N 常态线首例内容波（版本去向 v2.8.0——承接波 B 整合裁决顺延）；C1-C9 落地见本版下辖条目；规划按作者裁决内部消化（2026-09-09）。
 - **C1 协议知识签名 `nf sig`（`desktop/src/core/knowledge_sig.py`）**：01-36 编号方案文档/协议/管线/模块 → 结构化签名（标题/编号/版本/章节/引用集/正文哈希，知识指纹）；试点 01/24/36 签名已生成，全量 35 文档两遍生成逐字节一致；单测 5 例全绿。
 - **C2 版本差异检测 `nf diff` + verify check25**：任意两份签名 → 字段级差异 + 兼容判定（破坏/需评审/兼容）；verify.sh v2.13→v2.14 新增 check25（全量 01-36 签名可复现门禁），PASS 35→37；01 vs 36 实测差异清单可复现。
 - **C5 `nf explain`**：check12–check26 修复指引（缺什么/补什么/示例 三段式），`nf explain <check>` / `nf explain all`。

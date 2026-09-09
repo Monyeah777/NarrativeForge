@@ -4,7 +4,7 @@ target: 42 顶尖质量纵深工程（M1-M5）收口
 verdict: 通过
 date: 2026-09-08
 auditor: 天枢（基于项目现状取证）
-related: [42_顶尖质量纵深工程规划.md, docs/42_M5_工程收口.md, ROADMAP §9 质量纵深行]
+related: [docs/42_M5_工程收口.md, ROADMAP §9 质量纵深行]
 ---
 
 # M_AUDIT 协议设计审计（42 · 五维自评段随行）
