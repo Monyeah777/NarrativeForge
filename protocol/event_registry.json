@@ -81,9 +81,34 @@
       }
     },
     "chaos_event": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M18_混沌事件.md §3 事件契约 payload",
+      "fields": {
+        "type": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "magnitude": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "region": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "targets": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "constraints": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "seed": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "combat_result": {
       "payload_status": "declared",
@@ -274,9 +299,30 @@
       }
     },
     "market_event": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M09_经济贸易.md §3 事件契约 payload",
+      "fields": {
+        "type": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "commodity": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "price_delta": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "duration": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "affected_towns": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "minute_tick": {
       "note": "官方通用 M10 分钟级节拍",
@@ -427,9 +473,34 @@
       }
     },
     "reputation_change": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M14_阵营声望.md §3 事件契约 payload",
+      "fields": {
+        "faction_id": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "player": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "delta": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "old_tier": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "new_tier": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "reason": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "revision_recorded": {
       "payload_status": "pending",
@@ -486,9 +557,34 @@
       }
     },
     "travel_event": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M07_地图区域.md §3 事件契约 payload",
+      "fields": {
+        "from": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "to": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "route": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "duration": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "encounters": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "weather_mod": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "weather_state": {
       "payload_status": "declared",
