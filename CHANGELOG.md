@@ -5,6 +5,7 @@
 - **45 深化补强（W5）**：CI（ci-verify/coverage）装 jsonschema——schema 标准对照测试 CI 真跑（本地取证：5 份 schema 合法 draft2020-12 + M00 实例标准实现零错）；`nf asset usage` 资产引用度体检（键在 04/community/docs 全语料引用计数 + 零引用候选清单）；`nf release check` 发布前体检（verify + 基线自描述一致，--fast 跳过全量）；verify PASS=49 保持。
 - **45 四专项·地基波（W6，真实转录/E3 待作者触发）**：#0 事件载荷形状化地基——`protocol/event_payload.schema.json` + `protocol/event_registry.json`（首批官方核心链 tick_day/minute_tick/interaction_update/narrative_event/quest_state 字段级类型）+ `payload_registry.py` 自校验与防死注册（零第三方，社区包载荷 retro-fit 挂账）；#1 资产语义厚度——`nf asset thickness`（字符/键/小节/表格 + 低信息档候选，55 档低信息=0）；#3 打 tag 强制闸——`.github/workflows/release-gate.yml`（v* 标签推送即跑 verify+基线自描述+覆盖率，FAIL 即红）；verify PASS=49 保持。
 - **45 #2 遥测专项（执行留痕底座）**：`nf assemble --trace <file.json>` 落盘 plan/clarify/check 三阶段执行遥测（确定性字段、时间戳外套）；`docs/45_执行遥测规范.md`（phase/采集纪律，E3 真实转录回填接口预留）纳入 doc_hygiene；verify PASS=49 保持。
+- **45 遗留收口（W8）**：#0 载荷注册表覆盖全库 30 个机器事件——5 个有正文证据者登记字段级类型（declared），其余 25 个显式 `pending`（不编造字段，payload_status 区分）+ 漏登反向检查；#3 资产/载荷/基线体检并成 `test_quality_45` unittest 常驻（check12 内每跑必验）；trace 增 `source` 字段；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added

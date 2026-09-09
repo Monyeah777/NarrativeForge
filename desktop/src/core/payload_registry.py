@@ -36,7 +36,14 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         used.update(ev.get("subscribe") or [])
     reg_json = json.loads((r / "desktop/src/core/registry.json").read_text(encoding="utf-8"))
     used.update((reg_json.get("subscriptions") or {}).keys())
-    dead = sorted(set(registry.get("events", {})) - set(used))
+    registered = registry.get("events", {})
+    dead = sorted(set(registered) - used)
     if dead:
         issues.append("已登记事件无 machine 引用（死注册）：%s" % ", ".join(dead))
-    return issues, {"registered": len(registry.get("events", {})), "used": len(used)}
+    missing = sorted(used - set(registered))
+    if missing:
+        issues.append("机器事件未登记载荷（漏登）：%s" % ", ".join(missing))
+    declared = sum(1 for v in registered.values() if v.get("fields"))
+    return issues, {"registered": len(registered), "used": len(used),
+                    "declared": declared,
+                    "pending": len(registered) - declared}

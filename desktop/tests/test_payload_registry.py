@@ -17,7 +17,8 @@ class PayloadRegistryTest(unittest.TestCase):
     def test_repo_registry_clean(self):
         issues, stats = pr.scan(ROOT)
         self.assertEqual(issues, [])
-        self.assertGreaterEqual(stats["registered"], 5)
+        self.assertGreaterEqual(stats["registered"], 25)
+        self.assertGreaterEqual(stats["declared"], 5)
 
     def test_registry_dead_event_captured(self):
         import tempfile

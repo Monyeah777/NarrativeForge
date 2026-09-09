@@ -12,9 +12,9 @@
       "type": "object",
       "additionalProperties": {
         "type": "object",
-        "required": ["fields"],
         "properties": {
           "note": { "type": "string" },
+          "payload_status": { "type": "string", "enum": ["declared", "pending"] },
           "fields": {
             "type": "object",
             "additionalProperties": {

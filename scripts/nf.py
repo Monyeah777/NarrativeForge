@@ -1548,6 +1548,7 @@ def _cmd_assemble(args):
             _write_trace_file(args.trace_path, {
                 "tool": "nf assemble", "phase": "check",
                 "requirement": args.requirement,
+                "source": args.check_md,
                 "matched": plan_.get("matched"),
                 "package": plan_.get("package"),
                 "pipeline": plan_.get("pipeline"),
