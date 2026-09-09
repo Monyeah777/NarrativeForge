@@ -347,6 +347,9 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="执行遥测落盘（计划/澄清/验收留痕，供真实转录/E3 补测底座）")
     asm.add_argument("--rounds", action="store_true",
                      help="回合级 drill：对成品转录按回合断言（引用/推进/编造，45 A2）")
+    asm.add_argument("--answer", action="append", default=None,
+                     metavar="问答",
+                     help="澄清回填（可多次，如 --answer \"题材：西幻生存\" --answer \"主轴：生存\"）")
     rel = sub.add_parser("release",
                          help="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）", description="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）")
     rel.add_argument("--fast", action="store_true",
@@ -1445,6 +1448,7 @@ def _cmd_completion(args):
         lines += [
             "  esac",
             "  eval fl=\"$_nf_flags_${cmd//-/_}\"; fl=\"${fl:-}\"",
+            "  if [[ \"$cur\" == -* ]]; then COMPREPLY=( $(compgen -W \"$fl\" -- \"$cur\") ); return; fi",
             "  COMPREPLY=( $(compgen -W \"$fl\" -- \"$cur\") $(compgen -f -- \"$cur\") )",
             "}",
             "complete -F _nf_completions nf",
@@ -1498,10 +1502,14 @@ def _cmd_assemble(args):
     """nf assemble：需求 → 澄清漏斗 → 装配计划；--check 对成品完整版做机器验收。"""
     from core import assemble_plan as ap
 
-    funnel = ap.clarify(args.requirement)
-    plan_ = funnel.get("plan") or ap.plan(args.requirement)
+    req_text = args.requirement
+    answers = getattr(args, "answer", None) or []
+    if answers:
+        req_text = req_text + "（" + "；".join(answers) + "）"
+    funnel = ap.clarify(req_text)
+    plan_ = funnel.get("plan") or ap.plan(req_text)
     if args.save_path:
-        text = ap.dossier(args.requirement, plan_,
+        text = ap.dossier(req_text, plan_,
                           funnel.get("questions") or [])
         try:
             parent = os.path.dirname(os.path.abspath(args.save_path))

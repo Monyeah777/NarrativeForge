@@ -108,6 +108,7 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["completion", "bash"])
         self.assertEqual(code, 0)
         self.assertIn("complete -F _nf_completions nf", out)
+        self.assertIn('"$cur" == -*', out)
         self.assertIn("sig", out)
 
     def test_completion_zsh(self):
@@ -192,6 +193,15 @@ class NfCliSmokeTest(unittest.TestCase):
         finally:
             if os.path.exists(path):
                 os.remove(path)
+
+    def test_assemble_answers_fill_clarify(self):
+        """A3.2：--answer 多次回填 → 澄清转 ready（西幻命中预设）。"""
+        code, out = self._run(["assemble", "给我做一个世界",
+                               "--answer", "题材：西幻生存",
+                               "--answer", "主轴：生存"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("西幻生存领域包", out)
+        self.assertNotIn("需求澄清", out)
 
     def test_assemble_trace(self):
         fd, path = tempfile.mkstemp(suffix=".json", dir=str(ROOT))

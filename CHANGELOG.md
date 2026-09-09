@@ -14,6 +14,7 @@
 - **A1 W14**：revision_recorded 按 M98 §职责 散文级证据（ver/changes/date/author）转 declared（24→25）；剩余 5 条 techdoc 事件仍无显式结构 → pending；verify PASS=49 保持。
 - **A1 W15（techdoc 提案）**：`docs/45_M3_techdoc载荷提案.md`——5 条 pending 事件的 proposed 字段（doc_structure_ready/doc_delta_committed/intent_received/term_synced/term_conflict_detected），标「待作者确认才落 declared」，入 doc_hygiene；verify PASS=49 保持。
 - **A3.1 resources 标准面（W16）**：`resources/list` 分页（PAGE=20 + nextCursor，resources 总量 217 级可迭代）+ `resources/templates/list`（nf://repo/module/{id} / pipeline/{id} / asset/{package}/{key} URI 模板）；单测覆盖分页遍历与模板面；verify PASS=49 保持。
+- **A3.2 多轮记忆 + completion 语境（W17）**：`nf assemble --answer`（可多次回填澄清，折叠进需求文本后重跑漏斗，澄清转 ready）；bash completion 对 `-` 开头的当前词只补 flag（语境精细化）；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added
