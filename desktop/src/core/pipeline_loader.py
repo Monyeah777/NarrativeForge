@@ -174,6 +174,8 @@ def parse_pipeline_md(text: str) -> Optional[Pipeline]:
         data = yaml.safe_load(m.group(1)) or {}
     except ImportError:
         data = _parse_yaml_block(m.group(1))
+    if not isinstance(data, dict):
+        return None
     pnode = data.get("Pipeline", data)
     if not isinstance(pnode, dict):
         return None

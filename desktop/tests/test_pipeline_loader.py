@@ -48,6 +48,43 @@ class PipelineLoaderTest(unittest.TestCase):
             self.assertIsNotNone(pipe, str(doc))
             self.assertTrue(pipe.id.startswith("P"), doc.name)
 
+    def test_fallback_subset_parser(self):
+        text = ("Pipeline:\n  id: P99\n  structure:\n    type: linear\n"
+                "  tags: [a, b]\n  optional: true\n  n: 1\n  x: null\n"
+                "  layers:\n    - id: P00\n      name: 层\n"
+                "      default_modules: [M00]\n")
+        data = pl._parse_yaml_block(text)
+        self.assertEqual(data["Pipeline"]["id"], "P99")
+        self.assertEqual(data["Pipeline"]["tags"], ["a", "b"])
+        self.assertTrue(data["Pipeline"]["optional"])
+
+    def test_fallback_used_when_yaml_missing(self):
+        import sys
+        saved = sys.modules.get("yaml", None)
+        sys.modules["yaml"] = None  # force ImportError inside loader
+        try:
+            md = ("# 管线 P99\n```yaml\nPipeline:\n  id: P99\n"
+                  "  layers:\n    - id: P00\n      name: X\n"
+                  "      optional: false\n      default_modules: []\n"
+                  "      allowed_modules: []\n```\n")
+            pipe = pl.parse_pipeline_md(md)
+            self.assertIsNotNone(pipe)
+            self.assertEqual(pipe.id, "P99")
+        finally:
+            if saved is None:
+                sys.modules.pop("yaml", None)
+            else:
+                sys.modules["yaml"] = saved
+
+    def test_parse_edges(self):
+        self.assertIsNone(pl.parse_pipeline_md("no fence here"))
+        self.assertIsNone(pl.parse_pipeline_md("```yaml\nnot a map\n```"))
+
+    def test_discover_pipelines(self):
+        pipes = pl.discover_pipelines(str(ROOT / "03_管线库"))
+        self.assertGreaterEqual(len(pipes), 3)
+        self.assertEqual(pl.discover_pipelines(str(ROOT / "no_such_dir")), [])
+
 
 if __name__ == "__main__":
     unittest.main()

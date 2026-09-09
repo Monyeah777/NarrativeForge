@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-# 45 · 逐模块覆盖率门槛（防“总量绿、单文件裸奔”）：core 每文件 ≥ MIN（缺省 30，
+# 45 · 逐模块覆盖率门槛（防“总量绿、单文件裸奔”）：core 每文件 ≥ MIN（缺省 50，
 # __init__ 豁免）。失败 exit 1 并打印低于线文件清单。
-# 注：pipeline_loader 36% 为已知低档（解析分支深），补测到位后再上调至 50。
 set -e
 cd "$(dirname "$0")/.."
-MIN="${1:-30}"
+MIN="${1:-50}"
 python -m coverage run --source=desktop/src/core -m unittest discover -s desktop/tests >/dev/null 2>&1 || true
 python -m coverage json --include="desktop/src/core/*" -o _cov_tmp.json
 python - <<PY
