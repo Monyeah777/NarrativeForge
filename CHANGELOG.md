@@ -4,6 +4,7 @@
 - **下一波部分完成（W22）**：`resources/list` 增 `type`(module/pipeline/asset)/`package` 过滤后再分页；dossier `--answer` 自动回填“澄清回填”节（档案合并）；`bump_verify.sh` 支持 `--dry-run`（演练通过，未真改版本）；verify PASS=49 保持。
 - **下一波续（W23）**：`nf assemble --session` 多轮记忆落盘（跨调用保留已回填澄清）；`asset usage --strict` 零引用键即 exit 1（键消费证明进门禁，repo 现 0 零引用）；`nf doctor` 增 schema 标准对照检查（jsonschema 已装即真跑）；verify PASS=49 保持。
 - **开放项执行（W24）**：载荷 typed 落库（42 字段按机械规则转 number/array，作者执行确认；余字段保持 untyped 待正文类型证据）；zsh 补全升“全局 flag 集 + `-` 语境 compadd”、fish 补二级子命令 flag 语境；pre-push hook 升为完整 `nf release` 闸；**bump 实战一次：verify/README 标签 v2.20→v2.21**（quality_baseline 版本动态化后通过）；verify PASS=49 保持。
+- **质量深化批次（W25 部分）**：动态保真语料固化为 fixtures（`execution/rounds/good|bad.json`，round_drill 3 测改为读 fixtures）；本地实跑 `install_hooks.sh`（pre-push 完整闸生效）；`nf doctor` 13/13 通过（含 schema 标准对照）；verify PASS=49 保持。
 ## [2.10.0] - 2026-09-09（内容波收口：45 质量纵深 W1-W20 + 基础层 A 组A1-A5 随波发布 · tag v2.10.0）
 ### Added
 - **发布摘要**：45 质量纵深收口总档 `docs/45_质量纵深收口总档.md`——基线自描述自锁 / doc_hygiene 扩三指令档 / 真实 P03 回归 / asset density-usage-thickness / CI jsonschema 对照 / 事件载荷注册表 declared 30-30 / 回合级 drill / resources 分页+ 模板 / nf assemble --answer / completion 语境 / bump_verify / 逐模块覆盖率 / 指令档步进审计；verify v2.20 check1-31 PASS=49。

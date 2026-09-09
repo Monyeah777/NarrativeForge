@@ -1,0 +1,6 @@
+{
+  "schema": "nf-round-transcript/1",
+  "verdict": "good",
+  "transcript": "回合 1：引用 06 §3 推进，M00 写回 状态快照。\n回合 2：引用 06 §3，M80 输出并进入下一回合。\n",
+  "allowed": ["M00", "通用:M10", "M80"]
+}

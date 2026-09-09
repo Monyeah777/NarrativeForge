@@ -1,0 +1,6 @@
+{
+  "schema": "nf-round-transcript/1",
+  "verdict": "bad",
+  "transcript": "回合 1：推进状态，无引用。\n回合 2：引用 06 §3 由 M99 编造模块推进。\n",
+  "allowed": ["M00", "通用:M10", "M80"]
+}
