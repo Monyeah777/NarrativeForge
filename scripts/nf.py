@@ -365,6 +365,10 @@ def _build_parser() -> argparse.ArgumentParser:
                          help="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）", description="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）")
     rel.add_argument("--fast", action="store_true",
                      help="跳过 verify.sh 全量（快速自检：基线自描述 + doctor）")
+    tf = sub.add_parser("toolface",
+                        help="模块工具面浏览（45：machine_contract.tool_face 可选建议层，AI 裁量不入门禁）", description="模块工具面浏览（45：machine_contract.tool_face 可选建议层，AI 裁量不入门禁）")
+    tf.add_argument("--json", action="store_true",
+                    help="输出结构化 JSON（工具面清单）")
     return p
 
 
@@ -1188,6 +1192,7 @@ CHECK_GUIDE = {
     "29": "缺什么：Conformance 虚标或声明缺失（声明级别 > 可证级别）。补什么：按 01 §1.2 与 conformance_scan 提示降级或补证据。",
     "30": "缺什么：扩展判据缺失或版本字段 bump 无迁移记录。补什么：protocol/EXTENSION.md 判据 + bump 变更带 01 §7/02 §9.3 四步迁移记录。",
     "31": "缺什么：生成物过期（protocol/generated 与当前 schema/协议件不一致）。补什么：重跑 protocol_golden.write_golden 并随变更一并提交。",
+    "32": "缺什么：质量纵深汇总违约（载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用/tool_face 任一缺口）。补什么：跑 nf release 看细分失败项，修复后 verify 全绿。",
 }
 
 def _cmd_sig(args):
@@ -1757,6 +1762,27 @@ def _session_write(path, requirement, answers):
         pass
 
 
+def _cmd_toolface(args):
+    """nf toolface：浏览模块工具面（machine_contract.tool_face）。"""
+    import json as _json
+    from core import tool_face as tf
+
+    issues, stats = tf.scan(ROOT)
+    if args.json:
+        print(_json.dumps({"kind": "toolface", "issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf toolface（模块工具面 · AI 裁量不入门禁）==")
+        print("  模块 %d · 条目 %d · 候选工具链接 %d"
+              % (stats["modules"], stats["entries"], stats["candidates"]))
+        for f in stats["faces"]:
+            print("  · %s（%s · %d 条目）"
+                  % (f["module"], f["source"], f["entries"]))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+    return 1 if issues else 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd is None:
@@ -1772,6 +1798,8 @@ def main(argv=None) -> int:
         return _cmd_assemble(args)
     if args.cmd == "release":
         return _cmd_release(args)
+    if args.cmd == "toolface":
+        return _cmd_toolface(args)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "asset":

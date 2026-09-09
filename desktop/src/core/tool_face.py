@@ -40,6 +40,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     modules = 0
     entries = 0
     candidates = 0
+    faces = []
     for doc in csc._module_docs(str(r)):
         text = Path(doc).read_text(encoding="utf-8")
         parsed = csc._fence_yaml(text, "machine_contract")
@@ -51,9 +52,12 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
             issues.append("%s: tool_face 非空列表" % doc)
             continue
         modules += 1
+        faces.append({"module": (mc.get("id") or doc),
+                      "source": doc,
+                      "entries": len(face)})
         for e in face:
             entries += 1
             issues += validate_entry(e)
             candidates += len(e.get("candidates") or [])
     return issues, {"modules": modules, "entries": entries,
-                    "candidates": candidates}
+                    "candidates": candidates, "faces": faces}

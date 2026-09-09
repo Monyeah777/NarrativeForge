@@ -202,6 +202,20 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("基线自描述一致", out)
 
+    def test_toolface_ls_and_json(self):
+        code, out = self._run(["toolface"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("模块工具面", out)
+        self.assertIn("M10", out)
+        code, out = self._run(["toolface", "--json"])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "toolface"', out)
+
+    def test_explain_check32(self):
+        code, out = self._run(["explain", "32"])
+        self.assertEqual(code, 0)
+        self.assertIn("check32", out)
+
     def test_assemble_rounds_flag(self):
         good = ("回合 1：引用 06 §3 推进，M00 写回 状态快照。\n"
                 "回合 2：引用 06 §3，M80 输出并进入下一回合。\n")
