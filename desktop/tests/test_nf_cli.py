@@ -167,6 +167,17 @@ class NfCliSmokeTest(unittest.TestCase):
                                "--check", sample])
         self.assertEqual(code, 0, out)
 
+    def test_asset_usage_json(self):
+        code, out = self._run(["asset", "usage", "--json", "--root", str(ROOT)])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "asset-usage"', out)
+        self.assertIn('"total_refs"', out)
+
+    def test_release_check_fast(self):
+        code, out = self._run(["release", "--fast"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("基线自描述一致", out)
+
     def test_assemble_check_ok_and_reject(self):
         """nf assemble --check：合格成品过、编造编号成品拒。"""
         def _write(text):

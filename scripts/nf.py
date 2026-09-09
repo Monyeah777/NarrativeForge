@@ -238,6 +238,11 @@ def _build_parser() -> argparse.ArgumentParser:
     a_dns.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
     a_dns.add_argument("--json", action="store_true",
                        help="输出结构化 JSON（密度统计）")
+    a_use = asub.add_parser("usage",
+                            help="资产引用度体检（45：键在 04/community/docs 全语料引用次数/零引用清单）", description="资产引用度体检（45：键在 04/community/docs 全语料引用次数/零引用清单）")
+    a_use.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_use.add_argument("--json", action="store_true",
+                       help="输出结构化 JSON（引用度统计）")
     a_ls.add_argument("--pkg", default="", help="台账 package 过滤")
     a_ls.add_argument("--tier", default="",
                       choices=("official", "community", "experimental"))
@@ -333,6 +338,10 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="对成品完整版 md 做机器验收（骨架/编号/引用）")
     asm.add_argument("--save", dest="save_path", metavar="FILE.md",
                      help="把澄清/计划落成需求档案（八字段回填稿）")
+    rel = sub.add_parser("release",
+                         help="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）", description="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）")
+    rel.add_argument("--fast", action="store_true",
+                     help="跳过 verify.sh 全量（快速自检：基线自描述 + doctor）")
     return p
 
 
@@ -915,6 +924,22 @@ def _cmd_asset(args) -> int:
                     print("  [FAIL] %s" % i)
                 if not issues:
                     print("  ✓ 密度体检通过：无空档/不可读资产档")
+            return 1 if issues else 0
+        if args.asset_cmd == "usage":
+            from core import asset_density as ad
+            issues, stats = ad.usage_scan(args.root)
+            if args.json:
+                print(_json.dumps({"kind": "asset-usage",
+                                   "issues": issues, "stats": stats},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf asset usage（45 资产引用度）==")
+                print("  资产键 %d · 有引用 %d · 零引用 %d · 引用总次数 %d"
+                      % (stats["assets"], stats["used"], stats["zero_usage"],
+                         stats["total_refs"]))
+                if stats["zero_keys"]:
+                    print("  零引用键（低信息候选，不自动删）：%s"
+                          % "、".join(stats["zero_keys"][:20]))
             return 1 if issues else 0
         # rm / deprecate / restore：写操作，需显式 --ledger + --key
         ledger_path = args.ledger
@@ -1514,6 +1539,29 @@ def _cmd_assemble(args):
     return 0
 
 
+def _cmd_release(args):
+    """nf release：发布前体检——verify + 基线自描述一致（--fast 跳过 verify）。"""
+    import subprocess
+    from core import quality_baseline as qb
+
+    issues, stats = qb.scan(ROOT)
+    print("== nf release check（发布前体检）==")
+    print("  verify 版本 %s · check 数 %d（基线自描述一致：%s）"
+          % (stats["verify_version"], stats["checks"],
+             "OK" if not issues else "FAIL"))
+    for i in issues:
+        print("  [FAIL] %s" % i, file=sys.stderr)
+    if args.fast:
+        print("  --fast：跳过 verify.sh 全量（发布前请跑完整 nf release）")
+        return 1 if issues else 0
+    rc = subprocess.run(["bash", "verify.sh"], cwd=ROOT).returncode
+    if issues or rc != 0:
+        print("  ✗ 发布体检未过（基线/verify）——禁止发布", file=sys.stderr)
+        return 1
+    print("  ✓ 发布体检通过：verify 全绿 + 基线自描述一致（可打 tag）")
+    return 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd is None:
@@ -1527,6 +1575,8 @@ def main(argv=None) -> int:
         return _cmd_completion(args)
     if args.cmd == "assemble":
         return _cmd_assemble(args)
+    if args.cmd == "release":
+        return _cmd_release(args)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "asset":

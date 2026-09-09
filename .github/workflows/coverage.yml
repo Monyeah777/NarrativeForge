@@ -17,8 +17,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: 安装 coverage
-        run: pip install coverage
+      - name: 安装 coverage + jsonschema（标准对照测试 CI 真跑）
+        run: pip install coverage jsonschema
       - name: 核心层覆盖率门槛（desktop/src/core ≥80%）
         run: |
           coverage run --source=desktop/src/core -m unittest discover -s desktop/tests

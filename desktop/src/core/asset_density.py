@@ -56,3 +56,34 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
              "unkeyed": n_unkeyed, "tiny": n_tiny,
              "avg_keys_per_file": round(n_keys / max(1, n_files), 2)}
     return issues, stats
+
+
+def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """资产引用度体检：每个资产键在 04/community/docs 全语料中被引用次数。
+
+    FAIL 面留空（纯统计）：zero_usage 为「注册了但全语料无引用」的键清单，
+    供作者裁决（低信息键候选），不自动删。
+    """
+    r = Path(root)
+    keys: Dict[str, str] = {}
+    for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
+        for p in r.glob(pat):
+            if p.name == "README.md":
+                continue
+            for k in _keys_of(p):
+                keys.setdefault(k, p.relative_to(r).as_posix())
+    corpus: List[str] = []
+    for base in ("04_模块库", "community", "docs"):
+        for p in (r / base).rglob("*.md"):
+            try:
+                corpus.append(p.read_text(encoding="utf-8"))
+            except OSError:
+                continue
+    blob = "\n".join(corpus)
+    counts = {k: blob.count(k) for k in keys}
+    zero = sorted(k for k, n in counts.items() if n == 0)
+    stats = {"assets": len(keys), "zero_usage": len(zero),
+             "used": len(keys) - len(zero),
+             "total_refs": sum(counts.values()),
+             "zero_keys": zero}
+    return [], stats

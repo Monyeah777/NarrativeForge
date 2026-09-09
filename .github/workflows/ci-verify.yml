@@ -31,6 +31,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
-          pip install pyyaml PySide6
-      - name: 分层门禁（verify.sh v2.16，L0-L2 默认锁）
+          pip install pyyaml PySide6 jsonschema
+      - name: 分层门禁（verify.sh v2.20，L0-L2 默认锁）
         run: bash verify.sh
