@@ -179,6 +179,20 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("基线自描述一致", out)
 
+    def test_assemble_rounds_flag(self):
+        good = ("回合 1：引用 06 §3 推进，M00 写回 状态快照。\n"
+                "回合 2：引用 06 §3，M80 输出并进入下一回合。\n")
+        fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+        os.write(fd, good.encode("utf-8"))
+        os.close(fd)
+        try:
+            code, out = self._run(["assemble", "西幻生存",
+                                   "--check", path, "--rounds"])
+            self.assertEqual(code, 0, out)
+        finally:
+            if os.path.exists(path):
+                os.remove(path)
+
     def test_assemble_trace(self):
         fd, path = tempfile.mkstemp(suffix=".json", dir=str(ROOT))
         os.close(fd)

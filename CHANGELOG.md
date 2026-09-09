@@ -7,6 +7,7 @@
 - **45 #2 遥测专项（执行留痕底座）**：`nf assemble --trace <file.json>` 落盘 plan/clarify/check 三阶段执行遥测（确定性字段、时间戳外套）；`docs/45_执行遥测规范.md`（phase/采集纪律，E3 真实转录回填接口预留）纳入 doc_hygiene；verify PASS=49 保持。
 - **45 遗留收口（W8）**：#0 载荷注册表覆盖全库 30 个机器事件——5 个有正文证据者登记字段级类型（declared），其余 25 个显式 `pending`（不编造字段，payload_status 区分）+ 漏登反向检查；#3 资产/载荷/基线体检并成 `test_quality_45` unittest 常驻（check12 内每跑必验）；trace 增 `source` 字段；verify PASS=49 保持。
 - **A4/C 工程闸（W9）**：`scripts/per_module_coverage.sh` 逐模块覆盖率门槛（min30 起步，实测 0 低档；loader 深化后上调）+ `scripts/install_hooks.sh` 本地 pre-push（`nf release --fast` 防呆）；补 plog/pipeline_loader 最小单测（plog 0%→>50、loader 35→36，覆盖缺口显性化）；verify PASS=49 保持。
+- **A2 回合级 drill（W10）**：`round_drill.py` 执行转录按回合断言（R-R1 引用 / R-R2 推进留痕 / R-R3 允许集编号 / R-R4 跳号 WARN）+ `nf assemble --check --rounds` 联用 + `docs/45_M2_回合级drill.md` 入 doc_hygiene；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added

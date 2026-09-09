@@ -345,6 +345,8 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="把澄清/计划落成需求档案（八字段回填稿）")
     asm.add_argument("--trace", dest="trace_path", metavar="TRACE.json",
                      help="执行遥测落盘（计划/澄清/验收留痕，供真实转录/E3 补测底座）")
+    asm.add_argument("--rounds", action="store_true",
+                     help="回合级 drill：对成品转录按回合断言（引用/推进/编造，45 A2）")
     rel = sub.add_parser("release",
                          help="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）", description="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）")
     rel.add_argument("--fast", action="store_true",
@@ -1534,7 +1536,20 @@ def _cmd_assemble(args):
             print("  ✗ 读取成品失败：%s（修复指引：给出仓库内完整版 md 路径）" % exc,
                   file=sys.stderr)
             return 1
-        issues, stats = ap.check(out_md, plan_)
+        import re as _re
+        has_segments = bool(_re.search(r"^##\s+[0-7]\.", out_md, _re.M))
+        issues, stats = ap.check(out_md, plan_) if (
+            has_segments or not args.rounds) else ([], {})
+        if not stats:
+            stats = {"segments": 0, "modules_mentioned": 0,
+                     "allowed": len(plan_.get("allowed_module_ids") or [])}
+        if args.rounds:
+            from core import round_drill as rd
+            r_issues, r_stats = rd.scan(out_md, plan_["allowed_module_ids"])
+            for i in r_issues:
+                issues.append("回合级[%s]" % i)
+            if r_stats["warn_gaps"]:
+                print("  [WARN] 回合跳号：%s" % r_stats["warn_gaps"])
         print("== nf assemble --check（需求 → 成品机器验收）==")
         print("  需求：%s → %s/%s（模块提及 %d · 允许集 %d）"
               % (args.requirement, plan_["package"] or "？",
