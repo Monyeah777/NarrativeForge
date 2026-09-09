@@ -1,0 +1,983 @@
+{
+  "schema": "community-asset-ledger/1",
+  "entries": [
+    {
+      "key": "STYLE_DNA",
+      "package": "官方",
+      "file": "05_资产库/用户自定义/STYLE_DNA.md",
+      "line": 1
+    },
+    {
+      "key": "TECH_RULES",
+      "package": "官方",
+      "file": "05_资产库/用户自定义/TECH_RULES.md",
+      "line": 1
+    },
+    {
+      "key": "TECH_TEMPLATES",
+      "package": "官方",
+      "file": "05_资产库/用户自定义/TECH_TEMPLATES.md",
+      "line": 1
+    },
+    {
+      "key": "ATTR_TEMPLATES",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 1
+    },
+    {
+      "key": "BEHAVIOR_SIGNALS",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/BEHAVIOR_SIGNALS.md",
+      "line": 1
+    },
+    {
+      "key": "BIG5_INFER",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/BIG5_INFER.md",
+      "line": 1
+    },
+    {
+      "key": "CN001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 29
+    },
+    {
+      "key": "CN002",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 30
+    },
+    {
+      "key": "CN003",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 31
+    },
+    {
+      "key": "CN004",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 32
+    },
+    {
+      "key": "CN005",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 33
+    },
+    {
+      "key": "CN006",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 34
+    },
+    {
+      "key": "CN007",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 35
+    },
+    {
+      "key": "CN008",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 36
+    },
+    {
+      "key": "CN009",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 37
+    },
+    {
+      "key": "CN010",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 38
+    },
+    {
+      "key": "COGNITIVE_LOAD",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/COGNITIVE_LOAD.md",
+      "line": 1
+    },
+    {
+      "key": "DAILY_HABITS_SCHEDULE",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/DAILY_HABITS_SCHEDULE.md",
+      "line": 1
+    },
+    {
+      "key": "DH003",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/DAILY_HABITS_SCHEDULE.md",
+      "line": 23
+    },
+    {
+      "key": "EMOTION_WHEEL",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/EMOTION_WHEEL.md",
+      "line": 1
+    },
+    {
+      "key": "EVOLUTION_RULES",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/EVOLUTION_RULES.md",
+      "line": 1
+    },
+    {
+      "key": "F001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 5
+    },
+    {
+      "key": "F002",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 8
+    },
+    {
+      "key": "F003",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 11
+    },
+    {
+      "key": "F004",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 14
+    },
+    {
+      "key": "F005",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 17
+    },
+    {
+      "key": "F006",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 20
+    },
+    {
+      "key": "F007",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 23
+    },
+    {
+      "key": "F008",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 26
+    },
+    {
+      "key": "F009",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 29
+    },
+    {
+      "key": "FAMILY_BACKGROUND",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FAMILY_BACKGROUND.md",
+      "line": 1
+    },
+    {
+      "key": "FB001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FAMILY_BACKGROUND.md",
+      "line": 22
+    },
+    {
+      "key": "FEAR_LIBRARY",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FEAR_LIBRARY.md",
+      "line": 1
+    },
+    {
+      "key": "FORUM_POSTS",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/FORUM_POSTS.md",
+      "line": 1
+    },
+    {
+      "key": "GIFT_PREFS",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/GIFT_PREFS.md",
+      "line": 1
+    },
+    {
+      "key": "GOSSIP_TOPICS",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/GOSSIP_TOPICS.md",
+      "line": 1
+    },
+    {
+      "key": "GP002",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/GIFT_PREFS.md",
+      "line": 17
+    },
+    {
+      "key": "GROUP_CHAT",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/GROUP_CHAT.md",
+      "line": 1
+    },
+    {
+      "key": "HE001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/HIDDEN_EVENTS.md",
+      "line": 33
+    },
+    {
+      "key": "HIDDEN_EVENTS",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/HIDDEN_EVENTS.md",
+      "line": 1
+    },
+    {
+      "key": "INTERACTION_DEPTH",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/INTERACTION_DEPTH.md",
+      "line": 1
+    },
+    {
+      "key": "JP001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 18
+    },
+    {
+      "key": "JP002",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 19
+    },
+    {
+      "key": "JP003",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 20
+    },
+    {
+      "key": "JP004",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 21
+    },
+    {
+      "key": "JP005",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 22
+    },
+    {
+      "key": "JP006",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 23
+    },
+    {
+      "key": "JP007",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 24
+    },
+    {
+      "key": "JP008",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 25
+    },
+    {
+      "key": "JP009",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 26
+    },
+    {
+      "key": "JP010",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 27
+    },
+    {
+      "key": "L001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 8
+    },
+    {
+      "key": "L002",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 12
+    },
+    {
+      "key": "L003",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 16
+    },
+    {
+      "key": "L004",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 20
+    },
+    {
+      "key": "L005",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 24
+    },
+    {
+      "key": "L006",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 28
+    },
+    {
+      "key": "L007",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 32
+    },
+    {
+      "key": "L008",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 36
+    },
+    {
+      "key": "L009",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 40
+    },
+    {
+      "key": "L010",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 44
+    },
+    {
+      "key": "L011",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 48
+    },
+    {
+      "key": "L012",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 52
+    },
+    {
+      "key": "L013",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 56
+    },
+    {
+      "key": "L014",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 60
+    },
+    {
+      "key": "L015",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 64
+    },
+    {
+      "key": "L016",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 68
+    },
+    {
+      "key": "L017",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 72
+    },
+    {
+      "key": "L018",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 76
+    },
+    {
+      "key": "L019",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 80
+    },
+    {
+      "key": "L020",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 84
+    },
+    {
+      "key": "L021",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 88
+    },
+    {
+      "key": "L022",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 92
+    },
+    {
+      "key": "L023",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 96
+    },
+    {
+      "key": "L024",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 100
+    },
+    {
+      "key": "L025",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 104
+    },
+    {
+      "key": "L026",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 108
+    },
+    {
+      "key": "L027",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 112
+    },
+    {
+      "key": "L028",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 116
+    },
+    {
+      "key": "L029",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 120
+    },
+    {
+      "key": "L030",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 124
+    },
+    {
+      "key": "LOCATIONS",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/LOCATIONS.md",
+      "line": 1
+    },
+    {
+      "key": "NAME_LIBRARY",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/NAME_LIBRARY.md",
+      "line": 1
+    },
+    {
+      "key": "PART_TIME_JOB",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/PART_TIME_JOB.md",
+      "line": 1
+    },
+    {
+      "key": "PERSONALITY_LINK",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/PERSONALITY_LINK.md",
+      "line": 1
+    },
+    {
+      "key": "PHONE_CALL",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/PHONE_CALL.md",
+      "line": 1
+    },
+    {
+      "key": "PRESSURE_RULES",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/PRESSURE_RULES.md",
+      "line": 1
+    },
+    {
+      "key": "REGRET_LIBRARY",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/REGRET_LIBRARY.md",
+      "line": 1
+    },
+    {
+      "key": "RIVAL_INFO",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/RIVAL_INFO.md",
+      "line": 1
+    },
+    {
+      "key": "SC001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/DAILY_HABITS_SCHEDULE.md",
+      "line": 23
+    },
+    {
+      "key": "SOCIAL_FEED",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/SOCIAL_FEED.md",
+      "line": 1
+    },
+    {
+      "key": "T001",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 6
+    },
+    {
+      "key": "T002",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 11
+    },
+    {
+      "key": "T003",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 16
+    },
+    {
+      "key": "T004",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 21
+    },
+    {
+      "key": "T005",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 26
+    },
+    {
+      "key": "T006",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 31
+    },
+    {
+      "key": "T007",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 36
+    },
+    {
+      "key": "T008",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 41
+    },
+    {
+      "key": "T009",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 46
+    },
+    {
+      "key": "T010",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 51
+    },
+    {
+      "key": "T011",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 56
+    },
+    {
+      "key": "T012",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 61
+    },
+    {
+      "key": "T013",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 66
+    },
+    {
+      "key": "T014",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 71
+    },
+    {
+      "key": "T015",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 76
+    },
+    {
+      "key": "T016",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 81
+    },
+    {
+      "key": "T017",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 86
+    },
+    {
+      "key": "T018",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 91
+    },
+    {
+      "key": "T019",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 96
+    },
+    {
+      "key": "T020",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 101
+    },
+    {
+      "key": "T021",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 106
+    },
+    {
+      "key": "T022",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 111
+    },
+    {
+      "key": "T023",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 116
+    },
+    {
+      "key": "T024",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 121
+    },
+    {
+      "key": "T025",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 126
+    },
+    {
+      "key": "T026",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 131
+    },
+    {
+      "key": "T027",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 136
+    },
+    {
+      "key": "T028",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 141
+    },
+    {
+      "key": "T029",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 146
+    },
+    {
+      "key": "T030",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 151
+    },
+    {
+      "key": "T031",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 156
+    },
+    {
+      "key": "T032",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/ATTR_TEMPLATES.md",
+      "line": 161
+    },
+    {
+      "key": "WEATHER_MOOD",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/WEATHER_MOOD.md",
+      "line": 1
+    },
+    {
+      "key": "WEATHER_SEASON",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/WEATHER_SEASON.md",
+      "line": 1
+    },
+    {
+      "key": "WRITING_STYLE",
+      "package": "校园情感领域包",
+      "file": "community/校园情感领域包/assets/WRITING_STYLE.md",
+      "line": 1
+    },
+    {
+      "key": "CHAOS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/18_混沌事件_CHAOS.md",
+      "line": 1
+    },
+    {
+      "key": "COMBAT",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/04_战斗系统_COMBAT.md",
+      "line": 1
+    },
+    {
+      "key": "COMBINE",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/23_组合扩展_COMBINE.md",
+      "line": 1
+    },
+    {
+      "key": "CRAFTING",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/17_生产制造_CRAFTING.md",
+      "line": 1
+    },
+    {
+      "key": "DEATH",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/10_死亡重生_DEATH.md",
+      "line": 1
+    },
+    {
+      "key": "ECONOMY",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/09_经济贸易_ECONOMY.md",
+      "line": 1
+    },
+    {
+      "key": "EVENT_NARRATIVE",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/22_事件叙事_EVENT_NARRATIVE.md",
+      "line": 1
+    },
+    {
+      "key": "EXTERNAL",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/21_数据接口_EXTERNAL.md",
+      "line": 1
+    },
+    {
+      "key": "EXTERNAL_DATA",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/21_数据接口_EXTERNAL.md",
+      "line": 1
+    },
+    {
+      "key": "FACTIONS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/14_势力阵营_FACTIONS.md",
+      "line": 1
+    },
+    {
+      "key": "GANGS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/15_帮派势力_GANGS.md",
+      "line": 1
+    },
+    {
+      "key": "GENETICS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/19_遗传后代_GENETICS.md",
+      "line": 1
+    },
+    {
+      "key": "ITEMS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/05_物品装备_ITEMS.md",
+      "line": 1
+    },
+    {
+      "key": "JOB",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/01_职业成长与基础属性_JOB.md",
+      "line": 1
+    },
+    {
+      "key": "LITERARY",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/22_事件叙事_EVENT_NARRATIVE.md",
+      "line": 40
+    },
+    {
+      "key": "M06",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/06_任务剧情_TASKS.md",
+      "line": 1
+    },
+    {
+      "key": "M07",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/07_区域地图_REGIONS.md",
+      "line": 1
+    },
+    {
+      "key": "M08",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/08_天气季节_WEATHER.md",
+      "line": 1
+    },
+    {
+      "key": "M09",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/09_经济贸易_ECONOMY.md",
+      "line": 1
+    },
+    {
+      "key": "M10",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/10_死亡重生_DEATH.md",
+      "line": 1
+    },
+    {
+      "key": "M13",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/13_NPC交互_NPC_INTERACTION.md",
+      "line": 1
+    },
+    {
+      "key": "M14",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/14_势力阵营_FACTIONS.md",
+      "line": 1
+    },
+    {
+      "key": "M15",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/15_帮派势力_GANGS.md",
+      "line": 1
+    },
+    {
+      "key": "M22",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/22_事件叙事_EVENT_NARRATIVE.md",
+      "line": 1
+    },
+    {
+      "key": "MAGIC",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/11_魔法系统_MAGIC.md",
+      "line": 1
+    },
+    {
+      "key": "NORMAL",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/22_事件叙事_EVENT_NARRATIVE.md",
+      "line": 40
+    },
+    {
+      "key": "NPC",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/12_NPC对话_NPC_DIALOGUE.md",
+      "line": 1
+    },
+    {
+      "key": "NPC",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/13_NPC交互_NPC_INTERACTION.md",
+      "line": 1
+    },
+    {
+      "key": "NPC_DIALOGUE",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/12_NPC对话_NPC_DIALOGUE.md",
+      "line": 1
+    },
+    {
+      "key": "NPC_INTERACTION",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/13_NPC交互_NPC_INTERACTION.md",
+      "line": 1
+    },
+    {
+      "key": "RACES",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/02_种族天赋_RACES.md",
+      "line": 1
+    },
+    {
+      "key": "REGIONS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/07_区域地图_REGIONS.md",
+      "line": 1
+    },
+    {
+      "key": "SETTLEMENTS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/16_建筑据点_SETTLEMENTS.md",
+      "line": 1
+    },
+    {
+      "key": "SKILLS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/03_技能系统_SKILLS.md",
+      "line": 1
+    },
+    {
+      "key": "TASKS",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/06_任务剧情_TASKS.md",
+      "line": 1
+    },
+    {
+      "key": "WEATHER",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/08_天气季节_WEATHER.md",
+      "line": 1
+    },
+    {
+      "key": "WORLD_KNOWLEDGE",
+      "package": "西幻生存领域包",
+      "file": "community/西幻生存领域包/assets/20_世界知识_WORLD_KNOWLEDGE.md",
+      "line": 1
+    }
+  ]
+}

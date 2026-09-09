@@ -248,6 +248,13 @@ def _build_parser() -> argparse.ArgumentParser:
     a_thk.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
     a_thk.add_argument("--json", action="store_true",
                        help="输出结构化 JSON（厚度统计）")
+    a_led = asub.add_parser("ledger",
+                            help="资产键表机读投影（45：protocol/community_asset_ledger.json；--refresh 重生成）", description="资产键表机读投影（45：protocol/community_asset_ledger.json；--refresh 重生成）")
+    a_led.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_led.add_argument("--refresh", action="store_true",
+                       help="重生成 ledger 文件（随资产变更提交）")
+    a_led.add_argument("--json", action="store_true",
+                       help="输出结构化 JSON（校验统计）")
     a_ls.add_argument("--pkg", default="", help="台账 package 过滤")
     a_ls.add_argument("--tier", default="",
                       choices=("official", "community", "experimental"))
@@ -969,6 +976,28 @@ def _cmd_asset(args) -> int:
                 for f in stats["low_files"][:20]:
                     print("  · %s" % f)
             return 1 if issues else 0
+        if args.asset_cmd == "ledger":
+            from core import asset_ledger_projection as alp
+            if args.refresh:
+                issues, stats = alp.refresh(args.root)
+            else:
+                issues, stats = alp.verify(args.root)
+            if args.json:
+                print(_json.dumps({"kind": "asset-ledger",
+                                   "refresh": bool(args.refresh),
+                                   "issues": issues, "stats": stats},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf asset ledger（资产键表机读投影）==")
+                if args.refresh:
+                    print("  ✓ ledger 已重生成（%d 条）" % stats.get("entries", 0))
+                else:
+                    print("  校验：条目 %d · 一致 %s"
+                          % (stats.get("entries", 0),
+                             "是" if not issues else "否（refresh）"))
+                for i in issues:
+                    print("  [FAIL] %s" % i)
+            return 1 if issues else 0
         # rm / deprecate / restore：写操作，需显式 --ledger + --key
         ledger_path = args.ledger
         assets_root = os.path.dirname(os.path.abspath(ledger_path))
@@ -1629,7 +1658,29 @@ def _cmd_release(args):
         print("  --fast：跳过 verify.sh 全量（发布前请跑完整 nf release）")
         return 1 if issues else 0
     rc = subprocess.run(["bash", "verify.sh"], cwd=ROOT).returncode
-    if issues or rc != 0:
+    gate_fail = bool(issues) or rc != 0
+    if not gate_fail:
+        from core import asset_ledger_projection as alp
+        from core import instruction_step_audit as isa
+        from core import payload_registry as pr
+        for name, fn in (("资产 ledger", alp.verify),
+                         ("指令审计", isa.scan),
+                         ("载荷注册表", pr.scan)):
+            f_issues, _ = fn(ROOT)
+            if f_issues:
+                gate_fail = True
+                print("  [FAIL] %s：%s" % (name, "；".join(f_issues[:3])),
+                      file=sys.stderr)
+            else:
+                print("  ✓ %s 一致" % name)
+        cov = subprocess.run(["bash", "scripts/per_module_coverage.sh", "30"],
+                             cwd=ROOT).returncode
+        if cov != 0:
+            gate_fail = True
+            print("  [FAIL] 逐模块覆盖率 < min30", file=sys.stderr)
+        else:
+            print("  ✓ 逐模块覆盖率 ≥ min30")
+    if gate_fail:
         print("  ✗ 发布体检未过（基线/verify）——禁止发布", file=sys.stderr)
         return 1
     print("  ✓ 发布体检通过：verify 全绿 + 基线自描述一致（可打 tag）")

@@ -1,3 +1,6 @@
+## [Unreleased]
+### Added
+- **#1-#4 优化落地（W21）**：① 载荷类型收窄工具 `payload_typing.py`（数值/数组语义词 → 建议类型 proposal，不编造不改注册表）；② 资产键表机读 ledger 投影 `asset_ledger_projection.py`（163 键 → 文件/行，`nf asset ledger`，双源校验）；③ trace→drill 自动比对器 `trace_drill.py`（遥测重跑判定一致，verdict 漂移即 FAIL）；④ `nf release` 并入资产 ledger/指令审计/载荷注册表/逐模块覆盖率（发布体检合一）；verify PASS=49 + 逐模块 min30 0 低档保持。
 ## [2.10.0] - 2026-09-09（内容波收口：45 质量纵深 W1-W20 + 基础层 A 组A1-A5 随波发布 · tag v2.10.0）
 ### Added
 - **发布摘要**：45 质量纵深收口总档 `docs/45_质量纵深收口总档.md`——基线自描述自锁 / doc_hygiene 扩三指令档 / 真实 P03 回归 / asset density-usage-thickness / CI jsonschema 对照 / 事件载荷注册表 declared 30-30 / 回合级 drill / resources 分页+ 模板 / nf assemble --answer / completion 语境 / bump_verify / 逐模块覆盖率 / 指令档步进审计；verify v2.20 check1-31 PASS=49。
