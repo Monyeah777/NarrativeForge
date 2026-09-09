@@ -2,6 +2,7 @@
 ### Added
 - **模块工具面 tool_face（W29，首战例落地）**：`contract.schema.json` 增可选 `tool_face[]`（purpose/candidates{repo,ref,license,note}/guidance）；`tool_face.py` 轻量扫描（purpose/guidance 在场、candidate 有链接必有出处+license）并入 check32；01 §1.1 增 tool_face 规范；首战例 = `04_模块库/通用类/M10_时间推进.md`（三轨时间换算，arrow 作为候选引用≠背书）；verify 当前 v2.22 check1-32 PASS=51 保持。
 - **tool_face 可发现性（W30）**：`nf toolface`（人读/`--json` 浏览）+ `nf explain 32` 修复指引；verify v2.22 check1-32 PASS=51 保持。
+- **AI 入口重构（W31）**：README 压缩为判定层（MIT 开头/AI 元信息/快速开始/导航表/版本表），AI 路由与模型对比移入 `AI_ROUTING.md`；新增 `DEEP_DIVE.md` 七节认知模型；AGENT_START 指向两者；doc_hygiene 纳入新档；verify v2.22 check1-32 PASS=51 保持。
 - **质量纵深 check32（W28）**：verify 新增 check32 质量纵深汇总硬门（载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用），PASS 49→51；当前基线升级 verify v2.22 check1-32 PASS=51。
 - **#1-#4 优化落地（W21）**：① 载荷类型收窄工具 `payload_typing.py`（数值/数组语义词 → 建议类型 proposal，不编造不改注册表）；② 资产键表机读 ledger 投影 `asset_ledger_projection.py`（163 键 → 文件/行，`nf asset ledger`，双源校验）；③ trace→drill 自动比对器 `trace_drill.py`（遥测重跑判定一致，verdict 漂移即 FAIL）；④ `nf release` 并入资产 ledger/指令审计/载荷注册表/逐模块覆盖率（发布体检合一）；verify PASS=49 + 逐模块 min30 0 低档保持。
 - **下一波部分完成（W22）**：`resources/list` 增 `type`(module/pipeline/asset)/`package` 过滤后再分页；dossier `--answer` 自动回填“澄清回填”节（档案合并）；`bump_verify.sh` 支持 `--dry-run`（演练通过，未真改版本）；verify PASS=49 保持。
