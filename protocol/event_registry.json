@@ -211,14 +211,48 @@
       }
     },
     "doc_delta_committed": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
+      "fields": {
+        "doc_id": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "prev_ver": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "new_ver": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "changes": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        }
+      }
     },
     "doc_structure_ready": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
+      "fields": {
+        "doc_id": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "title": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "version": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "sections": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        }
+      }
     },
     "ghost_event": {
       "payload_status": "declared",
@@ -251,9 +285,22 @@
       }
     },
     "intent_received": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
+      "fields": {
+        "intent_id": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "mode": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "text": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        }
+      }
     },
     "interaction_update": {
       "note": "官方 M13 NPC 交互结果",
@@ -547,14 +594,40 @@
       }
     },
     "term_conflict_detected": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
+      "fields": {
+        "term": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "definitions": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "status": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        }
+      }
     },
     "term_synced": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
+      "fields": {
+        "delta": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "status": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        },
+        "count": {
+          "type": "untyped",
+          "note": "45_M3 提案确认；类型待核"
+        }
+      }
     },
     "tick_day": {
       "note": "官方通用 M10 时间推进广播",

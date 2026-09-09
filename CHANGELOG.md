@@ -17,6 +17,7 @@
 - **A3.2 多轮记忆 + completion 语境（W17）**：`nf assemble --answer`（可多次回填澄清，折叠进需求文本后重跑漏斗，澄清转 ready）；bash completion 对 `-` 开头的当前词只补 flag（语境精细化）；verify PASS=49 保持。
 - **A4 版本同步 + loader 深挖（W18）**：`scripts/bump_verify.sh`（vX.Y 标签一键同步 verify.sh/README 并跑 `release --fast` 复核）+ quality_baseline 版本 token 动态化（不再硬编码 v2.20）；pipeline_loader 补 P90/P03/坏件测试（覆盖率继续深挖，min30 暂保持）；verify PASS=49 保持。
 - **A5 指令档步进级审计（W19，A 收口）**：`instruction_step_audit.py`（指令/规范档内 `nf <sub>`、`python scripts/…`、仓库路径引用逐一可寻址机检）+ `docs_audit-46-a5-instruction.md`（5 档 5 步全通过）；verify PASS=49 保持。
+- **techdoc 载荷确认（W20）**：45_M3 提案经作者确认——doc_structure_ready/doc_delta_committed/intent_received/term_synced/term_conflict_detected 转 declared（**declared 30/30，pending 0**）；提案档状态改「已确认」；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added

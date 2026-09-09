@@ -1,11 +1,11 @@
-# 45 A1 · techdoc 链载荷补充提案（proposed · 待作者确认）
+# 45 A1 · techdoc 链载荷补充（proposed → 已确认 · 2026-09-09）
 
-> ⛔ 操作指令：以下为**提案**，未经作者确认不得写入 protocol/event_registry.json 的 declared。
+> ⛔ 操作指令：以下提案已于 2026-09-09 经作者确认并写入 registry（declared 30/30）；改字段须走 schema/registry 纪律。
 > 最后更新：2026-09-09
 
-## 现状
+## 现状（已收口）
 
-5 条 techdoc 事件在正文无显式 `payload:{…}` 结构：doc_structure_ready / doc_delta_committed / intent_received / term_synced / term_conflict_detected。为不编造，维持 pending，本文件给**可确认字段提案**。
+5 条 techdoc 事件原无显式 `payload:{…}` 结构；按本提案字段经作者确认后全部转 `payload_status: declared`（每字段 `untyped`，类型待正文补全后收窄）。
 
 ## 提案（每条均带依据与开放项）
 
@@ -19,5 +19,5 @@
 
 ## 落库纪律
 
-- 作者确认（或作者在 M90/M97/M98 事件契约补显式 payload）后，才可把对应条目转 `payload_status: declared`（note 记 `45_M3 提案确认`）。
-- 未确认前：注册表保持 pending；本文件只作提案，不算协议正文。
+- 确认已落库（note 记 `45_M3 techdoc 载荷提案经作者确认`）。
+- 后续：建议在 M90/M97/M98 事件契约补显式 payload 以收窄 untyped 类型。
