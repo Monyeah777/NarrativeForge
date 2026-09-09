@@ -28,6 +28,12 @@ class AssetDensityTest(unittest.TestCase):
             issues, _ = ad.scan(tmp)
             self.assertTrue(any("空档" in i for i in issues))
 
+    def test_thickness_repo(self):
+        issues, stats = ad.thickness_scan(ROOT)
+        self.assertEqual(issues, [])
+        self.assertGreaterEqual(stats["files"], 30)
+        self.assertEqual(stats["low_files"], [])
+
 
 if __name__ == "__main__":
     unittest.main()

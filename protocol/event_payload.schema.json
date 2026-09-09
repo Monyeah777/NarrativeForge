@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "event_payload.schema.json",
+  "title": "事件载荷字段注册表（45 · 载荷形状化地基）",
+  "description": "protocol/event_registry.json 的 IDL：事件 → 载荷字段类型登记，把事件从“名字字符串”升到“字段级类型”的可机检形态。",
+  "type": "object",
+  "required": ["schema", "events"],
+  "properties": {
+    "schema": { "type": "string", "enum": ["event-payload/1"] },
+    "note": { "type": "string" },
+    "events": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["fields"],
+        "properties": {
+          "note": { "type": "string" },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["string", "number", "boolean", "object", "array", "string[]", "number[]"]
+                },
+                "note": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

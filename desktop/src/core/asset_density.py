@@ -87,3 +87,40 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
              "total_refs": sum(counts.values()),
              "zero_keys": zero}
     return [], stats
+
+
+def thickness_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """资产语义厚度（计数升半语义）：每档 字符/键/小节/表格行 与 low 判定。
+
+    low = 空/过短(<200字) 或 无键且无小节（低信息档候选）；只报告不删（issues 空）。
+    """
+    r = Path(root)
+    import re as _re
+
+    rows = []
+    for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
+        for p in sorted(r.glob(pat)):
+            if p.name == "README.md":
+                continue
+            try:
+                text = p.read_text(encoding="utf-8")
+            except OSError as exc:
+                continue
+            if not text.strip():
+                continue
+            keys = _keys_of(p)
+            lines = text.splitlines()
+            sections = sum(1 for ln in lines if _re.match(r"^#{1,3}\s", ln))
+            tables = sum(1 for ln in lines if ln.lstrip().startswith("|"))
+            low = len(text) < 200 or (not keys and sections == 0)
+            rel = p.relative_to(r).as_posix()
+            pkg = rel.split("/")[1] if rel.startswith("community") else "官方"
+            rows.append({"package": pkg, "file": rel, "chars": len(text),
+                         "keys": len(keys), "sections": sections,
+                         "tables": tables, "low_info": low})
+    low_files = sorted(x["file"] for x in rows if x["low_info"])
+    stats = {"files": len(rows),
+             "low_info": len(low_files), "low_files": low_files,
+             "avg_chars": round(sum(x["chars"] for x in rows) / max(1, len(rows))),
+             "avg_sections": round(sum(x["sections"] for x in rows) / max(1, len(rows)))}
+    return [], stats

@@ -243,6 +243,11 @@ def _build_parser() -> argparse.ArgumentParser:
     a_use.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
     a_use.add_argument("--json", action="store_true",
                        help="输出结构化 JSON（引用度统计）")
+    a_thk = asub.add_parser("thickness",
+                            help="资产语义厚度体检（45：字符/键/小节/表格 + 低信息档候选）", description="资产语义厚度体检（45：字符/键/小节/表格 + 低信息档候选）")
+    a_thk.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_thk.add_argument("--json", action="store_true",
+                       help="输出结构化 JSON（厚度统计）")
     a_ls.add_argument("--pkg", default="", help="台账 package 过滤")
     a_ls.add_argument("--tier", default="",
                       choices=("official", "community", "experimental"))
@@ -940,6 +945,22 @@ def _cmd_asset(args) -> int:
                 if stats["zero_keys"]:
                     print("  零引用键（低信息候选，不自动删）：%s"
                           % "、".join(stats["zero_keys"][:20]))
+            return 1 if issues else 0
+        if args.asset_cmd == "thickness":
+            from core import asset_density as ad
+            issues, stats = ad.thickness_scan(args.root)
+            if args.json:
+                print(_json.dumps({"kind": "asset-thickness",
+                                   "issues": issues, "stats": stats},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf asset thickness（45 资产语义厚度）==")
+                print("  资产档 %d · 平均 %d 字符/档 · 平均 %d 小节/档"
+                      % (stats["files"], stats["avg_chars"],
+                         stats["avg_sections"]))
+                print("  低信息候选 %d（只报告不删）" % stats["low_info"])
+                for f in stats["low_files"][:20]:
+                    print("  · %s" % f)
             return 1 if issues else 0
         # rm / deprecate / restore：写操作，需显式 --ledger + --key
         ledger_path = args.ledger

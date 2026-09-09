@@ -1,0 +1,43 @@
+{
+  "schema": "event-payload/1",
+  "note": "45 载荷形状化地基：首批官方核心链事件载荷登记（事件名 ↔ 字段级类型）；社区包事件载荷分批 retro-fit 挂账。",
+  "events": {
+    "tick_day": {
+      "note": "官方通用 M10 时间推进广播",
+      "fields": {
+        "day": { "type": "number", "note": "第 N 日" },
+        "season": { "type": "string", "note": "季节枚举" },
+        "weather_state": { "type": "string", "note": "天气键（M08）" }
+      }
+    },
+    "minute_tick": {
+      "note": "官方通用 M10 分钟级节拍",
+      "fields": { "minute": { "type": "number" } }
+    },
+    "interaction_update": {
+      "note": "官方 M13 NPC 交互结果",
+      "fields": {
+        "npc_id": { "type": "string" },
+        "action": { "type": "string" },
+        "result": { "type": "string" },
+        "tick": { "type": "number" }
+      }
+    },
+    "narrative_event": {
+      "note": "官方事件:M22 事件总线广播",
+      "fields": {
+        "type": { "type": "string" },
+        "payload": { "type": "object" },
+        "tick": { "type": "number" }
+      }
+    },
+    "quest_state": {
+      "note": "官方 M06 任务状态变更",
+      "fields": {
+        "quest_id": { "type": "string" },
+        "state": { "type": "string" },
+        "tick": { "type": "number" }
+      }
+    }
+  }
+}

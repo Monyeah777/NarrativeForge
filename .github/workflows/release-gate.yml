@@ -1,0 +1,28 @@
+name: release-gate
+# 45 · 打 tag 强制闸：v* 标签推送即跑发布前体检（verify + 基线自描述 + 覆盖率），
+# 任一 FAIL → CI 红 → Releases/发布动作受阻（把 nf release check 从“命令”升为“强制”）。
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  gate:
+    name: release-preflight
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 安装测试依赖（verify + 标准对照 + 覆盖率）
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
+          pip install pyyaml PySide6 jsonschema coverage
+      - name: 发布前体检（verify + 基线自描述一致）
+        run: python3 scripts/nf.py release
+      - name: 覆盖率门槛（core ≥80）
+        run: |
+          coverage run --source=desktop/src/core -m unittest discover -s desktop/tests
+          coverage report --fail-under=80 --include="desktop/src/core/*"
