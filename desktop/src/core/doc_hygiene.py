@@ -29,6 +29,7 @@ REQUIRED_DOCS = [
     "docs/44_M2_AI通道内容规范.md",
     "docs/45_执行遥测规范.md",
     "docs/45_M2_回合级drill.md",
+    "docs/45_M3_techdoc载荷提案.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -42,6 +43,7 @@ INSTRUCTION_DOCS = [
     "docs/44_M2_AI通道内容规范.md",
     "docs/45_执行遥测规范.md",
     "docs/45_M2_回合级drill.md",
+    "docs/45_M3_techdoc载荷提案.md",
 ]
 
 

@@ -12,6 +12,7 @@
 - **A1 载荷证据化（W12，批量核验）**：按正文内联 payload 证据逐条核验并转 declared——state_snapshot(M93)/beat_tick(M94)/decision_brief(M95)/polished_output(M96)/campus_gift_intent(M91)/campus_anonymous_gift(M92)/combat_result(M04)/confession_event(M43)/death_trigger(M10)/ghost_event(M65)/level_up(M01)/npc_action(M22)/production_output(M17)（declared 7→20）；剩余 10 条无内联载荷证据保持 pending（不编造）；verify PASS=49 保持。
 - **A1 载荷证据化（W13，剩余领域事件）**：核验 M09 market_event / M14 reputation_change / M07 travel_event / M18 chaos_event（各 §3 事件契约 payload）转 declared（20→24）；techdoc 链 6 条（doc_structure_ready/intent_received/doc_delta_committed/revision_recorded/term_synced/term_conflict_detected）全文无内联载荷结构 → 维持 pending 并记理由（payload 经 outputs/流程传递，待文档补充显式结构）；verify PASS=49 保持。
 - **A1 W14**：revision_recorded 按 M98 §职责 散文级证据（ver/changes/date/author）转 declared（24→25）；剩余 5 条 techdoc 事件仍无显式结构 → pending；verify PASS=49 保持。
+- **A1 W15（techdoc 提案）**：`docs/45_M3_techdoc载荷提案.md`——5 条 pending 事件的 proposed 字段（doc_structure_ready/doc_delta_committed/intent_received/term_synced/term_conflict_detected），标「待作者确认才落 declared」，入 doc_hygiene；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added
