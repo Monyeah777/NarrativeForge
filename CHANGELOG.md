@@ -1,5 +1,6 @@
-## [Unreleased]
+## [2.10.0] - 2026-09-09（内容波收口：45 质量纵深 W1-W20 + 基础层 A 组A1-A5 随波发布 · tag v2.10.0）
 ### Added
+- **发布摘要**：45 质量纵深收口总档 `docs/45_质量纵深收口总档.md`——基线自描述自锁 / doc_hygiene 扩三指令档 / 真实 P03 回归 / asset density-usage-thickness / CI jsonschema 对照 / 事件载荷注册表 declared 30-30 / 回合级 drill / resources 分页+ 模板 / nf assemble --answer / completion 语境 / bump_verify / 逐模块覆盖率 / 指令档步进审计；verify v2.20 check1-31 PASS=49。
 - **质量纵深顶尖化 W1（45 · 基线自描述一致性）**：`quality_baseline.py` 机检锁死“verify 版本/check1-31/PASS=49”在 verify.sh、README、CHANGELOG 最新节、VERSION-MATRIX 的自洽（防改一处漏三处），并纳入 `nf doctor`；单测含真仓清洁 + 假仓漂移检出。五维注记：①静态基线自锁新增机检面；②-⑤水位不变（drill/纯度/资产/文档照常驻）；verify PASS=49 保持。
 - **质量纵深顶尖化 W2-W4（45）**：① 文档可执行性——`agent_组装指令包_v0.2.md`/`docs/44_M1_执行演练扩展.md`/`docs/44_M2_AI通道内容规范.md` 纳入 doc_hygiene（⛔+最后更新 100%）；② 动态保真——`nf assemble --check` 验收器按真实战例校准（编号真值=全库登记、残留语境豁免、决策只查叙述段），P03 完整样本落常驻回归（实证抓到样本 M21 残留问题并校准）；③ 资产密度——`asset_density.py` + `nf asset density`（55 档 165 键，空档 FAIL）；④ 收口 audit `docs_audit-45-quality-deep.md`（verdict 通过-阶段收口）；verify PASS=49 保持。
 - **45 深化补强（W5）**：CI（ci-verify/coverage）装 jsonschema——schema 标准对照测试 CI 真跑（本地取证：5 份 schema 合法 draft2020-12 + M00 实例标准实现零错）；`nf asset usage` 资产引用度体检（键在 04/community/docs 全语料引用计数 + 零引用候选清单）；`nf release check` 发布前体检（verify + 基线自描述一致，--fast 跳过全量）；verify PASS=49 保持。

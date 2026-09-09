@@ -226,6 +226,7 @@ v1.0.0「全平台正式版·打好地基」——一次兑现历版方案 §6 �
 | 质量纵深（42） | 随波收口（无独立 tag） | 42 顶尖质量纵深工程 M1-M5（质量五维，2026-09-08 开工） | ✅ M1-M5 全交付（2026-09-08 收口，check1-27 PASS=41；coverage 85%；随波收口无独立 tag） |
 | 协议层顶尖（43） | 已随 v2.9.0 发布（无独立 tag） | 43 协议层顶尖化工程 A1-A5（IDL schema / Conformance 分级 / 扩展策略+影响分层 / 生成物 golden，2026-09-08 立项） | ✅ 已随 v2.9.0 发布（2026-09-08，audit 建档） |
 | 内容波收口 v2.9.0 | 2026-09-08（tag v2.9.0） | STRATEGY 战略层 + 43 元工具 + 44 CLI/drill/AI 通道（CLI 顶尖化 W1-W7 / drill 7 主线 / AI 通道内容+自组装） | ✅ 已发布（2026-09-08，tag v2.9.0；verify v2.20 check1-31 PASS=49） |
+| 内容波收口 v2.10.0 | 2026-09-09（tag v2.10.0） | 45 质量纵深 W1-W20 + 基础层 A1-A5（载荷 30/30 / 回合 drill / resources 分页 / --answer / bump / 逐模块覆盖率 / 指令审计） | ✅ 已发布（2026-09-09，tag v2.10.0；verify v2.20 check1-31 PASS=49） |
 | 波 D–N | 常态（P∞） | 审计 + 对账 + 回冻结 + 外部评审窗 | 脉冲式 |
 
 > **协议层顶尖化工程（43 号，2026-09-08 立项）**：承接 42 质量纵深（质量收口后指向协议本体），四真空白 = A1 协议 IDL（`protocol/schema/*.json` + 自实现 JSON-schema 子集校验器 + check28）/ A2 Conformance 一致性分级（conformance: Lx + check29）/ A3 扩展策略 + `nf diff` 变更影响三档（check30）/ A4 生成物同仓 golden（check31）/ A5 收口 audit（docs_audit-43）。零第三方依赖红线保持；不 bump registry_schema_version（字段级新增走 V1）。**2026-09-08 A1-A5 全交付**：verify v2.20 check1-31 PASS=49 全绿，随下个内容波发布（无独立 tag）。
