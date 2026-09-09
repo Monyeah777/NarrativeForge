@@ -23,7 +23,7 @@
               "properties": {
                 "type": {
                   "type": "string",
-                  "enum": ["string", "number", "boolean", "object", "array", "string[]", "number[]"]
+                  "enum": ["string", "number", "boolean", "object", "array", "string[]", "number[]", "untyped"]
                 },
                 "note": { "type": "string" }
               }

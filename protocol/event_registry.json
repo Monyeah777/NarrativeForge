@@ -141,9 +141,34 @@
       }
     },
     "relationship_change": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "正文证据：community/校园情感领域包/modules/M40_关系深度.md（发布行+payload 同段）",
+      "fields": {
+        "npc_id": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "depth": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "cognition": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "delta": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "reason": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "reputation_change": {
       "payload_status": "pending",
@@ -193,9 +218,30 @@
       "fields": {}
     },
     "weather_state": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "正文证据：04_模块库/世界类/M08_季节天气.md（payload 含嵌套 modifiers{combat,travel,market}）",
+      "fields": {
+        "region": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "season": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "weather": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "day_phase": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "modifiers": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     }
   }
 }
