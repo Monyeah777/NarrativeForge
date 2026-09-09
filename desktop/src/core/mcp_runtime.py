@@ -439,6 +439,21 @@ def _repo_read_uri(uri: str) -> str:
     raise KeyError(uri)
 
 
+def _repo_resource_templates() -> list:
+    """resources/templates/list：仓库内容寻址模板（URI 模板语义）。"""
+    return [
+        {"uriTemplate": "nf://repo/module/{id}",
+         "name": "模块正文", "mimeType": "text/markdown",
+         "description": "按模块 id / 限定 id 取正文"},
+        {"uriTemplate": "nf://repo/pipeline/{id}",
+         "name": "管线正文", "mimeType": "text/markdown",
+         "description": "按 Pxx 或路径取管线正文"},
+        {"uriTemplate": "nf://repo/asset/{package}/{key}",
+         "name": "资产正文", "mimeType": "text/markdown",
+         "description": "按包/键取资产正文"},
+    ]
+
+
 class UnknownUriError(KeyError):
     """resources/read 白名单外 uri 的专用信号（C2 只读拒绝）。
 
@@ -527,8 +542,9 @@ class McpRuntime:
         if method == "initialize":
             return self._initialize(params)
         if method == "resources/list":
-            return {"resources": list(self._meta.values())
-                    + list(self._repo_meta.values())}
+            return self._list_resources(params)
+        if method == "resources/templates/list":
+            return {"resourceTemplates": _repo_resource_templates()}
         if method == "resources/read":
             return self._read(params)
         if method == "tools/list":
@@ -597,6 +613,22 @@ class McpRuntime:
             "mimeType": self._meta[uri]["mimeType"],
             "text": self._text[uri],
         }]}
+
+    def _list_resources(self, params: dict) -> dict:
+        """resources/list 分页（PAGE=20）：cursor 十进制索引，尾部 nextCursor 缺席。"""
+        items = list(self._meta.values()) + list(self._repo_meta.values())
+        page = 20
+        start = 0
+        if isinstance(params, dict) and isinstance(params.get("cursor"), str):
+            try:
+                start = max(0, int(params["cursor"]))
+            except ValueError:
+                start = 0
+        end = start + page
+        out = {"resources": items[start:end]}
+        if end < len(items):
+            out["nextCursor"] = str(end)
+        return out
 
     # ---- transport ----
     def serve_stdio(self, stdin: Optional[TextIO] = None,

@@ -80,9 +80,17 @@ class TestMcpRuntime(unittest.TestCase):
             {"jsonrpc": "2.0", "method": "notifications/initialized"}))
 
     def test_list_resources_no_text_g2(self):
-        """G2 + 44：resources/list 返回快照 + 仓库内容资源纯元数据——条目绝无 text。"""
-        resp = self.srv.handle(_req(2, "resources/list"))
-        resources = resp["result"]["resources"]
+        """G2 + 44 + A3：resources/list 分页返回快照+仓库资源元数据——条目绝无 text。"""
+        resources = []
+        cursor = None
+        for _ in range(30):
+            params = {} if cursor is None else {"cursor": cursor}
+            resp = self.srv.handle(_req(50, "resources/list", params))
+            page = resp["result"]["resources"]
+            resources += page
+            cursor = resp["result"].get("nextCursor")
+            if not cursor:
+                break
         self.assertGreaterEqual(len(resources), 2)
         self.assertTrue(any(r["uri"].startswith("nf://repo/module/")
                             for r in resources))
@@ -90,6 +98,14 @@ class TestMcpRuntime(unittest.TestCase):
             self.assertIn("uri", r)
             self.assertIn("name", r)
             self.assertNotIn("text", r, f"list 元数据不得内嵌正文（G2）：{r}")
+
+    def test_resources_templates_list(self):
+        """A3：resources/templates/list 暴露仓库内容寻址模板。"""
+        resp = self.srv.handle(_req(51, "resources/templates/list"))
+        tpls = resp["result"]["resourceTemplates"]
+        self.assertEqual(len(tpls), 3)
+        self.assertTrue(any("nf://repo/module/" in t["uriTemplate"]
+                            for t in tpls))
 
     def test_read_repo_module_resource_content(self):
         """44 深化：resources/read 经 nf://repo/… 取模块正文实质内容。"""
@@ -101,8 +117,16 @@ class TestMcpRuntime(unittest.TestCase):
 
     def test_channel_surface_end_to_end_deep(self):
         """44 深化：资源面与内容工具端到端自检（模块/管线/资产三类代表件全可读）。"""
-        listed = self.srv.handle(_req(40, "resources/list"))["result"]["resources"]
-        uris = {r["uri"] for r in listed}
+        uris = set()
+        cursor = None
+        for _ in range(30):
+            params = {} if cursor is None else {"cursor": cursor}
+            resp = self.srv.handle(_req(40, "resources/list", params))
+            page = resp["result"]["resources"]
+            uris |= {r["uri"] for r in page}
+            cursor = resp["result"].get("nextCursor")
+            if not cursor:
+                break
         self.assertTrue(any(u.endswith("/repo/module/M90") for u in uris))
         self.assertTrue(any(u.endswith("/repo/pipeline/P90") for u in uris))
         self.assertTrue(any(u.endswith("/TECH_RULES") for u in uris))
