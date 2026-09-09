@@ -4,7 +4,7 @@
 
 **Narrative Forge 是一台规范驱动的结构化文档生成器（元工具/文档工厂）**。它按协议校验结构，与文体无关：小说、技术文档、设定集都适用。叙事世界（P01/P02/P03）目前应用最成熟。
 
-**生成路径**：自然语言意图 → 按协议模板填充（模块/管线/资产三正交装配）→ `bash verify.sh` 结构校验（分层门禁 check1-31，v2.20）→ 输出结构化文档/可运行世界。
+**生成路径**：自然语言意图 → 按协议模板填充（模块/管线/资产三正交装配）→ `bash verify.sh` 结构校验（分层门禁 check1-31，v2.21）→ 输出结构化文档/可运行世界。
 
 **三个正交维度（均可增删改）**：
 - 模块（04_模块库）：领域能力原语，按 01 §2 声明接口后登记即被调度。
@@ -72,7 +72,7 @@
 
 仓库零第三方依赖、clone 即跑（Windows 建议 Git Bash；无需桌面壳）。以下几步五分钟走通「验证 → 演示 → 跑管线 → 派生新领域」：
 
-1. **跑全量验证（改任何库先过这关）**：`bash verify.sh` —— L0-L2 分层门禁 v2.20（check1-31）全绿 PASS=49 才可提交。
+1. **跑全量验证（改任何库先过这关）**：`bash verify.sh` —— L0-L2 分层门禁 v2.21（check1-31）全绿 PASS=49 才可提交。
 2. **一键演示世界**：`python scripts/nf.py demo` —— 自动装载社区「校园 × 西幻轻混」P04 管线全链跑通并导出 CCV3 成品（chara.json + world.json），产物路径与质量门（PASS/WARN/FAIL）直接打印。
 3. **看帮助分层引导**：`python scripts/nf.py --help` —— 作者命令（run / demo / pipeline new）与开发者治理工具族分列说明；逐条用法看各子命令 `--help`。
 4. **跑一条自己的管线**：`python scripts/nf.py run --pipeline community/校园西幻轻混组合包/pipelines/P04_轻混装配流管线.md --modules 通用类:M00,轻混类:M91,轻混类:M92,通用类:M80 --seed --fmt ccv3 --dest <输出目录>`
@@ -89,7 +89,7 @@
 
 端壳源码已移出主仓库演进主线（git 历史保留），产出时从冻结快照恢复并触发构建 workflow（壳线专用：仅 `shells-v*` 标签 / 手动触发——40 总纲 S6，基础层 v* 不再产壳）：Release 页可下载 `NarrativeForge.exe` / macOS / Linux 成品（`.github/workflows/build-desktop.yml`）。**Android APK 已不再产出（2026-09-07 裁决 #16）**——手机用户入口 = 任意 AI 客户端（B1 线：读 raw / 下载文件），无需专用 App。
 
-基础层验证不依赖端壳：`bash verify.sh`（v2.20，L0-L2 分层门禁 check1-31，clone 即绿 PASS=49）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
+基础层验证不依赖端壳：`bash verify.sh`（v2.21，L0-L2 分层门禁 check1-31，clone 即绿 PASS=49）+ `python scripts/e2e_desktop_headless.py` + `python -m unittest` 全绿即可。
 
 ## 社区版模板闭环（自制模板 → 组装 → 输出 MD）
 
@@ -104,9 +104,9 @@
 
 ## 协议链
 01_核心协议 → 02_联动注册表 → 03_管线库 → 04_模块库 → 05_资产库 → 06_Agent执行协议 → 07_官方核心出厂与社区预设导航 → 08_v0.5.0_优化版方案 → 09_v0.6.0_协议中转站方案 → 10_v0.7.0_自定义协议方案 → 11_v0.8.0_自定义模块组合方案 → 12_v0.9.0_Android同步门禁与APK闪退修复方案 → 13_v1.0.0_全平台正式版方案 → 14_v1.2.0_协议中转站v2方案 → 15_v1.3.0_Agentic检索方案 → 16_v1.4.0_质量治理闭环方案 → 17_v2.0.0_导出层CCV3方案 → 18_v2.0x_SKILL出口插件方案 → 19_v2.0x_协议定义向导方案 → 20_v2.0x_组合运行时调度引擎方案 → 21_v2.0x_E4模块市场雏形方案 → 22_v2.0x_E5模块市场雏形深化方案 → 24_v2.1.0_全链管道化方案 → 25_v2.1.0_AGENTS适配器方案 → 26_v2.1.0_质量门可解释化方案 → 27_v2.1.0_MCP适配器方案 → 28_v2.1.0_A1补遗方案 → 29_v2.1.0_B3协议自举方案 → 30_v2.1.0_B3B协议登记助手方案 → 31_v2.1.0_B4市场协议CLI先行_nf-market方案 → 32_v2.1.0_C-b-techdoc域包战例方案 → 33_v2.2.0_外部吸收首波方案（A5 MCP 规范核查报告见 33_v2.2.0_A5-MCP规范差距核查报告.md） → 34_v2.3.0_基础层深化首波方案 → 35_v2.4.0_外部吸收大包方案（规范核查报告见 35_v2.4.0_外部规范同步核查报告.md） → 36_v2.5.0_基础层深化续方案。
-> **v2.10.0 内容波收口 · 45 质量纵深/基础层 A 组随波发布**（✅ 已发布 2026-09-09，tag v2.10.0）：45 W1-W20（基线自锁/指令审计/载荷 30-30/回合 drill/资源分页/--answer/bump/逐模块覆盖率）+ 基础层 A1-A5 全部收口；verify v2.20 check1-31 PASS=49。
-> **v2.9.0 内容波收口 · STRATEGY + 43/44 随波发布**（✅ 已发布 2026-09-08，tag v2.9.0）：STRATEGY 战略层（目标/质量唯一/内部法官/发布边界）+ 43 协议层元工具（check28-31、schema 子集自洽、事件闭包进 golden）+ 44 CLI 顶尖化（doctor/help/completion/json 自洽矩阵）+ 动态 drill（7 主线）+ AI 通道（内容通道/需求自组装/用户自定义/需求档案，nf assemble）。verify v2.20 check1-31 PASS=49。
-> **v2.8.0 波 C 首个内容波 · 40 总纲 41/42 工程收口**（✅ 已发布 2026-09-08，tag v2.8.0）：41 波 C 质量编译深化（C1 `nf sig` / C2 `nf diff`+check25 / C3 语义矛盾 check26 / C4 `nf related` See-Also / C5 `nf explain` / C6 需求收敛模板 / C7 MCP 只读 tools/prompts / C8 transport 评估 / C9 回合指针 + D2-D6）+ 42 质量纵深 M1-M5 随波收口（执行失范 drill / 判级器 06 §11 / check27 纯度体检 / doc_hygiene 内容边界 / VERSION-MATRIX / coverage·lint CI）。verify.sh v2.20 PASS=49（check1-31），core 覆盖率 85%。外部实测线按 41 封存注记冻结，E3/B1/NF-FIELD-001 回填后补转正。方案真相源见 41_v2.8.0_波C质量编译深化规划.md 与 42_顶尖质量纵深工程规划.md。
+> **v2.10.0 内容波收口 · 45 质量纵深/基础层 A 组随波发布**（✅ 已发布 2026-09-09，tag v2.10.0）：45 W1-W20（基线自锁/指令审计/载荷 30-30/回合 drill/资源分页/--answer/bump/逐模块覆盖率）+ 基础层 A1-A5 全部收口；verify v2.21 check1-31 PASS=49。
+> **v2.9.0 内容波收口 · STRATEGY + 43/44 随波发布**（✅ 已发布 2026-09-08，tag v2.9.0）：STRATEGY 战略层（目标/质量唯一/内部法官/发布边界）+ 43 协议层元工具（check28-31、schema 子集自洽、事件闭包进 golden）+ 44 CLI 顶尖化（doctor/help/completion/json 自洽矩阵）+ 动态 drill（7 主线）+ AI 通道（内容通道/需求自组装/用户自定义/需求档案，nf assemble）。verify v2.21 check1-31 PASS=49。
+> **v2.8.0 波 C 首个内容波 · 40 总纲 41/42 工程收口**（✅ 已发布 2026-09-08，tag v2.8.0）：41 波 C 质量编译深化（C1 `nf sig` / C2 `nf diff`+check25 / C3 语义矛盾 check26 / C4 `nf related` See-Also / C5 `nf explain` / C6 需求收敛模板 / C7 MCP 只读 tools/prompts / C8 transport 评估 / C9 回合指针 + D2-D6）+ 42 质量纵深 M1-M5 随波收口（执行失范 drill / 判级器 06 §11 / check27 纯度体检 / doc_hygiene 内容边界 / VERSION-MATRIX / coverage·lint CI）。verify.sh v2.21 PASS=49（check1-31），core 覆盖率 85%。外部实测线按 41 封存注记冻结，E3/B1/NF-FIELD-001 回填后补转正。方案真相源见 41_v2.8.0_波C质量编译深化规划.md 与 42_顶尖质量纵深工程规划.md。
 > **v2.7.0 无壳基础层 · 40 总纲波A+波B 整合发布**（✅ 已发布 2026-09-07，tag v2.7.0）：首个无壳基础层版本——分离节奏发布线首验（普通基础层 tag 不再产壳，壳集中波另行 `shells-v*`）。波 A（S2 资产供应链台账 `nf asset` + check23 / S3 首批官方资产集入库 / S8 密钥扫描入 CI / Y1-Y5 Agent 自助组装线 / X2 `docs/mcp.md` / S1 外部验证实证档建档）+ 波 B（S4 `nf pipeline new` / S5 模块生命周期 `nf module` + check24 / S7 近端 `nf demo` + `nf --help` 分层 + README 五分钟快速开始）整合一版发布。verify.sh v2.13 PASS=35（check1-24）。外部实证 E1–E3 / Y5 回填后按 S13 转正补记。方案真相源见 40_未来计划总纲_三层评估短板解决方案与分波实施.md。
 > **v2.6.0 端壳接线波第 1 波**（✅ 已发布 2026-09-06，tag v2.6.0）：L3 冻结快照恢复 + W1-W9 接线（zone_a 外部读入 / wizard doc_semantics 声明 / zone_c 一键全链 + 变体选项 / rules 多出口 / zone_d 五格式导出 + 质量门可解释面板 / zone_g 市场 tier 视图 / main_window MCP serve 入口）+ Release 产线修复（G1 ci-verify + G2 build-desktop/build-android 干跑 + APK 启动崩溃 MDSnackbar 修复 + emulator 启动冒烟全绿）。桌面冒烟 22/22 + verify v2.11 PASS=31。端壳待接线项 0（脉冲式治理首波兑现回冻结）。方案真相源见 38 方案合并稿。
 > **v2.5.0 基础层深化续**（✅ 已发布 2026-09-06，tag v2.5.0）：主线收口——读入入册（parse_skill 资源随行装载 + nf import --register 登记）+ 协议层 V2（package.version 槽位 + 条件组合运行时）+ 市场本体化收口（nf market list --tier + nf spec ls）+ 协议多出口渲染（rules_render：protocol.yaml → agents/claude/skill）+ MCP 运行时化（mcp_runtime：快照 → stdio JSON-RPC，33-A5 报告 G1/G2/G4 差距勾销 + C2 只读白名单安全层 + nf serve）。verify v2.11 PASS=31。方案真相源见 36（CCV3 修复）+ 37 方案提交线。
@@ -154,7 +154,7 @@ NarrativeForge（NF）有一个**云端公共图书馆**（`library/`）：建�
 
 基础层真身：纯 Python 零第三方依赖的装配/IR/质检/导出/检索逻辑，被端壳（桌面 GUI / android）复用。L0-L2 验证入口：
 
-- 分层门禁：`bash verify.sh`（v2.20，check1-31 全绿 PASS=49，clone 即绿；Windows 用 Git Bash / WSL 跑 `bash`）
+- 分层门禁：`bash verify.sh`（v2.21，check1-31 全绿 PASS=49，clone 即绿；Windows 用 Git Bash / WSL 跑 `bash`）
 - 单元测试：`cd desktop && python -m unittest discover -s tests`
 - 端到端：`python scripts/e2e_desktop_headless.py`（直驱 core，无需 GUI/端壳）
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# 45 · 本地 git hook 安装（多会话防呆）：pre-push 跑 nf release --fast，
-# 基线自描述不一致即拒推（完整 verify 由 CI release-gate 在 tag 上强制）。
+# 45 · 本地 git hook 安装（多会话防呆）：pre-push 跑完整 nf release
+#（verify + 基线 + 资产 ledger + 指令审计 + 载荷 + 逐模块覆盖率），任一红即拒推。
 set -e
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "$ROOT/.git/hooks"
@@ -9,9 +9,9 @@ cat > "$ROOT/.git/hooks/pre-push" <<'EOF'
 # 自动安装：scripts/install_hooks.sh
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT" || exit 1
-echo "== pre-push：nf release --fast（基线自描述一致） =="
-python scripts/nf.py release --fast || {
-  echo "!! 基线自描述不一致——先修文档/verify 再推（完整门禁见 release-gate CI）" >&2
+echo "== pre-push：nf release（完整发布前体检） =="
+python scripts/nf.py release || {
+  echo "!! 发布前体检未过——先修再推" >&2
   exit 1
 }
 EOF

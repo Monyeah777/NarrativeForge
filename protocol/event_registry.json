@@ -7,16 +7,16 @@
       "note": "证据:M94_通用节拍桥.md 发布行+payload 同段",
       "fields": {
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "day": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "minute": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "origin": {
           "type": "untyped",
@@ -37,12 +37,12 @@
           "note": "正文证据字段名；类型待核"
         },
         "qty": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "quality": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "source_package": {
           "type": "untyped",
@@ -53,8 +53,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -97,8 +97,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "targets": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "constraints": {
           "type": "untyped",
@@ -119,20 +119,20 @@
           "note": "正文证据字段名；类型待核"
         },
         "participants": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "damage_log": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "loot_hint": {
           "type": "untyped",
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -153,8 +153,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -183,8 +183,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -197,8 +197,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "round": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "origin": {
           "type": "untyped",
@@ -227,8 +227,8 @@
           "note": "45_M3 提案确认；类型待核"
         },
         "changes": {
-          "type": "untyped",
-          "note": "45_M3 提案确认；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -245,12 +245,12 @@
           "note": "45_M3 提案确认；类型待核"
         },
         "version": {
-          "type": "untyped",
-          "note": "45_M3 提案确认；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "sections": {
-          "type": "untyped",
-          "note": "45_M3 提案确认；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -275,12 +275,12 @@
           "note": "正文证据字段名；类型待核"
         },
         "weight": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -328,20 +328,20 @@
           "note": "正文证据字段名；类型待核"
         },
         "from_lv": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "to_lv": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "gained_attrs": {
           "type": "untyped",
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -358,16 +358,16 @@
           "note": "正文证据字段名；类型待核"
         },
         "price_delta": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "duration": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "affected_towns": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -406,8 +406,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "strength": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "behavior": {
           "type": "untyped",
@@ -418,8 +418,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -458,20 +458,20 @@
           "note": "正文证据字段名；类型待核"
         },
         "qty": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "quality": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "cost": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -506,16 +506,16 @@
           "note": "正文证据字段名；类型待核"
         },
         "delta": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "reason": {
           "type": "untyped",
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -532,16 +532,16 @@
           "note": "正文证据字段名；类型待核"
         },
         "delta": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "old_tier": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "new_tier": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "reason": {
           "type": "untyped",
@@ -558,8 +558,8 @@
           "note": "散文级证据字段；类型待核"
         },
         "changes": {
-          "type": "untyped",
-          "note": "散文级证据字段；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "date": {
           "type": "untyped",
@@ -580,8 +580,8 @@
           "note": "正文证据字段名；类型待核"
         },
         "tick": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "origin": {
           "type": "untyped",
@@ -602,8 +602,8 @@
           "note": "45_M3 提案确认；类型待核"
         },
         "definitions": {
-          "type": "untyped",
-          "note": "45_M3 提案确认；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "status": {
           "type": "untyped",
@@ -616,16 +616,16 @@
       "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
       "fields": {
         "delta": {
-          "type": "untyped",
-          "note": "45_M3 提案确认；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "status": {
           "type": "untyped",
           "note": "45_M3 提案确认；类型待核"
         },
         "count": {
-          "type": "untyped",
-          "note": "45_M3 提案确认；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         }
       }
     },
@@ -663,12 +663,12 @@
           "note": "正文证据字段名；类型待核"
         },
         "duration": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "number",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "encounters": {
-          "type": "untyped",
-          "note": "正文证据字段名；类型待核"
+          "type": "array",
+          "note": "45 typed 落库（作者执行确认，机械规则）"
         },
         "weather_mod": {
           "type": "untyped",

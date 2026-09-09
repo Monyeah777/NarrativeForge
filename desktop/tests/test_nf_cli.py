@@ -115,12 +115,14 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["completion", "zsh"])
         self.assertEqual(code, 0)
         self.assertIn("compdef _nf nf", out)
+        self.assertIn("_nf_all_flags", out)
 
     def test_completion_fish(self):
         code, out = self._run(["completion", "fish"])
         self.assertEqual(code, 0)
         self.assertIn("__fish_use_subcommand", out)
         self.assertIn("doctor", out)
+        self.assertIn("and __fish_seen_subcommand_from", out)
 
     def test_assemble_plan_match(self):
         """nf assemble：需求 → 装配计划（西幻关键词命中 P03 预设包）。"""

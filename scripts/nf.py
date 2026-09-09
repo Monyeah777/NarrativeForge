@@ -1504,17 +1504,24 @@ def _cmd_completion(args):
         return 0
 
     if args.shell == "zsh":
+        all_flags = sorted(set(data["root_flags"]))
+        for c in cmds:
+            all_flags += tree[c]["flags"]
+            for sub in tree[c]["nested"].values():
+                all_flags += sub
+        all_flags = sorted(set(all_flags))
         lines = [
             "#compdef nf",
             "# nf zsh completion（自动生成）",
             "_nf_cmds=(%s)" % " ".join(cmds),
+            "_nf_all_flags=(%s)" % " ".join(all_flags),
             "_nf() {",
             "  local -a cmds",
             "  cmds=(%s)" % " ".join(cmds),
             "  if (( CURRENT == 2 )); then",
             "    _describe -t commands 'nf command' cmds",
             "  else",
-            "    _files",
+            "    if [[ $PREFIX == -* ]]; then compadd -- $_nf_all_flags; else _files; fi",
             "  fi",
             "}",
             "compdef _nf nf",
@@ -1540,6 +1547,12 @@ def _cmd_completion(args):
         for n2 in tree[c]["nested"]:
             lines.append("complete -c nf -n '__fish_seen_subcommand_from %s' -a '%s'"
                          % (c, n2))
+            for f in tree[c]["nested"][n2]:
+                cond = "__fish_seen_subcommand_from %s; and __fish_seen_subcommand_from %s" % (c, n2)
+                if f.startswith("--"):
+                    lines.append("complete -c nf -n '%s' -l %s" % (cond, f[2:]))
+                elif f.startswith("-") and len(f) == 2:
+                    lines.append("complete -c nf -n '%s' -s %s" % (cond, f[1:]))
     print("\n".join(lines))
     return 0
 

@@ -25,8 +25,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     ver = m.group(1) if m else ""
     nums = sorted({int(x) for x in re.findall(r"^check(\d+)\(\)\{", verify_text, re.M)})
     n_checks = len(nums)
-    if ver != "v2.20":
-        issues.append("verify.sh 版本非 v2.20（当前 %s）" % (ver or "空"))
+    if not ver:
+        issues.append("verify.sh 缺版本头（vX.Y）")
     if n_checks != 31 or nums != list(range(1, 32)):
         issues.append("verify.sh check 函数数/编号异常：%s" % nums)
 
