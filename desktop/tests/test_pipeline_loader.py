@@ -22,6 +22,21 @@ class PipelineLoaderTest(unittest.TestCase):
     def test_missing_file_returns_none(self):
         self.assertIsNone(pl.load_pipeline_file(str(ROOT / "no_such.md")))
 
+    def test_load_official_p90_and_community_p03(self):
+        for rel, pid in (("03_管线库/P90_技术文档生成管线.md", "P90"),
+                         ("community/西幻生存领域包/pipelines/P03_西幻生存流管线.md", "P03")):
+            pipe = pl.load_pipeline_file(str(ROOT / rel))
+            self.assertIsNotNone(pipe, rel)
+            self.assertEqual(pipe.id, pid)
+
+    def test_bad_content_returns_none(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = os.path.join(tmp, "bad.md")
+            with open(bad, "w", encoding="utf-8") as fh:
+                fh.write("not a pipeline yaml at all\n")
+            self.assertIsNone(pl.load_pipeline_file(bad))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -34,7 +34,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     checks: List[Tuple[str, str, int]] = []
     readme = (r / "README.md").read_text(encoding="utf-8")
     checks.append(("README", "基线句",
-                   1 if all(t in readme for t in ("v2.20", "check1-31", "PASS=49"))
+                   1 if all(t in readme for t in (ver, "check1-31", "PASS=49"))
                    else 0))
     changelog = (r / "CHANGELOG.md").read_text(encoding="utf-8")
     head = changelog.split("\n## [2.8.0]", 1)[0]
