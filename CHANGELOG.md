@@ -4,6 +4,7 @@
 - **tool_face 可发现性（W30）**：`nf toolface`（人读/`--json` 浏览）+ `nf explain 32` 修复指引；verify v2.22 check1-32 PASS=51 保持。
 - **AI 入口重构（W31）**：README 压缩为判定层（MIT 开头/AI 元信息/快速开始/导航表/版本表），AI 路由与模型对比移入 `AI_ROUTING.md`；新增 `DEEP_DIVE.md` 七节认知模型；AGENT_START 指向两者；doc_hygiene 纳入新档；verify v2.22 check1-32 PASS=51 保持。
 - **公开计划清退 + 结果导航（W32）**：08–40 方案文档从公开 main 移除（本地归档 `.rivet/private_archive/`，不入库）；新增 `results/RESULTS.md` 结果导航；VERSION-MATRIX 历史方案列改为 CHANGELOG 结果链接；`nf diff` 冒烟改用 01↔02；verify v2.22 check1-32 PASS=51 保持。
+- **公开面深度精简（W33）**：移除已退役端壳源码 `desktop/src/ui`、壳打包脚本、build-desktop/build-android 工作流，并同步移除 UI 引用测试与检查脚本；审计/散档归位（根 `docs_audit-*` → `results/audit/`，`paste_card/L3_FROZEN` → `docs/`）；Gitee 投稿模板迁入 `.github/ISSUE_TEMPLATE/`；verify v2.22 check1-32 PASS=51 保持。
 - **质量纵深 check32（W28）**：verify 新增 check32 质量纵深汇总硬门（载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用），PASS 49→51；当前基线升级 verify v2.22 check1-32 PASS=51。
 - **#1-#4 优化落地（W21）**：① 载荷类型收窄工具 `payload_typing.py`（数值/数组语义词 → 建议类型 proposal，不编造不改注册表）；② 资产键表机读 ledger 投影 `asset_ledger_projection.py`（163 键 → 文件/行，`nf asset ledger`，双源校验）；③ trace→drill 自动比对器 `trace_drill.py`（遥测重跑判定一致，verdict 漂移即 FAIL）；④ `nf release` 并入资产 ledger/指令审计/载荷注册表/逐模块覆盖率（发布体检合一）；verify PASS=49 + 逐模块 min30 0 低档保持。
 - **下一波部分完成（W22）**：`resources/list` 增 `type`(module/pipeline/asset)/`package` 过滤后再分页；dossier `--answer` 自动回填“澄清回填”节（档案合并）；`bump_verify.sh` 支持 `--dry-run`（演练通过，未真改版本）；verify PASS=49 保持。
@@ -219,7 +220,7 @@
 ### Fixed
 - **v2.6.0-emulator-smoke 环境链（38 方案，d25dade/ae16c92/8533376/23d2b09/ddae6db）**：ubuntu-latest runner 无 /dev/kvm 权限（kvm4all udev 规则）→ APK 相对路径定位失败（$GITHUB_WORKSPACE 绝对路径）→ emulator-runner 逐行 sh -c 变量跨行丢失（单行串联）→ logcat 抓取定位 app 崩溃。
 ### Changed
-- **v2.6.0 发布收口**：L3_FROZEN.md 状态升级「第 1 波完成 → 回冻结」+ 第 1 波记录；ROADMAP §1 v2.6.0 行 + §7.5 A3/A4/B4/C-a GUI 挂账勾销 + §8 指针 6 执行标记；README v2.6.0 块；tag v2.6.0。**端壳待接线项：0**（v2.6 = 第 1 波接线全部兑现，积压清零回冻结；脉冲触发条件重计）。
+- **v2.6.0 发布收口**：docs/L3_FROZEN.md 状态升级「第 1 波完成 → 回冻结」+ 第 1 波记录；ROADMAP §1 v2.6.0 行 + §7.5 A3/A4/B4/C-a GUI 挂账勾销 + §8 指针 6 执行标记；README v2.6.0 块；tag v2.6.0。**端壳待接线项：0**（v2.6 = 第 1 波接线全部兑现，积压清零回冻结；脉冲触发条件重计）。
 
 ## [2.5.0] - 2026-09-06（v2.5.0 基础层深化续：A 矩阵补全 + B 挂账 + MCP 运行时化——主线收口）
 ### Added
@@ -280,11 +281,11 @@
 - **v2.0.x-E5 模块市场雏形深化（方案 22，69dd4b2 W1 core + 47c0dfd W2 UI）**：community 仓库盘点——新增 `desktop/src/core/community_inventory.py`（catalog 盘点 4 包 29 模块 + 4 管线 + 已装判定；install_module save_module 幂等 / install_pipeline pipelines cache 按 id merge 不覆盖既有）；retriever.search 扩 kind=community_module/community_pipeline（显式指定才并入，E4 四类语义隔离，Hit tags=[来源包,✓已装/可装载]）；zone_g kind 下拉加「社区模块/社区管线」档——未装一键装载入库（module → on_modules_changed / pipeline → reload_pipelines）、已装转加入装配/设为当前管线；`scripts/smoke_zone_g_market.py` [7][8] 装载冒烟（M55 装载入库→标记翻转、P04 cache merge→③ 下拉含）。I5 边界裁决：references 跨包只读（E3）与用户工作区装载（E5，等同 seed_from_repo 既有模式）正交不冲突。
 ### Changed
 - README 协议链追加 19/20/21/22（治理指针 2，收口 E2-E5 落地）。
-- **23 方案分层治理**：L3 端壳冻结移出主仓库演进主线——verify.sh v2.9 分层门禁（check13① 去 android 两处比对、check12② compileall 去 android、版本号收口，clone 即绿零前置）+ CI 新增 ci-verify（L0-L2 闸门）+ build-desktop/build-android 退役 main 自动触发（仅 v* tag/手动）+ `L3_FROZEN.md` 真相源落盘（含移出清单索引与接回路径）。L2 core 语义零回归（135 单测/verify PASS=24/e2e 全绿）。
+- **23 方案分层治理**：L3 端壳冻结移出主仓库演进主线——verify.sh v2.9 分层门禁（check13① 去 android 两处比对、check12② compileall 去 android、版本号收口，clone 即绿零前置）+ CI 新增 ci-verify（L0-L2 闸门）+ build-desktop/build-android 退役 main 自动触发（仅 v* tag/手动）+ `docs/L3_FROZEN.md` 真相源落盘（含移出清单索引与接回路径）。L2 core 语义零回归（135 单测/verify PASS=24/e2e 全绿）。
 
 ## [2.1.0] - 2026-09-05（v2.1.0 基础层深化：A 适配面 + B 生成器 + C 内容资产化——CLI/库先行 + 自举工具链）
 ### Added
-- **v2.1.0-B2 全链管道化（方案 24，f25ea79 W1 + c59b11f W2）**：retrieve→compose→gate→export 单命令——新增 `desktop/src/core/pipeline.py`（pipe() 单一入口：selected full_id → build_assembly(E3 references 并入) → render_ir → quality_gate 三态 → gate.ok 且非禁阻断才 export；本地缺失项跳过入 warnings；fail_on_gate=False 强制导出诊断产物但 ok 仍 False——可信任度不变量不破）+ `scripts/nf.py` CLI（run 子命令，GateResult 摘要 + FAIL exit 1 镜像 verify 铁律；skill 拒 narrative 的产物×适配矩阵纪律 warnings 透传）。CLI/库先行薄壳形态（L3_FROZEN.md）的地基，L2 首个里程碑。
+- **v2.1.0-B2 全链管道化（方案 24，f25ea79 W1 + c59b11f W2）**：retrieve→compose→gate→export 单命令——新增 `desktop/src/core/pipeline.py`（pipe() 单一入口：selected full_id → build_assembly(E3 references 并入) → render_ir → quality_gate 三态 → gate.ok 且非禁阻断才 export；本地缺失项跳过入 warnings；fail_on_gate=False 强制导出诊断产物但 ok 仍 False——可信任度不变量不破）+ `scripts/nf.py` CLI（run 子命令，GateResult 摘要 + FAIL exit 1 镜像 verify 铁律；skill 拒 narrative 的产物×适配矩阵纪律 warnings 透传）。CLI/库先行薄壳形态（docs/L3_FROZEN.md）的地基，L2 首个里程碑。
 - **v2.1.0-A1 AGENTS/CLAUDE 适配器 + SKILL 边界裁决机制化（方案 25，74db425 W1 + 98ed908 W2）**：产物×适配矩阵第三格——新增 `desktop/src/core/semantics.py`（两判据裁决唯一真源：`classify_doc_semantics(ir)` meta 显式声明 > title/模块名项目约定词启发 > 缺省回退 skill）+ `agent_rules_adapter.py`（techdoc+project_rules → AGENTS.md/CLAUDE.md 项目约定出口，narrative/能力语义拒出同 skill 纪律）+ exporter 注册 agents/claude；protocol_wizard.self_check 内置 doc_semantics 值域校验 + nf.py --fmt 扩 agents/claude。CLI/库先行 + 裁决规则供向导/生成器复用。
 - **v2.1.0-B1 质量门可解释化（方案 26，9d396df）**：quality_gate 三态门 → 可解释报告 + 自动修复建议——`Issue` 加 `suggestion` 字段（缺省空串，向后兼容）+ 四条默认规则各补 actionable 修复指引（R1 空装配→勾选含核心 M00/M80 / R2 缺锚点→勾选 P00/P80 / W1 资产悬空→装包或删引用 / W2 层外→移层位或改层序）+ `GateResult.report_text()` 可解释报告（fail 优先、warn 可行动）；nf.py 质量门打印带建议。warn 从"只提示"变"告诉你怎么改"。
 - **v2.1.0-A2 MCP server 定义导出（方案 27，112aad1）**：A 线第四格——新增 `desktop/src/core/mcp_adapter.py`（techdoc IR → mcp.json：`mcp{name, capabilities.resources, resources[]}` 每模块 → Resource uri 层级编码 + text 正文，extra 入不静默丢；narrative 拒出同 skill/agents 纪律）+ exporter 注册 mcp + nf.py --fmt 扩。诚实映射裁决：无结构化工具参数源故做 Resources 型（MCP 官方定义 = client 管理的上下文数据），Tool/Prompt 留待结构化源。

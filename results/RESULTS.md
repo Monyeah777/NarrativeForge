@@ -8,9 +8,9 @@
 
 ## 审计与收口
 
-- [docs_audit-45-quality-deep.md](../docs_audit-45-quality-deep.md)
-- [docs_audit-46-a5-instruction.md](../docs_audit-46-a5-instruction.md)
-- [docs_audit-44-ai-channel.md](../docs_audit-44-ai-channel.md)
+- [docs_audit-45-quality-deep.md](audit/docs_audit-45-quality-deep.md)
+- [docs_audit-46-a5-instruction.md](audit/docs_audit-46-a5-instruction.md)
+- [docs_audit-44-ai-channel.md](audit/docs_audit-44-ai-channel.md)
 
 ## 正式协议与实现
 

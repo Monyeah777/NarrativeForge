@@ -9,7 +9,7 @@
 |---|---|---|
 | Agent（有 API / 能执行代码） | clone、verify、接 MCP | A 线：`nf serve` MCP（详见 `docs/mcp.md`） |
 | 免费客户端 AI（非 API，能读 raw/下载） | 读 raw、下载文件 | B1 线：`agent_组装指令包_v0.2.md` 完整装配 |
-| 纯粘贴客户端 | 只能读粘贴文本 | B2 已免除，自取 `paste_card.md` |
+| 纯粘贴客户端 | 只能读粘贴文本 | B2 已免除，自取 `docs/paste_card.md` |
 
 ## B1 完整装配
 
