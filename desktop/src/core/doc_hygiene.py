@@ -27,6 +27,7 @@ REQUIRED_DOCS = [
     "agent_组装指令包_v0.2.md",
     "docs/44_M1_执行演练扩展.md",
     "docs/44_M2_AI通道内容规范.md",
+    "docs/45_执行遥测规范.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -38,6 +39,7 @@ INSTRUCTION_DOCS = [
     "agent_组装指令包_v0.2.md",
     "docs/44_M1_执行演练扩展.md",
     "docs/44_M2_AI通道内容规范.md",
+    "docs/45_执行遥测规范.md",
 ]
 
 

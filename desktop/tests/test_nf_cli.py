@@ -8,6 +8,7 @@ import argparse
 import contextlib
 import importlib.util
 import io
+import json
 import os
 import subprocess
 import sys
@@ -177,6 +178,20 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["release", "--fast"])
         self.assertEqual(code, 0, out)
         self.assertIn("基线自描述一致", out)
+
+    def test_assemble_trace(self):
+        fd, path = tempfile.mkstemp(suffix=".json", dir=str(ROOT))
+        os.close(fd)
+        try:
+            code, out = self._run(["assemble", "西幻生存", "--trace", path])
+            self.assertEqual(code, 0, out)
+            with open(path, encoding="utf-8") as fh:
+                data = json.load(fh)
+            self.assertEqual(data["phase"], "plan")
+            self.assertEqual(data["pipeline"], "P03")
+        finally:
+            if os.path.exists(path):
+                os.remove(path)
 
     def test_assemble_check_ok_and_reject(self):
         """nf assemble --check：合格成品过、编造编号成品拒。"""

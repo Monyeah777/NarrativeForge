@@ -4,6 +4,7 @@
 - **质量纵深顶尖化 W2-W4（45）**：① 文档可执行性——`agent_组装指令包_v0.2.md`/`docs/44_M1_执行演练扩展.md`/`docs/44_M2_AI通道内容规范.md` 纳入 doc_hygiene（⛔+最后更新 100%）；② 动态保真——`nf assemble --check` 验收器按真实战例校准（编号真值=全库登记、残留语境豁免、决策只查叙述段），P03 完整样本落常驻回归（实证抓到样本 M21 残留问题并校准）；③ 资产密度——`asset_density.py` + `nf asset density`（55 档 165 键，空档 FAIL）；④ 收口 audit `docs_audit-45-quality-deep.md`（verdict 通过-阶段收口）；verify PASS=49 保持。
 - **45 深化补强（W5）**：CI（ci-verify/coverage）装 jsonschema——schema 标准对照测试 CI 真跑（本地取证：5 份 schema 合法 draft2020-12 + M00 实例标准实现零错）；`nf asset usage` 资产引用度体检（键在 04/community/docs 全语料引用计数 + 零引用候选清单）；`nf release check` 发布前体检（verify + 基线自描述一致，--fast 跳过全量）；verify PASS=49 保持。
 - **45 四专项·地基波（W6，真实转录/E3 待作者触发）**：#0 事件载荷形状化地基——`protocol/event_payload.schema.json` + `protocol/event_registry.json`（首批官方核心链 tick_day/minute_tick/interaction_update/narrative_event/quest_state 字段级类型）+ `payload_registry.py` 自校验与防死注册（零第三方，社区包载荷 retro-fit 挂账）；#1 资产语义厚度——`nf asset thickness`（字符/键/小节/表格 + 低信息档候选，55 档低信息=0）；#3 打 tag 强制闸——`.github/workflows/release-gate.yml`（v* 标签推送即跑 verify+基线自描述+覆盖率，FAIL 即红）；verify PASS=49 保持。
+- **45 #2 遥测专项（执行留痕底座）**：`nf assemble --trace <file.json>` 落盘 plan/clarify/check 三阶段执行遥测（确定性字段、时间戳外套）；`docs/45_执行遥测规范.md`（phase/采集纪律，E3 真实转录回填接口预留）纳入 doc_hygiene；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added

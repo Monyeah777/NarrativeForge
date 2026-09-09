@@ -343,6 +343,8 @@ def _build_parser() -> argparse.ArgumentParser:
                      help="对成品完整版 md 做机器验收（骨架/编号/引用）")
     asm.add_argument("--save", dest="save_path", metavar="FILE.md",
                      help="把澄清/计划落成需求档案（八字段回填稿）")
+    asm.add_argument("--trace", dest="trace_path", metavar="TRACE.json",
+                     help="执行遥测落盘（计划/澄清/验收留痕，供真实转录/E3 补测底座）")
     rel = sub.add_parser("release",
                          help="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）", description="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）")
     rel.add_argument("--fast", action="store_true",
@@ -1512,6 +1514,12 @@ def _cmd_assemble(args):
             return 1
         print("  ✓ 需求档案已存：%s" % args.save_path)
     if funnel["status"] == "clarify":
+        if args.trace_path:
+            _write_trace_file(args.trace_path, {
+                "tool": "nf assemble", "phase": "clarify",
+                "requirement": args.requirement,
+                "questions": funnel.get("questions") or [],
+            })
         print("== nf assemble（需求澄清）==")
         print("  你的需求信息还不够直接编排，先补三点（缺一不可）：")
         for q in funnel["questions"]:
@@ -1536,6 +1544,17 @@ def _cmd_assemble(args):
             print("  [FAIL] %s" % issue, file=sys.stderr)
         if not issues:
             print("  ✓ 成品通过自组装机器验收（八段骨架 + 编号允许集 + 决策引用）")
+        if args.trace_path:
+            _write_trace_file(args.trace_path, {
+                "tool": "nf assemble", "phase": "check",
+                "requirement": args.requirement,
+                "matched": plan_.get("matched"),
+                "package": plan_.get("package"),
+                "pipeline": plan_.get("pipeline"),
+                "ok": not issues,
+                "issues": issues,
+                "stats": stats,
+            })
         return 1 if issues else 0
     print("== nf assemble（需求 → 装配计划）==")
     if plan_["matched"]:
@@ -1557,6 +1576,16 @@ def _cmd_assemble(args):
               "protocol.yaml 登记（nf register）→ 成品里即可引用 → 验收")
         print("  验收：nf assemble \"%s\" --check <out.md>"
               % args.requirement)
+    if args.trace_path:
+        _write_trace_file(args.trace_path, {
+            "tool": "nf assemble", "phase": "plan",
+            "requirement": args.requirement,
+            "status": plan_.get("status"),
+            "matched": plan_.get("matched"),
+            "package": plan_.get("package"),
+            "pipeline": plan_.get("pipeline"),
+            "allowed_modules": len(plan_.get("allowed_module_ids") or []),
+        })
     return 0
 
 
@@ -1581,6 +1610,20 @@ def _cmd_release(args):
         return 1
     print("  ✓ 发布体检通过：verify 全绿 + 基线自描述一致（可打 tag）")
     return 0
+
+
+def _write_trace_file(path, payload):
+    import json as _json
+    try:
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            _json.dump(payload, fh, ensure_ascii=False, indent=2, sort_keys=True)
+            fh.write("\n")
+    except OSError as exc:
+        print("  ✗ 写 trace 失败：%s（修复指引：给可写路径）" % exc,
+              file=sys.stderr)
+        return False
+    print("  ✓ trace 已存：%s" % path)
+    return True
 
 
 def main(argv=None) -> int:
