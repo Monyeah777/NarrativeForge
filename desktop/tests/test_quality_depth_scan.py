@@ -18,6 +18,7 @@ class QualityDepthScanTest(unittest.TestCase):
         self.assertIn("payload_registry", stats)
         self.assertIn("asset_ledger", stats)
         self.assertIn("payload_consumer", stats)
+        self.assertIn("tool_face", stats)
 
 
 if __name__ == "__main__":

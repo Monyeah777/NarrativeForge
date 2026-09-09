@@ -1273,7 +1273,9 @@ def parse_version(line):
     return m.group(1) if m else None
 bumps = 0
 for f in files:
-    r = subprocess.run(['git', 'diff', 'HEAD', '--', f], capture_output=True, text=True)
+    r = subprocess.run(['git', 'diff', 'HEAD', '--', f],
+                       capture_output=True, text=True,
+                       encoding='utf-8', errors='replace')
     if r.returncode != 0:
         continue
     diff = r.stdout

@@ -56,6 +56,34 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
       "description": "对外查询接口面；零事件模块不得以空契约隐式脱离联动面"
+    },
+    "tool_face": {
+      "type": "array",
+      "description": "模块工具面（45 内部计划 v1）：AI 选/造工具的开放建议层；缺省 = 无工具纯文本模块",
+      "items": {
+        "type": "object",
+        "required": ["purpose", "guidance"],
+        "properties": {
+          "purpose": { "type": "string", "minLength": 1 },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["repo", "license"],
+              "properties": {
+                "repo": { "type": "string", "minLength": 1 },
+                "ref": { "type": "string" },
+                "license": { "type": "string", "minLength": 1 },
+                "note": { "type": "string" }
+              }
+            }
+          },
+          "guidance": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        }
+      }
     }
   },
   "additionalProperties": true

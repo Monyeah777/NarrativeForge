@@ -20,6 +20,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     from core import instruction_step_audit as isa
     from core import payload_consumer as pc
     from core import payload_registry as pr
+    from core import tool_face as tf
 
     issues: List[str] = []
     stats: Dict[str, Any] = {}
@@ -37,6 +38,10 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         for i in sub_issues:
             issues.append("%s: %s" % (name, i))
         stats[name] = sub_stats
+    tf_issues, tf_stats = tf.scan(root)
+    for i in tf_issues:
+        issues.append("tool_face: %s" % i)
+    stats["tool_face"] = tf_stats
     _, consumer_stats = pc.scan(root)
     stats["payload_consumer"] = consumer_stats
     return issues, stats
