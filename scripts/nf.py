@@ -1539,7 +1539,7 @@ def _cmd_assemble(args):
     plan_ = funnel.get("plan") or ap.plan(req_text)
     if args.save_path:
         text = ap.dossier(req_text, plan_,
-                          funnel.get("questions") or [])
+                          funnel.get("questions") or [], answers)
         try:
             parent = os.path.dirname(os.path.abspath(args.save_path))
             if parent:

@@ -615,8 +615,36 @@ class McpRuntime:
         }]}
 
     def _list_resources(self, params: dict) -> dict:
-        """resources/list 分页（PAGE=20）：cursor 十进制索引，尾部 nextCursor 缺席。"""
+        """resources/list 分页 + 过滤（type=module|pipeline|asset / package）。"""
         items = list(self._meta.values()) + list(self._repo_meta.values())
+        ftype = None
+        fpackage = None
+        if isinstance(params, dict):
+            ftype = params.get("type")
+            fpackage = params.get("package")
+        if ftype or fpackage:
+            import urllib.parse as up
+
+            kept = []
+            for it in items:
+                uri = it["uri"]
+                parts = uri.split("/")
+                if len(parts) >= 5 and parts[0] == "nf:" and parts[2] == "repo":
+                    kind = parts[3]
+                    if ftype and kind != ftype:
+                        continue
+                    if fpackage:
+                        if kind == "asset":
+                            pkg = up.unquote(parts[4])
+                        elif kind in ("module", "pipeline"):
+                            pkg = it.get("name", "").split(" ", 1)[-1]
+                            pkg = ""
+                        if pkg != fpackage:
+                            continue
+                elif ftype:
+                    continue
+                kept.append(it)
+            items = kept
         page = 20
         start = 0
         if isinstance(params, dict) and isinstance(params.get("cursor"), str):

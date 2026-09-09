@@ -107,6 +107,32 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertTrue(any("nf://repo/module/" in t["uriTemplate"]
                             for t in tpls))
 
+    def test_resources_list_filter_type(self):
+        uris = set()
+        cursor = None
+        for _ in range(20):
+            params = {"type": "module"}
+            if cursor:
+                params["cursor"] = cursor
+            resp = self.srv.handle(_req(52, "resources/list", params))
+            page = resp["result"]["resources"]
+            uris |= {r["uri"] for r in page}
+            cursor = resp["result"].get("nextCursor")
+            if not cursor:
+                break
+        self.assertTrue(uris)
+        self.assertTrue(all(u.startswith("nf://repo/module/") for u in uris))
+
+    def test_resources_list_filter_asset_package(self):
+        import urllib.parse as up
+        resp = self.srv.handle(_req(53, "resources/list",
+                                    {"type": "asset", "package": "官方"}))
+        page = resp["result"]["resources"]
+        self.assertTrue(page)
+        for r in page:
+            parts = r["uri"].split("/")
+            self.assertEqual(up.unquote(parts[4]), "官方")
+
     def test_read_repo_module_resource_content(self):
         """44 深化：resources/read 经 nf://repo/… 取模块正文实质内容。"""
         resp = self.srv.handle(_req(31, "resources/read",

@@ -83,7 +83,7 @@ def clarify(requirement: str) -> Dict[str, Any]:
 
 
 def dossier(requirement: str, plan_: Dict[str, Any],
-            questions: List[str] = ()) -> str:
+            questions: List[str] = (), answers: List[str] = ()) -> str:
     """漏斗产出 → 需求档案（对齐 docs/需求收敛模板.md 八字段回填稿）。"""
     req = requirement.strip()
     status = "澄清中（nf assemble 已抛问句，待回填）" if questions else (
@@ -114,6 +114,9 @@ def dossier(requirement: str, plan_: Dict[str, Any],
     if questions:
         lines.append("待澄清（nf assemble 问句）：")
         lines += ["  · %s" % q for q in questions]
+    if answers:
+        lines.append("澄清回填（--answer，已并入需求与档案）：")
+        lines += ["  · %s" % a for a in answers]
     return "\n".join(lines) + "\n"
 
 

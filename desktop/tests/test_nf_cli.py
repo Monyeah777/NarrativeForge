@@ -160,6 +160,21 @@ class NfCliSmokeTest(unittest.TestCase):
             if os.path.exists(path):
                 os.remove(path)
 
+    def test_assemble_dossier_merges_answers(self):
+        fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+        os.close(fd)
+        try:
+            code, out = self._run(["assemble", "给我做一个世界",
+                                   "--answer", "题材：西幻生存",
+                                   "--save", path])
+            self.assertEqual(code, 0, out)
+            text = open(path, encoding="utf-8").read()
+            self.assertIn("澄清回填", text)
+            self.assertIn("题材：西幻生存", text)
+        finally:
+            if os.path.exists(path):
+                os.remove(path)
+
     def test_assemble_check_real_p03_sample(self):
         """真实战例回归：仓库 P03 完整样本须通过 nf assemble --check。"""
         sample = os.path.join(ROOT, "docs", "完整版样本_西幻生存流P03.md")
