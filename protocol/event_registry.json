@@ -3,19 +3,82 @@
   "note": "45 载荷形状化地基：首批官方核心链事件载荷登记（事件名 ↔ 字段级类型）；社区包事件载荷分批 retro-fit 挂账。",
   "events": {
     "beat_tick": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M94_通用节拍桥.md 发布行+payload 同段",
+      "fields": {
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "day": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "minute": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "origin": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "buffered": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "campus_anonymous_gift": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M92_轻混装配执行.md step3_publish+payload 同段",
+      "fields": {
+        "item": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "qty": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "quality": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "source_package": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "origin": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "campus_gift_intent": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M91_异界身份桥.md 发布行+payload 同段",
+      "fields": {
+        "intent": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "secret_mode": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "origin": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "source_event": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "chaos_event": {
       "payload_status": "pending",
@@ -23,24 +86,104 @@
       "fields": {}
     },
     "combat_result": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M04_战斗系统.md 发布行+payload 同段",
+      "fields": {
+        "winner": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "participants": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "damage_log": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "loot_hint": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "confession_event": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M43_情敌系统.md 发布行+payload 同段",
+      "fields": {
+        "rival_id": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "target_npc": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "outcome": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "death_trigger": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M10_死亡重生.md 发布行+payload 同段",
+      "fields": {
+        "deceased": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "cause": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "blessing": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "lost_items": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "rebirth_point": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "decision_brief": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M95_通用决策汇总.md 发布行+payload 同段",
+      "fields": {
+        "context": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "round": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "origin": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "aggregated": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "doc_delta_committed": {
       "payload_status": "pending",
@@ -53,9 +196,34 @@
       "fields": {}
     },
     "ghost_event": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M65_幽灵遗憾.md 发布行+payload 同段",
+      "fields": {
+        "ghost_id": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "regret_type": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "target_npc": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "window": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "weight": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "intent_received": {
       "payload_status": "pending",
@@ -80,9 +248,30 @@
       }
     },
     "level_up": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M01_职业成长.md 发布行+payload 同段",
+      "fields": {
+        "job": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "from_lv": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "to_lv": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "gained_attrs": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "market_event": {
       "payload_status": "pending",
@@ -112,19 +301,86 @@
       }
     },
     "npc_action": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M22_三冲动驱动.md 发布行+payload 同段",
+      "fields": {
+        "npc_id": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "impulse": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "strength": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "behavior": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "target": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "polished_output": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M96_通用输出润色.md 发布行+payload 同段",
+      "fields": {
+        "source": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "aligned": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "origin": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "style": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "production_output": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M17_生产制造.md 发布行+payload 同段",
+      "fields": {
+        "recipe_id": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "item": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "qty": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "quality": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "cost": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "quest_state": {
       "note": "官方 M06 任务状态变更",
@@ -181,9 +437,26 @@
       "fields": {}
     },
     "state_snapshot": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M93_通用状态快照.md 发布行+payload 同段",
+      "fields": {
+        "domain": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "tick": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "origin": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        },
+        "mode": {
+          "type": "untyped",
+          "note": "正文证据字段名；类型待核"
+        }
+      }
     },
     "term_conflict_detected": {
       "payload_status": "pending",

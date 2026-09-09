@@ -9,6 +9,7 @@
 - **A4/C 工程闸（W9）**：`scripts/per_module_coverage.sh` 逐模块覆盖率门槛（min30 起步，实测 0 低档；loader 深化后上调）+ `scripts/install_hooks.sh` 本地 pre-push（`nf release --fast` 防呆）；补 plog/pipeline_loader 最小单测（plog 0%→>50、loader 35→36，覆盖缺口显性化）；verify PASS=49 保持。
 - **A2 回合级 drill（W10）**：`round_drill.py` 执行转录按回合断言（R-R1 引用 / R-R2 推进留痕 / R-R3 允许集编号 / R-R4 跳号 WARN）+ `nf assemble --check --rounds` 联用 + `docs/45_M2_回合级drill.md` 入 doc_hygiene；verify PASS=49 保持。
 - **A1 载荷证据化（W11，保守登记）**：`payload_evidence.py` 正文证据扫描器（只收「发布行+内联 payload」候选，防自动误映射）；schema 增 `untyped` 类型；人工核验 M40 relationship_change / M08 weather_state 后转 declared（declared 5→7，pending 23——每转一条均带 source 注记，不编造）；verify PASS=49 保持。
+- **A1 载荷证据化（W12，批量核验）**：按正文内联 payload 证据逐条核验并转 declared——state_snapshot(M93)/beat_tick(M94)/decision_brief(M95)/polished_output(M96)/campus_gift_intent(M91)/campus_anonymous_gift(M92)/combat_result(M04)/confession_event(M43)/death_trigger(M10)/ghost_event(M65)/level_up(M01)/npc_action(M22)/production_output(M17)（declared 7→20）；剩余 10 条无内联载荷证据保持 pending（不编造）；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added
