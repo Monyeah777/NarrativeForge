@@ -32,7 +32,7 @@ class Quality45StandingTest(unittest.TestCase):
     def test_baseline_standing(self):
         issues, stats = qb.scan(ROOT)
         self.assertEqual(issues, [])
-        self.assertEqual(stats["checks"], 31)
+        self.assertEqual(stats["checks"], 32)
 
 
 if __name__ == "__main__":

@@ -27,24 +27,24 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     n_checks = len(nums)
     if not ver:
         issues.append("verify.sh 缺版本头（vX.Y）")
-    if n_checks != 31 or nums != list(range(1, 32)):
+    if n_checks != 32 or nums != list(range(1, 33)):
         issues.append("verify.sh check 函数数/编号异常：%s" % nums)
 
-    claim = "v%s check1-31 PASS=49" % ver
+    claim = "v%s check1-32 PASS=51" % ver
     checks: List[Tuple[str, str, int]] = []
     readme = (r / "README.md").read_text(encoding="utf-8")
     checks.append(("README", "基线句",
-                   1 if all(t in readme for t in (ver, "check1-31", "PASS=49"))
+                   1 if all(t in readme for t in (ver, "check1-32", "PASS=51"))
                    else 0))
     changelog = (r / "CHANGELOG.md").read_text(encoding="utf-8")
     head = changelog.split("\n## [2.8.0]", 1)[0]
     checks.append(("CHANGELOG 最新节", "版本头+PASS 声明",
-                   head.count("[2.9.0]") + head.count("PASS=49")))
+                   head.count("[2.9.0]") + head.count("PASS=51")))
     matrix = (r / "VERSION-MATRIX.md").read_text(encoding="utf-8")
-    checks.append(("VERSION-MATRIX v2.9.0 行", "PASS=49",
+    checks.append(("VERSION-MATRIX v2.9.0 行", "PASS=51",
                    matrix.count("v2.9.0（内容波收口）")
-                   + matrix.count("PASS=49")))
+                   + matrix.count("PASS=51")))
     for name, what, n in checks:
         if n < 1:
-            issues.append("%s 缺 %s 声明（预期含 v2.20/check1-31/PASS=49）" % (name, what))
+            issues.append("%s 缺 %s 声明（预期含 v2.22/check1-32/PASS=51）" % (name, what))
     return issues, {"verify_version": ver, "checks": n_checks}

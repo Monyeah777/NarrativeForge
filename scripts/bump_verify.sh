@@ -18,19 +18,38 @@ python - "$NEW" <<'PY'
 import os
 import sys
 new = sys.argv[1]
-paths = ["verify.sh", "README.md"]
 total = 0
-for p in paths:
+# verify.sh：全量替换当前版本 token（历史注解不以 vX.Y 出现）。
+for p in ["verify.sh"]:
     d = open(p, encoding="utf-8").read()
-    n = d.count("v2.20")
+    n = d.count("v2.22")
     if n:
         total += n
         if os.environ.get("DRY") != "1":
-            d = d.replace("v2.20", new)
+            d = d.replace("v2.22", new)
             open(p, "w", encoding="utf-8", newline="\n").write(d)
         print(("dry " if os.environ.get("DRY") == "1" else "") + "updated", p, "x%d" % n)
+# README：只替换当前基线行（跳过发布历史块 `> **v...**`），避免时间线错乱。
+p = "README.md"
+d = open(p, encoding="utf-8").read()
+lines = d.splitlines(keepends=True)
+out = []
+n = 0
+for ln in lines:
+    if ln.startswith("> **v") and "verify v2.22" in ln:
+        out.append(ln)
+    elif not ln.startswith("> **v") and "v2.22" in ln:
+        n += 1
+        out.append(ln.replace("v2.22", new))
+    else:
+        out.append(ln)
+if n:
+    total += n
+    if os.environ.get("DRY") != "1":
+        open(p, "w", encoding="utf-8", newline="\n").write("".join(out))
+    print(("dry " if os.environ.get("DRY") == "1" else "") + "updated", p, "x%d" % n)
 if total == 0:
-    print("no v2.20 label found")
+    print("no v2.22 label found")
 PY
 if [ "$MODE" = "dry" ]; then
   echo "dry-run done（未写盘）"

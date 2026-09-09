@@ -380,14 +380,18 @@ def _repo_resource_metas() -> list:
         if not mid:
             continue
         uri = "nf://repo/module/" + up.quote(str(mid), safe="")
+        rel = it["rel"]
+        package = rel.split("/")[1] if rel.startswith("community") else "官方"
         metas.append({"uri": uri, "name": "模块 %s" % mid,
-                      "mimeType": "text/markdown"})
+                      "mimeType": "text/markdown", "package": package})
     for pat in ("03_管线库/*.md", "community/*/pipelines/*.md"):
         for p in sorted(root.glob(pat)):
             stem = p.name.split("_", 1)[0]
             uri = "nf://repo/pipeline/" + up.quote(stem, safe="")
+            rel = p.relative_to(root).as_posix()
+            package = rel.split("/")[1] if rel.startswith("community") else "官方"
             metas.append({"uri": uri, "name": "管线 %s" % stem,
-                          "mimeType": "text/markdown"})
+                          "mimeType": "text/markdown", "package": package})
     for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
         for p in sorted(root.glob(pat)):
             if p.name == "README.md":
@@ -400,7 +404,7 @@ def _repo_resource_metas() -> list:
             for k in keys:
                 uri = "nf://repo/asset/" + up.quote(package, safe="") + "/" + up.quote(k, safe="")
                 metas.append({"uri": uri, "name": "资产 %s/%s" % (package, k),
-                              "mimeType": "text/markdown"})
+                              "mimeType": "text/markdown", "package": package})
     metas.sort(key=lambda m: m["uri"])
     return metas
 
@@ -636,12 +640,11 @@ class McpRuntime:
                     if fpackage:
                         if kind == "asset":
                             pkg = up.unquote(parts[4])
-                        elif kind in ("module", "pipeline"):
-                            pkg = it.get("name", "").split(" ", 1)[-1]
-                            pkg = ""
+                        else:
+                            pkg = it.get("package", "")
                         if pkg != fpackage:
                             continue
-                elif ftype:
+                elif ftype or fpackage:
                     continue
                 kept.append(it)
             items = kept

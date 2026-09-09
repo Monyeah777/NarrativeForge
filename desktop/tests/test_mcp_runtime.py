@@ -133,6 +133,15 @@ class TestMcpRuntime(unittest.TestCase):
             parts = r["uri"].split("/")
             self.assertEqual(up.unquote(parts[4]), "官方")
 
+    def test_resources_list_filter_module_package(self):
+        resp = self.srv.handle(_req(54, "resources/list",
+                                    {"type": "module", "package": "官方"}))
+        page = resp["result"]["resources"]
+        self.assertTrue(page)
+        self.assertTrue(all(r["uri"].startswith("nf://repo/module/")
+                            for r in page))
+        self.assertTrue(all(r.get("package") == "官方" for r in page))
+
     def test_read_repo_module_resource_content(self):
         """44 深化：resources/read 经 nf://repo/… 取模块正文实质内容。"""
         resp = self.srv.handle(_req(31, "resources/read",

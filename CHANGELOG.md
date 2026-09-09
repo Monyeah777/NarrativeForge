@@ -1,5 +1,6 @@
 ## [Unreleased]
 ### Added
+- **质量纵深 check32（W28）**：verify 新增 check32 质量纵深汇总硬门（载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用），PASS 49→51；当前基线升级 verify v2.22 check1-32 PASS=51。
 - **#1-#4 优化落地（W21）**：① 载荷类型收窄工具 `payload_typing.py`（数值/数组语义词 → 建议类型 proposal，不编造不改注册表）；② 资产键表机读 ledger 投影 `asset_ledger_projection.py`（163 键 → 文件/行，`nf asset ledger`，双源校验）；③ trace→drill 自动比对器 `trace_drill.py`（遥测重跑判定一致，verdict 漂移即 FAIL）；④ `nf release` 并入资产 ledger/指令审计/载荷注册表/逐模块覆盖率（发布体检合一）；verify PASS=49 + 逐模块 min30 0 低档保持。
 - **下一波部分完成（W22）**：`resources/list` 增 `type`(module/pipeline/asset)/`package` 过滤后再分页；dossier `--answer` 自动回填“澄清回填”节（档案合并）；`bump_verify.sh` 支持 `--dry-run`（演练通过，未真改版本）；verify PASS=49 保持。
 - **下一波续（W23）**：`nf assemble --session` 多轮记忆落盘（跨调用保留已回填澄清）；`asset usage --strict` 零引用键即 exit 1（键消费证明进门禁，repo 现 0 零引用）；`nf doctor` 增 schema 标准对照检查（jsonschema 已装即真跑）；verify PASS=49 保持。

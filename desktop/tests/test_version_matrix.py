@@ -29,7 +29,7 @@ class VersionMatrixTest(unittest.TestCase):
         missing = []
         for ln in self.rows:
             cells = [c.strip() for c in ln.split("|")[1:-1]]
-            for token in re.findall(r"[\w.\-·]+\.md", cells[2]):
+            for token in re.findall(r"[A-Za-z0-9_.\-·/\u4e00-\u9fff]+\.md", cells[2]):
                 if not (ROOT / token).exists():
                     missing.append(token)
         self.assertEqual(missing, [])
