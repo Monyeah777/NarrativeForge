@@ -503,9 +503,26 @@
       }
     },
     "revision_recorded": {
-      "payload_status": "pending",
-      "note": "机器事件在册；字段级载荷待正文证据登记",
-      "fields": {}
+      "payload_status": "declared",
+      "note": "证据:M98_修订记录.md §职责 散文级：修订条目含 版本号递增/变更摘要/日期/作者（显式结构待补，字段按散文证据登记）",
+      "fields": {
+        "ver": {
+          "type": "untyped",
+          "note": "散文级证据字段；类型待核"
+        },
+        "changes": {
+          "type": "untyped",
+          "note": "散文级证据字段；类型待核"
+        },
+        "date": {
+          "type": "untyped",
+          "note": "散文级证据字段；类型待核"
+        },
+        "author": {
+          "type": "untyped",
+          "note": "散文级证据字段；类型待核"
+        }
+      }
     },
     "state_snapshot": {
       "payload_status": "declared",
