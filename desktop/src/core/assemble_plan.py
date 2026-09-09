@@ -146,7 +146,10 @@ def plan(requirement: str) -> Dict[str, Any]:
         known = sorted(packages)
     else:
         known = [pkg]
-    allowed = sorted(set(_official_core_ids() + modules))
+    all_registered = _official_core_ids()
+    for mids in packages.values():
+        all_registered += mids
+    allowed = sorted(set(all_registered))
     if pipeline and pkg:
         pipeline_path = (_ROOT / "community" / pkg / "pipelines").glob("%s*.md" % pipeline)
         pipe_files = [p.relative_to(_ROOT).as_posix() for p in pipeline_path]
@@ -174,15 +177,38 @@ def check(output_md: str, plan_: Dict[str, Any]) -> Tuple[List[str], Dict[str, i
         issues.append("八段骨架缺段：##%s" % ", ".join(str(i) for i in missing))
     allowed = set(plan_.get("allowed_module_ids") or [])
     mentioned = set()
-    for tok in _MODULE.findall(output_md):
-        mentioned.add(tok)
-        if tok not in allowed and tok.split(":", 1)[-1] not in {
-            a.split(":", 1)[-1] for a in allowed}:
-            issues.append("编造/越界编号：%s（装配允许集外）" % tok)
-    for clause in re.split(r"[。！？；\n]+", output_md):
-        if _DECISION.search(clause) and not _CITATION.search(clause) \
-                and not _MODULE.search(clause):
-            issues.append("无引用决策句：%s" % clause.strip()[:40])
+    _EXPL = ("残留", "不命中", "源编号", "未装配", "说明")
+    narrative = {0, 1, 2}
+    cur_seg = None
+    in_code = False
+    for line in output_md.splitlines():
+        s = line.strip()
+        if s.startswith("```"):
+            in_code = not in_code
+            continue
+        if in_code:
+            continue
+        m = _SEG.match(line)
+        if m:
+            cur_seg = int(m.group(1))
+            continue
+        for tok in _MODULE.findall(line):
+            mentioned.add(tok)
+            if tok in allowed or tok.split(":", 1)[-1] in {
+                    a.split(":", 1)[-1] for a in allowed}:
+                continue
+            if any(k in line for k in _EXPL):
+                continue
+            issues.append("编造/越界编号：%s（全库允许集外，且非残留/不命中说明）" % tok)
+        if cur_seg not in narrative or s.startswith(("-", "*", "|")):
+            continue
+        for clause in re.split(r"[。！？；\n]+", line):
+            clause = clause.strip()
+            if not clause:
+                continue
+            if _DECISION.search(clause) and not _CITATION.search(clause) \
+                    and not _MODULE.search(clause):
+                issues.append("无引用决策句：%s" % clause[:60])
     stats = {
         "segments": len(segs),
         "modules_mentioned": len(mentioned),

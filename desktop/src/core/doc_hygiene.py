@@ -24,6 +24,9 @@ REQUIRED_DOCS = [
     "docs/需求收敛模板.md",
     "docs/42_M1_协议可执行性自测规范.md", "docs/42_M1_P03_演练集.md",
     "docs/42_M2_回合状态头_v1.md", "docs/42_M3_纯度体检.md",
+    "agent_组装指令包_v0.2.md",
+    "docs/44_M1_执行演练扩展.md",
+    "docs/44_M2_AI通道内容规范.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -32,6 +35,9 @@ INSTRUCTION_DOCS = [
     "docs/迁移指南-基于nf-sig-diff.md",
     "docs/42_M1_协议可执行性自测规范.md", "docs/42_M1_P03_演练集.md",
     "docs/42_M2_回合状态头_v1.md", "docs/42_M3_纯度体检.md",
+    "agent_组装指令包_v0.2.md",
+    "docs/44_M1_执行演练扩展.md",
+    "docs/44_M2_AI通道内容规范.md",
 ]
 
 

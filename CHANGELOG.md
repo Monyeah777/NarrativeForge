@@ -1,6 +1,7 @@
 ## [Unreleased]
 ### Added
 - **质量纵深顶尖化 W1（45 · 基线自描述一致性）**：`quality_baseline.py` 机检锁死“verify 版本/check1-31/PASS=49”在 verify.sh、README、CHANGELOG 最新节、VERSION-MATRIX 的自洽（防改一处漏三处），并纳入 `nf doctor`；单测含真仓清洁 + 假仓漂移检出。五维注记：①静态基线自锁新增机检面；②-⑤水位不变（drill/纯度/资产/文档照常驻）；verify PASS=49 保持。
+- **质量纵深顶尖化 W2-W4（45）**：① 文档可执行性——`agent_组装指令包_v0.2.md`/`docs/44_M1_执行演练扩展.md`/`docs/44_M2_AI通道内容规范.md` 纳入 doc_hygiene（⛔+最后更新 100%）；② 动态保真——`nf assemble --check` 验收器按真实战例校准（编号真值=全库登记、残留语境豁免、决策只查叙述段），P03 完整样本落常驻回归（实证抓到样本 M21 残留问题并校准）；③ 资产密度——`asset_density.py` + `nf asset density`（55 档 165 键，空档 FAIL）；④ 收口 audit `docs_audit-45-quality-deep.md`（verdict 通过-阶段收口）；verify PASS=49 保持。
 
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added

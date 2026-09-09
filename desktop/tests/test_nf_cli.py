@@ -158,6 +158,15 @@ class NfCliSmokeTest(unittest.TestCase):
             if os.path.exists(path):
                 os.remove(path)
 
+    def test_assemble_check_real_p03_sample(self):
+        """真实战例回归：仓库 P03 完整样本须通过 nf assemble --check。"""
+        sample = os.path.join(ROOT, "docs", "完整版样本_西幻生存流P03.md")
+        self.assertTrue(os.path.exists(sample), sample)
+        code, out = self._run(["assemble",
+                               "帮我组装一个西幻生存世界的完整版",
+                               "--check", sample])
+        self.assertEqual(code, 0, out)
+
     def test_assemble_check_ok_and_reject(self):
         """nf assemble --check：合格成品过、编造编号成品拒。"""
         def _write(text):

@@ -233,6 +233,11 @@ def _build_parser() -> argparse.ArgumentParser:
     a_ls.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
     a_ls.add_argument("--json", action="store_true",
                       help="输出结构化 JSON（货架条目）")
+    a_dns = asub.add_parser("density",
+                            help="资产键语义密度体检（45：键数/字符/无键与空档统计）", description="资产键语义密度体检（45：键数/字符/无键与空档统计）")
+    a_dns.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_dns.add_argument("--json", action="store_true",
+                       help="输出结构化 JSON（密度统计）")
     a_ls.add_argument("--pkg", default="", help="台账 package 过滤")
     a_ls.add_argument("--tier", default="",
                       choices=("official", "community", "experimental"))
@@ -891,6 +896,26 @@ def _cmd_asset(args) -> int:
                       % (r["tier"], r["key"], r["version"], r["status"],
                          r["file"], r["source"]))
             return 0
+        if args.asset_cmd == "density":
+            from core import asset_density as ad
+            issues, stats = ad.scan(args.root)
+            if args.json:
+                print(_json.dumps({"kind": "asset-density",
+                                   "ok": not issues, "issues": issues,
+                                   "stats": stats},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf asset density（45 资产键语义密度）==")
+                print("  资产文件 %d · 键 %d · 平均 %.2f 键/档"
+                      % (stats["files"], stats["keys"],
+                         stats["avg_keys_per_file"]))
+                print("  无键档（中文名/附机制，合法计数）%d · 短档(<200字) %d"
+                      % (stats["unkeyed"], stats["tiny"]))
+                for i in issues:
+                    print("  [FAIL] %s" % i)
+                if not issues:
+                    print("  ✓ 密度体检通过：无空档/不可读资产档")
+            return 1 if issues else 0
         # rm / deprecate / restore：写操作，需显式 --ledger + --key
         ledger_path = args.ledger
         assets_root = os.path.dirname(os.path.abspath(ledger_path))
