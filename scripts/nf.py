@@ -1271,6 +1271,15 @@ def _cmd_doctor(args):
     except Exception as exc:
         chk("核心库可导入（schema_lint）", False, str(exc))
 
+    try:
+        from core import quality_baseline as qb
+        q_issues, q_stats = qb.scan(ROOT)
+        chk("基线自描述一致（verify %s · check1-31 PASS=49）"
+            % q_stats["verify_version"], not q_issues,
+            "verify/README/CHANGELOG/VERSION-MATRIX")
+    except Exception as exc:
+        chk("基线自描述一致", False, str(exc))
+
     n_pass = sum(1 for c in checks if c["ok"])
     if args.json:
         print(_json.dumps({

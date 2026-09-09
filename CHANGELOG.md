@@ -1,3 +1,7 @@
+## [Unreleased]
+### Added
+- **质量纵深顶尖化 W1（45 · 基线自描述一致性）**：`quality_baseline.py` 机检锁死“verify 版本/check1-31/PASS=49”在 verify.sh、README、CHANGELOG 最新节、VERSION-MATRIX 的自洽（防改一处漏三处），并纳入 `nf doctor`；单测含真仓清洁 + 假仓漂移检出。五维注记：①静态基线自锁新增机检面；②-⑤水位不变（drill/纯度/资产/文档照常驻）；verify PASS=49 保持。
+
 ## [2.9.0] - 2026-09-08（内容波收口：STRATEGY 战略层 + 43 协议层元工具/44 CLI·drill·AI 通道随波发布 · tag v2.9.0）
 ### Added
 - **发布摘要**：STRATEGY 战略层建立（目标/质量唯一/内部质量法官/计划内部消化）；43 协议层元工具 A1-A5（IDL schema/Conformance/EXTENSION/golden + schema 子集自洽/事件闭包进 golden）；44 CLI 工具链顶尖化（骨架/机器可读/补全/语义归一/自洽矩阵）+ 动态执行 drill（7 条可执行主线）+ AI 通道（内容通道/需求→自组装/用户自定义/需求档案）；verify v2.20 check1-31 PASS=49。
