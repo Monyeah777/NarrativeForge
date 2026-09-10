@@ -14,7 +14,7 @@
 | docs | 文档 / 协议改动 | `docs(protocol): 02 §8 登记 P03 西幻包` |
 | refactor | 重构不改行为 | `refactor(core): storage 导入路径收口` |
 | test | 测试增补 | `test(core): verify.sh 增 check12 代码层门禁` |
-| chore | 杂项 / CI | `chore(ci): build-desktop 增 unittest 步骤` |
+| chore | 杂项 / CI | `chore(ci): ci-verify 增覆盖率门槛` |
 
 scope 约定：`protocol`（01–07）/ `desktop` / `scripts` / `community` / `ci` / `core`（真相源 = desktop/src/core，APK 线已移除见裁决 #16）。
 
@@ -94,7 +94,7 @@ python3 -m compileall -q desktop/src scripts
 
 > 反例（C-a 教训）：模块质量分级曾因无消费方搁置——五问 ① 答不出「谁消费」即方案未成熟。正面示例见方案 33（A2 消费方 = nf who-refers CLI + retriever 库；A4 = verify check21）。
 
-**推荐段（可选，非门禁——v2.6-A 钢人论证 / M_AUDIT 协议设计审计）**：重大方向性决策（端壳功能集取舍 / 域包立项 / 协议设计前置 / 接线波切分）可选用协议设计审计工作单理清支持/反对/盲区——`nf design audit init "<问题>" --target T --mode {steelman,blindspot,full}` 生成，`--check` 结构自检（verdict 三态/论据与清单边界/meta 在场），`ls` 列审计索引。full 模式含盲区双问（Q1 低置信度 / Q2 遗漏）——反幻觉与反思维惯性；`nf design steelman` 为其钢人子集兼容入口。**措辞为推荐非必做**：默认缺席、按需装载，不强制任何决策走审计（「也许有人需要而有人不需要」）；审计产物（audit.md）是过程档案，与方案文档（产物）互补，可回溯决策依据。
+**推荐段（可选，非门禁——v2.6-A 钢人论证 / M_AUDIT 协议设计审计）**：重大方向性决策（域包立项 / 协议设计前置 / 线体取舍 / 发布节奏）可选用协议设计审计工作单理清支持/反对/盲区——`nf design audit init "<问题>" --target T --mode {steelman,blindspot,full}` 生成，`--check` 结构自检（verdict 三态/论据与清单边界/meta 在场），`ls` 列审计索引。full 模式含盲区双问（Q1 低置信度 / Q2 遗漏）——反幻觉与反思维惯性；`nf design steelman` 为其钢人子集兼容入口。**措辞为推荐非必做**：默认缺席、按需装载，不强制任何决策走审计（「也许有人需要而有人不需要」）；审计产物（audit.md）是过程档案，与方案文档（产物）互补，可回溯决策依据。
 
 ## 5. Issue / PR 规范
 - **缺陷上报**：使用 .github/ISSUE_TEMPLATE/bug_report.md（环境信息按模板填写）。

@@ -9,7 +9,7 @@
 #        [段 B] 社区领域包（check7-11，两包在场时执行；缺包 WARN 跳过）
 #        [段 C] 代码层门禁（check12-check32，无条件执行：分层治理 23 方案——本段默认锁 L0-L2；
 #        段 A/B = L0/L1（协议一致性 + 内容对账），check12-22 = L2 core（unittest/py_compile/协议投影/
-#        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳冻结移出（见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备）；check26 = 语义矛盾扫描门禁（41 波C C3：techdoc 链 machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移）；check27 = 架构纯度体检门禁（42 M3：协议层端壳残留/私货可变物/重复标题 grep + core raise 消息修复指引审计））
+#        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳线退役移出（桌面 GUI 端壳 2026-09-09 同轨退役，见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备）；check26 = 语义矛盾扫描门禁（41 波C C3：techdoc 链 machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移）；check27 = 架构纯度体检门禁（42 M3：协议层端壳残留/私货可变物/重复标题 grep + core raise 消息修复指引审计））
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
 # ============================================================
@@ -1379,7 +1379,7 @@ PYEOF
 
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.22（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳冻结移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.22（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
