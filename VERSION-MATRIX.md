@@ -28,3 +28,4 @@
 | 43 协议层顶尖（已随 v2.9.0 发布） | 2026-09-08 ✅（随波发布） | 规划内部消化（见 docs_audit-43-protocol） | A1-A5 全交付（check28-31，verify v2.20 check1-31 PASS=49；IDL/分级/扩展策略/生成物），已随 v2.9.0 发布（无独立 tag） |
 | v2.9.0（内容波收口） | 2026-09-08 ✅（tag v2.9.0） | 规划内部消化（见 docs_audit-43-protocol） | STRATEGY + 43 元工具 + 44 CLI/drill/AI 通道随波收口（verify v2.20 check1-31 PASS=49） |
 | v2.10.0（内容波收口） | 2026-09-09 ✅（tag v2.10.0） | docs/45_质量纵深收口总档.md | 45 W1-W20 + A1-A5 随波收口（载荷 30/30/回合 drill/资源分页/指令审计；verify v2.20 check1-31 PASS=49） |
+| v2.11.0（world_model 深化） | 2026-09-10 ⏳ | protocol/WORLD_MODEL.md | world_model 确定性抽象状态契约（M50 首战 + check32 + WorldModelRuntime + world_slots；verify v2.22 check1-32 PASS=51） |

@@ -84,6 +84,93 @@
           }
         }
       }
+    },
+    "world_model": {
+      "type": "object",
+      "description": "JEPA-inspired 确定性抽象状态世界模型（可选）：只声明可机检的有限状态变量、显式相位迁移与不变式；不是神经运行时，也不断言模型优劣",
+      "required": ["abstract_state", "transition", "invariants"],
+      "properties": {
+        "abstract_state": {
+          "type": "object",
+          "required": ["variables", "initial"],
+          "properties": {
+            "variables": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["name", "kind", "source"],
+                "properties": {
+                  "name": { "type": "string", "minLength": 1 },
+                  "kind": {
+                    "type": "string",
+                    "enum": ["string", "integer", "number", "boolean", "array"]
+                  },
+                  "source": { "type": "string", "minLength": 1 },
+                  "slot": { "type": "string", "minLength": 1 },
+                  "item_kind": {
+                    "type": "string",
+                    "enum": ["string", "integer", "number", "boolean"]
+                  },
+                  "note": { "type": "string" }
+                }
+              }
+            },
+            "initial": { "type": "object" }
+          },
+          "additionalProperties": false
+        },
+        "transition": {
+          "type": "object",
+          "required": ["initial_phase", "phases"],
+          "properties": {
+            "initial_phase": { "type": "string", "minLength": 1 },
+            "phases": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["phase", "next", "guard", "writes"],
+                "properties": {
+                  "phase": { "type": "string", "minLength": 1 },
+                  "next": { "type": "string", "minLength": 1 },
+                  "guard": { "type": "string", "minLength": 1 },
+                  "writes": {
+                    "type": "array",
+                    "items": { "type": "string", "minLength": 1 }
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "invariants": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["kind", "field"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": ["finite_phase", "monotonic", "finite_sequence"]
+              },
+              "field": { "type": "string", "minLength": 1 },
+              "values": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": true

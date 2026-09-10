@@ -1,0 +1,47 @@
+{
+  "schema_version": "1",
+  "description": "M00 数据槽的 world_model 可绑定投影；slot 必须在此注册表中可寻址。",
+  "slots": {
+    "data_bus.active_pipeline": {
+      "kind": "string",
+      "owner": "M50"
+    },
+    "data_bus.round.phase": {
+      "kind": "string",
+      "owner": "M50"
+    },
+    "data_bus.round.phase_trace": {
+      "kind": "array",
+      "item_kind": "string",
+      "owner": "M50"
+    },
+    "WorldState.time.tick": {
+      "kind": "integer",
+      "owner": "通用:M10"
+    },
+    "WorldState.time.day": {
+      "kind": "integer",
+      "owner": "通用:M10"
+    },
+    "WorldState.time.season": {
+      "kind": "string",
+      "owner": "M08"
+    },
+    "WorldState.time.weather": {
+      "kind": "string",
+      "owner": "M08"
+    },
+    "PlayerState.memories.working": {
+      "kind": "array",
+      "owner": "M23"
+    },
+    "PlayerState.memories.episodic": {
+      "kind": "array",
+      "owner": "M50"
+    },
+    "PlayerState.memories.semantic": {
+      "kind": "object",
+      "owner": "M50"
+    }
+  }
+}

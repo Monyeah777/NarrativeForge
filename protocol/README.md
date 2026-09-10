@@ -9,13 +9,15 @@
 
 | schema 文件 | 校验对象 | 真相形态 |
 |---|---|---|
-| `contract.schema.json` | 模块头 `machine_contract` 机读块（01 §1.1 九键） | 04_模块库 + community/*/modules 模块文档内的 yaml 围栏 |
+| `contract.schema.json` | 模块头 `machine_contract` 机读块（01 §1.1 九键 + 可选 `tool_face` / `world_model`） | 04_模块库 + community/*/modules 模块文档内的 yaml 围栏 |
 | `module.schema.json` | 注册表模块条目 | `desktop/src/core/registry.json` `modules[]`（02 §2 投影） |
 | `pipeline.schema.json` | 管线声明 `Pipeline` | 03_管线库 + community/*/pipelines 管线文档内的 yaml 围栏 |
 | `protocol.schema.json` | 社区包协议声明 `protocol.yaml` | community/*/protocol.yaml（01 §6.1） |
 | `asset.schema.json` | 资产台账条目 | `05_资产库/provenance.json` `assets[]`（05 README 机读台账） |
 
 > 每份 schema 均为 JSON object；顶层含 `$schema` / `$id` / `title` / `type: "object"` / `required[]` / `properties{}`。字段级新增须同步 schema（V1 只增不删）；结构性改契约定义须走 01 §7 V2 bump + 迁移记录（见 43 A3 EXTENSION.md）。
+
+可选纵深字段的独立语义规范：`WORLD_MODEL.md`（确定性抽象状态契约，check32 硬门）；`world_slots.json`（M00 数据槽可绑定投影，由 `desktop/src/core/world_slots.py` 机检）；`tool_face` 由 `desktop/src/core/tool_face.py` 轻量校验。
 
 ## 扫描口径（A1 验收）
 

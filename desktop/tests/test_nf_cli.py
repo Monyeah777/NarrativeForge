@@ -39,7 +39,7 @@ class NfCliSmokeTest(unittest.TestCase):
 
     def test_wave_c_subcommands_exposed(self):
         cmds = self._subcommands()
-        for c in ("sig", "diff", "explain", "related", "pipeline", "module", "demo"):
+        for c in ("sig", "diff", "explain", "related", "pipeline", "module", "demo", "worldmodel"):
             self.assertIn(c, cmds)
 
     def test_sig_verify(self):
@@ -210,6 +210,42 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["toolface", "--json"])
         self.assertEqual(code, 0)
         self.assertIn('"kind": "toolface"', out)
+
+    def test_worldmodel_ls_and_json(self):
+        code, out = self._run(["worldmodel"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("worldmodel", out)
+        self.assertIn("M50", out)
+        code, out = self._run(["worldmodel", "--json"])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "worldmodel"', out)
+        code, out = self._run(["worldmodel", "--walk"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("begin → run → end → archive → roll", out)
+        code, out = self._run(["worldmodel", "--run"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("5 steps", out)
+        self.assertIn("begin → run", out)
+        code, out = self._run(["worldmodel", "--run", "--json"])
+        self.assertEqual(code, 0)
+        self.assertIn('"kind": "worldmodel-run"', out)
+        self.assertIn('"digest"', out)
+        fd, state_path = tempfile.mkstemp(suffix=".json", dir=str(ROOT))
+        os.write(fd, json.dumps({
+            "data_bus": {
+                "active_pipeline": "P01",
+                "round": {"phase": "begin", "phase_trace": []},
+            },
+            "WorldState": {"time": {"tick": 0}},
+        }, ensure_ascii=False).encode("utf-8"))
+        os.close(fd)
+        try:
+            code, out = self._run(["worldmodel", "--run", "--state", state_path, "--json"])
+            self.assertEqual(code, 0, out)
+            self.assertIn('"concrete_before"', out)
+        finally:
+            if os.path.exists(state_path):
+                os.remove(state_path)
 
     def test_explain_check32(self):
         code, out = self._run(["explain", "32"])

@@ -369,6 +369,16 @@ def _build_parser() -> argparse.ArgumentParser:
                         help="模块工具面浏览（45：machine_contract.tool_face 可选建议层，AI 裁量不入门禁）", description="模块工具面浏览（45：machine_contract.tool_face 可选建议层，AI 裁量不入门禁）")
     tf.add_argument("--json", action="store_true",
                     help="输出结构化 JSON（工具面清单）")
+    wm = sub.add_parser("worldmodel",
+                        help="world_model 浏览（JEPA-inspired 确定性抽象状态契约，check32 硬门）", description="world_model 浏览（JEPA-inspired 确定性抽象状态契约，check32 硬门）")
+    wm.add_argument("--json", action="store_true",
+                    help="输出结构化 JSON（world_model 清单）")
+    wm.add_argument("--walk", action="store_true",
+                    help="从 initial_phase 重放确定性相位迁移环")
+    wm.add_argument("--run", action="store_true",
+                    help="执行 WorldModelRuntime：状态校验 + 相位前进 + 轨迹重放")
+    wm.add_argument("--state", dest="state_path", metavar="STATE.json",
+                    help="具体 M00 状态 JSON；与 --run 联用时按 slot 绑定重放")
     return p
 
 
@@ -1192,7 +1202,7 @@ CHECK_GUIDE = {
     "29": "缺什么：Conformance 虚标或声明缺失（声明级别 > 可证级别）。补什么：按 01 §1.2 与 conformance_scan 提示降级或补证据。",
     "30": "缺什么：扩展判据缺失或版本字段 bump 无迁移记录。补什么：protocol/EXTENSION.md 判据 + bump 变更带 01 §7/02 §9.3 四步迁移记录。",
     "31": "缺什么：生成物过期（protocol/generated 与当前 schema/协议件不一致）。补什么：重跑 protocol_golden.write_golden 并随变更一并提交。",
-    "32": "缺什么：质量纵深汇总违约（载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用/tool_face 任一缺口）。补什么：跑 nf release 看细分失败项，修复后 verify 全绿。",
+    "32": "缺什么：质量纵深汇总违约（载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用/tool_face/world_model/world_slots 任一缺口）。补什么：跑 nf release 看细分失败项，修复后 verify 全绿；world_model 契约自查可用 nf worldmodel。",
 }
 
 def _cmd_sig(args):
@@ -1390,8 +1400,8 @@ def _cmd_doctor(args):
     try:
         from core import quality_baseline as qb
         q_issues, q_stats = qb.scan(ROOT)
-        chk("基线自描述一致（verify %s · check1-31 PASS=49）"
-            % q_stats["verify_version"], not q_issues,
+        chk("基线自描述一致（verify %s · check1-%d PASS=51）"
+            % (q_stats["verify_version"], q_stats["checks"]), not q_issues,
             "verify/README/CHANGELOG/VERSION-MATRIX")
     except Exception as exc:
         chk("基线自描述一致", False, str(exc))
@@ -1419,6 +1429,23 @@ def _cmd_doctor(args):
                tf_stats["candidates"]))
     except Exception as exc:
         chk("模块工具面（tool_face）", False, str(exc))
+
+    try:
+        from core import world_model as wm
+        from core import world_slots as ws
+        wm_issues, wm_stats = wm.scan(ROOT)
+        ws_issues, ws_stats = ws.scan(ROOT)
+        chk("world_model 契约",
+            not wm_issues,
+            "模块 %d · 变量 %d · checks %d · slots %d/%d"
+            % (wm_stats["modules"], wm_stats["variables"],
+               wm_stats.get("checks", 0), wm_stats.get("slots", 0),
+               wm_stats.get("slot_registry", 0)))
+        chk("world_slots 注册表",
+            not ws_issues,
+            "slots %d · arrays %d" % (ws_stats["slots"], ws_stats["arrays"]))
+    except Exception as exc:
+        chk("world_model/world_slots", False, str(exc))
 
     n_pass = sum(1 for c in checks if c["ok"])
     if args.json:
@@ -1794,6 +1821,84 @@ def _cmd_toolface(args):
     return 1 if issues else 0
 
 
+def _cmd_worldmodel(args):
+    """nf worldmodel：浏览确定性抽象状态契约（machine_contract.world_model）。"""
+    import json as _json
+    from pathlib import Path
+
+    from core import conformance_scan as csc
+    from core import world_model as wm
+
+    concrete = None
+    if getattr(args, "state_path", None):
+        concrete = _json.loads(Path(args.state_path).read_text(encoding="utf-8"))
+
+    def _load(model):
+        text = Path(ROOT, model["source"]).read_text(encoding="utf-8")
+        parsed = csc._fence_yaml(text, "machine_contract")
+        return parsed.get("machine_contract", {}).get("world_model")
+
+    def _run_one(model):
+        contract = _load(model)
+        if not isinstance(contract, dict):
+            return None
+        runtime = wm.WorldModelRuntime(contract)
+        return runtime.replay_concrete(concrete) if concrete is not None else runtime.replay()
+
+    issues, stats = wm.scan(ROOT)
+    if args.json and args.run:
+        runs = []
+        for m in stats["models"]:
+            result = _run_one(m)
+            if result is not None:
+                runs.append({
+                    "module": m["module"],
+                    "source": m["source"],
+                    "result": result,
+                })
+        print(_json.dumps({"kind": "worldmodel-run", "issues": issues, "runs": runs},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    elif args.json:
+        print(_json.dumps({"kind": "worldmodel", "issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf worldmodel（JEPA-inspired 确定性抽象状态契约 · check32 硬门）==")
+        print("  模块 %d · 变量 %d · 相位 %d · 不变式 %d · checks %d · slots %d/%d"
+              % (stats["modules"], stats["variables"],
+                 stats["phases"], stats["invariants"],
+                 stats.get("checks", 0), stats.get("slots", 0),
+                 stats.get("slot_registry", 0)))
+        for m in stats["models"]:
+            print("  · %s（%s · initial=%s · %d phases · %d invariants · %d checks）"
+                  % (m["module"], m["source"], m["initial_phase"],
+                     m["phases"], m["invariants"], m.get("checks", 0)))
+        if args.walk:
+            for m in stats["models"]:
+                contract = _load(m)
+                if not isinstance(contract, dict):
+                    continue
+                seq, reason, repeat = wm.phase_sequence(contract)
+                print("  → %s 重放：%s（终止=%s%s）"
+                      % (m["module"], " → ".join(seq), reason,
+                         " · 重复=" + str(repeat) if repeat else ""))
+        if args.run:
+            for m in stats["models"]:
+                result = _run_one(m)
+                if result is None:
+                    continue
+                print("  → %s 运行：%d steps（%s%s · digest=%s）"
+                      % (m["module"], len(result["steps"]), result["reason"],
+                         " · 重复=" + str(result["repeat"]) if result["repeat"] else "",
+                         result.get("digest", "")[:12]))
+                for step in result["steps"]:
+                    print("    %d. %s → %s（guard=%s）"
+                          % (step["step"], step["phase_from"], step["phase_to"],
+                             step["guard"]))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+    return 1 if issues else 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd is None:
@@ -1811,6 +1916,8 @@ def main(argv=None) -> int:
         return _cmd_release(args)
     if args.cmd == "toolface":
         return _cmd_toolface(args)
+    if args.cmd == "worldmodel":
+        return _cmd_worldmodel(args)
     if args.cmd == "register":
         return _cmd_register(args)
     if args.cmd == "asset":

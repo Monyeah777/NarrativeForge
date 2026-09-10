@@ -28,6 +28,7 @@ NF 是**内容契约层**，不是叙事生成器。它定义“AI 稳定产出�
 | 03-05 | 管线/模块/资产库 | 装配器、资产五接口 |
 | 06 Agent执行协议 | 运行时怎么装载 | 执行 agent |
 | 07 官方导航 | 预设/目录/入口 | 人 + AI |
+| protocol/WORLD_MODEL.md + world_slots.json | 确定性抽象状态契约与 M00 槽位投影 | check32、WorldModelRuntime、nf worldmodel |
 | STRATEGY | 方向与裁决准绳 | 所有协作者 |
 | desktop/core | 逻辑本体 | CLI/MCP/壳 |
 | community | 领域包内容 | 装配器 |
@@ -35,7 +36,7 @@ NF 是**内容契约层**，不是叙事生成器。它定义“AI 稳定产出�
 
 ## §4 运行心智
 
-AI 消费 NF 的完整循环：**读 → 判 → 配 → 装 → 执 → 验**。读入口（AGENT_START/组装指令包）→ 判需求（nf assemble 澄清/预设/自定义）→ 配模块管线资产 → 装成完整版 → 执行/生成 → 用 `nf assemble --check`、`verify`、drill 验收。每一步都要引用真实件，禁止凭记忆。
+AI 消费 NF 的完整循环：**读 → 判 → 配 → 装 → 执 → 验**。读入口（AGENT_START/组装指令包）→ 判需求（nf assemble 澄清/预设/自定义）→ 配模块管线资产 → 装成完整版 → 执行/生成 → 用 `nf assemble --check`、`verify`、drill 验收。对带 `world_model` 的调度模块，可用 `nf worldmodel --run [--state STATE.json]` 验证其抽象状态相位图、槽位映射与轨迹摘要；每一步都要引用真实件，禁止凭记忆。
 
 ## §5 纪律红线
 

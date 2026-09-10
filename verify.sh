@@ -1347,7 +1347,7 @@ PYEOF
 }
 
 check32(){
-  echo '== [32/段C] 质量纵深汇总门禁（45 W28：载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用——新增纵深统一硬门）=='
+  echo '== [32/段C] 质量纵深汇总门禁（45 W28：载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用 + world_model/world_slots）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >/tmp/nf_check32.log 2>&1
@@ -1366,14 +1366,14 @@ print('质量纵深统计：%s'
 sys.exit(1 if issues else 0)
 PYEOF
     then
-      ok '质量纵深汇总扫描通过（载荷/ledger/指令/资产四族零缺口）'
+      ok '质量纵深汇总扫描通过（载荷/ledger/指令/资产/world_model/world_slots 零缺口）'
     else
       no "质量纵深汇总异常——$(tail -2 /tmp/nf_check32.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check32）'
   fi
-  if [ "$err" -eq 0 ]; then ok '质量纵深汇总门禁全绿（check32：45 W28——新增纵深统一硬门，PASS 49→51）'
+  if [ "$err" -eq 0 ]; then ok '质量纵深汇总门禁全绿（check32：45 W28 + world_model/world_slots——新增纵深统一硬门，PASS 49→51）'
   fi
 }
 

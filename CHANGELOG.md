@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased]
+## [2.11.0] - 未发布
 
-- 当前状态：协议工具面、质量纵深、AI 通道、公开面清理持续收敛；基线 verify v2.22，check1-32，PASS=51。
+- 新增 `machine_contract.world_model`：JEPA-inspired 确定性抽象状态契约，含 M00 slot 注册表绑定、M00 锚定独立体检、具体状态映射、机器 checks、`WorldModelRuntime` 重放、SHA-256 轨迹指纹与 `nf worldmodel --run [--state STATE.json] [--json]`（M50 首战 + check32 硬门）；基线 verify v2.22，check1-32，PASS=51。
 
 ## [2.10.0] - 2026-09-09
 

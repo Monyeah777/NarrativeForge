@@ -83,6 +83,8 @@
 
 **回合生命周期（对齐 M50 §4）**：`begin 快照 → run 17 步 → end 一致性校验 → roll 回卷`。任何一步异常不中断整轮：捕获记 `error_log`，回合继续。
 
+**世界模型自检（world_model）**：M50 携带确定性抽象状态契约 `world_model`（相位、`phase_trace`、机器 checks、M00 槽位绑定）。Agent 不把它当叙事逻辑；它用于协议自检：`nf worldmodel --run --state STATE.json` 可重放相位环并校验 `tick` 单调、`phase_trace` 有限序列。执行中相位违例按 M50 §5 回卷处理。
+
 ---
 
 ## 4. 认知边界强制四层管线（v0.7.13 认知边界强制补丁）
