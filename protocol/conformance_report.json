@@ -78,6 +78,34 @@
       "ok": true
     },
     {
+      "description": "一致性声明",
+      "detail": "版本 5 · scope 16 · 排除 11",
+      "digest": "93c2b49e2840afc915f73fd953770ed28fe1503449d2515197b5a4d9fda40f61",
+      "id": "declaration",
+      "ok": true
+    },
+    {
+      "description": "协议件版本史头",
+      "detail": "RFC 件 4 · 链 0",
+      "digest": "0ef42e8c8f8384e97e6a2a4a3b0466f62eb01970467ebdc06ccf06ddfb8acf0d",
+      "id": "rfc-heads",
+      "ok": true
+    },
+    {
+      "description": "实践包品类",
+      "detail": "实践包 3 条（格式/可证/投影）",
+      "digest": "b57eea94772fae2208283d796f58496959b4fbd47aefee99488adf3aee8ec925",
+      "id": "patterns",
+      "ok": true
+    },
+    {
+      "description": "服务端点契约指向真实性",
+      "detail": "端点 8（status=proposed）",
+      "digest": "93c25c44f2a9afe2d1a66d516f5a351fb8965d344ceaef525738ffeb497f6f87",
+      "id": "endpoint-contract",
+      "ok": true
+    },
+    {
       "description": "公开导出面零泄漏",
       "detail": "公开导出面零泄漏",
       "digest": "d90f0f64ce2bb95763db2d29f8644b1900632565cbcc71ebbd0f504cdf0c90c7",
@@ -85,9 +113,9 @@
       "ok": true
     }
   ],
-  "passed": 12,
-  "root": "f2563ec9ecc514f102da4b181709568f9db4735c39db03e7445aa6cca9331f66",
+  "passed": 16,
+  "root": "3c48df9936e8e86138497422c621768663ef8f55fce91a9c441d987e010e1e2a",
   "schema": "nf-conformance/1",
-  "total": 12,
+  "total": 16,
   "verdict": "conformant"
 }

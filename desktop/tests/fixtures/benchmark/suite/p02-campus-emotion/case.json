@@ -1,0 +1,12 @@
+{
+  "schema": "nf-bench-case/1",
+  "case": "p02-campus-emotion",
+  "note": "外部实测容器：校园情感流（P02）产物的跑分用例。",
+  "requirement": "校园情感流世界完整版：高二校园日常，关系驱动，含毕业遗憾暗线",
+  "pipeline": "community/校园情感领域包/pipelines/P02_校园情感流管线.md",
+  "default_artifact": "library/NF-1.md",
+  "expected": {
+    "min_total": 55,
+    "min_segments": 8
+  }
+}

@@ -25,16 +25,22 @@ NarrativeForge（NF）是**内容契约层**：把长内容生产变成可装载
 | 给馆藏条目加签名锚 | `nf library attest <编号> --key-file <密钥>` → `nf library verify --key-file <密钥>` |
 | 让别人独立验证馆藏 | `python scripts/nf_verify.py --entry <编号>`（读者侧，纯标准库，不依赖 NF） |
 | 检查一条管线跑不跑得通 | `nf pipeline dryrun --pipeline <管线.md>`（抽象执行 → 执行图；hard 缺陷与 advisory 分列） |
-| 一键发布前体检 | `nf conformance`（10 契约 → Merkle 根 + verdict）· `nf release` · `bash verify.sh` |
+| 让指令档走机器面（有 MCP 走 MCP，派发失败即停） | `nf driver <工作流>`（真源 `protocol/driver.json`；指令档头部 `DRIVER OVERRIDE` 块） |
+| 查协议件版本史 / supersede 链 | `nf rfc`（`protocol/rfc_index.json`；01=NF-0001 … 07=NF-0004） |
+| 取可发布的最佳实践包 | `nf patterns ls` · `nf patterns show <id>` · `nf patterns for <文件>`（真源 = 各包 frontmatter，适用面/证据须仓库内可证） |
+| 给 AI 产物跑分 / 多跑比对 | `nf bench run --case <用例> [--model <名>]` · `nf bench compare <runs.json>` |
+| 看服务端点契约形状 | `nf endpoint`（`status: proposed`——服务本体未实现，契约只固定形状） |
+| 一键发布前体检 | `nf conformance`（16 契约 → Merkle 根 + verdict）· `nf release` · `bash verify.sh` |
 
 详细步骤见 `references/quickstart.md`、`references/commands.md`、`references/assembly.md`。
 
 ## 核心能力总览
 
 - **装配**：从协议层 01–07 与 `community/` 领域包取模块、管线、资产，组成单文件完整版 `.md`。
-- **CLI**：`scripts/nf.py` 是统一入口，覆盖 `run / assemble / market / asset / library / pipeline / module / render / serve / conformance / approve / sig / attest / score / lint / lsp / license / telemetry / doctor / release / worldmodel` 等。
+- **CLI**：`scripts/nf.py` 是统一入口，覆盖 `run / assemble / market / asset / library / pipeline / module / render / serve / conformance / approve / sig / attest / score / lint / lsp / license / telemetry / doctor / release / worldmodel / driver / rfc / patterns / bench / endpoint` 等。
 - **图书馆机器面**：条目 frontmatter = 单一真相源（OKF 借鉴），INDEX/ALIAS 为投影；正文级检索、生命周期流转、回执单根（MMR）。
-- **可验证性**：`nf conformance` 产 Merkle 根封缄的一致性报告；`nf approve` 写内容绑定批准记录（对象一改即失效）。
+- **可验证性**：`nf conformance` 产 Merkle 根封缄的一致性报告（16 契约）；`nf approve` 写内容绑定批准记录（对象一改即失效）。
+- **治理声明与机器面**：`protocol/CONFORMANCE.md` 是一致性**声明**（符合哪些规范版本 + scope 白名单 + 显式排除清单，版本逐条与真源比对）；01/02/06/07 带 RFC 版本史头（`nf rfc`）；指令档带 `DRIVER OVERRIDE` 块（有 MCP 走 MCP、派发失败即停、禁止回退成文本步骤）；`patterns/` 是实践包货架；`nf bench` 是对 agent 产物的五维确定性跑分台；`protocol/endpoint_contract.json` 固定（未实现的）服务端点契约形状。
 - **MCP**：`nf serve <mcp.json 快照>` 提供标准 stdio JSON-RPC 运行时。
 - **质检**：`verify.sh`、`assemble --check`、`assemble --rounds`、`worldmodel --run`、`asset verify` 等构成内部验收链。
 - **世界模型**：`protocol/WORLD_MODEL.md` + `protocol/world_slots.json`，可用 `nf worldmodel --walk/--run` 验证确定性状态契约。

@@ -1,0 +1,12 @@
+{
+  "schema": "nf-bench-case/1",
+  "case": "p03-western-cross",
+  "note": "外部实测容器：把任意 AI 按 P03 装配出的「完整版」产物丢进来跑分，多跑/多模型可比对（ACP benchmark suite 机制借鉴）。",
+  "requirement": "西幻生存流世界完整版：以生存与经济为核心，含战斗、制造、势力、死亡重生，跨包引用校园情感包做遗憾线",
+  "pipeline": "community/西幻生存领域包/pipelines/P03_西幻生存流管线.md",
+  "default_artifact": "docs/完整版样本_西幻生存流P03.md",
+  "expected": {
+    "min_total": 60,
+    "min_segments": 8
+  }
+}

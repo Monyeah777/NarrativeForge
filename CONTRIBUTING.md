@@ -66,7 +66,7 @@ python3 -m compileall -q desktop/src scripts
 
 **③ PR 评审（reviewer 判据）**
 - 使用 .github/PULL_REQUEST_TEMPLATE.md，勾选「社区包」改动域 + 门禁自检清单（§5）。
-- **协议层 reviewer 判据 = 02 §8.1–8.4 登记规则 + check 全绿**：整包登记对照 §8.3 登记三要件、组合登记对照 §8.4 登记判定四规则；verify.sh check1–32 PASS=51 全绿为合并前提。
+- **协议层 reviewer 判据 = 02 §8.1–8.4 登记规则 + check 全绿**：整包登记对照 §8.3 登记三要件、组合登记对照 §8.4 登记判定四规则；verify.sh check1–36 PASS=59 全绿为合并前提。
 - 评审范围含题材/资产合规：模块遵循 R1（包间禁互引）/ R2（类别独占）/ R3（装配契约）；资产 EXT 闭合 + 溯源索引在册（§4.3）。
 
 **④ 登记（协作流程终点的机读落地）**

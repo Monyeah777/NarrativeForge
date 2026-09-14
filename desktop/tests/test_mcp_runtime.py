@@ -160,10 +160,12 @@ class TestMcpRuntime(unittest.TestCase):
         """A3：resources/templates/list 暴露仓库内容寻址模板。"""
         resp = self.srv.handle(_req(51, "resources/templates/list"))
         tpls = resp["result"]["resourceTemplates"]
-        self.assertEqual(len(tpls), 4)
+        self.assertEqual(len(tpls), 5)
         self.assertTrue(any("nf://repo/module/" in t["uriTemplate"]
                             for t in tpls))
         self.assertTrue(any("nf://repo/library/" in t["uriTemplate"]
+                            for t in tpls))
+        self.assertTrue(any("nf://repo/pattern/" in t["uriTemplate"]
                             for t in tpls))
 
     def test_resources_list_filter_type(self):
@@ -267,7 +269,7 @@ class TestMcpRuntime(unittest.TestCase):
                          {"library_search", "registry_query",
                           "pipeline_ls", "spec_ls",
                           "module_read", "pipeline_read", "asset_get",
-                          "library_read"})
+                          "library_read", "pattern_read"})
         for t in tools:
             self.assertIn("inputSchema", t)
 

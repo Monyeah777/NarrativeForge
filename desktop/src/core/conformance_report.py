@@ -19,6 +19,10 @@ of trusted*（NF 同样是 Bus Factor 1）。
 | `io-types` | I/O 类型面零可证不匹配（未收窄记覆盖缺口，不判死） |
 | `type-backlog` | 类型积压台账与注册表同步，且无「无 note 的 untyped」（不可无声增长） |
 | `event-backing` | 全仓事件背书：每个被订阅的事件都有发布方（外部通道须显式挂账） |
+| `declaration` | 一致性声明（scope 白名单 + 显式排除 + 版本与真源逐条一致） |
+| `rfc-heads` | 协议件 RFC 头齐备、日期自洽、supersede 链可解析 |
+| `patterns` | 实践包格式合规、适用面/证据可证、INDEX 投影一致 |
+| `endpoint-contract` | 服务端点契约的 maps_to 全部指向现存 CLI 子命令或 MCP 工具 |
 | `public-surface` | 公开导出面不泄漏内部件/绝对路径（借 specadia 分发白名单思路） |
 
 `verdict = conformant | non-conformant`；`root` = 各契约摘要的 Merkle 根（复用
@@ -120,6 +124,35 @@ def _c_event_backing(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_declaration(root: str) -> Tuple[bool, str]:
+    from core import conformance_decl as cd
+    issues, stats = cd.scan(root)
+    detail = "版本 %d · scope %d · 排除 %d" % (
+        stats.get("versions", 0), stats.get("scope", 0), stats.get("excluded", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
+def _c_rfc_heads(root: str) -> Tuple[bool, str]:
+    from core import rfc as rf
+    issues, _warns, stats = rf.scan(root)
+    return (not issues, "RFC 件 %d · 链 %d" % (stats.get("docs", 0), stats.get("chains", 0))
+            if not issues else "; ".join(issues[:2]))
+
+
+def _c_patterns(root: str) -> Tuple[bool, str]:
+    from core import patterns as pt
+    issues = pt.scan(root)[0] + pt.check_projection(root)
+    return (not issues, "实践包 %d 条（格式/可证/投影）" % len(pt.entries(root))
+            if not issues else "; ".join(issues[:2]))
+
+
+def _c_endpoint(root: str) -> Tuple[bool, str]:
+    from core import endpoint
+    issues, _warns, stats = endpoint.scan(root)
+    detail = "端点 %d（status=%s）" % (stats.get("endpoints", 0), stats.get("status", "?"))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_public_surface(root: str) -> Tuple[bool, str]:
     """公开导出面泄漏审计：绝对路径 / 内部件路径不得出现在对外产物里。"""
     bad: List[str] = []
@@ -150,6 +183,10 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("io-types", _c_io_types, "I/O 类型面（可证不匹配）"),
     ("type-backlog", _c_type_backlog, "类型积压显式化"),
     ("event-backing", _c_event_backing, "全仓事件背书"),
+    ("declaration", _c_declaration, "一致性声明"),
+    ("rfc-heads", _c_rfc_heads, "协议件版本史头"),
+    ("patterns", _c_patterns, "实践包品类"),
+    ("endpoint-contract", _c_endpoint, "服务端点契约指向真实性"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

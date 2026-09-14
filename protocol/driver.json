@@ -1,0 +1,38 @@
+{
+  "schema": "nf-driver/1",
+  "note": "指令档的机器面路由表（机制借鉴 ACP 的 driver override）：有 MCP 实现就走 MCP；派发失败即停，禁止回退成文本步骤。文档头部为声明位，本文件为机读真源。",
+  "bindings": {
+    "mcp.server": "python scripts/nf.py serve <mcp.json 快照>",
+    "mcp.tools": ["pipeline_ls", "spec_ls", "registry_query", "library_search",
+                  "library_read", "module_read", "pipeline_read", "asset_get"],
+    "mcp.prompts": ["assemble_guide"],
+    "setup": "nf run --fmt mcp → nf serve <快照>（详见 docs/mcp.md）"
+  },
+  "workflows": {
+    "assemble": {
+      "mcp_prompt": "assemble_guide",
+      "mcp_tools": ["module_read", "pipeline_read", "asset_get"],
+      "fallback": "agent_组装指令包_v0.2.md"
+    },
+    "routing": {
+      "mcp_prompt": "",
+      "mcp_tools": ["spec_ls", "registry_query"],
+      "fallback": "AI_ROUTING.md"
+    },
+    "menu": {
+      "mcp_prompt": "assemble_guide",
+      "mcp_tools": ["library_search", "library_read", "registry_query"],
+      "fallback": "docs/ai-menu.md"
+    }
+  },
+  "documents": [
+    {"path": "agent_组装指令包_v0.2.md", "workflow": "assemble"},
+    {"path": "AI_ROUTING.md", "workflow": "routing"},
+    {"path": "docs/ai-menu.md", "workflow": "menu"}
+  ],
+  "fail_closed": {
+    "rule": "派发失败（工具报错 / 服务中途不可达）→ 如实报错并停止；禁止以文本步骤继续。fallback 仅适用于「该工作流无映射」或「本会话未启用 MCP 面」。",
+    "why": "静默降级会把「按机器面规范取件」偷换成「凭记忆组装」，产物不可复现。",
+    "marker_keywords": ["不得回退", "停止"]
+  }
+}

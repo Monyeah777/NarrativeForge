@@ -1,0 +1,85 @@
+{
+  "schema": "nf-endpoint/1",
+  "status": "proposed",
+  "note": "服务端点契约（机制借鉴 microsoft/ai-chat-protocol 的 API 规格）：把**已实现**的 NF 能力声明成 HTTP 面，供未来的装配服务实现。status=proposed —— 服务本体尚未实现，本文件只固定契约形状；每个端点的 maps_to 必须指向**当下真实存在**的 CLI 子命令或 MCP 工具（否则门禁判 FAIL，防止契约指向空气）。",
+  "conventions": {
+    "encoding": "UTF-8 JSON（请求/响应）",
+    "errors": "非 2xx + {error: {code, message}}；message 必须带修复指引（见 patterns/error-message-guidance）",
+    "streaming": "stream=true 时响应为 text/event-stream（SSE），事件 data 为同一 schema 的分片",
+    "versioning": "契约版本随 RFC 头（protocol/rfc_index.json）；破坏性变更 bump 并留迁移记录"
+  },
+  "endpoints": [
+    {
+      "id": "assemble.plan",
+      "method": "POST",
+      "path": "/assemble/plan",
+      "streaming": true,
+      "request": {"requirement": "string"},
+      "response": {"plan": "object", "preset": "string|null", "pipeline": "string|null"},
+      "maps_to": "nf assemble"
+    },
+    {
+      "id": "assemble.check",
+      "method": "POST",
+      "path": "/assemble/check",
+      "streaming": false,
+      "request": {"requirement": "string", "artifact_text": "string"},
+      "response": {"issues": "array", "stats": "object"},
+      "maps_to": "nf assemble --check"
+    },
+    {
+      "id": "library.read",
+      "method": "GET",
+      "path": "/library/{id}",
+      "streaming": false,
+      "request": {"id": "string（NF 编号，大小写不敏感）"},
+      "response": {"frontmatter": "object", "text": "string"},
+      "maps_to": "library_read（MCP 工具）"
+    },
+    {
+      "id": "library.search",
+      "method": "GET",
+      "path": "/library/search",
+      "streaming": false,
+      "request": {"q": "string", "limit": "integer"},
+      "response": {"hits": "array"},
+      "maps_to": "library_search（MCP 工具）"
+    },
+    {
+      "id": "registry.query",
+      "method": "GET",
+      "path": "/registry",
+      "streaming": false,
+      "request": {"query": "string|null"},
+      "response": {"modules": "array", "protocols": "array"},
+      "maps_to": "registry_query（MCP 工具）"
+    },
+    {
+      "id": "pipeline.dryrun",
+      "method": "POST",
+      "path": "/pipeline/dryrun",
+      "streaming": false,
+      "request": {"pipeline": "string"},
+      "response": {"graph": "object"},
+      "maps_to": "nf pipeline dryrun"
+    },
+    {
+      "id": "bench.evaluate",
+      "method": "POST",
+      "path": "/bench/evaluate",
+      "streaming": false,
+      "request": {"case": "string", "artifact_text": "string", "model": "string"},
+      "response": {"run": "object"},
+      "maps_to": "nf bench run"
+    },
+    {
+      "id": "conformance.report",
+      "method": "GET",
+      "path": "/conformance",
+      "streaming": false,
+      "request": {},
+      "response": {"contracts": "array", "root": "string", "verdict": "string"},
+      "maps_to": "nf conformance"
+    }
+  ]
+}

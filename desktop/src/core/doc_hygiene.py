@@ -54,6 +54,11 @@ DOC_KINDS = {
     "docs/approval.md": "how-to",
     "docs/module_signature.md": "how-to",
     "docs/lsp.md": "how-to",
+    "docs/driver.md": "how-to",
+    "docs/patterns.md": "how-to",
+    "docs/bench.md": "how-to",
+    "docs/endpoint.md": "how-to",
+    "docs/rfc.md": "reference",
 }
 
 #: 需带 last-updated 位的关键文档（协议/导航/接入 + 指令类）
@@ -80,6 +85,11 @@ REQUIRED_DOCS = [
     "docs/approval.md",
     "docs/module_signature.md",
     "docs/lsp.md",
+    "docs/driver.md",
+    "docs/patterns.md",
+    "docs/bench.md",
+    "docs/endpoint.md",
+    "docs/rfc.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -103,6 +113,11 @@ INSTRUCTION_DOCS = [
     "docs/approval.md",
     "docs/module_signature.md",
     "docs/lsp.md",
+    "docs/driver.md",
+    "docs/patterns.md",
+    "docs/bench.md",
+    "docs/endpoint.md",
+    "docs/rfc.md",
 ]
 
 

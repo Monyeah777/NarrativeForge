@@ -44,7 +44,7 @@ AI 按指令格式输出正文 → 另存为 .md 文件
 
 1. **做什么**：按 `community/模板制作指令包.md` 产出你的包（protocol.yaml + modules/ + assets/ + pipelines/ + README 装载手册），题材模块用预留号段 M91–M99，资产经 `nf asset add` 走供应链台账入库（溯源/版本/状态齐备，见 `05_资产库/provenance.json` 战例）。
 2. **怎么提交**：完整流程见 `CONTRIBUTING.md` §4（社区包协作流程五步）——声明协议（protocol.yaml）→ 登记 02 §8 社区登记表 → registry protocols[] 投影（`nf register --check/--apply`）→ 提 Issue/PR。
-3. **验收什么**：`bash verify.sh` 全绿（v2.22 check1-32 PASS=51：check14 协议登记 / check15 组合引用 / check23 资产供应链 逐项自证）——任一 FAIL 即协议事故，先修再交。
+3. **验收什么**：`bash verify.sh` 全绿（v2.26 check1-36 PASS=59：check14 协议登记 / check15 组合引用 / check23 资产供应链 逐项自证）——任一 FAIL 即协议事故，先修再交。
 
 > 货架分级（tier）：official / community / experimental；第三方上架默认 `community` 起步，实战验证后再议升级。机制按「内容货架」设计——不照搬代码市场模式。
 

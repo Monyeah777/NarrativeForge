@@ -145,6 +145,17 @@ TOOL_DEFS = [
         },
     },
     {
+        "name": "pattern_read",
+        "description": "取实践包（patterns/）正文：按 id 返回 frontmatter + 可执行规则 + 正反例（只读）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"pattern_id": {
+                "type": "string",
+                "description": "pattern id（如 fail-closed-verification / single-source-truth）"}},
+            "required": ["pattern_id"],
+        },
+    },
+    {
         "name": "module_read",
         "description": "取模块正文实质内容（04_模块库 + community modules，按 id 或限定 id 解析）。",
         "inputSchema": {
@@ -271,6 +282,20 @@ def _tool_library_read(entry_id: str) -> dict:
                     "bytes": len(text.encode("utf-8")), "text": text}
     raise ValueError("馆藏条目未找到：%s（library_search 可枚举；编号大小写不敏感）"
                      "（修复指引：用 nf library ls 列全量编号）" % entry_id)
+
+
+def _tool_pattern_read(pattern_id: str) -> dict:
+    """按 id 取实践包正文（patterns/<id>/PATTERN.md）。"""
+    root = _repo_root()
+    want = (pattern_id or "").strip()
+    for p in sorted(root.glob("patterns/*/PATTERN.md")):
+        if p.parent.name == want:
+            text = p.read_text(encoding="utf-8")
+            return {"found": True, "id": want,
+                    "path": p.relative_to(root).as_posix(),
+                    "bytes": len(text.encode("utf-8")), "text": text}
+    raise ValueError("pattern 未找到：%s（修复指引：patterns/ 下按目录名取，如 "
+                     "fail-closed-verification）" % pattern_id)
 
 
 def _repo_module_index() -> list:
@@ -412,6 +437,7 @@ TOOL_HANDLERS = {
     "registry_query": lambda a: _tool_registry_query((a or {}).get("query", "")),
     "library_search": lambda a: _tool_library_search((a or {}).get("query", "")),
     "library_read": lambda a: _tool_library_read((a or {}).get("entry_id", "")),
+    "pattern_read": lambda a: _tool_pattern_read((a or {}).get("pattern_id", "")),
     "module_read": lambda a: _tool_module_read((a or {}).get("module_id", "")),
     "pipeline_read": lambda a: _tool_pipeline_read((a or {}).get("pipeline", "")),
     "asset_get": lambda a: _tool_asset_get((a or {}).get("key", ""),
@@ -478,6 +504,15 @@ def _repo_resource_metas() -> list:
                           "mimeType": "text/markdown", "package": "图书馆"})
     except Exception:
         pass
+    # 实践包（patterns/）
+    try:
+        for p in sorted(root.glob("patterns/*/PATTERN.md")):
+            pid = p.parent.name
+            metas.append({"uri": "nf://repo/pattern/" + up.quote(pid, safe=""),
+                          "name": "实践包 %s" % pid,
+                          "mimeType": "text/markdown", "package": "patterns"})
+    except Exception:
+        pass
     metas.sort(key=lambda m: m["uri"])
     return metas
 
@@ -497,6 +532,12 @@ def _repo_read_uri(uri: str) -> str:
         for e in nflib.entries(str(root)):
             if e["id"].lower() == eid.lower():
                 return Path(root, e["path"]).read_text(encoding="utf-8")
+        raise KeyError(uri)
+    if kind == "pattern":
+        pid = up.unquote(parts[4])
+        for p in sorted(root.glob("patterns/*/PATTERN.md")):
+            if p.parent.name == pid:
+                return p.read_text(encoding="utf-8")
         raise KeyError(uri)
     if kind == "module":
         mid = up.unquote(parts[4])
@@ -529,6 +570,9 @@ def _repo_resource_templates() -> list:
         {"uriTemplate": "nf://repo/library/{id}",
          "name": "馆藏条目正文", "mimeType": "text/markdown",
          "description": "按 NF 编号取云端图书馆条目正文（大小写不敏感）"},
+        {"uriTemplate": "nf://repo/pattern/{id}",
+         "name": "实践包正文", "mimeType": "text/markdown",
+         "description": "按 id 取 patterns/ 实践包正文（规则 + 正反例）"},
         {"uriTemplate": "nf://repo/module/{id}",
          "name": "模块正文", "mimeType": "text/markdown",
          "description": "按模块 id / 限定 id 取正文"},

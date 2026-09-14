@@ -6,7 +6,7 @@
 - 取件基底（raw，喂 AI 用）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`
 - 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/`
 - 本仓库全部内容本身就是 markdown 源文件——不存在 HTML 版，因此 llms.txt v2 的 `page.md` 孪生约定天然满足；本文件即仓库描述文件（等价 `rel="describedby"` 指向物）。
-- 质量凭证（本地真跑，非声明）：`bash verify.sh` → **v2.24 · check1-34 · PASS=55**。
+- 质量凭证（本地真跑，非声明）：`bash verify.sh` → **v2.26 · check1-36 · PASS=59**。
 
 ## 先读（入口链）
 
@@ -34,6 +34,14 @@
 - 机器检索：CLI `nf library search "关键词"`（正文级，中英文均可）；MCP 工具 `library_search` / `library_read`；资源 uri `nf://repo/library/{编号}`（大小写不敏感）。
 - **可验证回执**：[library/RECEIPTS.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/RECEIPTS.json) 给出全馆 Merkle 根与本馆每条目的 O(log n) inclusion proof。读者只需**该条内容 + 它的回执**即可本地折叠验证是否属于本馆（RFC 6962 域分隔，SHA-256），不必取全馆。折叠规则：叶 `SHA-256(0x00‖载荷)`、节 `SHA-256(0x01‖左‖右)`，载荷 = `{"id":…,"digest":…}`（digest 为该条目剔除 attestation 行后的规范摘要）。本地自验：`nf library receipts --entry <编号>`。
 
+## 治理（声明与机器面 · 有 MCP 走 MCP、派发失败即停）
+
+- [protocol/CONFORMANCE.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/CONFORMANCE.md)：一致性**声明**（符合哪些规范版本 + scope 白名单 + 显式排除清单；版本逐条与真源比对，声明了真源没有的项即 FAIL）
+- [protocol/rfc_index.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/rfc_index.json)：协议件 RFC 版本史索引（编号 / Category / Date / Status / supersede 链；01=NF-0001 … 07=NF-0004）
+- [protocol/driver.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/driver.json)：指令档 → 机器面路由（有 MCP 实现就走 MCP；派发失败即停，**禁止回退成文本步骤**）；文档头部 `DRIVER OVERRIDE` 块为声明位
+- [patterns/INDEX.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/patterns/INDEX.md)：实践包（可发布/可消费/可移植的最佳实践；真源 = 各包 `PATTERN.md` frontmatter，本表为投影；`applies_to`/`evidence` 须在仓库内可证）
+- [protocol/endpoint_contract.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/endpoint_contract.json)：服务端点契约（`status: proposed`——服务本体未实现，本契约只固定形状；每个端点 `maps_to` 必须指向现存 CLI 子命令或 MCP 工具）
+
 ## 装配（产出可交付的完整版）
 
 - [agent_组装指令包_v0.2.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/agent_组装指令包_v0.2.md)：取件顺序 → 选件铁律 → 八段骨架 → 自检清单
@@ -45,7 +53,7 @@
 - 全链管道：`python scripts/nf.py run|demo|assemble`
 - 浏览与装配：`market` / `asset` / `module` / `pipeline` / `render`
 - 图书馆：`library ls|show|search|reindex|verify|deprecate|restore|supersede`（真源 = 条目 frontmatter）
-- 治理与验证：`events`（全仓事件背书）· `receipts`（协议层回执）· `conformance`（12 契约报告）· `approve`（内容绑定批准）· `module types|contract|signature`
+- 治理与验证：`events`（全仓事件背书）· `receipts`（协议层回执）· `conformance`（16 契约报告 + 一致性声明）· `approve`（内容绑定批准）· `module types|contract|signature` · `driver`（指令档路由）· `rfc`（版本史）· `patterns ls|show|for|verify|reindex`（实践包）· `bench run|compare|report`（执行结果跑分台）· `endpoint`（端点契约）
 - 质量与治理：`sig` / `diff` / `score` / `lint` / `license` / `attest` / `telemetry` / `verify.sh`
 - MCP 服务：`python scripts/nf.py serve <mcp.json 快照>`（只读 resources/tools/prompts）
 

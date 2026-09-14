@@ -17,7 +17,7 @@
    - 输出逐字段差异（字段变更 / 新增 / 移除）+ 判定（破坏 / 需评审 / 兼容）。
    - 判定规则：文档编号变更 = 破坏；引用/章节移除 = 需评审；仅版本演进 = 兼容。
 3. **修复指引**：`python scripts/nf.py explain <check>`（如 check24/25/26）取「缺什么/补什么/示例」。
-4. **验收**：`bash verify.sh` 全绿（check1-32 PASS=51 基线）方可提交；迁移记录进 CHANGELOG 归档。
+4. **验收**：`bash verify.sh` 全绿（check1-36 PASS=59 基线）方可提交；迁移记录进 CHANGELOG 归档。
 
 ## 三、与既有门禁的关系
 

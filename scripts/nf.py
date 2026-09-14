@@ -413,6 +413,55 @@ def _build_parser() -> argparse.ArgumentParser:
     rc2.add_argument("--write", action="store_true", help="写入 protocol/RECEIPTS.json")
     rc2.add_argument("--entry", default="", help="只验一条（按相对路径）")
     rc2.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    drv = sub.add_parser("driver",
+                         help="指令档机器面路由（有 MCP 走 MCP；派发失败即停、不回退文本步骤）",
+                         description="指令档机器面路由（机制借鉴 ACP driver override）")
+    drv.add_argument("workflow", nargs="?", default="",
+                     help="工作流名（缺省 = 列全部工作流）")
+    drv.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    rfc = sub.add_parser("rfc",
+                         help="协议件 RFC 索引（编号/Category/Date/Status + supersede 链）",
+                         description="协议件 RFC 索引（机制借鉴 HMP：把协议版本史做成可机读头）")
+    rfc.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    ptn = sub.add_parser("patterns",
+                         help="实践包：可发布/可消费/可移植的最佳实践（ls/show/for/verify/reindex）",
+                         description="实践包品类（机制借鉴 ACP patterns：与内容域包并列的实践规范包）")
+    p2 = ptn.add_subparsers(dest="patterns_cmd")
+    pa_ls = p2.add_parser("ls", help="列出全部 pattern", description="列出全部 pattern")
+    pa_sh = p2.add_parser("show", help="看单条 pattern（frontmatter + 正文）",
+                          description="看单条 pattern（frontmatter + 正文）")
+    pa_sh.add_argument("id", help="pattern id（目录名）")
+    pa_fp = p2.add_parser("for", help="反向查：某文件适用哪些 pattern",
+                          description="反向查：某文件适用哪些 pattern")
+    pa_fp.add_argument("target", help="文件路径（仓库相对或绝对）")
+    pa_vf = p2.add_parser("verify", help="机检 pattern（格式 + 可证性）",
+                          description="机检 pattern（格式 + 可证性）")
+    pa_ri = p2.add_parser("reindex", help="重建 patterns/INDEX 投影",
+                          description="重建 patterns/INDEX 投影")
+    for _p2 in (pa_ls, pa_sh, pa_fp, pa_vf, pa_ri):
+        _p2.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    bn = sub.add_parser("bench",
+                        help="执行结果跑分台（对 agent 产物五维确定性评分；多跑可比对）",
+                        description="执行结果跑分台（机制借鉴 ACP benchmark suite：外部实测的容器）")
+    b2 = bn.add_subparsers(dest="bench_cmd", required=True)
+    b_run = b2.add_parser("run", help="跑一个用例 → run 记录（可 --out 存档）",
+                          description="跑一个用例 → run 记录（可 --out 存档）")
+    b_run.add_argument("--case", required=True, help="用例目录（含 case.json）")
+    b_run.add_argument("--artifact", default="", help="被评产物 md（缺省=用例 default_artifact）")
+    b_run.add_argument("--model", default="", help="跑次来源标识（模型/客户端名）")
+    b_run.add_argument("--out", default="", help="把 run 记录写入该 JSON（缺省=打印）")
+    b_cmp = b2.add_parser("compare", help="多跑比对（逐维均值/极差/相对最佳回落）",
+                          description="多跑比对（逐维均值/极差/相对最佳回落）")
+    b_cmp.add_argument("runs", help="run 记录 JSON（单个对象或数组）")
+    b_rep = b2.add_parser("report", help="人读跑分报告（markdown）",
+                          description="人读跑分报告（markdown）")
+    b_rep.add_argument("runs", help="run 记录 JSON（单个对象或数组）")
+    for _b2 in (b_run, b_cmp, b_rep):
+        _b2.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    ep = sub.add_parser("endpoint",
+                        help="服务端点契约（proposed：把已实现能力声明成 HTTP 面 + 指向真实性门禁）",
+                        description="服务端点契约（机制借鉴 microsoft/ai-chat-protocol）")
+    ep.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ap = sub.add_parser("approve",
                         help="内容绑定批准记录（被批准对象改动即失效）",
                         description="内容绑定批准记录（机制借鉴 MCOP approved-changeset gate）")
@@ -1714,6 +1763,243 @@ def _cmd_conformance(args):
     return 1 if (issues or doc["verdict"] != "conformant") else 0
 
 
+def _cmd_driver(args):
+    """nf driver：指令档机器面路由解析/自检。"""
+    from core import driver
+    import json as _json
+    issues, warns, stats = driver.scan(ROOT)
+    if args.workflow:
+        r = driver.resolve(ROOT, args.workflow)
+        if args.json:
+            print(_json.dumps({"resolve": r, "issues": issues, "warns": warns},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf driver %s ==" % args.workflow)
+            print("  路径：%s" % ("MCP（机器面）" if r["mode"] == "mcp" else r["mode"]))
+            if r.get("prompt"):
+                print("  提示：%s" % r["prompt"])
+            if r.get("tools"):
+                print("  工具：%s" % "、".join(r["tools"]))
+            print("  文本 fallback：%s" % r.get("fallback", "-"))
+            print("  派发失败：%s" % r.get("on_dispatch_failure", "-"))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+        return 1 if issues else 0
+    if args.json:
+        doc = driver.load(ROOT)
+        print(_json.dumps({"driver": doc, "issues": issues, "warns": warns,
+                           "stats": stats}, ensure_ascii=False, indent=2,
+                          sort_keys=True))
+    else:
+        doc = driver.load(ROOT)
+        print("== nf driver（指令档机器面路由）==")
+        for name, wf in sorted((doc.get("workflows") or {}).items()):
+            print("  %-12s MCP：%-28s fallback：%s"
+                  % (name, "、".join(wf.get("mcp_tools") or []) or "-",
+                     wf.get("fallback", "-")))
+        for w in warns:
+            print("  [note] %s" % w)
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ 工作流映射/工具名/fallback/文档声明块全部一致（fail-closed 已声明）")
+    return 1 if issues else 0
+
+
+def _cmd_rfc(args):
+    """nf rfc：协议件 RFC 索引与 supersede 链自检。"""
+    from core import rfc as rf
+    from pathlib import Path
+    import json as _json
+    issues, warns, stats = rf.scan(ROOT)
+    idx = rf.index(ROOT)
+    if args.json:
+        print(_json.dumps({"index": idx, "issues": issues, "warns": warns,
+                           "stats": stats}, ensure_ascii=False, indent=2,
+                          sort_keys=True))
+    else:
+        print("== nf rfc（协议件版本史）==")
+        for item in idx.get("docs") or []:
+            head = rf.parse_head((Path(ROOT) / item["path"]).read_text(encoding="utf-8"))
+            print("  %-9s %-34s %-16s %-9s %s"
+                  % (item.get("rfc"), item.get("path"), head.get("cat", "-"),
+                     head.get("status", "-"), head.get("date", "-")))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ %d 件 RFC 头齐备且链可解析" % stats.get("docs", 0))
+    return 1 if issues else 0
+
+
+def _cmd_patterns(args):
+    """nf patterns：实践包（ls/show/for/verify/reindex）。"""
+    from core import patterns as pt
+    from pathlib import Path
+    import json as _json
+    sub = getattr(args, "patterns_cmd", None) or "ls"
+    want_json = bool(getattr(args, "json", False))
+    if sub == "ls":
+        rows = pt.entries(ROOT)
+        if want_json:
+            print(_json.dumps([{"id": e["fm"].get("id"), "name": e["fm"].get("name"),
+                                "status": e["fm"].get("status"),
+                                "applies_to": e["fm"].get("applies_to")}
+                               for e in rows], ensure_ascii=False, indent=2,
+                              sort_keys=True))
+        else:
+            print("== nf patterns ls（%d 条）==" % len(rows))
+            for e in rows:
+                fm = e["fm"]
+                print("  %-28s %-10s %s" % (fm.get("id", e["dir"]),
+                                            fm.get("status", ""), fm.get("name", "")))
+        return 0
+    if sub == "show":
+        want = args.id.strip()
+        hit = next((e for e in pt.entries(ROOT)
+                    if str(e["fm"].get("id") or e["dir"]) == want), None)
+        if hit is None:
+            print("  ✗ pattern 未找到：%s（nf patterns ls 可枚举）" % args.id,
+                  file=sys.stderr)
+            return 1
+        text = (Path(ROOT) / hit["path"]).read_text(encoding="utf-8")
+        if want_json:
+            print(_json.dumps({"id": want, "path": hit["path"],
+                               "frontmatter": hit["fm"]}, ensure_ascii=False,
+                              indent=2, sort_keys=True))
+        else:
+            print("== nf patterns show %s ==" % want)
+            for k in sorted(hit["fm"]):
+                print("  %-12s %s" % (k + ":", hit["fm"][k]))
+            print()
+            print(text.split("---", 2)[-1].strip()[:1200])
+        return 0
+    if sub == "for":
+        hits = pt.for_path(ROOT, args.target)
+        if want_json:
+            print(_json.dumps(hits, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf patterns for %s（%d 条适用）==" % (args.target, len(hits)))
+            for h in hits:
+                print("  %-28s %s（命中 %s）" % (h["id"], h["name"], h["matched"]))
+        return 0
+    if sub == "reindex":
+        out = pt.write_projection(ROOT)
+        print("  ✓ patterns/INDEX 投影已重建：%s" % ("有变化" if out["changed"] else "无变化"))
+        return 0
+    issues, warns, stats = pt.scan(ROOT)
+    proj = pt.check_projection(ROOT)
+    if want_json:
+        print(_json.dumps({"issues": issues, "warns": warns, "projection": proj,
+                           "stats": stats}, ensure_ascii=False, indent=2,
+                          sort_keys=True))
+    else:
+        print("== nf patterns verify（%d 条）==" % stats.get("patterns", 0))
+        for i in list(issues) + list(proj):
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        for w in warns:
+            print("  [WARN] %s" % w)
+        if not issues and not proj:
+            print("  ✓ 格式合规 + 适用面/证据可证 + INDEX 投影一致")
+    return 1 if (issues or proj) else 0
+
+
+def _cmd_bench(args):
+    """nf bench：执行结果跑分（run / compare / report）。"""
+    from core import bench
+    from pathlib import Path
+    import json as _json
+    sub = getattr(args, "bench_cmd", None) or "run"
+    if sub == "run":
+        case_arg = args.case
+        if os.path.isdir(case_arg):
+            case_arg = os.path.join(case_arg, "case.json")
+        case_path = (case_arg if os.path.isabs(case_arg)
+                     else os.path.relpath(os.path.abspath(case_arg), ROOT))
+        artifact = args.artifact or bench.load_case(Path(ROOT, case_path))["default_artifact"]
+        try:
+            run = bench.evaluate(ROOT, case_path, artifact, model=args.model)
+        except (OSError, ValueError, KeyError) as exc:
+            print("  ✗ %s" % exc, file=sys.stderr)
+            return 1
+        if args.out:
+            with open(_rel_out(args.out), "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(_json.dumps(run, ensure_ascii=False, indent=2,
+                                     sort_keys=True) + "\n")
+        if args.json:
+            print(_json.dumps(run, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf bench run：%s ==" % run["case"])
+            print("  产物 %s（%s）· 模型 %s" % (run["artifact"],
+                                              run["artifact_digest"][:12],
+                                              run["model"] or "-"))
+            for k, v in sorted(run["scores"].items()):
+                print("  %-14s %.4f" % (k, v))
+            print("  总分 %.2f（下限 %.0f）→ %s" % (run["total"], run["floor"],
+                                                   run["verdict"]))
+            for i in run["detail"]["issues"][:4]:
+                print("    · %s" % i[:110])
+        return 0 if run["verdict"] != "fail" else 1
+    runs = _load_runs(args.runs)
+    if sub == "compare":
+        doc = bench.compare(runs)
+        if args.json:
+            print(_json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf bench compare（%d 跑）==" % doc["runs"])
+            for r in doc["ranking"]:
+                print("  %-14s %-16s %6s %s" % (r["run"], r["model"] or "-",
+                                                r["total"], r["verdict"]))
+            for k, v in sorted(doc["dims"].items()):
+                print("    · %-14s 均值 %.4f 极差 %.4f" % (k, v["mean"], v["spread"]))
+            if doc["regressions_vs_best"]:
+                print("  相对最佳回落 %d 项（前 3）：" % len(doc["regressions_vs_best"]))
+                for g in doc["regressions_vs_best"][:3]:
+                    print("    · %s %s %.4f→%.4f" % (g["run"], g["dim"], g["from"], g["to"]))
+        return 0
+    md = bench.report_markdown(bench.compare(runs))
+    print(md if not args.json else _json.dumps({"markdown": md},
+                                               ensure_ascii=False, indent=2))
+    return 0
+
+
+def _cmd_endpoint(args):
+    """nf endpoint：服务端点契约自检（proposed）。"""
+    from core import endpoint
+    import json as _json
+    issues, warns, stats = endpoint.scan(ROOT)
+    doc = endpoint.load(ROOT)
+    if args.json:
+        print(_json.dumps({"contract": doc, "issues": issues, "warns": warns,
+                           "stats": stats}, ensure_ascii=False, indent=2,
+                          sort_keys=True))
+    else:
+        print("== nf endpoint（服务端点契约 · %s）==" % stats.get("status", "?"))
+        for ep in doc.get("endpoints") or []:
+            print("  %-8s %-22s %-9s %s"
+                  % (ep.get("method"), ep.get("path"),
+                     "SSE" if ep.get("streaming") else "单发", ep.get("maps_to")))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        for w in warns:
+            print("  [note] %s" % w)
+        if not issues:
+            print("  ✓ 每个端点都映射到现存 CLI 子命令或 MCP 工具（契约不指向空气）")
+    return 1 if issues else 0
+
+
+def _rel_out(path):
+    return path if os.path.isabs(path) else os.path.join(ROOT, path)
+
+
+def _load_runs(path):
+    import json as _json
+    with open(_rel_out(path), encoding="utf-8") as fh:
+        data = _json.load(fh)
+    if isinstance(data, dict) and "runs" in data:
+        data = data["runs"]
+    return data if isinstance(data, list) else [data]
+
+
 def _cmd_receipts(args):
     """nf receipts：协议层回执单根（生成 / 校验 / 单条验证）。"""
     from core import receipts as rc
@@ -1831,7 +2117,7 @@ def _cmd_library(args):
     sub = getattr(args, "library_cmd", None) or "ls"
     if sub == "ls":
         rows = lib.entries(ROOT)
-        if args.json:
+        if getattr(args, "json", False):
             print(_json.dumps(lib.to_manifest(ROOT), ensure_ascii=False,
                               indent=2, sort_keys=True))
         else:
@@ -2810,6 +3096,16 @@ def main(argv=None) -> int:
         return _cmd_events(args)
     if args.cmd == "receipts":
         return _cmd_receipts(args)
+    if args.cmd == "driver":
+        return _cmd_driver(args)
+    if args.cmd == "rfc":
+        return _cmd_rfc(args)
+    if args.cmd == "patterns":
+        return _cmd_patterns(args)
+    if args.cmd == "bench":
+        return _cmd_bench(args)
+    if args.cmd == "endpoint":
+        return _cmd_endpoint(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

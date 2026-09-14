@@ -100,16 +100,38 @@ python scripts/nf.py pipeline dryrun --all
 python scripts/nf.py module types            # I/O 类型面覆盖率 + 可证不匹配（--write 补标）
 python scripts/nf.py module signature        # 模块边界冻结（漂移即 FAIL；--write 重签）
 python scripts/nf.py module contract         # L0 → L1/L2 机读块 retro-fit（--write 落盘）
-python scripts/nf.py module outputs --write  # 有事件载荷证据的模块补 outputs
+python scripts/nf.py module contract --write # retro-fit 落盘（含 outputs 投影：人读契约 + 正文事件契约推导，幂等）
 python scripts/nf.py module types --harvest  # 从模块正文收割载荷字段（证据可溯）
 python scripts/nf.py module types --backlog  # 类型积压台账（--write 重建）
 python scripts/nf.py events                  # 全仓事件背书（订阅必有发布方）
 python scripts/nf.py receipts --write        # 协议层回执单根（01–07/schema/baseline）
 python scripts/nf.py pipeline dryrun --all --write-advisory   # advisory 分类台账
-python scripts/nf.py conformance             # 10 契约 → Merkle 根 + verdict（--write 归档）
+python scripts/nf.py conformance             # 16 契约 → Merkle 根 + verdict（--write 归档）
 python scripts/nf.py approve <路径> --by <人> --note "…"  # 内容绑定批准
 python scripts/nf.py approve --verify
 ```
+
+## 治理声明与机器面（声明 / RFC / driver / 实践包 / 跑分台 / 端点）
+
+```bash
+python scripts/nf.py driver                  # 列工作流 → MCP 提示/工具/文本 fallback
+python scripts/nf.py driver assemble         # 解析某工作流该走哪条路（MCP vs fallback）
+python scripts/nf.py rfc                     # 协议件 RFC 版本史（编号/Category/Date/Status/supersede 链）
+python scripts/nf.py patterns ls             # 实践包清单
+python scripts/nf.py patterns show fail-closed-verification
+python scripts/nf.py patterns for docs/ai-menu.md   # 反向查：该文件适用哪些 pattern
+python scripts/nf.py patterns verify         # 格式 + 可证性机检
+python scripts/nf.py patterns reindex        # 重建 patterns/INDEX 投影
+python scripts/nf.py bench run --case desktop/tests/fixtures/benchmark/suite/p03-western-cross --model claude
+python scripts/nf.py bench compare runs.json # 多跑逐维均值/极差/相对最佳回落
+python scripts/nf.py bench report runs.json  # 人读跑分报告
+python scripts/nf.py endpoint                # 服务端点契约（status: proposed；maps_to 须指向现存能力）
+```
+
+一致性**声明**在 `protocol/CONFORMANCE.md`（版本表 + scope 白名单 + 显式排除清单）；
+`nf conformance` 会把它作为 `declaration` 契约逐条与真源比对（声明了真源没有的规范项即 FAIL）。
+指令档（组装指令包 / `AI_ROUTING.md` / `docs/ai-menu.md`）头部带 `DRIVER OVERRIDE` 块：
+**有 MCP 实现就走 MCP；派发失败即停，禁止回退成文本步骤**（真源 `protocol/driver.json`）。
 
 ## 质量与遥测
 

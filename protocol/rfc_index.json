@@ -1,0 +1,11 @@
+{
+  "schema": "nf-rfc/1",
+  "note": "协议件 RFC 索引（机制借鉴 HMP 的 RFC 系列：编号 / Category / Date / Status / supersede 链）。文档头部为真源，本索引为机读投影并逐条比对。",
+  "status_vocabulary": ["Active", "Superseded", "Deprecated", "Experimental"],
+  "docs": [
+    {"rfc": "NF-0001", "path": "01_核心协议.md", "category": "Standards Track"},
+    {"rfc": "NF-0002", "path": "02_联动注册表.md", "category": "Standards Track"},
+    {"rfc": "NF-0003", "path": "06_Agent执行协议.md", "category": "Standards Track"},
+    {"rfc": "NF-0004", "path": "07_官方核心出厂与社区预设导航.md", "category": "Informational"}
+  ]
+}

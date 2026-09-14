@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.25  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）
+# 版本 : v2.26  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）
 #        46 吸收七面 check33：MCP dual-era 版本对齐（2026-07-28/2025-11-25 + server/discover）/
 #        内容外挂签名 attestation / 基线相对回归评分 / 机械修复 + LSP / 正文 lint / 图书馆许可证门 / 遥测 semconv
 #        图书馆面 check34：条目 frontmatter 真源（OKF 借鉴）/ INDEX·ALIAS 投影一致（I5）/ 生命周期 /
 #        Diátaxis 四型覆盖 / llms.txt 机器入口清单 / 正文级馆藏检索
 #        深化面 check35（Pipelex/MCOP/Specadia 机制借鉴）：管线抽象执行 GraphSpec / 馆藏 MMR 回执单根 /
 #        模块边界签名冻结 / 内容绑定批准记录 / 一致性报告工件（Merkle 根 + verdict）/ 无效语料 + golden 修复对
+#        治理面 check36（ACP / HMP / ai-chat-protocol 机制借鉴）：一致性声明（scope + 显式排除）/
+#        协议件 RFC 头 + supersede 链 / 指令档机器面路由（driver override：fail-closed 不回退）/
+#        实践包品类 / 执行结果跑分台 / 服务端点契约（maps_to 指向真实性）
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
@@ -1633,9 +1636,81 @@ PYEOF
   fi
 }
 
+check36(){
+  echo '== [36/段C] 治理面门禁（一致性声明 / RFC 版本史 / 指令档机器面路由 / 实践包 / 跑分台 / 端点契约）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check36.log 2>&1
+import json, os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+problems = []
+try:
+    from core import (conformance_decl as cd, driver, endpoint,
+                      patterns as pt, rfc as rf, bench)
+except Exception as exc:
+    print('import 失败：%s' % exc)
+    sys.exit(1)
+
+# 1 一致性声明（scope 白名单 + 显式排除 + 版本与真源一致 + scope∩排除=∅）
+for i in cd.scan('.')[0]:
+    problems.append('一致性声明：%s' % i)
+
+# 2 协议件 RFC 头（编号唯一 / Category·Status 词表 / Date=最后更新 / 链可解析）
+for i in rf.scan('.')[0]:
+    problems.append('RFC 头：%s' % i)
+
+# 3 指令档机器面路由（工具名与运行时一致 / fallback 在场 / 文档 override 块齐）
+for i in driver.scan('.')[0]:
+    problems.append('driver：%s' % i)
+
+# 4 实践包（格式 + 适用面/证据可证 + INDEX 投影一致）
+for i in pt.scan('.')[0] + pt.check_projection('.'):
+    problems.append('实践包：%s' % i)
+
+# 5 跑分台：用例在场且对真实产物的评分**确定可复现**（同产物同分）
+cases = bench.cases('.')
+if len(cases) < 2:
+    problems.append('跑分用例不足（需 ≥2 个 case.json，现有 %d）' % len(cases))
+for c in cases:
+    d = bench.load_case(c)
+    rel = c.relative_to('.').as_posix()
+    r1 = bench.evaluate('.', rel, d['default_artifact'], model='check')
+    r2 = bench.evaluate('.', rel, d['default_artifact'], model='check')
+    if r1['scores'] != r2['scores'] or r1['total'] != r2['total']:
+        problems.append('跑分不确定（同一产物两次评分不同）：%s' % rel)
+    if r1['total'] < r1['floor']:
+        problems.append('跑分低于用例下限：%s（%.2f < %.0f）'
+                        % (rel, r1['total'], r1['floor']))
+
+# 6 端点契约：每个端点映射到现存能力（不指向空气）
+for i in endpoint.scan('.')[0]:
+    problems.append('端点契约：%s' % i)
+
+for p in problems:
+    print('[FAIL] %s' % p)
+print('治理面统计：声明 %s · RFC %s 件 · driver 工作流 %s · 实践包 %s 条 · 跑分用例 %s · 端点 %s'
+      % (cd.scan('.')[1].get('versions'),
+         rf.scan('.')[2].get('docs'),
+         driver.scan('.')[2].get('workflows'),
+         len(pt.entries('.')), len(cases),
+         endpoint.scan('.')[2].get('endpoints')))
+sys.exit(1 if problems else 0)
+PYEOF
+    then
+      ok '治理面扫描通过（声明 / RFC / driver / 实践包 / 跑分 / 端点）'
+    else
+      no "治理面扫描异常——$(tail -3 /tmp/nf_check36.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check36）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '治理面门禁全绿（check36：一致性声明 + RFC 版本史 + 指令档路由 + 实践包 + 跑分台 + 端点契约）'
+  fi
+}
+
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.25（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.26（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -1647,7 +1722,7 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁（L2 core：check12-check35 无条件执行；android 相关已随 L3 冻结移出）——'
+echo '—— 段 C：代码层门禁（L2 core：check12-check36 无条件执行；android 相关已随 L3 冻结移出）——'
 check12
 check13
 check14
@@ -1672,6 +1747,7 @@ check32
 check33
 check34
 check35
+check36
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
