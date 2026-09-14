@@ -10,7 +10,7 @@ NF 提供 MCP（Model Context Protocol）stdio 服务 `nf serve`：
 - 把「MCP 快照」（`nf run --fmt mcp` 导出的 `.json`）烧成 JSON-RPC stdio 会话（换行分隔 UTF-8 消息）；
 - **只读面**：`resources/list` + `resources/read`；41 波C C7（2026-09-08 裁决）开放**只读 tools/prompts**——`tools/list`+`tools/call`（library_search / registry_query / pipeline_ls / spec_ls）与 `prompts/list`+`prompts/get`（assemble_guide 装载引导）；写路径工具不实现，未知工具/方法拒出；
 - **uri 白名单**：`resources/read` 只接受快照内已登记 uri，未知 uri 返回 `-32602 INVALID_PARAMS`（不泄露目录结构）；
-- 协议版本对齐 `2025-11-25`（逐条实证对照见 33 号 A5 核查报告，G1/G2/G4 已勾销）。
+- **协议版本 = dual-era**：modern `2026-07-28`（每请求 `_meta` 携带版本，无协商握手）+ legacy `2025-11-25`（`initialize` 握手）并存；不支持版本回 `-32022` 并列出支持集。历史对照见 33 号 A5 核查报告（G1/G2/G4 已勾销），现代口径实证见规范 §Versioning / §Discovery。
 
 安全定位（C2 最小安全层）：只读 + 白名单——适合把仓库/内容库能力**只读暴露**给 agent 检索，天然无写面。
 
@@ -76,7 +76,8 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 
 | 方法 | 实现 | 说明 |
 |---|---|---|
-| `initialize` | ✅ | 协议版本 `2025-11-25`；`serverInfo` 自述（name/version 经握手，非快照文件顶层） |
+| `server/discover` | ✅ | modern 必备：一次返回 `supportedVersions` / `capabilities` / `_meta.serverInfo` + `instructions`/`ttlMs` |
+| `initialize` | ✅ | legacy 握手：请求版本受支持则回显，否则回落 `2025-11-25`；`serverInfo` 自述（非快照文件顶层） |
 | `notifications/initialized` | ✅ 静默 | 通知无 id，不应答 |
 | `ping` | ✅ | 返回 `{}` |
 | `resources/list` | ✅ | 快照登记资源纯元数据（无 text 字段） |
@@ -86,7 +87,7 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 | `prompts/list` / `prompts/get` | ✅ | 41 波C C7：assemble_guide 装载引导模板（只读） |
 | 写路径工具（未实现） | ❌ | 未知工具 → `-32602`；未知方法 → `-32601`（只读安全层天然拒写） |
 
-标准错误码：`-32700` 解析错误 / `-32600` 非法请求 / `-32601` 方法不存在 / `-32602` 参数非法 / `-32603` 内部错误。
+标准错误码：`-32700` 解析错误 / `-32600` 非法请求 / `-32601` 方法不存在 / `-32602` 参数非法 / `-32603` 内部错误；版本协商错误 `-32022`（`data.supported` / `data.requested`）。
 
 ## E3 实测记录（2026-09-08 · 协议级装载实测通过）
 

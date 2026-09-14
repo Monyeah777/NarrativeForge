@@ -1,0 +1,48 @@
+{
+  "metrics": {
+    "asset_files": 55,
+    "asset_keys": 165
+  },
+  "note": "nf score --write-baseline",
+  "recorded_at": "2026-09-14T09:26:24Z",
+  "schema": "nf-score/1",
+  "score": 100.0,
+  "signals": [
+    {
+      "name": "schema_clean",
+      "note": "IDL schema 零漂移（schema_lint）",
+      "value": 1.0,
+      "weight": 0.2
+    },
+    {
+      "name": "conformance_clean",
+      "note": "机读契约/一致性分级零虚标（conformance_scan）",
+      "value": 1.0,
+      "weight": 0.2
+    },
+    {
+      "name": "purity_clean",
+      "note": "架构纯度零违规（purity_scan）",
+      "value": 1.0,
+      "weight": 0.15
+    },
+    {
+      "name": "doc_hygiene",
+      "note": "文档卫生零缺口（doc_hygiene）",
+      "value": 1.0,
+      "weight": 0.15
+    },
+    {
+      "name": "depth_clean",
+      "note": "质量纵深零缺口（quality_depth_scan）",
+      "value": 1.0,
+      "weight": 0.15
+    },
+    {
+      "name": "asset_density",
+      "note": "资产键密度归一（asset_density）",
+      "value": 1.0,
+      "weight": 0.15
+    }
+  ]
+}

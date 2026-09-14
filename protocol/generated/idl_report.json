@@ -13,6 +13,34 @@
     },
     {
       "conformance": "L2",
+      "id": "M01",
+      "layer": "P20",
+      "name": "职业成长",
+      "source": "community/西幻生存领域包/modules/M01_职业成长.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M02",
+      "layer": "P20",
+      "name": "种族天赋",
+      "source": "community/西幻生存领域包/modules/M02_种族天赋.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M03",
+      "layer": "P40",
+      "name": "技能融合",
+      "source": "community/西幻生存领域包/modules/M03_技能融合.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M04",
+      "layer": "P50",
+      "name": "战斗系统",
+      "source": "community/西幻生存领域包/modules/M04_战斗系统.md"
+    },
+    {
+      "conformance": "L2",
       "id": "M06",
       "layer": "P30",
       "name": "任务剧情",
@@ -20,10 +48,38 @@
     },
     {
       "conformance": "L2",
+      "id": "M07",
+      "layer": "P60",
+      "name": "地图区域",
+      "source": "community/西幻生存领域包/modules/M07_地图区域.md"
+    },
+    {
+      "conformance": "L2",
       "id": "M08",
       "layer": "P10",
       "name": "季节天气",
       "source": "04_模块库/世界类/M08_季节天气.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M09",
+      "layer": "P60",
+      "name": "经济贸易",
+      "source": "community/西幻生存领域包/modules/M09_经济贸易.md"
+    },
+    {
+      "conformance": "L1",
+      "id": "M10",
+      "layer": "P40",
+      "name": "死亡重生",
+      "source": "community/西幻生存领域包/modules/M10_死亡重生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M11",
+      "layer": "P50",
+      "name": "文字魔法",
+      "source": "community/西幻生存领域包/modules/M11_文字魔法.md"
     },
     {
       "conformance": "L2",
@@ -41,6 +97,27 @@
     },
     {
       "conformance": "L2",
+      "id": "M14",
+      "layer": "P60",
+      "name": "阵营声望",
+      "source": "community/西幻生存领域包/modules/M14_阵营声望.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M15",
+      "layer": "P60",
+      "name": "帮派势力",
+      "source": "community/西幻生存领域包/modules/M15_帮派势力.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M16",
+      "layer": "P60",
+      "name": "建筑据点",
+      "source": "community/西幻生存领域包/modules/M16_建筑据点.md"
+    },
+    {
+      "conformance": "L2",
       "id": "M17",
       "layer": "P50",
       "name": "生产制造",
@@ -48,10 +125,31 @@
     },
     {
       "conformance": "L2",
+      "id": "M18",
+      "layer": "P30",
+      "name": "混沌事件",
+      "source": "community/西幻生存领域包/modules/M18_混沌事件.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M19",
+      "layer": "P20",
+      "name": "遗传后代",
+      "source": "community/西幻生存领域包/modules/M19_遗传后代.md"
+    },
+    {
+      "conformance": "L2",
       "id": "M20",
       "layer": "P70",
       "name": "世界知识库",
       "source": "04_模块库/事件类/M20_世界知识库.md"
+    },
+    {
+      "conformance": "L1",
+      "id": "M22",
+      "layer": "P40",
+      "name": "三冲动驱动",
+      "source": "community/校园情感领域包/modules/M22_三冲动驱动.md"
     },
     {
       "conformance": "L2",
@@ -69,6 +167,27 @@
     },
     {
       "conformance": "L2",
+      "id": "M40",
+      "layer": "P40",
+      "name": "关系深度",
+      "source": "community/校园情感领域包/modules/M40_关系深度.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M41",
+      "layer": "P40",
+      "name": "恋爱进阶",
+      "source": "community/校园情感领域包/modules/M41_恋爱进阶.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M43",
+      "layer": "P40",
+      "name": "情敌系统",
+      "source": "community/校园情感领域包/modules/M43_情敌系统.md"
+    },
+    {
+      "conformance": "L2",
       "id": "M50",
       "layer": "调度器",
       "name": "主循环",
@@ -80,6 +199,34 @@
       "layer": "P40",
       "name": "匿名情书",
       "source": "community/校园情感领域包/modules/M55_匿名情书.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M57",
+      "layer": "P50",
+      "name": "朋友圈动态",
+      "source": "community/校园情感领域包/modules/M57_朋友圈动态.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M58",
+      "layer": "P50",
+      "name": "电话通讯",
+      "source": "community/校园情感领域包/modules/M58_电话通讯.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M59",
+      "layer": "P50",
+      "name": "群聊系统",
+      "source": "community/校园情感领域包/modules/M59_群聊系统.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "M65",
+      "layer": "P60",
+      "name": "幽灵遗憾",
+      "source": "community/校园情感领域包/modules/M65_幽灵遗憾.md"
     },
     {
       "conformance": "L2",
@@ -168,7 +315,7 @@
   ],
   "coverage": {
     "asset_entries": 2,
-    "contract_covered": 23,
+    "contract_covered": 44,
     "module_docs": 44,
     "pipelines": 8,
     "protocols": 5,
@@ -177,20 +324,33 @@
   "event_closure": {
     "linked_events": [
       "beat_tick",
+      "chaos_event",
+      "combat_result",
+      "confession_event",
+      "death_trigger",
       "decision_brief",
       "doc_delta_committed",
       "doc_structure_ready",
+      "ghost_event",
       "intent_received",
       "interaction_update",
+      "level_up",
+      "market_event",
       "minute_tick",
       "narrative_event",
+      "npc_action",
       "production_output",
       "quest_state",
+      "relationship_change",
+      "reputation_change",
+      "romance_state_change",
+      "spell_cast",
       "state_snapshot",
       "term_conflict_detected",
-      "tick_day"
+      "tick_day",
+      "travel_event"
     ],
-    "modules": 23,
+    "modules": 44,
     "pub_only_by_module": {
       "campus_anonymous_gift": [
         "M92"
@@ -198,11 +358,23 @@
       "campus_gift_intent": [
         "M91"
       ],
+      "faction_event": [
+        "M15"
+      ],
+      "group_chat_event": [
+        "M59"
+      ],
+      "phone_call_event": [
+        "M58"
+      ],
       "polished_output": [
         "M96"
       ],
       "revision_recorded": [
         "M98"
+      ],
+      "social_feed_event": [
+        "M57"
       ],
       "term_synced": [
         "M97"
@@ -214,65 +386,17 @@
     "pub_only_events": [
       "campus_anonymous_gift",
       "campus_gift_intent",
+      "faction_event",
+      "group_chat_event",
+      "phone_call_event",
       "polished_output",
       "revision_recorded",
+      "social_feed_event",
       "term_synced",
       "weather_state"
     ],
-    "sub_only_by_module": {
-      "chaos_event": [
-        "M06",
-        "事件:M22"
-      ],
-      "combat_result": [
-        "M06"
-      ],
-      "confession_event": [
-        "M55",
-        "M91"
-      ],
-      "death_trigger": [
-        "事件:M22"
-      ],
-      "ghost_event": [
-        "事件:M22"
-      ],
-      "level_up": [
-        "M13"
-      ],
-      "market_event": [
-        "M17",
-        "事件:M22"
-      ],
-      "npc_action": [
-        "M55",
-        "M91"
-      ],
-      "relationship_change": [
-        "M55",
-        "M91",
-        "事件:M22"
-      ],
-      "reputation_change": [
-        "M06"
-      ],
-      "travel_event": [
-        "M06"
-      ]
-    },
-    "sub_only_events": [
-      "chaos_event",
-      "combat_result",
-      "confession_event",
-      "death_trigger",
-      "ghost_event",
-      "level_up",
-      "market_event",
-      "npc_action",
-      "relationship_change",
-      "reputation_change",
-      "travel_event"
-    ]
+    "sub_only_by_module": {},
+    "sub_only_events": []
   },
   "evidence_ids": [
     "M00",

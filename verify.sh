@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.22  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）
+# 版本 : v2.25  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）
+#        46 吸收七面 check33：MCP dual-era 版本对齐（2026-07-28/2025-11-25 + server/discover）/
+#        内容外挂签名 attestation / 基线相对回归评分 / 机械修复 + LSP / 正文 lint / 图书馆许可证门 / 遥测 semconv
+#        图书馆面 check34：条目 frontmatter 真源（OKF 借鉴）/ INDEX·ALIAS 投影一致（I5）/ 生命周期 /
+#        Diátaxis 四型覆盖 / llms.txt 机器入口清单 / 正文级馆藏检索
+#        深化面 check35（Pipelex/MCOP/Specadia 机制借鉴）：管线抽象执行 GraphSpec / 馆藏 MMR 回执单根 /
+#        模块边界签名冻结 / 内容绑定批准记录 / 一致性报告工件（Merkle 根 + verdict）/ 无效语料 + golden 修复对
 # 用法 : 仓库根目录执行  bash verify.sh  （脚本自动定位根目录）
 # 语义 : 任何 Agent/人对 01/02/03/04/05/06/07 层增删改后必须运行；
 #        任一 FAIL = 协议事故 → 回滚该次修改再重新验收。
@@ -1377,9 +1383,259 @@ PYEOF
   fi
 }
 
+check33(){
+  echo '== [33/段C] 新面汇总门禁（MCP dual-era / attestation / 基线回归评分 / 机械修复 / 正文 lint / 许可证门 / 遥测 semconv）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check33.log 2>&1
+import os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+problems = []
+try:
+    from core import (attest, regression_score as rs, autofix, lsp,
+                      prose_lint, license_gate, telemetry_semconv as ts,
+                      mcp_runtime as mcp)
+except Exception as exc:
+    print('import 失败：%s' % exc)
+    sys.exit(1)
+
+# 1 MCP dual-era：modern/legacy 并存 + server/discover + 版本协商错误码
+srv = mcp.McpRuntime({'mcp': {'name': 'nf-check33', 'version': '1.0.0',
+                              'resources': []}})
+disc = srv.handle({'jsonrpc': '2.0', 'id': 1, 'method': 'server/discover',
+                   'params': {'_meta': {
+                       'io.modelcontextprotocol/protocolVersion': '2026-07-28'}}})
+if disc.get('result', {}).get('supportedVersions') != list(mcp.SUPPORTED_VERSIONS):
+    problems.append('server/discover 支持版本集异常')
+bad = srv.handle({'jsonrpc': '2.0', 'id': 2, 'method': 'ping',
+                  'params': {'_meta': {
+                      'io.modelcontextprotocol/protocolVersion': '1900-01-01'}}})
+if bad.get('error', {}).get('code') != mcp.UNSUPPORTED_PROTOCOL_VERSION:
+    problems.append('版本协商错误码不是 -32022')
+leg = srv.handle({'jsonrpc': '2.0', 'id': 3, 'method': 'initialize',
+                  'params': {'protocolVersion': '2025-11-25'}})
+if leg.get('result', {}).get('protocolVersion') != '2025-11-25':
+    problems.append('legacy 握手回显异常')
+
+# 2 attestation：digest_only 一致 + 外挂锚 fail-closed
+att = attest.build('01_核心协议.md', '.')
+a_ok, a_issues, a_level = attest.verify(att, '.')
+if not a_ok or a_level != 'digest_only':
+    problems.append('attestation digest_only 校验未过：%s' % a_issues)
+a_bad = dict(att, signature={'scheme': 'sigstore-keyless', 'bundle': '/nope'})
+if attest.verify(a_bad, '.')[0]:
+    problems.append('attestation 外挂锚缺验证器却放行（应 fail-closed）')
+
+# 3 基线回归评分：当前 vs 基线（no silent worsening）
+cur = rs.evaluate('.')
+base_path = 'protocol/score_baseline.json'
+if not os.path.exists(base_path):
+    problems.append('缺回归评分基线 %s' % base_path)
+else:
+    cmp_out = rs.compare(cur, rs.load_baseline(base_path))
+    if not cmp_out['ok']:
+        problems.append('回归评分未过：%s' % cmp_out['verdict'])
+
+# 4 机械修复面：关键/指令档零待修
+try:
+    from core import doc_hygiene as dh
+    targets = [r for r in sorted(set(dh.REQUIRED_DOCS) | set(dh.INSTRUCTION_DOCS))
+               if os.path.exists(r)]
+except Exception:
+    targets = []
+pending = []
+for p in targets:
+    with open(p, encoding='utf-8') as fh:
+        if autofix.lint_rules(p, fh.read(), '.'):
+            pending.append(p)
+if pending:
+    problems.append('机械修复面待办 %d 件：%s' % (len(pending), '、'.join(pending[:3])))
+
+# 5 正文 lint 可检出 + LSP 能力在位
+if not prose_lint.lint_text('总而言之，我们应该谨慎。\n'):
+    problems.append('正文 lint 未检出已知样例')
+if not lsp.LspServer().handle({'jsonrpc': '2.0', 'id': 1,
+                               'method': 'initialize'})[0]['result']['capabilities']['codeActionProvider']:
+    problems.append('LSP codeAction 能力缺失')
+
+# 6 许可证门：零 FAIL
+l_issues, l_stats = license_gate.scan('.')
+if l_issues:
+    problems.append('许可证门 FAIL：%s' % '; '.join(l_issues))
+
+# 7 遥测 semconv：属性名对齐
+attrs = ts.attributes_for({'tool': 'nf assemble', 'phase': 'plan'})
+if (attrs.get('gen_ai.operation.name') != 'execute_tool'
+        or attrs.get('gen_ai.tool.name') != 'nf.assemble'):
+    problems.append('遥测 semconv 映射异常')
+
+for p in problems:
+    print('[FAIL] %s' % p)
+print('新面统计：MCP %s · 评分 %.2f · 机械待办 %d · 许可 WARN %d'
+      % (mcp.PROTOCOL_VERSION, cur['score'], len(pending), len(l_stats['warnings'])))
+sys.exit(1 if problems else 0)
+PYEOF
+    then
+      ok '新面扫描通过（MCP dual-era / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测）'
+    else
+      no "新面扫描异常——$(tail -3 /tmp/nf_check33.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check33）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '新面汇总门禁全绿（check33：MCP 版本对齐/内容外挂签名/回归评分/编辑器面/正文 lint/许可证门/遥测 semconv）'
+  fi
+}
+
+check34(){
+  echo '== [34/段C] 云端图书馆面门禁（frontmatter 真源 / INDEX·ALIAS 投影一致 / 生命周期 / 四型覆盖 / llms.txt 入口）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check34.log 2>&1
+import os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+problems = []
+try:
+    from core import library as nflib
+    from core import doc_hygiene as dh
+except Exception as exc:
+    print('import 失败：%s' % exc)
+    sys.exit(1)
+
+# 1 条目 frontmatter（真源）零 FAIL
+issues, warns, stats = nflib.verify('.')
+for i in issues:
+    problems.append('图书馆 frontmatter：%s' % i)
+
+# 2 投影一致（I5：INDEX 生成区 / ALIAS == 实时重算）
+for i in nflib.check_projection('.'):
+    problems.append('投影一致：%s' % i)
+
+# 3 文档四型覆盖（Diátaxis 借鉴）
+for i in dh.kind_coverage('.'):
+    problems.append('四型覆盖：%s' % i)
+
+# 4 llms.txt 机器入口清单在场且指向真件
+if not os.path.exists('llms.txt'):
+    problems.append('缺 llms.txt（agent 机器入口清单）')
+else:
+    with open('llms.txt', encoding='utf-8') as fh:
+        txt = fh.read()
+    for anchor in ('# NarrativeForge', 'library/INDEX.md', '01_核心协议.md',
+                   '06_Agent执行协议.md', 'agent_组装指令包_v0.2.md'):
+        if anchor not in txt:
+            problems.append('llms.txt 缺锚点：%s' % anchor)
+
+# 5 检索面可用（正文级命中，非仅文件名）
+if not nflib.search('雨天', '.', limit=1):
+    problems.append('馆藏检索无命中（倒排索引不可用）')
+
+for p in problems:
+    print('[FAIL] %s' % p)
+dist = dh.kind_distribution('.')
+print('图书馆统计：条目 %d · 在役 %d · WARN %d；文档四型：%s'
+      % (stats['entries'], stats['active'], len(warns),
+         ','.join('%s=%d' % (k, dist[k]) for k in dh.KINDS)))
+sys.exit(1 if problems else 0)
+PYEOF
+    then
+      ok '图书馆面扫描通过（frontmatter 真源 / 投影一致 / 四型覆盖 / llms.txt 入口 / 检索可用）'
+    else
+      no "图书馆面扫描异常——$(tail -3 /tmp/nf_check34.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check34）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '云端图书馆面门禁全绿（check34：单一真相源 I5 + 生命周期 + Diátaxis 四型 + llms.txt 机器入口）'
+  fi
+}
+
+check35(){
+  echo '== [35/段C] 深化面门禁（管线抽象执行 / 馆藏回执单根 / 模块边界冻结 / 内容绑定批准 / 一致性报告工件 / 无效语料）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >/tmp/nf_check35.log 2>&1
+import os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+problems = []
+try:
+    from core import pipelinerun as pr
+    from core import receipts, module_signature as ms, approval
+    from core import conformance_report as cr
+except Exception as exc:
+    print('import 失败：%s' % exc)
+    sys.exit(1)
+
+# 1 管线抽象执行：全仓零 hard 缺陷（advisory 不判死）
+d_issues, d_tot = pr.sweep('.')
+for i in d_issues:
+    problems.append('管线 dry-run：%s' % i)
+
+# 2 馆藏回执：逐条折叠到根 + 根与实时重算一致
+if not os.path.exists(receipts.RECEIPTS_REL):
+    problems.append('缺馆藏回执 %s（修复指引：nf library receipts --write）'
+                    % receipts.RECEIPTS_REL)
+else:
+    for i in receipts.verify(receipts.load('.'), '.')[0]:
+        problems.append('馆藏回执：%s' % i)
+
+# 3 模块边界冻结：零漂移
+for i in ms.verify('.')[0]:
+    problems.append('模块边界：%s' % i)
+
+# 4 内容绑定批准：零失效
+for i in approval.verify('.')[0]:
+    problems.append('批准记录：%s' % i)
+
+# 5 一致性报告工件：在盘报告 == 实时重算，且 verdict 达标
+r_issues, r_stats = cr.verify_committed('.')
+for i in r_issues:
+    problems.append('一致性报告：%s' % i)
+if r_stats and r_stats.get('verdict') != 'conformant':
+    problems.append('一致性报告 verdict 非 conformant：%s' % r_stats.get('verdict'))
+
+# 6 无效语料 + golden 修复对在场
+for rel in ('desktop/tests/fixtures/fixes/fix_cases.json',
+            'desktop/tests/test_invalid_corpus.py'):
+    if not os.path.exists(rel):
+        problems.append('缺语料件：%s' % rel)
+
+# 7 协议层回执（覆盖面从馆藏扩到 01-07 / schema / baseline）
+import json as _json
+if not os.path.exists(receipts.PROTOCOL_RECEIPTS_REL):
+    problems.append('缺协议层回执 %s（修复指引：nf receipts --write）'
+                    % receipts.PROTOCOL_RECEIPTS_REL)
+else:
+    with open(receipts.PROTOCOL_RECEIPTS_REL, encoding='utf-8') as fh:
+        for i in receipts.verify_scope(_json.load(fh), '.')[0]:
+            problems.append('协议回执：%s' % i)
+
+# 8 advisory 分类台账与实时重算一致
+for i in pr.verify_advisory('.')[0]:
+    problems.append('advisory 台账：%s' % i)
+
+for p in problems:
+    print('[FAIL] %s' % p)
+print('深化面统计：管线 %d 条（advisory %d）· 回执 %d 条 · 报告 %s'
+      % (d_tot['pipelines'], d_tot['notes'],
+         (r_stats or {}).get('contracts', 0), (r_stats or {}).get('verdict', '-')))
+sys.exit(1 if problems else 0)
+PYEOF
+    then
+      ok '深化面扫描通过（dry-run / 回执单根 / 边界冻结 / 批准记录 / 一致性报告 / 语料）'
+    else
+      no "深化面扫描异常——$(tail -3 /tmp/nf_check35.log | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check35）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '深化面门禁全绿（check35：抽象执行 GraphSpec + MMR 回执 + 边界签名 + 内容绑定批准 + 报告工件）'
+  fi
+}
+
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.22（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.25（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -1391,7 +1647,7 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁（L2 core：check12-check32 无条件执行；android 相关已随 L3 冻结移出）——'
+echo '—— 段 C：代码层门禁（L2 core：check12-check35 无条件执行；android 相关已随 L3 冻结移出）——'
 check12
 check13
 check14
@@ -1413,6 +1669,9 @@ check29
 check30
 check31
 check32
+check33
+check34
+check35
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then

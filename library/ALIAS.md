@@ -1,10 +1,10 @@
 # 📖 大小写转译表（ALIAS）· AI 专用
 
 > **用法**：拿不准编号大小写时 → 先把编号**全小写化** → 在「小写键」列匹配 → 用「真实编号」列拼链接取件。
-> 取件基底（GitHub）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/`（国内镜像 Gitee：`https://gitee.com/monyeah777/narrative-forge/raw/main/library/`，规则相同）。
-> 本表由云端代收站机器人自动维护（每次入库全量重建）；人工通道入库请同步补录。
+> 取件基底（GitHub）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`（国内镜像 Gitee：`https://gitee.com/monyeah777/narrative-forge/raw/main/`，规则相同）。
+> 本表由 `nf library reindex` 全量重建（真源 = 条目 frontmatter）；手工改将被覆盖。
 
-| 小写键 | 真实编号 | GitHub raw 链接 |
-|---|---|---|
-| nf-1 | NF-1 | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-1.md |
-| nf-worldcampus-monyeah777-1 | NF-WORLDCAMPUS-Monyeah777-1 | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-WORLDCAMPUS-Monyeah777-1.md |
+| 小写键 | 真实编号 | 状态 | GitHub raw 链接 | Gitee raw 链接 |
+|---|---|---|---|---|
+| nf-1 | NF-1 | active | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-1.md | https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-1.md |
+| nf-worldcampus-monyeah777-1 | NF-WORLDCAMPUS-Monyeah777-1 | active | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-WORLDCAMPUS-Monyeah777-1.md | https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-WORLDCAMPUS-Monyeah777-1.md |

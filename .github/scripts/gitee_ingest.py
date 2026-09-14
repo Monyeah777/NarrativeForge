@@ -237,35 +237,37 @@ def process(issue):
     print(f'  编号分配: {nfid} → {fname}')
 
     # 写文件（含入库注记头，标注 Gitee 来源）
+    # 真源 = YAML frontmatter（与 GitHub 前端同构；INDEX/ALIAS 由投影统一重生成）
+    frontmatter = (
+        '---\n'
+        f'id: {nfid}\n'
+        f'type: {topic}\n'
+        f'title: {title}\n'
+        f'description: {one_line}\n'
+        f'author: {author}\n'
+        'license: 未声明\n'
+        f'generated: {today}\n'
+        'status: active\n'
+        'sources:\n'
+        f'  - Gitee Issue #{number}（NF 投稿通道）\n'
+        '---\n\n'
+    )
     header = (
         f'> 📚 **NF 云端图书馆条目 {nfid}** · 入库 {today} · 投稿人：{author} · 来源：Gitee Issue #{number}\n'
         f'> 形态/领域：{topic} · 一句话：{one_line}\n'
+        '> 许可：未声明（投稿未填；许可证门挂账，不阻断入库）\n'
         f'> 本文为社区投稿副本，版权归投稿人；引用/衍生请注明来源；如需下架请联系作者。\n'
         f'> 自包含声明：本文件自带「是什么 + 怎么用」，AI 单文件即可正确使用。\n\n---\n\n'
     )
     with open(fname, 'w', encoding='utf-8') as f:
-        f.write(header + body_main.rstrip() + '\n')
+        f.write(frontmatter + header + body_main.rstrip() + '\n')
     print(f'  已写入 {fname}（{len(body_main)} 字符）')
 
-    # 更新 INDEX 登记表
-    with open('library/INDEX.md', encoding='utf-8') as f:
-        index = f.read()
-    lines = index.split('\n')
-    last_row = -1
-    for i, ln in enumerate(lines):
-        if re.match(r'^\|\s*NF-', ln):
-            last_row = i
-    new_row = f'| {nfid} | {title} | {topic} | {author} | {today} | {one_line} |'
-    if last_row >= 0:
-        lines.insert(last_row + 1, new_row)
-    else:
-        lines.append(new_row)
-    with open('library/INDEX.md', 'w', encoding='utf-8') as f:
-        f.write('\n'.join(lines))
-    print(f'  INDEX 已插入: {new_row}')
-
-    # 重建 ALIAS（复用 GitHub 前端实现；REPO env 需已设置）
-    rebuild_alias()
+    # 重生成 INDEX 生成区 + ALIAS（投影；真源 = 条目 frontmatter）
+    sys.path.insert(0, 'desktop/src')
+    from core import library as nflib                       # noqa: E402
+    out = nflib.write_projection('.')
+    print(f'  投影已重生成: {out["changed"] or "无变化"}')
 
     # 提交推送双端 + 回评 + 关闭
     if DRY:

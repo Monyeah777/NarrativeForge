@@ -16,6 +16,11 @@ from typing import Any, Dict, List, Tuple
 
 _ROOT = Path(__file__).resolve().parents[3]
 
+#: 当前基线声明（verify 每次扩 check 时同步：check 数 + PASS 期望值）。
+#: 本模块以 verify.sh 为单一真值做四处自洽断言，期望值集中在此，避免散落字面量。
+EXPECTED_CHECKS = 35
+EXPECTED_PASS = 57
+
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     r = Path(root)
@@ -27,22 +32,25 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     n_checks = len(nums)
     if not ver:
         issues.append("verify.sh 缺版本头（vX.Y）")
-    if n_checks != 32 or nums != list(range(1, 33)):
+    if n_checks != EXPECTED_CHECKS or nums != list(range(1, EXPECTED_CHECKS + 1)):
         issues.append("verify.sh check 函数数/编号异常：%s" % nums)
 
     checks: List[Tuple[str, str, int]] = []
     readme = (r / "README.md").read_text(encoding="utf-8")
     checks.append(("README", "基线句",
-                   1 if all(t in readme for t in (ver, "check1-32", "PASS=51"))
+                  1 if all(t in readme for t in (
+                      ver, "check1-%d" % EXPECTED_CHECKS,
+                      "PASS=%d" % EXPECTED_PASS))
                    else 0))
     changelog = (r / "CHANGELOG.md").read_text(encoding="utf-8")
     head = changelog.split("\n## [2.8.0]", 1)[0]
-    checks.append(("CHANGELOG 最新节", "PASS=51",
-                   head.count("PASS=51")))
+    checks.append(("CHANGELOG 最新节", "PASS=%d" % EXPECTED_PASS,
+                   head.count("PASS=%d" % EXPECTED_PASS)))
     matrix = (r / "VERSION-MATRIX.md").read_text(encoding="utf-8")
-    checks.append(("VERSION-MATRIX", "PASS=51",
-                   matrix.count("PASS=51")))
+    checks.append(("VERSION-MATRIX", "PASS=%d" % EXPECTED_PASS,
+                   matrix.count("PASS=%d" % EXPECTED_PASS)))
     for name, what, n in checks:
         if n < 1:
-            issues.append("%s 缺 %s 声明（预期含 v2.22/check1-32/PASS=51）" % (name, what))
+            issues.append("%s 缺 %s 声明（预期含 v2.x/check1-%d/PASS=%d）"
+                          % (name, what, EXPECTED_CHECKS, EXPECTED_PASS))
     return issues, {"verify_version": ver, "checks": n_checks}

@@ -1,0 +1,27 @@
+{
+  "schema": "nf-fix-cases/1",
+  "note": "机制借鉴 Pipelex tests/data/fixes/*.golden.mthds：每条 = 输入 + 规则集 + 期望输出（golden）。",
+  "cases": [
+    {
+      "name": "missing_header_pair",
+      "rules": ["instruction_mark", "last_updated"],
+      "today": "2026-09-14",
+      "input": "# 标题\n\n正文\n",
+      "expected": "# 标题\n> ⛔ 操作指令：阅读即执行——本文含可直接执行的命令/步骤/判定，勿当资料阅读。\n> 最后更新：2026-09-14\n\n正文\n"
+    },
+    {
+      "name": "trailing_ws_and_eof",
+      "rules": ["trailing_ws", "final_newline"],
+      "today": "2026-09-14",
+      "input": "# T  \n正文   ",
+      "expected": "# T\n正文\n"
+    },
+    {
+      "name": "idempotent_no_change",
+      "rules": ["instruction_mark", "last_updated"],
+      "today": "2026-09-14",
+      "input": "# T\n> ⛔ 操作指令：阅读即执行——本文含可直接执行的命令/步骤/判定，勿当资料阅读。\n> 最后更新：2026-09-14\n正文\n",
+      "expected": "# T\n> ⛔ 操作指令：阅读即执行——本文含可直接执行的命令/步骤/判定，勿当资料阅读。\n> 最后更新：2026-09-14\n正文\n"
+    }
+  ]
+}

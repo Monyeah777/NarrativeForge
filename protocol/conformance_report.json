@@ -1,0 +1,93 @@
+{
+  "contracts": [
+    {
+      "description": "规范化摘要可复现",
+      "detail": "canonical digest 两遍一致",
+      "digest": "3aacde7465e2a7b4b0f4b0ddb775ef1e8ec8328cf2c26856bc818cbd999b0880",
+      "id": "canonical-digest-determinism",
+      "ok": true
+    },
+    {
+      "description": "IDL 单一真相零漂移",
+      "detail": "schema 零漂移（6 类件）",
+      "digest": "2185c2d5fbd62001e6c3875ebd02c36c94ded3ed8cec407fe23731c3af50254b",
+      "id": "schema-clean",
+      "ok": true
+    },
+    {
+      "description": "架构纯度零违规",
+      "detail": "纯度零违规",
+      "digest": "6b57502180b736a88428738996933891584a687b0bfee5041f2e03bf02485e6a",
+      "id": "purity-clean",
+      "ok": true
+    },
+    {
+      "description": "文档四型覆盖",
+      "detail": "四型全覆盖",
+      "digest": "1ffa7df71bc8c981a1ab88e5747339ba64cf9e251f831e1a6796b6d2417b9ec6",
+      "id": "doc-kinds",
+      "ok": true
+    },
+    {
+      "description": "馆藏 frontmatter 真源",
+      "detail": "馆藏 frontmatter 真源零 FAIL",
+      "digest": "5c4fedd1c0f792cc9b052a4b08ac08d82b7bde2f9a731bd675660b34096cbc4b",
+      "id": "library-verify",
+      "ok": true
+    },
+    {
+      "description": "INDEX/ALIAS 投影一致",
+      "detail": "投影一致",
+      "digest": "5fe250ece716fcdbe260f7a16f0cf305657f20541ab4cd3c0448866b15a02f78",
+      "id": "library-projection",
+      "ok": true
+    },
+    {
+      "description": "管线抽象执行零 hard 缺陷",
+      "detail": "管线 8 条零 hard 缺陷（advisory 82）",
+      "digest": "84c6d65e0cce737753be272d6a75ae7aff0a862ecb03dd595e425a54e85368f2",
+      "id": "pipeline-dryrun",
+      "ok": true
+    },
+    {
+      "description": "模块边界冻结",
+      "detail": "模块边界零漂移",
+      "digest": "5f8395f07cad340e6283444c822f17a6b01c96ca095ac8544cb78fd1ba9e8c76",
+      "id": "module-signature",
+      "ok": true
+    },
+    {
+      "description": "I/O 类型面（可证不匹配）",
+      "detail": "可证不匹配 0 · 类型覆盖 36.9%（75/203 字段）",
+      "digest": "6daaf4726d077b853e26f6dd376025efcc32e2d03319a590a42859cd0a7d905b",
+      "id": "io-types",
+      "ok": true
+    },
+    {
+      "description": "类型积压显式化",
+      "detail": "不可推断 untyped 104 项（台账同步）",
+      "digest": "865930902fd549adb707feef730b8fb21d19ed55c05c32e711f0447f1af0cbd4",
+      "id": "type-backlog",
+      "ok": true
+    },
+    {
+      "description": "全仓事件背书",
+      "detail": "事件 36 · 跨包 9 · 挂账 0",
+      "digest": "4e43adf8863a5c5cf0d9b08ac79afed8634490fa7ab440766a2eeb106060e848",
+      "id": "event-backing",
+      "ok": true
+    },
+    {
+      "description": "公开导出面零泄漏",
+      "detail": "公开导出面零泄漏",
+      "digest": "d90f0f64ce2bb95763db2d29f8644b1900632565cbcc71ebbd0f504cdf0c90c7",
+      "id": "public-surface",
+      "ok": true
+    }
+  ],
+  "passed": 12,
+  "root": "f2563ec9ecc514f102da4b181709568f9db4735c39db03e7445aa6cca9331f66",
+  "schema": "nf-conformance/1",
+  "total": 12,
+  "verdict": "conformant"
+}

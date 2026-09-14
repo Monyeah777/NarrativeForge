@@ -4,13 +4,13 @@
 
 **一句话**：NF 是内容契约层——定义“AI 稳定产出长内容”的协议、质量与资产标准；叙事只是官方第一域包，协议本身域中立、模型无关。
 
-`verify v2.22 · check1-32 · PASS=51` · `python scripts/nf.py --version`
+`verify v2.25 · check1-35 · PASS=57` · `python scripts/nf.py --version`
 
 ## ⚡ 如果你是 AI / Agent
 
 - 这是什么：规范驱动的文档工厂，装模块/管线/资产 → 校验 → 输出。
 - 入口链：`AGENT_START.md`（开工）→ `AI_ROUTING.md`（选线）→ `DEEP_DIVE.md`（懂得深）。
-- 机器凭证：`bash verify.sh` → v2.22，check1-32，PASS=51。
+- 机器凭证：`bash verify.sh` → v2.25，check1-35，PASS=57。
 - 要懂 NF 为什么这样设计：读 [DEEP_DIVE.md](DEEP_DIVE.md)。
 
 ## 快速开始
@@ -33,7 +33,7 @@ AI 装配：
 
 ## 能力与资产
 
-44 模块 · 8 管线 · 5 社区包 · 55 资产档/163 键 · world_model 1（M50） · verify check1-32 常驻
+44 模块 · 8 管线 · 5 社区包 · 55 资产档/165 键 · world_model 1（M50） · 馆藏 2 件 · verify check1-35 常驻
 
 ## 协议链与文档导航
 

@@ -1,0 +1,42 @@
+{
+  "algorithm": "RFC6962-style sha256 domain-separated",
+  "count": 2,
+  "entries": [
+    {
+      "anchor": {
+        "fingerprint": "SHA256:RytmBjDCNbJ7He6VN9UHzVO/QtTc8HG3h5vP9ZIFrwg",
+        "identity": "nf-demo@local",
+        "key_id": "",
+        "mac": "",
+        "ns": "nf-attest",
+        "scheme": "ssh-sig",
+        "sig_file": "library/anchors/NF-1.sig"
+      },
+      "digest": "b90173a7148194031a2c63f75407ee14143667b61a4c4d22e12a93b27cab1cf9",
+      "id": "NF-1",
+      "leaf": "946b4657894ff21532245157879b717f35e699d7f24d8d845f3774cd0e5f8757",
+      "path": "library/NF-1.md",
+      "proof": [
+        {
+          "hash": "141750ac2d998a0545742c7dcb28251f21db714ed4089d6c542f636450867775",
+          "side": "right"
+        }
+      ]
+    },
+    {
+      "anchor": null,
+      "digest": "52e6d47ab4177ec296d3aecc48f2da050324e67ea222ca91991687ecd940a913",
+      "id": "NF-WORLDCAMPUS-Monyeah777-1",
+      "leaf": "141750ac2d998a0545742c7dcb28251f21db714ed4089d6c542f636450867775",
+      "path": "library/NF-WORLDCAMPUS-Monyeah777-1.md",
+      "proof": [
+        {
+          "hash": "946b4657894ff21532245157879b717f35e699d7f24d8d845f3774cd0e5f8757",
+          "side": "left"
+        }
+      ]
+    }
+  ],
+  "root": "0426623e001fd160d386eebda9ef81fe3c814fc6a8ca808055433aecaff0ca69",
+  "schema": "nf-receipts/1"
+}

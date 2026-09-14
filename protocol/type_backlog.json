@@ -1,0 +1,528 @@
+{
+  "count": 104,
+  "fields": [
+    {
+      "event": "beat_tick",
+      "field": "buffered",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "beat_tick",
+      "field": "origin",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "campus_anonymous_gift",
+      "field": "item",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "campus_anonymous_gift",
+      "field": "origin",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "campus_anonymous_gift",
+      "field": "source_package",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "campus_gift_intent",
+      "field": "intent",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "campus_gift_intent",
+      "field": "origin",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "campus_gift_intent",
+      "field": "secret_mode",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "campus_gift_intent",
+      "field": "source_event",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "chaos_event",
+      "field": "constraints",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "chaos_event",
+      "field": "magnitude",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "chaos_event",
+      "field": "region",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "chaos_event",
+      "field": "seed",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "chaos_event",
+      "field": "type",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "combat_result",
+      "field": "loot_hint",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "combat_result",
+      "field": "winner",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "confession_event",
+      "field": "outcome",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "confession_event",
+      "field": "rival_id",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "confession_event",
+      "field": "target_npc",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "death_trigger",
+      "field": "blessing",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "death_trigger",
+      "field": "cause",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "death_trigger",
+      "field": "deceased",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "death_trigger",
+      "field": "lost_items",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "death_trigger",
+      "field": "rebirth_point",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "decision_brief",
+      "field": "aggregated",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "decision_brief",
+      "field": "context",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "decision_brief",
+      "field": "origin",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "doc_delta_committed",
+      "field": "doc_id",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "doc_delta_committed",
+      "field": "new_ver",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "doc_delta_committed",
+      "field": "prev_ver",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "doc_structure_ready",
+      "field": "doc_id",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "doc_structure_ready",
+      "field": "title",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "ghost_event",
+      "field": "ghost_id",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "ghost_event",
+      "field": "regret_type",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "ghost_event",
+      "field": "target_npc",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "ghost_event",
+      "field": "window",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "group_chat_event",
+      "field": "group_id",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "group_chat_event",
+      "field": "trigger_event",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "intent_received",
+      "field": "intent_id",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "intent_received",
+      "field": "mode",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "intent_received",
+      "field": "text",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "level_up",
+      "field": "gained_attrs",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "level_up",
+      "field": "job",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "market_event",
+      "field": "commodity",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "market_event",
+      "field": "type",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "npc_action",
+      "field": "behavior",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "npc_action",
+      "field": "impulse",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "npc_action",
+      "field": "npc_id",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "npc_action",
+      "field": "target",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "phone_call_event",
+      "field": "affinity_probability",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "phone_call_event",
+      "field": "answered",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "phone_call_event",
+      "field": "call_id",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "phone_call_event",
+      "field": "npc_id",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "phone_call_event",
+      "field": "trigger_event",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "polished_output",
+      "field": "aligned",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "polished_output",
+      "field": "origin",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "polished_output",
+      "field": "source",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "polished_output",
+      "field": "style",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "production_output",
+      "field": "item",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "production_output",
+      "field": "recipe_id",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "relationship_change",
+      "field": "cognition",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "relationship_change",
+      "field": "depth",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "relationship_change",
+      "field": "npc_id",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "relationship_change",
+      "field": "reason",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "reputation_change",
+      "field": "faction_id",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "reputation_change",
+      "field": "player",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "reputation_change",
+      "field": "reason",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "revision_recorded",
+      "field": "author",
+      "note": "散文级证据字段；类型待核"
+    },
+    {
+      "event": "revision_recorded",
+      "field": "date",
+      "note": "散文级证据字段；类型待核"
+    },
+    {
+      "event": "revision_recorded",
+      "field": "ver",
+      "note": "散文级证据字段；类型待核"
+    },
+    {
+      "event": "romance_state_change",
+      "field": "from_stage",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "romance_state_change",
+      "field": "npc_id",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "romance_state_change",
+      "field": "reason",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "romance_state_change",
+      "field": "tick",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "romance_state_change",
+      "field": "to_stage",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "social_feed_event",
+      "field": "clue_trail",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "social_feed_event",
+      "field": "feed_id",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "social_feed_event",
+      "field": "npc_id",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "social_feed_event",
+      "field": "trigger_event",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "social_feed_event",
+      "field": "visibility",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "spell_cast",
+      "field": "caster",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "spell_cast",
+      "field": "effect_summary",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "spell_cast",
+      "field": "elements",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "spell_cast",
+      "field": "spell",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "spell_cast",
+      "field": "target",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "spell_cast",
+      "field": "tick",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "state_snapshot",
+      "field": "domain",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "state_snapshot",
+      "field": "mode",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "state_snapshot",
+      "field": "origin",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "term_conflict_detected",
+      "field": "status",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "term_conflict_detected",
+      "field": "term",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "term_synced",
+      "field": "status",
+      "note": "45_M3 提案确认；类型待核"
+    },
+    {
+      "event": "tick_day",
+      "field": "minute",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "tick_day",
+      "field": "season_ctx",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "tick_day",
+      "field": "tick",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "travel_event",
+      "field": "from",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "travel_event",
+      "field": "route",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "travel_event",
+      "field": "to",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "travel_event",
+      "field": "weather_mod",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "weather_state",
+      "field": "day_phase",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "weather_state",
+      "field": "modifiers",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "weather_state",
+      "field": "region",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "weather_state",
+      "field": "season",
+      "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "weather_state",
+      "field": "weather",
+      "note": "正文证据字段名；类型待核"
+    }
+  ],
+  "missing_note": [],
+  "note": "事件载荷中无法从正文证据推断类型的字段——待模块正文补充类型证据后收窄。纪律：不得新增无 note 的 untyped。",
+  "schema": "nf-type-backlog/1"
+}

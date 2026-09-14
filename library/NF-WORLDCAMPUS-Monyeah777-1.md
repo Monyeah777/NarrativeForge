@@ -1,3 +1,20 @@
+---
+id: NF-WORLDCAMPUS-Monyeah777-1
+type: 世界（短篇场景包）
+title: 雨天走廊·氛围包
+description: 雨天走廊氛围设定包——可直接生成场景/开场/转场
+author: Monyeah777
+license: 未声明
+generated: 2026-09-07
+status: active
+sources:
+  - Issue #2（NF 投稿通道）
+tags:
+  - 校园情感流
+  - 世界文档
+  - 短篇场景包
+---
+
 > 📚 **NF 云端图书馆条目 NF-WORLDCAMPUS-Monyeah777-1** · 入库 2026-09-07 · 投稿人：Monyeah777 · 来源：Issue #2
 > 形态/领域：校园情感流,世界文档,短篇场景包 · 一句话：雨天走廊氛围设定包——可直接生成场景/开场/转场
 > 本文为社区投稿副本，版权归投稿人；引用/衍生请注明来源；如需下架请联系作者。

@@ -22,12 +22,12 @@ scope 约定：`protocol`（01–07）/ `desktop` / `scripts` / `community` / `c
 
 - 主干 main 为唯一长期分支，改动直接推 main（大改动可短命分支合并后删除）。
 - **版本锚点**：发布即打 annotated tag（vX.Y.Z），tag 为版本真相源（I5），禁止在已发布 tag 上回写。
-- 开工前工作树须干净（当前基线 HEAD=eac0fbd，tag v0.5.0）。
+- 开工前工作树须干净（当前版本锚点 = 最新 annotated tag，见 §2）。
 
 ## 3. 验证门槛（提交前三步，全部通过）
 
 ```bash
-# ① 协议门禁（check1–11 两段式：段 A 官方 / 段 B 社区）
+# ① 协议门禁（check1–32 三段式：段 A 官方 / 段 B 社区 / 段 C 代码层）
 bash verify.sh
 # ② 代码层门禁（check12 同款：desktop core 用例）
 cd desktop && python3 -m unittest discover -s tests -q && cd ..
@@ -58,7 +58,7 @@ python3 -m compileall -q desktop/src scripts
 
 **① 协议合规自检（提交前，贡献者必过）**
 - **protocol.yaml 三要件齐备**（02 §8.3）：包根机读协议声明在场（01 §6.1 Schema 必填 12 字段，check14 ①-⑥ 断言）；登记要素（包目录/管线/模块/资产/类别）齐备；组合包另须 references 合规（02 §8.4 四规则：在册可寻址 / 依赖闭包闭合 / 同层 default 唯一 / 契约断裂 FAIL 阻断 + 自动仲裁）。
-- **本地自检单**：`bash verify.sh` check1–16 全绿（0 WARN / 0 FAIL；check14 注册门禁 / check15 组合门禁为社区包专项）；代码/语法按 §3 三步验证门槛全过；资产经 asset_get 寻址、登记溯源索引并满足 EXT 闭合，`bash scripts/reconcile_assets.sh --quiet` 全清（§4.3）。
+- **本地自检单**：`bash verify.sh` check1–32 全绿（0 WARN / 0 FAIL；check14 注册门禁 / check15 组合门禁为社区包专项）；代码/语法按 §3 三步验证门槛全过；资产经 asset_get 寻址、登记溯源索引并满足 EXT 闭合，`bash scripts/reconcile_assets.sh --quiet` 全清（§4.3）。
 
 **② 提交（分支 / commit / 引用规范）**
 - 分支策略按 §2（单主干 main 直推或短命分支合并）；commit 信息遵循 §1 Conventional Commits——type 取 `feat`（新包落盘）/ `docs`（协议改动），scope 取 `community`。
@@ -66,7 +66,7 @@ python3 -m compileall -q desktop/src scripts
 
 **③ PR 评审（reviewer 判据）**
 - 使用 .github/PULL_REQUEST_TEMPLATE.md，勾选「社区包」改动域 + 门禁自检清单（§5）。
-- **协议层 reviewer 判据 = 02 §8.1–8.4 登记规则 + check 全绿**：整包登记对照 §8.3 登记三要件、组合登记对照 §8.4 登记判定四规则；verify.sh check1–16 PASS=22 全绿为合并前提。
+- **协议层 reviewer 判据 = 02 §8.1–8.4 登记规则 + check 全绿**：整包登记对照 §8.3 登记三要件、组合登记对照 §8.4 登记判定四规则；verify.sh check1–32 PASS=51 全绿为合并前提。
 - 评审范围含题材/资产合规：模块遵循 R1（包间禁互引）/ R2（类别独占）/ R3（装配契约）；资产 EXT 闭合 + 溯源索引在册（§4.3）。
 
 **④ 登记（协作流程终点的机读落地）**

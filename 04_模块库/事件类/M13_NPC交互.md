@@ -10,11 +10,21 @@ machine_contract:
   category: 事件
   layer: P30
   inputs: [M12, M06, M20]
-  outputs: []
+  outputs: [npc_id, action, result, tick]
   events:
     publish: [interaction_update]
     subscribe: [quest_state, level_up]
   interfaces: []
+  io_types:
+    outputs:
+      npc_id: string
+      action: string
+      result: string
+      tick: number
+    inputs:
+      M12: untyped
+      M06: untyped
+      M20: untyped
 ```
 
 ## 1. 职责

@@ -15,6 +15,11 @@ machine_contract:
     publish: []
     subscribe: []
   interfaces: []
+  io_types:
+    outputs: {}
+    inputs:
+      M20: untyped
+      M13: untyped
 ```
 
 ## 1. 职责

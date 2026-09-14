@@ -276,6 +276,14 @@ def _build_parser() -> argparse.ArgumentParser:
                          help="管线脚手架（v2.8 波B S4：pipeline new——自 P00 骨架派生新管线）", description="管线脚手架（v2.8 波B S4：pipeline new——自 P00 骨架派生新管线）")
     psub = pln.add_subparsers(dest="pipeline_cmd", required=True)
     p_new = psub.add_parser("new", help="派生新管线：复制模板 → 改 id/name/领域标签（登记 02 / 填层名挂载按 README 三步）", description="派生新管线：复制模板 → 改 id/name/领域标签（登记 02 / 填层名挂载按 README 三步）")
+    p_dry = psub.add_parser("dryrun",
+                            help="管线抽象执行（不调模型跑一遍声明 → 执行图；hard 缺陷 + advisory 分列）",
+                            description="管线抽象执行（内部差距：静态 check 只能答『声明自洽吗』，答不了『跑得通吗』）")
+    p_dry.add_argument("--pipeline", default="", help="管线 md 路径（缺省 + --all 时全仓扫）")
+    p_dry.add_argument("--all", action="store_true", help="全仓管线扫一遍并汇总")
+    p_dry.add_argument("--json", action="store_true", help="输出执行图 JSON")
+    p_dry.add_argument("--write-advisory", action="store_true",
+                       help="配合 --all：把 advisory 分类台账写入 protocol/pipeline_advisory.json")
     p_new.add_argument("--id", required=True, help="新管线 id（如 P07）")
     p_new.add_argument("--name", required=True, help="新管线显示名（如 演示领域管线）")
     p_new.add_argument("--from", dest="template", default=None,
@@ -302,6 +310,27 @@ def _build_parser() -> argparse.ArgumentParser:
     m_rs = msub.add_parser("restore", help="状态流转 → active（deprecated/retired 回退）", description="状态流转 → active（deprecated/retired 回退）")
     m_rs.add_argument("file", help="模块 md 路径")
     m_vf = msub.add_parser("verify", help="引用门禁扫描（与 verify.sh check24 同语义）", description="引用门禁扫描（与 verify.sh check24 同语义）")
+    m_sg = msub.add_parser("signature",
+                           help="模块边界签名基线（边界写一次；漂移即 FAIL 直到重签）",
+                           description="模块边界签名基线（机制借鉴 Pipelex signature_for：边界冻结、实现可替）")
+    m_sg.add_argument("--write", action="store_true",
+                      help="重新冻结边界基线（评审后显式重签）")
+    m_sg.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    m_ty = msub.add_parser("types",
+                           help="I/O 类型面（io_types）：覆盖率 + 可证不匹配；--write 补标",
+                           description="I/O 类型面（机制借鉴 Pipelex typed concepts，01 §7 V1 字段级新增）")
+    m_ty.add_argument("--write", action="store_true",
+                      help="给全部有机读契约的模块补 io_types（确定性推导，未命中写 untyped）")
+    m_ty.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    m_ty.add_argument("--harvest", action="store_true",
+                      help="从模块正文事件契约收割载荷字段（并入 event_registry）")
+    m_ty.add_argument("--backlog", action="store_true",
+                      help="生成/校验类型积压台账（不可推断的 untyped 显式化）")
+    m_ct = msub.add_parser("contract",
+                           help="L0 → L1 机读块 retro-fit（从人读引用块/正文投影，不编造）",
+                           description="L0 → L1 机读块 retro-fit（机制借鉴 Pipelex：机读块 = 人读契约的结构化投影）")
+    m_ct.add_argument("--write", action="store_true", help="写入机读块（幂等；已有机读块则跳过）")
+    m_ct.add_argument("--json", action="store_true", help="输出结构化 JSON")
     m_vf.add_argument("--root", default=ROOT, help="扫描根（缺省 = 仓库根）")
 
     # ---- v2.8.0 波B S7：一键演示世界 ----
@@ -316,6 +345,134 @@ def _build_parser() -> argparse.ArgumentParser:
     sg.add_argument("--json", action="store_true", help="输出完整 canonical JSON 记录")
     sg.add_argument("--verify", action="store_true",
                     help="check25 同语义：两遍生成一致性校验（可复现门禁）")
+    at = sub.add_parser("attest",
+                        help="内容 attestation（三级信任：digest_only / hmac-sha256 / sigstore 外挂锚）",
+                        description="内容 attestation（内部差距：知识签名只自证可复现，无对外可验证的篡改证据）")
+    at.add_argument("target", nargs="?", default="",
+                    help="目标 md（缺省 = 01/02/06/07 四件集合）")
+    at.add_argument("--out", default="", help="写出 attestation JSON 的路径（缺省 = 不写盘）")
+    at.add_argument("--issuer", default="", help="签发方标识（写入 producer.issuer）")
+    at.add_argument("--key-file", default="",
+                    help="HMAC 密钥文件 → 签发/校验 hmac-sha256 级 attestation")
+    at.add_argument("--verify", default="",
+                    help="校验既有 attestation JSON（缺省 = 生成模式）")
+    at.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    sc = sub.add_parser("score",
+                        help="基线相对回归评分（Codecov 式：当前 vs 基线，no silent worsening）",
+                        description="基线相对回归评分（内部差距：现有门禁全为绝对门，无 delta/回归判据）")
+    sc.add_argument("--baseline", default="",
+                    help="基线 JSON（缺省 = protocol/score_baseline.json）")
+    sc.add_argument("--write-baseline", action="store_true",
+                    help="把当前分值写入基线（审计注记随写入）")
+    sc.add_argument("--tolerance", type=float, default=0.0,
+                    help="整体分允许下降幅度（缺省 0 = 不允许下降）")
+    sc.add_argument("--exceptions", default="",
+                    help="审计例外 JSON（[{signal,reason}]，例外只标注理由不隐藏回归）")
+    sc.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    ln = sub.add_parser("lint",
+                        help="机械检查/修复（doc_hygiene 同源判据 + 可选正文 lint；--fix 只改机械面）",
+                        description="机械检查/修复（内部差距：既有扫描器只报告不修，仓库无 auto-fix）")
+    ln.add_argument("target", nargs="*", default=None,
+                    help="目标 md/目录（缺省 = doc_hygiene 关键/指令档清单）")
+    ln.add_argument("--fix", action="store_true",
+                    help="应用机械修复（缺省 = 只报告，发现即 exit 1）")
+    ln.add_argument("--dry-run", action="store_true",
+                    help="配合 --fix：只报将改什么，不写盘")
+    ln.add_argument("--prose", action="store_true",
+                    help="额外跑正文 lint（去 AI 味规则集）")
+    ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    lp = sub.add_parser("lsp",
+                        help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
+                        description="最小 LSP 服务器（stdio Content-Length 分帧；诊断/quickfix 与 nf lint 同源）")
+    lp.add_argument("--root", default="", help="仓库根（缺省 = 本仓库）")
+    lc = sub.add_parser("license",
+                        help="图书馆许可证门（登记表「许可」列 + 条目内联声明双源校验）",
+                        description="图书馆许可证门（内部差距：登记表无许可列，入库产物不承载共享条款）")
+    lc.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    tl = sub.add_parser("telemetry",
+                        help="遥测 semconv 映射（trace 记录 → OTel GenAI 属性 / OTLP 形状）",
+                        description="遥测 semconv 映射（内部差距：trace 为自定 JSON，对外界不可消费）")
+    tl.add_argument("trace", help="trace JSON（单条记录或 {records:[...]}）")
+    tl.add_argument("--otlp", action="store_true",
+                    help="输出 OTLP 形状 JSON（resourceSpans → scopeSpans → spans）")
+    conf = sub.add_parser("conformance",
+                          help="一致性报告工件（9 契约 → Merkle 根 + verdict；可归档可比对）",
+                          description="一致性报告工件（机制借鉴 MCOP runConformanceSuite：make it checkable instead of trusted）")
+    conf.add_argument("--write", action="store_true",
+                      help="把当前报告写入 protocol/conformance_report.json")
+    conf.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    ev = sub.add_parser("events",
+                        help="全仓事件背书核对（订阅必有发布方；跨包事件可见；外部通道须挂账）",
+                        description="全仓事件背书核对（补 check16/26 之外：社区域包订阅是否真有发布方）")
+    ev.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    rc2 = sub.add_parser("receipts",
+                         help="协议层回执单根（01–07/schema/baseline 等机读产物各带 inclusion proof）",
+                         description="协议层回执单根（把回执覆盖面从馆藏扩到协议层机读产物）")
+    rc2.add_argument("--scope", default="protocol", choices=["protocol"],
+                     help="回执范围（当前支持 protocol）")
+    rc2.add_argument("--write", action="store_true", help="写入 protocol/RECEIPTS.json")
+    rc2.add_argument("--entry", default="", help="只验一条（按相对路径）")
+    rc2.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    ap = sub.add_parser("approve",
+                        help="内容绑定批准记录（被批准对象改动即失效）",
+                        description="内容绑定批准记录（机制借鉴 MCOP approved-changeset gate）")
+    ap.add_argument("subject", nargs="?", default="", help="被批准对象路径（仓库相对）")
+    ap.add_argument("--by", default="", help="批准人标识")
+    ap.add_argument("--note", default="", help="批准说明")
+    ap.add_argument("--verify", action="store_true",
+                    help="校验全部批准记录（缺省 = 生成模式）")
+    ap.add_argument("--list", action="store_true", help="列出全部批准记录（含失效标记）")
+    ap.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    lib = sub.add_parser("library",
+                         help="云端图书馆机器面（frontmatter 真源 / INDEX·ALIAS 投影 / 检索）",
+                         description="云端图书馆机器面（内部差距：library 无 CLI 面、MCP 检索不覆盖馆藏、元数据非一等公民）")
+    lsub = lib.add_subparsers(dest="library_cmd")
+    l_ls = lsub.add_parser("ls", help="列出馆藏条目（编号/状态/许可/标题）",
+                           description="列出馆藏条目（编号/状态/许可/标题）")
+    l_sh = lsub.add_parser("show", help="查看单条条目（frontmatter + 正文头）",
+                           description="查看单条条目（frontmatter + 正文头）")
+    l_sh.add_argument("entry", help="编号（如 NF-1）")
+    l_ri = lsub.add_parser("reindex",
+                           help="重生成 INDEX 生成区 + ALIAS（真源 = 条目 frontmatter）",
+                           description="重生成 INDEX 生成区 + ALIAS（真源 = 条目 frontmatter）")
+    l_vf = lsub.add_parser("verify", help="校验 frontmatter + 投影一致性（图书馆门同语义）",
+                           description="校验 frontmatter + 投影一致性（图书馆门同语义）")
+    l_vf.add_argument("--key-file", default="",
+                      help="验签名锚用的 HMAC 密钥（缺省 = 只报「无法校验」，不判死）")
+    l_vf.add_argument("--ssh-allowed-signers", default="",
+                      help="ssh-sig 锚校验用的 allowed_signers 文件")
+    l_vf.add_argument("--ssh-identity", default="",
+                      help="ssh-sig 锚校验用的 principal")
+    l_se = lsub.add_parser("search", help="关键词检索（标题/描述/标签/正文，中文子串可用）",
+                           description="关键词检索（标题/描述/标签/正文，中文子串可用）")
+    l_se.add_argument("query", help="检索串")
+    l_dp = lsub.add_parser("deprecate", help="生命周期流转 → deprecated（不再推荐、仍可读）",
+                           description="生命周期流转 → deprecated（不再推荐、仍可读）")
+    l_dp.add_argument("entry", help="编号")
+    l_rs = lsub.add_parser("restore", help="生命周期回退 → active",
+                           description="生命周期回退 → active")
+    l_rs.add_argument("entry", help="编号")
+    l_sp = lsub.add_parser("supersede", help="取代链：旧条目 → superseded（指向新条目）",
+                           description="取代链：旧条目 → superseded（指向新条目）")
+    l_sp.add_argument("entry", help="被取代的旧编号")
+    l_sp.add_argument("by", help="取代它的新编号")
+    l_at = lsub.add_parser("attest", help="给条目挂 attestation（复用 nf attest 信封摘要）",
+                           description="给条目挂 attestation（复用 nf attest 信封摘要，写入 frontmatter）")
+    l_at.add_argument("entry", help="编号")
+    l_at.add_argument("--key-file", default="",
+                      help="HMAC 密钥文件 → 一并落签名锚（不给则 digest_only 级）")
+    l_at.add_argument("--ssh-key", default="",
+                      help="SSH 私钥路径 → 落 ssh-sig 锚（真实非对称签名，读者用 ssh-keygen 即可验）")
+    l_at.add_argument("--ssh-identity", default="",
+                      help="ssh-sig 的 principal（allowed_signers 里的身份）")
+    l_rc = lsub.add_parser("receipts",
+                           help="馆藏回执 + 单根（逐条 inclusion proof，读者可本地折叠验证）",
+                           description="馆藏回执 + 单根（机制借鉴 MCOP MMR：O(log n) 审计路径代替 O(n) 重放）")
+    l_rc.add_argument("--write", action="store_true", help="写入 library/RECEIPTS.json")
+    l_rc.add_argument("--entry", default="",
+                      help="只验一条：按编号取回执并本地折叠到根（读者侧验证入口）")
+    for _p in (l_ls, l_sh, l_ri, l_vf, l_se, l_dp, l_rs, l_sp, l_at, l_rc):
+        _p.add_argument("--json", action="store_true", help="输出结构化 JSON")
     df = sub.add_parser("diff",
                         help="版本差异检测（41 波C C2：两份签名/文档 → 字段级差异 + 兼容判定）", description="版本差异检测（41 波C C2：两份签名/文档 → 字段级差异 + 兼容判定）")
     df.add_argument("a", help="签名 A 的文档 md 路径")
@@ -1038,6 +1195,55 @@ def _cmd_asset(args) -> int:
 
 def _cmd_pipeline(args) -> int:
     """nf pipeline new：P00 骨架派生新管线（v2.8.0 波B S4）。"""
+    if getattr(args, "pipeline_cmd", None) == "dryrun":
+        from core import pipelinerun as pr
+        import json as _json
+        if args.all or not args.pipeline:
+            if getattr(args, "write_advisory", False):
+                doc = pr.advisory_report(ROOT, write=True)
+                print("  ✓ advisory 台账已写入：共 %d 条 · %s"
+                      % (doc["total"], doc["counts"]))
+                return 0
+            issues, tot = pr.sweep(ROOT)
+            if args.json:
+                print(_json.dumps({"issues": issues,
+                                   "stats": {k: v for k, v in tot.items()
+                                             if k != "advisory_items"}},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf pipeline dryrun --all ==")
+                print("  管线 %d · 模块 %d · 官方核心基座 %d · advisory %d"
+                      % (tot["pipelines"], tot["modules"], tot["core_base"],
+                         tot["notes"]))
+                for cat, n in sorted(tot.get("advisory_buckets", {}).items()):
+                    print("    · %-14s %d" % (cat, n))
+                for i in issues:
+                    print("  [FAIL] %s" % i, file=sys.stderr)
+                if not issues:
+                    print("  ✓ 全仓管线零 hard 缺陷（advisory 为同层序/跨包事件，不作判死）")
+            return 1 if issues else 0
+        try:
+            g = pr.graph(args.pipeline, ROOT)
+        except (OSError, ValueError) as exc:
+            print("  ✗ %s" % exc, file=sys.stderr)
+            return 1
+        if args.json:
+            print(_json.dumps(g, ensure_ascii=False, indent=2, sort_keys=True))
+            return 1 if g["issues"] else 0
+        print("== nf pipeline dryrun：%s（%s）==" % (g["pipeline"]["id"], g["pipeline"]["name"]))
+        print("  层 %d · 模块 %d · token %d · 事件 %d · hard %d · advisory %d"
+              % (g["stats"]["layers"], g["stats"]["modules"], g["stats"]["tokens"],
+                 g["stats"]["events_published"], g["stats"]["issues"],
+                 g["stats"]["notes"]))
+        for s in g["steps"]:
+            mods = "、".join(m["id"] for m in s["modules"]) or "（空）"
+            print("  %2d. %-4s %-14s %s" % (s["index"], s["layer"],
+                                            s["layer_name"][:12], mods))
+        for i in g["issues"]:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        for n in g["notes"][:6]:
+            print("  [note] %s" % (n.get("detail") if isinstance(n, dict) else n))
+        return 1 if g["issues"] else 0
     from core.pipeline_scaffold import scaffold_pipeline, default_filename
     tmpl = args.template or os.path.join(ROOT, "03_管线库",
                                          "P00_通用文档生成管线.md")
@@ -1072,6 +1278,106 @@ def _cmd_module(args) -> int:
     import json as _json
     from core import module_lifecycle as ml
     try:
+        if args.module_cmd == "contract":
+            from core import machine_contract as mctl
+            if args.write:
+                rows = mctl.apply(ROOT, write=True)
+                print("== nf module contract --write ==")
+                print("  ✓ L0 → L1/L2 retro-fit 完成：%d 件" % len(rows))
+                for r in rows:
+                    print("    %-52s %s" % (r["path"], r["level"]))
+                return 0
+            c_issues, c_warns, c_stats = mctl.scan(ROOT)
+            if args.json:
+                print(_json.dumps({"issues": c_issues, "warns": c_warns,
+                                   "stats": c_stats}, ensure_ascii=False,
+                                  indent=2, sort_keys=True))
+            else:
+                print("== nf module contract（机读块覆盖）==")
+                print("  仍为 L0（无机读块）：%d 件" % len(c_stats.get("l0_list") or []))
+                for i in c_issues:
+                    print("  [FAIL] %s" % i, file=sys.stderr)
+                for w in c_warns:
+                    print("  [WARN] %s" % w)
+                if not c_issues and not (c_stats.get("l0_list") or []):
+                    print("  ✓ 全库模块均有机器契约（L0 = 0）")
+            return 1 if c_issues else 0
+        if args.module_cmd == "types":
+            from core import io_types as iot
+            if getattr(args, "harvest", False):
+                from core import payload_harvest as ph
+                h = ph.apply(ROOT, write=True)
+                print("== nf module types --harvest ==")
+                print("  正文载荷收割：新增 %d · 收窄 %d · 冲突 %d"
+                      % (len(h["added"]), len(h["narrowed"]), len(h["conflicts"])))
+                for c in h["conflicts"][:5]:
+                    print("  [WARN] 类型冲突（只报告不改）：%s" % c)
+                print("  类型面：%s" % ph.stats(ROOT))
+                return 0
+            if getattr(args, "backlog", False):
+                from core import payload_harvest as ph
+                if args.write:
+                    doc = ph.backlog(ROOT, write=True)
+                    print("  ✓ 类型积压台账已写入：%d 项 untyped（protocol/type_backlog.json）"
+                          % doc["count"])
+                    return 0
+                b_issues, b_stats = ph.verify_backlog(ROOT)
+                print("== nf module types --backlog ==")
+                print("  不可推断的 untyped：%d 项" % b_stats["untyped"])
+                for i in b_issues:
+                    print("  [FAIL] %s" % i, file=sys.stderr)
+                return 1 if b_issues else 0
+            if args.write:
+                rows = iot.apply(ROOT, write=True)
+                cov = iot.coverage(ROOT)
+                print("== nf module types --write ==")
+                print("  ✓ 已补标 %d 件（机读契约模块 %d · 类型覆盖 %.1f%%）"
+                      % (sum(1 for r in rows if r["changed"]),
+                         cov["modules_with_contract"], cov["coverage"]))
+                return 0
+            t_issues, t_warns, _t = iot.scan(ROOT)
+            cov = iot.coverage(ROOT)
+            if args.json:
+                print(_json.dumps({"issues": t_issues, "warns": t_warns,
+                                   "stats": cov}, ensure_ascii=False,
+                                  indent=2, sort_keys=True))
+            else:
+                print("== nf module types（I/O 类型面）==")
+                print("  机读契约模块 %d · L0 未承载 %d · 已标注 %d/%d 字段（%.1f%%）"
+                      % (cov["modules_with_contract"], cov["l0_modules"],
+                         cov["typed_fields"],
+                         cov["typed_fields"] + cov["untyped_fields"], cov["coverage"]))
+                for i in t_issues:
+                    print("  [FAIL] %s" % i, file=sys.stderr)
+                for w in t_warns:
+                    print("  [WARN] %s" % w)
+                if not t_issues:
+                    print("  ✓ 无可证类型不匹配（untyped 为如实缺口，不判死）")
+            return 1 if t_issues else 0
+        if args.module_cmd == "signature":
+            from core import module_signature as ms
+            if args.write:
+                rel = ms.write(ROOT)
+                print("== nf module signature --write ==")
+                print("  ✓ 边界基线已重冻结：%s（%d 模块）"
+                      % (rel, len(ms.signatures(ROOT))))
+                return 0
+            sig_issues, sig_warns, sig_stats = ms.verify(ROOT)
+            if args.json:
+                print(_json.dumps({"issues": sig_issues, "warns": sig_warns,
+                                   "stats": sig_stats},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf module signature（边界冻结）==")
+                print("  模块 %d · 已签 %d" % (sig_stats.get("modules", 0),
+                                              sig_stats.get("signed", 0)))
+                for i in sig_issues:
+                    print("  [FAIL] %s" % i, file=sys.stderr)
+                for w in sig_warns:
+                    print("  [WARN] %s" % w)
+                if not sig_issues:
+                    print("  ✓ 全部模块边界与基线一致（改边界须显式重签）")
+            return 1 if sig_issues else 0
         if args.module_cmd == "verify":
             issues, stats = ml.verify_modules(args.root)
             print("== nf module verify ==")
@@ -1240,6 +1546,559 @@ def _cmd_sig(args):
     except (OSError, ValueError) as exc:
         print("  ✗ %s" % exc, file=sys.stderr); return 1
 
+def _cmd_attest(args):
+    """nf attest：内容 attestation 生成/校验（三级信任；缺锚一律拒绝）。"""
+    from core import attest
+    import json as _json
+    try:
+        if args.verify:
+            with open(_rel_to_root(args.verify), encoding="utf-8") as fh:
+                payload = _json.load(fh)
+            items = (payload.get("attestations")
+                     if isinstance(payload, dict) and "attestations" in payload
+                     else [payload])
+            key = attest.read_key_file(args.key_file) if args.key_file else None
+            results = []
+            for att in items:
+                ok, issues, level = attest.verify(att, ROOT, key=key)
+                results.append({"subject": (att.get("subject") or {}).get("path"),
+                                "ok": ok, "level": level, "issues": issues})
+            all_ok = bool(results) and all(r["ok"] for r in results)
+            if args.json:
+                print(_json.dumps({"ok": all_ok, "results": results},
+                                  ensure_ascii=False, indent=2))
+            else:
+                print("== nf attest --verify（%d 件）==" % len(results))
+                for r in results:
+                    print("  %s %-34s 信任级：%s"
+                          % ("✓" if r["ok"] else "✗", r["subject"], r["level"]))
+                    for i in r["issues"]:
+                        print("    [FAIL] %s" % i, file=sys.stderr)
+            return 0 if all_ok else 1
+        targets = [args.target] if args.target else list(attest.DEFAULT_SUBJECTS)
+        key = attest.read_key_file(args.key_file) if args.key_file else None
+        items = []
+        for t in targets:
+            att = attest.build(_rel_to_root(t), ROOT, issuer=args.issuer)
+            if key:
+                att = attest.sign_hmac(att, key)
+            items.append(att)
+        payload = (items[0] if len(items) == 1
+                   else {"schema": "nf-attest-set/1", "attestations": items})
+        if args.out:
+            out_path = (args.out if os.path.isabs(args.out)
+                        else os.path.join(ROOT, args.out))
+            os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
+            with open(out_path, "w", encoding="utf-8",
+                      newline="\n") as fh:
+                fh.write(_json.dumps(payload, ensure_ascii=False,
+                                     indent=2, sort_keys=True) + "\n")
+        if args.json:
+            print(_json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf attest（%d 件）==" % len(items))
+            for att in items:
+                sig = att.get("signature") or {}
+                print("  %s  %-34s 级=%s  信封=%s"
+                      % (att["subject"]["sha256"][:12], att["subject"]["path"],
+                         sig.get("scheme") or "digest_only",
+                         att["envelope_digest"][:12]))
+            if args.out:
+                print("  写入：%s" % os.path.relpath(
+                    os.path.abspath(out_path), ROOT).replace("\\", "/"))
+            if not key:
+                print("  提示：未加 --key-file → digest_only 级（只证一致，"
+                      "不证诚实性）；对外可验证需 hmac 密钥或 sigstore 外挂锚。",
+                      file=sys.stderr)
+        return 0
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 1
+
+
+def _cmd_lint(args):
+    """nf lint：机械检查/修复（与 doc_hygiene / prose_lint 同源判据）。"""
+    from core import autofix
+    import json as _json
+    try:
+        if args.target:
+            targets = []
+            for t in args.target:
+                p = t if os.path.isabs(t) else os.path.join(ROOT, t)
+                if os.path.isdir(p):
+                    for dirpath, _dirs, files in os.walk(p):
+                        targets += [os.path.join(dirpath, f) for f in sorted(files)
+                                    if f.endswith(".md")]
+                elif os.path.exists(p):
+                    targets.append(p)
+                else:
+                    print("  ✗ 目标不存在：%s" % t, file=sys.stderr)
+                    return 1
+        else:
+            from core import doc_hygiene as dh
+            rels = sorted(set(dh.REQUIRED_DOCS) | set(dh.INSTRUCTION_DOCS))
+            targets = [os.path.join(ROOT, r) for r in rels
+                       if os.path.exists(os.path.join(ROOT, r))]
+        reports, prose = [], []
+        for p in targets:
+            if args.fix:
+                rep = autofix.fix_file(p, root=ROOT, dry_run=args.dry_run)
+                if rep["rules"]:
+                    reports.append(rep)
+            else:
+                with open(p, encoding="utf-8") as fh:
+                    text = fh.read()
+                rules = autofix.lint_rules(p, text, ROOT)
+                if rules:
+                    reports.append({"path": p, "changed": False,
+                                    "rules": [r["rule"] for r in rules]})
+            if args.prose:
+                from core import prose_lint
+                extra = prose_lint.load_custom_terms(ROOT)
+                with open(p, encoding="utf-8") as fh:
+                    for f in prose_lint.lint_text(fh.read(), extra_terms=extra):
+                        f = dict(f)
+                        f["path"] = os.path.relpath(p, ROOT).replace("\\", "/")
+                        prose.append(f)
+        if args.json:
+            print(_json.dumps({"mechanical": reports, "prose": prose},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            mode = ("修复（dry-run）" if args.dry_run
+                    else "修复" if args.fix else "报告")
+            print("== nf lint（%s · %d 目标）==" % (mode, len(targets)))
+            for rep in reports:
+                rel = os.path.relpath(rep["path"], ROOT).replace("\\", "/")
+                print("  %s %s" % ("✎" if rep.get("changed") else "·", rel))
+                print("      %s" % "、".join(rep["rules"]))
+            if not reports:
+                print("  ✓ 机械面无待办")
+            if prose:
+                print("  正文 lint：%d 条" % len(prose))
+                for f in prose[:20]:
+                    print("    [%s] %s:%d %s" % (f["rule"], f["path"],
+                                                f["line"], f["message"]))
+        if args.fix:
+            return 0
+        return 1 if (reports or prose) else 0
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 1
+
+
+def _cmd_conformance(args):
+    """nf conformance：一致性报告工件（9 契约 → Merkle 根 + verdict）。"""
+    from core import conformance_report as cr
+    import json as _json
+    if args.write:
+        rel = cr.write(ROOT)
+        doc = cr.run(ROOT)
+        print("== nf conformance --write ==")
+        print("  报告已写入：%s" % rel)
+        print("  verdict：%s（%d/%d 契约通过）· root=%s"
+              % (doc["verdict"], doc["passed"], doc["total"], doc["root"][:16]))
+        return 0 if doc["verdict"] == "conformant" else 1
+    issues, stats = cr.verify_committed(ROOT)
+    doc = cr.run(ROOT)
+    if args.json:
+        print(_json.dumps({"report": doc, "issues": issues},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf conformance（一致性报告）==")
+        print("  %s · %d/%d 契约 · root=%s"
+              % (doc["verdict"], doc["passed"], doc["total"], doc["root"][:16]))
+        for c in doc["contracts"]:
+            print("  %s %-30s %s" % ("✓" if c["ok"] else "✗", c["id"], c["detail"][:60]))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+    return 1 if (issues or doc["verdict"] != "conformant") else 0
+
+
+def _cmd_receipts(args):
+    """nf receipts：协议层回执单根（生成 / 校验 / 单条验证）。"""
+    from core import receipts as rc
+    import json as _json
+    path = os.path.join(ROOT, rc.PROTOCOL_RECEIPTS_REL)
+    if args.write:
+        rel = rc.write_scope(ROOT, scope=args.scope)
+        doc = rc.build_scope(ROOT, scope=args.scope)
+        print("  ✓ 协议层回执已写入：%s（根 %s · %d 件）"
+              % (rel, doc["root"][:16], doc["count"]))
+        return 0
+    if not os.path.exists(path):
+        print("  ✗ 缺协议层回执（修复指引：nf receipts --write）", file=sys.stderr)
+        return 1
+    with open(path, encoding="utf-8") as fh:
+        doc = _json.load(fh)
+    if args.entry:
+        hit = next((e for e in doc.get("entries") or []
+                    if e.get("id") == args.entry), None)
+        if hit is None:
+            print("  ✗ 回执中没有该件：%s" % args.entry, file=sys.stderr)
+            return 1
+        folded = rc.fold_proof(str(hit["leaf"]), hit.get("proof") or [])
+        ok = folded == str(doc.get("root"))
+        print("== nf receipts --entry %s ==" % hit["id"])
+        print("  折叠 %s · 根 %s → %s"
+              % (folded[:16], str(doc.get("root"))[:16], "✓ 一致" if ok else "✗ 不一致"))
+        return 0 if ok else 1
+    issues, stats = rc.verify_scope(doc, ROOT)
+    if args.json:
+        print(_json.dumps({"issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf receipts --scope %s（%d 件 · root=%s）=="
+              % (args.scope, stats.get("entries", 0), str(stats.get("root"))[:16]))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ 每条回执折叠到根，且根与实时重算一致")
+    return 1 if issues else 0
+
+
+def _cmd_events(args):
+    """nf events：全仓事件背书核对。"""
+    from core import registry_cross as rx
+    import json as _json
+    issues, warns, stats = rx.scan(ROOT)
+    if args.json:
+        print(_json.dumps({"issues": issues, "warns": warns, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf events（全仓事件背书）==")
+        print("  事件 %d · 跨包 %d · 无发布方挂账 %d"
+              % (stats["events"], len(stats["cross_pkg"]),
+                 len(warns) - len(stats["cross_pkg"])))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        for wmsg in warns[:10]:
+            print("  [note] %s" % wmsg)
+        if not issues:
+            print("  ✓ 每个被订阅的事件都有发布方（外部通道已显式挂账）")
+    return 1 if issues else 0
+
+
+def _cmd_approve(args):
+    """nf approve：内容绑定批准记录（生成 / 校验）。"""
+    from core import approval
+    import json as _json
+    if args.list:
+        rows = approval.list_records(ROOT)
+        if args.json:
+            print(_json.dumps(rows, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf approve --list（%d 条）==" % len(rows))
+            for r in rows:
+                print("  %s %-42s by %-12s %s%s"
+                      % ("✗失效" if r["stale"] else "✓有效", r["subject"],
+                         r["approved_by"] or "-", r["approved_at"],
+                         ("　· " + r["note"][:30]) if r["note"] else ""))
+            if not rows:
+                print("  （暂无记录）")
+        return 0
+    if args.verify:
+        issues, stats = approval.verify(ROOT)
+        if args.json:
+            print(_json.dumps({"issues": issues, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf approve --verify（%d 条）==" % stats.get("records", 0))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 全部批准记录有效（内容绑定未失效）")
+        return 1 if issues else 0
+    if not args.subject:
+        print("  ✗ 需要被批准对象路径（或 --verify）（修复指引：nf approve <path> --by <人>）",
+              file=sys.stderr)
+        return 2
+    try:
+        rel = approval.approve(ROOT, args.subject, args.by, args.note)
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 1
+    if args.json:
+        print(_json.dumps({"ok": True, "record": rel}, ensure_ascii=False, indent=2))
+    else:
+        print("  ✓ 批准记录已写入：%s（对象改动即自动失效）" % rel)
+    return 0
+
+
+def _cmd_library(args):
+    """nf library：云端图书馆机器面（真源 = 条目 frontmatter）。"""
+    from core import library as lib
+    import json as _json
+    sub = getattr(args, "library_cmd", None) or "ls"
+    if sub == "ls":
+        rows = lib.entries(ROOT)
+        if args.json:
+            print(_json.dumps(lib.to_manifest(ROOT), ensure_ascii=False,
+                              indent=2, sort_keys=True))
+        else:
+            print("== nf library ls（%d 件）==" % len(rows))
+            for e in rows:
+                fm = e["fm"]
+                print("  %-32s %-10s %-6s %s" % (
+                    e["id"], str(fm.get("status") or "active"),
+                    str(fm.get("license") or "-"), str(fm.get("title") or "")))
+        return 0
+    if sub == "show":
+        want = args.entry.strip()
+        hit = None
+        for e in lib.entries(ROOT):
+            if e["id"] == want or e["id"].lower() == want.lower():
+                hit = e
+                break
+        if hit is None:
+            print("  ✗ 条目未找到：%s（nf library ls 可枚举；大小写用 ALIAS 转译）"
+                  % args.entry, file=sys.stderr)
+            return 1
+        if args.json:
+            print(_json.dumps({"id": hit["id"], "path": hit["path"],
+                               "frontmatter": hit["fm"]},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf library show %s ==" % hit["id"])
+            print("  路径：%s" % hit["path"])
+            for k in sorted(hit["fm"]):
+                print("  %-14s %s" % (k + ":", hit["fm"][k]))
+        return 0
+    if sub == "reindex":
+        out = lib.write_projection(ROOT)
+        if args.json:
+            print(_json.dumps(out, ensure_ascii=False, indent=2))
+        else:
+            print("== nf library reindex ==")
+            print("  重生成：%s" % ("、".join(out["changed"]) if out["changed"]
+                                    else "无变化（投影已是最新）"))
+        return 0
+    if sub == "verify":
+        vkey = None
+        if getattr(args, "key_file", ""):
+            from core import attest as _att2
+            vkey = _att2.read_key_file(args.key_file)
+        issues, warns, stats = lib.verify(
+            ROOT, key=vkey,
+            ssh_allowed_signers=getattr(args, "ssh_allowed_signers", ""),
+            ssh_identity=getattr(args, "ssh_identity", ""))
+        proj = lib.check_projection(ROOT)
+        if args.json:
+            print(_json.dumps({"issues": issues, "projection": proj,
+                               "warns": warns, "stats": {k: v for k, v in stats.items()
+                                                         if k != "warns"}},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf library verify（图书馆门）==")
+            print("  条目 %d · 在役 %d · WARN %d"
+                  % (stats["entries"], stats["active"], len(warns)))
+            for i in list(issues) + list(proj):
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            for w in warns:
+                print("  [WARN] %s" % w)
+            if not issues and not proj:
+                print("  ✓ frontmatter 真源 + INDEX/ALIAS 投影一致")
+        return 1 if (issues or proj) else 0
+    if sub == "search":
+        hits = lib.search(args.query, ROOT)
+        if args.json:
+            print(_json.dumps(hits, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf library search「%s」（%d 命中）==" % (args.query, len(hits)))
+            for h in hits:
+                print("  %-32s %-6s %s" % (h["id"], h["score"], h["title"]))
+                print("      %s" % h["path"])
+        return 0
+    if sub in ("deprecate", "restore", "supersede"):
+        if sub == "supersede":
+            path = lib.set_status(ROOT, args.entry, "superseded", superseded_by=args.by)
+            msg = "已取代：%s → %s" % (args.entry, args.by)
+        else:
+            new = "deprecated" if sub == "deprecate" else "active"
+            path = lib.set_status(ROOT, args.entry, new)
+            msg = "生命周期 → %s：%s" % (new, args.entry)
+        if args.json:
+            print(_json.dumps({"ok": True, "path": path, "message": msg},
+                              ensure_ascii=False, indent=2))
+        else:
+            print("  ✓ %s（投影已重建；%s）" % (msg, path))
+        return 0
+    if sub == "receipts":
+        from core import receipts as rc
+        if args.entry:
+            if not os.path.exists(os.path.join(ROOT, rc.RECEIPTS_REL)):
+                print("  ✗ 缺回执文件（修复指引：nf library receipts --write）",
+                      file=sys.stderr)
+                return 1
+            doc = rc.load(ROOT)
+            want = args.entry.strip().lower()
+            hit = next((e for e in doc.get("entries") or []
+                        if str(e.get("id", "")).lower() == want), None)
+            if hit is None:
+                print("  ✗ 回执中没有该条目：%s（修复指引：nf library ls 列全量编号）"
+                      % args.entry, file=sys.stderr)
+                return 1
+            folded = rc.fold_proof(str(hit["leaf"]), hit.get("proof") or [])
+            ok = folded == str(doc.get("root"))
+            if args.json:
+                print(_json.dumps({"id": hit["id"], "ok": ok, "root": doc.get("root"),
+                                   "folded": folded, "path": hit.get("path"),
+                                   "leaf": hit.get("leaf"), "proof": hit.get("proof")},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf library receipts --entry %s ==" % hit["id"])
+                print("  回执折叠：%s" % folded[:24])
+                print("  全馆根　：%s" % str(doc.get("root"))[:24])
+                print("  %s（拿到该条内容 + 本回执即可本地自验，无需全馆）"
+                      % ("✓ 一致" if ok else "✗ 不一致"))
+            return 0 if ok else 1
+        if args.write:
+            rel = rc.write(ROOT)
+            doc = rc.build(ROOT)
+            print("  ✓ 回执已写入：%s（根 %s · %d 条）"
+                  % (rel, doc["root"][:16], doc["count"]))
+            return 0
+        if not os.path.exists(os.path.join(ROOT, rc.RECEIPTS_REL)):
+            print("  ✗ 缺回执文件（修复指引：nf library receipts --write）",
+                  file=sys.stderr)
+            return 1
+        issues, stats = rc.verify(rc.load(ROOT), ROOT)
+        if args.json:
+            print(_json.dumps({"issues": issues, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf library receipts（%d 条 · root=%s）=="
+                  % (stats.get("entries", 0), str(stats.get("root"))[:16]))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 每条回执折叠到根，且根与实时重算一致")
+        return 1 if issues else 0
+    if sub == "attest":
+        from core import library as nflib2
+        from core import attest as _att
+        key = _att.read_key_file(args.key_file) if args.key_file else None
+        out = nflib2.set_attestation(
+            ROOT, args.entry, key=key,
+            ssh_key=getattr(args, "ssh_key", ""),
+            ssh_identity=getattr(args, "ssh_identity", ""))
+        if args.json:
+            print(_json.dumps(out, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf library attest %s ==" % out["id"])
+            print("  信任级：%s%s" % (out["level"],
+                                     "" if not out.get("key_id")
+                                     else "（key_id %s）" % out["key_id"]))
+            print("  attestation：%s" % out["attestation"])
+            print("  已写入 frontmatter（attestation/attested_at%s），投影已重建"
+                  % ("/anchor_*" if out.get("key_id") else ""))
+        return 0
+    print("  ✗ 未知 library 子命令：%s" % sub, file=sys.stderr)
+    return 2
+
+
+def _cmd_telemetry(args):
+    """nf telemetry：trace 记录 → OTel GenAI semconv 属性 / OTLP 形状。"""
+    from core import telemetry_semconv as ts
+    import json as _json
+    try:
+        records = ts.load_trace(args.trace)
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 1
+    if not records:
+        print("  ✗ trace 为空或格式不识别（支持单条记录或 {records:[...]}）",
+              file=sys.stderr)
+        return 1
+    if args.otlp:
+        print(_json.dumps(ts.to_export(records), ensure_ascii=False, indent=2,
+                          sort_keys=False))
+        return 0
+    print("== nf telemetry（%d 记录 → semconv 属性）==" % len(records))
+    for r in records:
+        print("  %s" % ts.tool_name_of(r))
+        for k, v in sorted(ts.attributes_for(r).items()):
+            print("    %-28s %s" % (k, _json.dumps(v, ensure_ascii=False)))
+    return 0
+
+
+def _cmd_license(args):
+    """nf license：图书馆许可证门（登记行 + 内联声明双源）。"""
+    from core import license_gate as lg
+    import json as _json
+    issues, stats = lg.scan(ROOT)
+    if args.json:
+        print(_json.dumps({"issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf license（图书馆许可证门）==")
+        print("  登记 %d 件 · 已声明 %d · 未声明 %d · 无内联 %d · 双源不一致 %d"
+              % (stats["entries"], stats["declared"], len(stats["undeclared"]),
+                 len(stats["no_inline"]), len(stats["mismatched"])))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        for w in stats["warnings"]:
+            print("  [WARN] %s" % w)
+        if not issues:
+            print("  ✓ 许可面无 FAIL（WARN 为待投稿人回填项，不阻断入库）")
+    return 1 if issues else 0
+
+
+def _cmd_lsp(args):
+    """nf lsp：最小 LSP 服务器（stdio）。"""
+    from core import lsp as lsp_mod
+    root = args.root or ROOT
+    return lsp_mod.LspServer(root=root).serve()
+
+
+def _cmd_score(args):
+    """nf score：基线相对回归评分（绝对门之上的 no-silent-worsening 面）。"""
+    from core import regression_score as rs
+    from datetime import datetime, timezone
+    import json as _json
+    try:
+        cur = rs.evaluate(ROOT)
+        base_rel = args.baseline or rs.DEFAULT_BASELINE
+        base_path = (base_rel if os.path.isabs(base_rel)
+                     else os.path.join(ROOT, base_rel))
+        baseline = (rs.load_baseline(base_path) if os.path.exists(base_path)
+                    else {"schema": rs.SCHEMA})
+        exceptions = []
+        if args.exceptions:
+            exc_path = (args.exceptions if os.path.isabs(args.exceptions)
+                        else os.path.join(ROOT, args.exceptions))
+            with open(exc_path, encoding="utf-8") as fh:
+                exceptions = _json.load(fh)
+        out = rs.compare(cur, baseline, tolerance=args.tolerance,
+                         exceptions=exceptions)
+        if args.write_baseline:
+            rs.save_baseline(base_path, cur,
+                             recorded_at=datetime.now(timezone.utc)
+                             .strftime("%Y-%m-%dT%H:%M:%SZ"),
+                             note="nf score --write-baseline")
+        if args.json:
+            print(_json.dumps({"current": cur, "compare": out},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf score（基线相对回归评分）==")
+            print("  当前 %.2f · 基线 %.2f · delta %+.2f · 容差 %.2f"
+                  % (out["current_score"], out["baseline_score"],
+                     out["delta"], args.tolerance))
+            print("  %s" % out["verdict"])
+            for s in cur["signals"]:
+                print("  · %-18s w=%.2f v=%.2f" % (s["name"], s["weight"], s["value"]))
+            for r in out["regressed"]:
+                print("    [REGRESS] %s %.4f → %.4f（%.4f）"
+                      % (r["signal"], r["from"], r["to"], r["drop"]),
+                      file=sys.stderr)
+            if args.write_baseline:
+                print("  基线已写入：%s" % os.path.relpath(
+                    os.path.abspath(base_path), ROOT).replace("\\", "/"))
+        return 0 if out["ok"] else 1
+    except (OSError, ValueError, _json.JSONDecodeError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 1
+
+
 def _cmd_diff(args):
     """nf diff：41 波C C2 —— 结构化差异 + 兼容判定。"""
     from core import knowledge_sig as ks
@@ -1400,8 +2259,9 @@ def _cmd_doctor(args):
     try:
         from core import quality_baseline as qb
         q_issues, q_stats = qb.scan(ROOT)
-        chk("基线自描述一致（verify %s · check1-%d PASS=51）"
-            % (q_stats["verify_version"], q_stats["checks"]), not q_issues,
+        chk("基线自描述一致（verify %s · check1-%d PASS=%d）"
+            % (q_stats["verify_version"], q_stats["checks"], qb.EXPECTED_PASS),
+            not q_issues,
             "verify/README/CHANGELOG/VERSION-MATRIX")
     except Exception as exc:
         chk("基线自描述一致", False, str(exc))
@@ -1928,6 +2788,28 @@ def main(argv=None) -> int:
         return _cmd_module(args)
     if args.cmd == "sig":
         return _cmd_sig(args)
+    if args.cmd == "attest":
+        return _cmd_attest(args)
+    if args.cmd == "score":
+        return _cmd_score(args)
+    if args.cmd == "lint":
+        return _cmd_lint(args)
+    if args.cmd == "lsp":
+        return _cmd_lsp(args)
+    if args.cmd == "license":
+        return _cmd_license(args)
+    if args.cmd == "telemetry":
+        return _cmd_telemetry(args)
+    if args.cmd == "library":
+        return _cmd_library(args)
+    if args.cmd == "conformance":
+        return _cmd_conformance(args)
+    if args.cmd == "approve":
+        return _cmd_approve(args)
+    if args.cmd == "events":
+        return _cmd_events(args)
+    if args.cmd == "receipts":
+        return _cmd_receipts(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

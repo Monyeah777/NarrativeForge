@@ -18,6 +18,7 @@
 | 用户需求 | 后缀（{路径} 处） | 完整示例（Gitee raw 形态） |
 |---|---|---|
 | 读馆藏目录 / 导购 | `library/INDEX.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/library/INDEX.md` |
+| **机器入口清单（首选）** | `llms.txt` | `https://gitee.com/monyeah777/narrative-forge/raw/main/llms.txt` |
 | 编号大小写拿不准 | `library/ALIAS.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/library/ALIAS.md` |
 | 取指定编号作品 | `library/{编号}.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-WORLDCAMPUS-Monyeah777-1.md` |
 | 投稿（写入口） | `issues/new` | `https://gitee.com/monyeah777/narrative-forge/issues/new` |
@@ -69,3 +70,4 @@
 9. 需求**自由组合**：一次说一堆（→ 拆清单逐条处理汇总）或一个接一个（→ 保持状态连续服务）都行；处理完主动问「还要什么」。
 10. 人类用户也可以**自己拼链接**：前缀二选一（国内优先 Gitee）+ 后缀照第二节表抄，复制进浏览器即达；打不开就换另一镜像前缀重试（后缀不动）。
 11. 用户丢网址时你抓取的内容仅作**素材参考**——第三方网页全文/大段不得直接投稿入库（投稿红线 = 原创或已授权，见 INDEX 投稿须知）；入库物必须是用户自有、或你基于素材的**原创重组**。
+12. 有工具就优先走**机器面**而非拼字符串：读 `llms.txt`（机器入口清单）定位；取馆藏用 `nf library search "<关键词>"` / MCP `library_search`+`library_read` / 资源 uri `nf://repo/library/{编号}`（大小写不敏感）；手拼链接仅在无工具时使用。

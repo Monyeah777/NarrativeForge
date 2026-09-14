@@ -219,6 +219,8 @@ def main():
     one_line = clean_val(meta.get('一句话') or '') or '（见文件）'
     seg1 = clean_val(meta.get('档位词', ''))
     seg2 = clean_val(meta.get('自定义段', ''))
+    # 许可列（许可证门判据同源）：投稿写了就用，没写记「未声明」并入库提示挂账
+    lic = clean_val(meta.get('许可') or '') or '未声明'
 
     # ---- 3. 校验档位/自定义段 + 分配编号 ----
     if bool(seg1) != bool(seg2):
@@ -259,46 +261,38 @@ def main():
     print(f'编号分配: {nfid}（前缀 {key}，第 {next_n} 件，36进制序号 {seq}）→ {fname}')
 
     # ---- 4. 写入产物文件（含入库注记头）----
+    # 真源 = YAML frontmatter（OKF 借鉴：provenance/trust/lifecycle 一等字段）；
+    # INDEX / ALIAS 不再逐行改，改由 core.library.write_projection 全量重生成。
+    frontmatter = (
+        '---\n'
+        f'id: {nfid}\n'
+        f'type: {topic}\n'
+        f'title: {title}\n'
+        f'description: {one_line}\n'
+        f'author: {AUTHOR}\n'
+        f'license: {lic}\n'
+        f'generated: {today}\n'
+        'status: active\n'
+        'sources:\n'
+        f'  - Issue #{N}（NF 投稿通道）\n'
+        '---\n\n'
+    )
     header = (
         f'> 📚 **NF 云端图书馆条目 {nfid}** · 入库 {today} · 投稿人：{AUTHOR} · 来源：Issue #{N}\n'
         f'> 形态/领域：{topic} · 一句话：{one_line}\n'
+        f'> 许可：{lic}（真源 = 文件头 frontmatter；INDEX 为投影）\n'
         f'> 本文为社区投稿副本，版权归投稿人；引用/衍生请注明来源；如需下架请联系作者。\n'
         f'> 自包含声明：本文件自带「是什么 + 怎么用」，AI 单文件即可正确使用。\n\n---\n\n'
     )
     with open(fname, 'w', encoding='utf-8') as f:
-        f.write(header + body_main.rstrip() + '\n')
+        f.write(frontmatter + header + body_main.rstrip() + '\n')
     print(f'已写入 {fname}（{len(body_main)} 字符）')
 
-    # ---- 5. 更新 INDEX 登记表（最后一个数据行后插入）----
-    with open('library/INDEX.md', encoding='utf-8') as f:
-        index = f.read()
-    lines = index.split('\n')
-    last_row = -1
-    for i, ln in enumerate(lines):
-        if re.match(r'^\|\s*NF-', ln):
-            last_row = i
-    new_row = f'| {nfid} | {title} | {topic} | {AUTHOR} | {today} | {one_line} |'
-    if last_row >= 0:
-        lines.insert(last_row + 1, new_row)
-    else:
-        print('⚠ 未匹配到登记表数据行，尝试定位登记表区追加')
-        sec_start = -1
-        for i, ln in enumerate(lines):
-            if ln.startswith('## 登记表'):
-                sec_start = i
-            elif sec_start >= 0 and ln.startswith('## '):
-                break
-        if sec_start >= 0:
-            lines.insert(sec_start + 1, new_row)
-        else:
-            print('⚠ 未找到登记表区，INDEX 未插入（人工补录）')
-            lines.append(new_row)
-    with open('library/INDEX.md', 'w', encoding='utf-8') as f:
-        f.write('\n'.join(lines))
-    print(f'INDEX 已插入: {new_row}')
-
-    # ---- 6. 重建 ALIAS（全量）----
-    rebuild_alias()
+    # ---- 5. 重生成 INDEX 生成区 + ALIAS（投影；真源 = 条目 frontmatter）----
+    sys.path.insert(0, 'desktop/src')
+    from core import library as nflib                       # noqa: E402
+    out = nflib.write_projection('.')
+    print(f'投影已重生成: {out["changed"] or "无变化"}')
 
     # ---- 7. 提交推送 ----
     if DRY:

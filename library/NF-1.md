@@ -1,5 +1,33 @@
+---
+id: NF-1
+type: 世界（校园情感装配样本）
+title: 校园情感流（高二 · 毕业遗憾线）
+description: 官方装配样本：P02 校园情感管线 + 幽灵遗憾模块（引用式档位，示范诚实纪律）
+author: NarrativeForge（NF）作者
+license: MIT
+generated: 2026-09-06
+verified: 2026-09-14
+status: active
+stale_after: 2027-03-14
+sources:
+  - community/校园情感领域包
+  - 04_模块库
+tags:
+  - 校园情感
+  - 装配样本
+  - 引用式
+attestation: b90173a7148194031a2c63f75407ee14143667b61a4c4d22e12a93b27cab1cf9
+attested_at: 2026-09-14
+anchor_scheme: ssh-sig
+anchor_ns: nf-attest
+anchor_identity: nf-demo@local
+anchor_sig_file: library/anchors/NF-1.sig
+anchor_fingerprint: SHA256:RytmBjDCNbJ7He6VN9UHzVO/QtTc8HG3h5vP9ZIFrwg
+---
+
 # 叙事世界完整版：校园情感流（高二 · 毕业遗憾线）
 > 📚 NF 云端图书馆条目 **NF-1** · 入库 2026-09-07 · 投稿人：NarrativeForge（NF）作者 · 类型：装配样本（历史引用式件——正文含引用与缺口声明；普通入馆件一律须自包含可召回）
+> 许可：MIT（登记表同列同值；许可证门校验双源一致）
 
 > 版本：1.0.0 · 装配师：Operit（扮演外部 Agent）· 日期：2026-09-06 · 规范源：https://github.com/Monyeah777/NarrativeForge
 > 档位：**轻量引用式**（规格自包含、正文引用式）——题材模块含原文浓缩版与契约摘要，核心模块与资产全文以路径引用；离线自包含档需内嵌全文（见 ## 0 缺口声明）。

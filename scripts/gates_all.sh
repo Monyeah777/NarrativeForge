@@ -34,6 +34,6 @@ else
   echo "  skip：本地未装 coverage（CI coverage job 兜底）"
 fi
 
-echo "== 闸门 3/3 · verify（check1-27 PASS=41 铁律）=="
+echo "== 闸门 3/3 · verify（check1-32 PASS=51 铁律）=="
 bash verify.sh
 echo "== 三闸门全绿 =="

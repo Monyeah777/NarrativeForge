@@ -1,0 +1,4 @@
+interface:
+  display_name: "NarrativeForge"
+  short_description: "Use NarrativeForge to assemble and verify content"
+  default_prompt: "Use $narrativeforge to assemble a complete content work or operate the NarrativeForge CLI."

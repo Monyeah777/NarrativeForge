@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contract.schema.json",
-  "title": "模块头 machine_contract 机读契约块（01 §1.1 九键）",
+  "title": "模块头 machine_contract 机读契约块（01 §1.1 九键 + 可选 io_types 类型面）",
   "description": "模块文档内 machine_contract yaml 围栏的 IDL 定义；check16/26 消费的机读真相。",
   "type": "object",
   "required": ["schema", "id", "name", "category", "layer", "inputs", "outputs", "events", "interfaces", "conformance"],
@@ -56,6 +56,27 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
       "description": "对外查询接口面；零事件模块不得以空契约隐式脱离联动面"
+    },
+    "io_types": {
+      "type": "object",
+      "description": "I/O 类型面（01 §7 V1 字段级新增，可选）：outputs = token→kind、inputs = 依赖模块→期望 kind；untyped 为合法值（显式未收窄），不得编造具体类型",
+      "properties": {
+        "outputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": ["string", "integer", "number", "boolean", "array", "object", "event", "state", "untyped"]
+          }
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": ["string", "integer", "number", "boolean", "array", "object", "event", "state", "untyped"]
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "tool_face": {
       "type": "array",

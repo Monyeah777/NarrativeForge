@@ -21,11 +21,15 @@ C7 只读工具面（41_v2.8.0_波C质量编译深化规划，2026-09-08）：
 - 数据源 = 本仓库只读扫描（03_管线库/04_模块库/community/*/docs/registry.json），
   不改 C2 只读安全层（全部只读，无 tools 写路径）。
 
-协议事实（schema.ts 2025-11-25 权威）：
-- LATEST_PROTOCOL_VERSION = "2025-11-25"；JSONRPC_VERSION = "2.0"
+协议事实（2026-07-28 规范 basic/versioning + server/discover 实证；dual-era 服务器）：
+- modern（2026-07-28 起）：无协商握手——每请求以 `_meta` 携带协议版本/身份/能力；
+  版本不受支持 → UnsupportedProtocolVersionError（-32022，data={supported,requested}）。
+- legacy（2025-11-25 及更早）：`initialize` 握手建会话；本运行时保留双时代兼容
+  （术语见规范 §Versioning：modern / legacy / dual-era）。
+- `server/discover`：现代服务器 MUST 实现——一次返回 supportedVersions /
+  capabilities / serverInfo(_meta) 与可选 instructions / ttlMs / cacheScope。
 - initialize 响应：{protocolVersion, capabilities, serverInfo: Implementation}
-- notifications/initialized 是通知（无 id）→ 不应答
-- ping → EmptyResult（{}）
+- notifications/initialized 是通知（无 id）→ 不应答；ping → EmptyResult（{}）
 - 标准错误码：PARSE_ERROR=-32700 / INVALID_REQUEST=-32600 / METHOD_NOT_FOUND=-32601 /
   INVALID_PARAMS=-32602 / INTERNAL_ERROR=-32603
 
@@ -41,9 +45,19 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, TextIO
 
-#: 协议版本常量（schema.ts L12 实证）
-PROTOCOL_VERSION = "2025-11-25"
+#: 双时代协议版本常量（2026-07-28 规范 §Versioning 实证）
+MODERN_PROTOCOL_VERSION = "2026-07-28"
+LEGACY_PROTOCOL_VERSION = "2025-11-25"
+SUPPORTED_VERSIONS = (MODERN_PROTOCOL_VERSION, LEGACY_PROTOCOL_VERSION)
+#: 默认对外声明版本 = 支持的最新版本（历史引用点语义不变，值随规范前移）
+PROTOCOL_VERSION = MODERN_PROTOCOL_VERSION
 JSONRPC_VERSION = "2.0"
+
+#: 每请求 _meta 保留键（2026-07-28 规范 §Versioning + §Discovery 实证）
+META_PROTOCOL_VERSION = "io.modelcontextprotocol/protocolVersion"
+META_CLIENT_INFO = "io.modelcontextprotocol/clientInfo"
+META_CLIENT_CAPABILITIES = "io.modelcontextprotocol/clientCapabilities"
+META_SERVER_INFO = "io.modelcontextprotocol/serverInfo"
 
 #: JSON-RPC 标准错误码（schema.ts L173-177 实证）
 PARSE_ERROR = -32700
@@ -51,11 +65,21 @@ INVALID_REQUEST = -32600
 METHOD_NOT_FOUND = -32601
 INVALID_PARAMS = -32602
 INTERNAL_ERROR = -32603
+#: 现代版本协商错误码（2026-07-28 basic/versioning 实证）
+UNSUPPORTED_PROTOCOL_VERSION = -32022
 
 
-def _err(code: int, message: str) -> dict:
-    return {"jsonrpc": JSONRPC_VERSION, "id": None, "error": {"code": code,
-                                                              "message": message}}
+def _err(code: int, message: str, data: Optional[dict] = None) -> dict:
+    err: Dict[str, Any] = {"code": code, "message": message}
+    if data is not None:
+        err["data"] = data
+    return {"jsonrpc": JSONRPC_VERSION, "id": None, "error": err}
+
+
+def _discover_instructions() -> str:
+    """server/discover 的 instructions 位（可选自然语言自述，非协议语义）。"""
+    return ("NarrativeForge 只读内容服务：可枚举并取回 NF 仓库的模块/管线/资产正文"
+            "（resources + 只读 tools/prompts）。无写路径。")
 
 
 def _repo_root() -> "Path":
@@ -102,11 +126,22 @@ TOOL_DEFS = [
     },
     {
         "name": "library_search",
-        "description": "仓库侧知识库检索（docs + community README + 编号方案文档），按标题/路径匹配。",
+        "description": ("仓库侧知识库检索：**馆藏条目（正文级，含标题/描述/标签/正文）** "
+                        "+ docs + community README + 编号方案文档。"),
         "inputSchema": {
             "type": "object",
             "properties": {"query": {"type": "string", "description": "检索串"}},
             "required": ["query"],
+        },
+    },
+    {
+        "name": "library_read",
+        "description": "取云端图书馆馆藏条目正文（按 NF 编号，大小写不敏感；返回 frontmatter + 全文）。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"entry_id": {"type": "string",
+                                        "description": "馆藏编号（如 NF-1 / nf-worldcampus-monyeah777-1）"}},
+            "required": ["entry_id"],
         },
     },
     {
@@ -187,27 +222,55 @@ def _tool_registry_query(query: str) -> dict:
 
 
 def _tool_library_search(query: str, limit: int = 10) -> list:
+    """只读检索：馆藏条目（frontmatter 真源，正文级）∪ 仓库文档标题/路径。"""
     root = _repo_root()
     q = query.strip()
     hits = []
+    try:
+        from core import library as nflib
+        for h in nflib.search(q, str(root), limit=limit):
+            hits.append({"kind": "library", "id": h["id"], "path": h["path"],
+                         "title": h["title"], "score": h["score"],
+                         "status": h["status"], "type": h["type"],
+                         "uri": "nf://repo/library/" + h["id"]})
+    except Exception:
+        pass
     for p in sorted(root.glob("*.md")):
         if p.name.startswith(("0", "4")) is False and not p.name[:2].isdigit():
             continue
         text = p.read_text(encoding="utf-8")
         title = _md_title(text)
         if q in p.name or q in title:
-            hits.append({"path": p.name, "title": title})
+            hits.append({"kind": "doc", "path": p.name, "title": title})
     for p in sorted((root / "docs").glob("*.md")):
         text = p.read_text(encoding="utf-8")
         title = _md_title(text)
         if q in p.name or q in title:
-            hits.append({"path": p.relative_to(root).as_posix(), "title": title})
+            hits.append({"kind": "doc", "path": p.relative_to(root).as_posix(),
+                         "title": title})
     for p in sorted((root / "community").glob("*/README.md")):
         text = p.read_text(encoding="utf-8")
         title = _md_title(text)
         if q in p.name or q in title:
-            hits.append({"path": p.relative_to(root).as_posix(), "title": title})
+            hits.append({"kind": "doc", "path": p.relative_to(root).as_posix(),
+                         "title": title})
     return hits[:limit]
+
+
+def _tool_library_read(entry_id: str) -> dict:
+    """按编号取馆藏条目正文（大小写不敏感；ALIAS 语义内建）。"""
+    from core import library as nflib
+    root = _repo_root()
+    want = (entry_id or "").strip()
+    for e in nflib.entries(str(root)):
+        if e["id"].lower() == want.lower():
+            text = Path(root, e["path"]).read_text(encoding="utf-8")
+            return {"found": True, "id": e["id"], "path": e["path"],
+                    "status": str(e["fm"].get("status") or "active"),
+                    "frontmatter": e["fm"],
+                    "bytes": len(text.encode("utf-8")), "text": text}
+    raise ValueError("馆藏条目未找到：%s（library_search 可枚举；编号大小写不敏感）"
+                     "（修复指引：用 nf library ls 列全量编号）" % entry_id)
 
 
 def _repo_module_index() -> list:
@@ -348,6 +411,7 @@ TOOL_HANDLERS = {
     "spec_ls": lambda a: _tool_spec_ls(),
     "registry_query": lambda a: _tool_registry_query((a or {}).get("query", "")),
     "library_search": lambda a: _tool_library_search((a or {}).get("query", "")),
+    "library_read": lambda a: _tool_library_read((a or {}).get("entry_id", "")),
     "module_read": lambda a: _tool_module_read((a or {}).get("module_id", "")),
     "pipeline_read": lambda a: _tool_pipeline_read((a or {}).get("pipeline", "")),
     "asset_get": lambda a: _tool_asset_get((a or {}).get("key", ""),
@@ -405,6 +469,15 @@ def _repo_resource_metas() -> list:
                 uri = "nf://repo/asset/" + up.quote(package, safe="") + "/" + up.quote(k, safe="")
                 metas.append({"uri": uri, "name": "资产 %s/%s" % (package, k),
                               "mimeType": "text/markdown", "package": package})
+    # 馆藏条目（library/）——与 module/pipeline/asset 同级并入可寻址资源面
+    try:
+        from core import library as nflib
+        for e in nflib.entries(str(root)):
+            metas.append({"uri": "nf://repo/library/" + up.quote(e["id"], safe=""),
+                          "name": "馆藏 %s" % e["id"],
+                          "mimeType": "text/markdown", "package": "图书馆"})
+    except Exception:
+        pass
     metas.sort(key=lambda m: m["uri"])
     return metas
 
@@ -418,6 +491,13 @@ def _repo_read_uri(uri: str) -> str:
     if len(parts) < 4 or parts[0] != "nf:" or parts[2] != "repo":
         raise KeyError(uri)
     kind = parts[3]
+    if kind == "library":
+        eid = up.unquote(parts[4])
+        from core import library as nflib
+        for e in nflib.entries(str(root)):
+            if e["id"].lower() == eid.lower():
+                return Path(root, e["path"]).read_text(encoding="utf-8")
+        raise KeyError(uri)
     if kind == "module":
         mid = up.unquote(parts[4])
         hit = _resolve_module(_repo_module_index(), mid)
@@ -446,6 +526,9 @@ def _repo_read_uri(uri: str) -> str:
 def _repo_resource_templates() -> list:
     """resources/templates/list：仓库内容寻址模板（URI 模板语义）。"""
     return [
+        {"uriTemplate": "nf://repo/library/{id}",
+         "name": "馆藏条目正文", "mimeType": "text/markdown",
+         "description": "按 NF 编号取云端图书馆条目正文（大小写不敏感）"},
         {"uriTemplate": "nf://repo/module/{id}",
          "name": "模块正文", "mimeType": "text/markdown",
          "description": "按模块 id / 限定 id 取正文"},
@@ -518,6 +601,19 @@ class McpRuntime:
         rid = msg.get("id")
         params = msg.get("params") or {}
 
+        # modern 版本协商：请求自带 _meta 版本时逐请求校验（规范 §Versioning——
+        # 「no negotiation handshake, every request declares its version」）。
+        requested_version = None
+        if isinstance(params, dict) and isinstance(params.get("_meta"), dict):
+            requested_version = params["_meta"].get(META_PROTOCOL_VERSION)
+        if isinstance(requested_version, str) and requested_version not in SUPPORTED_VERSIONS:
+            # MUST：不支持即以 -32022 列出支持集（客户端据此选版重试）
+            if is_request:
+                return _err(UNSUPPORTED_PROTOCOL_VERSION, "Unsupported protocol version",
+                            {"supported": list(SUPPORTED_VERSIONS),
+                             "requested": requested_version})
+            return None
+
         try:
             result = self._dispatch(method, params)
         except UnknownUriError:
@@ -543,6 +639,8 @@ class McpRuntime:
         return {"jsonrpc": JSONRPC_VERSION, "id": rid, "result": result}
 
     def _dispatch(self, method: str, params: dict) -> Any:
+        if method == "server/discover":
+            return self._discover(params)
         if method == "initialize":
             return self._initialize(params)
         if method == "resources/list":
@@ -565,10 +663,38 @@ class McpRuntime:
         return _NOT_IMPLEMENTED
 
     # ---- 方法实现 ----
-    def _initialize(self, params: dict) -> dict:
+    def _capabilities(self) -> dict:
+        """本服务器能力面（只读：resources/tools/prompts）。"""
+        return {"resources": {}, "tools": {}, "prompts": {}}
+
+    def _discover(self, params: dict) -> dict:
+        """server/discover（2026-07-28 规范 §Discovery：现代服务器 MUST 实现）。
+
+        一次请求返回支持版本 + 能力 + 身份（`_meta` serverInfo），供客户端选版；
+        附可选 instructions 与缓存提示（ttlMs/cacheScope）。
+        """
         return {
-            "protocolVersion": PROTOCOL_VERSION,
-            "capabilities": {"resources": {}, "tools": {}, "prompts": {}},
+            "resultType": "complete",
+            "supportedVersions": list(SUPPORTED_VERSIONS),
+            "capabilities": self._capabilities(),
+            "_meta": {META_SERVER_INFO: {"name": self.server_name,
+                                         "version": self.server_version}},
+            "instructions": _discover_instructions(),
+            "ttlMs": 3600000,
+            "cacheScope": "public",
+        }
+
+    def _initialize(self, params: dict) -> dict:
+        """legacy 握手（2025-11-25 及更早）：会话建在 legacy 版本上。
+
+        双时代纪律：走 initialize 的客户端按定义是 legacy 客户端——请求版本受支持
+        则回显，否则回落到最新 legacy 版本（modern 版本对其不可理解）。
+        """
+        requested = params.get("protocolVersion") if isinstance(params, dict) else None
+        version = requested if requested in SUPPORTED_VERSIONS else LEGACY_PROTOCOL_VERSION
+        return {
+            "protocolVersion": version,
+            "capabilities": self._capabilities(),
             "serverInfo": {"name": self.server_name, "version": self.server_version},
         }
 
@@ -602,6 +728,14 @@ class McpRuntime:
 
     def _read(self, params: dict) -> dict:
         uri = params.get("uri") if isinstance(params, dict) else None
+        # ALIAS 语义内建：馆藏 uri 大小写不敏感（仍受白名单约束——只认已登记条目）
+        if (isinstance(uri, str) and uri not in self._repo_meta
+                and uri.lower().startswith("nf://repo/library/")):
+            low = uri.lower()
+            for k in self._repo_meta:
+                if k.lower() == low:
+                    uri = k
+                    break
         if isinstance(uri, str) and uri in self._repo_meta:
             try:
                 text = _repo_read_uri(uri)
@@ -666,7 +800,7 @@ class McpRuntime:
                     stdout: Optional[TextIO] = None) -> int:
         """stdio transport 主循环：逐行读 stdin → handle → 写 stdout。
 
-        transport 纪律（modelcontextprotocol.io 2025-11-25 transports 页实证）：
+        transport 纪律（modelcontextprotocol.io transports 页实证；2026-07-28 口径不变）：
         消息以换行分隔、UTF-8、消息内不得含嵌入换行；stdout 只写 MCP 消息；
         stderr 可作日志通道（本实现静默，日志由调用方决定）。
         """

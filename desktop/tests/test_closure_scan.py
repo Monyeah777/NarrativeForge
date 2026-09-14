@@ -21,12 +21,19 @@ class ClosureScanTest(unittest.TestCase):
         self.assertGreaterEqual(len(s1["linked_events"]), 10)
 
     def test_orphan_side_reporting(self):
-        """文本侧孤儿（内容模块）只报告并标注所在模块，不 FAIL——覆盖不设闸。"""
-        _, stats = cs.scan(ROOT)
-        self.assertGreaterEqual(len(stats["sub_only_events"]), 5)
+        """文本侧孤儿只报告并标注所在模块，不 FAIL——覆盖不设闸。
+
+        L0 retro-fit 后社区模块的发布方可见，订阅侧孤儿面显著收敛
+        （历史 ≥5 → 现 0）；本测固定的是「只报告」这一契约，不是孤儿数量。
+        """
+        issues, stats = cs.scan(ROOT)
+        self.assertEqual(issues, [])
+        for key in ("sub_only_events", "pub_only_events", "sub_only_by_module"):
+            self.assertIn(key, stats)
+        self.assertIsInstance(stats["sub_only_events"], list)
+        self.assertIsInstance(stats["pub_only_events"], list)
         for module_ids in stats["sub_only_by_module"].values():
             self.assertIsInstance(module_ids, list)
-        self.assertGreaterEqual(len(stats["pub_only_events"]), 5)
 
 
 if __name__ == "__main__":

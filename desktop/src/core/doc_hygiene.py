@@ -16,6 +16,46 @@ import os
 INSTRUCTION_MARK = "⛔ 操作指令"
 LAST_UPDATED_PREFIX = "> 最后更新："
 
+#: 文档四型（机制借鉴 Diátaxis：tutorial 学习导向 / how-to 任务导向 /
+#: reference 信息导向 / explanation 理解导向）。NF 原有「指令类 / 资料类」二分
+#: 是**执行语义**（要不要读到即执行），四型是**用途语义**——两者并存，不互相替代。
+KINDS = ("tutorial", "how-to", "reference", "explanation")
+
+#: 文档 → 四型归属（关键文档与指令档全覆盖；新增关键文档须同步入表）
+DOC_KINDS = {
+    "01_核心协议.md": "reference",
+    "02_联动注册表.md": "reference",
+    "06_Agent执行协议.md": "how-to",
+    "07_官方核心出厂与社区预设导航.md": "reference",
+    "DEEP_DIVE.md": "explanation",
+    "AI_ROUTING.md": "how-to",
+    "agent_组装指令包_v0.2.md": "how-to",
+    "docs/mcp.md": "how-to",
+    "docs/ai-menu.md": "how-to",
+    "docs/ai-menu-fieldtest-v1.md": "how-to",
+    "docs/迁移指南-基于nf-sig-diff.md": "how-to",
+    "docs/attest.md": "how-to",
+    "docs/需求收敛模板.md": "reference",
+    "docs/42_M1_协议可执行性自测规范.md": "reference",
+    "docs/42_M1_P03_演练集.md": "tutorial",
+    "docs/42_M2_回合状态头_v1.md": "reference",
+    "docs/42_M3_纯度体检.md": "reference",
+    "docs/44_M1_执行演练扩展.md": "tutorial",
+    "docs/44_M2_AI通道内容规范.md": "reference",
+    "docs/45_执行遥测规范.md": "reference",
+    "docs/45_M2_回合级drill.md": "tutorial",
+    "docs/45_M3_techdoc载荷提案.md": "explanation",
+    "docs/library.md": "how-to",
+    "docs/receipts.md": "how-to",
+    "docs/conformance.md": "how-to",
+    "docs/io_types.md": "reference",
+    "docs/pipelinerun.md": "how-to",
+    "docs/machine_contract.md": "how-to",
+    "docs/approval.md": "how-to",
+    "docs/module_signature.md": "how-to",
+    "docs/lsp.md": "how-to",
+}
+
 #: 需带 last-updated 位的关键文档（协议/导航/接入 + 指令类）
 REQUIRED_DOCS = [
     "01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
@@ -31,6 +71,15 @@ REQUIRED_DOCS = [
     "docs/45_M2_回合级drill.md",
     "docs/45_M3_techdoc载荷提案.md",
     "DEEP_DIVE.md",
+    "docs/library.md",
+    "docs/receipts.md",
+    "docs/conformance.md",
+    "docs/io_types.md",
+    "docs/pipelinerun.md",
+    "docs/machine_contract.md",
+    "docs/approval.md",
+    "docs/module_signature.md",
+    "docs/lsp.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -46,6 +95,14 @@ INSTRUCTION_DOCS = [
     "docs/45_M2_回合级drill.md",
     "docs/45_M3_techdoc载荷提案.md",
     "AI_ROUTING.md",
+    "docs/library.md",
+    "docs/receipts.md",
+    "docs/conformance.md",
+    "docs/pipelinerun.md",
+    "docs/machine_contract.md",
+    "docs/approval.md",
+    "docs/module_signature.md",
+    "docs/lsp.md",
 ]
 
 
@@ -72,6 +129,28 @@ def check_markers(root: str = ".") -> list:
         if not any(INSTRUCTION_MARK in ln for ln in head):
             issues.append("%s 缺「⛔ 操作指令」标识头（指令类文档须全覆盖）" % rel)
     return issues
+
+
+def kind_coverage(root: str = ".") -> list:
+    """四型覆盖校验：关键文档与指令档每件都须有四型归属（新增件漏表即报）。"""
+    issues = []
+    for rel in sorted(set(REQUIRED_DOCS) | set(INSTRUCTION_DOCS)):
+        kind = DOC_KINDS.get(rel)
+        if not kind:
+            issues.append("%s 缺四型归属（DOC_KINDS；取值 %s）" % (rel, "/".join(KINDS)))
+        elif kind not in KINDS:
+            issues.append("%s 四型取值非法：%s（取值 %s）" % (rel, kind, "/".join(KINDS)))
+    return issues
+
+
+def kind_distribution(root: str = ".") -> dict:
+    """四型分布（只统计在盘文件；供门禁/报告聚合）。"""
+    dist = {k: 0 for k in KINDS}
+    for rel, kind in DOC_KINDS.items():
+        if os.path.exists(os.path.join(root, rel)) and kind in dist:
+            dist[kind] += 1
+    dist["total"] = sum(dist[k] for k in KINDS)
+    return dist
 
 
 def stale(root: str = ".", month_limit: int = 3,

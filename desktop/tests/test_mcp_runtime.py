@@ -74,6 +74,63 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertEqual(result["serverInfo"]["name"], "P90-mcp")
         self.assertTrue(result["serverInfo"]["version"])
 
+    def test_initialize_legacy_fallback_when_version_unsupported(self):
+        """dual-era：initialize 请求不支持的版本 → 回落最新 legacy 版本。"""
+        resp = self.srv.handle(_req(2, "initialize", {"protocolVersion": "1900-01-01"}))
+        self.assertEqual(resp["result"]["protocolVersion"], "2025-11-25")
+
+    def test_discover_modern_must(self):
+        """2026-07-28 §Discovery：server/discover 一次返回版本集/能力/身份。"""
+        resp = self.srv.handle(_req(3, "server/discover", {
+            "_meta": {"io.modelcontextprotocol/protocolVersion": "2026-07-28"}}))
+        result = resp["result"]
+        self.assertEqual(result["resultType"], "complete")
+        self.assertEqual(result["supportedVersions"], ["2026-07-28", "2025-11-25"])
+        self.assertIn("resources", result["capabilities"])
+        self.assertEqual(
+            result["_meta"]["io.modelcontextprotocol/serverInfo"]["name"], "P90-mcp")
+        self.assertIn("ttlMs", result)
+
+    def test_unsupported_version_request_error_32022(self):
+        """规范 §Protocol Version Negotiation：不支持版本 MUST 回 -32022 并列出支持集。"""
+        resp = self.srv.handle(_req(4, "resources/list", {
+            "_meta": {"io.modelcontextprotocol/protocolVersion": "1900-01-01"}}))
+        err = resp["error"]
+        self.assertEqual(err["code"], -32022)
+        self.assertEqual(err["data"]["requested"], "1900-01-01")
+        self.assertIn("2026-07-28", err["data"]["supported"])
+
+    def test_modern_request_with_supported_version_ok(self):
+        """modern 请求带受支持版本 _meta → 正常应答（无握手）。"""
+        resp = self.srv.handle(_req(5, "ping", {
+            "_meta": {"io.modelcontextprotocol/protocolVersion": "2026-07-28"}}))
+        self.assertEqual(resp["result"], {})
+
+    def test_stdio_dual_era_end_to_end(self):
+        """真 stdio 环上跑 dual-era：modern(discover→tools/list) 与 legacy(initialize→initialized)
+        两种客户端会话都能在同一进程内走通——不是只调 handle()。"""
+        from io import StringIO
+        mod = {"io.modelcontextprotocol/protocolVersion": "2026-07-28"}
+        frames = [
+            {"jsonrpc": "2.0", "id": 1, "method": "server/discover", "params": {"_meta": mod}},
+            {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {"_meta": mod}},
+            {"jsonrpc": "2.0", "id": 3, "method": "initialize",
+             "params": {"protocolVersion": "2025-11-25", "capabilities": {}}},
+            {"jsonrpc": "2.0", "method": "notifications/initialized"},
+            {"jsonrpc": "2.0", "id": 4, "method": "ping"},
+        ]
+        payload = "".join(json.dumps(f, ensure_ascii=False) + "\n" for f in frames)
+        out = StringIO()
+        self.srv.serve_stdio(stdin=StringIO(payload), stdout=out)
+        msgs = [json.loads(x) for x in out.getvalue().strip().splitlines()]
+        self.assertEqual([m.get("id") for m in msgs], [1, 2, 3, 4],
+                         "通知不应答；请求按序应答")
+        self.assertEqual(msgs[0]["result"]["supportedVersions"],
+                         ["2026-07-28", "2025-11-25"])
+        self.assertTrue(msgs[1]["result"]["tools"])
+        self.assertEqual(msgs[2]["result"]["protocolVersion"], "2025-11-25")
+        self.assertEqual(msgs[3]["result"], {})
+
     def test_initialized_notification_no_response(self):
         """notifications/initialized 是通知——无 id，不应回响应。"""
         self.assertIsNone(self.srv.handle(
@@ -103,8 +160,10 @@ class TestMcpRuntime(unittest.TestCase):
         """A3：resources/templates/list 暴露仓库内容寻址模板。"""
         resp = self.srv.handle(_req(51, "resources/templates/list"))
         tpls = resp["result"]["resourceTemplates"]
-        self.assertEqual(len(tpls), 3)
+        self.assertEqual(len(tpls), 4)
         self.assertTrue(any("nf://repo/module/" in t["uriTemplate"]
+                            for t in tpls))
+        self.assertTrue(any("nf://repo/library/" in t["uriTemplate"]
                             for t in tpls))
 
     def test_resources_list_filter_type(self):
@@ -207,7 +266,8 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertEqual(names,
                          {"library_search", "registry_query",
                           "pipeline_ls", "spec_ls",
-                          "module_read", "pipeline_read", "asset_get"})
+                          "module_read", "pipeline_read", "asset_get",
+                          "library_read"})
         for t in tools:
             self.assertIn("inputSchema", t)
 
@@ -221,12 +281,12 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertIn("machine_contract", payload["text"])
 
     def test_tools_call_module_read_content_only_module(self):
-        """44 深化：存量内容模块（无机读块）也可按 id 读取正文。"""
+        """44 深化：社区模块（L0 retro-fit 后带机读块）也可按 id 读取正文。"""
         resp = self.srv.handle(_req(32, "tools/call", {
             "name": "module_read", "arguments": {"module_id": "M40"}}))
         payload = json.loads(resp["result"]["content"][0]["text"])
         self.assertTrue(payload["found"])
-        self.assertFalse(payload["has_machine_contract"])
+        self.assertTrue(payload["has_machine_contract"])
         self.assertIn("关系深度", payload["text"])
 
     def test_tools_call_pipeline_read_content(self):

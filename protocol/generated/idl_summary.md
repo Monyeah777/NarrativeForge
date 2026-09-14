@@ -6,7 +6,7 @@
 ## 覆盖
 | schema | 模块文档 | 机读契约 | 管线 | 协议包 | 台账条目 |
 | - | - | - | - | - | - |
-| 5 | 44 | 23 | 8 | 5 | 2 |
+| 5 | 44 | 44 | 8 | 5 | 2 |
 
 ## schema 定义
 - asset.schema.json
@@ -22,16 +22,37 @@
 | id | conformance | layer | source |
 | - | - | - | - |
 | M00 | L2 | P00 | 04_模块库/通用类/M00_数据结构.md |
+| M01 | L2 | P20 | community/西幻生存领域包/modules/M01_职业成长.md |
+| M02 | L2 | P20 | community/西幻生存领域包/modules/M02_种族天赋.md |
+| M03 | L2 | P40 | community/西幻生存领域包/modules/M03_技能融合.md |
+| M04 | L2 | P50 | community/西幻生存领域包/modules/M04_战斗系统.md |
 | M06 | L2 | P30 | 04_模块库/事件类/M06_任务剧情.md |
+| M07 | L2 | P60 | community/西幻生存领域包/modules/M07_地图区域.md |
 | M08 | L2 | P10 | 04_模块库/世界类/M08_季节天气.md |
+| M09 | L2 | P60 | community/西幻生存领域包/modules/M09_经济贸易.md |
+| M10 | L1 | P40 | community/西幻生存领域包/modules/M10_死亡重生.md |
+| M11 | L2 | P50 | community/西幻生存领域包/modules/M11_文字魔法.md |
 | M12 | L2 | P50 | 04_模块库/事件类/M12_NPC对话.md |
 | M13 | L2 | P30 | 04_模块库/事件类/M13_NPC交互.md |
+| M14 | L2 | P60 | community/西幻生存领域包/modules/M14_阵营声望.md |
+| M15 | L2 | P60 | community/西幻生存领域包/modules/M15_帮派势力.md |
+| M16 | L2 | P60 | community/西幻生存领域包/modules/M16_建筑据点.md |
 | M17 | L2 | P50 | community/西幻生存领域包/modules/M17_生产制造.md |
+| M18 | L2 | P30 | community/西幻生存领域包/modules/M18_混沌事件.md |
+| M19 | L2 | P20 | community/西幻生存领域包/modules/M19_遗传后代.md |
 | M20 | L2 | P70 | 04_模块库/事件类/M20_世界知识库.md |
+| M22 | L1 | P40 | community/校园情感领域包/modules/M22_三冲动驱动.md |
 | M23 | L2 | P20 | 04_模块库/通用类/M23_认知边界.md |
 | M24 | L2 | P70 | 04_模块库/通用类/M24_组合规则.md |
+| M40 | L2 | P40 | community/校园情感领域包/modules/M40_关系深度.md |
+| M41 | L2 | P40 | community/校园情感领域包/modules/M41_恋爱进阶.md |
+| M43 | L2 | P40 | community/校园情感领域包/modules/M43_情敌系统.md |
 | M50 | L2 | 调度器 | 04_模块库/通用类/M50_主循环.md |
 | M55 | L2 | P40 | community/校园情感领域包/modules/M55_匿名情书.md |
+| M57 | L2 | P50 | community/校园情感领域包/modules/M57_朋友圈动态.md |
+| M58 | L2 | P50 | community/校园情感领域包/modules/M58_电话通讯.md |
+| M59 | L2 | P50 | community/校园情感领域包/modules/M59_群聊系统.md |
+| M65 | L2 | P60 | community/校园情感领域包/modules/M65_幽灵遗憾.md |
 | M80 | L2 | P80 | 04_模块库/通用类/M80_输出生成器.md |
 | M90 | L2 | P90 | 04_模块库/技术文档类/M90_技术文档结构.md |
 | M91 | L2 | P40 | community/校园西幻轻混组合包/modules/M91_异界身份桥.md |

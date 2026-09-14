@@ -1,0 +1,182 @@
+{
+  "count": 44,
+  "modules": {
+    "M00": {
+      "digest": "360e62c6db27a4c7114a33093c5dd7d7acf944da4db3ced8016d612b8542aac7",
+      "path": "04_模块库/通用类/M00_数据结构.md"
+    },
+    "M01": {
+      "digest": "3143d50f908afdbb93c02334739858193ae9fb046af6040ae8422cfd58f21ab3",
+      "path": "community/西幻生存领域包/modules/M01_职业成长.md"
+    },
+    "M02": {
+      "digest": "92658cfedc60a22b2723d2f86be6b42c6a3dfa6029741ec9ffb716bd393e478e",
+      "path": "community/西幻生存领域包/modules/M02_种族天赋.md"
+    },
+    "M03": {
+      "digest": "fd1de32db55973e689ce217bbcfad33e871c335840708f4fbc1762429291ed74",
+      "path": "community/西幻生存领域包/modules/M03_技能融合.md"
+    },
+    "M04": {
+      "digest": "3a1b5d9edead4015e94eb5cb7a19c17c5f0b838a6fae56126c60b63486e3ac10",
+      "path": "community/西幻生存领域包/modules/M04_战斗系统.md"
+    },
+    "M06": {
+      "digest": "caf15b750b1d3ea0d1b535c4e9774a18888eda1404912c3def7988c151be5bbe",
+      "path": "04_模块库/事件类/M06_任务剧情.md"
+    },
+    "M07": {
+      "digest": "693c04a904173cd96db6ce026e5b56c0560a89af7583d486116147263a87718a",
+      "path": "community/西幻生存领域包/modules/M07_地图区域.md"
+    },
+    "M08": {
+      "digest": "aaae32b7c76f412c995843089bbf5b88d10dfc2a97df5f7a1bb5af8763ae047d",
+      "path": "04_模块库/世界类/M08_季节天气.md"
+    },
+    "M09": {
+      "digest": "ff49bd27aa9810f4840e992201e356c4a18453c0a152b4ff76e1ef133ad5ee0d",
+      "path": "community/西幻生存领域包/modules/M09_经济贸易.md"
+    },
+    "M10": {
+      "digest": "06e680c6b8e4bb3f0ee7fd90c0f150ac33478013449aa167f7d1f3707e2e9ab5",
+      "path": "community/西幻生存领域包/modules/M10_死亡重生.md"
+    },
+    "M11": {
+      "digest": "5f914035740e637ad698ea606bae94a57504461e8e4242cec43fd8028dabb6f0",
+      "path": "community/西幻生存领域包/modules/M11_文字魔法.md"
+    },
+    "M12": {
+      "digest": "01d6a39cb9e4ae0f97a6d7ae66b2ba6f703dfa2ab650792ea1b2d27e57876714",
+      "path": "04_模块库/事件类/M12_NPC对话.md"
+    },
+    "M13": {
+      "digest": "4e29dc514268909c1b615aa6d7860c5b286815442af8766cfd7ba4562ecd8a1d",
+      "path": "04_模块库/事件类/M13_NPC交互.md"
+    },
+    "M14": {
+      "digest": "e4ecbb755e518bacfbbc1da8479c81d473b120993dac0edc7e43070eabc80644",
+      "path": "community/西幻生存领域包/modules/M14_阵营声望.md"
+    },
+    "M15": {
+      "digest": "f6e010fe0913a7378dd0a893b7d03deb3a7bf1695248398f6552ef8ff3d7b9e1",
+      "path": "community/西幻生存领域包/modules/M15_帮派势力.md"
+    },
+    "M16": {
+      "digest": "25224d37601c8f30b8af148e87c7e2d4b86306224da3c63aa97de0dfbd647aa7",
+      "path": "community/西幻生存领域包/modules/M16_建筑据点.md"
+    },
+    "M17": {
+      "digest": "b6fe124f19444ccc78a1cb1eef85795328556450b25896227ca26de1c51c764e",
+      "path": "community/西幻生存领域包/modules/M17_生产制造.md"
+    },
+    "M18": {
+      "digest": "c1f1ef58e1a0cec05788308c6d3667442cea61b2bad622d0379c7d3e04c297bc",
+      "path": "community/西幻生存领域包/modules/M18_混沌事件.md"
+    },
+    "M19": {
+      "digest": "f17425d9c5cb6177285e04a929109da8592ed1795c328afa13430a1d11c4496b",
+      "path": "community/西幻生存领域包/modules/M19_遗传后代.md"
+    },
+    "M20": {
+      "digest": "0c5f843108ef29ba4819f822e1e0dd47434475db4c2ef280c7af2260c3048ec0",
+      "path": "04_模块库/事件类/M20_世界知识库.md"
+    },
+    "M22": {
+      "digest": "8ad8ea1b7cd59b43184d691d929b2fe03d4a68499025512e6acbcc5c4dd4a3fb",
+      "path": "community/校园情感领域包/modules/M22_三冲动驱动.md"
+    },
+    "M23": {
+      "digest": "911c6066de3b6acf2f382e73c3cd6adb55bf9dfcb34726eac62c310c48bf556f",
+      "path": "04_模块库/通用类/M23_认知边界.md"
+    },
+    "M24": {
+      "digest": "c305140f8221acdcd4d924e4d9f993968fd2495a8c5a189e48c5bbf8082c870c",
+      "path": "04_模块库/通用类/M24_组合规则.md"
+    },
+    "M40": {
+      "digest": "e50448df4d292574982240fb0442658244f42e6aba35e26ffc61021340688e23",
+      "path": "community/校园情感领域包/modules/M40_关系深度.md"
+    },
+    "M41": {
+      "digest": "2f2f5264f7bdf8d5b30d14b1ad90c6d2170e8ec485e9325b62b6e76d8da2cb54",
+      "path": "community/校园情感领域包/modules/M41_恋爱进阶.md"
+    },
+    "M43": {
+      "digest": "062baba3ca436c1bb0c7b027b71d498354e0f2f2968634c3a7ee7f4c3560b0ec",
+      "path": "community/校园情感领域包/modules/M43_情敌系统.md"
+    },
+    "M50": {
+      "digest": "6e099679cf57cd4bcd38c2632a6ad07138ba09d5b382381997c20ed61e2ad0dd",
+      "path": "04_模块库/通用类/M50_主循环.md"
+    },
+    "M55": {
+      "digest": "49b611b63775e1af3620a980c7accc3f58489852f7ff91e700e769d16b542591",
+      "path": "community/校园情感领域包/modules/M55_匿名情书.md"
+    },
+    "M57": {
+      "digest": "36e0f48e8b8bf68e91b7e950c5fd7ea2e6edc98acecc6fbd1ebe251231c124f5",
+      "path": "community/校园情感领域包/modules/M57_朋友圈动态.md"
+    },
+    "M58": {
+      "digest": "d2514e568c7432b61ae5d9f0ef4717c4b3e6edf5e17acf9d6431d2b8d5969567",
+      "path": "community/校园情感领域包/modules/M58_电话通讯.md"
+    },
+    "M59": {
+      "digest": "29a50c68d94017722c250db3ea52855031cb34f5fe9435605fbcbadfebe4cd25",
+      "path": "community/校园情感领域包/modules/M59_群聊系统.md"
+    },
+    "M65": {
+      "digest": "d76c47611effb61d565e0962e8658faba00849595e6ed6089f0d8feb8febd870",
+      "path": "community/校园情感领域包/modules/M65_幽灵遗憾.md"
+    },
+    "M80": {
+      "digest": "79edbedc79866fcf61976a1f906902c6bfd6a084c2c78c38f8f155998eb1184b",
+      "path": "04_模块库/通用类/M80_输出生成器.md"
+    },
+    "M90": {
+      "digest": "9fb71576deb57802ec6fc7512868f98acba7e936c4ab285450fe5b52158f222b",
+      "path": "04_模块库/技术文档类/M90_技术文档结构.md"
+    },
+    "M91": {
+      "digest": "ceae0f9d04d28884ef129d0c431f74daa5385b1eeed426d5e65bdac2ffa28c56",
+      "path": "community/校园西幻轻混组合包/modules/M91_异界身份桥.md"
+    },
+    "M92": {
+      "digest": "fb257256f55603392564c97320ec6897db30b602654978e13974ec7a65239f9c",
+      "path": "community/校园西幻轻混组合包/modules/M92_轻混装配执行.md"
+    },
+    "M93": {
+      "digest": "efa446bfa9cc3bb98652354f05a51e0921843c33bfcdc6878d570bc6ba772cb8",
+      "path": "community/通用核心基础包/modules/M93_通用状态快照.md"
+    },
+    "M94": {
+      "digest": "4b66b6d59d3418df1f491e66d578b39a59529183f8de9caa7ee806dce6144e80",
+      "path": "community/通用核心基础包/modules/M94_通用节拍桥.md"
+    },
+    "M95": {
+      "digest": "72029b012bcd45e29a8b738ecec6985c46dcd5f9cf10c881126905d4fb40c4c4",
+      "path": "community/通用核心基础包/modules/M95_通用决策汇总.md"
+    },
+    "M96": {
+      "digest": "029b1c94009ad053bbd25217afc1dc0c4ac97cc031fe9a918761146c62d359b1",
+      "path": "community/通用核心基础包/modules/M96_通用输出润色.md"
+    },
+    "M97": {
+      "digest": "d00381c141a2eb19459c61d84d677e36d54dcb79f5f404e64b9b61b0ada2130b",
+      "path": "community/技术文档域包/modules/M97_术语管理.md"
+    },
+    "M98": {
+      "digest": "f09734458d51608db551d0eb42ae3a0547ed97a96b63d5c997cb81832770220d",
+      "path": "community/技术文档域包/modules/M98_修订记录.md"
+    },
+    "事件:M22": {
+      "digest": "d6afedbe5118ca92f6de75211b05eac64144a618e2e368ad0c1aa82af971af20",
+      "path": "04_模块库/事件类/M22_事件叙事.md"
+    },
+    "通用:M10": {
+      "digest": "1b654bc697783cb6c7edf110190449a1bcb37786e153ab056ff536e297e6efdc",
+      "path": "04_模块库/通用类/M10_时间推进.md"
+    }
+  },
+  "schema": "nf-module-signatures/1"
+}
