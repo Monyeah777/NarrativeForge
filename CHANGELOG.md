@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.12.0] - 未发布
+
+- 知识层收口（check37）：**双源知识声明**（`protocol/knowledge_sources.json`：权威分层 `contract`/`reference`、查询有序 `query_order`、时效策略、可见性，**reference 级必须标注来源**、`locator` 必须指向真实件防纸面源）· **消化可追溯**（`protocol/transform_log.json`：源 ↔ 产物 `digest` 绑定，产物一改记录即失效；转正须齐三档证据 + 复核双签）· **晋升规则**（缺证据一律 `stay-reference`，不许用推测填）· **认知裁剪**（`cognition.filter_module` 必须指向在册模块）· **知识层巡检**（悬空引用 / 孤儿条目 FAIL，时效缺失 WARN）· 机器面 `nf knowledge [order|lint|transform]`。同波：一致性报告扩到 **17/17 契约**（增 `knowledge-sources`）、协议层回执覆盖面 **28 → 30 件**。基线 verify v2.27，check1-37，PASS=61。
+
 ## [2.11.0] - 未发布
 
 - 治理面收口（check36）：**一致性声明**（`protocol/CONFORMANCE.md`：`## 声明` 版本表逐条与真源比对 + `## 范围` 白名单 + `## 排除` 显式清单，scope∩排除=∅，声明了真源没有的规范项即 FAIL；`nf conformance` 增 `declaration` 契约）· **协议件 RFC 版本史**（01/02/06/07 头部机器可读 RFC 头：编号/Category/Date/Status/Supersedes/Superseded by；`nf rfc` + `protocol/rfc_index.json`，日期须等于「最后更新」、链可解析不成环）· **指令档机器面路由**（`protocol/driver.json` + 组装指令包 / `AI_ROUTING.md` / `docs/ai-menu.md` 头部 `DRIVER OVERRIDE` 块：有 MCP 实现就走 MCP，派发失败即停、**禁止回退成文本步骤**；工具名与 `mcp_runtime.TOOL_DEFS` 逐名一致）· **实践包品类**（`patterns/<id>/PATTERN.md` frontmatter 为真源 + `patterns/INDEX.md` 投影；`applies_to`/`evidence` 须在仓库内可证；`nf patterns ls/show/for/verify/reindex` + MCP `pattern_read` 工具 + `nf://repo/pattern/{id}` 资源）· **执行结果跑分台**（`nf bench run/compare/report`：对任意产物做五维确定性评分，用例下限判级，多跑出逐维均值/极差/相对最佳回落——外部实测的容器）· **服务端点契约**（`protocol/endpoint_contract.json`，`status: proposed`：8 端点映射到现存 CLI 子命令或 MCP 工具，`maps_to` 不许指向空气；`nf endpoint`）。同波：一致性报告扩到 **16/16 契约**、协议层回执覆盖面 24 → **28 件**（治理面机读件入锚）、`check36` 加入 段 C。基线 verify v2.26，check1-36，PASS=59。

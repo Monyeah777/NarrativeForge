@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-14",
+  "approved_at": "2026-09-15",
   "approved_by": "作者",
-  "note": "本波治理面收口：一致性报告重生成（16 契约，含治理面 4 契约）后重新批准",
+  "note": "知识层收口：一致性报告扩到 17 契约后重新批准",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "c434373b214aca1f2069824b8531ef8232cde5f81824d4f4a52fdab242b5e216"
+  "subject_digest": "a24caed8226af3e99550d02a945679b7b3ddd50be34be861fbdd792392e55c63"
 }

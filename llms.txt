@@ -6,7 +6,7 @@
 - 取件基底（raw，喂 AI 用）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`
 - 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/`
 - 本仓库全部内容本身就是 markdown 源文件——不存在 HTML 版，因此 llms.txt v2 的 `page.md` 孪生约定天然满足；本文件即仓库描述文件（等价 `rel="describedby"` 指向物）。
-- 质量凭证（本地真跑，非声明）：`bash verify.sh` → **v2.26 · check1-36 · PASS=59**。
+- 质量凭证（本地真跑，非声明）：`bash verify.sh` → **v2.27 · check1-37 · PASS=61**。
 
 ## 先读（入口链）
 

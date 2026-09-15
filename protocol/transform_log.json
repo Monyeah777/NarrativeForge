@@ -1,0 +1,5 @@
+{
+  "schema": "nf-transform-log/1",
+  "note": "消化记录（§4.2 消化可追溯：外部 → 本地必须有转换记录，与装配记录同纪律）。每条记录把「参考级源」与「本地产物」用 digest 绑死：产物内容一改，记录即失效。当前为 0 条——已声明的参考级源（tool-face-candidates / ext-validation-assets / ext-fixtures）尚未被转正进知识层，保持参考级不动，符合「不得写死」；本文件的存在使转正一旦发生即被门禁要求留痕。",
+  "entries": []
+}

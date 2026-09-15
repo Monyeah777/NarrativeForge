@@ -106,6 +106,13 @@
       "ok": true
     },
     {
+      "description": "双源知识层（权威分层/查询有序/时效/溯源）",
+      "detail": "源 6（合同 3 / 参考 3）· 消化记录 0",
+      "digest": "a7ce1de4d71652f6f564b10177dfd21e5edf0194dfd5eebd8888fcca17d3882d",
+      "id": "knowledge-sources",
+      "ok": true
+    },
+    {
       "description": "公开导出面零泄漏",
       "detail": "公开导出面零泄漏",
       "digest": "d90f0f64ce2bb95763db2d29f8644b1900632565cbcc71ebbd0f504cdf0c90c7",
@@ -113,9 +120,9 @@
       "ok": true
     }
   ],
-  "passed": 16,
-  "root": "3c48df9936e8e86138497422c621768663ef8f55fce91a9c441d987e010e1e2a",
+  "passed": 17,
+  "root": "328da1ad64cf43a25ef3445f19e1098301eb15c9e344780f3274877c028d732c",
   "schema": "nf-conformance/1",
-  "total": 16,
+  "total": 17,
   "verdict": "conformant"
 }

@@ -462,6 +462,18 @@ def _build_parser() -> argparse.ArgumentParser:
                         help="服务端点契约（proposed：把已实现能力声明成 HTTP 面 + 指向真实性门禁）",
                         description="服务端点契约（机制借鉴 microsoft/ai-chat-protocol）")
     ep.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    kn = sub.add_parser("knowledge",
+                        help="双源知识层（权威分层 / 消化可追溯 / 查询有序 / 时效 / 可见性）",
+                        description="双源知识层（机制借鉴一句式：编译时机按数据域选择）")
+    ksub = kn.add_subparsers(dest="knowledge_cmd")
+    k_order = ksub.add_parser("order", help="解析查询顺序（合同级在前、参考级在后）",
+                              description="解析查询顺序（合同级在前、参考级在后）")
+    k_lint = ksub.add_parser("lint", help="知识层巡检（悬空 / 孤儿 / 时效 / 溯源 / 声明）",
+                             description="知识层巡检（悬空 / 孤儿 / 时效 / 溯源 / 声明）")
+    k_tr = ksub.add_parser("transform", help="列消化记录（外部 → 本地，digest 绑定）",
+                           description="列消化记录（外部 → 本地，digest 绑定）")
+    for _k in (k_order, k_lint, k_tr):
+        _k.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ap = sub.add_parser("approve",
                         help="内容绑定批准记录（被批准对象改动即失效）",
                         description="内容绑定批准记录（机制借鉴 MCOP approved-changeset gate）")
@@ -1991,6 +2003,76 @@ def _rel_out(path):
     return path if os.path.isabs(path) else os.path.join(ROOT, path)
 
 
+def _cmd_knowledge(args):
+    """nf knowledge：双源知识层（状态 / 顺序 / 巡检 / 消化记录）。"""
+    from core import knowledge as kn
+    import json as _json
+    sub = getattr(args, "knowledge_cmd", None) or "status"
+    want_json = bool(getattr(args, "json", False))
+    if sub == "order":
+        rows = kn.resolve_order(ROOT)
+        if want_json:
+            print(_json.dumps({"query_order": rows}, ensure_ascii=False,
+                              indent=2, sort_keys=True))
+        else:
+            print("== nf knowledge order（查询有序：合同级 → 参考级）==")
+            for i, r in enumerate(rows, 1):
+                print("  %d. %-22s %-9s %-18s %s"
+                      % (i, r["id"], r["authority"], r["kind"], r["locator"]))
+        return 0
+    if sub == "lint":
+        issues, warns, stats = kn.lint(ROOT)
+        if want_json:
+            print(_json.dumps({"issues": issues, "warns": warns, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf knowledge lint（知识层巡检）==")
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            for w in warns:
+                print("  [WARN] %s" % w)
+            if not issues:
+                print("  ✓ 声明/顺序/溯源/悬空/孤儿 全绿（时效缺失 %d 件已记 WARN）"
+                      % stats.get("no_stale_after", 0))
+        return 1 if issues else 0
+    if sub == "transform":
+        issues, _warns, stats = kn.verify_transform(ROOT)
+        log = kn.load_log(ROOT)
+        if want_json:
+            print(_json.dumps({"issues": issues, "stats": stats,
+                               "entries": log.get("entries") or []},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf knowledge transform（消化记录：%d 条）==" % stats.get("entries", 0))
+            for e in log.get("entries") or []:
+                print("  %-18s → %-28s 转正=%s" % (e.get("from"), e.get("to"),
+                                                    e.get("promoted")))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 记录与产物摘要一致（无记录 = 无转正，符合 stay-reference）")
+        return 1 if issues else 0
+    issues, warns, stats = kn.scan(ROOT)
+    decl = kn.load_decl(ROOT)
+    if want_json:
+        print(_json.dumps({"declaration": decl, "issues": issues, "warns": warns,
+                           "stats": stats}, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf knowledge（双源知识层 · %d 源：合同 %d / 参考 %d）=="
+              % (stats.get("sources", 0), stats.get("contract", 0), stats.get("reference", 0)))
+        for s in kn.sources(ROOT):
+            print("  %-22s %-9s %-18s %-10s %s"
+                  % (s.get("id"), s.get("authority"), s.get("kind"),
+                     s.get("visibility"), s.get("locator")))
+        for w in warns:
+            print("  [WARN] %s" % w)
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ 权威分层/查询有序/时效/晋升/审核/认知裁剪 全部与判据一致")
+    return 1 if issues else 0
+
+
 def _load_runs(path):
     import json as _json
     with open(_rel_out(path), encoding="utf-8") as fh:
@@ -3106,6 +3188,8 @@ def main(argv=None) -> int:
         return _cmd_bench(args)
     if args.cmd == "endpoint":
         return _cmd_endpoint(args)
+    if args.cmd == "knowledge":
+        return _cmd_knowledge(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

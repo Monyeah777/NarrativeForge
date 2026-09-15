@@ -24,6 +24,7 @@ of trusted*（NF 同样是 Bus Factor 1）。
 | `patterns` | 实践包格式合规、适用面/证据可证、INDEX 投影一致 |
 | `endpoint-contract` | 服务端点契约的 maps_to 全部指向现存 CLI 子命令或 MCP 工具 |
 | `public-surface` | 公开导出面不泄漏内部件/绝对路径（借 specadia 分发白名单思路） |
+| `knowledge-sources` | 双源知识层：权威分层 / 查询有序 / 时效 / 消化可追溯 与声明逐条一致 |
 
 `verdict = conformant | non-conformant`；`root` = 各契约摘要的 Merkle 根（复用
 receipts 的 RFC 6962 折叠规则，不另造密码学）。
@@ -153,6 +154,16 @@ def _c_endpoint(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_knowledge(root: str) -> Tuple[bool, str]:
+    from core import knowledge as kn
+    issues, _warns, stats = kn.scan(root)
+    issues = issues + kn.verify_transform(root)[0]
+    detail = "源 %d（合同 %d / 参考 %d）· 消化记录 %d" % (
+        stats.get("sources", 0), stats.get("contract", 0),
+        stats.get("reference", 0), stats.get("transforms", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_public_surface(root: str) -> Tuple[bool, str]:
     """公开导出面泄漏审计：绝对路径 / 内部件路径不得出现在对外产物里。"""
     bad: List[str] = []
@@ -187,6 +198,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("rfc-heads", _c_rfc_heads, "协议件版本史头"),
     ("patterns", _c_patterns, "实践包品类"),
     ("endpoint-contract", _c_endpoint, "服务端点契约指向真实性"),
+    ("knowledge-sources", _c_knowledge, "双源知识层（权威分层/查询有序/时效/溯源）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

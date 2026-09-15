@@ -1,0 +1,99 @@
+{
+  "schema": "nf-knowledge-sources/1",
+  "note": "双源知识架构的机器可读声明（真源）：把「权威分层 / 消化可追溯 / 查询有序 / 时效 / 可见性」从散文变成可机检件。authority=contract 表示 NF 管辖内事实（本地编译层，可直接采信）；authority=reference 表示外部参考级（必须标注来源、不得写死、受时效约束）。机制借鉴一句式：编译时机按数据域选择——本地沉淀走写入时编译，外部变化走查询时检索（借 LLM Wiki 的编译优先主张与 GraphRAG 的 indexing/query 分段，实证判定见 results/audit）。",
+  "authority_vocabulary": ["contract", "reference"],
+  "kind_vocabulary": ["local-compiled", "external-retrieval"],
+  "visibility_vocabulary": ["public", "internal", "restricted"],
+  "query_order": [
+    "nf-protocol",
+    "nf-library",
+    "nf-patterns",
+    "tool-face-candidates",
+    "ext-validation-assets",
+    "ext-fixtures"
+  ],
+  "promotion": {
+    "rule": "参考级 → 合同级的「转正」必须齐三档证据：① 可机检（对应 checkN 通过）② 可复现（两遍一致或确定性推导）③ 可外部证（attestation 或可验证回执）。缺任一条不得转正，按 on_missing_evidence 处置。",
+    "evidence_tiers": ["machine-checkable", "reproducible", "externally-attestable"],
+    "triggers": ["reuse-frequency", "author-mark", "machine-check-pass"],
+    "on_missing_evidence": "stay-reference",
+    "frequency_source": "protocol/transform_log.json 条目的 reuse_count（可选字段；一旦声明就必须可复算）"
+  },
+  "review": {
+    "rule": "消化产物进知识层前须双签：机检（nf knowledge lint 全绿）+ 复核（reviewed_by / reviewed_at 非空）。缺签不得标为 contract 级。",
+    "machine_gates": [
+      "knowledge-schema",
+      "transform-provenance",
+      "no-dangling-reference",
+      "no-orphan-entry",
+      "freshness-declared"
+    ]
+  },
+  "cognition": {
+    "rule": "知识层同样受认知裁剪约束：visibility=restricted 的源不得进入公开可见域；叙事域消费知识层须经 M23 cognition.filter 裁剪。",
+    "filter_module": "M23",
+    "applies_to": ["nf-library", "tool-face-candidates", "ext-validation-assets", "ext-fixtures"]
+  },
+  "sources": [
+    {
+      "id": "nf-protocol",
+      "authority": "contract",
+      "kind": "local-compiled",
+      "locator": "protocol/schema",
+      "requires_source_label": false,
+      "visibility": "public",
+      "freshness": {"policy": "stale_after"},
+      "cognition_filtered": false
+    },
+    {
+      "id": "nf-library",
+      "authority": "contract",
+      "kind": "local-compiled",
+      "locator": "library",
+      "requires_source_label": false,
+      "visibility": "public",
+      "freshness": {"policy": "stale_after"},
+      "cognition_filtered": true
+    },
+    {
+      "id": "nf-patterns",
+      "authority": "contract",
+      "kind": "local-compiled",
+      "locator": "patterns",
+      "requires_source_label": false,
+      "visibility": "public",
+      "freshness": {"policy": "stale_after"},
+      "cognition_filtered": false
+    },
+    {
+      "id": "tool-face-candidates",
+      "authority": "reference",
+      "kind": "external-retrieval",
+      "locator": "desktop/src/core/tool_face.py",
+      "requires_source_label": true,
+      "visibility": "public",
+      "freshness": {"policy": "no-cache"},
+      "cognition_filtered": true
+    },
+    {
+      "id": "ext-validation-assets",
+      "authority": "reference",
+      "kind": "external-retrieval",
+      "locator": "docs/external-validation-assets",
+      "requires_source_label": true,
+      "visibility": "internal",
+      "freshness": {"policy": "ttl", "ttl_days": 180},
+      "cognition_filtered": true
+    },
+    {
+      "id": "ext-fixtures",
+      "authority": "reference",
+      "kind": "external-retrieval",
+      "locator": "desktop/tests/fixtures/external",
+      "requires_source_label": true,
+      "visibility": "internal",
+      "freshness": {"policy": "ttl", "ttl_days": 180},
+      "cognition_filtered": true
+    }
+  ]
+}
