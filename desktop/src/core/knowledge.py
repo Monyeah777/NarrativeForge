@@ -25,8 +25,10 @@ from typing import Any, Dict, List, Tuple
 
 DECL_REL = "protocol/knowledge_sources.json"
 LOG_REL = "protocol/transform_log.json"
+USAGE_REL = "protocol/knowledge_usage.json"
 SCHEMA = "nf-knowledge-sources/1"
 LOG_SCHEMA = "nf-transform-log/1"
+USAGE_SCHEMA = "nf-knowledge-usage/1"
 AUTHORITIES = ("contract", "reference")
 KINDS = ("local-compiled", "external-retrieval")
 VISIBILITIES = ("public", "internal", "restricted")
@@ -39,6 +41,8 @@ REQUIRED_SRC = ("id", "authority", "kind", "locator", "requires_source_label",
 REQUIRED_ENTRY = ("from", "to", "digest", "reviewed_by", "reviewed_at", "evidence")
 _MODULE_ID = re.compile(r"^\s*id:\s*(M\d+|事件:M\d+|通用:M\d+)\s*$", re.M)
 _DATED = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+#: 可见性秩：clearance 达到源的秩即可见（public ⊆ internal ⊆ restricted）
+VISIBILITY_RANK = {"public": 0, "internal": 1, "restricted": 2}
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -51,6 +55,10 @@ def load_decl(root: str = ".") -> Dict[str, Any]:
 
 def load_log(root: str = ".") -> Dict[str, Any]:
     return _read_json(Path(root) / LOG_REL)
+
+
+def load_usage(root: str = ".") -> Dict[str, Any]:
+    return _read_json(Path(root) / USAGE_REL)
 
 
 def sha256_file(path: str) -> str:
@@ -76,14 +84,37 @@ def reference_ids(root: str = ".") -> set:
     return {str(s.get("id")) for s in sources(root) if s.get("authority") == "reference"}
 
 
-def resolve_order(root: str = ".") -> List[Dict[str, str]]:
-    """按声明的 query_order 解析查询顺序（先合同级，再参考级）。"""
+def visible_ids(root: str = ".", clearance: str = "restricted") -> set:
+    """逐源可见性裁剪：clearance 达到源的可见性秩即可见（public ⊆ internal ⊆ restricted）。
+
+    认知边界协同的**执行面**：消费方（含叙事域的 M23 裁剪）按 clearance 取源，
+    越权源不进入查询顺序。
+    """
+    cap = VISIBILITY_RANK.get(str(clearance))
+    if cap is None:
+        return set()
+    out = set()
+    for s in sources(root):
+        rank = VISIBILITY_RANK.get(str(s.get("visibility")), 99)
+        if rank <= cap:
+            out.add(str(s.get("id")))
+    return out
+
+
+def resolve_order(root: str = ".", clearance: str = "") -> List[Dict[str, str]]:
+    """按声明的 query_order 解析查询顺序（先合同级，再参考级）。
+
+    `clearance` 非空时先过逐源可见性裁剪（越权源不出现）。
+    """
     decl = load_decl(root)
     by_id = {str(s.get("id")): s for s in sources(root)}
+    allowed = visible_ids(root, clearance) if clearance else None
     out = []
     for sid in decl.get("query_order") or []:
         s = by_id.get(str(sid))
         if s is None:
+            continue
+        if allowed is not None and str(sid) not in allowed:
             continue
         out.append({"id": str(sid), "authority": str(s.get("authority")),
                     "kind": str(s.get("kind")), "locator": str(s.get("locator")),
@@ -245,6 +276,103 @@ def verify_transform(root: str = ".") -> Tuple[List[str], List[str], Dict[str, A
     return issues, warns, stats
 
 
+def harvest_frequency(trace_path: str) -> Dict[str, int]:
+    """从 trace 记录数知识源使用频次（确定性，不联网、不调模型）。
+
+    记录形态支持三种：JSON 数组 / `{"records": [...]}` / JSONL（逐行对象）。
+    源标识取记录的 `knowledge_source` 或 `source_id` 字段（与遥测 semconv 对齐的字段名）。
+    """
+    p = Path(trace_path)
+    text = p.read_text(encoding="utf-8")
+    records: List[Any] = []
+    try:
+        data = json.loads(text)
+        if isinstance(data, list):
+            records = data
+        elif isinstance(data, dict):
+            records = data.get("records") if isinstance(data.get("records"), list) else [data]
+    except ValueError:
+        for line in text.splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    records.append(json.loads(line))
+                except ValueError:
+                    continue
+    counts: Dict[str, int] = {}
+    for r in records:
+        if not isinstance(r, dict):
+            continue
+        sid = str(r.get("knowledge_source") or r.get("source_id") or "")
+        if sid:
+            counts[sid] = counts.get(sid, 0) + 1
+    return {k: counts[k] for k in sorted(counts)}
+
+
+def write_usage(root: str = ".", counts: Dict[str, int] = None) -> str:
+    """写频率台账（唯一写入口；频次由 trace 复算，不许手写）。"""
+    clean = {k: int(v) for k, v in sorted((counts or {}).items())}
+    doc = {"schema": USAGE_SCHEMA,
+           "note": "知识源使用频次台账（复算入口：nf knowledge frequency --trace <file> --write）。"
+                   "晋升条目若声明 reuse_count，必须与本台账一致——频次不可手写。",
+           "counts": clean, "total": sum(clean.values())}
+    p = Path(root) / USAGE_REL
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                 encoding="utf-8", newline="\n")
+    return USAGE_REL
+
+
+def write_log(root: str = ".", entries: List[Dict[str, Any]] = None) -> str:
+    """写消化记录（复核工作流的落盘口；条目按 from/to 排序，保证可复算）。"""
+    doc = dict(load_log(root))
+    doc["schema"] = LOG_SCHEMA
+    doc.setdefault("note", "消化记录（外部 → 本地，digest 绑定）。")
+    doc["entries"] = sorted((entries or []), key=lambda e: (str(e.get("from")),
+                                                            str(e.get("to"))))
+    p = Path(root) / LOG_REL
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                 encoding="utf-8", newline="\n")
+    return LOG_REL
+
+
+def verify_usage(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
+    """频率台账校验：条目合法 + 与消化记录的 reuse_count 交叉复算。"""
+    issues: List[str] = []
+    warns: List[str] = []
+    doc = load_usage(root)
+    if not doc:
+        return ["缺频率台账 %s（修复指引：nf knowledge frequency --trace <file> --write）"
+                % USAGE_REL], warns, {}
+    if str(doc.get("schema") or "") != USAGE_SCHEMA:
+        issues.append("频率台账 schema 不匹配（期望 %s）" % USAGE_SCHEMA)
+    counts = doc.get("counts")
+    if not isinstance(counts, dict):
+        issues.append("频率台账 counts 非对象")
+        counts = {}
+    ids = {str(s.get("id")) for s in sources(root)}
+    for k, v in counts.items():
+        if str(k) not in ids:
+            issues.append("频率台账含未声明的源：%s（防幽灵频次）" % k)
+        if not (isinstance(v, int) and v >= 0):
+            issues.append("频率计数非非负整数：%s" % k)
+    if isinstance(doc.get("total"), int) and doc["total"] != sum(
+            v for v in counts.values() if isinstance(v, int)):
+        issues.append("频率台账 total 与 counts 求和不一致（手改痕迹）")
+    for e in load_log(root).get("entries") or []:
+        if not isinstance(e, dict) or "reuse_count" not in e:
+            continue
+        got = counts.get(str(e.get("from")))
+        if e["reuse_count"] != got:
+            issues.append("频次不可复算：%s 的记录 reuse_count=%s，频率台账=%s"
+                          "（修复指引：按 trace 重算，不要手写频次）"
+                          % (e.get("from"), e["reuse_count"], got))
+    stats = {"sources_with_usage": len(counts), "events": sum(
+        v for v in counts.values() if isinstance(v, int))}
+    return issues, warns, stats
+
+
 def lint(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     """知识层巡检（LLM Wiki lint 六项在 NF 的落位）：悬空引用 / 孤儿 / 时效 / 溯源 / 声明。"""
     issues: List[str] = []
@@ -252,6 +380,7 @@ def lint(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     d_issues, _d_warns, stats = scan(root)
     issues += d_issues
     issues += verify_transform(root)[0]
+    issues += verify_usage(root)[0]
     entry_ids = [p.name[:-3] for p in sorted((Path(root) / "library").glob("NF-*.md"))]
     idx_rel = Path(root) / "library" / "INDEX.md"
     idx = idx_rel.read_text(encoding="utf-8") if idx_rel.is_file() else ""

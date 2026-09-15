@@ -269,7 +269,7 @@ class TestMcpRuntime(unittest.TestCase):
                          {"library_search", "registry_query",
                           "pipeline_ls", "spec_ls",
                           "module_read", "pipeline_read", "asset_get",
-                          "library_read", "pattern_read"})
+                          "library_read", "pattern_read", "knowledge_order"})
         for t in tools:
             self.assertIn("inputSchema", t)
 

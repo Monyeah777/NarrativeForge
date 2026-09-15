@@ -1,0 +1,6 @@
+{
+  "counts": {},
+  "note": "知识源使用频次台账（复算入口：nf knowledge frequency --trace <file> --write）。晋升条目若声明 reuse_count，必须与本台账一致——频次不可手写。",
+  "schema": "nf-knowledge-usage/1",
+  "total": 0
+}

@@ -156,6 +156,17 @@ TOOL_DEFS = [
         },
     },
     {
+        "name": "knowledge_order",
+        "description": "解析知识源查询顺序（先合同级后参考级；可按可见性 clearance 裁剪）——双源知识层的机器面。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"clearance": {
+                "type": "string",
+                "description": "消费方清除级：public / internal / restricted（缺省 = 不裁剪）",
+                "enum": ["public", "internal", "restricted"]}},
+        },
+    },
+    {
         "name": "module_read",
         "description": "取模块正文实质内容（04_模块库 + community modules，按 id 或限定 id 解析）。",
         "inputSchema": {
@@ -298,6 +309,15 @@ def _tool_pattern_read(pattern_id: str) -> dict:
                      "fail-closed-verification）" % pattern_id)
 
 
+def _tool_knowledge_order(clearance: str = "") -> dict:
+    """按可见性裁剪解析知识源查询顺序（先合同级后参考级）。"""
+    from core import knowledge as kn
+    root = _repo_root()
+    rows = kn.resolve_order(root, clearance=(clearance or ""))
+    return {"clearance": clearance or "不裁剪", "contract_first": True,
+            "count": len(rows), "query_order": rows}
+
+
 def _repo_module_index() -> list:
     from core import conformance_scan as csc
     import re
@@ -438,6 +458,7 @@ TOOL_HANDLERS = {
     "library_search": lambda a: _tool_library_search((a or {}).get("query", "")),
     "library_read": lambda a: _tool_library_read((a or {}).get("entry_id", "")),
     "pattern_read": lambda a: _tool_pattern_read((a or {}).get("pattern_id", "")),
+    "knowledge_order": lambda a: _tool_knowledge_order((a or {}).get("clearance", "")),
     "module_read": lambda a: _tool_module_read((a or {}).get("module_id", "")),
     "pipeline_read": lambda a: _tool_pipeline_read((a or {}).get("pipeline", "")),
     "asset_get": lambda a: _tool_asset_get((a or {}).get("key", ""),

@@ -23,8 +23,10 @@ def _tree(tmp):
     """最小双源树：复制真源声明/记录，并按声明补出 locator 与在册模块。"""
     decl = json.loads((ROOT / kn.DECL_REL).read_text(encoding="utf-8"))
     log = json.loads((ROOT / kn.LOG_REL).read_text(encoding="utf-8"))
+    usage = json.loads((ROOT / kn.USAGE_REL).read_text(encoding="utf-8"))
     _mk(tmp, kn.DECL_REL, json.dumps(decl, ensure_ascii=False))
     _mk(tmp, kn.LOG_REL, json.dumps(log, ensure_ascii=False))
+    _mk(tmp, kn.USAGE_REL, json.dumps(usage, ensure_ascii=False))
     for s in decl["sources"]:
         p = Path(tmp, s["locator"])
         if p.suffix:
@@ -223,6 +225,109 @@ class TestLint(unittest.TestCase):
         issues, warns, _stats = kn.lint(tmp)
         self.assertEqual(issues, [])
         self.assertTrue(any("stale_after" in w for w in warns), warns)
+
+
+class TestUsage(unittest.TestCase):
+    def _usage(self, tmp, doc):
+        _tree(tmp)
+        _mk(tmp, kn.USAGE_REL, json.dumps(doc, ensure_ascii=False))
+        return kn.verify_usage(tmp)[0]
+
+    def _doc(self, **over):
+        d = {"schema": kn.USAGE_SCHEMA, "note": "x", "counts": {}, "total": 0}
+        d.update(over)
+        return d
+
+    def test_real_repo_usage_clean(self):
+        self.assertEqual(kn.verify_usage(str(ROOT))[0], [])
+
+    def test_unknown_source_key_is_fail(self):
+        tmp = tempfile.mkdtemp()
+        issues = self._usage(tmp, self._doc(counts={"ghost": 3}, total=3))
+        self.assertTrue(any("未声明的源" in i for i in issues), issues)
+
+    def test_total_mismatch_is_fail(self):
+        tmp = tempfile.mkdtemp()
+        issues = self._usage(tmp, self._doc(counts={"ext-fixtures": 2}, total=9))
+        self.assertTrue(any("total 与 counts" in i for i in issues), issues)
+
+    def test_non_int_count_is_fail(self):
+        tmp = tempfile.mkdtemp()
+        issues = self._usage(tmp, self._doc(counts={"ext-fixtures": "2"}, total=0))
+        self.assertTrue(any("非非负整数" in i for i in issues), issues)
+
+    def test_reuse_count_must_match_ledger(self):
+        tmp = tempfile.mkdtemp()
+        _tree(tmp)
+        digest = kn.sha256_file(str(Path(tmp, "library/NF-1.md")))
+        _mk(tmp, kn.LOG_REL, json.dumps({"schema": kn.LOG_SCHEMA, "entries": [
+            {"from": "ext-fixtures", "to": "library/NF-1.md", "digest": digest,
+             "reviewed_by": "作者", "reviewed_at": "2026-09-15", "evidence": [],
+             "promoted": False, "reuse_count": 5}]}, ensure_ascii=False))
+        issues = kn.verify_usage(tmp)[0]
+        self.assertTrue(any("频次不可复算" in i for i in issues), issues)
+        _mk(tmp, kn.USAGE_REL, json.dumps(self._doc(counts={"ext-fixtures": 5}, total=5),
+                                         ensure_ascii=False))
+        self.assertEqual(kn.verify_usage(tmp)[0], [])
+
+    def test_harvest_frequency_three_forms(self):
+        tmp = tempfile.mkdtemp()
+        arr = Path(tmp, "a.json")
+        arr.write_text('[{"knowledge_source": "ext-fixtures"}, {"source_id": "ext-fixtures"}]',
+                       encoding="utf-8")
+        self.assertEqual(kn.harvest_frequency(str(arr)), {"ext-fixtures": 2})
+        rec = Path(tmp, "r.json")
+        rec.write_text('{"records": [{"knowledge_source": "ext-fixtures"}]}', encoding="utf-8")
+        self.assertEqual(kn.harvest_frequency(str(rec)), {"ext-fixtures": 1})
+        jl = Path(tmp, "t.jsonl")
+        jl.write_text('{"knowledge_source": "ext-fixtures"}\n\n{"other": 1}\n', encoding="utf-8")
+        self.assertEqual(kn.harvest_frequency(str(jl)), {"ext-fixtures": 1})
+
+    def test_write_usage_is_canonical(self):
+        tmp = tempfile.mkdtemp()
+        _tree(tmp)
+        kn.write_usage(tmp, {"ext-fixtures": 2, "nf-library": 1})
+        doc = kn.load_usage(tmp)
+        self.assertEqual(doc["total"], 3)
+        self.assertEqual(list(doc["counts"]), ["ext-fixtures", "nf-library"])
+        self.assertEqual(kn.verify_usage(tmp)[0], [])
+
+
+class TestClearance(unittest.TestCase):
+    def test_public_cannot_see_internal(self):
+        allowed = kn.visible_ids(str(ROOT), "public")
+        self.assertIn("nf-library", allowed)
+        self.assertNotIn("ext-validation-assets", allowed)
+        self.assertNotIn("ext-fixtures", allowed)
+
+    def test_restricted_sees_all(self):
+        self.assertEqual(len(kn.visible_ids(str(ROOT), "restricted")), 6)
+
+    def test_resolve_order_filters_by_clearance(self):
+        full = [r["id"] for r in kn.resolve_order(str(ROOT))]
+        pub = [r["id"] for r in kn.resolve_order(str(ROOT), clearance="public")]
+        self.assertEqual(len(full), 6)
+        self.assertEqual(pub, [x for x in full if x in kn.visible_ids(str(ROOT), "public")])
+        self.assertNotIn("ext-fixtures", pub)
+
+    def test_unknown_clearance_yields_nothing(self):
+        self.assertEqual(kn.visible_ids(str(ROOT), "root"), set())
+
+
+class TestWorkflow(unittest.TestCase):
+    def test_write_log_roundtrip_and_promote(self):
+        tmp = tempfile.mkdtemp()
+        _tree(tmp)
+        digest = kn.sha256_file(str(Path(tmp, "library/NF-1.md")))
+        kn.write_log(tmp, [{"from": "ext-fixtures", "to": "library/NF-1.md", "digest": digest,
+                            "reviewed_by": "作者", "reviewed_at": "2026-09-15",
+                            "evidence": [], "promoted": False}])
+        self.assertEqual(kn.verify_transform(tmp)[0], [])
+        kn.write_log(tmp, [{"from": "ext-fixtures", "to": "library/NF-1.md", "digest": digest,
+                            "reviewed_by": "作者", "reviewed_at": "2026-09-15",
+                            "evidence": list(kn.TIERS), "promoted": True}])
+        self.assertEqual(kn.verify_transform(tmp)[0], [])
+        self.assertTrue(kn.load_log(tmp)["entries"][0]["promoted"])
 
 
 if __name__ == "__main__":

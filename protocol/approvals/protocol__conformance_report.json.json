@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-15",
   "approved_by": "作者",
-  "note": "知识层收口：一致性报告扩到 17 契约后重新批准",
+  "note": "知识层续波：一致性报告 knowledge-sources 契约纳入频次校验后重新批准",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "a24caed8226af3e99550d02a945679b7b3ddd50be34be861fbdd792392e55c63"
+  "subject_digest": "8ffb517ce4c6f54b6bc0107bc5ddd108c57f7edf0997c5712efc4e813ca8b226"
 }

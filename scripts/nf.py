@@ -396,7 +396,7 @@ def _build_parser() -> argparse.ArgumentParser:
     tl.add_argument("--otlp", action="store_true",
                     help="输出 OTLP 形状 JSON（resourceSpans → scopeSpans → spans）")
     conf = sub.add_parser("conformance",
-                          help="一致性报告工件（9 契约 → Merkle 根 + verdict；可归档可比对）",
+                         help="一致性报告工件（全部契约 → Merkle 根 + verdict；可归档可比对）",
                           description="一致性报告工件（机制借鉴 MCOP runConformanceSuite：make it checkable instead of trusted）")
     conf.add_argument("--write", action="store_true",
                       help="把当前报告写入 protocol/conformance_report.json")
@@ -468,11 +468,42 @@ def _build_parser() -> argparse.ArgumentParser:
     ksub = kn.add_subparsers(dest="knowledge_cmd")
     k_order = ksub.add_parser("order", help="解析查询顺序（合同级在前、参考级在后）",
                               description="解析查询顺序（合同级在前、参考级在后）")
+    k_order.add_argument("--as", dest="clearance", default="",
+                         choices=["", "public", "internal", "restricted"],
+                         help="按可见性裁剪（缺省 = 不裁剪）")
     k_lint = ksub.add_parser("lint", help="知识层巡检（悬空 / 孤儿 / 时效 / 溯源 / 声明）",
                              description="知识层巡检（悬空 / 孤儿 / 时效 / 溯源 / 声明）")
     k_tr = ksub.add_parser("transform", help="列消化记录（外部 → 本地，digest 绑定）",
                            description="列消化记录（外部 → 本地，digest 绑定）")
-    for _k in (k_order, k_lint, k_tr):
+    k_tr.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    _t = k_tr.add_subparsers(dest="transform_cmd")
+    t_add = _t.add_parser("add", help="登记一条消化记录（复核双签，未转正）",
+                          description="登记一条消化记录（复核双签，未转正）")
+    t_add.add_argument("--from", dest="src", required=True, help="参考级源 id")
+    t_add.add_argument("--to", dest="dst", required=True, help="本地产物（仓库相对路径）")
+    t_add.add_argument("--by", default="", help="复核人")
+    t_add.add_argument("--at", default="", help="复核时间 YYYY-MM-DD（缺省 = 今天）")
+    t_add.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    t_prom = _t.add_parser("promote", help="转正（须齐三档证据 + 复核双签）",
+                           description="转正（须齐三档证据 + 复核双签）")
+    t_prom.add_argument("--from", dest="src", required=True, help="参考级源 id")
+    t_prom.add_argument("--to", dest="dst", required=True, help="本地产物（仓库相对路径）")
+    t_prom.add_argument("--by", default="", help="复核人（必填）")
+    t_prom.add_argument("--at", default="", help="复核时间 YYYY-MM-DD（缺省 = 今天）")
+    t_prom.add_argument("--evidence", default="",
+                        help="证据档（逗号分隔，须齐 machine-checkable,reproducible,externally-attestable）")
+    t_prom.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    k_freq = ksub.add_parser("frequency", help="从 trace 复算知识源使用频次（--write 落台账）",
+                             description="从 trace 复算知识源使用频次（确定性；频次不可手写）")
+    k_freq.add_argument("--trace", required=True, help="trace 文件（JSON / JSONL）")
+    k_freq.add_argument("--write", action="store_true",
+                        help="写入 protocol/knowledge_usage.json")
+    k_vis = ksub.add_parser("visible", help="按可见性列出源（认知裁剪执行面）",
+                            description="按可见性列出源（认知裁剪执行面）")
+    k_vis.add_argument("--as", dest="clearance", default="public",
+                       choices=["public", "internal", "restricted"],
+                       help="消费方清除级（public ⊆ internal ⊆ restricted）")
+    for _k in (k_order, k_lint, k_freq, k_vis):
         _k.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ap = sub.add_parser("approve",
                         help="内容绑定批准记录（被批准对象改动即失效）",
@@ -1748,7 +1779,7 @@ def _cmd_lint(args):
 
 
 def _cmd_conformance(args):
-    """nf conformance：一致性报告工件（9 契约 → Merkle 根 + verdict）。"""
+    """nf conformance：一致性报告工件（全部契约 → Merkle 根 + verdict）。"""
     from core import conformance_report as cr
     import json as _json
     if args.write:
@@ -2010,16 +2041,60 @@ def _cmd_knowledge(args):
     sub = getattr(args, "knowledge_cmd", None) or "status"
     want_json = bool(getattr(args, "json", False))
     if sub == "order":
-        rows = kn.resolve_order(ROOT)
+        clearance = str(getattr(args, "clearance", "") or "")
+        rows = kn.resolve_order(ROOT, clearance=clearance)
         if want_json:
-            print(_json.dumps({"query_order": rows}, ensure_ascii=False,
+            print(_json.dumps({"clearance": clearance or "不裁剪", "query_order": rows},
+                              ensure_ascii=False,
                               indent=2, sort_keys=True))
         else:
-            print("== nf knowledge order（查询有序：合同级 → 参考级）==")
+            print("== nf knowledge order（查询有序：合同级 → 参考级%s）=="
+                  % ("· 裁剪至 " + clearance if clearance else ""))
             for i, r in enumerate(rows, 1):
                 print("  %d. %-22s %-9s %-18s %s"
                       % (i, r["id"], r["authority"], r["kind"], r["locator"]))
         return 0
+    if sub == "visible":
+        clearance = str(getattr(args, "clearance", "public") or "public")
+        allowed = kn.visible_ids(ROOT, clearance)
+        rows = [{"id": str(s.get("id")), "visibility": str(s.get("visibility")),
+                 "visible": str(s.get("id")) in allowed} for s in kn.sources(ROOT)]
+        if want_json:
+            print(_json.dumps({"clearance": clearance, "sources": rows},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf knowledge visible --as %s ==" % clearance)
+            for r in rows:
+                print("  %-22s %-11s %s" % (r["id"], r["visibility"],
+                                            "可见" if r["visible"] else "裁剪"))
+        return 0
+    if sub == "frequency":
+        try:
+            counts = kn.harvest_frequency(args.trace)
+        except OSError as exc:
+            print("  ✗ %s" % exc, file=sys.stderr)
+            return 1
+        if args.write:
+            kn.write_usage(ROOT, counts)
+        issues, _warns, stats = kn.verify_usage(ROOT)
+        if want_json:
+            print(_json.dumps({"counts": counts, "written": bool(args.write),
+                               "issues": issues, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf knowledge frequency（%d 源有事件 · 共 %d 次）=="
+                  % (len(counts), sum(counts.values())))
+            for k, v in counts.items():
+                print("  %-22s %d" % (k, v))
+            if not counts:
+                print("  （trace 中无 knowledge_source 事件）")
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if args.write and not issues:
+                print("  ✓ 频率台账已写入 %s（频次可复算）" % kn.USAGE_REL)
+            elif not args.write:
+                print("  （未写台账；加 --write 落盘）")
+        return 1 if issues else 0
     if sub == "lint":
         issues, warns, stats = kn.lint(ROOT)
         if want_json:
@@ -2036,6 +2111,59 @@ def _cmd_knowledge(args):
                       % stats.get("no_stale_after", 0))
         return 1 if issues else 0
     if sub == "transform":
+        tcmd = getattr(args, "transform_cmd", None)
+        if tcmd in ("add", "promote"):
+            import datetime as _dt
+            src = args.src.strip()
+            dst = args.dst.strip().replace("\\", "/")
+            at = args.at.strip() or _dt.date.today().isoformat()
+            if not os.path.isfile(os.path.join(ROOT, dst)):
+                print("  ✗ 产物不存在：%s（记录的 to 必须是仓库内真实件）" % dst,
+                      file=sys.stderr)
+                return 1
+            if src not in kn.reference_ids(ROOT):
+                print("  ✗ from 必须是已声明的参考级源：%s（修复指引：nf knowledge 列全部源）"
+                      % src, file=sys.stderr)
+                return 1
+            digest = kn.sha256_file(os.path.join(ROOT, dst))
+            entries = [dict(e) for e in (kn.load_log(ROOT).get("entries") or [])]
+            cur = next((e for e in entries
+                        if e.get("from") == src and e.get("to") == dst), None)
+            if cur is None:
+                cur = {"from": src, "to": dst, "digest": digest, "reviewed_by": "",
+                       "reviewed_at": "", "evidence": [], "promoted": False}
+                entries.append(cur)
+            cur["digest"] = digest
+            if args.by.strip():
+                cur["reviewed_by"] = args.by.strip()
+            cur["reviewed_at"] = at
+            if tcmd == "promote":
+                ev = [x.strip() for x in (args.evidence or "").split(",") if x.strip()]
+                missing = [t for t in kn.TIERS if t not in ev]
+                if missing:
+                    print("  ✗ 转正须齐三档证据，缺：%s（修复指引：--evidence %s）"
+                          % ("/".join(missing), ",".join(kn.TIERS)), file=sys.stderr)
+                    return 1
+                if not cur.get("reviewed_by"):
+                    print("  ✗ 转正须复核双签：缺 --by", file=sys.stderr)
+                    return 1
+                cur["evidence"] = list(ev)
+                cur["promoted"] = True
+            kn.write_log(ROOT, entries)
+            issues, _w, stats = kn.verify_transform(ROOT)
+            if want_json:
+                print(_json.dumps({"entry": cur, "issues": issues, "stats": stats},
+                                  ensure_ascii=False, indent=2, sort_keys=True))
+            else:
+                print("== nf knowledge transform %s ==" % tcmd)
+                print("  %s → %s（digest %s）转正=%s 复核=%s@%s"
+                      % (src, dst, digest[:12], cur.get("promoted"),
+                         cur.get("reviewed_by") or "-", cur.get("reviewed_at") or "-"))
+                for i in issues:
+                    print("  [FAIL] %s" % i, file=sys.stderr)
+                if not issues:
+                    print("  ✓ 记录已落盘，且与产物摘要一致（产物一改记录即失效）")
+            return 1 if issues else 0
         issues, _warns, stats = kn.verify_transform(ROOT)
         log = kn.load_log(ROOT)
         if want_json:

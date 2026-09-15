@@ -17,7 +17,7 @@
     "evidence_tiers": ["machine-checkable", "reproducible", "externally-attestable"],
     "triggers": ["reuse-frequency", "author-mark", "machine-check-pass"],
     "on_missing_evidence": "stay-reference",
-    "frequency_source": "protocol/transform_log.json 条目的 reuse_count（可选字段；一旦声明就必须可复算）"
+    "frequency_source": "protocol/knowledge_usage.json（由 nf knowledge frequency --trace <file> --write 从 trace 复算；消化记录一旦声明 reuse_count 就必须与该台账一致，手写即 FAIL）"
   },
   "review": {
     "rule": "消化产物进知识层前须双签：机检（nf knowledge lint 全绿）+ 复核（reviewed_by / reviewed_at 非空）。缺签不得标为 contract 级。",

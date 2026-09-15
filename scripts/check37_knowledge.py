@@ -32,6 +32,18 @@ def main() -> int:
     for i in kn.verify_transform(".")[0]:
         problems.append("消化记录：%s" % i)
 
+    # 3b 频次可复算：频率台账合法且与消化记录的 reuse_count 一致（不许手写频次）
+    for i in kn.verify_usage(".")[0]:
+        problems.append("频率台账：%s" % i)
+
+    # 3c 认知裁剪执行面：越权源不得进入任何 clearance 的查询顺序
+    for clearance in ("public", "internal", "restricted"):
+        allowed = kn.visible_ids(".", clearance)
+        leaked = [r["id"] for r in kn.resolve_order(".", clearance=clearance)
+                  if r["id"] not in allowed]
+        if leaked:
+            problems.append("认知裁剪失效（%s 看到越权源）：%s" % (clearance, leaked))
+
     # 4 巡检：悬空引用 / 孤儿条目（时效缺失按 WARN 挂账，不判死）
     lint_issues, _lint_warns, lstats = kn.lint(".")
     for i in lint_issues:

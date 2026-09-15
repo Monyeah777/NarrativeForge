@@ -107,8 +107,8 @@
     },
     {
       "description": "双源知识层（权威分层/查询有序/时效/溯源）",
-      "detail": "源 6（合同 3 / 参考 3）· 消化记录 0",
-      "digest": "a7ce1de4d71652f6f564b10177dfd21e5edf0194dfd5eebd8888fcca17d3882d",
+      "detail": "源 6（合同 3 / 参考 3）· 消化记录 0 · 频次事件 0",
+      "digest": "6a8fd28eb015621f8eb629d0e944dbfec9ed49589cece9f6c699eb7a42294567",
       "id": "knowledge-sources",
       "ok": true
     },
@@ -121,7 +121,7 @@
     }
   ],
   "passed": 17,
-  "root": "328da1ad64cf43a25ef3445f19e1098301eb15c9e344780f3274877c028d732c",
+  "root": "d0bc4133125a23d74553084577f2c5b88bf76e2cb4e90feb894ed51291e00230",
   "schema": "nf-conformance/1",
   "total": 17,
   "verdict": "conformant"

@@ -157,10 +157,11 @@ def _c_endpoint(root: str) -> Tuple[bool, str]:
 def _c_knowledge(root: str) -> Tuple[bool, str]:
     from core import knowledge as kn
     issues, _warns, stats = kn.scan(root)
-    issues = issues + kn.verify_transform(root)[0]
-    detail = "源 %d（合同 %d / 参考 %d）· 消化记录 %d" % (
+    issues = issues + kn.verify_transform(root)[0] + kn.verify_usage(root)[0]
+    events = kn.verify_usage(root)[2].get("events", 0)
+    detail = "源 %d（合同 %d / 参考 %d）· 消化记录 %d · 频次事件 %d" % (
         stats.get("sources", 0), stats.get("contract", 0),
-        stats.get("reference", 0), stats.get("transforms", 0))
+        stats.get("reference", 0), stats.get("transforms", 0), events)
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 

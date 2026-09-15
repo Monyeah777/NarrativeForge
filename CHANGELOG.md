@@ -2,6 +2,8 @@
 
 ## [2.12.0] - 未发布
 
+- 知识层续波（不新增 check——语义并入 check37，门禁形状不变）：**频次自动采集**（`nf knowledge frequency --trace <file> [--write]`：从 trace 复算源使用频次落 `protocol/knowledge_usage.json`；消化记录一旦声明 `reuse_count` 必须与台账一致，**手写频次即 FAIL**）· **复核工作流**（`nf knowledge transform add|promote`：登记 → 转正两段式，转正须齐三档证据 + 复核双签；两条路径**先校验后写盘**，非法入参不落脏记录）· **认知裁剪执行接线**（`visible_ids(clearance)`：秩 public ⊂ internal ⊂ restricted，`nf knowledge order --as` 与 MCP 工具 `knowledge_order` 均不返回越权源）· **MCP 工具面**（新增只读工具 `knowledge_order`）· **公开件卫生**（清掉 `.github/scripts/library_ingest.py` / `docs/ai-menu.md` / `CONTRIBUTING.md` 中引用内部档案路径的表述；`nf conformance` 帮助文案不再写死契约数）。基线不变：verify v2.27，check1-37，PASS=61。
+
 - 知识层收口（check37）：**双源知识声明**（`protocol/knowledge_sources.json`：权威分层 `contract`/`reference`、查询有序 `query_order`、时效策略、可见性，**reference 级必须标注来源**、`locator` 必须指向真实件防纸面源）· **消化可追溯**（`protocol/transform_log.json`：源 ↔ 产物 `digest` 绑定，产物一改记录即失效；转正须齐三档证据 + 复核双签）· **晋升规则**（缺证据一律 `stay-reference`，不许用推测填）· **认知裁剪**（`cognition.filter_module` 必须指向在册模块）· **知识层巡检**（悬空引用 / 孤儿条目 FAIL，时效缺失 WARN）· 机器面 `nf knowledge [order|lint|transform]`。同波：一致性报告扩到 **17/17 契约**（增 `knowledge-sources`）、协议层回执覆盖面 **28 → 30 件**。基线 verify v2.27，check1-37，PASS=61。
 
 ## [2.11.0] - 未发布
