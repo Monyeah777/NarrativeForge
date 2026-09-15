@@ -22,11 +22,29 @@
 #        段 A/B = L0/L1（协议一致性 + 内容对账），check12-22 = L2 core（unittest/py_compile/协议投影/
 #        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳线退役移出（桌面 GUI 端壳 2026-09-09 同轨退役，见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备）；check26 = 语义矛盾扫描门禁（41 波C C3：techdoc 链 machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移）；check27 = 架构纯度体检门禁（42 M3：协议层端壳残留/私货可变物/重复标题 grep + core raise 消息修复指引审计））
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
-#        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4285 行（v1.0 发布实测基线）。
+#        校园资产 29 文件 1451 行 / 西幻资产 23 文件 3657 行（2026-09-15 实测重校；v1.0 原基线 1575/4285 已过期）。
 # ============================================================
 set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT" || { echo '无法进入仓库根目录'; exit 2; }
+# ---- 临时文件隔离（并发安全：每次运行独立目录，避免共享固定路径互相覆盖日志）----
+# 背景：本仓库常有并发 agent 会话同时跑门禁；固定 /tmp 路径会让 B 会话的失败日志
+#       覆盖 A 会话的诊断输出，导致「看到的失败不是自己的」。原生 Windows（无 Git Bash）下
+#       硬编码 /tmp 亦不成立。故改为每次运行 mktemp -d 并在退出时清理。
+NFL_TMP="$(mktemp -d 2>/dev/null || echo "${TMPDIR:-/tmp}/nf_verify_$$")"
+if [ -z "$NFL_TMP" ] || [ ! -d "$NFL_TMP" ]; then
+  NFL_TMP="${TMPDIR:-/tmp}/nf_verify_$$"; mkdir -p "$NFL_TMP" 2>/dev/null || true
+fi
+cleanup_nfl(){
+  # 全绿才清理；有 FAIL 时保留目录——诊断日志是修复依据，删掉等于把修复线索一起删了。
+  if [ "${FAIL:-0}" -gt 0 ]; then
+    printf '  [i] 本次有 FAIL —— 诊断日志保留在：%s\n' "$NFL_TMP" >&2
+  else
+    [ -n "$NFL_TMP" ] && [ "$NFL_TMP" != "/" ] && rm -rf "$NFL_TMP" 2>/dev/null
+  fi
+  return 0
+}
+trap cleanup_nfl EXIT INT TERM
 # ---- Python 解释器探测（Windows 兼容）----
 # Windows 的 python3 可能是应用商店 stub：command -v 能找到但执行静默失败零输出。
 # 以「能真正执行 import sys」为可用判据：stub 被跳过，回退真实 python。
@@ -284,12 +302,12 @@ check12(){
   local err=0
   # ① desktop core 单元测试（desktop/tests 全量 discover，纯 unittest 无 pytest 依赖；L2 核心层）
   if [ -d desktop/tests ]; then
-    if ( cd desktop && "$PY3" -m unittest discover -s tests -q >/tmp/nf_check12_unittest.log 2>&1 ); then
+    if ( cd desktop && "$PY3" -m unittest discover -s tests -q >"$NFL_TMP"/nf_check12_unittest.log 2>&1 ); then
       ok 'desktop core 单元测试全绿（desktop/tests 全量 discover，纯 unittest 内置）'
     else
-      no 'desktop core 单元测试失败——见 /tmp/nf_check12_unittest.log'; err=1
+      no "desktop core 单元测试失败——见 $NFL_TMP/nf_check12_unittest.log"; err=1
       echo "  ── unittest log 尾部（诊断回显）──"
-      tail -40 /tmp/nf_check12_unittest.log 2>/dev/null | sed 's/^/    /'
+      tail -40 "$NFL_TMP"/nf_check12_unittest.log 2>/dev/null | sed 's/^/    /'
     fi
   else
     wn 'desktop/tests 不在场（跳过代码层 unittest）'
@@ -297,12 +315,12 @@ check12(){
   # ② 全量 py_compile 语法抽查（desktop/src scripts——L2 core 域；android/app
   #    已彻底移除（裁决 #16），不再编译，见 L3_FROZEN.md）
   if [ -n "$PY3" ]; then
-    if "$PY3" -m compileall -q desktop/src scripts >/tmp/nf_check12_pyc.log 2>&1; then
+    if "$PY3" -m compileall -q desktop/src scripts >"$NFL_TMP"/nf_check12_pyc.log 2>&1; then
       ok '全量 py_compile 语法抽查通过（desktop/src scripts）'
     else
-      no 'py_compile 语法抽查失败——见 /tmp/nf_check12_pyc.log'; err=1
+      no "py_compile 语法抽查失败——见 $NFL_TMP/nf_check12_pyc.log"; err=1
       echo "  ── py_compile log 尾部（诊断回显）──"
-      tail -30 /tmp/nf_check12_pyc.log 2>/dev/null | sed 's/^/    /'
+      tail -30 "$NFL_TMP"/nf_check12_pyc.log 2>/dev/null | sed 's/^/    /'
     fi
   else
     wn 'python3 不在 PATH（跳过 py_compile）'
@@ -344,7 +362,7 @@ check13(){
   fi
   # ③ 模块逐条一致：02 §2 模块表 13 件 == registry.json modules（条目数与 ID 集合全等）
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check13_cmp.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check13_cmp.log 2>&1
 import json, re, sys
 doc = open('02_联动注册表.md', encoding='utf-8').read()
 m = re.search(r'## 2\. 官方核心模块表.*?(?=\n## 3\.)', doc, re.S)
@@ -367,7 +385,7 @@ PYEOF
     then
       ok '模块逐条一致：02 §2 模块表 13 件 == registry.json modules（ID 集合全等）'
     else
-      no "模块表与机读投影不一致——$(head -3 /tmp/nf_check13_cmp.log | tr '\n' ' ')"; err=1
+      no "模块表与机读投影不一致——$(head -3 "$NFL_TMP"/nf_check13_cmp.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check13 模块逐条比对）'
@@ -395,7 +413,7 @@ check14(){
   fi
   # ②-⑦ 精确比对（python3 + PyYAML：解析两包 protocol.yaml + desktop registry.json + 02 文档反解）
   if [ "$YAMLOK" -eq 1 ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check14.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check14.log 2>&1
 import glob, json, os, re, sys
 import yaml
 
@@ -528,7 +546,7 @@ PYEOF
     then
       :
     else
-      no "check14 ②-⑦ 校验失败——$(head -5 /tmp/nf_check14.log | tr '\n' ' ')"; err=1
+      no "check14 ②-⑦ 校验失败——$(head -5 "$NFL_TMP"/nf_check14.log | tr '\n' ' ')"; err=1
     fi
   else
     # 降级：PyYAML 缺失 → 文本粗校验必填键在场（②），③-⑦ WARN 跳过不 FAIL（动作 3）
@@ -552,7 +570,7 @@ check15(){
   { [ "$PYOK" -eq 1 ] && "$PY3" -c 'import yaml' >/dev/null 2>&1; } && YAMLOK=1
   [ "$YAMLOK" -eq 1 ] || wn 'Python/PyYAML 不可用（check15 组合引用精确比对降级为 references 键文本粗校验；建议 pip install pyyaml 后重跑）'
   if [ "$YAMLOK" -eq 1 ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check15.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check15.log 2>&1
 import glob, json, os, sys
 import yaml
 # C2 包目录 glob 化（29 方案 B3-C）：check15 遍历层扫全部含 protocol.yaml 的 community 目录
@@ -679,7 +697,7 @@ PYEOF
     then
       :
     else
-      no "check15 ①-⑤ 校验失败——$(head -5 /tmp/nf_check15.log | tr '\n' ' ')"; err=1
+      no "check15 ①-⑤ 校验失败——$(head -5 "$NFL_TMP"/nf_check15.log | tr '\n' ' ')"; err=1
     fi
   else
     # 降级：PyYAML 缺失 → references 键文本粗校验（①-⑤ 精确比对跳过不 FAIL）
@@ -702,7 +720,7 @@ check16(){
   [ "$YAMLOK" -eq 1 ] || wn 'python3/PyYAML 不在（check16-A 契约仲裁降级 machine_contract 键文本粗校验；建议 pip install pyyaml 后重跑）'
   # ---- 子断言 A：契约仲裁（官方核心 13 件机读结构 + references 装配 publish⊆subscribe）----
   if [ "$YAMLOK" -eq 1 ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check16a.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check16a.log 2>&1
 import json, sys, os, glob
 import yaml
 CORE13 = [
@@ -833,7 +851,7 @@ PYEOF
     then
       :
     else
-      no "check16-A 契约仲裁校验失败——$(head -5 /tmp/nf_check16a.log | tr '\n' ' ')"; errA=1
+      no "check16-A 契约仲裁校验失败——$(head -5 "$NFL_TMP"/nf_check16a.log | tr '\n' ' ')"; errA=1
     fi
   else
     local f miss4=0
@@ -847,7 +865,7 @@ PYEOF
   fi
   # ---- 子断言 B：运行时寻址授权一致（registry references.asset_readonly ↔ _readonly_sources ↔ asset_get；loader 纯 json 消费，无 PyYAML 依赖）----
   if [ "$PYOK" -eq 1 ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check16b.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check16b.log 2>&1
 import json, sys, os, glob
 sys.path.insert(0, 'desktop/src')
 from core.registry_loader import load_registry
@@ -888,7 +906,7 @@ PYEOF
     then
       :
     else
-      no "check16-B 运行时寻址授权断言失败——$(head -5 /tmp/nf_check16b.log | tr '\n' ' ')"; errB=1
+      no "check16-B 运行时寻址授权断言失败——$(head -5 "$NFL_TMP"/nf_check16b.log | tr '\n' ' ')"; errB=1
     fi
   else
     no 'check16-B 运行时寻址授权断言无法执行（Python 解释器不可用）'; errB=1
@@ -900,10 +918,10 @@ check17(){
   echo '== [17/段C] 质量治理门禁（v1.4.0 check17：16_v1.4.0_质量治理闭环方案.md）=='
   local err=0
   if [ -d desktop/tests ]; then
-    if ( cd desktop && "$PY3" -m unittest tests.test_quality_gate -q >/tmp/nf_check17_unittest.log 2>&1 ); then
+    if ( cd desktop && "$PY3" -m unittest tests.test_quality_gate -q >"$NFL_TMP"/nf_check17_unittest.log 2>&1 ); then
       ok '质量治理门 unittest 全绿（test_quality_gate：空装配/缺锚点 fail、资产悬空/层外 warn、合法装配 ok；ok()=fail==0 可信任度不变量）'
     else
-      no "质量治理门 unittest 失败——见 /tmp/nf_check17_unittest.log"; err=1
+      no "质量治理门 unittest 失败——见 "$NFL_TMP"/nf_check17_unittest.log"; err=1
     fi
   else
     wn 'desktop/tests 不在场（跳过 check17）'
@@ -913,12 +931,12 @@ check18(){
   echo '== [18/段C] 导出契约门禁（v2.0.0 check18：17_v2.0.0_导出层CCV3方案.md）=='
   local err=0
   if [ -d desktop/tests ]; then
-    if ( cd desktop && "$PY3" -m unittest tests.test_ccv3_adapter tests.test_exporter -q >/tmp/nf_check18_unittest.log 2>&1 ); then
+    if ( cd desktop && "$PY3" -m unittest tests.test_ccv3_adapter tests.test_exporter -q >"$NFL_TMP"/nf_check18_unittest.log 2>&1 ); then
       ok '导出契约 unittest 全绿（ccv3_adapter：映射层引擎锚点排除/资产条目/无静默丢弃；exporter：chara spec 锚点/world 条目/PNG tEXt 回读）'
     else
-      no "导出契约 unittest 失败——见 /tmp/nf_check18_unittest.log"; err=1
+      no "导出契约 unittest 失败——见 "$NFL_TMP"/nf_check18_unittest.log"; err=1
       echo "  ── unittest log 尾部（诊断回显）──"
-      tail -40 /tmp/nf_check18_unittest.log 2>/dev/null | sed 's/^/    /'
+      tail -40 "$NFL_TMP"/nf_check18_unittest.log 2>/dev/null | sed 's/^/    /'
     fi
   else
     wn 'desktop/tests 不在场（跳过 check18）'
@@ -928,10 +946,10 @@ check19(){
   echo '== [19/段C] 导出产物 schema 合规（v2.2.0 A1：export_schema 5 格式 shape 自检）=='
   local err=0
   if [ -d desktop/tests ]; then
-    if ( cd desktop && "$PY3" -m unittest tests.test_export_schema -q >/tmp/nf_check19_unittest.log 2>&1 ); then
+    if ( cd desktop && "$PY3" -m unittest tests.test_export_schema -q >"$NFL_TMP"/nf_check19_unittest.log 2>&1 ); then
       ok '导出产物 schema 校验全绿（ccv3/skill/agents/claude/mcp 5 格式 shape 自检：合法产物通过 + 篡改检出）'
     else
-      no "导出产物 schema 校验失败——见 /tmp/nf_check19_unittest.log"; err=1
+      no "导出产物 schema 校验失败——见 "$NFL_TMP"/nf_check19_unittest.log"; err=1
     fi
   else
     wn 'desktop/tests 不在场（跳过 check19）'
@@ -944,7 +962,7 @@ check20(){
   local err=0 PYOK=0
   [ -n "$PY3" ] && PYOK=1
   if [ "$PYOK" -eq 1 ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check20.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check20.log 2>&1
 import glob, os, re, sys
 
 # A3 文档完整性（v2.2.0 外部吸收）：模块文档硬性必填项，缺即 fail。
@@ -1008,7 +1026,7 @@ PYEOF
     then
       :
     else
-      no "check20 文档完整性校验失败——$(head -5 /tmp/nf_check20.log | tr '\n' ' ')"; err=1
+      no "check20 文档完整性校验失败——$(head -5 "$NFL_TMP"/nf_check20.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check20）'
@@ -1020,10 +1038,10 @@ check21(){
   echo '== [21/段C] registry 引用图闭合门禁（v2.2.0 A4：impact_check 变更影响面——registry 自洽无悬空引用/无裸号重复）=='
   local err=0
   if [ -d desktop/tests ]; then
-    if ( cd desktop && "$PY3" -m unittest tests.test_impact_check -q >/tmp/nf_check21_unittest.log 2>&1 ); then
+    if ( cd desktop && "$PY3" -m unittest tests.test_impact_check -q >"$NFL_TMP"/nf_check21_unittest.log 2>&1 ); then
       ok 'registry 引用图闭合校验全绿（A4 impact_check：隔离构造悬空引用/重复检出 + registry.json 真源自洽 smoke）'
     else
-      no "registry 引用图闭合校验失败——见 /tmp/nf_check21_unittest.log"; err=1
+      no "registry 引用图闭合校验失败——见 "$NFL_TMP"/nf_check21_unittest.log"; err=1
     fi
   else
     wn 'desktop/tests 不在场（跳过 check21）'
@@ -1035,10 +1053,10 @@ check22(){
   echo '== [22/段C] 导出物规范体检门禁（v2.4.0 A4：export_schema 硬约束——spec_version 数值/name 规范/description 上限）=='
   local err=0
   if [ -d desktop/tests ]; then
-    if ( cd desktop && "$PY3" -m unittest tests.test_export_schema tests.test_ccv3_adapter tests.test_skill_adapter -q >/tmp/nf_check22_unittest.log 2>&1 ); then
+    if ( cd desktop && "$PY3" -m unittest tests.test_export_schema tests.test_ccv3_adapter tests.test_skill_adapter -q >"$NFL_TMP"/nf_check22_unittest.log 2>&1 ); then
       ok '导出物规范体检全绿（A4 export_schema：ccv3 spec_version 3.0-4.0 数值 + skill name a-z0-9-/≤64/匹配父目录 + description ≤1024）'
     else
-      no "导出物规范体检失败——见 /tmp/nf_check22_unittest.log"; err=1
+      no "导出物规范体检失败——见 "$NFL_TMP"/nf_check22_unittest.log"; err=1
     fi
   else
     wn 'desktop/tests 不在场（跳过 check22）'
@@ -1050,7 +1068,7 @@ check23(){
   echo '== [23/段C] 资产供应链闭合门禁（40 总纲 v2.7 波A S2：每资产可溯源/可发现/键无孤儿；台账=provenance.json + 文件头双源一致）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check23.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check23.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1068,7 +1086,7 @@ PYEOF
     then
       ok '资产供应链台账闭合（S2：托管资产 可溯源/可发现/键无孤儿）'
     else
-      no "资产供应链台账异常——$(tail -2 /tmp/nf_check23.log | tr '\n' ' ')"; err=1
+      no "资产供应链台账异常——$(tail -2 "$NFL_TMP"/nf_check23.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check23）'
@@ -1080,7 +1098,7 @@ check24(){
   echo '== [24/段C] 模块生命周期门禁（40 总纲 v2.8 波B S5：模块 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check24.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check24.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1098,7 +1116,7 @@ PYEOF
     then
       ok '模块状态扫描与引用门禁通过（S5：全部模块状态位可读，无 deprecated/retired 被引用）'
     else
-      no "模块生命周期门禁异常——$(tail -2 /tmp/nf_check24.log | tr '\n' ' ')"; err=1
+      no "模块生命周期门禁异常——$(tail -2 "$NFL_TMP"/nf_check24.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check24）'
@@ -1110,7 +1128,7 @@ check25(){
   echo '== [25/段C] 协议知识签名门禁（41 波C C2：01-36 全量文档签名两遍可复现——知识指纹稳定 = 编译期冲突可发现）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check25.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check25.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1128,7 +1146,7 @@ PYEOF
     then
       ok '协议知识签名全量可复现（C1/C2：01-36 覆盖，两遍逐字节一致）'
     else
-      no "协议知识签名门禁异常——$(tail -2 /tmp/nf_check25.log | tr '\n' ' ')"; err=1
+      no "协议知识签名门禁异常——$(tail -2 "$NFL_TMP"/nf_check25.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check25）'
@@ -1140,7 +1158,7 @@ check26(){
   echo '== [26/段C] 语义矛盾扫描门禁（41 波C C3：techdoc 链事件契约断链 + 挂载点/类别漂移——补 check15/21 结构自洽之上的语义空白）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check26.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check26.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1158,7 +1176,7 @@ PYEOF
     then
       ok '语义矛盾扫描通过（C3：techdoc 链事件契约闭合，无挂载点/类别漂移）'
     else
-      no "语义矛盾扫描异常——$(tail -2 /tmp/nf_check26.log | tr '\n' ' ')"; err=1
+      no "语义矛盾扫描异常——$(tail -2 "$NFL_TMP"/nf_check26.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check26）'
@@ -1170,7 +1188,7 @@ check27(){
   echo '== [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check27.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check27.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1188,7 +1206,7 @@ PYEOF
     then
       ok '架构纯度体检通过（M3：协议层无端壳残留/私货/重复标题，raise 消息修复指引零缺失）'
     else
-      no "纯度体检异常——$(tail -2 /tmp/nf_check27.log | tr '\n' ' ')"; err=1
+      no "纯度体检异常——$(tail -2 "$NFL_TMP"/nf_check27.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check27）'
@@ -1200,7 +1218,7 @@ check28(){
   echo '== [28/段C] 协议层 IDL schema 门禁（43 A1：protocol/schema 五定义在场 + 全量件过 schema——machine_contract/registry 投影/管线声明/协议包/资产台账，任一字段漂移即 FAIL）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check28.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check28.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1218,7 +1236,7 @@ PYEOF
     then
       ok '协议层 IDL 全量件过 schema（A1：contract/module/pipeline/protocol/asset 五定义在场 + 零漂移）'
     else
-      no "IDL schema 扫描异常——$(tail -2 /tmp/nf_check28.log | tr '\n' ' ')"; err=1
+      no "IDL schema 扫描异常——$(tail -2 "$NFL_TMP"/nf_check28.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check28）'
@@ -1231,7 +1249,7 @@ check29(){
   echo '== [29/段C] Conformance 一致性分级门禁（43 A2：01 §1.2 分级——模块机读块/协议包/导出 manifest 声明 ≤ 可证级别，防虚标）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check29.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check29.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1249,7 +1267,7 @@ PYEOF
     then
       ok 'Conformance 声明 ≤ 可证级别（A2：模块机读块/协议包/导出面零虚标）'
     else
-      no "Conformance 分级扫描异常——$(tail -2 /tmp/nf_check29.log | tr '\n' ' ')"; err=1
+      no "Conformance 分级扫描异常——$(tail -2 "$NFL_TMP"/nf_check29.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check29）'
@@ -1262,7 +1280,7 @@ check30(){
   echo '== [30/段C] 扩展策略 + bump 迁移门禁（43 A3：EXTENSION 判据在场 + 版本字段结构性变更须带 01 §7/02 §9.3 迁移记录）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check30.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check30.log 2>&1
 import os, re, subprocess, sys
 issues = []
 ext = ''
@@ -1317,7 +1335,7 @@ PYEOF
     then
       ok '扩展策略 + bump 迁移门禁通过（A3：EXTENSION 判据在场，版本 bump 均带迁移四步）'
     else
-      no "扩展策略/bump 迁移扫描异常——$(tail -2 /tmp/nf_check30.log | tr '\n' ' ')"; err=1
+      no "扩展策略/bump 迁移扫描异常——$(tail -2 "$NFL_TMP"/nf_check30.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check30）'
@@ -1330,7 +1348,7 @@ check31(){
   echo '== [31/段C] 生成物同仓 golden 门禁（43 A4：schema 定义 → 生成物可复现，仓库内产物 == 实时重算——双源不一致即过期 FAIL）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check31.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check31.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1348,7 +1366,7 @@ PYEOF
     then
       ok '生成物同仓 golden 一致（A4：schema↔生成物双源可复现，无过期）'
     else
-      no "golden 双源校验异常——$(tail -2 /tmp/nf_check31.log | tr '\n' ' ')"; err=1
+      no "golden 双源校验异常——$(tail -2 "$NFL_TMP"/nf_check31.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check31）'
@@ -1361,7 +1379,7 @@ check32(){
   echo '== [32/段C] 质量纵深汇总门禁（45 W28：载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用 + world_model/world_slots）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check32.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check32.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 try:
@@ -1379,7 +1397,7 @@ PYEOF
     then
       ok '质量纵深汇总扫描通过（载荷/ledger/指令/资产/world_model/world_slots 零缺口）'
     else
-      no "质量纵深汇总异常——$(tail -2 /tmp/nf_check32.log | tr '\n' ' ')"; err=1
+      no "质量纵深汇总异常——$(tail -2 "$NFL_TMP"/nf_check32.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check32）'
@@ -1392,7 +1410,7 @@ check33(){
   echo '== [33/段C] 新面汇总门禁（MCP dual-era / attestation / 基线回归评分 / 机械修复 / 正文 lint / 许可证门 / 遥测 semconv）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check33.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check33.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 problems = []
@@ -1483,7 +1501,7 @@ PYEOF
     then
       ok '新面扫描通过（MCP dual-era / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测）'
     else
-      no "新面扫描异常——$(tail -3 /tmp/nf_check33.log | tr '\n' ' ')"; err=1
+      no "新面扫描异常——$(tail -3 "$NFL_TMP"/nf_check33.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check33）'
@@ -1496,7 +1514,7 @@ check34(){
   echo '== [34/段C] 云端图书馆面门禁（frontmatter 真源 / INDEX·ALIAS 投影一致 / 生命周期 / 四型覆盖 / llms.txt 入口）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check34.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check34.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 problems = []
@@ -1546,7 +1564,7 @@ PYEOF
     then
       ok '图书馆面扫描通过（frontmatter 真源 / 投影一致 / 四型覆盖 / llms.txt 入口 / 检索可用）'
     else
-      no "图书馆面扫描异常——$(tail -3 /tmp/nf_check34.log | tr '\n' ' ')"; err=1
+      no "图书馆面扫描异常——$(tail -3 "$NFL_TMP"/nf_check34.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check34）'
@@ -1559,7 +1577,7 @@ check35(){
   echo '== [35/段C] 深化面门禁（管线抽象执行 / 馆藏回执单根 / 模块边界冻结 / 内容绑定批准 / 一致性报告工件 / 无效语料）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check35.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check35.log 2>&1
 import os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 problems = []
@@ -1629,7 +1647,7 @@ PYEOF
     then
       ok '深化面扫描通过（dry-run / 回执单根 / 边界冻结 / 批准记录 / 一致性报告 / 语料）'
     else
-      no "深化面扫描异常——$(tail -3 /tmp/nf_check35.log | tr '\n' ' ')"; err=1
+      no "深化面扫描异常——$(tail -3 "$NFL_TMP"/nf_check35.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check35）'
@@ -1642,7 +1660,7 @@ check36(){
   echo '== [36/段C] 治理面门禁（一致性声明 / RFC 版本史 / 指令档机器面路由 / 实践包 / 跑分台 / 端点契约）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" - <<'PYEOF' >/tmp/nf_check36.log 2>&1
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check36.log 2>&1
 import json, os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 problems = []
@@ -1701,7 +1719,7 @@ PYEOF
     then
       ok '治理面扫描通过（声明 / RFC / driver / 实践包 / 跑分 / 端点）'
     else
-      no "治理面扫描异常——$(tail -3 /tmp/nf_check36.log | tr '\n' ' ')"; err=1
+      no "治理面扫描异常——$(tail -3 "$NFL_TMP"/nf_check36.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check36）'
@@ -1714,11 +1732,11 @@ check37(){
   echo '== [37/段C] 知识层门禁（双源知识：权威分层 / 查询有序 / 时效 / 消化可追溯 / 认知裁剪）=='
   local err=0
   if [ -n "$PY3" ]; then
-    if "$PY3" scripts/check37_knowledge.py >/tmp/nf_check37.log 2>&1
+    if "$PY3" scripts/check37_knowledge.py >"$NFL_TMP"/nf_check37.log 2>&1
     then
       ok '知识层扫描通过（权威分层 / 查询有序 / 时效 / 溯源 / 巡检）'
     else
-      no "知识层扫描异常——$(tail -3 /tmp/nf_check37.log | tr '\n' ' ')"; err=1
+      no "知识层扫描异常——$(tail -3 "$NFL_TMP"/nf_check37.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check37）'

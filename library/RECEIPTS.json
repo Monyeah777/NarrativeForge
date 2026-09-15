@@ -1,6 +1,6 @@
 {
   "algorithm": "RFC6962-style sha256 domain-separated",
-  "count": 2,
+  "count": 3,
   "entries": [
     {
       "anchor": {
@@ -18,6 +18,27 @@
       "path": "library/NF-1.md",
       "proof": [
         {
+          "hash": "5482044352ae882d0dce6dcd815d2a43dad2ba32e00e432cdde36cf3815acd6d",
+          "side": "right"
+        },
+        {
+          "hash": "141750ac2d998a0545742c7dcb28251f21db714ed4089d6c542f636450867775",
+          "side": "right"
+        }
+      ]
+    },
+    {
+      "anchor": null,
+      "digest": "904856c28ee4ac042d474c126c56c6e2185b33b691c1de34b81d149bcedd927a",
+      "id": "NF-TECHDOC-Monyeah777-1",
+      "leaf": "5482044352ae882d0dce6dcd815d2a43dad2ba32e00e432cdde36cf3815acd6d",
+      "path": "library/NF-TECHDOC-Monyeah777-1.md",
+      "proof": [
+        {
+          "hash": "946b4657894ff21532245157879b717f35e699d7f24d8d845f3774cd0e5f8757",
+          "side": "left"
+        },
+        {
           "hash": "141750ac2d998a0545742c7dcb28251f21db714ed4089d6c542f636450867775",
           "side": "right"
         }
@@ -31,12 +52,12 @@
       "path": "library/NF-WORLDCAMPUS-Monyeah777-1.md",
       "proof": [
         {
-          "hash": "946b4657894ff21532245157879b717f35e699d7f24d8d845f3774cd0e5f8757",
+          "hash": "36548bf842a25cfe160fd4ab4e7a0e116d351c36f7613ef59242ac9d2189f650",
           "side": "left"
         }
       ]
     }
   ],
-  "root": "0426623e001fd160d386eebda9ef81fe3c814fc6a8ca808055433aecaff0ca69",
+  "root": "10aecaccabd0b1b537623de1ea5c1e20a95a7be14b02f96438c9ec4aa3ae4a49",
   "schema": "nf-receipts/1"
 }

@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-15",
   "approved_by": "作者",
-  "note": "断言表入一致性报告后重新批准",
+  "note": "内容建模三件入一致性报告（21 契约）后重新批准",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "8ba59d31aa9bb116632ae80055ee48fb30b959fb70e40ee53930159bb0644c6f"
+  "subject_digest": "d244d2b94c871a6a7afbfc8922d7c1883f11ec547ef05c1e3f8c911d9e609532"
 }

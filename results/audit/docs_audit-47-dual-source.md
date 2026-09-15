@@ -99,3 +99,23 @@
 **边界声明（写死，防过度工程）**：断言表只做**受限子集**，表达力不扩张；业务语义断言留在 check 代码里；
 四型写法首轮只 WARN，收敛节奏由存量统计决定。**未做**：跨池边界声明（P1-6）、粒度 atomic/composite（P1-5）、
 形态选择规则（P1-7）——留作 P1 波。
+
+## 九、内容建模三件（同日第三续波）
+
+外部机制只作借鉴（SKOS 概念方案 / 标准治理的 normative·informative 二分 / ODCS 与 Data Contract
+Specification 的契约要素），逐条过仓库实证后落地三件，**不新增 check**（并入一致性报告契约，由 check35 兜住）：
+
+| 件 | 真源 | 判据 | 当前水位 |
+|---|---|---|---|
+| 词表登记册 | `protocol/vocabularies.json` | probe 指回真源逐项比对；id 唯一；status 在册；值 ≥2、不重复、不与 alias 撞车 | **12 个概念方案，0 漂移**（覆盖 doc-kinds / knowledge 权威·形态·可见性 / 晋升档与触发 / 断言严重级与 kind / RFC 状态与类别 / 实践包状态 / 机读契约键） |
+| 规范件与说明件 | `protocol/normative.json` | 交集为空；规范件须有主（回执锚定或 `covered_by`，checkN 须真实）；说明件不得被回执锚定 | **规范件 28 · 说明件 177**，零违规 |
+| 数据契约登记 | `protocol/data_contracts.json` | artifact 存在；`quality_rule` 解析到真实 check/assertion；owner / freshness 非空；status 在册 | **10 契约**，quality_rule 全部解析（check21/32/35/37 + assertion） |
+
+**为什么这三件值得做**：它们是此前**只能在人脑里维持**的三类知识——词表以谁为准、哪些件有约束力、
+每个机读件谁管。现在三者都有真源 + 判据 + 机器面（`nf model`），且都进了回执覆盖面（改动即失效）。
+
+**五维水位（第三续波）**：静态可核验 ↑（三个新契约）· 架构纯度 ↑（词表不再散落）·
+文档可执行性 ↑（`docs/modeling.md`）· 动态可执行 =、资产密度 =。
+
+**仍挂账**：P1 四项（跨池边界 / 粒度 atomic·composite / 形态选择规则 / 三层校验分工）、
+词表的 `literal` 类目（当前 0 个，即所有词表都有代码真源）、以及"说明件噪声"（177 件里可再细分导航/历史/审计）。

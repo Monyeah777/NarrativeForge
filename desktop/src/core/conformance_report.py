@@ -167,6 +167,19 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_modeling(root: str) -> Tuple[bool, str]:
+    """内容建模三件：词表与真源一致 / 规范件皆有主 / 契约 quality_rule 可解析。"""
+    from core import modeling as M
+    issues, _warns, stats = M.scan(root)
+    v = stats.get("vocabularies", {})
+    n = stats.get("normative", {})
+    d = stats.get("data_contracts", {})
+    detail = "词表 %d · 规范件 %d / 说明件 %d · 数据契约 %d" % (
+        v.get("schemes", 0), n.get("normative", 0),
+        n.get("informative_files", 0), d.get("contracts", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_assertions(root: str) -> Tuple[bool, str]:
     """数据化断言表：跑一遍，fail 级不通过即 FAIL。"""
     from core import assertions as at
@@ -213,6 +226,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("endpoint-contract", _c_endpoint, "服务端点契约指向真实性"),
     ("knowledge-sources", _c_knowledge, "双源知识层（权威分层/查询有序/时效/溯源）"),
     ("assertions", _c_assertions, "数据化断言表（形状类断言数据化）"),
+    ("modeling", _c_modeling, "内容建模三件（词表/规范说明件/数据契约）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

@@ -73,6 +73,7 @@ DOC_KINDS = {
     "docs/rfc.md": "reference",
     "docs/knowledge.md": "how-to",
     "docs/assertions.md": "how-to",
+    "docs/modeling.md": "how-to",
 }
 
 #: 需带 last-updated 位的关键文档（协议/导航/接入 + 指令类）
@@ -106,6 +107,7 @@ REQUIRED_DOCS = [
     "docs/rfc.md",
     "docs/knowledge.md",
     "docs/assertions.md",
+    "docs/modeling.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -136,6 +138,7 @@ INSTRUCTION_DOCS = [
     "docs/rfc.md",
     "docs/knowledge.md",
     "docs/assertions.md",
+    "docs/modeling.md",
 ]
 
 

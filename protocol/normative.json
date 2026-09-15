@@ -1,0 +1,40 @@
+{
+  "schema": "nf-normative/1",
+  "note": "规范件与说明件之分（机制借鉴标准治理里的 normative / informative 二分：规范件是**有约束力**的，说明件只是解释）。NF 此前没有这道线——自称规范却没人管、说明件被当规范锚定，都无从判。判据两条：① 规范件必须**有主**（被回执锚定，或显式声明 covered_by）；② 说明件**不得**被回执锚定（否则等于把解释当规范）。",
+  "rule": "normative ∩ informative = ∅；规范件须被 protocol/RECEIPTS.json 锚定或声明 covered_by；说明件不得出现在回执覆盖面内。",
+  "normative": [
+    {"path": "01_核心协议.md"},
+    {"path": "02_联动注册表.md"},
+    {"path": "06_Agent执行协议.md"},
+    {"path": "07_官方核心出厂与社区预设导航.md"},
+    {"path": "protocol/CONFORMANCE.md"},
+    {"path": "protocol/EXTENSION.md", "covered_by": ["check30"]},
+    {"path": "protocol/driver.json"},
+    {"path": "protocol/endpoint_contract.json"},
+    {"path": "protocol/rfc_index.json"},
+    {"path": "protocol/knowledge_sources.json"},
+    {"path": "protocol/transform_log.json"},
+    {"path": "protocol/knowledge_usage.json"},
+    {"path": "protocol/assertions.json"},
+    {"path": "protocol/vocabularies.json"},
+    {"path": "protocol/normative.json"},
+    {"path": "protocol/data_contracts.json"},
+    {"path": "protocol/event_registry.json"},
+    {"path": "protocol/external_events.json"},
+    {"path": "protocol/module_signatures.json"},
+    {"path": "protocol/type_backlog.json"},
+    {"path": "protocol/pipeline_advisory.json"},
+    {"path": "protocol/conformance_report.json"},
+    {"path": "desktop/src/core/registry.json"},
+    {"path": "protocol/schema/contract.schema.json"},
+    {"path": "protocol/schema/module.schema.json"},
+    {"path": "protocol/schema/pipeline.schema.json"},
+    {"path": "protocol/schema/protocol.schema.json"},
+    {"path": "protocol/schema/asset.schema.json"}
+  ],
+  "informative": [
+    "README.md", "CONTRIBUTING.md", "ROADMAP.md", "ROUTES.md",
+    "AGENT_START.md", "AI_ROUTING.md", "DEEP_DIVE.md",
+    "docs/**", "skills/**", "results/**", "community/**"
+  ]
+}

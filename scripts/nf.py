@@ -386,6 +386,13 @@ def _build_parser() -> argparse.ArgumentParser:
                           help="数据化断言表（Schematron 式：patterns→rules→assertions）",
                           description="数据化断言表（机制借鉴 Schematron；kind 为封闭集）")
     asrt.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    mdl = sub.add_parser("model",
+                         help="内容建模三件（词表登记册 / 规范与说明件 / 数据契约登记）",
+                         description="内容建模三件（机制借鉴 SKOS 概念方案 / 规范-说明件二分 / 数据契约要素）")
+    mdl.add_argument("part", nargs="?", default="",
+                     choices=["", "vocab", "normative", "contracts"],
+                     help="只看一件（缺省 = 三件全跑）")
+    mdl.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2045,6 +2052,37 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_model(args):
+    """nf model：内容建模三件（词表 / 规范说明件 / 数据契约）。"""
+    from core import modeling as M
+    import json as _json
+    part = getattr(args, "part", "") or ""
+    fns = {"vocab": M.verify_vocabularies,
+           "normative": M.verify_normative,
+           "contracts": M.verify_contracts}
+    picked = [k for k in fns if not part or k == part]
+    issues, warns, stats = [], [], {}
+    for k in picked:
+        i, w, s = fns[k](ROOT)
+        issues += i
+        warns += w
+        stats[k] = s
+    if args.json:
+        print(_json.dumps({"issues": issues, "warns": warns, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf model（内容建模三件%s）==" % (" · " + part if part else ""))
+        for k in picked:
+            print("  %-10s %s" % (k, stats.get(k, {})))
+        for w in warns:
+            print("  [WARN] %s" % w)
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ 词表与真源一致 · 规范件皆有主 · 说明件未被当规范 · 契约 quality_rule 全部解析")
+    return 1 if issues else 0
+
+
 def _cmd_assertions(args):
     """nf assertions：跑数据化断言表（封闭 kind 集，不引第三方）。"""
     from core import assertions as at
@@ -3355,6 +3393,8 @@ def main(argv=None) -> int:
         return _cmd_knowledge(args)
     if args.cmd == "assertions":
         return _cmd_assertions(args)
+    if args.cmd == "model":
+        return _cmd_model(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

@@ -31,7 +31,10 @@ class TestLicenseGate(unittest.TestCase):
         """真实仓库：登记行许可齐备且在词表内（未声明只挂 WARN 不算 FAIL）。"""
         issues, stats = lg.scan(ROOT)
         self.assertEqual(issues, [])
-        self.assertEqual(stats["entries"], 2)
+        # 条目数从馆藏目录推导（原为硬编码 2，新增一件即误报）——
+        # 该断言实为一个更强的不变量：登记表投影覆盖全部条目文件。
+        n_entry_files = len(list((Path(ROOT) / "library").glob("NF-*.md")))
+        self.assertEqual(stats["entries"], n_entry_files)
         self.assertIn("NF-WORLDCAMPUS-Monyeah777-1", stats["undeclared"])
         self.assertEqual(stats["unknown"], [])
 
