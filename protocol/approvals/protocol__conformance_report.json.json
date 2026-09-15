@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-15",
   "approved_by": "作者",
-  "note": "内容建模三件入一致性报告（21 契约）后重新批准",
+  "note": "验证卡册（docs/verification-cards.md）入仓后重新批准",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "d244d2b94c871a6a7afbfc8922d7c1883f11ec547ef05c1e3f8c911d9e609532"
+  "subject_digest": "9a5c21bbe687504fc811e821ee7a50f84b69f4b90d021cc7c0bea77d9e9cfe75"
 }
