@@ -41,6 +41,7 @@
 - [protocol/driver.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/driver.json)：指令档 → 机器面路由（有 MCP 实现就走 MCP；派发失败即停，**禁止回退成文本步骤**）；文档头部 `DRIVER OVERRIDE` 块为声明位
 - [patterns/INDEX.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/patterns/INDEX.md)：实践包（可发布/可消费/可移植的最佳实践；真源 = 各包 `PATTERN.md` frontmatter，本表为投影；`applies_to`/`evidence` 须在仓库内可证）
 - [protocol/endpoint_contract.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/endpoint_contract.json)：服务端点契约（`status: proposed`——服务本体未实现，本契约只固定形状；每个端点 `maps_to` 必须指向现存 CLI 子命令或 MCP 工具）
+- [docs/verification-cards.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/docs/verification-cards.md)：**验证卡册**——把 `verify.sh` 的 37 条 check 逐条译成人读复跑卡（结论 / 判据 / 复跑命令 / 谁验 / 记录；37 = 真实单测 6 + 语义校验 12 + 结构断言 19）；**不读代码**也能判断某条门禁到底断言了什么（产物由 `build_verification_cards.ps1` 可复现生成）
 
 ## 装配（产出可交付的完整版）
 

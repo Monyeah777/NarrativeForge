@@ -121,9 +121,16 @@
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 28 / 说明件 179 · 数据契约 10",
-      "digest": "4aa87102433be0103fa16f85079abdb1c145055bf56d9d6f6a85b08b16de26ab",
+      "detail": "词表 12 · 规范件 28 / 说明件 180 · 数据契约 10",
+      "digest": "9b53a92c0b5a2a7300a0fab70cbe109be54a23ea7a423c7cf05847bd45a65d46",
       "id": "modeling",
+      "ok": true
+    },
+    {
+      "description": "决策记录（ADR：不可改 + 取代链）",
+      "detail": "决策 3 条（accepted 3 · 取代链 0）",
+      "digest": "311b448361453785860f583831730c4f05ed900978b7975b3be2def23869cd7d",
+      "id": "decisions",
       "ok": true
     },
     {
@@ -134,9 +141,9 @@
       "ok": true
     }
   ],
-  "passed": 19,
-  "root": "63d01ed76093fb942cfad999392f1fc4e379ab23361c7a2cbb58fdbe199f876d",
+  "passed": 20,
+  "root": "985684c57fd5241cada8f03ac5979d5c4fd92803b95ed474eda54b6b4975b08c",
   "schema": "nf-conformance/1",
-  "total": 19,
+  "total": 20,
   "verdict": "conformant"
 }

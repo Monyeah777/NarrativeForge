@@ -393,6 +393,16 @@ def _build_parser() -> argparse.ArgumentParser:
                      choices=["", "vocab", "normative", "contracts"],
                      help="只看一件（缺省 = 三件全跑）")
     mdl.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    dec = sub.add_parser("decisions",
+                         help="决策记录（ADR：一条一编号；采纳后不改不删，只可被取代）",
+                         description="决策记录（机制借鉴 ADR：supersede-only + 不可改）")
+    dsub = dec.add_subparsers(dest="decisions_cmd")
+    d_sh = dsub.add_parser("show", help="看单条决策（frontmatter + 正文）", description="看单条决策")
+    d_sh.add_argument("id", help="编号（如 ADR-0001）")
+    for _d in (dsub.add_parser("verify", help="机检决策记录", description="机检决策记录"),
+               dsub.add_parser("reindex", help="重建 INDEX 投影", description="重建 INDEX 投影"),
+               d_sh):
+        _d.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2052,6 +2062,61 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_decisions(args):
+    """nf decisions：决策记录（列表 / 单条 / 机检 / 投影重建）。"""
+    from core import decisions as dc
+    import json as _json
+    sub = getattr(args, "decisions_cmd", None) or "ls"
+    want_json = bool(getattr(args, "json", False))
+    if sub == "reindex":
+        out = dc.write_projection(ROOT)
+        print("  ✓ decisions/INDEX 投影已重建：%s" % ("有变化" if out["changed"] else "无变化"))
+        return 0
+    if sub == "show":
+        want = args.id.strip().upper()
+        hit = next((e for e in dc.entries(ROOT)
+                    if str(e["fm"].get("id")) == want), None)
+        if hit is None:
+            print("  ✗ 未找到：%s（nf decisions 可枚举）" % args.id, file=sys.stderr)
+            return 1
+        if want_json:
+            print(_json.dumps({"id": want, "path": hit["path"], "frontmatter": hit["fm"]},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf decisions show %s ==" % want)
+            for k in sorted(hit["fm"]):
+                print("  %-14s %s" % (k + ":", hit["fm"][k]))
+            print()
+            print(hit["body"].strip()[:1200])
+        return 0
+    issues, warns, stats = dc.scan(ROOT)
+    proj = dc.check_projection(ROOT)
+    if sub == "verify":
+        if want_json:
+            print(_json.dumps({"issues": issues, "warns": warns, "projection": proj,
+                               "stats": stats}, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf decisions verify（%d 条 · accepted %d）=="
+                  % (stats.get("decisions", 0), stats.get("accepted", 0)))
+            for i in list(issues) + list(proj):
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues and not proj:
+                print("  ✓ 编号/状态/取代链/证据可解析/三段齐/回执锚定 全部一致")
+        return 1 if (issues or proj) else 0
+    rows = dc.entries(ROOT)
+    if want_json:
+        print(_json.dumps([{k: e["fm"].get(k) for k in
+                            ("id", "title", "status", "date", "superseded_by")}
+                           for e in rows], ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf decisions（%d 条）==" % len(rows))
+        for e in rows:
+            fm = e["fm"]
+            print("  %-9s %-11s %-10s %s" % (fm.get("id"), fm.get("status"),
+                                             fm.get("date"), fm.get("title")))
+    return 0
+
+
 def _cmd_model(args):
     """nf model：内容建模三件（词表 / 规范说明件 / 数据契约）。"""
     from core import modeling as M
@@ -3395,6 +3460,8 @@ def main(argv=None) -> int:
         return _cmd_assertions(args)
     if args.cmd == "model":
         return _cmd_model(args)
+    if args.cmd == "decisions":
+        return _cmd_decisions(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

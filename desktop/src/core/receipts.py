@@ -181,9 +181,11 @@ def protocol_subjects(root: str = ".") -> List[str]:
              "protocol/assertions.json",
              "protocol/vocabularies.json", "protocol/normative.json",
              "protocol/data_contracts.json",
+             "decisions/INDEX.md",
              "desktop/src/core/registry.json"]
     r = Path(root)
     fixed += [p.relative_to(r).as_posix() for p in sorted(r.glob("protocol/schema/*.json"))]
+    fixed += [p.relative_to(r).as_posix() for p in sorted(r.glob("decisions/ADR-*.md"))]
     return [s for s in fixed if (r / s).is_file()]
 
 

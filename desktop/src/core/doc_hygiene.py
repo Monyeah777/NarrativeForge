@@ -47,6 +47,7 @@ DOC_KINDS = {
     "docs/ai-menu-fieldtest-v1.md": "how-to",
     "docs/迁移指南-基于nf-sig-diff.md": "how-to",
     "docs/attest.md": "how-to",
+    "docs/verification-cards.md": "reference",
     "docs/需求收敛模板.md": "reference",
     "docs/42_M1_协议可执行性自测规范.md": "reference",
     "docs/42_M1_P03_演练集.md": "tutorial",

@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-15",
   "approved_by": "作者",
-  "note": "验证卡册（docs/verification-cards.md）入仓后重新批准",
+  "note": "审计件增补后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "9a5c21bbe687504fc811e821ee7a50f84b69f4b90d021cc7c0bea77d9e9cfe75"
+  "subject_digest": "341e95f37f7037d73bd73ee5b98210981fd68a30a1e4294d6d6af62597a32060"
 }
