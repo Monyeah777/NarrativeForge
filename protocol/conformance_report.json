@@ -23,8 +23,8 @@
     },
     {
       "description": "文档四型覆盖",
-      "detail": "四型全覆盖",
-      "digest": "1ffa7df71bc8c981a1ab88e5747339ba64cf9e251f831e1a6796b6d2417b9ec6",
+      "detail": "四型全覆盖 · 写法 WARN 3",
+      "digest": "06a3777455680c0dcf5acf6a618c67e7e41114744719b8ded1c29a350bc1b154",
       "id": "doc-kinds",
       "ok": true
     },
@@ -113,6 +113,13 @@
       "ok": true
     },
     {
+      "description": "数据化断言表（形状类断言数据化）",
+      "detail": "断言 4 条（通过 4）· kind 封闭集 4 种",
+      "digest": "5f39d5e4ac104d4362ab1c9f8d3cedd1ef5c8e5202cbcde47436305ecc7a85cd",
+      "id": "assertions",
+      "ok": true
+    },
+    {
       "description": "公开导出面零泄漏",
       "detail": "公开导出面零泄漏",
       "digest": "d90f0f64ce2bb95763db2d29f8644b1900632565cbcc71ebbd0f504cdf0c90c7",
@@ -120,9 +127,9 @@
       "ok": true
     }
   ],
-  "passed": 17,
-  "root": "d0bc4133125a23d74553084577f2c5b88bf76e2cb4e90feb894ed51291e00230",
+  "passed": 18,
+  "root": "b05d08ab7e07aeaf82befb604ddd8f3a02a0a4370102a8e29d28c6f8720188a9",
   "schema": "nf-conformance/1",
-  "total": 17,
+  "total": 18,
   "verdict": "conformant"
 }

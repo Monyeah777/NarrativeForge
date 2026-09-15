@@ -42,6 +42,7 @@ MCP 侧：工具 `knowledge_order`（入参 `clearance` 可选）。
 | 裁剪执行 | `visible_ids(clearance)`：秩 `public ⊂ internal ⊂ restricted`，清除级达标才可见；`order --as` 与 MCP `knowledge_order` 都不返回越权源 |
 | 频次可复算 | 台账 `protocol/knowledge_usage.json` 由 trace 复算（`--write` 是唯一写入口）；消化记录一旦声明 `reuse_count`，必须与台账一致——**手写频次即 FAIL** |
 | 复核工作流 | `transform add`（登记 + 双签，未转正）→ `transform promote`（齐三档证据才可转正）；两条路径都**先校验后写盘**，非法入参不落脏记录 |
+| 唯一来源复用 | `verify_reuse`：条目 `id` 唯一且等于文件名；`ALIAS.md` 小写键唯一且指向在册条目；**任意两件全文摘要不得相同**（同一内容两份 = 两个真源，禁止复制正文） |
 
 ## 晋升（转正）规则
 

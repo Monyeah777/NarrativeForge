@@ -380,6 +380,12 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="配合 --fix：只报将改什么，不写盘")
     ln.add_argument("--prose", action="store_true",
                     help="额外跑正文 lint（去 AI 味规则集）")
+    ln.add_argument("--kinds", action="store_true",
+                    help="只跑四型写法判据（信息类型化：类型不只是标签）")
+    asrt = sub.add_parser("assertions",
+                          help="数据化断言表（Schematron 式：patterns→rules→assertions）",
+                          description="数据化断言表（机制借鉴 Schematron；kind 为封闭集）")
+    asrt.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -1712,6 +1718,15 @@ def _cmd_lint(args):
     """nf lint：机械检查/修复（与 doc_hygiene / prose_lint 同源判据）。"""
     from core import autofix
     import json as _json
+    if getattr(args, "kinds", False):
+        from core import doc_hygiene as dh
+        warns = dh.kind_rules(ROOT)
+        print("== nf lint --kinds（四型写法判据）==")
+        for w in warns:
+            print("  [WARN] %s" % w)
+        if not warns:
+            print("  ✓ 四型写法齐（每型都有该型必备的结构块）")
+        return 0
     try:
         if args.target:
             targets = []
@@ -2027,6 +2042,26 @@ def _cmd_endpoint(args):
             print("  [note] %s" % w)
         if not issues:
             print("  ✓ 每个端点都映射到现存 CLI 子命令或 MCP 工具（契约不指向空气）")
+    return 1 if issues else 0
+
+
+def _cmd_assertions(args):
+    """nf assertions：跑数据化断言表（封闭 kind 集，不引第三方）。"""
+    from core import assertions as at
+    import json as _json
+    results, issues = at.run(ROOT)
+    if args.json:
+        print(_json.dumps({"results": results, "issues": issues},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf assertions（%d 条 · kind 封闭集 %s）=="
+              % (len(results), "/".join(at.KINDS)))
+        for r in results:
+            print("  [%s] %-38s %s" % ("PASS" if r["ok"] else "FAIL", r["id"], r["detail"]))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ 断言表全绿（新增规则 = 加一行数据，不必改 check 代码）")
     return 1 if issues else 0
 
 
@@ -3318,6 +3353,8 @@ def main(argv=None) -> int:
         return _cmd_endpoint(args)
     if args.cmd == "knowledge":
         return _cmd_knowledge(args)
+    if args.cmd == "assertions":
+        return _cmd_assertions(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

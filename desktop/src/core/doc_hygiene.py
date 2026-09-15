@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import datetime as _dt
 import os
+import re
 
 INSTRUCTION_MARK = "⛔ 操作指令"
 LAST_UPDATED_PREFIX = "> 最后更新："
@@ -20,6 +21,17 @@ LAST_UPDATED_PREFIX = "> 最后更新："
 #: reference 信息导向 / explanation 理解导向）。NF 原有「指令类 / 资料类」二分
 #: 是**执行语义**（要不要读到即执行），四型是**用途语义**——两者并存，不互相替代。
 KINDS = ("tutorial", "how-to", "reference", "explanation")
+
+#: 四型**写法**判据（信息类型化的 NF 落位：类型不只是标签，还是写法约束）。
+#: 只判可判定形状、不判文风；违规按 WARN 挂账（先可数、再逐波收），不判死。
+KIND_RULES = {
+    "how-to": {"must_any": (r"```", r"python scripts/nf\.py", r">\s*⛔"),
+               "label": "可执行命令块"},
+    "reference": {"must_any": (r"^\|.+\|", r"词表", r"字段"), "label": "词表或字段表"},
+    "tutorial": {"must_any": (r"^\s*\d+[.、]\s", r"步骤", r"演练"), "label": "步骤序列"},
+    "explanation": {"must_any": (r"为什么", r"权衡", r"机制", r"原理"),
+                    "label": "为什么或权衡"},
+}
 
 #: 文档 → 四型归属（关键文档与指令档全覆盖；新增关键文档须同步入表）
 DOC_KINDS = {
@@ -60,6 +72,7 @@ DOC_KINDS = {
     "docs/endpoint.md": "how-to",
     "docs/rfc.md": "reference",
     "docs/knowledge.md": "how-to",
+    "docs/assertions.md": "how-to",
 }
 
 #: 需带 last-updated 位的关键文档（协议/导航/接入 + 指令类）
@@ -92,6 +105,7 @@ REQUIRED_DOCS = [
     "docs/endpoint.md",
     "docs/rfc.md",
     "docs/knowledge.md",
+    "docs/assertions.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -121,6 +135,7 @@ INSTRUCTION_DOCS = [
     "docs/endpoint.md",
     "docs/rfc.md",
     "docs/knowledge.md",
+    "docs/assertions.md",
 ]
 
 
@@ -159,6 +174,23 @@ def kind_coverage(root: str = ".") -> list:
         elif kind not in KINDS:
             issues.append("%s 四型取值非法：%s（取值 %s）" % (rel, kind, "/".join(KINDS)))
     return issues
+
+
+def kind_rules(root: str = ".") -> list:
+    """四型**写法**判据 → WARN 清单（走形不改归属；存量按可数收敛，不判死）。"""
+    warns = []
+    for rel, kind in sorted(DOC_KINDS.items()):
+        rule = KIND_RULES.get(kind)
+        if not rule:
+            continue
+        path = os.path.join(root, rel)
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+        if not any(re.search(p, text, re.M) for p in rule["must_any"]):
+            warns.append("%s 属 %s 型但缺「%s」（写法未定型）" % (rel, kind, rule["label"]))
+    return warns
 
 
 def kind_distribution(root: str = ".") -> dict:

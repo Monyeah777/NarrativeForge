@@ -1,0 +1,56 @@
+{
+  "schema": "nf-assertions/1",
+  "note": "断言表（数据化断言，机制借鉴 Schematron 的 patterns→rules→assertions）：把「能确定性判定的形状类断言」从 check 代码里搬出来，新增规则 = 加一行数据。边界写死：kind 是**封闭集**（见 kind_vocabulary），只做搬运与去重，不做表达力扩张，不自造 DSL；业务语义断言仍留在 check 代码里。每条断言必须有 fix（修复指引）。",
+  "severity_vocabulary": ["fail", "warn"],
+  "kind_vocabulary": ["regex_absent", "regex_present", "count_at_least", "json_value"],
+  "assertions": [
+    {
+      "id": "public-surface-no-abs-path",
+      "severity": "fail",
+      "kind": "regex_absent",
+      "params": {
+        "globs": ["desktop/tests/fixtures/external/**/*", "docs/external-validation-assets/*"],
+        "pattern": "(?<![A-Za-z0-9])[A-Za-z]:[\\\\/]|/Users/|/home/[a-z]"
+      },
+      "message": "公开导出面出现绝对路径（泄漏本机路径）",
+      "fix": "改成仓库相对路径或占位符",
+      "evidence": "check35 / conformance::public-surface"
+    },
+    {
+      "id": "idl-schema-five-in-place",
+      "severity": "fail",
+      "kind": "count_at_least",
+      "params": {"glob": "protocol/schema/*.schema.json", "min": 5},
+      "message": "IDL schema 定义少于 5 份（定义面残缺）",
+      "fix": "补齐缺失的 schema 定义后重跑",
+      "evidence": "check28"
+    },
+    {
+      "id": "llms-txt-machine-anchors",
+      "severity": "fail",
+      "kind": "regex_present",
+      "params": {
+        "path": "llms.txt",
+        "patterns": ["# NarrativeForge", "library/INDEX.md", "01_核心协议.md",
+                     "06_Agent执行协议.md", "agent_组装指令包_v0.2.md"]
+      },
+      "message": "llms.txt 缺机器入口锚点",
+      "fix": "按 docs/knowledge.md 之外的入口清单补齐锚点行",
+      "evidence": "check34"
+    },
+    {
+      "id": "contract-schema-declares-quality-keys",
+      "severity": "fail",
+      "kind": "json_value",
+      "params": {
+        "path": "protocol/schema/contract.schema.json",
+        "key": "properties",
+        "op": "contains_keys",
+        "value": ["conformance", "io_types"]
+      },
+      "message": "machine_contract 定义缺质量键（conformance / io_types）",
+      "fix": "在 contract.schema.json 的 properties 补该键（additive）",
+      "evidence": "check28 / check29"
+    }
+  ]
+}

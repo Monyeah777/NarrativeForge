@@ -1268,7 +1268,7 @@ issues = []
 ext = ''
 if os.path.isfile('protocol/EXTENSION.md'):
     ext = open('protocol/EXTENSION.md', encoding='utf-8').read()
-need = ['字段级新增', '迁移记录', 'bump', 'additive', 'editorial', '结构 bump']
+need = ['字段级新增', '迁移记录', 'bump', 'additive', 'editorial', '结构 bump', '派生三问']
 miss = [m for m in need if m not in ext]
 if miss:
     issues.append('EXTENSION.md 缺判据词：' + ','.join(miss))

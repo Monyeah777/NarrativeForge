@@ -70,7 +70,9 @@ def _c_purity(root: str) -> Tuple[bool, str]:
 def _c_doc_kinds(root: str) -> Tuple[bool, str]:
     from core import doc_hygiene
     issues = doc_hygiene.kind_coverage(root)
-    return (not issues, "四型全覆盖" if not issues else "; ".join(issues[:2]))
+    warns = doc_hygiene.kind_rules(root)
+    detail = "四型全覆盖 · 写法 WARN %d" % len(warns)
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
 def _c_library_verify(root: str) -> Tuple[bool, str]:
@@ -165,6 +167,16 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_assertions(root: str) -> Tuple[bool, str]:
+    """数据化断言表：跑一遍，fail 级不通过即 FAIL。"""
+    from core import assertions as at
+    results, issues = at.run(root)
+    passed = sum(1 for r in results if r["ok"])
+    detail = "断言 %d 条（通过 %d）· kind 封闭集 %d 种" % (
+        len(results), passed, len(at.KINDS))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_public_surface(root: str) -> Tuple[bool, str]:
     """公开导出面泄漏审计：绝对路径 / 内部件路径不得出现在对外产物里。"""
     bad: List[str] = []
@@ -200,6 +212,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("patterns", _c_patterns, "实践包品类"),
     ("endpoint-contract", _c_endpoint, "服务端点契约指向真实性"),
     ("knowledge-sources", _c_knowledge, "双源知识层（权威分层/查询有序/时效/溯源）"),
+    ("assertions", _c_assertions, "数据化断言表（形状类断言数据化）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

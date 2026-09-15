@@ -49,6 +49,10 @@ def main() -> int:
     for i in lint_issues:
         problems.append("知识层巡检：%s" % i)
 
+    # 5 唯一来源复用：ID 唯一 + 间接层可解析 + 禁止复制正文
+    for i in kn.verify_reuse(".")[0]:
+        problems.append("唯一来源复用：%s" % i)
+
     for p in problems:
         print("[FAIL] %s" % p)
     print("知识层统计：源 %d（合同 %d / 参考 %d）· 消化记录 %d · 悬空 %d · 孤儿 %d · 时效缺失 %d"

@@ -373,6 +373,60 @@ def verify_usage(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]
     return issues, warns, stats
 
 
+def verify_reuse(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
+    """唯一来源复用（conref / keyref 的可验证版）→ (issues, warns, stats)。
+
+    三条判据（全部确定性）：
+    1. **ID 唯一**：library 条目的 frontmatter `id` 必须唯一且等于文件名；
+    2. **间接层可解析**：`library/ALIAS.md` 的小写键唯一，且每行的真实编号都在册；
+    3. **禁止复制正文**：任意两件（library 条目 + patterns 源件）全文摘要不得相同
+       ——同一内容两份 = 两个真源，违反单一真相源。
+    """
+    issues: List[str] = []
+    warns: List[str] = []
+    r = Path(root)
+    lib = sorted(r.glob("library/NF-*.md"))
+    ids: Dict[str, str] = {}
+    digests: Dict[str, List[str]] = {}
+    for p in lib:
+        fm, _body = None, None
+        from core.library import parse_frontmatter
+        fm, _body = parse_frontmatter(p.read_text(encoding="utf-8"))
+        eid = str((fm or {}).get("id") or "")
+        if not eid:
+            issues.append("%s 缺 frontmatter id（复用面无法寻址）" % p.name)
+            continue
+        if eid in ids:
+            issues.append("条目 id 重复：%s（%s 与 %s）——同一编号两处真源" % (eid, ids[eid], p.name))
+        ids[eid] = p.name
+        if eid != p.stem:
+            issues.append("%s 的 id 与文件名不一致：%s" % (p.name, eid))
+    for p in sorted(r.glob("library/NF-*.md")) + sorted(r.glob("patterns/*/PATTERN.md")):
+        d = sha256_file(str(p))
+        digests.setdefault(d, []).append(p.relative_to(r).as_posix())
+    for d, files in digests.items():
+        if len(files) > 1:
+            issues.append("同一内容存在两份（禁止复制正文）：%s" % " 、 ".join(files))
+    alias = r / "library" / "ALIAS.md"
+    if alias.is_file():
+        seen: Dict[str, str] = {}
+        for line in alias.read_text(encoding="utf-8").splitlines():
+            if not line.startswith("|"):
+                continue
+            cells = [c.strip() for c in line.strip("|").split("|")]
+            if len(cells) < 2 or cells[0] in ("小写键", "---") or set(cells[0]) <= set("-: "):
+                continue
+            key, real = cells[0], cells[1]
+            if key in seen:
+                issues.append("ALIAS 小写键重复：%s（转译将歧义）" % key)
+            seen[key] = real
+            if real and real not in ids:
+                issues.append("ALIAS 指向不在册条目：%s → %s" % (key, real))
+    stats = {"entries": len(lib), "alias_keys": len(seen) if alias.is_file() else 0,
+             "unique_digests": len(digests)}
+    return issues, warns, stats
+
+
 def lint(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     """知识层巡检（LLM Wiki lint 六项在 NF 的落位）：悬空引用 / 孤儿 / 时效 / 溯源 / 声明。"""
     issues: List[str] = []
@@ -381,6 +435,7 @@ def lint(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     issues += d_issues
     issues += verify_transform(root)[0]
     issues += verify_usage(root)[0]
+    issues += verify_reuse(root)[0]
     entry_ids = [p.name[:-3] for p in sorted((Path(root) / "library").glob("NF-*.md"))]
     idx_rel = Path(root) / "library" / "INDEX.md"
     idx = idx_rel.read_text(encoding="utf-8") if idx_rel.is_file() else ""

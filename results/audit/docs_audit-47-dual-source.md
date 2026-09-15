@@ -80,3 +80,22 @@
 （当前 `entries: []`——无真实消化发生，不造记录）；③ 外部混合检索与图谱排序（越 core 红线 / 待排序契约细化）；
 ④ `05_资产库/用户自定义/STYLE_DNA.md` 与 `protocol/demo_signers/README.md` 中的 `.rivet` 引用**有意保留**：
 前者是内容资产（改动会扰动资产密度/厚度指标），后者是「私钥不公布、仅留本地」的安全说明。
+
+## 八、内容类型学吸收（同日第二续波，P0 四件）
+
+外部机制只作借鉴（DITA 的信息类型化 / S1000D 的 DM 粒度 / Diátaxis 的需求类型化 / DTD→Schematron 的校验分层），
+逐条过仓库实证后落地四件，**均不新增 check**（语义并入既有门禁，基线仍 v2.27 · check1-37 · PASS=61）：
+
+| 件 | 落点 | 判据 | 存量影响 |
+|---|---|---|---|
+| P0-1 四型写法判据 | `doc_hygiene.KIND_RULES` + `kind_rules()` + `nf lint --kinds` | 每型必备结构块（how-to 命令块 / reference 词表 / tutorial 步骤 / explanation 为什么） | **37 件中 3 件 WARN**（`45_M2_回合级drill` / `45_M3_techdoc载荷提案` / `需求收敛模板`）——按 WARN 挂账，不判死 |
+| P0-2 断言数据化 | `protocol/assertions.json` + `core/assertions.py` + `nf assertions` + 一致性报告 `assertions` 契约 | kind **封闭集**四种；每条必须有 `fix`；表自身过 schema/词表/唯一性门 | 搬运 4 条既有形状断言（公开面无绝对路径 / IDL 五定义 / llms.txt 锚点 / contract 键齐），零新增语义政策 |
+| P0-3 派生三问 | `protocol/EXTENSION.md` + `check30` 判据词表 | 基类在册 / 只增不删不改义 / 旧消费方忽略而不歧义 | 判据词表加 `派生三问`，文档缺词即 check30 FAIL |
+| P0-4 唯一来源复用 | `knowledge.verify_reuse` + check37 | 条目 id 唯一且等于文件名；ALIAS 键唯一且指向在册；**任意两件全文摘要不得相同** | 当前 0 违规（2 条目 / 2 译键 / 5 唯一摘要） |
+
+**五维水位（第二续波）**：静态可核验 ↑（断言数据化 + 复用判据进 check37）· 文档可执行性 ↑（四型写法定型，
+存量可数）· 架构纯度 ↑（断言从代码搬进数据，check 代码不再膨胀）· 动态可执行 =、资产密度 =。
+
+**边界声明（写死，防过度工程）**：断言表只做**受限子集**，表达力不扩张；业务语义断言留在 check 代码里；
+四型写法首轮只 WARN，收敛节奏由存量统计决定。**未做**：跨池边界声明（P1-6）、粒度 atomic/composite（P1-5）、
+形态选择规则（P1-7）——留作 P1 波。
