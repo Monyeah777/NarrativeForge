@@ -2,6 +2,8 @@
 
 ## [2.12.0] - 未发布
 
+- 接力协议收口（长期计划 W2，机制借鉴 SBAR/ISBAR；不新增 check）：新品类 `handovers/`（`HO-NNNN-*.md` + README 分工表）+ 声明 `protocol/handover.json`（五段：情境/背景/评估/建议/未决项 + 四条纪律）+ 门禁 `core/handover.py`（五段齐 / **未决项非空**——空未决 = 不合格交接 / **每条未决必须带判据** / `refs` 必须解析到真实件或 `checkN`，复用 decisions 的证据语义不重写第二套）+ 机器面 `nf handover [ls|check|verify]`。首件为**真实交接**：`HO-0001`（W1 决策族 → W2 交接族：状态 / 坑 / 建议 / 3 条带判据的未决项）。同波：一致性报告 20 → **21 契约**、协议层回执 39 → **40 件**。
+
 - 决策族收口（长期计划 W1，机制借鉴 ADR；不新增 check）：新品类 `decisions/`（**一条决策一编号**；`status: accepted` 后**正文不可改**——以协议回执锚定为判据，改了必然被 check35 抓住，只能靠新增 + 互指 supersede 演进）+ 门禁 `core/decisions.py`（编号唯一且等于文件名 / 状态词表 / 日期 / 三段齐（背景·决策·后果）/ 取代链互指且不成环 / **evidence 必须解析到真实件或 checkN 或 ADR-N** / INDEX 投影一致）+ 机器面 `nf decisions [show|verify|reindex]`。首件为三条**真实**决策：ADR-0001 双源知识层落位（不升模块层）· ADR-0002 门禁不注水（新语义并入既有 check）· ADR-0003 断言表 kind 封闭集（不自造 DSL）。同波：一致性报告 19 → **20 契约**、协议层回执 35 → **39 件**（3 ADR + INDEX 入锚）。
 
 - 内容建模三件（第七波，不新增 check——语义并入一致性报告与既有门禁）：**词表登记册**（`protocol/vocabularies.json`：12 个概念方案集中声明，每个用 `probe` 指回真源（`python_attr` / `json_path` / `literal`）逐项比对——**真源变了册子没跟即 FAIL**；含 alias 撞车、值重复、值少于两个等判据）· **规范件与说明件之分**（`protocol/normative.json`：28 件规范件 + 177 件说明件；规范件必须**有主**——被回执锚定或显式 `covered_by`，**说明件不得被回执锚定**，两名单交集为空）· **数据契约登记**（`protocol/data_contracts.json`：10 个机读件各写明 `quality_rule`（须解析到真实 `checkN` 或 `assertion:<id>`）/ `owner` / `freshness` / `consumers`——**指不出 quality_rule 的契约不许登记**）。机器面 `nf model [vocab|normative|contracts]`。同波：一致性报告 18 → **19 契约**、协议层回执 32 → **35 件**、新增 `docs/modeling.md`（入 doc_hygiene）。

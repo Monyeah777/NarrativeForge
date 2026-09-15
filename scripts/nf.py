@@ -403,6 +403,16 @@ def _build_parser() -> argparse.ArgumentParser:
                dsub.add_parser("reindex", help="重建 INDEX 投影", description="重建 INDEX 投影"),
                d_sh):
         _d.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    ho = sub.add_parser("handover",
+                        help="接力协议（SBAR：情境/背景/评估/建议 + 未决项带判据）",
+                        description="接力协议（机制借鉴 SBAR；空未决即不合格交接）")
+    hosub = ho.add_subparsers(dest="handover_cmd")
+    ho_ls = hosub.add_parser("ls", help="列全部交接件", description="列全部交接件")
+    ho_ck = hosub.add_parser("check", help="机检单件交接", description="机检单件交接")
+    ho_ck.add_argument("path", help="交接件路径（仓库相对）")
+    for _h in (ho_ls, ho_ck, hosub.add_parser("verify", help="机检声明 + 全部交接件",
+                                              description="机检声明 + 全部交接件")):
+        _h.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2062,6 +2072,53 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_handover(args):
+    """nf handover：接力协议（列表 / 单件机检 / 全量机检）。"""
+    from core import handover as ho
+    import json as _json
+    sub = getattr(args, "handover_cmd", None) or "ls"
+    want_json = bool(getattr(args, "json", False))
+    if sub == "check":
+        issues, st = ho.check_doc(ROOT, args.path)
+        if want_json:
+            print(_json.dumps({"path": args.path, "issues": issues, "stats": st},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf handover check %s（未决 %d 条）==" % (args.path, st.get("pending", 0)))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 五段齐 · 未决非空且每条带判据 · refs 可解析")
+        return 1 if issues else 0
+    if sub == "verify":
+        issues, warns, stats = ho.scan(ROOT)
+        if want_json:
+            print(_json.dumps({"issues": issues, "warns": warns, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf handover verify（%d 件 · 未决 %d 条）=="
+                  % (stats.get("handovers", 0), stats.get("pending", 0)))
+            for w in warns:
+                print("  [WARN] %s" % w)
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 声明与全部交接件一致")
+        return 1 if issues else 0
+    rows = ho.entries(ROOT)
+    if want_json:
+        print(_json.dumps([{k: e["fm"].get(k) for k in
+                            ("id", "title", "status", "date", "from", "to")}
+                           for e in rows], ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf handover（%d 件）==" % len(rows))
+        for e in rows:
+            fm = e["fm"]
+            print("  %-9s %-7s %-10s %s → %s" % (fm.get("id"), fm.get("status"),
+                                                 fm.get("date"), fm.get("from"), fm.get("to")))
+    return 0
+
+
 def _cmd_decisions(args):
     """nf decisions：决策记录（列表 / 单条 / 机检 / 投影重建）。"""
     from core import decisions as dc
@@ -3462,6 +3519,8 @@ def main(argv=None) -> int:
         return _cmd_model(args)
     if args.cmd == "decisions":
         return _cmd_decisions(args)
+    if args.cmd == "handover":
+        return _cmd_handover(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

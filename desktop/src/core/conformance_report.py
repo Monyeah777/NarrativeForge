@@ -167,6 +167,14 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_handover(root: str) -> Tuple[bool, str]:
+    """接力协议：五段齐 / 未决非空且每条带判据 / refs 可解析。"""
+    from core import handover as ho
+    issues, _warns, stats = ho.scan(root)
+    detail = "交接件 %d 件 · 未决 %d 条" % (stats.get("handovers", 0), stats.get("pending", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_decisions(root: str) -> Tuple[bool, str]:
     """决策记录：编号/状态/取代链/证据可解析/三段齐 + accepted 须被回执锚定 + 投影一致。"""
     from core import decisions as dc
@@ -238,6 +246,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("assertions", _c_assertions, "数据化断言表（形状类断言数据化）"),
     ("modeling", _c_modeling, "内容建模三件（词表/规范说明件/数据契约）"),
     ("decisions", _c_decisions, "决策记录（ADR：不可改 + 取代链）"),
+    ("handover", _c_handover, "接力协议（SBAR 五段 + 未决带判据）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 
