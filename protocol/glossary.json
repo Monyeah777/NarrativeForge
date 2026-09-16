@@ -1,0 +1,37 @@
+{
+  "schema": "nf-glossary/1",
+  "note": "NF 行话术语表（机制借鉴 Glossary：关键术语的唯一定义）。与 `protocol/vocabularies.json` 分工：那里管**受限词表**（枚举值），这里管**行话**（NF 自己的说法）。每条术语必须给出**真源**（定义所在件）与**使用面**（哪些件在用），且门禁会逐件**逐字核对术语确实出现**——写一个没人用的术语会被判死。",
+  "rules": [
+    "每条术语：term / definition / source / used_in；term 全表唯一",
+    "source 必须是仓库真实件，且**逐字出现**该术语（定义必须落在真源里，不能只在术语表里自证）",
+    "used_in 每条也必须是真实件且逐字出现该术语（防止登记没人用的行话）",
+    "used_in 可为空——表示该术语目前只在真源中出现"
+  ],
+  "terms": [
+    {"term": "真源", "definition": "唯一权威来源；其余同形态件只能是它的投影。",
+     "source": "llms.txt",
+     "used_in": ["protocol/CONFORMANCE.md", "protocol/knowledge_sources.json"]},
+    {"term": "投影", "definition": "由真源生成的派生物（可重算、手改会被覆盖）。",
+     "source": "llms.txt",
+     "used_in": ["docs/42_M3_纯度体检.md"]},
+    {"term": "fail-closed", "definition": "缺验证器/缺锚时一律判不可信，不得降级成通过。",
+     "source": "AGENTS.md",
+     "used_in": ["llms.txt", "docs/attest.md"]},
+    {"term": "回执", "definition": "带 inclusion proof 的可验证证明（某条 ∈ 全量）。",
+     "source": "llms.txt",
+     "used_in": ["protocol/knowledge_sources.json", "docs/knowledge.md"]},
+    {"term": "一致性声明", "definition": "「符合什么、管到哪、什么不管」的显式清单，逐条与真源比对。",
+     "source": "protocol/CONFORMANCE.md",
+     "used_in": ["llms.txt", "docs/verification-cards.md"]},
+    {"term": "断言表", "definition": "数据化的形状类断言（新增规则 = 加一行数据，kind 为封闭集）。",
+     "source": "docs/assertions.md",
+     "used_in": ["protocol/assertions.json"]},
+    {"term": "门禁不注水", "definition": "新语义并入既有 check，只在出现新独立面时才新增 check。",
+     "source": "decisions/ADR-0002-门禁不注水.md", "used_in": []},
+    {"term": "认知裁剪", "definition": "按消费方可见性收窄知识/信息面（可见性秩 public ⊂ internal ⊂ restricted）。",
+     "source": "protocol/knowledge_sources.json",
+     "used_in": ["docs/knowledge.md"]},
+    {"term": "唯一来源", "definition": "同一事实只允许一处真源，引用必须走编号/ID 间接层，禁止复制正文。",
+     "source": "docs/knowledge.md", "used_in": []}
+  ]
+}

@@ -429,6 +429,11 @@ def _build_parser() -> argparse.ArgumentParser:
     for _a in (ausub.add_parser("ls", help="列全部审计件", description="列全部审计件"), au_ck,
                ausub.add_parser("verify", help="机检声明 + 全部审计件", description="机检")):
         _a.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    cog = sub.add_parser("cognition", help="认知族（行话术语表 + 执行分档 Runbook/Playbook）",
+                         description="认知族（机制借鉴 Glossary + SOP/Runbook/Playbook 分档）")
+    cog.add_argument("part", nargs="?", default="", choices=["", "glossary", "modes"],
+                     help="只看一件（缺省 = 全跑）")
+    cog.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2088,6 +2093,35 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_cognition(args):
+    """nf cognition：行话术语表 / 执行分档（认证 + 逐条逐字核对）。"""
+    from core import cognition as cg
+    import json as _json
+    part = getattr(args, "part", "") or ""
+    fns = {"glossary": cg.verify_glossary, "modes": cg.verify_modes}
+    picked = [k for k in fns if not part or k == part]
+    issues, warns, stats = [], [], {}
+    for k in picked:
+        i, w, s = fns[k](ROOT)
+        issues += i
+        warns += w
+        stats[k] = s
+    if args.json:
+        print(_json.dumps({"issues": issues, "warns": warns, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        g, m = stats.get("glossary", {}), stats.get("modes", {})
+        print("== nf cognition（术语 %d 条 · 使用面 %d · 执行档 %d · 合格实例 %d）=="
+              % (g.get("terms", 0), g.get("uses", 0), m.get("modes", 0), m.get("instances_ok", 0)))
+        for w in warns:
+            print("  [WARN] %s" % w)
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ 术语在真源与使用面逐字可核 · 每档实例含必备结构块")
+    return 1 if issues else 0
+
+
 def _cmd_audit(args):
     """nf audit：审计/验收（列表 / 单件机检 / 全量机检）。"""
     from core import audit as au
@@ -3637,6 +3671,8 @@ def main(argv=None) -> int:
         return _cmd_postmortem(args)
     if args.cmd == "audit":
         return _cmd_audit(args)
+    if args.cmd == "cognition":
+        return _cmd_cognition(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

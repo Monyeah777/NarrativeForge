@@ -2,6 +2,8 @@
 
 ## [2.12.0] - 未发布
 
+- 认知族收口（长期计划 W5，机制借鉴 Glossary + SOP/Runbook/Playbook 分档；不新增 check）：**行话术语表** `protocol/glossary.json`（9 条 NF 行话，与 `vocabularies.json` 分工：那里管受限词表、这里管行话）+ 门禁 `core/cognition.py`（term 唯一 / definition 非空 / **source 必须真实存在且逐字出现该术语** / **used_in 每条也须逐字出现**——防"登记没人用的行话"）；**执行分档** `protocol/execution_modes.json`（runbook=确定性：必备「步骤/判定」，实例 `docs/迁移指南-基于nf-sig-diff.md`；playbook=不确定性：必备「角色/决策」，实例 `06_Agent执行协议.md`）+ 判据「实例必须逐字含全部必备结构块」。机器面 `nf cognition [glossary|modes]`。同波：一致性报告 23 → **24 契约**、协议层回执 42 → **44 件**。
+
 - 审计/验收族收口（长期计划 W4，机制借鉴 Audit Report + Acceptance/Sign-off + Baseline；不新增 check）：**分层裁决**——审计报告的内容（某时刻查到了什么）**保持说明件**（`results/audit/**` 仍不被回执锚定），而审计的**格式与判据**升为规范件 `protocol/audit.json`；门禁 `core/audit.py` 把「**结论必须绑定被审对象**」判据化：`subjects` 每条写 `路径:sha256`，对象一改旧审计立即失效（与 attest 同语义），并强制验收签收双要素（`accepted_by` + `accepted_at`）；存量 11 件无审计头者按 **WARN** 挂账不判死。机器面 `nf audit [ls|check|verify]`。首件带审计头报告 `AUD-0001`（W4 自审，绑 2 个被审对象 digest，verdict=pass）。同波：一致性报告 22 → **23 契约**、协议层回执 41 → **42 件**。
 
 - 复盘族收口（长期计划 W3，机制借鉴 SRE postmortem；不新增 check）：新品类 `postmortems/`（`PO-NNNN-*.md` + README 分工表）+ 声明 `protocol/postmortem.json`（四段：现象/影响/根因/行动项 + 六条纪律）+ 门禁 `core/postmortem.py`（四段齐 / **无指责**——`blame_tokens` 词表命中即 FAIL / **根因必须指向机制**——根因段须含 `root_cause_tokens` / **每条行动项必须同时含负责人与判据**——只写动作视为未闭环 / `trigger` 与 `refs` 须可解析 / **`status: closed` 必须已被协议回执锚定**，防事后美化）+ 机器面 `nf postmortem [ls|check|verify]`。首件为**真实复盘**：`PO-0001`（本会话真踩过的协议回执冻结顺序事故：现象/影响/根因指向机制/2 条带负责人与判据的行动项）。同波：一致性报告 21 → **22 契约**、协议层回执 40 → **41 件**。

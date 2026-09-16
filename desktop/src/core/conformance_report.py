@@ -167,6 +167,16 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_cognition(root: str) -> Tuple[bool, str]:
+    """认知族：术语表（术语须在真源与使用面逐字出现）+ 执行分档（实例须含必备结构块）。"""
+    from core import cognition as cg
+    issues, _warns, stats = cg.scan(root)
+    g, m = stats.get("glossary", {}), stats.get("modes", {})
+    detail = "术语 %d 条（使用面 %d）· 执行档 %d（合格实例 %d）" % (
+        g.get("terms", 0), g.get("uses", 0), m.get("modes", 0), m.get("instances_ok", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_audit(root: str) -> Tuple[bool, str]:
     """审计/验收：结论绑定被审对象 digest + 签收双要素（存量 legacy 按 WARN）。"""
     from core import audit as au
@@ -268,6 +278,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("handover", _c_handover, "接力协议（SBAR 五段 + 未决带判据）"),
     ("postmortem", _c_postmortem, "复盘（无指责 + 根因指向机制 + 行动项闭环）"),
     ("audit", _c_audit, "审计/验收（结论绑定对象 digest + 签收双要素）"),
+    ("cognition", _c_cognition, "认知族（术语表 + 执行分档）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

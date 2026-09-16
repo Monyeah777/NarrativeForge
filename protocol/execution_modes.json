@@ -1,0 +1,12 @@
+{
+  "schema": "nf-execution-modes/1",
+  "note": "执行面分档（机制借鉴 SOP/Runbook/Playbook 三分的后半段）：**Runbook** 面向「确定但复杂」——按步骤可复现、有预期结果；**Playbook** 面向「不确定」——靠角色分工 + 决策框架 + 沟通协议响应。判据不靠自述：每个实例件必须**逐字含该档的必备结构块**，否则不算该档。",
+  "modes": [
+    {"id": "runbook", "title": "确定性执行（按步骤可复现）",
+     "required_blocks": ["步骤", "判定"],
+     "instances": ["docs/迁移指南-基于nf-sig-diff.md"]},
+    {"id": "playbook", "title": "不确定性响应（角色 + 决策框架）",
+     "required_blocks": ["角色", "决策"],
+     "instances": ["06_Agent执行协议.md"]}
+  ]
+}

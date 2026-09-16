@@ -155,6 +155,13 @@
       "ok": true
     },
     {
+      "description": "认知族（术语表 + 执行分档）",
+      "detail": "术语 9 条（使用面 11）· 执行档 2（合格实例 2）",
+      "digest": "9910225ab9917a49301a98636fec86994950fbc16557631d4f4ab0f7cb592d4f",
+      "id": "cognition",
+      "ok": true
+    },
+    {
       "description": "公开导出面零泄漏",
       "detail": "公开导出面零泄漏",
       "digest": "d90f0f64ce2bb95763db2d29f8644b1900632565cbcc71ebbd0f504cdf0c90c7",
@@ -162,9 +169,9 @@
       "ok": true
     }
   ],
-  "passed": 23,
-  "root": "c58447d10b5d9f17bb2f01e14f669dadc0258d6d6e4ff38f90eb0f0b8b6e14a7",
+  "passed": 24,
+  "root": "ac2b3ad7148e7c4c512a420a79d8fce418ac6474c4e4ec9d363520b2861632e8",
   "schema": "nf-conformance/1",
-  "total": 23,
+  "total": 24,
   "verdict": "conformant"
 }

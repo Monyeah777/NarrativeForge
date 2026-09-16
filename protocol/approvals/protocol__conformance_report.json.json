@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-16",
   "approved_by": "作者",
-  "note": "审计协议入报告后重冻结",
+  "note": "认知族入报告后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "b847c356ba51dec90101267f8ab6a78dccca12bd52e090a4df1be0ffb1595d9b"
+  "subject_digest": "4afa31f2a4572a42429aaea8827ad93f49de6bd9dcabd251e08f9bcd7bc2679a"
 }
