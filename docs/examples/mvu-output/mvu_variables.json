@@ -1,6 +1,6 @@
 {
   "checks": {
-    "check": {
+    "phase": {
       "values": [
         "begin",
         "run",
@@ -8,6 +8,21 @@
         "archive",
         "roll"
       ]
+    },
+    "phase_trace": {
+      "values": [
+        "begin",
+        "run",
+        "end",
+        "archive",
+        "roll"
+      ]
+    },
+    "tick": {
+      "rule": {
+        "field": "tick",
+        "kind": "monotonic"
+      }
     }
   },
   "generator": "mvu_adapter/0.1",
@@ -78,12 +93,9 @@
     "doc_source": "https://raw.githubusercontent.com/Lunacaty/MVU-Maker/HEAD/README.md",
     "format": "MVU 变量模板（stat_data 树）",
     "unverified": [
-      "stat_data 树路径规则",
-      "条目位置参数 atDepth/depth/order",
-      "entries / tavern_helper.scripts 数组硬要求",
-      "正则五件套组成",
-      "变量列表条目形态（蓝灯 @D0）",
-      "base64/chara 分发细节"
+      "stat_data 树路径规则细节",
+      "正则五件套的具体组成",
+      "base64/chara 分发的字段细节"
     ],
     "verified": [
       "stat_data",
@@ -92,7 +104,11 @@
       "[mvu_update]变量输出格式（JSON Patch）",
       "七类型 string/number/boolean/enum/object/record/union",
       "registerMvuSchema",
-      "prefault/clamp/describe"
+      "prefault/clamp/describe",
+      "条目位置 atDepth=4 + depth + order=200",
+      "character_book.entries 必须为数组",
+      "tavern_helper.scripts 必须为数组（含 name）",
+      "变量列表 = 实时变量快照（蓝灯 @D0）"
     ]
   },
   "variables": [

@@ -14,4 +14,4 @@
 
 - **未在真实 SillyTavern 实测**，不声称兼容；条目位置参数与数组硬要求**未核对**，故 worldbook 保持 draft。
 - 正则五件套**未产出**（组成未核对）。
-- 未核对清单：stat_data 树路径规则、条目位置参数 atDepth/depth/order、entries / tavern_helper.scripts 数组硬要求、正则五件套组成、变量列表条目形态（蓝灯 @D0）、base64/chara 分发细节
+- 未核对清单：stat_data 树路径规则细节、正则五件套的具体组成、base64/chara 分发的字段细节

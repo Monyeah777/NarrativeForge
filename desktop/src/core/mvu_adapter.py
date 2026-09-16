@@ -8,9 +8,12 @@
   按 Schema 生成默认空值）；`[mvu_update]变量更新规则` / `[mvu_update]变量输出格式`（后者要求
   AI 以 **JSON Patch** 输出）；七类型 `string / number / boolean / enum / object / record / union`；
   酒馆助手脚本接口 `registerMvuSchema`；Zod 4 能力 `prefault / clamp / describe`。
-- 不可核对 ✗（未写入产物语义，只在 README 与 warning 里标注）：树路径规则细节、条目位置参数
-  （`atDepth` / `depth` / `order`）适用规则、`character_book.entries` 与 `tavern_helper.scripts`
-  的数组硬要求、正则五件套组成、变量列表（蓝灯 @D0）条目形态、base64/chara 分发细节。
+- 续核 ✓（同一 README，二次核对）：
+  条目位置标准 **`atDepth=4` + `depth` + `order=200`**（"条目位置自动对齐官方标准"，且 `@D` 应为 **4**）；
+  **`character_book.entries` 必须为数组**（ST `convertCharacterBook` 要求）；
+  **`tavern_helper.scripts` 必须为数组**（新版酒馆助手 JS-Slash-Runner 要求，Record 会被静默丢弃，
+  元素含 `name`）；**变量列表 = 实时变量快照（蓝灯 @D0）**；正则套件存在（含正则测试沙盒）。
+- 仍未核对 ✗：**正则五件套的具体组成**、**base64 / chara 分发的字段细节**。
 
 边界：**不产 JS、不产 Zod 脚本、不做运行时**；本模块只做「契约 → 变量模板 JSON + digest」。
 """
@@ -33,9 +36,12 @@ DOC_SOURCE = "https://raw.githubusercontent.com/Lunacaty/MVU-Maker/HEAD/README.m
 TYPE_MAP = {"string": "string", "integer": "number", "number": "number",
             "boolean": "boolean", "enum": "enum", "array": "array",
             "object": "object", "untyped": "union"}
-UNVERIFIED = ["stat_data 树路径规则", "条目位置参数 atDepth/depth/order",
-              "entries / tavern_helper.scripts 数组硬要求", "正则五件套组成",
-              "变量列表条目形态（蓝灯 @D0）", "base64/chara 分发细节"]
+UNVERIFIED = ["stat_data 树路径规则细节", "正则五件套的具体组成",
+              "base64/chara 分发的字段细节"]
+VERIFIED_EXTRA = ["条目位置 atDepth=4 + depth + order=200",
+                  "character_book.entries 必须为数组",
+                  "tavern_helper.scripts 必须为数组（含 name）",
+                  "变量列表 = 实时变量快照（蓝灯 @D0）"]
 
 
 def _modules(ir: IRDocument) -> List[Any]:
@@ -177,7 +183,9 @@ def _iter_checks(c: Dict[str, Any]) -> List[Any]:
     elif isinstance(decl, list):
         for d in decl:
             if isinstance(d, dict):
-                key = str(d.get("id") or d.get("name") or d.get("target") or "check")
+                # 真件形状（M50）：{kind, field, values}——键取 field（被检查的变量名）
+                key = str(d.get("field") or d.get("id") or d.get("name")
+                          or d.get("target") or "check")
                 out.append((key, d))
     return out
 
@@ -228,7 +236,7 @@ def build_mvu_payload(ir: IRDocument) -> Dict[str, Any]:
                    "verified": ["stat_data", "[InitVar]请勿打开",
                                 "[mvu_update]变量更新规则", "[mvu_update]变量输出格式（JSON Patch）",
                                 "七类型 string/number/boolean/enum/object/record/union",
-                                "registerMvuSchema", "prefault/clamp/describe"],
+                                "registerMvuSchema", "prefault/clamp/describe"] + VERIFIED_EXTRA,
                    "unverified": UNVERIFIED},
         "variables": variables,
         "initial": initial,
@@ -245,16 +253,20 @@ def build_mvu_payload(ir: IRDocument) -> Dict[str, Any]:
 def _worldbook_draft(payload: Dict[str, Any]) -> Dict[str, Any]:
     """世界书条目草案：只放已核对确切的条目名；位置参数一律标 draft（未核对）。"""
     return {"nf_draft": True,
-            "nf_note": "条目位置参数（atDepth/depth/order）与数组硬要求未核对，故不写死；"
-                       "请按目标前端的实际约定补齐后再导入。",
+            "nf_note": "位置标准已核对（atDepth=4 + depth + order=200；entries 与 "
+                       "tavern_helper.scripts 必须为数组）；**正则五件套与 base64 分发细节仍未核对**，"
+                       "故本文件保持 draft——请按目标前端实际约定补齐后再导入。",
             "character_book": {"entries": [
                 {"name": "[InitVar]请勿打开",
                  "nf_role": "变量初始化（禁用态，前端引擎读取；按 Schema 生成默认空值）",
+                 "atDepth": 4, "order": 200, "depth": 1,
                  "content": json.dumps(payload["initial"], ensure_ascii=False,
                                        sort_keys=True)},
                 {"name": "[mvu_update]变量更新规则", "nf_role": "每变量更新触发条件",
+                 "atDepth": 4, "order": 200, "depth": 2,
                  "content": "(待填：NF 不产更新规则文本，只给变量与初值)"},
                 {"name": "[mvu_update]变量输出格式", "nf_role": "要求以 JSON Patch 输出更新",
+                 "atDepth": 4, "order": 200, "depth": 3,
                  "content": "(待填：JSON Patch 输出约束)"}]}}
 
 
