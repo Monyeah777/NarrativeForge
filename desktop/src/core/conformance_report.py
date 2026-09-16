@@ -167,6 +167,17 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_st_quality(root: str) -> Tuple[bool, str]:
+    """ST 制卡质量规范：声明完整性 + 可判规则落产物（M→fail / S→warn / R→info）。"""
+    from core import st_quality as sq
+    issues, _warns, stats = sq.scan(root)
+    lv = stats.get("by_level", {})
+    detail = "规则 %d 条（M %d / S %d / R %d）· 落产物判 %d" % (
+        stats.get("rules", 0), lv.get("M", 0), lv.get("S", 0), lv.get("R", 0),
+        stats.get("artifact_checked", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_cognition(root: str) -> Tuple[bool, str]:
     """认知族：术语表（术语须在真源与使用面逐字出现）+ 执行分档（实例须含必备结构块）。"""
     from core import cognition as cg
@@ -279,6 +290,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("postmortem", _c_postmortem, "复盘（无指责 + 根因指向机制 + 行动项闭环）"),
     ("audit", _c_audit, "审计/验收（结论绑定对象 digest + 签收双要素）"),
     ("cognition", _c_cognition, "认知族（术语表 + 执行分档）"),
+    ("st-quality", _c_st_quality, "ST 制卡质量规范（M/S/R 数据化 + 落产物判）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 
