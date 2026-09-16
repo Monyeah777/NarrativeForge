@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-16",
   "approved_by": "作者",
-  "note": "MVU 核对续核 + 键名修正后重冻结",
+  "note": "MVU 核对收口（样例产物变更）重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c957239f7736853055ba7c55945a3963e6df9840e8c9f600068e85302339ea33"

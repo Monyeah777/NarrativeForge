@@ -36,12 +36,15 @@ DOC_SOURCE = "https://raw.githubusercontent.com/Lunacaty/MVU-Maker/HEAD/README.m
 TYPE_MAP = {"string": "string", "integer": "number", "number": "number",
             "boolean": "boolean", "enum": "enum", "array": "array",
             "object": "object", "untyped": "union"}
-UNVERIFIED = ["stat_data 树路径规则细节", "正则五件套的具体组成",
-              "base64/chara 分发的字段细节"]
+UNVERIFIED = ["stat_data 树路径规则细节"]
 VERIFIED_EXTRA = ["条目位置 atDepth=4 + depth + order=200",
                   "character_book.entries 必须为数组",
                   "tavern_helper.scripts 必须为数组（含 name）",
-                  "变量列表 = 实时变量快照（蓝灯 @D0）"]
+                  "变量列表 = 实时变量快照（蓝灯 @D0）",
+                  "正则五件套 = 隐藏/更新中/美化/隐藏状态栏/状态栏界面",
+                  "chara/ccv3 以 base64 写入（与 ST character-card-parser 一致）"]
+#: 正则五件套条目名（已核对原文）；替换串/规则正文未给出，故仍是占位。
+REGEX_SUITE = ["隐藏", "更新中", "美化", "隐藏状态栏", "状态栏界面"]
 
 
 def _modules(ir: IRDocument) -> List[Any]:
@@ -251,11 +254,12 @@ def build_mvu_payload(ir: IRDocument) -> Dict[str, Any]:
 
 
 def _worldbook_draft(payload: Dict[str, Any]) -> Dict[str, Any]:
-    """世界书条目草案：只放已核对确切的条目名；位置参数一律标 draft（未核对）。"""
-    return {"nf_draft": True,
-            "nf_note": "位置标准已核对（atDepth=4 + depth + order=200；entries 与 "
-                       "tavern_helper.scripts 必须为数组）；**正则五件套与 base64 分发细节仍未核对**，"
-                       "故本文件保持 draft——请按目标前端实际约定补齐后再导入。",
+    """世界书条目：结构与位置参数、数组要求、base64 分发**均已核对**；只剩 content 待作者填。"""
+    return {"nf_draft": False,
+            "nf_draft_scope": "结构与条目名/位置参数已核对；**各条目 content 待作者填**"
+                              "（NF 不产更新规则文本与正则替换串）。",
+            "nf_note": "位置标准 = atDepth=4 + depth + order=200；entries 与 tavern_helper.scripts "
+                       "必须为数组；chara/ccv3 分发一律 base64（与 ST character-card-parser 一致）。",
             "character_book": {"entries": [
                 {"name": "[InitVar]请勿打开",
                  "nf_role": "变量初始化（禁用态，前端引擎读取；按 Schema 生成默认空值）",

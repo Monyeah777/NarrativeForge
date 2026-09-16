@@ -97,7 +97,9 @@ class TestMvuAdapter(unittest.TestCase):
             payload = json.loads((Path(tmp) / "mvu_variables.json").read_text(encoding="utf-8"))
             self.assertEqual(len(payload["variables"]), 4)
             wb = json.loads((Path(tmp) / "mvu_worldbook.json").read_text(encoding="utf-8"))
-            self.assertTrue(wb["nf_draft"])
+            # 结构与位置参数已核对 → 不再是整体 draft，改为精确标注待填范围
+            self.assertFalse(wb["nf_draft"])
+            self.assertIn("待作者填", wb["nf_draft_scope"])
 
     def test_no_world_model_is_warning_not_crash(self):
         with tempfile.TemporaryDirectory() as tmp:

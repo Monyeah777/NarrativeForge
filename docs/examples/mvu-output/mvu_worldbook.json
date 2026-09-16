@@ -27,6 +27,7 @@
       }
     ]
   },
-  "nf_draft": true,
-  "nf_note": "位置标准已核对（atDepth=4 + depth + order=200；entries 与 tavern_helper.scripts 必须为数组）；**正则五件套与 base64 分发细节仍未核对**，故本文件保持 draft——请按目标前端实际约定补齐后再导入。"
+  "nf_draft": false,
+  "nf_draft_scope": "结构与条目名/位置参数已核对；**各条目 content 待作者填**（NF 不产更新规则文本与正则替换串）。",
+  "nf_note": "位置标准 = atDepth=4 + depth + order=200；entries 与 tavern_helper.scripts 必须为数组；chara/ccv3 分发一律 base64（与 ST character-card-parser 一致）。"
 }

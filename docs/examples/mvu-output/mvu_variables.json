@@ -93,9 +93,7 @@
     "doc_source": "https://raw.githubusercontent.com/Lunacaty/MVU-Maker/HEAD/README.md",
     "format": "MVU 变量模板（stat_data 树）",
     "unverified": [
-      "stat_data 树路径规则细节",
-      "正则五件套的具体组成",
-      "base64/chara 分发的字段细节"
+      "stat_data 树路径规则细节"
     ],
     "verified": [
       "stat_data",
@@ -108,7 +106,9 @@
       "条目位置 atDepth=4 + depth + order=200",
       "character_book.entries 必须为数组",
       "tavern_helper.scripts 必须为数组（含 name）",
-      "变量列表 = 实时变量快照（蓝灯 @D0）"
+      "变量列表 = 实时变量快照（蓝灯 @D0）",
+      "正则五件套 = 隐藏/更新中/美化/隐藏状态栏/状态栏界面",
+      "chara/ccv3 以 base64 写入（与 ST character-card-parser 一致）"
     ]
   },
   "variables": [
