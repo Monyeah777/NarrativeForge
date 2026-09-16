@@ -1,0 +1,133 @@
+{
+  "checks": {
+    "check": {
+      "values": [
+        "begin",
+        "run",
+        "end",
+        "archive",
+        "roll"
+      ]
+    }
+  },
+  "generator": "mvu_adapter/0.1",
+  "initial": {
+    "phase": "begin",
+    "phase_trace": [],
+    "pipeline": "P01",
+    "tick": 0
+  },
+  "invariants": [
+    "抽象状态变量必须是 world_model.abstract_state 显式声明的有限集",
+    "tick 单调不减",
+    "phase 只在 begin/run/end/archive/roll 有限集合内迁移",
+    "每个 phase 显式声明 next，迁移图从 initial_phase 全可达",
+    "非 M50 模块不得直写 M00 数据槽"
+  ],
+  "nf_draft": true,
+  "phases": [
+    {
+      "guard": "回合开始并快照 M00 数据槽",
+      "next": "run",
+      "phase": "begin",
+      "writes": []
+    },
+    {
+      "guard": "按 02 §6 执行官方核心与社区包合并顺序",
+      "next": "end",
+      "phase": "run",
+      "writes": [
+        "memory.working"
+      ]
+    },
+    {
+      "guard": "I2 核心固定结构/字段一致性校验通过",
+      "next": "archive",
+      "phase": "end",
+      "writes": []
+    },
+    {
+      "guard": "end 通过后执行回合末记忆写回",
+      "next": "roll",
+      "phase": "archive",
+      "writes": [
+        "memories.memory.episodic.items",
+        "memories.memory.semantic.facts"
+      ]
+    },
+    {
+      "guard": "回卷至 begin 快照并进入下一回合",
+      "next": "begin",
+      "phase": "roll",
+      "writes": [
+        "memory.working"
+      ]
+    }
+  ],
+  "provenance": {
+    "digests": {
+      "通用类:M50": "191287f48d6dd24686544baab2b501c99c2f35b8c3f81330a5fcff85f3a69ffe"
+    },
+    "modules": [
+      "通用类:M50"
+    ]
+  },
+  "schema": "nf-mvu-payload/1",
+  "target": {
+    "doc_check_date": "2026-09-16",
+    "doc_source": "https://raw.githubusercontent.com/Lunacaty/MVU-Maker/HEAD/README.md",
+    "format": "MVU 变量模板（stat_data 树）",
+    "unverified": [
+      "stat_data 树路径规则",
+      "条目位置参数 atDepth/depth/order",
+      "entries / tavern_helper.scripts 数组硬要求",
+      "正则五件套组成",
+      "变量列表条目形态（蓝灯 @D0）",
+      "base64/chara 分发细节"
+    ],
+    "verified": [
+      "stat_data",
+      "[InitVar]请勿打开",
+      "[mvu_update]变量更新规则",
+      "[mvu_update]变量输出格式（JSON Patch）",
+      "七类型 string/number/boolean/enum/object/record/union",
+      "registerMvuSchema",
+      "prefault/clamp/describe"
+    ]
+  },
+  "variables": [
+    {
+      "kind": "string",
+      "mvu_type": "string",
+      "name": "pipeline",
+      "note": "当前装配管线 id",
+      "slot": "data_bus.active_pipeline",
+      "source": "通用类:M50"
+    },
+    {
+      "kind": "integer",
+      "mvu_type": "number",
+      "name": "tick",
+      "note": "时间推进节拍；M50 只读",
+      "slot": "WorldState.time.tick",
+      "source": "通用类:M50"
+    },
+    {
+      "kind": "string",
+      "mvu_type": "string",
+      "name": "phase",
+      "note": "主循环抽象相位",
+      "slot": "data_bus.round.phase",
+      "source": "通用类:M50"
+    },
+    {
+      "kind": "array",
+      "mvu_type": "array",
+      "name": "phase_trace",
+      "note": "主循环相位轨迹；旧相位按迁移顺序追加",
+      "slot": "data_bus.round.phase_trace",
+      "source": "通用类:M50"
+    }
+  ],
+  "warnings": []
+}

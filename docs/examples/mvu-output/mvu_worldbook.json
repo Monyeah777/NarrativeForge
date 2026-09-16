@@ -1,0 +1,23 @@
+{
+  "character_book": {
+    "entries": [
+      {
+        "content": "{\"phase\": \"begin\", \"phase_trace\": [], \"pipeline\": \"P01\", \"tick\": 0}",
+        "name": "[InitVar]请勿打开",
+        "nf_role": "变量初始化（禁用态，前端引擎读取；按 Schema 生成默认空值）"
+      },
+      {
+        "content": "(待填：NF 不产更新规则文本，只给变量与初值)",
+        "name": "[mvu_update]变量更新规则",
+        "nf_role": "每变量更新触发条件"
+      },
+      {
+        "content": "(待填：JSON Patch 输出约束)",
+        "name": "[mvu_update]变量输出格式",
+        "nf_role": "要求以 JSON Patch 输出更新"
+      }
+    ]
+  },
+  "nf_draft": true,
+  "nf_note": "条目位置参数（atDepth/depth/order）与数组硬要求未核对，故不写死；请按目标前端的实际约定补齐后再导入。"
+}

@@ -64,7 +64,7 @@ def _build_parser() -> argparse.ArgumentParser:
     run.add_argument("--seed", action="store_true",
                      help="把 04_模块库官方核心 + community 组合包装载进 store（演示/自测）")
     run.add_argument("--fmt", default="ccv3",
-                     choices=["ccv3", "skill", "agents", "claude", "mcp"],
+                     choices=["ccv3", "skill", "agents", "claude", "mcp", "mvu"],
                      help="导出格式（exporter 注册表：ccv3/skill/agents/claude/mcp）")
     run.add_argument("--doc-semantics", default=None,
                      choices=["project_rules", "skill"],

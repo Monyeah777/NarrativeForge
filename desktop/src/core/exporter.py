@@ -25,6 +25,7 @@ from .ccv3_adapter import map_ir_to_ccv3, world_entries
 from .skill_adapter import export_skill
 from .agent_rules_adapter import export_agents, export_claude
 from .mcp_adapter import export_mcp
+from .mvu_adapter import export_mvu
 from .import_adapter import parse_skill, parse_ccv3   # 读入反向符号（34 方案 A4）
 
 
@@ -62,6 +63,7 @@ def _export_ccv3(ir: IRDocument, dest_dir: Path, res: ExportResult) -> None:
 
 
 _REGISTRY = {
+    "mvu": export_mvu,
     "ccv3": _export_ccv3,
     "skill": export_skill,
     "agents": export_agents,
