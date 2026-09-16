@@ -167,6 +167,15 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_postmortem(root: str) -> Tuple[bool, str]:
+    """复盘：四段齐 / 无指责 / 根因指向机制 / 行动项可指派可验 / closed 须锚定。"""
+    from core import postmortem as pm
+    issues, _warns, stats = pm.scan(root)
+    detail = "复盘 %d 件 · 行动项 %d 条" % (stats.get("postmortems", 0),
+                                            stats.get("actions", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_handover(root: str) -> Tuple[bool, str]:
     """接力协议：五段齐 / 未决非空且每条带判据 / refs 可解析。"""
     from core import handover as ho
@@ -247,6 +256,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("modeling", _c_modeling, "内容建模三件（词表/规范说明件/数据契约）"),
     ("decisions", _c_decisions, "决策记录（ADR：不可改 + 取代链）"),
     ("handover", _c_handover, "接力协议（SBAR 五段 + 未决带判据）"),
+    ("postmortem", _c_postmortem, "复盘（无指责 + 根因指向机制 + 行动项闭环）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

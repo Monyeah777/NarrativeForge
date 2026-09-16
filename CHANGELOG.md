@@ -2,6 +2,8 @@
 
 ## [2.12.0] - 未发布
 
+- 复盘族收口（长期计划 W3，机制借鉴 SRE postmortem；不新增 check）：新品类 `postmortems/`（`PO-NNNN-*.md` + README 分工表）+ 声明 `protocol/postmortem.json`（四段：现象/影响/根因/行动项 + 六条纪律）+ 门禁 `core/postmortem.py`（四段齐 / **无指责**——`blame_tokens` 词表命中即 FAIL / **根因必须指向机制**——根因段须含 `root_cause_tokens` / **每条行动项必须同时含负责人与判据**——只写动作视为未闭环 / `trigger` 与 `refs` 须可解析 / **`status: closed` 必须已被协议回执锚定**，防事后美化）+ 机器面 `nf postmortem [ls|check|verify]`。首件为**真实复盘**：`PO-0001`（本会话真踩过的协议回执冻结顺序事故：现象/影响/根因指向机制/2 条带负责人与判据的行动项）。同波：一致性报告 21 → **22 契约**、协议层回执 40 → **41 件**。
+
 - 接力协议收口（长期计划 W2，机制借鉴 SBAR/ISBAR；不新增 check）：新品类 `handovers/`（`HO-NNNN-*.md` + README 分工表）+ 声明 `protocol/handover.json`（五段：情境/背景/评估/建议/未决项 + 四条纪律）+ 门禁 `core/handover.py`（五段齐 / **未决项非空**——空未决 = 不合格交接 / **每条未决必须带判据** / `refs` 必须解析到真实件或 `checkN`，复用 decisions 的证据语义不重写第二套）+ 机器面 `nf handover [ls|check|verify]`。首件为**真实交接**：`HO-0001`（W1 决策族 → W2 交接族：状态 / 坑 / 建议 / 3 条带判据的未决项）。同波：一致性报告 20 → **21 契约**、协议层回执 39 → **40 件**。
 
 - 决策族收口（长期计划 W1，机制借鉴 ADR；不新增 check）：新品类 `decisions/`（**一条决策一编号**；`status: accepted` 后**正文不可改**——以协议回执锚定为判据，改了必然被 check35 抓住，只能靠新增 + 互指 supersede 演进）+ 门禁 `core/decisions.py`（编号唯一且等于文件名 / 状态词表 / 日期 / 三段齐（背景·决策·后果）/ 取代链互指且不成环 / **evidence 必须解析到真实件或 checkN 或 ADR-N** / INDEX 投影一致）+ 机器面 `nf decisions [show|verify|reindex]`。首件为三条**真实**决策：ADR-0001 双源知识层落位（不升模块层）· ADR-0002 门禁不注水（新语义并入既有 check）· ADR-0003 断言表 kind 封闭集（不自造 DSL）。同波：一致性报告 19 → **20 契约**、协议层回执 35 → **39 件**（3 ADR + INDEX 入锚）。

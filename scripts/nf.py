@@ -413,6 +413,14 @@ def _build_parser() -> argparse.ArgumentParser:
     for _h in (ho_ls, ho_ck, hosub.add_parser("verify", help="机检声明 + 全部交接件",
                                               description="机检声明 + 全部交接件")):
         _h.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    pm = sub.add_parser("postmortem", help="复盘（无指责 + 根因指向机制 + 行动项闭环）",
+                        description="复盘（机制借鉴 SRE postmortem）")
+    pmsub = pm.add_subparsers(dest="postmortem_cmd")
+    pm_ck = pmsub.add_parser("check", help="机检单件复盘", description="机检单件复盘")
+    pm_ck.add_argument("path", help="复盘件路径（仓库相对）")
+    for _p in (pmsub.add_parser("ls", help="列全部复盘", description="列全部复盘"), pm_ck,
+               pmsub.add_parser("verify", help="机检声明 + 全部复盘件", description="机检")):
+        _p.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2072,6 +2080,53 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_postmortem(args):
+    """nf postmortem：复盘（列表 / 单件机检 / 全量机检）。"""
+    from core import postmortem as pm
+    import json as _json
+    sub = getattr(args, "postmortem_cmd", None) or "ls"
+    want_json = bool(getattr(args, "json", False))
+    if sub == "check":
+        issues, st = pm.check_doc(ROOT, args.path)
+        if want_json:
+            print(_json.dumps({"path": args.path, "issues": issues, "stats": st},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf postmortem check %s（行动项 %d 条）==" % (args.path, st.get("actions", 0)))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 四段齐 · 无指责 · 根因指向机制 · 行动项带负责人与判据")
+        return 1 if issues else 0
+    if sub == "verify":
+        issues, warns, stats = pm.scan(ROOT)
+        if want_json:
+            print(_json.dumps({"issues": issues, "warns": warns, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf postmortem verify（%d 件 · 行动项 %d 条）=="
+                  % (stats.get("postmortems", 0), stats.get("actions", 0)))
+            for w in warns:
+                print("  [WARN] %s" % w)
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 声明与全部复盘件一致")
+        return 1 if issues else 0
+    rows = pm.entries(ROOT)
+    if want_json:
+        print(_json.dumps([{k: e["fm"].get(k) for k in
+                            ("id", "title", "status", "date", "trigger")} for e in rows],
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf postmortem（%d 件）==" % len(rows))
+        for e in rows:
+            fm = e["fm"]
+            print("  %-9s %-7s %-10s %s" % (fm.get("id"), fm.get("status"),
+                                            fm.get("date"), fm.get("title")))
+    return 0
+
+
 def _cmd_handover(args):
     """nf handover：接力协议（列表 / 单件机检 / 全量机检）。"""
     from core import handover as ho
@@ -3521,6 +3576,8 @@ def main(argv=None) -> int:
         return _cmd_decisions(args)
     if args.cmd == "handover":
         return _cmd_handover(args)
+    if args.cmd == "postmortem":
+        return _cmd_postmortem(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

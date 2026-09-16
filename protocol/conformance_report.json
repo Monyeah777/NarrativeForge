@@ -141,6 +141,13 @@
       "ok": true
     },
     {
+      "description": "复盘（无指责 + 根因指向机制 + 行动项闭环）",
+      "detail": "复盘 1 件 · 行动项 2 条",
+      "digest": "6141ca85efef093f1e030b4f66bfbab6505a57cebd5c06db618ad0a31e466bca",
+      "id": "postmortem",
+      "ok": true
+    },
+    {
       "description": "公开导出面零泄漏",
       "detail": "公开导出面零泄漏",
       "digest": "d90f0f64ce2bb95763db2d29f8644b1900632565cbcc71ebbd0f504cdf0c90c7",
@@ -148,9 +155,9 @@
       "ok": true
     }
   ],
-  "passed": 21,
-  "root": "daaf66017b475e559571b674b8d18af12855a70695e58894d3fcebdfcaa171b1",
+  "passed": 22,
+  "root": "818778ecf1dbe2376a1d10a17ea6f8eebb6938e1df70485c52227b4f70848faa",
   "schema": "nf-conformance/1",
-  "total": 21,
+  "total": 22,
   "verdict": "conformant"
 }

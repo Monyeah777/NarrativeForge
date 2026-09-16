@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-15",
   "approved_by": "作者",
-  "note": "接力协议入报告后重冻结",
+  "note": "复盘族入报告后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "68dc86670357b1f44c3b241947c1bde4d9b0a880aec14a5107fdfa65830a119c"
+  "subject_digest": "cc6b116caba0a783d83643cd98fc6b5a69b23497d1629f6364c5a546c9a3c87b"
 }

@@ -26,6 +26,25 @@ _DATED = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _BULLET = re.compile(r"^\s*[-*]\s+(.+)$", re.M)
 
 
+def _bullet_blocks(text: str) -> List[str]:
+    """列表按「bullet 块」切分（含缩进续行）——换行续写也算同一条未决项。"""
+    blocks: List[str] = []
+    cur: List[str] = []
+    for line in text.splitlines():
+        if re.match(r"^\s*[-*]\s+", line):
+            if cur:
+                blocks.append("\n".join(cur).strip())
+            cur = [line]
+        elif cur and line.strip():
+            cur.append(line)
+        elif cur:
+            blocks.append("\n".join(cur).strip())
+            cur = []
+    if cur:
+        blocks.append("\n".join(cur).strip())
+    return blocks
+
+
 def decl(root: str = ".") -> Dict[str, Any]:
     import json
     p = Path(root) / DECL_REL
@@ -63,7 +82,7 @@ def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
         if sec not in body:
             issues.append("正文缺段落：%s" % sec)
     pending = body.split("## 未决项", 1)[1] if "## 未决项" in body else ""
-    items = [m.group(1).strip() for m in _BULLET.finditer(pending)]
+    items = _bullet_blocks(pending)
     if not items:
         issues.append("未决项为空——空未决 = 不合格交接（没有未决就是没交接）")
     for it in items:
