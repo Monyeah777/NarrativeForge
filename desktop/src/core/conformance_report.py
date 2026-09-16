@@ -167,6 +167,16 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_audit(root: str) -> Tuple[bool, str]:
+    """审计/验收：结论绑定被审对象 digest + 签收双要素（存量 legacy 按 WARN）。"""
+    from core import audit as au
+    issues, _warns, stats = au.scan(root)
+    detail = "审计 %d 件（带审计头 %d · legacy %d）· 绑定对象 %d" % (
+        stats.get("audits", 0), stats.get("with_header", 0),
+        stats.get("legacy", 0), stats.get("subjects_ok", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_postmortem(root: str) -> Tuple[bool, str]:
     """复盘：四段齐 / 无指责 / 根因指向机制 / 行动项可指派可验 / closed 须锚定。"""
     from core import postmortem as pm
@@ -257,6 +267,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("decisions", _c_decisions, "决策记录（ADR：不可改 + 取代链）"),
     ("handover", _c_handover, "接力协议（SBAR 五段 + 未决带判据）"),
     ("postmortem", _c_postmortem, "复盘（无指责 + 根因指向机制 + 行动项闭环）"),
+    ("audit", _c_audit, "审计/验收（结论绑定对象 digest + 签收双要素）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

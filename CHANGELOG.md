@@ -2,6 +2,8 @@
 
 ## [2.12.0] - 未发布
 
+- 审计/验收族收口（长期计划 W4，机制借鉴 Audit Report + Acceptance/Sign-off + Baseline；不新增 check）：**分层裁决**——审计报告的内容（某时刻查到了什么）**保持说明件**（`results/audit/**` 仍不被回执锚定），而审计的**格式与判据**升为规范件 `protocol/audit.json`；门禁 `core/audit.py` 把「**结论必须绑定被审对象**」判据化：`subjects` 每条写 `路径:sha256`，对象一改旧审计立即失效（与 attest 同语义），并强制验收签收双要素（`accepted_by` + `accepted_at`）；存量 11 件无审计头者按 **WARN** 挂账不判死。机器面 `nf audit [ls|check|verify]`。首件带审计头报告 `AUD-0001`（W4 自审，绑 2 个被审对象 digest，verdict=pass）。同波：一致性报告 22 → **23 契约**、协议层回执 41 → **42 件**。
+
 - 复盘族收口（长期计划 W3，机制借鉴 SRE postmortem；不新增 check）：新品类 `postmortems/`（`PO-NNNN-*.md` + README 分工表）+ 声明 `protocol/postmortem.json`（四段：现象/影响/根因/行动项 + 六条纪律）+ 门禁 `core/postmortem.py`（四段齐 / **无指责**——`blame_tokens` 词表命中即 FAIL / **根因必须指向机制**——根因段须含 `root_cause_tokens` / **每条行动项必须同时含负责人与判据**——只写动作视为未闭环 / `trigger` 与 `refs` 须可解析 / **`status: closed` 必须已被协议回执锚定**，防事后美化）+ 机器面 `nf postmortem [ls|check|verify]`。首件为**真实复盘**：`PO-0001`（本会话真踩过的协议回执冻结顺序事故：现象/影响/根因指向机制/2 条带负责人与判据的行动项）。同波：一致性报告 21 → **22 契约**、协议层回执 40 → **41 件**。
 
 - 接力协议收口（长期计划 W2，机制借鉴 SBAR/ISBAR；不新增 check）：新品类 `handovers/`（`HO-NNNN-*.md` + README 分工表）+ 声明 `protocol/handover.json`（五段：情境/背景/评估/建议/未决项 + 四条纪律）+ 门禁 `core/handover.py`（五段齐 / **未决项非空**——空未决 = 不合格交接 / **每条未决必须带判据** / `refs` 必须解析到真实件或 `checkN`，复用 decisions 的证据语义不重写第二套）+ 机器面 `nf handover [ls|check|verify]`。首件为**真实交接**：`HO-0001`（W1 决策族 → W2 交接族：状态 / 坑 / 建议 / 3 条带判据的未决项）。同波：一致性报告 20 → **21 契约**、协议层回执 39 → **40 件**。

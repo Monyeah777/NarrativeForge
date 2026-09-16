@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-15",
+  "approved_at": "2026-09-16",
   "approved_by": "作者",
-  "note": "复盘族入报告后重冻结",
+  "note": "审计协议入报告后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "cc6b116caba0a783d83643cd98fc6b5a69b23497d1629f6364c5a546c9a3c87b"
+  "subject_digest": "b847c356ba51dec90101267f8ab6a78dccca12bd52e090a4df1be0ffb1595d9b"
 }

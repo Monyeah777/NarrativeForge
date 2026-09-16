@@ -1,0 +1,12 @@
+{
+  "schema": "nf-audit/1",
+  "note": "审计协议（机制借鉴 Audit Report + Acceptance/Sign-off + Baseline 三件）。**裁决事项**：审计报告的内容是「某时刻查到了什么」＝时点事实＝说明件（保持 `results/audit/**` 属说明件不动）；而审计报告**该怎么写、结论必须绑什么**＝约束＝规范件（本件）。冲突用分层消解，不动既有判据。",
+  "required_fields": ["id", "date", "scope", "verdict", "auditor", "subjects"],
+  "verdict_vocabulary": ["pass", "fail", "warn"],
+  "rules": [
+    "结论必须绑定被审对象：`subjects` 每条写 `路径:sha256`——对象内容一变，旧审计立即失效（与 attest 同语义），必须重审而不是复用结论",
+    "验收签收：出现 `accepted_by` 就必须有 `accepted_at`（YYYY-MM-DD）——只有签字没有日期不算签收",
+    "基线数字必须可复算：审计里引用的基线（check 数 / PASS 数 / 契约数）以 verify.sh 与 nf conformance 的输出为准",
+    "存量审计件可无审计头（legacy）：按 WARN 挂账，不判死，逐个回合收"
+  ]
+}

@@ -421,6 +421,14 @@ def _build_parser() -> argparse.ArgumentParser:
     for _p in (pmsub.add_parser("ls", help="列全部复盘", description="列全部复盘"), pm_ck,
                pmsub.add_parser("verify", help="机检声明 + 全部复盘件", description="机检")):
         _p.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    au = sub.add_parser("audit", help="审计/验收（结论绑定对象 digest + 签收双要素）",
+                        description="审计/验收（机制借鉴 Audit Report + Acceptance/Sign-off）")
+    ausub = au.add_subparsers(dest="audit_cmd")
+    au_ck = ausub.add_parser("check", help="机检单件审计", description="机检单件审计")
+    au_ck.add_argument("path", help="审计件路径（仓库相对）")
+    for _a in (ausub.add_parser("ls", help="列全部审计件", description="列全部审计件"), au_ck,
+               ausub.add_parser("verify", help="机检声明 + 全部审计件", description="机检")):
+        _a.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2080,6 +2088,55 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_audit(args):
+    """nf audit：审计/验收（列表 / 单件机检 / 全量机检）。"""
+    from core import audit as au
+    import json as _json
+    sub = getattr(args, "audit_cmd", None) or "ls"
+    want_json = bool(getattr(args, "json", False))
+    if sub == "check":
+        issues, st = au.check_doc(ROOT, args.path)
+        if want_json:
+            print(_json.dumps({"path": args.path, "issues": issues, "stats": st},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf audit check %s%s ==" % (
+                args.path, "（legacy：无审计头，按 WARN 挂账）" if st.get("legacy") else ""))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues and not st.get("legacy"):
+                print("  ✓ 必填齐 · verdict 在册 · 结论绑定对象 digest · 签收双要素")
+        return 1 if issues else 0
+    if sub == "verify":
+        issues, warns, stats = au.scan(ROOT)
+        if want_json:
+            print(_json.dumps({"issues": issues, "warns": warns, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf audit verify（%d 件 · 带审计头 %d · legacy %d）=="
+                  % (stats.get("audits", 0), stats.get("with_header", 0), stats.get("legacy", 0)))
+            for w in warns:
+                print("  [WARN] %s" % w)
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 声明与全部审计件一致（legacy 只挂账不判死）")
+        return 1 if issues else 0
+    rows = au.entries(ROOT)
+    if want_json:
+        print(_json.dumps([{k: e["fm"].get(k) for k in
+                            ("id", "date", "scope", "verdict", "auditor")} for e in rows],
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf audit（%d 件）==" % len(rows))
+        for e in rows:
+            fm = e["fm"]
+            print("  %-11s %-6s %-11s %s" % (fm.get("id") or "(legacy)",
+                                             fm.get("verdict") or "-",
+                                             fm.get("date") or "-", e["file"]))
+    return 0
+
+
 def _cmd_postmortem(args):
     """nf postmortem：复盘（列表 / 单件机检 / 全量机检）。"""
     from core import postmortem as pm
@@ -3578,6 +3635,8 @@ def main(argv=None) -> int:
         return _cmd_handover(args)
     if args.cmd == "postmortem":
         return _cmd_postmortem(args)
+    if args.cmd == "audit":
+        return _cmd_audit(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":
