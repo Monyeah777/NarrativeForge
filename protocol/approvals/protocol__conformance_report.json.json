@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "外部研究参考区入仓后重冻结",
+  "note": "state-front 装置与示例件入仓后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "2097e795ad4059783a25bab76fbeeec8e1b210943f871378cc4e3738d048717e"
+  "subject_digest": "0711eb116301ee8530e5dda189c9fe3cdd1b99f27424421bcb8f1db3e21a9f14"
 }

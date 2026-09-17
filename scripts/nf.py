@@ -440,6 +440,16 @@ def _build_parser() -> argparse.ArgumentParser:
     stv.add_argument("path", help="被校验对象（JSON；卡 / 世界书 / MVU 变量产物）")
     stv.add_argument("--out", default="", help="把 markdown 报告写入该路径")
     stv.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    sfp = sub.add_parser("state-front",
+                         help="条件先行排布（状态块前置/后置/省略；T3 刺激件生成器）",
+                         description="条件先行排布（灵感来源 arXiv:2609.02702 的 condition-first；NF 只做排布纪律）")
+    sfp.add_argument("path", help="产物 md 路径（仓库相对或绝对）")
+    sfp.add_argument("--mode", default="front", choices=["front", "back", "none"],
+                     help="排布方式（缺省 front = 条件先行）")
+    sfp.add_argument("--out", default="", help="写出排布结果")
+    sfp.add_argument("--check", action="store_true", help="只判「状态块是否已前置」")
+    sfp.add_argument("--ab", action="store_true", help="输出 A/B/C 三刺激件清单（T3 装置）")
+    sfp.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2099,6 +2109,57 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_state_front(args):
+    """nf state-front：条件先行排布（确定性；不调模型）。"""
+    from core import state_front as sf
+    import json as _json
+    from pathlib import Path as _Path
+    p = args.path if os.path.isabs(args.path) else os.path.join(ROOT, args.path)
+    try:
+        text = open(p, encoding="utf-8").read()
+    except OSError as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 1
+    if args.ab:
+        man = sf.ab_manifest(text)
+        if args.json:
+            print(_json.dumps(man, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("== nf state-front --ab（三刺激件清单 · 不调模型）==")
+            for k in ("front", "back", "none"):
+                v = man[k]
+                print("  %-6s chars %6d · sha256 %s · 状态块前置=%s"
+                      % (k, v["chars"], v["sha256"][:16], v["state_front"]))
+        return 0
+    if args.check:
+        issues = sf.check_order(text)
+        if args.json:
+            print(_json.dumps({"issues": issues}, ensure_ascii=False, indent=2))
+        else:
+            print("== nf state-front --check（%s）==" % args.path)
+            for i in issues:
+                print("  [FAIL] %s" % i)
+            if not issues:
+                print("  ✓ 状态块已前置（条件先行）")
+        return 1 if issues else 0
+    out = sf.reorder(text, args.mode)
+    if args.out:
+        op = args.out if os.path.isabs(args.out) else os.path.join(ROOT, args.out)
+        _Path(op).parent.mkdir(parents=True, exist_ok=True)
+        with open(op, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(out)
+    if args.json:
+        print(_json.dumps({"mode": args.mode, "chars": len(out),
+                           "state_front": not sf.check_order(out)}, ensure_ascii=False))
+    else:
+        print("== nf state-front（%s → %s）==" % (args.path, args.mode))
+        print("  输出长度 %d 字符 · 状态块前置=%s"
+              % (len(out), not sf.check_order(out)))
+        if args.out:
+            print("  已写入：%s" % args.out)
+    return 0
+
+
 def _cmd_st_validate(args):
     """nf st-validate：ST 制卡校验器原型（A-S3）。"""
     from core import st_validator as sv
@@ -3713,6 +3774,8 @@ def main(argv=None) -> int:
         return _cmd_cognition(args)
     if args.cmd == "st-validate":
         return _cmd_st_validate(args)
+    if args.cmd == "state-front":
+        return _cmd_state_front(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":
