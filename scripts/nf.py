@@ -434,6 +434,12 @@ def _build_parser() -> argparse.ArgumentParser:
     cog.add_argument("part", nargs="?", default="", choices=["", "glossary", "modes"],
                      help="只看一件（缺省 = 全跑）")
     cog.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    stv = sub.add_parser("st-validate",
+                         help="ST 制卡校验器原型（卡 / 世界书 / MVU 变量 → 报告；A-S3）",
+                         description="ST 制卡校验器原型 v0（任务书 A-S3：R1 结构 / R3 世界书 / R4 变量）")
+    stv.add_argument("path", help="被校验对象（JSON；卡 / 世界书 / MVU 变量产物）")
+    stv.add_argument("--out", default="", help="把 markdown 报告写入该路径")
+    stv.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
                         help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
@@ -2093,6 +2099,38 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_st_validate(args):
+    """nf st-validate：ST 制卡校验器原型（A-S3）。"""
+    from core import st_validator as sv
+    from pathlib import Path
+    import json as _json
+    try:
+        rep = sv.validate(args.path)
+    except (OSError, ValueError) as exc:
+        print("  ✗ %s" % exc, file=sys.stderr)
+        return 1
+    md = sv.report_markdown(rep)
+    if args.out:
+        outp = args.out if os.path.isabs(args.out) else os.path.join(ROOT, args.out)
+        Path(outp).parent.mkdir(parents=True, exist_ok=True)
+        with open(outp, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(md)
+    if args.json:
+        print(_json.dumps(rep, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        c = rep.get("counts", {})
+        print("== nf st-validate %s（%s：fail %d · warn %d · info %d）=="
+              % (args.path, rep.get("kind"), c.get("fail", 0), c.get("warn", 0),
+                 c.get("info", 0)))
+        for i in rep.get("issues") or []:
+            print("  [%s] %s %s" % (i["severity"].upper(), i["rule"], i["detail"]))
+        if not rep.get("issues"):
+            print("  ✓ 可自动化项全部通过（R1/R3/R4）")
+        if args.out:
+            print("  报告已写入：%s" % args.out)
+    return 1 if (rep.get("counts", {}).get("fail", 0) > 0) else 0
+
+
 def _cmd_cognition(args):
     """nf cognition：行话术语表 / 执行分档（认证 + 逐条逐字核对）。"""
     from core import cognition as cg
@@ -3673,6 +3711,8 @@ def main(argv=None) -> int:
         return _cmd_audit(args)
     if args.cmd == "cognition":
         return _cmd_cognition(args)
+    if args.cmd == "st-validate":
+        return _cmd_st_validate(args)
     if args.cmd == "diff":
         return _cmd_diff(args)
     if args.cmd == "related":

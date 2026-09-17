@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "ST 自查清单登记后重冻结",
+  "note": "ST 校验器与样例报告入仓后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "77ab6ba6cd4700c962df20651a8c88e8c4b7d4dedd1fb898bf37c232d948dc8d"
+  "subject_digest": "624ecaf147a5bb6739799d9bfdec2f36ee741d60b094af2a21cc0a10204453c0"
 }
