@@ -1,0 +1,32 @@
+{
+  "schema": "nf-mcp-package/1",
+  "status": "draft",
+  "note": "B 线（内容质检 MCP 包）的包装声明（机制：把「上架材料」里最易漂移的三样——工具面、类目、红线——变成可机检数据）。**只读面红线**由门禁钉死：声明的工具/提示必须与 mcp_runtime 的运行时面**逐名一致**，多一个少一个即 FAIL。命名与一句话在 B-S2 定稿前保持候选。",
+  "category_vocabulary": ["content-creation", "developer-tools", "knowledge-management"],
+  "red_lines": [
+    "只读：不新增任何写工具（当前 10 工具 + 1 prompt）",
+    "零新依赖：仅标准库",
+    "uri 白名单：资源模板受白名单约束",
+    "双协议版本：modern 2026-07-28 + legacy initialize 并存",
+    "门禁不减：仓库自检 PASS 数不得下降"
+  ],
+  "pending": [
+    "B-S2 上架材料（中英安装说明 + 提交文案）待 T1 宿主装载记录回填",
+    "对外命名与一句话定稿（B-S1 给候选，B-S2 拍板）",
+    "类目最终选定（候选 content-creation）"
+  ],
+  "package": {
+    "name_candidates": ["NarrativeForge Content Gate", "NF 内容质检面", "NF Spec Gate"],
+    "one_liner_candidates": [
+      "给任何 AI agent 一个可校验的内容规范与资产底座——先查契约，再落笔。",
+      "把长内容的验收标准变成 agent 可调用的只读工具面。"
+    ],
+    "category": "content-creation",
+    "targets": ["mcp.so", "Smithery", "魔搭（ModelScope）", "百度 MCP 表单"],
+    "tools": ["pipeline_ls", "spec_ls", "registry_query", "library_search",
+              "library_read", "pattern_read", "knowledge_order", "module_read",
+              "pipeline_read", "asset_get"],
+    "prompts": ["assemble_guide"],
+    "entry": "nf run --fmt mcp → nf serve <mcp.json 快照>"
+  }
+}

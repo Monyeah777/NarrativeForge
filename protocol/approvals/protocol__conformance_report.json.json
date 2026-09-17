@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "ST 校验演示 fixture 与报告入仓后重冻结",
+  "note": "B 线包装声明入报告后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "34994e9e22768fa02c80057073534d49a2db313b20083b9e1172618b01b72164"
+  "subject_digest": "56e2e2d93b583d7ee4db96eb563f6f2951789bc76b065a16a01d2017d42aebc0"
 }

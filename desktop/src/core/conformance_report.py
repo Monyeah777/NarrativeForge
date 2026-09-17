@@ -167,6 +167,16 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_mcp_package(root: str) -> Tuple[bool, str]:
+    """B 线包装声明：工具/提示面与运行时逐名一致（钉死「只读面不变」）+ 类目/红线/候选齐。"""
+    from core import mcp_package as mp
+    issues, _warns, stats = mp.scan(root)
+    detail = "工具 %d · 提示 %d · 类目 %s · 目标平台 %d" % (
+        stats.get("tools", 0), stats.get("prompts", 0),
+        stats.get("category", "?"), stats.get("targets", 0))
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_st_quality(root: str) -> Tuple[bool, str]:
     """ST 制卡质量规范：声明完整性 + 可判规则落产物（M→fail / S→warn / R→info）。"""
     from core import st_quality as sq
@@ -291,6 +301,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("audit", _c_audit, "审计/验收（结论绑定对象 digest + 签收双要素）"),
     ("cognition", _c_cognition, "认知族（术语表 + 执行分档）"),
     ("st-quality", _c_st_quality, "ST 制卡质量规范（M/S/R 数据化 + 落产物判）"),
+    ("mcp-package", _c_mcp_package, "B 线包装声明（工具面与运行时一致）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 
