@@ -1,0 +1,10 @@
+{
+  "schema": "nf-state-front/1",
+  "note": "条件先行声明（condition-first）：登记**自我要求为条件先行**的产物件——凡在此登记，状态块必须位于所有其它二级小节之前。装置见 `nf state-front`（确定性提取状态块 + 三排布 + --check）。本件只登记「哪些件这么要求自己」，不声称任何效果。",
+  "basis": "灵感来源 arXiv:2609.02702（2026-09-02，预印本）的 condition-first；NF 只取排布层。",
+  "declared": [
+    {"path": "docs/examples/state-front/p03_front.md",
+     "role": "T3 提案的 front 刺激件（条件先行组）",
+     "source": "docs/完整版样本_西幻生存流P03.md"}
+  ]
+}

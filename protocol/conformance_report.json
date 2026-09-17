@@ -176,6 +176,13 @@
       "ok": true
     },
     {
+      "description": "条件先行（登记件须通过排布判据）",
+      "detail": "登记 condition-first 件 1",
+      "digest": "c6bbb83c7c587b7073e9a3a38dda00033c31b7b6328c98cf5b1ab46bdd92e0b0",
+      "id": "state-front",
+      "ok": true
+    },
+    {
       "description": "公开导出面零泄漏",
       "detail": "公开导出面零泄漏",
       "digest": "d90f0f64ce2bb95763db2d29f8644b1900632565cbcc71ebbd0f504cdf0c90c7",
@@ -183,9 +190,9 @@
       "ok": true
     }
   ],
-  "passed": 26,
-  "root": "338e8639ba4f52a39765ccfe08872011a6724ba1fc55ce9012e6308bf60b2fbb",
+  "passed": 27,
+  "root": "7209d172a90a033e3d15664d4e5a7b681ba0d7d33052a6f4339d90b045806427",
   "schema": "nf-conformance/1",
-  "total": 26,
+  "total": 27,
   "verdict": "conformant"
 }

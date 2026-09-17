@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "state-front 装置与示例件入仓后重冻结",
+  "note": "条件先行门禁入报告后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "0711eb116301ee8530e5dda189c9fe3cdd1b99f27424421bcb8f1db3e21a9f14"
+  "subject_digest": "5097c79e7efe6ab97be77ae4602439c07f5f3d7931e1c1769df45436bbf788b5"
 }

@@ -167,6 +167,14 @@ def _c_knowledge(root: str) -> Tuple[bool, str]:
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
+def _c_state_front(root: str) -> Tuple[bool, str]:
+    """条件先行：登记件必须真的通过 check_order（声明即判据）。"""
+    from core import state_front as sfr
+    issues, _warns, stats = sfr.scan(root)
+    detail = "登记 condition-first 件 %d" % stats.get("declared", 0)
+    return (not issues, detail if not issues else "; ".join(issues[:2]))
+
+
 def _c_mcp_package(root: str) -> Tuple[bool, str]:
     """B 线包装声明：工具/提示面与运行时逐名一致（钉死「只读面不变」）+ 类目/红线/候选齐。"""
     from core import mcp_package as mp
@@ -302,6 +310,7 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
     ("cognition", _c_cognition, "认知族（术语表 + 执行分档）"),
     ("st-quality", _c_st_quality, "ST 制卡质量规范（M/S/R 数据化 + 落产物判）"),
     ("mcp-package", _c_mcp_package, "B 线包装声明（工具面与运行时一致）"),
+    ("state-front", _c_state_front, "条件先行（登记件须通过排布判据）"),
     ("public-surface", _c_public_surface, "公开导出面零泄漏"),
 ]
 

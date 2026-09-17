@@ -2,6 +2,8 @@
 
 ## [2.12.0] - 未发布
 
+- 条件先行门禁与提案补实（同日续波）：新增 `protocol/state_front.json`（登记**自我要求为 condition-first** 的产物件）+ `state_front.scan()` + conformance 契约 `state-front`（26→27，回执 46→47 件）——判据「**登记了就必须真的通过 `--check`**」（状态块位于所有其它二级小节之前），把"我们说过要前置"变成机器可查；`docs/reference/trace-as-state-ab-proposal.md` 补 §3.5「装置已就绪」（复现命令 + 三组刺激件指纹 + 非模型生成声明 + 仍未做真跑）。
+
 - 条件先行排布（**创新性执行**：把外部论文的 condition-first 机制翻成 NF 侧可执行的排布纪律）：新增 `desktop/src/core/state_front.py` + `nf state-front <产物.md> [--mode front/back/none] [--check] [--ab]`——从产物**确定性提取**「状态块」（编号清单 / 段落计数 / 要点摘录 / 原文 sha256，标注**非模型生成**）并做三种排布；`--check` 判据为「状态块位于所有其它二级小节之前」；`--ab` 输出 front/back/none 三刺激件清单（同长同块、仅位置不同 → sha256 不同），**为 T3 提案提供不依赖模型通道的可复现装置**。真产物实测：对 `docs/完整版样本_西幻生存流P03.md` 生成前置件（13044 字符）并通过 `--check`；后置/省略组 sha256 与长度按预期区分。零新依赖；不改协议语义与既有行为。
 
 - 外部研究吸收（**知识层**，仅 `docs/`；不改协议语义与既有行为）：新增参考存档区 `docs/reference/external/`——`trace-as-state.md`（Trace as State 客观摘要，`arXiv:2609.02702（2026-09-02，预印本）`：条件先行 / trace 作状态文本代理 / 27 组合 26 胜 / GraphWalks 81.8%·100%）· `laap-observation.md`（LAAP 生态观察一页，置顶「自述口径、非同行评审、不构成背书」，强主张不入 NF 表述）· `README.md`（材料清单 + 来源 + 级别 + 素材缺口）；新增 `docs/reference/nf-reference-notes.md`（外部概念 ↔ 仓内机制的**类比/相邻**映射，仓内机制按 T0 侦察实名定位：`protocol/WORLD_MODEL.md` · `protocol/world_slots.json` · `docs/42_M2_回合状态头_v1.md` · `docs/41_波C_C9_回合装载指针_v0.md` · `docs/45_M2_回合级drill.md` · `06_Agent执行协议.md`；末尾固定声明「参考记录，不构成验证或因果声明」）；新增 `docs/reference/trace-as-state-ab-proposal.md`（状态前置 vs 后置对照实验提案：设计 / 三条件 / 四指标 / 输出格式 / 负结果同样记录；未执行，列 backlog）。

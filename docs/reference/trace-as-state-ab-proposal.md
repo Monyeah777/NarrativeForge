@@ -28,6 +28,30 @@
 3. **人工质检问题数**：按 `docs/st-quality-checklist.md` 勾选，记未通过条数；
 4. **机器可判项**：`nf st-validate`（可自动化项）与 `nf assemble --check` 的 fail/warn 数。
 
+## 3.5 装置已就绪（2026-09-17 补）
+
+刺激件不再需要手写，也不依赖模型通道——用仓库内的确定性装置生成：
+
+```bash
+# 看三组刺激件的指纹（front / back / none）
+python scripts/nf.py state-front "docs/完整版样本_西幻生存流P03.md" --ab --json
+# 生成条件先行组（front）
+python scripts/nf.py state-front "docs/完整版样本_西幻生存流P03.md" \
+    --mode front --out docs/examples/state-front/p03_front.md
+# 判「状态块是否真的前置」
+python scripts/nf.py state-front docs/examples/state-front/p03_front.md --check
+```
+
+**装置实测指纹**（对 P03 样本）：front `13044` 字符 / `sha256 0948f7c0…`；
+back 同长同块（仅位置不同）/ `sha256 cf442a88…`；none `12059` 字符。
+
+- 状态块由**产物确定性提取**（编号清单 / 段落计数 / 要点摘录 / 原文 sha256），**非模型生成**；
+- 三组刺激件因此**同输入同结果**，可存档、可比对——实验记录里请连同 sha256 一起记；
+- 「front 组自我要求为 condition-first」这件事已登记进 `protocol/state_front.json`，并由
+  conformance 契约 `state-front` 兜住（**登记了就必须真的通过排布判据**）。
+
+**仍未做**：真跑（需要模型通道）；本装置只保证**刺激件客观且可复现**，不保证任何结果方向。
+
 ## 4. 预期输出格式
 
 - 每轮一条记录：`{条件, 轮次, 模型, 参数, 指标1..4, 原始输出路径}`；

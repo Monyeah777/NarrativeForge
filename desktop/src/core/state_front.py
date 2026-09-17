@@ -91,6 +91,38 @@ def ab_manifest(text: str) -> Dict[str, Dict[str, object]]:
     return out
 
 
+def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, object]]:
+    """门禁：凡登记为 condition-first 的产物件，必须真的通过 `check_order`。"""
+    import json
+    from pathlib import Path as _Path
+
+    rel = "protocol/state_front.json"
+    p = _Path(root) / rel
+    if not p.is_file():
+        return ["缺条件先行声明 %s" % rel], [], {}
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    issues: List[str] = []
+    warns: List[str] = []
+    if str(doc.get("schema") or "") != "nf-state-front/1":
+        issues.append("声明 schema 不匹配（期望 nf-state-front/1）")
+    rows = doc.get("declared") or []
+    if not rows:
+        warns.append("条件先行声明为空——门禁空转")
+    for r in rows:
+        rp = str(r.get("path") or "")
+        f = _Path(root) / rp
+        if not rp:
+            issues.append("声明条目缺 path")
+            continue
+        if not f.is_file():
+            issues.append("登记件不存在：%s" % rp)
+            continue
+        bad = check_order(f.read_text(encoding="utf-8"))
+        if bad:
+            issues.append("登记为 condition-first 但未通过：%s（%s）" % (rp, bad[0]))
+    return issues, warns, {"declared": len(rows)}
+
+
 def verify(text: str) -> Tuple[List[str], Dict[str, object]]:
     """产物级自检 → (issues, stats)。"""
     issues = check_order(text)
