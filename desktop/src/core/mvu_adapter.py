@@ -274,6 +274,15 @@ def _worldbook_draft(payload: Dict[str, Any]) -> Dict[str, Any]:
                  "content": "(待填：JSON Patch 输出约束)"}]}}
 
 
+def _regex_suite_draft() -> Dict[str, Any]:
+    """正则五件套草案：条目名已核对原文（隐藏/更新中/美化/隐藏状态栏/状态栏界面），规则正文待填。"""
+    return {"nf_draft": False,
+            "nf_draft_scope": "条目名与套件构成已核对；**findRegex / replaceString 等规则正文待作者填**。",
+            "nf_note": "美化正则产物须全内联样式（无 <style> 标签），否则酒馆沙盒 iframe 不兼容。",
+            "scripts": [{"name": n, "nf_role": "变量更新正则套件成员",
+                         "findRegex": "", "replaceString": ""} for n in REGEX_SUITE]}
+
+
 def export_mvu(ir: IRDocument, dest_dir: Path, res) -> None:
     """写出 MVU 变量模板产物；无 world_model 时不产空文件集，只记 warning。"""
     payload = build_mvu_payload(ir)
@@ -285,6 +294,7 @@ def export_mvu(ir: IRDocument, dest_dir: Path, res) -> None:
     p1 = dest / "mvu_variables.json"
     p2 = dest / "mvu_worldbook.json"
     p3 = dest / "mvu_README.md"
+    p4 = dest / "mvu_regex.json"
     p1.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
                   encoding="utf-8", newline="\n")
     p2.write_text(json.dumps(_worldbook_draft(payload), ensure_ascii=False, indent=2,
@@ -295,15 +305,19 @@ def export_mvu(ir: IRDocument, dest_dir: Path, res) -> None:
         "## 产物\n\n"
         "| 文件 | 内容 | 状态 |\n|---|---|---|\n"
         "| mvu_variables.json | 变量表 + 初值 + checks + 相位 + 不变式 + 溯源 digest | 可核 |\n"
-        "| mvu_worldbook.json | 世界书条目草案（`[InitVar]` / `[mvu_update]` ×2） | **draft** |\n\n"
+        "| mvu_worldbook.json | 世界书条目（`[InitVar]` / `[mvu_update]` ×2） | 结构/位置已核；content 待填 |\n"
+        "| mvu_regex.json | 正则五件套（隐藏/更新中/美化/隐藏状态栏/状态栏界面） | 条目名已核；规则正文待填 |\n\n"
         "## 如实声明\n\n"
         "- **未在真实 SillyTavern 实测**，不声称兼容；条目位置参数与数组硬要求**未核对**，"
         "故 worldbook 保持 draft。\n"
-        "- 正则五件套**未产出**（组成未核对）。\n"
+        "- 正则五件套条目名已核对并产出（规则正文待作者填）；美化产物须全内联样式。\n"
         "- 未核对清单：%s\n"
         % (ADAPTER_VERSION, DOC_CHECK_DATE, DOC_SOURCE, "、".join(UNVERIFIED)),
         encoding="utf-8", newline="\n")
-    res.files.extend([str(p1), str(p2), str(p3)])
+    p4.write_text(json.dumps(_regex_suite_draft(), ensure_ascii=False, indent=2,
+                             sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    res.files.extend([str(p1), str(p2), str(p3), str(p4)])
     for w in payload.get("warnings") or []:
         res.warnings.append(w)
-    res.warnings.append("MVU 侧装配件为 draft（条目位置参数与数组要求未核对）；未在真实 ST 实测")
+    res.warnings.append("MVU 侧装配件：结构与条目名/位置参数已核对，各条目 content 与正则替换串"
+                        "待作者填；未在真实 ST 实测")

@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-16",
+  "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "ST 制卡质量规范 v0 入报告后重冻结",
+  "note": "MVU 正则件产出后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "6663c20dc11ebf62424b72d125e0ee92e0aa164409ec6fa01671eb52d9078735"
+  "subject_digest": "d53ece34e7caf841293c86f0ed78e351e4f1dbc3fd0bd834d96b8ab70110c055"
 }

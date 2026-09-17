@@ -1,0 +1,37 @@
+{
+  "nf_draft": false,
+  "nf_draft_scope": "条目名与套件构成已核对；**findRegex / replaceString 等规则正文待作者填**。",
+  "nf_note": "美化正则产物须全内联样式（无 <style> 标签），否则酒馆沙盒 iframe 不兼容。",
+  "scripts": [
+    {
+      "findRegex": "",
+      "name": "隐藏",
+      "nf_role": "变量更新正则套件成员",
+      "replaceString": ""
+    },
+    {
+      "findRegex": "",
+      "name": "更新中",
+      "nf_role": "变量更新正则套件成员",
+      "replaceString": ""
+    },
+    {
+      "findRegex": "",
+      "name": "美化",
+      "nf_role": "变量更新正则套件成员",
+      "replaceString": ""
+    },
+    {
+      "findRegex": "",
+      "name": "隐藏状态栏",
+      "nf_role": "变量更新正则套件成员",
+      "replaceString": ""
+    },
+    {
+      "findRegex": "",
+      "name": "状态栏界面",
+      "nf_role": "变量更新正则套件成员",
+      "replaceString": ""
+    }
+  ]
+}

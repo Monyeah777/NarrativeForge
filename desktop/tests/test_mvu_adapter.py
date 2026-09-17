@@ -91,7 +91,7 @@ class TestMvuAdapter(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             res = exporter.ExportResult("mvu")
             export_mvu(_IR([_M("通用:M50", CONTRACT)]), Path(tmp), res)
-            self.assertEqual(len(res.files), 3)
+            self.assertEqual(len(res.files), 4)
             for f in res.files:
                 json.loads(Path(f).read_text(encoding="utf-8")) if f.endswith(".json") else None
             payload = json.loads((Path(tmp) / "mvu_variables.json").read_text(encoding="utf-8"))
@@ -100,6 +100,9 @@ class TestMvuAdapter(unittest.TestCase):
             # 结构与位置参数已核对 → 不再是整体 draft，改为精确标注待填范围
             self.assertFalse(wb["nf_draft"])
             self.assertIn("待作者填", wb["nf_draft_scope"])
+            rx = json.loads((Path(tmp) / "mvu_regex.json").read_text(encoding="utf-8"))
+            self.assertEqual([s["name"] for s in rx["scripts"]],
+                             ["隐藏", "更新中", "美化", "隐藏状态栏", "状态栏界面"])
 
     def test_no_world_model_is_warning_not_crash(self):
         with tempfile.TemporaryDirectory() as tmp:
