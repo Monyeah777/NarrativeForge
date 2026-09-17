@@ -13,6 +13,7 @@
     "X3 长会话抽检的 N（轮数）待定",
     "C1/C2/W1 等的 PNG/JSON 实卡解析器属 A-S3 校验器，本件不实现"
   ],
+  "checklist": "docs/st-quality-checklist.md",
   "rules": [
     {"id": "C1", "level": "M", "scope": "C", "check": "declaration",
      "rule": "可解析：命中 V1/V2/V3 之一；V3 卡以 ccv3 tEXt chunk（base64 UTF-8 JSON）存储、V2 卡用 chara，两者并存优先 ccv3",

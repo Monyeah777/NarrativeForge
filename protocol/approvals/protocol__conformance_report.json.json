@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "MVU 正则件产出后重冻结",
+  "note": "ST 自查清单登记后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "d53ece34e7caf841293c86f0ed78e351e4f1dbc3fd0bd834d96b8ab70110c055"
+  "subject_digest": "77ab6ba6cd4700c962df20651a8c88e8c4b7d4dedd1fb898bf37c232d948dc8d"
 }

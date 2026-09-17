@@ -40,6 +40,20 @@ def _check_v2(root: str) -> List[str]:
             if extra else [])
 
 
+def _check_checklist(root: str, d: Dict[str, Any]) -> List[str]:
+    """清单必须覆盖全部规则：`checklist` 指向的件里每个规则 id 都要出现（否则清单是装饰）。"""
+    rel = str(d.get("checklist") or "")
+    if not rel:
+        return ["缺 checklist 字段——人工自查清单必须登记（否则 S 级规则无处落地）"]
+    p = Path(root) / rel
+    if not p.is_file():
+        return ["自查清单不存在：%s" % rel]
+    text = p.read_text(encoding="utf-8")
+    miss = [str(r.get("id")) for r in (d.get("rules") or [])
+            if str(r.get("id")) and ("| %s |" % r.get("id")) not in text]
+    return (["自查清单未覆盖规则：%s" % "、".join(miss)] if miss else [])
+
+
 def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     """→ (issues, warns, stats)。M→fail；S 的现状项进 warns；R 只计数。"""
     issues: List[str] = []
@@ -87,6 +101,7 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     for rid in arts:
         if rid == "V2":
             issues += _check_v2(root)
+    issues += _check_checklist(root, d)
     if (d.get("pending") or []):
         warns.append("规范为草案：%d 项待补（%s）" % (len(d["pending"]), "；".join(d["pending"][:2])))
     stats = {"rules": len(seen), "by_level": by_level,
