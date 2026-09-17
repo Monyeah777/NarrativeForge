@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "B 线包装声明入报告后重冻结",
+  "note": "外部研究参考区入仓后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "56e2e2d93b583d7ee4db96eb563f6f2951789bc76b065a16a01d2017d42aebc0"
+  "subject_digest": "2097e795ad4059783a25bab76fbeeec8e1b210943f871378cc4e3738d048717e"
 }
