@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "条件先行门禁入报告后重冻结",
+  "note": "条件先行族判据入报告后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "5097c79e7efe6ab97be77ae4602439c07f5f3d7931e1c1769df45436bbf788b5"
+  "subject_digest": "db883cf18ded92a7bda41e65d75c023cd52f699c07b7e069f7a9bbaae2f5ca2a"
 }

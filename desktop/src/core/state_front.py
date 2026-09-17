@@ -106,8 +106,26 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, object]]:
     if str(doc.get("schema") or "") != "nf-state-front/1":
         issues.append("声明 schema 不匹配（期望 nf-state-front/1）")
     rows = doc.get("declared") or []
-    if not rows:
+    rules = doc.get("family_rules") or []
+    if not rows and not rules:
         warns.append("条件先行声明为空——门禁空转")
+    hits: List[str] = []
+    for r in rules:
+        g = str(r.get("glob") or "")
+        if not g:
+            issues.append("族规则缺 glob")
+            continue
+        matched = [p for p in sorted(_Path(root).glob(g)) if p.is_file()]
+        low = int(r.get("min_members") or 1)
+        if len(matched) < low:
+            issues.append("族 %s 成员不足：%d < %d（修复指引：按 sources 重新生成）"
+                          % (g, len(matched), low))
+        for p in matched:
+            hits.append(p.relative_to(_Path(root)).as_posix())
+    for rel_ in hits:
+        bad = check_order((_Path(root) / rel_).read_text(encoding="utf-8"))
+        if bad:
+            issues.append("族内件未通过 condition-first：%s（%s）" % (rel_, bad[0]))
     for r in rows:
         rp = str(r.get("path") or "")
         f = _Path(root) / rp
@@ -120,7 +138,8 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, object]]:
         bad = check_order(f.read_text(encoding="utf-8"))
         if bad:
             issues.append("登记为 condition-first 但未通过：%s（%s）" % (rp, bad[0]))
-    return issues, warns, {"declared": len(rows)}
+    return issues, warns, {"declared": len(rows), "family_rules": len(rules),
+                           "family_members": len(hits)}
 
 
 def verify(text: str) -> Tuple[List[str], Dict[str, object]]:

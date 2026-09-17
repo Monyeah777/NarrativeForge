@@ -52,6 +52,17 @@ back 同长同块（仅位置不同）/ `sha256 cf442a88…`；none `12059` 字�
 
 **仍未做**：真跑（需要模型通道）；本装置只保证**刺激件客观且可复现**，不保证任何结果方向。
 
+## 3.6 执行状态（2026-09-17 核实）
+
+- **本轮未执行**——原因是**没有可用的模型通道**：本机 `DEEPSEEK_API_KEY` / `OPENAI_API_KEY` /
+  `ANTHROPIC_API_KEY` / `GLM_API_KEY` / `MOONSHOT_API_KEY` **均未设置**；`ollama` 可执行文件在场但
+  模型与服务未验证。按任务包红线「无通道 → 只交提案，执行列 **backlog**」处理。
+- **恢复执行的前置**：任一模型通道可用（API key 或本地模型服务）→ 用 §3.5 的命令生成三组刺激件 →
+  按 §2 设计跑（同模型同参数、每条件 ≥3 轮）→ 记录落 `results/` + 原始输出存档。
+- **刺激件族已就绪且随门禁**：`docs/examples/state-front/*.md` 已登记为**产物族**
+  （`protocol/state_front.json` 的 `family_rules`：新增文件自动纳入），族内成员必须通过
+  `nf state-front --check`，由 conformance 契约 `state-front` 兜住。
+
 ## 4. 预期输出格式
 
 - 每轮一条记录：`{条件, 轮次, 模型, 参数, 指标1..4, 原始输出路径}`；

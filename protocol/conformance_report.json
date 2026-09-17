@@ -121,8 +121,8 @@
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 28 / 说明件 198 · 数据契约 10",
-      "digest": "4f5f4399b2fb5970402b501c6fd809443eb048fbcfae226faa26385e70913789",
+      "detail": "词表 12 · 规范件 28 / 说明件 200 · 数据契约 10",
+      "digest": "6fb518b2c888da2e939c9f85e53faa16e465517b1c4741c2ee75ee2b761f751f",
       "id": "modeling",
       "ok": true
     },
@@ -177,8 +177,8 @@
     },
     {
       "description": "条件先行（登记件须通过排布判据）",
-      "detail": "登记 condition-first 件 1",
-      "digest": "c6bbb83c7c587b7073e9a3a38dda00033c31b7b6328c98cf5b1ab46bdd92e0b0",
+      "detail": "单件 0 · 族规则 1 · 族成员 3",
+      "digest": "cc1946483898ef7de45d2d36d262985c9ddb7671898264f93a19aefa0a71e58c",
       "id": "state-front",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "7209d172a90a033e3d15664d4e5a7b681ba0d7d33052a6f4339d90b045806427",
+  "root": "c59a9bf8adda088e443f3459e99fe404d2f73a2cfd5d6e1dbbe5d5b7a52fff11",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

@@ -2,6 +2,8 @@
 
 ## [2.12.0] - 未发布
 
+- 条件先行判据扩到**产物族**（同日续波）：`protocol/state_front.json` 支持 `family_rules` + `glob`（**族登记**：日后新增刺激件自动纳入，无需改声明），`state_front.scan()` 按族展开并逐件判 `check_order`，族成员不足即 FAIL；族内现有 **3 件真实产物衍生件**（P03 完整版样本 / NF-1 馆藏条目 / NF-TECHDOC 条目 → `--mode front`）；conformance 契约 `state-front` detail 增列「族规则 / 族成员」计数。同波如实记录 T3 执行状态：**本机无模型通道**（五类 API key 均未设；ollama 在场但未验证），按红线列 **backlog**，并写明恢复执行的前置与步骤。
+
 - 条件先行门禁与提案补实（同日续波）：新增 `protocol/state_front.json`（登记**自我要求为 condition-first** 的产物件）+ `state_front.scan()` + conformance 契约 `state-front`（26→27，回执 46→47 件）——判据「**登记了就必须真的通过 `--check`**」（状态块位于所有其它二级小节之前），把"我们说过要前置"变成机器可查；`docs/reference/trace-as-state-ab-proposal.md` 补 §3.5「装置已就绪」（复现命令 + 三组刺激件指纹 + 非模型生成声明 + 仍未做真跑）。
 
 - 条件先行排布（**创新性执行**：把外部论文的 condition-first 机制翻成 NF 侧可执行的排布纪律）：新增 `desktop/src/core/state_front.py` + `nf state-front <产物.md> [--mode front/back/none] [--check] [--ab]`——从产物**确定性提取**「状态块」（编号清单 / 段落计数 / 要点摘录 / 原文 sha256，标注**非模型生成**）并做三种排布；`--check` 判据为「状态块位于所有其它二级小节之前」；`--ab` 输出 front/back/none 三刺激件清单（同长同块、仅位置不同 → sha256 不同），**为 T3 提案提供不依赖模型通道的可复现装置**。真产物实测：对 `docs/完整版样本_西幻生存流P03.md` 生成前置件（13044 字符）并通过 `--check`；后置/省略组 sha256 与长度按预期区分。零新依赖；不改协议语义与既有行为。

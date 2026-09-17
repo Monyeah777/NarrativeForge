@@ -171,7 +171,9 @@ def _c_state_front(root: str) -> Tuple[bool, str]:
     """条件先行：登记件必须真的通过 check_order（声明即判据）。"""
     from core import state_front as sfr
     issues, _warns, stats = sfr.scan(root)
-    detail = "登记 condition-first 件 %d" % stats.get("declared", 0)
+    detail = "单件 %d · 族规则 %d · 族成员 %d" % (
+        stats.get("declared", 0), stats.get("family_rules", 0),
+        stats.get("family_members", 0))
     return (not issues, detail if not issues else "; ".join(issues[:2]))
 
 
