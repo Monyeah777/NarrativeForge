@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-17",
   "approved_by": "作者",
-  "note": "ST 校验器与样例报告入仓后重冻结",
+  "note": "ST 校验演示 fixture 与报告入仓后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "624ecaf147a5bb6739799d9bfdec2f36ee741d60b094af2a21cc0a10204453c0"
+  "subject_digest": "34994e9e22768fa02c80057073534d49a2db313b20083b9e1172618b01b72164"
 }
