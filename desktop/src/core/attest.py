@@ -104,6 +104,18 @@ def have_external_verifier(tool: str = "cosign") -> bool:
     return shutil.which(tool) is not None
 
 
+def _which(tool: str, purpose: str) -> str:
+    """把外部 CLI 解析成**绝对路径**（逐行审查修正：裸名走 PATH 有 cwd 劫持面）。
+
+    缺失 → ValueError（fail-closed，带可执行修复指引）。
+    """
+    exe = shutil.which(tool)
+    if not exe:
+        raise ValueError("%s 需要外部命令 %s，但 PATH 中找不到（修复指引：先安装 %s 后重试，"
+                         "或改用 --key-file 的 hmac 级）" % (purpose, tool, tool))
+    return exe
+
+
 def verify_external(att: Dict[str, Any], tool: str = "cosign") -> Tuple[bool, List[str]]:
     """调用外部验证器校验 sigstore 锚；验证器缺失 → **拒绝**（不降级）。"""
     if not have_external_verifier(tool):
@@ -115,7 +127,7 @@ def verify_external(att: Dict[str, Any], tool: str = "cosign") -> Tuple[bool, Li
     if not bundle or not os.path.exists(bundle):
         return False, ["外挂锚缺 bundle 实体（signature.bundle 指向不存在）"
                        "（修复指引：随 attestation 一并分发签名 bundle）"]
-    proc = subprocess.run([tool, "verify-blob", "--bundle", bundle, bundle],
+    proc = subprocess.run([shutil.which(tool) or tool, "verify-blob", "--bundle", bundle, bundle],
                           capture_output=True, text=True)
     if proc.returncode != 0:
         return False, ["外挂锚校验失败：%s" % (proc.stderr or proc.stdout).strip()[:300]]
@@ -206,7 +218,8 @@ def sign_digest_ssh(subject_digest: str, key_path: str, identity: str,
         fh.write(ssh_payload(subject_digest))
     # stdin=DEVNULL：密钥若带口令，ssh-keygen 会等输入（实测会挂住）——
     # 这里让它**快速失败**而不是阻塞调用方。
-    proc = subprocess.run(["ssh-keygen", "-Y", "sign", "-f", key_path, "-n", ns,
+    proc = subprocess.run([_which("ssh-keygen", "ssh-sig 签名"),
+                           "-Y", "sign", "-f", key_path, "-n", ns,
                            payload_path], capture_output=True, text=True,
                           stdin=subprocess.DEVNULL)
     if proc.returncode != 0:
@@ -218,7 +231,8 @@ def sign_digest_ssh(subject_digest: str, key_path: str, identity: str,
     pub = key_path + ".pub"
     fingerprint = ""
     if os.path.isfile(pub):
-        fp = subprocess.run(["ssh-keygen", "-lf", pub], capture_output=True, text=True)
+        fp = subprocess.run([_which("ssh-keygen", "ssh-sig 指纹"), "-lf", pub],
+                            capture_output=True, text=True)
         if fp.returncode == 0 and fp.stdout.split():
             fingerprint = fp.stdout.split()[1]
     return {"scheme": SCHEME_SSH, "ns": ns, "identity": identity.strip(),
@@ -243,7 +257,11 @@ def verify_ssh_anchor(subject_digest: str, anchor: Dict[str, Any],
         return False, ["缺验签身份（修复指引：--ssh-identity <principal>）"]
     # 注意：必须按**字节**喂 stdin——Windows 文本模式会把 \n 翻成 \r\n，
     # 导致验签载荷与签名时不一致（实测踩过：incorrect signature）。
-    proc = subprocess.run(["ssh-keygen", "-Y", "verify", "-f", allowed_signers,
+    try:
+        exe = _which("ssh-keygen", "ssh-sig 验签")
+    except ValueError as exc:
+        return False, [str(exc)]
+    proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,
                            "-I", ident, "-n", ns, "-s", sig_file],
                           input=ssh_payload(subject_digest),
                           capture_output=True)

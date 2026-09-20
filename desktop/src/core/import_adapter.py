@@ -305,7 +305,6 @@ def _entry_to_module(e: dict, seen: set, warnings: List[str]) -> Optional[IRModu
         return None                            # 资产条目由调用方还原 asset_refs
     lm = _RE_COMMENT_LAYER.match(comment)
     layer_id = lm.group(1).strip() if lm else ""
-    layer_name = lm.group(2).strip() if lm else ""
     if not lm:
         warnings.append(f"条目 {full_id} 无 NF 层位注释（comment={comment!r}），"
                         "归入层外模块（extra_modules）")
@@ -388,7 +387,6 @@ def parse_ccv3(chara: dict, world: Optional[dict] = None) -> Ccv3ParseResult:
     if world is not None:
         if not isinstance(world, dict):
             raise ValueError("world 应为 dict")
-        w_name = str(world.get("name") or "")
         for e in list((world.get("entries") or [])):
             keys = e.get("keys") or []
             full_id = str(keys[0]) if keys else str(e.get("name") or "")

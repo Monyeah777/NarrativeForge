@@ -13,7 +13,6 @@ R3 类别漂移：模块头元信息「类别」与 machine_contract.category �
 """
 from __future__ import annotations
 
-import os
 import re
 
 from core import module_lifecycle as ml

@@ -14,7 +14,6 @@ NF 此前只有 `nf conformance` 的**报告**（跑一遍契约），没有**�
 from __future__ import annotations
 
 import json
-import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple

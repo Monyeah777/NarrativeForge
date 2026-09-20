@@ -99,8 +99,8 @@ class ExportSchemaValidTest(unittest.TestCase):
     def test_ccv3_world_entries_have_required_keys(self):
         """world.json 每条目含 name/keys/content/enabled/insertion_order/id。"""
         res, _ = self._export_and_validate(_narrative_ir(), "ccv3")
-        world = json.load(open(os.path.join(self.dir, "world.json"),
-                               encoding="utf-8"))
+        with open(os.path.join(self.dir, "world.json"), encoding="utf-8") as fh:
+            world = json.load(fh)
         for e in world["entries"]:
             for k in ("name", "keys", "content", "enabled",
                       "insertion_order", "id"):
@@ -118,25 +118,30 @@ class ExportSchemaTamperTest(unittest.TestCase):
 
     def test_mcp_missing_name_detected(self):
         p = os.path.join(self.dir, "mcp.json")
-        data = json.load(open(p, encoding="utf-8"))
+        with open(p, encoding="utf-8") as fh:
+            data = json.load(fh)
         del data["mcp"]["name"]
-        json.dump(data, open(p, "w", encoding="utf-8"), ensure_ascii=False)
+        with open(p, "w", encoding="utf-8") as fh:
+            json.dump(data, fh, ensure_ascii=False)
         issues = export_schema.validate_export("mcp", self.dir)
         self.assertTrue(any("mcp.name" in i for i in issues), issues)
 
     def test_ccv3_missing_spec_detected(self):
         p = os.path.join(self.dir, "chara.json")
-        data = json.load(open(p, encoding="utf-8"))
+        with open(p, encoding="utf-8") as fh:
+            data = json.load(fh)
         for k in ("spec", "spec_version"):
             data.pop(k, None)
-        json.dump(data, open(p, "w", encoding="utf-8"), ensure_ascii=False)
+        with open(p, "w", encoding="utf-8") as fh:
+            json.dump(data, fh, ensure_ascii=False)
         issues = export_schema.validate_export("ccv3", self.dir)
         self.assertTrue(any("缺必填键" in i for i in issues), issues)
 
 
 class ExportSchemaUnregisteredTest(unittest.TestCase):
     def test_unregistered_fmt_flagged(self):
-        issues = export_schema.validate_export("nope", "/tmp/x")
+        issues = export_schema.validate_export(
+            "nope", os.path.join(tempfile.gettempdir(), "nf_export_probe"))
         self.assertTrue(any("未登记" in i for i in issues))
 
 

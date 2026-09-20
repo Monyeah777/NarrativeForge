@@ -170,7 +170,8 @@ class NfCliSmokeTest(unittest.TestCase):
                                    "--answer", "题材：西幻生存",
                                    "--save", path])
             self.assertEqual(code, 0, out)
-            text = open(path, encoding="utf-8").read()
+            with open(path, encoding="utf-8") as fh:
+                text = fh.read()
             self.assertIn("澄清回填", text)
             self.assertIn("题材：西幻生存", text)
         finally:

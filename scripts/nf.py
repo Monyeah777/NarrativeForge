@@ -955,7 +955,6 @@ def _cmd_rename(args) -> int:
     --check（缺省）只列受影响引用；--apply 批量重链 references[].module_id 后
     合并写 registry protocols[]（只改引用目标，不动其它字段，V1 只增不删语义）。
     """
-    import json
     from core.impact_check import rename_module_plan
     from core.registry_loader import load_registry
 
@@ -1128,9 +1127,9 @@ def _cmd_design(args) -> int:
         out.parent.mkdir(parents=True, exist_ok=True)
         init_worksheet(args.question, context=args.context,
                        decider=args.decider, path=out)
-        print(f"== nf design steelman init ==")
+        print("== nf design steelman init ==")
         print(f"  ✓ 工作单已生成: {out}")
-        print(f"    用三套引导模板之一填充六段，然后跑 --check 自检")
+        print("    用三套引导模板之一填充六段，然后跑 --check 自检")
         return 0
     # ls
     root = Path(args.root)
@@ -1181,7 +1180,7 @@ def _cmd_audit(args) -> int:
                    context=args.context, path=out)
         print(f"== nf design audit init（mode={args.mode}）==")
         print(f"  ✓ audit.md 已生成: {out}")
-        print(f"    按引导问卷完成各节回填，然后 --check 自检")
+        print("    按引导问卷完成各节回填，然后 --check 自检")
         return 0
     # ls
     root = Path(args.root)
@@ -2140,7 +2139,8 @@ def _cmd_state_front(args):
     from pathlib import Path as _Path
     p = args.path if os.path.isabs(args.path) else os.path.join(ROOT, args.path)
     try:
-        text = open(p, encoding="utf-8").read()
+        with open(p, encoding="utf-8") as fh:
+            text = fh.read()
     except OSError as exc:
         print("  ✗ %s" % exc, file=sys.stderr)
         return 1
@@ -2951,6 +2951,8 @@ def _cmd_library(args):
             print("  attestation：%s" % out["attestation"])
             print("  已写入 frontmatter（attestation/attested_at%s），投影已重建"
                   % ("/anchor_*" if out.get("key_id") else ""))
+            if out.get("warn"):
+                print("  ⚠ %s" % out["warn"])
         return 0
     print("  ✗ 未知 library 子命令：%s" % sub, file=sys.stderr)
     return 2

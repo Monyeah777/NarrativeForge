@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """社区资产行数基线单测（可重签工件：漂移检测 + 新增包未登记 + 缺包只 WARN + 重签幂等）。"""
 import json
-import os
 import sys
 import tempfile
 import unittest

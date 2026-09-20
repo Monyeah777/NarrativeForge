@@ -202,7 +202,7 @@ def build_scope(root: str = ".", subjects: Optional[List[str]] = None,
                 scope: str = "protocol") -> Dict[str, Any]:
     """任意文件集 → 回执（叶 = sha256(0x00‖{"id":相对路径,"digest":文件摘要})）。"""
     rels = subjects if subjects is not None else protocol_subjects(root)
-    payloads, leaves, rows = [], [], []
+    leaves, rows = [], []
     for rel in rels:
         p = Path(root) / rel
         if not p.is_file():

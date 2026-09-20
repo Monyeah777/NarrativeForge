@@ -28,6 +28,7 @@ import hmac as _hmac
 import json
 import os
 import re
+import shutil as _shutil
 import subprocess
 import sys
 
@@ -83,7 +84,11 @@ def verify_ssh(digest: str, anchor, allowed_signers: str, identity: str):
         return False, "缺签名文件：%s" % (sig or "(未记录)")
     ident = identity or str(anchor.get("identity") or "")
     payload = (SSH_PAYLOAD_PREFIX + digest.strip().lower() + "\n").encode("utf-8")
-    proc = subprocess.run(["ssh-keygen", "-Y", "verify", "-f", allowed_signers,
+    exe = _shutil.which("ssh-keygen")
+    if not exe:
+        return False, ("ssh-sig 验签需要外部命令 ssh-keygen，但 PATH 中找不到"
+                       "（修复指引：先安装 OpenSSH ≥8.9 后重试）")
+    proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,
                            "-I", ident, "-n", str(anchor.get("ns") or SSH_NS),
                            "-s", sig],
                           input=payload, capture_output=True)

@@ -47,10 +47,10 @@ def make_header(pipeline_path: str, step: str,
 
 
 def _plan(pipeline_path: str, steps: List[str], laws: List[str],
-          done0: List[str] = None) -> List[str]:
+                 done0: List[str] | None = None) -> List[str]:
     out = []
     done = list(done0) if done0 else []
-    for i, step in enumerate(steps):
+    for _i, step in enumerate(steps):
         header = make_header(pipeline_path, step, list(done), laws)
         out.append(header + "\n执行：%s" % step)
         done.append(step)

@@ -23,7 +23,7 @@ from core.validator import validate_module, check_assembly  # noqa: E402
 from core.generator import (  # noqa: E402
     order_modules, generate_document, default_filename, collect_asset_keys)
 from core.pipeline_loader import (  # noqa: E402
-    parse_pipeline_md, discover_pipelines, load_pipeline_file)
+    parse_pipeline_md, discover_pipelines)
 from core.storage import Store  # noqa: E402
 from core.preset_manager import (  # noqa: E402
     snapshot_preset, apply_preset, export_preset_json, import_preset_json,

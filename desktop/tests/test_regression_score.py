@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """基线相对回归评分单测（绝对门之上的 no-silent-worsening 面）。"""
-import json
 import sys
 import tempfile
 import unittest
@@ -27,6 +26,24 @@ class TestRegressionScore(unittest.TestCase):
         self.assertEqual(a["score"], b["score"])
         self.assertEqual(a["signals"], b["signals"])
         self.assertEqual(a["schema"], "nf-score/1")
+
+    def test_scanner_unavailable_is_not_zero_issues(self):
+        """逐行审查回归：扫描器不可用**不得**当零问题（fail-closed），且要记 issues。
+
+        修前行为：`_count` 异常一律 `return 0` → 该信号满分 → 总分不变（坏扫描器 = 假绿）。
+        """
+        from core import quality_depth_scan as qd
+        base = rs.evaluate(ROOT)
+        orig = qd.scan
+        qd.scan = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom"))
+        try:
+            bad = rs.evaluate(ROOT)
+        finally:
+            qd.scan = orig
+        self.assertLess(bad["score"], base["score"], "扫描器坏掉必须让分值下降")
+        self.assertTrue(any("扫描器不可用" in i for i in bad["issues"]), bad["issues"])
+        sig = {s["name"]: s["value"] for s in bad["signals"]}
+        self.assertEqual(sig["depth_clean"], 0.0, "不可用 = 0 分，不是满分")
 
     def test_compare_flags_signal_regression(self):
         """单信号回落 → 判回归（即便整体分数靠其它信号撑住）。"""

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """v2.8.0 波C C4 —— 图书馆 See-Also related_of 单测（41 规划人读关联层）。"""
-import os
 import sys
 import unittest
 from pathlib import Path

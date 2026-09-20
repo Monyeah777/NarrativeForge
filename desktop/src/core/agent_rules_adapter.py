@@ -31,7 +31,7 @@ def _slug(name: str) -> str:
 
 def _build_agents_md(ir: IRDocument) -> str:
     """project_rules IR → AGENTS.md 文本（章节按层/模块组织，项目约定语义）。"""
-    body_parts = [f"# Agent Operating Rules", ""]
+    body_parts = ["# Agent Operating Rules", ""]
     n_blocks = 0
     for layer in ir.layers:
         body_parts.append(f"## {layer.name or layer.id}")

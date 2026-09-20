@@ -4,10 +4,9 @@
 """
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 
 # 模块分类（对应 04_模块库 顶层目录 + 桌面工具功能B的筛选）
 CATEGORIES = ["情感类", "生存类", "世界类", "事件类", "通用类", "技术文档类"]

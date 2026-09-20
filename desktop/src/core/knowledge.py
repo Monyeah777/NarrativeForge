@@ -309,7 +309,7 @@ def harvest_frequency(trace_path: str) -> Dict[str, int]:
     return {k: counts[k] for k in sorted(counts)}
 
 
-def write_usage(root: str = ".", counts: Dict[str, int] = None) -> str:
+def write_usage(root: str = ".", counts: Dict[str, int] | None = None) -> str:
     """写频率台账（唯一写入口；频次由 trace 复算，不许手写）。"""
     clean = {k: int(v) for k, v in sorted((counts or {}).items())}
     doc = {"schema": USAGE_SCHEMA,
@@ -323,7 +323,7 @@ def write_usage(root: str = ".", counts: Dict[str, int] = None) -> str:
     return USAGE_REL
 
 
-def write_log(root: str = ".", entries: List[Dict[str, Any]] = None) -> str:
+def write_log(root: str = ".", entries: List[Dict[str, Any]] | None = None) -> str:
     """写消化记录（复核工作流的落盘口；条目按 from/to 排序，保证可复算）。"""
     doc = dict(load_log(root))
     doc["schema"] = LOG_SCHEMA

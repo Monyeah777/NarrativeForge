@@ -339,7 +339,6 @@ def _repo_module_index() -> list:
 
 
 def _resolve_module(index: list, module_id: str) -> dict:
-    import re
 
     req = module_id.strip()
     exact, suffix = [], []
@@ -805,7 +804,7 @@ class McpRuntime:
             try:
                 text = _repo_read_uri(uri)
             except (KeyError, OSError):
-                raise UnknownUriError(uri)
+                raise UnknownUriError(uri) from None
             return {"contents": [{"uri": uri, "mimeType": "text/markdown",
                                   "text": text}]}
         if not isinstance(uri, str) or uri not in self._text:

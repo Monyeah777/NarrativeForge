@@ -19,7 +19,6 @@ protocol_wizard.self_check 共用）：
 from __future__ import annotations
 
 import re
-from typing import Optional
 
 from .ir import IRDocument
 

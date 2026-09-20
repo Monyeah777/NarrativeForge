@@ -4,7 +4,6 @@
 构造环/冲突案例触发 issue（RED→GREEN 反证）。
 """
 import json
-import os
 import sys
 import unittest
 from pathlib import Path

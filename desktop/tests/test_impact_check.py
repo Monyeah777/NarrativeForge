@@ -7,7 +7,6 @@
 """
 from __future__ import annotations
 
-import json
 import sys
 import tempfile
 import unittest
@@ -220,7 +219,7 @@ class TestCheckRegistryFile(unittest.TestCase):
     def test_missing_file_raises(self):
         # check_registry 文件缺失 = 协议事故（与 load_registry 语义一致，不静默空过）
         with tempfile.TemporaryDirectory(prefix="nf_im_") as td:
-            with self.assertRaises(Exception):
+            with self.assertRaises((ValueError, FileNotFoundError)):
                 check_registry(Path(td) / "nope.json")
 
     def test_real_registry_smoke(self):
@@ -231,7 +230,6 @@ class TestCheckRegistryFile(unittest.TestCase):
     def test_serialize_roundtrip(self):
         # registry_integrity_issues 对 Registry 与 dict 均工作（check21 可能传 dict）
         reg = _reg()
-        d = {"protocols": [dict(p) for p in reg.protocols]}
         # dict 形态经 Registry 包装（真实 json.load 走 load_registry → Registry）
         self.assertEqual(registry_integrity_issues(reg), [])
 

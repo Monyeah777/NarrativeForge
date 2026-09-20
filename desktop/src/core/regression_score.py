@@ -41,13 +41,18 @@ def _penalty(issue_count: int, step: float = 0.1) -> float:
     return max(0.0, 1.0 - issue_count * step)
 
 
-def _count(root: str, module: str, fn: str) -> int:
-    """调用 core.<module>.<fn>(root) → issues 数（统一容错为 0 问题不计分）。"""
+def _count(root: str, module: str, fn: str) -> Optional[int]:
+    """调用 core.<module>.<fn>(root) → issues 数；**扫描器不可用 → None**（哨兵，不是 0）。
+
+    逐行审查修正（2026-09-20）：此前异常一律 `return 0`，等于把**坏掉的扫描器判成
+    "零问题"**（信号满分 → 总分不变 → 回归门看不见 = 假绿）。改为返回哨兵，由调用方
+    按 0 分计并写进 issues（fail-closed：不可用 ≠ 干净）。
+    """
     try:
         mod = __import__("core.%s" % module, fromlist=[fn])
         issues = getattr(mod, fn)(root)
     except Exception:
-        return 0
+        return None
     if isinstance(issues, tuple):
         issues = issues[0]
     return len(issues or [])
@@ -58,12 +63,25 @@ def evaluate(root: str = ".") -> Dict[str, Any]:
     issues: List[str] = []
     values: Dict[str, float] = {}
 
-    values["schema_clean"] = _penalty(_count(root, "schema_lint", "scan"))
-    values["conformance_clean"] = _penalty(_count(root, "conformance_scan", "scan"))
-    values["purity_clean"] = _penalty(_count(root, "purity_scan", "scan"))
-    values["doc_hygiene"] = _penalty(
-        len(_markers(root)), step=0.2)
-    values["depth_clean"] = _penalty(_count(root, "quality_depth_scan", "scan"))
+    def scan_signal(module: str, fn: str, step: float = 0.1) -> float:
+        """扫描器 → 0..1 分值；**扫描器不可用 = 0 分 + issues**（不得当零问题）。"""
+        n = _count(root, module, fn)
+        if n is None:
+            issues.append("扫描器不可用：core.%s.%s（评分按 0 分计，修复后重跑——"
+                          "不可用不等于零问题）" % (module, fn))
+            return 0.0
+        return _penalty(n, step=step)
+
+    values["schema_clean"] = scan_signal("schema_lint", "scan")
+    values["conformance_clean"] = scan_signal("conformance_scan", "scan")
+    values["purity_clean"] = scan_signal("purity_scan", "scan")
+    _mk = _markers(root)
+    if _mk is None:
+        issues.append("扫描器不可用：core.doc_hygiene.check_markers（评分按 0 分计）")
+        values["doc_hygiene"] = 0.0
+    else:
+        values["doc_hygiene"] = _penalty(len(_mk), step=0.2)
+    values["depth_clean"] = scan_signal("quality_depth_scan", "scan")
 
     keys, files = 0, 0
     try:
@@ -71,8 +89,8 @@ def evaluate(root: str = ".") -> Dict[str, Any]:
         _di, stats = asset_density.scan(root)
         keys = int(stats.get("keys") or 0)
         files = int(stats.get("files") or 0)
-    except Exception:
-        pass
+    except Exception as exc:
+        issues.append("资产档扫描不可用：%s（评分按 0 分计）" % exc)
     density = (keys / files) if files else 0.0
     values["asset_density"] = max(0.0, min(1.0, density / DENSITY_TARGET))
     if not files:
@@ -94,12 +112,13 @@ def evaluate(root: str = ".") -> Dict[str, Any]:
     }
 
 
-def _markers(root: str) -> list:
+def _markers(root: str) -> Optional[list]:
+    """doc_hygiene 检查项；**不可用 → None**（与 _count 同语义：不静默当干净）。"""
     try:
         from core import doc_hygiene
         return doc_hygiene.check_markers(root)
     except Exception:
-        return []
+        return None
 
 
 def compare(current: Dict[str, Any], baseline: Dict[str, Any],

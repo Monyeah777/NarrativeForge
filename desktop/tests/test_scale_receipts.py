@@ -5,7 +5,6 @@
 自底向上——馆藏只有 2 件时（单步证明）完全掩盖了它，n≥3 全部折叠不到根。
 """
 import hashlib
-import json
 import subprocess
 import sys
 import tempfile

@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 import glob
-import os
-import shutil
 import sys
 import tempfile
 import unittest
@@ -27,7 +25,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 ROOT = Path(__file__).resolve().parent.parent.parent  # 仓库根
 
-from core.models import Module               # noqa: E402
 from core.parser import parse_module         # noqa: E402
 from core.storage import Store               # noqa: E402
 from core.pipeline_loader import load_pipeline_file  # noqa: E402

@@ -24,7 +24,9 @@ class ProtocolGoldenTest(unittest.TestCase):
         self.assertEqual(pg.render_markdown(data), pg.render_markdown(data))
 
     def test_generated_report_is_json(self):
-        data = json.load(open(os.path.join(ROOT, "protocol", "generated", "idl_report.json"), encoding="utf-8"))
+        with open(os.path.join(ROOT, "protocol", "generated", "idl_report.json"),
+                  encoding="utf-8") as fh:
+            data = json.load(fh)
         self.assertEqual(len(data["schema_ids"]), 5)
         self.assertGreaterEqual(data["coverage"]["contract_covered"], 20)
         self.assertIn("event_closure", data)

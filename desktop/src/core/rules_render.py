@@ -15,8 +15,7 @@ protocol.yaml（协议声明）直接渲染——E2 协议向导产物本应多�
 from __future__ import annotations
 
 import os
-from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List
 
 import yaml
 
@@ -43,7 +42,7 @@ def _module_lines(data: Dict[str, Any]) -> List[str]:
 def _render_agents(data: Dict[str, Any]) -> str:
     """protocol.yaml → AGENTS.md（项目约定：协议声明作 agent 工作规则）。"""
     name = _pkg_name(data)
-    lines = [f"# Agent Operating Rules", "", f"## {name} · 协议声明", ""]
+    lines = ["# Agent Operating Rules", "", f"## {name} · 协议声明", ""]
     pkg = data.get("package", {})
     lines.append(f"- 管线：{pkg.get('pipeline', '')}")
     lines.append(f"- 类别：{', '.join(str(c) for c in pkg.get('categories') or [])}")
@@ -70,7 +69,7 @@ def _render_skill(data: Dict[str, Any]) -> str:
         f"description: {name}（{pkg.get('pipeline', '')}）协议声明\n"
         "license: Proprietary. LICENSE.txt has complete terms\n"
         "---\n")
-    body = [f"# {name}", "", f"## 协议声明", ""]
+    body = [f"# {name}", "", "## 协议声明", ""]
     body.append(f"- 管线：{pkg.get('pipeline', '')}")
     body.append(f"- 类别：{', '.join(str(c) for c in pkg.get('categories') or [])}")
     return frontmatter + "\n".join(body)

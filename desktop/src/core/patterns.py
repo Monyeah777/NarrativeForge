@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import glob as _glob
 import fnmatch as _fnmatch
-import json
 import os
 import re
 from pathlib import Path

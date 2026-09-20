@@ -21,7 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core.registry_loader import (  # noqa: E402
-    load_registry, Registry, P90_DOMAIN_LAYER)
+    load_registry, Registry)
 
 CORE_DIR = Path(__file__).resolve().parent.parent / "src" / "core"
 REGISTRY_JSON = CORE_DIR / "registry.json"

@@ -14,7 +14,6 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 import re
 from pathlib import Path
@@ -517,13 +516,19 @@ def set_attestation(root: str, entry_id: str, issuer: str = "nf library",
     try:
         from core import receipts as _rc
         _rc.write(root)
-    except Exception:
-        pass
-    return {"id": hit["id"], "path": rel, "attestation": digest,
-            "envelope_digest": att["envelope_digest"], "level": level,
-            "key_id": anchor.get("key_id", ""),
-            "identity": anchor_fields.get("anchor_identity", ""),
-            "sig_file": anchor_fields.get("anchor_sig_file", "")}
+        warn = ""
+    except Exception as exc:
+        # 逐行审查修正（2026-09-20）：回执刷新失败**不得静默**——锚已写进条目而回执没跟上，
+        # 读者侧会 fail-closed；把失败带回调用方（CLI 打印 / --json 可见）。
+        warn = ("回执未刷新：%s（修复指引：手动跑 nf library receipts --write）" % exc)
+    out = {"id": hit["id"], "path": rel, "attestation": digest,
+           "envelope_digest": att["envelope_digest"], "level": level,
+           "key_id": anchor.get("key_id", ""),
+           "identity": anchor_fields.get("anchor_identity", ""),
+           "sig_file": anchor_fields.get("anchor_sig_file", "")}
+    if warn:
+        out["warn"] = warn
+    return out
 
 
 def to_manifest(root: str = ".") -> Dict[str, Any]:

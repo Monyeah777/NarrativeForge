@@ -64,7 +64,8 @@ class ImpactTierTest(unittest.TestCase):
 
 class ExtensionDocTest(unittest.TestCase):
     def test_extension_policy_present(self):
-        text = open(os.path.join(ROOT, "protocol", "EXTENSION.md"), encoding="utf-8").read()
+        with open(os.path.join(ROOT, "protocol", "EXTENSION.md"), encoding="utf-8") as fh:
+            text = fh.read()
         for marker in ("字段级新增", "结构性", "迁移记录", "bump", "additive", "editorial"):
             self.assertIn(marker, text)
         # 三档回放实证：3+1 例标题在场

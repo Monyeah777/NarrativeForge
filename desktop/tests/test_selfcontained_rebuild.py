@@ -7,7 +7,6 @@
 ② `--write` 后正文与源文件**逐字相等**；③ 再跑一次 `--check` 无漂移（幂等）。
 """
 import importlib.util
-import os
 import tempfile
 import unittest
 from pathlib import Path

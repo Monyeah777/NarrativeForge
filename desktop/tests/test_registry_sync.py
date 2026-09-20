@@ -5,7 +5,6 @@
 - merge_protocols(reg_protocols, entries)：只增不删合并 + 幂等 + 保序
 """
 import json
-import os
 import sys
 import unittest
 from pathlib import Path

@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """42 M5.2 —— VERSION-MATRIX 一致性校验（版本×方案×能力，常驻 unittest）。"""
-import os
 import re
-import sys
 import unittest
 from pathlib import Path
 

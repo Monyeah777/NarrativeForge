@@ -15,7 +15,6 @@ NF 的指令档（组装指令包 / AI_ROUTING / ai-menu）此前只说"怎么�
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 

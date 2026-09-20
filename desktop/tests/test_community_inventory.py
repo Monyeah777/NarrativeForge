@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from core.models import Pipeline, PipelineLayer, Module       # noqa: E402
+from core.models import Pipeline, PipelineLayer       # noqa: E402
 from core.storage import Store                                # noqa: E402
 from core.community_inventory import (                        # noqa: E402
     catalog, install_module, install_pipeline,

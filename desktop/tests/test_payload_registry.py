@@ -21,7 +21,6 @@ class PayloadRegistryTest(unittest.TestCase):
         self.assertGreaterEqual(stats["declared"], 5)
 
     def test_registry_dead_event_captured(self):
-        import tempfile
         from core import schema_lint as sl
 
         schema = json.loads((Path(ROOT) / "protocol/event_payload.schema.json")

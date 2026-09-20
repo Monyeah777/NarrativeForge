@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core.ir import IRDocument, IRLayer, IRModule  # noqa: E402
-from core.quality_gate import run_gate, default_rules, GateResult, Issue  # noqa: E402
+from core.quality_gate import run_gate, GateResult, Issue  # noqa: E402
 
 
 def _ir(layers=None, extra=None, missing=None):

@@ -81,7 +81,7 @@ def save_ledger(ledger: dict, ledger_path: str) -> None:
 
 def make_entry(file_rel: str, key: str, source: str, module: str = "",
                version: str = "1.0", status: str = STATUS_ACTIVE,
-               added: str = None) -> dict:
+                 added: str | None = None) -> dict:
     """构造条目并做字段级校验（源头拦截，CLI/测试共用）。"""
     if not key or not str(key).strip():
         raise AssetLedgerError("溯源键 key 不能为空——请先填溯源键再入库")
@@ -129,8 +129,8 @@ def parse_header(text: str):
 
 def add_asset(assets_root: str, file_rel: str, key: str, source: str,
               module: str = "", version: str = "1.0", status: str = STATUS_ACTIVE,
-              tier: str = None, package: str = "", added: str = None,
-              ledger_path: str = None) -> dict:
+                 tier: str | None = None, package: str = "", added: str | None = None,
+                 ledger_path: str | None = None) -> dict:
     """入库：资产文件头部写 nf-asset 头 + 台账 append 条目。
 
     幂等判定 = 同键/同文件已托管 → 拒绝（键唯一 + 文件唯一）。tier 在首次建档时落台账级。
@@ -178,7 +178,7 @@ def _load_for_update(assets_root: str, ledger_path: str, key: str):
     raise AssetLedgerError("台账无该键：%s（nf asset inventory 查看在册键）" % key)
 
 
-def set_status(assets_root: str, key: str, status: str, ledger_path: str = None) -> dict:
+def set_status(assets_root: str, key: str, status: str, ledger_path: str | None = None) -> dict:
     """状态流转（active/deprecated/retired）；同步改写资产文件头 status 位（双源一致）。"""
     if status not in VALID_STATUS:
         raise AssetLedgerError("status 非法：%s" % status)
@@ -201,7 +201,7 @@ def set_status(assets_root: str, key: str, status: str, ledger_path: str = None)
     return target
 
 
-def remove_entry(assets_root: str, key: str, ledger_path: str = None) -> dict:
+def remove_entry(assets_root: str, key: str, ledger_path: str | None = None) -> dict:
     """从台账摘除条目（只删台账不删文件；文件仍带旧头时 verify 报孤儿头，提示手动清理）。"""
     ledger, target, lp = _load_for_update(assets_root, ledger_path, key)
     ledger["assets"] = [e for e in ledger["assets"] if e.get("key") != key]
@@ -222,7 +222,7 @@ def _iter_md_candidates(ledger_dir: str) -> list:
     return out
 
 
-def verify_ledger_dir(ledger_dir: str, ledger_path: str = None) -> tuple:
+def verify_ledger_dir(ledger_dir: str, ledger_path: str | None = None) -> tuple:
     """单台账闭合校验。返回 (issues, stats)。
 
     stats：assets（在册条目数）/ untracked（目录下无头 md）/ orphans（孤儿文件头）。

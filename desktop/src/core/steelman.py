@@ -257,7 +257,7 @@ def check_worksheet(text: str) -> List[str]:
 
 
 def _has_numbered_reason(body: str) -> bool:
-    """5 节是否有实质编号理由：逐行判「列表条目 + 实质内容」，行内空白不跨行。
+    r"""5 节是否有实质编号理由：逐行判「列表条目 + 实质内容」，行内空白不跨行。
 
     缺陷修正一（RED→GREEN，6df32bc）：原 `re.search(r"^\s*\d+\.\s*\S", body,
     re.M)` 的 `\s*` 可跨行——`1. \n2. `（空理由占位）被误判为有理由。改逐行。

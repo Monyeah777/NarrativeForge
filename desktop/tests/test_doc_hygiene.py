@@ -42,9 +42,10 @@ class DocHygieneTest(unittest.TestCase):
             self._minimal_tree(tmp)
             rel = dh.INSTRUCTION_DOCS[0]
             path = os.path.join(tmp, rel)
-            text = open(path, encoding="utf-8").read().replace(
-                "⛔ 操作指令：阅读即执行。\n", "", 1)
-            open(path, "w", encoding="utf-8").write(text)
+            with open(path, encoding="utf-8") as fh:
+                text = fh.read().replace("⛔ 操作指令：阅读即执行。\n", "", 1)
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(text)
             issues = dh.check_markers(tmp)
             self.assertTrue(any("⛔ 操作指令" in i for i in issues), issues)
 
@@ -53,9 +54,10 @@ class DocHygieneTest(unittest.TestCase):
             self._minimal_tree(tmp)
             rel = dh.REQUIRED_DOCS[0]
             path = os.path.join(tmp, rel)
-            text = open(path, encoding="utf-8").read().replace(
-                "> 最后更新：2026-09-08\n", "", 1)
-            open(path, "w", encoding="utf-8").write(text)
+            with open(path, encoding="utf-8") as fh:
+                text = fh.read().replace("> 最后更新：2026-09-08\n", "", 1)
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(text)
             issues = dh.check_markers(tmp)
             self.assertTrue(any("最后更新" in i for i in issues), issues)
 

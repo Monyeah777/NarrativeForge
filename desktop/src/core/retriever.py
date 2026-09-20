@@ -20,7 +20,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Optional
 
-from .models import Module, AssetPack
 from .storage import Store
 
 #: 社区盘点装载态标签（单一真源：retriever 生产、zone_g/测试消费同此常量，

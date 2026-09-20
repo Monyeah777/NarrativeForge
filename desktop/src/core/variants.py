@@ -46,7 +46,6 @@ class VariantPlan:
     def overlap_issues(self) -> List[str]:
         """变体间模块重叠的人类可读报告（声明级警告，不阻断）。"""
         issues: List[str] = []
-        names = [v.name for v in self.variants]
         seen: Dict[str, List[str]] = {}   # fid -> [variant names]
         for v in self.variants:
             for fid in v.selected:

@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 #: 本模块输出的 scope 名（采集侧识别用）
 SCOPE_NAME = "nf.telemetry"

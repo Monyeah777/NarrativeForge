@@ -19,11 +19,11 @@ E5 承接 E4（方案 21）：zone_g 从「本地已装检索」扩到「communi
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
 
-from .models import Module, Pipeline, fid_key
+from .models import Module, Pipeline
 from .storage import Store
 
 

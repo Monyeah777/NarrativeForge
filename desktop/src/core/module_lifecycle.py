@@ -144,7 +144,8 @@ def _protocol_ids(root: str) -> dict:
     hits = {}
     for p in glob.glob(os.path.join(root, "community", "*", "protocol.yaml")):
         try:
-            text = open(p, encoding="utf-8").read()
+            with open(p, encoding="utf-8") as fh:
+                text = fh.read()
         except OSError:
             continue
         for num in _ID_NUM.findall(text):

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """40 总纲 v2.8 波B S4 —— nf pipeline new 派生脚手架单测（纯 unittest，L2 core 零依赖）。"""
-import os
 import sys
 import unittest
 from pathlib import Path

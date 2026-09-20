@@ -90,7 +90,7 @@ def _check_semantic_misalignment(output: str, semantics: Dict[str, list]) -> str
 
 
 def run_case(case: Dict, real_ids: List[str],
-             semantics: Dict[str, list] = None,
+                 semantics: Dict[str, list] | None = None,
              source_text: str = "") -> List[str]:
     """对单样本输出跑全部硬断言 → 返回命中的失范规则名列表。"""
     output = case.get("output") or ""
@@ -129,7 +129,7 @@ def run_file(path: str) -> Dict:
     return {"total": len(results), "results": results}
 
 
-def main(argv: List[str] = None) -> int:
+def main(argv: List[str] | None = None) -> int:
     args = list(argv) if argv is not None else sys.argv[1:]
     if not args:
         print("用法: python -m core.execution_drill <cases.json>", file=sys.stderr)

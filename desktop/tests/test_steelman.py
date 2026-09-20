@@ -7,7 +7,6 @@ check 四步齐备与缺项 warn / ls 索引 / 模板引导三套。
 """
 from __future__ import annotations
 
-import os
 import sys
 import tempfile
 import unittest
@@ -150,7 +149,7 @@ class TestSteelmanConstantDriven(unittest.TestCase):
             self.assertNotIn("## 2. 支持侧最强论据", emitted)
             # check 按新标题定位节——用新标题写的完整工作单应零缺项
             full = _make_complete()
-            for old, new in zip(orig, renamed):
+            for old, new in zip(orig, renamed, strict=True):
                 if old != new:
                     full = full.replace(f"## {old}", f"## {new}")
             self.assertEqual(check_worksheet(full), [])

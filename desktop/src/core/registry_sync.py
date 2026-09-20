@@ -30,7 +30,7 @@ def _read_pkg(pkg_dir: str) -> Dict[str, Any]:
         try:
             data = yaml.safe_load(f)
         except yaml.YAMLError as e:
-            raise ValueError("① protocol.yaml 解析失败: %s" % e)
+            raise ValueError("① protocol.yaml 解析失败: %s" % e) from e
     if not isinstance(data, dict) or not isinstance(data.get("package"), dict):
         raise ValueError("① protocol.yaml 缺 package 段（01 §6.1 Schema）")
     return data

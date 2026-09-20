@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """内容建模三件（词表 / 规范说明件 / 数据契约）正式与否定用例。"""
 import json
-import shutil
 import sys
 import unittest
 from pathlib import Path

@@ -52,7 +52,6 @@ def registry_integrity_issues(registry: Any) -> List[str]:
     pkgs = _pkg_map(registry)
     for p in registry.protocols or []:
         pid = p.get("id") or "<匿名>"
-        mids = [_norm(m) for m in (p.get("module_ids") or [])]
         # ③ 同包 module_ids 裸号重复（含限定/裸号并存 = 寻址歧义）
         seen: Dict[str, str] = {}
         for raw in p.get("module_ids") or []:

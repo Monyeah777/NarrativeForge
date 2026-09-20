@@ -104,7 +104,7 @@ def thickness_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                 continue
             try:
                 text = p.read_text(encoding="utf-8")
-            except OSError as exc:
+            except OSError:
                 continue
             if not text.strip():
                 continue

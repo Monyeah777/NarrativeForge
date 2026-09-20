@@ -57,8 +57,6 @@ def build_protocol_yaml(form: ProtocolForm) -> str:
                 f"（产物×适配矩阵：AGENTS=项目约定 / SKILL=能力包），实际 {form.doc_semantics}")
         sem_line = f"  doc_semantics: {form.doc_semantics}\n"
     core = list(form.core_modules) if form.core_modules else DEFAULT_CORE_MODULES
-    core_l = "\n".join(f'    - "{c}"' if ":" in c or c == "M00"
-                       else f"    - {c}" for c in core)
     mod_l = "\n".join(
         f'    - id: "{i}"\n      desc: {d}' for i, d in form.modules)
     ids_l = "\n".join(f'    - "{i}"' for i in form.module_id_range)
@@ -101,7 +99,6 @@ def self_check(yaml_text: str) -> List[str]:
     """自检（对齐 verify check14 ①-⑤ 粗校验）。返回警告/失败列表；空 = 通过。"""
     warns: List[str] = []
     try:
-        import re
         body = "\n".join(l for l in yaml_text.splitlines()
                          if not l.strip().startswith("#"))
         import yaml

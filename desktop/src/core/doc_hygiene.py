@@ -156,14 +156,16 @@ def check_markers(root: str = ".") -> list:
         if not os.path.exists(path):
             issues.append("%s 缺失（须入 REQUIRED_DOCS 清单）" % rel)
             continue
-        head = _head_lines(open(path, encoding="utf-8").read())
+        with open(path, encoding="utf-8") as fh:
+            head = _head_lines(fh.read())
         if not any(ln.startswith(LAST_UPDATED_PREFIX) for ln in head):
             issues.append("%s 缺「最后更新」位（头部 %d 行内）" % (rel, len(head)))
     for rel in INSTRUCTION_DOCS:
         path = os.path.join(root, rel)
         if not os.path.exists(path):
             continue
-        head = _head_lines(open(path, encoding="utf-8").read())
+        with open(path, encoding="utf-8") as fh:
+            head = _head_lines(fh.read())
         if not any(INSTRUCTION_MARK in ln for ln in head):
             issues.append("%s 缺「⛔ 操作指令」标识头（指令类文档须全覆盖）" % rel)
     return issues
