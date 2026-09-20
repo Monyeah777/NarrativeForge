@@ -120,3 +120,30 @@ $ python scripts/ai_domain_closure.py --gaps --loaded C00,C01 --branch app --lim
 1. 记录要求**未放宽**——仍是四步齐备、且必须随**本次变更**可见（新增的只是「记录该在的地方」多了一条：迁移记录档），JSON 文件由「结构上不可满足」变为「有明确合规通道」。
 2. 检测面**变准而非变松**——收敛到版本字段行后，非版本字段的数值改动（如 `assets.count`）与注释里的数字**不再**误判；该语义由回归测试钉住（`test_non_version_numeric_change_not_flagged`）。
 3. 两条修正均**不新增 check 序号、不改 Schema**；check30 的序号与门禁位次不变。
+
+## 八、外部输入筛选记录（`node.cool` → `awesome-nodejs`）
+
+**对象确定（先取证，再判定）**：`https://node.cool/` 实测 `302 → https://github.com/sindresorhus/awesome-nodejs`（Cloudflare 前置；非根路径返回 526，即该域是跳转 / 镜像入口而非独立产品）。筛选对象 = Node.js 包与资源精选清单（CC0-1.0；61 个子分类；**投稿因 spam 与低质量提交已暂停**）。
+
+**逐条实证**（口径：已具备不重做 / 不适面剔除 / 净吸收）：
+
+| 候选机制（该清单实况） | 判定 | NF 侧对应（仓内实证） |
+|---|---|---|
+| 精选清单形态：分类树 + Contents 锚点 + `- [name](link) - 描述。` | 已具备（更机检） | `library/` frontmatter 真源 + INDEX 与 ALIAS 机读投影（check34 投影一致断言）；`patterns/` INDEX；`nf market` 目录视图 + tier 徽章 |
+| 条目形态规范（描述短句 / 句号 / 禁营销语 / 去尾随空白） | 已具备（更机检） | `doc_hygiene`（四型写法 + 指令标识 + last-updated）、`purity_scan`（重复标题 / 私货）、`assertions`、`prose_lint`；library 必填列 + `license_gate` |
+| 同类不重复、相似须论证更优 | 已具备（**机检替代人读论证**） | R2 独占类别两两互斥（check14 ③）+ 编号全局唯一（check14 ⑤b）+ 同层 default 无交集（check15 ③）+ 组合引用白名单（check15 ①-④） |
+| 准入定量门槛：投稿项目须 30 天以上且 ≥100 stars | **剔除（与方向层冲突）** | STRATEGY §2：决策函数只含**质量**一个变量，star / 热度类指标**显式排除**（不当目标、不当参考、不进入立项与排期论证） |
+| 存量清理（unmaintained / deprecated 标记） | 已具备（更机检） | `module_lifecycle`（active / deprecated / retired + `nf module deprecate` + 引用门禁 check24）+ 资产台账 status 流转（check23） |
+| niche 出口（「Mad science」分类） | 已具备 | tier 三档（official / community / experimental）+ `nf market --tier experimental` + M91-M99 段徽章 |
+| 投稿人自检承诺（PR 模板） | 已具备（更具体） | `.github/PULL_REQUEST_TEMPLATE.md`（改动域勾选 + 门禁自检三条命令）+ 4 个 issue 模板（含 library_submission / NF投稿）+ CONTRIBUTING §3 验证门槛 |
+| 入口单一真相（条目链到源码仓，不链下游 registry） | 已具备（更系统） | I5 单一真相源：登记以 02 文档发起、registry 为派生投影；被引模块不改号仍归源包；官方模块不复制进社区包 |
+| 「投稿因 spam / 低质整仓暂停」这一治理实况 | 已具备（政策 + 存量机制）；**增量闸门状态位不产** | 增量：封闭式发育（外部接触冻结，作者裁决）；存量：lifecycle 流转。状态位在 NF 侧无消费者（入库前置已有三层要件 + `nf register --check` 拒绝 + 提交信息钩子），按「不产没人消费的东西」不立项 |
+| 外部链接可达性巡检（该仓自身无 CI，亦未提供） | 剔除（离线纪律） | knowledge 层已声明 reference 级源的时效（ttl / no-cache）与来源标注必填（check37）；执行面**刻意零网络**（L2 core 零第三方依赖红线） |
+| Node.js 生态包内容本身 | 剔除（不适面） | NF 核心 std-lib-only；NF 是内容协议层，不消费 Node 生态实现 |
+| 清单许可 CC0-1.0 | 无需吸收 | NF：代码 MIT + 内容许可分列（library 许可列 + 条目内联声明双源校验，`license_gate`） |
+
+**结论**：**无净吸收项**——该清单的每条机制在 NF 侧或已有更机检的对应物，或与方向层（质量单变量 / 零热度指标）冲突，或属实现层不适面。
+
+**记为风险类比的唯一一条（不构成吸收）**：该清单因 spam 与低质量投稿**整仓暂停投稿**；NF 的云端投稿通道（Issue 模板 + ingest 机器人自动入库）同为「零门槛粘贴」取向，其防线是机检（自包含硬标准 / 许可证门 / 三层要件）+ 事后流转（deprecated / retired）。若未来外投规模上升，**闸门强度**是首要观察项——挂账，交作者裁决。
+
+**边界**：本筛选只用该仓的**结构与治理实况**作判定依据，未复制其文本，未入任何资产 / 溯源图例。
