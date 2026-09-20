@@ -6,6 +6,9 @@
 ## 1. 提交信息格式（Conventional Commits）
 
 格式：`<type>(<scope>): <subject>`——subject 用中文一句话，禁句号结尾。
+**机检**：`bash scripts/install_hooks.sh` 装 `commit-msg` 钩子（`scripts/commit_msg_check.py`），
+不合规即拒提交（确需绕过用 `git commit --no-verify`）；判据与下表同源——下表 type 之外的
+`release` / `merge` / `ci` / `lib` 是仓库实证补充（发版 / 并行流合流 / CI 改动 / 入库机器人）。
 
 | type | 用途 | 示例 |
 | --- | --- | --- |
@@ -15,6 +18,12 @@
 | refactor | 重构不改行为 | `refactor(core): storage 导入路径收口` |
 | test | 测试增补 | `test(core): verify.sh 增 check12 代码层门禁` |
 | chore | 杂项 / CI | `chore(ci): ci-verify 增覆盖率门槛` |
+| release | 发版收口（CHANGELOG 归档 + 版本块归位） | `release(v2.10.0): 45 质量纵深收口发布` |
+| merge | 并行流合流（多会话/远端合并） | `merge(remote main): 并行流合流` |
+| ci | CI/工作流改动 | `ci(workflow): 壳端与基础层彻底分离` |
+| lib | 云端代收入库（机器人提交） | `lib(Y12): 云端代收 NF-9 自动入库` |
+
+多 type 可并联（`docs+feat(quality): …`）；scope 从宽（`state-front` / `v41,B1` / `docs+test` 均合法）；**不设行长上限**。
 
 scope 约定：`protocol`（01–07）/ `desktop` / `scripts` / `community` / `ci` / `core`（真相源 = desktop/src/core，APK 线已移除见裁决 #16）。
 
