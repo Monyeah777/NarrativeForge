@@ -51,6 +51,53 @@
       "message": "machine_contract 定义缺质量键（conformance / io_types）",
       "fix": "在 contract.schema.json 的 properties 补该键（additive）",
       "evidence": "check28 / check29"
+    },
+    {
+      "id": "contract-schema-extension-face-closed",
+      "severity": "fail",
+      "kind": "json_value",
+      "params": {
+        "path": "protocol/schema/contract.schema.json",
+        "key": "additionalProperties",
+        "op": "equals",
+        "value": false
+      },
+      "message": "machine_contract 扩展面未封闭（未登记键可静默入契约）",
+      "fix": "contract.schema.json 顶层 additionalProperties 置 false；新扩展键须先登记词表（01 §1.1 扩展键纪律）",
+      "evidence": "check28 / 01 §1.1"
+    },
+    {
+      "id": "canonical-digest-declared",
+      "severity": "fail",
+      "kind": "regex_present",
+      "params": {
+        "path": "protocol/CONFORMANCE.md",
+        "patterns": ["规范化摘要口径", "SHA-256", "RFC 6962", "RFC 8785", "ensure_ascii=False"]
+      },
+      "message": "CONFORMANCE.md 缺规范化摘要口径声明（仓外读者侧验证器无从逐字复现）",
+      "fix": "在 protocol/CONFORMANCE.md 补「规范化摘要口径」段：摘要口径 + Merkle 域分隔 + 与 RFC 8785 的关系声明",
+      "evidence": "nf assertions / conformance::assertions"
+    },
+    {
+      "id": "skill-face-frontmatter",
+      "severity": "fail",
+      "kind": "regex_present",
+      "params": {
+        "path": "skills/narrativeforge/SKILL.md",
+        "patterns": ["name:", "description:", "license:"]
+      },
+      "message": "对外 skill 面缺必要前件（name / description / license）——装载方选不中或授权不明",
+      "fix": "在 skills/narrativeforge/SKILL.md 前件补 name/description/license；description 须写明适用与不适用",
+      "evidence": "nf assertions / conformance::assertions"
+    },
+    {
+      "id": "skill-face-references",
+      "severity": "fail",
+      "kind": "count_at_least",
+      "params": {"glob": "skills/narrativeforge/references/*.md", "min": 3},
+      "message": "对外 skill 面参考件少于 3 件（SKILL.md 引用的 references 面残缺）",
+      "fix": "补齐 skills/narrativeforge/references/ 下被 SKILL.md 引用的参考件",
+      "evidence": "nf assertions / conformance::assertions"
     }
   ]
 }

@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import datetime as _dt
+import glob
 import os
 import re
 
@@ -233,3 +234,52 @@ def stale(root: str = ".", month_limit: int = 3,
                                  % (rel, month_limit, date_str))
                 break
     return warns
+
+
+#: 正文正规性扫描目标（NF 自产内容面；第三方夹具、`scripts/__pycache__` 等不入面）
+TEXT_SANITY_GLOBS = (
+    "*.md", "docs/*.md", "docs/**/*.md",
+    "04_模块库/*/*.md", "community/*/*.md", "community/*/modules/*.md", "community/*/assets/*.md",
+    "library/*.md", "protocol/*.md", "skills/*/*.md", "patterns/*/*.md",
+    "postmortems/*.md", "decisions/*.md", "results/*.md",
+)
+
+#: mojibake 特征字：UTF-8 中文被按 GBK 解码后再存回 UTF-8 时的高频字符。
+#: 取样自真实缺陷（`library/NF-TECHDOC-*.md` 与 `docs/examples/state-front/*` 同源生成产物）。
+MOJIBAKE_MARKERS = "锛銆鈥鏄鏂鐨涓鍦閫鎶璁缂鐩鍐鍜欏鏈鐢姝涔浣"
+MOJIBAKE_MIN_HITS = 3
+
+
+def text_sanity(root: str = ".", globs=None) -> list:
+    """正文正规性（**WARN 级，存量挂账不判死**）：围栏配平 + mojibake 特征。
+
+    判据两条，只判可判定形状、不判文风：
+    ① 围栏配平——每件正文的围栏标记（行首 ``` 或 ~~~）计数须为**偶数**；
+       奇 = 有未配平围栏，渲染与「按围栏切段」的解析（如 machine_contract 提取）都会走偏。
+    ② 编码可读——单行命中 ≥ `MOJIBAKE_MIN_HITS` 个 mojibake 特征字 = 该行正文不可读
+       （疑似 UTF-8/GBK 双重转换）。
+
+    返回 `"WARN: …"` 字符串列表，由调用方决定是否计入 WARN 计数。
+    """
+    out: list = []
+    files = sorted({p for g in (globs or TEXT_SANITY_GLOBS)
+                    for p in glob.glob(os.path.join(root, g), recursive=True)})
+    for rel in files:
+        rel = os.path.relpath(rel)
+        try:
+            with open(rel, encoding="utf-8") as fh:
+                text = fh.read()
+        except (OSError, UnicodeDecodeError) as exc:
+            out.append("WARN: 正文不可读 %s（%s）" % (rel, exc))
+            continue
+        lines = text.splitlines()
+        fences = sum(1 for ln in lines if re.match(r"^\s*(```|~~~)", ln))
+        if fences % 2:
+            out.append("WARN: 围栏未配平 %s（标记 %d 个，须为偶数——未配平的正文渲染与"
+                       "按围栏切段的解析都会走偏）" % (rel, fences))
+        bad = sum(1 for ln in lines
+                  if sum(1 for ch in ln if ch in MOJIBAKE_MARKERS) >= MOJIBAKE_MIN_HITS)
+        if bad:
+            out.append("WARN: 正文疑似 mojibake %s（%d 行命中编码特征——疑似 UTF-8/GBK 双重转换）"
+                       % (rel, bad))
+    return out

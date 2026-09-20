@@ -22,7 +22,8 @@
 #        段 A/B = L0/L1（协议一致性 + 内容对账），check12-22 = L2 core（unittest/py_compile/协议投影/
 #        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳线退役移出（桌面 GUI 端壳 2026-09-09 同轨退役，见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备）；check26 = 语义矛盾扫描门禁（41 波C C3：techdoc 链 machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移）；check27 = 架构纯度体检门禁（42 M3：协议层端壳残留/私货可变物/重复标题 grep + core raise 消息修复指引审计））
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
-#        校园资产 29 文件 1451 行 / 西幻资产 23 文件 3657 行（2026-09-15 实测重校；v1.0 原基线 1575/4285 已过期）。
+#        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4284 行（西幻 4285→4284：2026-09-20 删
+#        11_魔法系统_MAGIC.md 的孤立收尾围栏 1 行；行数基线属**发布基线**，内容改动后须核对更新）。
 # ============================================================
 set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -213,7 +214,7 @@ check8(){
   fi
   if [ -d community/西幻生存领域包 ]; then
     w=$(find community/西幻生存领域包/assets -name '*.md' ! -name 'README.md' -exec wc -l {} + 2>/dev/null | awk '/total/{s+=$1} END{print s+0}')
-    [ "$w" -eq 4285 ] || { no "西幻资产累计行数 ${w}（应 4285）——与发布基线核对"; err=1; }
+    [ "$w" -eq 4284 ] || { no "西幻资产累计行数 ${w}（应 4284）——与发布基线核对"; err=1; }
   else
     wn '西幻生存领域包不在场（跳过行数溯源）'
   fi
@@ -380,6 +381,8 @@ if len(reg_ids) != 13: errs.append('registry.json modules 数=%d（预期 13）'
 only_doc = sorted(set(doc_ids) - set(reg_ids)); only_reg = sorted(set(reg_ids) - set(doc_ids))
 if only_doc: errs.append('02 有而 registry.json 缺：' + ','.join(only_doc))
 if only_reg: errs.append('registry.json 有而 02 缺：' + ','.join(only_reg))
+for _e in errs:
+    print(_e)
 sys.exit(1 if errs else 0)
 PYEOF
     then
@@ -516,6 +519,11 @@ if not errs:
         _reg_ver = str(p.get('version') or '1.0.0')
         _proto_ver = str(pkg.get('version') or '1.0.0')
         if _reg_ver != _proto_ver: errs.append('⑦%s version 不一致: reg=%s proto=%s' % (pid, _reg_ver, _proto_ver))
+        # 包内容版本格式（02 §8 SemVer 映射：MAJOR.MINOR.PATCH；档位一致性由评审判，机检只判格式）
+        for _src, _v in (('registry', _reg_ver), ('protocol.yaml', _proto_ver)):
+            if not re.match(r'^\d+\.\d+\.\d+$', _v):
+                errs.append('⑦%s package.version 非语义化版本格式: %s=%s（预期 MAJOR.MINOR.PATCH，02 §8 包内容版本）'
+                            % (pid, _src, _v))
         # ⑦ 升级（29 方案 B3-C）：module_ids / mount_layers 从长度比对 → 元素级全序
         reg_ids = [str(x) for x in p.get('module_ids', [])]
         proto_ids = [str(x) for x in pkg.get('module_id_range', [])]
@@ -541,6 +549,8 @@ if not errs:
             regn = int(mm.group(1)) if mm else -1
             if regn >= 0 and len(p['module_ids']) != regn:
                 errs.append('⑦%s module_ids(%d) != 02 §8 在册(%d)' % (pid, len(p['module_ids']), regn))
+for _e in errs:
+    print(_e)
 sys.exit(1 if errs else 0)
 PYEOF
     then
@@ -692,10 +702,32 @@ for d in PKGS:
                     inter = set(spec.get('default', []) or []) & set(sp_spec.get('default', []) or [])
                     if inter:
                         errs.append('③%s 挂载层 %s default 与源包 %s 冲突（交集: %s）' % (pid, key, sp, ','.join(sorted(inter))))
+# ⑥ 钉扎复核提示（01 §6.1：源包结构性变更对已钉扎引用方属条件安全变更；钉扎滞后 = WARN 提示，不判死）
+for _d in PKGS:
+    if _d not in data or 'package' not in data[_d]:
+        continue
+    _pid = data[_d]['package'].get('id')
+    for _r in data[_d]['_refs']:
+        _sp = _r.get('source_package')
+        _pin = str(_r.get('source_schema_version'))
+        _sd = dir_by_id.get(_sp)
+        if not _sd or _sd not in data:
+            continue
+        _cur = str((data[_sd].get('protocol') or {}).get('schema_version'))
+        if _cur and _pin != _cur:
+            print('WARN: %s 引用 %s 钉扎=%s，源包当前=%s —— 钉扎滞后，复核契约后更新（01 §6.1 钉扎复核）'
+                  % (_pid, _sp, _pin, _cur))
+for _e in errs:
+    print(_e)
 sys.exit(1 if errs else 0)
 PYEOF
     then
-      :
+      # 钉扎复核提示透传（WARN 不判死：刻意钉旧版本合法，但必须可见）
+      if [ -f "$NFL_TMP"/nf_check15.log ]; then
+        while IFS= read -r _pinline; do
+          case "$_pinline" in WARN:*) wn "${_pinline#WARN: }" ;; esac
+        done < "$NFL_TMP"/nf_check15.log
+      fi
     else
       no "check15 ①-⑤ 校验失败——$(head -5 "$NFL_TMP"/nf_check15.log | tr '\n' ' ')"; err=1
     fi
@@ -786,6 +818,31 @@ for pkg in sorted(glob.glob('community/*/')):
         ev = mc.get('events')
         if mc.get('schema') != '1' or not isinstance(ev, dict) or not isinstance(ev.get('publish'), list) or not isinstance(ev.get('subscribe'), list):
             errs.append('②社区模块机读块结构违约: %s (schema=%r events keys=%s)' % (f, mc.get('schema'), sorted(ev.keys()) if isinstance(ev, dict) else ev))
+# ④ 发布方唯一 + 事件名词法（01 §1.1）：ASCII 小写蛇形——防全角/大小写/同形字造成「看起来同名其实不同名」
+def _ok_event_name(e):
+    return (isinstance(e, str) and e.isascii() and e == e.lower() and 1 <= len(e) <= 40
+            and e[0].isalpha() and all(c.isalnum() or c == '_' for c in e))
+owners = {}
+seen_names = {}
+for f in CORE13 + sorted(glob.glob('community/*/modules/*.md')):
+    owner_mc = extract_mc(f)
+    if not isinstance(owner_mc, dict):
+        continue
+    owner_id = str(owner_mc.get('id') or f)
+    _ev = owner_mc.get('events') or {}
+    for _side in ('publish', 'subscribe'):
+        for e in (_ev.get(_side) or []):
+            seen_names.setdefault(str(e), set()).add(_side)
+            if _side == 'publish':
+                owners.setdefault(str(e), set()).add(owner_id)
+for e in sorted(seen_names):
+    if not _ok_event_name(e):
+        errs.append('④事件名词法违约：%s（须 ASCII 小写蛇形 ^[a-z][a-z0-9_]{0,39}$——防全角/大小写/同形字撞名）' % e)
+multi_pub = {e: sorted(v) for e, v in owners.items() if len(v) > 1}
+for e in sorted(multi_pub):
+    errs.append('④发布方唯一违约：事件 %s 有多个发布方 %s（01 §1.1 发布方唯一；跨题材事件须经官方核心中介即事件桥）'
+                % (e, multi_pub[e]))
+
 # ③ references 装配契约仲裁（02 §8.4 规则④：相邻装配「源包发布面 ⊆ 邻居订阅面」，publish ⊄ subscribe 即 FAIL）
 reg = json.load(open('desktop/src/core/registry.json', encoding='utf-8'))
 prots = {p['id']: p for p in reg.get('protocols', [])}
@@ -1494,11 +1551,26 @@ if (attrs.get('gen_ai.operation.name') != 'execute_tool'
 
 for p in problems:
     print('[FAIL] %s' % p)
-print('新面统计：MCP %s · 评分 %.2f · 机械待办 %d · 许可 WARN %d'
-      % (mcp.PROTOCOL_VERSION, cur['score'], len(pending), len(l_stats['warnings'])))
+# 8 正文正规性（围栏配平 + mojibake 特征）：WARN 挂账，不判死（存量先可数，再逐波收）
+warns = []
+try:
+    from core import doc_hygiene as dh2
+    warns = dh2.text_sanity('.')
+except Exception as exc:
+    warns = ['WARN: 正文正规性扫描不可用（%s）' % exc]
+for w in warns:
+    print(w)
+print('新面统计：MCP %s · 评分 %.2f · 机械待办 %d · 许可 WARN %d · 正文正规性 WARN %d'
+      % (mcp.PROTOCOL_VERSION, cur['score'], len(pending), len(l_stats['warnings']), len(warns)))
 sys.exit(1 if problems else 0)
 PYEOF
     then
+      # 正文正规性 WARN 透传（存量挂账不判死，但必须可见并计数）
+      if [ -f "$NFL_TMP"/nf_check33.log ]; then
+        while IFS= read -r _txtline; do
+          case "$_txtline" in WARN:*) wn "${_txtline#WARN: }" ;; esac
+        done < "$NFL_TMP"/nf_check33.log
+      fi
       ok '新面扫描通过（MCP dual-era / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测）'
     else
       no "新面扫描异常——$(tail -3 "$NFL_TMP"/nf_check33.log | tr '\n' ' ')"; err=1

@@ -1,8 +1,9 @@
 """43 A1 —— 协议层 IDL 校验器（自实现 JSON-schema 子集 + 全量件扫描）。
 
 零第三方 JSON-schema 实现红线：本模块自实现子集校验（type/required/
-properties/enum/pattern/minLength/minItems/maxItems/minimum + additionalProperties），
-不引 jsonschema。YAML 解析复用仓库既有 PyYAML 依赖（verify check16 已用）。
+properties/propertyNames/enum/pattern/minLength/minItems/maxItems/minimum
++ additionalProperties），不引 jsonschema。YAML 解析复用仓库既有 PyYAML
+依赖（verify check16 已用）。
 
 扫描对象（见 protocol/README.md）：
 - contract  模块头 machine_contract（04_模块库 + community/*/modules）
@@ -30,12 +31,17 @@ except Exception:  # pragma: no cover - 环境缺依赖时由调用方提示
 FENCE = re.compile(r"(?ms)```yaml\s*(.*?)```")
 SCHEMA_DIR = os.path.join("protocol", "schema")
 
+#: 本校验器**实现的 JSON-Schema 方言**（自实现子集的语义归属）。
+#: 五份 schema 的 `$schema` 声明必须等于它——声明与实现不一致 = 方言虚标
+#: （子集是按 draft 2020-12 的形状做的：propertyNames 等属 2019-09+ 关键字）。
+DIALECT = "https://json-schema.org/draft/2020-12/schema"
+
 # 校验器已实现的关键字白名单（子集边界显式化）：
 # schema 定义若使用白名单之外的关键字（oneOf/$ref/patternProperties/format…），
 # check28 将 FAIL——防止「校验器声称子集却静默忽略语义」的假绿。
 SUBSET_ALLOWED_KEYS = {
     "$schema", "$id", "title", "description", "type",
-    "required", "properties", "additionalProperties", "items",
+    "required", "properties", "propertyNames", "additionalProperties", "items",
     "enum", "pattern", "minLength", "minimum", "minItems", "maxItems",
 }
 
@@ -60,6 +66,9 @@ def subset_key_violations(schema: Any, path: str = "schema") -> List[str]:
     extra = schema.get("additionalProperties")
     if isinstance(extra, dict):
         out += subset_key_violations(extra, f"{path}/additionalProperties")
+    pnames = schema.get("propertyNames")
+    if isinstance(pnames, dict):
+        out += subset_key_violations(pnames, f"{path}/propertyNames")
     return out
 
 
@@ -82,6 +91,11 @@ def subset_validate(
         for req in schema.get("required", []) or []:
             if req not in instance:
                 out.append(f"{path}: 缺必填字段 {req}")
+        # propertyNames：键名逐个过子 schema（01 §1.1 扩展键命名纪律）
+        pnames = schema.get("propertyNames")
+        if isinstance(pnames, dict):
+            for key in instance:
+                out += subset_validate(key, pnames, f"{path}/{key}（键名）")
         for key in props:
             if key in instance:
                 out += subset_validate(instance[key], props[key], f"{path}/{key}")
@@ -90,7 +104,7 @@ def subset_validate(
             if key in props:
                 continue
             if extra is False:
-                out.append(f"{path}: 未知字段 {key}")
+                out.append(f"{path}: 未知字段 {key}（不在该 schema 词表内）")
             elif isinstance(extra, dict):
                 out += subset_validate(instance[key], extra, f"{path}/{key}")
         return out
@@ -166,6 +180,10 @@ def check_schema_files(root: str) -> Tuple[List[str], List[Dict[str, Any]]]:
         for key in ("$id", "title", "type"):
             if key not in data:
                 issues.append(f"{name}: schema 缺 {key}")
+        if data.get("$schema") != DIALECT:
+            issues.append("%s: $schema=%r 与校验器实现的方言不一致（预期 %s；"
+                          "修复指引：改声明或先扩展校验器再改声明）"
+                          % (name, data.get("$schema"), DIALECT))
         if data.get("type") != "object":
             issues.append(f"{name}: schema.type 应为 object")
         if not isinstance(data.get("properties"), dict):

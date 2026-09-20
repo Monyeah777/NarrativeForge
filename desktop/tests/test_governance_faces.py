@@ -233,6 +233,46 @@ class TestEndpoint(unittest.TestCase):
             self.assertTrue(any("不存在的 MCP 工具" in i for i in issues), issues)
             self.assertTrue(any("id 重复" in i for i in issues), issues)
 
+    def test_deprecation_needs_exit_and_only_when_implemented(self):
+        """弃用/日落语义：未实装不许弃用；弃用必须带 sunset + replacement（无替代写 null）。"""
+        base = {"schema": "nf-endpoint/1", "conventions": {"deprecation": "见契约"},
+                "endpoints": [{"id": "a", "method": "GET", "path": "/a", "streaming": False,
+                               "maps_to": "nf run"}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "protocol").mkdir(parents=True)
+            (Path(tmp) / "scripts").mkdir(parents=True)
+            (Path(tmp) / "scripts" / "nf.py").write_text('sub.add_parser("run")\n',
+                                                         encoding="utf-8")
+            contract = Path(tmp) / "protocol" / "endpoint_contract.json"
+
+            # ① proposed 期间声明弃用 = FAIL
+            doc = dict(base, status="proposed")
+            doc["endpoints"] = [dict(base["endpoints"][0], deprecated=True,
+                                     sunset="2027-01-01", replacement=None)]
+            contract.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+            issues = endpoint.scan(tmp)[0]
+            self.assertTrue(any("没有可弃用的东西" in i for i in issues), issues)
+
+            # ② implemented + 有标志无出口 = FAIL
+            doc["status"] = "implemented"
+            doc["endpoints"] = [dict(base["endpoints"][0], deprecated=True, replacement="ghost")]
+            contract.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+            issues = endpoint.scan(tmp)[0]
+            self.assertTrue(any("缺合规 sunset" in i for i in issues), issues)
+            self.assertTrue(any("replacement 指向契约内不存在" in i for i in issues), issues)
+
+            # ③ implemented + 合规弃用 = 零 FAIL
+            doc["endpoints"] = [dict(base["endpoints"][0], deprecated=True,
+                                     sunset="2027-01-01", replacement=None)]
+            contract.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+            self.assertEqual(endpoint.scan(tmp)[0], [])
+
+            # ④ 未弃用却带 sunset = 悬空字段 FAIL
+            doc["endpoints"] = [dict(base["endpoints"][0], sunset="2027-01-01")]
+            contract.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+            issues = endpoint.scan(tmp)[0]
+            self.assertTrue(any("悬空弃用字段" in i for i in issues), issues)
+
 
 class TestConformanceReport(unittest.TestCase):
     """一致性报告工件：确定可复现 + 在盘报告与实时重算一致 + 篡改/缺失可检。"""

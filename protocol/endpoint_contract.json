@@ -6,7 +6,8 @@
     "encoding": "UTF-8 JSON（请求/响应）",
     "errors": "非 2xx + {error: {code, message}}；message 必须带修复指引（见 patterns/error-message-guidance）",
     "streaming": "stream=true 时响应为 text/event-stream（SSE），事件 data 为同一 schema 的分片",
-    "versioning": "契约版本随 RFC 头（protocol/rfc_index.json）；破坏性变更 bump 并留迁移记录"
+    "versioning": "契约版本随 RFC 头（protocol/rfc_index.json）；破坏性变更 bump 并留迁移记录",
+    "deprecation": "弃用/日落语义（机制借鉴 OpenAPI 的 deprecated 标志 + RFC 8594 Sunset 头）：端点弃用须**同时**给出 `sunset`（YYYY-MM-DD 日落日）与 `replacement`（替代端点 id，无替代写 null，不许省略）——只有标志没有出口的弃用视为违约；弃用只对**已实装**端点成立（status=proposed 期间不得声明弃用，未实装的能力没有可弃用的东西）；未弃用端点不得出现 sunset/replacement（悬空弃用字段）"
   },
   "endpoints": [
     {

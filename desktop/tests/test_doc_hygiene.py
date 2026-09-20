@@ -11,6 +11,8 @@ if str(Path(__file__).resolve().parent.parent / "src") not in sys.path:
 
 from core import doc_hygiene as dh  # noqa: E402
 
+ROOT = str(Path(__file__).resolve().parents[2])
+
 
 def _mk(root, rel, text):
     path = os.path.join(root, rel)
@@ -64,6 +66,26 @@ class DocHygieneTest(unittest.TestCase):
             self.assertTrue(warns)
             self._minimal_tree(tmp, updated="2026-09-01")
             self.assertEqual(dh.stale(tmp, month_limit=3, today="2026-09-08"), [])
+
+    def test_text_sanity_flags_fence_and_mojibake(self):
+        """正文正规性（WARN 级）：围栏未配平 / mojibake 特征各被抓到。"""
+        with self._tmpdir() as tmp:
+            _mk(tmp, "docs/clean.md", "# 干净\n\n```yaml\na: 1\n```\n\n正文\n")
+            _mk(tmp, "docs/unbalanced.md", "# 未配平\n\n```yaml\na: 1\n\n正文不闭合\n")
+            _mk(tmp, "docs/mojibake.md", "# 乱码\n\n管线 鏄鏂鐨涓鍦 鎶璁缂 正文\n")
+            warns = dh.text_sanity(tmp)
+            joined = "\n".join(warns)
+            self.assertIn("围栏未配平", joined)
+            self.assertIn("mojibake", joined)
+            self.assertNotIn("clean.md", joined)
+
+    def test_text_sanity_real_repo_counts_are_explicit(self):
+        """真实仓库：正文正规性发现项显式可数（存量挂账；数量变化即需复核）。"""
+        warns = dh.text_sanity(ROOT)
+        self.assertTrue(all(w.startswith("WARN: ") for w in warns))
+        # 存量按 WARN 挂账（不判死），但**当前为 0**：修复后本仓库不得再有
+        # 围栏未配平 / mojibake 的正文——本断言即该不变量本身（新增漂移即红）。
+        self.assertEqual(warns, [], "正文正规性缺口应已清零（围栏未配平 / mojibake）")
 
     def _tmpdir(self):
         import tempfile

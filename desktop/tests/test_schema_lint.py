@@ -66,6 +66,40 @@ class SchemaSubsetValidatorTest(unittest.TestCase):
         mut = dict(mc, events=events)
         self.assertTrue(any("未知字段 extra_event" in m for m in sl.subset_validate(mut, schema)))
 
+    def _m00_contract(self):
+        m00 = os.path.join(ROOT, "04_模块库", "通用类", "M00_数据结构.md")
+        with open(m00, encoding="utf-8") as fh:
+            parsed = sl._fence_yaml(fh.read(), "machine_contract")
+        self.assertIsNotNone(parsed)
+        return parsed["machine_contract"]
+
+    def test_extension_face_closed(self):
+        """扩展面封闭（01 §1.1 扩展键纪律）：词表外键 → 未知字段 FAIL。"""
+        schema = sl.load_schema(ROOT, "contract.schema.json")
+        mut = dict(self._m00_contract(), novel_face={"x": 1})
+        msgs = sl.subset_validate(mut, schema)
+        self.assertTrue(any("未知字段 novel_face" in m for m in msgs), msgs)
+
+    def test_extension_key_naming_discipline(self):
+        """键名纪律（propertyNames）：snake_case + ≤20 字符，违约即 pattern FAIL。"""
+        schema = {
+            "type": "object",
+            "properties": {"ok": {"type": "string"}},
+            "propertyNames": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,19}$"},
+            "additionalProperties": False,
+        }
+        self.assertEqual(sl.subset_validate({"ok": "v"}, schema), [])
+        for bad in ("Bad-Key", "HasCaps", "a" * 21):
+            msgs = sl.subset_validate({bad: "v"}, schema)
+            self.assertTrue(any("pattern" in m for m in msgs), (bad, msgs))
+
+    def test_registered_extension_key_passes(self):
+        """已登记扩展键照常通过——纪律是「先登记」，不是「禁扩展」。"""
+        schema = sl.load_schema(ROOT, "contract.schema.json")
+        mut = dict(self._m00_contract(),
+                   tool_face=[{"purpose": "示例能力", "guidance": {"check": "在场"}}])
+        self.assertEqual(sl.subset_validate(mut, schema), [])
+
 
 class SchemaScanTest(unittest.TestCase):
     def test_schema_files_meta(self):
@@ -93,6 +127,24 @@ class SchemaScanTest(unittest.TestCase):
         joined = "\n".join(bad)
         self.assertIn("oneOf", joined)
         self.assertIn("$ref", joined)
+
+    def test_schema_dialect_declaration_must_match(self):
+        """方言声明：$schema 与校验器实现的方言不一致即 FAIL（防「声明 2020-12、实现是别的」）。"""
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            sdir = os.path.join(tmp, "protocol", "schema")
+            os.makedirs(sdir)
+            ok_doc = {"$schema": sl.DIALECT, "$id": "x.schema.json", "title": "t",
+                      "type": "object", "properties": {}}
+            bad_doc = dict(ok_doc, **{"$schema": "http://json-schema.org/draft-07/schema#"})
+            with open(os.path.join(sdir, "x.schema.json"), "w", encoding="utf-8") as fh:
+                json.dump(bad_doc, fh)
+            issues, _schemas = sl.check_schema_files(tmp)
+            self.assertTrue(any("方言" in i for i in issues), issues)
+            with open(os.path.join(sdir, "x.schema.json"), "w", encoding="utf-8") as fh:
+                json.dump(ok_doc, fh)
+            self.assertEqual(sl.check_schema_files(tmp)[0], [])
 
     def test_repo_schemas_within_subset(self):
         """仓库五份 schema 全在子集白名单内（零越界 = 校验器无静默忽略面）。"""

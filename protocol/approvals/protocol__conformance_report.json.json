@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-17",
+  "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "条件先行族判据入报告后重冻结",
+  "note": "awesome 线第 3 条（skill 面判据）落地后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "db883cf18ded92a7bda41e65d75c023cd52f699c07b7e069f7a9bbaae2f5ca2a"
+  "subject_digest": "b0240a847209a66e61bb108684ba0462cfa95ca55a45e88fb0fc949d44f74313"
 }

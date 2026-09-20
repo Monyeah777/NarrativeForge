@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "contract.schema.json",
-  "title": "模块头 machine_contract 机读契约块（01 §1.1 九键 + 可选 io_types 类型面）",
-  "description": "模块文档内 machine_contract yaml 围栏的 IDL 定义；check16/26 消费的机读真相。",
+  "title": "模块头 machine_contract 机读契约块（01 §1.1 九键 + conformance + 已登记扩展键）",
+  "description": "模块文档内 machine_contract yaml 围栏的 IDL 定义；check16/26 消费的机读真相，check28 逐件校验。顶层键为封闭词表（01 §1.1 扩展键纪律）：词表 = 本文件 properties，扩展键须合命名模式，未登记键即 FAIL。",
   "type": "object",
   "required": ["schema", "id", "name", "category", "layer", "inputs", "outputs", "events", "interfaces", "conformance"],
   "properties": {
@@ -194,5 +194,10 @@
       "additionalProperties": false
     }
   },
-  "additionalProperties": true
+  "propertyNames": {
+    "type": "string",
+    "pattern": "^[a-z][a-z0-9_]{0,19}$",
+    "description": "顶层键命名纪律（01 §1.1）：snake_case、小写字母开头、≤20 字符——防大小写与连字符变体撞名"
+  },
+  "additionalProperties": false
 }

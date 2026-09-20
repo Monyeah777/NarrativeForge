@@ -79,8 +79,8 @@
     },
     {
       "description": "一致性声明",
-      "detail": "版本 5 · scope 16 · 排除 11",
-      "digest": "93c2b49e2840afc915f73fd953770ed28fe1503449d2515197b5a4d9fda40f61",
+      "detail": "版本 5 · scope 17 · 排除 11",
+      "digest": "1daf30b7857e3635eb574ec7ec0aa1e670972f31797078e9f2f46cf41c905060",
       "id": "declaration",
       "ok": true
     },
@@ -114,8 +114,8 @@
     },
     {
       "description": "数据化断言表（形状类断言数据化）",
-      "detail": "断言 4 条（通过 4）· kind 封闭集 4 种",
-      "digest": "5f39d5e4ac104d4362ab1c9f8d3cedd1ef5c8e5202cbcde47436305ecc7a85cd",
+      "detail": "断言 8 条（通过 8）· kind 封闭集 4 种",
+      "digest": "1314f1181c50ad9968500bb48c3eb13709ba9d81f1f11a4c7f2529ed73c60b64",
       "id": "assertions",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "c59a9bf8adda088e443f3459e99fe404d2f73a2cfd5d6e1dbbe5d5b7a52fff11",
+  "root": "0c03fd4d8f8db1ba4b58f9e60f153d64aa29ec86a27aaaa76dc871bc6d0b6ddc",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

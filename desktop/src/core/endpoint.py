@@ -60,6 +60,7 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     except Exception:
         tools = set()
     cmds = _cli_commands(root)
+    all_ids = [str(e.get("id") or "") for e in (doc.get("endpoints") or [])]
     ids, paths = set(), set()
     for ep in doc.get("endpoints") or []:
         eid = str(ep.get("id") or "")
@@ -85,6 +86,28 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
             if not c or c.group(1) not in cmds:
                 issues.append("%s 的 maps_to 无法解析为现存 CLI 子命令或 MCP 工具：%s"
                               "（修复指引：改正，或先实现该能力）" % (eid, maps))
+        # 弃用/日落语义（机制借鉴 OpenAPI deprecated + RFC 8594 Sunset）：有标志就必须有出口
+        dep = ep.get("deprecated")
+        if dep is not None and not isinstance(dep, bool):
+            issues.append("%s 的 deprecated 应为布尔：%r" % (eid, dep))
+        if dep:
+            if status != "implemented":
+                issues.append("%s 声明 deprecated 但契约 status=%s——未实装的能力没有可弃用的东西"
+                              "（修复指引：先落 implemented 再谈弃用）" % (eid, status))
+            if not conv.get("deprecation"):
+                issues.append("%s 声明 deprecated 但 conventions 未定义弃用约定" % eid)
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(ep.get("sunset") or "")):
+                issues.append("%s 声明 deprecated 但缺合规 sunset（YYYY-MM-DD）：%r"
+                              "（修复指引：按 RFC 8594 给出日落日期）" % (eid, ep.get("sunset")))
+            if "replacement" not in ep:
+                issues.append("%s 声明 deprecated 但缺 replacement（无替代写 null，不许省略）" % eid)
+            else:
+                rep = ep.get("replacement")
+                if rep is not None and str(rep) not in all_ids:
+                    issues.append("%s 的 replacement 指向契约内不存在的端点：%r"
+                                  "（修复指引：改为契约内端点 id，或写 null 表示无替代）" % (eid, rep))
+        elif any(k in ep for k in ("sunset", "replacement")):
+            issues.append("%s 未声明 deprecated 却带 sunset/replacement（悬空弃用字段）" % eid)
     stats = {"status": status, "endpoints": len(doc.get("endpoints") or []),
              "streaming": sum(1 for e in (doc.get("endpoints") or []) if e.get("streaming")),
              "cli_commands": len(cmds), "mcp_tools": len(tools)}
