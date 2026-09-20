@@ -56,7 +56,7 @@ Pipeline:
       allowed_modules: [事件:M22, M06, M13]
     - id: P40
       name: 行为决策
-      description: 闭包求值层：自带 AI系统:M25 读概念图 CONCEPT_GRAPH，对目标概念求前置闭包与缺失清单，写 PrereqState 并发布 concept_closure_ready / prereq_missing（M50 主循环调度本体驻官方核心位，不搬移）
+      description: 闭包求值层：自带 AI系统:M25 解析检索词（条目键 / 别名 / 概念名）并读概念图 CONCEPT_GRAPH，对目标概念求前置闭包与缺失清单，写 PrereqState 并发布 concept_closure_ready / prereq_missing（M50 主循环调度本体驻官方核心位，不搬移）
       optional: false
       default_modules: [AI系统:M25]
       allowed_modules: [AI系统:M25]
@@ -68,7 +68,7 @@ Pipeline:
       allowed_modules: [M12]
     - id: P60
       name: 长期演变
-      description: 装载序层：自带 AI系统:M26 订 concept_closure_ready / prereq_missing，收口确定性拓扑装载序（load_order）与逐概念就绪门（readiness_gate），发布 load_order_ready
+      description: 装载序层：自带 AI系统:M26 订 concept_closure_ready / prereq_missing，收口确定性拓扑装载序（load_order）、逐概念就绪门（readiness_gate）与下一步可装载集（ready_frontier），发布 load_order_ready
       optional: false
       default_modules: [AI系统:M26]
       allowed_modules: [AI系统:M26]
@@ -101,8 +101,8 @@ Pipeline:
 ```
 ## 运行规则
 - 只叠加、不搬移：官方核心配合件（M00 / 通用:M10 / M23 / M50 / M80，以及空跑层位的 M06/M13/M12/M20/M24/事件:M22）本体驻官方核心层位；本包以 core_only 依赖引用协作，**禁止**复制官方模块文件入本包 modules/ 或写入官方层 default 槽（I5 单一真相源）。
-- 契约闭合：M25 零订阅（求值由调度与层序触发）；M26 subscribe（concept_closure_ready / prereq_missing）⊆ M25 publish——本包内发布/订阅自洽无越界（check16 ③ 语义的同包形态）。
+- 契约闭合：AI系统:M25 零订阅（求值由调度与层序触发）；AI系统:M26 subscribe（concept_closure_ready / prereq_missing）⊆ AI系统:M25 publish——本包内发布/订阅自洽无越界（check16 ③ 语义的同包形态）。
 - 同层 default 无交集（check15 ③）：本包 P40 只挂 AI系统:M25、P60 只挂 AI系统:M26；官方骨架各层 default 为空、既有社区包同层 default 无本包编号——独立装载不冲突。
-- 三件产物（前置闭包 / 缺失清单 / 合法装载序）由 P40→P60 顺序产出，可经 `python scripts/ai_domain_closure.py` 逐字节复现；判据面缺口（图内部一致性不在 verify check 族内）如实记档于 `results/audit/docs_audit-50-ai-domain.md`。
+- 四件产物（前置闭包 / 缺失清单 / 合法装载序 / 下一步可装载集）由 P40→P60 顺序产出；概念图 v1.1 双支 47 概念 + 概念别名表，可经 `python scripts/ai_domain_closure.py` 逐字节复现；判据面缺口（图内部一致性不在 verify check 族内）如实记档于 `results/audit/docs_audit-50-ai-domain.md` 与 `results/audit/docs_audit-51-ai-domain-deepen.md`。
 - 本包 references=[] 恒空（零跨包零借阅）；后续包可经 references 协议级通道引用本包模块（届时按 02 §8.4 组合登记另立装配）。
 ---

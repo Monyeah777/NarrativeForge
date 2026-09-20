@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "AI系统域包波次收口：域包+管线+资产+三要件登记，check 族全绿（不新增 check / 不改 Schema）",
+  "note": "AI系统域包深化波次收口：概念图 v1.1 双支 47 概念 + 别名面 + 就绪清单；包版本 1.1.0（additive）带四步迁移记录；AUD-0002 重审、AUD-0003 建档；check 族全绿",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "9169a12adc8eb0cdc274878fa6de757697f7f70413bf906186e10938e97caf14"
+  "subject_digest": "a56b1ae9292638c679c1ced22a9525c94ed95b5f3d4d0f57c5621c6773c723b5"
 }

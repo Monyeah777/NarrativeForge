@@ -58,8 +58,8 @@
     },
     {
       "description": "I/O 类型面（可证不匹配）",
-      "detail": "可证不匹配 0 · 类型覆盖 36.2%（75/207 字段）",
-      "digest": "56e5e784f1cb689bcb4257e8296be50245808e564b300fd5a550b385063ae662",
+      "detail": "可证不匹配 0 · 类型覆盖 36.1%（75/208 字段）",
+      "digest": "d512eb75509f2d6b4be9ea4e124a2f5a7bf425e2a0bc5da5ade13d05ad842427",
       "id": "io-types",
       "ok": true
     },
@@ -121,8 +121,8 @@
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 29 / 说明件 208 · 数据契约 10",
-      "digest": "ff174d189c28d6922128be65c63eeee415929b6eca8e9e82d74aab8e4fb6bce1",
+      "detail": "词表 12 · 规范件 29 / 说明件 209 · 数据契约 10",
+      "digest": "1467bb6732dbd7f07f5e626215a26d1a2c06ab0f97003e51fbe55b9d089b6dcf",
       "id": "modeling",
       "ok": true
     },
@@ -149,8 +149,8 @@
     },
     {
       "description": "审计/验收（结论绑定对象 digest + 签收双要素）",
-      "detail": "审计 13 件（带审计头 2 · legacy 11）· 绑定对象 8",
-      "digest": "8e8005a607458e666c75e3e939e3d07adc430624ef113b1bd293eccf969415dc",
+      "detail": "审计 14 件（带审计头 3 · legacy 11）· 绑定对象 14",
+      "digest": "875de814caeb562897ee92f5ea9040d6366a3700c16901c7a34d07cc3ae71ddc",
       "id": "audit",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "e1a77bc3fe9b605d14dfaa1129051a8608a66214898b4ee1e539b4be2891f312",
+  "root": "48521e9fe8c9d70576d33b964bd3710027d116fba8cd00e009f0535c48913e6d",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

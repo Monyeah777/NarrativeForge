@@ -6,12 +6,12 @@ scope: 命题 P（依赖闭包型知识域能否在 NF 现有机制下自然表�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - community/AI系统域包/protocol.yaml:87366a506e5e98d8bd98d9fc68cf20669c6b21bdd843b85d173872785fab4816
-  - community/AI系统域包/assets/CONCEPT_GRAPH.md:9621b5f05b84591d210ea0c35ab6e1e33ab6b1b6615be4607e5d6afbbea9d0a2
-  - community/AI系统域包/modules/M25_前置闭包求值.md:8c561fbad3feabbb47bdf84fffd467adf60f527f14a462250889cb3e46ca213d
-  - community/AI系统域包/modules/M26_装载序就绪门.md:6528af33a073b266169408921a79531b255c22d8f84c7eea1419617f922be86b
-  - scripts/ai_domain_closure.py:0616377fd39eb7c8321e860931712aa27cb4592a2ed160bfc8a530254cb9560f
-  - desktop/tests/test_ai_domain_closure.py:5094ebb8d4fc00cb0a7cde342fc1a8d9e3039ceb7d34ad267f44fdeebe8abe1c
+  - community/AI系统域包/protocol.yaml:9430e17133858cb7f70d077cadbc07e8ff4d94ae695b0f5369e387bd04f55517
+  - community/AI系统域包/assets/CONCEPT_GRAPH.md:93058b9d94fe7828a4d2fc887fff493f65b14b67b7740457fbd3b3408f62e3eb
+  - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
+  - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448
+  - scripts/ai_domain_closure.py:1b7a2ab0d46534d4dda00f968e4ddd11c5492037963389ab53e9b053d5cb1679
+  - desktop/tests/test_ai_domain_closure.py:1f7e0e7749f2bf52edee010ff080b3b3a0ee23d4e51e5275eda7787a57c7fb02
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签（待作者回话后补写，补写即触发本件重审）。
@@ -113,3 +113,17 @@ $ python scripts/ai_domain_closure.py --order aisystem-module-order   # 违反�
 5. **文档可执行性**：包 README（速览 + 装载命令）、P07 管线（层位/允许段/契约闭合）、资产（人读表 + 机器可读块双形态同源）三件互指；求值命令与输出样本见本件 §三。
 
 **差在哪**：判据面仍靠域包自带质控（求值器 + 单测），不在仓库统一门禁内——这是本波明确点名的缺口，不是「已达标」。
+
+## 十、复审记录（同日第二波 · 深化波次后）
+
+**触发**：`nf conformance` 报 `audit` 契约不通过——本件 subjects 原绑 v1.0 资产 / 模块 / 求值器 / 测试，深化波次（概念图 v1.1 双支扩面 + 别名面 + 就绪清单，见 `docs_audit-51-ai-domain-deepen.md`）改动了这些对象。按审计协议「对象一改，旧审计即失效，须重审并更新摘要」，本件**重审**而非绕过。
+
+**复审结论（逐条复核，命题段与三层判定不改）**：
+
+1. 命题 P 结论不变：求值面仍可表达（四件产物可复现）、声明面仍以内容形态成立、**判据面缺口仍在**（图内部一致性仍不在 verify check 族内，缺口价值面随覆盖面扩大而上升）。
+2. 本件引用的数字在 v1.1 内容上重新实测：`closure(C22)` 仍 **13**、`missing(C22, {C01,C07,C08,C10,C18})` 仍 **8**、`load_order` 覆盖全图（24 → 47 概念）；域包自检 9 → **15** 项、单测 16 → **31** 例（新增别名 / 分支 / 就绪清单 / 用法错误与四类负例）。
+3. `verify.sh` 仍 PASS=61 / WARN=0 / FAIL=0（未新增 check、未改 Schema）。
+4. §六「运行时裸号歧义」与 §八 三处设计偏差在 v1.1 下仍成立（本波新增概念键为 `Cxx`，不触及 `Mxx` 裸号面）。
+5. 包内容版本随内容变更走 additive 档：`1.0.0 → 1.1.0`（`protocol.yaml` 摘要同步更新）。
+
+**摘要更新**：subjects 六条已更新为 v1.1 内容摘要；本件结论对新内容有效。

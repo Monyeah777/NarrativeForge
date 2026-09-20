@@ -7,7 +7,12 @@ package:
   conformance: "L2"            # 装配可执行：自带模块在装配在册（registry protocols[].module_ids）
   id: AI系统域包                # 包目录名（机读唯一标识，与 02 §8 在册一致）
   name: AI系统域包              # 显示名（与 README 标题一致）
-  version: "1.0.0"             # 包内容版本（v2.5.0 Wave2 版本槽位，V1 只增不删）
+  # 包内容版本迁移记录（02 §8 版本语义 · additive 档四步；对齐 01 §7 / 02 §9.3 的迁移记录体例）
+  # 现状快照：1.0.0 = 计算栈 24 概念 + 2 模块（M25/M26）+ P07 管线，首次发布 commit d062236
+  # bump 声明：additive 档（概念图扩至双支 47 概念 + 概念别名表 + M26 新增 ready_frontier 产出键）→ MINOR，1.0.0 升 1.1.0
+  # 迁移说明：只增不删——模块编号 / 管线 id / 类别 / assets.count 均未变，v1.0.0 读者语义不变，新键对旧读者可忽略
+  # 校验回读：check14 ⑦ 双源一致（registry protocols[].version 同步 1.1.0）+ 本记录满足 check30 + verify 全绿
+  version: "1.1.0"
   pipeline: P07                 # 自带装载管线（R3；P07 AI系统域装配流——派生自 P00 通用骨架）
   module_id_range:              # 模块编号清单（类内段 <独占类别>:Mxx；每类 00-99 独立空间，01 §1.6.11 通道②）
     - "AI系统:M25"              # 自带：前置闭包求值（读图求闭包与缺失清单）
