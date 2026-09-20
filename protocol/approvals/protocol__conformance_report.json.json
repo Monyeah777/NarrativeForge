@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "awesome 线第 3 条（skill 面判据）落地后重冻结",
+  "note": "资产行数基线改为可重签工件（规范件 28→29）后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "b0240a847209a66e61bb108684ba0462cfa95ca55a45e88fb0fc949d44f74313"
+  "subject_digest": "880821f373815e3a84848e9ca43fe4b0267015866d3e321c1283153163c41e56"
 }

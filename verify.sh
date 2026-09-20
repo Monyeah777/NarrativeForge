@@ -205,20 +205,44 @@ check7(){
 }
 check8(){
   echo '== [8/4·B] 社区资产行数溯源（07 §7 项3）=='
-  local err=0 c='' w=''
-  if [ -d community/校园情感领域包 ]; then
-    c=$(find community/校园情感领域包/assets -name '*.md' ! -name 'README.md' -exec wc -l {} + 2>/dev/null | awk '/total/{s+=$1} END{print s+0}')
-    [ "$c" -eq 1575 ] || { no "校园资产累计行数 ${c}（应 1575）——与发布基线核对"; err=1; }
+  # 基线 = 可重签工件 protocol/asset_line_baseline.json（不再把数字写在 verify.sh 里）：
+  # 内容/外形改动 → FAIL + 重签指引（nf asset baseline --write）；缺包按段 B 只记 WARN。
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check8.log 2>&1
+import os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+try:
+    from core import asset_line_baseline as alb
+except Exception as exc:
+    print('import 失败：%s' % exc)
+    sys.exit(1)
+issues, warns, stats = alb.verify('.')
+for i in issues:
+    print('[FAIL] %s' % i)
+for w in warns:
+    print('WARN: %s' % w)
+lines = stats.get('lines') or {}
+files = stats.get('files') or {}
+summary = ' / '.join('%s %d 文件 %d 行' % (p, files.get(p, 0), lines.get(p, 0))
+                     for p in sorted(lines)) or '无在场社区包（基线 %d 包在册）' % stats.get('baseline', 0)
+print('SUMMARY %s' % summary)
+sys.exit(1 if issues else 0)
+PYEOF
+    then
+      _bl_sum=$(LC_ALL=C.UTF-8 grep -a '^SUMMARY ' "$NFL_TMP"/nf_check8.log | sed 's/^SUMMARY //')
+      while IFS= read -r _blline; do
+        case "$_blline" in WARN:*) wn "${_blline#WARN: }" ;; esac
+      done < "$NFL_TMP"/nf_check8.log
+      ok "行数溯源一致（基线可重签）：${_bl_sum:-N/A}"
+    else
+      while IFS= read -r _blline; do
+        case "$_blline" in WARN:*) wn "${_blline#WARN: }" ;; esac
+      done < "$NFL_TMP"/nf_check8.log
+      no "社区资产行数溯源不符——$(head -3 "$NFL_TMP"/nf_check8.log | tr '\n' ' ')"; err=1
+    fi
   else
-    wn '校园情感领域包不在场（跳过行数溯源）'
-  fi
-  if [ -d community/西幻生存领域包 ]; then
-    w=$(find community/西幻生存领域包/assets -name '*.md' ! -name 'README.md' -exec wc -l {} + 2>/dev/null | awk '/total/{s+=$1} END{print s+0}')
-    [ "$w" -eq 4284 ] || { no "西幻资产累计行数 ${w}（应 4284）——与发布基线核对"; err=1; }
-  else
-    wn '西幻生存领域包不在场（跳过行数溯源）'
-  fi
-  if [ "$err" -eq 0 ]; then ok "行数溯源一致：校园 29 文件 ${c:-N/A} 行 / 西幻 23 文件 ${w:-N/A} 行（N/A=不在场跳过）"
+    wn 'python3 不在 PATH（跳过 check8 资产行数溯源）'
   fi
 }
 check9(){

@@ -1,0 +1,21 @@
+{
+  "note": "社区资产外形基线（文件数 / 行数 / 逐文件行数映射摘要）。内容改动后须显式重签：`nf asset baseline --write`——数字不写在 verify.sh 里，基线变更与内容变更同提交可见。",
+  "packages": [
+    {
+      "digest": "5e99f6aa5aa794e377eb4c78deef0b580c94f01947ae382002ecc1f1521c097b",
+      "dir": "community/校园情感领域包/assets",
+      "files": 29,
+      "lines": 1575,
+      "package": "校园情感领域包"
+    },
+    {
+      "digest": "508b486b5ac3e545a7f6381b4b2f8fe3bdd9a39dca228e1ec67e50fa6ebd9997",
+      "dir": "community/西幻生存领域包/assets",
+      "files": 23,
+      "lines": 4284,
+      "package": "西幻生存领域包"
+    }
+  ],
+  "recorded_at": "2026-09-20",
+  "schema": "nf-asset-line-baseline/1"
+}

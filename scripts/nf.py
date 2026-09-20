@@ -224,6 +224,12 @@ def _build_parser() -> argparse.ArgumentParser:
     a_vrf = asub.add_parser("verify", help="台账闭合校验（与 verify.sh check23 同语义）", description="台账闭合校验（与 verify.sh check23 同语义）")
     a_vrf.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
 
+    a_bl = asub.add_parser("baseline",
+                           help="社区资产行数基线（可重签工件；漂移即 FAIL 直到显式重签）",
+                           description="社区资产行数基线（机制对齐 module signature：外形冻结、内容演进须显式重签）")
+    a_bl.add_argument("--write", action="store_true", help="重新冻结基线（评审后显式重签）")
+    a_bl.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+
     a_inv = asub.add_parser("inventory", help="库存盘点（台账摘要 + 未托管/孤儿统计）", description="库存盘点（台账摘要 + 未托管/孤儿统计）")
     a_inv.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
     a_inv.add_argument("--json", action="store_true",
@@ -1199,6 +1205,24 @@ def _cmd_asset(args) -> int:
     from core import asset_ledger as al
 
     try:
+        if args.asset_cmd == "baseline":
+            from core import asset_line_baseline as alb
+            if args.write:
+                path = alb.write(args.root)
+                print("== nf asset baseline --write ==")
+                print("  [OK] 资产行数基线已重签：%s" % os.path.relpath(path, args.root))
+                print("    下一步：`bash verify.sh` 由 check8 自证外形一致")
+                return 0
+            issues, warns, stats = alb.verify(args.root)
+            print("== nf asset baseline（在册 %d 包 · 基线 %d 包）=="
+                  % (stats.get("packages", 0), stats.get("baseline", 0)))
+            for w in warns:
+                print("  [WARN] %s" % w)
+            for i in issues:
+                print("  [FAIL] %s" % i)
+            if not issues:
+                print("  [OK] 社区包资产外形与基线一致（改外形须显式重签）")
+            return 1 if issues else 0
         if args.asset_cmd == "add":
             if not args.root:
                 print("  ✗ add 需要 --root（台账所在资产根目录，如 05_资产库）", file=sys.stderr)
@@ -1646,7 +1670,7 @@ CHECK_GUIDE = {
     "5": "缺什么：质检门流水线违约（M80 gate_action ↔ 06 §5）。补什么：核对输出生成器的 gate_action 三态与执行协议一致。",
     "6": "缺什么：入口导航断链（README → 07 → 协议链/官方目录）。补什么：按 07 §7 项6 修 README 路由。",
     "7": "缺什么：社区两包结构完整度违约。补什么：校园/西幻包 modules/pipelines/protocol.yaml/README 与 02 §8 在册数一致。",
-    "8": "缺什么：社区资产行数溯源不符。补什么：核对资产切片行号区间（07 §7 项3）。",
+    "8": "缺什么：社区资产外形与基线不一致（文件数 / 行数 / 逐文件摘要）。补什么：核对内容后显式重签 `nf asset baseline --write`（07 §7 项3）。",
     "9": "缺什么：模块-资产引用不可寻址或社区 README 重号未限定。补什么：资产键真实可寻址 + 社区重号限定引用。",
     "10": "缺什么：EXT 闭合违约或社区红线未落地。补什么：EXT 实体闭合 + 红线条目对齐 07 §7 项2/8。",
     "11": "缺什么：资产-模块三方对账不一致（02 §8.1 ↔ modules/ ↔ assets/README）。补什么：三方条目对齐（08 方案 T5 A5）。",
