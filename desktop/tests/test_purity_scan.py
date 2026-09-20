@@ -60,6 +60,41 @@ class PurityScanTest(unittest.TestCase):
             issues, _ = ps.scan(tmp)
             self.assertEqual(issues, [])
 
+    def test_mutation_r5_unregistered_third_party_captured(self):
+        """R5：未登记的第三方硬 import 被抓（core/scripts 面）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "desktop/src/core/bad.py", "import requests\n")
+            issues, stats = ps.scan(tmp)
+            self.assertTrue(any("第三方 import 未登记" in i for i in issues), issues)
+            self.assertGreaterEqual(stats["imports"], 1)
+
+    def test_r5_soft_declared_and_hard_allowed_pass(self):
+        """R5：软导入 + 登记（jsonschema）与硬依赖白名单（yaml）都放行。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "desktop/src/core/ok.py",
+                   "import yaml\n"
+                   "try:\n"
+                   "    from jsonschema import Draft202012Validator\n"
+                   "except ImportError:\n"
+                   "    Draft202012Validator = None\n")
+            issues, _ = ps.scan(tmp)
+            self.assertEqual(issues, [])
+
+    def test_r5_declared_soft_import_without_guard_is_caught(self):
+        """R5：已登记的软依赖若**裸导入**（无守卫）仍判 FAIL——登记不等于免守卫。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "desktop/src/core/bad.py", "from PySide6.QtGui import QImage\n")
+            issues, _ = ps.scan(tmp)
+            self.assertTrue(any("未软导入" in i for i in issues), issues)
+
+    def test_r5_residue_is_warn_not_fail(self):
+        """R5：登记在 IMPORT_RESIDUE 的存量残留走 WARN 挂账（不判死但不得隐身）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "scripts/selftest_android.py", "from app.controller import Controller\n")
+            issues, stats = ps.scan(tmp)
+            self.assertEqual(issues, [])
+            self.assertTrue(any("残留" in w for w in stats["import_residue"]), stats)
+
 
 if __name__ == "__main__":
     unittest.main()

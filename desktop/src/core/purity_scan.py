@@ -9,6 +9,11 @@ R2 私货/可变物：协议层文档（01/02/06/07）不得出现机器不可�
 R3 冗余标题：同文档内重复章节标题（同一标题文本出现 >1 次）。
 R4 错误信息即微型文档：desktop/src/core 全部 raise 消息须含修复/指引语
     （应为/先/请/须/必填/参考/示例/§ 等动作或出处词——标准批 A #12）。
+R5 import 面越界：desktop/src/core + scripts 的第三方 import 面必须**登记**——
+    只许 stdlib / 本地模块 / HARD_ALLOW 登记的硬依赖；其余第三方必须**软导入**
+    （try/except ImportError 守卫）且在 SOFT_IMPORTS 登记理由；已退役端壳的存量残留
+    在 IMPORT_RESIDUE 登记（**WARN 挂账**，带裁决指针，不判死但不得隐身）。
+    （内部差距：CONTRIBUTING §4.2「core 零第三方依赖」是成文红线，此前**零判据**。）
 
 check27 自身用变异注入验证捕获力（mutation testing：test_purity_scan 对
 每规则注入典型违规样本，断言可被捕获——「check 的 check」）。
@@ -18,6 +23,7 @@ from __future__ import annotations
 import ast
 import os
 import re
+import sys
 
 #: 协议真相源 + 导航文档（R1/R2/R3 作用域）
 PROTO_DOCS = ("01_核心协议.md", "02_联动注册表.md",
@@ -25,6 +31,22 @@ PROTO_DOCS = ("01_核心协议.md", "02_联动注册表.md",
 
 _END_SHELL = re.compile(r"(?i)(android|APK|src/ui|Kivy)")
 _PRIVATE = re.compile(r"[A-Za-z]:\\|/tmp/|/Users/|/home/|TODO|FIXME|XXX|TBD")
+
+#: R5 硬依赖白名单（**登记**的第三方硬 import：允许直接 import）
+HARD_ALLOW = {
+    "yaml": "PyYAML（仓库既有依赖；check16/28 同源解析，见 CONTRIBUTING §4.2 例外）",
+}
+#: R5 软导入登记（第三方可选依赖：必须 try/except ImportError 守卫 + 写明理由）
+SOFT_IMPORTS = {
+    "jsonschema": "IDL 标准实现交叉验证（可选对照；缺依赖则跳过该面）",
+    "PySide6": "CCV3 卡面占位图写入（缺依赖须给明确修复指引，不得裸 ImportError）",
+}
+#: R5 存量残留（**WARN 挂账**：带裁决/文档指针，不判死，待作者裁决后清理）
+IMPORT_RESIDUE = {
+    "scripts/selftest_android.py": "L3 端壳退役残留——docs/L3_FROZEN.md 记「已彻底移除·裁决 #16」，"
+                                   "文件仍在且 import 不存在的 app.controller（待作者裁决删除）",
+}
+IMPORT_SCAN = ("desktop/src/core/*.py", "scripts/*.py")
 _HEAD = re.compile(r"^#{1,6}\s+(.*?)\s*$")
 _ACTION = re.compile(
     r"(应|须|先|必填|必需|必须|请|建议|参考|查看|运行|执行|使用|改用|替换|修复|"
@@ -45,9 +67,53 @@ def _iter_raise_messages(tree: ast.AST):
                 yield node.lineno, "".join(parts)
 
 
+def _guarded_import_lines(tree: ast.AST) -> set:
+    """try/except {ImportError|ModuleNotFoundError|Exception|bare} 守卫体内的 import 行号。"""
+    out = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Try):
+            continue
+        catches = False
+        for h in node.handlers:
+            if h.type is None:
+                catches = True
+            elif isinstance(h.type, ast.Name):
+                catches = catches or h.type.id in ("ImportError", "ModuleNotFoundError", "Exception")
+            elif isinstance(h.type, ast.Tuple):
+                names = {e.id for e in h.type.elts if isinstance(e, ast.Name)}
+                catches = catches or bool(names & {"ImportError", "ModuleNotFoundError", "Exception"})
+        if not catches:
+            continue
+        for sub in node.body:
+            for n2 in ast.walk(sub):
+                if isinstance(n2, (ast.Import, ast.ImportFrom)):
+                    out.add(n2.lineno)
+    return out
+
+
+def _top_modules(tree: ast.AST) -> list:
+    """→ [(module_top_name, lineno)]（跳过相对导入）。"""
+    out = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            out += [(a.name.split(".")[0], node.lineno) for a in node.names]
+        elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+            out.append((node.module.split(".")[0], node.lineno))
+    return out
+
+
+def _is_local(mod: str, root: str) -> bool:
+    if mod == "core":
+        return True
+    for base in (os.path.join(root, "desktop", "src", "core"), os.path.join(root, "scripts")):
+        if os.path.exists(os.path.join(base, mod + ".py")):
+            return True
+    return False
+
+
 def scan(root: str = ".") -> tuple:
     issues = []
-    stats = {"docs": 0, "raises": 0}
+    stats = {"docs": 0, "raises": 0, "imports": 0, "import_residue": []}
     # R1/R2/R3：协议层文档
     for name in PROTO_DOCS:
         path = os.path.join(root, name)
@@ -93,4 +159,33 @@ def scan(root: str = ".") -> tuple:
                 if msg and not _ACTION.search(msg):
                     issues.append("%s:%d raise 消息缺修复指引：%s"
                                   % (fname, lineno, msg[:60]))
+    # R5：import 面（core + scripts 的第三方依赖须登记；软导入才可免硬依赖）
+    import glob as _glob
+    for rel_pat in IMPORT_SCAN:
+        for f in sorted(_glob.glob(os.path.join(root, rel_pat))):
+            rel = os.path.relpath(f, root).replace("\\", "/")
+            try:
+                with open(f, encoding="utf-8") as fh:
+                    tree = ast.parse(fh.read())
+            except (OSError, SyntaxError):
+                continue
+            guarded = _guarded_import_lines(tree)
+            residue = IMPORT_RESIDUE.get(rel)
+            for mod, lineno in _top_modules(tree):
+                if mod in sys.stdlib_module_names or _is_local(mod, root):
+                    continue
+                stats["imports"] += 1
+                if mod in HARD_ALLOW:
+                    continue
+                if mod in SOFT_IMPORTS:
+                    if lineno not in guarded:
+                        msg = ("%s:%d 第三方 %s 未软导入（须 try/except ImportError 守卫；"
+                               "登记理由：%s）" % (rel, lineno, mod, SOFT_IMPORTS[mod]))
+                        (stats["import_residue"] if residue else issues).append(
+                            "%s（%s）" % (msg, residue) if residue else msg)
+                    continue
+                msg = ("%s:%d 第三方 import 未登记：%s（修复指引：改为软导入并在 purity_scan.SOFT_IMPORTS "
+                       "登记理由，或加入 HARD_ALLOW；端壳残留则登记 IMPORT_RESIDUE）" % (rel, lineno, mod))
+                (stats["import_residue"] if residue else issues).append(
+                    "%s（%s）" % (msg, residue) if residue else msg)
     return issues, stats

@@ -1689,7 +1689,7 @@ CHECK_GUIDE = {
     "24": "缺什么：模块状态位异常或 deprecated/retired 被引用。补什么：module deprecate/restore 流转或移除引用方。",
     "25": "缺什么：01-36 编号方案文档签名不可复现/结构缺标题。补什么：文档须 UTF-8 且含 # 标题，同一内容重复生成须逐字节一致；示例：nf sig --verify。",
     "26": "缺什么：语义矛盾（techdoc 链订阅事件无发布方 / 挂载点或类别漂移）。补什么：全库补发布方或修正漂移；示例：nf related 反查 + semantic_conflict.scan。",
-    "27": "缺什么：架构纯度违约（端壳残留/私货可变物/重复标题/raise 消息缺修复指引）。补什么：purity_scan 四规则逐条修；示例：R1 端壳关键词残留清理。",
+    "27": "缺什么：架构纯度违约（端壳残留/私货可变物/重复标题/raise 消息缺修复指引/第三方 import 未登记）。补什么：purity_scan 五规则逐条修；示例：R1 端壳关键词残留清理、R5 第三方 import 改软导入并在 SOFT_IMPORTS 登记理由。",
     "28": "缺什么：协议层 IDL 违约（schema 定义缺失或协议件字段漂移）。补什么：protocol/schema 五定义在场 + 在场 machine_contract/管线/协议包/台账过 schema；示例：nf doctor 看 schema 在场。",
     "29": "缺什么：Conformance 虚标或声明缺失（声明级别 > 可证级别）。补什么：按 01 §1.2 与 conformance_scan 提示降级或补证据。",
     "30": "缺什么：扩展判据缺失或版本字段 bump 无迁移记录。补什么：protocol/EXTENSION.md 判据 + bump 变更带 01 §7/02 §9.3 四步迁移记录。",

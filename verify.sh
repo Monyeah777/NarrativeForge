@@ -1280,13 +1280,23 @@ except Exception as exc:
 issues, stats = ps.scan('.')
 for i in issues:
     print('[FAIL] %s' % i)
-print('纯度体检统计：文档 %d / raise 审计 %d'
-      % (stats['docs'], stats['raises']))
+for w in stats.get('import_residue') or []:
+    print('WARN: %s' % w)
+print('纯度体检统计：文档 %d / raise 审计 %d / 第三方 import %d / import 残留 %d'
+      % (stats['docs'], stats['raises'], stats.get('imports', 0),
+         len(stats.get('import_residue') or [])))
 sys.exit(1 if issues else 0)
 PYEOF
     then
+      # import 残留透传（存量挂账不判死，但必须可见并计数）
+      while IFS= read -r _purline; do
+        case "$_purline" in WARN:*) wn "${_purline#WARN: }" ;; esac
+      done < "$NFL_TMP"/nf_check27.log
       ok '架构纯度体检通过（M3：协议层无端壳残留/私货/重复标题，raise 消息修复指引零缺失）'
     else
+      while IFS= read -r _purline; do
+        case "$_purline" in WARN:*) wn "${_purline#WARN: }" ;; esac
+      done < "$NFL_TMP"/nf_check27.log
       no "纯度体检异常——$(tail -2 "$NFL_TMP"/nf_check27.log | tr '\n' ' ')"; err=1
     fi
   else

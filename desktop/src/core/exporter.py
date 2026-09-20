@@ -98,7 +98,12 @@ def write_png_card(ir: IRDocument, path: Optional[str | Path] = None) -> str:
     chara = map_ir_to_ccv3(ir)
     payload = base64.b64encode(
         json.dumps(chara, ensure_ascii=False).encode("utf-8")).decode("ascii")
-    from PySide6.QtGui import QImage
+    try:
+        from PySide6.QtGui import QImage
+    except ImportError as exc:
+        raise ImportError(
+            "写 PNG 卡面需要 PySide6（当前环境缺该依赖）：请先安装 PySide6 后重试，"
+            "或改用 JSON 卡面导出（不依赖 Qt）") from exc
     img = QImage(512, 512, QImage.Format.Format_RGB32)
     img.fill(0xFF222233)      # 深色占位底（无卡面素材）
     img.setText("chara", payload)

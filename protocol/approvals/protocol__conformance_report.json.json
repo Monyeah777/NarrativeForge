@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "资产行数基线改为可重签工件（规范件 28→29）后重冻结",
+  "note": "R5 import 面规则落地（purity 契约恢复 conformant）后重冻结",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "880821f373815e3a84848e9ca43fe4b0267015866d3e321c1283153163c41e56"
