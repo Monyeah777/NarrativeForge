@@ -70,7 +70,13 @@ def check_registerable(pkg_dir: str, doc: str) -> List[str]:
 
 
 def _normalize(entry: Dict[str, Any]) -> Dict[str, Any]:
-    """条目规范化（module_ids 全 str、空列表字段兜底），保证合并可比较。"""
+    """条目规范化（module_ids 全 str、空列表字段兜底），保证合并可比较。
+
+    v1.1.0 修正（内部差距实证）：键集此前漏 `version`——**新增**包经 `nf register --apply`
+    写入的 `protocols[]` 条目因此不带包内容版本（check14 ⑦ 两侧按 `or "1.0.0"` 缺省比对，
+    1.0.0 时无感；包内容版本 bump 后即失配，只能手工补投影）。此处按协议包法定字段补齐
+    （缺省等价 "1.0.0"，与 check14 ⑦ 同口径）。
+    """
     return {
         "id": str(entry["id"]),
         "name": str(entry.get("name", entry["id"])),
@@ -81,6 +87,7 @@ def _normalize(entry: Dict[str, Any]) -> Dict[str, Any]:
         "mount_layers": dict(entry.get("mount_layers") or {}),
         "references": list(entry.get("references") or []),
         "schema_version": str(entry.get("schema_version", "")),
+        "version": str(entry.get("version") or "1.0.0"),
     }
 
 

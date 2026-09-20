@@ -6,7 +6,7 @@ scope: 命题 P（依赖闭包型知识域能否在 NF 现有机制下自然表�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - community/AI系统域包/protocol.yaml:9430e17133858cb7f70d077cadbc07e8ff4d94ae695b0f5369e387bd04f55517
+  - community/AI系统域包/protocol.yaml:13e26c88057987be2c5933a879d214ed75a1f33e5bc8da4371a36dbcc04bf7b1
   - community/AI系统域包/assets/CONCEPT_GRAPH.md:93058b9d94fe7828a4d2fc887fff493f65b14b67b7740457fbd3b3408f62e3eb
   - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
   - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448

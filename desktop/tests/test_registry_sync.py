@@ -120,5 +120,36 @@ class MergeProtocolsTest(unittest.TestCase):
         self.assertEqual(once, twice)
 
 
+class VersionProjectionTest(unittest.TestCase):
+    """v1.1.0 修正：投影透传 `package.version`。
+
+    内部差距实证：`_normalize` 键集此前漏 `version` → 新增包经 `nf register --apply` 写入的
+    条目不带包内容版本（check14 ⑦ 两侧按 `or "1.0.0"` 缺省比对，1.0.0 时无感）；包内容版本
+    bump 后即失配，只能手工补投影。以下三例钉住修正行为（含缺省兜底与覆盖生效）。
+    """
+
+    def test_projection_entry_carries_version(self):
+        entry = project_entry(str(CAMPUS))
+        self.assertEqual(entry["version"], "1.0.0")
+        self.assertIn("version", registry_sync._normalize(entry))
+
+    def test_merge_writes_version_from_projection(self):
+        """bump 后 merge 必须把新版本写进条目（不得静默保留旧值）。"""
+        reg = [{"id": "测试包V", "version": "1.0.0", "module_ids": []}]
+        entry = project_entry(str(CAMPUS))
+        entry["id"] = "测试包V"
+        entry["version"] = "1.2.0"
+        out = registry_sync.merge_protocols(reg, [entry])
+        self.assertEqual(out[0]["version"], "1.2.0")
+
+    def test_missing_version_defaults_to_1_0_0(self):
+        """条目缺 version 时按 check14 ⑦ 同口径兜底 "1.0.0"（不写空串）。"""
+        entry = {"id": "无版本包", "name": "无版本包", "pipeline": "P09",
+                 "categories": [], "module_ids": [], "assets": {}, "mount_layers": {},
+                 "references": [], "schema_version": "2"}
+        out = registry_sync.merge_protocols([], [entry])
+        self.assertEqual(out[0]["version"], "1.0.0")
+
+
 if __name__ == "__main__":
     unittest.main()

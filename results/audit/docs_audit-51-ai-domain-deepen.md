@@ -2,11 +2,11 @@
 id: AUD-0003
 title: AI 系统域包深化 —— 双支概念图 / 别名检索 / 就绪清单；四仓借鉴逐条实证
 date: 2026-09-20
-scope: 域包深化（概念图 v1.1 扩面 + 检索词面 + 就绪清单面 + 声明面同步）与四份外部输入的「机制借鉴 → 逐条实证」判定；门禁收口
+scope: 域包深化（概念图 v1.1 扩面 + 检索词面 + 就绪清单面 + 声明面同步）＋两条机制缺口补修（registry_sync 投影版本透传 / check30 判据修正）与四份外部输入的「机制借鉴 → 逐条实证」判定；门禁收口
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - community/AI系统域包/protocol.yaml:9430e17133858cb7f70d077cadbc07e8ff4d94ae695b0f5369e387bd04f55517
+  - community/AI系统域包/protocol.yaml:13e26c88057987be2c5933a879d214ed75a1f33e5bc8da4371a36dbcc04bf7b1
   - community/AI系统域包/assets/CONCEPT_GRAPH.md:93058b9d94fe7828a4d2fc887fff493f65b14b67b7740457fbd3b3408f62e3eb
   - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
   - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448
@@ -107,3 +107,16 @@ $ python scripts/ai_domain_closure.py --gaps --loaded C00,C01 --branch app --lim
 5. **文档可执行性**：README（四件产物 + 辅助面）、模块（数据槽 / 就绪清单契约）、资产（人读表 + 别名表 + 机读块）三处互指且命令可粘贴执行。
 
 **差在哪**：应用栈的边仍未全部拿到实现类证据；判据面仍靠域包自带质控——两条都如实记在上面。
+
+## 七、补修记录（同日收口 · §五 两条机制缺口已修）
+
+| 缺口（原挂账） | 修法 | 回归测试（可复现） | 复测结论 |
+|---|---|---|---|
+| `nf register` 投影不带 `version`（新增包条目缺包内容版本；bump 后 check14 ⑦ 失配，只能手工补投影） | `registry_sync._normalize` 键集补 `version`（缺省 `or "1.0.0"`，与 check14 ⑦ 兜底同口径） | `desktop/tests/test_registry_sync.py::VersionProjectionTest`（投影带 version / merge 写入新版本 / 缺省兜底，3 例） | 6 个已登记包 `nf register --check` **全部幂等**（修正未产生伪 diff）；AI系统域包双源一致 `1.1.0` |
+| `check30` 判据过宽（`tok` 为死代码：任何 `: <数字>` 变更行都触发）+ JSON 类文件无迁移记录通道 | ① 判据真正收敛到**版本字段行**（`tok` 同时认 YAML `version:` 与 JSON `"version":`）；② 记录面 = 该文件 diff **∪** `02 §9` / `protocol/EXTENSION.md` 的同次提交 diff | `desktop/tests/test_check30_bump.py`（6 例：两条正例通道 / 三条负例（无记录、JSON 无记录、四步缺一）/ 一条误判回归），**取 `verify.sh` 内嵌程序真件**在独立 git 夹具上执行 | 记录档落 `02 §9.4`（四步齐备）；`protocol.yaml` 只留指针（记录单一真相源）；verify 全绿 |
+
+**性质声明**（防「修判据 = 放宽判据」误读）：
+
+1. 记录要求**未放宽**——仍是四步齐备、且必须随**本次变更**可见（新增的只是「记录该在的地方」多了一条：迁移记录档），JSON 文件由「结构上不可满足」变为「有明确合规通道」。
+2. 检测面**变准而非变松**——收敛到版本字段行后，非版本字段的数值改动（如 `assets.count`）与注释里的数字**不再**误判；该语义由回归测试钉住（`test_non_version_numeric_change_not_flagged`）。
+3. 两条修正均**不新增 check 序号、不改 Schema**；check30 的序号与门禁位次不变。

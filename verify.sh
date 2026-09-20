@@ -1444,38 +1444,49 @@ if os.path.isdir(sdir):
     files += [os.path.join(sdir, f) for f in sorted(os.listdir(sdir)) if f.endswith('.json')]
 import glob
 files += sorted(glob.glob('community/*/protocol.yaml'))
-tok = re.compile(r'\b(?:registry_schema_version|schema_version)\b\s*[:=]\s*"?[0-9][0-9.]*"?')
+# 版本字段行判据（001 修正，2026-09-20 实测）：此前 tok 定义后从未使用，实际对所有 ± 行跑
+# parse_version——任何含 ": <数字>" 的变更行（注释里的 "= 1.0.0"、assets 计数等）都会被判成版本
+# bump；且四步迁移记录只认被扫文件自身 diff，JSON（registry.json / schema）无法内嵌注释 =
+# 结构上不可满足。修正：① 判据真正收敛到版本字段行；② 记录面 = 该文件 diff ∪ 迁移记录档
+# （02 §9 / protocol/EXTENSION.md）的同次提交 diff——记录仍须四步齐备且随本次变更可见。
+tok = re.compile(r'\b(?:registry_schema_version|schema_version|version)"?\s*[:=]\s*"?[0-9][0-9.]*"?')
 def parse_version(line):
     m = re.search(r'[:=]\s*"?([0-9][0-9.]*)"?', line)
     return m.group(1) if m else None
-bumps = 0
-for f in files:
-    r = subprocess.run(['git', 'diff', 'HEAD', '--', f],
+
+def _diff(rel):
+    r = subprocess.run(['git', 'diff', 'HEAD', '--', rel],
                        capture_output=True, text=True,
                        encoding='utf-8', errors='replace')
-    if r.returncode != 0:
-        continue
-    diff = r.stdout
+    return r.stdout if r.returncode == 0 else ''
+
+record_face = '\n'.join(_diff(p) for p in ('02_联动注册表.md', 'protocol/EXTENSION.md'))
+bumps = []
+for f in files:
+    diff = _diff(f)
     old = {}; new = {}
     for ln in diff.splitlines():
         if ln.startswith('---') or ln.startswith('+++'):
             continue
-        if ln.startswith('-') and not ln.startswith('---'):
-            v = parse_version(ln[1:])
-            if v is not None:
-                old.setdefault(v, 0)
-        if ln.startswith('+') and not ln.startswith('+++'):
-            v = parse_version(ln[1:])
-            if v is not None:
-                new.setdefault(v, 0)
+        if ln[:1] not in ('-', '+'):
+            continue
+        body = ln[1:]
+        if not tok.search(body):
+            continue                        # 只认版本字段行（tok 不再是死代码）
+        v = parse_version(body)
+        if v is None:
+            continue
+        (old if ln[0] == '-' else new).setdefault(v, 0)
     if old and new and set(old) != set(new):
-        bumps += 1
+        bumps.append(f)
         markers = ['现状快照', 'bump 声明', '迁移说明', '校验回读']
-        present = [m for m in markers if m in diff]
+        present = [m for m in markers if m in diff + '\n' + record_face]
         if len(present) < 4:
             issues.append('%s: 版本字段结构性变更（bump）但无四步迁移记录（缺：%s）'
-                          % (f, ','.join(set(markers) - set(present))))
-print('扩展策略统计：判据词缺 %d / bump diff %d' % (len(miss), bumps))
+                          '——记录可内嵌该文件 diff，或写入 02 §9 / protocol/EXTENSION.md 的同次提交 diff'
+                          % (f, ','.join(sorted(set(markers) - set(present)))))
+print('扩展策略统计：判据词缺 %d / bump 文件 %d（%s）'
+      % (len(miss), len(bumps), '、'.join(bumps) or '无'))
 for i in issues:
     print('[FAIL] %s' % i)
 sys.exit(1 if issues else 0)
