@@ -28,8 +28,10 @@ DEFAULT_TARGETS = ("README.md", "README.en.md", "llms.txt", "AGENT_START.md", "R
 DEFAULT_GLOBS = ("docs/*.md",)
 #: 不探测的链接前缀（站内锚点 / 邮件 / 电话）
 SKIP_PREFIXES = ("#", "mailto:", "tel:")
-_URL_RE = re.compile(r"https?://[^\s\)\]\>\"'，。；、）】]+")
-_TRAILING = ".,;:!?）)】」』"
+_URL_RE = re.compile(r"https?://[^\s\)\]\>\"'，。；、）】`（]+")
+_TRAILING = ".,;:!?）)】」』`\"'"
+#: 模板占位符：含 `{…}` 的「URL」是文档里的骨架示例，不是可探测链接（跳过而非报失败）
+_PLACEHOLDER = re.compile(r"[{}]")
 
 
 def strip_trailing(url: str) -> str:
@@ -40,11 +42,13 @@ def strip_trailing(url: str) -> str:
 
 
 def extract_links(text: str, skip: Sequence[str] = ()) -> List[str]:
-    """抽取正文 http(s) 链接（去尾标点、去重、保序、过 skip 前缀）。"""
+    """抽取正文 http(s) 链接（去尾标点/反引号/引号、跳过模板占位符、去重、保序、过 skip 前缀）。"""
     out: List[str] = []
     for raw in _URL_RE.findall(text):
         url = strip_trailing(raw.strip())
         if not url or url.startswith(SKIP_PREFIXES):
+            continue
+        if _PLACEHOLDER.search(url):                # 形如 …/{路径} 的骨架示例：跳过
             continue
         if any(url.startswith(s) for s in skip if s):
             continue
@@ -83,8 +87,11 @@ def default_fetcher(timeout: float = 10.0) -> Callable[[str], Tuple[bool, str]]:
     import urllib.request
 
     def fetch(url: str) -> Tuple[bool, str]:
+        # 非 ASCII 路径须先百分号编码（浏览器同义行为）——否则 urllib 抛 UnicodeEncodeError
+        import urllib.parse
+        target = urllib.parse.quote(url, safe=":/?#[]@!$&'()*+,;=%~")
         req = urllib.request.Request(
-            url, method="HEAD",
+            target, method="HEAD",
             headers={"User-Agent": "nf-external-link-check/1.0"})
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:

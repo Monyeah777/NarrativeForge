@@ -164,9 +164,27 @@ def alias_map(graph: Dict[str, Any]) -> Dict[str, str]:
     return out
 
 
-#: 证据强度词表（2026-09-20 收口）：external = 有外部实现类/来源类证据；domain-logic = 域内
-#: 可复算依赖推断（自撰可复核）；inferred = 纯推断。门禁只判「声明在场 + 与图例自洽」。
-PROVENANCE_STRENGTHS = ("external", "domain-logic", "inferred")
+#: 证据强度词表（2026-09-20 收口；同日加 `mixed` 档）：四级阶梯，按**节点外部覆盖**可判定——
+#: `external` = 每个节点至少有一个非推断来源键（全覆盖）；`mixed` = 部分节点有非推断键；
+#: `domain-logic` = 无外部键但图例含 domain-logic；`inferred` = 图例只有推断键。
+#: 门禁只判「声明在场 + 与覆盖实况自洽」，不判「证据是否真的充分」。
+PROVENANCE_STRENGTHS = ("external", "mixed", "domain-logic", "inferred")
+#: 非外部来源键（推断类）
+_NON_SOURCE_KEYS = ("inferred", "domain-logic")
+
+
+def external_coverage(graph: Dict[str, Any]) -> Tuple[int, int]:
+    """(有外部来源锚的节点数, 包内节点总数)——覆盖度是强度声明的判定依据。"""
+    total = 0
+    covered = 0
+    for node in graph.get("nodes") or []:
+        if not isinstance(node, dict) or not node.get("id"):
+            continue
+        total += 1
+        prov = [str(x) for x in (node.get("provenance") or [])]
+        if any(p not in _NON_SOURCE_KEYS for p in prov):
+            covered += 1
+    return covered, total
 
 
 def provenance_strength(graph: Dict[str, Any]) -> str:
@@ -284,12 +302,19 @@ def problems(graph: Dict[str, Any]) -> List[str]:
     elif strength not in PROVENANCE_STRENGTHS:
         issues.append("provenance_strength 越词表：%s（取值 %s）"
                       % (strength, " / ".join(PROVENANCE_STRENGTHS)))
-    elif strength == "external":
-        # external 须有**非推断**来源键在册（推断图例不能单独支撑 external 声明）
-        non_inferred = {k for k in legend if k not in ("inferred", "domain-logic")}
-        if not non_inferred:
-            issues.append("provenance_strength=external 但图例无任何非推断来源键"
-                          "（修复指引：补外部来源图例，或把强度降为 domain-logic / inferred）")
+    else:
+        # 四级阶梯须与「节点外部覆盖」自洽（可判定：覆盖 = 有非推断来源键的节点数 / 包内节点数）
+        covered, total = external_coverage(graph)
+        ratio = (float(covered) / total) if total else 0.0
+        if strength == "external" and ratio < 1.0:
+            issues.append("provenance_strength=external 但外部覆盖仅 %d/%d（修复指引：补齐每节点的"
+                          "外部来源锚，或按实况降为 mixed / domain-logic）" % (covered, total))
+        elif strength == "mixed" and not (0.0 < ratio < 1.0):
+            issues.append("provenance_strength=mixed 但外部覆盖 = %d/%d（修复指引：全覆盖用 "
+                          "external；无外部锚用 domain-logic / inferred）" % (covered, total))
+        elif strength in ("domain-logic", "inferred") and ratio > 0.0:
+            issues.append("provenance_strength=%s 但已有 %d/%d 节点挂外部来源键"
+                          "（修复指引：按实况升为 mixed / external）" % (strength, covered, total))
     seen_nodes: Set[str] = set()
     for node in graph.get("nodes") or []:
         if not isinstance(node, dict) or not node.get("id"):

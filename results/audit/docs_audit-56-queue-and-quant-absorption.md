@@ -6,13 +6,14 @@ scope: ① 执行作者裁决队列六项（闭包跨域形态 / 证据强度入
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/concept_graph.py:778134e3ba46fdcd3a42dd781897e86eff3536e146a105daef144f795a9c0915
-  - verify.sh:b652719a33742cf5038d36bd0ce43b43c96927aa92ddfce6639423b3f700b97c
-  - README.en.md:142b07e2b950cb17c9c8668d1a182ee99ab74340f14407ecb5ca055f018670ef
-  - scripts/check_external_links.py:7d143f342f1cc5cf991c3bbc248e2ace027ad73e4cb2cf4449ccce67ce66d529
+  - desktop/src/core/concept_graph.py:5a4f5b6dc61f825c3d51a648eae84e434ac3cc475114db7c3f50e256ae193ca2
+  - verify.sh:320794ec2b7f322c873b0d691bd589dfd7b71238a66b526863171e8f78bd2245
+  - README.en.md:3431128ea3b63304bbc0f28a0fae594117c935ef89ba7a83e883fab45063313f
+  - scripts/check_external_links.py:29540f42547caef598fb417b83de3fc78ece33a2e216364ad631829532af0a07
   - community/量化金融域包/assets/DATA_CONTRACT.md:3815cd420ce535b571149a1ca0725b2d5c1757660e83d0edd8ed1d5c14ed2af1
   - community/量化金融域包/assets/STRATEGY_SPECS.md:9174638b5caf2d5d8586b80d07ed9aeca5d221e16f01ec19ce0e4c0f50859e65
-  - community/量化金融域包/assets/QUANT_GRAPH.md:fc5c36657facf4c3de8fb5fa9e679a4ab29503676c22efd6d88fa83bccae1b43
+  - community/量化金融域包/assets/QUANT_GRAPH.md:331d63943effe51462440c41832202df3b8e6bb2553734472947ac77927e094c
+  - .github/workflows/external-links.yml:85b42364e385a25a3920bb0321a2bc0b33c3cfd464eddf6be2d7a41dfb0f6850
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
@@ -72,3 +73,13 @@ subjects:
 2. 外链巡检**未接入任何自动化**（本地/定时任务自行调用）；如需定时跑，属运维面，不在本仓门禁内。
 3. 英文入口只覆盖机读事实与装载路径，**不是**中文文档的全量翻译（避免双源维护面爆炸）——`README.md` 仍是权威版本。
 4. 六个项目的**代码与数据零吸收**（只取机制观察与形态）；AGPL 仓连结构也不传导。
+
+## 六、跟进（同日 · 三条挂账一并执行）
+
+| 挂账 | 处置 | 实测 |
+|---|---|---|
+| ① 量化图证据强度升格 | **取回权威来源当外部锚**：Crossref REST API 取回 **10 条**经典工作元数据（Markowitz 1952 / Sharpe 1964·1966 / Black-Scholes 1973 / Fama-French 1993 / Jegadeesh-Titman 1993 / Kyle 1985 / Almgren-Chriss 2001 / Harvey-Liu-Zhu 2015 / Cont 2001，含 DOI 与年份），arXiv 摘要页取回 **3 条**（Deep Learning for Portfolio Optimization 2020-05-27 / Momentum Transformer 2021-12-16 / Deep Learning for Limit Order Books 2016-01-08）；据此给 **14/30 节点**挂外部来源键，资产新增 §6 外部证据表与取回失败清单 | 强度声明 `domain-logic` → **`mixed`**；判据同步升级为**四级阶梯 + 覆盖自洽**（`external` 须全覆盖 / `mixed` 须部分覆盖 / `domain-logic` 须零外部键）。AI系统域包实测 **external（47/47 全覆盖）**，量化金融 **mixed（14/30）**——都是机检结论，不是自述 |
+| ② 外链巡检接自动化 | 新增工作流 `.github/workflows/external-links.yml`：`workflow_dispatch` + **每周一 cron**；权限最小化（`contents: read`）；先跑离线 scan（恒绿）再跑 `--fetch`（失败即 job 红）；报告上传为 artifact（**不写回仓库**） | 网络抖动可手动重跑；门禁基线不受影响（外链巡检始终在 verify 之外）。**首跑即抓出工具自身三处缺陷并当场修正**：① 行内代码里的 URL 带尾随反引号未剥离；② 骨架示例 URL（含 `{路径}` 占位符）被当死链；③ 非 ASCII 路径未百分号编码 → urllib `UnicodeEncodeError`。修正后复测 **20/20 取样链接全部可达、0 失败**，并补 2 例单测（占位符跳过 / 尾引号剥离） |
+| ③ 英文入口扩到全量 | `README.en.md` 重写为**逐节镜像**（5 个 H2 与 `README.md` 一一对应：AI/Agent 入口 / 快速开始 / 能力与资产 / 协议链导航 / 版本块），并顺带**校正中文 README 的能力块陈旧数字**（44 模块 · 8 管线 · 5 社区包 · 55 档/165 键 · 馆藏 2 件 → 48 模块 · 10 管线 · 7 社区包 · 60 档/326 键 · 概念图 2 · 馆藏 3 件）；check34 增两条断言：**H2 章节数一致** + **中文入口引用的 ASCII 名 .md 件在英文入口同样出现** | 单测同步加 2 例；「双语面腐烂」类事故因此变成门禁可拦 |
+
+**取回失败与修正如实记录**：arXiv API 端点返回 406（改走摘要页）· Merton 1973 的 DOI 失效（1 条未取回）· MIT OCW `/pages/calendar/` 重定向环、`/pages/lecture-notes/` 讲座清单为前端渲染、QuantEcon 站点返回 JS 桩 → **课程体系序未取回**，故量化图仍无 orderings（不造序）· 一次 arXiv ID 猜测取回无关论文（1904.08900 = CornerNet-Lite）**已弃用不入图例**。

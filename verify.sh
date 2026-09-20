@@ -1797,6 +1797,25 @@ try:
 except Exception as exc:
     problems.append('双语入口锚点检查不可用：%s' % exc)
 
+# 8 双语入口结构对齐（2026-09-20 收口）：H2 章节数一致 + 中文入口引用的 ASCII 名 .md 件在英文入口同样出现
+try:
+    with open('README.md', encoding='utf-8') as _fh:
+        _zh = _fh.read()
+    with open('README.en.md', encoding='utf-8') as _fh:
+        _en = _fh.read()
+    _zh_h2 = len(_re.findall(r'(?m)^## ', _zh))
+    _en_h2 = len(_re.findall(r'(?m)^## ', _en))
+    if _zh_h2 != _en_h2:
+        problems.append('双语入口：章节结构不对齐（README.md H2=%d，README.en.md H2=%d）'
+                        '（修复指引：英文面按中文面逐节镜像）' % (_zh_h2, _en_h2))
+    _refs = sorted(set(_re.findall(r'[A-Za-z0-9_\-\./]+\.md', _zh)))
+    _miss = [r for r in _refs if r not in _en]
+    if _miss:
+        problems.append('双语入口：README.en.md 缺中文入口引用的件：%s'
+                        '（修复指引：英文面须覆盖同组文档入口）' % '、'.join(_miss[:5]))
+except Exception as exc:
+    problems.append('双语入口结构对齐检查不可用：%s' % exc)
+
 for p in problems:
     print('[FAIL] %s' % p)
 dist = dh.kind_distribution('.')

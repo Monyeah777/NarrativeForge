@@ -21,6 +21,7 @@ from core import quality_baseline as qb  # noqa: E402
 ANCHORS = ("check1-%d" % qb.EXPECTED_CHECKS, "PASS=%d" % qb.EXPECTED_PASS,
            "01_核心协议.md", "06_Agent执行协议.md", "llms.txt", "community/")
 ENTRIES = ("README.md", "README.en.md")
+_MD_REF = re.compile(r"[A-Za-z0-9_\-\./]+\.md")
 
 
 class BilingualEntryTest(unittest.TestCase):
@@ -44,6 +45,20 @@ class BilingualEntryTest(unittest.TestCase):
     def test_machine_index_points_to_english_entry(self):
         self.assertIn("README.en.md", self._read("llms.txt"))
 
+    def test_section_structure_is_aligned(self):
+        """结构对齐：两份入口的 H2 章节数一致（英文面逐节镜像中文面）。"""
+        counts = [len(re.findall(r"(?m)^## ", self._read(rel))) for rel in ENTRIES]
+        self.assertEqual(counts[0], counts[1],
+                         "双语入口章节数不一致：%s" % dict(zip(ENTRIES, counts)))
+        self.assertEqual(counts[0], 5)
+
+    def test_english_entry_covers_chinese_doc_references(self):
+        """文档入口覆盖：中文入口引用的 ASCII 名 .md 件须在英文入口同样出现。"""
+        zh_refs = sorted(set(_MD_REF.findall(self._read("README.md"))))
+        en = self._read("README.en.md")
+        missing = [r for r in zh_refs if r not in en]
+        self.assertEqual(missing, [], "英文入口缺件：%s" % missing)
+
 
 class ExternalLinkToolTest(unittest.TestCase):
     """外链巡检工具（**非门禁**）：解析判据 + 注入 fetcher 的正负例（离线可跑）。"""
@@ -63,6 +78,17 @@ class ExternalLinkToolTest(unittest.TestCase):
     def test_skips_anchors_and_mail(self):
         text = "[锚](#section) [邮件](mailto:a@b.c) 正文 https://c.example/z"
         self.assertEqual(self.tool.extract_links(text), ["https://c.example/z"])
+
+    def test_skips_template_placeholder_urls(self):
+        """骨架示例 URL（含 `{…}` 占位符）必须跳过——否则巡检把模板当死链。"""
+        text = "取件：https://x.example/tree/main/{路径}` 与真实 https://x.example/real"
+        self.assertEqual(self.tool.extract_links(text), ["https://x.example/real"])
+
+    def test_strips_trailing_backtick_and_quote(self):
+        """markdown 行内代码/引号里的 URL 会带尾随反引号或引号，须剥掉。"""
+        text = "见 `https://a.example/x` 与 \"https://b.example/y\""
+        self.assertEqual(self.tool.extract_links(text),
+                         ["https://a.example/x", "https://b.example/y"])
 
     def test_check_reports_ok_and_fail_with_injected_fetcher(self):
         links = {"README.md": ["https://ok.example/1", "https://dead.example/2"],

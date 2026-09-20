@@ -1,0 +1,39 @@
+name: External links (scheduled, non-gate)
+
+# 定位（2026-09-20 作者裁决执行）：外链可达性**不进 verify 基线**（门禁须静态可复现），
+# 本工作流把它做成独立任务——每周跑一次（或手动触发），失败即红便于察觉，报告作为工件留存。
+# 权限最小化：只读仓库内容；不上传、不写回仓库任何文件（报告走 artifact）。
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * 1'      # 每周一 03:17 UTC（避开整点拥塞）
+
+permissions:
+  contents: read
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Scan mode (offline, always green)
+        run: python scripts/check_external_links.py
+
+      - name: Fetch mode (network; failures turn this job red)
+        run: python scripts/check_external_links.py --fetch --json --write results/external-links-report.json
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-links-report
+          path: results/external-links-report.json
+          if-no-files-found: warn

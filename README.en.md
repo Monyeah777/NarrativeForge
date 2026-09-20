@@ -1,43 +1,62 @@
-# NarrativeForge · Content Contract Workshop (English entry)
+# NarrativeForge · Document Generation Workshop (spec-driven) — English mirror
 
-> **What this is**: NarrativeForge (NF) is a **content contract layer** — it turns "AI reliably produces long-form content" into loading, quality-gated, reproducible engineering. The protocol itself is domain-neutral and model-agnostic; narrative is only the first official domain package.
-> **This file is the minimal English entry.** The authoritative documents are Chinese; this entry covers the machine-checkable facts and the loading paths so an English-only agent can start. It is kept in sync with `README.md` by a machine check (`verify.sh` check34, bilingual anchors).
+> MIT License · original open source · please cite the source when deriving/referencing
+
+**In one sentence**: NF is a **content contract layer** — it defines the protocols, quality gates and asset standards for "AI reliably produces long-form content"; narrative is only the first official domain package, while the protocol itself is domain-neutral and model-agnostic.
+
+`verify v2.27 · check1-37 · PASS=61` · `python scripts/nf.py --version`
+
+> **Bilingual rule**: this file mirrors `README.md` section by section; the Chinese `README.md` is authoritative. The machine-checkable facts (version, check count, PASS baseline, protocol files, machine entries) are asserted identical by `verify.sh` check34 — a drift fails the gate.
 > 最后更新：2026-09-20
 
-## Quality credential (run locally, not a claim)
+## ⚡ If you are an AI / Agent
 
-`bash verify.sh` → **v2.27 · check1-37 · PASS=61** (WARN=0, FAIL=0). The gate is self-contained and offline.
+- What this is: a spec-driven document factory — load modules/pipelines/assets → validate → emit.
+- Entry chain: `AGENT_START.md` (start) → `AI_ROUTING.md` (pick a route) → `DEEP_DIVE.md` (go deep).
+- Machine credential: `bash verify.sh` → v2.27, check1-37, PASS=61; the machine entry list is `llms.txt`, the English entry is `README.en.md` (both entries' machine facts are asserted consistent by check34).
+- To understand why NF is designed this way: read [DEEP_DIVE.md](DEEP_DIVE.md).
 
-## Machine entry points
+## Quick start
 
-| Entry | Path | For |
-|---|---|---|
-| Machine index | `llms.txt` | agents: what to read first |
-| Core protocol | `01_核心协议.md` | module / pipeline / asset protocols |
-| Registry (truth source) | `02_联动注册表.md` | module table, mount points, community package registrations |
-| Agent execution protocol | `06_Agent执行协议.md` | runtime constraints for agents |
-| Navigation | `07_官方核心出厂与社区预设导航.md` | official-core assembly guide |
-| Domain packages | `community/` | official domain packages (narrative + non-narrative domains) |
-| Protocol IDL | `protocol/schema/*.json` | machine-readable schemas (contract / module / pipeline / protocol / asset) |
-| CLI | `scripts/nf.py --help` | the `nf` toolchain (`market` / `pipeline` / `asset` / `module` / `register` / `score` …) |
+Human (author/developer, 5 minutes):
 
-## Three loading paths
+1. `bash verify.sh`
+2. `python scripts/nf.py demo`
+3. `python scripts/nf.py --help`
+4. `python scripts/nf.py doctor`
+5. `python scripts/nf.py completion bash`
 
-1. **Official core assembly** — read `07_官方核心出厂与社区预设导航.md` and load the 13 official core modules via pipeline `P01`.
-2. **Domain package** — pick a package under `community/`, read its `README.md` + `protocol.yaml`, load its pipeline (e.g. `P02` … `P08`).
-3. **Agent self-assembly** — read `AGENT_START.md` → `agent_组装指令包_v0.2.md`, then assemble a self-contained world document.
+AI assembly:
 
-## What is machine-verified
+1. Read `AGENT_START.md`
+2. Read `agent_组装指令包_v0.2.md`
+3. Take `01_核心协议.md` / `02_联动注册表.md` / `06_Agent执行协议.md` / `07_官方核心出厂与社区预设导航.md` and community packages as needed
+4. Assemble a self-contained full version and pass the `##7` self-check
+5. `nf assemble "<requirement>" --check <out.md>`
 
-- `bash verify.sh` — 37 checks in three sections (official core / community packages / code layer). All green is the baseline, not a quality claim.
-- `python -m unittest discover -s desktop/tests -q` — core test suite.
-- `nf conformance` — conformance report (contracts → Merkle root → verdict).
-- `nf score` — baseline-relative regression score (no silent worsening).
-- `nf events` — event backing: every subscribed event must have a publisher.
+## Capabilities and assets
 
-## Scope and licensing
+48 modules · 10 pipelines · 7 community packages (3 narrative / 3 non-narrative / 1 composite) · 60 asset files / 326 keys · 2 concept graphs (AI systems 47 + quantitative finance 30) · world_model 1 (M50) · library entries 3 · practice packs 3 · knowledge sources 6 (contract 3 / reference 3) · verify check1-37 always on
 
-- Repository content: see `LICENSE` (MIT) and per-entry license columns (`library/INDEX.md`, `nf license`).
-- Domain packages are self-authored content; external material is used only as evidence (provenance recorded per asset) and is never copied.
+## Protocol chain and documentation map
 
-> Chinese original: `README.md`. If the two entries disagree on a machine-checkable fact, the check in `verify.sh` (check34) fails — the machine facts must match.
+| Layer | Entry |
+|---|---|
+| Direction | `STRATEGY.md` |
+| Protocol | `01_核心协议.md` · `02_联动注册表.md` · `06_Agent执行协议.md` · `07_官方核心出厂与社区预设导航.md` · `protocol/WORLD_MODEL.md` |
+| Library | `03_管线库/` · `04_模块库/` · `05_资产库/` |
+| Community | `community/README.md` · `community/模板制作指令包.md` |
+| AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
+| Tooling | `docs/mcp.md` · `scripts/nf.py` · `scripts/verify.sh` |
+| Collection | `library/INDEX.md` · `ROUTES.md` |
+
+## Version block
+
+| Version | Status |
+|---|---|
+| v2.11.0 | current (2026-09-10) · world_model deterministic abstract-state contract + world_slots |
+| v2.10.0 | released 2026-09-09 · 45 quality depth + foundation-layer wave A |
+| v2.9.0 | released 2026-09-08 · STRATEGY + waves 43/44 |
+| v2.8.0 | released 2026-09-08 · waves 41/42 quality closure |
+
+Full version history: `CHANGELOG.md` and `VERSION-MATRIX.md`.

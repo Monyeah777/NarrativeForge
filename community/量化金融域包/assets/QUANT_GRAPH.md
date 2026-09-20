@@ -63,6 +63,8 @@
 | `Q29` | 数值方法与动态规划：数值解、动态规划、模型求解口径 | P20 | `Q07`、`Q08` | domain-logic |
 | `Q30` | 交易对象与账户口径：持仓 / 委托 / 成交 / 资金的对象与口径一致性 | P50 | `Q18`、`Q19` | domain-logic |
 
+> 外部锚（§6 表）：Q07/Q09/Q10/Q11/Q12/Q13/Q14/Q16/Q17/Q19/Q22/Q23/Q24/Q25 共 **14 个节点**挂权威来源键（Crossref 10 条 + arXiv 3 条）；其余 16 个节点为 `domain-logic`。
+
 ## 3. 概念别名表（检索词 → 条目键）
 
 > 别名与 id 等价；别名在图内**必须唯一**（重复即拒）。概念名本身也可直接作为检索词。
@@ -108,7 +110,7 @@ concept_graph:
   domain: 量化金融
   date: "2026-09-20"
   intent: 概念前置依赖的偏序声明（前置闭包求值的输入面）
-  provenance_strength: domain-logic   # 证据强度（2026-09-20 收口词表）：domain-logic = 域内「产物 → 输入」可复算依赖，自撰可复核；本图无外部结构证据
+  provenance_strength: mixed   # 证据强度（2026-09-20 收口词表四级：external / mixed / domain-logic / inferred）：本图部分节点挂外部权威来源锚（14/30），其余为域内可复算依赖，见 §6 外部证据表
   closure_rules:
     closure: "closure(c) = {c} ∪ ⋃ closure(p)，p ∈ prereqs(c)（传递闭包）"
     missing: "missing(c, L) = closure(c) − L（L = 已装载概念集）"
@@ -128,7 +130,20 @@ concept_graph:
       name: 研究与交易（因子 → 信号 → 组合 → 回测 → 绩效 / 风控 / 执行 / 治理）
       nodes: [Q09, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18, Q19, Q20, Q21, Q22, Q23, Q24, Q25, Q26, Q27, Q29, Q30]
   provenance_legend:
-    domain-logic: 本件按域内「产物 → 输入」的可复算依赖自撰（可复核；无外部结构证据）
+    markowitz1952: Markowitz, "Portfolio Selection", Journal of Finance 1952（DOI 10.2307/2975974；Crossref 元数据取回）
+    sharpe1964: "Sharpe, 'Capital Asset Prices: A Theory of Market Equilibrium under Conditions of Risk', Journal of Finance 1964（DOI 10.1111/j.1540-6261.1964.tb02865.x）"
+    sharpe1966: Sharpe, "Mutual Fund Performance", Journal of Business 1966（DOI 10.1086/294846）
+    blackscholes1973: Black & Scholes, "The Pricing of Options and Corporate Liabilities", Journal of Political Economy 1973（DOI 10.1086/260062）
+    famafrench1993: Fama & French, "Common risk factors in the returns on stocks and bonds", Journal of Financial Economics 1993（DOI 10.1016/0304-405X(93)90023-5）
+    jegadeesh1993: Jegadeesh & Titman, "Returns to Buying Winners and Selling Losers", Journal of Finance 1993（DOI 10.1111/j.1540-6261.1993.tb04702.x）
+    kyle1985: Kyle, "Continuous Auctions and Insider Trading", Econometrica 1985（DOI 10.2307/1913210）
+    almgren2000: Almgren & Chriss, "Optimal execution of portfolio transactions", Journal of Risk 2001（DOI 10.21314/JOR.2001.041）
+    harvey2016: Harvey, Liu & Zhu, "…and the Cross-Section of Expected Returns", Review of Financial Studies 2015（DOI 10.1093/rfs/hhv059）
+    cont2001: "Cont, 'Empirical properties of asset returns: stylized facts and statistical issues', Quantitative Finance 2001（DOI 10.1080/713665670）"
+    arxiv-dl-portfolio: Zhang, Zohren & Roberts, "Deep Learning for Portfolio Optimization", arXiv:2005.13665（2020-05-27）
+    arxiv-momentum-transformer: Wood, Giegerich, Roberts & Zohren, "Trading with the Momentum Transformer", arXiv:2112.08534（2021-12-16）
+    arxiv-dl-lob: Sirignano, "Deep Learning for Limit Order Books", arXiv:1601.01987（2016-01-08）
+    domain-logic: 本件按域内「产物 → 输入」的可复算依赖自撰（可复核；无外部来源锚的部分节点用此键）
     inferred: 本件推断（无来源，待实现类证据收窄）
   external_prereqs:
     - id: Q00
@@ -143,25 +158,25 @@ concept_graph:
     - {id: Q04, branch: data, name: 基本面与另类数据：财报与公告、情绪文本、另类数据源, layer: P50, prereqs: [Q02], provenance: [domain-logic], aliases: [基本面数据, 另类数据, 情绪数据]}
     - {id: Q05, branch: data, name: 数据存储与查询：时序 / 列存、研究数据层、查询可复现, layer: P60, prereqs: [Q03], provenance: [domain-logic], aliases: [时序库, 列存, 研究数据层]}
     - {id: Q06, branch: foundations, name: 工具与框架生态：研究环境、数据接口、回测框架的选型口径, layer: P50, prereqs: [Q01], provenance: [domain-logic], aliases: [工具生态, 研究环境, 回测框架]}
-    - {id: Q07, branch: foundations, name: 统计与时间序列基础：分布、平稳性、自相关、频率对齐, layer: P20, prereqs: [Q00], provenance: [domain-logic], aliases: [时间序列, 平稳性, 自相关]}
+    - {id: Q07, branch: foundations, name: 统计与时间序列基础：分布、平稳性、自相关、频率对齐, layer: P20, prereqs: [Q00], provenance: [cont2001, domain-logic], aliases: [时间序列, 平稳性, 自相关]}
     - {id: Q08, branch: foundations, name: 计量经济学与回归：OLS、面板、稳健标准误、因果视角, layer: P20, prereqs: [Q07], provenance: [domain-logic], aliases: [计量经济学, 回归, 面板数据]}
-    - {id: Q09, branch: research, name: 因子分析：因子定义、标准化、极值处理、中性化、IC / 分层, layer: P40, prereqs: [Q03, Q04, Q08], provenance: [domain-logic], aliases: [因子, 因子分析, 中性化, IC]}
-    - {id: Q10, branch: research, name: 技术指标与规则信号：价格派生指标、形态规则、信号口径, layer: P40, prereqs: [Q02, Q07], provenance: [domain-logic], aliases: [技术指标, 规则信号]}
-    - {id: Q11, branch: research, name: 多因子合成：打分、权重、组合信号与拥挤度意识, layer: P40, prereqs: [Q09, Q10], provenance: [domain-logic], aliases: [多因子, 因子合成, 打分]}
-    - {id: Q12, branch: research, name: 组合优化：均值方差、风险平价、换手与权重约束, layer: P50, prereqs: [Q11, Q07], provenance: [domain-logic], aliases: [组合优化, 均值方差, 风险平价]}
-    - {id: Q13, branch: research, name: 风险模型与暴露：因子风险、协方差估计、行业与风格暴露, layer: P50, prereqs: [Q08, Q09], provenance: [domain-logic], aliases: [风险模型, 协方差, 暴露]}
-    - {id: Q14, branch: research, name: 交易成本与容量：费率、滑点、冲击成本、策略容量, layer: P50, prereqs: [Q12], provenance: [domain-logic], aliases: [交易成本, 滑点, 容量]}
+    - {id: Q09, branch: research, name: 因子分析：因子定义、标准化、极值处理、中性化、IC / 分层, layer: P40, prereqs: [Q03, Q04, Q08], provenance: [famafrench1993, jegadeesh1993, domain-logic], aliases: [因子, 因子分析, 中性化, IC]}
+    - {id: Q10, branch: research, name: 技术指标与规则信号：价格派生指标、形态规则、信号口径, layer: P40, prereqs: [Q02, Q07], provenance: [jegadeesh1993, domain-logic], aliases: [技术指标, 规则信号]}
+    - {id: Q11, branch: research, name: 多因子合成：打分、权重、组合信号与拥挤度意识, layer: P40, prereqs: [Q09, Q10], provenance: [famafrench1993, domain-logic], aliases: [多因子, 因子合成, 打分]}
+    - {id: Q12, branch: research, name: 组合优化：均值方差、风险平价、换手与权重约束, layer: P50, prereqs: [Q11, Q07], provenance: [markowitz1952, sharpe1964, domain-logic], aliases: [组合优化, 均值方差, 风险平价]}
+    - {id: Q13, branch: research, name: 风险模型与暴露：因子风险、协方差估计、行业与风格暴露, layer: P50, prereqs: [Q08, Q09], provenance: [sharpe1964, famafrench1993, domain-logic], aliases: [风险模型, 协方差, 暴露]}
+    - {id: Q14, branch: research, name: 交易成本与容量：费率、滑点、冲击成本、策略容量, layer: P50, prereqs: [Q12], provenance: [almgren2000, domain-logic], aliases: [交易成本, 滑点, 容量]}
     - {id: Q15, branch: research, name: 回测引擎与偏差控制：成交假设、前视偏差、数据泄漏、样本外切分, layer: P50, prereqs: [Q03, Q12], provenance: [domain-logic], aliases: [回测, 前视偏差, 数据泄漏]}
-    - {id: Q16, branch: research, name: 绩效评估与归因：收益与风险调整指标、收益归因分解, layer: P80, prereqs: [Q15, Q13], provenance: [domain-logic], aliases: [绩效, 归因, 夏普]}
-    - {id: Q17, branch: research, name: 稳健性与过拟合防护：样本外、滚动验证、多重检验、参数敏感性, layer: P60, prereqs: [Q10, Q11, Q16], provenance: [domain-logic], aliases: [过拟合, 样本外, 多重检验]}
+    - {id: Q16, branch: research, name: 绩效评估与归因：收益与风险调整指标、收益归因分解, layer: P80, prereqs: [Q15, Q13], provenance: [sharpe1966, domain-logic], aliases: [绩效, 归因, 夏普]}
+    - {id: Q17, branch: research, name: 稳健性与过拟合防护：样本外、滚动验证、多重检验、参数敏感性, layer: P60, prereqs: [Q10, Q11, Q16], provenance: [harvey2016, domain-logic], aliases: [过拟合, 样本外, 多重检验]}
     - {id: Q18, branch: research, name: 执行与交易：下单、算法执行、交易成本分析（TCA）, layer: P50, prereqs: [Q14, Q15], provenance: [domain-logic], aliases: [执行, 算法交易, TCA]}
-    - {id: Q19, branch: research, name: 组合风险管理：回撤、风险预算、敞口与限额、止损口径, layer: P60, prereqs: [Q13, Q16], provenance: [domain-logic], aliases: [风控, 回撤, 风险预算]}
+    - {id: Q19, branch: research, name: 组合风险管理：回撤、风险预算、敞口与限额、止损口径, layer: P60, prereqs: [Q13, Q16], provenance: [markowitz1952, cont2001, domain-logic], aliases: [风控, 回撤, 风险预算]}
     - {id: Q20, branch: research, name: 实盘运维与监控：实盘与回测偏差、漂移检测、告警, layer: P60, prereqs: [Q18, Q19], provenance: [domain-logic], aliases: [实盘, 监控, 漂移]}
     - {id: Q21, branch: research, name: 合规与治理：交易合规、留痕与审计、信息披露, layer: P80, prereqs: [Q19], provenance: [domain-logic], aliases: [合规, 留痕, 披露]}
-    - {id: Q22, branch: research, name: 机器学习在量化：特征学习、非线性模型、模型风险, layer: P60, prereqs: [Q09, Q17], provenance: [domain-logic], aliases: [机器学习, 特征学习, 模型风险]}
-    - {id: Q23, branch: research, name: 高频与市场微结构：订单簿、做市、延迟与撮合口径, layer: P50, prereqs: [Q18, Q07], provenance: [domain-logic], aliases: [高频, 订单簿, 做市]}
-    - {id: Q24, branch: research, name: 衍生品与定价：期权定价直觉、隐含波动、希腊字母与对冲口径, layer: P50, prereqs: [Q07, Q12], provenance: [domain-logic], aliases: [期权, 隐含波动, 希腊字母]}
-    - {id: Q25, branch: research, name: 多资产与宏观配置：资产类别、宏观因子、再平衡口径, layer: P60, prereqs: [Q12, Q13], provenance: [domain-logic], aliases: [多资产, 宏观配置, 再平衡]}
+    - {id: Q22, branch: research, name: 机器学习在量化：特征学习、非线性模型、模型风险, layer: P60, prereqs: [Q09, Q17], provenance: [arxiv-dl-portfolio, arxiv-momentum-transformer, domain-logic], aliases: [机器学习, 特征学习, 模型风险]}
+    - {id: Q23, branch: research, name: 高频与市场微结构：订单簿、做市、延迟与撮合口径, layer: P50, prereqs: [Q18, Q07], provenance: [kyle1985, arxiv-dl-lob, domain-logic], aliases: [高频, 订单簿, 做市]}
+    - {id: Q24, branch: research, name: 衍生品与定价：期权定价直觉、隐含波动、希腊字母与对冲口径, layer: P50, prereqs: [Q07, Q12], provenance: [blackscholes1973, domain-logic], aliases: [期权, 隐含波动, 希腊字母]}
+    - {id: Q25, branch: research, name: 多资产与宏观配置：资产类别、宏观因子、再平衡口径, layer: P60, prereqs: [Q12, Q13], provenance: [markowitz1952, domain-logic], aliases: [多资产, 宏观配置, 再平衡]}
     - {id: Q26, branch: research, name: 研究与复现纪律：研究版本、口径一致、可复现产物, layer: P60, prereqs: [Q15, Q17], provenance: [domain-logic], aliases: [复现, 研究版本, 口径一致]}
     - {id: Q27, branch: research, name: 可视化与研究报告：绩效图表、风险呈现、报告面口径, layer: P80, prereqs: [Q16, Q26], provenance: [domain-logic], aliases: [可视化, 研究报告]}
     - {id: Q28, branch: data, name: 数据源抽象与标准化：多源接入、字段标准化、扩展点口径, layer: P50, prereqs: [Q02], provenance: [domain-logic], aliases: [数据源抽象, Provider 抽象, 字段标准化, 多源接入]}
@@ -190,10 +205,33 @@ python scripts/ai_domain_closure.py --asset community/量化金融域包/assets/
 python scripts/ai_domain_closure.py --asset community/量化金融域包/assets/QUANT_GRAPH.md --ready-list --loaded Q00,Q01,Q02,Q07
 ```
 
-## 6. 溯源与已知缺口（诚实边界）
+## 6. 外部证据（权威来源锚 · 2026-09-20 取回）
 
-- **无外部结构证据**：本图未引用任何外部清单 / 仓库 / 课程的结构（输入仓未声明许可；清单类来源不提供前置关系；本波勘验的六个实现类仓中 AGPL-3.0 者按纪律同样不传导结构，MIT / Apache-2.0 者仅作**机制观察**、不入本图图例）。故所有边均为**域内可复算依赖**（`domain-logic`），少数节点标 `inferred`。
-- **证据强度分级（已声明、已入判据）**：机读块 `provenance_strength: domain-logic`——与 AI 系统域包（`external`：课程讲序 + 论文锚点，可做「序违反边 = 0」交叉验证）相比，本图**缺实现类 / 来源类证据**。判据面已由 check32 的 `concept_graph` 子扫描承担**声明在场 + 与图例自洽**（不判「证据是否真的充分」——那不可判定）。
+纪律：外部来源只作**「该概念有可复现的权威工作」的证据**（元数据级事实：标题 / 作者 / 年份 / DOI 或 arXiv 号），**不摘录正文**；取回件留本地内部档案（不随仓库分发）。
+
+| 图例键 | 来源（取回事实） | 锚定节点 |
+|---|---|---|
+| `markowitz1952` | Markowitz, *Portfolio Selection*, Journal of Finance 1952（DOI 10.2307/2975974） | Q12、Q19、Q25 |
+| `sharpe1964` | Sharpe, *Capital Asset Prices…*, Journal of Finance 1964（DOI 10.1111/j.1540-6261.1964.tb02865.x） | Q12、Q13 |
+| `sharpe1966` | Sharpe, *Mutual Fund Performance*, Journal of Business 1966（DOI 10.1086/294846） | Q16 |
+| `blackscholes1973` | Black & Scholes, *The Pricing of Options and Corporate Liabilities*, JPE 1973（DOI 10.1086/260062） | Q24 |
+| `famafrench1993` | Fama & French, *Common risk factors in the returns on stocks and bonds*, JFE 1993（DOI 10.1016/0304-405X(93)90023-5） | Q09、Q11、Q13 |
+| `jegadeesh1993` | Jegadeesh & Titman, *Returns to Buying Winners and Selling Losers*, JF 1993（DOI 10.1111/j.1540-6261.1993.tb04702.x） | Q09、Q10 |
+| `kyle1985` | Kyle, *Continuous Auctions and Insider Trading*, Econometrica 1985（DOI 10.2307/1913210） | Q23 |
+| `almgren2000` | Almgren & Chriss, *Optimal execution of portfolio transactions*, Journal of Risk 2001（DOI 10.21314/JOR.2001.041） | Q14 |
+| `harvey2016` | Harvey, Liu & Zhu, *…and the Cross-Section of Expected Returns*, RFS 2015（DOI 10.1093/rfs/hhv059） | Q17 |
+| `cont2001` | Cont, *Empirical properties of asset returns: stylized facts and statistical issues*, Quantitative Finance 2001（DOI 10.1080/713665670） | Q07、Q19 |
+| `arxiv-dl-portfolio` | Zhang, Zohren & Roberts, *Deep Learning for Portfolio Optimization*, arXiv:2005.13665（2020-05-27） | Q22 |
+| `arxiv-momentum-transformer` | Wood, Giegerich, Roberts & Zohren, *Trading with the Momentum Transformer*, arXiv:2112.08534（2021-12-16） | Q22 |
+| `arxiv-dl-lob` | Sirignano, *Deep Learning for Limit Order Books*, arXiv:1601.01987（2016-01-08） | Q23 |
+
+取回方式与失败如实记录：Crossref REST API（10 条成功 / 1 条 DOI 失效：Merton 1973 未取回）· arXiv 摘要页（3 条成功；**arXiv API 端点返回 406**，改走摘要页）· 课程体系页**未取回**（MIT OCW `/pages/calendar/` 重定向环、`/pages/lecture-notes/` 讲座清单为前端渲染、QuantEcon 站点返回 JS 桩）→ 故本图**仍无 orderings**（不造序）· 一次 arXiv ID 误取（1904.08900 实为无关论文）已弃用、不入图例。
+
+## 7. 已知缺口（诚实边界）
+
+- **证据强度 = `mixed`（已声明、已入判据）**：14/30 节点挂外部权威来源锚，其余 16 个为 `domain-logic`（域内可复算依赖）。判据面由 check32 的 `concept_graph` 子扫描承担**四级阶梯与覆盖实况自洽**（external 须全覆盖 / mixed 须部分覆盖 / domain-logic 须零外部键；不判「证据是否真的充分」——那不可判定）。
+- **无 orderings**：本图不携带任何来源序（课程体系页未取回，清单类来源不提供前置关系）→ 不提供 `--order` 校验对象；序校验对象仅存在于有来源序的域包（AI 系统域包）。
+- **外部结构零传导**：输入仓（awesome-quant）未声明许可、六个实现类仓中 OpenBB 为 AGPL-3.0 → 均不传导结构；本图的边仍以域内「产物 → 输入」自撰（`domain-logic`）。
 - **边只立「必须」**：`precise` 依赖才立边——「通常一起用」「有助于」这类弱依赖不立边（例：数值方法与动态规划是常见工具，但不是组合优化的**必须**前置，故 Q29 独立成支，不并入 Q12 的 prereqs）。
 - **无 orderings**：本图不携带任何来源序（无外部序证据），故不提供 `--order` 校验对象；序校验对象仅存在于有来源序的域包。
 - **门禁面**：图内部一致性由 verify check32 的 `concept_graph` 子扫描保证（无环 / 无悬空 / 边有溯源 / 层位合法 / 别名唯一 / 分支完备）；但**证据强度本身无判据**（门禁不判「边是否有足够证据」）——该缺口属判据面，记档于 `results/audit/docs_audit-55-quant-domain.md` §三。

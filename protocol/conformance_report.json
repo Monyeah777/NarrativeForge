@@ -149,8 +149,8 @@
     },
     {
       "description": "审计/验收（结论绑定对象 digest + 签收双要素）",
-      "detail": "审计 19 件（带审计头 8 · legacy 11）· 绑定对象 40",
-      "digest": "23f0eae06d710180410c9bf5fc73079e716e7586a83833a3b15b19840fdcc89b",
+      "detail": "审计 19 件（带审计头 8 · legacy 11）· 绑定对象 41",
+      "digest": "cb5038ab85147d790dcfe65236c90d64fb58824e6c72350f42082d8bf22c0416",
       "id": "audit",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "12a38430cacf998e5a33484c14609af029eaa4dda4024f9328c32fe1394eccd8",
+  "root": "979f32f7cee7535144118665fc233b4a85286d3490e02c9e4dce4a64535c06aa",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

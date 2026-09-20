@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "六项裁决收口 + 六仓吸收 + 量化域包深化：证据面判据 / 双语入口一致性 / 外链巡检（非门禁）/ 两件新资产 / 三新概念；不新增 check、不改 Schema",
+  "note": "三条挂账收口 + 巡检工具首跑自纠（三处缺陷修正）；AUD-0005/0007/0008 摘要同步",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "388a57a387e23fe125cde1145422a5e94660b054a0e9f09329da253aee410d7b"
+  "subject_digest": "f9aee2d8341cde501886914dd2fa10abcbfd6dff217471ec3f1bc9ef31bf6bc0"
 }
