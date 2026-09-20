@@ -44,8 +44,8 @@
     },
     {
       "description": "管线抽象执行零 hard 缺陷",
-      "detail": "管线 8 条零 hard 缺陷（advisory 82）",
-      "digest": "84c6d65e0cce737753be272d6a75ae7aff0a862ecb03dd595e425a54e85368f2",
+      "detail": "管线 9 条零 hard 缺陷（advisory 92）",
+      "digest": "1a6414c787b32191cacdc90eb5b683a90459c02f26105674d2f98fe18aedf862",
       "id": "pipeline-dryrun",
       "ok": true
     },
@@ -58,8 +58,8 @@
     },
     {
       "description": "I/O 类型面（可证不匹配）",
-      "detail": "可证不匹配 0 · 类型覆盖 36.9%（75/203 字段）",
-      "digest": "6daaf4726d077b853e26f6dd376025efcc32e2d03319a590a42859cd0a7d905b",
+      "detail": "可证不匹配 0 · 类型覆盖 36.2%（75/207 字段）",
+      "digest": "56e5e784f1cb689bcb4257e8296be50245808e564b300fd5a550b385063ae662",
       "id": "io-types",
       "ok": true
     },
@@ -72,8 +72,8 @@
     },
     {
       "description": "全仓事件背书",
-      "detail": "事件 36 · 跨包 9 · 挂账 0",
-      "digest": "4e43adf8863a5c5cf0d9b08ac79afed8634490fa7ab440766a2eeb106060e848",
+      "detail": "事件 39 · 跨包 9 · 挂账 0",
+      "digest": "69cbc27ce2ef2de6d3a039c0466e9d045668b374e099336958e974af720e4f3c",
       "id": "event-backing",
       "ok": true
     },
@@ -121,8 +121,8 @@
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 29 / 说明件 200 · 数据契约 10",
-      "digest": "6a8acbb9ce1f1ea386b16bbd4294ab51df97c14aa31bc4588061ee70daa301cb",
+      "detail": "词表 12 · 规范件 29 / 说明件 208 · 数据契约 10",
+      "digest": "ff174d189c28d6922128be65c63eeee415929b6eca8e9e82d74aab8e4fb6bce1",
       "id": "modeling",
       "ok": true
     },
@@ -149,8 +149,8 @@
     },
     {
       "description": "审计/验收（结论绑定对象 digest + 签收双要素）",
-      "detail": "审计 12 件（带审计头 1 · legacy 11）· 绑定对象 2",
-      "digest": "39eb792fc4a54b4f2ddca4ae087a784f18ca400fb681755272e93a93f7874f73",
+      "detail": "审计 13 件（带审计头 2 · legacy 11）· 绑定对象 8",
+      "digest": "8e8005a607458e666c75e3e939e3d07adc430624ef113b1bd293eccf969415dc",
       "id": "audit",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "7f98321522b3b4d6d38f6ac0569832e6ca6f62656706cc409d74805d78d3702b",
+  "root": "e1a77bc3fe9b605d14dfaa1129051a8608a66214898b4ee1e539b4be2891f312",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

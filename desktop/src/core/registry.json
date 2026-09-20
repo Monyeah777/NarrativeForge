@@ -565,6 +565,40 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "AI系统域包",
+      "name": "AI系统域包",
+      "pipeline": "P07",
+      "categories": [
+        "AI系统"
+      ],
+      "module_ids": [
+        "AI系统:M25",
+        "AI系统:M26"
+      ],
+      "assets": {
+        "count": 1,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI系统:M25"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI系统:M26"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2"
     }
   ]
 }

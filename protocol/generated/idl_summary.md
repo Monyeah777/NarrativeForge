@@ -6,7 +6,7 @@
 ## 覆盖
 | schema | 模块文档 | 机读契约 | 管线 | 协议包 | 台账条目 |
 | - | - | - | - | - | - |
-| 5 | 44 | 44 | 8 | 5 | 2 |
+| 5 | 46 | 46 | 9 | 6 | 2 |
 
 ## schema 定义
 - asset.schema.json
@@ -16,11 +16,13 @@
 - protocol.schema.json
 
 ## 装配在册证据（id 集）
-- M00, M01, M02, M03, M04, M06, M07, M08, M09, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M23, M24, M40, M41, M43, M50, M55, M57, M58, M59, M65, M80, M90, M91, M92, M93, M94, M95, M96, M97, M98, 事件:M22, 情感:M22, 生存:M10, 通用:M10
+- AI系统:M25, AI系统:M26, M00, M01, M02, M03, M04, M06, M07, M08, M09, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M23, M24, M40, M41, M43, M50, M55, M57, M58, M59, M65, M80, M90, M91, M92, M93, M94, M95, M96, M97, M98, 事件:M22, 情感:M22, 生存:M10, 通用:M10
 
 ## 机读契约模块
 | id | conformance | layer | source |
 | - | - | - | - |
+| AI系统:M25 | L2 | P40 | community/AI系统域包/modules/M25_前置闭包求值.md |
+| AI系统:M26 | L2 | P60 | community/AI系统域包/modules/M26_装载序就绪门.md |
 | M00 | L2 | P00 | 04_模块库/通用类/M00_数据结构.md |
 | M01 | L2 | P20 | community/西幻生存领域包/modules/M01_职业成长.md |
 | M02 | L2 | P20 | community/西幻生存领域包/modules/M02_种族天赋.md |
@@ -67,10 +69,10 @@
 | 通用:M10 | L2 | P10 | 04_模块库/通用类/M10_时间推进.md |
 
 ## 管线
-- P00_通用文档生成管线.md, P01_标准管线.md, P02_校园情感流管线.md, P03_西幻生存流管线.md, P04_轻混装配流管线.md, P05_核心基础流管线.md, P06_技术文档题材装配流管线.md, P90_技术文档生成管线.md
+- P00_通用文档生成管线.md, P01_标准管线.md, P02_校园情感流管线.md, P03_西幻生存流管线.md, P04_轻混装配流管线.md, P05_核心基础流管线.md, P06_技术文档题材装配流管线.md, P07_AI系统域装配流管线.md, P90_技术文档生成管线.md
 
 ## 协议包
-- community/技术文档域包/protocol.yaml, community/校园情感领域包/protocol.yaml, community/校园西幻轻混组合包/protocol.yaml, community/西幻生存领域包/protocol.yaml, community/通用核心基础包/protocol.yaml
+- community/AI系统域包/protocol.yaml, community/技术文档域包/protocol.yaml, community/校园情感领域包/protocol.yaml, community/校园西幻轻混组合包/protocol.yaml, community/西幻生存领域包/protocol.yaml, community/通用核心基础包/protocol.yaml
 
 ## 资产台账键
 - TECH_RULES, TECH_TEMPLATES

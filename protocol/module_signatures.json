@@ -1,6 +1,14 @@
 {
-  "count": 44,
+  "count": 46,
   "modules": {
+    "AI系统:M25": {
+      "digest": "2b1b414c33b298f4c2f4e91066b378e8c1cc7d2e2966e8d6633ae7f960f806c7",
+      "path": "community/AI系统域包/modules/M25_前置闭包求值.md"
+    },
+    "AI系统:M26": {
+      "digest": "034f7bd02d4acfa48948d0cf547ce5781841be1bc2eb5ef237d7e58fa2888fab",
+      "path": "community/AI系统域包/modules/M26_装载序就绪门.md"
+    },
     "M00": {
       "digest": "360e62c6db27a4c7114a33093c5dd7d7acf944da4db3ced8016d612b8542aac7",
       "path": "04_模块库/通用类/M00_数据结构.md"

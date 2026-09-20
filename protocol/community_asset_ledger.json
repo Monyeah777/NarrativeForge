@@ -2,6 +2,162 @@
   "schema": "community-asset-ledger/1",
   "entries": [
     {
+      "key": "C00",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 16
+    },
+    {
+      "key": "C01",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 11
+    },
+    {
+      "key": "C02",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 24
+    },
+    {
+      "key": "C03",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 25
+    },
+    {
+      "key": "C04",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 26
+    },
+    {
+      "key": "C05",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 27
+    },
+    {
+      "key": "C06",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 28
+    },
+    {
+      "key": "C07",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 29
+    },
+    {
+      "key": "C08",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 30
+    },
+    {
+      "key": "C09",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 31
+    },
+    {
+      "key": "C10",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 32
+    },
+    {
+      "key": "C11",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 33
+    },
+    {
+      "key": "C12",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 34
+    },
+    {
+      "key": "C13",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 35
+    },
+    {
+      "key": "C14",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 36
+    },
+    {
+      "key": "C15",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 37
+    },
+    {
+      "key": "C16",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 38
+    },
+    {
+      "key": "C17",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 39
+    },
+    {
+      "key": "C18",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 40
+    },
+    {
+      "key": "C19",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 41
+    },
+    {
+      "key": "C20",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 42
+    },
+    {
+      "key": "C21",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 43
+    },
+    {
+      "key": "C22",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 12
+    },
+    {
+      "key": "C23",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 45
+    },
+    {
+      "key": "C24",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 11
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "AI系统域包",
+      "file": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
       "key": "STYLE_DNA",
       "package": "官方",
       "file": "05_资产库/用户自定义/STYLE_DNA.md",

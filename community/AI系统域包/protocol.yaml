@@ -1,0 +1,32 @@
+# protocol.yaml — 第三方协议声明（AI系统域包，第 6 件社区包 / 第 2 个非叙事域战例）
+# 依据 01 §6.1 Schema 模板骨架 + 02 §8.3 第三方协议登记；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ / check15 ⑤ 断言）
+# 定位：非叙事题材域包「AI 系统域」——承载 NF 此前从未表达过的东西：概念前置依赖 / 闭包（概念图资产 + 求值/排序两模块）。
+protocol:
+  schema_version: "2"          # 引用 Schema 版本，v2 起支持 references；bump 走 01 §7 V1/V2/V3
+package:
+  conformance: "L2"            # 装配可执行：自带模块在装配在册（registry protocols[].module_ids）
+  id: AI系统域包                # 包目录名（机读唯一标识，与 02 §8 在册一致）
+  name: AI系统域包              # 显示名（与 README 标题一致）
+  version: "1.0.0"             # 包内容版本（v2.5.0 Wave2 版本槽位，V1 只增不删）
+  pipeline: P07                 # 自带装载管线（R3；P07 AI系统域装配流——派生自 P00 通用骨架）
+  module_id_range:              # 模块编号清单（类内段 <独占类别>:Mxx；每类 00-99 独立空间，01 §1.6.11 通道②）
+    - "AI系统:M25"              # 自带：前置闭包求值（读图求闭包与缺失清单）
+    - "AI系统:M26"              # 自带：装载序与就绪门（拓扑序与逐概念就绪判定）
+  categories:                   # 独占类别声明（R2；[AI系统] 与既有 [情感]/[生存]/[世界]/[事件]/[轻混]/[通用]/[技术文档] 无交集）
+    - AI系统
+  dependencies:                 # R1 依赖边界
+    core_only: true             # 只依赖官方核心层
+    core_modules: [M00, 通用:M10, M50, M80]   # ⊆ 官方核心 13 件（数据槽 / 节拍 / 调度 / 输出门；官方文件不复制进包，仅依赖引用，I5 单一真相源）
+    cross_package: []           # deprecated 兼容字段（恒空）；references 为唯一跨包引用通道（v0.8.0）
+  references: []                # v2 跨包引用白名单（本包零跨包零借阅，恒空）
+  modules:                      # 模块清单（与 module_id_range 等长等序；与模块文档 / 02 §8 在册一致）
+    - id: "AI系统:M25"
+      desc: 前置闭包求值（读概念图资产 CONCEPT_GRAPH → 对目标概念算闭包与缺失清单，维护 PrereqState）
+    - id: "AI系统:M26"
+      desc: 装载序与就绪门（把闭包结果收口为确定性拓扑装载序 load_order 与逐概念就绪门 readiness_gate）
+  assets:                       # 资产声明（I4：本包唯一内容资产 = 概念图）
+    count: 1                    # 内容文件数（assets/CONCEPT_GRAPH.md；README.md 为装载手册，非内容资产）
+    readme: README.md           # 包根 README（人读速览，双源一致对照）
+  mount_layers:                 # 挂载层声明（R3，对齐 02 §5 挂载点键名；同层 default 与既有包交集为空——两模块为类内段新编号，唯一 id）
+    P40 行为决策: {default: [AI系统:M25], available: []}    # 闭包求值层（读图 + 算闭包；官方 M50 调度本体驻官方核心位，不搬移）
+    P60 长期演变: {default: [AI系统:M26], available: []}    # 装载序与就绪门层（派生量收口，不含闭包算法）

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1",
+  "tier": "community",
+  "assets": [
+    {
+      "file": "CONCEPT_GRAPH.md",
+      "key": "CONCEPT_GRAPH",
+      "source": "AI系统域包自带概念图（2026-09-20 本波自撰）；结构证据 = 开源课程《AI 系统》五模块 24 子单元（Infrasys-AI，Apache-2.0，Copyright 2018-2023 ZOMI）+ CMU 15-442/642 讲序 + CMU 10-414/714 实现序 + CS2023 KA 名单 + 七篇系统工作论文锚点；逐边溯源见资产 §3/§6",
+      "version": "1.0",
+      "status": "active",
+      "module": "AI系统:M25",
+      "added": "2026-09-20"
+    }
+  ],
+  "package": "AI系统域包"
+}

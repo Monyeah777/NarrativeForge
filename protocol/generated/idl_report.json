@@ -6,6 +6,20 @@
   "contracts": [
     {
       "conformance": "L2",
+      "id": "AI系统:M25",
+      "layer": "P40",
+      "name": "前置闭包求值",
+      "source": "community/AI系统域包/modules/M25_前置闭包求值.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI系统:M26",
+      "layer": "P60",
+      "name": "装载序与就绪门",
+      "source": "community/AI系统域包/modules/M26_装载序就绪门.md"
+    },
+    {
+      "conformance": "L2",
       "id": "M00",
       "layer": "P00",
       "name": "数据结构",
@@ -315,10 +329,10 @@
   ],
   "coverage": {
     "asset_entries": 2,
-    "contract_covered": 44,
-    "module_docs": 44,
-    "pipelines": 8,
-    "protocols": 5,
+    "contract_covered": 46,
+    "module_docs": 46,
+    "pipelines": 9,
+    "protocols": 6,
     "schema_issues": 0
   },
   "event_closure": {
@@ -326,6 +340,7 @@
       "beat_tick",
       "chaos_event",
       "combat_result",
+      "concept_closure_ready",
       "confession_event",
       "death_trigger",
       "decision_brief",
@@ -339,6 +354,7 @@
       "minute_tick",
       "narrative_event",
       "npc_action",
+      "prereq_missing",
       "production_output",
       "quest_state",
       "relationship_change",
@@ -350,7 +366,7 @@
       "tick_day",
       "travel_event"
     ],
-    "modules": 44,
+    "modules": 46,
     "pub_only_by_module": {
       "campus_anonymous_gift": [
         "M92"
@@ -363,6 +379,9 @@
       ],
       "group_chat_event": [
         "M59"
+      ],
+      "load_order_ready": [
+        "AI系统:M26"
       ],
       "phone_call_event": [
         "M58"
@@ -388,6 +407,7 @@
       "campus_gift_intent",
       "faction_event",
       "group_chat_event",
+      "load_order_ready",
       "phone_call_event",
       "polished_output",
       "revision_recorded",
@@ -399,6 +419,8 @@
     "sub_only_events": []
   },
   "evidence_ids": [
+    "AI系统:M25",
+    "AI系统:M26",
     "M00",
     "M01",
     "M02",
@@ -453,9 +475,11 @@
     "P04_轻混装配流管线.md",
     "P05_核心基础流管线.md",
     "P06_技术文档题材装配流管线.md",
+    "P07_AI系统域装配流管线.md",
     "P90_技术文档生成管线.md"
   ],
   "protocol_files": [
+    "community/AI系统域包/protocol.yaml",
     "community/技术文档域包/protocol.yaml",
     "community/校园情感领域包/protocol.yaml",
     "community/校园西幻轻混组合包/protocol.yaml",

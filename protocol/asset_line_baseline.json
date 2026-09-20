@@ -2,6 +2,13 @@
   "note": "社区资产外形基线（文件数 / 行数 / 逐文件行数映射摘要）。内容改动后须显式重签：`nf asset baseline --write`——数字不写在 verify.sh 里，基线变更与内容变更同提交可见。",
   "packages": [
     {
+      "digest": "01371ab55f609d1c1f49ab6e6c35b009f64d9546fe4ed77c532b183637c0a3cc",
+      "dir": "community/AI系统域包/assets",
+      "files": 1,
+      "lines": 160,
+      "package": "AI系统域包"
+    },
+    {
       "digest": "5e99f6aa5aa794e377eb4c78deef0b580c94f01947ae382002ecc1f1521c097b",
       "dir": "community/校园情感领域包/assets",
       "files": 29,

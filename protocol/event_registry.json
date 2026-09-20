@@ -134,6 +134,24 @@
       "note": "证据:M04_战斗系统.md 发布行+payload 同段",
       "payload_status": "declared"
     },
+    "concept_closure_ready": {
+      "fields": {
+        "closure": {
+          "note": "前置闭包（概念 id 列表，含目标自身与包外前置族）",
+          "type": "string[]"
+        },
+        "closure_size": {
+          "note": "闭包规模（概念数）",
+          "type": "number"
+        },
+        "target": {
+          "note": "目标概念 id（如 C22）",
+          "type": "string"
+        }
+      },
+      "note": "证据:community/AI系统域包/modules/M25_前置闭包求值.md §4 事件契约（本域自撰，字段自定）",
+      "payload_status": "declared"
+    },
     "confession_event": {
       "fields": {
         "outcome": {
@@ -370,6 +388,24 @@
       "note": "证据:M01_职业成长.md 发布行+payload 同段",
       "payload_status": "declared"
     },
+    "load_order_ready": {
+      "fields": {
+        "blocked_size": {
+          "note": "就绪门未开的概念数",
+          "type": "number"
+        },
+        "seq_size": {
+          "note": "装载序长度（概念数）",
+          "type": "number"
+        },
+        "source_graph": {
+          "note": "图资产键（CONCEPT_GRAPH）",
+          "type": "string"
+        }
+      },
+      "note": "证据:community/AI系统域包/modules/M26_装载序就绪门.md §4 事件联动（本域自撰，字段自定）",
+      "payload_status": "declared"
+    },
     "market_event": {
       "fields": {
         "affected_towns": {
@@ -494,6 +530,24 @@
         }
       },
       "note": "证据:M96_通用输出润色.md 发布行+payload 同段",
+      "payload_status": "declared"
+    },
+    "prereq_missing": {
+      "fields": {
+        "missing": {
+          "note": "缺失概念 id 列表（闭包 − 已装载集）",
+          "type": "string[]"
+        },
+        "missing_size": {
+          "note": "缺失规模（概念数）",
+          "type": "number"
+        },
+        "target": {
+          "note": "目标概念 id",
+          "type": "string"
+        }
+      },
+      "note": "证据:community/AI系统域包/modules/M25_前置闭包求值.md §4 事件契约（本域自撰，字段自定）",
       "payload_status": "declared"
     },
     "production_output": {
