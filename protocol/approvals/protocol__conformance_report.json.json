@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "量化金融域包落盘收口：P08 + 量化金融:M31/M32 + 两资产 + 三要件；机制通用性与证据强度分级两靶实测；不新增 check / 不改 Schema",
+  "note": "六项裁决收口 + 六仓吸收 + 量化域包深化：证据面判据 / 双语入口一致性 / 外链巡检（非门禁）/ 两件新资产 / 三新概念；不新增 check、不改 Schema",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "bbe7c286efd3e705c048a1376fb071504115e94e6bf3e4b275026f330b5a68cc"
+  "subject_digest": "388a57a387e23fe125cde1145422a5e94660b054a0e9f09329da253aee410d7b"
 }

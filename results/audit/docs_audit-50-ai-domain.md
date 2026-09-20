@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - community/AI系统域包/protocol.yaml:13e26c88057987be2c5933a879d214ed75a1f33e5bc8da4371a36dbcc04bf7b1
-  - community/AI系统域包/assets/CONCEPT_GRAPH.md:c28ab45810bf09d18661583793b55eba41815e8ea0437a587279608d346c456a
+  - community/AI系统域包/assets/CONCEPT_GRAPH.md:bd666baaf1bc9eccc0fbd319c37e922f2dc5abba09020003e74a1ec41c321894
   - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
   - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448
   - scripts/ai_domain_closure.py:d886f926456343326bbebbbe7a642e3f78414e00282b1600c2f25b3376b8a928

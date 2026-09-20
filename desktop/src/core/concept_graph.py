@@ -13,7 +13,12 @@
 - 结构：节点 id 唯一、层位 ∈ P00–P80、必备字段（name）、**边带 provenance**；
 - 图论：无环（拓扑全序可达）、前置无悬空（须在节点表或外部前置族内）、无自环；
 - 检索面：别名唯一（重复即歧义）；
-- 分支面：分支 id 唯一、每个包内概念恰属一个分支、分支成员须真实存在。
+- 分支面：分支 id 唯一、每个包内概念恰属一个分支、分支成员须真实存在；
+- **证据面**（2026-09-20 作者裁决收口）：节点 provenance 的**每个键都须在图例中在册**
+  （防「图例漂移」静默——此前只查 provenance 非空）；且图须声明 `provenance_strength`
+  ∈ {external, domain-logic, inferred} 且与图例自洽（`external` 要求图例中至少有一个
+  **非推断**来源键）。门禁只判「声明在场 + 与图例一致」，**不判证据是否真的充分**（那不可
+  判定，硬判会造假判据）——证据强度的**分级声明**才是可机检的部分。
 
 纪律：没有 `concept_graph:` 机读块的资产一律跳过（不影响既有包与用户自定义资产）。
 """
@@ -159,6 +164,16 @@ def alias_map(graph: Dict[str, Any]) -> Dict[str, str]:
     return out
 
 
+#: 证据强度词表（2026-09-20 收口）：external = 有外部实现类/来源类证据；domain-logic = 域内
+#: 可复算依赖推断（自撰可复核）；inferred = 纯推断。门禁只判「声明在场 + 与图例自洽」。
+PROVENANCE_STRENGTHS = ("external", "domain-logic", "inferred")
+
+
+def provenance_strength(graph: Dict[str, Any]) -> str:
+    """图上声明的证据强度（缺省空串——由 problems() 要求显式声明）。"""
+    return str(graph.get("provenance_strength") or "").strip()
+
+
 def resolve(graph: Dict[str, Any], token: str) -> str:
     """检索词 → 概念 id（顺序：条目键 → 别名 → 概念名）。"""
     t = str(token).strip()
@@ -254,12 +269,27 @@ def violations(graph: Dict[str, Any], seq: Sequence[str]) -> List[Tuple[str, str
 
 
 def problems(graph: Dict[str, Any]) -> List[str]:
-    """图健康度：无环 / 无悬空 / 边有溯源 / 层位合法 / id 唯一 / 别名唯一 / 分支完备。"""
+    """图健康度：无环 / 无悬空 / 边有溯源 / 层位合法 / id 唯一 / 别名唯一 / 分支完备 / 证据面。"""
     issues: List[str] = []
     prereqs = prereqs_of(graph)
     ext = {str(x.get("id")) for x in (graph.get("external_prereqs") or [])
            if isinstance(x, dict)}
     declared = set(prereqs) | ext
+    legend = {str(k) for k in (graph.get("provenance_legend") or {})}
+    strength = provenance_strength(graph)
+    if not strength:
+        issues.append("图缺 provenance_strength 声明（修复指引：在机读块声明取值 "
+                      "%s——证据强度须显式，不得默认按强证据理解）"
+                      % " / ".join(PROVENANCE_STRENGTHS))
+    elif strength not in PROVENANCE_STRENGTHS:
+        issues.append("provenance_strength 越词表：%s（取值 %s）"
+                      % (strength, " / ".join(PROVENANCE_STRENGTHS)))
+    elif strength == "external":
+        # external 须有**非推断**来源键在册（推断图例不能单独支撑 external 声明）
+        non_inferred = {k for k in legend if k not in ("inferred", "domain-logic")}
+        if not non_inferred:
+            issues.append("provenance_strength=external 但图例无任何非推断来源键"
+                          "（修复指引：补外部来源图例，或把强度降为 domain-logic / inferred）")
     seen_nodes: Set[str] = set()
     for node in graph.get("nodes") or []:
         if not isinstance(node, dict) or not node.get("id"):
@@ -273,6 +303,11 @@ def problems(graph: Dict[str, Any]) -> List[str]:
             issues.append("节点 %s 缺 name（修复指引：每个概念须有可读名）" % nid)
         if not node.get("provenance"):
             issues.append("节点 %s 缺 provenance（边无溯源即不可复核）" % nid)
+        else:
+            for key in node.get("provenance") or []:
+                if str(key) not in legend:
+                    issues.append("节点 %s 的 provenance 键 %r 不在 provenance_legend 中"
+                                  "（修复指引：补图例键，防图例漂移静默）" % (nid, key))
         layer = str(node.get("layer") or "")
         if layer and layer not in LAYERS:
             issues.append("节点 %s 层位越界：%s（取值 %s）" % (nid, layer, "/".join(LAYERS)))

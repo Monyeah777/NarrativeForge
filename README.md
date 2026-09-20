@@ -10,7 +10,7 @@
 
 - 这是什么：规范驱动的文档工厂，装模块/管线/资产 → 校验 → 输出。
 - 入口链：`AGENT_START.md`（开工）→ `AI_ROUTING.md`（选线）→ `DEEP_DIVE.md`（懂得深）。
-- 机器凭证：`bash verify.sh` → v2.27，check1-37，PASS=61。
+- 机器凭证：`bash verify.sh` → v2.27，check1-37，PASS=61；机器入口清单见 `llms.txt`，英文入口见 `README.en.md`（两份入口的机读事实由 check34 断言一致）。
 - 要懂 NF 为什么这样设计：读 [DEEP_DIVE.md](DEEP_DIVE.md)。
 
 ## 快速开始

@@ -1773,6 +1773,30 @@ try:
 except Exception as exc:
     problems.append('投稿闸门声明确认不可用：%s' % exc)
 
+# 7 双语入口机读事实一致（2026-09-20 作者裁决收口）：README.md 与 README.en.md 须共享同一组
+#   机读锚点（版本 / check 数 / PASS 基线 / 核心协议件 / 机器入口），防「第二语言面腐烂」
+#   （外部实证：某清单的双语面无判据 → 中文面只剩英文面 ~54%）。期望值取自 quality_baseline，不写字面量。
+try:
+    import re as _re
+    from core import quality_baseline as _qb
+    _want = ('check1-%d' % _qb.EXPECTED_CHECKS, 'PASS=%d' % _qb.EXPECTED_PASS,
+             '01_核心协议.md', '06_Agent执行协议.md', 'llms.txt', 'community/')
+    for _rel in ('README.md', 'README.en.md'):
+        _p = os.path.join('.', _rel)
+        if not os.path.isfile(_p):
+            problems.append('双语入口：缺 %s（修复指引：中英入口须成对，英文入口覆盖同组机读事实）' % _rel)
+            continue
+        with open(_p, encoding='utf-8') as _fh:
+            _txt = _fh.read()
+        for _a in _want:
+            if _a not in _txt:
+                problems.append('双语入口：%s 缺机读锚点 %s（修复指引：与 README.md 同步机读事实）'
+                                % (_rel, _a))
+        if not _re.search(r'v\d+\.\d+', _txt):
+            problems.append('双语入口：%s 缺版本号（vX.Y）' % _rel)
+except Exception as exc:
+    problems.append('双语入口锚点检查不可用：%s' % exc)
+
 for p in problems:
     print('[FAIL] %s' % p)
 dist = dh.kind_distribution('.')

@@ -135,6 +135,7 @@ concept_graph:
   domain: AI系统
   date: "2026-09-20"
   intent: 概念前置依赖的偏序声明（前置闭包求值的输入面）
+  provenance_strength: external    # 证据强度（2026-09-20 收口词表）：external = 有外部来源类证据（课程讲序 / 论文锚点 / 指南章节），见 provenance_legend
   closure_rules:
     closure: "closure(c) = {c} ∪ ⋃ closure(p)，p ∈ prereqs(c)（传递闭包）"
     missing: "missing(c, L) = closure(c) − L（L = 已装载概念集）"

@@ -52,9 +52,9 @@ class RepoGraphTest(unittest.TestCase):
     def test_repo_scan_clean(self):
         issues, stats = cg.scan(str(ROOT))
         self.assertEqual(issues, [])
-        # 两个域包各带一件概念图资产（AI系统域包 47 概念 + 量化金融域包 27 概念）
+        # 两个域包各带一件概念图资产（AI系统域包 47 概念 + 量化金融域包 30 概念）
         self.assertEqual(stats["graphs"], 2)
-        self.assertEqual(stats["nodes"], 74)
+        self.assertEqual(stats["nodes"], 77)
         self.assertGreater(stats["edges"], 0)
 
     def test_scanner_and_evaluator_share_semantics(self):

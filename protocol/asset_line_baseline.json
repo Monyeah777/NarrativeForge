@@ -2,10 +2,10 @@
   "note": "社区资产外形基线（文件数 / 行数 / 逐文件行数映射摘要）。内容改动后须显式重签：`nf asset baseline --write`——数字不写在 verify.sh 里，基线变更与内容变更同提交可见。",
   "packages": [
     {
-      "digest": "978f75af3853ce1cfe66a425608a00c467c584ffa629bfeb04a386fa6406f513",
+      "digest": "efc23a9dfdf4af50141ec40753f752d9b83665989a08b60b01e5143e70912e0a",
       "dir": "community/AI系统域包/assets",
       "files": 1,
-      "lines": 305,
+      "lines": 306,
       "package": "AI系统域包"
     },
     {
@@ -23,10 +23,10 @@
       "package": "西幻生存领域包"
     },
     {
-      "digest": "fac490617a035ddd980d677f39f079f838d54931caa072cee3e9c76d768ec5a4",
+      "digest": "b3a670daa9dfa23f9e9f032b99dd598fc729874dc8636a6593e257162b693a2b",
       "dir": "community/量化金融域包/assets",
-      "files": 2,
-      "lines": 236,
+      "files": 4,
+      "lines": 376,
       "package": "量化金融域包"
     }
   ],

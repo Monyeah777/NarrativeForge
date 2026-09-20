@@ -6,12 +6,12 @@ scope: 收口四项作者裁决的挂账（均取自本会话外挂账队列）�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/concept_graph.py:bc57a614a5b439fe5bd00e54fb516dcc47a752ca125260b46808b2f1d6f047c9
+  - desktop/src/core/concept_graph.py:778134e3ba46fdcd3a42dd781897e86eff3536e146a105daef144f795a9c0915
   - desktop/src/core/intake.py:6a0d584c81dcdeb1439bf4e3f16b201e08e618c8d6296e80a63c6f5266447e56
   - desktop/src/core/asset_ledger.py:f45329c6ac19c864799ee5113f4246474d2a0e41521942bea10f90e379e9e236
   - scripts/ai_domain_closure.py:d886f926456343326bbebbbe7a642e3f78414e00282b1600c2f25b3376b8a928
   - library/intake.json:06b0640909783242a624bf55bee8ee59f3aa5ab46bfbe03c67f3497c3fd76b8d
-  - verify.sh:5782a1a65b93207bae5085bb1ed99dc7b26139ffb1c6e8ee215c6ab3a6ebd0f1
+  - verify.sh:b652719a33742cf5038d36bd0ce43b43c96927aa92ddfce6639423b3f700b97c
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

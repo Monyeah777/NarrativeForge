@@ -19,6 +19,24 @@
       "status": "active",
       "module": "量化金融:M32",
       "added": "2026-09-20"
+    },
+    {
+      "file": "DATA_CONTRACT.md",
+      "key": "DATA_CONTRACT",
+      "source": "量化金融域包自带数据与对象契约表（2026-09-20 本波自撰）；机制观察来自 QUANTAXIS(MIT)/zvt(MIT)/QuantDinger(Apache-2.0) 的数据—对象分层（仅观察，不复制文本）；OpenBB(AGPL-3.0) 仅作对照、不入设计",
+      "version": "1.0",
+      "status": "active",
+      "module": "量化金融:M31",
+      "added": "2026-09-20"
+    },
+    {
+      "file": "STRATEGY_SPECS.md",
+      "key": "STRATEGY_SPECS",
+      "source": "量化金融域包自带策略口径示例表（2026-09-20 本波自撰，7 例规格）；机制观察来自 quant-trading(Apache-2.0) 的策略示例集形态与 QuantEcon.py(MIT) 的模型—教程配对（仅观察，不复制文本）",
+      "version": "1.0",
+      "status": "active",
+      "module": "量化金融:M32",
+      "added": "2026-09-20"
     }
   ],
   "package": "量化金融域包"

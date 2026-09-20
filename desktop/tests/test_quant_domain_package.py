@@ -69,7 +69,7 @@ class PackageFaceTest(unittest.TestCase):
     def test_assets_count_matches_files(self):
         count = len(list((PKG / "assets").glob("*.md")))
         self.assertEqual(count, self.pkg["assets"]["count"])
-        self.assertEqual(count, 2)
+        self.assertEqual(count, 4)
 
     def test_registry_projection_matches(self):
         self.assertEqual(self.entry["pipeline"], self.pkg["pipeline"])
@@ -134,7 +134,7 @@ class QuantGraphTest(unittest.TestCase):
 
     def test_graph_health_and_shape(self):
         self.assertEqual(cg.problems(self.graph), [])
-        self.assertEqual(len(cg.in_package_ids(self.graph)), 27)
+        self.assertEqual(len(cg.in_package_ids(self.graph)), 30)
         self.assertEqual(sorted(cg.branch_map(self.graph)),
                          ["data", "foundations", "research"])
 
@@ -145,7 +145,7 @@ class QuantGraphTest(unittest.TestCase):
         self.assertIn("Q16", first)
         front = cg.frontier(self.graph, ["Q00", "Q01", "Q02", "Q03", "Q04",
                                         "Q05", "Q06", "Q07", "Q08"], branch="research")
-        self.assertEqual(front, ["Q09", "Q10"])
+        self.assertEqual(front, ["Q09", "Q10", "Q29"])
         self.assertEqual(adc.closure(self.graph, "Q17"), first)   # 工具与门禁同源
 
     def test_alias_resolution(self):

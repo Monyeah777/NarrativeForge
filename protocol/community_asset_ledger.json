@@ -1280,10 +1280,46 @@
       "line": 1
     },
     {
+      "key": "ACCT_CASH",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 58
+    },
+    {
+      "key": "ACCT_POSITION",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 57
+    },
+    {
+      "key": "ACCT_RECON",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 61
+    },
+    {
+      "key": "ALT_AVAILABLE_TS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 51
+    },
+    {
+      "key": "ALT_SOURCE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 50
+    },
+    {
       "key": "BIAS_LOOKAHEAD",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_METRICS.md",
       "line": 42
+    },
+    {
+      "key": "BIAS_LOOKAHEAD",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 34
     },
     {
       "key": "BIAS_SURVIVORSHIP",
@@ -1292,10 +1328,22 @@
       "line": 43
     },
     {
+      "key": "BIAS_SURVIVORSHIP",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 35
+    },
+    {
       "key": "CAPACITY_LIMIT",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_METRICS.md",
       "line": 36
+    },
+    {
+      "key": "CAPACITY_LIMIT",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 21
     },
     {
       "key": "COST_FEE",
@@ -1306,8 +1354,20 @@
     {
       "key": "COST_FILL_PRICE",
       "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 24
+    },
+    {
+      "key": "COST_FILL_PRICE",
+      "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_METRICS.md",
       "line": 35
+    },
+    {
+      "key": "COST_FILL_PRICE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 20
     },
     {
       "key": "COST_SLIPPAGE",
@@ -1316,10 +1376,112 @@
       "line": 34
     },
     {
+      "key": "COST_SLIPPAGE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 26
+    },
+    {
+      "key": "DATA_CONTRACT",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 1
+    },
+    {
+      "key": "DATA_CONTRACT",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 5
+    },
+    {
+      "key": "FILL_OBJ",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 60
+    },
+    {
+      "key": "FUND_ANNOUNCE_TS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 48
+    },
+    {
+      "key": "FUND_ANNOUNCE_TS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 24
+    },
+    {
+      "key": "FUND_AVAILABLE_TS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 49
+    },
+    {
+      "key": "FUND_PERIOD",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 47
+    },
+    {
+      "key": "INSTR_CURRENCY",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 41
+    },
+    {
+      "key": "INSTR_DELIST_DATE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 38
+    },
+    {
+      "key": "INSTR_EXCHANGE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 36
+    },
+    {
+      "key": "INSTR_LIST_DATE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 37
+    },
+    {
+      "key": "INSTR_MULTIPLIER",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 39
+    },
+    {
+      "key": "INSTR_MULTIPLIER",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 25
+    },
+    {
+      "key": "INSTR_TICK_SIZE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 40
+    },
+    {
+      "key": "INSTR_TYPE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 35
+    },
+    {
       "key": "METRIC_ANNUAL_FACTOR",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_METRICS.md",
       "line": 20
+    },
+    {
+      "key": "METRIC_ANNUAL_FACTOR",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 26
     },
     {
       "key": "METRIC_CALMAR",
@@ -1370,10 +1532,46 @@
       "line": 25
     },
     {
+      "key": "METRIC_TURNOVER",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 22
+    },
+    {
       "key": "METRIC_VOL_ANNUAL",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_METRICS.md",
       "line": 21
+    },
+    {
+      "key": "ORDER_OBJ",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 59
+    },
+    {
+      "key": "PROVIDER_COVERAGE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 69
+    },
+    {
+      "key": "PROVIDER_ID",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 67
+    },
+    {
+      "key": "PROVIDER_MAP",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 68
+    },
+    {
+      "key": "PROVIDER_MISSING",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 70
     },
     {
       "key": "Q00",
@@ -1394,16 +1592,34 @@
       "line": 6
     },
     {
+      "key": "Q02",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 20
+    },
+    {
       "key": "Q03",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 35
     },
     {
+      "key": "Q03",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 23
+    },
+    {
       "key": "Q04",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 36
+    },
+    {
+      "key": "Q04",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 23
     },
     {
       "key": "Q05",
@@ -1424,10 +1640,22 @@
       "line": 27
     },
     {
+      "key": "Q07",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 20
+    },
+    {
       "key": "Q08",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 6
+    },
+    {
+      "key": "Q08",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 22
     },
     {
       "key": "Q09",
@@ -1436,46 +1664,82 @@
       "line": 6
     },
     {
-      "key": "Q10",
+      "key": "Q09",
       "package": "量化金融域包",
-      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 44
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 21
     },
     {
-      "key": "Q11",
+      "key": "Q10",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 45
     },
     {
-      "key": "Q12",
+      "key": "Q10",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 20
+    },
+    {
+      "key": "Q11",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 46
     },
     {
-      "key": "Q13",
+      "key": "Q11",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 23
+    },
+    {
+      "key": "Q12",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 47
     },
     {
-      "key": "Q14",
+      "key": "Q12",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 22
+    },
+    {
+      "key": "Q13",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 48
     },
     {
-      "key": "Q15",
+      "key": "Q13",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 22
+    },
+    {
+      "key": "Q14",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 49
     },
     {
-      "key": "Q16",
+      "key": "Q15",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 50
+    },
+    {
+      "key": "Q15",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 24
+    },
+    {
+      "key": "Q16",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 51
     },
     {
       "key": "Q17",
@@ -1487,58 +1751,100 @@
       "key": "Q18",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 52
+      "line": 53
+    },
+    {
+      "key": "Q18",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 26
     },
     {
       "key": "Q19",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 53
+      "line": 54
+    },
+    {
+      "key": "Q19",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 20
     },
     {
       "key": "Q20",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 54
+      "line": 55
     },
     {
       "key": "Q21",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 55
+      "line": 56
     },
     {
       "key": "Q22",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 56
+      "line": 57
     },
     {
       "key": "Q23",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 57
+      "line": 58
+    },
+    {
+      "key": "Q23",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 26
     },
     {
       "key": "Q24",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 58
+      "line": 59
+    },
+    {
+      "key": "Q24",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 25
     },
     {
       "key": "Q25",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 59
+      "line": 60
     },
     {
       "key": "Q26",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
-      "line": 60
+      "line": 61
     },
     {
       "key": "Q27",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q28",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q29",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q30",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
       "line": 6
@@ -1550,9 +1856,93 @@
       "line": 1
     },
     {
+      "key": "QUANT_GRAPH",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 14
+    },
+    {
       "key": "QUANT_METRICS",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 1
+    },
+    {
+      "key": "QUANT_METRICS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 5
+    },
+    {
+      "key": "QUOTE_ADJ_FACTOR",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 21
+    },
+    {
+      "key": "QUOTE_AMOUNT",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 26
+    },
+    {
+      "key": "QUOTE_AVAILABLE_TS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 29
+    },
+    {
+      "key": "QUOTE_CLOSE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 24
+    },
+    {
+      "key": "QUOTE_HIGH",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 22
+    },
+    {
+      "key": "QUOTE_LOW",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 23
+    },
+    {
+      "key": "QUOTE_OPEN",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 21
+    },
+    {
+      "key": "QUOTE_SYMBOL",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 19
+    },
+    {
+      "key": "QUOTE_TRADABLE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 28
+    },
+    {
+      "key": "QUOTE_TS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 20
+    },
+    {
+      "key": "QUOTE_VOLUME",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
+      "line": 25
+    },
+    {
+      "key": "STRATEGY_SPECS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
       "line": 1
     }
   ]

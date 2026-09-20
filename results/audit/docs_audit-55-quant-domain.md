@@ -6,11 +6,11 @@ scope: 作者指示新建域包（community 第 7 包）：口径协议（因子
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - community/量化金融域包/protocol.yaml:d15512a34deaf572a2550823863a5a75878768bc5c08ed686d042076c245551f
-  - community/量化金融域包/assets/QUANT_GRAPH.md:e90f9be12b11698ce64f4f3c787b01423834726568ce12eb69dbf9e30732edc1
+  - community/量化金融域包/protocol.yaml:7ba7176c55538b2e57c70c3f0b58439601107ac9091b60495b86cc3996f7d83a
+  - community/量化金融域包/assets/QUANT_GRAPH.md:fc5c36657facf4c3de8fb5fa9e679a4ab29503676c22efd6d88fa83bccae1b43
   - community/量化金融域包/assets/QUANT_METRICS.md:fd85b5a871729e04b9c4026cc177e66875e35ca44cd098808cadbeb46f19ef06
-  - community/量化金融域包/modules/M31_因子与信号口径.md:785470ff312969c1f835b430d828b35ea41778900a510cbde328d668d046db6d
-  - community/量化金融域包/modules/M32_回测与绩效口径.md:03dca78148aa438a34d57a3dc518cad0158f0f867eab71d7c00b4a60c512f531
+  - community/量化金融域包/modules/M31_因子与信号口径.md:0062acf3777030a560b55843d086a6719850474a3ec531bfd83de75df9e90882
+  - community/量化金融域包/modules/M32_回测与绩效口径.md:42b89e48bd6c0b715e30567812acdaa733080a5547ee72c7f194081a5183f26d
   - community/量化金融域包/pipelines/P08_量化金融域装配流管线.md:2d1b47c702c1bce5418786643f3f0d9d89b9943c5ed39a0987433453d41d0e37
 ---
 
