@@ -110,7 +110,7 @@ def self_check(yaml_text: str) -> List[str]:
     if proto.get("schema_version") not in ("2",):
         warns.append(f"schema_version 应为 '2'，实际 {proto.get('schema_version')}")
     if not pkg.get("module_id_range"):
-        warns.append("module_id_range 为空——需声明模块编号（M91-M99 社区段规则）")
+            warns.append("module_id_range 为空——需声明模块编号（M91-M99 机制段或 <独占类别>:Mxx 类内段，02 §8.3）")
     mods = pkg.get("modules") or []
     for m in mods:
         if not m.get("desc"):

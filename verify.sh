@@ -440,10 +440,10 @@ check14(){
     [ -f "$d/protocol.yaml" ] || { no "①缺协议声明: $d/protocol.yaml（登记三要件①不满足；community/* 下每个目录须为带 protocol.yaml 的登记包）"; miss=1; }
   done
   if [ "$miss" -eq 1 ]; then
-    no 'protocol.yaml 缺失——check14 ②-⑦ 跳过（登记三要件不全，包不被平台门禁识别）'
+    no 'protocol.yaml 缺失——check14 ②-⑧ 跳过（登记三要件不全，包不被平台门禁识别）'
     return
   fi
-  # ②-⑦ 精确比对（python3 + PyYAML：解析两包 protocol.yaml + desktop registry.json + 02 文档反解）
+  # ②-⑧ 精确比对（python3 + PyYAML：解析两包 protocol.yaml + desktop registry.json + 02 文档反解 + 03 管线库反解）
   if [ "$YAMLOK" -eq 1 ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check14.log 2>&1
 import glob, json, os, re, sys
@@ -455,6 +455,9 @@ import yaml
 # 02 §8.1/8.2 段落结构（segmap）与「不占 M91-99 社区段」规则（通用 M93-96/轻混 M91-92 合法占段，
 # 不能内容推导纳入领域检查）；新增领域包须在此登记 + 02 §8 开新段 + registry 条目（登记三要件②）。
 DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包']
+# LEGACY_BARE = 存量既有领域包（v1.1 迁出模块沿用原编号不改号，包内裸号属既有）；其余包**新增**
+# 编号须落 M91-M99 机制段或 <独占类别>:Mxx 类内段（01 §1.6.11 编号命名空间扩展；每类 00-99 独立）。
+LEGACY_BARE = set(DOMAIN)
 ALL_PKGS = sorted(d.replace('\\', '/') for d in glob.glob('community/*')
                   if os.path.isdir(d) and os.path.isfile(os.path.join(d, 'protocol.yaml')))
 REQUIRED = [
@@ -504,6 +507,7 @@ if not errs:
         if dep.get('core_only') is not True: errs.append('%s ④R1 core_only 应为 true' % d)
         if dep.get('cross_package'): errs.append('%s ④R1 cross_package 应为空数组' % d)
     # ⑤ 编号在册一致（module_id_range ↔ 02 §8 反解）+ M91-M99 不占用（领域包专属：通用/组合包合法占 M91-99 社区段）
+    #    + 编号命名空间判据（01 §1.6.11：类别在册 / 类内号唯一 / 全库不重号 / 新包裸号限 M91-M99）
     doc = open('02_联动注册表.md', encoding='utf-8').read()
     # segmap：领域包目录 → 02 §8.x 段（按段标题含包名定位；新增领域包自动匹配，勿硬编码 §8.1/§8.2 下标）
     segmap = {}
@@ -522,6 +526,30 @@ if not errs:
             errs.append('%s ⑤02 §8 在册模块数未取到' % d)
         elif len(ids) != regn:
             errs.append('%s ⑤module_id_range(%d) != 02 §8 在册(%d)' % (d, len(ids), regn))
+    # ⑤b 编号命名空间（全部登记包逐条）：形态 = 裸号 Mxx（机制段 M91-M99，全局唯一）或
+    #     <类别>:Mxx 类内段（类别须在本包 categories 在册 = R2 独占；类内号在类别内唯一）；
+    #     两种形态都不许跨包重号（module id 是全局寻址面）。
+    seen_mid, seen_catnum = {}, {}
+    for d in ALL_PKGS:
+        pkg = data[d]['package']
+        cats = set(str(c) for c in (pkg.get('categories') or []))
+        for mid in [str(x) for x in (pkg.get('module_id_range') or [])]:
+            if mid in seen_mid:
+                errs.append('⑤模块 id 跨包重号: %s ∈ %s 与 %s（编号须全局唯一寻址）' % (mid, d, seen_mid[mid]))
+            seen_mid[mid] = d
+            mpre = re.match(r'^([^:]+):(M\d{2,3})$', mid)
+            if mpre:
+                cat, num = mpre.group(1), mpre.group(2)
+                if cat not in cats:
+                    errs.append('%s ⑤类内编号类别未在册: %s（类别 %s 须列入本包 categories，R2 独占；01 §1.6.11）'
+                                % (d, mid, cat))
+                ckey = (cat, num)
+                if ckey in seen_catnum and seen_catnum[ckey] != d:
+                    errs.append('⑤类内号重号: %s ∈ %s 与 %s（同类别内编号须唯一）' % (mid, d, seen_catnum[ckey]))
+                seen_catnum[ckey] = d
+            elif re.match(r'^M\d{2,3}$', mid) and d not in LEGACY_BARE and not re.match(r'^M9[1-9]$', mid):
+                errs.append('%s ⑤裸号越段: %s（新包新增编号落 M91-M99 机制段或 <独占类别>:Mxx 类内段；'
+                            '既有包沿用原编号不改号——01 §1.6.11）' % (d, mid))
     # ⑥ protocol.yaml ↔ README 关键字段一致（双源一致，check14 ⑥，含组合包）
     for d in ALL_PKGS:
         rd = open(d + '/README.md', encoding='utf-8').read()
@@ -578,6 +606,30 @@ if not errs:
             regn = int(mm.group(1)) if mm else -1
             if regn >= 0 and len(p['module_ids']) != regn:
                 errs.append('⑦%s module_ids(%d) != 02 §8 在册(%d)' % (pid, len(p['module_ids']), regn))
+    # ⑧ 管线 id 避让与唯一（R3，01 §1.6.11）：管线 id 与层位 id 同形（P\d{2}），机读侧层位靠 id 解析，
+    #    故自带管线须 ① 全库唯一 ② 不占官方管线 id（03_管线库 在册）③ 不占注册层位 id
+    #    （registry mount_points = 02 §5 九层）。官方 P00 骨架与 P00 层位同号为派生同名先例，存量豁免。
+    layers = set((reg.get('mount_points') or {}).keys())
+    offi = set()
+    for _f in glob.glob('03_管线库/*.md'):
+        try:
+            with open(_f, encoding='utf-8') as _fh:
+                _m = re.search(r'^\s*id:\s*(P\d{2})\s*$', _fh.read(), re.M)
+        except OSError:
+            continue
+        if _m:
+            offi.add(_m.group(1))
+    seen_pipe = {}
+    for p in reg.get('protocols', []):
+        _pid, _pl = str(p.get('id')), str(p.get('pipeline'))
+        if _pl in layers:
+            errs.append('⑧%s 管线 id 占用层位 id: %s（层位 id = registry mount_points；自带管线须避让——01 §1.6.11）'
+                        % (_pid, _pl))
+        if _pl in offi:
+            errs.append('⑧%s 管线 id 与官方管线重号: %s（03_管线库 在册）' % (_pid, _pl))
+        if _pl in seen_pipe:
+            errs.append('⑧管线 id 跨包重号: %s ∈ %s 与 %s' % (_pl, _pid, seen_pipe[_pl]))
+        seen_pipe[_pl] = _pid
 for _e in errs:
     print(_e)
 sys.exit(1 if errs else 0)
@@ -585,7 +637,7 @@ PYEOF
     then
       :
     else
-      no "check14 ②-⑦ 校验失败——$(head -5 "$NFL_TMP"/nf_check14.log | tr '\n' ' ')"; err=1
+      no "check14 ②-⑧ 校验失败——$(head -5 "$NFL_TMP"/nf_check14.log | tr '\n' ' ')"; err=1
     fi
   else
     # 降级：PyYAML 缺失 → 文本粗校验必填键在场（②），③-⑦ WARN 跳过不 FAIL（动作 3）
@@ -597,9 +649,9 @@ PYEOF
       done
     done
     [ "$miss2" -eq 0 ] || err=1
-    [ "$miss2" -eq 0 ] && wn 'check14 ②-⑦ 精确比对跳过（PyYAML 缺失，仅必填键文本粗校验；建议安装 pyyaml 后重跑）'
+    [ "$miss2" -eq 0 ] && wn 'check14 ②-⑧ 精确比对跳过（PyYAML 缺失，仅必填键文本粗校验；建议安装 pyyaml 后重跑）'
   fi
-  if [ "$err" -eq 0 ]; then ok '社区协议登记门禁全绿（check14 七项：①protocol.yaml 在场 ②Schema 必填 12 字段 ③R2 类别不冲突 ④R1 依赖边界 ⑤编号在册一致+M91-M99 不占用 ⑥双源一致 ⑦protocols[] 投影一致）'
+  if [ "$err" -eq 0 ]; then ok '社区协议登记门禁全绿（check14 八项：①protocol.yaml 在场 ②Schema 必填 12 字段 ③R2 类别不冲突 ④R1 依赖边界 ⑤编号在册一致+M91-M99 不占用+编号命名空间（类别在册/类内号唯一/全库不重号/新包裸号限段） ⑥双源一致 ⑦protocols[] 投影一致 ⑧管线 id 避让层位/官方 id 且全库唯一）'
   fi
 }
 check15(){

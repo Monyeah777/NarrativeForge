@@ -3524,7 +3524,8 @@ def _cmd_assemble(args):
               % ("、".join(plan_["known_packages"]) or "—"))
         print("  装配允许集（官方核心 + 全部已登记社区模块）：%d"
               % len(plan_["allowed_module_ids"]))
-        print("  自定义预留槽位：模块 M91-M99 · 资产 900+ 命名空间 · 新管线 Pxx（不占用既有）")
+        print("  自定义预留槽位：模块 M91-M99 或 <本包独占类别>:Mxx 类内段 · 资产 900+ 命名空间 · "
+              "新管线 Pxx（避让层位 id P00-P80 与官方/既有管线，见 02 §8.3）")
         print("  建件：按 community/模板制作指令包.md 做自定义模块/资产 → "
               "protocol.yaml 登记（nf register）→ 成品里即可引用 → 验收")
         print("  验收：nf assemble \"%s\" --check <out.md>"

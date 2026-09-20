@@ -42,7 +42,7 @@ AI 按指令格式输出正文 → 另存为 .md 文件
 
 想往货架上架东西（题材领域包 / 模块 / 资产 / 管线 / 协议登记）？按「做什么 → 怎么提交 → 验收什么」三步走：
 
-1. **做什么**：按 `community/模板制作指令包.md` 产出你的包（protocol.yaml + modules/ + assets/ + pipelines/ + README 装载手册），题材模块用预留号段 M91–M99，资产经 `nf asset add` 走供应链台账入库（溯源/版本/状态齐备，见 `05_资产库/provenance.json` 战例）。
+1. **做什么**：按 `community/模板制作指令包.md` 产出你的包（protocol.yaml + modules/ + assets/ + pipelines/ + README 装载手册），题材模块用 M91–M99 机制段或本包独占类别的类内段 `<类别>:Mxx`，资产经 `nf asset add` 走供应链台账入库（溯源/版本/状态齐备，见 `05_资产库/provenance.json` 战例）。
 2. **怎么提交**：完整流程见 `CONTRIBUTING.md` §4（社区包协作流程五步）——声明协议（protocol.yaml）→ 登记 02 §8 社区登记表 → registry protocols[] 投影（`nf register --check/--apply`）→ 提 Issue/PR。
 3. **验收什么**：`bash verify.sh` 全绿（v2.26 check1-36 PASS=59：check14 协议登记 / check15 组合引用 / check23 资产供应链 逐项自证）——任一 FAIL 即协议事故，先修再交。
 
