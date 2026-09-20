@@ -6,7 +6,7 @@
 ## 覆盖
 | schema | 模块文档 | 机读契约 | 管线 | 协议包 | 台账条目 |
 | - | - | - | - | - | - |
-| 5 | 46 | 46 | 9 | 6 | 2 |
+| 5 | 48 | 48 | 10 | 7 | 2 |
 
 ## schema 定义
 - asset.schema.json
@@ -16,7 +16,7 @@
 - protocol.schema.json
 
 ## 装配在册证据（id 集）
-- AI系统:M25, AI系统:M26, M00, M01, M02, M03, M04, M06, M07, M08, M09, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M23, M24, M40, M41, M43, M50, M55, M57, M58, M59, M65, M80, M90, M91, M92, M93, M94, M95, M96, M97, M98, 事件:M22, 情感:M22, 生存:M10, 通用:M10
+- AI系统:M25, AI系统:M26, M00, M01, M02, M03, M04, M06, M07, M08, M09, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M23, M24, M40, M41, M43, M50, M55, M57, M58, M59, M65, M80, M90, M91, M92, M93, M94, M95, M96, M97, M98, 事件:M22, 情感:M22, 生存:M10, 通用:M10, 量化金融:M31, 量化金融:M32
 
 ## 机读契约模块
 | id | conformance | layer | source |
@@ -67,12 +67,14 @@
 | M98 | L2 | P60 | community/技术文档域包/modules/M98_修订记录.md |
 | 事件:M22 | L2 | P30 | 04_模块库/事件类/M22_事件叙事.md |
 | 通用:M10 | L2 | P10 | 04_模块库/通用类/M10_时间推进.md |
+| 量化金融:M31 | L2 | P40 | community/量化金融域包/modules/M31_因子与信号口径.md |
+| 量化金融:M32 | L2 | P60 | community/量化金融域包/modules/M32_回测与绩效口径.md |
 
 ## 管线
-- P00_通用文档生成管线.md, P01_标准管线.md, P02_校园情感流管线.md, P03_西幻生存流管线.md, P04_轻混装配流管线.md, P05_核心基础流管线.md, P06_技术文档题材装配流管线.md, P07_AI系统域装配流管线.md, P90_技术文档生成管线.md
+- P00_通用文档生成管线.md, P01_标准管线.md, P02_校园情感流管线.md, P03_西幻生存流管线.md, P04_轻混装配流管线.md, P05_核心基础流管线.md, P06_技术文档题材装配流管线.md, P07_AI系统域装配流管线.md, P08_量化金融域装配流管线.md, P90_技术文档生成管线.md
 
 ## 协议包
-- community/AI系统域包/protocol.yaml, community/技术文档域包/protocol.yaml, community/校园情感领域包/protocol.yaml, community/校园西幻轻混组合包/protocol.yaml, community/西幻生存领域包/protocol.yaml, community/通用核心基础包/protocol.yaml
+- community/AI系统域包/protocol.yaml, community/技术文档域包/protocol.yaml, community/校园情感领域包/protocol.yaml, community/校园西幻轻混组合包/protocol.yaml, community/西幻生存领域包/protocol.yaml, community/通用核心基础包/protocol.yaml, community/量化金融域包/protocol.yaml
 
 ## 资产台账键
 - TECH_RULES, TECH_TEMPLATES

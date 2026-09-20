@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "外部输入筛选批次三（awesome-shell）留档：判定无净吸收项；AUD-0006 建档并绑仓内证据件",
+  "note": "量化金融域包落盘收口：P08 + 量化金融:M31/M32 + 两资产 + 三要件；机制通用性与证据强度分级两靶实测；不新增 check / 不改 Schema",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "17ebd29f7eb56429c02b6d0ee0a65e7118a1ef4587929a90d488a9eeb7c347e0"
+  "subject_digest": "bbe7c286efd3e705c048a1376fb071504115e94e6bf3e4b275026f330b5a68cc"
 }

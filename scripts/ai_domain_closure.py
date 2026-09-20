@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AI 系统域 · 概念前置闭包求值（只读 · 确定性 · 零网络 · 不改仓库任何文件）。
+"""概念前置闭包求值（只读 · 确定性 · 零网络 · 不改仓库任何文件）。
 
-定位：把「概念前置依赖」从**内容**变成**可复算产物**——读域包资产
-`community/AI系统域包/assets/CONCEPT_GRAPH.md` 的机器可读块，输出：
+定位：把「概念前置依赖」从**内容**变成**可复算产物**——读**任一**域包资产的
+`concept_graph` 机器可读块（缺省 `community/AI系统域包/assets/CONCEPT_GRAPH.md`，
+跨域用 `--asset community/量化金融域包/assets/QUANT_GRAPH.md` 等），输出：
 
 1. 前置闭包 `closure(c)`
 2. 缺失清单 `missing(c, L)`（L = 已装载概念集）
@@ -91,7 +92,7 @@ def report(graph: Dict[str, Any], target: str, loaded: Sequence[str],
 
 def render(res: Dict[str, Any]) -> str:
     lines = [
-        "== AI 系统域 · 前置闭包求值（只读）==",
+        "== 概念前置闭包求值（只读）==",
         "资产：%s（v%s · 域 %s · 节点 %d + 包外前置 %d · 分支 %s）"
         % (res["asset"], res["graph_version"], res["domain"], res["nodes"],
            res["external_prereqs"],
@@ -241,7 +242,7 @@ def _loaded_arg(raw: str) -> List[str]:
 
 def main(argv: Sequence[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
-        description="AI 系统域概念前置闭包求值（只读；不改仓库任何文件）")
+        description="概念前置闭包求值（只读；跨域通用——用 --asset 指定任一含 concept_graph 块的资产）")
     ap.add_argument("--asset", default=str(_ROOT / DEFAULT_ASSET),
                     help="概念图资产路径（缺省仓库内 %s）" % DEFAULT_ASSET)
     ap.add_argument("--target", default="C22",

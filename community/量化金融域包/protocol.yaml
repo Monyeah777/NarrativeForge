@@ -1,0 +1,32 @@
+# protocol.yaml — 第三方协议声明（量化金融域包，community 第 7 包 / 第 3 个非叙事域）
+# 依据 01 §6.1 Schema 模板骨架 + 02 §8.3 第三方协议登记；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ / check15 ⑤ 断言）
+# 定位：非叙事题材域包「量化金融域」——把该域的口径纪律（因子口径 / 回测与绩效口径）协议化，并随包携带概念前置图（「依赖闭包型」形态的第二实例）。
+protocol:
+  schema_version: "2"          # 引用 Schema 版本，v2 起支持 references；bump 走 01 §7 V1/V2/V3
+package:
+  conformance: "L2"            # 装配可执行：自带模块在装配在册（registry protocols[].module_ids）
+  id: 量化金融域包              # 包目录名（机读唯一标识，与 02 §8 在册一致）
+  name: 量化金融域包            # 显示名（与 README 标题一致）
+  version: "1.0.0"             # 包内容版本（v2.5.0 Wave2 版本槽位，V1 只增不删）
+  pipeline: P08                 # 自带装载管线（R3；P08 量化金融域装配流——派生自 P00 通用骨架）
+  module_id_range:              # 模块编号清单（类内段 <独占类别>:Mxx；每类 00-99 独立空间，01 §1.6.11 通道②）
+    - "量化金融:M31"            # 自带：因子与信号口径（因子定义 / 标准化 / 中性化的口径一致性）
+    - "量化金融:M32"            # 自带：回测与绩效口径（成本与成交假设 / 样本外切分 / 指标口径）
+  categories:                   # 独占类别声明（R2；[量化金融] 与既有 [情感]/[生存]/[世界]/[事件]/[轻混]/[通用]/[技术文档]/[AI系统] 无交集）
+    - 量化金融
+  dependencies:                 # R1 依赖边界
+    core_only: true             # 只依赖官方核心层
+    core_modules: [M00, 通用:M10, M50, M80]   # ⊆ 官方核心 13 件（数据槽 / 节拍 / 调度 / 输出门；官方文件不复制进包，仅依赖引用，I5 单一真相源）
+    cross_package: []           # deprecated 兼容字段（恒空）；references 为唯一跨包引用通道（v0.8.0）
+  references: []                # v2 跨包引用白名单（本包零跨包零借阅，恒空）
+  modules:                      # 模块清单（与 module_id_range 等长等序；与模块文档 / 02 §8 在册一致）
+    - id: "量化金融:M31"
+      desc: 因子与信号口径（维护 FactorSpec：定义 / 标准化 / 极值处理 / 中性化基准 / 频率对齐的口径一致性）
+    - id: "量化金融:M32"
+      desc: 回测与绩效口径（维护 BacktestSpec：成本与成交假设 / 样本外切分 / 指标口径，检查前视与存活偏差口径）
+  assets:                       # 资产声明（I4：本包内容资产 = 概念前置图 + 绩效与风控口径表）
+    count: 2                    # 内容文件数（assets/QUANT_GRAPH.md + assets/QUANT_METRICS.md；README.md 为装载手册，非内容资产）
+    readme: README.md           # 包根 README（人读速览，双源一致对照）
+  mount_layers:                 # 挂载层声明（R3，对齐 02 §5 挂载点键名；同层 default 与既有包交集为空——类内段新编号，唯一 id）
+    P40 行为决策: {default: [量化金融:M31], available: []}    # 因子口径层（读概念图与口径表；官方 M50 调度本体驻官方核心位，不搬移）
+    P60 长期演变: {default: [量化金融:M32], available: []}    # 回测与绩效口径层（收口口径一致性，不含因子定义）

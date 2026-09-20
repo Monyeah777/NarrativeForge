@@ -600,6 +600,41 @@
       "references": [],
       "version": "1.1.0",
       "schema_version": "2"
+    },
+    {
+      "id": "量化金融域包",
+      "name": "量化金融域包",
+      "pipeline": "P08",
+      "categories": [
+        "量化金融"
+      ],
+      "module_ids": [
+        "量化金融:M31",
+        "量化金融:M32"
+      ],
+      "assets": {
+        "count": 2,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "量化金融:M31"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "量化金融:M32"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

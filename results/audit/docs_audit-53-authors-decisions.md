@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/concept_graph.py:bc57a614a5b439fe5bd00e54fb516dcc47a752ca125260b46808b2f1d6f047c9
   - desktop/src/core/intake.py:6a0d584c81dcdeb1439bf4e3f16b201e08e618c8d6296e80a63c6f5266447e56
   - desktop/src/core/asset_ledger.py:f45329c6ac19c864799ee5113f4246474d2a0e41521942bea10f90e379e9e236
-  - scripts/ai_domain_closure.py:737665f9bc56f6b6e4b8711075464f29bf6df702e7c1be9c378e4499f82b2d49
+  - scripts/ai_domain_closure.py:d886f926456343326bbebbbe7a642e3f78414e00282b1600c2f25b3376b8a928
   - library/intake.json:06b0640909783242a624bf55bee8ee59f3aa5ab46bfbe03c67f3497c3fd76b8d
   - verify.sh:5782a1a65b93207bae5085bb1ed99dc7b26139ffb1c6e8ee215c6ab3a6ebd0f1
 ---

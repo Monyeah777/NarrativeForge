@@ -21,6 +21,13 @@
       "files": 23,
       "lines": 4284,
       "package": "西幻生存领域包"
+    },
+    {
+      "digest": "fac490617a035ddd980d677f39f079f838d54931caa072cee3e9c76d768ec5a4",
+      "dir": "community/量化金融域包/assets",
+      "files": 2,
+      "lines": 236,
+      "package": "量化金融域包"
     }
   ],
   "recorded_at": "2026-09-20",

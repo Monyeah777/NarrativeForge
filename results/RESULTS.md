@@ -8,6 +8,7 @@
 
 ## 审计与收口
 
+- [docs_audit-55-quant-domain.md](audit/docs_audit-55-quant-domain.md)
 - [docs_audit-54-external-inputs-shell.md](audit/docs_audit-54-external-inputs-shell.md)
 - [docs_audit-53-authors-decisions.md](audit/docs_audit-53-authors-decisions.md)
 - [docs_audit-52-external-inputs.md](audit/docs_audit-52-external-inputs.md)

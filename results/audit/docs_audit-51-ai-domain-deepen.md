@@ -10,7 +10,7 @@ subjects:
   - community/AI系统域包/assets/CONCEPT_GRAPH.md:c28ab45810bf09d18661583793b55eba41815e8ea0437a587279608d346c456a
   - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
   - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448
-  - scripts/ai_domain_closure.py:737665f9bc56f6b6e4b8711075464f29bf6df702e7c1be9c378e4499f82b2d49
+  - scripts/ai_domain_closure.py:d886f926456343326bbebbbe7a642e3f78414e00282b1600c2f25b3376b8a928
   - desktop/tests/test_ai_domain_closure.py:1f7e0e7749f2bf52edee010ff080b3b3a0ee23d4e51e5275eda7787a57c7fb02
 ---
 

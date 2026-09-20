@@ -1,5 +1,5 @@
 {
-  "count": 46,
+  "count": 48,
   "modules": {
     "AI系统:M25": {
       "digest": "05f5994517146a1c2ea0cb1951d849e0e004e506725bc3ad8e1dbb88f264b949",
@@ -184,6 +184,14 @@
     "通用:M10": {
       "digest": "1b654bc697783cb6c7edf110190449a1bcb37786e153ab056ff536e297e6efdc",
       "path": "04_模块库/通用类/M10_时间推进.md"
+    },
+    "量化金融:M31": {
+      "digest": "01f77a604e1b651576cbab922d9371a906e367c61e378bda3ea97e5eb7baba7d",
+      "path": "community/量化金融域包/modules/M31_因子与信号口径.md"
+    },
+    "量化金融:M32": {
+      "digest": "bb00e01c0c102ef55c7c92626f7389c906ba622aad967b5492ef7e786211e84e",
+      "path": "community/量化金融域包/modules/M32_回测与绩效口径.md"
     }
   },
   "schema": "nf-module-signatures/1"

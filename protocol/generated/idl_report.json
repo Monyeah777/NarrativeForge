@@ -325,14 +325,28 @@
       "layer": "P10",
       "name": "时间推进",
       "source": "04_模块库/通用类/M10_时间推进.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "量化金融:M31",
+      "layer": "P40",
+      "name": "因子与信号口径",
+      "source": "community/量化金融域包/modules/M31_因子与信号口径.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "量化金融:M32",
+      "layer": "P60",
+      "name": "回测与绩效口径",
+      "source": "community/量化金融域包/modules/M32_回测与绩效口径.md"
     }
   ],
   "coverage": {
     "asset_entries": 2,
-    "contract_covered": 46,
-    "module_docs": 46,
-    "pipelines": 9,
-    "protocols": 6,
+    "contract_covered": 48,
+    "module_docs": 48,
+    "pipelines": 10,
+    "protocols": 7,
     "schema_issues": 0
   },
   "event_closure": {
@@ -346,6 +360,8 @@
       "decision_brief",
       "doc_delta_committed",
       "doc_structure_ready",
+      "factor_spec_conflict",
+      "factor_spec_ready",
       "ghost_event",
       "intent_received",
       "interaction_update",
@@ -366,8 +382,14 @@
       "tick_day",
       "travel_event"
     ],
-    "modules": 46,
+    "modules": 48,
     "pub_only_by_module": {
+      "backtest_spec_conflict": [
+        "量化金融:M32"
+      ],
+      "backtest_spec_ready": [
+        "量化金融:M32"
+      ],
       "campus_anonymous_gift": [
         "M92"
       ],
@@ -403,6 +425,8 @@
       ]
     },
     "pub_only_events": [
+      "backtest_spec_conflict",
+      "backtest_spec_ready",
       "campus_anonymous_gift",
       "campus_gift_intent",
       "faction_event",
@@ -464,7 +488,9 @@
     "事件:M22",
     "情感:M22",
     "生存:M10",
-    "通用:M10"
+    "通用:M10",
+    "量化金融:M31",
+    "量化金融:M32"
   ],
   "generated_by": "43 A4 protocol_golden（schema 定义 → 校验摘要，确定性渲染）",
   "pipeline_files": [
@@ -476,6 +502,7 @@
     "P05_核心基础流管线.md",
     "P06_技术文档题材装配流管线.md",
     "P07_AI系统域装配流管线.md",
+    "P08_量化金融域装配流管线.md",
     "P90_技术文档生成管线.md"
   ],
   "protocol_files": [
@@ -484,7 +511,8 @@
     "community/校园情感领域包/protocol.yaml",
     "community/校园西幻轻混组合包/protocol.yaml",
     "community/西幻生存领域包/protocol.yaml",
-    "community/通用核心基础包/protocol.yaml"
+    "community/通用核心基础包/protocol.yaml",
+    "community/量化金融域包/protocol.yaml"
   ],
   "registry_modules": [
     {

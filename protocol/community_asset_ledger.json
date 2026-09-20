@@ -1278,6 +1278,282 @@
       "package": "西幻生存领域包",
       "file": "community/西幻生存领域包/assets/20_世界知识_WORLD_KNOWLEDGE.md",
       "line": 1
+    },
+    {
+      "key": "BIAS_LOOKAHEAD",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 42
+    },
+    {
+      "key": "BIAS_SURVIVORSHIP",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 43
+    },
+    {
+      "key": "CAPACITY_LIMIT",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 36
+    },
+    {
+      "key": "COST_FEE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 33
+    },
+    {
+      "key": "COST_FILL_PRICE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 35
+    },
+    {
+      "key": "COST_SLIPPAGE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 34
+    },
+    {
+      "key": "METRIC_ANNUAL_FACTOR",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 20
+    },
+    {
+      "key": "METRIC_CALMAR",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 24
+    },
+    {
+      "key": "METRIC_DRAWDOWN_MAX",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 23
+    },
+    {
+      "key": "METRIC_IC",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 26
+    },
+    {
+      "key": "METRIC_IR",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 27
+    },
+    {
+      "key": "METRIC_RETURN_LOG",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 19
+    },
+    {
+      "key": "METRIC_RETURN_SIMPLE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 18
+    },
+    {
+      "key": "METRIC_SHARPE",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 22
+    },
+    {
+      "key": "METRIC_TURNOVER",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 25
+    },
+    {
+      "key": "METRIC_VOL_ANNUAL",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 21
+    },
+    {
+      "key": "Q00",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q01",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q02",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q03",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 35
+    },
+    {
+      "key": "Q04",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 36
+    },
+    {
+      "key": "Q05",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q06",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q07",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 27
+    },
+    {
+      "key": "Q08",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q09",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "Q10",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 44
+    },
+    {
+      "key": "Q11",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 45
+    },
+    {
+      "key": "Q12",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 46
+    },
+    {
+      "key": "Q13",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 47
+    },
+    {
+      "key": "Q14",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 48
+    },
+    {
+      "key": "Q15",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 49
+    },
+    {
+      "key": "Q16",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 50
+    },
+    {
+      "key": "Q17",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 13
+    },
+    {
+      "key": "Q18",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 52
+    },
+    {
+      "key": "Q19",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 53
+    },
+    {
+      "key": "Q20",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 54
+    },
+    {
+      "key": "Q21",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 55
+    },
+    {
+      "key": "Q22",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 56
+    },
+    {
+      "key": "Q23",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 57
+    },
+    {
+      "key": "Q24",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 58
+    },
+    {
+      "key": "Q25",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 59
+    },
+    {
+      "key": "Q26",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 60
+    },
+    {
+      "key": "Q27",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 6
+    },
+    {
+      "key": "QUANT_GRAPH",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "QUANT_METRICS",
+      "package": "量化金融域包",
+      "file": "community/量化金融域包/assets/QUANT_METRICS.md",
+      "line": 1
     }
   ]
 }

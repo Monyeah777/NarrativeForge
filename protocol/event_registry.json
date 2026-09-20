@@ -1,5 +1,37 @@
 {
   "events": {
+    "backtest_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "是否阻断（因子口径未定 / 偏差口径未声明即为真）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "冲突字段（cost_model / split / metrics / bias_checks）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "冲突原因（缺项 / 越词表 / 阻断项）",
+          "type": "string"
+        }
+      },
+      "note": "证据:community/量化金融域包/modules/M32_回测与绩效口径.md §4 事件联动（本域自撰，字段自定）",
+      "payload_status": "declared"
+    },
+    "backtest_spec_ready": {
+      "fields": {
+        "bias_declared": {
+          "note": "两条偏差口径是否已声明（前视 / 存活）",
+          "type": "boolean"
+        },
+        "metric_scope": {
+          "note": "指标口径集合版本（口径变更即新版本）",
+          "type": "string"
+        }
+      },
+      "note": "证据:community/量化金融域包/modules/M32_回测与绩效口径.md §4 事件联动（本域自撰，字段自定）",
+      "payload_status": "declared"
+    },
     "beat_tick": {
       "fields": {
         "buffered": {
@@ -268,6 +300,38 @@
         }
       },
       "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
+      "payload_status": "declared"
+    },
+    "factor_spec_conflict": {
+      "fields": {
+        "factor": {
+          "note": "因子 / 信号名",
+          "type": "string"
+        },
+        "field": {
+          "note": "冲突字段（definition / neutralize / winsorize / frequency / missing）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "冲突原因（缺项 / 越词表 / 跨因子不一致）",
+          "type": "string"
+        }
+      },
+      "note": "证据:community/量化金融域包/modules/M31_因子与信号口径.md §4 事件契约（本域自撰，字段自定）",
+      "payload_status": "declared"
+    },
+    "factor_spec_ready": {
+      "fields": {
+        "factor_count": {
+          "note": "通过口径校验的因子数",
+          "type": "number"
+        },
+        "spec_version": {
+          "note": "口径集合版本（口径变更即新版本）",
+          "type": "string"
+        }
+      },
+      "note": "证据:community/量化金融域包/modules/M31_因子与信号口径.md §4 事件契约（本域自撰，字段自定）",
       "payload_status": "declared"
     },
     "faction_event": {
