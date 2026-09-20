@@ -245,6 +245,13 @@ class NegativeCaseTest(unittest.TestCase):
         self.assertEqual(fails, [])
         self.assertEqual(len(passes), 15)
 
+    def test_self_check_passes_on_quant_asset(self):
+        """跨域通用化：按资产登记键级样例（QUANT_GRAPH）同样零 FAIL、15 例。"""
+        fails, passes = adc.self_check(
+            ROOT / "community" / "量化金融域包" / "assets" / "QUANT_GRAPH.md")
+        self.assertEqual(fails, [])
+        self.assertEqual(len(passes), 15)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -10,11 +10,13 @@ subjects:
   - community/AI系统域包/assets/CONCEPT_GRAPH.md:bd666baaf1bc9eccc0fbd319c37e922f2dc5abba09020003e74a1ec41c321894
   - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
   - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448
-  - scripts/ai_domain_closure.py:d886f926456343326bbebbbe7a642e3f78414e00282b1600c2f25b3376b8a928
-  - desktop/tests/test_ai_domain_closure.py:1f7e0e7749f2bf52edee010ff080b3b3a0ee23d4e51e5275eda7787a57c7fb02
+  - scripts/ai_domain_closure.py:215309a9027c548129b72b7fc3108ba6ade7d593019c8cc6a474008cd189bd15
+  - desktop/tests/test_ai_domain_closure.py:dde7ad7c4087ce72c67c98eb8f5f8e3f123568e1b7dd6c31914235265bd97c80
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
+
+> 重审（2026-09-21 · D1-D5 修复波）：`ai_domain_closure.py` 自检样例按资产登记通用化（闭包语义不变）——结论复核不变，subjects 依「重审并更新 digest」处置。
 
 ## 一、本波做了什么（结果形态）
 

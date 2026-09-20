@@ -9,13 +9,15 @@ subjects:
   - desktop/src/core/concept_graph.py:5a4f5b6dc61f825c3d51a648eae84e434ac3cc475114db7c3f50e256ae193ca2
   - desktop/src/core/intake.py:6a0d584c81dcdeb1439bf4e3f16b201e08e618c8d6296e80a63c6f5266447e56
   - desktop/src/core/asset_ledger.py:f45329c6ac19c864799ee5113f4246474d2a0e41521942bea10f90e379e9e236
-  - scripts/ai_domain_closure.py:d886f926456343326bbebbbe7a642e3f78414e00282b1600c2f25b3376b8a928
+  - scripts/ai_domain_closure.py:215309a9027c548129b72b7fc3108ba6ade7d593019c8cc6a474008cd189bd15
   - library/intake.json:06b0640909783242a624bf55bee8ee59f3aa5ab46bfbe03c67f3497c3fd76b8d
   - verify.sh:320794ec2b7f322c873b0d691bd589dfd7b71238a66b526863171e8f78bd2245
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
 > subjects = 四项执行的**承重件**（任一件再改，本件结论即失效，须重审）。
+
+> 重审（2026-09-21 · D1-D5 修复波）：`ai_domain_closure.py` 自检样例按资产登记通用化（闭包语义不变）——结论复核不变，subjects 依「重审并更新 digest」处置。
 
 ## 一、执行清单（四项 · 逐项给判据与回归）
 
