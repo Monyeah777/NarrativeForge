@@ -41,11 +41,12 @@ SOFT_IMPORTS = {
     "jsonschema": "IDL 标准实现交叉验证（可选对照；缺依赖则跳过该面）",
     "PySide6": "CCV3 卡面占位图写入（缺依赖须给明确修复指引，不得裸 ImportError）",
 }
-#: R5 存量残留（**WARN 挂账**：带裁决/文档指针，不判死，待作者裁决后清理）
-IMPORT_RESIDUE = {
-    "scripts/selftest_android.py": "L3 端壳退役残留——docs/L3_FROZEN.md 记「已彻底移除·裁决 #16」，"
-                                   "文件仍在且 import 不存在的 app.controller（待作者裁决删除）",
-}
+#: R5 存量残留（**WARN 挂账**：确有理由保留的存量违规，须带裁决/文档指针；不判死但不得隐身）
+#: 空表即"零残留"。注意本扫描按**文件系统**取件（与 verify 其它 check 同口径）——
+#: 未入库的本地副本同样会被扫到，故"仓库干净"不等于"工作目录干净"。
+#: 2026-09-20：唯一一项残留（`scripts/` 下端壳自检旧脚本，属 `.git/info/exclude` 的本地旧副本）
+#: 经作者裁决删除，登记随之清空。
+IMPORT_RESIDUE: dict = {}
 IMPORT_SCAN = ("desktop/src/core/*.py", "scripts/*.py")
 _HEAD = re.compile(r"^#{1,6}\s+(.*?)\s*$")
 _ACTION = re.compile(

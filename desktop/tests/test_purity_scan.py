@@ -88,12 +88,26 @@ class PurityScanTest(unittest.TestCase):
             self.assertTrue(any("未软导入" in i for i in issues), issues)
 
     def test_r5_residue_is_warn_not_fail(self):
-        """R5：登记在 IMPORT_RESIDUE 的存量残留走 WARN 挂账（不判死但不得隐身）。"""
+        """R5：登记在 IMPORT_RESIDUE 的存量残留走 WARN 挂账（不判死但不得隐身）。
+
+        真表当前为空（2026-09-20 清理后零残留），故用临时登记注入验证机制本身。
+        """
         with tempfile.TemporaryDirectory() as tmp:
-            _write(tmp, "scripts/selftest_android.py", "from app.controller import Controller\n")
-            issues, stats = ps.scan(tmp)
-            self.assertEqual(issues, [])
-            self.assertTrue(any("残留" in w for w in stats["import_residue"]), stats)
+            saved = dict(ps.IMPORT_RESIDUE)
+            ps.IMPORT_RESIDUE.clear()
+            ps.IMPORT_RESIDUE["scripts/legacy_selfcheck.py"] = "测试用残留（带裁决指针）"
+            try:
+                _write(tmp, "scripts/legacy_selfcheck.py", "from ghost.controller import C\n")
+                issues, stats = ps.scan(tmp)
+                self.assertEqual(issues, [])
+                self.assertTrue(any("残留" in w for w in stats["import_residue"]), stats)
+                # 同一文件若未登记 → 判 FAIL（登记才是豁免的唯一出口）
+                ps.IMPORT_RESIDUE.clear()
+                issues2, _ = ps.scan(tmp)
+                self.assertTrue(any("未登记" in i for i in issues2), issues2)
+            finally:
+                ps.IMPORT_RESIDUE.clear()
+                ps.IMPORT_RESIDUE.update(saved)
 
 
 if __name__ == "__main__":
