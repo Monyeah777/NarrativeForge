@@ -302,4 +302,4 @@ load_order(G) = toposort(G) 的任一线性化（确定性：同入度按 id 升
 - CS2023 只取到 **Knowledge Area 名单页**，未取 KA 之间的前置表——故 C00 → C01 的边标为「课程序列」而非「已证前置」。
 - 应用栈（C25–C47）的边以**结构类证据 + 本件自撰**为主：指南章节序提供覆盖面与教学序，不单独充当实现级前置证据；待有实现类证据再收窄。
 - `C24` 的 `inferred` 部分（对齐与幻觉维度）与 `C45`（模式 / 反模式）同属高抽象节点，前置边只保留已能举出实例的几条。
-- 本件是**内容资产**：门禁校验其可寻址与可溯源（check23 / check32 资产面），但**不校验图内部一致性**（无环 / 无悬空 / 闭包正确）——该缺口属判据面，记档于 `results/audit/docs_audit-50-ai-domain.md` §六 与 `results/audit/docs_audit-51-ai-domain-deepen.md`。
+- 本件是**内容资产**：门禁校验其可寻址与可溯源（check23 / check32 资产面）；**图内部一致性已入判据面**（2026-09-20 作者裁决收口）：check32 追加 `concept_graph` 子扫描，对任何带本机读块的资产体检**无环 / 无悬空 / 边有溯源 / 层位合法 / 节点 id 唯一 / 别名唯一 / 分支完备**，且与只读求值器**同源**（`desktop/src/core/concept_graph.py` 单一实现，避免门禁与求值器双源漂移）。原「判据面缺口」条目因此关闭，记档见 `results/audit/docs_audit-50-ai-domain.md` §二 与 `docs_audit-53-authors-decisions.md`。

@@ -182,5 +182,58 @@ class RootScanTest(AssetLedgerTestBase):
         self.assertEqual(al.filter_rows(rows, pkg="demo")[0]["file"], "X.md")
 
 
+class ShelfShapeTest(unittest.TestCase):
+    """资产货架**单层不变量**（2026-09-20 作者裁决收口）。
+
+    背景：密度 / 键表投影 / 行数基线三面以非递归 glob 取件，台账面走 os.walk——
+    货架出现子目录时文件会「台账可见、三面不可见」（静默丢口径），故子目录即 FAIL。
+    """
+
+    def _shelf(self, tmp: str, pkg: str = "某包") -> str:
+        d = os.path.join(tmp, "community", pkg, "assets")
+        os.makedirs(d, exist_ok=True)
+        return d
+
+    def test_flat_shelf_passes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = self._shelf(tmp)
+            with open(os.path.join(d, "A.md"), "w", encoding="utf-8") as f:
+                f.write("# A\n")
+            issues, stats = al.verify_shelf_shape(tmp)
+            self.assertEqual(issues, [])
+            self.assertEqual(stats["shelves"], 1)
+
+    def test_nested_dir_under_package_shelf_is_caught(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = self._shelf(tmp)
+            os.makedirs(os.path.join(d, "sub"))
+            with open(os.path.join(d, "sub", "B.md"), "w", encoding="utf-8") as f:
+                f.write("# B\n")
+            issues, _ = al.verify_shelf_shape(tmp)
+            self.assertTrue(any("资产货架含子目录" in i for i in issues), issues)
+            self.assertTrue(any("community/某包/assets" in i for i in issues), issues)
+
+    def test_user_shelf_is_covered_too(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, "05_资产库", "用户自定义", "sub"))
+            issues, _ = al.verify_shelf_shape(tmp)
+            self.assertTrue(any("用户自定义" in i for i in issues), issues)
+
+    def test_verify_root_aggregates_shape_issues_and_shelf_stat(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(self._shelf(tmp), "sub"))
+            issues, stats = al.verify_root(tmp)
+            self.assertIn("shelves", stats)
+            self.assertEqual(stats["shelves"], 1)
+            self.assertTrue(any("资产货架含子目录" in i for i in issues), issues)
+
+    def test_repo_shelves_are_flat(self):
+        """仓库真源：三个域包货架与用户自定义货架当前均为单层（本不变量成立）。"""
+        repo = str(Path(__file__).resolve().parents[2])
+        issues, stats = al.verify_shelf_shape(repo)
+        self.assertEqual(issues, [], issues)
+        self.assertGreaterEqual(stats["shelves"], 4)
+
+
 if __name__ == "__main__":
     unittest.main()

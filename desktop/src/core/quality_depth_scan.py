@@ -7,6 +7,8 @@
 - asset_density + thickness + usage(strict)：空档/不可读 + 低信息档 + 零引用键。
 - world_model：可选确定性抽象状态契约（变量/相位/不变式）语义成立。
 - world_slots：M00 数据槽注册表自身结构与类型约束成立。
+- concept_graph：概念前置偏序图（资产机读块）健康度——无环 / 无悬空 / 边有溯源 /
+  层位合法 / 别名唯一 / 分支完备（判据面收口，见 results/audit/docs_audit-50 §二）。
 
 若任一子扫描 FAIL，本扫描 FAIL；动态/外部证据类不入本门（保持不伪造）。
 """
@@ -19,6 +21,7 @@ from typing import Any, Dict, List, Tuple
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     from core import asset_density as ad
     from core import asset_ledger_projection as alp
+    from core import concept_graph as cg
     from core import instruction_step_audit as isa
     from core import payload_consumer as pc
     from core import payload_registry as pr
@@ -31,6 +34,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     for name, fn in (("payload_registry", pr.scan),
                      ("asset_ledger", alp.verify),
                      ("instruction_audit", isa.scan),
+                     ("concept_graph", cg.scan),
                      ("asset_density", ad.scan),
                      ("asset_thickness", ad.thickness_scan),
                      ("asset_usage_strict", lambda r: ad.usage_scan(r))):

@@ -34,6 +34,8 @@
 
 7. **单一真相源**：条目文件头的 YAML frontmatter 是**唯一真源**（`id/type/title/description/license/sources/generated/verified/status/stale_after/attestation`）；下方登记表与 `ALIAS.md` 均由脚本重生成（`python scripts/nf.py library reindex`），**不要手改生成区**。
 
+> **闸门声明（机读真相）= `library/intake.json`**：上条两通道的接收模式（`open` / `author_only` / `paused`）以该件为准，两个入库机器人运行时读它（作者可一键关闸为 `paused`）；本条通道措辞须与声明逐字一致，三方不一致即 `verify check34` FAIL。
+
 <!-- BEGIN GENERATED: library-index -->
 
 ## 登记表（由条目 frontmatter 自动生成，勿手改）

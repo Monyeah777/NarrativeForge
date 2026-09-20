@@ -550,6 +550,44 @@ if not errs:
             elif re.match(r'^M\d{2,3}$', mid) and d not in LEGACY_BARE and not re.match(r'^M9[1-9]$', mid):
                 errs.append('%s ⑤裸号越段: %s（新包新增编号落 M91-M99 机制段或 <独占类别>:Mxx 类内段；'
                             '既有包沿用原编号不改号——01 §1.6.11）' % (d, mid))
+    # ⑤c 裸号索引歧义（2026-09-20 作者裁决收口）：运行时模块索引 pipelinerun._module_files 以
+    #     **文件名 stem 裸号**为键、setdefault 先到先得——类内段新编号与既有包 / 官方核心裸号相同
+    #     时，会静默改写既有管线的裸号引用解析（实测战例：AI系统:M01/M02 曾把西幻 P03 的
+    #     M01/M02 解析改指本包；本处把该隐患写成三条判据）：
+    #     ① 同一裸号不得属两个及以上 community 包（真歧义）；
+    #     ② 同包内文件名裸号不得重复（同包歧义）；
+    #     ③ 包自有裸号若被官方核心 / 他包占用，则本包管线不得以**裸号**引用它（须全限定）。
+    _stem_owner = {}
+    for _m in sorted(glob.glob('community/*/modules/*.md')):
+        _pkg = _m.replace('\\', '/').split('/')[1]
+        _stem_owner.setdefault(os.path.basename(_m).split('_')[0], []).append(_pkg)
+    _core_stems = {os.path.basename(_f).split('_')[0] for _f in glob.glob('04_模块库/*/*.md')}
+    for _stem, _pkgs in sorted(_stem_owner.items()):
+        _uniq = sorted(set(_pkgs))
+        if len(_pkgs) > 1 and len(_uniq) == 1:
+            errs.append('%s ⑤裸号同包重复：文件名裸号 %s 出现 %d 次'
+                        '（修复指引：同包模块编号须唯一）' % (_uniq[0], _stem, len(_pkgs)))
+        elif len(_uniq) > 1:
+            errs.append('⑤裸号跨包重号：%s 同时属 %s（运行时模块索引按裸号先到先得解析，'
+                        '后到包的裸号引用会被静默改写；修复指引：类内段换号，或全部改用全限定 id 引用）'
+                        % (_stem, '、'.join(_uniq)))
+    for _pkg in sorted({p for v in _stem_owner.values() for p in v}):
+        _own = {s for s, v in _stem_owner.items() if _pkg in v}
+        for _pf in sorted(glob.glob('community/%s/pipelines/*.md' % _pkg)):
+            try:
+                _text = open(_pf, encoding='utf-8').read()
+            except OSError:
+                continue
+            for _lst in re.findall(r'(?m)^\s*(?:default_modules|allowed_modules)\s*:\s*\[([^\]]*)\]',
+                                   _text):
+                for _tok in (x.strip() for x in _lst.split(',')):
+                    if not _tok or ':' in _tok:
+                        continue
+                    if _tok in _own and (_tok in _core_stems
+                                         or len(set(_stem_owner.get(_tok, []))) > 1):
+                        errs.append('%s ⑤裸号引用歧义：%s 以裸号引用 %s，而该裸号被官方核心 / 他包占用'
+                                    '（修复指引：改写为全限定 id，如 <类别>:%s）'
+                                    % (_pf.replace('\\', '/'), _pkg, _tok, _tok))
     # ⑥ protocol.yaml ↔ README 关键字段一致（双源一致，check14 ⑥，含组合包）
     for d in ALL_PKGS:
         rd = open(d + '/README.md', encoding='utf-8').read()
@@ -1535,7 +1573,7 @@ PYEOF
 }
 
 check32(){
-  echo '== [32/段C] 质量纵深汇总门禁（45 W28：载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用 + world_model/world_slots）=='
+  echo '== [32/段C] 质量纵深汇总门禁（45 W28：载荷注册表/资产 ledger/指令审计/概念图健康/资产密度·厚度·零引用 + world_model/world_slots）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check32.log 2>&1
@@ -1554,14 +1592,14 @@ print('质量纵深统计：%s'
 sys.exit(1 if issues else 0)
 PYEOF
     then
-      ok '质量纵深汇总扫描通过（载荷/ledger/指令/资产/world_model/world_slots 零缺口）'
+      ok '质量纵深汇总扫描通过（载荷/ledger/指令/概念图/资产/world_model/world_slots 零缺口）'
     else
       no "质量纵深汇总异常——$(tail -2 "$NFL_TMP"/nf_check32.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check32）'
   fi
-  if [ "$err" -eq 0 ]; then ok '质量纵深汇总门禁全绿（check32：45 W28 + world_model/world_slots——新增纵深统一硬门，PASS 49→51）'
+  if [ "$err" -eq 0 ]; then ok '质量纵深汇总门禁全绿（check32：45 W28 + 概念图健康 + world_model/world_slots——纵深统一硬门，PASS 49→51）'
   fi
 }
 
@@ -1726,6 +1764,14 @@ else:
 # 5 检索面可用（正文级命中，非仅文件名）
 if not nflib.search('雨天', '.', limit=1):
     problems.append('馆藏检索无命中（倒排索引不可用）')
+
+# 6 投稿闸门三方一致（2026-09-20 作者裁决收口）：声明件 ⇄ 须知措辞 ⇄ 两个入库机器人引用
+try:
+    from core import intake as ik
+    for i in ik.scan('.')[0]:
+        problems.append('投稿闸门：%s' % i)
+except Exception as exc:
+    problems.append('投稿闸门声明确认不可用：%s' % exc)
 
 for p in problems:
     print('[FAIL] %s' % p)

@@ -7,10 +7,10 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - community/AI系统域包/protocol.yaml:13e26c88057987be2c5933a879d214ed75a1f33e5bc8da4371a36dbcc04bf7b1
-  - community/AI系统域包/assets/CONCEPT_GRAPH.md:93058b9d94fe7828a4d2fc887fff493f65b14b67b7740457fbd3b3408f62e3eb
+  - community/AI系统域包/assets/CONCEPT_GRAPH.md:c28ab45810bf09d18661583793b55eba41815e8ea0437a587279608d346c456a
   - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
   - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448
-  - scripts/ai_domain_closure.py:1b7a2ab0d46534d4dda00f968e4ddd11c5492037963389ab53e9b053d5cb1679
+  - scripts/ai_domain_closure.py:737665f9bc56f6b6e4b8711075464f29bf6df702e7c1be9c378e4499f82b2d49
   - desktop/tests/test_ai_domain_closure.py:1f7e0e7749f2bf52edee010ff080b3b3a0ee23d4e51e5275eda7787a57c7fb02
 ---
 
@@ -125,5 +125,7 @@ $ python scripts/ai_domain_closure.py --order aisystem-module-order   # 违反�
 3. `verify.sh` 仍 PASS=61 / WARN=0 / FAIL=0（未新增 check、未改 Schema）。
 4. §六「运行时裸号歧义」与 §八 三处设计偏差在 v1.1 下仍成立（本波新增概念键为 `Cxx`，不触及 `Mxx` 裸号面）。
 5. 包内容版本随内容变更走 additive 档：`1.0.0 → 1.1.0`（`protocol.yaml` 摘要同步更新）。
+
+**第三波复审（2026-09-20 · 作者裁决四项执行）**：本件 §二 的**判据面缺口已关闭**——概念图内部一致性现由 verify check32 的 `concept_graph` 子扫描承担（无环 / 无悬空 / 边有溯源 / 层位合法 / 节点 id 唯一 / 别名唯一 / 分支完备），且只读求值器与门禁**同源**（`desktop/src/core/concept_graph.py` 单一实现）。命题 P 的三层口径结论不变（求值面可表达 / 声明面以内容形态成立 / 判据面原缺口），第三波所做的正是把该缺口的**最小可行补法**兑现。subjects 中资产与求值器摘要已随之更新；详录见 `docs_audit-53-authors-decisions.md`。
 
 **摘要更新**：subjects 六条已更新为 v1.1 内容摘要；本件结论对新内容有效。

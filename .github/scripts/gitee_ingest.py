@@ -30,7 +30,7 @@ from glob import glob
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # 复用 GitHub 前端的纯函数（36进制 / 文件名解析 / 存量扫描 / ALIAS 重建）
 from library_ingest import (to_b36, parse_nfname, scan_existing, rebuild_alias,
-                            SEG_RE)
+                            SEG_RE, load_gate, INTAKE_REL)
 
 GITEE_OWNER = 'monyeah777'
 GITEE_REPO = 'narrative-forge'
@@ -153,6 +153,18 @@ def process(issue):
     body = issue.get('body', '') or ''
     author = (issue.get('user') or {}).get('login', 'unknown')
     print(f'── 处理 Gitee Issue #{number}（作者 {author}）')
+
+    # 投稿闸门（声明件驱动，2026-09-20 收口）：本通道按 library/intake.json 的 channels.gitee
+    # 走 mode——open 零门槛 / author_only 白名单 / paused 暂停；声明不可读即 fail-closed 暂停。
+    mode, allow = load_gate('gitee')
+    if mode == 'paused':
+        print('  ⏸ 闸门=paused：本轮不接收（作者改回 open / author_only 后重投）')
+        return
+    if mode == 'author_only' and author.lower() not in allow:
+        gitee_comment(number, f'⏳ 本通道当前仅接受白名单投稿人（闸门声明 {INTAKE_REL}）。')
+        gitee_close(number)
+        print(f'  非白名单投稿人（{author}），已礼貌拒绝')
+        return
 
     if already_processed(number):
         print(f'  ⏭ 已入库过（防重），仅尝试关闭')

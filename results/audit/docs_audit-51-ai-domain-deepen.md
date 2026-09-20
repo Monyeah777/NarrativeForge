@@ -7,10 +7,10 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - community/AI系统域包/protocol.yaml:13e26c88057987be2c5933a879d214ed75a1f33e5bc8da4371a36dbcc04bf7b1
-  - community/AI系统域包/assets/CONCEPT_GRAPH.md:93058b9d94fe7828a4d2fc887fff493f65b14b67b7740457fbd3b3408f62e3eb
+  - community/AI系统域包/assets/CONCEPT_GRAPH.md:c28ab45810bf09d18661583793b55eba41815e8ea0437a587279608d346c456a
   - community/AI系统域包/modules/M25_前置闭包求值.md:2118a73922271efa1c38095e6ff430b9cec1b34031d7c316306afbb45a0cd1bd
   - community/AI系统域包/modules/M26_装载序就绪门.md:fbc7c16d73989bdce1240748407497baf2e811f90337dc6da211645487663448
-  - scripts/ai_domain_closure.py:1b7a2ab0d46534d4dda00f968e4ddd11c5492037963389ab53e9b053d5cb1679
+  - scripts/ai_domain_closure.py:737665f9bc56f6b6e4b8711075464f29bf6df702e7c1be9c378e4499f82b2d49
   - desktop/tests/test_ai_domain_closure.py:1f7e0e7749f2bf52edee010ff080b3b3a0ee23d4e51e5275eda7787a57c7fb02
 ---
 
@@ -147,3 +147,7 @@ $ python scripts/ai_domain_closure.py --gaps --loaded C00,C01 --branch app --lim
 **记为风险类比的唯一一条（不构成吸收）**：该清单因 spam 与低质量投稿**整仓暂停投稿**；NF 的云端投稿通道（Issue 模板 + ingest 机器人自动入库）同为「零门槛粘贴」取向，其防线是机检（自包含硬标准 / 许可证门 / 三层要件）+ 事后流转（deprecated / retired）。若未来外投规模上升，**闸门强度**是首要观察项——挂账，交作者裁决。
 
 **边界**：本筛选只用该仓的**结构与治理实况**作判定依据，未复制其文本，未入任何资产 / 溯源图例。
+
+## 九、复审（第三波 · 作者裁决四项执行后）
+
+本件 §五 挂账的两条机制缺口（`registry_sync` 投影不带 `version`、`check30` 判据过宽与死代码）已在 `fix(quality)` 波次修掉；本件 §一 表格里的「M25 interfaces / M26 outputs / 资产键」口径未变，唯**求值器实现改为复用 `core/concept_graph`（图语义单一实现）**、资产 §8 原「判据面缺口」条目随 check32 子扫描落地而关闭，故 subjects 中资产与求值器摘要更新为第三波值。

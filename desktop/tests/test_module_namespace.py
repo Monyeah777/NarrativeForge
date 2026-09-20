@@ -108,6 +108,30 @@ def _run(tmp: Path) -> tuple:
     return cp.returncode, (cp.stdout or "") + (cp.stderr or "")
 
 
+def _add_modules(tmp: Path, pkg: str, stems: list) -> None:
+    """给夹具包写模块文件（文件名 stem 即运行时模块索引的裸号键）。"""
+    d = tmp / pkg / "modules"
+    d.mkdir(parents=True, exist_ok=True)
+    for i, stem in enumerate(stems):
+        (d / ("%s_夹具%d.md" % (stem, i))).write_text(
+            "# 模块 %s · 夹具\n" % stem, encoding="utf-8")
+
+
+def _add_core_module(tmp: Path, stem: str) -> None:
+    d = tmp / "04_模块库" / "通用类"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / ("%s_核心夹具.md" % stem)).write_text("# 模块 %s · 核心夹具\n" % stem,
+                                       encoding="utf-8")
+
+
+def _add_pipeline(tmp: Path, pkg: str, pid: str, refs: list) -> None:
+    d = tmp / pkg / "pipelines"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / ("%s_夹具流.md" % pid)).write_text(
+        "# 管线 %s · 夹具\n\n```yaml\nPipeline:\n  id: %s\n  layers:\n    - id: P40\n"
+        "      default_modules: [%s]\n```\n" % (pid, pid, ", ".join(refs)), encoding="utf-8")
+
+
 BASE = [
     ("community/校园情感领域包", "校园情感领域包", "校园情感领域包", "P02",
      ["情感:M22"], ["情感"]),
@@ -168,6 +192,68 @@ class Check14NamespaceGate(unittest.TestCase):
         rc, out = self._case(new_pipe="P02")
         self.assertEqual(rc, 1, out)
         self.assertIn("⑧管线 id 跨包重号: P02", out)
+
+
+class Check14BareIdAmbiguityGate(unittest.TestCase):
+    """⑤c 裸号索引歧义（2026-09-20 收口）：运行时不变量 = 裸号 → 唯一模块。
+
+    判据取 verify.sh check14 真件执行；夹具在合规登记树上叠加 modules/ 与 pipelines/ 后注入变异。
+    """
+
+    def _tree(self, tmp: Path, mutator=None):
+        _write_tree(tmp, [tuple(p) for p in BASE])
+        if mutator is not None:
+            mutator(tmp)
+        return _run(tmp)
+
+    def test_clean_tree_with_unique_bare_stems_passes(self):
+        """正例：各包裸号互不相同、管线以裸号引用自有模块 → 零违规（不误伤单包自引）。"""
+        def mut(tmp):
+            _add_modules(tmp, "community/测试域包", ["M01"])
+            _add_pipeline(tmp, "community/测试域包", "P07", ["M01"])
+        with tempfile.TemporaryDirectory() as d:
+            rc, out = self._tree(Path(d), mut)
+        self.assertEqual(rc, 0, out)
+
+    def test_two_packages_sharing_bare_stem_is_caught(self):
+        """负例：同一裸号属两个 community 包 → 跨包重号（运行时索引先到先得会改写解析）。"""
+        def mut(tmp):
+            _add_modules(tmp, "community/测试域包", ["M01"])
+            _add_modules(tmp, "community/西幻生存领域包", ["M01"])
+        with tempfile.TemporaryDirectory() as d:
+            rc, out = self._tree(Path(d), mut)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("⑤裸号跨包重号", out)
+
+    def test_duplicate_bare_stem_inside_one_package_is_caught(self):
+        """负例：同包内两个文件同裸号 → 同包重复。"""
+        def mut(tmp):
+            _add_modules(tmp, "community/测试域包", ["M01", "M01"])
+        with tempfile.TemporaryDirectory() as d:
+            rc, out = self._tree(Path(d), mut)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("⑤裸号同包重复", out)
+
+    def test_bare_reference_shadowed_by_core_is_caught(self):
+        """负例：包自有裸号被官方核心占用 + 本包管线以裸号引用它 → 引用歧义。"""
+        def mut(tmp):
+            _add_core_module(tmp, "M01")
+            _add_modules(tmp, "community/测试域包", ["M01"])
+            _add_pipeline(tmp, "community/测试域包", "P07", ["M01"])
+        with tempfile.TemporaryDirectory() as d:
+            rc, out = self._tree(Path(d), mut)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("⑤裸号引用歧义", out)
+
+    def test_full_qualified_reference_clears_shadowing(self):
+        """正例对照：同场景改用全限定 id 引用 → 零违规（歧义只由裸号引用构成）。"""
+        def mut(tmp):
+            _add_core_module(tmp, "M01")
+            _add_modules(tmp, "community/测试域包", ["M01"])
+            _add_pipeline(tmp, "community/测试域包", "P07", ["测试类:M01"])
+        with tempfile.TemporaryDirectory() as d:
+            rc, out = self._tree(Path(d), mut)
+        self.assertEqual(rc, 0, out)
 
 
 if __name__ == "__main__":

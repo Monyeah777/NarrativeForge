@@ -12,12 +12,21 @@
 纯 Python 标准库、零第三方依赖（L2 core 红线）。路径均为显式传入，便于单测隔离。
 """
 import datetime
+import glob
 import json
 import os
 import re
 
 LEDGER_SCHEMA_VERSION = "1"
 LEDGER_FILE = "provenance.json"
+
+#: 资产货架目录（**单层不变量**，2026-09-20 作者裁决收口）：密度体检 / 键表投影 / 行数基线
+#: 三面均以**非递归** glob 取件（`community/*/assets/*.md`、`05_资产库/用户自定义/*.md`），
+#: 而本台账面走 `os.walk`（递归）——货架一旦出现子目录，文件会「台账可见、三面不可见」
+#: （静默丢口径，外部实证见 results/audit/docs_audit-52-external-inputs.md §三.①）。
+#: 故把单层写成可机检不变量：子目录即 FAIL，分组请用键表 / 一包多文件表达。
+SHELF_GLOBS = (os.path.join("community", "*", "assets"),
+               os.path.join("05_资产库", "用户自定义"))
 
 STATUS_ACTIVE = "active"
 STATUS_DEPRECATED = "deprecated"
@@ -299,7 +308,10 @@ def verify_ledger_dir(ledger_dir: str, ledger_path: str | None = None) -> tuple:
 def verify_root(root: str) -> tuple:
     """仓库级扫描：找出全部 provenance.json 台账目录并逐册校验；聚合统计。"""
     issues = []
-    stats = {"ledgers": 0, "assets": 0, "untracked": 0, "orphans": 0}
+    stats = {"ledgers": 0, "assets": 0, "untracked": 0, "orphans": 0, "shelves": 0}
+    shape_issues, shape_stats = verify_shelf_shape(root)
+    issues.extend(shape_issues)
+    stats["shelves"] = shape_stats["shelves"]
     for base, dirs, files in os.walk(root):
         dirs[:] = [d for d in dirs if d not in (".git", ".gitee", "__pycache__")]
         if LEDGER_FILE in files:
@@ -309,6 +321,31 @@ def verify_root(root: str) -> tuple:
             for k in ("assets", "untracked", "orphans"):
                 stats[k] += dir_stats.get(k, 0)
     return issues, stats
+
+
+def verify_shelf_shape(root: str = ".") -> tuple:
+    """资产货架**单层不变量**：货架目录下不得含子目录（返回 issues, stats）。
+
+    为什么是硬门而不是提示：三面扫描（`asset_density` / `asset_ledger_projection` /
+    `asset_line_baseline`）不递归，子目录里的资产会静默脱离密度、键表投影与行数基线，
+    而台账面（`os.walk`）仍看得见——口径分裂且无门禁可见。修复指引：资产平铺为 .md；
+    需要分组请用键表（assets/README.md 或资产内条目键）与「一包多文件」表达。
+    """
+    issues = []
+    shelves = 0
+    for pattern in SHELF_GLOBS:
+        for shelf in sorted(glob.glob(os.path.join(root, pattern))):
+            if not os.path.isdir(shelf):
+                continue
+            shelves += 1
+            rel = os.path.relpath(shelf, root).replace("\\", "/")
+            subs = sorted(d for d in os.listdir(shelf)
+                          if os.path.isdir(os.path.join(shelf, d)))
+            if subs:
+                issues.append("%s 资产货架含子目录 %s（货架为单层：密度 / 键表投影 / 行数基线"
+                              "三面不递归，子目录会静默丢口径；修复指引：资产平铺为 .md，"
+                              "分组用键表表达）" % (rel, "、".join(subs)))
+    return issues, {"shelves": shelves}
 
 
 def iter_assets(root: str):

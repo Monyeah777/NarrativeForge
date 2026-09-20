@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "外部输入筛选批次二（data-engineer-handbook）留档：判定无净吸收项；AUD-0004 建档并绑仓内证据件",
+  "note": "作者裁决四项执行收口：概念图判据面入 check32 / 裸号歧义入 check14 ⑤ / 投稿闸门声明化入 check34 / 货架单层不变量入 check23；四项均既有 check 内追加、不新增 check 序号、不改 Schema",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "7e2baca8e0ff5b7cadc4e18294b90ccd7935f421886bf57339e780c1724e2d38"
+  "subject_digest": "6cd61c79f4e14bc97acdcacdfcf7fbbed153be3d8c949be715cc30ccd28a2453"
 }

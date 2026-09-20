@@ -33,12 +33,37 @@ BODY = os.environ.get('ISSUE_BODY', '') or ''
 AUTHOR = os.environ.get('ISSUE_AUTHOR', '')
 DRY = os.environ.get('DRY_RUN', '') == '1'
 
-ALLOWED = {'monyeah777'}
+#: 投稿闸门声明（机读真相）：mode ∈ open / author_only / paused；白名单随声明走。
+#: 2026-09-20 收口（作者裁决）：闸门此前是代码常量 `ALLOWED = {'monyeah777'}`——改闸门不留痕、
+#: 读者从 INDEX 看不出「谁能投」。现改为读声明件，并由 verify check34 断言「声明 ⇄ 须知措辞 ⇄
+#: 两个机器人引用」三方一致（外部实证：某精选清单因投稿腐化整仓停投，闸门须可见可控）。
+INTAKE_REL = 'library/intake.json'
 GITEE_OWNER = 'monyeah777'
 GITEE_REPO = 'narrative-forge'
 B36 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 MAX_SEG = 16
 SEG_RE = re.compile(r'^[A-Za-z0-9]{1,%d}$' % MAX_SEG)
+
+
+def load_gate(channel='github'):
+    """读投稿闸门声明 → (mode, allowlist)。**fail-closed**：声明缺失 / 不可解析 / mode 非法，
+    一律按 `paused` 处理（宁可暂停接收并让作者看到修复指引，也不静默放行）。
+
+    mode 取值：`open`（零门槛直投）/ `author_only`（白名单）/ `paused`（暂停接收）。
+    """
+    try:
+        with open(INTAKE_REL, encoding='utf-8') as f:
+            data = json.load(f)
+        ch = (data.get('channels') or {}).get(channel) or {}
+        mode = str(ch.get('mode') or '')
+        allow = {str(x).strip().lower() for x in (ch.get('allowlist') or []) if str(x).strip()}
+        if mode in ('open', 'author_only', 'paused'):
+            return mode, allow
+        print(f'⚠ 闸门声明 mode 非法：{mode!r}（修复指引：{INTAKE_REL} 的 channels.{channel}.mode '
+              f'取值 open / author_only / paused）')
+    except Exception as exc:
+        print(f'⚠ 闸门声明不可读（{exc}）：修复指引：确认 {INTAKE_REL} 存在且为合法 JSON')
+    return 'paused', set()
 
 
 def fail(msg):
@@ -165,9 +190,16 @@ def main():
     if not TITLE.startswith('【NF投稿】'):
         print('非投稿标题，跳过')
         sys.exit(0)
-    if AUTHOR.lower() not in ALLOWED:
-        comment('⏳ 收到投稿意图，但云端代收站当前仅接受作者本人投稿（公开仓库白名单防滥用）。如需投稿请联系作者。')
-        print('非作者投稿，已礼貌拒绝')
+    mode, allow = load_gate('github')
+    if mode == 'paused':
+        comment(f'⏸ 云端代收站当前**暂停接收投稿**（闸门声明 {INTAKE_REL} = paused）。'
+                '作者改回 open / author_only 后重投即可。')
+        print('闸门=paused，暂停接收')
+        sys.exit(0)
+    if mode == 'author_only' and AUTHOR.lower() not in allow:
+        comment('⏳ 收到投稿意图，但本通道当前仅接受白名单投稿人（闸门声明 '
+                f'{INTAKE_REL}）。外部投稿请走 Gitee 通道或联系作者。')
+        print(f'非白名单投稿人（{AUTHOR}），已礼貌拒绝')
         sys.exit(0)
     if not BODY.strip():
         comment('⚠️ Issue 正文为空——请按模板粘贴产物全文后再提交。')
