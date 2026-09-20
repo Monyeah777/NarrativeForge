@@ -14,6 +14,12 @@ R5 import 面越界：desktop/src/core + scripts 的第三方 import 面必须**
     （try/except ImportError 守卫）且在 SOFT_IMPORTS 登记理由；已退役端壳的存量残留
     在 IMPORT_RESIDUE 登记（**WARN 挂账**，带裁决指针，不判死但不得隐身）。
     （内部差距：CONTRIBUTING §4.2「core 零第三方依赖」是成文红线，此前**零判据**。）
+R6 危险 sink 面：desktop/src/core + scripts 不得出现**动态执行 / shell 命令 / 不安全
+    反序列化**（eval / exec / __import__ / os.system / os.popen / subprocess(shell=True) /
+    pickle.load(s) / marshal.loads / yaml.load）——确需使用须在 SINK_ALLOW 登记并写明理由
+    （放行可审计；list 参数调用 subprocess 不受限）。
+    （内部差距：安全兜底此前**零判据**——NF 只靠人读与本仓之外的 linter；实测 sink 面
+    仅 1 处受控 `__import__`，故本条落地即零返工。）
 
 check27 自身用变异注入验证捕获力（mutation testing：test_purity_scan 对
 每规则注入典型违规样本，断言可被捕获——「check 的 check」）。
@@ -48,6 +54,24 @@ SOFT_IMPORTS = {
 #: 经作者裁决删除，登记随之清空。
 IMPORT_RESIDUE: dict = {}
 IMPORT_SCAN = ("desktop/src/core/*.py", "scripts/*.py")
+
+#: R6 危险 sink（AST 级；键 = 规范化调用名）
+DANGEROUS_CALLS = {
+    "eval": "动态执行（输入可注入）",
+    "exec": "动态执行（输入可注入）",
+    "__import__": "动态导入（须证明模块名非用户输入）",
+    "os.system": "shell 命令（改用 subprocess 列表参数）",
+    "os.popen": "shell 管道（改用 subprocess 列表参数）",
+    "pickle.load": "不安全反序列化（可执行任意代码）",
+    "pickle.loads": "不安全反序列化（可执行任意代码）",
+    "marshal.loads": "不安全反序列化",
+    "yaml.load": "非安全 YAML 载入（改用 yaml.safe_load）",
+}
+#: R6 已登记放行（键 = "<文件基名>:<调用名>"；放行须可审计）
+SINK_ALLOW = {
+    "regression_score.py:__import__":
+        "模块名取自内部常量表 SIGNAL_SPECS（非用户输入），用于按名调用既有扫描器",
+}
 _HEAD = re.compile(r"^#{1,6}\s+(.*?)\s*$")
 _ACTION = re.compile(
     r"(应|须|先|必填|必需|必须|请|建议|参考|查看|运行|执行|使用|改用|替换|修复|"
@@ -189,4 +213,25 @@ def scan(root: str = ".") -> tuple:
                        "登记理由，或加入 HARD_ALLOW；端壳残留则登记 IMPORT_RESIDUE）" % (rel, lineno, mod))
                 (stats["import_residue"] if residue else issues).append(
                     "%s（%s）" % (msg, residue) if residue else msg)
+            # R6：危险 sink 面（同一次 AST 遍历复用 tree）
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.Call):
+                    continue
+                call = ast.unparse(node.func)
+                flags = []
+                if call in DANGEROUS_CALLS:
+                    flags.append(call)
+                for kw in node.keywords:
+                    if kw.arg == "shell" and isinstance(kw.value, ast.Constant) \
+                            and kw.value.value is True:
+                        flags.append("subprocess(shell=True)")
+                for name in flags:
+                    stats["sinks"] = stats.get("sinks", 0) + 1
+                    key = "%s:%s" % (os.path.basename(f), "subprocess" if "shell" in name else call)
+                    if key in SINK_ALLOW:
+                        continue
+                    issues.append("%s:%d 危险 sink %s（%s）——确需使用须在 purity_scan.SINK_ALLOW "
+                                  "登记理由（修复指引：改用安全等价物，或登记后写明为何不可注入）"
+                                  % (rel, node.lineno, name,
+                                     DANGEROUS_CALLS.get(call, "shell=True 命令注入面")))
     return issues, stats

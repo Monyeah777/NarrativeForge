@@ -12,6 +12,8 @@ if str(Path(__file__).resolve().parent.parent / "src") not in sys.path:
 
 from core import purity_scan as ps  # noqa: E402
 
+ROOT = str(Path(__file__).resolve().parents[2])
+
 
 def _write(root, rel, text):
     path = os.path.join(root, rel)
@@ -108,6 +110,50 @@ class PurityScanTest(unittest.TestCase):
             finally:
                 ps.IMPORT_RESIDUE.clear()
                 ps.IMPORT_RESIDUE.update(saved)
+
+    def test_mutation_r6_dangerous_sinks_captured(self):
+        """R6：动态执行 / shell 命令 / 不安全反序列化逐个被抓（core/scripts 面）。"""
+        cases = {
+            "eval": ("desktop/src/core/s1.py", "eval('1+1')\n"),
+            "exec": ("desktop/src/core/s2.py", "exec('x=1')\n"),
+            "os.system": ("desktop/src/core/s3.py", "import os\nos.system('ls')\n"),
+            "shell=True": ("scripts/s4.py",
+                           "import subprocess\nsubprocess.run('ls', shell=True)\n"),
+            "pickle.loads": ("desktop/src/core/s5.py", "import pickle\npickle.loads(b'')\n"),
+            "yaml.load": ("desktop/src/core/s6.py", "import yaml\nyaml.load('a: 1')\n"),
+        }
+        for label, (rel, body) in cases.items():
+            with tempfile.TemporaryDirectory() as tmp:
+                _write(tmp, rel, body)
+                issues, stats = ps.scan(tmp)
+                self.assertTrue(any("危险 sink" in i for i in issues),
+                                "%s 未被捕获：%s" % (label, issues))
+                self.assertGreaterEqual(stats.get("sinks", 0), 1)
+
+    def test_r6_registered_sink_allowed(self):
+        """R6：登记在 SINK_ALLOW 的受控用法放行（放行须可审计）；未登记即 FAIL。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            saved = dict(ps.SINK_ALLOW)
+            ps.SINK_ALLOW.clear()
+            ps.SINK_ALLOW["guarded.py:__import__"] = "测试用登记（模块名来自内部常量表）"
+            try:
+                _write(tmp, "desktop/src/core/guarded.py",
+                       "def f(name):\n    return __import__('core.%s' % name)\n")
+                issues, _ = ps.scan(tmp)
+                self.assertEqual([i for i in issues if "危险 sink" in i], [])
+                ps.SINK_ALLOW.clear()
+                issues2, _ = ps.scan(tmp)
+                self.assertTrue(any("危险 sink" in i for i in issues2), issues2)
+            finally:
+                ps.SINK_ALLOW.clear()
+                ps.SINK_ALLOW.update(saved)
+
+    def test_r6_real_repo_sink_surface_is_declared(self):
+        """真仓库：危险 sink 面只剩已登记项（当前 = regression_score 的受控 __import__）。"""
+        issues, stats = ps.scan(ROOT)
+        self.assertEqual([i for i in issues if "危险 sink" in i], [],
+                         "真仓库出现未登记 sink 即 FAIL")
+        self.assertLessEqual(stats.get("sinks", 0), 2)
 
 
 if __name__ == "__main__":

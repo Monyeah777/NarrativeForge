@@ -57,8 +57,13 @@ elif command -v python >/dev/null 2>&1 && python -c 'import sys' >/dev/null 2>&1
 fi
 PASS=0; FAIL=0; WARN=0
 ok(){ PASS=$((PASS+1)); printf '  [PASS] %s\n' "$1"; }
-no(){ FAIL=$((FAIL+1)); printf '  [FAIL] %s\n' "$1"; }
-wn(){ WARN=$((WARN+1)); printf '  [WARN] %s\n' "$1"; }
+# 机制借鉴 reviewdog 的「发现 → 结构化注解」：在 GitHub Actions 里把 FAIL/WARN 同时打成
+# Actions 注解（`::error::` / `::warning::`），失败直接显示在 CI 摘要与 PR 界面；
+# 本地跑（无 GITHUB_ACTIONS）行为不变。多行消息按 Actions 规则转义为 %0A。
+_gha_note(){ [ "${GITHUB_ACTIONS:-}" = "true" ] || return 0
+  printf '::%s title=verify.sh::%s\n' "$1" "${2//$'\n'/%0A}"; }
+no(){ FAIL=$((FAIL+1)); printf '  [FAIL] %s\n' "$1"; _gha_note error "$1"; }
+wn(){ WARN=$((WARN+1)); printf '  [WARN] %s\n' "$1"; _gha_note warning "$1"; }
 check1(){
   echo '== [1/6·A] 官方核心目录结构（07 §7 项1）=='
   local err=0
