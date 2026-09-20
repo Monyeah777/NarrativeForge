@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-20",
   "approved_by": "作者",
-  "note": "AI系统域包深化补修收口：registry_sync 投影透传 version + check30 判据修正（含 6 例 check30 回归测试、3 例投影测试）；记录档落 02 §9.4；check 族全绿",
+  "note": "外部输入筛选批次二（data-engineer-handbook）留档：判定无净吸收项；AUD-0004 建档并绑仓内证据件",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "a56b1ae9292638c679c1ced22a9525c94ed95b5f3d4d0f57c5621c6773c723b5"
+  "subject_digest": "7e2baca8e0ff5b7cadc4e18294b90ccd7935f421886bf57339e780c1724e2d38"
 }
