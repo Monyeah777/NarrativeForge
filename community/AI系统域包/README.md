@@ -36,5 +36,5 @@
 ```
 ## 5. 边界与不宣称
 - 本包是**机制型非叙事域包**：自带 2 模块 + 1 内容资产；不产出叙事文本，不替代官方 M00/M50/M80 的任何职责。
-- 概念图资产是**内容**：门禁校验其可寻址与可溯源（check23 / check32 资产面）；图内部一致性（无环 / 无悬空 / 闭包正确）由 `scripts/ai_domain_closure.py --check` 与本包测试复算，**不在 verify check 族内**——该判据面缺口如实记档于 `results/audit/docs_audit-50-ai-domain.md`。
+- 概念图资产是**内容**：门禁校验其可寻址与可溯源（check23 / check32 资产面）；图内部一致性（无环 / 无悬空 / 边有溯源 / 层位合法 / 别名唯一 / 分支完备）已由 **check32 子扫描**（`concept_graph`）硬门覆盖；闭包正确性由 `scripts/ai_domain_closure.py --check` 与本包测试复算。判据面收口记录见 `results/audit/docs_audit-50-ai-domain.md` §二。
 - 概念图的来源为**内容与序的证据**（外部课程体系与论文锚点，逐条标注 provenance）；结构借鉴的署名与许可见资产 §6，本包正文自撰、不复制外部文本。
