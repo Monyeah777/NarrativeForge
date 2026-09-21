@@ -1,0 +1,24 @@
+# 仓库 EOL / 编码纪律（RFC 3629：UTF-8；行尾：LF）
+# 与 verify check33「编码卫生」门禁同源：属性优先于 core.autocrlf，
+# 保证 Windows / Linux / macOS 工作区字节一致（摘要与逐字节复现的前提）。
+* text=auto eol=lf
+
+# 二进制面：禁行尾转换（转换会破坏字节）
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.gif binary
+*.gz binary
+*.zip binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+
+# 生成物/基线类：文本但禁 diff 噪声
+protocol/asset_line_baseline.json text eol=lf
+protocol/generated/*.json text eol=lf
+
+# 平台脚本面（若将来引入）：保持 CRLF 的仅限显式声明件
+*.bat text eol=crlf

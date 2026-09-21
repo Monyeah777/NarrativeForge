@@ -40,6 +40,12 @@ def _ir():
         meta={"timestamp": "2026-09-05 00:00"})
 
 
+def _book(card: dict) -> dict:
+    """取世界书：v3 真形状在 `data` 内，v2 旧形状在顶层（两者都支持）。"""
+    body = card.get("data") if isinstance(card.get("data"), dict) else card
+    return body.get("character_book") or {}
+
+
 class TestMapIRToCCV3(unittest.TestCase):
     def setUp(self):
         self.ir = _ir()
@@ -52,6 +58,19 @@ class TestMapIRToCCV3(unittest.TestCase):
         self.assertEqual(chara.get("spec_version"), "3.0")
         self.assertEqual(chara.get("name"), "校园试炼")
 
+    def test_v3_real_shape_data_block_and_mirror(self):
+        """v3 真形状（外部实证 2026-09-21）：内容字段在 `data` 内，顶层仅 v2 兼容镜像。"""
+        chara = map_ir_to_ccv3(self.ir)
+        self.assertIsInstance(chara.get("data"), dict)
+        inner = chara["data"]
+        for k in ("name", "description", "personality", "scenario", "first_mes",
+                  "mes_example", "character_book", "extensions", "creator"):
+            self.assertIn(k, inner, "data 缺字段 %s" % k)
+        for k in ("name", "description", "personality", "scenario", "first_mes",
+                  "mes_example"):
+            self.assertEqual(chara[k], inner[k], "顶层镜像须与 data.%s 同源" % k)
+        self.assertGreaterEqual(len(inner["character_book"]["entries"]), 1)
+
     def test_persona_placeholder_semantics(self):
         # NF 装配 = 世界观非单角色：persona 为引导占位，不伪称角色定义
         persona = map_ir_to_ccv3(self.ir).get("personality", "")
@@ -59,7 +78,7 @@ class TestMapIRToCCV3(unittest.TestCase):
 
     def test_character_book_excludes_engine_anchors(self):
         # P00/P80 引擎锚点（数据结构/输出生成器）不导叙事 world
-        cb = map_ir_to_ccv3(self.ir).get("character_book") or {}
+        cb = _book(map_ir_to_ccv3(self.ir))
         entries = cb.get("entries") or []
         keys = "".join("".join(e.get("keys") or []) for e in entries)
         self.assertIn("M06", keys)
@@ -68,7 +87,7 @@ class TestMapIRToCCV3(unittest.TestCase):
         self.assertNotIn("M80", keys)     # P80 排除
 
     def test_asset_entry_present(self):
-        cb = map_ir_to_ccv3(self.ir).get("character_book") or {}
+        cb = _book(map_ir_to_ccv3(self.ir))
         entries = cb.get("entries") or []
         content_all = "\n".join(e.get("content", "") for e in entries)
         self.assertIn("角色模板库", content_all)

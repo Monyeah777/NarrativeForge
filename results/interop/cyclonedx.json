@@ -1,0 +1,61 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "dep:yaml",
+      "description": "硬依赖（登记）：PyYAML（仓库既有依赖；check16/28 同源解析，见 CONTRIBUTING §4.2 例外）",
+      "name": "yaml",
+      "scope": "required",
+      "type": "library"
+    },
+    {
+      "bom-ref": "opt:PySide6",
+      "description": "软依赖（可选，须守卫）：CCV3 卡面占位图写入（缺依赖须给明确修复指引，不得裸 ImportError）",
+      "name": "PySide6",
+      "scope": "optional",
+      "type": "library"
+    },
+    {
+      "bom-ref": "opt:jsonschema",
+      "description": "软依赖（可选，须守卫）：IDL 标准实现交叉验证（可选对照；缺依赖则跳过该面）",
+      "name": "jsonschema",
+      "scope": "optional",
+      "type": "library"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "bom-ref": "pkg:nf/narrativeforge@v2.27",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "NarrativeForge",
+      "type": "application"
+    },
+    "properties": [
+      {
+        "name": "nf:source",
+        "value": "purity_scan 依赖登记面（纯派生）"
+      },
+      {
+        "name": "nf:note",
+        "value": "与 SPDX 面同源；timestamp 取仓内声明日期最大值（非墙钟）。"
+      }
+    ],
+    "timestamp": "2026-09-21T00:00:00Z",
+    "tools": [
+      {
+        "name": "nf interop --kind cyclonedx",
+        "vendor": "NarrativeForge",
+        "version": "1.0.0"
+      }
+    ]
+  },
+  "serialNumber": "urn:uuid:13130a75-63a6-4e99-84ae-ba121396bfbf",
+  "specVersion": "1.5",
+  "version": 1
+}

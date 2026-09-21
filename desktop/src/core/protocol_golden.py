@@ -163,6 +163,25 @@ def verify_golden(root: str) -> Tuple[List[str], Dict[str, int]]:
                 f"{GENERATED_DIR}/{REPORT_NAME} 过期：与当前 schema/协议件不一致——"
                 "请用 protocol_golden.write_golden 刷新并随变更一并提交"
             )
+    # 人读摘要同样入仓，此前**只渲染不校验**（真实缺口：摘要可腐烂而门禁不响）
+    expected_md = render_markdown(data)
+    summary_path = os.path.join(root, GENERATED_DIR, SUMMARY_NAME)
+    if not os.path.isfile(summary_path):
+        issues.append(f"{GENERATED_DIR}/{SUMMARY_NAME} 缺失（生成物未入仓）")
+    else:
+        with open(summary_path, "rb") as fh:
+            if fh.read() != expected_md:
+                issues.append(f"{GENERATED_DIR}/{SUMMARY_NAME} 过期：与实时重算不一致"
+                              "（修复指引：刷新生成物并随变更提交）")
+    # 透明日志（哈希链）也是生成物：链自洽 + 与回执一致 + 在盘 == 实时重算
+    try:
+        from core import transparency_log as _tl
+        t_issues, t_stats = _tl.verify(root)
+        for i in t_issues:
+            issues.append("透明日志：%s" % i)
+    except Exception as exc:  # pragma: no cover - 模块不可用须可见
+        issues.append("透明日志校验不可用：%s（修复指引：检查 core/transparency_log.py）" % exc)
+        t_stats = {}
     return issues, {"report_bytes": len(expected), "schema_ids": len(data["schema_ids"])}
 
 

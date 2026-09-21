@@ -102,7 +102,15 @@ def _scenario_text(ir: IRDocument) -> str:
 
 
 def map_ir_to_ccv3(ir: IRDocument) -> dict:
-    """IR → chara_card_v3 dict（CCV3 单卡 + character_book 世界书）。"""
+    """IR → chara_card_v3 dict（**v3 真形状**：spec/spec_version + `data` 块 + v2 兼容镜像）。
+
+    结构依据（外部实证，2026-09-21 修正）：SillyTavern 自身写卡逻辑（`src/character-card-parser.js`
+    的 `write()`）在 CCv3 分支里做的是 `v3Data.spec = 'chara_card_v3'` / `v3Data.spec_version = '3.0'`，
+    而 v3 的**内容字段**位于 `data` 对象内（v2 字段保留在顶层只为向后兼容）。
+    本适配器此前只输出顶层 v2 字段 + v3 头 —— 属**结构性缺陷**（内部门禁只校自述 schema，
+    所以从未红过；外部标准一照就现）。现改为：`data` 承载 v3 全字段（权威），
+    顶层同步镜像 v2 兼容字段（name/description/personality/scenario/first_mes/mes_example）。
+    """
     n_rule = sum(len(l.modules) for l in ir.layers
                  if l.id not in _ENGINE_LAYERS)
     n_asset = len([v for v in (ir.asset_refs or {}).values() if v is not None])
@@ -110,9 +118,7 @@ def map_ir_to_ccv3(ir: IRDocument) -> dict:
         f"{ir.pipeline_name}（{ir.pipeline_id}）装配产物 · {n_rule} 个规则模块"
         f" + {n_asset} 项资产素材。由叙事工坊 2.0 导出层生成。")
     entries = world_entries(ir)
-    return {
-        "spec": "chara_card_v3",
-        "spec_version": "3.0",
+    data = {
         "name": ir.title,
         "description": description,
         "personality": "（主角占位）此装配是世界观设定，非单一角色定义——"
@@ -133,3 +139,12 @@ def map_ir_to_ccv3(ir: IRDocument) -> dict:
         "character_version": "2.0.0",
         "extensions": {},
     }
+    # v3 真形状：spec/spec_version 在场 + 内容入 data；顶层保留 v2 兼容镜像（同源，不另造内容）
+    card: dict = {
+        "spec": "chara_card_v3",
+        "spec_version": "3.0",
+        "data": data,
+    }
+    for k in ("name", "description", "personality", "scenario", "first_mes", "mes_example"):
+        card[k] = data[k]
+    return card

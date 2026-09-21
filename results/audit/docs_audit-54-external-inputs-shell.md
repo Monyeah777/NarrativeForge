@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - CONTRIBUTING.md:0a4dc584550fd42508a952c2f74b40b4ffc2af3b7fb54acfe8df628a50ea5899
   - skills/narrativeforge/SKILL.md:8742a5f651473d1ecb5770b4ac2c1e190bce998e1205cfa7c424e677010982d0
-  - library/INDEX.md:ad72c2703a330bd0f30a591b13e9434bac90fcaf9da191802694dc4b92e32703
+  - library/INDEX.md:bb92ed10beeeb80ec2b5a95ddace2ad8cac6f7cd8b28095b1ad778b1dfdc3ebc
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

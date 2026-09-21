@@ -4,6 +4,7 @@ type: 世界（短篇场景包）
 title: 雨天走廊·氛围包
 description: 雨天走廊氛围设定包——可直接生成场景/开场/转场
 author: Monyeah777
+rating: general
 license: 未声明
 generated: 2026-09-07
 status: active

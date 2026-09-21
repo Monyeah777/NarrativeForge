@@ -55,17 +55,17 @@ SOFT_IMPORTS = {
 IMPORT_RESIDUE: dict = {}
 IMPORT_SCAN = ("desktop/src/core/*.py", "scripts/*.py")
 
-#: R6 危险 sink（AST 级；键 = 规范化调用名）
+#: R6 危险 sink（AST 级；键 = 规范化调用名）+ CWE 对齐（外部缺陷类型编码，便于跨工具对账）
 DANGEROUS_CALLS = {
-    "eval": "动态执行（输入可注入）",
-    "exec": "动态执行（输入可注入）",
-    "__import__": "动态导入（须证明模块名非用户输入）",
-    "os.system": "shell 命令（改用 subprocess 列表参数）",
-    "os.popen": "shell 管道（改用 subprocess 列表参数）",
-    "pickle.load": "不安全反序列化（可执行任意代码）",
-    "pickle.loads": "不安全反序列化（可执行任意代码）",
-    "marshal.loads": "不安全反序列化",
-    "yaml.load": "非安全 YAML 载入（改用 yaml.safe_load）",
+    "eval": "CWE-95 动态执行（输入可注入）",
+    "exec": "CWE-95 动态执行（输入可注入）",
+    "__import__": "CWE-470 动态导入（须证明模块名非用户输入）",
+    "os.system": "CWE-78 shell 命令（改用 subprocess 列表参数）",
+    "os.popen": "CWE-78 shell 管道（改用 subprocess 列表参数）",
+    "pickle.load": "CWE-502 不安全反序列化（可执行任意代码）",
+    "pickle.loads": "CWE-502 不安全反序列化（可执行任意代码）",
+    "marshal.loads": "CWE-502 不安全反序列化",
+    "yaml.load": "CWE-502 非安全 YAML 载入（改用 yaml.safe_load）",
 }
 #: R6 已登记放行（键 = "<文件基名>:<调用名>"；放行须可审计）
 SINK_ALLOW = {
@@ -234,4 +234,15 @@ def scan(root: str = ".") -> tuple:
                                   "登记理由（修复指引：改用安全等价物，或登记后写明为何不可注入）"
                                   % (rel, node.lineno, name,
                                      DANGEROUS_CALLS.get(call, "shell=True 命令注入面")))
+    # R6 自洽面（登记表自身的判据）：每个 sink 类目须带 CWE 对齐（跨工具对账用缺陷类型编码），
+    # 且 SINK_ALLOW 的每个放行键必须指向一个已登记 sink——放行不能凭空出现。
+    for call, desc in sorted(DANGEROUS_CALLS.items()):
+        if not re.match(r"^CWE-\d+ ", desc):
+            issues.append("危险 sink 类目缺 CWE 对齐：%s（修复指引：在 purity_scan.DANGEROUS_CALLS "
+                          "的说明前加 `CWE-<nnn> `，便于外部扫描器按缺陷类型对账）" % call)
+    for key in sorted(SINK_ALLOW):
+        sink = key.rsplit(":", 1)[-1]
+        if sink not in DANGEROUS_CALLS and sink != "subprocess":
+            issues.append("SINK_ALLOW 放行键指向未登记 sink：%s（修复指引：删除放行，"
+                          "或先在 DANGEROUS_CALLS 登记该 sink 类目）" % key)
     return issues, stats

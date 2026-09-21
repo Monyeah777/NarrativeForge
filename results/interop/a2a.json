@@ -1,0 +1,95 @@
+{
+  "capabilities": {
+    "pushNotifications": false,
+    "streaming": true
+  },
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "description": "内容契约层：装配 / 质检 / 图书馆 / 一致性报告（只读面）",
+  "name": "NarrativeForge",
+  "preferredTransport": "stdio",
+  "protocolVersion": "0.2.5",
+  "skills": [
+    {
+      "description": "maps_to nf assemble（POST /assemble/plan）",
+      "id": "assemble.plan",
+      "name": "assemble.plan",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    },
+    {
+      "description": "maps_to nf assemble --check（POST /assemble/check）",
+      "id": "assemble.check",
+      "name": "assemble.check",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    },
+    {
+      "description": "maps_to library_read（MCP 工具）（GET /library/{id}）",
+      "id": "library.read",
+      "name": "library.read",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    },
+    {
+      "description": "maps_to library_search（MCP 工具）（GET /library/search）",
+      "id": "library.search",
+      "name": "library.search",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    },
+    {
+      "description": "maps_to registry_query（MCP 工具）（GET /registry）",
+      "id": "registry.query",
+      "name": "registry.query",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    },
+    {
+      "description": "maps_to nf pipeline dryrun（POST /pipeline/dryrun）",
+      "id": "pipeline.dryrun",
+      "name": "pipeline.dryrun",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    },
+    {
+      "description": "maps_to nf bench run（POST /bench/evaluate）",
+      "id": "bench.evaluate",
+      "name": "bench.evaluate",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    },
+    {
+      "description": "maps_to nf conformance（GET /conformance）",
+      "id": "conformance.report",
+      "name": "conformance.report",
+      "tags": [
+        "narrativeforge",
+        "content-contract"
+      ]
+    }
+  ],
+  "url": "urn:nf:repo",
+  "version": "1.0.0",
+  "x-nf-note": "能力面 = protocol/endpoint_contract.json 的投影；服务本体 status=proposed（未实装，本卡不据此宣称在线）"
+}

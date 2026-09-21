@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """正文级 lint 单测（AI 味机械特征；只报告不阻断）。"""
+import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -55,6 +57,38 @@ class TestProseLint(unittest.TestCase):
             self.assertGreaterEqual(f["line"], 1)
         counts = pl.summarize(found)
         self.assertEqual(sum(counts.values()), len(found))
+
+
+    def test_command_face_flags_unknown_cli_command(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, "scripts"))
+            with open(os.path.join(tmp, "scripts", "nf.py"), "w", encoding="utf-8") as fh:
+                fh.write('sub.add_parser("doctor")\nsub.add_parser("market")\n')
+            with open(os.path.join(tmp, "README.md"), "w", encoding="utf-8") as fh:
+                fh.write("跑 `python scripts/nf.py doctor` 自检；`nf market --list` 看货架。\n")
+            issues, stats = pl.command_face(tmp)
+            self.assertEqual(issues, [], issues)
+            self.assertEqual(stats["commands_checked"], 2)
+            with open(os.path.join(tmp, "README.md"), "a", encoding="utf-8") as fh:
+                fh.write("另见 `nf doctorr`。\n")
+            issues2, _ = pl.command_face(tmp)
+            self.assertTrue(any("doctorr" in i for i in issues2), issues2)
+
+    def test_command_face_ignores_prose_mentions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, "scripts"))
+            with open(os.path.join(tmp, "scripts", "nf.py"), "w", encoding="utf-8") as fh:
+                fh.write('sub.add_parser("doctor")\n')
+            with open(os.path.join(tmp, "README.md"), "w", encoding="utf-8") as fh:
+                fh.write("NF doctor 这一节是散文里的词，不是命令片段。\n")
+            issues, stats = pl.command_face(tmp)
+            self.assertEqual(issues, [], issues)
+            self.assertEqual(stats["commands_checked"], 0)
+
+    def test_command_face_flags_unknown_mcp_tool(self):
+        tmp = str(Path(__file__).resolve().parents[2])
+        issues, _ = pl.command_face(tmp)
+        self.assertEqual(issues, [], "本仓文档命令面须零漂移：%s" % issues[:3])
 
 
 if __name__ == "__main__":

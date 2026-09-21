@@ -4,6 +4,7 @@ type: 世界（校园情感装配样本）
 title: 校园情感流（高二 · 毕业遗憾线）
 description: 官方装配样本：P02 校园情感管线 + 幽灵遗憾模块（引用式档位，示范诚实纪律）
 author: NarrativeForge（NF）作者
+rating: teen
 license: MIT
 generated: 2026-09-06
 verified: 2026-09-14
@@ -16,8 +17,8 @@ tags:
   - 校园情感
   - 装配样本
   - 引用式
-attestation: b90173a7148194031a2c63f75407ee14143667b61a4c4d22e12a93b27cab1cf9
-attested_at: 2026-09-14
+attestation: a3872e040ba2dc307bc665896908cc0b2a53802517bf867d39ba34d1dea83866
+attested_at: 2026-09-21
 anchor_scheme: ssh-sig
 anchor_ns: nf-attest
 anchor_identity: nf-demo@local

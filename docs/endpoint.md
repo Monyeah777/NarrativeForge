@@ -20,6 +20,15 @@ python scripts/nf.py endpoint --json
 subparser 注册表内）或 MCP 工具（在 `mcp_runtime.TOOL_DEFS` 内）；`method`/`status` 在词表内；
 `streaming: true` 的端点必须声明 SSE 约定；`id` 与 `method+path` 唯一。
 
+## 幂等声明（RFC 9110 §9.2.2）
+
+契约**默认 idempotent**——同请求重放须得同结果且无副作用；例外只在顶层
+`idempotency_exceptions` 登记（每条给 `mode` / `key` / `why`）：非幂等端点（如
+`bench.evaluate` 会落评测记录）`key=required` 时客户端 MUST 带幂等键、服务端 MUST 据此去重。
+判据：例外 id 须在契约内、`mode` 与 `key` 在词表内、`why` 非空、要求幂等键时
+`conventions.idempotency` 必须在场。派生面同步标注：`nf interop --kind openapi` 的每个
+operation 带 `x-nf-idempotency`。
+
 ## 边界
 
 契约存在 ≠ 服务存在。真正实现服务时把 `status` 改成 `implemented` 并补实测记录；此前不得对外宣称有服务。

@@ -10,8 +10,8 @@ subjects:
   - desktop/src/core/intake.py:6a0d584c81dcdeb1439bf4e3f16b201e08e618c8d6296e80a63c6f5266447e56
   - desktop/src/core/asset_ledger.py:f45329c6ac19c864799ee5113f4246474d2a0e41521942bea10f90e379e9e236
   - scripts/ai_domain_closure.py:d886f926456343326bbebbbe7a642e3f78414e00282b1600c2f25b3376b8a928
-  - library/intake.json:06b0640909783242a624bf55bee8ee59f3aa5ab46bfbe03c67f3497c3fd76b8d
-  - verify.sh:320794ec2b7f322c873b0d691bd589dfd7b71238a66b526863171e8f78bd2245
+  - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
+  - verify.sh:00bb02e959eda5a85a218b7eb2eb4a08a6d523d634243886aab386016f9d1dd0
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

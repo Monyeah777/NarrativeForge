@@ -8,6 +8,12 @@
 
 ## 审计与收口
 
+- [docs_audit-58-pending-items.md](audit/docs_audit-58-pending-items.md)（六条挂账收口 + 出口/会话面外部核验）
+- [docs_audit-57-external-protocols.md](audit/docs_audit-57-external-protocols.md) · [interop-schema-validation.md](interop-schema-validation.md)（外部权威校验取证）
+
+## 互操作导出面（入仓投影）
+
+- [results/interop/](interop/)（11 面派生投影：openapi / asyncapi / intoto / sbom / slsa / a2a / prov / cyclonedx / vc / c2pa / cid；与实时派生逐字节一致由 check33 断言）
 - [docs_audit-56-queue-and-quant-absorption.md](audit/docs_audit-56-queue-and-quant-absorption.md)
 - [docs_audit-55-quant-domain.md](audit/docs_audit-55-quant-domain.md)
 - [docs_audit-54-external-inputs-shell.md](audit/docs_audit-54-external-inputs-shell.md)

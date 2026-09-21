@@ -538,6 +538,28 @@ def _build_parser() -> argparse.ArgumentParser:
                         help="服务端点契约（proposed：把已实现能力声明成 HTTP 面 + 指向真实性门禁）",
                         description="服务端点契约（机制借鉴 microsoft/ai-chat-protocol）")
     ep.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    iop = sub.add_parser("interop",
+                         help="互操作导出（OpenAPI 3.1 / AsyncAPI 3.0 / in-toto Statement / SPDX SBOM——纯派生）",
+                         description="互操作导出面：把既有声明件实时派生为外部标准工具可读的文档"
+                                     "（不新增真源；同一输入两次导出逐字节一致）")
+    iop.add_argument("--kind", default="openapi",
+                     choices=["openapi", "asyncapi", "intoto", "sbom",
+                              "slsa", "a2a", "prov", "cyclonedx", "vc", "c2pa", "cid"],
+                     help="导出种类（缺省 openapi）")
+    iop.add_argument("--all", action="store_true",
+                     help="导出全部面（配合 --out 落盘为目录；单面时 --out 为文件）")
+    iop.add_argument("--list", action="store_true", help="列出可导出种类与其消费方")
+    iop.add_argument("--check", action="store_true",
+                     help="只跑导出面门禁（覆盖完整 + 形状合法 + 确定性）")
+    iop.add_argument("--out", default="", help="写入文件（缺省打印到 stdout）")
+    iop.add_argument("--json", action="store_true", help="--check 时输出结构化 JSON")
+    tr = sub.add_parser("transparency",
+                        help="透明日志（哈希链）：append-only 顺序 + 防删改（不可抵赖另说）",
+                        description="透明日志：由 protocol/RECEIPTS.json 确定性派生哈希链"
+                                    "（RFC 6962 风格域分隔），并校验在盘生成物")
+    tr.add_argument("--write", action="store_true",
+                    help="写入 protocol/generated/receipt_chain.json")
+    tr.add_argument("--json", action="store_true", help="输出结构化 JSON")
     kn = sub.add_parser("knowledge",
                         help="双源知识层（权威分层 / 消化可追溯 / 查询有序 / 时效 / 可见性）",
                         description="双源知识层（机制借鉴一句式：编译时机按数据域选择）")
@@ -2132,6 +2154,67 @@ def _cmd_endpoint(args):
     return 1 if issues else 0
 
 
+def _cmd_interop(args):
+    """nf interop：互操作导出面（纯派生；--check 走门禁）。"""
+    from core import interop_export as ie
+    if args.list:
+        for kind, (fn, label) in ie.KINDS.items():
+            print("  %-9s %-38s 消费者：外部标准工具链" % (kind, label))
+        return 0
+    if args.check:
+        issues, stats = ie.verify(ROOT)
+        if args.json:
+            import json as _json
+            print(_json.dumps({"issues": issues, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 导出面一致（%s）" % ie.summary(stats))
+        return 1 if issues else 0
+    if args.all:
+        out_dir = args.out or os.path.join("results", "interop")
+        os.makedirs(out_dir, exist_ok=True)
+        for kind in ie.KINDS:
+            dest = os.path.join(out_dir, "%s.json" % kind)
+            with open(dest, "wb") as fh:
+                fh.write(ie.render(kind, ROOT))
+            print("written: %s" % dest)
+        print("  （入仓面须与实时派生逐字节一致——由 verify check33 断言；"
+              "改声明件后重跑本命令）")
+        return 0
+    blob = ie.render(args.kind, ROOT)
+    if args.out:
+        with open(args.out, "wb") as fh:
+            fh.write(blob)
+        print("written: %s（%d 字节，纯派生，勿手改）" % (args.out, len(blob)))
+    else:
+        sys.stdout.write(blob.decode("utf-8"))
+    return 0
+
+
+def _cmd_transparency(args):
+    """nf transparency：透明日志（哈希链）校验 / 落盘。"""
+    from core import transparency_log as tl
+    if args.write:
+        rel = tl.write(ROOT)
+        print("  ✓ 已写入：%s（链头 %s…）" % (rel, tl.build(ROOT)["head"][:16]))
+    issues, stats = tl.verify(ROOT)
+    if args.json:
+        import json as _json
+        print(_json.dumps({"issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            print("  ✓ 链自洽（%d 节 · 链头 %s… · 在盘生成物一致）"
+                  % (stats["links"], stats["head"]))
+        print("  边界：%s" % tl.BOUNDARY)
+    return 1 if issues else 0
+
+
 def _cmd_state_front(args):
     """nf state-front：条件先行排布（确定性；不调模型）。"""
     from core import state_front as sf
@@ -2684,6 +2767,28 @@ def _cmd_receipts(args):
         doc = rc.build_scope(ROOT, scope=args.scope)
         print("  ✓ 协议层回执已写入：%s（根 %s · %d 件）"
               % (rel, doc["root"][:16], doc["count"]))
+        # 派生面联动刷新（真实事故驱动）：in-toto / SLSA / PROV / CID 等派生面与透明日志
+        # 都绑定回执根——重签后不刷新，check31/check33 会红（本波实测踩到一次）。
+        refreshed = []
+        try:
+            from core import transparency_log as _tl
+            if os.path.isfile(os.path.join(ROOT, _tl.GENERATED_REL)):
+                _tl.write(ROOT)
+                refreshed.append(_tl.GENERATED_REL)
+        except Exception as exc:            # 不静默：刷新失败要看得见
+            print("  [warn] 透明日志未刷新：%s" % exc, file=sys.stderr)
+        interop_dir = os.path.join(ROOT, "results", "interop")
+        if os.path.isdir(interop_dir):
+            try:
+                from core import interop_export as _ie
+                for kind in _ie.KINDS:
+                    with open(os.path.join(interop_dir, "%s.json" % kind), "wb") as fh:
+                        fh.write(_ie.render(kind, ROOT))
+                refreshed.append("results/interop/*.json（%d 面）" % len(_ie.KINDS))
+            except Exception as exc:
+                print("  [warn] 互操作入仓面未刷新：%s" % exc, file=sys.stderr)
+        if refreshed:
+            print("  ↻ 派生面联动刷新：%s" % " · ".join(refreshed))
         return 0
     if not os.path.exists(path):
         print("  ✗ 缺协议层回执（修复指引：nf receipts --write）", file=sys.stderr)
@@ -3783,6 +3888,10 @@ def main(argv=None) -> int:
         return _cmd_bench(args)
     if args.cmd == "endpoint":
         return _cmd_endpoint(args)
+    if args.cmd == "interop":
+        return _cmd_interop(args)
+    if args.cmd == "transparency":
+        return _cmd_transparency(args)
     if args.cmd == "knowledge":
         return _cmd_knowledge(args)
     if args.cmd == "assertions":

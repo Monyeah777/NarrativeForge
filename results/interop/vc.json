@@ -1,0 +1,21 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://narrativeforge.dev/ns/credentials/v1"
+  ],
+  "credentialSubject": {
+    "contracts": 27,
+    "id": "nf:conformance_report",
+    "receiptCount": 48,
+    "receiptRoot": "b877f652ab8b3eddfb7618c0eae31a00b77ed7d76324804bc921f3ad2f5283af",
+    "verdict": "conformant"
+  },
+  "issuer": "执行者（作者授权本波裁决）",
+  "type": [
+    "VerifiableCredential",
+    "NfConformanceCredential"
+  ],
+  "validFrom": "2026-09-21",
+  "x-nf-note": "派生自 protocol/conformance_report.json + protocol/RECEIPTS.json + protocol/approvals/*（纯派生，不新增真源）",
+  "x-nf-proof-status": "unsigned（本仓签名走 ssh 外挂锚 nf attest；未接 JWS/Data Integrity 签名套件——形状可读，不可验证，勿当凭证使用）"
+}

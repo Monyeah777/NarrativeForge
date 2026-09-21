@@ -226,15 +226,16 @@ def render_index_block(root: str = ".") -> str:
     """登记表（由条目 frontmatter 重生成；含生命周期与可信度列）。"""
     rows = entries(root)
     out = [BEGIN_INDEX, "", "## 登记表（由条目 frontmatter 自动生成，勿手改）", "",
-           "| 编号 | 标题 | 形态/领域 | 投稿人 | 入库日期 | 许可 | 状态 | 一句话 |",
-           "|---|---|---|---|---|---|---|---|"]
+           "| 编号 | 标题 | 形态/领域 | 投稿人 | 入库日期 | 许可 | 分级 | 状态 | 一句话 |",
+           "|---|---|---|---|---|---|---|---|---|"]
     for e in rows:
         fm = e["fm"]
-        out.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+        out.append("| %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
             e["id"], _cell(fm.get("title")) or e["id"],
             _cell(fm.get("type")), _cell(fm.get("author")),
             _cell(fm.get("generated")) or _cell(fm.get("added")),
-            _cell(fm.get("license")), _cell(fm.get("status")) or "active",
+            _cell(fm.get("license")), _cell(fm.get("rating")) or "unrated",
+            _cell(fm.get("status")) or "active",
             _cell(fm.get("description"))))
     out += ["",
             "> 状态：`active`（在役）/ `deprecated`（不再推荐但仍可读）/ "

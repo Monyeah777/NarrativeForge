@@ -56,6 +56,7 @@
 - 浏览与装配：`market` / `asset` / `module` / `pipeline` / `render`
 - 图书馆：`library ls|show|search|reindex|verify|deprecate|restore|supersede`（真源 = 条目 frontmatter）
 - 治理与验证：`events`（全仓事件背书）· `receipts`（协议层回执）· `conformance`（16 契约报告 + 一致性声明）· `approve`（内容绑定批准）· `module types|contract|signature` · `driver`（指令档路由）· `rfc`（版本史）· `patterns ls|show|for|verify|reindex`（实践包）· `bench run|compare|report`（执行结果跑分台）· `endpoint`（端点契约）
+- 互操作导出：`interop --kind openapi|asyncapi|intoto|sbom`（纯派生：OpenAPI 3.1 / AsyncAPI 3.0 / in-toto Statement / SPDX SBOM）
 - 质量与治理：`sig` / `diff` / `score` / `lint` / `license` / `attest` / `telemetry` / `verify.sh`
 - MCP 服务：`python scripts/nf.py serve <mcp.json 快照>`（只读 resources/tools/prompts）
 

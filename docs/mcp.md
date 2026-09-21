@@ -102,3 +102,24 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 - 实现：`desktop/src/core/mcp_runtime.py`（运行时）/ `mcp_adapter.py`（导出）/ `export_schema.py`（shape 校验）
 - 核查基线：`33_v2.2.0_A5-MCP规范差距核查报告.md`
 - CLI 入口：`scripts/nf.py`（`run --fmt mcp` / `serve`）
+
+## 帧纪律与结构约束（2026-09-21 增补，外部标准吸收）
+
+stdio transport 的**可执行判据**（此前只写在注释里，现在进 check33）：
+
+1. **一条消息一行** —— `encode_message()` 用紧凑分隔符序列化，且消息内不得出现裸换行；
+2. **行边界陷阱转义** —— `U+2028` 行分隔 / `U+2029` 段分隔 / `U+0085` NEL 按 Unicode 换行
+   边界读行的客户端会把它们当换行（JSON 规范允许裸写）→ 出口一律转义为 `\uXXXX`；
+3. **通知不写响应行** —— 无 `id` 的消息处理完即静默（`encode_message(None) is None`）；
+4. **JSON-RPC 2.0 §4 / §5** —— `params` 若在场 MUST 为结构化（原始类型 → `-32600`；
+   数组 → `-32602`，本运行时只接受按名参数）、`id` MUST 为字符串/数字/null，
+   **id 可判定时错误响应 MUST 回显**（不可判定才 `null`）。
+
+自测：`desktop/tests/test_mcp_runtime.py`（含帧纪律三例 + 结构约束四例）；
+门禁：`verify.sh` check33 第 11/13 面。
+
+**资源模板面**（RFC 6570 一级子集）：`resources/templates/list` 的 5 条模板（library /
+pattern / module / pipeline / asset）须满足——只许 `{var}` 简单展开（不许 `{+id}` 操作符、
+`{x*}` 爆炸、前缀修饰）、变量名唯一、花括号配平、无查询串；并且**每条真实资源 uri 都必须
+被某条模板覆盖**（模板⇄读取面一致，防止「列得出但取不回」）。实测：5 模板全合法、
+**390 条真实资源 uri 零未覆盖**；负例（操作符/重名/问号/空变量/不配平）逐类可拦。

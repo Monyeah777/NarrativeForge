@@ -5,7 +5,8 @@
       "gate": [
         "self_contained",
         "numbering",
-        "license_warn"
+        "license_warn",
+        "rating_warn"
       ],
       "index_label": "公开开放 · 零门槛",
       "mode": "open"
@@ -17,7 +18,8 @@
       "gate": [
         "self_contained",
         "numbering",
-        "license_warn"
+        "license_warn",
+        "rating_warn"
       ],
       "index_label": "仅作者本人自投",
       "mode": "author_only"
@@ -25,10 +27,21 @@
   },
   "note": "投稿闸门的唯一机读真相：两个入库机器人（.github/scripts/library_ingest.py / gitee_ingest.py）运行时读本件；library/INDEX.md 投稿须知须出现各通道的 index_label；三方不一致即 verify check34 FAIL。改闸门 = 改本件 + 同步须知措辞（机器人自动跟随）。mode 取值：open（零门槛直投）/ author_only（白名单）/ paused（暂停接收，作者一键关闸）。",
   "schema": "nf-intake/1",
+  "rating": {
+    "vocabulary": [
+      "general",
+      "teen",
+      "mature",
+      "unrated"
+    ],
+    "required": true,
+    "note": "内容分级（挂账收口）：每条馆藏须在 frontmatter 声明 rating（真源 = 条目 frontmatter，投影 = INDEX 的「分级」列）。取值 = general / teen / mature / unrated；`unrated` 是**显式声明未分级**（不是缺省），缺字段即 FAIL——分级是消费方选择的前提，不许沉默。分级由投稿人自述 + 入库机器人闸门里的 rating_warn 提示，门禁只判「声明在场且合规」。"
+  },
   "standards": [
     "自包含可召回",
     "编号前缀小写键唯一",
-    "许可未声明则挂账（不阻断）"
+    "许可未声明则挂账（不阻断）",
+    "内容分级须声明（取值为词表内，未定级写 unrated 而非留空）"
   ],
   "updated": "2026-09-20"
 }

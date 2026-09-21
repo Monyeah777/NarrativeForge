@@ -24,6 +24,51 @@ ALLOWED = {
     "MIT", "Apache-2.0", "BSD-3-Clause", "BSD-2-Clause", "ISC",
     "CC-BY-4.0", "CC-BY-SA-4.0", "CC0-1.0", "专有", UNDECLARED,
 }
+#: SPDX 表达式面（机制借鉴 SPDX License Expression 语法）：允许用 AND / OR / WITH / 括号 / `+`
+#: 组合词表内的 id —— 逐条登记的旧口径只能表达「单一许可」，投稿人写「MIT OR Apache-2.0」
+#: 会被误判越词表。表达式解析只做**词法级**判定（id 在册 + 运算符合法 + 括号配平），
+#: 不做许可兼容性推断（那是法律判断，不是门禁的活）。
+OPERATORS = ("AND", "OR", "WITH")
+_EXPR_TOKEN = re.compile(r"\(|\)|[A-Za-z0-9.+\-]+")
+
+
+def _license_atoms(expr: str) -> list:
+    return [t for t in _EXPR_TOKEN.findall(expr) if t not in ("(", ")")]
+
+
+def expression_issue(expr: str) -> str:
+    """SPDX 表达式词法体检 → 违规说明（空串 = 合规，或 None 表示非表达式形态）。"""
+    text = str(expr or "").strip()
+    if not text:
+        return "许可为空"
+    if text in ("专有", UNDECLARED):   # NF 专属占位（非 SPDX 表达式形态）
+        return ""
+    tokens = _EXPR_TOKEN.findall(text)
+    if "".join(tokens) != re.sub(r"\s+", "", text):
+        return "含非法字符（修复指引：SPDX id / AND / OR / WITH / 括号 / `+` 之外不得出现）"
+    if text.count("(") != text.count(")"):
+        return "括号不配平"
+    atoms = _license_atoms(text)
+    if not atoms:
+        return "表达式无许可 id"
+    for a in atoms:
+        if a in OPERATORS:
+            continue
+        base = a[:-1] if a.endswith("+") else a
+        if base in ALLOWED or base.startswith("LicenseRef-"):
+            continue
+        return ("许可 id 不在词表：%s（允许：%s；或用 `LicenseRef-<自定义>` 显式自造）"
+                % (a, "、".join(sorted(x for x in ALLOWED if x not in (UNDECLARED,)))))
+    # 运算符不得相邻 / 首尾（词法级：两个运算符挨着 = 缺操作数）
+    for i, tok in enumerate(tokens):
+        if tok in OPERATORS:
+            if i == 0 or i == len(tokens) - 1:
+                return "运算符 %s 出现在表达式首/尾（缺操作数）" % tok
+            if tokens[i - 1] in OPERATORS or tokens[i - 1] == "(":
+                return "运算符 %s 前缺少操作数" % tok
+            if tokens[i + 1] == ")":
+                return "运算符 %s 后缺少操作数" % tok
+    return ""
 
 _ROW = re.compile(r"^\|\s*(NF-[A-Za-z0-9\-]+)\s*\|")
 _INLINE = re.compile(r"(?m)^\s*(?:>\s*)?(?:许可|license)\s*[:：]\s*([^\s（(]+)")
@@ -75,9 +120,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
             issues.append("登记行缺「许可」列值：%s（修复指引：按许可词表补值，"
                           "投稿人未回填写「%s」）" % (r["id"], UNDECLARED))
             continue
-        if lic not in ALLOWED:
-            issues.append("许可取值不在词表：%s = %s（允许：%s）"
-                          % (r["id"], lic, "、".join(sorted(ALLOWED))))
+        # 许可面走 SPDX 表达式词法判据（单一 id 是表达式的特例）
+        expr_bad = expression_issue(lic)
+        if expr_bad:
+            issues.append("许可取值不合规：%s = %s（%s；允许：%s）"
+                          % (r["id"], lic, expr_bad, "、".join(sorted(ALLOWED))))
             unknown.append(r["id"])
             continue
         if lic == UNDECLARED:

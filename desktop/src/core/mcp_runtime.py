@@ -41,6 +41,7 @@ C7 只读工具面（41_v2.8.0_波C质量编译深化规划，2026-09-08）：
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, TextIO
@@ -74,6 +75,94 @@ def _err(code: int, message: str, data: Optional[dict] = None) -> dict:
     if data is not None:
         err["data"] = data
     return {"jsonrpc": JSONRPC_VERSION, "id": None, "error": err}
+
+
+def _err_at(code: int, message: str, rid: Any) -> dict:
+    """带 id 回显的错误响应（JSON-RPC 2.0 §5：id 可判定时 MUST 回显）。"""
+    out = _err(code, message)
+    out["id"] = rid
+    return out
+
+
+#: stdio transport 的「行边界陷阱」字符（JSON-RPC over stdio = 一条消息一行）
+#: U+2028 行分隔 / U+2029 段分隔 / U+0085 NEL —— 按 Unicode 换行边界读行的客户端会把
+#: 它们当换行 → 一条消息被劈成两条。JSON 规范允许裸写这些字符，故须在**出口**转义。
+LINE_BOUNDARY_TRAPS = {"\u2028": "\\u2028", "\u2029": "\\u2029", "\u0085": "\\u0085"}
+
+
+def encode_message(msg: Optional[dict]) -> Optional[str]:
+    """响应 → 单行 UTF-8 消息（transport 纪律的可执行落点）。
+
+    判据（modelcontextprotocol.io transports 页 + JSON-RPC 2.0 §6 换行分隔）：
+    ① 紧凑分隔符（无多余空白，减小截断面）；② 行边界陷阱字符转义；
+    ③ 行尾恰好一个 ``\\n``（消息内不得出现裸换行）。
+    """
+    if msg is None:
+        return None
+    text = json.dumps(msg, ensure_ascii=False, separators=(",", ":"))
+    for ch, esc in LINE_BOUNDARY_TRAPS.items():
+        text = text.replace(ch, esc)
+    return text + "\n"
+
+
+def is_single_line_message(line: str) -> bool:
+    """校验一行是否为合规消息（恰好一条、无裸行边界字符、非空）。"""
+    body = line[:-1] if line.endswith("\n") else line
+    if not body or "\n" in body or "\r" in body:
+        return False
+    return not any(ch in body for ch in LINE_BOUNDARY_TRAPS)
+
+
+#: URI 模板判据（RFC 6570 的**一级子集**：只许 `{var}` 简单展开，不许操作符/爆炸/前缀修饰）
+_TEMPLATE_VAR = re.compile(r"^[A-Za-z0-9_]+$")
+
+
+def uri_template_issue(template: str) -> str:
+    """URI 模板体检 → 违规说明（空串 = 合规）。"""
+    t = str(template or "")
+    if not t:
+        return "模板为空"
+    if not t.startswith("nf://"):
+        return "模板须以 nf:// 开头（NF 资源命名空间）"
+    if "#" in t or "?" in t:
+        return "模板不得含查询串/片段（资源寻址只到路径）"
+    if "{" not in t:
+        return "模板无变量（固定 uri 不该登记为模板）"
+    # 逐段检查花括号
+    for part in re.findall(r"\{[^}]*\}", t):
+        inner = part[1:-1]
+        if not inner:
+            return "出现空变量 {}"
+        if not _TEMPLATE_VAR.match(inner):
+            return ("变量 %r 非法（RFC 6570 一级子集只许 [A-Za-z0-9_]+ 且不带操作符/爆炸修饰）"
+                    % inner)
+    if t.count("{") != t.count("}"):
+        return "花括号不配平"
+    if "{{" in t or "}}" in t:
+        return "花括号嵌套/转义非法"
+    names = re.findall(r"\{([^}]*)\}", t)
+    if len(set(names)) != len(names):
+        return "同一模板内变量名重复：%s" % "、".join(names)
+    if re.search(r"/\{[^}]*\}/\{[^}]*\}", t) is None and t.endswith("/"):
+        return "模板以 / 收尾（变量须占据整段）"
+    return ""
+
+
+def template_matches(template: str, uri: str) -> bool:
+    """给定模板与具体 uri：字面段逐一相等、变量段非空 → True（模板⇄读取面一致性）。"""
+    if uri_template_issue(template):
+        return False
+    t_parts = template.split("/")
+    u_parts = str(uri).split("/")
+    if len(t_parts) != len(u_parts):
+        return False
+    for t_part, u_part in zip(t_parts, u_parts):
+        if t_part.startswith("{") and t_part.endswith("}"):
+            if not u_part:
+                return False
+        elif t_part != u_part:
+            return False
+    return True
 
 
 def _discover_instructions() -> str:
@@ -663,6 +752,20 @@ class McpRuntime:
         # 通知：无 id 字段 → 处理但不应答
         is_request = "id" in msg
         rid = msg.get("id")
+        # JSON-RPC 2.0 §4：id MUST be String / Number / Null（布尔与结构体不是合法 id）
+        if is_request and not (rid is None or isinstance(rid, (str, int, float))
+                               and not isinstance(rid, bool)):
+            return _err(INVALID_REQUEST, "id 必须是字符串、数字或 null"
+                        "（修复指引：按 JSON-RPC 2.0 §4 用请求序号，勿用结构体/布尔）")
+        # JSON-RPC 2.0 §4.2：params 若在场 MUST be Structured（对象或数组）；
+        # MCP 只定义按名对象参数 → 数组走 INVALID_PARAMS（本运行时无位置参数面）。
+        if "params" in msg and msg.get("params") is not None:
+            if not isinstance(msg["params"], (dict, list)):
+                return _err_at(INVALID_REQUEST, "params 必须是结构化值（对象或数组）"
+                               "（修复指引：JSON-RPC 2.0 §4.2——原始类型参数非法）", rid)
+            if isinstance(msg["params"], list):
+                return _err_at(INVALID_PARAMS, "params 只接受按名对象"
+                               "（修复指引：改用 {name: value} 形式，本运行时无位置参数面）", rid)
         params = msg.get("params") or {}
 
         # modern 版本协商：请求自带 _meta 版本时逐请求校验（规范 §Versioning——
@@ -710,16 +813,17 @@ class McpRuntime:
         if method == "resources/list":
             return self._list_resources(params)
         if method == "resources/templates/list":
-            return {"resourceTemplates": _repo_resource_templates()}
+            return self._cacheable({"resourceTemplates": _repo_resource_templates()})
         if method == "resources/read":
             return self._read(params)
         if method == "tools/list":
-            return {"tools": TOOL_DEFS}
+            return self._cacheable({"tools": TOOL_DEFS})
         if method == "tools/call":
             return self._call_tool(params)
         if method == "prompts/list":
-            return {"prompts": [{"name": d["name"], "description": d["description"]}
-                                for d in PROMPT_DEFS]}
+            return self._cacheable({"prompts": [{"name": d["name"],
+                                                "description": d["description"]}
+                                               for d in PROMPT_DEFS]})
         if method == "prompts/get":
             return self._prompt_get(params)
         if method == "ping":
@@ -816,6 +920,21 @@ class McpRuntime:
             "text": self._text[uri],
         }]}
 
+    def _cacheable(self, payload: dict, ttl_ms: int = 3600000,
+                   cache_scope: str = "public") -> dict:
+        """给可缓存结果补现代规范必填三键（resultType / ttlMs / cacheScope）。
+
+        外部实证（2026-09-21，MCP 2026-07-28 官方 schema）：`ListResourcesResult` /
+        `ListToolsResult` / `ListPromptsResult` 与 `DiscoverResult` 都继承
+        `CacheableResult`，其 `required = [cacheScope, resultType, ttlMs]`——
+        本仓此前只在 server/discover 上给了这三个键，list 三面缺它们（官方 schema 判 FAIL）。
+        """
+        out = {"resultType": "complete"}
+        out.update(payload)
+        out.setdefault("ttlMs", ttl_ms)
+        out.setdefault("cacheScope", cache_scope)
+        return out
+
     def _list_resources(self, params: dict) -> dict:
         """resources/list 分页 + 过滤（type=module|pipeline|asset / package）。"""
         items = list(self._meta.values()) + list(self._repo_meta.values())
@@ -854,10 +973,10 @@ class McpRuntime:
             except ValueError:
                 start = 0
         end = start + page
-        out = {"resources": items[start:end]}
+        out: Dict[str, Any] = {"resources": items[start:end]}
         if end < len(items):
             out["nextCursor"] = str(end)
-        return out
+        return self._cacheable(out)
 
     # ---- transport ----
     def serve_stdio(self, stdin: Optional[TextIO] = None,
@@ -889,7 +1008,7 @@ class McpRuntime:
                     msg = json.loads(line)
                 except json.JSONDecodeError:
                     out = _err(PARSE_ERROR, "Parse error")
-                    stdout.write(json.dumps(out, ensure_ascii=False) + "\n")
+                    stdout.write(encode_message(out) or "")
                     stdout.flush()
                     continue
                 try:
@@ -897,7 +1016,7 @@ class McpRuntime:
                 except Exception as exc:  # 防御：单条消息异常不杀循环
                     resp = _err(INTERNAL_ERROR, f"Internal error: {exc}")
                 if resp is not None:
-                    stdout.write(json.dumps(resp, ensure_ascii=False) + "\n")
+                    stdout.write(encode_message(resp) or "")
                     stdout.flush()
         except KeyboardInterrupt:
             # Ctrl+C：会话正常终止——静默退出，不打印 traceback

@@ -1,0 +1,516 @@
+{
+  "components": {
+    "schemas": {
+      "NfError": {
+        "properties": {
+          "error": {
+            "properties": {
+              "code": {
+                "description": "机器可判定错误码",
+                "type": "integer"
+              },
+              "data": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "message": {
+                "description": "人读说明，必须带修复指引",
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "由 protocol/endpoint_contract.json 实时派生（status=proposed）；本文件非真源。",
+    "title": "NarrativeForge 服务端点契约（派生）",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/assemble/check": {
+      "post": {
+        "operationId": "assemble.check",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "artifact_text": {
+                    "description": "string",
+                    "type": "string"
+                  },
+                  "requirement": {
+                    "description": "string",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "issues": {
+                      "description": "array",
+                      "items": {},
+                      "type": "array"
+                    },
+                    "stats": {
+                      "additionalProperties": true,
+                      "description": "object",
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to nf assemble --check",
+        "x-nf-idempotency": "idempotent"
+      }
+    },
+    "/assemble/plan": {
+      "post": {
+        "operationId": "assemble.plan",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "requirement": {
+                    "description": "string",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "pipeline": {
+                      "description": "string|null",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "plan": {
+                      "additionalProperties": true,
+                      "description": "object",
+                      "type": "object"
+                    },
+                    "preset": {
+                      "description": "string|null",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                },
+                "x-nf-streaming": "stream=true 时响应为 text/event-stream（SSE），事件 data 为同一 schema 的分片"
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to nf assemble",
+        "x-nf-idempotency": "idempotent"
+      }
+    },
+    "/bench/evaluate": {
+      "post": {
+        "operationId": "bench.evaluate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "artifact_text": {
+                    "description": "string",
+                    "type": "string"
+                  },
+                  "case": {
+                    "description": "string",
+                    "type": "string"
+                  },
+                  "model": {
+                    "description": "string",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "run": {
+                      "additionalProperties": true,
+                      "description": "object",
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to nf bench run",
+        "x-nf-idempotency": "non-idempotent（幂等键 required）"
+      }
+    },
+    "/conformance": {
+      "get": {
+        "operationId": "conformance.report",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "contracts": {
+                      "description": "array",
+                      "items": {},
+                      "type": "array"
+                    },
+                    "root": {
+                      "description": "string",
+                      "type": "string"
+                    },
+                    "verdict": {
+                      "description": "string",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to nf conformance",
+        "x-nf-idempotency": "idempotent"
+      }
+    },
+    "/library/search": {
+      "get": {
+        "operationId": "library.search",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "limit": {
+                    "description": "integer",
+                    "type": "integer"
+                  },
+                  "q": {
+                    "description": "string",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "hits": {
+                      "description": "array",
+                      "items": {},
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to library_search（MCP 工具）",
+        "x-nf-idempotency": "idempotent"
+      }
+    },
+    "/library/{id}": {
+      "get": {
+        "operationId": "library.read",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "id": {
+                    "description": "string（NF 编号，大小写不敏感）",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "frontmatter": {
+                      "additionalProperties": true,
+                      "description": "object",
+                      "type": "object"
+                    },
+                    "text": {
+                      "description": "string",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to library_read（MCP 工具）",
+        "x-nf-idempotency": "idempotent"
+      }
+    },
+    "/pipeline/dryrun": {
+      "post": {
+        "operationId": "pipeline.dryrun",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "pipeline": {
+                    "description": "string",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "graph": {
+                      "additionalProperties": true,
+                      "description": "object",
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to nf pipeline dryrun",
+        "x-nf-idempotency": "idempotent"
+      }
+    },
+    "/registry": {
+      "get": {
+        "operationId": "registry.query",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "query": {
+                    "description": "string|null",
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "modules": {
+                      "description": "array",
+                      "items": {},
+                      "type": "array"
+                    },
+                    "protocols": {
+                      "description": "array",
+                      "items": {},
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "成功"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NfError"
+                }
+              }
+            },
+            "description": "错误（RFC 9457 Problem Details 映射见 x-nf-error-mapping）"
+          }
+        },
+        "summary": "maps_to registry_query（MCP 工具）",
+        "x-nf-idempotency": "idempotent"
+      }
+    }
+  },
+  "servers": [],
+  "x-nf-endpoints": 8,
+  "x-nf-error-mapping": {
+    "detail": "error.message + 修复指引（patterns/error-message-guidance）",
+    "instance": "请求路径",
+    "source": "非 2xx + {error: {code, message}}；message 必须带修复指引（见 patterns/error-message-guidance）",
+    "status": "HTTP 状态码（与 message 同源）",
+    "title": "error.message",
+    "type": "about:blank"
+  }
+}

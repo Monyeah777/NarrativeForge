@@ -4,6 +4,7 @@ type: 技术文档装配（自包含完整版）
 title: 技术文档装配流 P06 · 自包含完整版
 description: 技术文档域包 P06 装配的自包含完整版——15 件模块正文与管线声明全文内嵌、零资产、无需仓库路径即可装载开跑
 author: Monyeah777
+rating: general
 license: MIT
 generated: 2026-09-15
 verified: 2026-09-15

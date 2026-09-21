@@ -28,3 +28,20 @@ python scripts/nf_verify.py --entry NF-1               # 读者侧独立验证�
 - 回执证明「属于本馆且未被换」；**签名锚**（`anchor_*`）另证「谁签过」——两者互补。
 - 落锚会改变锚字段，但**不改变规范摘要与全馆根**（锚字段排除在摘要之外，自指安全）。
 - `nf library attest` 会自动刷新回执，避免"锚了新、回执还是旧"。
+
+## 透明日志（哈希链 · 2026-09-21 收口）
+
+回执单根只证明「**此刻的集合**」；顺序与历史由 `nf transparency` 补上：
+
+```bash
+python scripts/nf.py transparency            # 校验链（自洽 + 与回执一致 + 在盘生成物）
+python scripts/nf.py transparency --write    # 刷新 protocol/generated/receipt_chain.json
+python scripts/nf.py interop --kind intoto   # 同源导出：in-toto Statement（外部校验器可读）
+```
+
+链式：`leaf = H(path ‖ digest)`、`chain[i] = H(chain[i-1] ‖ leaf[i])`（域分隔前缀见
+`core/transparency_log.py`），由 `protocol/RECEIPTS.json` **确定性派生**。
+
+**边界（不夸大）**：链条可证 **append-only 顺序 + 防删改**；**不提供不可抵赖性**——
+那需要第三方见证或远程日志（Rekor/SCITT），本仓单人治理、无第二署名方，故该声明写在
+生成物的 `boundary` 字段里，门禁判它必须在场。

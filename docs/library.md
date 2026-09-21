@@ -24,3 +24,16 @@ python scripts/nf.py library deprecate|restore|supersede <编号…>
 - 条目 schema 见 `library/INDEX.md` 投稿须知；`license` 由 `nf license` 双源校验。
 - 状态 `active / deprecated / superseded`（取代链须指向真实条目）；未收窄信息**留空而非猜**。
 - 机器取用面另有 MCP：`library_search` / `library_read` / `nf://repo/library/{编号}`。
+
+## 内容分级（2026-09-21 收口）
+
+每件馆藏须在 frontmatter 声明 `rating`（真源），投影到登记表「分级」列：
+
+```bash
+python scripts/nf.py library reindex    # 重生成登记表（含分级列）
+python scripts/nf.py library verify     # 含分级声明判据（缺字段即 FAIL）
+```
+
+词表来自 `library/intake.json: rating.vocabulary`（**按声明判，不写死在代码里**）：
+`general` / `teen` / `mature` / `unrated`——`unrated` 是**显式声明未分级**，不是缺省。
+本门只判「声明在场且合规」，不替投稿人做适龄判断。

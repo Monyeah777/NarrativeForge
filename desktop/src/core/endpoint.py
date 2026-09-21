@@ -21,6 +21,8 @@ from typing import Any, Dict, List, Tuple
 CONTRACT_REL = "protocol/endpoint_contract.json"
 STATUSES = ("proposed", "implemented")
 METHODS = ("GET", "POST", "PUT", "PATCH", "DELETE")
+IDEMPOTENCY_MODES = ("idempotent", "non-idempotent")
+IDEMPOTENCY_KEY = ("required", "none")
 _MCP = re.compile(r"^([a-z_]+)（MCP 工具）$")
 _CLI = re.compile(r"^nf\s+([a-z-]+)")
 
@@ -108,7 +110,37 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
                                   "（修复指引：改为契约内端点 id，或写 null 表示无替代）" % (eid, rep))
         elif any(k in ep for k in ("sunset", "replacement")):
             issues.append("%s 未声明 deprecated 却带 sunset/replacement（悬空弃用字段）" % eid)
+    # 幂等声明面（RFC 9110 §9.2.2）：默认幂等，例外须登记且非幂等端点须给幂等键策略
+    if not conv.get("idempotency"):
+        issues.append("conventions 未声明幂等语义（修复指引：按 RFC 9110 §9.2.2 写明默认幂等 + "
+                      "例外登记规则——幂等性是重试安全的前提，不许沉默）")
+    exceptions = doc.get("idempotency_exceptions") or []
+    seen_exc = set()
+    for exc in exceptions:
+        xid = str(exc.get("id") or "")
+        if xid not in ids:
+            issues.append("幂等例外指向契约内不存在的端点：%r（修复指引：改为契约内端点 id，"
+                          "或删除该例外）" % xid)
+            continue
+        if xid in seen_exc:
+            issues.append("幂等例外重复登记端点：%s" % xid)
+        seen_exc.add(xid)
+        mode = str(exc.get("mode") or "")
+        if mode not in IDEMPOTENCY_MODES:
+            issues.append("幂等例外 mode 越词表：%s = %r（允许 %s）"
+                          % (xid, mode, "/".join(IDEMPOTENCY_MODES)))
+        elif mode == "non-idempotent":
+            key = str(exc.get("key") or "")
+            if key not in IDEMPOTENCY_KEY:
+                issues.append("非幂等端点 %s 缺幂等键策略（修复指引：key ∈ %s——required = "
+                              "须幂等键去重；none = 明示不可重放并写 why）"
+                              % (xid, "/".join(IDEMPOTENCY_KEY)))
+            elif key == "required" and not conv.get("idempotency"):
+                issues.append("幂等例外要求幂等键但 conventions 未定义幂等语义：%s" % xid)
+        if not str(exc.get("why") or "").strip():
+            issues.append("幂等例外缺 why（修复指引：写明为何非幂等、重放会发生什么）")
     stats = {"status": status, "endpoints": len(doc.get("endpoints") or []),
              "streaming": sum(1 for e in (doc.get("endpoints") or []) if e.get("streaming")),
-             "cli_commands": len(cmds), "mcp_tools": len(tools)}
+             "cli_commands": len(cmds), "mcp_tools": len(tools),
+             "idempotency_exceptions": len(exceptions)}
     return issues, warns, stats

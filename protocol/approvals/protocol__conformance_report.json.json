@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-20",
-  "approved_by": "作者",
-  "note": "三条挂账收口 + 巡检工具首跑自纠（三处缺陷修正）；AUD-0005/0007/0008 摘要同步",
+  "approved_at": "2026-09-21",
+  "approved_by": "执行者（作者授权本波裁决）",
+  "note": "AUD-0010 定稿（961 例全绿；13 面外部核验；挂账清零）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "f9aee2d8341cde501886914dd2fa10abcbfd6dff217471ec3f1bc9ef31bf6bc0"
+  "subject_digest": "4c67140a1db0e69722f056eaa10cc0c363291b00d13985f0053d6ba1b255ad9e"
 }

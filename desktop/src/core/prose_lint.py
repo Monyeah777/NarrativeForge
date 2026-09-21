@@ -133,3 +133,68 @@ def summarize(findings: List[Dict[str, object]]) -> Dict[str, int]:
     for f in findings:
         counts[f["rule"]] = counts.get(f["rule"], 0) + 1
     return counts
+
+
+#: 命令面一致性扫描范围（入口文档 + 协议件 + 使用面 docs）
+FACE_DOCS = ("README.md", "README.en.md", "ROUTES.md", "AGENT_START.md",
+             "AI_ROUTING.md", "agent_组装指令包_v0.2.md", "llms.txt",
+             "01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
+             "07_官方核心出厂与社区预设导航.md")
+_CODE_SPAN = re.compile(r"`([^`\n]+)`")
+_FENCE_BLOCK = re.compile(r"```[a-zA-Z0-9]*\n(.*?)```", re.S)
+_NF_CALL = re.compile(r"\b(?:nf|nf\.py)\s+([a-z][a-z0-9-]*)")
+_MCP_TOOL_MENTION = re.compile(r"([a-z][a-z0-9_]{2,})（MCP 工具）")
+
+
+def _command_snippets(text: str) -> List[str]:
+    """只取**当作命令呈现**的片段：行内代码 + 围栏代码块（避免把散文误判成命令）。"""
+    out = [m.group(1) for m in _CODE_SPAN.finditer(text)]
+    out += [m.group(1) for m in _FENCE_BLOCK.finditer(text)]
+    return out
+
+
+def command_face(root: str = ".") -> tuple:
+    """文档命令面 ↔ CLI 注册表 / MCP 工具表一致性（外部标准净吸收：文档即接口面）。
+
+    内部差距：`protocol/driver.json` 只锚定**指令档**（组装指令包 / AI_ROUTING / ai-menu）
+    的机器面路由；README、ROUTES、07 导航、docs/** 里写的 `nf <子命令>` 与 MCP 工具名
+    **无判据**——写错一个子命令（改名的残留）读者按文档执行即失败，门禁一条都不会红。
+    判据只看「当作命令呈现的片段」（行内代码 / 围栏块），不判散文里的自然语言词。
+    """
+    import glob
+    nf_path = os.path.join(root, "scripts", "nf.py")
+    cmds = set()
+    if os.path.exists(nf_path):
+        with open(nf_path, encoding="utf-8") as fh:
+            cmds = set(re.findall(r'sub\.add_parser\(\s*"([a-z0-9-]+)"', fh.read()))
+    try:
+        import sys
+        sys.path.insert(0, os.path.join(root, "desktop", "src"))
+        from core.mcp_runtime import TOOL_DEFS  # noqa: PLC0415
+        tools = {t["name"] for t in TOOL_DEFS}
+    except Exception:  # pragma: no cover - 工具表不可读即跳过工具面
+        tools = set()
+    docs = [d for d in FACE_DOCS if os.path.exists(os.path.join(root, d))]
+    docs += sorted(os.path.relpath(p, root).replace(os.sep, "/")
+                   for p in glob.glob(os.path.join(root, "docs", "*.md")))
+    issues: List[str] = []
+    checked = 0
+    for rel in docs:
+        with open(os.path.join(root, rel), encoding="utf-8") as fh:
+            text = fh.read()
+        for snip in _command_snippets(text):
+            for m in _NF_CALL.finditer(snip):
+                checked += 1
+                name = m.group(1)
+                if name not in cmds:
+                    issues.append("%s 命令面：`%s` 不是 CLI 子命令"
+                                  "（修复指引：核对 scripts/nf.py 注册表改文档，或先实现该命令）"
+                                  % (rel, ("nf " + name).strip()))
+            for m in _MCP_TOOL_MENTION.finditer(snip):
+                checked += 1
+                if tools and m.group(1) not in tools:
+                    issues.append("%s 命令面：%s 不是已登记 MCP 工具"
+                                  "（修复指引：核对 core/mcp_runtime.TOOL_DEFS，"
+                                  "工具名与实现须逐名一致）" % (rel, m.group(1)))
+    return issues, {"docs": len(docs), "commands_checked": checked,
+                    "cli_commands": len(cmds), "mcp_tools": len(tools)}

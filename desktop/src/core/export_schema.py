@@ -22,8 +22,11 @@ import os
 import re
 from typing import List
 
-#: ccv3 chara_card_v3 稳定核心字段（对齐 ccv3_adapter 文档注释 + 真实产物）
-CCV3_CHARA_KEYS = {"name", "description", "spec", "spec_version"}
+#: ccv3 卡面必填：v3 真形状（spec/spec_version/data）+ 顶层 v2 兼容镜像
+#: 外部实证（2026-09-21）：SillyTavern 写卡逻辑设置 spec='chara_card_v3' / spec_version='3.0'，
+#: v3 内容字段位于 `data`；此前只校顶层字段，会放过「v2 字段 + v3 头」这种假 v3。
+CCV3_CHARA_KEYS = {"spec", "spec_version", "data"}
+CCV3_COMPAT_MIRROR = ("name", "description")
 CCV3_CHARA_OPT = {"personality", "scenario", "first_mes", "mes_example",
                   "system_prompt", "post_history_instructions",
                   "alternate_greetings", "tags", "creator",
@@ -48,6 +51,17 @@ def check_ccv3_chara(path: str) -> List[str]:
     for k in CCV3_CHARA_KEYS:
         if k not in data:
             issues.append(f"ccv3 chara 缺必填键: {k}")
+    # v3 真形状：内容字段须落在 data 内（顶层镜像仅作 v2 兼容，不作为权威位）
+    if isinstance(data.get("data"), dict):
+        inner = data["data"]
+        for k in ("name", "character_book"):
+            if k not in inner:
+                issues.append(f"ccv3 chara.data 缺字段: {k}（v3 内容位在 data 内）")
+        for k in CCV3_COMPAT_MIRROR:
+            if k in data and k in inner and data[k] != inner[k]:
+                issues.append(f"ccv3 chara 顶层镜像与 data.{k} 不一致（镜像须同源）")
+    elif "data" in data:
+        issues.append("ccv3 chara.data 应为对象（v3 真形状）")
     # v2.4.0 A2 核查：SillyTavern validator 要求 Number(spec_version) ∈ [3.0,4.0)
     # ——"v3" 字符串经 Number() 得 NaN 校验 fail，须为数值字符串 "3.0"（bug 级差距机读化）
     sv = data.get("spec_version")

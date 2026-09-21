@@ -156,5 +156,36 @@ class PurityScanTest(unittest.TestCase):
         self.assertLessEqual(stats.get("sinks", 0), 2)
 
 
+class SinkRegistryTest(unittest.TestCase):
+    """R6 自洽面（本波净吸收）：sink 类目须带 CWE 对齐 + SINK_ALLOW 须指向已登记 sink。"""
+
+    def test_repo_registry_is_self_consistent(self):
+        issues, _ = ps.scan(ROOT)
+        self.assertEqual([i for i in issues if "CWE" in i or "SINK_ALLOW" in i], [],
+                         "仓库 sink 登记面须自洽")
+        for call, desc in ps.DANGEROUS_CALLS.items():
+            self.assertRegex(desc, r"^CWE-\d+ ", call)
+
+    def test_mutation_missing_cwe_captured(self):
+        original = dict(ps.DANGEROUS_CALLS)
+        try:
+            ps.DANGEROUS_CALLS["eval"] = "动态执行（无 CWE 对齐）"
+            issues, _ = ps.scan(ROOT)
+        finally:
+            ps.DANGEROUS_CALLS.clear()
+            ps.DANGEROUS_CALLS.update(original)
+        self.assertTrue(any("缺 CWE 对齐" in i for i in issues), issues)
+
+    def test_mutation_allow_key_for_unknown_sink_captured(self):
+        original = dict(ps.SINK_ALLOW)
+        try:
+            ps.SINK_ALLOW["ghost.py:totally_unknown"] = "凭空放行（负例）"
+            issues, _ = ps.scan(ROOT)
+        finally:
+            ps.SINK_ALLOW.clear()
+            ps.SINK_ALLOW.update(original)
+        self.assertTrue(any("指向未登记 sink" in i for i in issues), issues)
+
+
 if __name__ == "__main__":
     unittest.main()

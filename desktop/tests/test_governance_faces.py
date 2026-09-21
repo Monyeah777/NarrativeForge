@@ -235,7 +235,49 @@ class TestEndpoint(unittest.TestCase):
 
     def test_deprecation_needs_exit_and_only_when_implemented(self):
         """弃用/日落语义：未实装不许弃用；弃用必须带 sunset + replacement（无替代写 null）。"""
-        base = {"schema": "nf-endpoint/1", "conventions": {"deprecation": "见契约"},
+        self._deprecation_case()
+
+    def test_idempotency_exceptions_are_declared_and_bounded(self):
+        """幂等声明（RFC 9110 §9.2.2）：例外须指向在册端点 + mode/key 在词表 + why 非空。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "protocol").mkdir(parents=True)
+            (Path(tmp) / "scripts").mkdir(parents=True)
+            (Path(tmp) / "scripts" / "nf.py").write_text('sub.add_parser("run")\n',
+                                                          encoding="utf-8")
+            contract = {
+                "schema": "nf-endpoint/1", "status": "proposed", "conventions": {},
+                "endpoints": [
+                    {"id": "a", "method": "GET", "path": "/a", "streaming": False,
+                     "maps_to": "nf run"},
+                    {"id": "b", "method": "POST", "path": "/b", "streaming": False,
+                     "maps_to": "nf run"}],
+                "idempotency_exceptions": [
+                    {"id": "ghost", "mode": "non-idempotent", "key": "required", "why": "x"},
+                    {"id": "b", "mode": "maybe", "key": "maybe", "why": ""},
+                    {"id": "b", "mode": "non-idempotent", "key": "bogus", "why": ""},
+                ]}
+            (Path(tmp) / "protocol" / "endpoint_contract.json").write_text(
+                json.dumps(contract), encoding="utf-8")
+            issues = endpoint.scan(tmp)[0]
+            self.assertTrue(any("不存在的端点" in i for i in issues), issues)
+            self.assertTrue(any("mode 越词表" in i for i in issues), issues)
+            self.assertTrue(any("缺幂等键策略" in i for i in issues), issues)
+            self.assertTrue(any("缺 why" in i for i in issues), issues)
+
+        # 正例：仓库自身契约合规（含一条已登记的非幂等端点）
+        issues_repo, _warns, stats = endpoint.scan(str(ROOT))
+        self.assertEqual(issues_repo, [], issues_repo)
+        self.assertGreaterEqual(stats["idempotency_exceptions"], 1)
+        # 要求幂等键时必须声明幂等语义（否则客户端无从重放）
+        doc = json.loads((ROOT / "protocol" / "endpoint_contract.json").read_text(
+            encoding="utf-8"))
+        needs_key = [e for e in doc["idempotency_exceptions"] if e.get("key") == "required"]
+        if needs_key:
+            self.assertIn("idempotency", doc["conventions"])
+
+    def _deprecation_case(self):
+        base = {"schema": "nf-endpoint/1",
+                "conventions": {"deprecation": "见契约", "idempotency": "默认幂等"},
                 "endpoints": [{"id": "a", "method": "GET", "path": "/a", "streaming": False,
                                "maps_to": "nf run"}]}
         with tempfile.TemporaryDirectory() as tmp:
@@ -272,6 +314,13 @@ class TestEndpoint(unittest.TestCase):
             contract.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
             issues = endpoint.scan(tmp)[0]
             self.assertTrue(any("悬空弃用字段" in i for i in issues), issues)
+
+            # ⑤ 未声明幂等语义 = FAIL（RFC 9110 §9.2.2 面不许沉默）
+            doc["endpoints"] = [dict(base["endpoints"][0])]
+            doc["conventions"] = {"deprecation": "见契约"}
+            contract.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+            issues = endpoint.scan(tmp)[0]
+            self.assertTrue(any("未声明幂等语义" in i for i in issues), issues)
 
 
 class TestConformanceReport(unittest.TestCase):

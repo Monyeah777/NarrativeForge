@@ -1,0 +1,463 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "predicate": {
+    "buildDefinition": {
+      "buildType": "https://narrativeforge.dev/buildtypes/local-gate/v1",
+      "externalParameters": {
+        "declaredBaseline": "check1-37 PASS=61",
+        "gate": "verify.sh",
+        "gateVersion": "v2.27",
+        "note": "参数取自仓内声明件（不引入新真源）"
+      },
+      "internalParameters": {
+        "repoRoot": "relative"
+      },
+      "resolvedDependencies": [
+        {
+          "uri": "nf://repo/STRATEGY.md"
+        },
+        {
+          "uri": "nf://repo/01_核心协议.md"
+        },
+        {
+          "uri": "nf://repo/02_联动注册表.md"
+        },
+        {
+          "uri": "nf://repo/06_Agent执行协议.md"
+        },
+        {
+          "uri": "nf://repo/07_官方核心出厂与社区预设导航.md"
+        },
+        {
+          "uri": "nf://repo/llms.txt"
+        },
+        {
+          "uri": "nf://repo/library/INDEX.md"
+        },
+        {
+          "uri": "nf://repo/library/ALIAS.md"
+        },
+        {
+          "uri": "nf://repo/protocol/event_registry.json"
+        },
+        {
+          "uri": "nf://repo/protocol/world_slots.json"
+        },
+        {
+          "uri": "nf://repo/protocol/export_conformance.json"
+        },
+        {
+          "uri": "nf://repo/protocol/community_asset_ledger.json"
+        },
+        {
+          "uri": "nf://repo/protocol/external_events.json"
+        },
+        {
+          "uri": "nf://repo/protocol/type_backlog.json"
+        },
+        {
+          "uri": "nf://repo/protocol/pipeline_advisory.json"
+        },
+        {
+          "uri": "nf://repo/protocol/score_baseline.json"
+        },
+        {
+          "uri": "nf://repo/protocol/module_signatures.json"
+        },
+        {
+          "uri": "nf://repo/protocol/conformance_report.json"
+        },
+        {
+          "uri": "nf://repo/protocol/asset_line_baseline.json"
+        },
+        {
+          "uri": "nf://repo/protocol/CONFORMANCE.md"
+        },
+        {
+          "uri": "nf://repo/protocol/driver.json"
+        },
+        {
+          "uri": "nf://repo/protocol/rfc_index.json"
+        },
+        {
+          "uri": "nf://repo/protocol/endpoint_contract.json"
+        },
+        {
+          "uri": "nf://repo/protocol/knowledge_sources.json"
+        },
+        {
+          "uri": "nf://repo/protocol/transform_log.json"
+        },
+        {
+          "uri": "nf://repo/protocol/knowledge_usage.json"
+        },
+        {
+          "uri": "nf://repo/protocol/assertions.json"
+        },
+        {
+          "uri": "nf://repo/protocol/vocabularies.json"
+        },
+        {
+          "uri": "nf://repo/protocol/normative.json"
+        },
+        {
+          "uri": "nf://repo/protocol/data_contracts.json"
+        },
+        {
+          "uri": "nf://repo/decisions/INDEX.md"
+        },
+        {
+          "uri": "nf://repo/protocol/handover.json"
+        },
+        {
+          "uri": "nf://repo/protocol/postmortem.json"
+        },
+        {
+          "uri": "nf://repo/protocol/audit.json"
+        },
+        {
+          "uri": "nf://repo/protocol/glossary.json"
+        },
+        {
+          "uri": "nf://repo/protocol/execution_modes.json"
+        },
+        {
+          "uri": "nf://repo/protocol/st_quality.json"
+        },
+        {
+          "uri": "nf://repo/protocol/mcp_package.json"
+        },
+        {
+          "uri": "nf://repo/protocol/state_front.json"
+        },
+        {
+          "uri": "nf://repo/desktop/src/core/registry.json"
+        },
+        {
+          "uri": "nf://repo/protocol/schema/asset.schema.json"
+        },
+        {
+          "uri": "nf://repo/protocol/schema/contract.schema.json"
+        },
+        {
+          "uri": "nf://repo/protocol/schema/module.schema.json"
+        },
+        {
+          "uri": "nf://repo/protocol/schema/pipeline.schema.json"
+        },
+        {
+          "uri": "nf://repo/protocol/schema/protocol.schema.json"
+        },
+        {
+          "uri": "nf://repo/decisions/ADR-0001-双源知识层落位.md"
+        },
+        {
+          "uri": "nf://repo/decisions/ADR-0002-门禁不注水.md"
+        },
+        {
+          "uri": "nf://repo/decisions/ADR-0003-断言表封闭集.md"
+        }
+      ]
+    },
+    "runDetails": {
+      "builder": {
+        "id": "https://narrativeforge.dev/builder/verify-sh"
+      },
+      "metadata": {
+        "invocationId": "b877f652ab8b3edd",
+        "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
+      }
+    }
+  },
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "subject": [
+    {
+      "digest": {
+        "sha256": "287a95e5c746aec574c70058e841f8a3555012bf22c9fecc38c0ce0dfd581e20"
+      },
+      "name": "STRATEGY.md"
+    },
+    {
+      "digest": {
+        "sha256": "7eaaccd43afa4f68a36c3712620f23b94b30111174ca60d563a353991e245ea8"
+      },
+      "name": "01_核心协议.md"
+    },
+    {
+      "digest": {
+        "sha256": "cc9a3b369f998eecd64b9f01f0bc6328a2f84a199639b8da922e9cba2cd3b87c"
+      },
+      "name": "02_联动注册表.md"
+    },
+    {
+      "digest": {
+        "sha256": "abfd3fbdaf88043a97fd068809dc92cfa3259cc4fbfdb7bb882d57ccec0200b2"
+      },
+      "name": "06_Agent执行协议.md"
+    },
+    {
+      "digest": {
+        "sha256": "6d613ca78347d6a466ed95181d135bc82847ece05ef1276b07436780a1954916"
+      },
+      "name": "07_官方核心出厂与社区预设导航.md"
+    },
+    {
+      "digest": {
+        "sha256": "e3859535d0db046ea6ee4d4d29efb7f9af5b3a8ca2c8d917d2652864334b7375"
+      },
+      "name": "llms.txt"
+    },
+    {
+      "digest": {
+        "sha256": "bb92ed10beeeb80ec2b5a95ddace2ad8cac6f7cd8b28095b1ad778b1dfdc3ebc"
+      },
+      "name": "library/INDEX.md"
+    },
+    {
+      "digest": {
+        "sha256": "bac7a42d89f73e3693c364c51abb5a7a5151faefd0a71ece36d39819c9cc9b73"
+      },
+      "name": "library/ALIAS.md"
+    },
+    {
+      "digest": {
+        "sha256": "dc6edbf5047dc5e134d1e9442efe1ff633fe991a527394f460a897abc4f4cc39"
+      },
+      "name": "protocol/event_registry.json"
+    },
+    {
+      "digest": {
+        "sha256": "4eb545555cca2df318c3ab2c102eab7e5114d09758e66de1d11c487f23d799f1"
+      },
+      "name": "protocol/world_slots.json"
+    },
+    {
+      "digest": {
+        "sha256": "7863137982af93de46a060197a22e197d8230d44faa6e0f3e055f6b31da5b14d"
+      },
+      "name": "protocol/export_conformance.json"
+    },
+    {
+      "digest": {
+        "sha256": "0da4a7e5a97f82ffa3b48468193f184a55a6b64a6cf3092ecfbff6079f77815b"
+      },
+      "name": "protocol/community_asset_ledger.json"
+    },
+    {
+      "digest": {
+        "sha256": "f24bebe1fd054b03df42e5637a050f2743140c17fae3aa61c1321a236ced5ee2"
+      },
+      "name": "protocol/external_events.json"
+    },
+    {
+      "digest": {
+        "sha256": "e8bd82acac0ea4892d90ef6be659bebb41c082f9092c77c7bb46e05ef2276e40"
+      },
+      "name": "protocol/type_backlog.json"
+    },
+    {
+      "digest": {
+        "sha256": "163b9974c82e00fc1c7f49e86569227e71fbfbd06a87487f190b396d3e2187fe"
+      },
+      "name": "protocol/pipeline_advisory.json"
+    },
+    {
+      "digest": {
+        "sha256": "00dbe82ff51bbfed817398ddecb5e256a76463dc512978b8f2f050abfe41d3b9"
+      },
+      "name": "protocol/score_baseline.json"
+    },
+    {
+      "digest": {
+        "sha256": "2b02091e51428942d6737a8734a3a26c9d89fd647daff757c0d944796d901319"
+      },
+      "name": "protocol/module_signatures.json"
+    },
+    {
+      "digest": {
+        "sha256": "4c67140a1db0e69722f056eaa10cc0c363291b00d13985f0053d6ba1b255ad9e"
+      },
+      "name": "protocol/conformance_report.json"
+    },
+    {
+      "digest": {
+        "sha256": "0f837c11a26340f279af116a94d5a0c4f84a031aac716441f8105c52c063593a"
+      },
+      "name": "protocol/asset_line_baseline.json"
+    },
+    {
+      "digest": {
+        "sha256": "85925da3cf31a7fcb2ed8b1d9641f7a9895bae897e69b48349a0745e8374254f"
+      },
+      "name": "protocol/CONFORMANCE.md"
+    },
+    {
+      "digest": {
+        "sha256": "476965215da304a6baa64b7c181e5e90faf5bb8f5240989a8532f40cd800df0e"
+      },
+      "name": "protocol/driver.json"
+    },
+    {
+      "digest": {
+        "sha256": "87de7ac68f9846b333323efecdbb7555adf24215ae8145d573fe8d0688b8e86d"
+      },
+      "name": "protocol/rfc_index.json"
+    },
+    {
+      "digest": {
+        "sha256": "26da8e6382e152b4672347ea1d3de1f9732cabab0111ac01e622d38ded119a8f"
+      },
+      "name": "protocol/endpoint_contract.json"
+    },
+    {
+      "digest": {
+        "sha256": "e39b4e5319b94bb1a17e1ceaa6e53b0623eb0fa44051d94731dc363302b25390"
+      },
+      "name": "protocol/knowledge_sources.json"
+    },
+    {
+      "digest": {
+        "sha256": "89103feda2d144097222518bcbf9fe68e2da3ebdc410b14216cae3491e32042a"
+      },
+      "name": "protocol/transform_log.json"
+    },
+    {
+      "digest": {
+        "sha256": "c2b024386b746578e571c91085af09b8767b85e09862b733bd1c3f572ec99e44"
+      },
+      "name": "protocol/knowledge_usage.json"
+    },
+    {
+      "digest": {
+        "sha256": "243495d338ca591728e8ae048c510e1f2beeea77d73fba34ccc3de95431e29bf"
+      },
+      "name": "protocol/assertions.json"
+    },
+    {
+      "digest": {
+        "sha256": "62fde4ac67cd01ac8dddf5428f20234560429e8dfced571be664f5920e068173"
+      },
+      "name": "protocol/vocabularies.json"
+    },
+    {
+      "digest": {
+        "sha256": "f64fc6ee87215eb42a4b8f6a6d0c2d9b8c4af699a1c924b7fb85fa1684e59de4"
+      },
+      "name": "protocol/normative.json"
+    },
+    {
+      "digest": {
+        "sha256": "6affbdff2bd191ed327d45af06bec42a58433db33d756c4f27347c9c1b72330b"
+      },
+      "name": "protocol/data_contracts.json"
+    },
+    {
+      "digest": {
+        "sha256": "af8857826f91886e662925465a0d6d499c45cce7a13fdd7b6f213737b31b4ea0"
+      },
+      "name": "decisions/INDEX.md"
+    },
+    {
+      "digest": {
+        "sha256": "6f9322345d51bc5e55e09ce043e803eaab213ed123c4ee5d5d12238dde388b37"
+      },
+      "name": "protocol/handover.json"
+    },
+    {
+      "digest": {
+        "sha256": "01f15c52959b4c6120931404d7fa62beaa14c649ddf35514d08b6e5d95b6fee3"
+      },
+      "name": "protocol/postmortem.json"
+    },
+    {
+      "digest": {
+        "sha256": "914c5dfe05763ecab52cea35cb72fd34026cd2522ca37fbebc0a86596a1d01eb"
+      },
+      "name": "protocol/audit.json"
+    },
+    {
+      "digest": {
+        "sha256": "119dd3449c0255541bf61fde6d9621060d44c89200e03b788db335f64c970b41"
+      },
+      "name": "protocol/glossary.json"
+    },
+    {
+      "digest": {
+        "sha256": "6657720467a3db93ce21472901e28b807e76bfe17a3df112c8e1b689bd3d5cf2"
+      },
+      "name": "protocol/execution_modes.json"
+    },
+    {
+      "digest": {
+        "sha256": "21c8589b07247607bfefc6916cff01d8589988fe7fd73914f687df262fa14e2d"
+      },
+      "name": "protocol/st_quality.json"
+    },
+    {
+      "digest": {
+        "sha256": "93291a7384281da61b974fdfd93c3b54cc73fc3bba29951cd32a87f590e3243d"
+      },
+      "name": "protocol/mcp_package.json"
+    },
+    {
+      "digest": {
+        "sha256": "1a542591cf38382ae3301cf5ac67c80a6a4d2fdcfd7c56fab27eccbbad0ca791"
+      },
+      "name": "protocol/state_front.json"
+    },
+    {
+      "digest": {
+        "sha256": "47df241463d1527473b605ab69fde43f765a3fe2aa5c8ac8fdc49765db68adaf"
+      },
+      "name": "desktop/src/core/registry.json"
+    },
+    {
+      "digest": {
+        "sha256": "3c9564582f6cc563d64518f943f5def2f2a8d09c3e34895ddd67296a9fc05068"
+      },
+      "name": "protocol/schema/asset.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "23a46a2010ce1bc143063fc3b7d60e1ae1959e884bf251901d9a6680bcd43ef7"
+      },
+      "name": "protocol/schema/contract.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "4271c47cdd643524684f19a81c2d23dd6f9a1d85da704d7a49be870927e059b2"
+      },
+      "name": "protocol/schema/module.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "ffde217472353bc57df583a1f4b976eaa982a1e0c12c3b77293083e11c1e7a39"
+      },
+      "name": "protocol/schema/pipeline.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "ac1b9bed3e12202de56921fc432f290a1659e7a68573d1e5c28d6c9ab4932fb9"
+      },
+      "name": "protocol/schema/protocol.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "bd5881ed0c36590c485900a0071e5c17c1615ca876ce03171b87f6fe58c2469e"
+      },
+      "name": "decisions/ADR-0001-双源知识层落位.md"
+    },
+    {
+      "digest": {
+        "sha256": "88f7627421970fb55cbb83a2ba31dff2cb6d0e7ed24139637976263427100cfe"
+      },
+      "name": "decisions/ADR-0002-门禁不注水.md"
+    },
+    {
+      "digest": {
+        "sha256": "43ff7428a28389ce1cca04e98bf2aba3109da23ec7511ce49a937e36399f9f4f"
+      },
+      "name": "decisions/ADR-0003-断言表封闭集.md"
+    }
+  ]
+}

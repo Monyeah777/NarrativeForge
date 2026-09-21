@@ -239,10 +239,15 @@ class TestParseCcv3Restore(unittest.TestCase):
         new_chara = json.loads(Path(out.files[0]).read_text(encoding="utf-8"))
         # description 逐字一致（含 pipeline/块数/资产数措辞）
         self.assertEqual(new_chara["description"], self.chara["description"])
+        # v3 真形状：内容字段在 data 内（顶层为 v2 兼容镜像，二者同源）
+        self.assertIn("data", new_chara)
+        self.assertEqual(new_chara["name"], new_chara["data"]["name"])
+        orig_book = (self.chara.get("data") or self.chara)["character_book"]
+        new_book = new_chara["data"]["character_book"]
         orig = {e["keys"][0]: e for e in
-                self.chara["character_book"]["entries"]}
+                orig_book["entries"]}
         new = {e["keys"][0]: e for e in
-               new_chara["character_book"]["entries"]}
+               new_book["entries"]}
         self.assertEqual(set(new), set(orig))
         for fid in orig:
             self.assertEqual(new[fid]["keys"], orig[fid]["keys"])

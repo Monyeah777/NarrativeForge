@@ -1,0 +1,249 @@
+{
+  "codec": "raw (0x71)",
+  "entries": [
+    {
+      "cid": "bafyreibipkk6lr2gv3cxjryaldued6fdkvibfpzczh7myogazyg72wa6ea",
+      "path": "STRATEGY.md",
+      "sha256": "287a95e5c746aec574c70058e841f8a3555012bf22c9fecc38c0ce0dfd581e20"
+    },
+    {
+      "cid": "bafyreid6vlgniox2j5ukg3bxcjra6i5zjmybceluzjqnky5dkomr4jc6va",
+      "path": "01_核心协议.md",
+      "sha256": "7eaaccd43afa4f68a36c3712620f23b94b30111174ca60d563a353991e245ea8"
+    },
+    {
+      "cid": "bafyreigmti5tnh4zr3wnms47ahylyyziul4eugmwhg4nverots5czu5ypq",
+      "path": "02_联动注册表.md",
+      "sha256": "cc9a3b369f998eecd64b9f01f0bc6328a2f84a199639b8da922e9cba2cd3b87c"
+    },
+    {
+      "cid": "bafyreifl7u733l4iaq5jp7igrae5zewpumszzrh37w33xcbnk7goyaqawi",
+      "path": "06_Agent执行协议.md",
+      "sha256": "abfd3fbdaf88043a97fd068809dc92cfa3259cc4fbfdb7bb882d57ccec0200b2"
+    },
+    {
+      "cid": "bafyreidnme6kpa2h22sgn3mvdaorgw6ifbd6zyc66etwwb2dm6akdfkjcy",
+      "path": "07_官方核心出厂与社区预设导航.md",
+      "sha256": "6d613ca78347d6a466ed95181d135bc82847ece05ef1276b07436780a1954916"
+    },
+    {
+      "cid": "bafyreihdqwktlug3arxkn3snjuu67n7zv5ntvdfczdmrputffbsdgs3tou",
+      "path": "llms.txt",
+      "sha256": "e3859535d0db046ea6ee4d4d29efb7f9af5b3a8ca2c8d917d2652864334b7375"
+    },
+    {
+      "cid": "bafyreif3slwrbpxoxahmfnnjlxnm4kwyzldpptmlfaevwgwxpcy57xb6xq",
+      "path": "library/INDEX.md",
+      "sha256": "bb92ed10beeeb80ec2b5a95ddace2ad8cac6f7cd8b28095b1ad778b1dfdc3ebc"
+    },
+    {
+      "cid": "bafyreif2y6sc3cpxhy3jhq3eyunlwwt2kfi7v36qu4pm4nwttam4tte3om",
+      "path": "library/ALIAS.md",
+      "sha256": "bac7a42d89f73e3693c364c51abb5a7a5151faefd0a71ece36d39819c9cc9b73"
+    },
+    {
+      "cid": "bafyreig4n3n7kbd5yxqtjupjiqxp4h7wgp7jsgssookpiyfis6v4j5gmhe",
+      "path": "protocol/event_registry.json",
+      "sha256": "dc6edbf5047dc5e134d1e9442efe1ff633fe991a527394f460a897abc4f4cc39"
+    },
+    {
+      "cid": "bafyreicowvcvkxgkfxzrrq5lfqic5k36keknbf2y4zw6dui4jb7shv4z6e",
+      "path": "protocol/world_slots.json",
+      "sha256": "4eb545555cca2df318c3ab2c102eab7e5114d09758e66de1d11c487f23d799f1"
+    },
+    {
+      "cid": "bafyreidymmjxtavpsppenidadf5cfymx3arq2rh2u3qphycv62zr3jnrju",
+      "path": "protocol/export_conformance.json",
+      "sha256": "7863137982af93de46a060197a22e197d8230d44faa6e0f3e055f6b31da5b14d"
+    },
+    {
+      "cid": "bafyreianust6lkl7ql72hneenamt6gckkwtlmstm6mes5t576ydz654blm",
+      "path": "protocol/community_asset_ledger.json",
+      "sha256": "0da4a7e5a97f82ffa3b48468193f184a55a6b64a6cf3092ecfbff6079f77815b"
+    },
+    {
+      "cid": "bafyreihsjpv6d7ifjmb56qxfmn5akdzhimkayf724ovgdqjsdirwz3k64i",
+      "path": "protocol/external_events.json",
+      "sha256": "f24bebe1fd054b03df42e5637a050f2743140c17fae3aa61c1321a236ced5ee2"
+    },
+    {
+      "cid": "bafyreihixwbkzlaouses3ehpnptftpv3ihaif6ijfr34po2g4bppej3oia",
+      "path": "protocol/type_backlog.json",
+      "sha256": "e8bd82acac0ea4892d90ef6be659bebb41c082f9092c77c7bb46e05ef2276e40"
+    },
+    {
+      "cid": "bafyreiawhomxjsboad6by72j5bswsit6oh57xudkq5eh6gilhfwt4imh7y",
+      "path": "protocol/pipeline_advisory.json",
+      "sha256": "163b9974c82e00fc1c7f49e86569227e71fbfbd06a87487f190b396d3e2187fe"
+    },
+    {
+      "cid": "bafyreiaa3puc75i3x7wyc44y3xwllyswu5sghxcrff4lr4xqkcv74qotxe",
+      "path": "protocol/score_baseline.json",
+      "sha256": "00dbe82ff51bbfed817398ddecb5e256a76463dc512978b8f2f050abfe41d3b9"
+    },
+    {
+      "cid": "bafyreiblaier4ukcrfbnm432q42khitmtwe72zd5v73vpqgzir4w3eatde",
+      "path": "protocol/module_signatures.json",
+      "sha256": "2b02091e51428942d6737a8734a3a26c9d89fd647daff757c0d944796d901319"
+    },
+    {
+      "cid": "bafyreicmm4kauhnq42lsf4cw5kqqzqgdmmurwagrhgc7abj5noq3evnnty",
+      "path": "protocol/conformance_report.json",
+      "sha256": "4c67140a1db0e69722f056eaa10cc0c363291b00d13985f0053d6ba1b255ad9e"
+    },
+    {
+      "cid": "bafyreiapqn6bditdidzhtlyrnkknlige7bfaggvmofsed6aqlrjmay2zhi",
+      "path": "protocol/asset_line_baseline.json",
+      "sha256": "0f837c11a26340f279af116a94d5a0c4f84a031aac716441f8105c52c063593a"
+    },
+    {
+      "cid": "bafyreiefsjo2htzru76lf3mldwled55jrfn25cl6ng2igsnaorpig5bfj4",
+      "path": "protocol/CONFORMANCE.md",
+      "sha256": "85925da3cf31a7fcb2ed8b1d9641f7a9895bae897e69b48349a0745e8374254f"
+    },
+    {
+      "cid": "bafyreichnfsscxndastlvjslpqmb4xuq7l23xd2sicmjvbjs6qgnqag7by",
+      "path": "protocol/driver.json",
+      "sha256": "476965215da304a6baa64b7c181e5e90faf5bb8f5240989a8532f40cd800df0e"
+    },
+    {
+      "cid": "bafyreieh3z5mnd4yi2ztgmr673g3w5kvvxzeefnoqfc5k476rudirohinu",
+      "path": "protocol/rfc_index.json",
+      "sha256": "87de7ac68f9846b333323efecdbb7555adf24215ae8145d573fe8d0688b8e86d"
+    },
+    {
+      "cid": "bafyreibg3khghaxbkk2goi2h5iot3ypzomwkxkybcgwadzrc2og62em2r4",
+      "path": "protocol/endpoint_contract.json",
+      "sha256": "26da8e6382e152b4672347ea1d3de1f9732cabab0111ac01e622d38ded119a8f"
+    },
+    {
+      "cid": "bafyreihdtnhfggnzjoy2c7q45ktokoygepvq7jcakhmuomo4gyzqfmstsa",
+      "path": "protocol/knowledge_sources.json",
+      "sha256": "e39b4e5319b94bb1a17e1ceaa6e53b0623eb0fa44051d94731dc363302b25390"
+    },
+    {
+      "cid": "bafyreiejca763iwriqexeisrrpf7t7ti4lnd5poeccyuefwk4ner4mqefi",
+      "path": "protocol/transform_log.json",
+      "sha256": "89103feda2d144097222518bcbf9fe68e2da3ebdc410b14216cae3491e32042a"
+    },
+    {
+      "cid": "bafyreigcwasdq23umv4ok4ojccc26cnyoz5ylyeymk3thpi4h5ls5sm6iq",
+      "path": "protocol/knowledge_usage.json",
+      "sha256": "c2b024386b746578e571c91085af09b8767b85e09862b733bd1c3f572ec99e44"
+    },
+    {
+      "cid": "bafyreibegsk5gogklelsr2foasgfcdq7fpxou56xh65djtgd32kughrjx4",
+      "path": "protocol/assertions.json",
+      "sha256": "243495d338ca591728e8ae048c510e1f2beeea77d73fba34ccc3de95431e29bf"
+    },
+    {
+      "cid": "bafyreidc7xskyz6nagwi3xpvikhsai2fmbbj5dp45vlrxzte6wja4bubom",
+      "path": "protocol/vocabularies.json",
+      "sha256": "62fde4ac67cd01ac8dddf5428f20234560429e8dfced571be664f5920e068173"
+    },
+    {
+      "cid": "bafyreihwj7do5bzbl22cus4pnjwqylm3rrfpngnbzeslp64f7ilijzm54q",
+      "path": "protocol/normative.json",
+      "sha256": "f64fc6ee87215eb42a4b8f6a6d0c2d9b8c4af699a1c924b7fb85fa1684e59de4"
+    },
+    {
+      "cid": "bafyreidk76676k6rshwte7kfv4dl5rbklbbt3mz5ovwe6jzupsobw4rtbm",
+      "path": "protocol/data_contracts.json",
+      "sha256": "6affbdff2bd191ed327d45af06bec42a58433db33d756c4f27347c9c1b72330b"
+    },
+    {
+      "cid": "bafyreifprblye34rrbxgmkjfizna23kjtrc4zz5bh7oxw3zbg433gg2oua",
+      "path": "decisions/INDEX.md",
+      "sha256": "af8857826f91886e662925465a0d6d499c45cce7a13fdd7b6f213737b31b4ea0"
+    },
+    {
+      "cid": "bafyreidpsmrdixkrxrpflye44bb6qa7kvmqt5ujdytxf2xiseog54oelg4",
+      "path": "protocol/handover.json",
+      "sha256": "6f9322345d51bc5e55e09ce043e803eaab213ed123c4ee5d5d12238dde388b37"
+    },
+    {
+      "cid": "bafyreiab6fofffm3jrqsbeyuatl7uyv6vikmmso56nkrjuelnzozlnx64m",
+      "path": "protocol/postmortem.json",
+      "sha256": "01f15c52959b4c6120931404d7fa62beaa14c649ddf35514d08b6e5d95b6fee3"
+    },
+    {
+      "cid": "bafyreierjro74blwh3flklhkgxfxf7juajwneurmun735pakqzmwuhib5m",
+      "path": "protocol/audit.json",
+      "sha256": "914c5dfe05763ecab52cea35cb72fd34026cd2522ca37fbebc0a86596a1d01eb"
+    },
+    {
+      "cid": "bafyreiartxjujhackvkbx5q73zwzmiigbvcmreqa4a5xrdntgx3ezfylie",
+      "path": "protocol/glossary.json",
+      "sha256": "119dd3449c0255541bf61fde6d9621060d44c89200e03b788db335f64c970b41"
+    },
+    {
+      "cid": "bafyreidgk5zaiz5d3oj44ikhfea6fc4apz3l7yl2hxyrfshbw2e32pk46i",
+      "path": "protocol/execution_modes.json",
+      "sha256": "6657720467a3db93ce21472901e28b807e76bfe17a3df112c8e1b689bd3d5cf2"
+    },
+    {
+      "cid": "bafyreibbzbmjwbzeoyd3736gsfwp6aoylcmyr7t7244rj5uh34tc7ikofu",
+      "path": "protocol/st_quality.json",
+      "sha256": "21c8589b07247607bfefc6916cff01d8589988fe7fd73914f687df262fa14e2d"
+    },
+    {
+      "cid": "bafyreietfenhhbbidwtbxf2p37mtyo2uzrz7yo52fgkrzuzkq72zbyzehu",
+      "path": "protocol/mcp_package.json",
+      "sha256": "93291a7384281da61b974fdfd93c3b54cc73fc3bba29951cd32a87f590e3243d"
+    },
+    {
+      "cid": "bafyreia2kqszdtzyhavogma46wwgpsaknjgs7xh5prlpvmt6zs522dfhse",
+      "path": "protocol/state_front.json",
+      "sha256": "1a542591cf38382ae3301cf5ac67c80a6a4d2fdcfd7c56fab27eccbbad0ca791"
+    },
+    {
+      "cid": "bafyreich34sbiy6rkj2hhnqfvnu73zb7oznd7yvklsfmr7oes5s5w2fnv4",
+      "path": "desktop/src/core/registry.json",
+      "sha256": "47df241463d1527473b605ab69fde43f765a3fe2aa5c8ac8fdc49765db68adaf"
+    },
+    {
+      "cid": "bafyreib4svsfql3myvr5mriy7fb7lxxs6kunbhb6gsev3xlhffvj7qcqna",
+      "path": "protocol/schema/asset.schema.json",
+      "sha256": "3c9564582f6cc563d64518f943f5def2f2a8d09c3e34895ddd67296a9fc05068"
+    },
+    {
+      "cid": "bafyreibdurvcaegodpaugbr7yo35mdq24gkz5ccl6jizahm2m2alzvb664",
+      "path": "protocol/schema/contract.schema.json",
+      "sha256": "23a46a2010ce1bc143063fc3b7d60e1ae1959e884bf251901d9a6680bcd43ef7"
+    },
+    {
+      "cid": "bafyreiccohchzxlegusgqtyzvaoc2i65n6nb3bo2obgxusn6q4espyczwi",
+      "path": "protocol/schema/module.schema.json",
+      "sha256": "4271c47cdd643524684f19a81c2d23dd6f9a1d85da704d7a49be870927e059b2"
+    },
+    {
+      "cid": "bafyreih73yqxi4rvhpcx35mduh2ls5xkvgbkdygbfq5xokjqqpqryht2he",
+      "path": "protocol/schema/pipeline.schema.json",
+      "sha256": "ffde217472353bc57df583a1f4b976eaa982a1e0c12c3b77293083e11c1e7a39"
+    },
+    {
+      "cid": "bafyreifmdon62pqseaw6k2jb7rbs6kikczm6pjufopi6lqunnsnljezpxe",
+      "path": "protocol/schema/protocol.schema.json",
+      "sha256": "ac1b9bed3e12202de56921fc432f290a1659e7a68573d1e5c28d6c9ab4932fb9"
+    },
+    {
+      "cid": "bafyreif5lca62dbwlegeqwiauadr4xaxyfqvzkdwzybrog4h637frqsgty",
+      "path": "decisions/ADR-0001-双源知识层落位.md",
+      "sha256": "bd5881ed0c36590c485900a0071e5c17c1615ca876ce03171b87f6fe58c2469e"
+    },
+    {
+      "cid": "bafyreiei65rhiimxb62vzo4duk5ddx7sznwq47wsie4wg6lwey2coeam7y",
+      "path": "decisions/ADR-0002-门禁不注水.md",
+      "sha256": "88f7627421970fb55cbb83a2ba31dff2cb6d0e7ed24139637976263427100cfe"
+    },
+    {
+      "cid": "bafyreicd752criudrhhbzsqe5gf7fk5dcco2epwhkeoojgutpy3dth47j4",
+      "path": "decisions/ADR-0003-断言表封闭集.md",
+      "sha256": "43ff7428a28389ce1cca04e98bf2aba3109da23ec7511ce49a937e36399f9f4f"
+    }
+  ],
+  "multibase": "base32 (lowercase, no padding, prefix 'b')",
+  "multihash": "sha2-256 (0x12)",
+  "schema": "nf-cid-index/1",
+  "x-nf-note": "派生自 protocol/RECEIPTS.json；CID 可被 multiformats 生态直接校验。"
+}

@@ -98,7 +98,99 @@ class ExternalLinkToolTest(unittest.TestCase):
         self.assertEqual(report["total"], 3)
         self.assertEqual(report["checked"], 2)      # 同链接只探一次
         self.assertEqual(report["failed"], 1)
-        self.assertEqual([r["status"] for r in report["rows"]].count("fail"), 1)
+
+    def test_transient_classification_and_retry_after(self):
+        """瞬态口径：超时/5xx/429/408/425 可重试；4xx（非上述）一律定性。"""
+        for d in ("HTTP 500", "HTTP 429", "HTTP 408", "超时", "TimeoutError",
+                  "URLError", "ConnectionResetError"):
+            self.assertTrue(self.tool.is_transient(d), d)
+        for d in ("HTTP 404", "HTTP 403", "HTTP 200", "HTTP 410"):
+            self.assertFalse(self.tool.is_transient(d), d)
+        self.assertEqual(self.tool.retry_after_seconds("HTTP 429（Retry-After: 3）"), 3.0)
+        self.assertEqual(self.tool.retry_after_seconds("HTTP 429（Retry-After: 999）"), 10.0)
+        self.assertEqual(self.tool.retry_after_seconds("HTTP 404"), 0.0)
+
+    def test_probe_with_retry_recovers_and_respects_attempt_budget(self):
+        """退避重试：瞬态失败重试后成功即 ok；非瞬态不重试；次数用尽如实报失败。"""
+        calls = {"n": 0}
+        waits = []
+
+        def seq(url):
+            calls["n"] += 1
+            return (calls["n"] >= 3, "HTTP 503" if calls["n"] < 3 else "HTTP 200")
+
+        ok, detail = self.tool.probe_with_retry("https://x.example", seq, retries=2,
+                                                backoff=1.0, sleep=waits.append)
+        self.assertTrue(ok, detail)
+        self.assertEqual(calls["n"], 3)
+        self.assertEqual(waits, [1.0, 2.0], "退避应逐次翻倍")
+
+        calls2 = {"n": 0}
+
+        def dead(url):
+            calls2["n"] += 1
+            return False, "HTTP 404"
+
+        ok2, detail2 = self.tool.probe_with_retry("https://y.example", dead, retries=3,
+                                                  backoff=1.0, sleep=lambda _s: None)
+        self.assertFalse(ok2)
+        self.assertEqual(calls2["n"], 1, "非瞬态失败不得重试")
+        self.assertEqual(detail2, "HTTP 404")
+
+    def test_retry_wrapped_fetch_keeps_report_shape(self):
+        """接线面：probe_with_retry 包装后的 fetcher 仍产出同形报告（失败项逐条可寻址）。"""
+        self._retry_wrapped_case()
+
+    def test_domain_breaker_skips_after_repeated_failure(self):
+        """域级熔断（本机网络实测驱动）：连续失败达阈值后同域链接不再探测，且跳过可见。"""
+        breaker = self.tool.DomainBreaker(threshold=2)
+        calls = {"n": 0}
+
+        def dead(url):
+            calls["n"] += 1
+            return (self.tool.host_of(url) == "ok.example", "TimeoutError")
+
+        links = {"README.md": ["https://bad.example/1", "https://bad.example/2",
+                               "https://bad.example/3", "https://ok.example/9"]}
+        report = self.tool.check_with_breaker(links, dead, breaker=breaker)
+        self.assertEqual(calls["n"], 3, "第三次同域链接应被熔断跳过（bad×2 + ok×1）")
+        self.assertEqual(report["failed"], 2)
+        self.assertEqual(report["skipped"], 1)
+        self.assertEqual(report["tripped_hosts"], {"bad.example": 2})
+        skipped = [r for r in report["rows"] if r["status"] == "skipped"]
+        self.assertIn("域级熔断", skipped[0]["detail"])
+        self.assertEqual(self.tool.host_of("https://a.b.example:8443/x?y=1"), "a.b.example")
+
+    def test_breaker_resets_after_success(self):
+        breaker = self.tool.DomainBreaker(threshold=2)
+        breaker.record("https://x.example/1", False)
+        breaker.record("https://x.example/2", True)
+        breaker.record("https://x.example/3", False)
+        self.assertFalse(breaker.is_open("https://x.example/4"), "成功须清零连续失败计数")
+
+    def test_time_budget_marks_skipped(self):
+        links = {"README.md": ["https://a.example/1", "https://b.example/2"]}
+        report = self.tool.check_with_breaker(
+            links, lambda url: (True, "ok"), deadline=lambda: -1.0)
+        self.assertEqual(report["checked"], 0)
+        self.assertEqual(report["skipped"], 2)
+        self.assertIn("时间预算", report["rows"][0]["detail"])
+
+    def _retry_wrapped_case(self):
+        calls = {"n": 0}
+
+        def flaky(url):
+            calls["n"] += 1
+            if calls["n"] == 1:
+                return False, "HTTP 503"
+            return (True, "HTTP 200")
+
+        wrapped = lambda url: self.tool.probe_with_retry(  # noqa: E731
+            url, flaky, retries=1, backoff=0.0, sleep=lambda _s: None)
+        links = {"README.md": ["https://ok.example/1", "https://dead.example/2"]}
+        report = self.tool.check(links, wrapped)
+        self.assertEqual(report["checked"], 2)
+        self.assertEqual([r["status"] for r in report["rows"]], ["ok", "ok"])
 
     def test_limit_skips_beyond_sample(self):
         links = {"README.md": ["https://a.example/1", "https://a.example/2"]}

@@ -1604,7 +1604,7 @@ PYEOF
 }
 
 check33(){
-  echo '== [33/段C] 新面汇总门禁（MCP dual-era / attestation / 基线回归评分 / 机械修复 / 正文 lint / 许可证门 / 遥测 semconv）=='
+  echo '== [33/段C] 新面汇总门禁（MCP dual-era / stdio 帧纪律 / attestation / 基线回归评分 / 机械修复 / 正文 lint / 许可证门 / 遥测 semconv / 编码卫生 / 互操作导出（含入仓一致性）/ 文档命令面）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check33.log 2>&1
@@ -1700,8 +1700,114 @@ except Exception as exc:
     warns = ['WARN: 正文正规性扫描不可用（%s）' % exc]
 for w in warns:
     print(w)
+
+# 9 编码卫生（RFC 3629 / RFC 8259 §4 唯一名 / RFC 7493 I-JSON / UAX #15 NFC / UTS #39 同形）：
+#   BOM / CRLF / 非 UTF-8 / JSON 重复键 / 标识面隐形·同形字符 + .gitattributes LF 落点
+try:
+    from core import text_hygiene as th
+    _th_issues, _th_stats = th.scan('.')
+    for i in _th_issues:
+        problems.append('编码卫生：%s' % i)
+    _th_line = th.summary(_th_stats)
+except Exception as exc:
+    problems.append('编码卫生扫描不可用：%s' % exc)
+    _th_line = '不可用'
+
+# 10 互操作导出面（OpenAPI 3.1 / AsyncAPI 3.0 / in-toto Statement v1 / SPDX 2.3 / CloudEvents）：
+#   纯派生（不新增真源）→ 门禁断言覆盖完整 + 形状合法 + 确定性
+try:
+    from core import interop_export as ie
+    _ie_issues, _ie_stats = ie.verify('.')
+    for i in _ie_issues:
+        problems.append('互操作导出：%s' % i)
+    _ie_line = ie.summary(_ie_stats)
+except Exception as exc:
+    problems.append('互操作导出面不可用：%s' % exc)
+    _ie_line = '不可用'
+
+# 11 JSON-RPC 2.0 §4 结构约束（MCP 面）：params 须结构化 + id 须字符串/数字/null
+try:
+    for _msg, _want in (
+            ({'jsonrpc': '2.0', 'id': 91, 'method': 'ping', 'params': 'raw'},
+             mcp.INVALID_REQUEST),
+            ({'jsonrpc': '2.0', 'id': 92, 'method': 'ping', 'params': [1]},
+             mcp.INVALID_PARAMS),
+            ({'jsonrpc': '2.0', 'id': {'x': 1}, 'method': 'ping'},
+             mcp.INVALID_REQUEST)):
+        _got = srv.handle(_msg).get('error', {}).get('code')
+        if _got != _want:
+            problems.append('JSON-RPC 2.0 §4：%r 期望错误码 %s，实得 %s'
+                            % (_msg.get('params', _msg.get('id')), _want, _got))
+except Exception as exc:
+    problems.append('JSON-RPC 结构约束检查不可用：%s' % exc)
+
+# 12 文档命令面 ↔ CLI 注册表 / MCP 工具表（只判「当作命令呈现」的片段）
+try:
+    from core import prose_lint as _pl
+    _pl_issues, _pl_stats = _pl.command_face('.')
+    for i in _pl_issues:
+        problems.append('文档命令面：%s' % i)
+    _pl_line = ('文档 %(docs)d 件 / 命令提及 %(commands_checked)d 处 / CLI %(cli_commands)d 条'
+                % _pl_stats)
+except Exception as exc:
+    problems.append('文档命令面检查不可用：%s' % exc)
+    _pl_line = '不可用'
+
+# 13 stdio 帧纪律（一条消息一行 + 行边界陷阱转义）+ 资源模板面（RFC 6570 一级子集 + 覆盖）
+try:
+    _trap = {'jsonrpc': '2.0', 'id': 93,
+             'result': {'text': 'a\nb\u2028c\u2029d\u0085e'}}
+    _line = mcp.encode_message(_trap)
+    if not mcp.is_single_line_message(_line):
+        problems.append('stdio 帧纪律：响应不是单行消息')
+    if _line.count('\n') != 1:
+        problems.append('stdio 帧纪律：消息内出现裸换行（读者会把一条消息劈成两条）')
+    for _ch in ('\u2028', '\u2029', '\u0085'):
+        if _ch in _line:
+            problems.append('stdio 帧纪律：行边界陷阱字符未转义 U+%04X' % ord(_ch))
+    if mcp.encode_message(None) is not None:
+        problems.append('stdio 帧纪律：通知（无 id）不应写出响应行')
+    # 资源模板面（RFC 6570 一级子集）：模板合法 + 真实资源 uri 全被模板覆盖
+    _tpls = mcp._repo_resource_templates()
+    for _t in _tpls:
+        _bad = mcp.uri_template_issue(_t.get('uriTemplate', ''))
+        if _bad:
+            problems.append('资源模板：%s（%s）' % (_t.get('uriTemplate'), _bad))
+    _metas = mcp._repo_resource_metas()
+    _uncovered = [x['uri'] for x in _metas
+                  if not any(mcp.template_matches(t['uriTemplate'], x['uri']) for t in _tpls)]
+    if _uncovered:
+        problems.append('资源模板：%d 条真实资源 uri 无模板覆盖（例：%s）'
+                        % (len(_uncovered), _uncovered[0]))
+except Exception as exc:
+    problems.append('stdio 帧纪律检查不可用：%s' % exc)
+
+# 14 互操作导出面入仓一致性（results/interop/*.json == 实时派生，逐字节）
+try:
+    from core import interop_export as _ie
+    _dir = os.path.join('results', 'interop')
+    if os.path.isdir(_dir):
+        _missing, _drift = [], []
+        for _kind in _ie.KINDS:
+            _p = os.path.join(_dir, '%s.json' % _kind)
+            if not os.path.isfile(_p):
+                _missing.append(_kind)
+                continue
+            with open(_p, 'rb') as _fh:
+                if _fh.read() != _ie.render(_kind, '.'):
+                    _drift.append(_kind)
+        if _missing:
+            problems.append('互操作入仓面缺件：%s（修复指引：nf interop --all --out results/interop）'
+                            % ','.join(_missing))
+        if _drift:
+            problems.append('互操作入仓面与实时派生不一致：%s（修复指引：重跑 nf interop --all '
+                            '——入仓面是派生投影，不是真源）' % ','.join(_drift))
+except Exception as exc:
+    problems.append('互操作入仓面检查不可用：%s' % exc)
+
 print('新面统计：MCP %s · 评分 %.2f · 机械待办 %d · 许可 WARN %d · 正文正规性 WARN %d'
       % (mcp.PROTOCOL_VERSION, cur['score'], len(pending), len(l_stats['warnings']), len(warns)))
+print('新增面：编码卫生 %s · 互操作 %s · 文档命令面 %s' % (_th_line, _ie_line, _pl_line))
 sys.exit(1 if problems else 0)
 PYEOF
     then
@@ -1711,19 +1817,19 @@ PYEOF
           case "$_txtline" in WARN:*) wn "${_txtline#WARN: }" ;; esac
         done < "$NFL_TMP"/nf_check33.log
       fi
-      ok '新面扫描通过（MCP dual-era / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测）'
+      ok '新面扫描通过（MCP dual-era / stdio 帧纪律 / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测 / 编码卫生 / 互操作导出与入仓面一致 / 文档命令面）'
     else
       no "新面扫描异常——$(tail -3 "$NFL_TMP"/nf_check33.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check33）'
   fi
-  if [ "$err" -eq 0 ]; then ok '新面汇总门禁全绿（check33：MCP 版本对齐/内容外挂签名/回归评分/编辑器面/正文 lint/许可证门/遥测 semconv）'
+  if [ "$err" -eq 0 ]; then ok '新面汇总门禁全绿（check33：MCP 版本对齐/stdio 帧纪律/内容外挂签名/回归评分/编辑器面/正文 lint/许可证门/遥测 semconv/编码卫生/互操作导出含入仓/文档命令面）'
   fi
 }
 
 check34(){
-  echo '== [34/段C] 云端图书馆面门禁（frontmatter 真源 / INDEX·ALIAS 投影一致 / 生命周期 / 四型覆盖 / llms.txt 入口）=='
+  echo '== [34/段C] 云端图书馆面门禁（frontmatter 真源 / INDEX·ALIAS 投影一致 / 生命周期 / 四型覆盖 / llms.txt 入口 / 内容分级声明）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check34.log 2>&1
@@ -1764,6 +1870,16 @@ else:
 # 5 检索面可用（正文级命中，非仅文件名）
 if not nflib.search('雨天', '.', limit=1):
     problems.append('馆藏检索无命中（倒排索引不可用）')
+
+# 5b 内容分级声明（挂账收口：分级原是真空——登记表无列、条目无字段、须知无词）
+try:
+    from core import rating_gate as rg
+    r_issues, r_stats = rg.scan('.')
+    for i in r_issues:
+        problems.append('内容分级：%s' % i)
+    print('分级统计：%s' % rg.summary(r_stats))
+except Exception as exc:
+    problems.append('内容分级门不可用：%s' % exc)
 
 # 6 投稿闸门三方一致（2026-09-20 作者裁决收口）：声明件 ⇄ 须知措辞 ⇄ 两个入库机器人引用
 try:

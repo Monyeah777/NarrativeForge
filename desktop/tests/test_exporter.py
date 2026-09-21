@@ -53,8 +53,12 @@ class TestExport(unittest.TestCase):
         chara = json.loads(Path(self.dest, "chara.json")
                            .read_text(encoding="utf-8"))
         self.assertEqual(chara.get("spec"), "chara_card_v3")
-        self.assertIn("character_book", chara)
-        self.assertGreaterEqual(len(chara["character_book"]["entries"]), 1)
+        # v3 真形状：spec/spec_version + data（内容字段在 data 内，顶层为 v2 兼容镜像）
+        self.assertIn("data", chara)
+        self.assertEqual(chara["spec"], "chara_card_v3")
+        self.assertIn("character_book", chara["data"])
+        self.assertGreaterEqual(len(chara["data"]["character_book"]["entries"]), 1)
+        self.assertEqual(chara["name"], chara["data"]["name"], "顶层镜像须与 data 同源")
 
     def test_world_json_entries(self):
         export(self.ir, "ccv3", dest_dir=self.dest)

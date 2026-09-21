@@ -16,13 +16,17 @@ import json
 import sys
 import tempfile
 import unittest
+from io import StringIO
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core.exporter import export  # noqa: E402
 from core.ir import IRDocument, IRLayer, IRModule  # noqa: E402
-from core.mcp_runtime import McpRuntime, load_snapshot  # noqa: E402
+from core.mcp_runtime import (INVALID_PARAMS, INVALID_REQUEST,  # noqa: E402
+                              McpRuntime, encode_message, is_single_line_message,
+                              load_snapshot, template_matches, uri_template_issue,
+                              _repo_resource_metas, _repo_resource_templates)
 
 
 def _techdoc_snapshot() -> dict:
@@ -435,6 +439,100 @@ class TestMcpRuntime(unittest.TestCase):
             {"jsonrpc": "2.0", "id": 9, "method": "boom"}) + "\n"), stdout=out)
         msg = json.loads(out.getvalue().strip())
         self.assertEqual(msg["error"]["code"], -32603)
+
+
+    # —— JSON-RPC 2.0 §4 / §5 结构约束（本波净吸收：params 结构性与 id 类型）——
+    def test_params_must_be_structured(self):
+        for bad in ("raw", 7, True):
+            msg = self.srv.handle(
+                {"jsonrpc": "2.0", "id": 71, "method": "ping", "params": bad})
+            self.assertEqual(msg["error"]["code"], INVALID_REQUEST, msg)
+            self.assertEqual(msg["id"], 71, "id 可判定时 MUST 回显（§5）")
+
+    def test_positional_params_rejected_with_invalid_params(self):
+        msg = self.srv.handle(
+            {"jsonrpc": "2.0", "id": 72, "method": "ping", "params": [1, 2]})
+        self.assertEqual(msg["error"]["code"], INVALID_PARAMS, msg)
+        self.assertEqual(msg["id"], 72)
+
+    def test_id_must_be_string_number_or_null(self):
+        msg = self.srv.handle({"jsonrpc": "2.0", "id": {"x": 1}, "method": "ping"})
+        self.assertEqual(msg["error"]["code"], INVALID_REQUEST, msg)
+        self.assertIsNone(msg["id"], "id 无法判定时 MUST 为 null（§5）")
+        ok = self.srv.handle({"jsonrpc": "2.0", "id": "abc", "method": "ping"})
+        self.assertEqual(ok["id"], "abc")
+
+    def test_params_null_and_absent_are_accepted(self):
+        for msg in ({"jsonrpc": "2.0", "id": 73, "method": "ping", "params": None},
+                    {"jsonrpc": "2.0", "id": 74, "method": "ping"}):
+            out = self.srv.handle(msg)
+            self.assertNotIn("error", out, out)
+
+    # —— stdio transport 帧纪律（本波净吸收：一条消息一行 + 行边界陷阱字符转义）——
+    def test_encode_message_is_single_line_and_escapes_traps(self):
+        msg = {"jsonrpc": "2.0", "id": 81,
+               "result": {"text": "第一行\n第二行\u2028LS\u2029PS\u0085NEL"}}
+        line = encode_message(msg)
+        self.assertTrue(line.endswith("\n"))
+        self.assertTrue(is_single_line_message(line), repr(line))
+        self.assertEqual(line.count("\n"), 1, "消息内不得出现裸换行（除结尾分隔符）")
+        self.assertIn("\\u2028", line)
+        self.assertIn("\\u0085", line)
+        self.assertNotIn("\u2028", line)
+        self.assertIsNone(encode_message(None), "通知无响应 → 不写行")
+
+    def test_serve_stdio_writes_one_line_per_response(self):
+        payload = json.dumps({"jsonrpc": "2.0", "id": 82, "method": "ping"}) + "\n"
+        out = StringIO()
+        self.srv.serve_stdio(stdin=StringIO(payload), stdout=out)
+        lines = out.getvalue().splitlines()
+        self.assertEqual(len(lines), 1, out.getvalue())
+        self.assertTrue(is_single_line_message(lines[0] + "\n"))
+
+    def test_serve_stdio_parse_error_recovered(self):
+        payload = '{"jsonrpc": "2.0", "id": 83, "method"\n' + \
+                  json.dumps({"jsonrpc": "2.0", "id": 84, "method": "ping"}) + "\n"
+        out = StringIO()
+        self.srv.serve_stdio(stdin=StringIO(payload), stdout=out)
+        lines = out.getvalue().splitlines()
+        self.assertEqual(len(lines), 2)
+        self.assertEqual(json.loads(lines[0])["error"]["code"], -32700)
+        self.assertEqual(json.loads(lines[1])["id"], 84)
+
+    # —— 资源模板面（RFC 6570 一级子集）：模板合法 + 真实 uri 全覆盖 ——
+    def test_uri_template_subset_validated(self):
+        for good in ("nf://repo/library/{id}", "nf://repo/asset/{package}/{key}"):
+            self.assertEqual(uri_template_issue(good), "", good)
+        for bad, why in (("nf://repo/library/{+id}", "操作符"),
+                         ("nf://repo/{a}/{a}", "重复"),
+                         ("nf://repo/library/{id}?q={q}", "查询"),
+                         ("nf://repo/library/{}", "空变量"),
+                         ("nf://repo/library/{id", "配平")):
+            self.assertIn(why, uri_template_issue(bad), bad)
+
+    def test_template_matches_real_uris(self):
+        templates = _repo_resource_templates()
+        metas = _repo_resource_metas()
+        self.assertGreater(len(metas), 50, "仓库资源面应有真实条目")
+        uncovered = [m["uri"] for m in metas
+                     if not any(template_matches(t["uriTemplate"], m["uri"])
+                                for t in templates)]
+        self.assertEqual(uncovered, [], "真实资源 uri 须被模板覆盖：%s" % uncovered[:3])
+        self.assertFalse(template_matches("nf://repo/library/{id}", "nf://repo/library/"))
+        self.assertFalse(template_matches("nf://repo/library/{id}", "nf://repo/pattern/x"))
+
+    def test_cacheable_results_carry_modern_required_keys(self):
+        """外部实证（MCP 2026-07-28 官方 schema）：可缓存结果须带 resultType/ttlMs/cacheScope。"""
+        for method in ("server/discover", "resources/list", "tools/list", "prompts/list",
+                       "resources/templates/list"):
+            resp = self.srv.handle(_req(90, method, {
+                "_meta": {"io.modelcontextprotocol/protocolVersion": "2026-07-28"}}))
+            result = resp["result"]
+            for k in ("resultType", "ttlMs", "cacheScope"):
+                self.assertIn(k, result, "%s 缺 %s" % (method, k))
+            self.assertEqual(result["resultType"], "complete")
+            self.assertIsInstance(result["ttlMs"], int)
+            self.assertIn(result["cacheScope"], ("public", "private"))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,69 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "comment": "派生面非真源；created = max(仓内声明日期: score_baseline / provenance / approvals)（保确定性，非墙钟）。",
+  "creationInfo": {
+    "comment": "由纯度扫描登记面（HARD_ALLOW / SOFT_IMPORTS）实时派生；created = 仓内声明日期最大值（非墙钟，保确定性）",
+    "created": "2026-09-21T00:00:00Z",
+    "creators": [
+      "Tool: nf interop --kind sbom"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://narrativeforge.dev/spdx/v2.27",
+  "name": "narrativeforge-sbom",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-narrativeforge",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "NOASSERTION",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "NarrativeForge",
+      "versionInfo": "v2.27"
+    },
+    {
+      "SPDXID": "SPDXRef-Dependency-yaml",
+      "comment": "硬依赖（登记）：PyYAML（仓库既有依赖；check16/28 同源解析，见 CONTRIBUTING §4.2 例外）",
+      "downloadLocation": "NOASSERTION",
+      "licenseConcluded": "NOASSERTION",
+      "name": "yaml"
+    },
+    {
+      "SPDXID": "SPDXRef-Optional-PySide6",
+      "comment": "软依赖（可选，须 try/except 守卫）：CCV3 卡面占位图写入（缺依赖须给明确修复指引，不得裸 ImportError）",
+      "downloadLocation": "NOASSERTION",
+      "licenseConcluded": "NOASSERTION",
+      "name": "PySide6"
+    },
+    {
+      "SPDXID": "SPDXRef-Optional-jsonschema",
+      "comment": "软依赖（可选，须 try/except 守卫）：IDL 标准实现交叉验证（可选对照；缺依赖则跳过该面）",
+      "downloadLocation": "NOASSERTION",
+      "licenseConcluded": "NOASSERTION",
+      "name": "jsonschema"
+    }
+  ],
+  "relationships": [
+    {
+      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relationshipType": "DESCRIBES",
+      "spdxElementId": "SPDXRef-DOCUMENT"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relationshipType": "DEPENDENCY_OF",
+      "spdxElementId": "SPDXRef-Dependency-yaml"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF",
+      "spdxElementId": "SPDXRef-Optional-PySide6"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF",
+      "spdxElementId": "SPDXRef-Optional-jsonschema"
+    }
+  ],
+  "spdxVersion": "SPDX-2.3"
+}

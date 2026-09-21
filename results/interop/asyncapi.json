@@ -1,0 +1,2193 @@
+{
+  "asyncapi": "3.0.0",
+  "channels": {
+    "nf/backtest_spec_conflict": {
+      "address": "nf/backtest_spec_conflict",
+      "messages": {
+        "nf.backtest_spec_conflict": {
+          "$ref": "#/components/messages/backtest_spec_conflict"
+        }
+      },
+      "title": "backtest_spec_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.backtest_spec_conflict"
+      }
+    },
+    "nf/backtest_spec_ready": {
+      "address": "nf/backtest_spec_ready",
+      "messages": {
+        "nf.backtest_spec_ready": {
+          "$ref": "#/components/messages/backtest_spec_ready"
+        }
+      },
+      "title": "backtest_spec_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.backtest_spec_ready"
+      }
+    },
+    "nf/beat_tick": {
+      "address": "nf/beat_tick",
+      "messages": {
+        "nf.beat_tick": {
+          "$ref": "#/components/messages/beat_tick"
+        }
+      },
+      "title": "beat_tick",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.beat_tick"
+      }
+    },
+    "nf/campus_anonymous_gift": {
+      "address": "nf/campus_anonymous_gift",
+      "messages": {
+        "nf.campus_anonymous_gift": {
+          "$ref": "#/components/messages/campus_anonymous_gift"
+        }
+      },
+      "title": "campus_anonymous_gift",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.campus_anonymous_gift"
+      }
+    },
+    "nf/campus_gift_intent": {
+      "address": "nf/campus_gift_intent",
+      "messages": {
+        "nf.campus_gift_intent": {
+          "$ref": "#/components/messages/campus_gift_intent"
+        }
+      },
+      "title": "campus_gift_intent",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.campus_gift_intent"
+      }
+    },
+    "nf/chaos_event": {
+      "address": "nf/chaos_event",
+      "messages": {
+        "nf.chaos_event": {
+          "$ref": "#/components/messages/chaos_event"
+        }
+      },
+      "title": "chaos_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.chaos_event"
+      }
+    },
+    "nf/combat_result": {
+      "address": "nf/combat_result",
+      "messages": {
+        "nf.combat_result": {
+          "$ref": "#/components/messages/combat_result"
+        }
+      },
+      "title": "combat_result",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.combat_result"
+      }
+    },
+    "nf/concept_closure_ready": {
+      "address": "nf/concept_closure_ready",
+      "messages": {
+        "nf.concept_closure_ready": {
+          "$ref": "#/components/messages/concept_closure_ready"
+        }
+      },
+      "title": "concept_closure_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.concept_closure_ready"
+      }
+    },
+    "nf/confession_event": {
+      "address": "nf/confession_event",
+      "messages": {
+        "nf.confession_event": {
+          "$ref": "#/components/messages/confession_event"
+        }
+      },
+      "title": "confession_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.confession_event"
+      }
+    },
+    "nf/death_trigger": {
+      "address": "nf/death_trigger",
+      "messages": {
+        "nf.death_trigger": {
+          "$ref": "#/components/messages/death_trigger"
+        }
+      },
+      "title": "death_trigger",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.death_trigger"
+      }
+    },
+    "nf/decision_brief": {
+      "address": "nf/decision_brief",
+      "messages": {
+        "nf.decision_brief": {
+          "$ref": "#/components/messages/decision_brief"
+        }
+      },
+      "title": "decision_brief",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.decision_brief"
+      }
+    },
+    "nf/doc_delta_committed": {
+      "address": "nf/doc_delta_committed",
+      "messages": {
+        "nf.doc_delta_committed": {
+          "$ref": "#/components/messages/doc_delta_committed"
+        }
+      },
+      "title": "doc_delta_committed",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.doc_delta_committed"
+      }
+    },
+    "nf/doc_structure_ready": {
+      "address": "nf/doc_structure_ready",
+      "messages": {
+        "nf.doc_structure_ready": {
+          "$ref": "#/components/messages/doc_structure_ready"
+        }
+      },
+      "title": "doc_structure_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.doc_structure_ready"
+      }
+    },
+    "nf/faction_event": {
+      "address": "nf/faction_event",
+      "messages": {
+        "nf.faction_event": {
+          "$ref": "#/components/messages/faction_event"
+        }
+      },
+      "title": "faction_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.faction_event"
+      }
+    },
+    "nf/factor_spec_conflict": {
+      "address": "nf/factor_spec_conflict",
+      "messages": {
+        "nf.factor_spec_conflict": {
+          "$ref": "#/components/messages/factor_spec_conflict"
+        }
+      },
+      "title": "factor_spec_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.factor_spec_conflict"
+      }
+    },
+    "nf/factor_spec_ready": {
+      "address": "nf/factor_spec_ready",
+      "messages": {
+        "nf.factor_spec_ready": {
+          "$ref": "#/components/messages/factor_spec_ready"
+        }
+      },
+      "title": "factor_spec_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.factor_spec_ready"
+      }
+    },
+    "nf/ghost_event": {
+      "address": "nf/ghost_event",
+      "messages": {
+        "nf.ghost_event": {
+          "$ref": "#/components/messages/ghost_event"
+        }
+      },
+      "title": "ghost_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.ghost_event"
+      }
+    },
+    "nf/group_chat_event": {
+      "address": "nf/group_chat_event",
+      "messages": {
+        "nf.group_chat_event": {
+          "$ref": "#/components/messages/group_chat_event"
+        }
+      },
+      "title": "group_chat_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.group_chat_event"
+      }
+    },
+    "nf/intent_received": {
+      "address": "nf/intent_received",
+      "messages": {
+        "nf.intent_received": {
+          "$ref": "#/components/messages/intent_received"
+        }
+      },
+      "title": "intent_received",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.intent_received"
+      }
+    },
+    "nf/interaction_update": {
+      "address": "nf/interaction_update",
+      "messages": {
+        "nf.interaction_update": {
+          "$ref": "#/components/messages/interaction_update"
+        }
+      },
+      "title": "interaction_update",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.interaction_update"
+      }
+    },
+    "nf/level_up": {
+      "address": "nf/level_up",
+      "messages": {
+        "nf.level_up": {
+          "$ref": "#/components/messages/level_up"
+        }
+      },
+      "title": "level_up",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.level_up"
+      }
+    },
+    "nf/load_order_ready": {
+      "address": "nf/load_order_ready",
+      "messages": {
+        "nf.load_order_ready": {
+          "$ref": "#/components/messages/load_order_ready"
+        }
+      },
+      "title": "load_order_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.load_order_ready"
+      }
+    },
+    "nf/market_event": {
+      "address": "nf/market_event",
+      "messages": {
+        "nf.market_event": {
+          "$ref": "#/components/messages/market_event"
+        }
+      },
+      "title": "market_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.market_event"
+      }
+    },
+    "nf/minute_tick": {
+      "address": "nf/minute_tick",
+      "messages": {
+        "nf.minute_tick": {
+          "$ref": "#/components/messages/minute_tick"
+        }
+      },
+      "title": "minute_tick",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.minute_tick"
+      }
+    },
+    "nf/narrative_event": {
+      "address": "nf/narrative_event",
+      "messages": {
+        "nf.narrative_event": {
+          "$ref": "#/components/messages/narrative_event"
+        }
+      },
+      "title": "narrative_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.narrative_event"
+      }
+    },
+    "nf/npc_action": {
+      "address": "nf/npc_action",
+      "messages": {
+        "nf.npc_action": {
+          "$ref": "#/components/messages/npc_action"
+        }
+      },
+      "title": "npc_action",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.npc_action"
+      }
+    },
+    "nf/phone_call_event": {
+      "address": "nf/phone_call_event",
+      "messages": {
+        "nf.phone_call_event": {
+          "$ref": "#/components/messages/phone_call_event"
+        }
+      },
+      "title": "phone_call_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.phone_call_event"
+      }
+    },
+    "nf/polished_output": {
+      "address": "nf/polished_output",
+      "messages": {
+        "nf.polished_output": {
+          "$ref": "#/components/messages/polished_output"
+        }
+      },
+      "title": "polished_output",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.polished_output"
+      }
+    },
+    "nf/prereq_missing": {
+      "address": "nf/prereq_missing",
+      "messages": {
+        "nf.prereq_missing": {
+          "$ref": "#/components/messages/prereq_missing"
+        }
+      },
+      "title": "prereq_missing",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.prereq_missing"
+      }
+    },
+    "nf/production_output": {
+      "address": "nf/production_output",
+      "messages": {
+        "nf.production_output": {
+          "$ref": "#/components/messages/production_output"
+        }
+      },
+      "title": "production_output",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.production_output"
+      }
+    },
+    "nf/quest_state": {
+      "address": "nf/quest_state",
+      "messages": {
+        "nf.quest_state": {
+          "$ref": "#/components/messages/quest_state"
+        }
+      },
+      "title": "quest_state",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.quest_state"
+      }
+    },
+    "nf/relationship_change": {
+      "address": "nf/relationship_change",
+      "messages": {
+        "nf.relationship_change": {
+          "$ref": "#/components/messages/relationship_change"
+        }
+      },
+      "title": "relationship_change",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.relationship_change"
+      }
+    },
+    "nf/reputation_change": {
+      "address": "nf/reputation_change",
+      "messages": {
+        "nf.reputation_change": {
+          "$ref": "#/components/messages/reputation_change"
+        }
+      },
+      "title": "reputation_change",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.reputation_change"
+      }
+    },
+    "nf/revision_recorded": {
+      "address": "nf/revision_recorded",
+      "messages": {
+        "nf.revision_recorded": {
+          "$ref": "#/components/messages/revision_recorded"
+        }
+      },
+      "title": "revision_recorded",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.revision_recorded"
+      }
+    },
+    "nf/romance_state_change": {
+      "address": "nf/romance_state_change",
+      "messages": {
+        "nf.romance_state_change": {
+          "$ref": "#/components/messages/romance_state_change"
+        }
+      },
+      "title": "romance_state_change",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.romance_state_change"
+      }
+    },
+    "nf/social_feed_event": {
+      "address": "nf/social_feed_event",
+      "messages": {
+        "nf.social_feed_event": {
+          "$ref": "#/components/messages/social_feed_event"
+        }
+      },
+      "title": "social_feed_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.social_feed_event"
+      }
+    },
+    "nf/spell_cast": {
+      "address": "nf/spell_cast",
+      "messages": {
+        "nf.spell_cast": {
+          "$ref": "#/components/messages/spell_cast"
+        }
+      },
+      "title": "spell_cast",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.spell_cast"
+      }
+    },
+    "nf/state_snapshot": {
+      "address": "nf/state_snapshot",
+      "messages": {
+        "nf.state_snapshot": {
+          "$ref": "#/components/messages/state_snapshot"
+        }
+      },
+      "title": "state_snapshot",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.state_snapshot"
+      }
+    },
+    "nf/term_conflict_detected": {
+      "address": "nf/term_conflict_detected",
+      "messages": {
+        "nf.term_conflict_detected": {
+          "$ref": "#/components/messages/term_conflict_detected"
+        }
+      },
+      "title": "term_conflict_detected",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.term_conflict_detected"
+      }
+    },
+    "nf/term_synced": {
+      "address": "nf/term_synced",
+      "messages": {
+        "nf.term_synced": {
+          "$ref": "#/components/messages/term_synced"
+        }
+      },
+      "title": "term_synced",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.term_synced"
+      }
+    },
+    "nf/tick_day": {
+      "address": "nf/tick_day",
+      "messages": {
+        "nf.tick_day": {
+          "$ref": "#/components/messages/tick_day"
+        }
+      },
+      "title": "tick_day",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.tick_day"
+      }
+    },
+    "nf/travel_event": {
+      "address": "nf/travel_event",
+      "messages": {
+        "nf.travel_event": {
+          "$ref": "#/components/messages/travel_event"
+        }
+      },
+      "title": "travel_event",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.travel_event"
+      }
+    },
+    "nf/weather_state": {
+      "address": "nf/weather_state",
+      "messages": {
+        "nf.weather_state": {
+          "$ref": "#/components/messages/weather_state"
+        }
+      },
+      "title": "weather_state",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.weather_state"
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "backtest_spec_conflict": {
+        "contentType": "application/json",
+        "name": "backtest_spec_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:community/量化金融域包/modules/M32_回测与绩效口径.md §4 事件联动（本域自撰，字段自定）"
+      },
+      "backtest_spec_ready": {
+        "contentType": "application/json",
+        "name": "backtest_spec_ready",
+        "payload": {
+          "properties": {
+            "bias_declared": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "metric_scope": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:community/量化金融域包/modules/M32_回测与绩效口径.md §4 事件联动（本域自撰，字段自定）"
+      },
+      "beat_tick": {
+        "contentType": "application/json",
+        "name": "beat_tick",
+        "payload": {
+          "properties": {
+            "buffered": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "day": {
+              "description": "number",
+              "type": "number"
+            },
+            "minute": {
+              "description": "number",
+              "type": "number"
+            },
+            "origin": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M94_通用节拍桥.md 发布行+payload 同段"
+      },
+      "campus_anonymous_gift": {
+        "contentType": "application/json",
+        "name": "campus_anonymous_gift",
+        "payload": {
+          "properties": {
+            "item": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "origin": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "qty": {
+              "description": "number",
+              "type": "number"
+            },
+            "quality": {
+              "description": "number",
+              "type": "number"
+            },
+            "source_package": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M92_轻混装配执行.md step3_publish+payload 同段"
+      },
+      "campus_gift_intent": {
+        "contentType": "application/json",
+        "name": "campus_gift_intent",
+        "payload": {
+          "properties": {
+            "intent": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "origin": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "secret_mode": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "source_event": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M91_异界身份桥.md 发布行+payload 同段"
+      },
+      "chaos_event": {
+        "contentType": "application/json",
+        "name": "chaos_event",
+        "payload": {
+          "properties": {
+            "constraints": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "magnitude": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "region": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "seed": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "targets": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "type": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M18_混沌事件.md §3 事件契约 payload"
+      },
+      "combat_result": {
+        "contentType": "application/json",
+        "name": "combat_result",
+        "payload": {
+          "properties": {
+            "damage_log": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "loot_hint": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "participants": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            },
+            "winner": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M04_战斗系统.md 发布行+payload 同段"
+      },
+      "concept_closure_ready": {
+        "contentType": "application/json",
+        "name": "concept_closure_ready",
+        "payload": {
+          "properties": {
+            "closure": {
+              "description": "string[]",
+              "type": "string"
+            },
+            "closure_size": {
+              "description": "number",
+              "type": "number"
+            },
+            "target": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:community/AI系统域包/modules/M25_前置闭包求值.md §4 事件契约（本域自撰，字段自定）"
+      },
+      "confession_event": {
+        "contentType": "application/json",
+        "name": "confession_event",
+        "payload": {
+          "properties": {
+            "outcome": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "rival_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "target_npc": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M43_情敌系统.md 发布行+payload 同段"
+      },
+      "death_trigger": {
+        "contentType": "application/json",
+        "name": "death_trigger",
+        "payload": {
+          "properties": {
+            "blessing": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "cause": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "deceased": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "lost_items": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "rebirth_point": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M10_死亡重生.md 发布行+payload 同段"
+      },
+      "decision_brief": {
+        "contentType": "application/json",
+        "name": "decision_brief",
+        "payload": {
+          "properties": {
+            "aggregated": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "context": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "origin": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "round": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M95_通用决策汇总.md 发布行+payload 同段"
+      },
+      "doc_delta_committed": {
+        "contentType": "application/json",
+        "name": "doc_delta_committed",
+        "payload": {
+          "properties": {
+            "changes": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "doc_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "new_ver": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "prev_ver": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）"
+      },
+      "doc_structure_ready": {
+        "contentType": "application/json",
+        "name": "doc_structure_ready",
+        "payload": {
+          "properties": {
+            "doc_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "sections": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "title": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "version": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）"
+      },
+      "faction_event": {
+        "contentType": "application/json",
+        "name": "faction_event",
+        "payload": {
+          "properties": {},
+          "type": "object"
+        },
+        "x-nf-note": "证据:M15_帮派势力 机读块 events.publish；载荷形状待补"
+      },
+      "factor_spec_conflict": {
+        "contentType": "application/json",
+        "name": "factor_spec_conflict",
+        "payload": {
+          "properties": {
+            "factor": {
+              "description": "string",
+              "type": "string"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:community/量化金融域包/modules/M31_因子与信号口径.md §4 事件契约（本域自撰，字段自定）"
+      },
+      "factor_spec_ready": {
+        "contentType": "application/json",
+        "name": "factor_spec_ready",
+        "payload": {
+          "properties": {
+            "factor_count": {
+              "description": "number",
+              "type": "number"
+            },
+            "spec_version": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:community/量化金融域包/modules/M31_因子与信号口径.md §4 事件契约（本域自撰，字段自定）"
+      },
+      "ghost_event": {
+        "contentType": "application/json",
+        "name": "ghost_event",
+        "payload": {
+          "properties": {
+            "ghost_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "regret_type": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "target_npc": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            },
+            "weight": {
+              "description": "number",
+              "type": "number"
+            },
+            "window": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M65_幽灵遗憾.md 发布行+payload 同段"
+      },
+      "group_chat_event": {
+        "contentType": "application/json",
+        "name": "group_chat_event",
+        "payload": {
+          "properties": {
+            "group_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "msgs": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "npc_ids": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "trigger_event": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M59_群聊系统 机读块 events.publish；载荷形状待补"
+      },
+      "intent_received": {
+        "contentType": "application/json",
+        "name": "intent_received",
+        "payload": {
+          "properties": {
+            "intent_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "mode": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "text": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）"
+      },
+      "interaction_update": {
+        "contentType": "application/json",
+        "name": "interaction_update",
+        "payload": {
+          "properties": {
+            "action": {
+              "description": "string",
+              "type": "string"
+            },
+            "npc_id": {
+              "description": "string",
+              "type": "string"
+            },
+            "result": {
+              "description": "string",
+              "type": "string"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "官方 M13 NPC 交互结果"
+      },
+      "level_up": {
+        "contentType": "application/json",
+        "name": "level_up",
+        "payload": {
+          "properties": {
+            "from_lv": {
+              "description": "number",
+              "type": "number"
+            },
+            "gained_attrs": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "job": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            },
+            "to_lv": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M01_职业成长.md 发布行+payload 同段"
+      },
+      "load_order_ready": {
+        "contentType": "application/json",
+        "name": "load_order_ready",
+        "payload": {
+          "properties": {
+            "blocked_size": {
+              "description": "number",
+              "type": "number"
+            },
+            "seq_size": {
+              "description": "number",
+              "type": "number"
+            },
+            "source_graph": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:community/AI系统域包/modules/M26_装载序就绪门.md §4 事件联动（本域自撰，字段自定）"
+      },
+      "market_event": {
+        "contentType": "application/json",
+        "name": "market_event",
+        "payload": {
+          "properties": {
+            "affected_towns": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "commodity": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "duration": {
+              "description": "number",
+              "type": "number"
+            },
+            "price_delta": {
+              "description": "number",
+              "type": "number"
+            },
+            "type": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M09_经济贸易.md §3 事件契约 payload"
+      },
+      "minute_tick": {
+        "contentType": "application/json",
+        "name": "minute_tick",
+        "payload": {
+          "properties": {
+            "minute": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "官方通用 M10 分钟级节拍"
+      },
+      "narrative_event": {
+        "contentType": "application/json",
+        "name": "narrative_event",
+        "payload": {
+          "properties": {
+            "payload": {
+              "additionalProperties": true,
+              "description": "object",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            },
+            "type": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "官方事件:M22 事件总线广播"
+      },
+      "npc_action": {
+        "contentType": "application/json",
+        "name": "npc_action",
+        "payload": {
+          "properties": {
+            "behavior": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "impulse": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "npc_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "strength": {
+              "description": "number",
+              "type": "number"
+            },
+            "target": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M22_三冲动驱动.md 发布行+payload 同段"
+      },
+      "phone_call_event": {
+        "contentType": "application/json",
+        "name": "phone_call_event",
+        "payload": {
+          "properties": {
+            "affinity_probability": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "answered": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "call_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "npc_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "trigger_event": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M58_电话通讯 机读块 events.publish；载荷形状待补"
+      },
+      "polished_output": {
+        "contentType": "application/json",
+        "name": "polished_output",
+        "payload": {
+          "properties": {
+            "aligned": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "origin": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "source": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "style": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M96_通用输出润色.md 发布行+payload 同段"
+      },
+      "prereq_missing": {
+        "contentType": "application/json",
+        "name": "prereq_missing",
+        "payload": {
+          "properties": {
+            "missing": {
+              "description": "string[]",
+              "type": "string"
+            },
+            "missing_size": {
+              "description": "number",
+              "type": "number"
+            },
+            "target": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:community/AI系统域包/modules/M25_前置闭包求值.md §4 事件契约（本域自撰，字段自定）"
+      },
+      "production_output": {
+        "contentType": "application/json",
+        "name": "production_output",
+        "payload": {
+          "properties": {
+            "cost": {
+              "description": "number",
+              "type": "number"
+            },
+            "item": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "qty": {
+              "description": "number",
+              "type": "number"
+            },
+            "quality": {
+              "description": "number",
+              "type": "number"
+            },
+            "recipe_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M17_生产制造.md 发布行+payload 同段"
+      },
+      "quest_state": {
+        "contentType": "application/json",
+        "name": "quest_state",
+        "payload": {
+          "properties": {
+            "quest_id": {
+              "description": "string",
+              "type": "string"
+            },
+            "state": {
+              "description": "string",
+              "type": "string"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "官方 M06 任务状态变更"
+      },
+      "relationship_change": {
+        "contentType": "application/json",
+        "name": "relationship_change",
+        "payload": {
+          "properties": {
+            "cognition": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "delta": {
+              "description": "number",
+              "type": "number"
+            },
+            "depth": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "npc_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "reason": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "正文证据：community/校园情感领域包/modules/M40_关系深度.md（发布行+payload 同段）"
+      },
+      "reputation_change": {
+        "contentType": "application/json",
+        "name": "reputation_change",
+        "payload": {
+          "properties": {
+            "delta": {
+              "description": "number",
+              "type": "number"
+            },
+            "faction_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "new_tier": {
+              "description": "number",
+              "type": "number"
+            },
+            "old_tier": {
+              "description": "number",
+              "type": "number"
+            },
+            "player": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "reason": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M14_阵营声望.md §3 事件契约 payload"
+      },
+      "revision_recorded": {
+        "contentType": "application/json",
+        "name": "revision_recorded",
+        "payload": {
+          "properties": {
+            "author": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "changes": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "date": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "ver": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M98_修订记录.md §职责 散文级：修订条目含 版本号递增/变更摘要/日期/作者（显式结构待补，字段按散文证据登记）"
+      },
+      "romance_state_change": {
+        "contentType": "application/json",
+        "name": "romance_state_change",
+        "payload": {
+          "properties": {
+            "from_stage": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "npc_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "reason": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "to_stage": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M41_恋爱进阶/M43_情敌系统 机读块 events.publish；载荷形状待补"
+      },
+      "social_feed_event": {
+        "contentType": "application/json",
+        "name": "social_feed_event",
+        "payload": {
+          "properties": {
+            "clue_trail": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "feed_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "npc_id": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "trigger_event": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "visibility": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M57_朋友圈动态 机读块 events.publish；载荷形状待补"
+      },
+      "spell_cast": {
+        "contentType": "application/json",
+        "name": "spell_cast",
+        "payload": {
+          "properties": {
+            "caster": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "effect_summary": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "elements": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "spell": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "target": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M03_技能融合/M11_文字魔法 机读块 events.publish（L0 retro-fit 后可见）；载荷形状待补"
+      },
+      "state_snapshot": {
+        "contentType": "application/json",
+        "name": "state_snapshot",
+        "payload": {
+          "properties": {
+            "domain": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "mode": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "origin": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M93_通用状态快照.md 发布行+payload 同段"
+      },
+      "term_conflict_detected": {
+        "contentType": "application/json",
+        "name": "term_conflict_detected",
+        "payload": {
+          "properties": {
+            "definitions": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "status": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "term": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）"
+      },
+      "term_synced": {
+        "contentType": "application/json",
+        "name": "term_synced",
+        "payload": {
+          "properties": {
+            "count": {
+              "description": "number",
+              "type": "number"
+            },
+            "delta": {
+              "description": "number",
+              "type": "number"
+            },
+            "status": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）"
+      },
+      "tick_day": {
+        "contentType": "application/json",
+        "name": "tick_day",
+        "payload": {
+          "properties": {
+            "day": {
+              "description": "number",
+              "type": "number"
+            },
+            "is_new_day": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "minute": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "season": {
+              "description": "string",
+              "type": "string"
+            },
+            "season_ctx": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "tick": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "weather_state": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "官方通用 M10 时间推进广播"
+      },
+      "travel_event": {
+        "contentType": "application/json",
+        "name": "travel_event",
+        "payload": {
+          "properties": {
+            "duration": {
+              "description": "number",
+              "type": "number"
+            },
+            "encounters": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "from": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "route": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "to": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "weather_mod": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:M07_地图区域.md §3 事件契约 payload"
+      },
+      "weather_state": {
+        "contentType": "application/json",
+        "name": "weather_state",
+        "payload": {
+          "properties": {
+            "day_phase": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "modifiers": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "region": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "season": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "weather": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "正文证据：04_模块库/世界类/M08_季节天气.md（payload 含嵌套 modifiers{combat,travel,market}）"
+      }
+    }
+  },
+  "info": {
+    "description": "由 protocol/event_registry.json + external_events.json 实时派生；本文件非真源。",
+    "title": "NarrativeForge 事件登记（派生）",
+    "version": "1.0.0"
+  },
+  "operations": {
+    "publish/backtest_spec_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/backtest_spec_conflict"
+      }
+    },
+    "publish/backtest_spec_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/backtest_spec_ready"
+      }
+    },
+    "publish/beat_tick": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/beat_tick"
+      }
+    },
+    "publish/campus_anonymous_gift": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/campus_anonymous_gift"
+      }
+    },
+    "publish/campus_gift_intent": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/campus_gift_intent"
+      }
+    },
+    "publish/chaos_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/chaos_event"
+      }
+    },
+    "publish/combat_result": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/combat_result"
+      }
+    },
+    "publish/concept_closure_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/concept_closure_ready"
+      }
+    },
+    "publish/confession_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/confession_event"
+      }
+    },
+    "publish/death_trigger": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/death_trigger"
+      }
+    },
+    "publish/decision_brief": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/decision_brief"
+      }
+    },
+    "publish/doc_delta_committed": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/doc_delta_committed"
+      }
+    },
+    "publish/doc_structure_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/doc_structure_ready"
+      }
+    },
+    "publish/faction_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/faction_event"
+      }
+    },
+    "publish/factor_spec_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/factor_spec_conflict"
+      }
+    },
+    "publish/factor_spec_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/factor_spec_ready"
+      }
+    },
+    "publish/ghost_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/ghost_event"
+      }
+    },
+    "publish/group_chat_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/group_chat_event"
+      }
+    },
+    "publish/intent_received": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/intent_received"
+      }
+    },
+    "publish/interaction_update": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/interaction_update"
+      }
+    },
+    "publish/level_up": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/level_up"
+      }
+    },
+    "publish/load_order_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/load_order_ready"
+      }
+    },
+    "publish/market_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/market_event"
+      }
+    },
+    "publish/minute_tick": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/minute_tick"
+      }
+    },
+    "publish/narrative_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/narrative_event"
+      }
+    },
+    "publish/npc_action": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/npc_action"
+      }
+    },
+    "publish/phone_call_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/phone_call_event"
+      }
+    },
+    "publish/polished_output": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/polished_output"
+      }
+    },
+    "publish/prereq_missing": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/prereq_missing"
+      }
+    },
+    "publish/production_output": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/production_output"
+      }
+    },
+    "publish/quest_state": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/quest_state"
+      }
+    },
+    "publish/relationship_change": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/relationship_change"
+      }
+    },
+    "publish/reputation_change": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/reputation_change"
+      }
+    },
+    "publish/revision_recorded": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/revision_recorded"
+      }
+    },
+    "publish/romance_state_change": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/romance_state_change"
+      }
+    },
+    "publish/social_feed_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/social_feed_event"
+      }
+    },
+    "publish/spell_cast": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/spell_cast"
+      }
+    },
+    "publish/state_snapshot": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/state_snapshot"
+      }
+    },
+    "publish/term_conflict_detected": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/term_conflict_detected"
+      }
+    },
+    "publish/term_synced": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/term_synced"
+      }
+    },
+    "publish/tick_day": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/tick_day"
+      }
+    },
+    "publish/travel_event": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/travel_event"
+      }
+    },
+    "publish/weather_state": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/weather_state"
+      }
+    }
+  },
+  "x-nf-events": 43
+}
