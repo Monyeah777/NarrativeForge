@@ -13,7 +13,7 @@
 
 并附三件可证检查：图健康度（无环 / 无悬空 / 有溯源 / 层位合法 / 别名唯一 / 分支完备）、
 「给定序列对图的违反边数」（判定某份讲序 / 目录序是不是本图的前置序）、锚点自检
-`--check`（含负例注入）。
+`--check`（按资产登记键级样例 + 负例注入；未登记资产退化为通用判据）。
 
 **图语义单一实现**：本脚本不自带一套图算法，而是复用 `desktop/src/core/concept_graph.py`
 （同一实现被 verify check32 的概念图子扫描消费）——避免「门禁算一套、求值器算另一套」的双源漂移。
@@ -31,6 +31,7 @@
   python scripts/ai_domain_closure.py --gaps --loaded C00,C01 --branch app --limit 10
   python scripts/ai_domain_closure.py --order design-guide-chapter-order
   python scripts/ai_domain_closure.py --check
+  python scripts/ai_domain_closure.py --check --asset community/量化金融域包/assets/QUANT_GRAPH.md
 退出码：0 成功 / 1 自检、图健康度或输入非法 / 2 用法错误。
 """
 from __future__ import annotations
@@ -160,8 +161,47 @@ def render_gaps(graph: Dict[str, Any], loaded: Sequence[str], branch: str,
 
 
 # ---------------------------------------------------------------- 自检
+#: 键级自检样例集：按资产文件名（stem）登记——`--check` / `self_check()` 按资产选取；
+#: 未登记资产退化为通用判据（图健康 / 装载序覆盖 / 确定性 / 逆序负例），不硬编码单图键。
+_SAMPLES: Dict[str, Dict[str, Any]] = {
+    "CONCEPT_GRAPH": {
+        "closure_target": "C22", "closure_size": 13, "closure_root": "C00",
+        "missing_loaded": ["C01", "C07", "C08", "C10", "C18"],
+        "missing_size": 8, "missing_has": ["C22", "C09"],
+        "min_target": "C01", "min_closure": ["C00", "C01"],
+        "resolve_cases": [("RAG", "C28"), ("PagedAttention", "C22"), ("  autodiff  ", "C08")],
+        "alias_pair": ("RAG", "C28"),
+        "frontier_loaded": ["C00", "C01"], "frontier_has": "C02", "frontier_not": "C25",
+        "branch_empty": "app",
+        "inject_cycle": ("C09", "C12"), "inject_dangling": ("C22", "C99"),
+        "inject_dup_alias": ("C29", "RAG"), "branch_drop": "C45",
+    },
+    "QUANT_GRAPH": {
+        "closure_target": "Q17", "closure_size": 15, "closure_root": "Q00",
+        "missing_loaded": ["Q00", "Q01", "Q02", "Q07", "Q10"],
+        "missing_size": 10, "missing_has": ["Q17", "Q09"],
+        "min_target": "Q01", "min_closure": ["Q00", "Q01"],
+        "resolve_cases": [("因子", "Q09"), ("组合优化", "Q12"), ("  Quant Overview  ", "Q01")],
+        "alias_pair": ("因子", "Q09"),
+        "frontier_loaded": ["Q00", "Q01"], "frontier_has": "Q02", "frontier_not": "Q09",
+        "branch_empty": "research",
+        "inject_cycle": ("Q09", "Q17"), "inject_dangling": ("Q17", "Q99"),
+        "inject_dup_alias": ("Q30", "因子"), "branch_drop": "Q30",
+    },
+}
+
+
+def _samples_for(asset: str | Path) -> Dict[str, Any] | None:
+    """按资产文件名（stem）取登记样例；未登记返回 None（退化通用判据）。"""
+    return _SAMPLES.get(Path(str(asset)).stem)
+
+
 def self_check(asset: str | Path = DEFAULT_ASSET) -> Tuple[List[str], List[str]]:
-    """自检 → (failures, passes)。含负例注入：环 / 悬空 / 别名重复 / 分支缺口。"""
+    """自检 → (failures, passes)。含负例注入：环 / 悬空 / 别名重复 / 分支缺口。
+
+    键级样例按资产登记（`_SAMPLES`：CONCEPT_GRAPH / QUANT_GRAPH …）；未登记资产只跑
+    通用判据（图健康 / 装载序覆盖 / 确定性 / 逆序负例）——不硬编码任何单图键。
+    """
     fails: List[str] = []
     passes: List[str] = []
 
@@ -169,62 +209,77 @@ def self_check(asset: str | Path = DEFAULT_ASSET) -> Tuple[List[str], List[str]]
         (passes if cond else fails).append(label)
 
     graph = load_graph(asset)
+    pack = _samples_for(asset)
+
     expect(not problems(graph),
            "图健康度：无环 / 无悬空 / 有溯源 / 层位合法 / 别名唯一 / 分支完备")
-
-    clo = closure(graph, "C22")
-    expect(len(clo) == 13 and "C22" in clo and "C00" in clo,
-           "closure(C22) = 13 个概念（含自身与包外前置 C00）")
-
-    loaded = ["C01", "C07", "C08", "C10", "C18"]
-    miss = missing(graph, "C22", loaded)
-    expect(len(miss) == 8 and "C22" in miss and "C09" in miss,
-           "missing(C22, {C01,C07,C08,C10,C18}) = 8 个概念")
-    expect(closure(graph, "C01") == ["C00", "C01"], "closure(C01) = {C00, C01}")
 
     order = toposort(graph)
     expect(len(order) == len(in_package_ids(graph)) and not violations(graph, order),
            "load_order 覆盖全部包内概念且对图零违反边")
-    expect(toposort(graph) == order and closure(graph, "C22") == clo,
+
+    if pack is None:
+        expect(toposort(graph) == order, "确定性：同输入两次求值逐字节一致")
+        expect(len(violations(graph, list(reversed(order)))) > 0, "负例：逆序序列的违反边非零")
+        return fails, passes
+
+    t = str(pack["closure_target"])
+    clo = closure(graph, t)
+    expect(len(clo) == pack["closure_size"] and t in clo and pack["closure_root"] in clo,
+           "closure(%s) = %d 个概念（含自身与包外前置 %s）"
+           % (t, pack["closure_size"], pack["closure_root"]))
+    expect(toposort(graph) == order and closure(graph, t) == clo,
            "确定性：同输入两次求值逐字节一致")
 
-    expect(resolve(graph, "RAG") == "C28" and resolve(graph, "PagedAttention") == "C22"
-           and resolve(graph, "  autodiff  ") == "C08",
-           "检索词解析：别名（含大小写 / 空白）与条目键同解")
-    expect(closure(graph, "RAG") == closure(graph, "C28"), "别名闭包与条目键闭包一致")
+    loaded = list(pack["missing_loaded"])
+    miss = missing(graph, t, loaded)
+    expect(len(miss) == pack["missing_size"] and all(c in miss for c in pack["missing_has"]),
+           "missing(%s, {%s}) = %d 个概念" % (t, ",".join(loaded), pack["missing_size"]))
 
-    front = frontier(graph, ["C00", "C01"])
-    expect("C02" in front and "C25" not in front,
-           "frontier({C00,C01}) 含 C02 且不含前置未齐的 C25")
-    expect(frontier(graph, ["C00", "C01"], branch="app") == [],
-           "frontier 分支过滤生效（app 支此时为空）")
+    mt = str(pack["min_target"])
+    expect(closure(graph, mt) == list(pack["min_closure"]),
+           "closure(%s) = {%s}" % (mt, ", ".join(pack["min_closure"])))
+
+    expect(all(resolve(graph, q) == e for q, e in pack["resolve_cases"]),
+           "检索词解析：别名（含大小写 / 空白）与条目键同解")
+    aq, ae = pack["alias_pair"]
+    expect(closure(graph, aq) == closure(graph, ae), "别名闭包与条目键闭包一致")
+
+    front = frontier(graph, list(pack["frontier_loaded"]))
+    expect(pack["frontier_has"] in front and pack["frontier_not"] not in front,
+           "frontier({%s}) 含 %s 且不含前置未齐的 %s"
+           % (",".join(pack["frontier_loaded"]), pack["frontier_has"], pack["frontier_not"]))
+    expect(frontier(graph, list(pack["frontier_loaded"]),
+                    branch=str(pack["branch_empty"])) == [],
+           "frontier 分支过滤生效（%s 支此时为空）" % pack["branch_empty"])
 
     cyc = copy.deepcopy(graph)
     for node in cyc["nodes"]:
-        if node["id"] == "C09":
-            node["prereqs"] = list(node["prereqs"]) + ["C12"]
+        if node["id"] == pack["inject_cycle"][0]:
+            node["prereqs"] = list(node["prereqs"]) + [pack["inject_cycle"][1]]
     expect(any("环" in i for i in problems(cyc)), "负例：注入环被检出")
 
     dang = copy.deepcopy(graph)
     for node in dang["nodes"]:
-        if node["id"] == "C22":
-            node["prereqs"] = list(node["prereqs"]) + ["C99"]
+        if node["id"] == pack["inject_dangling"][0]:
+            node["prereqs"] = list(node["prereqs"]) + [pack["inject_dangling"][1]]
     expect(any("悬空" in i for i in problems(dang)), "负例：悬空前置被检出")
 
     dup = copy.deepcopy(graph)
     for node in dup["nodes"]:
-        if node["id"] == "C29":
-            node["aliases"] = list(node.get("aliases") or []) + ["RAG"]
+        if node["id"] == pack["inject_dup_alias"][0]:
+            node["aliases"] = list(node.get("aliases") or []) + [pack["inject_dup_alias"][1]]
     expect(any("别名重复" in i for i in problems(dup)), "负例：重复别名被检出")
 
     nbr = copy.deepcopy(graph)
     for br in nbr["branches"]:
-        br["nodes"] = [n for n in br["nodes"] if n != "C45"]
+        br["nodes"] = [n for n in br["nodes"] if n != pack["branch_drop"]]
     expect(any("未归入任何分支" in i for i in problems(nbr)), "负例：分支缺口被检出")
 
     expect(len(violations(graph, list(reversed(order)))) > 0, "负例：逆序序列的违反边非零")
 
     return fails, passes
+
 
 
 # ---------------------------------------------------------------- CLI
@@ -267,7 +322,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print("  [PASS] %s" % p)
             for f in fails:
                 print("  [FAIL] %s" % f)
-            print("自检：%d/%d 通过" % (len(passes), len(passes) + len(fails)))
+            suffix = "" if _samples_for(args.asset) else "（通用判据；该资产未登记键级样例）"
+            print("自检：%d/%d 通过%s" % (len(passes), len(passes) + len(fails), suffix))
             return 0 if not fails else 1
 
         graph = load_graph(args.asset)

@@ -6,7 +6,7 @@ NF 此前只有 `nf conformance` 的**报告**（跑一遍契约），没有**�
 `protocol/CONFORMANCE.md` 三段（机器按标题解析，人也可读）：
 - `## 声明`：规范 × 版本 × 真源（版本值必须与真源**逐条一致**）；
 - `## 范围`：scope 白名单（每个路径必须**存在**）；
-- `## 排除`：显式排除清单（路径 + 理由；路径须存在或匹配到文件）；
+- `## 排除`：显式排除清单（路径 +理由；路径须存在或匹配到文件——标注「允许不存在」的运行期/本地件可缺省）；
 - 另有硬约束：**scope ∩ 排除 = ∅**（不许既在范围又排除）。
 
 纪律：版本事实一律**从真源读**（01/02/registry.json/schema/基线常量），声明里改数字改不动门禁。
@@ -119,10 +119,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         rel = item["path"]
         if not rel:
             continue
+        optional = "允许不存在" in str(item.get("reason") or "")
         if any(ch in rel for ch in "*?["):
-            if not list(Path(root).glob(rel)):
+            if not optional and not list(Path(root).glob(rel)):
                 issues.append("排除项 glob 无匹配：%s" % rel)
-        elif not (Path(root) / rel).exists():
+        elif not optional and not (Path(root) / rel).exists():
             issues.append("排除项路径不存在：%s（修复指引：删除该条或修正路径）" % rel)
     scope_set = {s.rstrip("/") for s in decl["scope"]}
     for item in decl["excluded"]:

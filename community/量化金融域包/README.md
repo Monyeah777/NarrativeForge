@@ -1,7 +1,7 @@
 # 量化金融域包（community 非叙事题材域包 · 量化金融域装配流）
 > 定位：**社区非叙事题材域包**（community 第 7 包、第 3 个非叙事域），独占「量化金融」类（01 §6 R2 / 02 §8 第三方协议登记）。本包把量化研究里最容易出错、也最需要**事前说清**的两件事协议化：**因子与信号口径**（FactorSpec）与**回测与绩效口径**（BacktestSpec）——并随包携带该域的**概念前置图**（「依赖闭包型」域包形态的第二实例）。经本包自带 **P08 管线**装载（R3 装配契约）。
 > 协议声明：包根 `protocol.yaml`（01 §6.1 Schema，schema_version "2"，references 空列表）为**机读真相**，本 README 为**人读速览**，双源一致（check14 ⑥ / check15 ⑤）；登记三要件见 02 §8.3。
-> 结构：modules/（2 域模块 量化金融:M31、量化金融:M32，类内段编号）｜assets/（**2 内容资产**：概念前置图 QUANT_GRAPH、绩效与风控口径表 QUANT_METRICS）｜pipelines/P08_量化金融域装配流管线.md
+> 结构：modules/（2 域模块 量化金融:M31、量化金融:M32，类内段编号）｜assets/（**4 内容资产**：概念前置图 QUANT_GRAPH、绩效与风控口径表 QUANT_METRICS、数据与对象契约 DATA_CONTRACT、策略口径示例 STRATEGY_SPECS）｜pipelines/P08_量化金融域装配流管线.md
 > 依赖边界（R1）：只依赖官方核心层（M00 / 通用:M10 / M50 / M80 共 4 件 core_modules，core_only true）；**不搬移**官方模块入包 default/available 槽（I5 单一真相源）。
 > 内容自撰声明：本包正文（概念定义、口径规则、图层与别名）全部自撰；**未引用外部清单 / 仓库的结构**（外部输入只作本波触发与对照，判定见 `results/audit/docs_audit-55-quant-domain.md`）。
 ## 1. 包速览
@@ -37,4 +37,4 @@
 ## 5. 边界与不宣称
 - 本包是**口径协议 + 知识前置**类域包：**不提供**数据、不执行交易、不做收益承诺；它管的是「口径是否说清、前置是否齐备」。
 - 概念图是**内容资产**：门禁校验其可寻址与可溯源（check23 / check32 资产面）与**图内部一致性**（check32 的 `concept_graph` 子扫描：无环 / 无悬空 / 边有溯源 / 层位合法 / 别名唯一 / 分支完备）。
-- **证据强度声明**：本图**无外部结构证据**（输入仓未声明许可，按纪律不传导其结构），边以域内「产物 → 输入」的可复算依赖为主、溯源标 `domain-logic`——证据强度低于 AI系统域包（后者有课程与论文锚点），该差异如实记档于 `assets/QUANT_GRAPH.md` §7 与 `results/audit/docs_audit-55-quant-domain.md`。
+- **证据强度声明**：本图**零外部结构传导**（输入仓未声明许可，按纪律不传导其结构），边以域内「产物 → 输入」的可复算依赖为主；证据面已升格为 `mixed`——14/30 节点挂外部权威来源锚（Crossref 10 条 + arXiv 3 条，见 `assets/QUANT_GRAPH.md` §6），其余 16 节点标 `domain-logic`——整体仍低于 AI系统域包（后者 `external`、47/47 全覆盖），该差异如实记档于 `assets/QUANT_GRAPH.md` §7 与 `results/audit/docs_audit-55-quant-domain.md`。

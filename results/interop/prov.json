@@ -67,7 +67,7 @@
     {
       "@id": "nf:file/02_联动注册表.md",
       "@type": "prov:Entity",
-      "nf:sha256": "cc9a3b369f998eecd64b9f01f0bc6328a2f84a199639b8da922e9cba2cd3b87c"
+      "nf:sha256": "e2ee1971a12ee6d9d7399e746f6684f95ec91d36e532297737a54e5df6c18ab2"
     },
     {
       "@id": "nf:file/06_Agent执行协议.md",
@@ -127,7 +127,7 @@
     {
       "@id": "nf:file/protocol/CONFORMANCE.md",
       "@type": "prov:Entity",
-      "nf:sha256": "85925da3cf31a7fcb2ed8b1d9641f7a9895bae897e69b48349a0745e8374254f"
+      "nf:sha256": "096ca620bdb499fa7f82d77ef276ebe416015cb68d618e6170de31e5ac7d2414"
     },
     {
       "@id": "nf:file/protocol/assertions.json",

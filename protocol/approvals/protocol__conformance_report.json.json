@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-21",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "AUD-0010 定稿（961 例全绿；13 面外部核验；挂账清零）",
+  "note": "合并 GitHub 上游 2 提交（D1-D5 修复波 + AI域包 README）后重签",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "4c67140a1db0e69722f056eaa10cc0c363291b00d13985f0053d6ba1b255ad9e"

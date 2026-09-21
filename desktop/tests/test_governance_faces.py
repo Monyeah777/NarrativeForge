@@ -67,6 +67,33 @@ class TestDeclarationRealRepo(unittest.TestCase):
             issues = cd.scan(tmp)[0]
             self.assertTrue(any("scope 与排除重叠" in i for i in issues), issues)
 
+    def test_optional_excluded_may_be_absent(self):
+        """「允许不存在」标注的运行期件缺省不报缺口；未标注的缺省仍报（宽容不放松）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "protocol").mkdir(parents=True)
+            (Path(tmp) / "a.md").write_text("x", encoding="utf-8")
+            (Path(tmp) / "protocol" / "CONFORMANCE.md").write_text(
+                """# C
+
+## 声明
+
+| 规范 | 版本 | 真源 |
+|---|---|---|
+
+## 范围
+
+- `a.md`
+
+## 排除
+
+| 路径 | 理由 |
+|---|---|
+| `gone-runtime` | 运行期件（允许不存在） |
+| `gone-plain` | 陈旧条目 |
+""", encoding="utf-8")
+            issues = cd.scan(tmp)[0]
+            self.assertTrue(any("gone-plain" in i for i in issues), issues)
+            self.assertFalse(any("gone-runtime" in i for i in issues), issues)
 
 class TestRfc(unittest.TestCase):
     HEAD = ("> 最后更新：2026-09-08\n> **RFC**: NF-0001 · **Category**: Standards Track · "
