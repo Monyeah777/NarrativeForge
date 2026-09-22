@@ -118,3 +118,20 @@ ruff / flake8 / bandit（3 处 XML 面 nosec + 前置 DTD/ENTITY 守卫）/ vult
   按不可达记档（HDF5 与 Prometheus 出口经 URL 修正与补测转为可达，同样记档）。
 - 机验率是**本仓口径的覆盖率**，不是内容质量分；它挡的是回退，不是「打磨完成」。
 - 外部接触（客户端装载实测）仍按 STRATEGY 封存，本波零外部实测宣称。
+
+## 九、推送阶段新暴露的两处（已修，同一波内收口）
+
+本波在 `git push` 的 pre-push 体检（`nf release` = verify.sh + 逐模块覆盖率 ≥30%）里又抓到两处
+**存量**缺口——都不是本波新写代码引入，但都由本波的推送动作暴露：
+
+1. **工具临时件打断门禁**：`scripts/per_module_coverage.sh` 正常路径自删 `_cov_tmp.json`，
+   一旦中断就留在仓库根；编码卫生把它当仓库件扫 → `check12` 单测与 `check33` 编码卫生双红、
+   体检拦推。修法（根因面）：`core/text_hygiene.EXCLUDE_FILES` + `.gitignore` 补排除
+   （与 `.mypy_cache`/`.pytest_cache` 同类处理——工具缓存不该进内容扫描）。
+2. **逐模块覆盖率实测 `gap_review.py` = 0.0%**（AUD-0015 落地时无随行单测）→ 补
+   `desktop/tests/test_gap_review.py` 6 例：候选筛法确定性 / 类别过滤 / 证据面 / **双轨纪律
+   （无确定性证据的行不得进 `fixable`）** / stub shape 与 `limit` 语义。实测
+   `files=109 below=0（min=30）`。
+
+两处修完后的发布体检：**verify 全绿 + 逐模块覆盖率 ≥ min30 → pre-push 通过**；
+双端推送后三处 ref 一致（本地 = GitHub = Gitee = `7a5637a`）。
