@@ -602,6 +602,28 @@ def _build_parser() -> argparse.ArgumentParser:
     of_mt.add_argument("--write", action="store_true",
                        help="重签 protocol/output_forms_baseline.json")
     of_mt.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    dm = sub.add_parser("domain",
+                        help="域包工厂（AI 品类清单工程：从一个域规格生成整套过门禁的域包）",
+                        description="域包工厂：读内部域规格（.rivet/private_archive/ai_packs/specs/"
+                                    "<code>.json）生成 protocol.yaml / README / 模块×2 / 管线 / "
+                                    "资产×3（含 provenance 台账）/ 机验产出面×9，并登记 02 §8 与 "
+                                    "verify.sh DOMAIN 列表；幂等（重跑逐字节一致）")
+    dmsub = dm.add_subparsers(dest="domain_cmd")
+    dm_b = dmsub.add_parser("build", help="按规格生成/更新一个域包（--write 才落盘）",
+                            description="生成域包：缺省只报差异（dry-run），--write 落盘并登记；"
+                                        "--render/--no-render 控制是否顺带重渲染产出面")
+    dm_b.add_argument("--spec", required=True, help="域码（如 A01）")
+    dm_b.add_argument("--write", action="store_true", help="落盘（缺省 dry-run）")
+    dm_b.add_argument("--no-render", action="store_true", help="不自动渲染产出面")
+    dm_b.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    dm_v = dmsub.add_parser("verify", help="校验已生成域包与生成器逐字节一致 + 登记到位",
+                            description="工厂自检：生成物 ≡ 计划（字节级）+ 02 §8 在册 + "
+                                        "verify.sh DOMAIN 在册 + registry protocols[] 在册 + R2 类别不冲突")
+    dm_v.add_argument("--spec", default="", help="只验某域码（缺省全部已建域包）")
+    dm_v.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    dm_l = dmsub.add_parser("specs", help="列出内部域规格与其状态",
+                            description="列域规格：域码 / 名称 / 度量族 / 是否已建包")
+    dm_l.add_argument("--json", action="store_true", help="输出结构化 JSON")
     dc = sub.add_parser("decide",
                         help="决策层（typed-decision 三原语 choice/noul/score：候选集上报概率 + argmax）",
                         description="决策层端口：把选择写成类型化问题交给决策模型；"
@@ -892,7 +914,9 @@ def _cmd_register(args) -> int:
         return 0
 
     reg["protocols"] = merged
-    with open(reg_path, "w", encoding="utf-8") as f:
+    # EOL 纪律：仓库 = LF（.gitattributes `* text=auto eol=lf`）——Windows 文本模式默认 CRLF，
+    # 实测会把 registry.json 写成 CRLF 并被 check33 编码卫生判 FAIL（2026-09-22 实测修）。
+    with open(reg_path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(reg, f, ensure_ascii=False, indent=2)
     print(f"  ✓ 已写入 {reg_path}（protocols[] {len(cur)} → {len(merged)} 条，只增不删）")
     print("  下一步：跑 `bash verify.sh` 由 check14 ⑦ 元素级断言自证")
@@ -2402,6 +2426,84 @@ def _cmd_decide(args):
             print("  （适配器 %s · calibrated=%s · 决策层不出现在门禁路径）"
                   % (meta.get("adapter"), meta.get("calibrated")))
     return 0 if out.get("status") == "ok" else 1
+
+
+def _cmd_domain(args):
+    """nf domain：域包工厂（build / verify / specs）。"""
+    import json as _json
+    import glob as _glob
+
+    from core import domain_pack as dp
+
+    sub = getattr(args, "domain_cmd", "") or "specs"
+    spec_dir = os.path.join(ROOT, dp.SPEC_DIR)
+    codes = sorted(os.path.splitext(os.path.basename(p))[0]
+                   for p in _glob.glob(os.path.join(spec_dir, "*.json")))
+    if sub == "specs":
+        reg = {}
+        try:
+            with open(os.path.join(ROOT, dp.REGISTRY_REL), encoding="utf-8") as fh:
+                reg = {p.get("id"): p for p in _json.load(fh).get("protocols") or []}
+        except OSError:
+            pass
+        rows = []
+        for c in codes:
+            spec = dp.load_spec(ROOT, c)
+            rows.append({"code": c, "name": spec["name"], "pack": spec["pack_name"],
+                         "category": spec["category"], "family": spec["metric_family"],
+                         "built": spec["pack_name"] in reg,
+                         "pipeline": (reg.get(spec["pack_name"]) or {}).get("pipeline", "")})
+        if args.json:
+            print(_json.dumps(rows, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("  %-5s %-22s %-22s %-18s %s" % ("域码", "名称", "包名", "度量族", "状态"))
+            for r in rows:
+                print("  %-5s %-22s %-22s %-18s %s"
+                      % (r["code"], r["name"], r["pack"], r["family"],
+                         ("已建 " + r["pipeline"]) if r["built"] else "未建"))
+            print("  —— 规格 %d 条（已建 %d）" % (len(rows), sum(1 for r in rows if r["built"])))
+        return 0
+    if sub == "build":
+        spec = dp.load_spec(ROOT, args.spec)
+        out = dp.build(ROOT, spec, write=args.write, render=not args.no_render)
+        if args.json:
+            print(_json.dumps(out, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("  域 %s · 包 %s · 管线 %s · 模块 %s"
+                  % (out["spec"], spec["pack_name"], out["pipeline"],
+                     "、".join(out["module_ids"])))
+            print("  计划 %d 件，%s %d 件%s"
+                  % (out["files"],
+                     "已落盘" if args.write else "待落盘（--write 才写）",
+                     out["written"] if args.write else out["changed"],
+                     "" if args.write else "（差异件）"))
+            if args.write:
+                print("  登记：02 §8 %s · verify.sh DOMAIN %s · 产出面渲染 %d 件"
+                      % (out["registry"]["section02"], out["registry"]["domain_list"],
+                         len(out["registry"].get("render") or [])))
+                for i in (out["registry"].get("render_issues") or []):
+                    print("  [FAIL] %s" % i, file=sys.stderr)
+            if args.write:
+                print("  下一步：python scripts/nf.py register --apply（投影 registry protocols[]）")
+        return 0
+    # verify
+    targets = [args.spec] if args.spec else codes
+    issues_all = []
+    rows = []
+    for c in targets:
+        spec = dp.load_spec(ROOT, c)
+        issues, stats = dp.verify(ROOT, spec)
+        issues_all += ["%s: %s" % (c, i) for i in issues]
+        rows.append({"code": c, "stats": stats})
+    if args.json:
+        print(_json.dumps({"issues": issues_all, "rows": rows},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        for i in issues_all:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues_all:
+            print("  ✓ 域包工厂自检通过：%d 个域包与生成器逐字节一致，登记三处到位" % len(targets))
+    return 1 if issues_all else 0
 
 
 def _cmd_output(args):
@@ -4210,6 +4312,8 @@ def main(argv=None) -> int:
         return _cmd_transparency(args)
     if args.cmd == "output":
         return _cmd_output(args)
+    if args.cmd == "domain":
+        return _cmd_domain(args)
     if args.cmd == "decide":
         return _cmd_decide(args)
     if args.cmd == "workloop":

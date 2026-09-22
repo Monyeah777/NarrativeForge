@@ -44,8 +44,8 @@
     },
     {
       "description": "管线抽象执行零 hard 缺陷",
-      "detail": "管线 10 条零 hard 缺陷（advisory 102）",
-      "digest": "0d7adb30941b4d006d6e7fabe20924fd394f56816387a90b1042644dd07c6d83",
+      "detail": "管线 11 条零 hard 缺陷（advisory 112）",
+      "digest": "43b068cbe449871b5a9d42b0f8fb7cfb315c17fb76ebed5aba71dd5d18b615f3",
       "id": "pipeline-dryrun",
       "ok": true
     },
@@ -58,8 +58,8 @@
     },
     {
       "description": "I/O 类型面（可证不匹配）",
-      "detail": "可证不匹配 0 · 类型覆盖 43.1%（94/218 字段）",
-      "digest": "af80f0e1eb79189db560d327a9a104fba98d959baef942b7096770108b16c0bf",
+      "detail": "可证不匹配 0 · 类型覆盖 42.5%（96/226 字段）",
+      "digest": "ee77257597290c95b757583c7d4d26d0c419e2f14465e8a97e4b5b9f4a7ada96",
       "id": "io-types",
       "ok": true
     },
@@ -72,8 +72,8 @@
     },
     {
       "description": "全仓事件背书",
-      "detail": "事件 43 · 跨包 9 · 挂账 0",
-      "digest": "f087a88206dd589b4f2bca9df1d9a4b57afedca01e8e3117b24f7ca59b3e3eed",
+      "detail": "事件 47 · 跨包 9 · 挂账 0",
+      "digest": "e6031a8dc42ae25b4c419ecd8cd053150370edfc44772eec4febd36cc3588b27",
       "id": "event-backing",
       "ok": true
     },
@@ -121,8 +121,8 @@
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 30 / 说明件 267 · 数据契约 26",
-      "digest": "52962ade01d499e0a7b32a85c56b4014760a7cf9075c8f2494444f725a7a4038",
+      "detail": "词表 12 · 规范件 30 / 说明件 287 · 数据契约 26",
+      "digest": "013eb604fc1bbdd38a8eb770ad67022b744a8b45566f688ff17098914896239a",
       "id": "modeling",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "1fb33c544b5d76ad6249cc2b8c6f482c56fcde6da6801893be3736cb9c94a7a0",
+  "root": "605998e635662e5cb45a5218cc63a60c8e185e4f30bc3656d12956520c5646ee",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

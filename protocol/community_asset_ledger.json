@@ -302,6 +302,42 @@
       "line": 15
     },
     {
+      "key": "CONCEPT_GRAPH",
+      "package": "大语言模型域包",
+      "file": "community/大语言模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "大语言模型域包",
+      "file": "community/大语言模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "大语言模型域包",
+      "file": "community/大语言模型域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "大语言模型域包",
+      "file": "community/大语言模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "大语言模型域包",
+      "file": "community/大语言模型域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "大语言模型域包",
+      "file": "community/大语言模型域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
       "key": "STYLE_DNA",
       "package": "官方",
       "file": "05_资产库/用户自定义/STYLE_DNA.md",

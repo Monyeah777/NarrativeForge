@@ -321,6 +321,20 @@
     },
     {
       "conformance": "L2",
+      "id": "大语言模型:M01",
+      "layer": "P40",
+      "name": "模型与能力口径登记",
+      "source": "community/大语言模型域包/modules/A01a_模型与能力口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "大语言模型:M02",
+      "layer": "P60",
+      "name": "能力面收口与形态派生",
+      "source": "community/大语言模型域包/modules/A01b_能力面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "通用:M10",
       "layer": "P10",
       "name": "时间推进",
@@ -343,10 +357,10 @@
   ],
   "coverage": {
     "asset_entries": 2,
-    "contract_covered": 48,
-    "module_docs": 48,
-    "pipelines": 10,
-    "protocols": 7,
+    "contract_covered": 50,
+    "module_docs": 50,
+    "pipelines": 11,
+    "protocols": 8,
     "schema_issues": 0
   },
   "event_closure": {
@@ -360,6 +374,7 @@
       "decision_brief",
       "doc_delta_committed",
       "doc_structure_ready",
+      "domain_spec_ready",
       "factor_spec_conflict",
       "factor_spec_ready",
       "ghost_event",
@@ -382,7 +397,7 @@
       "tick_day",
       "travel_event"
     ],
-    "modules": 48,
+    "modules": 50,
     "pub_only_by_module": {
       "backtest_spec_conflict": [
         "量化金融:M32"
@@ -395,6 +410,15 @@
       ],
       "campus_gift_intent": [
         "M91"
+      ],
+      "domain_report_conflict": [
+        "大语言模型:M02"
+      ],
+      "domain_report_ready": [
+        "大语言模型:M02"
+      ],
+      "domain_spec_conflict": [
+        "大语言模型:M01"
       ],
       "faction_event": [
         "M15"
@@ -429,6 +453,9 @@
       "backtest_spec_ready",
       "campus_anonymous_gift",
       "campus_gift_intent",
+      "domain_report_conflict",
+      "domain_report_ready",
+      "domain_spec_conflict",
       "faction_event",
       "group_chat_event",
       "load_order_ready",
@@ -486,6 +513,8 @@
     "M97",
     "M98",
     "事件:M22",
+    "大语言模型:M01",
+    "大语言模型:M02",
     "情感:M22",
     "生存:M10",
     "通用:M10",
@@ -503,10 +532,12 @@
     "P06_技术文档题材装配流管线.md",
     "P07_AI系统域装配流管线.md",
     "P08_量化金融域装配流管线.md",
+    "P09_大语言模型装配流管线.md",
     "P90_技术文档生成管线.md"
   ],
   "protocol_files": [
     "community/AI系统域包/protocol.yaml",
+    "community/大语言模型域包/protocol.yaml",
     "community/技术文档域包/protocol.yaml",
     "community/校园情感领域包/protocol.yaml",
     "community/校园西幻轻混组合包/protocol.yaml",

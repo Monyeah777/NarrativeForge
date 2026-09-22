@@ -1,5 +1,5 @@
 {
-  "count": 48,
+  "count": 50,
   "modules": {
     "AI系统:M25": {
       "digest": "9eba42619fd91017080e670d5f60d17ba4255d2444d87243f5f440d6ed55c8db",
@@ -180,6 +180,14 @@
     "事件:M22": {
       "digest": "d6afedbe5118ca92f6de75211b05eac64144a618e2e368ad0c1aa82af971af20",
       "path": "04_模块库/事件类/M22_事件叙事.md"
+    },
+    "大语言模型:M01": {
+      "digest": "8b4cbb4396908661cff7d6e27a4b0ae52c376573ff2088d30bea1ab594373cb8",
+      "path": "community/大语言模型域包/modules/A01a_模型与能力口径登记.md"
+    },
+    "大语言模型:M02": {
+      "digest": "0a6a539b6ec65962a7b63738b2f6841d0171c93c31f2d4fae00a1548d0b693da",
+      "path": "community/大语言模型域包/modules/A01b_能力面收口与形态派生.md"
     },
     "通用:M10": {
       "digest": "1b654bc697783cb6c7edf110190449a1bcb37786e153ab056ff536e297e6efdc",

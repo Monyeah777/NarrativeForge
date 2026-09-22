@@ -1,0 +1,30 @@
+{
+  "schema": "nf-domain-packs/1",
+  "note": "AI 品类域包名录（公开结果面）。每包：域码 / 独占类别 / 管线 / 模块 / 资产数 / 产出面与机验率 / 规格摘要。机检：check32 domain_packs 子扫描（名录 ↔ 盘上实况一致 + 可机验占比 ≥95%）。规格源在内部档案，故名录只登记摘要（spec_digest）不携带内容。",
+  "machine_verifiable_threshold": 0.95,
+  "packs": [
+    {
+      "code": "A01",
+      "section": "A · 模型与能力",
+      "name": "大语言模型",
+      "package": "大语言模型域包",
+      "category": "大语言模型",
+      "pipeline": "P09",
+      "module_ids": [
+        "大语言模型:M01",
+        "大语言模型:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "spec_digest": "dfa47bccbc248b33859d492d2dcc7b42e416c00e7ecb3f641b8950f9f532e885"
+    }
+  ],
+  "count": 1,
+  "subdivisions_total": 12
+}

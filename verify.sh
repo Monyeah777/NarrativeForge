@@ -454,7 +454,7 @@ import yaml
 # DOMAIN = 领域包显式登记（③ 独占类别互斥 + ⑤ 编号在册/M91-99 不占用专属）——领域包语义依赖
 # 02 §8.1/8.2 段落结构（segmap）与「不占 M91-99 社区段」规则（通用 M93-96/轻混 M91-92 合法占段，
 # 不能内容推导纳入领域检查）；新增领域包须在此登记 + 02 §8 开新段 + registry 条目（登记三要件②）。
-DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包']
+DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/大语言模型域包']
 # LEGACY_BARE = 存量既有领域包（v1.1 迁出模块沿用原编号不改号，包内裸号属既有）；其余包**新增**
 # 编号须落 M91-M99 机制段或 <独占类别>:Mxx 类内段（01 §1.6.11 编号命名空间扩展；每类 00-99 独立）。
 LEGACY_BARE = set(DOMAIN)
@@ -517,6 +517,8 @@ if not errs:
         segm = segpat.search(doc)
         segmap[d] = segm.group(0) if segm else ''
     for d in DOMAIN:
+        if d not in data:
+            continue        # 合成/局部树里可缺该包目录（真实树上由 ① 段判 missing）
         ids = [str(x) for x in data[d]['package']['module_id_range']]
         m99 = [i for i in ids if re.match(r'^M9[1-9]$', i)]
         if m99: errs.append('%s ⑤M91-M99 段被占用: %s（新包新增编号才落 M91-M99，既有包沿用原编号）' % (d, ','.join(m99)))

@@ -9,6 +9,13 @@
       "package": "AI系统域包"
     },
     {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/大语言模型域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "大语言模型域包"
+    },
+    {
       "digest": "5e99f6aa5aa794e377eb4c78deef0b580c94f01947ae382002ecc1f1521c097b",
       "dir": "community/校园情感领域包/assets",
       "files": 29,
@@ -30,6 +37,6 @@
       "package": "量化金融域包"
     }
   ],
-  "recorded_at": "2026-09-20",
+  "recorded_at": "2026-09-22",
   "schema": "nf-asset-line-baseline/1"
 }

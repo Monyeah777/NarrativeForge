@@ -1,7 +1,7 @@
 {
   "counts": {
     "同层依赖序": 2,
-    "跨包/外部事件": 94,
+    "跨包/外部事件": 104,
     "跨包/外部依赖": 6
   },
   "items": [
@@ -204,6 +204,56 @@
       "category": "跨包/外部事件",
       "detail": "M06 ← travel_event（可能由 references 跨包闭包或外部域包提供）",
       "pipeline": "P07"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "M06、事件:M22 ← chaos_event（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "M06 ← combat_result（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "事件:M22 ← death_trigger（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "事件:M22 ← ghost_event（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "M13 ← level_up（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "事件:M22 ← market_event（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "事件:M22 ← production_output（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "事件:M22 ← relationship_change（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "M06 ← reputation_change（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
+    },
+    {
+      "category": "跨包/外部事件",
+      "detail": "M06 ← travel_event（可能由 references 跨包闭包或外部域包提供）",
+      "pipeline": "P09"
     },
     {
       "category": "跨包/外部事件",
@@ -517,7 +567,7 @@
     }
   ],
   "note": "管线抽象执行的 advisory（同层顺序 / 跨包依赖 / 跨包事件）——不判死，但需分类可见；类别计数下降即缺口收敛。",
-  "pipelines": 10,
+  "pipelines": 11,
   "schema": "nf-pipeline-advisory/1",
-  "total": 102
+  "total": 112
 }

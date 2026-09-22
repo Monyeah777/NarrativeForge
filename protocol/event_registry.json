@@ -302,6 +302,78 @@
       "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
       "payload_status": "declared"
     },
+    "domain_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "domain_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "domain_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "domain_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
     "faction_event": {
       "fields": {},
       "note": "证据:M15_帮派势力 机读块 events.publish；载荷形状待补",

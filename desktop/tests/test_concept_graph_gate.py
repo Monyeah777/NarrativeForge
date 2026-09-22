@@ -52,9 +52,12 @@ class RepoGraphTest(unittest.TestCase):
     def test_repo_scan_clean(self):
         issues, stats = cg.scan(str(ROOT))
         self.assertEqual(issues, [])
-        # 两个域包各带一件概念图资产（AI系统域包 47 概念 + 量化金融域包 30 概念）
-        self.assertEqual(stats["graphs"], 2)
-        self.assertEqual(stats["nodes"], 77)
+        # 图数 = 货架上带机读块的资产数（原为硬编码 2：新增域包即误报——改为从货架推导，
+        # 同 test_license_gate 的既有修法；口径仍是「每件图资产零 issue」）
+        expected = len(cg.graph_assets(str(ROOT)))
+        self.assertEqual(stats["graphs"], expected)
+        self.assertGreaterEqual(stats["graphs"], 2)
+        self.assertGreaterEqual(stats["nodes"], 77)
         self.assertGreater(stats["edges"], 0)
 
     def test_scanner_and_evaluator_share_semantics(self):

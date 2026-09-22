@@ -168,7 +168,9 @@ class QuantGraphTest(unittest.TestCase):
     def test_scan_reports_two_graphs_in_repo(self):
         issues, stats = cg.scan(str(ROOT))
         self.assertEqual(issues, [])
-        self.assertEqual(stats["graphs"], 2)
+        # 图数从货架推导（原硬编码 2：AI 品类域包进场后即误报——同 test_license_gate 修法）
+        self.assertEqual(stats["graphs"], len(cg.graph_assets(str(ROOT))))
+        self.assertGreaterEqual(stats["graphs"], 2)
 
 
 if __name__ == "__main__":

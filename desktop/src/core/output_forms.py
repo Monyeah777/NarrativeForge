@@ -68,6 +68,7 @@ _FORM_MAX_TIER = {
     "json-schema": "T2", "vega-lite": "T3", "mermaid": "T3", "graphviz-dot": "T3",
     "graphml": "T3", "json-graph-format": "T3", "quant-metrics": "T3",
     "performance-report": "T4", "concept-closure": "T4", "system-card": "T3",
+    "domain-spec": "T3", "domain-report": "T4",
 }
 
 
@@ -159,18 +160,23 @@ def detect(root: str, rel: str) -> Tuple[str, str]:
             sch = str(data.get("$schema") or "")
             if "json-schema.org" in sch:
                 form = "json-schema"
-            if "vega-lite" in sch:
+            kind = str(data.get("kind") or "")
+            if kind.startswith("nf-domain-spec"):
+                form = "domain-spec"
+            elif kind.startswith("nf-domain-report"):
+                form = "domain-report"
+            elif kind.startswith("nf-system-card"):
+                form = "system-card"
+            elif "vega-lite" in sch:
                 form = "vega-lite"
             elif "vega" in sch:
                 form = "vega"
-            elif str(data.get("kind") or "").startswith("nf-performance"):
+            elif kind.startswith("nf-performance"):
                 form = "performance-report"
-            elif str(data.get("kind") or "").startswith("nf-quant-metrics"):
+            elif kind.startswith("nf-quant-metrics"):
                 form = "quant-metrics"
-            elif str(data.get("kind") or "").startswith("nf-concept-closure"):
+            elif kind.startswith("nf-concept-closure"):
                 form = "concept-closure"
-            elif str(data.get("kind") or "").startswith("nf-system-card"):
-                form = "system-card"
     return form, _FORM_MAX_TIER.get(form, "T1")
 
 
@@ -587,6 +593,47 @@ def _check_quant_metrics(root: str, rel: str) -> List[str]:
     return issues
 
 
+def _check_domain_spec(root: str, rel: str) -> List[str]:
+    """域口径表机读投影：条数口径 + id 序 + 判据/锚齐备（语义面，不只形状）。"""
+    issues = _check_json(root, rel)
+    data, err = _read_json(_rel(root, rel))
+    if err or not isinstance(data, dict):
+        return issues + ([err] if err else [])
+    code = str(data.get("code") or "")
+    subs = data.get("subdivisions") or []
+    if len(subs) != 12:
+        issues.append("细分条目应为 12 条，实为 %d" % len(subs))
+    for i, s in enumerate(subs, 1):
+        want = "%s-%02d" % (code, i)
+        if s.get("id") != want:
+            issues.append("第 %d 条 id 应为 %s，实为 %r" % (i, want, s.get("id")))
+        if not str(s.get("anchor") or "").startswith(("http://", "https://")):
+            issues.append("%s 锚非绝对 URL" % s.get("id"))
+        if int(s.get("anchor_status") or 0) == 0:
+            issues.append("%s 锚缺可达性实测值（不得假装可达：探不到记 0 并在锚表注明）"
+                          % s.get("id"))
+    return issues
+
+
+def _check_domain_report(root: str, rel: str) -> List[str]:
+    """域报告：形状 + 口径族在册 + 样例规模自洽（复算一致由 recompute 面判）。"""
+    from core import domain_metrics as dm
+
+    issues = _check_json(root, rel)
+    data, err = _read_json(_rel(root, rel))
+    if err or not isinstance(data, dict):
+        return issues + ([err] if err else [])
+    fam = str(data.get("family") or "")
+    if fam not in dm.FAMILIES:
+        issues.append("度量族未在本仓引擎登记：%r（不得宣称可复算）" % fam)
+    metrics = data.get("metrics") or {}
+    if str(metrics.get("family") or "") != fam:
+        issues.append("metrics.family 与报告 family 不一致")
+    if int(data.get("sample_rows") or 0) < 1:
+        issues.append("样例规模为 0（无样例即无口径值）")
+    return issues
+
+
 _FORM_CHECK: Dict[str, Callable[[str, str], List[str]]] = {
     "json": _check_json, "json-schema": _check_json, "vega-lite": _check_vega_lite,
     "vega": _check_json, "jsonl": _check_jsonl, "csv": _check_csv, "xml": _check_xml,
@@ -595,6 +642,7 @@ _FORM_CHECK: Dict[str, Callable[[str, str], List[str]]] = {
     "svg": _check_xml, "json-graph-format": _check_json,
     "quant-metrics": _check_quant_metrics, "performance-report": _check_json,
     "concept-closure": _check_json, "system-card": _check_json,
+    "domain-spec": _check_domain_spec, "domain-report": _check_domain_report,
 }
 
 
@@ -674,6 +722,63 @@ def _gen_mermaid(root: str, entry: dict):
     if spec.get("id") == "mermaid-declaration-flow":
         return qm.mermaid_declaration_flow(), []
     return None, ["未登记 Mermaid 生成器：%r" % spec.get("id")]
+
+
+def _gen_domain_report(root: str, entry: dict):
+    """域包 T4 面：由样例夹具按声明度量族重算域报告（core/domain_metrics）。"""
+    from core import domain_metrics as dm
+
+    spec = entry.get("recompute") or entry.get("render") or {}
+    inputs = spec.get("inputs") or []
+    params = dict(spec.get("params") or {})
+    family = str(params.pop("family", ""))
+    if not inputs or not family:
+        return None, ["域报告缺 inputs 或 family（无源/无族即无功能）"]
+    src = _pkg_rel(entry, inputs[0])
+    rows, err = dm.load_rows(_rel(root, src))
+    if err:
+        return None, ["输入 %s %s" % (src, err)]
+    try:
+        metrics = dm.evaluate(family, rows, **params)
+    except Exception as exc:  # 口径参数错误必须可见
+        return None, ["复算异常 %s: %s" % (type(exc).__name__, exc)]
+    return {
+        "kind": "nf-domain-report/1",
+        "code": str(params.get("code") or ""),
+        "domain": str(params.get("domain") or ""),
+        "family": family,
+        "sample": inputs[0],
+        "sample_rows": len(rows),
+        "metrics": metrics,
+    }, []
+
+
+def _gen_vega_metrics(root: str, entry: dict):
+    """指标条形图：由域报告里的标量指标确定性生成 Vega-Lite 规格。"""
+    spec = entry.get("render") or entry.get("recompute") or {}
+    inputs = spec.get("inputs") or []
+    if not inputs:
+        return None, ["图表面缺 inputs"]
+    data, err = _read_json(_rel(root, _pkg_rel(entry, inputs[0])))
+    if err:
+        return None, ["输入 %s %s" % (inputs[0], err)]
+    vals = []
+    for k, v in sorted((data.get("metrics") or {}).items()):
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            vals.append({"metric": k, "value": float(v)})
+    if not vals:
+        return None, ["报告里没有可画的标量指标"]
+    return {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": str(spec.get("params", {}).get("title") or "域指标"),
+        "data": {"values": vals},
+        "mark": {"type": "bar"},
+        "encoding": {
+            "x": {"field": "value", "type": "quantitative", "title": "口径值"},
+            "y": {"field": "metric", "type": "nominal", "title": "指标",
+                  "sort": "-x"},
+        },
+    }, []
 
 
 def _gen_mermaid_concept_dag(root: str, entry: dict):
@@ -761,6 +866,8 @@ GENERATORS: Dict[str, Callable[[str, dict], Tuple[Any, List[str]]]] = {
     "mermaid-declaration-flow": _gen_mermaid,
     "mermaid-concept-dag": _gen_mermaid_concept_dag,
     "graphml-concept-dag": _gen_graphml_concept_dag,
+    "domain-report": _gen_domain_report,
+    "vega-metrics": _gen_vega_metrics,
 }
 
 

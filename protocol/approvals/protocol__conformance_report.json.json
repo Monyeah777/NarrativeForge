@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-22",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "产出形态层 116 条（可达 110）+ 两域包机验产出面 14 件（T4 2 件）+ check32 output_forms + 编码卫生排除工具临时件（_cov_tmp.json 教训）+ 决策模型热冷裁决",
+  "note": "域包工厂 + A01 首包 + 15 例工厂单测（口径公式/夹具确定性/唯一性/机验占比）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "76c4d272458ae2bb12bcaf2ae8ce796fea7b3ce55b5b15978c60c63d726f6aaf"
+  "subject_digest": "e6842bda3465ab90c8a6e9ef9c91a2fef011e62dcd9850538a48ac4cf2054970"
 }

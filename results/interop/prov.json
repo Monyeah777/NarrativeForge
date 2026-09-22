@@ -67,7 +67,7 @@
     {
       "@id": "nf:file/02_联动注册表.md",
       "@type": "prov:Entity",
-      "nf:sha256": "c6df92a97dd7d2127a8f86f3d71ec7c08c95da2964d753c39274395365989637"
+      "nf:sha256": "856704a26552ce8e73c8a62adfa38fa5d6df4a5c216913aad47c69bd5ca9b9fd"
     },
     {
       "@id": "nf:file/06_Agent执行协议.md",
@@ -107,7 +107,7 @@
     {
       "@id": "nf:file/desktop/src/core/registry.json",
       "@type": "prov:Entity",
-      "nf:sha256": "01a81c5d219b8cf4f6c0dc137388377cabaf91c4476d21fc5cf63cf704aa09f2"
+      "nf:sha256": "b750544db3b29d0c7c5a6792cd9aabb153601955bc8aaf074eb1b92e4821a120"
     },
     {
       "@id": "nf:file/library/ALIAS.md",
@@ -137,7 +137,7 @@
     {
       "@id": "nf:file/protocol/asset_line_baseline.json",
       "@type": "prov:Entity",
-      "nf:sha256": "0f837c11a26340f279af116a94d5a0c4f84a031aac716441f8105c52c063593a"
+      "nf:sha256": "58b7d77c0015d26c715d36c8dad2bb6bc03103eb8fcc3e891d80b6fb5de5fa2e"
     },
     {
       "@id": "nf:file/protocol/audit.json",
@@ -147,12 +147,12 @@
     {
       "@id": "nf:file/protocol/community_asset_ledger.json",
       "@type": "prov:Entity",
-      "nf:sha256": "0da4a7e5a97f82ffa3b48468193f184a55a6b64a6cf3092ecfbff6079f77815b"
+      "nf:sha256": "d1a2378514b581478ec49429ad1c00900e406a34d82b12f530f01bc45fc5df75"
     },
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "76c4d272458ae2bb12bcaf2ae8ce796fea7b3ce55b5b15978c60c63d726f6aaf"
+      "nf:sha256": "e6842bda3465ab90c8a6e9ef9c91a2fef011e62dcd9850538a48ac4cf2054970"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",
@@ -177,7 +177,7 @@
     {
       "@id": "nf:file/protocol/event_registry.json",
       "@type": "prov:Entity",
-      "nf:sha256": "ec610d7ce4d360ffca1737ebab25db6309901953931e1054bbfe9093cdda8865"
+      "nf:sha256": "95c8ce82025e2e3594de55df6500394784fe61b84d10e1de31418505b33872c3"
     },
     {
       "@id": "nf:file/protocol/execution_modes.json",
@@ -222,7 +222,7 @@
     {
       "@id": "nf:file/protocol/module_signatures.json",
       "@type": "prov:Entity",
-      "nf:sha256": "5159d9ed10d803ad06f56b26acf5c8c6256d422b36c488dc9767c98a220c644a"
+      "nf:sha256": "025d1128fa9b6d867b2d746b474caf1198797e018c6689c0b2766945d1108b7a"
     },
     {
       "@id": "nf:file/protocol/normative.json",
@@ -232,7 +232,7 @@
     {
       "@id": "nf:file/protocol/pipeline_advisory.json",
       "@type": "prov:Entity",
-      "nf:sha256": "163b9974c82e00fc1c7f49e86569227e71fbfbd06a87487f190b396d3e2187fe"
+      "nf:sha256": "eb672ce9314760d8a8de26ee26fd7535b8268898265b77f9a46af91fe082fa38"
     },
     {
       "@id": "nf:file/protocol/postmortem.json",

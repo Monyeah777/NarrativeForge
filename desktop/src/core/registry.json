@@ -635,6 +635,41 @@
       "references": [],
       "schema_version": "2",
       "version": "1.1.0"
+    },
+    {
+      "id": "大语言模型域包",
+      "name": "大语言模型域包",
+      "pipeline": "P09",
+      "categories": [
+        "大语言模型"
+      ],
+      "module_ids": [
+        "大语言模型:M01",
+        "大语言模型:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "大语言模型:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "大语言模型:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }
