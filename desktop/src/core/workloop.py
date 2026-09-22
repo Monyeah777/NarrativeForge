@@ -140,7 +140,7 @@ def capability_gaps(root: str = ".") -> List[Dict[str, Any]]:
     try:
         from core import interop_export as _ie
         interop_decl = sorted(_ie.KINDS)
-    except Exception:  # pragma: no cover
+    except Exception:  # pragma: no cover —— 导出面声明不可读：本轮不产 innovate 候选（不静默：候选缺失即结果为少一条）
         pass
     cli_kinds: List[str] = []
     if cmds:

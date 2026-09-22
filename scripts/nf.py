@@ -601,6 +601,19 @@ def _build_parser() -> argparse.ArgumentParser:
     wl.add_argument("--gate", default="", help="收口时的门禁结论（如 PASS=61）")
     wl.add_argument("--note", default="", help="收口说明")
     wl.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    rv = sub.add_parser("review",
+                        help="缺口逐行审查（决策模型逐行判 + 确定性证据复核，双轨）",
+                        description="逐行审查：机械预筛候选行 → 决策模型逐行判（是否缺口/严重度）"
+                                    "→ 确定性证据复核 → 只把**有证据**的放进修复清单")
+    rv.add_argument("--adapter", default="stub", help="判定适配器（stub / systemone-http）")
+    rv.add_argument("--endpoint", default="", help="systemone-http 端点")
+    rv.add_argument("--scope", default="",
+                    help="只扫某类：unharvestable-payload / silent-skip / missing-quality-rule")
+    rv.add_argument("--limit", type=int, default=0, help="只审前 N 行候选（0=全量）")
+    rv.add_argument("--batch", type=int, default=8, help="每批行数（缺省 8）")
+    rv.add_argument("--timeout", type=float, default=120.0, help="适配器超时秒")
+    rv.add_argument("--write", default="", help="把审查报告写入路径（不得写 protocol/）")
+    rv.add_argument("--json", action="store_true", help="输出结构化 JSON")
     kn = sub.add_parser("knowledge",
                         help="双源知识层（权威分层 / 消化可追溯 / 查询有序 / 时效 / 可见性）",
                         description="双源知识层（机制借鉴一句式：编译时机按数据域选择）")
@@ -2232,6 +2245,43 @@ def _cmd_interop(args):
         print("written: %s（%d 字节，纯派生，勿手改）" % (args.out, len(blob)))
     else:
         sys.stdout.write(blob.decode("utf-8"))
+    return 0
+
+
+def _cmd_review(args):
+    """nf review：缺口逐行审查（模型判 + 证据复核）。"""
+    from core import gap_review as gr
+    import json as _json
+    scope = tuple(s for s in (args.scope or "").split(",") if s)
+    rows = gr.candidates(ROOT, classes=scope)
+    if args.limit:
+        rows = rows[:max(1, args.limit)]
+    doc = gr.review(ROOT, adapter=args.adapter, endpoint=args.endpoint,
+                    limit=args.limit, batch=max(1, args.batch), timeout=args.timeout)
+    if args.json:
+        print(_json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf review（逐行缺口审查 · 适配器 %s）==" % args.adapter)
+        print("  %s" % gr.summary(doc))
+        for r in doc["fixable"][:40]:
+            print("  [可修] %-22s %s:%s  p=%s sev=%s | %s"
+                  % (r["class"], r["file"], r["line"],
+                     ("%.2f" % r["model_gap_p"]) if r["model_gap_p"] is not None else "-",
+                     ("%.2f" % r["model_severity"]) if r["model_severity"] is not None else "-",
+                     r["evidence"][:88]))
+        if doc["suspected"]:
+            print("  —— 模型怀疑但**无证据**（不修，只挂账）%d 条" % len(doc["suspected"]))
+    if args.write:
+        if args.write.replace("\\", "/").startswith("protocol/"):
+            print("  ✗ 报告不得写入协议层 protocol/（修复指引：写 results/ 或 .rivet/）",
+                  file=sys.stderr)
+            return 2
+        dest = os.path.join(ROOT, args.write)
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        with open(dest, "w", encoding="utf-8", newline="\n") as fh:
+            _json.dump(doc, fh, ensure_ascii=False, indent=2, sort_keys=True)
+            fh.write("\n")
+        print("  报告已写入：%s" % args.write)
     return 0
 
 
@@ -4020,6 +4070,8 @@ def main(argv=None) -> int:
         return _cmd_decide(args)
     if args.cmd == "workloop":
         return _cmd_workloop(args)
+    if args.cmd == "review":
+        return _cmd_review(args)
     if args.cmd == "knowledge":
         return _cmd_knowledge(args)
     if args.cmd == "assertions":

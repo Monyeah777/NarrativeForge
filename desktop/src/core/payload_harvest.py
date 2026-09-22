@@ -95,7 +95,9 @@ def harvest_doc(text: str) -> Dict[str, Dict[str, str]]:
             m = re.match(r"\s*(?:event|name)\s*:\s*([a-z_][a-z0-9_]*)", line)
             if m:
                 event = m.group(1)
-            m2 = re.match(r"\s*publish\s*:\s*\[?\s*([a-z_][a-z0-9_]*)", line)
+            # 事件标记三写法（实测缺口：模块正文用 `produce:` 时旧规则认不出 →
+            # 28 处 payload 行的类型证据全被漏收，见 AUD-0015）
+            m2 = re.match(r"\s*(?:publish|produce)\s*:\s*\[?\s*([a-z_][a-z0-9_]*)", line)
             if m2 and not event:
                 event = m2.group(1)
             m3 = re.match(r"\s*payload\s*:\s*\{(.*)\}\s*$", line)

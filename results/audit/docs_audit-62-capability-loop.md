@@ -6,9 +6,9 @@ scope: 作者指令「利用决策模型来进行 NF 项目内目前已有的功
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/workloop.py:6e12c77012f3dffd588f8450b26d046829ff3574d385e46d5857bab8dbfa2c5f
-  - desktop/src/core/interop_export.py:b1df3d1e9efe66bcd740561459c9f51a634d4fa2081d27fc8f44150b6cf1e4bf
-  - scripts/nf.py:d5fcefbad4963d76c542b07407932a1ff9a0726266cf39502179c7dbf54a7429
+  - desktop/src/core/workloop.py:11eac59e76eb1b8e0b49a88f8f1620cf2d5a7e8257dedbc9c91084ba9c75e3ab
+  - desktop/src/core/interop_export.py:9dc832aba768fbd97f927283b85ffc749c5714304b5f75032b59893d5e079a21
+  - scripts/nf.py:423440d0eff4526dfdf2284c0f460ea941e9ea53317803ec2d3def3e2bb6a93c
   - scripts/check_interop_schemas.py:712239292e64e402a9088e6b1f1a6607ab37eca8c99bc7eba4c282e0e9595dde
   - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c
   - desktop/tests/test_interop_export.py:5d47f3aa9c894c36360652a45d8ae5ac3dcf072402a10e72126b20f520aaae98

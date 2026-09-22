@@ -1,21 +1,6 @@
 {
-  "count": 99,
+  "count": 86,
   "fields": [
-    {
-      "event": "campus_gift_intent",
-      "field": "intent",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "campus_gift_intent",
-      "field": "origin",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "campus_gift_intent",
-      "field": "secret_mode",
-      "note": "正文证据字段名；类型待核"
-    },
     {
       "event": "campus_gift_intent",
       "field": "source_event",
@@ -94,21 +79,6 @@
     {
       "event": "death_trigger",
       "field": "rebirth_point",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "decision_brief",
-      "field": "aggregated",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "decision_brief",
-      "field": "context",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "decision_brief",
-      "field": "origin",
       "note": "正文证据字段名；类型待核"
     },
     {
@@ -245,26 +215,6 @@
       "event": "phone_call_event",
       "field": "trigger_event",
       "note": "正文 payload 收割（证据可溯）"
-    },
-    {
-      "event": "polished_output",
-      "field": "aligned",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "polished_output",
-      "field": "origin",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "polished_output",
-      "field": "source",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "polished_output",
-      "field": "style",
-      "note": "正文证据字段名；类型待核"
     },
     {
       "event": "production_output",
@@ -405,21 +355,6 @@
       "event": "spell_cast",
       "field": "tick",
       "note": "正文 payload 收割（证据可溯）"
-    },
-    {
-      "event": "state_snapshot",
-      "field": "domain",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "state_snapshot",
-      "field": "mode",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "state_snapshot",
-      "field": "origin",
-      "note": "正文证据字段名；类型待核"
     },
     {
       "event": "term_conflict_detected",

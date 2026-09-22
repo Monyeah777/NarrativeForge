@@ -151,7 +151,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
           % (args.host, args.port, args.model_dir, args.device), flush=True)
     try:
         srv.serve_forever()
-    except KeyboardInterrupt:
+    except KeyboardInterrupt:      # Ctrl+C = 正常终止（服务退出，不打印 traceback）
         pass
     finally:
         srv.server_close()

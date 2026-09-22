@@ -98,6 +98,36 @@
       "message": "对外 skill 面参考件少于 3 件（SKILL.md 引用的 references 面残缺）",
       "fix": "补齐 skills/narrativeforge/references/ 下被 SKILL.md 引用的参考件",
       "evidence": "nf assertions / conformance::assertions"
+    },
+    {
+      "id": "vocabularies-face",
+      "severity": "fail",
+      "kind": "json_value",
+      "params": {"path": "protocol/vocabularies.json", "key": "schema",
+                 "op": "equals", "value": "nf-vocabularies/1"},
+      "message": "词表登记册不在位或 schema 未自证",
+      "fix": "补 protocol/vocabularies.json（schema=nf-vocabularies/1）",
+      "evidence": "nf assertions / 数据契约登记（quality_rule=assertion:vocabularies-face）"
+    },
+    {
+      "id": "normative-face",
+      "severity": "fail",
+      "kind": "json_value",
+      "params": {"path": "protocol/normative.json", "key": "schema",
+                 "op": "equals", "value": "nf-normative/1"},
+      "message": "规范/说明件名单不在位或 schema 未自证",
+      "fix": "补 protocol/normative.json（schema=nf-normative/1）",
+      "evidence": "nf assertions / 数据契约登记（quality_rule=assertion:normative-face）"
+    },
+    {
+      "id": "data-contracts-face",
+      "severity": "fail",
+      "kind": "json_value",
+      "params": {"path": "protocol/data_contracts.json", "key": "schema",
+                 "op": "equals", "value": "nf-data-contracts/1"},
+      "message": "数据契约登记表不在位或 schema 未自证",
+      "fix": "补 protocol/data_contracts.json（schema=nf-data-contracts/1）",
+      "evidence": "nf assertions / 数据契约登记（quality_rule=assertion:data-contracts-face）"
     }
   ]
 }

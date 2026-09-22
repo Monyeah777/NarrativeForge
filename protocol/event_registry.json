@@ -91,16 +91,16 @@
     "campus_gift_intent": {
       "fields": {
         "intent": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "origin": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "secret_mode": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "boolean"
         },
         "source_event": {
           "note": "正文证据字段名；类型待核",
@@ -239,16 +239,16 @@
     "decision_brief": {
       "fields": {
         "aggregated": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "boolean"
         },
         "context": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "array"
         },
         "origin": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "round": {
           "note": "45 typed 落库（作者执行确认，机械规则）",
@@ -577,20 +577,20 @@
     "polished_output": {
       "fields": {
         "aligned": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "origin": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "source": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "style": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         }
       },
       "note": "证据:M96_通用输出润色.md 发布行+payload 同段",
@@ -825,16 +825,16 @@
     "state_snapshot": {
       "fields": {
         "domain": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "array"
         },
         "mode": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "origin": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "tick": {
           "note": "45 typed 落库（作者执行确认，机械规则）",

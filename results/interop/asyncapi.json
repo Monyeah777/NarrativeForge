@@ -759,19 +759,16 @@
         "payload": {
           "properties": {
             "intent": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "origin": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "secret_mode": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "boolean",
+              "type": "boolean"
             },
             "source_event": {
               "additionalProperties": true,
@@ -953,19 +950,17 @@
         "payload": {
           "properties": {
             "aggregated": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "boolean",
+              "type": "boolean"
             },
             "context": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "array",
+              "items": {},
+              "type": "array"
             },
             "origin": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "round": {
               "description": "number",
@@ -1406,24 +1401,20 @@
         "payload": {
           "properties": {
             "aligned": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "origin": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "source": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "style": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             }
           },
           "type": "object"
@@ -1731,19 +1722,17 @@
         "payload": {
           "properties": {
             "domain": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "array",
+              "items": {},
+              "type": "array"
             },
             "mode": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "origin": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "tick": {
               "description": "number",

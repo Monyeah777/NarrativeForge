@@ -9,7 +9,7 @@ subjects:
   - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
   - desktop/src/core/transparency_log.py:ffb298d1a55611f03ee8dca1a57aa6148fd06bfaeb4cbd6a07dade279ebddd00
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
-  - desktop/src/core/interop_export.py:b1df3d1e9efe66bcd740561459c9f51a634d4fa2081d27fc8f44150b6cf1e4bf
+  - desktop/src/core/interop_export.py:9dc832aba768fbd97f927283b85ffc749c5714304b5f75032b59893d5e079a21
   - desktop/src/core/ccv3_adapter.py:cb33b76eb4e3af332f73fceefd5ef8e7ed171d76cc4ee02327555f21bb5c9ca1
   - desktop/src/core/export_schema.py:cc97399818bb788c39fec7d9409a8449385d45d2f5c88cf355717c4b14780503
   - desktop/src/core/mcp_runtime.py:5de4d409bf9c24c731e3a6238e3f9d8039ef751a6372bc145d181ec06f296c0e

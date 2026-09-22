@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-22",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "AUD-0014 定稿（派生物不入审计 subjects 的口径重申）",
+  "note": "AUD-0015：决策模型逐行审查 93 行 + 按类修理（收割器根因/契约登记 15/静默吞错计数）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "a1cb65b8778b976aafbdc1e81ae4700460465b537d2270d1b16adae30318ef3f"
+  "subject_digest": "3353631e82e0d59f0b3c2db4e3c09869ca94aaab407982dd84bc90b3edfb56db"
 }

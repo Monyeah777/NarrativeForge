@@ -65,8 +65,8 @@
     },
     {
       "description": "类型积压显式化",
-      "detail": "不可推断 untyped 99 项（台账同步）",
-      "digest": "db19a956da4f2181b7c4fee91d4df846287d297f66b96c79a64a714d13c233e3",
+      "detail": "不可推断 untyped 86 项（台账同步）",
+      "digest": "9bf8e17efed46f802b3f0c325e21b2b8207c9bbb72cbd0aa784c4441aff56515",
       "id": "type-backlog",
       "ok": true
     },
@@ -114,15 +114,15 @@
     },
     {
       "description": "数据化断言表（形状类断言数据化）",
-      "detail": "断言 8 条（通过 8）· kind 封闭集 4 种",
-      "digest": "1314f1181c50ad9968500bb48c3eb13709ba9d81f1f11a4c7f2529ed73c60b64",
+      "detail": "断言 11 条（通过 11）· kind 封闭集 4 种",
+      "digest": "c2343c8b278265a97544dc7d86288acef32eb6c4c92238d5fc4ab1477583cef7",
       "id": "assertions",
       "ok": true
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 30 / 说明件 247 · 数据契约 11",
-      "digest": "36517679f502b62c166da486aca395d088711f2e7f4557ff704354ba6524bea8",
+      "detail": "词表 12 · 规范件 30 / 说明件 248 · 数据契约 26",
+      "digest": "dd5ead459df1ec75f2f057ea219a318b8e69fda685a259a47241f22f9bda8af1",
       "id": "modeling",
       "ok": true
     },
@@ -149,8 +149,8 @@
     },
     {
       "description": "审计/验收（结论绑定对象 digest + 签收双要素）",
-      "detail": "审计 25 件（带审计头 14 · legacy 11）· 绑定对象 107",
-      "digest": "a06280168cd0ffac5bc5ca4bb2eedc066b4bb7cc195e6d0e482d130f82d63129",
+      "detail": "审计 26 件（带审计头 15 · legacy 11）· 绑定对象 116",
+      "digest": "6c297d915fe70d3120e985991df19cee25b9e7d5afb668eb2b648f40bd842d3f",
       "id": "audit",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "64c25bdf671bda6883e781413ae6d902ed9b3a7bfa1a4f36fe7cd3ee07696dd1",
+  "root": "9d6c1c003c5e6641ce09c55f06ff3de12a0a04662ae681ebe8fc7245d4dd83fa",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

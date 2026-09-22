@@ -596,7 +596,7 @@ def decision_surface(root: str = ".") -> Dict[str, Any]:
         try:
             with open(p, encoding="utf-8") as fh:
                 head = fh.read(1200)
-        except OSError:
+        except OSError:            # 尽力而为：读不到该审计件就跳过（缺件由 check35 回执门报出）
             continue
         if not head.startswith("---"):
             continue
@@ -837,7 +837,7 @@ def verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         _s2.path.insert(0, os.path.join(root, "desktop", "src"))
         from core import purity_scan as _ps
         want_hard = set(_ps.HARD_ALLOW)
-    except Exception:  # pragma: no cover - 登记面不可读即跳过该断言
+    except Exception:  # pragma: no cover —— 登记面不可读：跳过该断言（纯度门 R5 另报未登记 import）
         want_hard = set()
     if want_hard and hard != want_hard:
         issues.append("CycloneDX 硬依赖集与登记面不一致：%s（期望 %s）"
