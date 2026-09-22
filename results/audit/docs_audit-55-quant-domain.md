@@ -6,7 +6,7 @@ scope: 作者指示新建域包（community 第 7 包）：口径协议（因子
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - community/量化金融域包/protocol.yaml:7ba7176c55538b2e57c70c3f0b58439601107ac9091b60495b86cc3996f7d83a
+  - community/量化金融域包/protocol.yaml:df556b4f08e825ed9113831f7061252e6187e656a39e1fc0a3dc5fb792afe26d
   - community/量化金融域包/assets/QUANT_GRAPH.md:331d63943effe51462440c41832202df3b8e6bb2553734472947ac77927e094c
   - community/量化金融域包/assets/QUANT_METRICS.md:fd85b5a871729e04b9c4026cc177e66875e35ca44cd098808cadbeb46f19ef06
   - community/量化金融域包/modules/M31_因子与信号口径.md:6404dd6093d63828e39b5ff69b9e289a54c50fed32e61e5c8e15832ef371fd00

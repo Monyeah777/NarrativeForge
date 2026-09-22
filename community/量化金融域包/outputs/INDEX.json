@@ -1,0 +1,107 @@
+{
+  "schema": "nf-output-index/1",
+  "package": "量化金融域包",
+  "note": "机验产出面清单（本包自持，check14/check32 与 nf output 按此判定）。role=data 数据面 / schema 契约面 / chart 图表 / diagram 图示 / functional 可复算面。tier 语义见 protocol/output_forms.json。",
+  "source_data": [
+    {
+      "path": "outputs/samples/EQUITY_CURVE.csv",
+      "role": "source",
+      "note": "合成样例净值曲线（闭式公式生成，非真实行情，仅供复算与图表生成）；表头 date,equity,benchmark"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "outputs/schemas/QUANT_METRICS.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "口径注册表契约（每条口径必须给公式/单位/必备参数/事故/实现引擎）"
+    },
+    {
+      "path": "outputs/QUANT_METRICS.json",
+      "form": "quant-metrics",
+      "tier": "T3",
+      "role": "data",
+      "schema": "outputs/schemas/QUANT_METRICS.schema.json",
+      "dual_source": {
+        "markdown": "assets/QUANT_METRICS.md",
+        "field": "id",
+        "key_pattern": "`([A-Z][A-Z0-9_]{4,})`",
+        "exclude": ["QUANT_METRICS"]
+      },
+      "note": "资产 QUANT_METRICS.md §2–§4 的机读同源面：16 条键（10 指标 + 4 成本容量 + 2 偏差）双向一致；engine 非空者必须被 core/quant_metrics.py 真实实现"
+    },
+    {
+      "path": "outputs/schemas/PERFORMANCE_REPORT.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "绩效报告契约（口径四要素 + 披露面 + 成本/成交假设）"
+    },
+    {
+      "path": "outputs/samples/EQUITY_CURVE.csv",
+      "form": "csv",
+      "tier": "T2",
+      "role": "data",
+      "note": "复算输入面（唯一数据源：策略净值 + 基准净值）"
+    },
+    {
+      "path": "outputs/PERFORMANCE_REPORT.json",
+      "form": "performance-report",
+      "tier": "T4",
+      "role": "functional",
+      "schema": "outputs/schemas/PERFORMANCE_REPORT.schema.json",
+      "recompute": {
+        "id": "performance-report",
+        "inputs": ["outputs/samples/EQUITY_CURVE.csv"],
+        "params": {
+          "period_start": "2026-06-01",
+          "period_end": "2026-08-21",
+          "as_of": "2026-08-21",
+          "currency": "CNY",
+          "return_basis": "simple",
+          "frequency": "daily",
+          "risk_free_rate_annual": 0.015,
+          "benchmark_id": "NF-SAMPLE-INDEX",
+          "cost_bps_fee": 3.0,
+          "cost_bps_slippage": 5.0,
+          "fill_rule": "next_open",
+          "single_side_turnover": true
+        }
+      },
+      "note": "由 quant_metrics.performance_report 从净值数据复算的绩效报告：check32 会重算并逐字段比对（口径漂移即 FAIL）"
+    },
+    {
+      "path": "outputs/charts/EQUITY_CURVE.vega.json",
+      "form": "vega-lite",
+      "tier": "T3",
+      "role": "chart",
+      "render": {
+        "id": "vega-equity-curve",
+        "inputs": ["outputs/samples/EQUITY_CURVE.csv"],
+        "params": {"title": "净值曲线（策略 vs 基准，合成样例）"}
+      },
+      "note": "图表即数据：Vega-Lite v5 规格由净值数据确定性生成（非手绘）"
+    },
+    {
+      "path": "outputs/charts/DRAWDOWN.vega.json",
+      "form": "vega-lite",
+      "tier": "T3",
+      "role": "chart",
+      "render": {
+        "id": "vega-drawdown",
+        "inputs": ["outputs/samples/EQUITY_CURVE.csv"],
+        "params": {"title": "回撤曲线（净值口径）"}
+      },
+      "note": "回撤序列同样由数据生成；与报告的 max_drawdown 口径同源"
+    },
+    {
+      "path": "outputs/charts/DECLARATION_CHAIN.mmd",
+      "form": "mermaid",
+      "tier": "T3",
+      "role": "diagram",
+      "render": {"id": "mermaid-declaration-flow"},
+      "note": "口径声明依赖图（收益口径/年化因子/rf/净值 → 报告 → 披露面）"
+    }
+  ]
+}

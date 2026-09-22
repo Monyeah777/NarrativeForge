@@ -1,0 +1,77 @@
+{
+  "kind": "nf-system-card/1",
+  "system": {
+    "id": "NF-AI-DOMAIN-PACK",
+    "name": "AI系统域包",
+    "version": "1.1.0",
+    "kind_of_system": "domain-package",
+    "model_agnostic": true,
+    "upstream_models": []
+  },
+  "intended_use": {
+    "purpose": "把「AI 系统」这一域的**概念前置关系**协议化：给出概念图资产（47 个包内概念 + 1 个包外前置族）、前置闭包求值（M25）与装载序就绪门（M26）两个模块，使任何客户端可按闭包装载该域知识。",
+    "consumers": ["装配运行时（P07 管线）", "依赖闭包求值的装配方", "教材/课程纲目类内容生产方"],
+    "in_scope": ["概念前置偏序（DAG）", "闭包与缺失清单", "拓扑装载序与逐概念就绪判定"]
+  },
+  "limitations": [
+    "概念图覆盖率以 v1.1 声明的双支（compute/app）为界，未覆盖的相邻领域必须显式登记为新概念，不得默认继承",
+    "边级溯源中 provenance=inferred 的边属本件推断，未经外部复核——装配备注为『待复核』",
+    "闭包求值只判**结构前置**（是否已装载），不判概念被理解的程度",
+    "包外前置族 C00 不随包交付，装载方须自备前置"
+  ],
+  "data": {
+    "sources": [
+      {"id": "CONCEPT_GRAPH", "kind": "self-authored",
+       "note": "资产正文自撰；结构与序作为内容证据逐条标注来源线，不从外部仓库复制文本"},
+      {"id": "pipeline.yaml/registry", "kind": "generated",
+       "note": "本包的登记面由 protocol.yaml / registry.json 双源一致机制派生"}
+    ],
+    "provenance_policy": "外部输入只作**机制借鉴**（逐条对照本仓实证），不作立项理由或质量背书；公开文档提及外部只写「机制借鉴 + 实证判定」结论（STRATEGY §3.2/§3.3）",
+    "personal_data": "none"
+  },
+  "evaluation": {
+    "method": "内部机检链：verify 门禁（check1–37）+ 概念图健康度（check32 concept_graph）+ 本波新增产出形态面（check32 output_forms）+ 单测",
+    "faces": [
+      {"name": "静态门禁", "gate": "bash verify.sh", "result": "见 check32 output_forms / check14 包登记"},
+      {"name": "概念图健康", "gate": "check32 concept_graph", "result": "无环 / 无悬空 / 边有溯源 / 层位合法 / 别名唯一"},
+      {"name": "产出形态（本卡自身）", "gate": "check32 output_forms + nf output check", "result": "schema 校验 + 闭包产物 T4 复算一致"},
+      {"name": "单元测试", "gate": "python -m unittest", "result": "见 CHANGELOG 本轮计数"}
+    ],
+    "reproduce_command": "python scripts/nf.py output verify --json",
+    "not_measured": [
+      "概念被『理解』的程度（结构前置 ≠ 掌握）",
+      "外部客户端装载实测（外部接触冻结中，由作者显式触发）",
+      "外部模型的生成质量（本包不含模型，模型无关是底线）"
+    ]
+  },
+  "human_oversight": [
+    "包的增删概念与边须走 02 §8 登记 + 资产键表更新，禁止绕过门禁改图",
+    "provenance=inferred 的边由维护者复核后方可升级为 domain-logic/external",
+    "域包公开面只放结果（资产 + 模块 + 收口注记），计划与草案不进公开仓"
+  ],
+  "risk_management": {
+    "framework": "NIST AI RMF 1.0",
+    "functions": {
+      "GOVERN": ["包登记三要件（protocol.yaml / registry / 02 在册）由 check14 硬门守住",
+                  "公开文案纪律：只写结果/状态，不写决策过程"],
+      "MAP": ["概念图即域边界的地图：47 概念 + 双分支 + 包外前置族显式声明",
+              "不覆盖处必须以新概念显式登记（禁止默认继承）"],
+      "MEASURE": ["门禁不注水：check 只增不减；本波语义并入既有 check 序号",
+                  "产出形态面按档位计量（T2/T3/T4），机验率与功能面数落基线"],
+      "MANAGE": ["资产/模块状态位（active/deprecated/retired）支持淘汰流转",
+                 "基线回退即 FAIL：新增产出不得退回散文"]
+    },
+    "residual_risks": [
+      "边级溯源部分为推断（inferred），未外部复核",
+      "包外前置族不交付 → 装载方可能缺基础概念（就绪门会报缺失，但不代劳补齐）",
+      "计划期文档内部消化，公开面看不到演进过程（有意的设计选择，非缺陷残留）"
+    ]
+  },
+  "out_of_scope": ["基础数学/编程教材内容", "具体模型权重与推理运行时", "非概念前置类的域能力（如合规审计流程）"],
+  "not_claims": [
+    "非 GIPS 合规声明（本包不产出绩效报告）",
+    "未做外部客户端装载实测——不宣称外部兼容性",
+    "概念图不宣称完备：覆盖以 v1.1 声明边界为准",
+    "NIST AI RMF 段为**字段映射陈述**，不构成合规认证"
+  ]
+}

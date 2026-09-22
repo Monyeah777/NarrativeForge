@@ -1,0 +1,64 @@
+{
+  "schema": "nf-output-index/1",
+  "package": "AI系统域包",
+  "note": "机验产出面清单（本包自持，check14/check32 与 nf output 按此判定）。role 语义同量化金融域包。概念图的唯一机读真相仍在 assets/CONCEPT_GRAPH.md §4 围栏块——本目录产出面是它**确定性派生**的产物（图形态 / 闭包产物），不是第二个真源。",
+  "outputs": [
+    {
+      "path": "outputs/schemas/SYSTEM_CARD.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "系统卡契约（用途/限制/数据/评测/人审/风险治理/不宣称）"
+    },
+    {
+      "path": "outputs/SYSTEM_CARD.json",
+      "form": "system-card",
+      "tier": "T3",
+      "role": "data",
+      "schema": "outputs/schemas/SYSTEM_CARD.schema.json",
+      "note": "本包自身的系统卡（机验形态）：把「是什么/不能做什么/怎么验的」写成有 schema 的数据"
+    },
+    {
+      "path": "outputs/schemas/CONCEPT_CLOSURE.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "闭包产物契约"
+    },
+    {
+      "path": "outputs/CONCEPT_CLOSURE.json",
+      "form": "concept-closure",
+      "tier": "T4",
+      "role": "functional",
+      "schema": "outputs/schemas/CONCEPT_CLOSURE.schema.json",
+      "recompute": {
+        "id": "concept-closure",
+        "graph": "community/AI系统域包/assets/CONCEPT_GRAPH.md",
+        "target": "C42"
+      },
+      "note": "M25/M26 产物面：由概念图复算 C42（评价与可观测）的闭包与全图装载序；check32 重算比对"
+    },
+    {
+      "path": "outputs/charts/CONCEPT_DAG.mmd",
+      "form": "mermaid",
+      "tier": "T3",
+      "role": "diagram",
+      "render": {
+        "id": "mermaid-concept-dag",
+        "graph": "community/AI系统域包/assets/CONCEPT_GRAPH.md"
+      },
+      "note": "概念前置图（按层分组）由图资产确定性派生"
+    },
+    {
+      "path": "outputs/CONCEPT_DAG.graphml",
+      "form": "graphml",
+      "tier": "T3",
+      "role": "diagram",
+      "render": {
+        "id": "graphml-concept-dag",
+        "graph": "community/AI系统域包/assets/CONCEPT_GRAPH.md"
+      },
+      "note": "同一张图的交换形态（GraphML）：边端点引用完整性由形态校验器判定"
+    }
+  ]
+}

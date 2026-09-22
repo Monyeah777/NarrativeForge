@@ -12,9 +12,9 @@
       "sha256": "7eaaccd43afa4f68a36c3712620f23b94b30111174ca60d563a353991e245ea8"
     },
     {
-      "cid": "bafyreihc5ymxdijo43m5oom6orxwnbhzl3er2nxfgiuxon5fjzo7nqmkwi",
+      "cid": "bafyreigg36jks7ox2ijhvd4g6plr5r6arsk5ukle25j4hetuhfjwlgewg4",
       "path": "02_联动注册表.md",
-      "sha256": "e2ee1971a12ee6d9d7399e746f6684f95ec91d36e532297737a54e5df6c18ab2"
+      "sha256": "c6df92a97dd7d2127a8f86f3d71ec7c08c95da2964d753c39274395365989637"
     },
     {
       "cid": "bafyreifl7u733l4iaq5jp7igrae5zewpumszzrh37w33xcbnk7goyaqawi",
@@ -87,9 +87,9 @@
       "sha256": "5159d9ed10d803ad06f56b26acf5c8c6256d422b36c488dc9767c98a220c644a"
     },
     {
-      "cid": "bafyreigx4kcsgdz2ftkfcyi4fdso6lffk5au3llanrwzupk3qsu2jshwky",
+      "cid": "bafyreidwytjhermk4k5rfpfpflum46lp5j5tzzk3lmkzpddayy6xe33kv4",
       "path": "protocol/conformance_report.json",
-      "sha256": "d7e285230f3a2cd451611c28e4ef2ca557414dad606c6d9a3d5b84a9a4c8f656"
+      "sha256": "76c4d272458ae2bb12bcaf2ae8ce796fea7b3ce55b5b15978c60c63d726f6aaf"
     },
     {
       "cid": "bafyreiapqn6bditdidzhtlyrnkknlige7bfaggvmofsed6aqlrjmay2zhi",
@@ -202,9 +202,9 @@
       "sha256": "8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f"
     },
     {
-      "cid": "bafyreich34sbiy6rkj2hhnqfvnu73zb7oznd7yvklsfmr7oes5s5w2fnv4",
+      "cid": "bafyreiabvaof2im3rt2pnqg4cnzyqn34voxzdrchnuq7yxhwht3qjkqj6i",
       "path": "desktop/src/core/registry.json",
-      "sha256": "47df241463d1527473b605ab69fde43f765a3fe2aa5c8ac8fdc49765db68adaf"
+      "sha256": "01a81c5d219b8cf4f6c0dc137388377cabaf91c4476d21fc5cf63cf704aa09f2"
     },
     {
       "cid": "bafyreib4svsfql3myvr5mriy7fb7lxxs6kunbhb6gsev3xlhffvj7qcqna",

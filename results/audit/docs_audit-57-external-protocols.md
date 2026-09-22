@@ -13,10 +13,10 @@ subjects:
   - desktop/src/core/mcp_runtime.py:104e72d90c207132a1479297ba5853a50e525e65f17ff12c08524c9520708751
   - desktop/src/core/prose_lint.py:680715a34a1c43687a87113edc323c1491ab7577f99352bda4b30633b064b15c
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
-  - desktop/src/core/doc_hygiene.py:88f7a7036765f62f80f15ec8671395e71175079b4bba749197b0f1086491a70d
+  - desktop/src/core/doc_hygiene.py:c5b18ace2d760b054706b1f29ae9c0fa98dc224d6bb93927378412d01c81e4f0
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
   - desktop/src/core/purity_scan.py:0a9e84cf5af8bf9560bbb0dc79fd166ce7b9cf2fb6e65cd47a5d7e673906d4c6
-  - scripts/nf.py:b643499e4565c78f8faf4c4dd8774c6d6ccc452047c7329028795ec7a78b9f0d
+  - scripts/nf.py:29ce5578e70221512429b7f702b02bc2e9d05f5881671798fee8c5c45f518960
   - scripts/check_external_links.py:4167e9e27e453a9f495870c9a69820d9c8886023cfd2d10d4457ae3686f15515
   - scripts/check_interop_schemas.py:6cae41b5247e8ea594b3825ff61bc3b9186caf21c170bc122d31861d30974c74
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9

@@ -7,7 +7,7 @@ package:
   conformance: "L2"            # 装配可执行：自带模块在装配在册（registry protocols[].module_ids）
   id: 量化金融域包              # 包目录名（机读唯一标识，与 02 §8 在册一致）
   name: 量化金融域包            # 显示名（与 README 标题一致）
-  version: "1.0.0"             # 包内容版本（v2.5.0 Wave2 版本槽位，V1 只增不删）
+  version: "1.1.0"             # additive 档（产出形态面：outputs/ 机验产出，见 outputs/INDEX.json 与 02 §9.5）
   pipeline: P08                 # 自带装载管线（R3；P08 量化金融域装配流——派生自 P00 通用骨架）
   module_id_range:              # 模块编号清单（类内段 <独占类别>:Mxx；每类 00-99 独立空间，01 §1.6.11 通道②）
     - "量化金融:M31"            # 自带：因子与信号口径（因子定义 / 标准化 / 中性化的口径一致性）
@@ -27,6 +27,11 @@ package:
   assets:                       # 资产声明（I4：本包内容资产 = 概念前置图 + 三张口径 / 契约表）
     count: 4                    # 内容文件数（QUANT_GRAPH / QUANT_METRICS / DATA_CONTRACT / STRATEGY_SPECS；README.md 为装载手册，非内容资产）
     readme: README.md           # 包根 README（人读速览，双源一致对照）
+  outputs:                      # 机验产出面（本波新增：口径注册表 / 绩效报告 / 图表，见 outputs/INDEX.json）
+    index: outputs/INDEX.json   # 产出面清单（机检入口；check32 output_forms 子扫描消费）
+    count: 8                    # 声明产出面件数（schema 2 / 数据 2 / 可复算 1 / 图表 2 / 图示 1）
+    machine_verifiable: 8       # 其中可机验（档位 ≥ T2）件数——本包机验率见 nf output meter
+    functional: 1               # 其中可复算（T4：绩效报告由净值数据重算比对）
   mount_layers:                 # 挂载层声明（R3，对齐 02 §5 挂载点键名；同层 default 与既有包交集为空——类内段新编号，唯一 id）
     P40 行为决策: {default: [量化金融:M31], available: []}    # 因子口径层（读概念图与口径表；官方 M50 调度本体驻官方核心位，不搬移）
     P60 长期演变: {default: [量化金融:M32], available: []}    # 回测与绩效口径层（收口口径一致性，不含因子定义）

@@ -6,7 +6,7 @@ scope: 域包深化（概念图 v1.1 扩面 + 检索词面 + 就绪清单面 + �
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - community/AI系统域包/protocol.yaml:13e26c88057987be2c5933a879d214ed75a1f33e5bc8da4371a36dbcc04bf7b1
+  - community/AI系统域包/protocol.yaml:d3803152400d86977f1c3f395c8051c6c06230bc6d565ae823a17b1ec37b27ac
   - community/AI系统域包/assets/CONCEPT_GRAPH.md:bd666baaf1bc9eccc0fbd319c37e922f2dc5abba09020003e74a1ec41c321894
   - community/AI系统域包/modules/M25_前置闭包求值.md:407a0cd4758d8390d04cfb8a3fd3b1bc4153b4e414cf023dc52f028e18ec353f
   - community/AI系统域包/modules/M26_装载序就绪门.md:997415ffd94150b0a6599359eaf04252001cf1b834495f0dfcfb95f5c50bddc3

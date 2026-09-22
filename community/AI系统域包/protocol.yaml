@@ -8,7 +8,7 @@ package:
   id: AI系统域包                # 包目录名（机读唯一标识，与 02 §8 在册一致）
   name: AI系统域包              # 显示名（与 README 标题一致）
   # 包内容版本迁移记录（additive 档，1.0.0 → 1.1.0）：四步记录单一真源 = 02 §9.4（本件不复制一份）
-  version: "1.1.0"
+  version: "1.2.0"             # additive 档（产出形态面：outputs/ 机验产出，见 outputs/INDEX.json 与 02 §9.5）
   pipeline: P07                 # 自带装载管线（R3；P07 AI系统域装配流——派生自 P00 通用骨架）
   module_id_range:              # 模块编号清单（类内段 <独占类别>:Mxx；每类 00-99 独立空间，01 §1.6.11 通道②）
     - "AI系统:M25"              # 自带：前置闭包求值（读图求闭包与缺失清单）
@@ -28,6 +28,11 @@ package:
   assets:                       # 资产声明（I4：本包唯一内容资产 = 概念图）
     count: 1                    # 内容文件数（assets/CONCEPT_GRAPH.md；README.md 为装载手册，非内容资产）
     readme: README.md           # 包根 README（人读速览，双源一致对照）
+  outputs:                      # 机验产出面（本波新增：数据 / 图表 / 图结构 / 契约形态，见 outputs/INDEX.json）
+    index: outputs/INDEX.json   # 产出面清单（机检入口；check32 output_forms 子扫描消费）
+    count: 6                    # 声明产出面件数（schema 2 / 数据 1 / 可复算 1 / 图示 2）
+    machine_verifiable: 6       # 其中可机验（档位 ≥ T2）件数——本包机验率见 nf output meter
+    functional: 1               # 其中可复算（T4：闭包产物由概念图重算比对）
   mount_layers:                 # 挂载层声明（R3，对齐 02 §5 挂载点键名；同层 default 与既有包交集为空——两模块为类内段新编号，唯一 id）
     P40 行为决策: {default: [AI系统:M25], available: []}    # 闭包求值层（读图 + 算闭包；官方 M50 调度本体驻官方核心位，不搬移）
     P60 长期演变: {default: [AI系统:M26], available: []}    # 装载序与就绪门层（派生量收口，不含闭包算法）

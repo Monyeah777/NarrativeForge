@@ -566,6 +566,42 @@ def _build_parser() -> argparse.ArgumentParser:
     tr.add_argument("--write", action="store_true",
                     help="写入 protocol/generated/receipt_chain.json")
     tr.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    of = sub.add_parser("output",
+                        help="产出形态面（数据/图表/图结构/契约：形态清单 + 机验档位 + 可复算）",
+                        description="产出形态面：把「产出一律是散文」的缺口机制化——"
+                                    "形态清单（protocol/output_forms.json）、包级产出面"
+                                    "（community/<包>/outputs/INDEX.json）、T0–T4 档位判定、"
+                                    "T4 可复算面重算比对、机验率基线")
+    ofsub = of.add_subparsers(dest="output_cmd")
+    of_ls = ofsub.add_parser("list", help="列形态清单（可按状态/类别/档位过滤）",
+                             description="列产出形态清单：每条给类别 / 档位 / 状态 / 规范入口，"
+                                         "并打印覆盖统计（可达数与档位/状态分布）")
+    of_ls.add_argument("--status", default="", help="按状态过滤（supported/absorbed/planned/…）")
+    of_ls.add_argument("--category", default="", help="按类别过滤")
+    of_ls.add_argument("--tier", default="", help="按档位过滤（T0–T4）")
+    of_ls.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    of_ck = ofsub.add_parser("check", help="判单件（多件）产出面的形态与档位并校验",
+                             description="判件：按扩展名 + 内容嗅探判形态与上限档位，"
+                                         "跑该形态的校验器（JSON 重复键 / CSV 行长 / Vega-Lite 通道绑定 / "
+                                         "GraphML 悬空边 / 口径注册表的 engine 真实性…）")
+    of_ck.add_argument("paths", nargs="+", help="待判文件路径（仓库相对或绝对）")
+    of_ck.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    of_vf = ofsub.add_parser("verify", help="全量机检（与 verify check32 output_forms 同语义）",
+                             description="全量机检：形态清单自洽 + 包级产出面逐件校验（形态/档位/schema/"
+                                         "双源一致/T4 复算）+ 机验率基线不回落；退出码即门禁语义")
+    of_vf.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    of_rn = ofsub.add_parser("render", help="按包清单渲染产出面（数据/图表/图结构）",
+                             description="渲染：按 community/<包>/outputs/INDEX.json 调生成器重算/重绘产出面；"
+                                         "缺省只报告差异，--write 才落盘（EOL 契约 = LF）")
+    of_rn.add_argument("--package", default="", help="只渲染某包（缺省全部）")
+    of_rn.add_argument("--write", action="store_true", help="落盘（缺省只报告差异，不写）")
+    of_rn.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    of_mt = ofsub.add_parser("meter", help="机验率 / 功能面计量（--write 重签基线）",
+                             description="计量：逐包算机验面 / 功能面（T4）/ 散文资产与机验率；"
+                                         "--write 重签 protocol/output_forms_baseline.json（回退即 FAIL）")
+    of_mt.add_argument("--write", action="store_true",
+                       help="重签 protocol/output_forms_baseline.json")
+    of_mt.add_argument("--json", action="store_true", help="输出结构化 JSON")
     dc = sub.add_parser("decide",
                         help="决策层（typed-decision 三原语 choice/noul/score：候选集上报概率 + argmax）",
                         description="决策层端口：把选择写成类型化问题交给决策模型；"
@@ -2368,6 +2404,112 @@ def _cmd_decide(args):
     return 0 if out.get("status") == "ok" else 1
 
 
+def _cmd_output(args):
+    """nf output：产出形态面（清单 / 判件 / 全量机检 / 渲染 / 机验率）。"""
+    import json as _json
+
+    from core import output_forms as of
+
+    sub = getattr(args, "output_cmd", "") or "verify"
+    if sub == "list":
+        reg = of.load_registry(ROOT)
+        rows = []
+        for f in reg.get("forms") or []:
+            if args.status and f.get("status") != args.status:
+                continue
+            if args.category and f.get("category") != args.category:
+                continue
+            if args.tier and f.get("tier") != args.tier:
+                continue
+            rows.append(f)
+        if args.json:
+            print(_json.dumps(rows, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("  %-28s %-14s %-4s %-12s %s"
+                  % ("形态", "类别", "档位", "状态", "规范入口/备注"))
+            for f in rows:
+                print("  %-28s %-14s %-4s %-12s %s"
+                      % (f.get("id"), f.get("category"), f.get("tier"),
+                         f.get("status"), (f.get("spec") or {}).get("uri", "")))
+            cov = reg.get("coverage") or {}
+            print("  —— 共 %d 条（可达 %s / 不可达 %s）；状态 %s；档位 %s"
+                  % (cov.get("forms", 0), cov.get("reachable"),
+                     cov.get("unreachable"), cov.get("by_status"), cov.get("by_tier")))
+        return 0
+    if sub == "check":
+        blob = []
+        bad = 0
+        for p in args.paths:
+            rel = p
+            if os.path.isabs(p):
+                rel = os.path.relpath(p, os.path.abspath(ROOT)).replace(os.sep, "/")
+            if not os.path.isfile(os.path.join(ROOT, rel.replace("/", os.sep))):
+                blob.append({"path": rel, "error": "文件不存在"}); bad += 1; continue
+            form, tier = of.detect(ROOT, rel)
+            issues = of._FORM_CHECK.get(form, lambda r, x: [])(ROOT, rel)
+            blob.append({"path": rel, "form": form, "max_tier": tier,
+                         "issues": issues})
+            bad += 1 if issues else 0
+        if args.json:
+            print(_json.dumps(blob, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            for r in blob:
+                if r.get("error"):
+                    print("  [FAIL] %s %s" % (r["path"], r["error"])); continue
+                mark = "✗" if r["issues"] else "✓"
+                print("  %s %-46s 形态=%-14s 上限档位=%s"
+                      % (mark, r["path"], r["form"], r["max_tier"]))
+                for i in r["issues"]:
+                    print("      - %s" % i)
+        return 1 if bad else 0
+    if sub == "render":
+        issues, rows = of.render_outputs(ROOT, package=args.package, write=args.write)
+        if args.json:
+            print(_json.dumps({"issues": issues, "rows": rows},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            for r in rows:
+                print("  %s %-52s 生成器=%-24s %s"
+                      % ("改" if r["changed"] else "同", r["path"], r["generator"],
+                         "已落盘" if r["written"] else "未落盘（--write 才写）"))
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+        return 1 if issues else 0
+    if sub == "meter":
+        if args.write:
+            doc = of.write_baseline(ROOT)
+            if not args.json:
+                print("  已重签 %s" % of.BASELINE_REL)
+                _st = doc
+        _, _st = of.meter(ROOT)
+        if args.json:
+            print(_json.dumps(_st, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("  %-18s %-8s %-8s %-10s %s"
+                  % ("包", "机验面", "功能面", "散文资产", "机验率"))
+            for pkg, s in (_st.get("packages") or {}).items():
+                print("  %-18s %-8s %-8s %-10s %s"
+                      % (pkg, s["machine_verifiable"], s["functional"],
+                         s["prose_assets"], s["machine_verifiable_ratio"]))
+            print("  合计：%s" % _st.get("totals"))
+        return 0
+    issues, stats = of.scan(ROOT)
+    if args.json:
+        print(_json.dumps({"issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+        if not issues:
+            reg = stats.get("registry") or {}
+            print("  ✓ 产出形态面一致：形态 %s 条（可达 %s）；包级产出 %s 件；机验率 %s"
+                  % (reg.get("forms"), reg.get("forms", 0) - reg.get("unreachable", 0),
+                     (stats.get("index") or {}).get("outputs"),
+                     {k: v["machine_verifiable_ratio"]
+                      for k, v in (stats.get("meter") or {}).items()}))
+    return 1 if issues else 0
+
+
 def _cmd_transparency(args):
     """nf transparency：透明日志（哈希链）校验 / 落盘。"""
     from core import transparency_log as tl
@@ -4066,6 +4208,8 @@ def main(argv=None) -> int:
         return _cmd_interop(args)
     if args.cmd == "transparency":
         return _cmd_transparency(args)
+    if args.cmd == "output":
+        return _cmd_output(args)
     if args.cmd == "decide":
         return _cmd_decide(args)
     if args.cmd == "workloop":

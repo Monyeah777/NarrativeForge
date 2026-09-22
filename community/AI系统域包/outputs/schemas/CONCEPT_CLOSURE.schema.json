@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narrativeforge.local/schema/concept-closure.schema.json",
+  "title": "AI 系统域 · 前置闭包与装载序产物（可复算）",
+  "description": "M25（前置闭包求值）/ M26（装载序就绪门）的产物面：由概念图资产确定性复算，check32 会重算并逐字段比对（T4）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "graph", "target", "closure", "load_order", "alias"],
+  "properties": {
+    "kind": {"const": "nf-concept-closure/1"},
+    "graph": {"type": "string", "pattern": "^assets/|^community/"},
+    "target": {"type": "string", "pattern": "^C\\d{2}$"},
+    "closure": {"type": "array", "minItems": 1,
+                "items": {"type": "string", "pattern": "^C\\d{2}$"}},
+    "load_order": {"type": "array", "minItems": 1,
+                   "items": {"type": "string", "pattern": "^C\\d{2}$"}},
+    "alias": {"type": "array",
+              "items": {"type": "array", "minItems": 2, "maxItems": 2,
+                        "items": {"type": "string"}}}
+  }
+}

@@ -1,0 +1,9 @@
+%% 口径声明链（QUANT_METRICS 口径纪律的可视化，非新增真源）
+flowchart LR
+  A[收益口径 simple/log] --> D[绩效报告]
+  B[年化因子 252/52/12] --> D
+  C[无风险利率 rf] --> D
+  E[净值序列] --> D
+  D --> F[披露面 disclosures]
+  G[成本与滑点申报] --> F
+  H[基准与成交价假设] --> F

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narrativeforge.local/schema/performance-report.schema.json",
+  "title": "量化金融域 · 绩效报告（GIPS 对齐披露面）",
+  "description": "由 core/quant_metrics.py 从净值数据确定性复算的报告（T4）：口径四要素（收益口径 / 年化因子 / 无风险利率 / 区间与频率）与披露面齐备。**非 GIPS 合规声明**——合规需第三方鉴证与合成组合全量数据。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "as_of", "currency", "return_basis", "frequency", "annual_factor",
+               "risk_free_rate_annual", "period", "gross", "benchmark", "excess", "costs",
+               "disclosures"],
+  "properties": {
+    "kind": {"const": "nf-performance/1"},
+    "as_of": {"type": "string", "format": "date"},
+    "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+    "return_basis": {"enum": ["simple", "log"]},
+    "frequency": {"enum": ["daily", "weekly", "monthly"]},
+    "annual_factor": {"enum": [252, 52, 12]},
+    "risk_free_rate_annual": {"type": "number"},
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end", "observations"],
+      "properties": {
+        "start": {"type": "string", "format": "date"},
+        "end": {"type": "string", "format": "date"},
+        "observations": {"type": "integer", "minimum": 3}
+      }
+    },
+    "gross": {"$ref": "#/$defs/block"},
+    "benchmark": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/benchmark_block"}]},
+    "excess": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["annualized", "tracking_error", "information_ratio"],
+          "properties": {
+            "annualized": {"type": "number"},
+            "tracking_error": {"type": "number"},
+            "information_ratio": {"type": "number"}
+          }
+        }
+      ]
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fee_bps", "slippage_bps", "fill_rule", "turnover_basis"],
+      "properties": {
+        "fee_bps": {"type": "number", "minimum": 0},
+        "slippage_bps": {"type": "number", "minimum": 0},
+        "fill_rule": {"enum": ["next_open", "vwap", "twap"]},
+        "turnover_basis": {"enum": ["single_side", "double_side"]}
+      }
+    },
+    "disclosures": {"type": "array", "minItems": 5,
+                    "items": {"type": "string", "minLength": 8}}
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cumulative", "annualized", "volatility_annualized", "sharpe",
+                   "max_drawdown", "calmar"],
+      "properties": {
+        "cumulative": {"type": "number"},
+        "annualized": {"type": "number"},
+        "volatility_annualized": {"type": "number", "minimum": 0},
+        "sharpe": {"type": "number"},
+        "max_drawdown": {"type": "number", "minimum": 0},
+        "calmar": {"type": "number"}
+      }
+    },
+    "benchmark_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "cumulative", "annualized", "volatility_annualized",
+                   "sharpe", "max_drawdown", "calmar"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "cumulative": {"type": "number"},
+        "annualized": {"type": "number"},
+        "volatility_annualized": {"type": "number", "minimum": 0},
+        "sharpe": {"type": "number"},
+        "max_drawdown": {"type": "number", "minimum": 0},
+        "calmar": {"type": "number"}
+      }
+    }
+  }
+}

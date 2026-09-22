@@ -1,0 +1,24 @@
+{
+  "note": "机验率/功能面基线（可重签工件）。低于基线即 check32 失败——产出形态不得从数据/契约退回散文。重签：nf output meter --write",
+  "packages": {
+    "AI系统域包": {
+      "functional": 1,
+      "machine_verifiable": 6,
+      "machine_verifiable_ratio": 0.8571,
+      "prose_assets": 1
+    },
+    "量化金融域包": {
+      "functional": 1,
+      "machine_verifiable": 8,
+      "machine_verifiable_ratio": 0.6667,
+      "prose_assets": 4
+    }
+  },
+  "schema": "nf-output-forms-baseline/1",
+  "totals": {
+    "functional": 2,
+    "machine_verifiable": 14,
+    "machine_verifiable_ratio": 0.7368,
+    "prose_assets": 5
+  }
+}

@@ -1,0 +1,2761 @@
+{
+  "schema": "nf-output-forms/1",
+  "note": "产出形态清单（真源）。tier = 本仓可做到的**判定强度**（T0 散文 → T4 可复算），不是格式高低；status = 本仓落地状态（supported/absorbed/planned/deferred/unfit/reference/unreachable）。evidence = 本机逐条联网实测快照（可达性/取样 sha256），**外部规范只作形态入口与机制借鉴，不作质量背书**（STRATEGY §3.2/§3.3）。重签：scripts/nf.py output verify；生成：见内部档案。",
+  "tiers": {
+    "T0": "散文（只能人读，机器无判据）",
+    "T1": "良构（有语法，可判是否可解析）",
+    "T2": "形状（有 schema / 结构断言：类型·必填·枚举）",
+    "T3": "语义（引用完整·单位口径·双源一致）",
+    "T4": "可复算（本仓引擎重算并与在盘产物逐字段一致）"
+  },
+  "categories": [
+    {
+      "id": "structured-data",
+      "name": "结构化数据",
+      "note": "可直接被程序读取的通用数据形态"
+    },
+    {
+      "id": "tabular",
+      "name": "表格与列式",
+      "note": "二维表 / 列式 / 表格元数据"
+    },
+    {
+      "id": "timeseries",
+      "name": "时序与观测",
+      "note": "时间序列、指标暴露、遥测"
+    },
+    {
+      "id": "chart",
+      "name": "图表",
+      "note": "可复现的图形规格（图即数据）"
+    },
+    {
+      "id": "diagram",
+      "name": "图示",
+      "note": "文本化图示语言"
+    },
+    {
+      "id": "graph-structure",
+      "name": "图与知识结构",
+      "note": "节点/边/本体/溯源图"
+    },
+    {
+      "id": "contract",
+      "name": "契约与约束",
+      "note": "schema / 类型 / 形状约束语言"
+    },
+    {
+      "id": "interface",
+      "name": "接口",
+      "note": "服务与事件接口描述"
+    },
+    {
+      "id": "packaging",
+      "name": "打包与元数据",
+      "note": "交付包、数据集元数据、归档规范"
+    },
+    {
+      "id": "document",
+      "name": "文档",
+      "note": "人读文档形态"
+    },
+    {
+      "id": "quant-domain",
+      "name": "金融专业面",
+      "note": "量化/投研域权威规范与实现参考"
+    },
+    {
+      "id": "ai-domain",
+      "name": "AI 专业面",
+      "note": "AI 系统域权威规范与实现参考"
+    }
+  ],
+  "coverage": {
+    "forms": 116,
+    "reachable": 110,
+    "unreachable": 6,
+    "by_status": {
+      "absorbed": 17,
+      "deferred": 11,
+      "planned": 61,
+      "reference": 10,
+      "supported": 11,
+      "unfit": 6
+    },
+    "by_tier": {
+      "T1": 22,
+      "T2": 55,
+      "T3": 39
+    }
+  },
+  "forms": [
+    {
+      "id": "croissant",
+      "category": "ai-domain",
+      "name": "Croissant（数据集元数据）",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：数据集货架立项（需 MLCommons 元数据形态）",
+      "spec": {
+        "uri": "https://docs.mlcommons.org/croissant/docs/croissant-spec.html",
+        "version": "1.0",
+        "title": "Croissant Format Specification | Croissant site"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "e004696783f688ed5caca2ea8280dfda3764ac9fb2d0f65db10e5ecfd7c7e8b5",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cyclonedx-mlbom",
+      "category": "ai-domain",
+      "name": "CycloneDX ML-BOM",
+      "tier": "T2",
+      "status": "supported",
+      "validator": "interop_export:cyclonedx",
+      "note": "通用 SBOM 面已达；ML-BOM 扩展字段未落（触发：模型资产入库）",
+      "spec": {
+        "uri": "https://cyclonedx.org/capabilities/mlbom/",
+        "version": "1.5",
+        "title": "Machine Learning Bill of Materials (AI/ML-BOM) | CycloneDX"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "63ba98bc9e113ca8032cf92438beb0e99014cdd764365ef73fa786527a6b4c34",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "datasheets",
+      "category": "ai-domain",
+      "name": "Datasheets for Datasets",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：数据集资产入库（与 Croissant 同批）",
+      "spec": {
+        "uri": "https://arxiv.org/abs/1803.09010",
+        "version": "2021",
+        "title": "[1803.09010] Datasheets for Datasets"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "a797ae3b75d7bd60adb85a2175ed4bcac98b8fec91082a37edf5d4f43da2584e",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "eu-ai-act",
+      "category": "ai-domain",
+      "name": "EU AI Act 技术文档附件",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "本波只落「用途/限制/人审」透明字段；**不宣称**附件四对齐",
+      "spec": {
+        "uri": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+        "version": "2024/1689",
+        "title": ""
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 202,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "helm",
+      "category": "ai-domain",
+      "name": "HELM（评测结果面）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：评测结果面（场景×指标矩阵）",
+      "spec": {
+        "uri": "https://github.com/stanford-crfm/helm",
+        "version": "repo",
+        "title": "GitHub - stanford-crfm/helm: Holistic Evaluation of Language Models (HELM) is an open source Python framework created by"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "5b2b46c19e3cdaf1a334bee12532996506e73e34a90c17da187e343921732b7c",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "hf-model-card",
+      "category": "ai-domain",
+      "name": "Hugging Face Model Card 元数据",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：与 HF hub 元数据互操作",
+      "spec": {
+        "uri": "https://huggingface.co/docs/hub/model-cards",
+        "version": "hub",
+        "title": "Model Cards · Hugging Face"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "e2b05a16e40e2c4a5cc189acb7cd4423d86b2dcc0e842e9fb375f7fdae3668f9",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "inspect-ai",
+      "category": "ai-domain",
+      "name": "Inspect AI（评测框架）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：评测执行与日志面",
+      "spec": {
+        "uri": "https://github.com/UKGovernmentBEIS/inspect_ai",
+        "version": "repo",
+        "title": "GitHub - UKGovernmentBEIS/inspect_ai: Inspect: A framework for large language model evaluations · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "385e90eb38fe53dcb5833e33382881cc013341fa2656f7da5f6d4cb408da67f7",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "iso42001",
+      "category": "ai-domain",
+      "name": "ISO/IEC 42001 AI 管理体系",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "规范入口 403（bot 拦截）；触发：管理体系文档面立项",
+      "spec": {
+        "uri": "https://www.iso.org/standard/42001",
+        "version": "2023",
+        "title": ""
+      },
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "content_type": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "mlflow-model",
+      "category": "ai-domain",
+      "name": "MLflow Model Format",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：模型资产入库面（当前无模型资产货架）",
+      "spec": {
+        "uri": "https://mlflow.org/docs/latest/models.html",
+        "version": "2.x",
+        "title": "<!DOCTYPE html>"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "52accb7c666483d57f9c876772dfe601bbdc83f7240a69e3045b2c3025a0cc90",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "model-cards",
+      "category": "ai-domain",
+      "name": "Model Cards for Model Reporting",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "output_forms:system-card",
+      "note": "系统卡形态：用途/限制/数据/评估/人审/风险治理映射，含 schema",
+      "spec": {
+        "uri": "https://arxiv.org/abs/1810.03993",
+        "version": "2019",
+        "title": "[1810.03993] Model Cards for Model Reporting"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "e2febd58587b7afa80118607529edc30fc082054cb46c17da1dfcf9954813635",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "nist-ai-rmf",
+      "category": "ai-domain",
+      "name": "NIST AI RMF",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "output_forms:system-card",
+      "note": "系统卡 risk_management 段按 RMF 四职能（GOVERN/MAP/MEASURE/MANAGE）声明映射",
+      "spec": {
+        "uri": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "version": "1.0",
+        "title": "AI Risk Management Framework | NIST"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "3bba0c77fa216487611778455c01a2afb89081251f0dcdf09ca05ed4832d9870",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "onnx-ir",
+      "category": "ai-domain",
+      "name": "ONNX IR",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：模型文件交换面",
+      "spec": {
+        "uri": "https://github.com/onnx/onnx/blob/main/docs/IR.md",
+        "version": "opset 21",
+        "title": "onnx/docs/IR.md at main · onnx/onnx · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "0b03904b9f98f9bb099c9cf529c5eeacd670d148a57d75100f2278fc7b3e09f0",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "otel-gen-ai",
+      "category": "ai-domain",
+      "name": "OTel GenAI 语义约定",
+      "tier": "T3",
+      "status": "supported",
+      "validator": "telemetry_semconv",
+      "note": "已达：GenAI 语义约定核对面",
+      "spec": {
+        "uri": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+        "version": "1.x",
+        "title": "Moved: Generative AI semantic conventions | OpenTelemetry"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "492f48d15ec173c8845c8a32ccfc8d85869c8eaafcf768bfc0754033f4c52882",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ragas",
+      "category": "ai-domain",
+      "name": "RAGAS（RAG 评测指标）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：RAG 指标集（忠实度/相关度）",
+      "spec": {
+        "uri": "https://github.com/explodinggradients/ragas",
+        "version": "repo",
+        "title": "GitHub - vibrantlabsai/ragas: Supercharge Your LLM Application Evaluations 🚀 · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "5da745543ce6934189044a2c9b08e4b043986d0af6d1abd71e994694025c7ed1",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "spdx3",
+      "category": "ai-domain",
+      "name": "SPDX 3.0（含 AI profile）",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "当前为 SPDX 2.3；3.0 含 AI profile，触发：模型资产面",
+      "spec": {
+        "uri": "https://spdx.github.io/spdx-spec/v3.0/",
+        "version": "3.0.1",
+        "title": "Redirecting"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "9281b3a21aeb60cc6adae7122d304f90e092ac22c02e25558454437cd40a0a2a",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "chartjs-config",
+      "category": "chart",
+      "name": "Chart.js configuration",
+      "tier": "T2",
+      "status": "deferred",
+      "validator": "",
+      "note": "前端壳冻结中；前置：壳波",
+      "spec": {
+        "uri": "https://www.chartjs.org/docs/latest/configuration/",
+        "version": "4.x",
+        "title": "Configuration | Chart.js"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "b43875c05ec0ab50169127c06b98b57ce742a47148873cf319b6ad0abafd9dbe",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "echarts-option",
+      "category": "chart",
+      "name": "Apache ECharts option",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：中文生态图表面（同上依赖问题）",
+      "spec": {
+        "uri": "https://echarts.apache.org/en/option.html",
+        "version": "5.x",
+        "title": "Documentation - Apache ECharts"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "7cf2ac41d1689b6debec43d1917e4d76161a4be62a523f3dd0964d77a371d063",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "grafana-dashboard-json",
+      "category": "chart",
+      "name": "Grafana Dashboard JSON model",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：遥测面接 Grafana 交付",
+      "spec": {
+        "uri": "https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/view-dashboard-json-model/",
+        "version": "v10+",
+        "title": "JSON model | Grafana documentation"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "7ec15985df04195768382735139495c826ea3d981d5f9b33a6e7243be6f99ba6",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "observable-plot",
+      "category": "chart",
+      "name": "Observable Plot",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "规范入口本机 429（限流），形态登记保留",
+      "spec": {
+        "uri": "https://observablehq.com/plot/",
+        "version": "0.6",
+        "title": ""
+      },
+      "evidence": {
+        "reachable": false,
+        "http_status": 429,
+        "content_type": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": "HTTPError: Too Many Requests"
+      }
+    },
+    {
+      "id": "plotly-figure",
+      "category": "chart",
+      "name": "Plotly Figure JSON",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：需交互式图表交付（引入 plotly 依赖）",
+      "spec": {
+        "uri": "https://raw.githubusercontent.com/plotly/plotly.js/master/dist/plot-schema.json",
+        "version": "plot-schema",
+        "title": "{"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain; charset=utf-8",
+        "sha256_sample": "0442b742d7a226b1368535006b200f87901a439e60db70c5f88d573be7420b47",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "svg",
+      "category": "chart",
+      "name": "SVG",
+      "tier": "T1",
+      "status": "absorbed",
+      "validator": "output_forms:svg",
+      "note": "XML 良构性判定（未做渲染正确性判定）",
+      "spec": {
+        "uri": "https://www.w3.org/TR/SVG2/",
+        "version": "2",
+        "title": "Scalable Vector Graphics (SVG) 2"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "10e8cc28e2b373c91b796463873a6804b642967b623b0a8835b9d4ac19e23d5a",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "vega",
+      "category": "chart",
+      "name": "Vega 规格",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：Vega-Lite 表达不够（复杂交互面）",
+      "spec": {
+        "uri": "https://vega.github.io/schema/vega/v5.json",
+        "version": "v5",
+        "title": "{"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "sha256_sample": "cf3d5d144eda0db1946f85cff9262707cf85b243f6e9368f21f3da0876b66322",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "vega-lite",
+      "category": "chart",
+      "name": "Vega-Lite 规格",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "output_forms:vega-lite",
+      "note": "结构校验（$schema/mark/data/encoding 通道绑定）+ 本仓确定性生成器",
+      "spec": {
+        "uri": "https://vega.github.io/schema/vega-lite/v5.json",
+        "version": "v5",
+        "title": "{"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "sha256_sample": "e9b3625d6825ad774d0da3e1d528207a502c7126c0375365840853e765cd89ea",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cddl",
+      "category": "contract",
+      "name": "CDDL",
+      "tier": "T2",
+      "status": "deferred",
+      "validator": "",
+      "note": "同上；NF 产出面非 CBOR 主导",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc8610.txt",
+        "version": "RFC 8610",
+        "title": "Internet Engineering Task Force (IETF)                       H. Birkholz"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "16ad35088753299829e31c470a6047ca4dd40e2d1559ca0d4e213c0cbd65e9b7",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cue",
+      "category": "contract",
+      "name": "CUE",
+      "tier": "T3",
+      "status": "unfit",
+      "validator": "",
+      "note": "本机无 CUE 工具链且 core 零依赖红线；如实不适",
+      "spec": {
+        "uri": "https://cuelang.org/docs/reference/spec/",
+        "version": "0.9",
+        "title": "The CUE Language Specification | CUE"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "3b9c07085ce0bca63afa4867435b755627160c0be25f5d4e35878fcb835263b1",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "json-schema",
+      "category": "contract",
+      "name": "JSON Schema",
+      "tier": "T2",
+      "status": "absorbed",
+      "validator": "output_forms:json_schema_check",
+      "note": "自带 2020-12 子集校验器；不支持的关键字显式上报（绝不静默通过）",
+      "spec": {
+        "uri": "https://json-schema.org/draft/2020-12/schema",
+        "version": "2020-12",
+        "title": "{"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "application/schema+json",
+        "sha256_sample": "41da76f5afb7ce062d248f762463a92f7ca47e4e0f905b224ba6afeef91ded0f",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "json-schema-core",
+      "category": "contract",
+      "name": "JSON Schema Core 规范正文",
+      "tier": "T2",
+      "status": "reference",
+      "validator": "",
+      "note": "同 json-schema（规范正文入口，不单独成面）",
+      "spec": {
+        "uri": "https://json-schema.org/draft/2020-12/json-schema-core",
+        "version": "2020-12",
+        "title": "JSON Schema: A Media Type for Describing JSON Documents"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "df4a6e095c5f89c6adcb2688719aeef189b8ff0c615294cf7d31a76dfb92c9ca",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "json-typedef",
+      "category": "contract",
+      "name": "JSON Type Definition",
+      "tier": "T2",
+      "status": "deferred",
+      "validator": "",
+      "note": "与 JSON Schema 同类；已有后者即不重复进货",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc8927.txt",
+        "version": "RFC 8927",
+        "title": "﻿"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "abf00295a75760a87e95cc28667554888e168a479834189e62778fdbfc7fcc72",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "k8s-crd",
+      "category": "contract",
+      "name": "Kubernetes CRD（OpenAPI v3 子集）",
+      "tier": "T2",
+      "status": "unfit",
+      "validator": "",
+      "note": "不适面：NF 非 Kubernetes 交付物",
+      "spec": {
+        "uri": "https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/",
+        "version": "1.x",
+        "title": "Extend the Kubernetes API with CustomResourceDefinitions | Kubernetes"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "1bed268920cb6f6b2f39428f5c6b50d2143ea280e2e4e0522730060330888d98",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "shacl",
+      "category": "contract",
+      "name": "SHACL",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：图约束需要标准形状语言时",
+      "spec": {
+        "uri": "https://www.w3.org/TR/shacl/",
+        "version": "REC 2017",
+        "title": "Shapes Constraint Language (SHACL)"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "f32508315c6f77f16f1e9c3938a1ee2994ec505edc1daa92a2f4188714247284",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "xmlschema11",
+      "category": "contract",
+      "name": "XML Schema 1.1",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：XML 产出面需要强约束时",
+      "spec": {
+        "uri": "https://www.w3.org/TR/xmlschema11-1/",
+        "version": "1.1",
+        "title": "W3C XML Schema Definition Language (XSD) 1.1 Part 1: Structures"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "3fa17aa38f9213112ec8d67bfa8ad6f5812d788cbbcd7d52f121f1b6afda4d85",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "graphviz-dot",
+      "category": "diagram",
+      "name": "Graphviz DOT",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "output_forms:dot",
+      "note": "头/花括号配对判定 + 生成器",
+      "spec": {
+        "uri": "https://graphviz.org/doc/info/lang.html",
+        "version": "DOT language",
+        "title": "DOT Language | Graphviz"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "c450fdf5466fccb642ddb1f6800eb2c1727eff66c4b0fdcf1d67e7ff17fd9650",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "mermaid",
+      "category": "diagram",
+      "name": "Mermaid",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "output_forms:mermaid",
+      "note": "图种/首行/语句面判定 + 生成器",
+      "spec": {
+        "uri": "https://mermaid.js.org/intro/",
+        "version": "11.x",
+        "title": "About Mermaid | Mermaid"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "969720854d515995f04c6ab778c9b7216509f38cf6b856e09b7b1efa5e13772c",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "plantuml",
+      "category": "diagram",
+      "name": "PlantUML",
+      "tier": "T2",
+      "status": "deferred",
+      "validator": "",
+      "note": "前置：plantuml 渲染器（外部 Java 工具链）",
+      "spec": {
+        "uri": "https://plantuml.com/en/guide",
+        "version": "1.2024",
+        "title": "PlantUML Language Reference Guide"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "08f74ea7acb85817035c4488fdb0e2b1557c8b703259eeac91a598e4af9e48c0",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "asciidoc",
+      "category": "document",
+      "name": "AsciiDoc",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：多格式文档链需求（当前 Markdown 主面）",
+      "spec": {
+        "uri": "https://docs.asciidoctor.org/asciidoc/latest/",
+        "version": "v1.0.4",
+        "title": "AsciiDoc Language Documentation | Asciidoctor Docs"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "493fb838c8e13ca0f5aeef0d271f82e8c5b8d85feb27ab6e3675c916f90e463b",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "atom",
+      "category": "document",
+      "name": "Atom Syndication Format",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：订阅/更新流交付面",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc4287.txt",
+        "version": "RFC 4287",
+        "title": "Example Feed"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "c379f78d073d77917ca8b2c51ee21d02c1cb59d95b9ca0eea8996591f103399f",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "commonmark",
+      "category": "document",
+      "name": "CommonMark",
+      "tier": "T1",
+      "status": "supported",
+      "validator": "doc_hygiene/prose_lint",
+      "note": "已达：文档卫生与正文 lint",
+      "spec": {
+        "uri": "https://spec.commonmark.org/0.31.2/",
+        "version": "0.31.2",
+        "title": "CommonMark Spec"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "c6a6884569433744c7afb82d2d001b0259239b9fede18e808ee23f9b517673fa",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "epub33",
+      "category": "document",
+      "name": "EPUB",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：电子书交付面",
+      "spec": {
+        "uri": "https://www.w3.org/TR/epub-33/",
+        "version": "3.3",
+        "title": "EPUB 3.3"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "0cc4807ce78c6b98ed22127f1366bbe36929409b242cad5974a0abefd1e8acbe",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "gfm",
+      "category": "document",
+      "name": "GitHub Flavored Markdown",
+      "tier": "T1",
+      "status": "supported",
+      "validator": "doc_hygiene/prose_lint",
+      "note": "同 CommonMark（表格/围栏面）",
+      "spec": {
+        "uri": "https://github.github.com/gfm/",
+        "version": "0.29-gfm",
+        "title": "GitHub Flavored Markdown Spec"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "ca07b2c6fdde684e4ce03b9f6873da93d50d9eb731c1b8e84e3a2244fb3b20ca",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "html5",
+      "category": "document",
+      "name": "HTML Living Standard",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：网页交付面（需 HTML 良构判定）",
+      "spec": {
+        "uri": "https://html.spec.whatwg.org/",
+        "version": "living",
+        "title": "HTML Standard"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "4193a69ab23f9282b4fbbf009f7566773e5f58041bd51a481e2bf818f93b5dba",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "json-feed",
+      "category": "document",
+      "name": "JSON Feed",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "同上（JSON 形态）",
+      "spec": {
+        "uri": "https://www.jsonfeed.org/version/1.1/",
+        "version": "1.1",
+        "title": "JSON Feed - JSON Feed Version 1.1"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "9775f930a0bc8c785fdae66f4dd0233e68f0d8dd69173b7aad146371f34e93d2",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "latex",
+      "category": "document",
+      "name": "LaTeX",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：出版级排版交付面",
+      "spec": {
+        "uri": "https://www.latex-project.org/help/documentation/",
+        "version": "2e",
+        "title": "LaTeX Documentation"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "6b42102760bfd8fafa11ebc9d5f57d16a72838145472f0c6cafa6798d5ea0406",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "nbformat",
+      "category": "document",
+      "name": "Jupyter Notebook Format",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：可执行笔记交付面",
+      "spec": {
+        "uri": "https://nbformat.readthedocs.io/en/latest/format_description.html",
+        "version": "4.5",
+        "title": "The Notebook file format &#8212; nbformat 5.11 documentation"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "f534c9b16fe3f228576ce9c85ddb7e0602427626e1ab3c7dbf3e2de404e7f503",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "gexf",
+      "category": "graph-structure",
+      "name": "GEXF",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：图交换需求（GraphML 已覆盖主面）",
+      "spec": {
+        "uri": "https://gexf.net/",
+        "version": "1.2",
+        "title": "GEXF File Format"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "6800cb9e515b2a55a900f28a4e6a37c99305ccfb14cad2126ebdd5506059a022",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "graphml",
+      "category": "graph-structure",
+      "name": "GraphML",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "output_forms:graphml",
+      "note": "XML + 节点/边引用完整性（边端点悬空即 FAIL）+ 生成器",
+      "spec": {
+        "uri": "http://graphml.graphdrawing.org/specification.html",
+        "version": "1.0",
+        "title": "GraphML Specification"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "cf8d3b2a42d7c8a9b95beb709bfdd1663dc1637fd0b89a3446dd40d08323f6ac",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "json-graph-format",
+      "category": "graph-structure",
+      "name": "JSON Graph Format",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "output_forms:json",
+      "note": "节点/边 JSON 形态（结构校验）",
+      "spec": {
+        "uri": "https://jsongraphformat.info/",
+        "version": "1.0",
+        "title": "JSON Graph Format Specification Website"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "e7ee1e429641c200534229f47bb7c7f0efe2bfadc51d2c70546e19f7e122b76a",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "json-ld",
+      "category": "graph-structure",
+      "name": "JSON-LD",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：知识图谱/本体面立项（当前概念图用自态 JSON）",
+      "spec": {
+        "uri": "https://www.w3.org/TR/json-ld11/",
+        "version": "1.1",
+        "title": "JSON-LD 1.1"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "2d5428a8dc135e953e1e3e3d15bca578f56b193ee2d100872f34b0379a60f7b4",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "openlineage",
+      "category": "graph-structure",
+      "name": "OpenLineage 对象模型",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：数据血缘面（当前 provenance 面已覆盖资产溯源）",
+      "spec": {
+        "uri": "https://openlineage.io/docs/spec/object-model",
+        "version": "2-0-2",
+        "title": "Object Model | OpenLineage"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "ea181c938e8bfa40ed63ff41604079eb664944a8a97a96730920d318f4f23205",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "owl2",
+      "category": "graph-structure",
+      "name": "OWL 2",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：本体面立项（当前概念图为自定义自态图）",
+      "spec": {
+        "uri": "https://www.w3.org/TR/owl2-overview/",
+        "version": "2",
+        "title": "OWL 2 Web Ontology Language Document Overview (Second Edition)"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "d5d22b811eb348c845c5aa5aaa5c05448e61b63e3a8ee24b129075916d6115a5",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "prov-o",
+      "category": "graph-structure",
+      "name": "PROV-O",
+      "tier": "T3",
+      "status": "supported",
+      "validator": "interop_export:prov",
+      "note": "已有溯源图导出面（nf interop prov）",
+      "spec": {
+        "uri": "https://www.w3.org/TR/prov-o/",
+        "version": "REC 2013",
+        "title": "PROV-O: The PROV Ontology"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "85fbfefbd5aee4e3fc18ae8c481ff9f5c4ee44bfbf5caa9f67a4ee823449552c",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "rdf11",
+      "category": "graph-structure",
+      "name": "RDF 1.1 Concepts",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "同上",
+      "spec": {
+        "uri": "https://www.w3.org/TR/rdf11-concepts/",
+        "version": "1.1",
+        "title": "RDF 1.1 Concepts and Abstract Syntax"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "0638246e503995cdf42389dba33274e0bfdb35e353215c73f15e86c3a559e76c",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "skos",
+      "category": "graph-structure",
+      "name": "SKOS",
+      "tier": "T3",
+      "status": "deferred",
+      "validator": "",
+      "note": "同 OWL；词表场景未到",
+      "spec": {
+        "uri": "https://www.w3.org/TR/skos-reference/",
+        "version": "REF",
+        "title": "SKOS Simple Knowledge Organization System Reference"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "d1e84ebea4e73c818590e6b2e62a0fb0ef5d0e152888e6f506ebaa3439ebc85c",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "turtle",
+      "category": "graph-structure",
+      "name": "RDF Turtle",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "同上（三元组序列化）",
+      "spec": {
+        "uri": "https://www.w3.org/TR/turtle/",
+        "version": "1.1",
+        "title": "RDF 1.1 Turtle"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "7f5e965048c24c1948205bcaa090354dc87ccf3c22f002258b014f15c3c87bfe",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "a2a",
+      "category": "interface",
+      "name": "A2A Protocol",
+      "tier": "T2",
+      "status": "supported",
+      "validator": "interop_export:a2a",
+      "note": "已达：Agent Card 投影",
+      "spec": {
+        "uri": "https://a2a-protocol.org/latest/specification/",
+        "version": "0.3",
+        "title": "Overview - A2A Protocol"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "471c290800fbdf5ba31da8c59f75ccdaa705e756a266c6546c4e8f32c1bec3be",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "asyncapi",
+      "category": "interface",
+      "name": "AsyncAPI",
+      "tier": "T2",
+      "status": "supported",
+      "validator": "interop_export:asyncapi",
+      "note": "已达：含 CloudEvents 属性",
+      "spec": {
+        "uri": "https://www.asyncapi.com/docs/reference/specification/v3.0.0",
+        "version": "3.0.0",
+        "title": "3.0.0 | AsyncAPI Initiative for event-driven APIs"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "a5e827619b0c2eb43a972861ead8e9dcfc40ad9177085e30d0d9de2d6a0b3e1c",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cloudevents",
+      "category": "interface",
+      "name": "CloudEvents",
+      "tier": "T2",
+      "status": "supported",
+      "validator": "interop_export:asyncapi",
+      "note": "事件属性面已在 AsyncAPI 导出内",
+      "spec": {
+        "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md",
+        "version": "1.0.2",
+        "title": "spec/cloudevents/spec.md at main · cloudevents/spec · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "05a383d1f772457b37bc1d9e7c4134c93dae68912990b16772c17868f373c2b0",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "graphql-sdl",
+      "category": "interface",
+      "name": "GraphQL SDL",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：图查询面需求",
+      "spec": {
+        "uri": "https://spec.graphql.org/October2021/",
+        "version": "October 2021",
+        "title": "GraphQL"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "e3102f4f21fa9b03b7ca4fc495ddcb25e137a93f67bee77d9f518bc192e28c73",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "jsonapi",
+      "category": "interface",
+      "name": "JSON:API",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：REST 资源面规范化交付",
+      "spec": {
+        "uri": "https://jsonapi.org/format/",
+        "version": "1.1",
+        "title": "JSON:API &mdash; Latest Specification (v1.1)"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "86206e5140cacad6878a38ce3e0f40ce9223e81d9116fb83b6ef9fd9f6ea78ff",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "jsonrpc",
+      "category": "interface",
+      "name": "JSON-RPC",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：RPC 端点面（MCP 已用 JSON-RPC，未单列产出面）",
+      "spec": {
+        "uri": "https://www.jsonrpc.org/specification",
+        "version": "2.0",
+        "title": "JSON-RPC 2.0 Specification"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "8fe1edfdca511d309e712e47447457ea5159b728ec02071a84593aed692aefeb",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "mcp",
+      "category": "interface",
+      "name": "Model Context Protocol",
+      "tier": "T3",
+      "status": "supported",
+      "validator": "mcp_runtime",
+      "note": "已达：dual-era 版本对齐 + stdio 帧纪律（check33）",
+      "spec": {
+        "uri": "https://modelcontextprotocol.io/specification/2025-06-18",
+        "version": "2025-06-18",
+        "title": "Specification - Model Context Protocol"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "e4a1422eefebc5e2c8f838d2d8d08071af8258639a51255a1058502204da80b1",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "odata-v401",
+      "category": "interface",
+      "name": "OData v4.01",
+      "tier": "T2",
+      "status": "unfit",
+      "validator": "",
+      "note": "不适面：无 OData 消费端",
+      "spec": {
+        "uri": "https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html",
+        "version": "4.01",
+        "title": "OData Version 4.01. Part 1: Protocol"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "fcdeea10270061a02032a7126e61682b507d010dddb3482465c0faa430bb2dcf",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "openapi",
+      "category": "interface",
+      "name": "OpenAPI",
+      "tier": "T2",
+      "status": "supported",
+      "validator": "interop_export:openapi",
+      "note": "已达：nf interop openapi（12 面之一）",
+      "spec": {
+        "uri": "https://spec.openapis.org/oas/v3.1.0",
+        "version": "3.1.0",
+        "title": "OpenAPI Specification v3.1.0"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "8b6beb4bd7ec5279fe61fe5a5ac78c0cfefc74923eabce9770cd5d3392369735",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "protobuf-proto3",
+      "category": "interface",
+      "name": "Protocol Buffers proto3",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：需要 gRPC 面（当前 MCP/HTTP 已覆盖）",
+      "spec": {
+        "uri": "https://protobuf.dev/programming-guides/proto3/",
+        "version": "proto3",
+        "title": "Language Guide (proto 3) | Protocol Buffers Documentation"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "218e2ef94ce3cc0e9397140ac97d663df74808e1e6171a57771edcff38ff7038",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "rfc9457",
+      "category": "interface",
+      "name": "Problem Details for HTTP APIs",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：错误面标准化（CLI/MCP 错误信封统一）",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc9457.txt",
+        "version": "RFC 9457",
+        "title": "You do not have enough credit."
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "f2b3db92fb0bf3489cb3841a0da0c0d88dff40797b64d40b6123085183886c7b",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "sparql11-protocol",
+      "category": "interface",
+      "name": "SPARQL 1.1 Protocol",
+      "tier": "T3",
+      "status": "deferred",
+      "validator": "",
+      "note": "前置：图数据库端点；NF 无 SPARQL 服务面",
+      "spec": {
+        "uri": "https://www.w3.org/TR/sparql11-protocol/",
+        "version": "1.1",
+        "title": "SPARQL 1.1 Protocol"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "1bdc3d586af5f13638a4f8ea8aa9daf2a417ee2c00a0db413cbf09a78d98a121",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "wsdl20",
+      "category": "interface",
+      "name": "WSDL 2.0",
+      "tier": "T2",
+      "status": "unfit",
+      "validator": "",
+      "note": "不适面：SOAP 无消费端",
+      "spec": {
+        "uri": "https://www.w3.org/TR/wsdl20/",
+        "version": "2.0",
+        "title": "Web Services Description Language (WSDL) Version 2.0 Part 1: Core Language"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "0c001ea8d8883a6ca3f60c45d6f6905605e86b600f6bfeea0ac341fd72bc3eb7",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "bagit",
+      "category": "packaging",
+      "name": "BagIt",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：交付包需固定校验清单（当前 sha256 清单已覆盖）",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc8493.txt",
+        "version": "RFC 8493",
+        "title": "Independent Submission                                          J. Kunze"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "4964147d2e6e16442d4a6dbfbe68178a8f33c3e791c06d68a8b33f51ad821537",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "datacite-kernel",
+      "category": "packaging",
+      "name": "DataCite Metadata Kernel",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：馆藏条目的对外 DOI 元数据面",
+      "spec": {
+        "uri": "https://schema.datacite.org/meta/kernel-4.6/",
+        "version": "4.6",
+        "title": "�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0003�=�r۸���"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "f6dbdb7cfc9bacade4487f91ebcff1a83fd1936576a62b8411c1da2f33ca0477",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oci-image-manifest",
+      "category": "packaging",
+      "name": "OCI Image Manifest",
+      "tier": "T2",
+      "status": "unfit",
+      "validator": "",
+      "note": "不适面：NF 交付非容器镜像",
+      "spec": {
+        "uri": "https://github.com/opencontainers/image-spec/blob/main/manifest.md",
+        "version": "1.1",
+        "title": "image-spec/manifest.md at main · opencontainers/image-spec · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "e5a5733a7037c19769aeb3cdd9c6121c9fc2b4d5b179460c4d95623d31b905dd",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ro-crate",
+      "category": "packaging",
+      "name": "RO-Crate",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：研究包交付面（含数据集+代码+元数据）",
+      "spec": {
+        "uri": "https://www.researchobject.org/ro-crate/specification.html",
+        "version": "1.1",
+        "title": "Specification | Research Object Crate (RO-Crate)"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "2532bbe70e5eebceca42ef60789e598eefe295cb94b552dc4e3b3dea6295e3fa",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "schema-org-dataset",
+      "category": "packaging",
+      "name": "schema.org Dataset",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：数据集结构化标注（SEO/互操作）",
+      "spec": {
+        "uri": "https://schema.org/Dataset",
+        "version": "v28",
+        "title": "Dataset - Schema.org Type"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "2fedbe91969c63596431b1386840f78c393c491d973c01e36e9031907d1e2982",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "alphalens",
+      "category": "quant-domain",
+      "name": "Alphalens（因子分析实现）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：因子分析面（IC/分层）",
+      "spec": {
+        "uri": "https://github.com/quantopian/alphalens",
+        "version": "repo",
+        "title": "GitHub - quantopian/alphalens: Performance analysis of predictive (alpha) stock factors · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "da91693e92c8cafacbee28e12e67c86b5f325c3385e470ec220e4fddb0f0b6f9",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "empyrical",
+      "category": "quant-domain",
+      "name": "empyrical（绩效指标实现）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：绩效指标实现口径（本仓 quant_metrics 对照其定义）",
+      "spec": {
+        "uri": "https://github.com/quantopian/empyrical",
+        "version": "repo",
+        "title": "GitHub - quantopian/empyrical: Common financial risk and performance metrics. Used by zipline and pyfolio. · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "f02f4b78e2e235e20aff9bf46ea1153020fe41d86d944e2df2bb2214c6fdcc9b",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "fibo",
+      "category": "quant-domain",
+      "name": "FIBO 金融业务本体",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：金融本体面（当前口径表为轻量自态）",
+      "spec": {
+        "uri": "https://spec.edmcouncil.org/fibo/",
+        "version": "2024Q3",
+        "title": "FIBO"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "092847066dd2531c27fadb624e16ada0c877712a30e7f38d55b6fb7613f177c9",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "fix-44",
+      "category": "quant-domain",
+      "name": "FIX Protocol",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：交易接口面（NF 非交易系统，仅口径借鉴）",
+      "spec": {
+        "uri": "https://www.fixtrading.org/standards/fix-4-4/",
+        "version": "4.4",
+        "title": "<html><head><link rel=\"icon\" href=\"data:;\"><meta http-equiv=\"refresh\" content=\"0;/.well-known/sgcaptcha/?r=%2Fstandards%"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 202,
+        "content_type": "text/html",
+        "sha256_sample": "872b3575c6c79a04cac708ee712915407693f0b26b48ed71a755e21c31feb426",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "fix-orchestra",
+      "category": "quant-domain",
+      "name": "FIX Orchestra（机读规则库）",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "机制借鉴：机读规则库 ↔ NF 资产键表同构；未引运行时",
+      "spec": {
+        "uri": "https://www.fixtrading.org/standards/fix-orchestra-repository/",
+        "version": "1.0",
+        "title": "<html><head><link rel=\"icon\" href=\"data:;\"><meta http-equiv=\"refresh\" content=\"0;/.well-known/sgcaptcha/?r=%2Fstandards%"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 202,
+        "content_type": "text/html",
+        "sha256_sample": "e5b40e14d3a5fd70387051ef86e5a62420492af5b8c3ce26d8b6510628bbbb2b",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "fix-sbe",
+      "category": "quant-domain",
+      "name": "Simple Binary Encoding",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：低延迟二进制面（明显超出当前范围）",
+      "spec": {
+        "uri": "https://www.fixtrading.org/standards/simple-binary-encoding/",
+        "version": "1.0",
+        "title": "<html><head><link rel=\"icon\" href=\"data:;\"><meta http-equiv=\"refresh\" content=\"0;/.well-known/sgcaptcha/?r=%2Fstandards%"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 202,
+        "content_type": "text/html",
+        "sha256_sample": "3989afc27043991a321d652c6b51499bc79029007eb95346331b9d15e1bd2c12",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "fpml",
+      "category": "quant-domain",
+      "name": "FpML",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：衍生品条款面（FpML 体量大，按需）",
+      "spec": {
+        "uri": "https://www.fpml.org/",
+        "version": "5.12",
+        "title": "FpML &#8211; Financial products Markup Language"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "1459d3bb984ba21dc9e4e40b22b8e2304d5afa7c86002127ec719f7363034898",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "gips",
+      "category": "quant-domain",
+      "name": "GIPS（全球投资绩效标准）",
+      "tier": "T3",
+      "status": "absorbed",
+      "validator": "quant_metrics:performance_report",
+      "note": "口径 + 披露面对齐（**非合规声明**）；报告为 T4 可复算面",
+      "spec": {
+        "uri": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+        "version": "2020",
+        "title": "GIPS® Standards: Performance Ethics &amp; Reporting | RPC"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "267434ae3d7808032289af6200f6178a53eefdabc2295384b239d4ba8e8cd8fd",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "iso10383-mic",
+      "category": "quant-domain",
+      "name": "ISO 10383 MIC 市场代码",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：市场代码校验（与交易日历面同批）",
+      "spec": {
+        "uri": "https://www.iso20022.org/market-identifier-codes",
+        "version": "2024",
+        "title": "Market identifier codes | ISO20022"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "973bff91b58ff70a50a8c5533e60a49f8f0dd09329533a9a18f36b3000d71d45",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "iso10962-cfi",
+      "category": "quant-domain",
+      "name": "ISO 10962 CFI 分类",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：标的分类口径落地（需 CFI 词表）",
+      "spec": {
+        "uri": "https://www.iso.org/standard/44799.html",
+        "version": "2021",
+        "title": ""
+      },
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "content_type": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "iso17442-lei",
+      "category": "quant-domain",
+      "name": "ISO 17442 LEI",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：机构主体标识面（LEI 校验位可机检）",
+      "spec": {
+        "uri": "https://www.gleif.org/en/about-lei/iso-17442-the-lei-code-structure",
+        "version": "2020",
+        "title": "The Legal Entity Identifier (LEI) - LEI &amp; vLEI - Organizational Identity – GLEIF"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "de3a2e7136043ffaa3720de2731a48ebbae90e3b471a039cf0e634a2e96184b2",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "iso20022",
+      "category": "quant-domain",
+      "name": "ISO 20022 报文定义",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：资金/结算面（当前研究域外）",
+      "spec": {
+        "uri": "https://www.iso20022.org/iso-20022-message-definitions",
+        "version": "2024",
+        "title": ""
+      },
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "content_type": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "iso6166-isin",
+      "category": "quant-domain",
+      "name": "ISO 6166 ISIN",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：标的代码校验（ISIN 校验位可机检）",
+      "spec": {
+        "uri": "https://www.iso.org/standard/44866.html",
+        "version": "2022",
+        "title": ""
+      },
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "content_type": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "ixdtf",
+      "category": "quant-domain",
+      "name": "Internet Extended Date/Time Format",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：需带时区/时间尺度（IXDTF）标注的产出面",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc9557.txt",
+        "version": "RFC 9557",
+        "title": "﻿"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "87fa632cd75d13aa441859da635ed6618f66d203fe71a30fa85afedbeb149e85",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "qlib",
+      "category": "quant-domain",
+      "name": "Microsoft Qlib",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：AI 量化平台分层（数据/模型/组合）",
+      "spec": {
+        "uri": "https://github.com/microsoft/qlib",
+        "version": "repo",
+        "title": "GitHub - microsoft/qlib: Qlib is an AI-oriented Quant investment platform that aims to use AI tech to empower Quant Rese"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "c706b7ef94cebd12dd1b86865b756499d87c956d11421055ea68a2b246b5f362",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "quantlib",
+      "category": "quant-domain",
+      "name": "QuantLib（口径实现参考）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考（机制借鉴）：定价/期限口径",
+      "spec": {
+        "uri": "https://www.quantlib.org/",
+        "version": "1.35",
+        "title": "QuantLib, a free/open-source library for quantitative finance"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "f69c8d0a5ead3f9d88fdc45a1b78e87cfdde500ea02b60198ba849c247c4dd74",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "quantstats",
+      "category": "quant-domain",
+      "name": "QuantStats（绩效报告实现）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：绩效报告呈现面",
+      "spec": {
+        "uri": "https://github.com/ranaroussi/quantstats",
+        "version": "repo",
+        "title": "GitHub - ranaroussi/quantstats: Portfolio analytics for quants, written in Python · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "6ea6b1d9a8522b27af92ae3c6b82533e0d41f54820119868f5cd4ff74abb2fa4",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "rfc3339",
+      "category": "quant-domain",
+      "name": "RFC 3339 时间戳",
+      "tier": "T2",
+      "status": "absorbed",
+      "validator": "output_forms:format:date-time",
+      "note": "由 JSON Schema format 面浅校验（时间戳语法）；不带时区的本地时间不判",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc3339.txt",
+        "version": "RFC 3339",
+        "title": "Network Working Group                                           G. Klyne"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "9ab2b8864a85dca73a88f49b0927bc7bc85f596926e4fd1890905777924e700a",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "sdmx-json",
+      "category": "quant-domain",
+      "name": "SDMX-JSON",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：统计数据交换面（宏观数据域）",
+      "spec": {
+        "uri": "https://github.com/sdmx-twg/sdmx-json",
+        "version": "2.0",
+        "title": "GitHub - sdmx-twg/sdmx-json: This repository is used for maintaining the SDMx-JSON message specifications. · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "425727e37dce82edb87e2bdb937a9a90898874d35df19c83b4e0ef79196c69d7",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "vectorbt",
+      "category": "quant-domain",
+      "name": "vectorbt（回测实现）",
+      "tier": "T1",
+      "status": "reference",
+      "validator": "",
+      "note": "实现参考：回测引擎面",
+      "spec": {
+        "uri": "https://github.com/polakowo/vectorbt",
+        "version": "repo",
+        "title": "GitHub - polakowo/vectorbt: The backtesting engine that gives you an unfair advantage. Run thousands of trading ideas be"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "f64044eb9b86e7d11c5819ed5f5eaaa188958da620468fdf96165f4a22c0c58b",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "xbrl-21",
+      "category": "quant-domain",
+      "name": "XBRL 2.1",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：财报数据入域（基本面因子源）",
+      "spec": {
+        "uri": "https://www.xbrl.org/Specification/XBRL-2.1/REC-2003-12-31/XBRL-2.1-REC-2003-12-31+corrected-errata-2013-02-20.html",
+        "version": "2.1",
+        "title": "Extensible Business Reporting Language (XBRL) 2.1"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "1c283e36c609cd6228f3b0c73d961e27fc0fdf932267c4355ae70843d1bd9872",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "xbrl-json",
+      "category": "quant-domain",
+      "name": "xBRL-JSON",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "同上（JSON 形态更适合本仓）",
+      "spec": {
+        "uri": "https://www.xbrl.org/Specification/xbrl-json/REC-2020-08-19/xbrl-json-REC-2020-08-19.html",
+        "version": "REC 2020",
+        "title": ""
+      },
+      "evidence": {
+        "reachable": false,
+        "http_status": 404,
+        "content_type": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": "HTTPError: Not Found"
+      }
+    },
+    {
+      "id": "cbor",
+      "category": "structured-data",
+      "name": "CBOR",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：二进制紧凑交付需求",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc8949.txt",
+        "version": "RFC 8949",
+        "title": "﻿"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "c88ae84f4d6380a67ae6c874c3c6ba04df7742e8eaa135a1336dc7b0cc8a4886",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "geo-json",
+      "category": "structured-data",
+      "name": "GeoJSON",
+      "tier": "T2",
+      "status": "unfit",
+      "validator": "",
+      "note": "不适面：三域（叙事/AI/量化）暂无地理产出",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc7946.txt",
+        "version": "RFC 7946",
+        "title": "Internet Engineering Task Force (IETF)                         H. Butler"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "cb52f07b9cc6c841750d75850988fe8f32c7b7f0e1f7420f2069d5b5ded124f8",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "json",
+      "category": "structured-data",
+      "name": "JSON",
+      "tier": "T2",
+      "status": "absorbed",
+      "validator": "output_forms:json",
+      "note": "自带解析 + 重复键判定（text_hygiene 编码卫生同源）",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc8259.txt",
+        "version": "RFC 8259",
+        "title": "Internet Engineering Task Force (IETF)                      T. Bray, Ed."
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "61a5378f4255c720beb2a4b4a63b29540147c140f36988bf086291989b4cd2d7",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "jsonl",
+      "category": "structured-data",
+      "name": "JSON Lines",
+      "tier": "T2",
+      "status": "absorbed",
+      "validator": "output_forms:jsonl",
+      "note": "逐行解析，坏行带行号上报",
+      "spec": {
+        "uri": "https://jsonlines.org/",
+        "version": "1.0",
+        "title": "JSON Lines"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "a1da59ce6ac1009dff7a19ee1701d78c9e130896e1f8b47ac6c8846d035d4d59",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "msgpack",
+      "category": "structured-data",
+      "name": "MessagePack",
+      "tier": "T1",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：同上（CBOR 与 msgpack 二选一）",
+      "spec": {
+        "uri": "https://github.com/msgpack/msgpack/blob/master/spec.md",
+        "version": "spec 2020",
+        "title": "msgpack/spec.md at master · msgpack/msgpack · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "4c8cd540ffd1594efb3cdcfdd0968eb846cfea6385ed0cc71bc3dfbf73fcfff9",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "toml",
+      "category": "structured-data",
+      "name": "TOML",
+      "tier": "T2",
+      "status": "absorbed",
+      "validator": "output_forms:toml",
+      "note": "标准库 tomllib 解析",
+      "spec": {
+        "uri": "https://toml.io/en/v1.0.0",
+        "version": "1.0.0",
+        "title": "TOML: English v1.0.0"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "c849fd0e7c2807d41f610e5263b9e1a9d95d608c6163fdc780e0e81417a65eac",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "xml",
+      "category": "structured-data",
+      "name": "XML",
+      "tier": "T1",
+      "status": "absorbed",
+      "validator": "output_forms:xml",
+      "note": "良构性判定（标准库 ElementTree）",
+      "spec": {
+        "uri": "https://www.w3.org/TR/xml/",
+        "version": "1.0 5th ed",
+        "title": "Extensible Markup Language (XML) 1.0 (Fifth Edition)"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "a49fce93d86635f43c3c5b548172c5ba0238259974a129ad8c691037d62d2a2c",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "yaml",
+      "category": "structured-data",
+      "name": "YAML",
+      "tier": "T2",
+      "status": "absorbed",
+      "validator": "output_forms:yaml",
+      "note": "收窄子集（映射/列表/标量；禁 Tab）——核心层零第三方依赖",
+      "spec": {
+        "uri": "https://yaml.org/spec/1.2.2/",
+        "version": "1.2.2",
+        "title": "YAML Ain’t Markup Language (YAML™) revision 1.2.2"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "b5a77b9313fb1a1a7bd9e0df398b9a582d3cc9078dfbdbe67902a1e8ca76604a",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "arrow-columnar",
+      "category": "tabular",
+      "name": "Apache Arrow Columnar Format",
+      "tier": "T3",
+      "status": "deferred",
+      "validator": "",
+      "note": "前置同上；触发：量化域单表 > 1e6 行",
+      "spec": {
+        "uri": "https://arrow.apache.org/docs/format/Columnar.html",
+        "version": "1.4",
+        "title": "Arrow Columnar Format &#8212; Apache Arrow v25.0.1"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "668cad1537b3d719efb5b6869ce9867a35f2729a1454fb0078fd4ef5ef2426c6",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "avro",
+      "category": "tabular",
+      "name": "Apache Avro",
+      "tier": "T3",
+      "status": "deferred",
+      "validator": "",
+      "note": "前置：avro 运行时",
+      "spec": {
+        "uri": "https://avro.apache.org/docs/1.11.1/specification/",
+        "version": "1.11.1",
+        "title": "Specification | Apache Avro"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html",
+        "sha256_sample": "963897cf3b59354c67f4fbcb762affaef3dc5182485e5e0ba35c1f242b89f113",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "csv",
+      "category": "tabular",
+      "name": "CSV",
+      "tier": "T2",
+      "status": "absorbed",
+      "validator": "output_forms:csv",
+      "note": "表头唯一 + 行字段数一致 + 禁 NUL",
+      "spec": {
+        "uri": "https://www.rfc-editor.org/rfc/rfc4180.txt",
+        "version": "RFC 4180",
+        "title": "Network Working Group                                    Y. Shafranovich"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/plain;charset=utf-8",
+        "sha256_sample": "5d9ec035aa40c0108362cb767c9e2d08c30f7225cb2a4715f484cb13c29b5f21",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "csvw",
+      "category": "tabular",
+      "name": "CSV on the Web (Tabular Data Model)",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：表格元数据需给外部工具消费时（当前自用 schema 已够）",
+      "spec": {
+        "uri": "https://www.w3.org/TR/tabular-data-model/",
+        "version": "W3C REC 2015",
+        "title": "Model for Tabular Data and Metadata on the Web"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "214a2305b6ce959b3559046435a73f51e7d5f68a27181ab9fd5f5f55727f2a79",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "frictionless-data-package",
+      "category": "tabular",
+      "name": "Frictionless Data Package",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：多文件数据集打包交付面立项",
+      "spec": {
+        "uri": "https://specs.frictionlessdata.io/data-package/",
+        "version": "v1",
+        "title": "Data Package | Data Package (v1)"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "252eb811590db7526b91abaf5f84205361cfc4fb02ff570a396a7815d824f14d",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "frictionless-table-schema",
+      "category": "tabular",
+      "name": "Frictionless Table Schema",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "机制已取其意（列类型/约束）；运行时未引（零依赖红线）",
+      "spec": {
+        "uri": "https://specs.frictionlessdata.io/table-schema/",
+        "version": "v1",
+        "title": "Table Schema | Data Package (v1)"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "f3c9a11e579fde48b75c66d4175c37e1c8b5451bbc11c78d7c438d4f7e014b35",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "parquet",
+      "category": "tabular",
+      "name": "Apache Parquet",
+      "tier": "T3",
+      "status": "deferred",
+      "validator": "",
+      "note": "前置：pyarrow 等二进制依赖（与 core 零依赖冲突）",
+      "spec": {
+        "uri": "https://github.com/apache/parquet-format",
+        "version": "format 2.x",
+        "title": "GitHub - apache/parquet-format: Apache Parquet Format · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "0e70317fa7bc6e663105a4440f8f4b149b0c0c657f8249a7c53dc5b5a2e6aab5",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "sql-ddl",
+      "category": "tabular",
+      "name": "SQL DDL / SQLite 文件格式",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：数据面需要 DDL 形态（当前用 JSON Schema 承载）",
+      "spec": {
+        "uri": "https://www.sqlite.org/fileformat2.html",
+        "version": "SQLite 3",
+        "title": "Database File Format"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "3cf72e32f586156317f53903b28ff2cbfab196ec63a0a36a5a6a9328e02b2502",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "xlsx",
+      "category": "tabular",
+      "name": "Office Open XML (SpreadsheetML)",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：作者要求 Excel 交付面（需 OOXML 写出）",
+      "spec": {
+        "uri": "https://ecma-international.org/publications-and-standards/standards/ecma-376/",
+        "version": "ECMA-376 5th",
+        "title": "ECMA-376 - Ecma International"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "5966bdbdb0cbdbd1072220208ecb4d11e3a46f4c71db29004b1fc25bcc4fa44a",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "hdf5",
+      "category": "timeseries",
+      "name": "HDF5",
+      "tier": "T2",
+      "status": "deferred",
+      "validator": "",
+      "note": "前置：h5py；触发：时序原始数据入库",
+      "spec": {
+        "uri": "https://www.hdfgroup.org/solutions/hdf5/",
+        "version": "1.14",
+        "title": "The HDF5® Library &amp; File Format - The HDF Group - ensuring long-term access and usability of HDF data and supporting"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "e8a268599de0706670cb19af8580a6a1e1cc812b98d59918ce0665809aaa9676",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "netcdf-cf",
+      "category": "timeseries",
+      "name": "netCDF + CF Conventions",
+      "tier": "T2",
+      "status": "deferred",
+      "validator": "",
+      "note": "前置：netCDF4；适用面窄（科学数）",
+      "spec": {
+        "uri": "https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html",
+        "version": "CF 1.11",
+        "title": "NetCDF Climate and Forecast (CF) Metadata Conventions"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "65a9d1e9d75d2b772a5e303baf4a65b9ec4ea920cf50d0bfb363159885b59000",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "openmetrics",
+      "category": "timeseries",
+      "name": "OpenMetrics",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：NF 遥测面导出对接采集端",
+      "spec": {
+        "uri": "https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md",
+        "version": "1.0",
+        "title": "OpenMetrics/specification/OpenMetrics.md at main · prometheus/OpenMetrics · GitHub"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "sha256_sample": "adf66cdfad3d6c30061ab3226de07fb83e086709ced1339c54166a4ab2e24a84",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "otel-semconv",
+      "category": "timeseries",
+      "name": "OpenTelemetry Semantic Conventions",
+      "tier": "T3",
+      "status": "supported",
+      "validator": "telemetry_semconv",
+      "note": "已达：语义约定核对面",
+      "spec": {
+        "uri": "https://opentelemetry.io/docs/specs/semconv/",
+        "version": "1.x",
+        "title": "OpenTelemetry semantic conventions 1.44.0 | OpenTelemetry"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "948959be6ec368ec2afb5d6b774cb152499fbcd6bda7819d32f36dcc57656c9b",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "otlp",
+      "category": "timeseries",
+      "name": "OpenTelemetry Protocol (OTLP)",
+      "tier": "T3",
+      "status": "planned",
+      "validator": "",
+      "note": "触发：遥测导出对接 OTLP 采集器",
+      "spec": {
+        "uri": "https://opentelemetry.io/docs/specs/otlp/",
+        "version": "1.x",
+        "title": "OTLP Specification 1.11.0 | OpenTelemetry"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "226271cfd04cfa67039379d0489e2e0eed66c658d558035c11970bceb2328ef6",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    },
+    {
+      "id": "prom-exposition",
+      "category": "timeseries",
+      "name": "Prometheus 文本暴露格式",
+      "tier": "T2",
+      "status": "planned",
+      "validator": "",
+      "note": "同上（文本暴露格式）",
+      "spec": {
+        "uri": "https://prometheus.io/docs/instrumenting/exposition_formats/",
+        "version": "0.0.4",
+        "title": "Exposition formats | Prometheus"
+      },
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "content_type": "text/html; charset=UTF-8",
+        "sha256_sample": "99615a755e6fd908548fcb16f9441f5224e8bd18c14e20433607195639b6ecdc",
+        "probe_date": "2026-09-22",
+        "probe_method": "本机 GET（64KB 取样 / 单条超时 25s / 10 并发）",
+        "error": ""
+      }
+    }
+  ]
+}

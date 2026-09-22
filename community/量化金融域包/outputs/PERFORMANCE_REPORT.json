@@ -1,0 +1,49 @@
+{
+  "annual_factor": 252,
+  "as_of": "2026-08-21",
+  "benchmark": {
+    "annualized": 0.143635,
+    "calmar": 8.516894,
+    "cumulative": 0.031922,
+    "id": "NF-SAMPLE-INDEX",
+    "max_drawdown": 0.016865,
+    "sharpe": 6.473536,
+    "volatility_annualized": 0.018464
+  },
+  "costs": {
+    "fee_bps": 3.0,
+    "fill_rule": "next_open",
+    "slippage_bps": 5.0,
+    "turnover_basis": "single_side"
+  },
+  "currency": "CNY",
+  "disclosures": [
+    "收益口径 = simple；年化因子 = 252（daily）；无风险利率年化 = 0.015",
+    "绩效为**毛口径**（未扣费）；费用与滑点按申报值计（fee=3.0 bps, slippage=5.0 bps）",
+    "成交价假设 = next_open（须晚于信号时点；前视偏差口径见 DATA_CONTRACT §7）",
+    "最大回撤 / 卡尔玛按净值序列口径；卡尔玛分子分母同区间",
+    "口径与披露面（收益口径/年化因子/无风险利率/基准/费用与成交假设）逐项显式；**非 GIPS 合规声明**——合规需第三方鉴证与合成组合全量数据"
+  ],
+  "excess": {
+    "annualized": 0.190837,
+    "information_ratio": 8.40542,
+    "tracking_error": 0.018409
+  },
+  "frequency": "daily",
+  "gross": {
+    "annualized": 0.334472,
+    "calmar": 15.541439,
+    "cumulative": 0.069888,
+    "max_drawdown": 0.021521,
+    "sharpe": 9.049606,
+    "volatility_annualized": 0.030307
+  },
+  "kind": "nf-performance/1",
+  "period": {
+    "end": "2026-08-21",
+    "observations": 60,
+    "start": "2026-06-01"
+  },
+  "return_basis": "simple",
+  "risk_free_rate_annual": 0.015
+}

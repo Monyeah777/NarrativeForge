@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-22",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "AUD-0016 定稿（subjects 摘要补齐）",
+  "note": "产出形态层 116 条（可达 110）+ 两域包机验产出面 14 件（T4 2 件）+ check32 output_forms + 决策模型热冷裁决（spdx3 转候选）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "d7e285230f3a2cd451611c28e4ef2ca557414dad606c6d9a3d5b84a9a4c8f656"
+  "subject_digest": "76c4d272458ae2bb12bcaf2ae8ce796fea7b3ce55b5b15978c60c63d726f6aaf"
 }

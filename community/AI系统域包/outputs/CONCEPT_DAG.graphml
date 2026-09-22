@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="layer" for="node" attr.name="layer" attr.type="string"/>
+  <key id="branch" for="node" attr.name="branch" attr.type="string"/>
+  <key id="provenance" for="edge" attr.name="provenance" attr.type="string"/>
+  <graph id="concept-graph" edgedefault="directed">
+    <node id="C01">
+      <data key="layer">P00</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C02">
+      <data key="layer">P00</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C03">
+      <data key="layer">P00</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C04">
+      <data key="layer">P10</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C05">
+      <data key="layer">P10</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C06">
+      <data key="layer">P30</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C07">
+      <data key="layer">P40</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C08">
+      <data key="layer">P40</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C09">
+      <data key="layer">P40</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C10">
+      <data key="layer">P50</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C11">
+      <data key="layer">P30</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C12">
+      <data key="layer">P40</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C13">
+      <data key="layer">P40</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C14">
+      <data key="layer">P50</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C15">
+      <data key="layer">P50</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C16">
+      <data key="layer">P60</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C17">
+      <data key="layer">P60</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C18">
+      <data key="layer">P50</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C19">
+      <data key="layer">P60</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C20">
+      <data key="layer">P40</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C21">
+      <data key="layer">P50</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C22">
+      <data key="layer">P50</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C23">
+      <data key="layer">P50</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C24">
+      <data key="layer">P80</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C25">
+      <data key="layer">P40</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C26">
+      <data key="layer">P40</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C27">
+      <data key="layer">P40</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C28">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C29">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C30">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C31">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C32">
+      <data key="layer">P40</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C33">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C34">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C35">
+      <data key="layer">P60</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C36">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C37">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C38">
+      <data key="layer">P60</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C39">
+      <data key="layer">P60</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C40">
+      <data key="layer">P80</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C41">
+      <data key="layer">P60</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C42">
+      <data key="layer">P80</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C43">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C44">
+      <data key="layer">P50</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C45">
+      <data key="layer">P80</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C46">
+      <data key="layer">P60</data>
+      <data key="branch">compute</data>
+    </node>
+    <node id="C47">
+      <data key="layer">P60</data>
+      <data key="branch">app</data>
+    </node>
+    <node id="C00">
+      <data key="layer"></data>
+      <data key="branch"></data>
+    </node>
+    <edge source="C00" target="C01">
+      <data key="provenance">['aisystem', 'cmu-mlsys']</data>
+    </edge>
+    <edge source="C01" target="C02">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C02" target="C03">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C03" target="C04">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C04" target="C05">
+      <data key="provenance">['cmu-mlsys']</data>
+    </edge>
+    <edge source="C05" target="C06">
+      <data key="provenance">['cmu-mlsys']</data>
+    </edge>
+    <edge source="C01" target="C07">
+      <data key="provenance">['cmu-mlsys']</data>
+    </edge>
+    <edge source="C07" target="C08">
+      <data key="provenance">['cmu-mlsys', 'cmu-dlsys', 'aisystem']</data>
+    </edge>
+    <edge source="C08" target="C09">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C07" target="C10">
+      <data key="provenance">['cmu-dlsys', 'aisystem']</data>
+    </edge>
+    <edge source="C09" target="C10">
+      <data key="provenance">['cmu-dlsys', 'aisystem']</data>
+    </edge>
+    <edge source="C00" target="C11">
+      <data key="provenance">['aisystem', 'mlir']</data>
+    </edge>
+    <edge source="C11" target="C12">
+      <data key="provenance">['aisystem', 'tvm', 'mlir', 'dlc-survey']</data>
+    </edge>
+    <edge source="C09" target="C12">
+      <data key="provenance">['aisystem', 'tvm', 'mlir', 'dlc-survey']</data>
+    </edge>
+    <edge source="C12" target="C13">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C13" target="C14">
+      <data key="provenance">['aisystem', 'cmu-mlsys']</data>
+    </edge>
+    <edge source="C06" target="C14">
+      <data key="provenance">['aisystem', 'cmu-mlsys']</data>
+    </edge>
+    <edge source="C07" target="C15">
+      <data key="provenance">['cmu-mlsys']</data>
+    </edge>
+    <edge source="C00" target="C15">
+      <data key="provenance">['cmu-mlsys']</data>
+    </edge>
+    <edge source="C15" target="C16">
+      <data key="provenance">['zero', 'cmu-mlsys']</data>
+    </edge>
+    <edge source="C08" target="C16">
+      <data key="provenance">['zero', 'cmu-mlsys']</data>
+    </edge>
+    <edge source="C15" target="C17">
+      <data key="provenance">['cmu-mlsys']</data>
+    </edge>
+    <edge source="C16" target="C17">
+      <data key="provenance">['cmu-mlsys']</data>
+    </edge>
+    <edge source="C09" target="C18">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C12" target="C18">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C10" target="C19">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C18" target="C19">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C46" target="C19">
+      <data key="provenance">['aisystem']</data>
+    </edge>
+    <edge source="C08" target="C20">
+      <data key="provenance">['cmu-mlsys', 'cmu-dlsys']</data>
+    </edge>
+    <edge source="C10" target="C20">
+      <data key="provenance">['cmu-mlsys', 'cmu-dlsys']</data>
+    </edge>
+    <edge source="C20" target="C21">
+      <data key="provenance">['flash-attention']</data>
+    </edge>
+    <edge source="C14" target="C21">
+      <data key="provenance">['flash-attention']</data>
+    </edge>
+    <edge source="C18" target="C22">
+      <data key="provenance">['orca', 'vllm']</data>
+    </edge>
+    <edge source="C20" target="C22">
+      <data key="provenance">['orca', 'vllm']</data>
+    </edge>
+    <edge source="C16" target="C22">
+      <data key="provenance">['orca', 'vllm']</data>
+    </edge>
+    <edge source="C14" target="C23">
+      <data key="provenance">['aisystem', 'cmu-mlsys']</data>
+    </edge>
+    <edge source="C18" target="C23">
+      <data key="provenance">['aisystem', 'cmu-mlsys']</data>
+    </edge>
+    <edge source="C18" target="C24">
+      <data key="provenance">['cs2023', 'inferred']</data>
+    </edge>
+    <edge source="C22" target="C24">
+      <data key="provenance">['cs2023', 'inferred']</data>
+    </edge>
+    <edge source="C01" target="C25">
+      <data key="provenance">['guide-05', 'prompt-libs']</data>
+    </edge>
+    <edge source="C20" target="C25">
+      <data key="provenance">['guide-05', 'prompt-libs']</data>
+    </edge>
+    <edge source="C25" target="C26">
+      <data key="provenance">['guide-05']</data>
+    </edge>
+    <edge source="C20" target="C27">
+      <data key="provenance">['guide-01', 'guide-06']</data>
+    </edge>
+    <edge source="C25" target="C28">
+      <data key="provenance">['guide-06']</data>
+    </edge>
+    <edge source="C27" target="C28">
+      <data key="provenance">['guide-06']</data>
+    </edge>
+    <edge source="C43" target="C28">
+      <data key="provenance">['guide-06']</data>
+    </edge>
+    <edge source="C27" target="C29">
+      <data key="provenance">['guide-06', 'iis-osint']</data>
+    </edge>
+    <edge source="C28" target="C30">
+      <data key="provenance">['guide-06']</data>
+    </edge>
+    <edge source="C29" target="C30">
+      <data key="provenance">['guide-06']</data>
+    </edge>
+    <edge source="C28" target="C31">
+      <data key="provenance">['guide-06']</data>
+    </edge>
+    <edge source="C30" target="C31">
+      <data key="provenance">['guide-06']</data>
+    </edge>
+    <edge source="C25" target="C32">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C18" target="C32">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C32" target="C33">
+      <data key="provenance">['guide-07', 'guide-17']</data>
+    </edge>
+    <edge source="C32" target="C34">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C33" target="C34">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C32" target="C35">
+      <data key="provenance">['guide-08']</data>
+    </edge>
+    <edge source="C29" target="C35">
+      <data key="provenance">['guide-08']</data>
+    </edge>
+    <edge source="C32" target="C36">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C32" target="C37">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C36" target="C37">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C32" target="C38">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C37" target="C38">
+      <data key="provenance">['guide-07']</data>
+    </edge>
+    <edge source="C25" target="C39">
+      <data key="provenance">['guide-12', 'guide-07']</data>
+    </edge>
+    <edge source="C32" target="C39">
+      <data key="provenance">['guide-12', 'guide-07']</data>
+    </edge>
+    <edge source="C33" target="C39">
+      <data key="provenance">['guide-12', 'guide-07']</data>
+    </edge>
+    <edge source="C24" target="C40">
+      <data key="provenance">['guide-14']</data>
+    </edge>
+    <edge source="C28" target="C40">
+      <data key="provenance">['guide-14']</data>
+    </edge>
+    <edge source="C32" target="C40">
+      <data key="provenance">['guide-14']</data>
+    </edge>
+    <edge source="C25" target="C41">
+      <data key="provenance">['guide-13']</data>
+    </edge>
+    <edge source="C32" target="C41">
+      <data key="provenance">['guide-13']</data>
+    </edge>
+    <edge source="C40" target="C41">
+      <data key="provenance">['guide-13']</data>
+    </edge>
+    <edge source="C22" target="C42">
+      <data key="provenance">['guide-11', 'guide-13']</data>
+    </edge>
+    <edge source="C40" target="C42">
+      <data key="provenance">['guide-11', 'guide-13']</data>
+    </edge>
+    <edge source="C41" target="C42">
+      <data key="provenance">['guide-11', 'guide-13']</data>
+    </edge>
+    <edge source="C47" target="C42">
+      <data key="provenance">['guide-11', 'guide-13']</data>
+    </edge>
+    <edge source="C27" target="C43">
+      <data key="provenance">['guide-06', 'guide-10', 'iis-osint']</data>
+    </edge>
+    <edge source="C18" target="C44">
+      <data key="provenance">['guide-18', 'guide-19']</data>
+    </edge>
+    <edge source="C20" target="C44">
+      <data key="provenance">['guide-18', 'guide-19']</data>
+    </edge>
+    <edge source="C28" target="C45">
+      <data key="provenance">['guide-15', 'guide-16']</data>
+    </edge>
+    <edge source="C32" target="C45">
+      <data key="provenance">['guide-15', 'guide-16']</data>
+    </edge>
+    <edge source="C40" target="C45">
+      <data key="provenance">['guide-15', 'guide-16']</data>
+    </edge>
+    <edge source="C15" target="C46">
+      <data key="provenance">['guide-03']</data>
+    </edge>
+    <edge source="C08" target="C46">
+      <data key="provenance">['guide-03']</data>
+    </edge>
+    <edge source="C01" target="C47">
+      <data key="provenance">['guide-02']</data>
+    </edge>
+    <edge source="C20" target="C47">
+      <data key="provenance">['guide-02']</data>
+    </edge>
+    <edge source="C24" target="C47">
+      <data key="provenance">['guide-02']</data>
+    </edge>
+  </graph>
+</graphml>

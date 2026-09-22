@@ -1,0 +1,184 @@
+{
+  "kind": "nf-quant-metrics/1",
+  "domain": "量化金融域包",
+  "source": "assets/QUANT_METRICS.md",
+  "note": "口径机读面（同源于 assets/QUANT_METRICS.md §2–§4；双源一致由 check32 output_forms 断言）。engine 非空即**必须**被 core/quant_metrics.py 真实实现并复算——宣称与实现不一致即 FAIL。",
+  "annual_factors": {
+    "daily": 252,
+    "weekly": 52,
+    "monthly": 12
+  },
+  "metrics": [
+    {
+      "id": "METRIC_RETURN_SIMPLE",
+      "name": "简单收益率",
+      "formula": "r_t = P_t / P_{t-1} - 1",
+      "unit": "ratio",
+      "category": "return",
+      "required_params": ["prices", "return_basis=simple"],
+      "annual_factor_required": false,
+      "pitfall": "复权方式不同 → 同一标的两组收益",
+      "engine": "quant_metrics:simple_returns",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_RETURN_LOG",
+      "name": "对数收益率",
+      "formula": "r_t = ln(P_t / P_{t-1})",
+      "unit": "ratio",
+      "category": "return",
+      "required_params": ["prices", "return_basis=log", "positive_prices"],
+      "annual_factor_required": false,
+      "pitfall": "与简单收益混用做几何链接",
+      "engine": "quant_metrics:log_returns",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_ANNUAL_FACTOR",
+      "name": "年化因子",
+      "formula": "daily=252 / weekly=52 / monthly=12（须与观测频率一致）",
+      "unit": "count",
+      "category": "return",
+      "required_params": ["frequency"],
+      "annual_factor_required": false,
+      "pitfall": "用 365 年化交易策略；跨频率混用",
+      "engine": "quant_metrics:ANNUAL_FACTORS",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_VOL_ANNUAL",
+      "name": "年化波动率",
+      "formula": "std(r) * sqrt(annual_factor)，样本标准差 ddof=1",
+      "unit": "ratio",
+      "category": "risk",
+      "required_params": ["returns", "annual_factor", "sample_window"],
+      "annual_factor_required": true,
+      "pitfall": "不声明窗口；用事后波动作事前约束",
+      "engine": "quant_metrics:annualized_volatility",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_SHARPE",
+      "name": "夏普比率",
+      "formula": "(mean(r) - rf_period) / std(r) * sqrt(annual_factor)",
+      "unit": "ratio",
+      "category": "risk-adjusted",
+      "required_params": ["returns", "risk_free_rate_annual", "annual_factor"],
+      "annual_factor_required": true,
+      "pitfall": "无风险利率缺失 / 频率与年化因子不匹配",
+      "engine": "quant_metrics:sharpe",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_DRAWDOWN_MAX",
+      "name": "最大回撤",
+      "formula": "max_t (peak_so_far - value_t) / peak_so_far（净值序列口径）",
+      "unit": "ratio",
+      "category": "risk",
+      "required_params": ["equity_curve"],
+      "annual_factor_required": false,
+      "pitfall": "用累计收益而非净值；区间截断择优",
+      "engine": "quant_metrics:max_drawdown",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_CALMAR",
+      "name": "卡玛比率",
+      "formula": "annualized_return / max_drawdown（分子分母同区间）",
+      "unit": "ratio",
+      "category": "risk-adjusted",
+      "required_params": ["annual_factor", "annualized_return", "max_drawdown",
+                          "same_period"],
+      "annual_factor_required": true,
+      "pitfall": "分子分母区间不一致",
+      "engine": "quant_metrics:calmar",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_TURNOVER",
+      "name": "换手率",
+      "formula": "single_side: sum(|dW|)/2 ；double_side: sum(|dW|)",
+      "unit": "ratio",
+      "category": "turnover",
+      "required_params": ["weight_series", "single_side_declared"],
+      "annual_factor_required": false,
+      "pitfall": "单双边混用 → 成本估算差一倍",
+      "engine": "quant_metrics:turnover",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_IC",
+      "name": "信息系数",
+      "formula": "corr(rank(factor_t), rank(forward_return_{t+h}))（spearman）",
+      "unit": "ratio",
+      "category": "predictive",
+      "required_params": ["factor", "forward_return", "horizon_matches_rebalance"],
+      "annual_factor_required": false,
+      "pitfall": "预测期与调仓频率不一致（前视）",
+      "engine": "quant_metrics:information_coefficient",
+      "verifiable": "T4"
+    },
+    {
+      "id": "METRIC_IR",
+      "name": "信息比率",
+      "formula": "mean(active_return) / std(active_return) * sqrt(annual_factor)",
+      "unit": "ratio",
+      "category": "risk-adjusted",
+      "required_params": ["returns", "benchmark_returns", "annual_factor"],
+      "annual_factor_required": true,
+      "pitfall": "基准口径不明 → 与夏普混淆",
+      "engine": "quant_metrics:information_ratio",
+      "verifiable": "T4"
+    }
+  ],
+  "declared_only": [
+    {
+      "id": "COST_FEE",
+      "name": "费率",
+      "kind_of_declaration": "申报值（bps）：佣金 + 印花税 / 过户费，按市场分别申报",
+      "must_appear_in": "performance_report.costs.fee_bps",
+      "pitfall": "忽略最低佣金与阶梯费率",
+      "verifiable": "T3"
+    },
+    {
+      "id": "COST_SLIPPAGE",
+      "name": "滑点",
+      "kind_of_declaration": "申报值（bps）+ 标定区间（冲击模型参数）",
+      "must_appear_in": "performance_report.costs.slippage_bps",
+      "pitfall": "用固定点数滑点掩盖小盘股冲击",
+      "verifiable": "T3"
+    },
+    {
+      "id": "COST_FILL_PRICE",
+      "name": "成交价假设",
+      "kind_of_declaration": "枚举：next_open / vwap / twap（必须晚于信号时点）",
+      "must_appear_in": "performance_report.costs.fill_rule",
+      "pitfall": "用当根收盘成交 → 前视偏差",
+      "verifiable": "T3"
+    },
+    {
+      "id": "CAPACITY_LIMIT",
+      "name": "容量",
+      "kind_of_declaration": "策略规模 / 日均成交额比例上限（须声明标定样本）",
+      "must_appear_in": "performance_report.disclosures[2]（容量口径声明位）",
+      "pitfall": "用回测收益线性外推大资金容量",
+      "verifiable": "T3"
+    },
+    {
+      "id": "BIAS_LOOKAHEAD",
+      "name": "前视偏差",
+      "kind_of_declaration": "数据可用时点与信号时点分离；成交发生在信号之后",
+      "must_appear_in": "performance_report.costs.fill_rule + disclosures",
+      "pitfall": "回测虚高，实盘无法复现",
+      "verifiable": "T3"
+    },
+    {
+      "id": "BIAS_SURVIVORSHIP",
+      "name": "存活偏差",
+      "kind_of_declaration": "标的池按**时点**构造（含已退市标的）",
+      "must_appear_in": "performance_report.disclosures（标的池口径声明位）",
+      "pitfall": "回测池系统性偏向存活者",
+      "verifiable": "T3"
+    }
+  ]
+}

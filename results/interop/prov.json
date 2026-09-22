@@ -67,7 +67,7 @@
     {
       "@id": "nf:file/02_联动注册表.md",
       "@type": "prov:Entity",
-      "nf:sha256": "e2ee1971a12ee6d9d7399e746f6684f95ec91d36e532297737a54e5df6c18ab2"
+      "nf:sha256": "c6df92a97dd7d2127a8f86f3d71ec7c08c95da2964d753c39274395365989637"
     },
     {
       "@id": "nf:file/06_Agent执行协议.md",
@@ -107,7 +107,7 @@
     {
       "@id": "nf:file/desktop/src/core/registry.json",
       "@type": "prov:Entity",
-      "nf:sha256": "47df241463d1527473b605ab69fde43f765a3fe2aa5c8ac8fdc49765db68adaf"
+      "nf:sha256": "01a81c5d219b8cf4f6c0dc137388377cabaf91c4476d21fc5cf63cf704aa09f2"
     },
     {
       "@id": "nf:file/library/ALIAS.md",
@@ -152,7 +152,7 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "d7e285230f3a2cd451611c28e4ef2ca557414dad606c6d9a3d5b84a9a4c8f656"
+      "nf:sha256": "76c4d272458ae2bb12bcaf2ae8ce796fea7b3ce55b5b15978c60c63d726f6aaf"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",

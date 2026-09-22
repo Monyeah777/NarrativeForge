@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narrativeforge.local/schema/quant-metrics.schema.json",
+  "title": "量化金融域 · 指标口径注册表（机读面）",
+  "description": "assets/QUANT_METRICS.md 的机读同源面：每条口径必须给出公式、单位、必备参数、常见事故与实现引擎；有引擎者必须被本仓引擎真实复算（T4）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "domain", "source", "annual_factors", "metrics", "declared_only"],
+  "properties": {
+    "kind": {"const": "nf-quant-metrics/1"},
+    "note": {"type": "string"},
+    "domain": {"type": "string", "minLength": 1},
+    "source": {"type": "string", "pattern": "^assets/"},
+    "annual_factors": {
+      "type": "object",
+      "required": ["daily", "weekly", "monthly"],
+      "additionalProperties": {"type": "integer", "minimum": 1}
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "formula", "unit", "category", "required_params",
+                     "pitfall", "engine", "verifiable"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^METRIC_[A-Z0-9_]{2,}$"},
+          "name": {"type": "string", "minLength": 1},
+          "formula": {"type": "string", "minLength": 3},
+          "unit": {"enum": ["ratio", "percent", "currency", "count"]},
+          "category": {"enum": ["return", "risk", "risk-adjusted", "turnover",
+                                "predictive", "benchmark"]},
+          "required_params": {"type": "array", "minItems": 1,
+                              "items": {"type": "string", "minLength": 1}},
+          "annual_factor_required": {"type": "boolean"},
+          "pitfall": {"type": "string", "minLength": 3},
+          "engine": {"type": "string",
+                     "pattern": "^(quant_metrics:[A-Za-z_]+)?$"},
+          "verifiable": {"enum": ["T4", "T3"]}
+        }
+      }
+    },
+    "declared_only": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "kind_of_declaration", "must_appear_in", "pitfall",
+                     "verifiable"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^(COST|CAPACITY|BIAS)_[A-Z0-9_]{2,}$"},
+          "name": {"type": "string", "minLength": 1},
+          "kind_of_declaration": {"type": "string", "minLength": 3},
+          "must_appear_in": {"type": "string", "minLength": 3},
+          "pitfall": {"type": "string", "minLength": 3},
+          "verifiable": {"enum": ["T3"]}
+        }
+      }
+    }
+  }
+}
