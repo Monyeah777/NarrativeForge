@@ -66,6 +66,9 @@ NOSCHEMA: Dict[str, str] = {
              "且本仓**不做容器封装**，故只做自校验"),
     "cid": ("CID 由 multiformats 规范定义（multiformats/cid + multicodec 表），"
             "无 JSON Schema；本仓以**已知向量**校验（sha256(\"\") 的 CIDv1 raw）"),
+    "decisions": ("决策面是 **NF 自有形状**（决策能力 + 公开裁决索引），非外部标准；"
+                  "无官方 JSON Schema 可对，判据落在本仓 check33"
+                  "（覆盖一致 / 内部边界声明 / 确定性）"),
 }
 
 

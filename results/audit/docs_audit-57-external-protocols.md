@@ -9,18 +9,18 @@ subjects:
   - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
   - desktop/src/core/text_hygiene.py:dd75d3ecfd1b3f4147f6417157e98671e5453b7205868cef30409636e341379e
-  - desktop/src/core/interop_export.py:a76f820e785fcec45dba4d7248e04fb179d8e1f3b933064a04e64cf28f218d9e
+  - desktop/src/core/interop_export.py:b1df3d1e9efe66bcd740561459c9f51a634d4fa2081d27fc8f44150b6cf1e4bf
   - desktop/src/core/mcp_runtime.py:5de4d409bf9c24c731e3a6238e3f9d8039ef751a6372bc145d181ec06f296c0e
   - desktop/src/core/prose_lint.py:680715a34a1c43687a87113edc323c1491ab7577f99352bda4b30633b064b15c
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
   - desktop/src/core/doc_hygiene.py:88f7a7036765f62f80f15ec8671395e71175079b4bba749197b0f1086491a70d
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
   - desktop/src/core/purity_scan.py:0a9e84cf5af8bf9560bbb0dc79fd166ce7b9cf2fb6e65cd47a5d7e673906d4c6
-  - scripts/nf.py:b50cd466b15b68ac8ab40b25df726470b702d88a226c8b5f4550d2871d2e6dee
+  - scripts/nf.py:d5fcefbad4963d76c542b07407932a1ff9a0726266cf39502179c7dbf54a7429
   - scripts/check_external_links.py:f6f9a270f1e99fe08f45416ea0e19359724993985e29f96a37633b40784ff1ed
-  - scripts/check_interop_schemas.py:7c9416b50fb9baf8809226ad281b7ecbc4f8e9956f9e5aa0191106431f92fd88
-  - results/interop-schema-validation.md:574cf0aca484d1bac8687f72a0143b4e3747fa12e4ecfb854b69ed11444dca14
-  - docs/interop.md:142f151ceaf9f0b12e54e7cec8845fab64d422a01a60665c1b1e318c1deaf274
+  - scripts/check_interop_schemas.py:712239292e64e402a9088e6b1f1a6607ab37eca8c99bc7eba4c282e0e9595dde
+  - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
+  - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c
   - docs/text-hygiene.md:36edf35f60bc669192443a8c16a4bcdc7c22408270fff5ea15308a16a756f986
   - docs/endpoint.md:4da6d07f9d0ed0a7166c028b1a4070a370f2edc9e70e700cce03c3d38b4e930f
   - docs/mcp.md:fb8c5a30492705190e879e7f0124ecd01d95c4d7a099980ccbf8c1976acb9ca5

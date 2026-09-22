@@ -9,17 +9,17 @@ subjects:
   - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
   - desktop/src/core/transparency_log.py:ffb298d1a55611f03ee8dca1a57aa6148fd06bfaeb4cbd6a07dade279ebddd00
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
-  - desktop/src/core/interop_export.py:a76f820e785fcec45dba4d7248e04fb179d8e1f3b933064a04e64cf28f218d9e
+  - desktop/src/core/interop_export.py:b1df3d1e9efe66bcd740561459c9f51a634d4fa2081d27fc8f44150b6cf1e4bf
   - desktop/src/core/ccv3_adapter.py:cb33b76eb4e3af332f73fceefd5ef8e7ed171d76cc4ee02327555f21bb5c9ca1
   - desktop/src/core/export_schema.py:cc97399818bb788c39fec7d9409a8449385d45d2f5c88cf355717c4b14780503
   - desktop/src/core/mcp_runtime.py:5de4d409bf9c24c731e3a6238e3f9d8039ef751a6372bc145d181ec06f296c0e
   - desktop/src/core/import_adapter.py:5620194e56ce42b175e02f69d4bc6d03b99f35b43e5d38ab6c0d4aab9eaab333
   - desktop/src/core/library.py:92317109afa273b54c1babc722e7d12442faa6c2924d495b7b9217ed35b6501a
-  - scripts/check_interop_schemas.py:7c9416b50fb9baf8809226ad281b7ecbc4f8e9956f9e5aa0191106431f92fd88
+  - scripts/check_interop_schemas.py:712239292e64e402a9088e6b1f1a6607ab37eca8c99bc7eba4c282e0e9595dde
   - scripts/check_external_links.py:f6f9a270f1e99fe08f45416ea0e19359724993985e29f96a37633b40784ff1ed
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
   - docs/external-validation-assets/E1_ccv3_sample_lightmix_P04_chara.json:528935dcf5be9caf69e25a88ec1637b64b8b725c51a539e1ede1d3a864dbcb45
-  - results/interop-schema-validation.md:574cf0aca484d1bac8687f72a0143b4e3747fa12e4ecfb854b69ed11444dca14
+  - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

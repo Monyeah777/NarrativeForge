@@ -32,6 +32,8 @@ SOURCES = (
     ("type-backlog", "protocol/type_backlog.json"),
     ("pipeline-advisory", "protocol/pipeline_advisory.json"),
 )
+#: 「扩展 / 深化 / 创新」三族（**机械派生**：每条都带可核验的缺口事实，不靠想象）
+FAMILIES = ("extend", "deepen", "innovate")
 ORDER_DIR = ".rivet/private_archive/work_orders"
 #: 工单必须落在这个前缀下（内部档案）；落到别处即 FAIL
 ARCHIVE_PREFIX = ".rivet/"
@@ -60,7 +62,7 @@ def state(root: str = ".") -> Dict[str, Any]:
     }
 
 
-def items(root: str = ".", limit: int = 0) -> List[Dict[str, Any]]:
+def items(root: str = ".", limit: int = 0, source: str = "") -> List[Dict[str, Any]]:
     """工作项清单（来自公开声明件；每条带 id/kind/title/detail/落点提示/完成判据）。"""
     out: List[Dict[str, Any]] = []
     backlog = _read(root, "protocol/type_backlog.json")
@@ -85,15 +87,111 @@ def items(root: str = ".", limit: int = 0) -> List[Dict[str, Any]]:
             "where_hint": "对应管线声明与所涉模块的 references/事件声明",
             "done_when": ["该类别计数下降或转为在册机制", "nf pipeline dryrun --all 零 hard"],
         })
+    out += capability_gaps(root)
+    if source:
+        out = [it for it in out if it["source"] == source]
     return out[:limit] if limit else out
 
 
-def questions(root: str = ".", top: int = 5) -> Dict[str, Any]:
+def capability_gaps(root: str = ".") -> List[Dict[str, Any]]:
+    """现有功能的延伸/深化/创新候选（**全部机械派生**，每条附缺口事实）。
+
+    设计纪律：候选不是"我觉得可以做 XXX"，而是**仓库状态里可核验的缺口**——
+    ① 已有只读面未接 MCP（extend）；② 同一份事实在两处声明却无一致性判据（deepen，
+    实例：CLI 可选值 ↔ 声明件曾两次漏同步）；③ 两个既有面之间尚未接线（innovate）。
+    """
+    import re
+    out: List[Dict[str, Any]] = []
+
+    # ① extend：只读治理面未接 MCP
+    nf_path = os.path.join(root, "scripts", "nf.py")
+    cmds: List[str] = []
+    if os.path.isfile(nf_path):
+        with open(nf_path, encoding="utf-8") as fh:
+            cmds = sorted(set(re.findall(r'sub\.add_parser\(\s*"([a-z0-9-]+)"', fh.read())))
+    try:
+        from core import mcp_runtime as _mcp
+        tools = {t["name"] for t in _mcp.TOOL_DEFS}
+    except Exception:  # pragma: no cover
+        tools = set()
+    readonly_governance = [c for c in cmds if c in (
+        "decisions", "handover", "postmortem", "audit", "transparency", "score",
+        "conformance", "assertions", "model", "cognition", "events", "rfc",
+        "endpoint", "interop", "workloop", "decide", "explain", "related",
+        "who-refers", "impact")]
+    covered = {"receipts", "endpoint", "driver", "patterns", "knowledge"}
+    missing = [c for c in readonly_governance if c not in covered]
+    if missing:
+        out.append({
+            "id": "CAP-EXTEND-MCP-READONLY",
+            "source": "capability-gaps", "family": "extend",
+            "kind": "capability-extension",
+            "title": "把只读治理面接入 MCP（当前 %d 个只读面未暴露，工具仅 %d 个）"
+                     % (len(missing), len(tools)),
+            "detail": "未接 MCP 的只读面：%s" % "、".join(missing[:8]),
+            "where_hint": "core/mcp_runtime.py（TOOL_DEFS + 只读白名单）+ protocol/"
+                          "mcp_package.json 登记",
+            "done_when": ["新增工具逐名与实现一致", "check33 新面扫描含逐名一致断言",
+                          "MCP 工具仍全只读（无写路径）"],
+        })
+
+    # ② deepen：同一事实两处声明、却无「一致性判据」的实例（先报已证实的那个）
+    interop_decl: List[str] = []
+    try:
+        from core import interop_export as _ie
+        interop_decl = sorted(_ie.KINDS)
+    except Exception:  # pragma: no cover
+        pass
+    cli_kinds: List[str] = []
+    if cmds:
+        with open(nf_path, encoding="utf-8") as fh:
+            text = fh.read()
+        m = re.search(r'add_argument\(\s*"--kind",\s*default="[a-z]+",\s*choices=\[([^\]]+)\]',
+                      text)
+        if m:
+            cli_kinds = sorted(re.findall(r'"([a-z]+)"', m.group(1)))
+    if interop_decl and cli_kinds and cli_kinds != interop_decl:
+        out.append({
+            "id": "CAP-DEEPEN-DECL-CONSISTENCY",
+            "source": "capability-gaps", "family": "deepen",
+            "kind": "judgement-deepening",
+            "title": "加「CLI 可选值 ↔ 声明件」一致性判据（已抓到实例：缺 %s）"
+                     % "、".join(sorted(set(interop_decl) - set(cli_kinds))),
+            "detail": "interop CLI kinds=%s / 导出面声明=%s —— 同类漏同步此前已发生一次"
+                      "（slsa/a2a），属可机检的判据缺口" % (cli_kinds, interop_decl),
+            "where_hint": "scripts/nf.py 的 choices + core/interop_export.KINDS（判据落 check33）",
+            "done_when": ["修掉实例差异", "新增通用判据：CLI choices ⊆ 声明件（或相等）",
+                          "负例单测：故意漏一个 kind 应被抓"],
+        })
+
+    # ③ innovate：两个既有面之间尚未接线（**接线完成即自动撤单**——候选池必须反映当前状态）
+    if "decisions" not in interop_decl:
+        out.append({
+            "id": "CAP-INNOVATE-DECISION-INTEROP",
+            "source": "capability-gaps", "family": "innovate",
+            "kind": "capability-innovation",
+            "title": "把决策层/工单面接进互操作导出（决策可被外部工具链读）",
+            "detail": "现状：decision_layer.json 与 workloop 工单都在仓内，互操作导出面"
+                      "（%d 面）尚无「决策面」投影；外部工具链读不到「谁按什么概率决定了什么」"
+                      % len(interop_decl),
+            "where_hint": "core/interop_export.py 新增 kind（纯派生自 decision_layer.json + 公开裁决索引）",
+            "done_when": ["新导出面纯派生（不改真源）",
+                          "外部 schema 校验口径成立或如实记 no-schema",
+                          "check33 入仓面逐字节一致"],
+        })
+    return out
+
+
+def questions(root: str = ".", top: int = 5, source: str = "") -> Dict[str, Any]:
     """组类型化问题：挑活（choice）+ 每项风险（score）+ 每项「能否安全做」（noul）。"""
-    picked = items(root, limit=max(1, top))
+    picked = items(root, limit=max(1, top), source=source)
     q: Dict[str, Any] = {}
     if not picked:
         return q
+    q["family"] = {"type": "choice",
+                   "instructions": "这一轮要哪一类工作（extend 加面 / deepen 深化判据 / "
+                                   "innovate 新组合）",
+                   "options": list(FAMILIES)}
     q["next_item"] = {"type": "choice",
                       "instructions": "选下一个要推进的工作项（优先小改动面、可门禁验收）",
                       "options": [it["id"] for it in picked]}
@@ -114,11 +212,11 @@ def _order_id(chosen: str, st: Dict[str, Any]) -> str:
 
 
 def plan(root: str = ".", adapter: str = "stub", top: int = 5, endpoint: str = "",
-         timeout: float = 30.0) -> Dict[str, Any]:
+         timeout: float = 30.0, source: str = "") -> Dict[str, Any]:
     """回路第一步：问决策层 → 产出工单（**只读声明，不落笔内容**）。"""
     st = state(root)
-    picked = items(root, limit=max(1, top))
-    qs = questions(root, top=top)
+    picked = items(root, limit=max(1, top), source=source)
+    qs = questions(root, top=top, source=source)
     if not qs:
         return {"schema": "nf-workorder/1", "status": "empty",
                 "reason": "公开声明里没有待办项（type_backlog / pipeline_advisory 均为空）",
@@ -137,7 +235,7 @@ def plan(root: str = ".", adapter: str = "stub", top: int = 5, endpoint: str = "
                 "decision_meta": out.get("meta")}
     answers = out["answers"]
     chosen_id = answers["next_item"]["argmax"]
-    chosen = next(it for it in items(root) if it["id"] == chosen_id)
+    chosen = next(it for it in items(root, source=source) if it["id"] == chosen_id)
     risk = answers.get("risk:%s" % chosen_id) or {}
     safe = answers.get("gate_safe:%s" % chosen_id) or {}
     return {

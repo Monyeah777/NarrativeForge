@@ -15,6 +15,7 @@
 | vc | W3C VC Data Model 2.0 以规范文本 + JSON-LD 上下文发布（w3c/vc-data-model: 规范正文；无官方 JSON Schema 收口凭证形状） | - | no-schema | W3C VC Data Model 2.0 以规范文本 + JSON-LD 上下文发布（w3c/vc-data-model: 规范正文；无官方 JSON Schema 收口凭证形状） |
 | c2pa | C2PA 规范以 CBOR/JUMBF 容器 + JSON 清单表示定义（contentauth/c2pa-rs 等实现仓；官方无独立 JSON Schema 文件），且本仓**不做容器封装**，故只做自校验 | - | no-schema | C2PA 规范以 CBOR/JUMBF 容器 + JSON 清单表示定义（contentauth/c2pa-rs 等实现仓；官方无独立 JSON Schema 文件），且本仓**不做容器封装**，故只做自校验 |
 | cid | CID 由 multiformats 规范定义（multiformats/cid + multicodec 表），无 JSON Schema；本仓以**已知向量**校验（sha256("") 的 CIDv1 raw） | - | no-schema | CID 由 multiformats 规范定义（multiformats/cid + multicodec 表），无 JSON Schema；本仓以**已知向量**校验（sha256("") 的 CIDv1 raw） |
+| decisions | 决策面是 **NF 自有形状**（决策能力 + 公开裁决索引），非外部标准；无外部 schema 可对，判据落在本仓 check33（覆盖一致 / 内部边界声明 / 确定性） | - | no-schema | 决策面是 **NF 自有形状**（决策能力 + 公开裁决索引），非外部标准；无外部 schema 可对，判据落在本仓 check33（覆盖一致 / 内部边界声明 / 确定性） |
 | ccv3(E1) | SillyTavern 源码字面量 | 200 | ok | 与上游字面量一致（spec=chara_card_v3 / spec_version=3.0 / data 结构在位） |
 | mcp(E3) | https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/main/schema/2026-07-28/schema.json | 200 | ok | 4 个方法应答通过官方 schema（server/discover / resources/list / tools/list / prompts/list） |
 

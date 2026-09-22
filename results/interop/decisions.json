@@ -1,0 +1,180 @@
+{
+  "adapters": [
+    {
+      "calibrated": false,
+      "id": "stub",
+      "inGatePath": true,
+      "kind": "offline-deterministic"
+    },
+    {
+      "calibrated": true,
+      "id": "systemone-http",
+      "inGatePath": false,
+      "kind": "local-http"
+    },
+    {
+      "calibrated": false,
+      "id": "openai-json",
+      "inGatePath": false,
+      "kind": "remote-http"
+    }
+  ],
+  "boundaries": [
+    "只给决策与概率，不执行动作（服务端与 NF 侧均不落地动作）",
+    "不生成正文：决策层非自回归，内容仍由内容契约层（协议 + 模块 + 资产）承担",
+    "模型不入门禁路径：门禁必须离线确定（stub 之外一律非门禁任务）",
+    "概率的使用由调用方自证校准（本层不替调用方承担决策后果）",
+    "候选模型只在**显式拉取**后可用（pulled=false 即未下载；NF 不替作者决定下载数十 GB 权重）"
+  ],
+  "candidates": [
+    {
+      "evidence": "2026-09-21 取回模型卡与配置实测：accuracy 0.766 / Brier 0.062 / ECE 0.213 / score MAE 0.242；四种 workflow 专用（agent-trace / customer-service / invoice / security）；作者自述 specialist（勿作静默默认）、英文专用、选项数建议 <20",
+      "id": "laya-typed-decisions",
+      "license": "apache-2.0",
+      "local": null,
+      "pulled": false,
+      "source": "hf:convaiinnovations/laya-typed-decisions"
+    },
+    {
+      "evidence": "2026-09-21 取回模型卡实测：与 base 同族的做多语面（NF 中文 state 应优先此变体，而非英文专用 checkpoint）",
+      "id": "laya-multilingual",
+      "license": "apache-2.0",
+      "local": {
+        "runtime": "laya 0.3.5 + torch 2.14.0 + transformers 5.17.0（CPU 可跑）",
+        "servedBy": "scripts/serve_decision_model.py（NF 口径 shim：POST /v1/systemone）"
+      },
+      "pulled": true,
+      "source": "hf:convaiinnovations/laya-multilingual"
+    },
+    {
+      "evidence": "2026-09-21 取回模型卡与 adapter_config 实测：非自回归、只评调用方给的候选；三原语 choice/noul/score；需上游 base 精确 revision + Open-Jev loader + GPU；AutoPeftModel 直调不实现该接口",
+      "id": "open-jev-9b",
+      "license": "apache-2.0",
+      "local": null,
+      "pulled": false,
+      "source": "hf:ZefanCai/Open-Jev-9B"
+    }
+  ],
+  "primitives": {
+    "choice": "在调用方给定的候选集上报概率分布 + argmax；候选集由调用方提供，模型不得自造候选",
+    "noul": "对是非问题报概率 p(true)",
+    "score": "对调用方给定的有序等级报概率分布 + 期望值"
+  },
+  "publicDecisionIndex": [
+    {
+      "date": "2026-09-16",
+      "id": "AUD-0001",
+      "title": "W4 审计/验收协议化 —— 自审",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-20",
+      "id": "AUD-0002",
+      "title": "AI 系统域包 —— 概念前置依赖 / 闭包在 NF 现有机制下的三层判定（第 6 件社区包 / 第 2 个非叙事域）",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-20",
+      "id": "AUD-0003",
+      "title": "AI 系统域包深化 —— 双支概念图 / 别名检索 / 就绪清单；四仓借鉴逐条实证",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-20",
+      "id": "AUD-0004",
+      "title": "外部输入筛选台账 —— data-engineer-handbook（批次二；判定：无净吸收项）",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-20",
+      "id": "AUD-0005",
+      "title": "作者裁决四项执行 —— 概念图判据面 / 运行时裸号歧义 / 投稿闸门声明化 / 资产货架口径",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-20",
+      "id": "AUD-0006",
+      "title": "外部输入筛选台账 —— awesome-shell（批次三；判定：无净吸收项）",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-20",
+      "id": "AUD-0007",
+      "title": "量化金融域包落盘 —— 第 3 个非叙事域、第二个「依赖闭包型」域包；机制复用与证据强度分级",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-20",
+      "id": "AUD-0008",
+      "title": "六项裁决一次收口（各取最优解）+ 六个量化项目吸收与域包深化（第 4/5 件资产、3 个新概念）",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-21",
+      "id": "AUD-0009",
+      "title": "外部协议清单吸收波（162 条 → 逐条实证 → 净吸收 15 条归并 10 项机制）——编码卫生 / 互操作导出 / 文档命令面 / JSON-RPC 结构约束",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-21",
+      "id": "AUD-0010",
+      "title": "六条挂账全部收口 + 出口/会话面外部核验（CCV3 假 v3 与 MCP 可缓存结果两处真缺陷）",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-22",
+      "id": "AUD-0011",
+      "title": "决策层端口（typed-decision 三原语）与 Jev / Laya 候选模型实证",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-22",
+      "id": "AUD-0012",
+      "title": "构建回路（决策模型挑活 → 生成式 worker 落笔 → 门禁验收）——「让模型替我干活构建 NF」的落地形态",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-22",
+      "id": "AUD-0013",
+      "title": "真模型接入构建回路并落定两项——laya-multilingual 本地跑通（CPU）· 判据按实测修正 · 两项类型缺口闭环",
+      "verdict": "pass"
+    },
+    {
+      "date": "2026-09-22",
+      "id": "AUD-0014",
+      "title": "决策模型驱动「扩展 / 深化 / 创新」——能力缺口候选池 + 真模型选 innovatie 项落地（决策面接入互操作导出）",
+      "verdict": "pass"
+    }
+  ],
+  "responseContract": {
+    "abstain_rule": "adapter 不可用、超时或输出不合 schema → status=abstained + reason（严禁猜测补齐：决策层的沉默比编造安全）",
+    "answers": "name → {type, probs?: [float], options?: [string], argmax?: string|int, p?: float, value?: float}；probs 求和须 ≈ 1（容差 1e-6），长度须等于 options/levels 长度",
+    "meta": "adapter / calibrated（是否校准概率）/ non_gate: true / schema；systemone-http 另有 model 字段",
+    "required": [
+      "schema",
+      "status",
+      "answers",
+      "meta"
+    ],
+    "status_vocabulary": [
+      "ok",
+      "abstained"
+    ]
+  },
+  "schema": "nf-decision-surface/1",
+  "workloop": {
+    "entry": "python scripts/nf.py workloop [--adapter stub|systemone-http] [--top N] [--write]",
+    "non_negotiables": [
+      "决策层不生成内容（Laya 是编码器分类、Open-Jev 非自回归决策头——都不会写代码或正文）",
+      "工单只落内部档案（计划类产品内部消化；公开仓只收结果 + audit）",
+      "落笔方必须是 worker，决策模型只提供选择与概率",
+      "验收只认门禁（verify.sh 全绿 + nf conformance conformant）"
+    ],
+    "role": "决策层驱动的构建回路：决策模型挑活 / 判风险 / 定「能否在不碰回执锚定件条件下完成」；生成式 worker（人 / Codex / 生成式模型）落笔；NF 门禁验收",
+    "sources": [
+      "protocol/type_backlog.json（未定型事件字段）",
+      "protocol/pipeline_advisory.json（管线 advisory）"
+    ]
+  },
+  "x-nf-internal": "逐次工单（挑活/风险/收口）留在内部档案 .rivet/private_archive/work_orders/，不随本面发布（STRATEGY §四 计划内部消化）；本面只投影**能力与公开裁决索引**。"
+}

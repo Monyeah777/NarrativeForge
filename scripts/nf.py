@@ -542,10 +542,16 @@ def _build_parser() -> argparse.ArgumentParser:
                          help="互操作导出（OpenAPI 3.1 / AsyncAPI 3.0 / in-toto Statement / SPDX SBOM——纯派生）",
                          description="互操作导出面：把既有声明件实时派生为外部标准工具可读的文档"
                                      "（不新增真源；同一输入两次导出逐字节一致）")
-    iop.add_argument("--kind", default="openapi",
-                     choices=["openapi", "asyncapi", "intoto", "sbom",
-                              "slsa", "a2a", "prov", "cyclonedx", "vc", "c2pa", "cid"],
-                     help="导出种类（缺省 openapi）")
+    # 单一真相：CLI 可选值**派生自导出面声明**（KINDS）——此前手工维护的列表
+    # 曾两次漏同步（slsa/a2a、c2pa），故这里不再手写（同时由 workloop 的
+    # CAP-DEEPEN-DECL-CONSISTENCY 候选与 check33 断言把该 bug 类别关掉）。
+    try:
+        from core import interop_export as _ie_kinds
+        _kinds = sorted(_ie_kinds.KINDS)
+    except Exception:  # pragma: no cover - 声明件不可读时退回最小面
+        _kinds = ["openapi"]
+    iop.add_argument("--kind", default="openapi", choices=_kinds,
+                     help="导出种类（缺省 openapi；可选值派生自 interop_export.KINDS）")
     iop.add_argument("--all", action="store_true",
                      help="导出全部面（配合 --out 落盘为目录；单面时 --out 为文件）")
     iop.add_argument("--list", action="store_true", help="列出可导出种类与其消费方")
@@ -582,6 +588,9 @@ def _build_parser() -> argparse.ArgumentParser:
                                     "决策模型只选择不落笔，工单只落内部档案")
     wl.add_argument("--adapter", default="stub", help="决策适配器（stub / systemone-http）")
     wl.add_argument("--top", type=int, default=5, help="候选工作项数（缺省 5）")
+    wl.add_argument("--source", default="",
+                    help="限定候选池来源：type-backlog / pipeline-advisory / capability-gaps"
+                         "（缺省=全池；操作者定池、模型定选）")
     wl.add_argument("--endpoint", default="", help="systemone-http 端点")
     wl.add_argument("--timeout", type=float, default=30.0, help="适配器超时秒")
     wl.add_argument("--list", action="store_true", help="列出待办工作项（不提问）")
@@ -2237,16 +2246,18 @@ def _cmd_workloop(args):
               % (rel, args.outcome or "landed", args.gate or "unknown"))
         return 0
     if args.list:
-        rows = wl.items(ROOT, limit=max(1, args.top))
+        rows = wl.items(ROOT, limit=max(1, args.top), source=args.source)
         if args.json:
             print(_json.dumps(rows, ensure_ascii=False, indent=2, sort_keys=True))
         else:
             for it in rows:
                 print("  %-28s %-16s %s" % (it["id"], it["kind"], it["title"]))
-            print("  （共 %d 项在册；这是决策层的候选面）" % len(wl.items(ROOT)))
+            print("  （共 %d 项在册%s；这是决策层的候选面）"
+                  % (len(wl.items(ROOT, source=args.source)),
+                     "（来源限定 %s）" % args.source if args.source else ""))
         return 0
     doc = wl.plan(ROOT, adapter=args.adapter, top=max(1, args.top),
-                  endpoint=args.endpoint, timeout=args.timeout)
+                  endpoint=args.endpoint, timeout=args.timeout, source=args.source)
     if args.json:
         print(_json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True))
     else:

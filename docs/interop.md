@@ -20,6 +20,7 @@
 | `vc` | `protocol/conformance_report.json` + `RECEIPTS.json` + `approvals/*` | W3C VC 2.0 形状（**未签名**） | VC 工具链（形状可读；可验证性未宣称） |
 | `c2pa` | `protocol/RECEIPTS.json` | C2PA JSON 清单形状（**未封装/未签名**） | 内容凭证工具链（仅清单形状） |
 | `cid` | `protocol/RECEIPTS.json` | CIDv1（multibase base32 / raw / sha2-256） | multiformats 生态（内容寻址） |
+| `decisions` | `protocol/decision_layer.json` + `results/audit/*.md` frontmatter | 决策面（NF 自有形状） | 外部工具链（读「有哪些决策能力、规则如何、模型拉取状态、公开裁决索引」） |
 
 ## 怎么用
 
@@ -52,6 +53,13 @@ python scripts/nf.py interop --check
 4. **fail-closed**——真源缺失即 FAIL（不是"空导出面"，而是"没有可导出的东西"）。
 5. **入仓面一致**——`results/interop/*.json` 若在仓，须与实时派生**逐字节一致**
    （入仓面是投影，不是真源；改声明件后重跑 `--all`）。
+6. **决策面的内部边界**——`decisions` 面**不导出逐次工单**（工单留在内部档案，
+   `STRATEGY §四` 计划内部消化），该声明必须位；只投影能力面 + `results/audit/*.md` 的
+   **公开裁决索引**（id/标题/日期/结论）。
+
+> CLI 的 `--kind` 可选值**派生自 `interop_export.KINDS`**（不再手写）——此前手工列表两次漏同步
+> （`slsa`/`a2a`、`c2pa`），现由构造消除该类 bug；「CLI 可选值 ↔ 声明件」的一致性也进了
+> 构建回路的候选池（漏同步即自动生成一条 deepen 候选）。
 
 ## 与其他面关系
 

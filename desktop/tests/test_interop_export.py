@@ -155,8 +155,8 @@ class InteropExportTest(unittest.TestCase):
 
     def test_interop_kinds_cover_six_faces(self):
         self.assertEqual(sorted(ie.KINDS),
-                         ["a2a", "asyncapi", "c2pa", "cid", "cyclonedx", "intoto",
-                          "openapi", "prov", "sbom", "slsa", "vc"])
+                         ["a2a", "asyncapi", "c2pa", "cid", "cyclonedx", "decisions",
+                          "intoto", "openapi", "prov", "sbom", "slsa", "vc"])
 
     def test_cid_multiformats_vector(self):
         """multiformats 已知向量：raw codec + sha2-256 下 sha256("") 的 CIDv1。"""
@@ -203,6 +203,25 @@ class InteropExportTest(unittest.TestCase):
             self.assertTrue(p.is_file(), "缺入仓面：%s" % kind)
             self.assertEqual(p.read_bytes(), ie.render(kind, ROOT),
                              "入仓面与实时派生不一致：%s" % kind)
+
+    def test_cli_kind_choices_derive_from_declaration(self):
+        """CLI `--kind` 对每个声明面都必须可跑（此前手写列表两次漏同步 slsa/a2a、c2pa）。"""
+        import subprocess
+        for kind in sorted(ie.KINDS):
+            r = subprocess.run([sys.executable, "scripts/nf.py", "interop", "--kind", kind],
+                               cwd=ROOT, capture_output=True, text=True,
+                               encoding="utf-8", timeout=90)
+            self.assertEqual(r.returncode, 0, "kind=%s 不可跑：%s" % (kind, r.stderr[:200]))
+            self.assertTrue(r.stdout.strip().startswith("{"),
+                            "kind=%s 输出不像机读面：%s" % (kind, r.stdout[:120]))
+
+    def test_decision_surface_excludes_internal_work_orders(self):
+        ds = ie.decision_surface(ROOT)
+        self.assertIn("不随本面发布", ds["x-nf-internal"])
+        self.assertGreaterEqual(len(ds["publicDecisionIndex"]), 5)
+        self.assertEqual(len(ds["adapters"]), 3)
+        for c in ds["candidates"]:
+            self.assertIn("pulled", c)
 
     def test_prov_graph_shape_and_coverage(self):
         pv = ie.prov_document(ROOT)

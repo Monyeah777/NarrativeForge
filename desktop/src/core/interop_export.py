@@ -581,6 +581,57 @@ def cid_index(root: str = ".") -> Dict[str, Any]:
     }
 
 
+def decision_surface(root: str = ".") -> Dict[str, Any]:
+    """决策面（派生）：外部工具链能读到「本仓有哪些决策能力、按什么规则、模型拉取状态如何」。
+
+    派生真源 = `protocol/decision_layer.json`（原语/适配器/候选/边界/workloop 契约）+
+    `results/audit/*.md` 的 frontmatter（公开的决策与裁决**索引**：id/标题/日期/结论）。
+    **不导出逐次工单**：工单与收口件留在内部档案（`STRATEGY §四` 计划内部消化），
+    本面显式声明这一点（门禁判该声明必须在位），避免"看起来什么都导出了"的错觉。
+    """
+    import glob as _glob
+    decl = _read_json(root, "protocol/decision_layer.json")
+    audits = []
+    for p in sorted(_glob.glob(os.path.join(root, "results", "audit", "*.md"))):
+        try:
+            with open(p, encoding="utf-8") as fh:
+                head = fh.read(1200)
+        except OSError:
+            continue
+        if not head.startswith("---"):
+            continue
+        block = head.split("---", 2)[1]
+        rec: Dict[str, str] = {}
+        for line in block.splitlines():
+            if ":" in line:
+                k, v = line.split(":", 1)
+                rec[k.strip()] = v.strip()
+        if rec.get("id"):
+            audits.append({"id": rec.get("id"), "title": rec.get("title", ""),
+                           "date": rec.get("date", ""), "verdict": rec.get("verdict", "")})
+    return {
+        "schema": "nf-decision-surface/1",
+        "primitives": decl.get("primitives") or {},
+        "responseContract": decl.get("response_contract") or {},
+        "adapters": [{"id": a.get("id"), "kind": a.get("kind"),
+                      "inGatePath": a.get("in_gate_path"),
+                      "calibrated": a.get("calibrated")}
+                     for a in (decl.get("adapters") or [])],
+        "candidates": [{"id": c.get("id"), "source": c.get("source"),
+                        "license": c.get("license"), "pulled": c.get("pulled"),
+                        "evidence": str(c.get("evidence") or "")[:200],
+                        "local": ({"runtime": (c.get("local") or {}).get("runtime"),
+                                   "servedBy": (c.get("local") or {}).get("served_by")}
+                                  if c.get("local") else None)}
+                       for c in (decl.get("candidates") or [])],
+        "boundaries": decl.get("boundaries") or [],
+        "workloop": decl.get("workloop") or {},
+        "publicDecisionIndex": audits,
+        "x-nf-internal": "逐次工单（挑活/风险/收口）留在内部档案 .rivet/private_archive/work_orders/，"
+                         "不随本面发布（STRATEGY §四 计划内部消化）；本面只投影**能力与公开裁决索引**。",
+    }
+
+
 def a2a_agent_card(root: str = ".") -> Dict[str, Any]:
     """A2A Agent Card（能力面投影）——skills 来自服务端点契约 + MCP 包声明，不新增真源。"""
     contract = _read_json(root, CONTRACT_REL)
@@ -624,6 +675,7 @@ KINDS = {
     "vc": (vc_document, "W3C VC 2.0 形状（未签名，含状态注记）"),
     "c2pa": (c2pa_manifest, "C2PA JSON 清单形状（未封装/未签名）"),
     "cid": (cid_index, "CIDv1 内容寻址索引（multiformats）"),
+    "decisions": (decision_surface, "决策面（决策能力 + 公开裁决索引；工单不入公开面）"),
 }
 
 
@@ -836,6 +888,21 @@ def verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                           "前缀 b + raw codec 0x71 + sha2-256 multihash）" % e.get("path"))
             break
 
+    # 决策面：适配器/候选全覆盖 + 「工单不入公开面」声明在位（防"看起来什么都导出了"）
+    ds = decision_surface(root)
+    decl_dl = _read_json(root, "protocol/decision_layer.json")
+    if len(ds.get("adapters") or []) != len(decl_dl.get("adapters") or []):
+        issues.append("决策面适配器数与声明不一致：%d vs %d"
+                      % (len(ds.get("adapters") or []), len(decl_dl.get("adapters") or [])))
+    if len(ds.get("candidates") or []) != len(decl_dl.get("candidates") or []):
+        issues.append("决策面候选数与声明不一致：%d vs %d"
+                      % (len(ds.get("candidates") or []), len(decl_dl.get("candidates") or [])))
+    if "不随本面发布" not in str(ds.get("x-nf-internal") or ""):
+        issues.append("决策面缺「工单不入公开面」声明（修复指引：写明内部档案边界，"
+                      "不得让外部以为逐次决策已公开）")
+    if not (ds.get("publicDecisionIndex") or []):
+        issues.append("决策面缺公开裁决索引（修复指引：results/audit/*.md 的 frontmatter 可派生）")
+
     stats = {"openapi_paths": len(oa.get("paths") or {}),
              "asyncapi_channels": len(aa.get("channels") or {}),
              "intoto_subjects": len(st.get("subject") or []),
@@ -848,6 +915,9 @@ def verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
              "vc_type": (vc.get("type") or [""])[0],
              "c2pa_assertions": len(c2.get("assertions") or []),
              "cid_entries": len(ci.get("entries") or []),
+             "decision_adapters": len(ds.get("adapters") or []),
+             "decision_candidates": len(ds.get("candidates") or []),
+             "decision_audits": len(ds.get("publicDecisionIndex") or []),
              "issues": len(issues)}
     return issues, stats
 
@@ -856,4 +926,5 @@ def summary(stats: Dict[str, Any]) -> str:
     return ("OpenAPI 路径 %(openapi_paths)d / AsyncAPI 通道 %(asyncapi_channels)d / "
             "in-toto subject %(intoto_subjects)d / SBOM 包 %(sbom_packages)d / "
             "SLSA subject %(slsa_subjects)d / A2A skills %(a2a_skills)d / "
-            "PROV 节点 %(prov_nodes)d" % stats)
+            "PROV 节点 %(prov_nodes)d / 决策面 适配器 %(decision_adapters)d"
+            "（裁决索引 %(decision_audits)d）" % stats)

@@ -179,7 +179,12 @@ class WorkloopTest(unittest.TestCase):
     def test_items_come_from_public_declarations(self):
         rows = self.wl.items(str(ROOT))
         sources = {r["source"] for r in rows}
-        self.assertEqual(sources, {"type-backlog", "pipeline-advisory"})
+        # 三类公开派生源：待办声明两件 + 「扩展/深化/创新」能力缺口（机械派生）
+        self.assertEqual(sources, {"type-backlog", "pipeline-advisory", "capability-gaps"})
+        gaps = [r for r in rows if r["source"] == "capability-gaps"]
+        for g in gaps:
+            self.assertIn(g.get("family"), ("extend", "deepen", "innovate"))
+            self.assertTrue(g["where_hint"] and g["done_when"])
         for r in rows[:3]:
             self.assertTrue(r["where_hint"])
             self.assertTrue(r["done_when"])
