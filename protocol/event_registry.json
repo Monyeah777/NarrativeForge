@@ -35,8 +35,8 @@
     "beat_tick": {
       "fields": {
         "buffered": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "boolean"
         },
         "day": {
           "note": "45 typed 落库（作者执行确认，机械规则）",
@@ -47,8 +47,8 @@
           "type": "number"
         },
         "origin": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "tick": {
           "note": "45 typed 落库（作者执行确认，机械规则）",
@@ -61,12 +61,12 @@
     "campus_anonymous_gift": {
       "fields": {
         "item": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "origin": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "qty": {
           "note": "45 typed 落库（作者执行确认，机械规则）",
@@ -77,8 +77,8 @@
           "type": "number"
         },
         "source_package": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "string"
         },
         "tick": {
           "note": "45 typed 落库（作者执行确认，机械规则）",
@@ -302,6 +302,11 @@
       "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
       "payload_status": "declared"
     },
+    "faction_event": {
+      "fields": {},
+      "note": "证据:M15_帮派势力 机读块 events.publish；载荷形状待补",
+      "payload_status": "declared"
+    },
     "factor_spec_conflict": {
       "fields": {
         "factor": {
@@ -332,11 +337,6 @@
         }
       },
       "note": "证据:community/量化金融域包/modules/M31_因子与信号口径.md §4 事件契约（本域自撰，字段自定）",
-      "payload_status": "declared"
-    },
-    "faction_event": {
-      "fields": {},
-      "note": "证据:M15_帮派势力 机读块 events.publish；载荷形状待补",
       "payload_status": "declared"
     },
     "ghost_event": {

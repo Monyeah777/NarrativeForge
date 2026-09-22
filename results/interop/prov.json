@@ -152,12 +152,17 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "4c67140a1db0e69722f056eaa10cc0c363291b00d13985f0053d6ba1b255ad9e"
+      "nf:sha256": "28bee1ee689a8cd668c7ca6b8fffd10d4b6f69d9a8c9d1727ee822f79696a727"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",
       "@type": "prov:Entity",
-      "nf:sha256": "6affbdff2bd191ed327d45af06bec42a58433db33d756c4f27347c9c1b72330b"
+      "nf:sha256": "6c9c0e9482eddf48b5599d5fd7aa0b9852ca4b4ba9e066570b6afc0502779578"
+    },
+    {
+      "@id": "nf:file/protocol/decision_layer.json",
+      "@type": "prov:Entity",
+      "nf:sha256": "8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f"
     },
     {
       "@id": "nf:file/protocol/driver.json",
@@ -172,7 +177,7 @@
     {
       "@id": "nf:file/protocol/event_registry.json",
       "@type": "prov:Entity",
-      "nf:sha256": "dc6edbf5047dc5e134d1e9442efe1ff633fe991a527394f460a897abc4f4cc39"
+      "nf:sha256": "79e5e1a62bcddcd45a1020e8c9c0d0ca9206d3432477aaf31f17f744dc4d8979"
     },
     {
       "@id": "nf:file/protocol/execution_modes.json",
@@ -217,12 +222,12 @@
     {
       "@id": "nf:file/protocol/module_signatures.json",
       "@type": "prov:Entity",
-      "nf:sha256": "2b02091e51428942d6737a8734a3a26c9d89fd647daff757c0d944796d901319"
+      "nf:sha256": "5159d9ed10d803ad06f56b26acf5c8c6256d422b36c488dc9767c98a220c644a"
     },
     {
       "@id": "nf:file/protocol/normative.json",
       "@type": "prov:Entity",
-      "nf:sha256": "f64fc6ee87215eb42a4b8f6a6d0c2d9b8c4af699a1c924b7fb85fa1684e59de4"
+      "nf:sha256": "4b47f2ff9c70cb58ad1f379d75891a5d7652c4a23c079ea0f7a4c4c8ed46ca6a"
     },
     {
       "@id": "nf:file/protocol/pipeline_advisory.json",
@@ -287,7 +292,7 @@
     {
       "@id": "nf:file/protocol/type_backlog.json",
       "@type": "prov:Entity",
-      "nf:sha256": "e8bd82acac0ea4892d90ef6be659bebb41c082f9092c77c7bb46e05ef2276e40"
+      "nf:sha256": "797be93d1f7d9a439cad62b1eba47136e5ec850d1c3eb1f0641a510aad32952c"
     },
     {
       "@id": "nf:file/protocol/vocabularies.json",
@@ -323,6 +328,6 @@
   "x-nf-counts": {
     "activities": 3,
     "agents": 3,
-    "entities": 53
+    "entities": 54
   }
 }

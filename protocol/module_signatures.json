@@ -2,11 +2,11 @@
   "count": 48,
   "modules": {
     "AI系统:M25": {
-      "digest": "05f5994517146a1c2ea0cb1951d849e0e004e506725bc3ad8e1dbb88f264b949",
+      "digest": "9eba42619fd91017080e670d5f60d17ba4255d2444d87243f5f440d6ed55c8db",
       "path": "community/AI系统域包/modules/M25_前置闭包求值.md"
     },
     "AI系统:M26": {
-      "digest": "9fdf51cb88eaa474c0f6551ea701810eb65d5c6eb0de455ea732fb2cca0fde0e",
+      "digest": "61a9cec0e1cda494e6fdf3676c0371ec4a0d2827ea27815e12592e2ff3444a69",
       "path": "community/AI系统域包/modules/M26_装载序就绪门.md"
     },
     "M00": {
@@ -50,7 +50,7 @@
       "path": "community/西幻生存领域包/modules/M10_死亡重生.md"
     },
     "M11": {
-      "digest": "5f914035740e637ad698ea606bae94a57504461e8e4242cec43fd8028dabb6f0",
+      "digest": "5e6e1f4c4c83396ca02353b16fa1b5489ad9dc87e5d06997d61115e9313bfd93",
       "path": "community/西幻生存领域包/modules/M11_文字魔法.md"
     },
     "M12": {
@@ -62,7 +62,7 @@
       "path": "04_模块库/事件类/M13_NPC交互.md"
     },
     "M14": {
-      "digest": "e4ecbb755e518bacfbbc1da8479c81d473b120993dac0edc7e43070eabc80644",
+      "digest": "3873ed1ebf39bbabb4cdd13c872ce516ea2770d4390a7121bb43b47adb76dd7c",
       "path": "community/西幻生存领域包/modules/M14_阵营声望.md"
     },
     "M15": {
@@ -74,7 +74,7 @@
       "path": "community/西幻生存领域包/modules/M16_建筑据点.md"
     },
     "M17": {
-      "digest": "b6fe124f19444ccc78a1cb1eef85795328556450b25896227ca26de1c51c764e",
+      "digest": "12d0aea8c20b1313dc9852b6e1928d7cb210ee7cea8f58c116019dabfa84d733",
       "path": "community/西幻生存领域包/modules/M17_生产制造.md"
     },
     "M18": {
@@ -102,11 +102,11 @@
       "path": "04_模块库/通用类/M24_组合规则.md"
     },
     "M40": {
-      "digest": "e50448df4d292574982240fb0442658244f42e6aba35e26ffc61021340688e23",
+      "digest": "4e52256391fab4053f4977e81e044afe5320288c7be124e9bcbd83e19b181e6f",
       "path": "community/校园情感领域包/modules/M40_关系深度.md"
     },
     "M41": {
-      "digest": "2f2f5264f7bdf8d5b30d14b1ad90c6d2170e8ec485e9325b62b6e76d8da2cb54",
+      "digest": "7c249b5343c63d3330b60d3e68978faaf957fef76c55c711944e62e1629ed511",
       "path": "community/校园情感领域包/modules/M41_恋爱进阶.md"
     },
     "M43": {
@@ -146,27 +146,27 @@
       "path": "04_模块库/技术文档类/M90_技术文档结构.md"
     },
     "M91": {
-      "digest": "ceae0f9d04d28884ef129d0c431f74daa5385b1eeed426d5e65bdac2ffa28c56",
+      "digest": "97b6c2911aeb07cf9bbbf848a215d16e91e39d68f0de1d53a0b13e981af47f40",
       "path": "community/校园西幻轻混组合包/modules/M91_异界身份桥.md"
     },
     "M92": {
-      "digest": "fb257256f55603392564c97320ec6897db30b602654978e13974ec7a65239f9c",
+      "digest": "ff5a11184b0a956931290d52fe52f412d4825988fc30f43c6b297eac22eea652",
       "path": "community/校园西幻轻混组合包/modules/M92_轻混装配执行.md"
     },
     "M93": {
-      "digest": "efa446bfa9cc3bb98652354f05a51e0921843c33bfcdc6878d570bc6ba772cb8",
+      "digest": "d1ed9b6a0a82571112819d5dba49cfdb6bf8591e1ef952fe980e35f16e5a2a7f",
       "path": "community/通用核心基础包/modules/M93_通用状态快照.md"
     },
     "M94": {
-      "digest": "4b66b6d59d3418df1f491e66d578b39a59529183f8de9caa7ee806dce6144e80",
+      "digest": "d67fbaad74e80f962268991905a92d89caa7f7eb480bd7dd8ff6a3df0d8a0a11",
       "path": "community/通用核心基础包/modules/M94_通用节拍桥.md"
     },
     "M95": {
-      "digest": "72029b012bcd45e29a8b738ecec6985c46dcd5f9cf10c881126905d4fb40c4c4",
+      "digest": "7a971fa0f61a33c171f8dd773918ab21ef337ced9d57ac2a72e8310952424626",
       "path": "community/通用核心基础包/modules/M95_通用决策汇总.md"
     },
     "M96": {
-      "digest": "029b1c94009ad053bbd25217afc1dc0c4ac97cc031fe9a918761146c62d359b1",
+      "digest": "c0ebd6d6b7af7c1ca6f29946888511e275e87dc54cdb25cea7f131a1eb04774a",
       "path": "community/通用核心基础包/modules/M96_通用输出润色.md"
     },
     "M97": {
@@ -186,11 +186,11 @@
       "path": "04_模块库/通用类/M10_时间推进.md"
     },
     "量化金融:M31": {
-      "digest": "01f77a604e1b651576cbab922d9371a906e367c61e378bda3ea97e5eb7baba7d",
+      "digest": "e6ee899707cd0c4e72d4b50dfc851ae073276b89ca96a78e5997f8c2394fed16",
       "path": "community/量化金融域包/modules/M31_因子与信号口径.md"
     },
     "量化金融:M32": {
-      "digest": "bb00e01c0c102ef55c7c92626f7389c906ba622aad967b5492ef7e786211e84e",
+      "digest": "3549c6e7f71c8b0e283ba49ffb02cd767265d31e780c10f584cf7cb11a66ba1c",
       "path": "community/量化金融域包/modules/M32_回测与绩效口径.md"
     }
   },

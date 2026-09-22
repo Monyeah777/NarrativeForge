@@ -695,9 +695,8 @@
         "payload": {
           "properties": {
             "buffered": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "boolean",
+              "type": "boolean"
             },
             "day": {
               "description": "number",
@@ -708,9 +707,8 @@
               "type": "number"
             },
             "origin": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "tick": {
               "description": "number",
@@ -727,14 +725,12 @@
         "payload": {
           "properties": {
             "item": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "origin": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "qty": {
               "description": "number",
@@ -745,9 +741,8 @@
               "type": "number"
             },
             "source_package": {
-              "additionalProperties": true,
-              "description": "untyped",
-              "type": "object"
+              "description": "string",
+              "type": "string"
             },
             "tick": {
               "description": "number",

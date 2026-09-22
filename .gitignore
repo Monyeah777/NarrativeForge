@@ -11,3 +11,8 @@ __pycache__/
 .rivet.md
 
 .coverage
+
+# 本地模型权重与运行环境（决策层候选；体积 GB 级，绝不入仓）
+checkpoints/
+*.safetensors
+*.gguf

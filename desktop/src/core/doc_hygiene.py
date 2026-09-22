@@ -78,6 +78,7 @@ DOC_KINDS = {
     "docs/modeling.md": "how-to",
     "docs/interop.md": "how-to",
     "docs/text-hygiene.md": "reference",
+    "docs/decision-layer.md": "how-to",
 }
 
 #: 需带 last-updated 位的关键文档（协议/导航/接入 + 指令类）
@@ -114,6 +115,7 @@ REQUIRED_DOCS = [
     "docs/modeling.md",
     "docs/interop.md",
     "docs/text-hygiene.md",
+    "docs/decision-layer.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -146,6 +148,7 @@ INSTRUCTION_DOCS = [
     "docs/assertions.md",
     "docs/modeling.md",
     "docs/interop.md",
+    "docs/decision-layer.md",
 ]
 
 

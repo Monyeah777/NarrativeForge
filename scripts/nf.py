@@ -560,6 +560,38 @@ def _build_parser() -> argparse.ArgumentParser:
     tr.add_argument("--write", action="store_true",
                     help="写入 protocol/generated/receipt_chain.json")
     tr.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    dc = sub.add_parser("decide",
+                        help="决策层（typed-decision 三原语 choice/noul/score：候选集上报概率 + argmax）",
+                        description="决策层端口：把选择写成类型化问题交给决策模型；"
+                                    "模型在门禁之外，缺适配器/超时/输出不合 schema 一律 abstained")
+    dc.add_argument("--state", default="", help="状态文本文件路径")
+    dc.add_argument("--state-text", default="", help="状态文本（与 --state 二选一）")
+    dc.add_argument("--questions", required=True, help="问题 JSON 文件路径")
+    dc.add_argument("--adapter", default="stub",
+                    help="适配器 id（stub 离线确定性 / systemone-http 本地服务 / openai-json）")
+    dc.add_argument("--endpoint", default="", help="适配器端点（systemone-http / openai-json 必填）")
+    dc.add_argument("--model", default="", help="openai-json 适配器的模型名")
+    dc.add_argument("--timeout", type=float, default=30.0, help="适配器超时秒（缺省 30）")
+    dc.add_argument("--dry-run", action="store_true",
+                    help="只体检（声明面 + 请求形状 + stub 决定），不调用外部适配器")
+    dc.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    wl = sub.add_parser("workloop",
+                        help="构建回路：决策模型挑活 → 生成式 worker 落笔 → NF 门禁验收",
+                        description="构建回路：从公开待办真源（type_backlog / pipeline_advisory）"
+                                    "组类型化问题问决策层，产出**工单**（含完成判据与验收命令）；"
+                                    "决策模型只选择不落笔，工单只落内部档案")
+    wl.add_argument("--adapter", default="stub", help="决策适配器（stub / systemone-http）")
+    wl.add_argument("--top", type=int, default=5, help="候选工作项数（缺省 5）")
+    wl.add_argument("--endpoint", default="", help="systemone-http 端点")
+    wl.add_argument("--timeout", type=float, default=30.0, help="适配器超时秒")
+    wl.add_argument("--list", action="store_true", help="列出待办工作项（不提问）")
+    wl.add_argument("--write", action="store_true",
+                    help="把工单写入内部档案 .rivet/private_archive/work_orders/")
+    wl.add_argument("--close", default="", help="收口：工单号（配合 --outcome/--gate/--note）")
+    wl.add_argument("--outcome", default="", help="收口结果：landed / abandoned")
+    wl.add_argument("--gate", default="", help="收口时的门禁结论（如 PASS=61）")
+    wl.add_argument("--note", default="", help="收口说明")
+    wl.add_argument("--json", action="store_true", help="输出结构化 JSON")
     kn = sub.add_parser("knowledge",
                         help="双源知识层（权威分层 / 消化可追溯 / 查询有序 / 时效 / 可见性）",
                         description="双源知识层（机制借鉴一句式：编译时机按数据域选择）")
@@ -2192,6 +2224,87 @@ def _cmd_interop(args):
     else:
         sys.stdout.write(blob.decode("utf-8"))
     return 0
+
+
+def _cmd_workloop(args):
+    """nf workloop：决策模型挑活 → 工单（只落内部档案）→ 收口记档。"""
+    from core import workloop as wl
+    import json as _json
+    if args.close:
+        rel = wl.close(ROOT, args.close, args.outcome or "landed", args.gate or "unknown",
+                       args.note)
+        print("  ✓ 已收口：%s（结果 %s · 门禁 %s）"
+              % (rel, args.outcome or "landed", args.gate or "unknown"))
+        return 0
+    if args.list:
+        rows = wl.items(ROOT, limit=max(1, args.top))
+        if args.json:
+            print(_json.dumps(rows, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            for it in rows:
+                print("  %-28s %-16s %s" % (it["id"], it["kind"], it["title"]))
+            print("  （共 %d 项在册；这是决策层的候选面）" % len(wl.items(ROOT)))
+        return 0
+    doc = wl.plan(ROOT, adapter=args.adapter, top=max(1, args.top),
+                  endpoint=args.endpoint, timeout=args.timeout)
+    if args.json:
+        print(_json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print(wl.render_brief(doc))
+    if args.write and doc.get("status") == "ok":
+        rel = wl.write_order(ROOT, doc)
+        if not args.json:
+            print("\n  工单已落内部档案：%s（计划类产品内部消化，不入公开仓）" % rel)
+    return 0 if doc.get("status") == "ok" else 1
+
+
+def _cmd_decide(args):
+    """nf decide：决策层统一入口（stub 走门禁口径；外部适配器为非门禁任务）。"""
+    from core import decision_layer as dl
+    import json as _json
+    if args.state:
+        with open(args.state, encoding="utf-8") as fh:
+            state = fh.read()
+    else:
+        state = args.state_text
+    with open(args.questions, encoding="utf-8") as fh:
+        questions = _json.load(fh)
+    req = {"state": state, "questions": questions}
+    if args.dry_run:
+        issues, stats = dl.scan(ROOT)
+        if args.json:
+            print(_json.dumps({"issues": issues, "stats": stats},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            for i in issues:
+                print("  [FAIL] %s" % i, file=sys.stderr)
+            if not issues:
+                print("  ✓ 决策层面体检通过（%s）" % dl.summary(stats))
+        return 1 if issues else 0
+    out = dl.decide(req, adapter=args.adapter, endpoint=args.endpoint,
+                    model=args.model, timeout=args.timeout, root=ROOT)
+    if args.json:
+        print(_json.dumps(out, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        if out.get("status") == "abstained":
+            print("  ⚠ abstained：%s" % out.get("reason"))
+        else:
+            for name, ans in (out.get("answers") or {}).items():
+                if ans.get("type") == "choice":
+                    print("  %-14s choice → %s（p=%.3f）"
+                          % (name, ans.get("argmax"),
+                             (ans.get("probs") or [0])[list(ans.get("options") or [])
+                              .index(ans.get("argmax"))] if ans.get("options") else 0.0))
+                elif ans.get("type") == "score":
+                    print("  %-14s score → 期望值 %.2f（%s）"
+                          % (name, ans.get("value", 0.0),
+                             " ".join("%.2f" % p for p in ans.get("probs") or [])))
+                else:
+                    print("  %-14s noul → p(true)=%.3f" % (name, ans.get("p", 0.0)))
+            meta = out.get("meta") or {}
+            print("  （适配器 %s · calibrated=%s · 决策层不出现在门禁路径）"
+                  % (meta.get("adapter"), meta.get("calibrated")))
+    return 0 if out.get("status") == "ok" else 1
 
 
 def _cmd_transparency(args):
@@ -3892,6 +4005,10 @@ def main(argv=None) -> int:
         return _cmd_interop(args)
     if args.cmd == "transparency":
         return _cmd_transparency(args)
+    if args.cmd == "decide":
+        return _cmd_decide(args)
+    if args.cmd == "workloop":
+        return _cmd_workloop(args)
     if args.cmd == "knowledge":
         return _cmd_knowledge(args)
     if args.cmd == "assertions":

@@ -1,0 +1,115 @@
+{
+  "schema": "nf-decision-layer/1",
+  "status": "active",
+  "note": "决策层端口（机制借鉴：非自回归 typed-decision 模型的 choice / noul / score 三原语——决策 = 在**调用方给定**的候选集上报概率分布与 argmax，不生成正文、不执行动作）。NF 侧只做三件事：定义问题与答案的形状、把模型放在门禁之外、把不可用情形 fail-closed 成 abstained。",
+  "primitives": {
+    "choice": "在调用方给定的候选集上报概率分布 + argmax；候选集由调用方提供，模型不得自造候选",
+    "noul": "对是非问题报概率 p(true)",
+    "score": "对调用方给定的有序等级报概率分布 + 期望值"
+  },
+  "response_contract": {
+    "required": ["schema", "status", "answers", "meta"],
+    "status_vocabulary": ["ok", "abstained"],
+    "answers": "name → {type, probs?: [float], options?: [string], argmax?: string|int, p?: float, value?: float}；probs 求和须 ≈ 1（容差 1e-6），长度须等于 options/levels 长度",
+    "meta": "adapter / calibrated（是否校准概率）/ non_gate: true / schema；systemone-http 另有 model 字段",
+    "abstain_rule": "adapter 不可用、超时或输出不合 schema → status=abstained + reason（严禁猜测补齐：决策层的沉默比编造安全）"
+  },
+  "adapters": [
+    {
+      "id": "stub",
+      "kind": "offline-deterministic",
+      "in_gate_path": true,
+      "calibrated": false,
+      "note": "规则式确定性实现：门禁 / CI / 演练使用；calibrated=false 是硬标注——其输出是排序信号，不是概率"
+    },
+    {
+      "id": "systemone-http",
+      "kind": "local-http",
+      "in_gate_path": false,
+      "calibrated": true,
+      "endpoint": "http://127.0.0.1:<port>/v1/systemone",
+      "protocol": "POST {state, questions} → {declared keys: probabilities}（Jev / Laya 系 System-1 服务口径）",
+      "note": "对接本地 typed-decision 服务；只读调用，服务不执行动作"
+    },
+    {
+      "id": "openai-json",
+      "kind": "remote-http",
+      "in_gate_path": false,
+      "calibrated": false,
+      "note": "任一聊天模型以受限 JSON 作答；**其自报概率不是校准概率**（无 proper scoring rule 保证），故 calibrated=false"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "laya-typed-decisions",
+      "source": "hf:convaiinnovations/laya-typed-decisions",
+      "license": "apache-2.0",
+      "encoder": "answerdotai/ModernBERT-large",
+      "params": "421M",
+      "context": 1024,
+      "calibrated_decisions": true,
+      "language": ["en"],
+      "evidence": "2026-09-21 取回模型卡与配置实测：accuracy 0.766 / Brier 0.062 / ECE 0.213 / score MAE 0.242；四种 workflow 专用（agent-trace / customer-service / invoice / security）；作者自述 specialist（勿作静默默认）、英文专用、选项数建议 <20",
+      "pulled": false
+    },
+    {
+      "id": "laya-multilingual",
+      "source": "hf:convaiinnovations/laya-multilingual",
+      "license": "apache-2.0",
+      "encoder": "mmBERT-base",
+      "params": "322M",
+      "context": 1024,
+      "calibrated_decisions": true,
+      "language": ["100+ languages（含中文）"],
+      "evidence": "2026-09-21 取回模型卡实测：与 base 同族的做多语面（NF 中文 state 应优先此变体，而非英文专用 checkpoint）",
+      "pulled": true,
+      "local": {
+        "how": "python -c \"from huggingface_hub import snapshot_download; snapshot_download('convaiinnovations/laya-multilingual', local_dir='.rivet/scratch/models/laya-multilingual')\"",
+        "size_gb": 0.63,
+        "runtime": "laya 0.3.5 + torch 2.14.0 + transformers 5.17.0（CPU 可跑）",
+        "served_by": "scripts/serve_decision_model.py（NF 口径 shim：POST /v1/systemone）",
+        "real_run": {
+          "date": "2026-09-22",
+          "task": "nf workloop --adapter systemone-http（真实待办挑选）",
+          "input_tokens": 604,
+          "answer": "next_item=campus_anonymous_gift.source_package（choice）；risk 期望 2.15（中偏高）；gate_safe p=0.99",
+          "lesson": "服务端概率四舍五入到 4 位（和=0.9999）→ NF 判据容差由 1e-6 调到 1e-3 并在适配器侧归一化、把原始和记入 meta（判据放松、证据不放松）"
+        }
+      }
+    },
+    {
+      "id": "open-jev-9b",
+      "source": "hf:ZefanCai/Open-Jev-9B",
+      "license": "apache-2.0",
+      "base_model": "Qwen/Qwen3.5-9B",
+      "base_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+      "kind": "LoRA adapter + scalar decision head",
+      "calibrated_decisions": true,
+      "serve": "python -m jev.server --checkpoint ./checkpoints/open-jev-9b/package/checkpoint --device cuda:0 --max-length 4096 --batch-size 1 --host 127.0.0.1 --port 8791",
+      "evidence": "2026-09-21 取回模型卡与 adapter_config 实测：非自回归、只评调用方给的候选；三原语 choice/noul/score；需上游 base 精确 revision + Open-Jev loader + GPU；AutoPeftModel 直调不实现该接口",
+      "pulled": false
+    }
+  ],
+  "boundaries": [
+    "只给决策与概率，不执行动作（服务端与 NF 侧均不落地动作）",
+    "不生成正文：决策层非自回归，内容仍由内容契约层（协议 + 模块 + 资产）承担",
+    "模型不入门禁路径：门禁必须离线确定（stub 之外一律非门禁任务）",
+    "概率的使用由调用方自证校准（本层不替调用方承担决策后果）",
+    "候选模型只在**显式拉取**后可用（pulled=false 即未下载；NF 不替作者决定下载数十 GB 权重）"
+  ],
+  "workloop": {
+    "role": "决策层驱动的构建回路：决策模型挑活 / 判风险 / 定「能否在不碰回执锚定件条件下完成」；生成式 worker（人 / Codex / 生成式模型）落笔；NF 门禁验收",
+    "sources": ["protocol/type_backlog.json（未定型事件字段）", "protocol/pipeline_advisory.json（管线 advisory）"],
+    "non_negotiables": [
+      "决策层不生成内容（Laya 是编码器分类、Open-Jev 非自回归决策头——都不会写代码或正文）",
+      "工单只落内部档案（计划类产品内部消化；公开仓只收结果 + audit）",
+      "落笔方必须是 worker，决策模型只提供选择与概率",
+      "验收只认门禁（verify.sh 全绿 + nf conformance conformant）"
+    ],
+    "entry": "python scripts/nf.py workloop [--adapter stub|systemone-http] [--top N] [--write]"
+  },
+  "related": [
+    "protocol/WORLD_MODEL.md（确定性状态契约：决策层的 state 面由它给）",
+    "02_联动注册表.md §8（P40 行为决策层位：决策层服务的装配槽位）"
+  ]
+}

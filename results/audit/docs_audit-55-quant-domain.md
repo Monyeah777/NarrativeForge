@@ -9,8 +9,8 @@ subjects:
   - community/量化金融域包/protocol.yaml:7ba7176c55538b2e57c70c3f0b58439601107ac9091b60495b86cc3996f7d83a
   - community/量化金融域包/assets/QUANT_GRAPH.md:331d63943effe51462440c41832202df3b8e6bb2553734472947ac77927e094c
   - community/量化金融域包/assets/QUANT_METRICS.md:fd85b5a871729e04b9c4026cc177e66875e35ca44cd098808cadbeb46f19ef06
-  - community/量化金融域包/modules/M31_因子与信号口径.md:0062acf3777030a560b55843d086a6719850474a3ec531bfd83de75df9e90882
-  - community/量化金融域包/modules/M32_回测与绩效口径.md:42b89e48bd6c0b715e30567812acdaa733080a5547ee72c7f194081a5183f26d
+  - community/量化金融域包/modules/M31_因子与信号口径.md:6404dd6093d63828e39b5ff69b9e289a54c50fed32e61e5c8e15832ef371fd00
+  - community/量化金融域包/modules/M32_回测与绩效口径.md:30a5a15d78272ea2cc95418423fc356f053c58da313f2ab2cf33cb777b851d8e
   - community/量化金融域包/pipelines/P08_量化金融域装配流管线.md:2d1b47c702c1bce5418786643f3f0d9d89b9943c5ed39a0987433453d41d0e37
 ---
 

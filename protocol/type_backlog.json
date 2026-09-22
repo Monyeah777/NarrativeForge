@@ -1,31 +1,6 @@
 {
-  "count": 104,
+  "count": 99,
   "fields": [
-    {
-      "event": "beat_tick",
-      "field": "buffered",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "beat_tick",
-      "field": "origin",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "campus_anonymous_gift",
-      "field": "item",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "campus_anonymous_gift",
-      "field": "origin",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "campus_anonymous_gift",
-      "field": "source_package",
-      "note": "正文证据字段名；类型待核"
-    },
     {
       "event": "campus_gift_intent",
       "field": "intent",

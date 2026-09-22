@@ -6,8 +6,8 @@
   "credentialSubject": {
     "contracts": 27,
     "id": "nf:conformance_report",
-    "receiptCount": 48,
-    "receiptRoot": "7a5df695334e2f20c317514df29eb21b94af74a88670e332edb404515a71fbfb",
+    "receiptCount": 49,
+    "receiptRoot": "e2dcc1ddd0f7aa0eac83e097141ef3787535e8f9bcc5d3f94e7765609da23a1e",
     "verdict": "conformant"
   },
   "issuer": "执行者（作者授权本波裁决）",
@@ -15,7 +15,7 @@
     "VerifiableCredential",
     "NfConformanceCredential"
   ],
-  "validFrom": "2026-09-21",
+  "validFrom": "2026-09-22",
   "x-nf-note": "派生自 protocol/conformance_report.json + protocol/RECEIPTS.json + protocol/approvals/*（纯派生，不新增真源）",
   "x-nf-proof-status": "unsigned（本仓签名走 ssh 外挂锚 nf attest；未接 JWS/Data Integrity 签名套件——形状可读，不可验证，勿当凭证使用）"
 }

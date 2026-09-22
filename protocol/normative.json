@@ -26,6 +26,7 @@
     {"path": "protocol/type_backlog.json"},
     {"path": "protocol/pipeline_advisory.json"},
     {"path": "protocol/conformance_report.json"},
+    {"path": "protocol/decision_layer.json"},
     {"path": "desktop/src/core/registry.json"},
     {"path": "protocol/schema/contract.schema.json"},
     {"path": "protocol/schema/module.schema.json"},

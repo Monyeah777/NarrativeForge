@@ -11,7 +11,7 @@ subjects:
   - desktop/src/core/asset_ledger.py:f45329c6ac19c864799ee5113f4246474d2a0e41521942bea10f90e379e9e236
   - scripts/ai_domain_closure.py:215309a9027c548129b72b7fc3108ba6ade7d593019c8cc6a474008cd189bd15
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
-  - verify.sh:00bb02e959eda5a85a218b7eb2eb4a08a6d523d634243886aab386016f9d1dd0
+  - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

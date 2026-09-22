@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-21",
+  "approved_at": "2026-09-22",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "合并 GitHub 上游 2 提交（D1-D5 修复波 + AI域包 README）后重签",
+  "note": "AUD-0013：真模型（laya-multilingual）接入 + 两轮落笔 + 判据按实测修正",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "4c67140a1db0e69722f056eaa10cc0c363291b00d13985f0053d6ba1b255ad9e"
+  "subject_digest": "28bee1ee689a8cd668c7ca6b8fffd10d4b6f69d9a8c9d1727ee822f79696a727"
 }

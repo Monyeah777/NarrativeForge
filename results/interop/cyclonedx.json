@@ -21,6 +21,13 @@
       "name": "jsonschema",
       "scope": "optional",
       "type": "library"
+    },
+    {
+      "bom-ref": "opt:laya",
+      "description": "软依赖（可选，须守卫）：决策层本地服务（scripts/serve_decision_model.py）的模型运行时；软导入 + 缺依赖给修复指引",
+      "name": "laya",
+      "scope": "optional",
+      "type": "library"
     }
   ],
   "metadata": {
@@ -46,7 +53,7 @@
         "value": "与 SPDX 面同源；timestamp 取仓内声明日期最大值（非墙钟）。"
       }
     ],
-    "timestamp": "2026-09-21T00:00:00Z",
+    "timestamp": "2026-09-22T00:00:00Z",
     "tools": [
       {
         "name": "nf interop --kind cyclonedx",

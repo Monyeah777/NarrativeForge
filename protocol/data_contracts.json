@@ -39,7 +39,11 @@
      "consumers": ["check35", "nf pipeline dryrun"]},
     {"id": "library-receipts", "artifact": "library/RECEIPTS.json",
      "quality_rule": "check35", "owner": "机制维护（check 即 owner）", "status": "active",
-     "freshness": "重冻结：nf library receipts --write（馆藏改动后）",
-     "consumers": ["check35", "图书馆读者侧自验"]}
+      "freshness": "重冻结：nf library receipts --write（馆藏改动后）",
+      "consumers": ["check35", "图书馆读者侧自验"]},
+    {"id": "decision-layer", "artifact": "protocol/decision_layer.json",
+     "quality_rule": "check33", "owner": "机制维护（check 即 owner）", "status": "active",
+     "freshness": "人工声明；候选拉取状态改后跑 nf receipts --write（回执覆盖面含本件）",
+     "consumers": ["nf decide", "scripts/pull_decision_model.py", "verify check33"]}
   ]
 }

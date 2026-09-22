@@ -46,6 +46,7 @@ HARD_ALLOW = {
 SOFT_IMPORTS = {
     "jsonschema": "IDL 标准实现交叉验证（可选对照；缺依赖则跳过该面）",
     "PySide6": "CCV3 卡面占位图写入（缺依赖须给明确修复指引，不得裸 ImportError）",
+    "laya": "决策层本地服务（scripts/serve_decision_model.py）的模型运行时；软导入 + 缺依赖给修复指引",
 }
 #: R5 存量残留（**WARN 挂账**：确有理由保留的存量违规，须带裁决/文档指针；不判死但不得隐身）
 #: 空表即"零残留"。注意本扫描按**文件系统**取件（与 verify 其它 check 同口径）——

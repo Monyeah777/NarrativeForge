@@ -6,7 +6,7 @@ scope: 作者指令「遗留全部补上」——处置 AUD-0009 §五 列出的
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:00bb02e959eda5a85a218b7eb2eb4a08a6d523d634243886aab386016f9d1dd0
+  - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
   - desktop/src/core/transparency_log.py:ffb298d1a55611f03ee8dca1a57aa6148fd06bfaeb4cbd6a07dade279ebddd00
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
   - desktop/src/core/interop_export.py:a76f820e785fcec45dba4d7248e04fb179d8e1f3b933064a04e64cf28f218d9e
@@ -17,7 +17,6 @@ subjects:
   - desktop/src/core/library.py:92317109afa273b54c1babc722e7d12442faa6c2924d495b7b9217ed35b6501a
   - scripts/check_interop_schemas.py:7c9416b50fb9baf8809226ad281b7ecbc4f8e9956f9e5aa0191106431f92fd88
   - scripts/check_external_links.py:f6f9a270f1e99fe08f45416ea0e19359724993985e29f96a37633b40784ff1ed
-  - protocol/generated/receipt_chain.json:285f6d9a7db38194cfba4fec972521ed40c07d7da058f34212bc3b01b4e5e4b3
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
   - docs/external-validation-assets/E1_ccv3_sample_lightmix_P04_chara.json:528935dcf5be9caf69e25a88ec1637b64b8b725c51a539e1ede1d3a864dbcb45
   - results/interop-schema-validation.md:574cf0aca484d1bac8687f72a0143b4e3747fa12e4ecfb854b69ed11444dca14
@@ -25,6 +24,8 @@ subjects:
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
 > subjects = 本波承重件十五件（门禁 / 透明日志 / 分级门 / 互操作导出 / CCV3 出口与判据 / MCP 运行时 / 还原适配器 / 图书馆真源 / 两个外部核验工具 / 链生成物 / 声明件 / E1 样本 / 取证报告）。
+> **口径修正（2026-09-22）**：subjects **不含派生物**——透明日志生成物每次重生成都会变，
+> 绑进审计只会制造假失效；派生物由自己的门禁自证（check31 golden / check35 回执 / check33 入仓面逐字节）。
 
 ## 一、逐条处置（原挂账 6 条 → 全部落地）
 

@@ -3,7 +3,7 @@
   "comment": "派生面非真源；created = max(仓内声明日期: score_baseline / provenance / approvals)（保确定性，非墙钟）。",
   "creationInfo": {
     "comment": "由纯度扫描登记面（HARD_ALLOW / SOFT_IMPORTS）实时派生；created = 仓内声明日期最大值（非墙钟，保确定性）",
-    "created": "2026-09-21T00:00:00Z",
+    "created": "2026-09-22T00:00:00Z",
     "creators": [
       "Tool: nf interop --kind sbom"
     ]
@@ -41,6 +41,13 @@
       "downloadLocation": "NOASSERTION",
       "licenseConcluded": "NOASSERTION",
       "name": "jsonschema"
+    },
+    {
+      "SPDXID": "SPDXRef-Optional-laya",
+      "comment": "软依赖（可选，须 try/except 守卫）：决策层本地服务（scripts/serve_decision_model.py）的模型运行时；软导入 + 缺依赖给修复指引",
+      "downloadLocation": "NOASSERTION",
+      "licenseConcluded": "NOASSERTION",
+      "name": "laya"
     }
   ],
   "relationships": [
@@ -63,6 +70,11 @@
       "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
       "relationshipType": "OPTIONAL_DEPENDENCY_OF",
       "spdxElementId": "SPDXRef-Optional-jsonschema"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF",
+      "spdxElementId": "SPDXRef-Optional-laya"
     }
   ],
   "spdxVersion": "SPDX-2.3"

@@ -6,17 +6,17 @@ scope: 作者指示的七项任务（NF 深析 / 外部协议清单 ≥100 条 /
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:00bb02e959eda5a85a218b7eb2eb4a08a6d523d634243886aab386016f9d1dd0
+  - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
   - desktop/src/core/text_hygiene.py:dd75d3ecfd1b3f4147f6417157e98671e5453b7205868cef30409636e341379e
   - desktop/src/core/interop_export.py:a76f820e785fcec45dba4d7248e04fb179d8e1f3b933064a04e64cf28f218d9e
   - desktop/src/core/mcp_runtime.py:5de4d409bf9c24c731e3a6238e3f9d8039ef751a6372bc145d181ec06f296c0e
   - desktop/src/core/prose_lint.py:680715a34a1c43687a87113edc323c1491ab7577f99352bda4b30633b064b15c
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
-  - desktop/src/core/doc_hygiene.py:611cdf773c11bab4a57194bc5be89c55af44c1be10e96b51992a2ff517e19e6a
+  - desktop/src/core/doc_hygiene.py:88f7a7036765f62f80f15ec8671395e71175079b4bba749197b0f1086491a70d
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
-  - desktop/src/core/purity_scan.py:72d51f0ff36fb217975f15eadbb4121275625494e893cab400962e9facfbcfb4
-  - scripts/nf.py:090792b30a06a411bf3f5e9d0200171edf873a5851d3e29371d821e9e56f2615
+  - desktop/src/core/purity_scan.py:0a9e84cf5af8bf9560bbb0dc79fd166ce7b9cf2fb6e65cd47a5d7e673906d4c6
+  - scripts/nf.py:b50cd466b15b68ac8ab40b25df726470b702d88a226c8b5f4550d2871d2e6dee
   - scripts/check_external_links.py:f6f9a270f1e99fe08f45416ea0e19359724993985e29f96a37633b40784ff1ed
   - scripts/check_interop_schemas.py:7c9416b50fb9baf8809226ad281b7ecbc4f8e9956f9e5aa0191106431f92fd88
   - results/interop-schema-validation.md:574cf0aca484d1bac8687f72a0143b4e3747fa12e4ecfb854b69ed11444dca14

@@ -1604,7 +1604,7 @@ PYEOF
 }
 
 check33(){
-  echo '== [33/段C] 新面汇总门禁（MCP dual-era / stdio 帧纪律 / attestation / 基线回归评分 / 机械修复 / 正文 lint / 许可证门 / 遥测 semconv / 编码卫生 / 互操作导出（含入仓一致性）/ 文档命令面）=='
+  echo '== [33/段C] 新面汇总门禁（MCP dual-era / stdio 帧纪律 / attestation / 基线回归评分 / 机械修复 / 正文 lint / 许可证门 / 遥测 semconv / 编码卫生 / 互操作导出（含入仓一致性）/ 文档命令面 / 决策层面 / 构建回路）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check33.log 2>&1
@@ -1805,9 +1805,33 @@ try:
 except Exception as exc:
     problems.append('互操作入仓面检查不可用：%s' % exc)
 
+# 15 决策层面（typed-decision 端口：声明完整 + 适配器诚实标注 + stub 确定性 + fail-closed）
+try:
+    from core import decision_layer as _dl
+    _dl_issues, _dl_stats = _dl.scan('.')
+    for i in _dl_issues:
+        problems.append('决策层：%s' % i)
+    _dl_line = _dl.summary(_dl_stats)
+except Exception as exc:
+    problems.append('决策层体检不可用：%s' % exc)
+    _dl_line = '不可用'
+
+# 16 构建回路（决策模型挑活 → 工单只落内部档案 → worker 落笔 → 门禁验收）
+try:
+    from core import workloop as _wl
+    _wl_issues, _wl_stats = _wl.scan('.')
+    for i in _wl_issues:
+        problems.append('构建回路：%s' % i)
+    _wl_line = _wl.summary(_wl_stats)
+except Exception as exc:
+    problems.append('构建回路体检不可用：%s' % exc)
+    _wl_line = '不可用'
+
 print('新面统计：MCP %s · 评分 %.2f · 机械待办 %d · 许可 WARN %d · 正文正规性 WARN %d'
       % (mcp.PROTOCOL_VERSION, cur['score'], len(pending), len(l_stats['warnings']), len(warns)))
 print('新增面：编码卫生 %s · 互操作 %s · 文档命令面 %s' % (_th_line, _ie_line, _pl_line))
+print('决策层面：%s' % _dl_line)
+print('构建回路：%s' % _wl_line)
 sys.exit(1 if problems else 0)
 PYEOF
     then
@@ -1817,14 +1841,14 @@ PYEOF
           case "$_txtline" in WARN:*) wn "${_txtline#WARN: }" ;; esac
         done < "$NFL_TMP"/nf_check33.log
       fi
-      ok '新面扫描通过（MCP dual-era / stdio 帧纪律 / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测 / 编码卫生 / 互操作导出与入仓面一致 / 文档命令面）'
+      ok '新面扫描通过（MCP dual-era / stdio 帧纪律 / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测 / 编码卫生 / 互操作导出与入仓面一致 / 文档命令面 / 决策层面 / 构建回路）'
     else
       no "新面扫描异常——$(tail -3 "$NFL_TMP"/nf_check33.log | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check33）'
   fi
-  if [ "$err" -eq 0 ]; then ok '新面汇总门禁全绿（check33：MCP 版本对齐/stdio 帧纪律/内容外挂签名/回归评分/编辑器面/正文 lint/许可证门/遥测 semconv/编码卫生/互操作导出含入仓/文档命令面）'
+  if [ "$err" -eq 0 ]; then ok '新面汇总门禁全绿（check33：MCP 版本对齐/stdio 帧纪律/内容外挂签名/回归评分/编辑器面/正文 lint/许可证门/遥测 semconv/编码卫生/互操作导出含入仓/文档命令面/决策层 typed-decision 端口/构建回路）'
   fi
 }
 
