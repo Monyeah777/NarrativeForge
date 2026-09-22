@@ -56,7 +56,7 @@ def _package_module_sets() -> Dict[str, List[str]]:
             mids = [(data.get("package") or {}).get("module_id_range") or []]
             if pkg:
                 sets[str(pkg)] = [str(x) for x in mids[0]]
-        except Exception:
+        except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             continue
     return sets
 

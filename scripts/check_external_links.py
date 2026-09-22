@@ -168,9 +168,6 @@ def collect(root: str, targets: Sequence[str] = DEFAULT_TARGETS,
 
 def default_fetcher(timeout: float = 10.0) -> Callable[[str], Tuple[bool, str]]:
     """基于 urllib 的探测（HEAD；异常如实归类，不静默）。返回 (ok, detail)。"""
-    import urllib.error
-    import urllib.request
-
     def fetch(url: str) -> Tuple[bool, str]:
         # 非 ASCII 路径须先百分号编码（浏览器同义行为）——否则 urllib 抛 UnicodeEncodeError
         import urllib.parse
@@ -179,7 +176,9 @@ def default_fetcher(timeout: float = 10.0) -> Callable[[str], Tuple[bool, str]]:
             target, method="HEAD",
             headers={"User-Agent": "nf-external-link-check/1.0"})
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
+            if not str(url).startswith(("http://", "https://")):
+                return False, "scheme 非 http/https（修复指引：只探测 http/https 链接）"
+            with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310 —— 已在上方校验 scheme ∈ {http,https}；端点由调用方显式给出
                 code = int(getattr(resp, "status", 200))
                 return (200 <= code < 400, "HTTP %s" % code)
         except urllib.error.HTTPError as exc:

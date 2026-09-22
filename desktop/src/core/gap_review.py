@@ -41,8 +41,6 @@ def _payload_candidates(root: str) -> List[Dict[str, Any]]:
             m = re.search(r"payload\s*:\s*\{([^}]*)\}", line)
             if not m:
                 continue
-            fields = [t.split(":")[0].strip().strip("?")
-                      for t in ph._split_top_level(m.group(1))]
             tokens = ph._split_top_level(m.group(1))
             kind = ""
             missing = []

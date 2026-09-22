@@ -159,7 +159,9 @@ def check_skill_md(path: str) -> List[str]:
 
 
 def check_agents_md(path: str) -> List[str]:
-    return _check_md_frontmatter(path, ("",)) if False else _check_agents_like(path)
+    # 死条件清理（vulture 100% 置信实证）：原写法 `A if False else B` 属遗留分支，
+    # 行为等价于直接调用 B；此处收敛为单一路径，避免"看起来有两种校验"的误读。
+    return _check_agents_like(path)
 
 
 def _check_agents_like(path: str) -> List[str]:

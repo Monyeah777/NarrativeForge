@@ -8,9 +8,9 @@ auditor: 本轮执行者
 subjects:
   - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
-  - desktop/src/core/workloop.py:11eac59e76eb1b8e0b49a88f8f1620cf2d5a7e8257dedbc9c91084ba9c75e3ab
-  - desktop/src/core/decision_layer.py:3bdf806770b5ea6f4c812dc0b88a8cb16caa71a1fc9925fda21bf02aef337426
-  - scripts/nf.py:423440d0eff4526dfdf2284c0f460ea941e9ea53317803ec2d3def3e2bb6a93c
+  - desktop/src/core/workloop.py:25df02cccb732a1a06b71e7ca55ddf82cb136bfb273f9488e184fb47c0a58d8d
+  - desktop/src/core/decision_layer.py:44f194ec3f2803a35669f6bdec179685bbf6c42fe43856bf11d8fae469f6e80f
+  - scripts/nf.py:b643499e4565c78f8faf4c4dd8774c6d6ccc452047c7329028795ec7a78b9f0d
   - desktop/tests/test_decision_layer.py:40521a5b641df92f0c4b4f28386c2a4118e5bee44ae050f924a3206fc74d3bc9
   - docs/decision-layer.md:85ac1dc81c879cf98a15a0c089ba1c825c67649fe3ee431a9172336c09b04314
 ---

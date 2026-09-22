@@ -102,7 +102,7 @@ def load_community_pipeline(pkg: str, pid: str) -> Optional[Pipeline]:
     for f in sorted(pdir.glob("*.md")):
         try:
             pl = load_pipeline_file(f)
-        except Exception:
+        except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             continue
         if pl is not None and pl.id == pid:
             return pl
@@ -136,7 +136,7 @@ def catalog(store: Store) -> List[CommunityItem]:
                     try:
                         from .parser import parse_module
                         m = parse_module(f.read_text(encoding="utf-8"))
-                    except Exception:
+                    except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                         continue
                 installed = fid_key(m.full_id) in installed_mods
                 items.append(CommunityItem(
@@ -148,7 +148,7 @@ def catalog(store: Store) -> List[CommunityItem]:
                 try:
                     from .pipeline_loader import load_pipeline_file
                     pl = load_pipeline_file(f)
-                except Exception:
+                except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                     continue
                 if pl is not None:
                     items.append(CommunityItem(

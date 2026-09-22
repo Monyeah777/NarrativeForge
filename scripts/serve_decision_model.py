@@ -29,7 +29,7 @@ import argparse
 import json
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, Optional, Sequence
 
 AGENT = None          # 进程内单例（模型常驻，避免每请求重载）
 AGENT_LOCK = threading.Lock()

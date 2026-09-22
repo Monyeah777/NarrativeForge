@@ -19,7 +19,8 @@ import unicodedata
 from typing import Any, Dict, List, Tuple
 
 #: 扫描排除目录（本地 AI 工作区 / 版本库元数据 / 缓存）
-EXCLUDE_DIRS = {".git", ".rivet", "__pycache__", ".ruff_cache"}
+EXCLUDE_DIRS = {".git", ".rivet", "__pycache__", ".ruff_cache",
+                ".mypy_cache", ".pylint.d", ".pytest_cache"}
 #: 排除的二进制扩展（内容哨兵为主，这里只做快速跳过）
 BINARY_EXT = {".png", ".jpg", ".jpeg", ".ico", ".gif", ".gz", ".zip", ".pdf",
               ".woff", ".woff2", ".ttf", ".so", ".dll", ".exe"}

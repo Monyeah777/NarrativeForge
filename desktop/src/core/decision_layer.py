@@ -27,7 +27,7 @@ import os
 import time
 import urllib.error
 import urllib.request
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 DECL_REL = "protocol/decision_layer.json"
 SCHEMA = "nf-decision-layer/1"
@@ -202,7 +202,10 @@ def _post_json(url: str, payload: Dict[str, Any], timeout: float) -> Dict[str, A
     data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     req = urllib.request.Request(url, data=data, method="POST",
                                 headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
+    if not str(url).startswith(("http://", "https://")):
+        raise ValueError("只允许 http/https 端点（修复指引：端点须显式给 scheme）："
+                         + repr(url))
+    with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310 —— 已在上方校验 scheme ∈ {http,https}；端点由调用方显式给出
         return json.loads(resp.read().decode("utf-8"))
 
 
@@ -265,11 +268,14 @@ def openai_json_decide(req: Dict[str, Any], endpoint: str, model: str,
     payload = {"model": model, "messages": [{"role": "user", "content": prompt}],
                "temperature": 0}
     headers = {"Content-Type": "application/json"}
+    if not str(endpoint).startswith(("http://", "https://")):
+        raise ValueError("只允许 http/https 端点（修复指引：端点须显式给 scheme）："
+                         + repr(endpoint))
     if api_key:
         headers["Authorization"] = "Bearer %s" % api_key
     data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     r = urllib.request.Request(endpoint, data=data, method="POST", headers=headers)
-    with urllib.request.urlopen(r, timeout=timeout) as resp:
+    with urllib.request.urlopen(r, timeout=timeout) as resp:  # nosec B310 —— 已在上方校验 scheme ∈ {http,https}；端点由调用方显式给出
         body = json.loads(resp.read().decode("utf-8"))
     text = body["choices"][0]["message"]["content"]
     raw = json.loads(text)

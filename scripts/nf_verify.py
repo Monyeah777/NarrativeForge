@@ -29,7 +29,7 @@ import json
 import os
 import re
 import shutil as _shutil
-import subprocess
+import subprocess  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
 import sys
 
 SCHEMA = "nf-receipts/1"
@@ -88,7 +88,7 @@ def verify_ssh(digest: str, anchor, allowed_signers: str, identity: str):
     if not exe:
         return False, ("ssh-sig 验签需要外部命令 ssh-keygen，但 PATH 中找不到"
                        "（修复指引：先安装 OpenSSH ≥8.9 后重试）")
-    proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,
+    proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
                            "-I", ident, "-n", str(anchor.get("ns") or SSH_NS),
                            "-s", sig],
                           input=payload, capture_output=True)

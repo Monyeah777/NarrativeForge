@@ -41,7 +41,7 @@ def collect(root: str) -> Dict[str, Any]:
         try:
             with open(doc, encoding="utf-8") as fh:
                 text = fh.read()
-        except Exception:
+        except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             continue
         parsed = _csc._fence_yaml(text, "machine_contract")
         mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
@@ -176,12 +176,11 @@ def verify_golden(root: str) -> Tuple[List[str], Dict[str, int]]:
     # 透明日志（哈希链）也是生成物：链自洽 + 与回执一致 + 在盘 == 实时重算
     try:
         from core import transparency_log as _tl
-        t_issues, t_stats = _tl.verify(root)
+        t_issues, _t_stats = _tl.verify(root)
         for i in t_issues:
             issues.append("透明日志：%s" % i)
     except Exception as exc:  # pragma: no cover - 模块不可用须可见
         issues.append("透明日志校验不可用：%s（修复指引：检查 core/transparency_log.py）" % exc)
-        t_stats = {}
     return issues, {"report_bytes": len(expected), "schema_ids": len(data["schema_ids"])}
 
 

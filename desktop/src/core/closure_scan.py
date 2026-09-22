@@ -24,7 +24,7 @@ def _module_contracts(root: str) -> List[Dict[str, Any]]:
         try:
             with open(doc, encoding="utf-8") as fh:
                 text = fh.read()
-        except Exception:
+        except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             continue
         parsed = csc._fence_yaml(text, "machine_contract")
         mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None

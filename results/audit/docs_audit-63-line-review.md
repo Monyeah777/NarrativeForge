@@ -6,15 +6,15 @@ scope: 作者指令「让决策模型逐行检验缺口，找出所有漏洞，�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/gap_review.py:dd4a4e792c24996ebfe591c71b97a5664dd65cde9395ae8bed48e4b00014158a
+  - desktop/src/core/gap_review.py:0aa993b9aada1a4e9718f3b62b9ae2683e551f5ed4ac10e28e999d37400a20ab
   - desktop/src/core/payload_harvest.py:f62843f3301a7331aa0bc73b9f240070d963de694357b1f3e90ec54ee281d3ca
   - protocol/data_contracts.json:ce951a3322dd7a4827c39d68826aee9e3945986e5c64bd0b4b1fa1741ff72b32
   - protocol/assertions.json:4eb0b6ad0ca755daeef0a1d6c4d98eb8515173338ad51abd9bc07dac9f5e18f6
-  - desktop/src/core/interop_export.py:9dc832aba768fbd97f927283b85ffc749c5714304b5f75032b59893d5e079a21
-  - desktop/src/core/text_hygiene.py:52f0f945aa948cccc276de1d8f6a228d301dfe2314e195c555fea6c38743aeb8
-  - desktop/src/core/workloop.py:11eac59e76eb1b8e0b49a88f8f1620cf2d5a7e8257dedbc9c91084ba9c75e3ab
-  - scripts/serve_decision_model.py:02074902fcdaeda997bc36a16020f64521140dcfc70ca9a9e5cff3e5c7da93a0
-  - scripts/nf.py:423440d0eff4526dfdf2284c0f460ea941e9ea53317803ec2d3def3e2bb6a93c
+  - desktop/src/core/interop_export.py:1fc35ff29f0b7b0a95ae8fa150f8e05534a7e65bf821f6749d95491dcd1ab8a6
+  - desktop/src/core/text_hygiene.py:44f38b0833bb0dbce70d810a6ec79c86b34a8f044ecf83354d5a51135648ef27
+  - desktop/src/core/workloop.py:25df02cccb732a1a06b71e7ca55ddf82cb136bfb273f9488e184fb47c0a58d8d
+  - scripts/serve_decision_model.py:a2030d6476644deb05ed2d0b61bc01fe0cf7ada6461317de979a01b7a2a59af5
+  - scripts/nf.py:b643499e4565c78f8faf4c4dd8774c6d6ccc452047c7329028795ec7a78b9f0d
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

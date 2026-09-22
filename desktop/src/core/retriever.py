@@ -97,7 +97,7 @@ def _protocol_hits(q: str, limit: int) -> List[Hit]:
                 out.append(Hit(kind="protocol", ref=pid, name=pid, tags=[tag]))
             if len(out) >= limit:
                 break
-    except Exception:
+    except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
         pass    # registry 缺失/损坏：protocol 源空（不阻断其它源检索）
     return out
 
@@ -124,7 +124,7 @@ def _community_hits(store: Store, kind: str, q: str, limit: int) -> List[Hit]:
                            tags=tags, layer=it.layer))
             if len(out) >= limit:
                 break
-    except Exception:
+    except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B110 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
         pass    # 盘点失败（仓库缺 community/）：社区源空（不阻断其它源）
     return out
 

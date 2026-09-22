@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-22",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "AUD-0015：决策模型逐行审查 93 行 + 按类修理（收割器根因/契约登记 15/静默吞错计数）",
+  "note": "AUD-0016 定稿（subjects 摘要补齐）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "3353631e82e0d59f0b3c2db4e3c09869ca94aaab407982dd84bc90b3edfb56db"
+  "subject_digest": "d7e285230f3a2cd451611c28e4ef2ca557414dad606c6d9a3d5b84a9a4c8f656"
 }

@@ -49,9 +49,9 @@ if str(_ROOT / "desktop" / "src") not in sys.path:      # 复用 core 的图语�
     sys.path.insert(0, str(_ROOT / "desktop" / "src"))
 
 from core.concept_graph import (                        # noqa: E402  （路径注入后再导入）
-    BLOCK_MARKER, DEFAULT_ASSET, LAYERS, ClosureError, alias_map, branch_map,
-    closure, fenced_block, frontier, in_package_ids, load_graph, missing,
-    node_branch, node_meta, prereqs_of, problems, resolve, toposort, violations,
+    DEFAULT_ASSET, ClosureError, branch_map, closure, frontier, in_package_ids,
+    load_graph, missing, node_branch, node_meta, problems, resolve, toposort,
+    violations,
 )
 
 

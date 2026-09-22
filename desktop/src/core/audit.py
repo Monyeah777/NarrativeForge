@@ -24,6 +24,40 @@ SCHEMA = "nf-audit/1"
 _DATED = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
+# ---------------------------------------------------------------- M_AUDIT 门面
+# （`nf design audit` 的实现此前依赖本模块的 init_audit/check_audit/scan_audit，
+#   但这三个名字在本模块被审计报告族取代后消失，且调用点曾被同名函数遮蔽
+#   （flake8 F811 实证）→ 该子命令实际打到了 nf audit。现按**单源委托**修活：
+#   M_AUDIT 的 steelman 模式直接委托 core.steelman（钢人节判据的唯一实现），
+#   未实装的 blindspot/full 模式 fail-closed 并给修复指引——不编造语义。）
+
+def init_audit(question: str, context: str = "", decider: str = "",
+               mode: str = "steelman", path=None) -> str:
+    """M_AUDIT init（mode=steelman）：委托 core.steelman.init_worksheet。"""
+    from core import steelman
+    if mode != "steelman":
+        raise ValueError(
+            "M_AUDIT 模式 %r 未实装（修复指引：用 --mode steelman；blindspot/full 的"
+            "模板与判据尚未成文，须先落规范再实现——见 docs_f2-decision-steelman.md）" % mode)
+    return steelman.init_worksheet(question, context=context, decider=decider, path=path)
+
+
+def check_audit(target) -> List[str]:
+    """M_AUDIT check：委托 core.steelman.check_worksheet（同一套钢人节判据）。"""
+    from core import steelman
+    from pathlib import Path as _Path
+    p = _Path(target)
+    if not p.is_file():
+        return ["审计件不存在：%s（修复指引：先 nf design audit init 生成工作单）" % p]
+    return steelman.check_worksheet(p.read_text(encoding="utf-8"))
+
+
+def scan_audit(root: str = ".") -> List[str]:
+    """M_AUDIT ls：委托 core.steelman.scan_steelman（设计审计记录索引）。"""
+    from core import steelman
+    return steelman.scan_steelman(root)
+
+
 def decl(root: str = ".") -> Dict[str, Any]:
     p = Path(root) / DECL_REL
     return json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}

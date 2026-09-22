@@ -231,6 +231,6 @@ def discover_pipelines(directory: Path | str) -> List[Pipeline]:
             pl = load_pipeline_file(f)
             if pl:
                 out.append(pl)
-        except Exception:
+        except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             continue
     return out

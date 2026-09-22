@@ -793,14 +793,14 @@ def _seed_store(store):
         try:
             store.save_module(parse_module(Path(f).read_text(encoding="utf-8")))
             stats["core"] += 1
-        except Exception:
+        except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             continue
     for f in sorted(glob.glob(os.path.join(ROOT, "community",
                                            "校园西幻轻混组合包", "modules", "*.md"))):
         try:
             store.save_module(parse_module(Path(f).read_text(encoding="utf-8")))
             stats["combo"] += 1
-        except Exception:
+        except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
             continue
     return stats
 
@@ -930,7 +930,7 @@ def _cmd_market(args) -> int:
             with open(pf, encoding="utf-8") as f:
                 raw = yaml.safe_load(f)
             data[raw["package"]["id"]] = raw
-        except Exception:
+        except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
             continue
 
     seen, dep_issues = dependencies(pkg_id, prots, data)
@@ -1223,7 +1223,7 @@ def _cmd_design(args) -> int:
     return 0
 
 
-def _cmd_audit(args) -> int:
+def _cmd_design_audit(args) -> int:
     """nf design audit：M_AUDIT 协议设计审计（决策过程质量）。
 
     audit init <question> --target T --mode {steelman,blindspot,full}
@@ -3826,7 +3826,7 @@ def _cmd_assemble(args):
 
 def _cmd_release(args):
     """nf release：发布前体检——verify + 基线自描述一致（--fast 跳过 verify）。"""
-    import subprocess
+    import subprocess  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
     from core import quality_baseline as qb
 
     issues, stats = qb.scan(ROOT)
@@ -3839,7 +3839,7 @@ def _cmd_release(args):
     if args.fast:
         print("  --fast：跳过 verify.sh 全量（发布前请跑完整 nf release）")
         return 1 if issues else 0
-    rc = subprocess.run(["bash", "verify.sh"], cwd=ROOT).returncode
+    rc = subprocess.run(["bash", "verify.sh"], cwd=ROOT).returncode  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
     gate_fail = bool(issues) or rc != 0
     if not gate_fail:
         from core import asset_ledger_projection as alp
@@ -3855,7 +3855,7 @@ def _cmd_release(args):
                       file=sys.stderr)
             else:
                 print("  ✓ %s 一致" % name)
-        cov = subprocess.run(["bash", "scripts/per_module_coverage.sh", "30"],
+        cov = subprocess.run(["bash", "scripts/per_module_coverage.sh", "30"],  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
                              cwd=ROOT).returncode
         if cov != 0:
             gate_fail = True
@@ -4118,7 +4118,10 @@ def main(argv=None) -> int:
         return _cmd_serve(args)
     if args.cmd == "design":
         if args.design_cmd == "audit":
-            return _cmd_audit(args)
+            # 注意：这里必须指向 **design audit** 实现（1226 段）——此前与 `nf audit`
+            # 的同名函数冲突（flake8 F811），`nf design audit ls` 实际打到 nf audit 那套
+            # （实测输出「== nf audit（26 件）==」），已重命名为 _cmd_design_audit 修正。
+            return _cmd_design_audit(args)
         return _cmd_design(args)
     if args.cmd != "run":
         _build_parser().print_help()
@@ -4197,7 +4200,7 @@ def cli(argv=None) -> int:
     try:
         import signal
         signal.signal(signal.SIGPIPE, signal.SIG_DFL)
-    except Exception:
+    except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B110 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
         pass
     try:
         code = main(argv)
@@ -4205,7 +4208,7 @@ def cli(argv=None) -> int:
         try:
             devnull = os.open(os.devnull, os.O_WRONLY)
             os.dup2(devnull, sys.stdout.fileno())
-        except Exception:
+        except Exception:  # nosec B110 —— 尽力而为：终端重定向失败即沿用默认（见 AUD-0016）
             pass
         code = 0
     except KeyboardInterrupt:

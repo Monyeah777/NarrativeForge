@@ -132,7 +132,7 @@ def verify(root: str = ".", key: Optional[bytes] = None,
             from core.license_gate import ALLOWED
             if lic and lic not in ALLOWED:
                 issues.append("%s license 不在词表：%s" % (eid, lic))
-        except Exception:
+        except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             pass
         st = str(fm.get("status") or "active")
         if st not in STATUSES:

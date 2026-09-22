@@ -344,7 +344,7 @@ def _tool_library_search(query: str, limit: int = 10) -> list:
                          "title": h["title"], "score": h["score"],
                          "status": h["status"], "type": h["type"],
                          "uri": "nf://repo/library/" + h["id"]})
-    except Exception:
+    except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
         pass
     for p in sorted(root.glob("*.md")):
         if p.name.startswith(("0", "4")) is False and not p.name[:2].isdigit():
@@ -611,7 +611,7 @@ def _repo_resource_metas() -> list:
             metas.append({"uri": "nf://repo/library/" + up.quote(e["id"], safe=""),
                           "name": "馆藏 %s" % e["id"],
                           "mimeType": "text/markdown", "package": "图书馆"})
-    except Exception:
+    except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B110 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
         pass
     # 实践包（patterns/）
     try:
@@ -620,7 +620,7 @@ def _repo_resource_metas() -> list:
             metas.append({"uri": "nf://repo/pattern/" + up.quote(pid, safe=""),
                           "name": "实践包 %s" % pid,
                           "mimeType": "text/markdown", "package": "patterns"})
-    except Exception:
+    except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B110 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
         pass
     metas.sort(key=lambda m: m["uri"])
     return metas

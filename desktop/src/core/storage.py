@@ -58,7 +58,7 @@ class Store:
         if self.config_path.exists():
             try:
                 return json.loads(self.config_path.read_text(encoding="utf-8"))
-            except Exception:
+            except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
                 pass
         return {"pipeline": "P01", "asset_pack": "", "recent": []}
 
@@ -98,7 +98,7 @@ class Store:
                 if src.exists():
                     m.source_md = src.read_text(encoding="utf-8")
                 mods.append(m)
-            except Exception:
+            except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                 continue
         return mods
 
@@ -130,7 +130,7 @@ class Store:
             try:
                 om = Module.from_json(json.loads(
                     (old / "module.json").read_text(encoding="utf-8")))
-            except Exception:
+            except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                 continue
             if fid_key(om.full_id) == key:
                 shutil.rmtree(old, ignore_errors=True)
@@ -149,7 +149,7 @@ class Store:
             try:
                 mm = Module.from_json(json.loads(
                     (d / "module.json").read_text(encoding="utf-8")))
-            except Exception:
+            except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                 continue
             if fid_key(mm.full_id) == key:
                 shutil.rmtree(d, ignore_errors=True)
@@ -176,7 +176,7 @@ class Store:
                         json.loads(jf.read_text(encoding="utf-8")))
                     a.source_dir = str(d)
                     out.append(a)
-                except Exception:
+                except Exception:  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（见 AUD-0016）
                     continue
         return out
 
@@ -212,7 +212,7 @@ class Store:
             try:
                 out.append(Preset.from_json(
                     json.loads(f.read_text(encoding="utf-8"))))
-            except Exception:
+            except Exception:  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（见 AUD-0016）
                 continue
         return out
 

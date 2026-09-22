@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - protocol/audit.json:914c5dfe05763ecab52cea35cb72fd34026cd2522ca37fbebc0a86596a1d01eb
-  - desktop/src/core/audit.py:e3af0ec66fd6bef523e5c592f58a0d7217568e02002b9ffa7e8384d6c47947d0
+  - desktop/src/core/audit.py:73131f81a8ca797fce5d4d30e63caca71e5ea50ee0d2b4d8a605e6999a73093c
 accepted_by: 作者
 accepted_at: 2026-09-16
 ---

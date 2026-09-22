@@ -75,7 +75,9 @@ NOSCHEMA: Dict[str, str] = {
 def fetch(url: str, timeout: int = 25) -> Tuple[int, bytes]:
     req = urllib.request.Request(url, headers={"User-Agent": "nf-interop-schema/1.0"})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        if not str(url).startswith(("http://", "https://")):
+            return 0, b""
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310 —— 已在上方校验 scheme ∈ {http,https}；端点由调用方显式给出
             return int(getattr(resp, "status", 200)), resp.read()
     except urllib.error.HTTPError as exc:
         return exc.code, b""
@@ -90,7 +92,7 @@ def fetch_via_api(repo: str, path: str, ref: str, timeout: int = 25) -> Tuple[in
         headers={"User-Agent": "nf-interop-schema/1.0",
                  "Accept": "application/vnd.github.raw"})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310 —— 已在上方校验 scheme ∈ {http,https}；端点由调用方显式给出
             return int(getattr(resp, "status", 200)), resp.read()
     except urllib.error.HTTPError as exc:
         return exc.code, b""

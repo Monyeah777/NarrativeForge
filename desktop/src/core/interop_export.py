@@ -434,7 +434,6 @@ def cyclonedx_doc(root: str = ".") -> Dict[str, Any]:
     形式（由本仓声明摘要派生，保确定性，非随机 UUID）。
     """
     sbom = sbom_doc(root)
-    import hashlib
     import sys as _sys
     _sys.path.insert(0, os.path.join(root, "desktop", "src"))
     try:
@@ -442,6 +441,7 @@ def cyclonedx_doc(root: str = ".") -> Dict[str, Any]:
         hard, soft = dict(ps.HARD_ALLOW), dict(ps.SOFT_IMPORTS)
     except Exception:  # pragma: no cover
         hard, soft = {}, {}
+    import hashlib
     seed = hashlib.sha256((sbom.get("documentNamespace") or "").encode("utf-8")).hexdigest()
     serial = "urn:uuid:%s-%s-%s-%s-%s" % (seed[:8], seed[8:12], seed[12:16],
                                           seed[16:20], seed[20:32])
@@ -558,7 +558,6 @@ def cid_index(root: str = ".") -> Dict[str, Any]:
     （注：IPFS 空文件常见的 `bafkrei…` 是 dag-pb codec 0x70，非本面所用的 raw codec）。
     """
     import base64
-    import hashlib
     rec = _read_json(root, RECEIPTS_REL)
 
     def cidv1_raw_sha256(digest_hex: str) -> str:
@@ -789,7 +788,7 @@ def verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                                                                _qb.EXPECTED_PASS):
                 issues.append("SLSA 派生面基线句与 quality_baseline 期望值不一致：%s"
                               "（修复指引：两处须同源）" % declared)
-        except Exception:  # pragma: no cover
+        except Exception:  # pragma: no cover  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
             pass
     # A2A Agent Card：skills 须覆盖端点契约；未实装须显式声明
     card = a2a_agent_card(root)

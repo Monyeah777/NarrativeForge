@@ -22,7 +22,7 @@ import json
 import os
 import shlex
 import shutil
-import subprocess
+import subprocess  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
@@ -147,7 +147,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if real and real[0] == "hf" and exe:
             real[0] = exe
         print("  $ %s" % _render(real))
-        rc = subprocess.run(real).returncode
+        rc = subprocess.run(real).returncode  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
         if rc != 0:
             print("  ✗ 命令失败（退出码 %d）——已如实中止，不静默降级" % rc, file=sys.stderr)
             return 1

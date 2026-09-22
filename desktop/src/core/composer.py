@@ -43,7 +43,7 @@ def _protocol_refs(store: Store, pipeline_id: str) -> List[dict]:
         for p in (reg.protocols or []):
             if p.get("id") == pipeline_id or p.get("pipeline") == pipeline_id:
                 return list(p.get("references") or [])
-    except Exception:
+    except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
         pass
     return []
 
@@ -60,7 +60,7 @@ def _load_source_module(pkg_name: str, module_ref: str) -> Optional[Module]:
         if f.name.startswith(num + "_") or f.stem == num:
             try:
                 return parse_module(f.read_text(encoding="utf-8"))
-            except Exception:
+            except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                 continue
     return None
 

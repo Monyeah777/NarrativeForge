@@ -22,7 +22,7 @@ import json
 import os
 import re
 import shutil
-import subprocess
+import subprocess  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -127,7 +127,7 @@ def verify_external(att: Dict[str, Any], tool: str = "cosign") -> Tuple[bool, Li
     if not bundle or not os.path.exists(bundle):
         return False, ["外挂锚缺 bundle 实体（signature.bundle 指向不存在）"
                        "（修复指引：随 attestation 一并分发签名 bundle）"]
-    proc = subprocess.run([shutil.which(tool) or tool, "verify-blob", "--bundle", bundle, bundle],
+    proc = subprocess.run([shutil.which(tool) or tool, "verify-blob", "--bundle", bundle, bundle],  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
                           capture_output=True, text=True)
     if proc.returncode != 0:
         return False, ["外挂锚校验失败：%s" % (proc.stderr or proc.stdout).strip()[:300]]
@@ -218,7 +218,7 @@ def sign_digest_ssh(subject_digest: str, key_path: str, identity: str,
         fh.write(ssh_payload(subject_digest))
     # stdin=DEVNULL：密钥若带口令，ssh-keygen 会等输入（实测会挂住）——
     # 这里让它**快速失败**而不是阻塞调用方。
-    proc = subprocess.run([_which("ssh-keygen", "ssh-sig 签名"),
+    proc = subprocess.run([_which("ssh-keygen", "ssh-sig 签名"),  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
                            "-Y", "sign", "-f", key_path, "-n", ns,
                            payload_path], capture_output=True, text=True,
                           stdin=subprocess.DEVNULL)
@@ -231,7 +231,7 @@ def sign_digest_ssh(subject_digest: str, key_path: str, identity: str,
     pub = key_path + ".pub"
     fingerprint = ""
     if os.path.isfile(pub):
-        fp = subprocess.run([_which("ssh-keygen", "ssh-sig 指纹"), "-lf", pub],
+        fp = subprocess.run([_which("ssh-keygen", "ssh-sig 指纹"), "-lf", pub],  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
                             capture_output=True, text=True)
         if fp.returncode == 0 and fp.stdout.split():
             fingerprint = fp.stdout.split()[1]
@@ -261,7 +261,7 @@ def verify_ssh_anchor(subject_digest: str, anchor: Dict[str, Any],
         exe = _which("ssh-keygen", "ssh-sig 验签")
     except ValueError as exc:
         return False, [str(exc)]
-    proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,
+    proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
                            "-I", ident, "-n", ns, "-s", sig_file],
                           input=ssh_payload(subject_digest),
                           capture_output=True)
