@@ -11,7 +11,7 @@ subjects:
   - protocol/data_contracts.json:ce951a3322dd7a4827c39d68826aee9e3945986e5c64bd0b4b1fa1741ff72b32
   - protocol/assertions.json:4eb0b6ad0ca755daeef0a1d6c4d98eb8515173338ad51abd9bc07dac9f5e18f6
   - desktop/src/core/interop_export.py:1fc35ff29f0b7b0a95ae8fa150f8e05534a7e65bf821f6749d95491dcd1ab8a6
-  - desktop/src/core/text_hygiene.py:44f38b0833bb0dbce70d810a6ec79c86b34a8f044ecf83354d5a51135648ef27
+  - desktop/src/core/text_hygiene.py:44f22d14c2ab470a2d30a5484b484a81c57baaf3111a5a1fcec0005a9d0cdeae
   - desktop/src/core/workloop.py:25df02cccb732a1a06b71e7ca55ddf82cb136bfb273f9488e184fb47c0a58d8d
   - scripts/serve_decision_model.py:a2030d6476644deb05ed2d0b61bc01fe0cf7ada6461317de979a01b7a2a59af5
   - scripts/nf.py:29ce5578e70221512429b7f702b02bc2e9d05f5881671798fee8c5c45f518960

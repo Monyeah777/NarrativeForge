@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - verify.sh:8bef5e7b8b79d95c02620d6dea17fab6318c6dee0b79b53e2754b971f16431d2
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
-  - desktop/src/core/text_hygiene.py:44f38b0833bb0dbce70d810a6ec79c86b34a8f044ecf83354d5a51135648ef27
+  - desktop/src/core/text_hygiene.py:44f22d14c2ab470a2d30a5484b484a81c57baaf3111a5a1fcec0005a9d0cdeae
   - desktop/src/core/interop_export.py:1fc35ff29f0b7b0a95ae8fa150f8e05534a7e65bf821f6749d95491dcd1ab8a6
   - desktop/src/core/mcp_runtime.py:104e72d90c207132a1479297ba5853a50e525e65f17ff12c08524c9520708751
   - desktop/src/core/prose_lint.py:680715a34a1c43687a87113edc323c1491ab7577f99352bda4b30633b064b15c

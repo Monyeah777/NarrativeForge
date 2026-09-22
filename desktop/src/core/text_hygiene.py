@@ -21,6 +21,10 @@ from typing import Any, Dict, List, Tuple
 #: 扫描排除目录（本地 AI 工作区 / 版本库元数据 / 缓存）
 EXCLUDE_DIRS = {".git", ".rivet", "__pycache__", ".ruff_cache",
                 ".mypy_cache", ".pylint.d", ".pytest_cache"}
+#: 排除的**工具临时产出**（与缓存同类：可再生、非仓库件）。实测教训（2026-09-22）：
+#: `scripts/per_module_coverage.sh` 正常路径会自删 `_cov_tmp.json`，一旦被中断就留在仓库根，
+#: 于是编码卫生把它当仓库件扫 → 整条 check12/check33 假红。按「先可数、再收口」补排除。
+EXCLUDE_FILES = {"_cov_tmp.json"}
 #: 排除的二进制扩展（内容哨兵为主，这里只做快速跳过）
 BINARY_EXT = {".png", ".jpg", ".jpeg", ".ico", ".gif", ".gz", ".zip", ".pdf",
               ".woff", ".woff2", ".ttf", ".so", ".dll", ".exe"}
@@ -100,6 +104,8 @@ def _walk(root: str) -> List[str]:
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
         for fn in filenames:
+            if fn in EXCLUDE_FILES:
+                continue
             if os.path.splitext(fn)[1].lower() in BINARY_EXT:
                 continue
             out.append(os.path.join(dirpath, fn))
