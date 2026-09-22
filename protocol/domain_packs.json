@@ -23,8 +23,218 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "spec_digest": "dfa47bccbc248b33859d492d2dcc7b42e416c00e7ecb3f641b8950f9f532e885"
+    },
+    {
+      "code": "A02",
+      "section": "A · 模型与能力",
+      "name": "多模态大模型",
+      "package": "多模态大模型域包",
+      "category": "多模态大模型",
+      "pipeline": "P11",
+      "module_ids": [
+        "多模态大模型:M01",
+        "多模态大模型:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "spec_digest": "7e8d903a3ea03dfc3bd800bda089e3b2e9535ae5b2d261db5fc75894da7e3e74"
+    },
+    {
+      "code": "A03",
+      "section": "A · 模型与能力",
+      "name": "视觉模型",
+      "package": "视觉模型域包",
+      "category": "视觉模型",
+      "pipeline": "P12",
+      "module_ids": [
+        "视觉模型:M01",
+        "视觉模型:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "spec_digest": "d0b571307f570aefa02edb8cec120d6fa2955902e161289cca85d52bdb768e0a"
+    },
+    {
+      "code": "A04",
+      "section": "A · 模型与能力",
+      "name": "语音识别与合成",
+      "package": "语音识别与合成域包",
+      "category": "语音识别与合成",
+      "pipeline": "P13",
+      "module_ids": [
+        "语音识别与合成:M01",
+        "语音识别与合成:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "spec_digest": "ae249ad49a1c1a2b07375dd04aa00809a23547cc8bbd01e2e29b13b92e1fcf0e"
+    },
+    {
+      "code": "A05",
+      "section": "A · 模型与能力",
+      "name": "音频与音乐生成",
+      "package": "音频与音乐生成域包",
+      "category": "音频与音乐生成",
+      "pipeline": "P14",
+      "module_ids": [
+        "音频与音乐生成:M01",
+        "音频与音乐生成:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "spec_digest": "49d6c9157cf8ec3f6e0512e5252d2bbc3a0cd91d652a44797c5bbedca871bad8"
+    },
+    {
+      "code": "A06",
+      "section": "A · 模型与能力",
+      "name": "视频生成与理解",
+      "package": "视频生成与理解域包",
+      "category": "视频生成与理解",
+      "pipeline": "P15",
+      "module_ids": [
+        "视频生成与理解:M01",
+        "视频生成与理解:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "retrieval",
+      "spec_digest": "cc9732ee59eb9c86ab004b6e74f08f82bee27f19a6c0b1ca5b5c0177533eb196"
+    },
+    {
+      "code": "A07",
+      "section": "A · 模型与能力",
+      "name": "图像生成与编辑",
+      "package": "图像生成与编辑域包",
+      "category": "图像生成与编辑",
+      "pipeline": "P16",
+      "module_ids": [
+        "图像生成与编辑:M01",
+        "图像生成与编辑:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "spec_digest": "78c00531d22881fbf5e32db8ff22ce7db8ec318f188442d06af78709b3ce37c7"
+    },
+    {
+      "code": "B01",
+      "section": "B · 任务类型",
+      "name": "文本生成与创作",
+      "package": "文本生成与创作域包",
+      "category": "文本生成与创作",
+      "pipeline": "P17",
+      "module_ids": [
+        "文本生成与创作:M01",
+        "文本生成与创作:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "spec_digest": "e3fb158557bb4f4481882e84314f50abf93f037233f44a173fd3769c5d4c9b6b"
+    },
+    {
+      "code": "B02",
+      "section": "B · 任务类型",
+      "name": "摘要与信息压缩",
+      "package": "摘要与信息压缩域包",
+      "category": "摘要与信息压缩",
+      "pipeline": "P18",
+      "module_ids": [
+        "摘要与信息压缩:M01",
+        "摘要与信息压缩:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "spec_digest": "f9f44d8b9a105474017c13276c303e250056d89cdbd1f38dd8f921137661da98"
+    },
+    {
+      "code": "B03",
+      "section": "B · 任务类型",
+      "name": "机器翻译与本地化",
+      "package": "机器翻译与本地化域包",
+      "category": "机器翻译与本地化",
+      "pipeline": "P19",
+      "module_ids": [
+        "机器翻译与本地化:M01",
+        "机器翻译与本地化:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "spec_digest": "3aa7961fdf8f7f4fe75e5db051fbd3f0b1633b602bae41416b85ab3a4047a96d"
+    },
+    {
+      "code": "B04",
+      "section": "B · 任务类型",
+      "name": "分类与情感分析",
+      "package": "分类与情感分析域包",
+      "category": "分类与情感分析",
+      "pipeline": "P21",
+      "module_ids": [
+        "分类与情感分析:M01",
+        "分类与情感分析:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "spec_digest": "b1de95804b72d6f1b471010795fdd44d6cbf2790be9e9040fed3341b56833368"
     }
   ],
-  "count": 1,
-  "subdivisions_total": 12
+  "count": 11,
+  "subdivisions_total": 132
 }

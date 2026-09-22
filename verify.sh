@@ -180,8 +180,10 @@ check7(){
   local err=0 regxy='' regxh=''
   # T6：在册数一致性——02 §8.1/§8.2 登记行反解在册模块数，与 modules/ 实存件数比对（防注册表与文件失同步）
   if [ -f 02_联动注册表.md ]; then
-    regxy=$(sed -n '/^### 8\.1/,/^### 8\.2/p' 02_联动注册表.md | grep -oE '模块（[0-9]+）' | grep -oE '[0-9]+')
-    regxh=$(sed -n '/^### 8\.2/,/^### 8\.3/p' 02_联动注册表.md | grep -oE '模块（[0-9]+）' | grep -oE '[0-9]+')
+    # 段号须带分隔符匹配：`^### 8\.1` 会连 `### 8.10` 一起命中（域包 >9 个即误取，
+    # 2026-09-22 AI 品类域包扩面实测踩到）——故锚定 `### 8.N `（后随空格）
+    regxy=$(sed -n '/^### 8\.1 /,/^### 8\.2 /p' 02_联动注册表.md | grep -oE '模块（[0-9]+）' | grep -oE '[0-9]+')
+    regxh=$(sed -n '/^### 8\.2 /,/^### 8\.3 /p' 02_联动注册表.md | grep -oE '模块（[0-9]+）' | grep -oE '[0-9]+')
   fi
   if [ -d community/校园情感领域包 ]; then
     local cmod=$(find community/校园情感领域包/modules -name '*.md' 2>/dev/null | wc -l)
@@ -454,7 +456,7 @@ import yaml
 # DOMAIN = 领域包显式登记（③ 独占类别互斥 + ⑤ 编号在册/M91-99 不占用专属）——领域包语义依赖
 # 02 §8.1/8.2 段落结构（segmap）与「不占 M91-99 社区段」规则（通用 M93-96/轻混 M91-92 合法占段，
 # 不能内容推导纳入领域检查）；新增领域包须在此登记 + 02 §8 开新段 + registry 条目（登记三要件②）。
-DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/大语言模型域包']
+DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/大语言模型域包', 'community/多模态大模型域包', 'community/视觉模型域包', 'community/语音识别与合成域包', 'community/音频与音乐生成域包', 'community/视频生成与理解域包', 'community/图像生成与编辑域包', 'community/文本生成与创作域包', 'community/摘要与信息压缩域包', 'community/机器翻译与本地化域包', 'community/分类与情感分析域包']
 # LEGACY_BARE = 存量既有领域包（v1.1 迁出模块沿用原编号不改号，包内裸号属既有）；其余包**新增**
 # 编号须落 M91-M99 机制段或 <独占类别>:Mxx 类内段（01 §1.6.11 编号命名空间扩展；每类 00-99 独立）。
 LEGACY_BARE = set(DOMAIN)

@@ -1,5 +1,5 @@
 {
-  "count": 50,
+  "count": 70,
   "modules": {
     "AI系统:M25": {
       "digest": "9eba42619fd91017080e670d5f60d17ba4255d2444d87243f5f440d6ed55c8db",
@@ -181,13 +181,85 @@
       "digest": "d6afedbe5118ca92f6de75211b05eac64144a618e2e368ad0c1aa82af971af20",
       "path": "04_模块库/事件类/M22_事件叙事.md"
     },
+    "分类与情感分析:M01": {
+      "digest": "6ef54c372f744285cccce7645ded63d1b5124258a2fbe34f143515b411e105c3",
+      "path": "community/分类与情感分析域包/modules/B04a_分类口径登记.md"
+    },
+    "分类与情感分析:M02": {
+      "digest": "45d6f153e26113734fc8b144353baace4a76631f281c2c7ac0049719949f6e6f",
+      "path": "community/分类与情感分析域包/modules/B04b_分类面收口与形态派生.md"
+    },
+    "图像生成与编辑:M01": {
+      "digest": "a53ad864c3875017d379a2faa2c7b5d47a47d99078df9699abeb83dfa9b6f4a8",
+      "path": "community/图像生成与编辑域包/modules/A07a_图像生成口径登记.md"
+    },
+    "图像生成与编辑:M02": {
+      "digest": "2fe58e3c12a511cde435ff25728b1a165345555e35a0468866f0a231e3a16fc4",
+      "path": "community/图像生成与编辑域包/modules/A07b_生成面收口与形态派生.md"
+    },
+    "多模态大模型:M01": {
+      "digest": "dc2fe253e12ca187c1163ef3a5fbd21ad610cf18995757976afc40e9e8e13eea",
+      "path": "community/多模态大模型域包/modules/A02a_多模态口径登记.md"
+    },
+    "多模态大模型:M02": {
+      "digest": "51490a30e6a4de5debc95f2fa34b5bf5efaebc088291a229c45dcb559588bf8b",
+      "path": "community/多模态大模型域包/modules/A02b_多模态面收口与形态派生.md"
+    },
     "大语言模型:M01": {
-      "digest": "8b4cbb4396908661cff7d6e27a4b0ae52c376573ff2088d30bea1ab594373cb8",
+      "digest": "1331056637f5074000f71993012f27a06614b5d158aefd805205f7b9fdfd9e54",
       "path": "community/大语言模型域包/modules/A01a_模型与能力口径登记.md"
     },
     "大语言模型:M02": {
-      "digest": "0a6a539b6ec65962a7b63738b2f6841d0171c93c31f2d4fae00a1548d0b693da",
+      "digest": "5015443192f499379c46a4313ec9feb63a36e3a5282c81fe7b252d1cc837d371",
       "path": "community/大语言模型域包/modules/A01b_能力面收口与形态派生.md"
+    },
+    "摘要与信息压缩:M01": {
+      "digest": "19fdfd82ab8bed6558d2b925974d60fa1f12ce2da4f97912b606e5ce06fe318b",
+      "path": "community/摘要与信息压缩域包/modules/B02a_摘要口径登记.md"
+    },
+    "摘要与信息压缩:M02": {
+      "digest": "b2ce24492fd53c15fb00f9c94c2d3096e7a187058f2c03920d4088284823cf38",
+      "path": "community/摘要与信息压缩域包/modules/B02b_摘要面收口与形态派生.md"
+    },
+    "文本生成与创作:M01": {
+      "digest": "f50cece7400987c81db6e0bcdb168b16e7159f4e8c4d7f9609d738929a74ffa2",
+      "path": "community/文本生成与创作域包/modules/B01a_创作口径登记.md"
+    },
+    "文本生成与创作:M02": {
+      "digest": "78a7e862f976ddb374eb1af471b615e4cd885db8d6966cefd9e473302e31e9a5",
+      "path": "community/文本生成与创作域包/modules/B01b_创作面收口与形态派生.md"
+    },
+    "机器翻译与本地化:M01": {
+      "digest": "f681be8e1b41788535723888de7f022295e94684f864cdc44bb830365821e215",
+      "path": "community/机器翻译与本地化域包/modules/B03a_翻译口径登记.md"
+    },
+    "机器翻译与本地化:M02": {
+      "digest": "fb80d8180cbd45b68497d5e8c82ecdcabe5c776e1e615c58ea253bf8db038e18",
+      "path": "community/机器翻译与本地化域包/modules/B03b_本地化面收口与形态派生.md"
+    },
+    "视觉模型:M01": {
+      "digest": "a57ecbdd5a40e2add25896f21b33a9855e1a6d3dd4946e7cc68cf7c895f50176",
+      "path": "community/视觉模型域包/modules/A03a_视觉任务口径登记.md"
+    },
+    "视觉模型:M02": {
+      "digest": "c099364df080b68f5a008d0e067d1ee74e39e07d9bb853ba33b528b46e1e269e",
+      "path": "community/视觉模型域包/modules/A03b_视觉面收口与形态派生.md"
+    },
+    "视频生成与理解:M01": {
+      "digest": "6f14ae4dff0ae756ee4d5b5720cac01b612da71e5dbbc11087053d87476062f1",
+      "path": "community/视频生成与理解域包/modules/A06a_视频口径登记.md"
+    },
+    "视频生成与理解:M02": {
+      "digest": "ccbbe4ca211c5463ca501c87bd3ec30d7701805f6b9b8bde142c7c070b5560d9",
+      "path": "community/视频生成与理解域包/modules/A06b_视频面收口与形态派生.md"
+    },
+    "语音识别与合成:M01": {
+      "digest": "806b9dbe847a7cb95795e598562136af54a0142049f4fe3c6ebdc6eeed6d7cdc",
+      "path": "community/语音识别与合成域包/modules/A04a_语音口径登记.md"
+    },
+    "语音识别与合成:M02": {
+      "digest": "4919da5cf5e23382059be47fdf1e1996918e0ae5f6fb29ac5e69ff3089042a94",
+      "path": "community/语音识别与合成域包/modules/A04b_语音面收口与形态派生.md"
     },
     "通用:M10": {
       "digest": "1b654bc697783cb6c7edf110190449a1bcb37786e153ab056ff536e297e6efdc",
@@ -200,6 +272,14 @@
     "量化金融:M32": {
       "digest": "3549c6e7f71c8b0e283ba49ffb02cd767265d31e780c10f584cf7cb11a66ba1c",
       "path": "community/量化金融域包/modules/M32_回测与绩效口径.md"
+    },
+    "音频与音乐生成:M01": {
+      "digest": "f080fcc7b0ee9a457f73fa0f91f9ded9b3d7cb4d4e69e1a81bc14f42059423d3",
+      "path": "community/音频与音乐生成域包/modules/A05a_音频音乐口径登记.md"
+    },
+    "音频与音乐生成:M02": {
+      "digest": "8491e3821860c8292150419c598d8d9e848b49f43b06fea2edfca019e1fa68d1",
+      "path": "community/音频与音乐生成域包/modules/A05b_音频面收口与形态派生.md"
     }
   },
   "schema": "nf-module-signatures/1"

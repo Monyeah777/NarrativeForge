@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B03",
+  "domain": "机器翻译与本地化",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "generation",
+  "subdivisions": [
+    {
+      "id": "B03-01",
+      "name": "通用文本翻译",
+      "definition": "通用文本翻译的口径：语言对方向、句级 / 段级切分与 BLEU 类指标口径。",
+      "anchor": "https://arxiv.org/abs/1609.08144",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 lang_pair（方向含变体标签）、segment_unit（sentence|paragraph）与 metric（BLEU 变体 + tokenizer 口径）。",
+      "pitfall": "不同 tokenizer 的 BLEU 直接比较；句级切分不同导致段级质量被掩盖。"
+    },
+    {
+      "id": "B03-02",
+      "name": "领域术语翻译",
+      "definition": "领域术语翻译的口径：术语来源、强制约束方式与违反统计。",
+      "anchor": "https://iate.europa.eu/",
+      "anchor_kind": "dataset",
+      "anchor_status": 200,
+      "check": "声明 term_source（术语库 id）、constraint_mode（hard|soft）与 violation_rate（术语违反率）。",
+      "pitfall": "声称术语一致却不报违反率；软约束当硬约束宣传。"
+    },
+    {
+      "id": "B03-03",
+      "name": "文学与风格翻译",
+      "definition": "文学与风格翻译的口径：风格目标、译者干预边界与评审方式。",
+      "anchor": "https://www.statmt.org/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 style_target（枚举）、intervention（允许的编辑操作）与 review（人工评审协议）。",
+      "pitfall": "用 BLEU 评价文学翻译质量；无人工评审就宣称「保留了风格」。"
+    },
+    {
+      "id": "B03-04",
+      "name": "口语与字幕翻译",
+      "definition": "口语与字幕翻译的口径：口语化处理、字符 / 行数与 CPS（每秒字符数）约束。",
+      "anchor": "https://opus.nlpl.eu/",
+      "anchor_kind": "dataset",
+      "anchor_status": 200,
+      "check": "声明 max_chars_per_line、max_lines 与 max_cps（每秒字符数），并给违规字幕占比。",
+      "pitfall": "忽略时长约束导致字幕读不完；口语化处理无标准导致跨版本不可比。"
+    },
+    {
+      "id": "B03-05",
+      "name": "格式保留翻译",
+      "definition": "格式保留翻译的口径：标记保护范围、占位符规则与还原校验。",
+      "anchor": "https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.html",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 protected_tags（清单）、placeholder_rule（规则）与 restore_check（还原校验通过率）。",
+      "pitfall": "标签在译后被破坏（文件不可解析）；占位符顺序错乱。"
+    },
+    {
+      "id": "B03-06",
+      "name": "多语种并行",
+      "definition": "多语种并行翻译的口径：语种集合、共享参数证据与质量一致性报告。",
+      "anchor": "https://arxiv.org/abs/2207.04672",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 langs（清单）、pivot（直译|枢轴）与 per_lang_metric（逐语种指标，禁止只报平均）。",
+      "pitfall": "只报多语平均分掩盖低资源语言崩塌；枢轴翻译的误差未计入。"
+    },
+    {
+      "id": "B03-07",
+      "name": "术语库与翻译记忆",
+      "definition": "术语库与翻译记忆的口径：记忆匹配阈值、模糊匹配策略与冲突处理。",
+      "anchor": "https://pypi.org/project/translate-toolkit/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 tm_threshold（模糊匹配阈值）、conflict_policy（新覆盖/最频/人工）与单元键（句级 / 片段级）。",
+      "pitfall": "低相似度记忆被强制套用；术语与记忆冲突无裁决规则。"
+    },
+    {
+      "id": "B03-08",
+      "name": "本地化与地区变体",
+      "definition": "本地化与地区变体的口径：区域标签、日期 / 数字 / 货币格式与内容合规差异。",
+      "anchor": "https://cldr.unicode.org/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 locale_tags（BCP 47 列表）、format_source（CLDR 版本）与 compliance_diffs（地区合规差异清单）。",
+      "pitfall": "语言标签只到语言级（忽略地区变体）；日期与货币格式硬编码。"
+    },
+    {
+      "id": "B03-09",
+      "name": "译后编辑与人工审校",
+      "definition": "译后编辑与人工审校的口径：编辑类型、编辑工作量（编辑距离）与审校层级。",
+      "anchor": "https://themqm.org/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 edit_types（错误维度清单）、effort_metric（如 HTER / 编辑距离）与 review_level（单审|双审）。",
+      "pitfall": "无编辑工作量数据导致「可用性」结论无据；审校层级不声明。"
+    },
+    {
+      "id": "B03-10",
+      "name": "低资源语言",
+      "definition": "低资源语言的口径：资源规模、数据来源许可与评估可行性声明。",
+      "anchor": "https://www.masakhane.io/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 data_size（句对量级）、data_license（逐源）与 eval_feasibility（是否有母语评审）。",
+      "pitfall": "用非母语评审宣称质量；训练与测试同源（无泛化证据）。"
+    },
+    {
+      "id": "B03-11",
+      "name": "翻译质量评估",
+      "definition": "翻译质量评估的口径：自动指标（COMET 类）、人工 MQM 分数与二者相关性。",
+      "anchor": "https://arxiv.org/abs/2009.09025",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 auto_metric（id + 版本）、human_scale（MQM 维度）与 correlation（自动与人工的相关性报告）。",
+      "pitfall": "只报自动指标不报相关性；人工量表维度未定义。"
+    },
+    {
+      "id": "B03-12",
+      "name": "文化适配与合规",
+      "definition": "文化适配与合规的口径：禁忌检查清单、文化改写范围与合规复核。",
+      "anchor": "https://www.w3.org/International/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 taboo_checklist（来源）、rewrite_scope（可改写范围）与 compliance_review（复核人 / 规则）。",
+      "pitfall": "文化禁忌无清单（漏检靠运气）；改写越界改动事实。"
+    }
+  ]
+}

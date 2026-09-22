@@ -321,6 +321,48 @@
     },
     {
       "conformance": "L2",
+      "id": "分类与情感分析:M01",
+      "layer": "P40",
+      "name": "分类口径登记",
+      "source": "community/分类与情感分析域包/modules/B04a_分类口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "分类与情感分析:M02",
+      "layer": "P60",
+      "name": "分类面收口与形态派生",
+      "source": "community/分类与情感分析域包/modules/B04b_分类面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "图像生成与编辑:M01",
+      "layer": "P40",
+      "name": "图像生成口径登记",
+      "source": "community/图像生成与编辑域包/modules/A07a_图像生成口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "图像生成与编辑:M02",
+      "layer": "P60",
+      "name": "生成面收口与形态派生",
+      "source": "community/图像生成与编辑域包/modules/A07b_生成面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "多模态大模型:M01",
+      "layer": "P40",
+      "name": "多模态口径登记",
+      "source": "community/多模态大模型域包/modules/A02a_多模态口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "多模态大模型:M02",
+      "layer": "P60",
+      "name": "多模态面收口与形态派生",
+      "source": "community/多模态大模型域包/modules/A02b_多模态面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "大语言模型:M01",
       "layer": "P40",
       "name": "模型与能力口径登记",
@@ -332,6 +374,90 @@
       "layer": "P60",
       "name": "能力面收口与形态派生",
       "source": "community/大语言模型域包/modules/A01b_能力面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "摘要与信息压缩:M01",
+      "layer": "P40",
+      "name": "摘要口径登记",
+      "source": "community/摘要与信息压缩域包/modules/B02a_摘要口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "摘要与信息压缩:M02",
+      "layer": "P60",
+      "name": "摘要面收口与形态派生",
+      "source": "community/摘要与信息压缩域包/modules/B02b_摘要面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "文本生成与创作:M01",
+      "layer": "P40",
+      "name": "创作口径登记",
+      "source": "community/文本生成与创作域包/modules/B01a_创作口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "文本生成与创作:M02",
+      "layer": "P60",
+      "name": "创作面收口与形态派生",
+      "source": "community/文本生成与创作域包/modules/B01b_创作面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "机器翻译与本地化:M01",
+      "layer": "P40",
+      "name": "翻译口径登记",
+      "source": "community/机器翻译与本地化域包/modules/B03a_翻译口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "机器翻译与本地化:M02",
+      "layer": "P60",
+      "name": "本地化面收口与形态派生",
+      "source": "community/机器翻译与本地化域包/modules/B03b_本地化面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "视觉模型:M01",
+      "layer": "P40",
+      "name": "视觉任务口径登记",
+      "source": "community/视觉模型域包/modules/A03a_视觉任务口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "视觉模型:M02",
+      "layer": "P60",
+      "name": "视觉面收口与形态派生",
+      "source": "community/视觉模型域包/modules/A03b_视觉面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "视频生成与理解:M01",
+      "layer": "P40",
+      "name": "视频口径登记",
+      "source": "community/视频生成与理解域包/modules/A06a_视频口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "视频生成与理解:M02",
+      "layer": "P60",
+      "name": "视频面收口与形态派生",
+      "source": "community/视频生成与理解域包/modules/A06b_视频面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "语音识别与合成:M01",
+      "layer": "P40",
+      "name": "语音口径登记",
+      "source": "community/语音识别与合成域包/modules/A04a_语音口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "语音识别与合成:M02",
+      "layer": "P60",
+      "name": "语音面收口与形态派生",
+      "source": "community/语音识别与合成域包/modules/A04b_语音面收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -353,18 +479,43 @@
       "layer": "P60",
       "name": "回测与绩效口径",
       "source": "community/量化金融域包/modules/M32_回测与绩效口径.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "音频与音乐生成:M01",
+      "layer": "P40",
+      "name": "音频音乐口径登记",
+      "source": "community/音频与音乐生成域包/modules/A05a_音频音乐口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "音频与音乐生成:M02",
+      "layer": "P60",
+      "name": "音频面收口与形态派生",
+      "source": "community/音频与音乐生成域包/modules/A05b_音频面收口与形态派生.md"
     }
   ],
   "coverage": {
     "asset_entries": 2,
-    "contract_covered": 50,
-    "module_docs": 50,
-    "pipelines": 11,
-    "protocols": 8,
+    "contract_covered": 70,
+    "module_docs": 70,
+    "pipelines": 21,
+    "protocols": 18,
     "schema_issues": 0
   },
   "event_closure": {
     "linked_events": [
+      "a01_spec_ready",
+      "a02_spec_ready",
+      "a03_spec_ready",
+      "a04_spec_ready",
+      "a05_spec_ready",
+      "a06_spec_ready",
+      "a07_spec_ready",
+      "b01_spec_ready",
+      "b02_spec_ready",
+      "b03_spec_ready",
+      "b04_spec_ready",
       "beat_tick",
       "chaos_event",
       "combat_result",
@@ -374,7 +525,6 @@
       "decision_brief",
       "doc_delta_committed",
       "doc_structure_ready",
-      "domain_spec_ready",
       "factor_spec_conflict",
       "factor_spec_ready",
       "ghost_event",
@@ -397,8 +547,107 @@
       "tick_day",
       "travel_event"
     ],
-    "modules": 50,
+    "modules": 70,
     "pub_only_by_module": {
+      "a01_report_conflict": [
+        "大语言模型:M02"
+      ],
+      "a01_report_ready": [
+        "大语言模型:M02"
+      ],
+      "a01_spec_conflict": [
+        "大语言模型:M01"
+      ],
+      "a02_report_conflict": [
+        "多模态大模型:M02"
+      ],
+      "a02_report_ready": [
+        "多模态大模型:M02"
+      ],
+      "a02_spec_conflict": [
+        "多模态大模型:M01"
+      ],
+      "a03_report_conflict": [
+        "视觉模型:M02"
+      ],
+      "a03_report_ready": [
+        "视觉模型:M02"
+      ],
+      "a03_spec_conflict": [
+        "视觉模型:M01"
+      ],
+      "a04_report_conflict": [
+        "语音识别与合成:M02"
+      ],
+      "a04_report_ready": [
+        "语音识别与合成:M02"
+      ],
+      "a04_spec_conflict": [
+        "语音识别与合成:M01"
+      ],
+      "a05_report_conflict": [
+        "音频与音乐生成:M02"
+      ],
+      "a05_report_ready": [
+        "音频与音乐生成:M02"
+      ],
+      "a05_spec_conflict": [
+        "音频与音乐生成:M01"
+      ],
+      "a06_report_conflict": [
+        "视频生成与理解:M02"
+      ],
+      "a06_report_ready": [
+        "视频生成与理解:M02"
+      ],
+      "a06_spec_conflict": [
+        "视频生成与理解:M01"
+      ],
+      "a07_report_conflict": [
+        "图像生成与编辑:M02"
+      ],
+      "a07_report_ready": [
+        "图像生成与编辑:M02"
+      ],
+      "a07_spec_conflict": [
+        "图像生成与编辑:M01"
+      ],
+      "b01_report_conflict": [
+        "文本生成与创作:M02"
+      ],
+      "b01_report_ready": [
+        "文本生成与创作:M02"
+      ],
+      "b01_spec_conflict": [
+        "文本生成与创作:M01"
+      ],
+      "b02_report_conflict": [
+        "摘要与信息压缩:M02"
+      ],
+      "b02_report_ready": [
+        "摘要与信息压缩:M02"
+      ],
+      "b02_spec_conflict": [
+        "摘要与信息压缩:M01"
+      ],
+      "b03_report_conflict": [
+        "机器翻译与本地化:M02"
+      ],
+      "b03_report_ready": [
+        "机器翻译与本地化:M02"
+      ],
+      "b03_spec_conflict": [
+        "机器翻译与本地化:M01"
+      ],
+      "b04_report_conflict": [
+        "分类与情感分析:M02"
+      ],
+      "b04_report_ready": [
+        "分类与情感分析:M02"
+      ],
+      "b04_spec_conflict": [
+        "分类与情感分析:M01"
+      ],
       "backtest_spec_conflict": [
         "量化金融:M32"
       ],
@@ -410,15 +659,6 @@
       ],
       "campus_gift_intent": [
         "M91"
-      ],
-      "domain_report_conflict": [
-        "大语言模型:M02"
-      ],
-      "domain_report_ready": [
-        "大语言模型:M02"
-      ],
-      "domain_spec_conflict": [
-        "大语言模型:M01"
       ],
       "faction_event": [
         "M15"
@@ -449,13 +689,43 @@
       ]
     },
     "pub_only_events": [
+      "a01_report_conflict",
+      "a01_report_ready",
+      "a01_spec_conflict",
+      "a02_report_conflict",
+      "a02_report_ready",
+      "a02_spec_conflict",
+      "a03_report_conflict",
+      "a03_report_ready",
+      "a03_spec_conflict",
+      "a04_report_conflict",
+      "a04_report_ready",
+      "a04_spec_conflict",
+      "a05_report_conflict",
+      "a05_report_ready",
+      "a05_spec_conflict",
+      "a06_report_conflict",
+      "a06_report_ready",
+      "a06_spec_conflict",
+      "a07_report_conflict",
+      "a07_report_ready",
+      "a07_spec_conflict",
+      "b01_report_conflict",
+      "b01_report_ready",
+      "b01_spec_conflict",
+      "b02_report_conflict",
+      "b02_report_ready",
+      "b02_spec_conflict",
+      "b03_report_conflict",
+      "b03_report_ready",
+      "b03_spec_conflict",
+      "b04_report_conflict",
+      "b04_report_ready",
+      "b04_spec_conflict",
       "backtest_spec_conflict",
       "backtest_spec_ready",
       "campus_anonymous_gift",
       "campus_gift_intent",
-      "domain_report_conflict",
-      "domain_report_ready",
-      "domain_spec_conflict",
       "faction_event",
       "group_chat_event",
       "load_order_ready",
@@ -513,13 +783,33 @@
     "M97",
     "M98",
     "事件:M22",
+    "分类与情感分析:M01",
+    "分类与情感分析:M02",
+    "图像生成与编辑:M01",
+    "图像生成与编辑:M02",
+    "多模态大模型:M01",
+    "多模态大模型:M02",
     "大语言模型:M01",
     "大语言模型:M02",
     "情感:M22",
+    "摘要与信息压缩:M01",
+    "摘要与信息压缩:M02",
+    "文本生成与创作:M01",
+    "文本生成与创作:M02",
+    "机器翻译与本地化:M01",
+    "机器翻译与本地化:M02",
     "生存:M10",
+    "视觉模型:M01",
+    "视觉模型:M02",
+    "视频生成与理解:M01",
+    "视频生成与理解:M02",
+    "语音识别与合成:M01",
+    "语音识别与合成:M02",
     "通用:M10",
     "量化金融:M31",
-    "量化金融:M32"
+    "量化金融:M32",
+    "音频与音乐生成:M01",
+    "音频与音乐生成:M02"
   ],
   "generated_by": "43 A4 protocol_golden（schema 定义 → 校验摘要，确定性渲染）",
   "pipeline_files": [
@@ -533,17 +823,37 @@
     "P07_AI系统域装配流管线.md",
     "P08_量化金融域装配流管线.md",
     "P09_大语言模型装配流管线.md",
+    "P11_多模态大模型装配流管线.md",
+    "P12_视觉模型装配流管线.md",
+    "P13_语音识别与合成装配流管线.md",
+    "P14_音频与音乐生成装配流管线.md",
+    "P15_视频生成与理解装配流管线.md",
+    "P16_图像生成与编辑装配流管线.md",
+    "P17_文本生成与创作装配流管线.md",
+    "P18_摘要与信息压缩装配流管线.md",
+    "P19_机器翻译与本地化装配流管线.md",
+    "P21_分类与情感分析装配流管线.md",
     "P90_技术文档生成管线.md"
   ],
   "protocol_files": [
     "community/AI系统域包/protocol.yaml",
+    "community/分类与情感分析域包/protocol.yaml",
+    "community/图像生成与编辑域包/protocol.yaml",
+    "community/多模态大模型域包/protocol.yaml",
     "community/大语言模型域包/protocol.yaml",
     "community/技术文档域包/protocol.yaml",
+    "community/摘要与信息压缩域包/protocol.yaml",
+    "community/文本生成与创作域包/protocol.yaml",
+    "community/机器翻译与本地化域包/protocol.yaml",
     "community/校园情感领域包/protocol.yaml",
     "community/校园西幻轻混组合包/protocol.yaml",
     "community/西幻生存领域包/protocol.yaml",
+    "community/视觉模型域包/protocol.yaml",
+    "community/视频生成与理解域包/protocol.yaml",
+    "community/语音识别与合成域包/protocol.yaml",
     "community/通用核心基础包/protocol.yaml",
-    "community/量化金融域包/protocol.yaml"
+    "community/量化金融域包/protocol.yaml",
+    "community/音频与音乐生成域包/protocol.yaml"
   ],
   "registry_modules": [
     {

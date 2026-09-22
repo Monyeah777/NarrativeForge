@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "A04",
+  "domain": "语音识别与合成",
+  "section": "A · 模型与能力",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "generation",
+  "subdivisions": [
+    {
+      "id": "A04-01",
+      "name": "端到端 ASR 声学建模",
+      "definition": "端到端 ASR 的建模口径：声学前端、词表单位（字符 / BPE / 词）、解码方式与语言模型融合。",
+      "anchor": "https://arxiv.org/abs/1512.02595",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 acoustic_frontend（帧长/帧移 ms）、token_unit（char|bpe|word）、decoding（greedy|beam+LM）三项。",
+      "pitfall": "用不同语言模型融合强度比较 WER；前端帧移未记录导致流式与离线数字不可比。"
+    },
+    {
+      "id": "A04-02",
+      "name": "语音活动检测与切分",
+      "definition": "语音活动检测与切分的口径：判定阈值、最短语音段、最大静音切分与尾部保留。",
+      "anchor": "https://github.com/snakers4/silero-vad",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 vad_threshold、min_speech_ms、max_silence_ms、tail_padding_ms 四个数值。",
+      "pitfall": "切分过碎导致识别上下文丢失；尾部静音截断导致尾音丢失。"
+    },
+    {
+      "id": "A04-03",
+      "name": "说话人分离与识别",
+      "definition": "说话人分离与识别的口径：说话人数量假设、聚类阈值与评测指标（DER / EER）。",
+      "anchor": "https://arxiv.org/abs/2003.12687",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 num_speakers（已知|自动）、clustering_threshold、metric（DER|EER）+ 评分帧长与主说话人定义。",
+      "pitfall": "重叠语音不显式声明（collar 处理不同）导致 DER 不可比；说话人数假设不同直接比 EER。"
+    },
+    {
+      "id": "A04-04",
+      "name": "方言与口音适应",
+      "definition": "方言与口音适应的口径：适配数据规模、微调范围与基线对照。",
+      "anchor": "https://commonvoice.mozilla.org/",
+      "anchor_kind": "dataset",
+      "anchor_status": 200,
+      "check": "声明 adapt_data_hours（小时数）、adapt_scope（frontend|encoder|decoder|full）、以及未适配基线的同集 WER。",
+      "pitfall": "只报适配后 WER 不报基线；把数据泄漏（测试口音出现在适配集）当适配收益。"
+    },
+    {
+      "id": "A04-05",
+      "name": "噪声与远场鲁棒",
+      "definition": "噪声与远场鲁棒的口径：信噪比范围、混响时间与增强前端是否进入链路。",
+      "anchor": "https://github.com/microsoft/DNS-Challenge",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 snr_db（范围）、t60_s（混响时间）、enhancement（none|denoise|dereverb）三项，并给各噪声条件下的 WER。",
+      "pitfall": "只报干净集 WER；增强前端的训练集泄漏（同噪声同说话人）导致虚高。"
+    },
+    {
+      "id": "A04-06",
+      "name": "流式低延迟识别",
+      "definition": "流式低延迟识别的口径：块大小、延迟定义（首字延迟 / 稳定延迟）与回退策略。",
+      "anchor": "https://arxiv.org/abs/2010.10759",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 chunk_ms、latency_metric（first_partial|stable_hypothesis）、以及允许的回退窗口（ms）。",
+      "pitfall": "用整句离线 WER 宣称流式性能；延迟定义未声明导致与产品 SLA 对不上。"
+    },
+    {
+      "id": "A04-07",
+      "name": "TTS 声学模型与声码器",
+      "definition": "TTS 声学模型与声码器的口径：声学特征、采样率、声码器类型与推理步数。",
+      "anchor": "https://arxiv.org/abs/1712.05884",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 acoustic_feature（mel 维数 + 帧移）、sample_rate（Hz）、vocoder（id + 版本）、inference_steps。",
+      "pitfall": "采样率不一致造成听感对比无效；声码器版本未记录导致音质回归无法归因。"
+    },
+    {
+      "id": "A04-08",
+      "name": "音色克隆与声音转换",
+      "definition": "音色克隆与声音转换的口径：参考音频时长、是否需要授权声明、相似度评测方法。",
+      "anchor": "https://arxiv.org/abs/1802.06006",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 ref_audio_sec（参考时长）、consent（授权声明文件名）、similarity_metric（MOS|SECS）与评分人数。",
+      "pitfall": "无授权就克隆音色（合规红线）；用自评 MOS 代替第三方听测。"
+    },
+    {
+      "id": "A04-09",
+      "name": "韵律与情感控制",
+      "definition": "韵律与情感控制的口径：控制维度（音高 / 时长 / 能量）、控制粒度与标注来源。",
+      "anchor": "https://arxiv.org/abs/1904.06022",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 control_dims（枚举）、granularity（utterance|word|phoneme）、以及情感标注来源（人工|模型）。",
+      "pitfall": "标注来源是模型却报成人工标注；控制粒度不同导致控制精度不可比。"
+    },
+    {
+      "id": "A04-10",
+      "name": "多语种混说",
+      "definition": "多语种混说（code-switching）的口径：语种切换点标注、语种识别粒度与指标口径。",
+      "anchor": "https://arxiv.org/abs/2212.04356",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 switch_point_annotation（人工|规则）、lid_granularity（句|词|字符）与指标（WER|MER）。",
+      "pitfall": "用单语测试集宣称混说能力；切换点标注口径不同导致 MER 不可比。"
+    },
+    {
+      "id": "A04-11",
+      "name": "语音评测与打分",
+      "definition": "语音评测与打分的口径：评分维度、评分人一致性、以及分数映射（原始分 → 报告分）。",
+      "anchor": "https://arxiv.org/abs/2104.01378",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 score_dims（发音/流利度/完整度等枚举）、inter_rater_agreement（如 Cohen kappa）、score_mapping（分段函数或分位映射）。",
+      "pitfall": "无评分人一致性就报分数可靠；分数映射未公开导致跨版本不可比。"
+    },
+    {
+      "id": "A04-12",
+      "name": "字幕时间轴对齐",
+      "definition": "字幕时间轴对齐的口径：对齐单位、允许偏差与时间基准。",
+      "anchor": "https://arxiv.org/abs/2303.00747",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 align_unit（词|字符|句）、tolerance_ms（允许偏差）与 time_base（音频起点定义）。",
+      "pitfall": "不声明容差就把手工校对与自动对齐混比；音频起点未定义导致整体偏移。"
+    }
+  ]
+}

@@ -395,6 +395,17 @@ def standards_md(spec: Dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _event_names(spec: Dict[str, Any], which: int) -> Tuple[str, str]:
+    """包内事件名（**单源**：machine_contract 与 §4 事件契约必须同名）。
+
+    命名纪律：事件名按域码命名空间（a01_/b03_…）——01 §1.1「发布方唯一」要求同一事件名
+    只能有一个发布方，故跨域同名会被 check16 ④ 判违约（2026-09-22 实测）。
+    """
+    code = spec["code"].lower()
+    kind = "spec" if which == 1 else "report"
+    return "%s_%s_ready" % (code, kind), "%s_%s_conflict" % (code, kind)
+
+
 def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:
     """which: 1 = P40 口径层，2 = P60 收口层。"""
     code, cat, name = spec["code"], spec["category"], spec["name"]
@@ -402,19 +413,20 @@ def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:
     title = spec["module_titles"][which - 1]
     layer = "P40" if which == 1 else "P60"
     layer_name = "行为决策" if which == 1 else "长期演变"
+    ready_ev, conflict_ev = _event_names(spec, which)
     if which == 1:
         duty = ("逐条登记本域 %d 个细分口径（定义 / 可机验判据 / 失效模式），校验齐备性与词表边界；"
                 "越界或缺项即发布口径冲突事件" % len(spec["subdivisions"]))
         outs = ["domain_spec", "spec_conflict_list"]
-        pub = ["domain_spec_ready", "domain_spec_conflict"]
+        pub = [ready_ev, conflict_ev]
         sub_ev: List[str] = []
         assets = "CONCEPT_GRAPH, DOMAIN_SPEC, STANDARDS_ANCHORS"
     else:
         duty = ("把口径面收口为**可复算产出**：由样例与度量族重算域报告（T4），并从概念图派生图形态；"
                 "报告与图与口径表三段同源，任一漂移即发布收口冲突事件")
         outs = ["domain_report", "closure_conflict_list"]
-        pub = ["domain_report_ready", "domain_report_conflict"]
-        sub_ev = ["domain_spec_ready"]
+        pub = [ready_ev, conflict_ev]
+        sub_ev = [_event_names(spec, 1)[0]]
         assets = "DOMAIN_SPEC, CONCEPT_GRAPH"
     lines = [
         "# 模块 %s · %s" % (mid, title),
@@ -480,15 +492,15 @@ def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:
             "登记": "逐条登记 Spec 条目（id ∈ 条目键表，判据非空，锚为绝对 URL）",
             "校验": "判据齐备且锚可达性已记档 → 通过；缺项 / 锚非 URL → spec_conflict",
             "落槽": "写 DomainSpecState{subdivisions, conflicts, tick}",
-            "发布": "全通过 → domain_spec_ready；否则逐条 domain_spec_conflict",
+            "发布": "全通过 → %s；否则逐条 %s" % (ready_ev, conflict_ev),
         }
     else:
         logic = {
             "读口径": "读 %s:M01 的口径状态（spec 齐备才继续）" % cat,
             "复算": "由 samples/CASES.csv 按度量族重算域报告（core/domain_metrics）",
-            "对齐": "报告字段 ⊆ 口径表条目键；对不上 → domain_report_conflict",
+            "对齐": "报告字段 ⊆ 口径表条目键；对不上 → %s" % conflict_ev,
             "派生": "由 CONCEPT_GRAPH 派生分层图（Mermaid / GraphML）",
-            "发布": "全部一致 → domain_report_ready；否则 domain_report_conflict",
+            "发布": "全部一致 → %s；否则 %s" % (ready_ev, conflict_ev),
         }
     for k, v in logic.items():
         lines.append("      %s: %s" % (k, v))
@@ -509,18 +521,18 @@ def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:
     ]
     if which == 1:
         events = [
-            ("domain_spec_ready", "{ subdivisions: number, checked: number, tick: number }",
+            (ready_ev, "{ subdivisions: number, checked: number, tick: number }",
              "口径面齐备（%d 条全过判据）" % len(spec["subdivisions"])),
-            ("domain_spec_conflict",
+            (conflict_ev,
              "{ field: string, reason: string, blocking: boolean }",
              "口径缺项 / 越词表 / 锚非 URL"),
         ]
     else:
         events = [
-            ("domain_report_ready",
+            (ready_ev,
              "{ family: string, metrics: number, tick: number }",
              "度量复算完成且与口径表同源"),
-            ("domain_report_conflict",
+            (conflict_ev,
              "{ field: string, reason: string, blocking: boolean }",
              "复算结果与在盘报告不一致 / 报告字段越口径表"),
         ]

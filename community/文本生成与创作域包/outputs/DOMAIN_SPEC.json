@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B01",
+  "domain": "文本生成与创作",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "generation",
+  "subdivisions": [
+    {
+      "id": "B01-01",
+      "name": "长文结构与大纲",
+      "definition": "长文结构与大纲的口径：层级深度、每节目标字数与「大纲 → 正文」的一致性要求。",
+      "anchor": "https://arxiv.org/abs/2210.06774",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 outline_depth（层级）、per_section_words（目标字数）与 outline_adherence（是否有一致性检查）。",
+      "pitfall": "无大纲直接长文生成导致中段漂移；只给总字数不给分节预算。"
+    },
+    {
+      "id": "B01-02",
+      "name": "文风与语体控制",
+      "definition": "文风与语体控制的口径：控制变量（人称 / 时态 / 语域 / 句长分布）与判定方式。",
+      "anchor": "https://arxiv.org/abs/1909.05858",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 control_vars（枚举）、判定方式（规则|模型|人工）与容差（如句长 Ziel 区间）。",
+      "pitfall": "只用形容词描述文风（无法判定）；控制变量变了却与旧稿直接比质量。"
+    },
+    {
+      "id": "B01-03",
+      "name": "续写与改写",
+      "definition": "续写与改写的口径：上下文窗口、改写强度与事实保留约束。",
+      "anchor": "https://arxiv.org/abs/1910.10683",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 context_window（token 数）、rewrite_strength（0–1）与 fact_preserve（required|optional + 校验方式）。",
+      "pitfall": "改写后事实漂移无校验；上下文超出窗口被静默截断。"
+    },
+    {
+      "id": "B01-04",
+      "name": "扩写与压缩",
+      "definition": "扩写与压缩的口径：目标比率、允许增删的信息类型与复查方式。",
+      "anchor": "https://arxiv.org/abs/1603.07252",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 target_ratio（如 ≤0.4 压缩率）、allowed_ops（增/删/改三类是否允许）与 fact_check 方式。",
+      "pitfall": "压缩率无上限定义导致「压缩」实为改写；删掉关键限定语却称忠实。"
+    },
+    {
+      "id": "B01-05",
+      "name": "标题与导语生成",
+      "definition": "标题与导语生成的口径：字数上限、信息覆盖要求与去重规则。",
+      "anchor": "https://arxiv.org/abs/1506.03340",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 max_chars、coverage_rule（须覆盖的关键要素）与 dedup（与正文重复率上限）。",
+      "pitfall": "标题与正文首句完全重复（信息零增益）；字数不设上限导致版式崩坏。"
+    },
+    {
+      "id": "B01-06",
+      "name": "营销文案",
+      "definition": "营销文案的口径：卖点清单、合规禁令与行动号召（CTA）要求。",
+      "anchor": "https://www.ftc.gov/business-guidance/resources/advertising-faqs-guide-small-business",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 selling_points（清单）、forbidden_claims（禁用宣称清单）与 cta（必须存在的动作号召）。",
+      "pitfall": "出现绝对化或无依据疗效宣称；无 CTA 导致文案不可用。"
+    },
+    {
+      "id": "B01-07",
+      "name": "公文与技术写作",
+      "definition": "公文与技术写作的口径：体例（章节 / 编号）、术语一致性与引用规范。",
+      "anchor": "https://www.rfc-editor.org/rfc/rfc7322.txt",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 style_guide（体例来源）、term_consistency（同义词合并表）与 citation_format（引用格式）。",
+      "pitfall": "同义词混用导致检索失效；引用格式不统一导致审校返工。"
+    },
+    {
+      "id": "B01-08",
+      "name": "创意写作与诗歌",
+      "definition": "创意写作与诗歌的口径：约束（韵律 / 格律 / 字数）、创作自由度与评审方式。",
+      "anchor": "https://arxiv.org/abs/1805.04833",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 constraints（韵律/格律/字数等枚举）、freedom（受约束 vs 自由）与评审方式（人工 / 规则）。",
+      "pitfall": "格律约束未声明导致「不合格也当合格」；用自动指标替代人工文学评审。"
+    },
+    {
+      "id": "B01-09",
+      "name": "去 AI 味与人类化改写",
+      "definition": "去 AI 味与人类化改写的口径：可检测特征（句长方差 / 连接词密度 / 套路词表）与目标阈值。",
+      "anchor": "https://arxiv.org/abs/1906.04043",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 feature_set（可量化特征清单）、target_threshold（各特征目标值）与检测器版本（若用检测器）。",
+      "pitfall": "只靠删「首先/其次」当人类化；检测器版本未固定导致效果不可复现。"
+    },
+    {
+      "id": "B01-10",
+      "name": "事实一致性与引用",
+      "definition": "事实一致性与引用的口径：可核查主张的抽取、证据绑定与不一致处置。",
+      "anchor": "https://arxiv.org/abs/2305.14251",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 claim_extraction（方法）、evidence_binding（每条主张须绑来源 id）与 handling（contradict → 阻断或标注）。",
+      "pitfall": "主张无来源 id（无法复核）；发现矛盾仅改措辞不改事实。"
+    },
+    {
+      "id": "B01-11",
+      "name": "多轮编辑与版本管理",
+      "definition": "多轮编辑与版本管理的口径：版本标识、变更记录粒度与回滚可行性。",
+      "anchor": "https://arxiv.org/abs/2208.11663",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 version_id 规则、change_log 粒度（段落 / 句子）与 rollback（是否可逐版回滚）。",
+      "pitfall": "覆盖式改写导致不可回滚；变更记录只写「润色」不指范围。"
+    },
+    {
+      "id": "B01-12",
+      "name": "生成质量评估",
+      "definition": "生成质量评估的口径：自动指标、人工评审与一致性统计三分量。",
+      "anchor": "https://arxiv.org/abs/2303.16634",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 auto_metrics（清单含版本）、human_protocol（人数 / 量表）与 agreement（如 kappa）。",
+      "pitfall": "只用单一自动指标下「质量」结论；人工评审无一致性统计。"
+    }
+  ]
+}

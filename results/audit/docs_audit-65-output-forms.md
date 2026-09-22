@@ -12,7 +12,6 @@ subjects:
   - desktop/src/core/doc_hygiene.py:c5b18ace2d760b054706b1f29ae9c0fa98dc224d6bb93927378412d01c81e4f0
   - scripts/nf.py:9bb0ad2964d938a9d52ee2a693023ece2a09c4d1088ba186eed4389222d976ee
   - protocol/output_forms.json:aff71eccf1cd0b57c51a86681c613580e79d346bb6e5dfdd97a873a2436943e9
-  - protocol/output_forms_baseline.json:bcf9b737fbcae558d8df76e358143ef96f7c79cb5b034a2057827299eb79bc16
   - community/量化金融域包/outputs/INDEX.json:cfe9272a362e138f9cb6d15615176cbb348716336d31b372bf411645f74a7bb6
   - community/AI系统域包/outputs/INDEX.json:95103926c6736571fb38e5c95f8234b76dddf26ee286270e3bdbdf3fd4c33a99
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e

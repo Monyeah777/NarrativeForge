@@ -7,18 +7,84 @@
       "machine_verifiable_ratio": 0.8571,
       "prose_assets": 1
     },
+    "分类与情感分析域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "图像生成与编辑域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "多模态大模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "大语言模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "摘要与信息压缩域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "文本生成与创作域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "机器翻译与本地化域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "视觉模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "视频生成与理解域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "语音识别与合成域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "量化金融域包": {
       "functional": 1,
       "machine_verifiable": 8,
       "machine_verifiable_ratio": 0.6667,
       "prose_assets": 4
+    },
+    "音频与音乐生成域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
     }
   },
   "schema": "nf-output-forms-baseline/1",
   "totals": {
-    "functional": 2,
-    "machine_verifiable": 14,
-    "machine_verifiable_ratio": 0.7368,
-    "prose_assets": 5
+    "functional": 13,
+    "machine_verifiable": 124,
+    "machine_verifiable_ratio": 0.7654,
+    "prose_assets": 38
   }
 }

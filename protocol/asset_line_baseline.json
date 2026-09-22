@@ -10,10 +10,52 @@
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/分类与情感分析域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "分类与情感分析域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/图像生成与编辑域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "图像生成与编辑域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/多模态大模型域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "多模态大模型域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
       "dir": "community/大语言模型域包/assets",
       "files": 3,
       "lines": 249,
       "package": "大语言模型域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/摘要与信息压缩域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "摘要与信息压缩域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/文本生成与创作域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "文本生成与创作域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/机器翻译与本地化域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "机器翻译与本地化域包"
     },
     {
       "digest": "5e99f6aa5aa794e377eb4c78deef0b580c94f01947ae382002ecc1f1521c097b",
@@ -30,11 +72,39 @@
       "package": "西幻生存领域包"
     },
     {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/视觉模型域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "视觉模型域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/视频生成与理解域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "视频生成与理解域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/语音识别与合成域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "语音识别与合成域包"
+    },
+    {
       "digest": "9ea7a86227b8b2cc89fc6b230f9aa5bb8905564693f864d0d8eacc510e28f5eb",
       "dir": "community/量化金融域包/assets",
       "files": 4,
       "lines": 414,
       "package": "量化金融域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/音频与音乐生成域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "音频与音乐生成域包"
     }
   ],
   "recorded_at": "2026-09-22",

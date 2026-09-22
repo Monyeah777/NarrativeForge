@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "agreement",
+        "value": 1.0
+      },
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "loss",
+        "value": 7.0
+      },
+      {
+        "metric": "n",
+        "value": 16.0
+      },
+      {
+        "metric": "tie",
+        "value": 0.0
+      },
+      {
+        "metric": "win",
+        "value": 9.0
+      },
+      {
+        "metric": "win_rate_excl_tie",
+        "value": 0.5625
+      }
+    ]
+  },
+  "description": "音频与音乐生成 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

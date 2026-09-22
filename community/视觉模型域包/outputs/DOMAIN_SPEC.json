@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "A03",
+  "domain": "视觉模型",
+  "section": "A · 模型与能力",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "classification",
+  "subdivisions": [
+    {
+      "id": "A03-01",
+      "name": "图像分类与主干网络",
+      "definition": "图像分类的口径：类别空间、top-k 报告方式与主干网络口径（层数 / 宽度 / 输入分辨率）。",
+      "anchor": "https://arxiv.org/abs/1512.03385",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 num_classes、top_k（枚举 1|5）、input_resolution（正整数）与 backbone_id；四者齐备方可比较。",
+      "pitfall": "类别空间不同却直接比 top-1；分辨率提升带来的收益与推理成本未一并报告。"
+    },
+    {
+      "id": "A03-02",
+      "name": "目标检测",
+      "definition": "目标检测的口径：IoU 阈值、NMS 参数、置信度阈值与框格式。",
+      "anchor": "https://arxiv.org/abs/1506.02640",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 iou_threshold、nms_iou、score_threshold、box_format（xyxy|xywh）四项；缺一即检测口径未定。",
+      "pitfall": "NMS 阈值变动使 mAP 不可比；框格式未声明导致坐标错位。"
+    },
+    {
+      "id": "A03-03",
+      "name": "语义与实例分割",
+      "definition": "语义分割与实例分割的口径：掩码粒度、忽略类、评估指标（mIoU / mask AP）。",
+      "anchor": "https://arxiv.org/abs/1703.06870",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 mask_granularity（semantic|instance|panoptic）、ignore_index（类别 id 或 none）、metric（mIoU|mask_AP）。",
+      "pitfall": "忽略类处理不同导致 mIoU 虚高；语义与实例指标混用。"
+    },
+    {
+      "id": "A03-04",
+      "name": "关键点与姿态估计",
+      "definition": "关键点与姿态估计的口径：关键点数量与顺序、OKS 阈值、单人 / 多人设定。",
+      "anchor": "https://arxiv.org/abs/1611.08050",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 keypoint_count、keypoint_order（定义表引用）、oks_threshold 与 setting（single|multi person）。",
+      "pitfall": "关键点顺序不同造成精度骤降的假象；阈值未声明导致 AP 不可比。"
+    },
+    {
+      "id": "A03-05",
+      "name": "深度估计与点云",
+      "definition": "深度估计与点云的误差口径：尺度对齐方式、截断阈值与单位。",
+      "anchor": "https://arxiv.org/abs/1907.03670",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 scale_alignment（none|median|least-squares）、max_depth（截断，米）、unit，以及指标（AbsRel|RMSE）。",
+      "pitfall": "未做尺度对齐就报 AbsRel；截断阈值不同导致跨报告不可比。"
+    },
+    {
+      "id": "A03-06",
+      "name": "人脸识别与活体检测",
+      "definition": "人脸识别与活体检测的口径：阈值选择、误识率口径与活体攻击类型覆盖。",
+      "anchor": "https://arxiv.org/abs/1503.03832",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 far（误识率，如 1e-4）、threshold、以及活体攻击类型清单（print|replay|mask）；三者齐备。",
+      "pitfall": "只报准确率不报误识率；活体只测打印攻击却宣称防多种攻击。"
+    },
+    {
+      "id": "A03-07",
+      "name": "图像检索与重识别",
+      "definition": "图像检索与重识别的口径：查询库规模、mAP / CMC 口径与跨域设定。",
+      "anchor": "https://arxiv.org/abs/2001.04193",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 gallery_size、mAP 计算口径（是否用 CMC 单查询）、以及跨域测试设定（same|cross domain）。",
+      "pitfall": "gallery 规模不同直接比 mAP；跨域设定未声明导致泛化结论失真。"
+    },
+    {
+      "id": "A03-08",
+      "name": "视频理解与动作识别",
+      "definition": "视频理解与动作识别的口径：采样帧数与间隔、时序窗口、clip 级还是视频级判定。",
+      "anchor": "https://arxiv.org/abs/1406.2199",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 frames_per_clip、sampling_rate（帧间隔）、temporal_window（秒）与 granularity（clip|video）。",
+      "pitfall": "用更多帧换分数却不报推理成本；clip 级精度当视频级结论。"
+    },
+    {
+      "id": "A03-09",
+      "name": "医学影像分析",
+      "definition": "医学影像分析的口径：数据划分（患者级 / 切片级）、敏感度与特异度口径、阅片参考标准。",
+      "anchor": "https://arxiv.org/abs/1711.05225",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 split_level（patient|slice）、sensitivity/specificity（各含阈值）、以及 reference_standard（金标准来源）。",
+      "pitfall": "切片级划分导致同一患者跨训练与测试集；只报 AUC 不报阈值下的敏感度与特异度。"
+    },
+    {
+      "id": "A03-10",
+      "name": "工业缺陷检测",
+      "definition": "工业缺陷检测的口径：缺陷类型定义、漏检与误检口径、监督设定。",
+      "anchor": "https://arxiv.org/abs/2106.08265",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 defect_taxonomy（类型清单）、image_level vs pixel_level 指标、以及 setting（supervised|unsupervised）。",
+      "pitfall": "图级 AUROC 当像素级分割性能；缺陷类型定义随批次变化导致指标漂移。"
+    },
+    {
+      "id": "A03-11",
+      "name": "遥感与航拍解译",
+      "definition": "遥感与航拍解译的口径：地物类别体系、影像分辨率与地理划分（按区域切分）。",
+      "anchor": "https://arxiv.org/abs/1711.10398",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 class_taxonomy（类别体系来源）、gsd（地面采样距离，米/像素）、以及 split_by（region|random）。",
+      "pitfall": "随机切分让相邻瓦片跨集，指标虚高；类别体系不同却比较 mIoU。"
+    },
+    {
+      "id": "A03-12",
+      "name": "数据增强与预训练策略",
+      "definition": "数据增强与预训练策略的口径：增强管线、预训练目标与下游微调设定。",
+      "anchor": "https://arxiv.org/abs/1805.09501",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 aug_policy（策略名 + 版本）、pretrain_objective（对比|掩码|监督）、finetune_epochs；三者齐备。",
+      "pitfall": "预训练目标不同却只比下游分数（无法归因）；增强策略未记录导致不可复现。"
+    }
+  ]
+}

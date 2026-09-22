@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-22",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "域包工厂 + A01 首包 + 15 例工厂单测（口径公式/夹具确定性/唯一性/机验占比）",
+  "note": "A01–B04 域包 + AUD-0017 subjects 去除派生物（基线不入审计绑定）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "e6842bda3465ab90c8a6e9ef9c91a2fef011e62dcd9850538a48ac4cf2054970"
+  "subject_digest": "2eafa38292a9282e931127a19ddeff2b3efc8c3fa7ad61b4a8d24ea1abbc7d09"
 }

@@ -303,6 +303,114 @@
     },
     {
       "key": "CONCEPT_GRAPH",
+      "package": "分类与情感分析域包",
+      "file": "community/分类与情感分析域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "分类与情感分析域包",
+      "file": "community/分类与情感分析域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "分类与情感分析域包",
+      "file": "community/分类与情感分析域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "分类与情感分析域包",
+      "file": "community/分类与情感分析域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "分类与情感分析域包",
+      "file": "community/分类与情感分析域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "分类与情感分析域包",
+      "file": "community/分类与情感分析域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "图像生成与编辑域包",
+      "file": "community/图像生成与编辑域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "图像生成与编辑域包",
+      "file": "community/图像生成与编辑域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "图像生成与编辑域包",
+      "file": "community/图像生成与编辑域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "图像生成与编辑域包",
+      "file": "community/图像生成与编辑域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "图像生成与编辑域包",
+      "file": "community/图像生成与编辑域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "图像生成与编辑域包",
+      "file": "community/图像生成与编辑域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "多模态大模型域包",
+      "file": "community/多模态大模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "多模态大模型域包",
+      "file": "community/多模态大模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "多模态大模型域包",
+      "file": "community/多模态大模型域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "多模态大模型域包",
+      "file": "community/多模态大模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "多模态大模型域包",
+      "file": "community/多模态大模型域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "多模态大模型域包",
+      "file": "community/多模态大模型域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
       "package": "大语言模型域包",
       "file": "community/大语言模型域包/assets/CONCEPT_GRAPH.md",
       "line": 1
@@ -353,6 +461,114 @@
       "key": "TECH_TEMPLATES",
       "package": "官方",
       "file": "05_资产库/用户自定义/TECH_TEMPLATES.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "摘要与信息压缩域包",
+      "file": "community/摘要与信息压缩域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "摘要与信息压缩域包",
+      "file": "community/摘要与信息压缩域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "摘要与信息压缩域包",
+      "file": "community/摘要与信息压缩域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "摘要与信息压缩域包",
+      "file": "community/摘要与信息压缩域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "摘要与信息压缩域包",
+      "file": "community/摘要与信息压缩域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "摘要与信息压缩域包",
+      "file": "community/摘要与信息压缩域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "文本生成与创作域包",
+      "file": "community/文本生成与创作域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "文本生成与创作域包",
+      "file": "community/文本生成与创作域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "文本生成与创作域包",
+      "file": "community/文本生成与创作域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "文本生成与创作域包",
+      "file": "community/文本生成与创作域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "文本生成与创作域包",
+      "file": "community/文本生成与创作域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "文本生成与创作域包",
+      "file": "community/文本生成与创作域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "机器翻译与本地化域包",
+      "file": "community/机器翻译与本地化域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "机器翻译与本地化域包",
+      "file": "community/机器翻译与本地化域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "机器翻译与本地化域包",
+      "file": "community/机器翻译与本地化域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "机器翻译与本地化域包",
+      "file": "community/机器翻译与本地化域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "机器翻译与本地化域包",
+      "file": "community/机器翻译与本地化域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "机器翻译与本地化域包",
+      "file": "community/机器翻译与本地化域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {
@@ -1316,6 +1532,114 @@
       "line": 1
     },
     {
+      "key": "CONCEPT_GRAPH",
+      "package": "视觉模型域包",
+      "file": "community/视觉模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "视觉模型域包",
+      "file": "community/视觉模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "视觉模型域包",
+      "file": "community/视觉模型域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "视觉模型域包",
+      "file": "community/视觉模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "视觉模型域包",
+      "file": "community/视觉模型域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "视觉模型域包",
+      "file": "community/视觉模型域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "视频生成与理解域包",
+      "file": "community/视频生成与理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "视频生成与理解域包",
+      "file": "community/视频生成与理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "视频生成与理解域包",
+      "file": "community/视频生成与理解域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "视频生成与理解域包",
+      "file": "community/视频生成与理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "视频生成与理解域包",
+      "file": "community/视频生成与理解域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "视频生成与理解域包",
+      "file": "community/视频生成与理解域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "语音识别与合成域包",
+      "file": "community/语音识别与合成域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "语音识别与合成域包",
+      "file": "community/语音识别与合成域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "语音识别与合成域包",
+      "file": "community/语音识别与合成域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "语音识别与合成域包",
+      "file": "community/语音识别与合成域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "语音识别与合成域包",
+      "file": "community/语音识别与合成域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "语音识别与合成域包",
+      "file": "community/语音识别与合成域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
       "key": "ACCT_CASH",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/DATA_CONTRACT.md",
@@ -1979,6 +2303,42 @@
       "key": "STRATEGY_SPECS",
       "package": "量化金融域包",
       "file": "community/量化金融域包/assets/STRATEGY_SPECS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "音频与音乐生成域包",
+      "file": "community/音频与音乐生成域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "音频与音乐生成域包",
+      "file": "community/音频与音乐生成域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "音频与音乐生成域包",
+      "file": "community/音频与音乐生成域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "音频与音乐生成域包",
+      "file": "community/音频与音乐生成域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "音频与音乐生成域包",
+      "file": "community/音频与音乐生成域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "音频与音乐生成域包",
+      "file": "community/音频与音乐生成域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     }
   ]

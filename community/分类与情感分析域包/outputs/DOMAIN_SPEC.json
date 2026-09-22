@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B04",
+  "domain": "分类与情感分析",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "classification",
+  "subdivisions": [
+    {
+      "id": "B04-01",
+      "name": "意图识别",
+      "definition": "意图识别的口径：意图集合封闭性、域内 / 域外处理与置信阈值。",
+      "anchor": "https://pypi.org/project/Rasa/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 intent_set（封闭词表 id 或 none 兜底）、oos_policy（reject|unknown 类）与 threshold（置信阈值）。",
+      "pitfall": "无兜底类导致域外输入被硬分到某意图；阈值未声明导致拒答率不可控。"
+    },
+    {
+      "id": "B04-02",
+      "name": "话题与标签分类",
+      "definition": "话题与标签分类的口径：标签体系、多标签处理与长尾报告。",
+      "anchor": "https://arxiv.org/abs/1509.01626",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 label_taxonomy（体系 + 版本）、multilabel（true|false）与 long_tail_report（尾类单独指标）。",
+      "pitfall": "只报 macro/micro 平均掩盖尾类归零；标签体系版本漂移未记录。"
+    },
+    {
+      "id": "B04-03",
+      "name": "情感极性",
+      "definition": "情感极性的口径：极性分级、否定与转折处理、以及中性类定义。",
+      "anchor": "https://pypi.org/project/textblob/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 polarity_levels（二/三/五级）、negation_handling（规则 id）与 neutral_rule（中性的判定条件）。",
+      "pitfall": "中性类定义随数据集漂移；否定与转折未处理导致极性反转漏判。"
+    },
+    {
+      "id": "B04-04",
+      "name": "细粒度情绪",
+      "definition": "细粒度情绪的口径：情绪体系来源、标注人数与标注一致性。",
+      "anchor": "https://arxiv.org/abs/2005.00547",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 emotion_taxonomy（体系来源）、annotators_per_item（人数）与 agreement（kappa 或 alpha）。",
+      "pitfall": "单标注者数据当金标准；情绪体系混杂（Ekman 与 Plutchik 混用）。"
+    },
+    {
+      "id": "B04-05",
+      "name": "立场与观点检测",
+      "definition": "立场与观点检测的口径：目标实体、立场取值与目标缺失处理。",
+      "anchor": "https://aclanthology.org/S16-1003/",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 target_entity（须绑定目标 id）、stance_values（枚举）与 notarget_policy（跳过|单列）。",
+      "pitfall": "不绑定目标就判立场（同一句对不同目标立场可相反）；目标缺失样本混入分母。"
+    },
+    {
+      "id": "B04-06",
+      "name": "垃圾与违规识别",
+      "definition": "垃圾与违规识别的口径：违规类别体系、误伤成本与申诉通道要求。",
+      "anchor": "https://www.perspectiveapi.com/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 violation_taxonomy、threshold（按类分别给）与 appeal_path（申诉与复核机制声明）。",
+      "pitfall": "单阈值覆盖所有违规类（误伤高）；无申诉机制（不可运营）。"
+    },
+    {
+      "id": "B04-07",
+      "name": "情感强度与演化",
+      "definition": "情感强度与演化的口径：强度标尺、时间切片与演化指标。",
+      "anchor": "https://pypi.org/project/vaderSentiment/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 intensity_scale（如 −4..4）、time_bucket（小时/天）与 evolution_metric（差分 / 斜率）。",
+      "pitfall": "强度标尺未声明导致跨研究不可比；时间切片改变后趋势结论反转。"
+    },
+    {
+      "id": "B04-08",
+      "name": "少样本分类",
+      "definition": "少样本分类的口径：样本数与选择策略、提示方式与基线对照。",
+      "anchor": "https://arxiv.org/abs/2209.11055",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 shots_per_class（每类样本数）、selection（随机|语义）、prompt_form（有|无）与同池基线对照。",
+      "pitfall": "样本选择偏向易例；只报少样本结果不与全监督基线对照。"
+    },
+    {
+      "id": "B04-09",
+      "name": "层级多标签",
+      "definition": "层级多标签的口径：层级深度、父子约束与违反率统计。",
+      "anchor": "https://pypi.org/project/scikit-multilearn/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 hierarchy_depth、parent_child_constraint（是否强制）与 violation_rate（越层预测占比）。",
+      "pitfall": "预测出无父节点的子类（结构非法）；层级深度不同却比较 F1。"
+    },
+    {
+      "id": "B04-10",
+      "name": "阈值与概率校准",
+      "definition": "阈值与概率校准的口径：阈值选取依据、校准方法与可靠性指标。",
+      "anchor": "https://arxiv.org/abs/1706.04599",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 threshold_policy（按类 / 全局 + 选取数据）、calibration（none|温度|等渗）与 ECE（含分箱数）。",
+      "pitfall": "在测试集上选阈值（泄漏）；只报准确率不报校准误差。"
+    },
+    {
+      "id": "B04-11",
+      "name": "标注一致性校验",
+      "definition": "标注一致性校验的口径：一致性指标、可接受下限与冲突裁决流程。",
+      "anchor": "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 agreement_metric（kappa|alpha）、accept_floor（可接受下限）与 arbitration（裁决人 / 规则）。",
+      "pitfall": "一致性低仍直接训练（噪声放大）；无裁决流程导致冲突永久滞留。"
+    },
+    {
+      "id": "B04-12",
+      "name": "分类评测指标",
+      "definition": "分类评测指标的口径：指标集合（P/R/F1/AUC）、平均方式与置信区间。",
+      "anchor": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 metric_set、averaging（macro|micro|weighted）与 CI（bootstrap 次数或区间方法）。",
+      "pitfall": "averaging 不同却比较 F1；无置信区间就断言「更优」。"
+    }
+  ]
+}

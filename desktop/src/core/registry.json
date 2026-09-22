@@ -670,6 +670,356 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "多模态大模型域包",
+      "name": "多模态大模型域包",
+      "pipeline": "P11",
+      "categories": [
+        "多模态大模型"
+      ],
+      "module_ids": [
+        "多模态大模型:M01",
+        "多模态大模型:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "多模态大模型:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "多模态大模型:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "视觉模型域包",
+      "name": "视觉模型域包",
+      "pipeline": "P12",
+      "categories": [
+        "视觉模型"
+      ],
+      "module_ids": [
+        "视觉模型:M01",
+        "视觉模型:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "视觉模型:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "视觉模型:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "语音识别与合成域包",
+      "name": "语音识别与合成域包",
+      "pipeline": "P13",
+      "categories": [
+        "语音识别与合成"
+      ],
+      "module_ids": [
+        "语音识别与合成:M01",
+        "语音识别与合成:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "语音识别与合成:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "语音识别与合成:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "音频与音乐生成域包",
+      "name": "音频与音乐生成域包",
+      "pipeline": "P14",
+      "categories": [
+        "音频与音乐生成"
+      ],
+      "module_ids": [
+        "音频与音乐生成:M01",
+        "音频与音乐生成:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "音频与音乐生成:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "音频与音乐生成:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "视频生成与理解域包",
+      "name": "视频生成与理解域包",
+      "pipeline": "P15",
+      "categories": [
+        "视频生成与理解"
+      ],
+      "module_ids": [
+        "视频生成与理解:M01",
+        "视频生成与理解:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "视频生成与理解:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "视频生成与理解:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "图像生成与编辑域包",
+      "name": "图像生成与编辑域包",
+      "pipeline": "P16",
+      "categories": [
+        "图像生成与编辑"
+      ],
+      "module_ids": [
+        "图像生成与编辑:M01",
+        "图像生成与编辑:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "图像生成与编辑:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "图像生成与编辑:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "文本生成与创作域包",
+      "name": "文本生成与创作域包",
+      "pipeline": "P17",
+      "categories": [
+        "文本生成与创作"
+      ],
+      "module_ids": [
+        "文本生成与创作:M01",
+        "文本生成与创作:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "文本生成与创作:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "文本生成与创作:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "摘要与信息压缩域包",
+      "name": "摘要与信息压缩域包",
+      "pipeline": "P18",
+      "categories": [
+        "摘要与信息压缩"
+      ],
+      "module_ids": [
+        "摘要与信息压缩:M01",
+        "摘要与信息压缩:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "摘要与信息压缩:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "摘要与信息压缩:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "机器翻译与本地化域包",
+      "name": "机器翻译与本地化域包",
+      "pipeline": "P19",
+      "categories": [
+        "机器翻译与本地化"
+      ],
+      "module_ids": [
+        "机器翻译与本地化:M01",
+        "机器翻译与本地化:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "机器翻译与本地化:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "机器翻译与本地化:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "分类与情感分析域包",
+      "name": "分类与情感分析域包",
+      "pipeline": "P21",
+      "categories": [
+        "分类与情感分析"
+      ],
+      "module_ids": [
+        "分类与情感分析:M01",
+        "分类与情感分析:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "分类与情感分析:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "分类与情感分析:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }
