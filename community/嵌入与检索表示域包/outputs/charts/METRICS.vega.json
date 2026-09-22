@@ -1,0 +1,60 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "k",
+        "value": 5.0
+      },
+      {
+        "metric": "map",
+        "value": 0.805556
+      },
+      {
+        "metric": "mrr",
+        "value": 0.833333
+      },
+      {
+        "metric": "n",
+        "value": 18.0
+      },
+      {
+        "metric": "ndcg_at_k",
+        "value": 0.871049
+      },
+      {
+        "metric": "precision_at_k",
+        "value": 0.4
+      },
+      {
+        "metric": "queries",
+        "value": 3.0
+      },
+      {
+        "metric": "recall_at_k",
+        "value": 1.0
+      }
+    ]
+  },
+  "description": "嵌入与检索表示 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

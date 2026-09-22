@@ -1020,6 +1020,111 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "代码大模型域包",
+      "name": "代码大模型域包",
+      "pipeline": "P22",
+      "categories": [
+        "代码大模型"
+      ],
+      "module_ids": [
+        "代码大模型:M01",
+        "代码大模型:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "代码大模型:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "代码大模型:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "嵌入与检索表示域包",
+      "name": "嵌入与检索表示域包",
+      "pipeline": "P23",
+      "categories": [
+        "嵌入与检索表示"
+      ],
+      "module_ids": [
+        "嵌入与检索表示:M01",
+        "嵌入与检索表示:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "嵌入与检索表示:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "嵌入与检索表示:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "具身智能与机器人域包",
+      "name": "具身智能与机器人域包",
+      "pipeline": "P24",
+      "categories": [
+        "具身智能与机器人"
+      ],
+      "module_ids": [
+        "具身智能与机器人:M01",
+        "具身智能与机器人:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "具身智能与机器人:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "具身智能与机器人:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

@@ -7,6 +7,18 @@
       "machine_verifiable_ratio": 0.8571,
       "prose_assets": 1
     },
+    "代码大模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "具身智能与机器人域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "分类与情感分析域包": {
       "functional": 1,
       "machine_verifiable": 10,
@@ -26,6 +38,12 @@
       "prose_assets": 3
     },
     "大语言模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "嵌入与检索表示域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -82,9 +100,9 @@
   },
   "schema": "nf-output-forms-baseline/1",
   "totals": {
-    "functional": 13,
-    "machine_verifiable": 124,
-    "machine_verifiable_ratio": 0.7654,
-    "prose_assets": 38
+    "functional": 16,
+    "machine_verifiable": 154,
+    "machine_verifiable_ratio": 0.7662,
+    "prose_assets": 47
   }
 }

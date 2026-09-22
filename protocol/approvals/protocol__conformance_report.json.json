@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-22",
+  "approved_at": "2026-09-23",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "A01–B04 域包 + AUD-0017 subjects 去除派生物（基线不入审计绑定）",
+  "note": "AI 品类域包工程 14 包 + 文档/审计收口（AUD-0018）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "2eafa38292a9282e931127a19ddeff2b3efc8c3fa7ad61b4a8d24ea1abbc7d09"
+  "subject_digest": "479827b4f8ccb6ab63d33ee1973eb2557d0593407f48cddffbf7f1fa05128e05"
 }

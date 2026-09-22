@@ -303,6 +303,78 @@
     },
     {
       "key": "CONCEPT_GRAPH",
+      "package": "代码大模型域包",
+      "file": "community/代码大模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "代码大模型域包",
+      "file": "community/代码大模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "代码大模型域包",
+      "file": "community/代码大模型域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码大模型域包",
+      "file": "community/代码大模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码大模型域包",
+      "file": "community/代码大模型域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码大模型域包",
+      "file": "community/代码大模型域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "具身智能与机器人域包",
+      "file": "community/具身智能与机器人域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "具身智能与机器人域包",
+      "file": "community/具身智能与机器人域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "具身智能与机器人域包",
+      "file": "community/具身智能与机器人域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "具身智能与机器人域包",
+      "file": "community/具身智能与机器人域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "具身智能与机器人域包",
+      "file": "community/具身智能与机器人域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "具身智能与机器人域包",
+      "file": "community/具身智能与机器人域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
       "package": "分类与情感分析域包",
       "file": "community/分类与情感分析域包/assets/CONCEPT_GRAPH.md",
       "line": 1
@@ -461,6 +533,42 @@
       "key": "TECH_TEMPLATES",
       "package": "官方",
       "file": "05_资产库/用户自定义/TECH_TEMPLATES.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "嵌入与检索表示域包",
+      "file": "community/嵌入与检索表示域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "嵌入与检索表示域包",
+      "file": "community/嵌入与检索表示域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "嵌入与检索表示域包",
+      "file": "community/嵌入与检索表示域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "嵌入与检索表示域包",
+      "file": "community/嵌入与检索表示域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "嵌入与检索表示域包",
+      "file": "community/嵌入与检索表示域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "嵌入与检索表示域包",
+      "file": "community/嵌入与检索表示域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {

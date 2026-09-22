@@ -80,6 +80,7 @@ DOC_KINDS = {
     "docs/text-hygiene.md": "reference",
     "docs/decision-layer.md": "how-to",
     "docs/output-forms.md": "how-to",
+    "docs/domain-packs.md": "how-to",
 }
 
 #: 需带 last-updated 位的关键文档（协议/导航/接入 + 指令类）
@@ -116,6 +117,7 @@ REQUIRED_DOCS = [
     "docs/modeling.md",
     "docs/interop.md",
     "docs/output-forms.md",
+    "docs/domain-packs.md",
     "docs/text-hygiene.md",
     "docs/decision-layer.md",
 ]

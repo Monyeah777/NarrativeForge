@@ -12,9 +12,9 @@
       "sha256": "7eaaccd43afa4f68a36c3712620f23b94b30111174ca60d563a353991e245ea8"
     },
     {
-      "cid": "bafyreiferg3r23a2kfwgb3hut5jetycuqs4zsmirytnfxpf5zlvwhyg6h4",
+      "cid": "bafyreied6tsq5f57rnimcqfvym4bj4hxx4aplnws76n5b5r7mjg3apfe5e",
       "path": "02_联动注册表.md",
-      "sha256": "a489b71d6c1a516c60ecf49f5249e05484b9993111c4da5bbcbdcaeb63e0de3f"
+      "sha256": "83f4e50e97bf8b50c140b5c33814f0f7bf00f5b6d2ff9bd0f63f624db03ca4e9"
     },
     {
       "cid": "bafyreifl7u733l4iaq5jp7igrae5zewpumszzrh37w33xcbnk7goyaqawi",
@@ -42,9 +42,9 @@
       "sha256": "bac7a42d89f73e3693c364c51abb5a7a5151faefd0a71ece36d39819c9cc9b73"
     },
     {
-      "cid": "bafyreiboxrwooyifehbwyqk3dcvrfbo7ky4xxslgw2enuyz32hviui2fkq",
+      "cid": "bafyreif23sdngbv5errbnz66waj7r7ktj7s7ps6hfchfsf3c6rttv63lu4",
       "path": "protocol/event_registry.json",
-      "sha256": "2ebc6ce7610521c36c415b18ab1285df56397bc966b688da633bd1ea8a234554"
+      "sha256": "badc86d306bd246216e7deb013f8fd534fe5f7cbc7288e591762f4673afb6ba7"
     },
     {
       "cid": "bafyreicowvcvkxgkfxzrrq5lfqic5k36keknbf2y4zw6dui4jb7shv4z6e",
@@ -57,9 +57,9 @@
       "sha256": "7863137982af93de46a060197a22e197d8230d44faa6e0f3e055f6b31da5b14d"
     },
     {
-      "cid": "bafyreidznibpkmhve5sgvgcymqecp43jslcgnewz5ej5xsduw754ka7ylu",
+      "cid": "bafyreibah67tvmfqqek4stw23evyj27bchmhbi5c2zt6kwyqpvuccjnfly",
       "path": "protocol/community_asset_ledger.json",
-      "sha256": "796a02f530f527646a9858640827f36992c46692d9e913dbc874b7fbc503f85d"
+      "sha256": "203fbf3ab0b08115c94edad92b84ebe111d870a3a2d667e55b107d682125a55e"
     },
     {
       "cid": "bafyreihsjpv6d7ifjmb56qxfmn5akdzhimkayf724ovgdqjsdirwz3k64i",
@@ -72,9 +72,9 @@
       "sha256": "ee8aec4ec8f698a02442595208cf466015a59c525c9683935763a2b1e1a1b131"
     },
     {
-      "cid": "bafyreidcfecsg2gqxnavglvlqskphongt4o3knl3pr4b57ivmzfoydvy3y",
+      "cid": "bafyreicrfknym7yvjoqugybre3ua5hplkahrkybscbbfja3aos524rrbqu",
       "path": "protocol/pipeline_advisory.json",
-      "sha256": "6229052368d0bb41532eab8494f3b9a69f1db5357b7c781efd15664aec0eb8de"
+      "sha256": "512a9b867f154ba143603126e80e9deb500f156032104254836074bbae462185"
     },
     {
       "cid": "bafyreiaa3puc75i3x7wyc44y3xwllyswu5sghxcrff4lr4xqkcv74qotxe",
@@ -82,19 +82,19 @@
       "sha256": "00dbe82ff51bbfed817398ddecb5e256a76463dc512978b8f2f050abfe41d3b9"
     },
     {
-      "cid": "bafyreiapvk7isqqmtci5thitsomd52n7aa7d2ikjurqawft6ljcbhmnya4",
+      "cid": "bafyreieyvlxexiizacljgod6ll722x6ijlfnq67auwg6nmdgktk3q5s7lq",
       "path": "protocol/module_signatures.json",
-      "sha256": "0faabe89420c9891d99d1393983ee9bf003e3d2149a4600b167e5a4413b1b807"
+      "sha256": "98aaee4ba119009693387e5affad5fc84acad87be0a58de6b06654d5b8765f5c"
     },
     {
-      "cid": "bafyreibov6ryfevjfaxjgejhugo557zlh36iyp5hvvq3jkgsj2q2xpd5be",
+      "cid": "bafyreichtat3j6gmw2vwhuz64glt5msvpuczgqd7jdg5767x6h5akeuoau",
       "path": "protocol/conformance_report.json",
-      "sha256": "2eafa38292a9282e931127a19ddeff2b3efc8c3fa7ad61b4a8d24ea1abbc7d09"
+      "sha256": "479827b4f8ccb6ab63d33ee1973eb2557d0593407f48cddffbf7f1fa05128e05"
     },
     {
-      "cid": "bafyreia2gm76wnsrr7lovnleuphbxhixij5pstd3drqwpauzrwldet6vp4",
+      "cid": "bafyreihhnzxullqkxip4nyf76snhnlek3ksprgk3fgsktxtxufgwjuiggm",
       "path": "protocol/asset_line_baseline.json",
-      "sha256": "1a333feb36518fd6eab564a3ce1b9d17427af94c7b1c616782998d96324fd57f"
+      "sha256": "e76e6f45ae0aba1fc6e0bff49a76ac8adaa4f8995b29a4a9de77a14d64d10633"
     },
     {
       "cid": "bafyreiajnstcbpnuth5h7awxp3zhn27ecyavznunmghgc4g6ghs2y7jecq",
@@ -202,9 +202,9 @@
       "sha256": "8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f"
     },
     {
-      "cid": "bafyreif2725vho5hwsgsmjddqzwejepwlf7u7aabzykkkwalykeiih62bi",
+      "cid": "bafyreib47lhzl4xqyrqaxyj2fzvaor3kr74lmsbhkyrmlxciwmyboxfy7u",
       "path": "desktop/src/core/registry.json",
-      "sha256": "bafebb53bba7b48d262463866c4491f6597f4f8001ce14a5580bc288841fda0a"
+      "sha256": "3cfacf95f2f0c4600be13a2e6a07476a8ff8b648275622c5dc48b330175cb8fd"
     },
     {
       "cid": "bafyreib4svsfql3myvr5mriy7fb7lxxs6kunbhb6gsev3xlhffvj7qcqna",

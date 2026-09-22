@@ -151,6 +151,69 @@
       "spec_digest": "78c00531d22881fbf5e32db8ff22ce7db8ec318f188442d06af78709b3ce37c7"
     },
     {
+      "code": "A09",
+      "section": "A · 模型与能力",
+      "name": "代码大模型",
+      "package": "代码大模型域包",
+      "category": "代码大模型",
+      "pipeline": "P22",
+      "module_ids": [
+        "代码大模型:M01",
+        "代码大模型:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "exact_judgement",
+      "spec_digest": "26b7df4f5f9746b5778f8640f961316fcdd1b7f3775d000dc51f72e0215833ba"
+    },
+    {
+      "code": "A11",
+      "section": "A · 模型与能力",
+      "name": "嵌入与检索表示",
+      "package": "嵌入与检索表示域包",
+      "category": "嵌入与检索表示",
+      "pipeline": "P23",
+      "module_ids": [
+        "嵌入与检索表示:M01",
+        "嵌入与检索表示:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "retrieval",
+      "spec_digest": "8538e40ba179fa09770a785f058e4fcd56eb5c53bb443281a790ef4a5ab95d10"
+    },
+    {
+      "code": "A13",
+      "section": "A · 模型与能力",
+      "name": "具身智能与机器人",
+      "package": "具身智能与机器人域包",
+      "category": "具身智能与机器人",
+      "pipeline": "P24",
+      "module_ids": [
+        "具身智能与机器人:M01",
+        "具身智能与机器人:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "exact_judgement",
+      "spec_digest": "4fd106de52b6e62d92f40fc7db35a153487cbc36aace5f55ba66f1096aeabff4"
+    },
+    {
       "code": "B01",
       "section": "B · 任务类型",
       "name": "文本生成与创作",
@@ -235,6 +298,6 @@
       "spec_digest": "b1de95804b72d6f1b471010795fdd44d6cbf2790be9e9040fed3341b56833368"
     }
   ],
-  "count": 11,
-  "subdivisions_total": 132
+  "count": 14,
+  "subdivisions_total": 168
 }

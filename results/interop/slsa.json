@@ -167,7 +167,7 @@
         "id": "https://narrativeforge.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "bb3aa5ecb006b70d",
+        "invocationId": "a4f0f6642c84ebf7",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -188,7 +188,7 @@
     },
     {
       "digest": {
-        "sha256": "a489b71d6c1a516c60ecf49f5249e05484b9993111c4da5bbcbdcaeb63e0de3f"
+        "sha256": "83f4e50e97bf8b50c140b5c33814f0f7bf00f5b6d2ff9bd0f63f624db03ca4e9"
       },
       "name": "02_联动注册表.md"
     },
@@ -224,7 +224,7 @@
     },
     {
       "digest": {
-        "sha256": "2ebc6ce7610521c36c415b18ab1285df56397bc966b688da633bd1ea8a234554"
+        "sha256": "badc86d306bd246216e7deb013f8fd534fe5f7cbc7288e591762f4673afb6ba7"
       },
       "name": "protocol/event_registry.json"
     },
@@ -242,7 +242,7 @@
     },
     {
       "digest": {
-        "sha256": "796a02f530f527646a9858640827f36992c46692d9e913dbc874b7fbc503f85d"
+        "sha256": "203fbf3ab0b08115c94edad92b84ebe111d870a3a2d667e55b107d682125a55e"
       },
       "name": "protocol/community_asset_ledger.json"
     },
@@ -260,7 +260,7 @@
     },
     {
       "digest": {
-        "sha256": "6229052368d0bb41532eab8494f3b9a69f1db5357b7c781efd15664aec0eb8de"
+        "sha256": "512a9b867f154ba143603126e80e9deb500f156032104254836074bbae462185"
       },
       "name": "protocol/pipeline_advisory.json"
     },
@@ -272,19 +272,19 @@
     },
     {
       "digest": {
-        "sha256": "0faabe89420c9891d99d1393983ee9bf003e3d2149a4600b167e5a4413b1b807"
+        "sha256": "98aaee4ba119009693387e5affad5fc84acad87be0a58de6b06654d5b8765f5c"
       },
       "name": "protocol/module_signatures.json"
     },
     {
       "digest": {
-        "sha256": "2eafa38292a9282e931127a19ddeff2b3efc8c3fa7ad61b4a8d24ea1abbc7d09"
+        "sha256": "479827b4f8ccb6ab63d33ee1973eb2557d0593407f48cddffbf7f1fa05128e05"
       },
       "name": "protocol/conformance_report.json"
     },
     {
       "digest": {
-        "sha256": "1a333feb36518fd6eab564a3ce1b9d17427af94c7b1c616782998d96324fd57f"
+        "sha256": "e76e6f45ae0aba1fc6e0bff49a76ac8adaa4f8995b29a4a9de77a14d64d10633"
       },
       "name": "protocol/asset_line_baseline.json"
     },
@@ -416,7 +416,7 @@
     },
     {
       "digest": {
-        "sha256": "bafebb53bba7b48d262463866c4491f6597f4f8001ce14a5580bc288841fda0a"
+        "sha256": "3cfacf95f2f0c4600be13a2e6a07476a8ff8b648275622c5dc48b330175cb8fd"
       },
       "name": "desktop/src/core/registry.json"
     },

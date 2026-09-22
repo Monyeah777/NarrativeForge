@@ -1,5 +1,5 @@
 {
-  "count": 70,
+  "count": 76,
   "modules": {
     "AI系统:M25": {
       "digest": "9eba42619fd91017080e670d5f60d17ba4255d2444d87243f5f440d6ed55c8db",
@@ -181,6 +181,22 @@
       "digest": "d6afedbe5118ca92f6de75211b05eac64144a618e2e368ad0c1aa82af971af20",
       "path": "04_模块库/事件类/M22_事件叙事.md"
     },
+    "代码大模型:M01": {
+      "digest": "ea2312d10d20fc3ddda3fa62c3247f92394c3b3777f83ae1e5cccea729a695ee",
+      "path": "community/代码大模型域包/modules/A09a_代码口径登记.md"
+    },
+    "代码大模型:M02": {
+      "digest": "6c61821f4be4a0bcf6ccd1c65278c0646f76667f2fd234e214bb892dcd413ffc",
+      "path": "community/代码大模型域包/modules/A09b_代码面收口与形态派生.md"
+    },
+    "具身智能与机器人:M01": {
+      "digest": "1ab13725776e402604585d87d931ec25a0cb40cc926b9f5270c68889338c27c0",
+      "path": "community/具身智能与机器人域包/modules/A13a_具身口径登记.md"
+    },
+    "具身智能与机器人:M02": {
+      "digest": "2a599fb0d3eaa67498c247b7c01ac57b3e26ab4fe7a8256178b57d02d7c18524",
+      "path": "community/具身智能与机器人域包/modules/A13b_具身面收口与形态派生.md"
+    },
     "分类与情感分析:M01": {
       "digest": "6ef54c372f744285cccce7645ded63d1b5124258a2fbe34f143515b411e105c3",
       "path": "community/分类与情感分析域包/modules/B04a_分类口径登记.md"
@@ -212,6 +228,14 @@
     "大语言模型:M02": {
       "digest": "5015443192f499379c46a4313ec9feb63a36e3a5282c81fe7b252d1cc837d371",
       "path": "community/大语言模型域包/modules/A01b_能力面收口与形态派生.md"
+    },
+    "嵌入与检索表示:M01": {
+      "digest": "58e20012cdc5e7a16349e6a7c3843d1a173bcaf22e83a09871a710755744e210",
+      "path": "community/嵌入与检索表示域包/modules/A11a_嵌入口径登记.md"
+    },
+    "嵌入与检索表示:M02": {
+      "digest": "f7e2668ec6088b258a3d36bcb5a0e699fddc25e04ed99df098554d6f62a53d8f",
+      "path": "community/嵌入与检索表示域包/modules/A11b_嵌入面收口与形态派生.md"
     },
     "摘要与信息压缩:M01": {
       "digest": "19fdfd82ab8bed6558d2b925974d60fa1f12ce2da4f97912b606e5ce06fe318b",

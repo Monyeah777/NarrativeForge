@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "A11",
+  "domain": "嵌入与检索表示",
+  "section": "A · 模型与能力",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "retrieval",
+  "subdivisions": [
+    {
+      "id": "A11-01",
+      "name": "文本嵌入模型选型",
+      "definition": "文本嵌入模型选型的口径：模型 id 与版本、维度、最大输入长度与多语言覆盖。",
+      "anchor": "https://arxiv.org/abs/2212.03533",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 model_id（含 revision）、dim、max_tokens 与 langs（是否多语言），四项齐备方可比较。",
+      "pitfall": "只写模型名不给 revision（同一名字权重已变）；最大输入长度不同却直接比检索分。"
+    },
+    {
+      "id": "A11-02",
+      "name": "稀疏与稠密混合检索",
+      "definition": "稀疏与稠密混合检索的口径：混合方式（并集 / 加权 / RRF）、权重与归一化。",
+      "anchor": "https://arxiv.org/abs/2210.11934",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 fusion（rrf|weighted|union）、weights（数值）与 score_norm（min-max|z-score|none）。",
+      "pitfall": "分数未归一化就加权（BM25 与余弦量纲不同）；融合方式未声明导致不可复现。"
+    },
+    {
+      "id": "A11-03",
+      "name": "重排序模型",
+      "definition": "重排序模型的口径：候选规模、重排深度与延迟预算。",
+      "anchor": "https://arxiv.org/abs/1908.10084",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 candidates（进入重排的候选数）、rerank_depth（最终截断）与 latency_budget_ms。",
+      "pitfall": "候选规模与重排深度未声明导致跨系统不可比；延迟预算缺失导致线上不可用。"
+    },
+    {
+      "id": "A11-04",
+      "name": "向量维度与压缩",
+      "definition": "向量维度与压缩的口径：降维 / 量化方式、召回损失与存储成本对照。",
+      "anchor": "https://arxiv.org/abs/1702.08734",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 compression（none|PQ|OPQ|int8）、target_dim 与 recall_loss（对照全维度的召回差）。",
+      "pitfall": "只报存储节省不报召回损失；量化参数未记录导致不可复现。"
+    },
+    {
+      "id": "A11-05",
+      "name": "相似度度量与归一化",
+      "definition": "相似度度量与归一化的口径：度量选择（余弦 / 内积 / 欧氏）、是否归一化与距离变换。",
+      "anchor": "https://scikit-learn.org/stable/modules/metrics.html",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 metric（cosine|ip|l2）、normalized（true|false）与 distance_transform（若将距离当分数）。",
+      "pitfall": "内积与余弦混淆（未归一化时结果不同）；距离未做单调变换导致排序反转。"
+    },
+    {
+      "id": "A11-06",
+      "name": "多语言嵌入",
+      "definition": "多语言嵌入的口径：语言覆盖、跨语言检索评测与语言对齐方式。",
+      "anchor": "https://arxiv.org/abs/2004.09813",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 langs、eval_mode（mono|cross）与 alignment（对比学习|显式映射|无）。",
+      "pitfall": "只测单语检索却宣称跨语言；语言覆盖清单与实际支持不符。"
+    },
+    {
+      "id": "A11-07",
+      "name": "领域嵌入微调",
+      "definition": "领域嵌入微调的口径：微调数据构造、负样本策略与基线对照。",
+      "anchor": "https://arxiv.org/abs/2112.07899",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 finetune_pairs（正对规模）、negatives（批内|挖掘）与 baseline（同测试集未微调基线）。",
+      "pitfall": "无基线对照（无法归因收益）；负样本泄漏（测试集对出现在训练对中）。"
+    },
+    {
+      "id": "A11-08",
+      "name": "多向量与后期交互",
+      "definition": "多向量与后期交互的口径：向量数（每文档）、交互方式与存储代价。",
+      "anchor": "https://arxiv.org/abs/2112.01488",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 vectors_per_doc、interaction（maxsim|sum|late）与 storage_cost（每文档字节数估计）。",
+      "pitfall": "只报效果不报存储代价；向量数未声明导致索引规模估算错误。"
+    },
+    {
+      "id": "A11-09",
+      "name": "向量库选型",
+      "definition": "向量库选型的口径：索引类型（HNSW / IVF）、关键参数与召回-延迟曲线。",
+      "anchor": "https://arxiv.org/abs/1603.09320",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 index_type、key_params（如 M/efSearch/nlist/nprobe）与 recall_latency_curve（≥3 点）。",
+      "pitfall": "只报单点延迟；参数不同（efSearch）直接比召回。"
+    },
+    {
+      "id": "A11-10",
+      "name": "召回评测",
+      "definition": "召回评测的口径：候选库规模、相关性标注来源与指标（R@k / nDCG / MRR）。",
+      "anchor": "https://arxiv.org/abs/2104.08663",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 gallery_size、relevance_source（人工|模型|点击）与 metric（含 k 值）；三者缺一即评测不成立。",
+      "pitfall": "用模型自标相关性自评；gallery 规模不同直接比 R@k。"
+    },
+    {
+      "id": "A11-11",
+      "name": "语义去重",
+      "definition": "语义去重的口径：相似阈值、判定粒度（文本 / 段落）与保留策略。",
+      "anchor": "https://arxiv.org/abs/2107.06499",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 threshold、granularity（doc|paragraph）与 keep_policy（最新|最长|来源优先）。",
+      "pitfall": "阈值不声明（去重率不可复现）；保留策略随意导致信息丢失。"
+    },
+    {
+      "id": "A11-12",
+      "name": "嵌入漂移与版本",
+      "definition": "嵌入漂移与版本的口径：模型 / 归一化变更的检测、重嵌入策略与兼容窗口。",
+      "anchor": "https://arxiv.org/abs/2210.07316",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 drift_check（样本对相似度基线）、reindex_policy（全量|增量）与 compat_window（新旧混用期限）。",
+      "pitfall": "模型升级不重嵌入导致检索质量静默下降；新旧向量混用无兼容声明。"
+    }
+  ]
+}

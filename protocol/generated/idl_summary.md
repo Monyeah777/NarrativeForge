@@ -6,7 +6,7 @@
 ## 覆盖
 | schema | 模块文档 | 机读契约 | 管线 | 协议包 | 台账条目 |
 | - | - | - | - | - | - |
-| 5 | 70 | 70 | 21 | 18 | 2 |
+| 5 | 76 | 76 | 24 | 21 | 2 |
 
 ## schema 定义
 - asset.schema.json
@@ -16,7 +16,7 @@
 - protocol.schema.json
 
 ## 装配在册证据（id 集）
-- AI系统:M25, AI系统:M26, M00, M01, M02, M03, M04, M06, M07, M08, M09, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M23, M24, M40, M41, M43, M50, M55, M57, M58, M59, M65, M80, M90, M91, M92, M93, M94, M95, M96, M97, M98, 事件:M22, 分类与情感分析:M01, 分类与情感分析:M02, 图像生成与编辑:M01, 图像生成与编辑:M02, 多模态大模型:M01, 多模态大模型:M02, 大语言模型:M01, 大语言模型:M02, 情感:M22, 摘要与信息压缩:M01, 摘要与信息压缩:M02, 文本生成与创作:M01, 文本生成与创作:M02, 机器翻译与本地化:M01, 机器翻译与本地化:M02, 生存:M10, 视觉模型:M01, 视觉模型:M02, 视频生成与理解:M01, 视频生成与理解:M02, 语音识别与合成:M01, 语音识别与合成:M02, 通用:M10, 量化金融:M31, 量化金融:M32, 音频与音乐生成:M01, 音频与音乐生成:M02
+- AI系统:M25, AI系统:M26, M00, M01, M02, M03, M04, M06, M07, M08, M09, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M23, M24, M40, M41, M43, M50, M55, M57, M58, M59, M65, M80, M90, M91, M92, M93, M94, M95, M96, M97, M98, 事件:M22, 代码大模型:M01, 代码大模型:M02, 具身智能与机器人:M01, 具身智能与机器人:M02, 分类与情感分析:M01, 分类与情感分析:M02, 图像生成与编辑:M01, 图像生成与编辑:M02, 多模态大模型:M01, 多模态大模型:M02, 大语言模型:M01, 大语言模型:M02, 嵌入与检索表示:M01, 嵌入与检索表示:M02, 情感:M22, 摘要与信息压缩:M01, 摘要与信息压缩:M02, 文本生成与创作:M01, 文本生成与创作:M02, 机器翻译与本地化:M01, 机器翻译与本地化:M02, 生存:M10, 视觉模型:M01, 视觉模型:M02, 视频生成与理解:M01, 视频生成与理解:M02, 语音识别与合成:M01, 语音识别与合成:M02, 通用:M10, 量化金融:M31, 量化金融:M32, 音频与音乐生成:M01, 音频与音乐生成:M02
 
 ## 机读契约模块
 | id | conformance | layer | source |
@@ -66,6 +66,10 @@
 | M97 | L2 | P40 | community/技术文档域包/modules/M97_术语管理.md |
 | M98 | L2 | P60 | community/技术文档域包/modules/M98_修订记录.md |
 | 事件:M22 | L2 | P30 | 04_模块库/事件类/M22_事件叙事.md |
+| 代码大模型:M01 | L2 | P40 | community/代码大模型域包/modules/A09a_代码口径登记.md |
+| 代码大模型:M02 | L2 | P60 | community/代码大模型域包/modules/A09b_代码面收口与形态派生.md |
+| 具身智能与机器人:M01 | L2 | P40 | community/具身智能与机器人域包/modules/A13a_具身口径登记.md |
+| 具身智能与机器人:M02 | L2 | P60 | community/具身智能与机器人域包/modules/A13b_具身面收口与形态派生.md |
 | 分类与情感分析:M01 | L2 | P40 | community/分类与情感分析域包/modules/B04a_分类口径登记.md |
 | 分类与情感分析:M02 | L2 | P60 | community/分类与情感分析域包/modules/B04b_分类面收口与形态派生.md |
 | 图像生成与编辑:M01 | L2 | P40 | community/图像生成与编辑域包/modules/A07a_图像生成口径登记.md |
@@ -74,6 +78,8 @@
 | 多模态大模型:M02 | L2 | P60 | community/多模态大模型域包/modules/A02b_多模态面收口与形态派生.md |
 | 大语言模型:M01 | L2 | P40 | community/大语言模型域包/modules/A01a_模型与能力口径登记.md |
 | 大语言模型:M02 | L2 | P60 | community/大语言模型域包/modules/A01b_能力面收口与形态派生.md |
+| 嵌入与检索表示:M01 | L2 | P40 | community/嵌入与检索表示域包/modules/A11a_嵌入口径登记.md |
+| 嵌入与检索表示:M02 | L2 | P60 | community/嵌入与检索表示域包/modules/A11b_嵌入面收口与形态派生.md |
 | 摘要与信息压缩:M01 | L2 | P40 | community/摘要与信息压缩域包/modules/B02a_摘要口径登记.md |
 | 摘要与信息压缩:M02 | L2 | P60 | community/摘要与信息压缩域包/modules/B02b_摘要面收口与形态派生.md |
 | 文本生成与创作:M01 | L2 | P40 | community/文本生成与创作域包/modules/B01a_创作口径登记.md |
@@ -93,10 +99,10 @@
 | 音频与音乐生成:M02 | L2 | P60 | community/音频与音乐生成域包/modules/A05b_音频面收口与形态派生.md |
 
 ## 管线
-- P00_通用文档生成管线.md, P01_标准管线.md, P02_校园情感流管线.md, P03_西幻生存流管线.md, P04_轻混装配流管线.md, P05_核心基础流管线.md, P06_技术文档题材装配流管线.md, P07_AI系统域装配流管线.md, P08_量化金融域装配流管线.md, P09_大语言模型装配流管线.md, P11_多模态大模型装配流管线.md, P12_视觉模型装配流管线.md, P13_语音识别与合成装配流管线.md, P14_音频与音乐生成装配流管线.md, P15_视频生成与理解装配流管线.md, P16_图像生成与编辑装配流管线.md, P17_文本生成与创作装配流管线.md, P18_摘要与信息压缩装配流管线.md, P19_机器翻译与本地化装配流管线.md, P21_分类与情感分析装配流管线.md, P90_技术文档生成管线.md
+- P00_通用文档生成管线.md, P01_标准管线.md, P02_校园情感流管线.md, P03_西幻生存流管线.md, P04_轻混装配流管线.md, P05_核心基础流管线.md, P06_技术文档题材装配流管线.md, P07_AI系统域装配流管线.md, P08_量化金融域装配流管线.md, P09_大语言模型装配流管线.md, P11_多模态大模型装配流管线.md, P12_视觉模型装配流管线.md, P13_语音识别与合成装配流管线.md, P14_音频与音乐生成装配流管线.md, P15_视频生成与理解装配流管线.md, P16_图像生成与编辑装配流管线.md, P17_文本生成与创作装配流管线.md, P18_摘要与信息压缩装配流管线.md, P19_机器翻译与本地化装配流管线.md, P21_分类与情感分析装配流管线.md, P22_代码大模型装配流管线.md, P23_嵌入与检索表示装配流管线.md, P24_具身智能与机器人装配流管线.md, P90_技术文档生成管线.md
 
 ## 协议包
-- community/AI系统域包/protocol.yaml, community/分类与情感分析域包/protocol.yaml, community/图像生成与编辑域包/protocol.yaml, community/多模态大模型域包/protocol.yaml, community/大语言模型域包/protocol.yaml, community/技术文档域包/protocol.yaml, community/摘要与信息压缩域包/protocol.yaml, community/文本生成与创作域包/protocol.yaml, community/机器翻译与本地化域包/protocol.yaml, community/校园情感领域包/protocol.yaml, community/校园西幻轻混组合包/protocol.yaml, community/西幻生存领域包/protocol.yaml, community/视觉模型域包/protocol.yaml, community/视频生成与理解域包/protocol.yaml, community/语音识别与合成域包/protocol.yaml, community/通用核心基础包/protocol.yaml, community/量化金融域包/protocol.yaml, community/音频与音乐生成域包/protocol.yaml
+- community/AI系统域包/protocol.yaml, community/代码大模型域包/protocol.yaml, community/具身智能与机器人域包/protocol.yaml, community/分类与情感分析域包/protocol.yaml, community/图像生成与编辑域包/protocol.yaml, community/多模态大模型域包/protocol.yaml, community/大语言模型域包/protocol.yaml, community/嵌入与检索表示域包/protocol.yaml, community/技术文档域包/protocol.yaml, community/摘要与信息压缩域包/protocol.yaml, community/文本生成与创作域包/protocol.yaml, community/机器翻译与本地化域包/protocol.yaml, community/校园情感领域包/protocol.yaml, community/校园西幻轻混组合包/protocol.yaml, community/西幻生存领域包/protocol.yaml, community/视觉模型域包/protocol.yaml, community/视频生成与理解域包/protocol.yaml, community/语音识别与合成域包/protocol.yaml, community/通用核心基础包/protocol.yaml, community/量化金融域包/protocol.yaml, community/音频与音乐生成域包/protocol.yaml
 
 ## 资产台账键
 - TECH_RULES, TECH_TEMPLATES

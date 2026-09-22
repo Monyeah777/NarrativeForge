@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "A13",
+  "domain": "具身智能与机器人",
+  "section": "A · 模型与能力",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "exact_judgement",
+  "subdivisions": [
+    {
+      "id": "A13-01",
+      "name": "机器人运动规划",
+      "definition": "机器人运动规划的口径：规划空间、约束（碰撞 / 关节限位）、规划时间与成功率。",
+      "anchor": "https://moveit.picknik.ai/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 planning_space（joint|task）、constraints（清单）、plan_timeout_ms 与 success_rate（含试验次数）。",
+      "pitfall": "只报单次成功（不给试验次数）；约束未写全导致「成功」不可复现。"
+    },
+    {
+      "id": "A13-02",
+      "name": "抓取与精细操作",
+      "definition": "抓取与精细操作的口径：抓取位姿表示、成功率定义与失败模式分类。",
+      "anchor": "https://arxiv.org/abs/1710.01330",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 grasp_repr（6DoF|top-down）、success_definition（阈值）与 failure_taxonomy（滑落/碰撞/未接触等）。",
+      "pitfall": "成功定义含糊（抬升算不算）；失败不分类型导致无法迭代。"
+    },
+    {
+      "id": "A13-03",
+      "name": "视觉语言动作模型",
+      "definition": "视觉语言动作模型（VLA）的口径：动作空间、观测模态与指令跟随评测。",
+      "anchor": "https://arxiv.org/abs/2212.06817",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 action_space（关节增量|末端位姿 + 频率）、obs_modalities（枚举）与 instruction_following（评测集 id）。",
+      "pitfall": "动作频率未声明导致轨迹不可执行；指令跟随只用训练分布内指令评测。"
+    },
+    {
+      "id": "A13-04",
+      "name": "遥操作与示教",
+      "definition": "遥操作与示教的口径：遥操作时延、示教数据量与质量过滤规则。",
+      "anchor": "https://arxiv.org/abs/1709.10087",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 teleop_latency_ms、demo_episodes（条数）与 quality_filter（成功/人工剔除规则）。",
+      "pitfall": "示教含失败样本未过滤；时延未声明导致遥操作可用性结论无效。"
+    },
+    {
+      "id": "A13-05",
+      "name": "仿真到现实迁移",
+      "definition": "仿真到现实迁移的口径：域随机化维度、真机微调规模与性能落差报告。",
+      "anchor": "https://arxiv.org/abs/1703.06907",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 randomization_dims（清单）、real_steps（真机样本量）与 sim2real_gap（仿真与真机指标差）。",
+      "pitfall": "只报仿真成绩；真机样本量与落差未报告。"
+    },
+    {
+      "id": "A13-06",
+      "name": "多传感器感知融合",
+      "definition": "多传感器感知融合的口径：传感器集合、时间同步方式与融合层级。",
+      "anchor": "https://pypi.org/project/filterpy/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 sensors（枚举）、sync（硬件触发|软同步 + 容差 ms）与 fusion_level（early|late|hybrid）。",
+      "pitfall": "时间同步容差不声明导致融合结果不可复现；传感器缺失时无降级策略。"
+    },
+    {
+      "id": "A13-07",
+      "name": "任务与技能库",
+      "definition": "任务与技能库的口径：技能表示（参数化 / 学习策略）、前置条件与组合接口。",
+      "anchor": "https://arxiv.org/abs/2204.01691",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 skill_repr（参数化|policy）、preconditions（字段清单）与 composition_api（调用契约）。",
+      "pitfall": "技能无前置条件（组合即失败）；接口无契约导致复用不了。"
+    },
+    {
+      "id": "A13-08",
+      "name": "人机协作安全",
+      "definition": "人机协作安全的口径：安全标准引用、速度与力限制、急停与风险评估。",
+      "anchor": "https://eur-lex.europa.eu/eli/reg/2023/1230/oj",
+      "anchor_kind": "spec",
+      "anchor_status": 202,
+      "check": "声明 safety_standard（如 ISO/TS 15066）、speed_force_limits（数值 + 依据）与 e_stop（响应时间 ms）。",
+      "pitfall": "安全限值无标准依据；急停响应时间未实测。"
+    },
+    {
+      "id": "A13-09",
+      "name": "移动机器人与导航",
+      "definition": "移动机器人与导航的口径：定位方式、建图指标与导航成功率。",
+      "anchor": "https://docs.nav2.org/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 localization（lidar|视觉|融合 + 精度 cm）、mapping_metric（ATE/RPE）与 nav_success（含场景数）。",
+      "pitfall": "只报里程计误差不报闭环一致性；导航成功率未给场景分布。"
+    },
+    {
+      "id": "A13-10",
+      "name": "机械臂标定",
+      "definition": "机械臂标定的口径：标定方法、残差指标与复检周期。",
+      "anchor": "https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 calibration_method（手眼|DH）、residual（mm / 度）与 recalibration_interval（小时或次数）。",
+      "pitfall": "标定残差不公开（精度无据）；无复检周期导致漂移未被发现。"
+    },
+    {
+      "id": "A13-11",
+      "name": "数据集与基准",
+      "definition": "数据集与基准的口径：任务集合、演示模态（视觉 / 动作）与切分方式。",
+      "anchor": "https://arxiv.org/abs/2303.04137",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 task_count、modalities（枚举）与 split_policy（按任务|按场景|随机）。",
+      "pitfall": "随机切分让同一任务跨训练与测试；模态清单与实际不符。"
+    },
+    {
+      "id": "A13-12",
+      "name": "具身 Agent",
+      "definition": "具身 Agent 的口径：状态表示、动作原语与长程任务成功率。",
+      "anchor": "https://arxiv.org/abs/2303.03378",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 state_repr（字段清单）、action_primitives（枚举）与 long_horizon_success（分步数与成功率曲线）。",
+      "pitfall": "长程任务只报最终成功（中间失败被掩盖）；动作原语未封闭。"
+    }
+  ]
+}
