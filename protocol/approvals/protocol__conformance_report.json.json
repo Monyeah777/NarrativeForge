@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-23",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "20 包（A 段 14 全建 + B01–B06）/ 240 细分 / 214 机验产出面 / 22 T4 面",
+  "note": "23 包（A 段 14 + B01–B09）+ 工厂内建 registry 投影（消除建包漏登记）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "3e3da92457a76ee9d67ea50b19dbbd41f2b3696a606c2504bdb4bff7f686f8bd"
+  "subject_digest": "9c5f6c58727a279ce9df978837bf934c1fe8f5378ca45361da7e9fddcaca3060"
 }

@@ -2478,13 +2478,13 @@ def _cmd_domain(args):
                      out["written"] if args.write else out["changed"],
                      "" if args.write else "（差异件）"))
             if args.write:
-                print("  登记：02 §8 %s · verify.sh DOMAIN %s · 产出面渲染 %d 件"
+                print("  登记：02 §8 %s · verify.sh DOMAIN %s · registry protocols[] %s · "
+                      "产出面渲染 %d 件"
                       % (out["registry"]["section02"], out["registry"]["domain_list"],
+                         out["registry"].get("protocols", "—"),
                          len(out["registry"].get("render") or [])))
                 for i in (out["registry"].get("render_issues") or []):
                     print("  [FAIL] %s" % i, file=sys.stderr)
-            if args.write:
-                print("  下一步：python scripts/nf.py register --apply（投影 registry protocols[]）")
         return 0
     # verify
     targets = [args.spec] if args.spec else codes

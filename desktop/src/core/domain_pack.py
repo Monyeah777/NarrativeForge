@@ -1146,9 +1146,39 @@ def _append_domain_list(root: str, spec: Dict[str, Any]) -> bool:
     return True
 
 
+def _register_protocols(root: str, spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
+    """把包投影进 registry protocols[]（与 `nf register --apply` 同一套纯函数）。"""
+    from core import protocol_projection as pp
+    from core import registry_sync as rsync
+
+    pkg_dir = str(Path(root) / "community" / spec["pack_name"])
+    path = Path(root) / REGISTRY_REL
+    reg = _read_json(path) or {}
+    cur = reg.get("protocols")
+    if not isinstance(cur, list):
+        return "registry protocols[] 缺失（跳过投影）"
+    try:
+        entry = pp.project_entry(pkg_dir)
+    except Exception as exc:  # 投影失败必须可见
+        return "投影失败：%s" % exc
+    merged = rsync.merge_protocols(cur, [entry])
+    if [json.dumps(p, sort_keys=True, ensure_ascii=False) for p in merged] == \
+            [json.dumps(p, sort_keys=True, ensure_ascii=False) for p in cur]:
+        return "已登记（幂等，无变化）"
+    reg["protocols"] = merged
+    path.write_text(json.dumps(reg, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8", newline="\n")
+    return "已写入（protocols[] %d → %d）" % (len(cur), len(merged))
+
+
 def build(root: str, spec: Dict[str, Any], write: bool = False,
           render: bool = True) -> Dict[str, Any]:
-    """生成整包：文件 + 登记（02 §8 / verify.sh DOMAIN）+ 可选渲染产出面。"""
+    """生成整包：文件 + 登记三处（02 §8 / verify.sh DOMAIN / registry protocols[]）+ 渲染产出面。
+
+    登记三处**一次做完**（2026-09-23 实测教训：漏跑 `nf register --apply` 会让
+    check14 ⑦ / check15 ⑤ / check29 虚标 / check32 名录四处红——工厂把这一步收进来，
+    从构造上消除「建了包没登记」这一类）。
+    """
     alloc, files = plan(root, spec)
     changed, written = [], []
     for rel, content in sorted(files.items()):
@@ -1164,6 +1194,7 @@ def build(root: str, spec: Dict[str, Any], write: bool = False,
     if write:
         reg["section02"] = _append_section02(root, spec, alloc)
         reg["domain_list"] = _append_domain_list(root, spec)
+        reg["protocols"] = _register_protocols(root, spec, alloc)
         update_manifest(root, spec, write=True)
         if render:
             from core import output_forms as of

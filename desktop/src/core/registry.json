@@ -1335,6 +1335,111 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "多轮对话与角色扮演域包",
+      "name": "多轮对话与角色扮演域包",
+      "pipeline": "P32",
+      "categories": [
+        "多轮对话与角色扮演"
+      ],
+      "module_ids": [
+        "多轮对话与角色扮演:M01",
+        "多轮对话与角色扮演:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "多轮对话与角色扮演:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "多轮对话与角色扮演:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "代码生成与补全域包",
+      "name": "代码生成与补全域包",
+      "pipeline": "P33",
+      "categories": [
+        "代码生成与补全"
+      ],
+      "module_ids": [
+        "代码生成与补全:M01",
+        "代码生成与补全:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "代码生成与补全:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "代码生成与补全:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "代码审查与缺陷检测域包",
+      "name": "代码审查与缺陷检测域包",
+      "pipeline": "P34",
+      "categories": [
+        "代码审查与缺陷检测"
+      ],
+      "module_ids": [
+        "代码审查与缺陷检测:M01",
+        "代码审查与缺陷检测:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "代码审查与缺陷检测:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "代码审查与缺陷检测:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

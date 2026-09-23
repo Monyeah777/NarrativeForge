@@ -6,7 +6,7 @@ scope: 作者指示的七项任务（NF 深析 / 外部协议清单 ≥100 条 /
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:c0271c0c74dd7395391dbc52d3b5a294ec9484c85ce1336fd2db002290f0b709
+  - verify.sh:f14c8e40f7501a54bd6132ae571492e975bc747c1288d7a7dcdd1929399395f2
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
   - desktop/src/core/text_hygiene.py:44f22d14c2ab470a2d30a5484b484a81c57baaf3111a5a1fcec0005a9d0cdeae
   - desktop/src/core/interop_export.py:1fc35ff29f0b7b0a95ae8fa150f8e05534a7e65bf821f6749d95491dcd1ab8a6
@@ -16,7 +16,7 @@ subjects:
   - desktop/src/core/doc_hygiene.py:ee315d685c82a6e1841aeb7859fb885684a9fa52f856f951e05484201afffc74
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
   - desktop/src/core/purity_scan.py:0a9e84cf5af8bf9560bbb0dc79fd166ce7b9cf2fb6e65cd47a5d7e673906d4c6
-  - scripts/nf.py:9bb0ad2964d938a9d52ee2a693023ece2a09c4d1088ba186eed4389222d976ee
+  - scripts/nf.py:3484f46ff1fcde7180a6c8fa5a46d8b406181782304140e820a26e83e5bdc54d
   - scripts/check_external_links.py:4167e9e27e453a9f495870c9a69820d9c8886023cfd2d10d4457ae3686f15515
   - scripts/check_interop_schemas.py:6cae41b5247e8ea594b3825ff61bc3b9186caf21c170bc122d31861d30974c74
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9

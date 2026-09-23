@@ -1,5 +1,5 @@
 {
-  "count": 88,
+  "count": 94,
   "modules": {
     "AI系统:M25": {
       "digest": "9eba42619fd91017080e670d5f60d17ba4255d2444d87243f5f440d6ed55c8db",
@@ -197,6 +197,22 @@
       "digest": "6c61821f4be4a0bcf6ccd1c65278c0646f76667f2fd234e214bb892dcd413ffc",
       "path": "community/代码大模型域包/modules/A09b_代码面收口与形态派生.md"
     },
+    "代码审查与缺陷检测:M01": {
+      "digest": "8230ad0f452d714e98118f0ac541c5829db3cabcc8f91aaa8efa0349bc07beaa",
+      "path": "community/代码审查与缺陷检测域包/modules/B09a_审查口径登记.md"
+    },
+    "代码审查与缺陷检测:M02": {
+      "digest": "ef7750216421e917a3b7cc7db700f4ca696d6de3632a2de2035f496f39f03a20",
+      "path": "community/代码审查与缺陷检测域包/modules/B09b_审查面收口与形态派生.md"
+    },
+    "代码生成与补全:M01": {
+      "digest": "4268269222897e9a3d7909f8148d527e7f8b7175dc341d813fa4c649e41a8ea1",
+      "path": "community/代码生成与补全域包/modules/B08a_代码生成口径登记.md"
+    },
+    "代码生成与补全:M02": {
+      "digest": "77377c9298351775b9066d6cc3114218b8561d075a6c382b919fd95bc9454493",
+      "path": "community/代码生成与补全域包/modules/B08b_生成面收口与形态派生.md"
+    },
     "信息抽取与结构化:M01": {
       "digest": "31808a6bcf6fce64e224dd637191ba5daa3cf3abf452e0503980d5b19ef86523",
       "path": "community/信息抽取与结构化域包/modules/B05a_抽取口径登记.md"
@@ -236,6 +252,14 @@
     "多模态大模型:M02": {
       "digest": "51490a30e6a4de5debc95f2fa34b5bf5efaebc088291a229c45dcb559588bf8b",
       "path": "community/多模态大模型域包/modules/A02b_多模态面收口与形态派生.md"
+    },
+    "多轮对话与角色扮演:M01": {
+      "digest": "1a8711b73d2330af0887ef090bd64818ba5a8ad0126b15a7a8194626c15e16f9",
+      "path": "community/多轮对话与角色扮演域包/modules/B07a_角色扮演口径登记.md"
+    },
+    "多轮对话与角色扮演:M02": {
+      "digest": "1601b617bb8df8ea4c6665ed8eee962a71b534880566d4b9ff6d33224db6d96c",
+      "path": "community/多轮对话与角色扮演域包/modules/B07b_对话面收口与形态派生.md"
     },
     "大语言模型:M01": {
       "digest": "1331056637f5074000f71993012f27a06614b5d158aefd805205f7b9fdfd9e54",

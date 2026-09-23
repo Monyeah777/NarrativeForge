@@ -24,6 +24,20 @@
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/代码审查与缺陷检测域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "代码审查与缺陷检测域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/代码生成与补全域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "代码生成与补全域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
       "dir": "community/信息抽取与结构化域包/assets",
       "files": 3,
       "lines": 249,
@@ -56,6 +70,13 @@
       "files": 3,
       "lines": 249,
       "package": "多模态大模型域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/多轮对话与角色扮演域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "多轮对话与角色扮演域包"
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",

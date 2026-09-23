@@ -375,6 +375,78 @@
     },
     {
       "key": "CONCEPT_GRAPH",
+      "package": "代码审查与缺陷检测域包",
+      "file": "community/代码审查与缺陷检测域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "代码审查与缺陷检测域包",
+      "file": "community/代码审查与缺陷检测域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "代码审查与缺陷检测域包",
+      "file": "community/代码审查与缺陷检测域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码审查与缺陷检测域包",
+      "file": "community/代码审查与缺陷检测域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码审查与缺陷检测域包",
+      "file": "community/代码审查与缺陷检测域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码审查与缺陷检测域包",
+      "file": "community/代码审查与缺陷检测域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "代码生成与补全域包",
+      "file": "community/代码生成与补全域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "代码生成与补全域包",
+      "file": "community/代码生成与补全域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "代码生成与补全域包",
+      "file": "community/代码生成与补全域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码生成与补全域包",
+      "file": "community/代码生成与补全域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码生成与补全域包",
+      "file": "community/代码生成与补全域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "代码生成与补全域包",
+      "file": "community/代码生成与补全域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
       "package": "信息抽取与结构化域包",
       "file": "community/信息抽取与结构化域包/assets/CONCEPT_GRAPH.md",
       "line": 1
@@ -551,6 +623,42 @@
       "key": "STANDARDS_ANCHORS",
       "package": "多模态大模型域包",
       "file": "community/多模态大模型域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "多轮对话与角色扮演域包",
+      "file": "community/多轮对话与角色扮演域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "多轮对话与角色扮演域包",
+      "file": "community/多轮对话与角色扮演域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "多轮对话与角色扮演域包",
+      "file": "community/多轮对话与角色扮演域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "多轮对话与角色扮演域包",
+      "file": "community/多轮对话与角色扮演域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "多轮对话与角色扮演域包",
+      "file": "community/多轮对话与角色扮演域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "多轮对话与角色扮演域包",
+      "file": "community/多轮对话与角色扮演域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {

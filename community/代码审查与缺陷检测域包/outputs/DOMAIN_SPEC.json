@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B09",
+  "domain": "代码审查与缺陷检测",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "classification",
+  "subdivisions": [
+    {
+      "id": "B09-01",
+      "name": "静态审查规则",
+      "definition": "静态分析与规则引擎的口径：规则集与版本、扫描范围与规则命中口径。",
+      "anchor": "https://semgrep.dev/docs/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 ruleset（来源 + 版本）、scan_scope（路径 / 语言）与 hit_definition（单条=一处代码位置）。",
+      "pitfall": "规则集版本漂移（两次扫描结果不同）；命中定义不同（按文件/按行）导致计数不可比。"
+    },
+    {
+      "id": "B09-02",
+      "name": "漏洞模式识别",
+      "definition": "漏洞类型与分类体系的口径：CWE / OWASP 映射与严重度分级依据。",
+      "anchor": "https://owasp.org/www-project-top-ten/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 taxonomy（CWE|OWASP + 版本）、severity_scheme（CVSS 或自定义 + 依据）与 mapping（逐条映射表）。",
+      "pitfall": "严重度凭感觉（不可比）；无分类映射导致修复优先级失真。"
+    },
+    {
+      "id": "B09-03",
+      "name": "代码异味",
+      "definition": "代码异味与复杂度的口径：度量（圈复杂度 / 认知复杂度 / 函数长度）与阈值来源。",
+      "anchor": "https://pypi.org/project/radon/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 metrics（度量清单）、thresholds（各项阈值 + 来源）与 counting_rule（是否含布尔分支）。",
+      "pitfall": "阈值不声明（结论不可复现）；复杂度计数规则不同横向比。"
+    },
+    {
+      "id": "B09-04",
+      "name": "依赖与供应链风险",
+      "definition": "依赖与供应链风险的口径：依赖清单来源、漏洞库版本与可修复性判定。",
+      "anchor": "https://owasp.org/www-project-dependency-check/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 lockfile（来源与格式）、vuln_db（OSV/NVD + 抓取日期）与 fixability（有无可用升级版本）。",
+      "pitfall": "漏洞库过期（漏报）；不区分「可修/不可修」导致告警积压。"
+    },
+    {
+      "id": "B09-05",
+      "name": "提交信息与 PR 描述",
+      "definition": "密钥与敏感信息泄露的口径：检测规则、误报基线与泄露后的处置流程。",
+      "anchor": "https://pypi.org/project/detect-secrets/",
+      "anchor_kind": "repo",
+      "anchor_status": 200,
+      "check": "声明 rules（规则集 + 版本）、false_positive_baseline（对照基线）与 response_sop（轮换 / 撤销步骤）。",
+      "pitfall": "只扫不处置（密钥仍在）；无基线导致误报淹没真报。"
+    },
+    {
+      "id": "B09-06",
+      "name": "变更影响面分析",
+      "definition": "测试覆盖与回归的口径：覆盖率口径（行 / 分支）、增量覆盖与回归门阈值。",
+      "anchor": "https://coverage.readthedocs.io/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 coverage_kind（line|branch）、delta_coverage（增量 vs 全量）与 gate_threshold（合入阈值）。",
+      "pitfall": "只看全量覆盖率（新增代码裸奔）；口径（行/分支）混用。"
+    },
+    {
+      "id": "B09-07",
+      "name": "测试覆盖缺口",
+      "definition": "审查意见质量与去噪的口径：意见可操作性、优先级与噪声率控制。",
+      "anchor": "https://google.github.io/eng-practices/review/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 actionability（每条须含位置 + 建议）、priority（分级规则）与 noise_rate（被作者标记为无效的比例）。",
+      "pitfall": "泛泛而谈（不可执行）；噪声率不统计导致审查疲劳。"
+    },
+    {
+      "id": "B09-08",
+      "name": "性能反模式",
+      "definition": "增量审查与 diff 范围的口径：审查范围定义、历史上下文取舍与重复评论抑制。",
+      "anchor": "https://git-scm.com/docs/git-diff",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 review_scope（diff|文件|全仓）、history_context（是否带历史）与 dedup_rule（同问题不重复报）。",
+      "pitfall": "每次全仓重报（噪声爆炸）；diff 基线不明导致漏审。"
+    },
+    {
+      "id": "B09-09",
+      "name": "审查意见生成",
+      "definition": "缺陷预测与排序的口径：特征 / 模型来源、排序指标与人工复核比例。",
+      "anchor": "https://defects4j.org/",
+      "anchor_kind": "dataset",
+      "anchor_status": 200,
+      "check": "声明 prediction_source（规则|模型 + 版本）、ranking_metric（如 recall@10）与 human_audit_ratio。",
+      "pitfall": "只报准确率不报排序质量（前几条没用）；不抽检。"
+    },
+    {
+      "id": "B09-10",
+      "name": "误报率控制",
+      "definition": "修复建议与补丁正确性的口径：补丁验证方式（测试驱动）、回归风险与回滚点。",
+      "anchor": "https://swebench.com/",
+      "anchor_kind": "dataset",
+      "anchor_status": 200,
+      "check": "声明 patch_validation（测试执行 + 通过判据）、regression_check（原有测试是否仍过）与 rollback_point。",
+      "pitfall": "补丁未经测试就建议合入；不查回归。"
+    },
+    {
+      "id": "B09-11",
+      "name": "审查优先级排序",
+      "definition": "误报治理与基线的口径：误报定义、基线快照与抑制规则的生命周期。",
+      "anchor": "https://codeql.github.com/docs/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 fp_definition（判据）、baseline_snapshot（时间 + 计数）与 suppression_ttl（抑制有效期 + 复审）。",
+      "pitfall": "抑制无期限（永久掩盖）；基线不更新导致趋势失真。"
+    },
+    {
+      "id": "B09-12",
+      "name": "自动化门禁集成",
+      "definition": "审查结果可机验的口径：输出格式（SARIF 等）、字段完整性与消费方。",
+      "anchor": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 output_format（SARIF 2.1.0 等）、required_fields（ruleId/level/location）与 consumers（IDE|CI|门禁）。",
+      "pitfall": "输出纯文本（无法门禁化）；字段缺失导致定位失败。"
+    }
+  ]
+}

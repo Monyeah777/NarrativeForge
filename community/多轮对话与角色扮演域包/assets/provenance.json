@@ -1,0 +1,33 @@
+{
+  "schema_version": "1",
+  "tier": "community",
+  "assets": [
+    {
+      "file": "CONCEPT_GRAPH.md",
+      "key": "CONCEPT_GRAPH",
+      "version": "1.0",
+      "status": "active",
+      "module": "多轮对话与角色扮演:M01",
+      "added": "2026-09-22",
+      "source": "多轮对话与角色扮演域包自带概念前置图（域包工厂生成，2026-09-22）；12 个概念的来源锚见 STANDARDS_ANCHORS，逐条可达性实证"
+    },
+    {
+      "file": "DOMAIN_SPEC.md",
+      "key": "DOMAIN_SPEC",
+      "version": "1.0",
+      "status": "active",
+      "module": "多轮对话与角色扮演:M01",
+      "added": "2026-09-22",
+      "source": "多轮对话与角色扮演域包自带域口径表（2026-09-22 自撰）；域内通行口径的规范化表述，不含外部文本"
+    },
+    {
+      "file": "STANDARDS_ANCHORS.md",
+      "key": "STANDARDS_ANCHORS",
+      "version": "1.0",
+      "status": "active",
+      "module": "多轮对话与角色扮演:M02",
+      "added": "2026-09-22",
+      "source": "多轮对话与角色扮演域包自带权威锚表（2026-09-22 本机实测可达性）；锚只作口径参照，不作品质背书"
+    }
+  ]
+}

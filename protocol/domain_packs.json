@@ -422,8 +422,71 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "retrieval",
       "spec_digest": "212baa8acfb3a8aa2621695e7974ad5e7b0ddc6cfffc79be815e68fce34bfc08"
+    },
+    {
+      "code": "B07",
+      "section": "B · 任务类型",
+      "name": "多轮对话与角色扮演",
+      "package": "多轮对话与角色扮演域包",
+      "category": "多轮对话与角色扮演",
+      "pipeline": "P32",
+      "module_ids": [
+        "多轮对话与角色扮演:M01",
+        "多轮对话与角色扮演:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "spec_digest": "a003a78f20fd0e2533bbcb402be0354e31160e2a379b2aaab7b6e8a5080d7e43"
+    },
+    {
+      "code": "B08",
+      "section": "B · 任务类型",
+      "name": "代码生成与补全",
+      "package": "代码生成与补全域包",
+      "category": "代码生成与补全",
+      "pipeline": "P33",
+      "module_ids": [
+        "代码生成与补全:M01",
+        "代码生成与补全:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "exact_judgement",
+      "spec_digest": "97b156a40f5faee9c9609e59827919273540d81981668a449113659b5405538a"
+    },
+    {
+      "code": "B09",
+      "section": "B · 任务类型",
+      "name": "代码审查与缺陷检测",
+      "package": "代码审查与缺陷检测域包",
+      "category": "代码审查与缺陷检测",
+      "pipeline": "P34",
+      "module_ids": [
+        "代码审查与缺陷检测:M01",
+        "代码审查与缺陷检测:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "spec_digest": "6834e7504d8606a6bb1ac110a280cf7e1d2f0717398e90db566cb06a11ed19a6"
     }
   ],
-  "count": 20,
-  "subdivisions_total": 240
+  "count": 23,
+  "subdivisions_total": 276
 }

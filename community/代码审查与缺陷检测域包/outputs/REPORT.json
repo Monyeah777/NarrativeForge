@@ -1,0 +1,44 @@
+{
+  "code": "B09",
+  "domain": "代码审查与缺陷检测",
+  "family": "classification",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "accuracy": 0.75,
+    "confusion": {
+      "neg": {
+        "neg": 10,
+        "pos": 2
+      },
+      "pos": {
+        "neg": 4,
+        "pos": 8
+      }
+    },
+    "digits": 6,
+    "family": "classification",
+    "macro": {
+      "f1": 0.748252,
+      "precision": 0.757143,
+      "recall": 0.75
+    },
+    "n": 24,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "per_label": {
+      "neg": {
+        "f1": 0.769231,
+        "precision": 0.714286,
+        "recall": 0.833333,
+        "support": 12
+      },
+      "pos": {
+        "f1": 0.727273,
+        "precision": 0.8,
+        "recall": 0.666667,
+        "support": 12
+      }
+    }
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 24
+}
