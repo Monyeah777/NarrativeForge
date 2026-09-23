@@ -16,6 +16,14 @@ flowchart TD
     C12-10
     C12-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-commonmark
+    STD-frictionless-package
+    STD-gfm
+    STD-mlcommons-bench
+    STD-w3c-epub33
+  end
   C12-01 --> C12-02
   C12-02 --> C12-03
   C12-03 --> C12-04
@@ -36,3 +44,15 @@ flowchart TD
   C12-08 --> C12-11
   C12-11 --> C12-12
   C12-09 --> C12-12
+  C12-07 --> STD-cncf-otel-semconv
+  C12-12 --> STD-cncf-otel-semconv
+  C12-05 --> STD-commonmark
+  C12-03 --> STD-frictionless-package
+  C12-01 --> STD-gfm
+  C12-04 --> STD-gfm
+  C12-06 --> STD-gfm
+  C12-02 --> STD-mlcommons-bench
+  C12-08 --> STD-mlcommons-bench
+  C12-11 --> STD-mlcommons-bench
+  C12-09 --> STD-w3c-epub33
+  C12-10 --> STD-w3c-epub33

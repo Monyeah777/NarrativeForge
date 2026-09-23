@@ -16,6 +16,14 @@ flowchart TD
     E17-10
     E17-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-commonmark
+    STD-frictionless-package
+    STD-frictionless-table
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E17-01 --> E17-02
   E17-02 --> E17-03
   E17-03 --> E17-04
@@ -36,3 +44,15 @@ flowchart TD
   E17-08 --> E17-11
   E17-11 --> E17-12
   E17-09 --> E17-12
+  E17-07 --> STD-cncf-otel-semconv
+  E17-01 --> STD-commonmark
+  E17-04 --> STD-commonmark
+  E17-11 --> STD-frictionless-package
+  E17-10 --> STD-frictionless-table
+  E17-12 --> STD-frictionless-table
+  E17-03 --> STD-w3c-epub33
+  E17-06 --> STD-w3c-epub33
+  E17-09 --> STD-w3c-epub33
+  E17-02 --> STD-w3c-tabular-data
+  E17-05 --> STD-w3c-tabular-data
+  E17-08 --> STD-w3c-tabular-data

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F02-01` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-02` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-03` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-04` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-05` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-06` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-07` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-08` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-09` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-10` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-11` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `F02-12` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F02-01` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `oasis-openapi` OpenAPI 3.1（OpenAPI Initiative；关键词「接口|API|端点|服务|部署」命中） |
+| `F02-02` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F02-03` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F02-04` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F02-05` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F02-06` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F02-07` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F02-08` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F02-09` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `w3c-prov-o` PROV-O 溯源本体（W3C；关键词「溯源|证据链|审计」命中） |
+| `F02-10` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F02-11` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F02-12` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

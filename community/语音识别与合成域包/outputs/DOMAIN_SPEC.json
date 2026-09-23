@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/1512.02595",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-webaudio",
+      "standard_why": "关键词「音频|语音|声学|音乐|歌声」命中",
       "check": "声明 acoustic_frontend（帧长/帧移 ms）、token_unit（char|bpe|word）、decoding（greedy|beam+LM）三项。",
       "pitfall": "用不同语言模型融合强度比较 WER；前端帧移未记录导致流式与离线数字不可比。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://pypi.org/project/webrtcvad/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "w3c-webaudio",
+      "standard_why": "关键词「音频|语音|声学|音乐|歌声」命中",
       "check": "声明 vad_threshold、min_speech_ms、max_silence_ms、tail_padding_ms 四个数值。",
       "pitfall": "切分过碎导致识别上下文丢失；尾部静音截断导致尾音丢失。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://arxiv.org/abs/2003.12687",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "A 段默认绑定（轮换 2）",
       "check": "声明 num_speakers（已知|自动）、clustering_threshold、metric（DER|EER）+ 评分帧长与主说话人定义。",
       "pitfall": "重叠语音不显式声明（collar 处理不同）导致 DER 不可比；说话人数假设不同直接比 EER。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://commonvoice.mozilla.org/",
       "anchor_kind": "dataset",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "A 段默认绑定（轮换 0）",
       "check": "声明 adapt_data_hours（小时数）、adapt_scope（frontend|encoder|decoder|full）、以及未适配基线的同集 WER。",
       "pitfall": "只报适配后 WER 不报基线；把数据泄漏（测试口音出现在适配集）当适配收益。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://pypi.org/project/noisereduce/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "A 段默认绑定（轮换 1）",
       "check": "声明 snr_db（范围）、t60_s（混响时间）、enhancement（none|denoise|dereverb）三项，并给各噪声条件下的 WER。",
       "pitfall": "只报干净集 WER；增强前端的训练集泄漏（同噪声同说话人）导致虚高。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://arxiv.org/abs/2010.10759",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "A 段默认绑定（轮换 2）",
       "check": "声明 chunk_ms、latency_metric（first_partial|stable_hypothesis）、以及允许的回退窗口（ms）。",
       "pitfall": "用整句离线 WER 宣称流式性能；延迟定义未声明导致与产品 SLA 对不上。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://arxiv.org/abs/1712.05884",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 acoustic_feature（mel 维数 + 帧移）、sample_rate（Hz）、vocoder（id + 版本）、inference_steps。",
       "pitfall": "采样率不一致造成听感对比无效；声码器版本未记录导致音质回归无法归因。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/1802.06006",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "A 段默认绑定（轮换 1）",
       "check": "声明 ref_audio_sec（参考时长）、consent（授权声明文件名）、similarity_metric（MOS|SECS）与评分人数。",
       "pitfall": "无授权就克隆音色（合规红线）；用自评 MOS 代替第三方听测。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://arxiv.org/abs/1904.06022",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "A 段默认绑定（轮换 2）",
       "check": "声明 control_dims（枚举）、granularity（utterance|word|phoneme）、以及情感标注来源（人工|模型）。",
       "pitfall": "标注来源是模型却报成人工标注；控制粒度不同导致控制精度不可比。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2212.04356",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "A 段默认绑定（轮换 0）",
       "check": "声明 switch_point_annotation（人工|规则）、lid_granularity（句|词|字符）与指标（WER|MER）。",
       "pitfall": "用单语测试集宣称混说能力；切换点标注口径不同导致 MER 不可比。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/2104.01378",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
       "check": "声明 score_dims（发音/流利度/完整度等枚举）、inter_rater_agreement（如 Cohen kappa）、score_mapping（分段函数或分位映射）。",
       "pitfall": "无评分人一致性就报分数可靠；分数映射未公开导致跨版本不可比。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/2303.00747",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 align_unit（词|字符|句）、tolerance_ms（允许偏差）与 time_base（音频起点定义）。",
       "pitfall": "不声明容差就把手工校对与自动对齐混比；音频起点未定义导致整体偏移。"
     }

@@ -16,6 +16,13 @@ flowchart TD
     E07-10
     E07-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-creativecommons
+    STD-gdpr
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E07-01 --> E07-02
   E07-02 --> E07-03
   E07-03 --> E07-04
@@ -36,3 +43,15 @@ flowchart TD
   E07-08 --> E07-11
   E07-11 --> E07-12
   E07-09 --> E07-12
+  E07-01 --> STD-commonmark
+  E07-04 --> STD-commonmark
+  E07-07 --> STD-commonmark
+  E07-10 --> STD-creativecommons
+  E07-09 --> STD-gdpr
+  E07-03 --> STD-w3c-epub33
+  E07-06 --> STD-w3c-epub33
+  E07-11 --> STD-w3c-epub33
+  E07-12 --> STD-w3c-epub33
+  E07-02 --> STD-w3c-tabular-data
+  E07-05 --> STD-w3c-tabular-data
+  E07-08 --> STD-w3c-tabular-data

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A07-01` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `A07-02` | paper | https://arxiv.org/abs/2210.02747 | ✓ 200 |
-| `A07-03` | paper | https://arxiv.org/abs/2302.05543 | ✓ 200 |
-| `A07-04` | paper | https://arxiv.org/abs/2109.07161 | ✓ 200 |
-| `A07-05` | paper | https://arxiv.org/abs/1703.06868 | ✓ 200 |
-| `A07-06` | paper | https://arxiv.org/abs/2107.10833 | ✓ 200 |
-| `A07-07` | paper | https://arxiv.org/abs/2011.11961 | ✓ 200 |
-| `A07-08` | paper | https://arxiv.org/abs/1901.08971 | ✓ 200 |
-| `A07-09` | paper | https://arxiv.org/abs/2106.09685 | ✓ 200 |
-| `A07-10` | paper | https://arxiv.org/abs/2207.12598 | ✓ 200 |
-| `A07-11` | spec | https://c2pa.org/specifications/specifications/1.3/index.html | ✓ 200 |
-| `A07-12` | paper | https://arxiv.org/abs/1706.08500 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A07-01` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A07-02` | paper | https://arxiv.org/abs/2210.02747 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A07-03` | paper | https://arxiv.org/abs/2302.05543 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A07-04` | paper | https://arxiv.org/abs/2109.07161 | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `A07-05` | paper | https://arxiv.org/abs/1703.06868 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A07-06` | paper | https://arxiv.org/abs/2107.10833 | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `A07-07` | paper | https://arxiv.org/abs/2011.11961 | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `A07-08` | paper | https://arxiv.org/abs/1901.08971 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A07-09` | paper | https://arxiv.org/abs/2106.09685 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `A07-10` | paper | https://arxiv.org/abs/2207.12598 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `A07-11` | spec | https://c2pa.org/specifications/specifications/1.3/index.html | ✓ 200 | `c2pa-spec` 内容凭证规范（C2PA；关键词「水印|溯源|凭证|内容来源」命中） |
+| `A07-12` | paper | https://arxiv.org/abs/1706.08500 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

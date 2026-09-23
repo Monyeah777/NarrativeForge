@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D03-01` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-02` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-03` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-04` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-05` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-06` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-07` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-08` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-09` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-10` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-11` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
-| `D03-12` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D03-01` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `D03-02` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D03-03` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `D03-04` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D03-05` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D03-06` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D03-07` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D03-08` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `D03-09` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D03-10` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D03-11` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `D03-12` | spec | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

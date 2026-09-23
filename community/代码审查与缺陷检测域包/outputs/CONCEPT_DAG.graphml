@@ -52,6 +52,22 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-cwe">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oasis-sarif">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-osv">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-spdx-3">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="B09-01" target="B09-02">
       <data key="provenance">['b09-anchor']</data>
     </edge>
@@ -81,6 +97,42 @@
     </edge>
     <edge source="B09-11" target="B09-12">
       <data key="provenance">['b09-anchor']</data>
+    </edge>
+    <edge source="B09-02" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-05" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-08" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-11" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-01" target="STD-oasis-sarif">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-07" target="STD-oasis-sarif">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-10" target="STD-oasis-sarif">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-03" target="STD-osv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-06" target="STD-osv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-09" target="STD-osv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-12" target="STD-osv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B09-04" target="STD-spdx-3">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

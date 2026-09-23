@@ -16,6 +16,16 @@ flowchart TD
     D10-10
     D10-12
   end
+  subgraph P80[P80]
+    STD-c2pa-spec
+    STD-fao-food
+    STD-gdpr
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-oecd-ai
+    STD-opengeospatial
+    STD-w3c-prov-o
+  end
   D10-01 --> D10-02
   D10-02 --> D10-03
   D10-03 --> D10-04
@@ -36,3 +46,15 @@ flowchart TD
   D10-08 --> D10-11
   D10-11 --> D10-12
   D10-09 --> D10-12
+  D10-09 --> STD-c2pa-spec
+  D10-06 --> STD-fao-food
+  D10-10 --> STD-fao-food
+  D10-12 --> STD-gdpr
+  D10-03 --> STD-iso-iec-25010
+  D10-01 --> STD-nist-ai-rmf
+  D10-04 --> STD-nist-ai-rmf
+  D10-07 --> STD-nist-ai-rmf
+  D10-08 --> STD-oecd-ai
+  D10-11 --> STD-opengeospatial
+  D10-02 --> STD-w3c-prov-o
+  D10-05 --> STD-w3c-prov-o

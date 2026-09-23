@@ -16,6 +16,11 @@ flowchart TD
     E04-10
     E04-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E04-01 --> E04-02
   E04-02 --> E04-03
   E04-03 --> E04-04
@@ -36,3 +41,15 @@ flowchart TD
   E04-08 --> E04-11
   E04-11 --> E04-12
   E04-09 --> E04-12
+  E04-01 --> STD-commonmark
+  E04-04 --> STD-commonmark
+  E04-07 --> STD-commonmark
+  E04-10 --> STD-commonmark
+  E04-03 --> STD-w3c-epub33
+  E04-06 --> STD-w3c-epub33
+  E04-09 --> STD-w3c-epub33
+  E04-12 --> STD-w3c-epub33
+  E04-02 --> STD-w3c-tabular-data
+  E04-05 --> STD-w3c-tabular-data
+  E04-08 --> STD-w3c-tabular-data
+  E04-11 --> STD-w3c-tabular-data

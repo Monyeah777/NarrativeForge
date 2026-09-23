@@ -52,6 +52,30 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-frictionless-package">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-table">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-gdpr">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json-schema">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oci-image">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-tabular-data">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="B16-01" target="B16-02">
       <data key="provenance">['b16-anchor']</data>
     </edge>
@@ -111,6 +135,42 @@
     </edge>
     <edge source="B16-09" target="B16-12">
       <data key="provenance">['b16-anchor']</data>
+    </edge>
+    <edge source="B16-07" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-06" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-09" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-12" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-10" target="STD-gdpr">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-01" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-04" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-02" target="STD-oci-image">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-03" target="STD-oci-image">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-08" target="STD-oci-image">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-05" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="B16-11" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

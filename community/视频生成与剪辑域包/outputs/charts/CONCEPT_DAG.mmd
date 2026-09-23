@@ -16,6 +16,13 @@ flowchart TD
     E08-10
     E08-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-package
+    STD-oci-image
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E08-01 --> E08-02
   E08-02 --> E08-03
   E08-03 --> E08-04
@@ -36,3 +43,15 @@ flowchart TD
   E08-08 --> E08-11
   E08-11 --> E08-12
   E08-09 --> E08-12
+  E08-01 --> STD-commonmark
+  E08-07 --> STD-commonmark
+  E08-10 --> STD-commonmark
+  E08-08 --> STD-frictionless-package
+  E08-02 --> STD-oci-image
+  E08-04 --> STD-oci-image
+  E08-05 --> STD-oci-image
+  E08-09 --> STD-oci-image
+  E08-03 --> STD-w3c-epub33
+  E08-06 --> STD-w3c-epub33
+  E08-12 --> STD-w3c-epub33
+  E08-11 --> STD-w3c-tabular-data

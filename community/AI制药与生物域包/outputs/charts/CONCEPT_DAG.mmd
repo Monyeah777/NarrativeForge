@@ -16,6 +16,14 @@ flowchart TD
     D02-10
     D02-12
   end
+  subgraph P80[P80]
+    STD-hl7-fhir
+    STD-iso-iec-25010
+    STD-mermaid
+    STD-nist-ai-rmf
+    STD-w3c-epub33
+    STD-w3c-prov-o
+  end
   D02-01 --> D02-02
   D02-02 --> D02-03
   D02-03 --> D02-04
@@ -36,3 +44,15 @@ flowchart TD
   D02-08 --> D02-11
   D02-11 --> D02-12
   D02-09 --> D02-12
+  D02-04 --> STD-hl7-fhir
+  D02-03 --> STD-iso-iec-25010
+  D02-09 --> STD-iso-iec-25010
+  D02-12 --> STD-iso-iec-25010
+  D02-07 --> STD-mermaid
+  D02-01 --> STD-nist-ai-rmf
+  D02-10 --> STD-nist-ai-rmf
+  D02-06 --> STD-w3c-epub33
+  D02-02 --> STD-w3c-prov-o
+  D02-05 --> STD-w3c-prov-o
+  D02-08 --> STD-w3c-prov-o
+  D02-11 --> STD-w3c-prov-o

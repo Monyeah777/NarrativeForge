@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「搜索与信息聚合」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（搜索与信息聚合:M01）与收口模块（搜索与信息聚合:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E17-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E17-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,12 @@
 | `E17-10` | 问答式搜索 | P60 | `E17-09`、`E17-07` | e17-anchor |
 | `E17-11` | 垂直检索 | P40 | `E17-10`、`E17-08` | e17-anchor |
 | `E17-12` | 内容抽取清洗 | P60 | `E17-11`、`E17-09` | e17-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `E17-07` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E17-01`、`E17-04` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `E17-11` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `E17-10`、`E17-12` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E17-03`、`E17-06`、`E17-09` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E17-02`、`E17-05`、`E17-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +52,12 @@
 | `E17-问答式搜索` | `E17-10` |
 | `E17-垂直检索` | `E17-11` |
 | `E17-内容抽取清洗` | `E17-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-package` | `STD-frictionless-package` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +69,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e17-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E17-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +89,15 @@ concept_graph:
         - "E17-10"
         - "E17-11"
         - "E17-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-commonmark"
+        - "STD-frictionless-package"
+        - "STD-frictionless-table"
+        - "STD-w3c-epub33"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "E17-01"
       name: "查询理解"
@@ -181,6 +203,60 @@ concept_graph:
         - "E17-09"
       provenance:
         - "e17-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E17-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E17-01"
+        - "E17-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E17-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E17-10"
+        - "E17-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E17-03"
+        - "E17-06"
+        - "E17-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E17-02"
+        - "E17-05"
+        - "E17-08"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

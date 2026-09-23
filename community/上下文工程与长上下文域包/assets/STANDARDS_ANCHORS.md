@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C12-01` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-02` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-03` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-04` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-05` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-06` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-07` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-08` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-09` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-10` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-11` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `C12-12` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C12-01` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `C12-02` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C12-03` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `C12-04` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `C12-05` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C12-06` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `C12-07` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C12-08` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C12-09` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `C12-10` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `C12-11` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C12-12` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
 
 ## 2. 使用边界
 

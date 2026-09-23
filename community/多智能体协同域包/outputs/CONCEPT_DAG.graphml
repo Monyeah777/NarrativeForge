@@ -52,6 +52,26 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-a2a">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-cncf-cloudevents">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-cncf-otel-semconv">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mcp">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="C17-01" target="C17-02">
       <data key="provenance">['c17-anchor']</data>
     </edge>
@@ -111,6 +131,42 @@
     </edge>
     <edge source="C17-09" target="C17-12">
       <data key="provenance">['c17-anchor']</data>
+    </edge>
+    <edge source="C17-01" target="STD-a2a">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-03" target="STD-a2a">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-07" target="STD-a2a">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-12" target="STD-a2a">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-02" target="STD-cncf-cloudevents">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-09" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-11" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-04" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-05" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-06" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-08" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C17-10" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D02-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D02-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D02-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；关键词「医疗|临床|病历|诊断」命中） |
+| `D02-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `D02-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `mermaid` Mermaid 图语言（Mermaid；关键词「流程|结构图|示意」命中） |
+| `D02-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D02-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

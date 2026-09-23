@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/2210.06774",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 outline_depth（层级）、per_section_words（目标字数）与 outline_adherence（是否有一致性检查）。",
       "pitfall": "无大纲直接长文生成导致中段漂移；只给总字数不给分节预算。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/1909.05858",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 control_vars（枚举）、判定方式（规则|模型|人工）与容差（如句长 Ziel 区间）。",
       "pitfall": "只用形容词描述文风（无法判定）；控制变量变了却与旧稿直接比质量。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://arxiv.org/abs/1910.10683",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 context_window（token 数）、rewrite_strength（0–1）与 fact_preserve（required|optional + 校验方式）。",
       "pitfall": "改写后事实漂移无校验；上下文超出窗口被静默截断。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://arxiv.org/abs/1603.07252",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 target_ratio（如 ≤0.4 压缩率）、allowed_ops（增/删/改三类是否允许）与 fact_check 方式。",
       "pitfall": "压缩率无上限定义导致「压缩」实为改写；删掉关键限定语却称忠实。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://arxiv.org/abs/1506.03340",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 max_chars、coverage_rule（须覆盖的关键要素）与 dedup（与正文重复率上限）。",
       "pitfall": "标题与正文首句完全重复（信息零增益）；字数不设上限导致版式崩坏。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://www.ftc.gov/business-guidance/resources/advertising-faqs-guide-small-business",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 selling_points（清单）、forbidden_claims（禁用宣称清单）与 cta（必须存在的动作号召）。",
       "pitfall": "出现绝对化或无依据疗效宣称；无 CTA 导致文案不可用。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://www.rfc-editor.org/rfc/rfc7322.txt",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 style_guide（体例来源）、term_consistency（同义词合并表）与 citation_format（引用格式）。",
       "pitfall": "同义词混用导致检索失效；引用格式不统一导致审校返工。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/1805.04833",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 constraints（韵律/格律/字数等枚举）、freedom（受约束 vs 自由）与评审方式（人工 / 规则）。",
       "pitfall": "格律约束未声明导致「不合格也当合格」；用自动指标替代人工文学评审。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://arxiv.org/abs/1906.04043",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 feature_set（可量化特征清单）、target_threshold（各特征目标值）与检测器版本（若用检测器）。",
       "pitfall": "只靠删「首先/其次」当人类化；检测器版本未固定导致效果不可复现。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2305.14251",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 claim_extraction（方法）、evidence_binding（每条主张须绑来源 id）与 handling（contradict → 阻断或标注）。",
       "pitfall": "主张无来源 id（无法复核）；发现矛盾仅改措辞不改事实。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/2208.11663",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 version_id 规则、change_log 粒度（段落 / 句子）与 rollback（是否可逐版回滚）。",
       "pitfall": "覆盖式改写导致不可回滚；变更记录只写「润色」不指范围。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/2303.16634",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
       "check": "声明 auto_metrics（清单含版本）、human_protocol（人数 / 量表）与 agreement（如 kappa）。",
       "pitfall": "只用单一自动指标下「质量」结论；人工评审无一致性统计。"
     }

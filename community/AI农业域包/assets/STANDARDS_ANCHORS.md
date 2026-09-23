@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D10-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D10-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D10-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D10-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D10-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D10-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D10-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D10-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `fao-food` 食品安全与质量（FAO；关键词「农业|种植|养殖」命中） |
+| `D10-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D10-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `oecd-ai` OECD AI 原则（OECD；关键词「政务|公共事务|政策」命中） |
+| `D10-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `c2pa-spec` 内容凭证规范（C2PA；关键词「水印|溯源|凭证|内容来源」命中） |
+| `D10-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `fao-food` 食品安全与质量（FAO；关键词「农业|种植|养殖」命中） |
+| `D10-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC；关键词「地理|遥感|地图|空间|三维|点云」命中） |
+| `D10-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
 
 ## 2. 使用边界
 

@@ -16,6 +16,12 @@ flowchart TD
     D04-10
     D04-12
   end
+  subgraph P80[P80]
+    STD-cncf-cloudevents
+    STD-gdpr
+    STD-gips
+    STD-iso10383
+  end
   D04-01 --> D04-02
   D04-02 --> D04-03
   D04-03 --> D04-04
@@ -36,3 +42,15 @@ flowchart TD
   D04-08 --> D04-11
   D04-11 --> D04-12
   D04-09 --> D04-12
+  D04-05 --> STD-cncf-cloudevents
+  D04-08 --> STD-gdpr
+  D04-09 --> STD-gdpr
+  D04-01 --> STD-gips
+  D04-03 --> STD-gips
+  D04-06 --> STD-gips
+  D04-07 --> STD-gips
+  D04-10 --> STD-gips
+  D04-11 --> STD-gips
+  D04-02 --> STD-iso10383
+  D04-04 --> STD-iso10383
+  D04-12 --> STD-iso10383

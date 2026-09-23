@@ -16,6 +16,14 @@ flowchart TD
     C18-10
     C18-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-frictionless-table
+    STD-onnx
+    STD-onvif-ucum
+    STD-openmetrics
+    STD-prometheus-exposition
+  end
   C18-01 --> C18-02
   C18-02 --> C18-03
   C18-03 --> C18-04
@@ -36,3 +44,15 @@ flowchart TD
   C18-08 --> C18-11
   C18-11 --> C18-12
   C18-09 --> C18-12
+  C18-01 --> STD-cncf-otel-semconv
+  C18-02 --> STD-cncf-otel-semconv
+  C18-04 --> STD-cncf-otel-semconv
+  C18-06 --> STD-cncf-otel-semconv
+  C18-10 --> STD-cncf-otel-semconv
+  C18-07 --> STD-frictionless-table
+  C18-08 --> STD-onnx
+  C18-03 --> STD-onvif-ucum
+  C18-09 --> STD-openmetrics
+  C18-12 --> STD-openmetrics
+  C18-05 --> STD-prometheus-exposition
+  C18-11 --> STD-prometheus-exposition

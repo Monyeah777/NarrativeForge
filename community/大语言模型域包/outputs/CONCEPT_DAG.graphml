@@ -52,6 +52,26 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-creativecommons">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-gfm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-skos">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A01-01" target="A01-02">
       <data key="provenance">['a01-anchor']</data>
     </edge>
@@ -81,6 +101,42 @@
     </edge>
     <edge source="A01-06" target="A01-12">
       <data key="provenance">['a01-anchor']</data>
+    </edge>
+    <edge source="A01-08" target="STD-creativecommons">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-05" target="STD-gfm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-04" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-06" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-09" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-01" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-02" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-07" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-10" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-11" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-12" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A01-03" target="STD-w3c-skos">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

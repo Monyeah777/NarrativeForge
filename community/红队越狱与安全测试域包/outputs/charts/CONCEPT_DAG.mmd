@@ -16,6 +16,14 @@ flowchart TD
     C09-10
     C09-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-commonmark
+    STD-cwe
+    STD-frictionless-table
+    STD-mlcommons-bench
+    STD-owasp-llm
+  end
   C09-01 --> C09-02
   C09-02 --> C09-03
   C09-03 --> C09-04
@@ -36,3 +44,15 @@ flowchart TD
   C09-08 --> C09-11
   C09-11 --> C09-12
   C09-09 --> C09-12
+  C09-04 --> STD-cncf-otel-semconv
+  C09-07 --> STD-cncf-otel-semconv
+  C09-01 --> STD-commonmark
+  C09-03 --> STD-commonmark
+  C09-12 --> STD-cwe
+  C09-06 --> STD-frictionless-table
+  C09-11 --> STD-mlcommons-bench
+  C09-02 --> STD-owasp-llm
+  C09-05 --> STD-owasp-llm
+  C09-08 --> STD-owasp-llm
+  C09-09 --> STD-owasp-llm
+  C09-10 --> STD-owasp-llm

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C02-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C02-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C02-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C02-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C02-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C02-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C02-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C02-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C02-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C02-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C02-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C02-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `C02-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C02-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
 
 ## 2. 使用边界
 

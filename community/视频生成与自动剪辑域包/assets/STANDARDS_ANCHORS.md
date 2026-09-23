@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B16-01` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-03` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-04` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-05` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-06` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-07` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-08` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-09` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-11` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B16-12` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B16-01` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B16-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `B16-03` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `B16-04` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B16-05` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B16-06` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B16-07` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `B16-08` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `B16-09` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B16-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `B16-11` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B16-12` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
 
 ## 2. 使用边界
 

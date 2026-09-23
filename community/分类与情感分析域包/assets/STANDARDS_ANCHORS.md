@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B04-01` | repo | https://pypi.org/project/Rasa/ | ✓ 200 |
-| `B04-02` | paper | https://arxiv.org/abs/1509.01626 | ✓ 200 |
-| `B04-03` | repo | https://pypi.org/project/textblob/ | ✓ 200 |
-| `B04-04` | paper | https://arxiv.org/abs/2005.00547 | ✓ 200 |
-| `B04-05` | paper | https://aclanthology.org/S16-1003/ | ✓ 200 |
-| `B04-06` | doc | https://www.perspectiveapi.com/ | ✓ 200 |
-| `B04-07` | repo | https://pypi.org/project/vaderSentiment/ | ✓ 200 |
-| `B04-08` | paper | https://arxiv.org/abs/2209.11055 | ✓ 200 |
-| `B04-09` | repo | https://pypi.org/project/scikit-multilearn/ | ✓ 200 |
-| `B04-10` | paper | https://arxiv.org/abs/1706.04599 | ✓ 200 |
-| `B04-11` | doc | https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html | ✓ 200 |
-| `B04-12` | doc | https://scikit-learn.org/stable/modules/model_evaluation.html | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B04-01` | repo | https://pypi.org/project/Rasa/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-02` | paper | https://arxiv.org/abs/1509.01626 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-03` | repo | https://pypi.org/project/textblob/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-04` | paper | https://arxiv.org/abs/2005.00547 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-05` | paper | https://aclanthology.org/S16-1003/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-06` | doc | https://www.perspectiveapi.com/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-07` | repo | https://pypi.org/project/vaderSentiment/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-08` | paper | https://arxiv.org/abs/2209.11055 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-09` | repo | https://pypi.org/project/scikit-multilearn/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-10` | paper | https://arxiv.org/abs/1706.04599 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B04-11` | doc | https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `B04-12` | doc | https://scikit-learn.org/stable/modules/model_evaluation.html | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

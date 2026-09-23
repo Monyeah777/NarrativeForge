@@ -16,6 +16,14 @@ flowchart TD
     B14-10
     B14-12
   end
+  subgraph P80[P80]
+    STD-creativecommons
+    STD-frictionless-table
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+    STD-w3c-tabular-data
+    STD-w3c-webaudio
+  end
   B14-01 --> B14-02
   B14-02 --> B14-03
   B14-03 --> B14-04
@@ -36,3 +44,15 @@ flowchart TD
   B14-08 --> B14-11
   B14-11 --> B14-12
   B14-09 --> B14-12
+  B14-08 --> STD-creativecommons
+  B14-03 --> STD-frictionless-table
+  B14-06 --> STD-frictionless-table
+  B14-01 --> STD-ietf-json-schema
+  B14-04 --> STD-ietf-json-schema
+  B14-07 --> STD-ietf-json-schema
+  B14-10 --> STD-ietf-json-schema
+  B14-09 --> STD-mlcommons-bench
+  B14-12 --> STD-mlcommons-bench
+  B14-02 --> STD-w3c-tabular-data
+  B14-05 --> STD-w3c-tabular-data
+  B14-11 --> STD-w3c-webaudio

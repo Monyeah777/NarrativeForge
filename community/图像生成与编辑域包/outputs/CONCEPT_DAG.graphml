@@ -52,6 +52,26 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-c2pa-spec">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-svg2">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A07-01" target="A07-02">
       <data key="provenance">['a07-anchor']</data>
     </edge>
@@ -81,6 +101,42 @@
     </edge>
     <edge source="A07-11" target="A07-12">
       <data key="provenance">['a07-anchor']</data>
+    </edge>
+    <edge source="A07-11" target="STD-c2pa-spec">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-10" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-02" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-05" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-08" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-09" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-12" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-01" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-03" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-04" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-06" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A07-07" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

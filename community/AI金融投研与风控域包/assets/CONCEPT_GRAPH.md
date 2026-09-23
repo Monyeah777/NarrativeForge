@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「AI+金融投研与风控」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（AI金融投研与风控:M01）与收口模块（AI金融投研与风控:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（D04-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D04-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,10 @@
 | `D04-10` | 金融问答 | P60 | `D04-09`、`D04-07` | d04-anchor |
 | `D04-11` | 市场数据分析 | P40 | `D04-10`、`D04-08` | d04-anchor |
 | `D04-12` | 披露与免责 | P60 | `D04-11`、`D04-09` | d04-anchor |
+| `STD-cncf-cloudevents` | 标准 · CloudEvents 1.0（CNCF） | P80 | `D04-05` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `D04-08`、`D04-09` | std-catalog |
+| `STD-gips` | 标准 · GIPS 绩效标准（CFA Institute） | P80 | `D04-01`、`D04-03`、`D04-06`、`D04-07`、`D04-10`、`D04-11` | std-catalog |
+| `STD-iso10383` | 标准 · ISO 10383 MIC（ISO） | P80 | `D04-02`、`D04-04`、`D04-12` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +50,10 @@
 | `D04-金融问答` | `D04-10` |
 | `D04-市场数据分析` | `D04-11` |
 | `D04-披露与免责` | `D04-12` |
+| `std-cncf-cloudevents` | `STD-cncf-cloudevents` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-gips` | `STD-gips` |
+| `std-iso10383` | `STD-iso10383` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +65,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     d04-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "D04-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +85,13 @@ concept_graph:
         - "D04-10"
         - "D04-11"
         - "D04-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-cloudevents"
+        - "STD-gdpr"
+        - "STD-gips"
+        - "STD-iso10383"
   nodes:
     - id: "D04-01"
       name: "财报解析与摘要"
@@ -181,6 +197,46 @@ concept_graph:
         - "D04-09"
       provenance:
         - "d04-anchor"
+    - id: "STD-cncf-cloudevents"
+      name: "标准 · CloudEvents 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D04-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D04-08"
+        - "D04-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gips"
+      name: "标准 · GIPS 绩效标准"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D04-01"
+        - "D04-03"
+        - "D04-06"
+        - "D04-07"
+        - "D04-10"
+        - "D04-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-iso10383"
+      name: "标准 · ISO 10383 MIC"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D04-02"
+        - "D04-04"
+        - "D04-12"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

@@ -16,6 +16,13 @@ flowchart TD
     E02-10
     E02-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-mlcommons-bench
+    STD-owasp-llm
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E02-01 --> E02-02
   E02-02 --> E02-03
   E02-03 --> E02-04
@@ -36,3 +43,15 @@ flowchart TD
   E02-08 --> E02-11
   E02-11 --> E02-12
   E02-09 --> E02-12
+  E02-01 --> STD-commonmark
+  E02-04 --> STD-commonmark
+  E02-07 --> STD-commonmark
+  E02-10 --> STD-commonmark
+  E02-12 --> STD-mlcommons-bench
+  E02-09 --> STD-owasp-llm
+  E02-03 --> STD-w3c-epub33
+  E02-06 --> STD-w3c-epub33
+  E02-02 --> STD-w3c-tabular-data
+  E02-05 --> STD-w3c-tabular-data
+  E02-08 --> STD-w3c-tabular-data
+  E02-11 --> STD-w3c-tabular-data

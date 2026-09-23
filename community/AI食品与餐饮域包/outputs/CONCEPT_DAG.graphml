@@ -52,6 +52,22 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-gdpr">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-iso-iec-25010">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-ai-rmf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-prov-o">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="D16-01" target="D16-02">
       <data key="provenance">['d16-anchor']</data>
     </edge>
@@ -111,6 +127,42 @@
     </edge>
     <edge source="D16-09" target="D16-12">
       <data key="provenance">['d16-anchor']</data>
+    </edge>
+    <edge source="D16-12" target="STD-gdpr">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-03" target="STD-iso-iec-25010">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-09" target="STD-iso-iec-25010">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-01" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-04" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-06" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-07" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-10" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-02" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-05" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-08" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D16-11" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

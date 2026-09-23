@@ -52,6 +52,38 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-creativecommons">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-800-188">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oasis-openapi">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-osi-osd">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-spdx-licenses">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-epub33">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="F09-01" target="F09-02">
       <data key="provenance">['f09-anchor']</data>
     </edge>
@@ -111,6 +143,42 @@
     </edge>
     <edge source="F09-09" target="F09-12">
       <data key="provenance">['f09-anchor']</data>
+    </edge>
+    <edge source="F09-01" target="STD-creativecommons">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-08" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-06" target="STD-nist-800-188">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-03" target="STD-oasis-openapi">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-05" target="STD-osi-osd">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-07" target="STD-osi-osd">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-09" target="STD-osi-osd">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-11" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-02" target="STD-spdx-licenses">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-10" target="STD-spdx-licenses">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-12" target="STD-spdx-licenses">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-04" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

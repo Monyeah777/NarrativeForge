@@ -16,6 +16,12 @@ flowchart TD
     E20-10
     E20-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-gdpr
+    STD-khronos-gltf
+    STD-w3c-webaudio
+  end
   E20-01 --> E20-02
   E20-02 --> E20-03
   E20-03 --> E20-04
@@ -36,3 +42,15 @@ flowchart TD
   E20-08 --> E20-11
   E20-11 --> E20-12
   E20-09 --> E20-12
+  E20-09 --> STD-cncf-otel-semconv
+  E20-10 --> STD-gdpr
+  E20-01 --> STD-khronos-gltf
+  E20-03 --> STD-khronos-gltf
+  E20-05 --> STD-khronos-gltf
+  E20-07 --> STD-khronos-gltf
+  E20-11 --> STD-khronos-gltf
+  E20-02 --> STD-w3c-webaudio
+  E20-04 --> STD-w3c-webaudio
+  E20-06 --> STD-w3c-webaudio
+  E20-08 --> STD-w3c-webaudio
+  E20-12 --> STD-w3c-webaudio

@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/2204.03458",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 resolution（宽×高）、fps、max_duration_s 与 eval_dims（三者分列），缺一即口径未定。",
       "pitfall": "只报画质不报时序一致性；用短片段成绩代表长视频能力。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/2311.15127",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 ref_frames（数量与位置）、first_frame_strict（true|false）、motion_control（none|camera|trajectory）。",
       "pitfall": "首帧不严格却宣称「图生视频保真」；运动幅度未控导致评测集不可比。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://arxiv.org/abs/2212.11565",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 edit_scope（local|global|temporal）、mask_source（手工|模型|自动）与 consistency_loss（有|无 + 权重）。",
       "pitfall": "编辑后未做时序一致性检查导致闪烁；掩码来源未声明使复现不可能。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://arxiv.org/abs/2104.13371",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 degradation_model（枚举 + 参数）、scale_factor（整数）、temporal_consistency_metric（如 tOF/tLP）。",
       "pitfall": "退化模型未声明导致 PSNR 不可比；缺时间一致性指标掩盖闪烁。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://arxiv.org/abs/2008.04838",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "A 段默认绑定（轮换 1）",
       "check": "声明 transition_types（hard|gradual）、threshold（数值）与 keyframe_rule（等间隔|内容自适应）。",
       "pitfall": "只测硬切却在真实素材（含渐变）上宣称可用；阈值不同导致召回不可比。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://arxiv.org/abs/2311.17982",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-owl-time",
+      "standard_why": "关键词「时间线|时序|日期」命中",
       "check": "声明 consistency_metric（枚举）、window_s（窗口长度）与 drift_measure（主体 / 背景 / 光照分列）。",
       "pitfall": "只在短窗口内测一致性；主体漂移与背景漂移混为一个数字。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://arxiv.org/abs/2302.05543",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "A 段默认绑定（轮换 0）",
       "check": "声明 control_signal（pose|depth|trajectory）、control_strength（0–1）与 fidelity_tradeoff 报告方式。",
       "pitfall": "只报可控性不报保真损失；控制强度未声明导致不可复现。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/1705.00754",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 caption_granularity（clip|video）、temporal_alignment（required|none）与指标（CIDEr|SPICE 等）。",
       "pitfall": "片段级字幕当全片摘要；指标与切分不同导致跨报告不可比。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://arxiv.org/abs/1809.01696",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 q_type_dist（类型分布）、temporal_dependency（yes|no 标注）与 answer_form（open|mc）。",
       "pitfall": "多选题成绩当开放问答能力；时序依赖未标注导致「单帧即可答」混入统计。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2104.08860",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "oci-image",
+      "standard_why": "关键词「视频|剪辑|字幕」命中",
       "check": "声明 query_modality（text|image|video）、gallery_size 与 metric（R@k / mAP）+ 是否取平均。",
       "pitfall": "候选库规模不同直接比 R@1；多模态查询混在一张表里。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/2008.10010",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "A 段默认绑定（轮换 1）",
       "check": "声明 driving_signal（audio|text）、sync_metric（LSE-C|LSE-D|人工）与 identity_metric（如 ID 相似度）。",
       "pitfall": "只报同步不报身份漂移；用同一人脸库自测自评。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/1812.01717",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
       "check": "声明 distribution_metric（FVD 等）、per_sample_metrics（清单）、eval_set_size（≥1000 建议）与随机种子数。",
       "pitfall": "用极小的评测集报 FVD；单次采样不报方差导致结论不稳。"
     }

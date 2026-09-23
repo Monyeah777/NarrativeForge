@@ -16,6 +16,16 @@ flowchart TD
     E13-10
     E13-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-cwe
+    STD-eu-machinery
+    STD-osi-osd
+    STD-owasp-llm
+    STD-peps
+    STD-spdx-3
+    STD-w3c-epub33
+  end
   E13-01 --> E13-02
   E13-02 --> E13-03
   E13-03 --> E13-04
@@ -36,3 +46,15 @@ flowchart TD
   E13-08 --> E13-11
   E13-11 --> E13-12
   E13-09 --> E13-12
+  E13-09 --> STD-commonmark
+  E13-05 --> STD-cwe
+  E13-11 --> STD-eu-machinery
+  E13-02 --> STD-osi-osd
+  E13-04 --> STD-osi-osd
+  E13-08 --> STD-osi-osd
+  E13-12 --> STD-osi-osd
+  E13-10 --> STD-owasp-llm
+  E13-01 --> STD-peps
+  E13-03 --> STD-peps
+  E13-06 --> STD-spdx-3
+  E13-07 --> STD-w3c-epub33

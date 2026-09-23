@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「推理优化与加速」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（推理优化与加速:M01）与收口模块（推理优化与加速:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C10-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C10-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `C10-10` | 长上下文加速 | P60 | `C10-09`、`C10-07` | c10-anchor |
 | `C10-11` | 硬件适配 | P40 | `C10-10`、`C10-08` | c10-anchor |
 | `C10-12` | 加速效果评测 | P60 | `C10-11`、`C10-09` | c10-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C10-04`、`C10-07` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `C10-03`、`C10-06`、`C10-09` | std-catalog |
+| `STD-gfm` | 标准 · GFM 扩展（GitHub） | P80 | `C10-10` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `C10-02`、`C10-05`、`C10-08`、`C10-11`、`C10-12` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `C10-01` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `C10-长上下文加速` | `C10-10` |
 | `C10-硬件适配` | `C10-11` |
 | `C10-加速效果评测` | `C10-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-gfm` | `STD-gfm` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-onnx` | `STD-onnx` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c10-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C10-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "C10-10"
         - "C10-11"
         - "C10-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-frictionless-table"
+        - "STD-gfm"
+        - "STD-mlcommons-bench"
+        - "STD-onnx"
   nodes:
     - id: "C10-01"
       name: "低比特量化"
@@ -181,6 +200,53 @@ concept_graph:
         - "C10-09"
       provenance:
         - "c10-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C10-04"
+        - "C10-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C10-03"
+        - "C10-06"
+        - "C10-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gfm"
+      name: "标准 · GFM 扩展"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C10-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C10-02"
+        - "C10-05"
+        - "C10-08"
+        - "C10-11"
+        - "C10-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C10-01"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

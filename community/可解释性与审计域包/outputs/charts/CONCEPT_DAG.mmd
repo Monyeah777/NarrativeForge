@@ -16,6 +16,13 @@ flowchart TD
     F06-10
     F06-12
   end
+  subgraph P80[P80]
+    STD-gdpr
+    STD-nist-ai-rmf
+    STD-onnx
+    STD-spdx-licenses
+    STD-w3c-prov-o
+  end
   F06-01 --> F06-02
   F06-02 --> F06-03
   F06-03 --> F06-04
@@ -36,3 +43,15 @@ flowchart TD
   F06-08 --> F06-11
   F06-11 --> F06-12
   F06-09 --> F06-12
+  F06-11 --> STD-gdpr
+  F06-01 --> STD-nist-ai-rmf
+  F06-04 --> STD-nist-ai-rmf
+  F06-07 --> STD-nist-ai-rmf
+  F06-09 --> STD-nist-ai-rmf
+  F06-10 --> STD-nist-ai-rmf
+  F06-02 --> STD-onnx
+  F06-03 --> STD-onnx
+  F06-12 --> STD-spdx-licenses
+  F06-05 --> STD-w3c-prov-o
+  F06-06 --> STD-w3c-prov-o
+  F06-08 --> STD-w3c-prov-o

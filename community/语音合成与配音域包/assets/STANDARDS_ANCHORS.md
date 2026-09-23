@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B14-01` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-03` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-04` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-05` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-06` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-07` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-08` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-09` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-11` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B14-12` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B14-01` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-03` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-04` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-05` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-06` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-07` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-08` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `B14-09` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `B14-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B14-11` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `B14-12` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

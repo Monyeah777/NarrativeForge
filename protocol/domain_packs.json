@@ -23,6 +23,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "authored",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 22,
+      "concept_density": 1.2941,
       "spec_digest": "dfa47bccbc248b33859d492d2dcc7b42e416c00e7ecb3f641b8950f9f532e885"
     },
     {
@@ -45,6 +50,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "authored",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 22,
+      "concept_density": 1.1579,
       "spec_digest": "7e8d903a3ea03dfc3bd800bda089e3b2e9535ae5b2d261db5fc75894da7e3e74"
     },
     {
@@ -67,6 +77,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "authored",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 22,
+      "concept_density": 1.1,
       "spec_digest": "d0b571307f570aefa02edb8cec120d6fa2955902e161289cca85d52bdb768e0a"
     },
     {
@@ -89,6 +104,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "authored",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 22,
+      "concept_density": 1.2941,
       "spec_digest": "097e87b79aa71db62e4f41caa1669014f92321648da022eceea953a77ba074e6"
     },
     {
@@ -111,6 +131,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "authored",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 22,
+      "concept_density": 1.1579,
       "spec_digest": "a64420eb5c20bb745f80bae32d1581c9b44f812285e24f627f2dcfee5ccca02c"
     },
     {
@@ -133,6 +158,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "retrieval",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 22,
+      "concept_density": 1.375,
       "spec_digest": "cc9732ee59eb9c86ab004b6e74f08f82bee27f19a6c0b1ca5b5c0177533eb196"
     },
     {
@@ -155,6 +185,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "authored",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 22,
+      "concept_density": 1.2941,
       "spec_digest": "78c00531d22881fbf5e32db8ff22ce7db8ec318f188442d06af78709b3ce37c7"
     },
     {
@@ -177,6 +212,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 22,
+      "concept_density": 1.375,
       "spec_digest": "7f4ba7931fdf35a4491c08e007bc608d98c2db57cd50b435695192a6f9650a1d"
     },
     {
@@ -199,6 +239,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
       "content_tier": "authored",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 22,
+      "concept_density": 1.1579,
       "spec_digest": "26b7df4f5f9746b5778f8640f961316fcdd1b7f3775d000dc51f72e0215833ba"
     },
     {
@@ -221,6 +266,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
       "content_tier": "authored",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 22,
+      "concept_density": 1.2222,
       "spec_digest": "3a6b1a8377542405bf2dfb1c63818625b6c2058a783afe798e2746a5e585d504"
     },
     {
@@ -243,6 +293,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "retrieval",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 22,
+      "concept_density": 1.375,
       "spec_digest": "8538e40ba179fa09770a785f058e4fcd56eb5c53bb443281a790ef4a5ab95d10"
     },
     {
@@ -265,6 +320,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 21,
+      "concept_density": 1.3125,
       "spec_digest": "b1e44c1fe98b53c617da1b35cbe2884433386b556e5a64157d3a75281e715497"
     },
     {
@@ -287,6 +347,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
       "content_tier": "authored",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 22,
+      "concept_density": 1.1579,
       "spec_digest": "dc492691c36a1077ca2710fc766d7c2d26548cf9bda41505d98a00a20bd0bef3"
     },
     {
@@ -309,6 +374,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
       "content_tier": "authored",
+      "standards_bound": 10,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 22,
+      "concept_edges": 22,
+      "concept_density": 1.0,
       "spec_digest": "ce655a48a7371b4c3f91067f64779bc23ed65ed86e96b665f6168bffd68aa0ed"
     },
     {
@@ -331,6 +401,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "authored",
+      "standards_bound": 3,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 15,
+      "concept_edges": 22,
+      "concept_density": 1.4667,
       "spec_digest": "e3fb158557bb4f4481882e84314f50abf93f037233f44a173fd3769c5d4c9b6b"
     },
     {
@@ -353,6 +428,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "authored",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 22,
+      "concept_density": 1.2941,
       "spec_digest": "f9f44d8b9a105474017c13276c303e250056d89cdbd1f38dd8f921137661da98"
     },
     {
@@ -375,6 +455,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "authored",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 22,
+      "concept_density": 1.2222,
       "spec_digest": "3aa7961fdf8f7f4fe75e5db051fbd3f0b1633b602bae41416b85ab3a4047a96d"
     },
     {
@@ -397,6 +482,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 22,
+      "concept_density": 1.375,
       "spec_digest": "b1de95804b72d6f1b471010795fdd44d6cbf2790be9e9040fed3341b56833368"
     },
     {
@@ -419,6 +509,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "authored",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 22,
+      "concept_density": 1.1579,
       "spec_digest": "9c9cdaf412f7a5bce64daf106d79ba8e471cfa6cb73b29a3074a26820dd3876e"
     },
     {
@@ -441,6 +536,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "retrieval",
       "content_tier": "authored",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 22,
+      "concept_density": 1.2222,
       "spec_digest": "212baa8acfb3a8aa2621695e7974ad5e7b0ddc6cfffc79be815e68fce34bfc08"
     },
     {
@@ -463,6 +563,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "authored",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 22,
+      "concept_density": 1.1579,
       "spec_digest": "a003a78f20fd0e2533bbcb402be0354e31160e2a379b2aaab7b6e8a5080d7e43"
     },
     {
@@ -485,6 +590,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
       "content_tier": "authored",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 22,
+      "concept_density": 1.2941,
       "spec_digest": "97b156a40f5faee9c9609e59827919273540d81981668a449113659b5405538a"
     },
     {
@@ -507,6 +617,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 22,
+      "concept_density": 1.375,
       "spec_digest": "6834e7504d8606a6bb1ac110a280cf7e1d2f0717398e90db566cb06a11ed19a6"
     },
     {
@@ -529,6 +644,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 22,
+      "concept_density": 1.375,
       "spec_digest": "5a6404480c909bdd160e6d22cc46aa345e86ff3dcbbf0ba3ad2b49bc7e0aefc1"
     },
     {
@@ -551,6 +671,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "authored",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 22,
+      "concept_density": 1.2222,
       "spec_digest": "51783bb018a80d618b5eebe01a7cc95a53ad201607bd7383a314a9415cd191ce"
     },
     {
@@ -573,6 +698,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "authored",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 22,
+      "concept_density": 1.375,
       "spec_digest": "b8faf7a35523d3429dc2109d34748ccee7fcb99f5cd10c86a5fa96a02828031d"
     },
     {
@@ -595,6 +725,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "6ab213bd67ec75c52c17706d1599b2ce71aa56fa31c786bb99db58b06b59b893"
     },
     {
@@ -617,6 +752,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "2a12d818e760c942e67206f5789731ba690af7da9810e964767cbe3b397fbc9a"
     },
     {
@@ -639,6 +779,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "3c29d3a401f1da34a7f37e8c958954fb034f093e0fb28abf418f770877a2f400"
     },
     {
@@ -661,6 +806,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "ca8bc7fc5c4bd099fab4dcac312a62751f85e37164be3197c889009739f781be"
     },
     {
@@ -683,6 +833,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "bc74e1b4169357ee98160161fe6f9a98a848933a8dad3f4f8fef38cc12f10cfb"
     },
     {
@@ -705,6 +860,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "76cc0305c6ecc56d259414b46c4594992fed1d1866a001f5fe85a91ddc911977"
     },
     {
@@ -727,6 +887,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
       "content_tier": "derived",
+      "standards_bound": 3,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 15,
+      "concept_edges": 32,
+      "concept_density": 2.1333,
       "spec_digest": "cef629a8ee1abd2610a76f7408e67435c4579135d696d27109ddb57e43786b09"
     },
     {
@@ -749,6 +914,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "drift",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "037bdde5dba14bceeadfdbda791e286102b5277089a5a2f4b618531c64e488e7"
     },
     {
@@ -771,6 +941,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "42fa948faf58336c1ab2c12fa8c167888b0ee732f407f06c74db0105326b1958"
     },
     {
@@ -793,6 +968,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "360e15dc92133c915928c31df2ce2ef5e62c69880913821504bd3cc405937d08"
     },
     {
@@ -815,6 +995,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "drift",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "1d7e69b7db9cdb9f4b57cfef2e7a24273d8ded022462fd87f1e2fb0c08fd9df8"
     },
     {
@@ -837,6 +1022,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "cab0e6519f1c7a7b6c3c6f3a514cb8a95ef11f649fb2827b480e8afcd7977672"
     },
     {
@@ -859,6 +1049,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "d822bec0af5f8bf7d009bf01d3c14e436abbdccf7b0520d1474b96477c12b980"
     },
     {
@@ -881,6 +1076,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "drift",
       "content_tier": "derived",
+      "standards_bound": 3,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 15,
+      "concept_edges": 32,
+      "concept_density": 2.1333,
       "spec_digest": "a65cb8fbbc9110e6d771f4c0f4b4cc453dfcf58c935f8b7ac235c73cd51a31be"
     },
     {
@@ -903,6 +1103,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "527dcd71432d16804b356ed72273e225dadaa6ec917c6ba13f724354eacb3794"
     },
     {
@@ -925,6 +1130,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "2a154c679673e82612172bd2ef05675166f551afa14fc9b0f874ae180e405e97"
     },
     {
@@ -947,6 +1157,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "drift",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "2359638dc8c68b21ee3f5e156210877de585ad9eeb7216fb9e13b96d88826a4b"
     },
     {
@@ -969,6 +1184,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "51614af0ecf5aa5f14e07fccaa06f902341f62bff52607bca179b3643acb3fda"
     },
     {
@@ -991,6 +1211,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "3caaa5395fed1499baf1b8fcf23e16912a5bf39fe2888449ad1e6dd0c7025184"
     },
     {
@@ -1013,6 +1238,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "drift",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "f68c2d576faebfe0b01d058a7896a25a045f1076fa89ece0eaf551b53f7c87fa"
     },
     {
@@ -1035,6 +1265,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "2363a07658eee8ff2f9b15a358e27698d66cb76d921041e59428387d0ae94ef7"
     },
     {
@@ -1057,6 +1292,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "753f5542e17920f237c1f4ca04f52dcd05c7ee43075abc3ff9939c143ce8c3c9"
     },
     {
@@ -1079,6 +1319,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "drift",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "25ae6e21345e8a8f34a26d759bf1ed253bee393e4205807d1d21b831dd8d6e53"
     },
     {
@@ -1101,6 +1346,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "0446bc480c51c0a3bc6a7c203119385e43ac782b135931f46c5eef81ac4e4bdd"
     },
     {
@@ -1123,6 +1373,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "59498427db28e5da0a3615de8bc34ea9306c0ab072e25cc5df1df3ac2898df33"
     },
     {
@@ -1145,6 +1400,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "79c29b93f63115f885780de798eafc2c4b47faffac7ee364b127a42b19b1c21b"
     },
     {
@@ -1167,6 +1427,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "bc46f539bfecade58a50f80146d231e56d8bc79c7b0b9cf092d4d10d47910bcc"
     },
     {
@@ -1189,6 +1454,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "f325cdcf109723ff4e5698cff1eb27af7812c34bb2e5ad6497bc2fac805b3888"
     },
     {
@@ -1211,6 +1481,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "a42108cb33f84a46b707bde184077a56490186a895c7ab5ad06d44ac236a7a86"
     },
     {
@@ -1233,6 +1508,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "41873ad4840e42d11f9d8ffe328e1856edf74b9564e75f816719a2900f24da01"
     },
     {
@@ -1255,6 +1535,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "def936488a7c81a07f8f9da5f8121ec9023dcc18a3bbd6657266384f1bbbb211"
     },
     {
@@ -1277,6 +1562,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "e5bba7ef48e280a4c256653190f7d7e44e931d8bfaaaec5beb9d67d80363555c"
     },
     {
@@ -1299,6 +1589,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "1e7fa312a6e6b987b8e796ceb94224133979b158098ce5967c50fae54f3185cb"
     },
     {
@@ -1321,6 +1616,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "313c1a4020afb5017aff1eba72c1841267bab7e9e70be84c61e5ba3d115a023d"
     },
     {
@@ -1343,6 +1643,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "ace61419a2641d09c477d6e61aad5c2cebd7a08adb7cc4078cb72512a7c7d562"
     },
     {
@@ -1365,6 +1670,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "81c93d85197eb6093ea2c79078d3303152afa95fbb185c44d5841271d826b0b4"
     },
     {
@@ -1387,6 +1697,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "86c098ac0c1839854f102867bd9bdccd93d6fe8b534dae64f137adad571a1572"
     },
     {
@@ -1409,6 +1724,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "93dc0b44044329a7c340801127a3a2e7fc6b2135a2d529ecd38ad64d4da9fa45"
     },
     {
@@ -1431,6 +1751,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 3,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 15,
+      "concept_edges": 32,
+      "concept_density": 2.1333,
       "spec_digest": "75c0ad2f1b3c32784ace955b5adc63f307cd40d728f0fa42963087c55cf63a05"
     },
     {
@@ -1453,6 +1778,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "b18ee2c659854a458619cb67fc50bdb84ab6e4d6a86f2a069bb4b9cd55ff080f"
     },
     {
@@ -1475,6 +1805,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "edba7c7870faab1c9bd7595b967d8890f44d815a152b3feffb65ea5a03ec555d"
     },
     {
@@ -1497,6 +1832,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "7611055862918b1a187e9bc25bef668031e87012293cfea2ff5dfc9c4fc6193b"
     },
     {
@@ -1519,6 +1859,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "e2e3eefb20727ed026d413f28c4f53e69c505d614ce6608839a6c4ca04daff01"
     },
     {
@@ -1541,6 +1886,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "d31d257b075ffaa873bdac7d3341a02a9f9f0c5668d46bac236b9e8c6c699470"
     },
     {
@@ -1563,6 +1913,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "d80e69111756eccfb3be8869b5820a61f5e449fffeb4a73a151637452a915421"
     },
     {
@@ -1585,6 +1940,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "2a6eb8d7854f6ea6daac0322e85a7a0728f13a26aff48eb8a0f0b15fa7df9fc0"
     },
     {
@@ -1607,6 +1967,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "791d030520811b70dfaf114996fe2c06ff5ebddeda949e4142c9dafc5d146d36"
     },
     {
@@ -1629,6 +1994,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "derived",
+      "standards_bound": 3,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 15,
+      "concept_edges": 32,
+      "concept_density": 2.1333,
       "spec_digest": "036bf69528e32d759153bf43420d70f3ecdf69648ffc31cf4780663c2b861efe"
     },
     {
@@ -1651,6 +2021,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 3,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 15,
+      "concept_edges": 32,
+      "concept_density": 2.1333,
       "spec_digest": "d898dcb1de812845f6a7b06658d17a0bc648b2ca7647f512b438fb55622ed10b"
     },
     {
@@ -1673,6 +2048,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "ae1c02523e8118231cd9e237a1da7672c6971760dcf480d422447b4bfad02ee1"
     },
     {
@@ -1695,6 +2075,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "5b61b882ab160eeebde286e13a16683b326902a4b3320af681dabd0fa63ca95f"
     },
     {
@@ -1717,6 +2102,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "4433218bdae0ee68a988e0a17354dd3ef3c96d81eb77893efad4fc6b3af5b919"
     },
     {
@@ -1739,6 +2129,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "c404473f2070b9ce917e9c439bb7c2b0ecc5ea684e7fea9033a0f7a2e8caebca"
     },
     {
@@ -1761,6 +2156,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "5f6541267f9536c5386bb6eef360c47fefb7cf54d93b738ef22d7653b052ea32"
     },
     {
@@ -1783,6 +2183,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "794295cc658e301d5e28739ae539324433406fe0029c298b3f38f980d43218fa"
     },
     {
@@ -1805,6 +2210,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "4c9cf0cf009c7729951045c6dc9213a8b92bc81fc009bdc25666ccc62d54f392"
     },
     {
@@ -1827,6 +2237,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "2f9daaa3151df73c00a371886e73aeb30e281d82d1f1fb50e58220b1e6dfa1e0"
     },
     {
@@ -1849,6 +2264,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "d39034d7f4af036894eb39fd383918df92260195c95320fa1d900851211365d2"
     },
     {
@@ -1871,6 +2291,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "b7902a0a58bcc4b26b9b4275c64632485fbf7b5ad709d19077aaf66cfe6bbda9"
     },
     {
@@ -1893,6 +2318,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "derived",
+      "standards_bound": 3,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 15,
+      "concept_edges": 32,
+      "concept_density": 2.1333,
       "spec_digest": "28c06ac5b4750c922303d3a1e34591e5ab25303c4a370834bc46fda76ba03019"
     },
     {
@@ -1915,6 +2345,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "a5df33844d55ae5c6f91d9f4598706714b4d18c8bb80752338e4489832a45050"
     },
     {
@@ -1937,6 +2372,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "c37a76557f1657da455d17345c89534a80ef37af85ed9f1e5e879d667fe0854d"
     },
     {
@@ -1959,6 +2399,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "9b5bff3712991af28c603314124c187093f9bf2eb1187eba723baa1286994f38"
     },
     {
@@ -1981,6 +2426,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
       "content_tier": "derived",
+      "standards_bound": 4,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 16,
+      "concept_edges": 32,
+      "concept_density": 2.0,
       "spec_digest": "aab642f18366974d098a895aa9da6d4a40c0d6752d0ddf98904660f19d89f549"
     },
     {
@@ -2003,6 +2453,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "agreement",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "cfc29068d59fabd52807197321f3846a7473130057438c239549c4075ad7cf2a"
     },
     {
@@ -2025,6 +2480,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "ee77502c5a6138fdc62b9d8431100c49fd7a1a5fd89ae9b317cf0768ac5a2c40"
     },
     {
@@ -2047,6 +2507,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "c3806e0c28a00d1f4d4c74fad8729427070df541e67e54d8bcb6553574c864e5"
     },
     {
@@ -2069,6 +2534,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "agreement",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "aae4860ade6e4fb586f8d77b41b556da0b8a85d730ac2339f067ed528102c83d"
     },
     {
@@ -2091,6 +2561,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "d5d894fbcd45bf1990145af1c69692eb41bec2e83a13eb4858b784644d4ec037"
     },
     {
@@ -2113,6 +2588,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "b25f38b510bbbdc087f9f8d47bef3aeb9f214620e8a956536b52157738936922"
     },
     {
@@ -2135,6 +2615,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "agreement",
       "content_tier": "derived",
+      "standards_bound": 6,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 18,
+      "concept_edges": 32,
+      "concept_density": 1.7778,
       "spec_digest": "36d6f278ebf8f6ff43554362666b76a4b025973aec000ac2d39b8c13156cef70"
     },
     {
@@ -2157,6 +2642,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "content_tier": "derived",
+      "standards_bound": 7,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 19,
+      "concept_edges": 32,
+      "concept_density": 1.6842,
       "spec_digest": "58ec01ccac77d3c029167272edc42db3e51ebf329d388fe5c4e850037b724a54"
     },
     {
@@ -2179,6 +2669,11 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "contract_compliance",
       "content_tier": "derived",
+      "standards_bound": 8,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 20,
+      "concept_edges": 32,
+      "concept_density": 1.6,
       "spec_digest": "4568eee306c4a473fa9538644e280e2585f7ff43d6e0dd9ab3d8b73501809998"
     },
     {
@@ -2201,9 +2696,18 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "agreement",
       "content_tier": "derived",
+      "standards_bound": 5,
+      "standards_binding_coverage": 1.0,
+      "concept_nodes": 17,
+      "concept_edges": 32,
+      "concept_density": 1.8824,
       "spec_digest": "521f85120acf063522fb5d58f574860a868667816e406eee17f17075ba86ca74"
     }
   ],
   "count": 100,
-  "subdivisions_total": 1200
+  "subdivisions_total": 1200,
+  "standards_catalog": "protocol/standards_catalog.json",
+  "concept_density_min": 1.0,
+  "binding_coverage_min": 1.0,
+  "concept_density_threshold": 1.0
 }

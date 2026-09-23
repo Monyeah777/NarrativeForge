@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D20-01` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-02` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-03` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-04` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-05` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-06` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-07` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-08` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-09` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-10` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-11` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
-| `D20-12` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D20-01` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `D20-02` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-03` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-04` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-05` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-06` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-07` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-08` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-09` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-10` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `D20-11` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `rocrate` RO-Crate 1.1（Research Object；域码 D20 专属绑定（轮换 0）） |
+| `D20-12` | doc | https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；关键词「风险|伦理|责任」命中） |
 
 ## 2. 使用边界
 

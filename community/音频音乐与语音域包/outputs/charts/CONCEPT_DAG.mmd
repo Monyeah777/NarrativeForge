@@ -16,6 +16,12 @@ flowchart TD
     E09-10
     E09-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+    STD-w3c-webaudio
+  end
   E09-01 --> E09-02
   E09-02 --> E09-03
   E09-03 --> E09-04
@@ -36,3 +42,15 @@ flowchart TD
   E09-08 --> E09-11
   E09-11 --> E09-12
   E09-09 --> E09-12
+  E09-01 --> STD-commonmark
+  E09-07 --> STD-commonmark
+  E09-03 --> STD-w3c-epub33
+  E09-06 --> STD-w3c-epub33
+  E09-09 --> STD-w3c-epub33
+  E09-05 --> STD-w3c-tabular-data
+  E09-08 --> STD-w3c-tabular-data
+  E09-11 --> STD-w3c-tabular-data
+  E09-02 --> STD-w3c-webaudio
+  E09-04 --> STD-w3c-webaudio
+  E09-10 --> STD-w3c-webaudio
+  E09-12 --> STD-w3c-webaudio

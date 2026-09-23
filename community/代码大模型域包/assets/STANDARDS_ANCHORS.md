@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A09-01` | paper | https://arxiv.org/abs/2107.03374 | ✓ 200 |
-| `A09-02` | paper | https://arxiv.org/abs/2303.12570 | ✓ 200 |
-| `A09-03` | paper | https://arxiv.org/abs/2308.02312 | ✓ 200 |
-| `A09-04` | paper | https://arxiv.org/abs/2109.00859 | ✓ 200 |
-| `A09-05` | spec | https://cwe.mitre.org/ | ✓ 200 |
-| `A09-06` | paper | https://arxiv.org/abs/2305.00418 | ✓ 200 |
-| `A09-07` | paper | https://arxiv.org/abs/1809.08887 | ✓ 200 |
-| `A09-08` | doc | https://www.shellcheck.net/ | ✓ 200 |
-| `A09-09` | doc | https://refactoring.com/catalog/ | ✓ 200 |
-| `A09-10` | paper | https://arxiv.org/abs/2102.04664 | ✓ 200 |
-| `A09-11` | paper | https://arxiv.org/abs/2107.03374 | ✓ 200 |
-| `A09-12` | spec | https://owasp.org/www-project-top-10-for-large-language-model-applications/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A09-01` | paper | https://arxiv.org/abs/2107.03374 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `A09-02` | paper | https://arxiv.org/abs/2303.12570 | ✓ 200 | `osv` OSV 漏洞格式（Google/OSV；域码 A09 专属绑定（轮换 0）） |
+| `A09-03` | paper | https://arxiv.org/abs/2308.02312 | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `A09-04` | paper | https://arxiv.org/abs/2109.00859 | ✓ 200 | `osv` OSV 漏洞格式（Google/OSV；域码 A09 专属绑定（轮换 0）） |
+| `A09-05` | spec | https://cwe.mitre.org/ | ✓ 200 | `cwe` CWE 缺陷枚举（MITRE；关键词「漏洞|缺陷|弱点」命中） |
+| `A09-06` | paper | https://arxiv.org/abs/2305.00418 | ✓ 200 | `osv` OSV 漏洞格式（Google/OSV；域码 A09 专属绑定（轮换 0）） |
+| `A09-07` | paper | https://arxiv.org/abs/1809.08887 | ✓ 200 | `osv` OSV 漏洞格式（Google/OSV；域码 A09 专属绑定（轮换 0）） |
+| `A09-08` | doc | https://www.shellcheck.net/ | ✓ 200 | `osv` OSV 漏洞格式（Google/OSV；域码 A09 专属绑定（轮换 0）） |
+| `A09-09` | doc | https://refactoring.com/catalog/ | ✓ 200 | `osv` OSV 漏洞格式（Google/OSV；域码 A09 专属绑定（轮换 0）） |
+| `A09-10` | paper | https://arxiv.org/abs/2102.04664 | ✓ 200 | `osv` OSV 漏洞格式（Google/OSV；域码 A09 专属绑定（轮换 0）） |
+| `A09-11` | paper | https://arxiv.org/abs/2107.03374 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `A09-12` | spec | https://owasp.org/www-project-top-10-for-large-language-model-applications/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
 
 ## 2. 使用边界
 

@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 |
-|---|---|---|---|---|
-| `A07-01` | 扩散模型与采样器 | 扩散模型与采样器的口径：噪声调度、采样步数、引导强度与随机种子策略。 | 声明 noise_schedule（linear|cosine）、sample_steps、guidance_scale（数值）与 seed 策略（固定|随机 + 次数）。 | 不同采样步数直接比画质；只报单张最好结果不报种子方差。 |
-| `A07-02` | 流匹配与整流流 | 流匹配与整流流的训练口径：路径构造、时间采样分布与 ODE 求解器。 | 声明 path（linear|cosine）、t_sampling（uniform|logit-normal）、solver（euler|heun）+ 步数。 | 求解器与步数不同却比较生成质量；路径定义未记录导致训练不可复现。 |
-| `A07-03` | 结构条件控制 | 结构条件控制的口径：条件模态（边缘 / 深度 / 姿态 / 分割）、控制强度与条件保真度。 | 声明 condition_modality（枚举）、control_weight（0–1）与条件保真度指标（如 F1 of edges）。 | 只报美观不报结构遵循度；控制权重未声明导致复现不出同一结果。 |
-| `A07-04` | 图像修复与扩图 | 图像修复与扩图的口径：掩码生成方式、外扩比例与边界一致性要求。 | 声明 mask_source（手工|自动）、outpaint_ratio（外扩比例）与 boundary_metric（边界一致性指标）。 | 掩码过小导致任务过易（虚高）；扩图边界接缝未评测。 |
-| `A07-05` | 风格化与风格迁移 | 风格化与风格迁移的口径：风格参考数量、内容保真度与风格强度控制。 | 声明 style_refs（数量）、content_fidelity（指标 + 阈值）与 style_strength（0–1 或枚举）。 | 只报风格相似不报内容保持；风格强度未声明导致对比不公平。 |
-| `A07-06` | 超分与画质增强 | 超分与画质增强的口径：退化模型、放大倍数与感知 / 保真双指标。 | 声明 degradation_model、scale_factor 与双指标（PSNR/SSIM + LPIPS 或 NIQE）。 | 只报 PSNR 掩盖过度平滑；退化模型与实际不符导致结论不可迁移。 |
-| `A07-07` | 背景替换与抠图 | 背景替换与抠图的口径：alpha 边缘质量、半透明区域处理与合成光照一致性。 | 声明 alpha_metric（MAD|MSE|Gradient）、semi_transparent（handled|ignored）与 relight（true|false）。 | 只测不透明区域（发丝与半透明处忽略）；合成后光照不一致未评测。 |
-| `A07-08` | 人像美化与换脸边界 | 人像美化与换脸边界：可做 / 不可做清单、同意与可追溯要求。 | 必须给出 allowed_ops 与 forbidden_ops 两张清单 + consent_required（true）+ traceability（输入输出指纹口径）。 | 默认同意缺失（无授权换脸）；无输入输出指纹导致不可追责。 |
-| `A07-09` | LoRA 与个性化微调 | LoRA 与个性化微调的口径：训练集规模、秩与学习率、以及过拟合判定。 | 声明 train_set_size、rank（r）、lr 与 overfit_check（留出集 + 阈值）。 | 用训练图自测（必然「像」）；秩与学习率未记录导致无法复现。 |
-| `A07-10` | 提示词与美学控制 | 提示词与美学控制的口径：提示结构、负向提示与美学评分来源。 | 声明 prompt_template（结构）、negative_prompt（是否使用）与 aesthetic_score（模型 id + 版本或人工量表）。 | 用模型自己打的美学分当人类偏好；提示模板未固定导致跨报告不可比。 |
-| `A07-11` | 生成水印与溯源 | 生成水印与溯源的口径：水印方法、鲁棒性测试条件与溯源清单形态。 | 声明 watermark_method、robustness_tests（裁剪/压缩/重采样各一）与 manifest 形态（字段清单引用）。 | 只声明「含水印」不做鲁棒性测试；清单字段缺失导致溯源断裂。 |
-| `A07-12` | 生成质量评测 | 生成质量评测的口径：分布级指标（FID）、文本一致性与人工偏好三分量。 | 声明 fid_set_size、text_alignment_metric 与 human_pref（人数 / 一致性 kappa），三者缺一即评测不全。 | FID 用小样本集；只报 FID 不报文本一致性（提示遵循被掩盖）。 |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
+|---|---|---|---|---|---|
+| `A07-01` | 扩散模型与采样器 | 扩散模型与采样器的口径：噪声调度、采样步数、引导强度与随机种子策略。 | 声明 noise_schedule（linear|cosine）、sample_steps、guidance_scale（数值）与 seed 策略（固定|随机 + 次数）。 | 不同采样步数直接比画质；只报单张最好结果不报种子方差。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
+| `A07-02` | 流匹配与整流流 | 流匹配与整流流的训练口径：路径构造、时间采样分布与 ODE 求解器。 | 声明 path（linear|cosine）、t_sampling（uniform|logit-normal）、solver（euler|heun）+ 步数。 | 求解器与步数不同却比较生成质量；路径定义未记录导致训练不可复现。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A07-03` | 结构条件控制 | 结构条件控制的口径：条件模态（边缘 / 深度 / 姿态 / 分割）、控制强度与条件保真度。 | 声明 condition_modality（枚举）、control_weight（0–1）与条件保真度指标（如 F1 of edges）。 | 只报美观不报结构遵循度；控制权重未声明导致复现不出同一结果。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
+| `A07-04` | 图像修复与扩图 | 图像修复与扩图的口径：掩码生成方式、外扩比例与边界一致性要求。 | 声明 mask_source（手工|自动）、outpaint_ratio（外扩比例）与 boundary_metric（边界一致性指标）。 | 掩码过小导致任务过易（虚高）；扩图边界接缝未评测。 | `w3c-svg2` SVG 2（W3C） |
+| `A07-05` | 风格化与风格迁移 | 风格化与风格迁移的口径：风格参考数量、内容保真度与风格强度控制。 | 声明 style_refs（数量）、content_fidelity（指标 + 阈值）与 style_strength（0–1 或枚举）。 | 只报风格相似不报内容保持；风格强度未声明导致对比不公平。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A07-06` | 超分与画质增强 | 超分与画质增强的口径：退化模型、放大倍数与感知 / 保真双指标。 | 声明 degradation_model、scale_factor 与双指标（PSNR/SSIM + LPIPS 或 NIQE）。 | 只报 PSNR 掩盖过度平滑；退化模型与实际不符导致结论不可迁移。 | `w3c-svg2` SVG 2（W3C） |
+| `A07-07` | 背景替换与抠图 | 背景替换与抠图的口径：alpha 边缘质量、半透明区域处理与合成光照一致性。 | 声明 alpha_metric（MAD|MSE|Gradient）、semi_transparent（handled|ignored）与 relight（true|false）。 | 只测不透明区域（发丝与半透明处忽略）；合成后光照不一致未评测。 | `w3c-svg2` SVG 2（W3C） |
+| `A07-08` | 人像美化与换脸边界 | 人像美化与换脸边界：可做 / 不可做清单、同意与可追溯要求。 | 必须给出 allowed_ops 与 forbidden_ops 两张清单 + consent_required（true）+ traceability（输入输出指纹口径）。 | 默认同意缺失（无授权换脸）；无输入输出指纹导致不可追责。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A07-09` | LoRA 与个性化微调 | LoRA 与个性化微调的口径：训练集规模、秩与学习率、以及过拟合判定。 | 声明 train_set_size、rank（r）、lr 与 overfit_check（留出集 + 阈值）。 | 用训练图自测（必然「像」）；秩与学习率未记录导致无法复现。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A07-10` | 提示词与美学控制 | 提示词与美学控制的口径：提示结构、负向提示与美学评分来源。 | 声明 prompt_template（结构）、negative_prompt（是否使用）与 aesthetic_score（模型 id + 版本或人工量表）。 | 用模型自己打的美学分当人类偏好；提示模板未固定导致跨报告不可比。 | `commonmark` CommonMark 0.31.2（CommonMark） |
+| `A07-11` | 生成水印与溯源 | 生成水印与溯源的口径：水印方法、鲁棒性测试条件与溯源清单形态。 | 声明 watermark_method、robustness_tests（裁剪/压缩/重采样各一）与 manifest 形态（字段清单引用）。 | 只声明「含水印」不做鲁棒性测试；清单字段缺失导致溯源断裂。 | `c2pa-spec` 内容凭证规范（C2PA） |
+| `A07-12` | 生成质量评测 | 生成质量评测的口径：分布级指标（FID）、文本一致性与人工偏好三分量。 | 声明 fid_set_size、text_alignment_metric 与 human_pref（人数 / 一致性 kappa），三者缺一即评测不全。 | FID 用小样本集；只报 FID 不报文本一致性（提示遵循被掩盖）。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
 
 ## 3. 机读投影契约
 

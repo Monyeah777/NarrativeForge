@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C09-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C09-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C09-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C09-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `C09-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C09-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C09-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `C09-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C09-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C09-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `C09-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `C09-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `C09-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C09-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cwe` CWE 缺陷枚举（MITRE；关键词「漏洞|缺陷|弱点」命中） |
 
 ## 2. 使用边界
 

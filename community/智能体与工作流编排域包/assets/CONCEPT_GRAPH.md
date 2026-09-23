@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「智能体与工作流编排」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（智能体与工作流编排:M01）与收口模块（智能体与工作流编排:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E12-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E12-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,13 @@
 | `E12-10` | 成本控制 | P60 | `E12-09`、`E12-07` | e12-anchor |
 | `E12-11` | 可观测性 | P40 | `E12-10`、`E12-08` | e12-anchor |
 | `E12-12` | 编排规范定义 | P60 | `E12-11`、`E12-09` | e12-anchor |
+| `STD-a2a` | 标准 · A2A 协议（Linux Foundation） | P80 | `E12-12` | std-catalog |
+| `STD-cncf-cloudevents` | 标准 · CloudEvents 1.0（CNCF） | P80 | `E12-07` | std-catalog |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `E12-10`、`E12-11` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E12-04` | std-catalog |
+| `STD-mcp` | 标准 · Model Context Protocol（Anthropic/MCP） | P80 | `E12-01`、`E12-02` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E12-03`、`E12-06`、`E12-09` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E12-05`、`E12-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +53,13 @@
 | `E12-成本控制` | `E12-10` |
 | `E12-可观测性` | `E12-11` |
 | `E12-编排规范定义` | `E12-12` |
+| `std-a2a` | `STD-a2a` |
+| `std-cncf-cloudevents` | `STD-cncf-cloudevents` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-mcp` | `STD-mcp` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +71,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e12-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E12-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +91,16 @@ concept_graph:
         - "E12-10"
         - "E12-11"
         - "E12-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-a2a"
+        - "STD-cncf-cloudevents"
+        - "STD-cncf-otel-semconv"
+        - "STD-commonmark"
+        - "STD-mcp"
+        - "STD-w3c-epub33"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "E12-01"
       name: "多智能体分工"
@@ -181,6 +206,67 @@ concept_graph:
         - "E12-09"
       provenance:
         - "e12-anchor"
+    - id: "STD-a2a"
+      name: "标准 · A2A 协议"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E12-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cncf-cloudevents"
+      name: "标准 · CloudEvents 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E12-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E12-10"
+        - "E12-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E12-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mcp"
+      name: "标准 · Model Context Protocol"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E12-01"
+        - "E12-02"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E12-03"
+        - "E12-06"
+        - "E12-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E12-05"
+        - "E12-08"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

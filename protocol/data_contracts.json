@@ -4,6 +4,24 @@
   "status_vocabulary": ["active", "proposed", "deprecated"],
   "rule_prefixes": ["check", "assertion:"],
   "contracts": [
+    {
+      "id": "standards-catalog",
+      "artifact": "protocol/standards_catalog.json",
+      "quality_rule": "check32",
+      "owner": "域包工厂（core/domain_pack.py）+ check32 domain_packs 子扫描",
+      "status": "active",
+      "freshness": "重建：python .rivet/scratch/ai_packs/build_standards_catalog.py（外部可达性为时间快照）",
+      "consumers": ["nf domain build", "check32 domain_packs", "protocol/standards_binding.json"]
+    },
+    {
+      "id": "standards-binding",
+      "artifact": "protocol/standards_binding.json",
+      "quality_rule": "check32",
+      "owner": "域包工厂（core/domain_pack.py）",
+      "status": "active",
+      "freshness": "重建：随 nf domain build --write 自动刷新（每包 12 条绑定）",
+      "consumers": ["check32 domain_packs", "docs/domain-packs.md"]
+    },
     {"id": "registry", "artifact": "desktop/src/core/registry.json",
      "quality_rule": "check21", "owner": "机制维护（check 即 owner）", "status": "active",
      "freshness": "重扫描：nf spec / nf market --tier community", "consumers": ["nf market", "nf related", "nf who-refers"]},

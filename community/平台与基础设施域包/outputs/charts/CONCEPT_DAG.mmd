@@ -16,6 +16,15 @@ flowchart TD
     F08-10
     F08-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-mlcommons-bench
+    STD-nist-ai-rmf
+    STD-oasis-openapi
+    STD-onnx
+    STD-spdx-licenses
+    STD-w3c-prov-o
+  end
   F08-01 --> F08-02
   F08-02 --> F08-03
   F08-03 --> F08-04
@@ -36,3 +45,15 @@ flowchart TD
   F08-08 --> F08-11
   F08-11 --> F08-12
   F08-09 --> F08-12
+  F08-09 --> STD-cncf-otel-semconv
+  F08-01 --> STD-mlcommons-bench
+  F08-02 --> STD-mlcommons-bench
+  F08-04 --> STD-nist-ai-rmf
+  F08-05 --> STD-oasis-openapi
+  F08-10 --> STD-oasis-openapi
+  F08-07 --> STD-onnx
+  F08-11 --> STD-onnx
+  F08-03 --> STD-spdx-licenses
+  F08-06 --> STD-spdx-licenses
+  F08-12 --> STD-spdx-licenses
+  F08-08 --> STD-w3c-prov-o

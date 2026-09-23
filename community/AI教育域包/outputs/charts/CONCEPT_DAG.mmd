@@ -16,6 +16,13 @@ flowchart TD
     D06-10
     D06-12
   end
+  subgraph P80[P80]
+    STD-gdpr
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-unesco-ai
+    STD-w3c-prov-o
+  end
   D06-01 --> D06-02
   D06-02 --> D06-03
   D06-03 --> D06-04
@@ -36,3 +43,15 @@ flowchart TD
   D06-08 --> D06-11
   D06-11 --> D06-12
   D06-09 --> D06-12
+  D06-11 --> STD-gdpr
+  D06-03 --> STD-iso-iec-25010
+  D06-06 --> STD-iso-iec-25010
+  D06-09 --> STD-iso-iec-25010
+  D06-12 --> STD-iso-iec-25010
+  D06-01 --> STD-nist-ai-rmf
+  D06-04 --> STD-nist-ai-rmf
+  D06-07 --> STD-nist-ai-rmf
+  D06-10 --> STD-unesco-ai
+  D06-02 --> STD-w3c-prov-o
+  D06-05 --> STD-w3c-prov-o
+  D06-08 --> STD-w3c-prov-o

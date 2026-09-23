@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E02-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E02-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E02-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `E02-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E02-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

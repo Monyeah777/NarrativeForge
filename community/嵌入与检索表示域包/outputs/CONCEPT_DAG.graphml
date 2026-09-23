@@ -52,6 +52,22 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-arrow">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-package">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A11-05" target="A11-02">
       <data key="provenance">['a11-anchor']</data>
     </edge>
@@ -81,6 +97,42 @@
     </edge>
     <edge source="A11-04" target="A11-12">
       <data key="provenance">['a11-anchor']</data>
+    </edge>
+    <edge source="A11-05" target="STD-arrow">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-11" target="STD-arrow">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-02" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-04" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-06" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-07" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-08" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-09" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-12" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-10" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-01" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-03" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

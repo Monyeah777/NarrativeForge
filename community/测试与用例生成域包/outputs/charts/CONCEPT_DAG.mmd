@@ -16,6 +16,12 @@ flowchart TD
     B10-10
     B10-12
   end
+  subgraph P80[P80]
+    STD-a2a
+    STD-ietf-json-schema
+    STD-nist-800-142
+    STD-peps
+  end
   B10-02 --> B10-01
   B10-02 --> B10-03
   B10-06 --> B10-03
@@ -26,3 +32,15 @@ flowchart TD
   B10-05 --> B10-10
   B10-01 --> B10-11
   B10-10 --> B10-12
+  B10-10 --> STD-a2a
+  B10-04 --> STD-ietf-json-schema
+  B10-01 --> STD-nist-800-142
+  B10-03 --> STD-nist-800-142
+  B10-05 --> STD-nist-800-142
+  B10-07 --> STD-nist-800-142
+  B10-09 --> STD-nist-800-142
+  B10-11 --> STD-nist-800-142
+  B10-02 --> STD-peps
+  B10-06 --> STD-peps
+  B10-08 --> STD-peps
+  B10-12 --> STD-peps

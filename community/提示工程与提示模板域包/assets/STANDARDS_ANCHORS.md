@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C13-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C13-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C13-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `C13-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C13-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C13-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `C13-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C13-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C13-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C13-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C13-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C13-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C13-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `C13-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
 
 ## 2. 使用边界
 

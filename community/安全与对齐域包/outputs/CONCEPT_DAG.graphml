@@ -52,6 +52,30 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-c2pa-spec">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-spdx-licenses">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-prov-o">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="F01-01" target="F01-02">
       <data key="provenance">['f01-anchor']</data>
     </edge>
@@ -111,6 +135,42 @@
     </edge>
     <edge source="F01-09" target="F01-12">
       <data key="provenance">['f01-anchor']</data>
+    </edge>
+    <edge source="F01-07" target="STD-c2pa-spec">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-02" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-04" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-01" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-06" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-10" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-12" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-03" target="STD-spdx-licenses">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-09" target="STD-spdx-licenses">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-05" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-08" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F01-11" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

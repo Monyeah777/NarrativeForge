@@ -16,6 +16,11 @@ flowchart TD
     B01-10
     B01-12
   end
+  subgraph P80[P80]
+    STD-frictionless-table
+    STD-ietf-json-schema
+    STD-w3c-tabular-data
+  end
   B01-01 --> B01-03
   B01-02 --> B01-03
   B01-03 --> B01-04
@@ -26,3 +31,15 @@ flowchart TD
   B01-04 --> B01-11
   B01-10 --> B01-12
   B01-11 --> B01-12
+  B01-03 --> STD-frictionless-table
+  B01-06 --> STD-frictionless-table
+  B01-09 --> STD-frictionless-table
+  B01-12 --> STD-frictionless-table
+  B01-01 --> STD-ietf-json-schema
+  B01-04 --> STD-ietf-json-schema
+  B01-07 --> STD-ietf-json-schema
+  B01-10 --> STD-ietf-json-schema
+  B01-02 --> STD-w3c-tabular-data
+  B01-05 --> STD-w3c-tabular-data
+  B01-08 --> STD-w3c-tabular-data
+  B01-11 --> STD-w3c-tabular-data

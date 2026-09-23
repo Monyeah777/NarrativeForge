@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/2006.11239",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 noise_schedule（linear|cosine）、sample_steps、guidance_scale（数值）与 seed 策略（固定|随机 + 次数）。",
       "pitfall": "不同采样步数直接比画质；只报单张最好结果不报种子方差。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/2210.02747",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "A 段默认绑定（轮换 1）",
       "check": "声明 path（linear|cosine）、t_sampling（uniform|logit-normal）、solver（euler|heun）+ 步数。",
       "pitfall": "求解器与步数不同却比较生成质量；路径定义未记录导致训练不可复现。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://arxiv.org/abs/2302.05543",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "A 段默认绑定（轮换 2）",
       "check": "声明 condition_modality（枚举）、control_weight（0–1）与条件保真度指标（如 F1 of edges）。",
       "pitfall": "只报美观不报结构遵循度；控制权重未声明导致复现不出同一结果。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://arxiv.org/abs/2109.07161",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-svg2",
+      "standard_why": "关键词「图像|视觉|扩散|超分|抠图」命中",
       "check": "声明 mask_source（手工|自动）、outpaint_ratio（外扩比例）与 boundary_metric（边界一致性指标）。",
       "pitfall": "掩码过小导致任务过易（虚高）；扩图边界接缝未评测。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://arxiv.org/abs/1703.06868",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "A 段默认绑定（轮换 1）",
       "check": "声明 style_refs（数量）、content_fidelity（指标 + 阈值）与 style_strength（0–1 或枚举）。",
       "pitfall": "只报风格相似不报内容保持；风格强度未声明导致对比不公平。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://arxiv.org/abs/2107.10833",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-svg2",
+      "standard_why": "关键词「图像|视觉|扩散|超分|抠图」命中",
       "check": "声明 degradation_model、scale_factor 与双指标（PSNR/SSIM + LPIPS 或 NIQE）。",
       "pitfall": "只报 PSNR 掩盖过度平滑；退化模型与实际不符导致结论不可迁移。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://arxiv.org/abs/2011.11961",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-svg2",
+      "standard_why": "关键词「图像|视觉|扩散|超分|抠图」命中",
       "check": "声明 alpha_metric（MAD|MSE|Gradient）、semi_transparent（handled|ignored）与 relight（true|false）。",
       "pitfall": "只测不透明区域（发丝与半透明处忽略）；合成后光照不一致未评测。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/1901.08971",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "A 段默认绑定（轮换 1）",
       "check": "必须给出 allowed_ops 与 forbidden_ops 两张清单 + consent_required（true）+ traceability（输入输出指纹口径）。",
       "pitfall": "默认同意缺失（无授权换脸）；无输入输出指纹导致不可追责。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://arxiv.org/abs/2106.09685",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
       "check": "声明 train_set_size、rank（r）、lr 与 overfit_check（留出集 + 阈值）。",
       "pitfall": "用训练图自测（必然「像」）；秩与学习率未记录导致无法复现。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2207.12598",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "commonmark",
+      "standard_why": "关键词「提示|指令|模板」命中",
       "check": "声明 prompt_template（结构）、negative_prompt（是否使用）与 aesthetic_score（模型 id + 版本或人工量表）。",
       "pitfall": "用模型自己打的美学分当人类偏好；提示模板未固定导致跨报告不可比。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://c2pa.org/specifications/specifications/1.3/index.html",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "c2pa-spec",
+      "standard_why": "关键词「水印|溯源|凭证|内容来源」命中",
       "check": "声明 watermark_method、robustness_tests（裁剪/压缩/重采样各一）与 manifest 形态（字段清单引用）。",
       "pitfall": "只声明「含水印」不做鲁棒性测试；清单字段缺失导致溯源断裂。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/1706.08500",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
       "check": "声明 fid_set_size、text_alignment_metric 与 human_pref（人数 / 一致性 kappa），三者缺一即评测不全。",
       "pitfall": "FID 用小样本集；只报 FID 不报文本一致性（提示遵循被掩盖）。"
     }

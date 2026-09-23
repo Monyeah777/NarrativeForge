@@ -16,6 +16,13 @@ flowchart TD
     F04-10
     F04-12
   end
+  subgraph P80[P80]
+    STD-creativecommons
+    STD-gdpr
+    STD-mlcommons-bench
+    STD-nist-ai-rmf
+    STD-spdx-licenses
+  end
   F04-01 --> F04-02
   F04-02 --> F04-03
   F04-03 --> F04-04
@@ -36,3 +43,15 @@ flowchart TD
   F04-08 --> F04-11
   F04-11 --> F04-12
   F04-09 --> F04-12
+  F04-02 --> STD-creativecommons
+  F04-03 --> STD-creativecommons
+  F04-05 --> STD-creativecommons
+  F04-09 --> STD-creativecommons
+  F04-10 --> STD-creativecommons
+  F04-11 --> STD-creativecommons
+  F04-07 --> STD-gdpr
+  F04-01 --> STD-mlcommons-bench
+  F04-12 --> STD-nist-ai-rmf
+  F04-04 --> STD-spdx-licenses
+  F04-06 --> STD-spdx-licenses
+  F04-08 --> STD-spdx-licenses

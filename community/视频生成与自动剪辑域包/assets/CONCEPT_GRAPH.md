@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「视频生成与自动剪辑」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（视频生成与自动剪辑:M01）与收口模块（视频生成与自动剪辑:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（B16-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（B16-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,12 @@
 | `B16-10` | 视频合规审核 | P60 | `B16-09`、`B16-07` | b16-anchor |
 | `B16-11` | 渲染与转码参数 | P40 | `B16-10`、`B16-08` | b16-anchor |
 | `B16-12` | 成片质量评估 | P60 | `B16-11`、`B16-09` | b16-anchor |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `B16-07` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `B16-06`、`B16-09`、`B16-12` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `B16-10` | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `B16-01`、`B16-04` | std-catalog |
+| `STD-oci-image` | 标准 · 镜像清单（OCI） | P80 | `B16-02`、`B16-03`、`B16-08` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `B16-05`、`B16-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +52,12 @@
 | `B16-视频合规审核` | `B16-10` |
 | `B16-渲染与转码参数` | `B16-11` |
 | `B16-成片质量评估` | `B16-12` |
+| `std-frictionless-package` | `STD-frictionless-package` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-oci-image` | `STD-oci-image` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +69,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     b16-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "B16-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +89,15 @@ concept_graph:
         - "B16-10"
         - "B16-11"
         - "B16-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-frictionless-package"
+        - "STD-frictionless-table"
+        - "STD-gdpr"
+        - "STD-ietf-json-schema"
+        - "STD-oci-image"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "B16-01"
       name: "脚本到分镜"
@@ -181,6 +203,60 @@ concept_graph:
         - "B16-09"
       provenance:
         - "b16-anchor"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B16-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B16-06"
+        - "B16-09"
+        - "B16-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B16-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B16-01"
+        - "B16-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oci-image"
+      name: "标准 · 镜像清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B16-02"
+        - "B16-03"
+        - "B16-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B16-05"
+        - "B16-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

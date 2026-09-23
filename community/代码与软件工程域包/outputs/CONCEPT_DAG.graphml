@@ -52,6 +52,38 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-cwe">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-eu-machinery">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-osi-osd">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-peps">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-spdx-3">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-epub33">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="E13-01" target="E13-02">
       <data key="provenance">['e13-anchor']</data>
     </edge>
@@ -111,6 +143,42 @@
     </edge>
     <edge source="E13-09" target="E13-12">
       <data key="provenance">['e13-anchor']</data>
+    </edge>
+    <edge source="E13-09" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-05" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-11" target="STD-eu-machinery">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-02" target="STD-osi-osd">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-04" target="STD-osi-osd">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-08" target="STD-osi-osd">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-12" target="STD-osi-osd">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-10" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-01" target="STD-peps">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-03" target="STD-peps">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-06" target="STD-spdx-3">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E13-07" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

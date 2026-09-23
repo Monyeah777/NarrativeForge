@@ -52,6 +52,30 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-frictionless-table">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-iso-iec-25010">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-ai-rmf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oasis-openapi">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-prov-o">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="D19-01" target="D19-02">
       <data key="provenance">['d19-anchor']</data>
     </edge>
@@ -111,6 +135,42 @@
     </edge>
     <edge source="D19-09" target="D19-12">
       <data key="provenance">['d19-anchor']</data>
+    </edge>
+    <edge source="D19-05" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-03" target="STD-iso-iec-25010">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-09" target="STD-iso-iec-25010">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-01" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-04" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-07" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-10" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-06" target="STD-oasis-openapi">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-12" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-02" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-08" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D19-11" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

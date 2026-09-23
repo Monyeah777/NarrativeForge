@@ -16,6 +16,14 @@ flowchart TD
     F01-10
     F01-12
   end
+  subgraph P80[P80]
+    STD-c2pa-spec
+    STD-commonmark
+    STD-mlcommons-bench
+    STD-owasp-llm
+    STD-spdx-licenses
+    STD-w3c-prov-o
+  end
   F01-01 --> F01-02
   F01-02 --> F01-03
   F01-03 --> F01-04
@@ -36,3 +44,15 @@ flowchart TD
   F01-08 --> F01-11
   F01-11 --> F01-12
   F01-09 --> F01-12
+  F01-07 --> STD-c2pa-spec
+  F01-02 --> STD-commonmark
+  F01-04 --> STD-mlcommons-bench
+  F01-01 --> STD-owasp-llm
+  F01-06 --> STD-owasp-llm
+  F01-10 --> STD-owasp-llm
+  F01-12 --> STD-owasp-llm
+  F01-03 --> STD-spdx-licenses
+  F01-09 --> STD-spdx-licenses
+  F01-05 --> STD-w3c-prov-o
+  F01-08 --> STD-w3c-prov-o
+  F01-11 --> STD-w3c-prov-o

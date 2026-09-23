@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E08-01` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-02` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-03` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-04` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-05` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-06` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-07` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-08` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-09` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-10` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-11` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
-| `E08-12` | doc | https://ffmpeg.org/documentation.html | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E08-01` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E08-02` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `E08-03` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E08-04` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `E08-05` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `E08-06` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E08-07` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E08-08` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `E08-09` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `E08-10` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E08-11` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E08-12` | doc | https://ffmpeg.org/documentation.html | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

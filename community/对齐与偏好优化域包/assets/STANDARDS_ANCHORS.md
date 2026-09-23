@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C07-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C07-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C07-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mermaid` Mermaid 图语言（Mermaid；关键词「流程|结构图|示意」命中） |
+| `C07-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C07-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `C07-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `C07-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C07-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `C07-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C07-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `C07-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `C07-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C07-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C07-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
 
 ## 2. 使用边界
 

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B07-01` | paper | https://arxiv.org/abs/1801.07243 | ✓ 200 |
-| `B07-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B07-03` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 |
-| `B07-04` | paper | https://arxiv.org/abs/1810.00278 | ✓ 200 |
-| `B07-05` | paper | https://arxiv.org/abs/2308.07201 | ✓ 200 |
-| `B07-06` | paper | https://arxiv.org/abs/2212.08073 | ✓ 200 |
-| `B07-07` | paper | https://arxiv.org/abs/2106.01144 | ✓ 200 |
-| `B07-08` | spec | https://www.w3.org/TR/owl-time/ | ✓ 200 |
-| `B07-09` | paper | https://arxiv.org/abs/2005.14165 | ✓ 200 |
-| `B07-10` | paper | https://arxiv.org/abs/2310.08560 | ✓ 200 |
-| `B07-11` | paper | https://arxiv.org/abs/2310.00746 | ✓ 200 |
-| `B07-12` | paper | https://arxiv.org/abs/2106.01144 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B07-01` | paper | https://arxiv.org/abs/1801.07243 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B07-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B07-03` | paper | https://arxiv.org/abs/2307.03172 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B07-04` | paper | https://arxiv.org/abs/1810.00278 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `B07-05` | paper | https://arxiv.org/abs/2308.07201 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B07-06` | paper | https://arxiv.org/abs/2212.08073 | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `B07-07` | paper | https://arxiv.org/abs/2106.01144 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B07-08` | spec | https://www.w3.org/TR/owl-time/ | ✓ 200 | `w3c-owl-time` OWL-Time 时间本体（W3C；关键词「时间线|时序|日期」命中） |
+| `B07-09` | paper | https://arxiv.org/abs/2005.14165 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B07-10` | paper | https://arxiv.org/abs/2310.08560 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B07-11` | paper | https://arxiv.org/abs/2310.00746 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `B07-12` | paper | https://arxiv.org/abs/2106.01144 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

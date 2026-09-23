@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B02-01` | repo | https://pypi.org/project/sumy/ | ✓ 200 |
-| `B02-02` | paper | https://arxiv.org/abs/1704.04368 | ✓ 200 |
-| `B02-03` | paper | https://arxiv.org/abs/1906.01749 | ✓ 200 |
-| `B02-04` | dataset | https://groups.inf.ed.ac.uk/ami/corpus/ | ✓ 200 |
-| `B02-05` | paper | https://arxiv.org/abs/1912.08777 | ✓ 200 |
-| `B02-06` | repo | https://pypi.org/project/yake/ | ✓ 200 |
-| `B02-07` | paper | https://arxiv.org/abs/2004.05150 | ✓ 200 |
-| `B02-08` | paper | https://arxiv.org/abs/2111.09525 | ✓ 200 |
-| `B02-09` | paper | https://pypi.org/project/sumy/ | ✓ 200 |
-| `B02-10` | paper | https://arxiv.org/abs/2010.11934 | ✓ 200 |
-| `B02-11` | paper | https://arxiv.org/abs/1904.09675 | ✓ 200 |
-| `B02-12` | paper | https://arxiv.org/abs/1906.01749 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B02-01` | repo | https://pypi.org/project/sumy/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-02` | paper | https://arxiv.org/abs/1704.04368 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-03` | paper | https://arxiv.org/abs/1906.01749 | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `B02-04` | dataset | https://groups.inf.ed.ac.uk/ami/corpus/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-05` | paper | https://arxiv.org/abs/1912.08777 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-06` | repo | https://pypi.org/project/yake/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-07` | paper | https://arxiv.org/abs/2004.05150 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-08` | paper | https://arxiv.org/abs/2111.09525 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-09` | paper | https://pypi.org/project/sumy/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-10` | paper | https://arxiv.org/abs/2010.11934 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B02-11` | paper | https://arxiv.org/abs/1904.09675 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `B02-12` | paper | https://arxiv.org/abs/1906.01749 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

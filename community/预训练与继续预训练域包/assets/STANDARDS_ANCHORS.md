@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C04-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C04-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C04-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C04-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `C04-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C04-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C04-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C04-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `C04-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
+| `C04-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `C04-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `C04-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C04-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C04-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
 
 ## 2. 使用边界
 

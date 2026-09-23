@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「AI+政务与公共事务」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（AI政务与公共事务:M01）与收口模块（AI政务与公共事务:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（D07-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D07-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,14 @@
 | `D07-10` | 政务信息公开 | P60 | `D07-09`、`D07-07` | d07-anchor |
 | `D07-11` | 权限与保密 | P40 | `D07-10`、`D07-08` | d07-anchor |
 | `D07-12` | 无障碍服务 | P60 | `D07-11`、`D07-09` | d07-anchor |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `D07-07` | std-catalog |
+| `STD-iso-iec-25010` | 标准 · SQuaRE 质量模型（ISO/IEC） | P80 | `D07-06` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid） | P80 | `D07-04` | std-catalog |
+| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST） | P80 | `D07-09`、`D07-11` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative） | P80 | `D07-08` | std-catalog |
+| `STD-oecd-ai` | 标准 · OECD AI 原则（OECD） | P80 | `D07-01`、`D07-03`、`D07-10` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `D07-02`、`D07-05` | std-catalog |
+| `STD-w3c-wcag22` | 标准 · WCAG 2.2（W3C） | P80 | `D07-12` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +54,14 @@
 | `D07-政务信息公开` | `D07-10` |
 | `D07-权限与保密` | `D07-11` |
 | `D07-无障碍服务` | `D07-12` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-iso-iec-25010` | `STD-iso-iec-25010` |
+| `std-mermaid` | `STD-mermaid` |
+| `std-nist-800-188` | `STD-nist-800-188` |
+| `std-oasis-openapi` | `STD-oasis-openapi` |
+| `std-oecd-ai` | `STD-oecd-ai` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
+| `std-w3c-wcag22` | `STD-w3c-wcag22` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +73,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     d07-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "D07-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +93,17 @@ concept_graph:
         - "D07-10"
         - "D07-11"
         - "D07-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-gdpr"
+        - "STD-iso-iec-25010"
+        - "STD-mermaid"
+        - "STD-nist-800-188"
+        - "STD-oasis-openapi"
+        - "STD-oecd-ai"
+        - "STD-w3c-prov-o"
+        - "STD-w3c-wcag22"
   nodes:
     - id: "D07-01"
       name: "政策文件解读"
@@ -181,6 +209,74 @@ concept_graph:
         - "D07-09"
       provenance:
         - "d07-anchor"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-iso-iec-25010"
+      name: "标准 · SQuaRE 质量模型"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-800-188"
+      name: "标准 · SP 800-188 去标识化"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-09"
+        - "D07-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oasis-openapi"
+      name: "标准 · OpenAPI 3.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oecd-ai"
+      name: "标准 · OECD AI 原则"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-01"
+        - "D07-03"
+        - "D07-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-02"
+        - "D07-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-wcag22"
+      name: "标准 · WCAG 2.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D07-12"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

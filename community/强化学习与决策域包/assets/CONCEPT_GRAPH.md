@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「强化学习与决策」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（强化学习与决策:M01）与收口模块（强化学习与决策:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（A12-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A12-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,10 @@
 | `A12-10` | 资源调度优化 | P60 | `A12-09` | a12-anchor |
 | `A12-11` | RLHF 中的 RL | P40 | `A12-01`、`A12-05` | a12-anchor |
 | `A12-12` | 训练稳定性与探索 | P60 | `A12-01`、`A12-10` | a12-anchor |
+| `STD-mcp` | 标准 · Model Context Protocol（Anthropic/MCP） | P80 | `A12-07` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A12-01`、`A12-05`、`A12-09`、`A12-11`、`A12-12` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `A12-02`、`A12-04`、`A12-06`、`A12-08`、`A12-10` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `A12-03` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +50,10 @@
 | `A12-资源调度优化` | `A12-10` |
 | `A12-RLHF-中的-RL` | `A12-11` |
 | `A12-训练稳定性与探索` | `A12-12` |
+| `std-mcp` | `STD-mcp` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-onnx` | `STD-onnx` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +65,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     a12-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "A12-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +85,13 @@ concept_graph:
         - "A12-10"
         - "A12-11"
         - "A12-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-mcp"
+        - "STD-mlcommons-bench"
+        - "STD-nist-ai-rmf"
+        - "STD-onnx"
   nodes:
     - id: "A12-01"
       name: "策略梯度与 PPO"
@@ -170,6 +186,46 @@ concept_graph:
         - "A12-10"
       provenance:
         - "a12-anchor"
+    - id: "STD-mcp"
+      name: "标准 · Model Context Protocol"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A12-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A12-01"
+        - "A12-05"
+        - "A12-09"
+        - "A12-11"
+        - "A12-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A12-02"
+        - "A12-04"
+        - "A12-06"
+        - "A12-08"
+        - "A12-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A12-03"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

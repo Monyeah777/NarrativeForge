@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C08-01` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-02` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-03` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-04` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-05` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-06` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-07` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-08` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-09` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-10` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-11` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
-| `C08-12` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C08-01` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C08-02` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C08-03` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C08-04` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；域码 C08 专属绑定（轮换 0）） |
+| `C08-05` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；域码 C08 专属绑定（轮换 0）） |
+| `C08-06` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；域码 C08 专属绑定（轮换 0）） |
+| `C08-07` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C08-08` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；域码 C08 专属绑定（轮换 0）） |
+| `C08-09` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C08-10` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C08-11` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C08-12` | spec | https://mlcommons.org/benchmarks/inference-datacenter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

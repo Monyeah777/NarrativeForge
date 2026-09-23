@@ -16,6 +16,13 @@ flowchart TD
     D01-10
     D01-12
   end
+  subgraph P80[P80]
+    STD-dicom
+    STD-gdpr
+    STD-hl7-fhir
+    STD-unesco-ai
+    STD-w3c-skos
+  end
   D01-01 --> D01-02
   D01-02 --> D01-03
   D01-03 --> D01-04
@@ -36,3 +43,15 @@ flowchart TD
   D01-08 --> D01-11
   D01-11 --> D01-12
   D01-09 --> D01-12
+  D01-06 --> STD-dicom
+  D01-11 --> STD-gdpr
+  D01-12 --> STD-gdpr
+  D01-01 --> STD-hl7-fhir
+  D01-02 --> STD-hl7-fhir
+  D01-03 --> STD-hl7-fhir
+  D01-05 --> STD-hl7-fhir
+  D01-08 --> STD-hl7-fhir
+  D01-09 --> STD-hl7-fhir
+  D01-10 --> STD-hl7-fhir
+  D01-07 --> STD-unesco-ai
+  D01-04 --> STD-w3c-skos

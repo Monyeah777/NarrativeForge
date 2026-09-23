@@ -16,6 +16,13 @@ flowchart TD
     F10-10
     F10-12
   end
+  subgraph P80[P80]
+    STD-nist-ai-rmf
+    STD-oasis-openapi
+    STD-spdx-licenses
+    STD-unesco-ai
+    STD-w3c-prov-o
+  end
   F10-01 --> F10-02
   F10-02 --> F10-03
   F10-03 --> F10-04
@@ -36,3 +43,15 @@ flowchart TD
   F10-08 --> F10-11
   F10-11 --> F10-12
   F10-09 --> F10-12
+  F10-01 --> STD-nist-ai-rmf
+  F10-04 --> STD-nist-ai-rmf
+  F10-07 --> STD-nist-ai-rmf
+  F10-10 --> STD-nist-ai-rmf
+  F10-11 --> STD-oasis-openapi
+  F10-03 --> STD-spdx-licenses
+  F10-06 --> STD-spdx-licenses
+  F10-09 --> STD-spdx-licenses
+  F10-12 --> STD-spdx-licenses
+  F10-08 --> STD-unesco-ai
+  F10-02 --> STD-w3c-prov-o
+  F10-05 --> STD-w3c-prov-o

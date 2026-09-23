@@ -16,6 +16,13 @@ flowchart TD
     C10-10
     C10-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-frictionless-table
+    STD-gfm
+    STD-mlcommons-bench
+    STD-onnx
+  end
   C10-01 --> C10-02
   C10-02 --> C10-03
   C10-03 --> C10-04
@@ -36,3 +43,15 @@ flowchart TD
   C10-08 --> C10-11
   C10-11 --> C10-12
   C10-09 --> C10-12
+  C10-04 --> STD-cncf-otel-semconv
+  C10-07 --> STD-cncf-otel-semconv
+  C10-03 --> STD-frictionless-table
+  C10-06 --> STD-frictionless-table
+  C10-09 --> STD-frictionless-table
+  C10-10 --> STD-gfm
+  C10-02 --> STD-mlcommons-bench
+  C10-05 --> STD-mlcommons-bench
+  C10-08 --> STD-mlcommons-bench
+  C10-11 --> STD-mlcommons-bench
+  C10-12 --> STD-mlcommons-bench
+  C10-01 --> STD-onnx

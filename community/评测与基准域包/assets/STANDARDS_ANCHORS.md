@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F05-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `F05-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F05-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `F05-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `F05-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `F05-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F05-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F05-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `F05-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `F05-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `F05-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `F05-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `F05-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F05-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `nist-800-188` SP 800-188 去标识化（NIST；关键词「权限|访问控制|治理」命中） |
 
 ## 2. 使用边界
 

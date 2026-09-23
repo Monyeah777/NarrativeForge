@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E19-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E19-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E19-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；关键词「风险|伦理|责任」命中） |
+| `E19-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E19-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

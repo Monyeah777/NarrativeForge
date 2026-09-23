@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D06-01` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-02` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-03` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-04` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-05` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-06` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-07` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-08` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-09` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-10` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-11` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
-| `D06-12` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D06-01` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-02` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-03` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-04` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-05` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-06` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-07` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-08` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-09` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D06-10` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
+| `D06-11` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D06-12` | spec | https://www.unesco.org/en/artificial-intelligence/recommendation-ethics | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

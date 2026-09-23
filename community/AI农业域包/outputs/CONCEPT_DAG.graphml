@@ -52,6 +52,38 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-c2pa-spec">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-fao-food">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-gdpr">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-iso-iec-25010">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-ai-rmf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oecd-ai">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-opengeospatial">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-prov-o">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="D10-01" target="D10-02">
       <data key="provenance">['d10-anchor']</data>
     </edge>
@@ -111,6 +143,42 @@
     </edge>
     <edge source="D10-09" target="D10-12">
       <data key="provenance">['d10-anchor']</data>
+    </edge>
+    <edge source="D10-09" target="STD-c2pa-spec">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-06" target="STD-fao-food">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-10" target="STD-fao-food">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-12" target="STD-gdpr">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-03" target="STD-iso-iec-25010">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-01" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-04" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-07" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-08" target="STD-oecd-ai">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-11" target="STD-opengeospatial">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-02" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D10-05" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

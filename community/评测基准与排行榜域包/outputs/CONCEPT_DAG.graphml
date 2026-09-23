@@ -52,6 +52,18 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-cncf-otel-semconv">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oasis-sarif">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="C08-01" target="C08-02">
       <data key="provenance">['c08-anchor']</data>
     </edge>
@@ -111,6 +123,42 @@
     </edge>
     <edge source="C08-09" target="C08-12">
       <data key="provenance">['c08-anchor']</data>
+    </edge>
+    <edge source="C08-03" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-01" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-05" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-07" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-09" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-10" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-11" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-12" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-02" target="STD-oasis-sarif">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-04" target="STD-oasis-sarif">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-06" target="STD-oasis-sarif">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C08-08" target="STD-oasis-sarif">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

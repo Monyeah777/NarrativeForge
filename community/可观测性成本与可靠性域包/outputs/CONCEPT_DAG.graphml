@@ -52,6 +52,30 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-cncf-otel-semconv">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-table">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onvif-ucum">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-openmetrics">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-prometheus-exposition">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="C18-01" target="C18-02">
       <data key="provenance">['c18-anchor']</data>
     </edge>
@@ -111,6 +135,42 @@
     </edge>
     <edge source="C18-09" target="C18-12">
       <data key="provenance">['c18-anchor']</data>
+    </edge>
+    <edge source="C18-01" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-02" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-04" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-06" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-10" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-07" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-08" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-03" target="STD-onvif-ucum">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-09" target="STD-openmetrics">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-12" target="STD-openmetrics">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-05" target="STD-prometheus-exposition">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C18-11" target="STD-prometheus-exposition">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

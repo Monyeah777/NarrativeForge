@@ -16,6 +16,12 @@ flowchart TD
     E19-10
     E19-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-nist-ai-rmf
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E19-01 --> E19-02
   E19-02 --> E19-03
   E19-03 --> E19-04
@@ -36,3 +42,15 @@ flowchart TD
   E19-08 --> E19-11
   E19-11 --> E19-12
   E19-09 --> E19-12
+  E19-01 --> STD-commonmark
+  E19-04 --> STD-commonmark
+  E19-10 --> STD-commonmark
+  E19-07 --> STD-nist-ai-rmf
+  E19-03 --> STD-w3c-epub33
+  E19-06 --> STD-w3c-epub33
+  E19-09 --> STD-w3c-epub33
+  E19-12 --> STD-w3c-epub33
+  E19-02 --> STD-w3c-tabular-data
+  E19-05 --> STD-w3c-tabular-data
+  E19-08 --> STD-w3c-tabular-data
+  E19-11 --> STD-w3c-tabular-data

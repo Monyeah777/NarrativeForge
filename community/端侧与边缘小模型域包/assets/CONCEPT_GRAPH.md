@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「端侧与边缘小模型」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（端侧与边缘小模型:M01）与收口模块（端侧与边缘小模型:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（A14-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 10 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A14-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,16 @@
 | `A14-10` | 端侧工具调用 | P60 | `A14-03` | a14-anchor |
 | `A14-11` | 固件与 OTA 更新 | P40 | `A14-04` | a14-anchor |
 | `A14-12` | 端侧模型安全 | P60 | `A14-05` | a14-anchor |
+| `STD-a2a` | 标准 · A2A 协议（Linux Foundation） | P80 | `A14-06` | std-catalog |
+| `STD-covesa-vss` | 标准 · Vehicle Signal Specification（COVESA） | P80 | `A14-09` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `A14-05` | std-catalog |
+| `STD-ieee-754` | 标准 · 浮点运算标准（IEEE） | P80 | `A14-04`、`A14-08` | std-catalog |
+| `STD-mcp` | 标准 · Model Context Protocol（Anthropic/MCP） | P80 | `A14-10` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A14-07` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative） | P80 | `A14-02` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `A14-01`、`A14-03` | std-catalog |
+| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP） | P80 | `A14-12` | std-catalog |
+| `STD-uptane` | 标准 · OTA 安全框架（Uptane） | P80 | `A14-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +56,16 @@
 | `A14-端侧工具调用` | `A14-10` |
 | `A14-固件与-OTA-更新` | `A14-11` |
 | `A14-端侧模型安全` | `A14-12` |
+| `std-a2a` | `STD-a2a` |
+| `std-covesa-vss` | `STD-covesa-vss` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-ieee-754` | `STD-ieee-754` |
+| `std-mcp` | `STD-mcp` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-oasis-openapi` | `STD-oasis-openapi` |
+| `std-onnx` | `STD-onnx` |
+| `std-owasp-llm` | `STD-owasp-llm` |
+| `std-uptane` | `STD-uptane` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +77,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     a14-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "A14-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +97,19 @@ concept_graph:
         - "A14-10"
         - "A14-11"
         - "A14-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-a2a"
+        - "STD-covesa-vss"
+        - "STD-gdpr"
+        - "STD-ieee-754"
+        - "STD-mcp"
+        - "STD-mlcommons-bench"
+        - "STD-oasis-openapi"
+        - "STD-onnx"
+        - "STD-owasp-llm"
+        - "STD-uptane"
   nodes:
     - id: "A14-01"
       name: "小模型蒸馏与裁剪"
@@ -171,6 +205,88 @@ concept_graph:
         - "A14-05"
       provenance:
         - "a14-anchor"
+    - id: "STD-a2a"
+      name: "标准 · A2A 协议"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-covesa-vss"
+      name: "标准 · Vehicle Signal Specification"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ieee-754"
+      name: "标准 · 浮点运算标准"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-04"
+        - "A14-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mcp"
+      name: "标准 · Model Context Protocol"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oasis-openapi"
+      name: "标准 · OpenAPI 3.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-02"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-01"
+        - "A14-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-owasp-llm"
+      name: "标准 · LLM 应用十大风险"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-uptane"
+      name: "标准 · OTA 安全框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A14-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

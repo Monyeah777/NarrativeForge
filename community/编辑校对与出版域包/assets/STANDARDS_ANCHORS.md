@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E10-01` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-02` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-03` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-04` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-05` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-06` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-07` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-08` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-09` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-10` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-11` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
-| `E10-12` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E10-01` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
+| `E10-02` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
+| `E10-03` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
+| `E10-04` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
+| `E10-05` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `E10-06` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `mermaid` Mermaid 图语言（Mermaid；关键词「流程|结构图|示意」命中） |
+| `E10-07` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
+| `E10-08` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
+| `E10-09` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `E10-10` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
+| `E10-11` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `E10-12` | spec | https://www.w3.org/TR/epub-33/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；域码 E10 专属绑定（轮换 0）） |
 
 ## 2. 使用边界
 

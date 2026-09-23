@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「数据采集与清洗」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（数据采集与清洗:M01）与收口模块（数据采集与清洗:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C01-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 3 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C01-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,9 @@
 | `C01-10` | 数据血缘 | P60 | `C01-09`、`C01-07` | c01-anchor |
 | `C01-11` | 质量打分 | P40 | `C01-10`、`C01-08` | c01-anchor |
 | `C01-12` | 脏数据回溯 | P60 | `C01-11`、`C01-09` | c01-anchor |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `C01-03`、`C01-05`、`C01-07`、`C01-09`、`C01-11` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `C01-01`、`C01-06` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `C01-02`、`C01-04`、`C01-08`、`C01-10`、`C01-12` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +49,9 @@
 | `C01-数据血缘` | `C01-10` |
 | `C01-质量打分` | `C01-11` |
 | `C01-脏数据回溯` | `C01-12` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +63,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c01-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C01-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +83,12 @@ concept_graph:
         - "C01-10"
         - "C01-11"
         - "C01-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-frictionless-table"
+        - "STD-gdpr"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "C01-01"
       name: "网页抓取与合规"
@@ -181,6 +194,39 @@ concept_graph:
         - "C01-09"
       provenance:
         - "c01-anchor"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C01-03"
+        - "C01-05"
+        - "C01-07"
+        - "C01-09"
+        - "C01-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C01-01"
+        - "C01-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C01-02"
+        - "C01-04"
+        - "C01-08"
+        - "C01-10"
+        - "C01-12"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

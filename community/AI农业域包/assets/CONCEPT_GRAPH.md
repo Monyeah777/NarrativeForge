@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「AI+农业」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（AI农业:M01）与收口模块（AI农业:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（D10-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D10-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,14 @@
 | `D10-10` | 农业知识科普 | P60 | `D10-09`、`D10-07` | d10-anchor |
 | `D10-11` | 遥感长势监测 | P40 | `D10-10`、`D10-08` | d10-anchor |
 | `D10-12` | 农资合规 | P60 | `D10-11`、`D10-09` | d10-anchor |
+| `STD-c2pa-spec` | 标准 · 内容凭证规范（C2PA） | P80 | `D10-09` | std-catalog |
+| `STD-fao-food` | 标准 · 食品安全与质量（FAO） | P80 | `D10-06`、`D10-10` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `D10-12` | std-catalog |
+| `STD-iso-iec-25010` | 标准 · SQuaRE 质量模型（ISO/IEC） | P80 | `D10-03` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `D10-01`、`D10-04`、`D10-07` | std-catalog |
+| `STD-oecd-ai` | 标准 · OECD AI 原则（OECD） | P80 | `D10-08` | std-catalog |
+| `STD-opengeospatial` | 标准 · OGC 标准（含 GeoJSON/3D Tiles）（OGC） | P80 | `D10-11` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `D10-02`、`D10-05` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +54,14 @@
 | `D10-农业知识科普` | `D10-10` |
 | `D10-遥感长势监测` | `D10-11` |
 | `D10-农资合规` | `D10-12` |
+| `std-c2pa-spec` | `STD-c2pa-spec` |
+| `std-fao-food` | `STD-fao-food` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-iso-iec-25010` | `STD-iso-iec-25010` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-oecd-ai` | `STD-oecd-ai` |
+| `std-opengeospatial` | `STD-opengeospatial` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +73,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     d10-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "D10-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +93,17 @@ concept_graph:
         - "D10-10"
         - "D10-11"
         - "D10-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-c2pa-spec"
+        - "STD-fao-food"
+        - "STD-gdpr"
+        - "STD-iso-iec-25010"
+        - "STD-nist-ai-rmf"
+        - "STD-oecd-ai"
+        - "STD-opengeospatial"
+        - "STD-w3c-prov-o"
   nodes:
     - id: "D10-01"
       name: "作物病虫害识别"
@@ -181,6 +209,74 @@ concept_graph:
         - "D10-09"
       provenance:
         - "d10-anchor"
+    - id: "STD-c2pa-spec"
+      name: "标准 · 内容凭证规范"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-fao-food"
+      name: "标准 · 食品安全与质量"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-06"
+        - "D10-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-iso-iec-25010"
+      name: "标准 · SQuaRE 质量模型"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-01"
+        - "D10-04"
+        - "D10-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oecd-ai"
+      name: "标准 · OECD AI 原则"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-opengeospatial"
+      name: "标准 · OGC 标准（含 GeoJSON/3D Tiles）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D10-02"
+        - "D10-05"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

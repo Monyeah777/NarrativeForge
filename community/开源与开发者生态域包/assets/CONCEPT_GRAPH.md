@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「开源与开发者生态」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（开源与开发者生态:M01）与收口模块（开源与开发者生态:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（F09-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（F09-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,14 @@
 | `F09-10` | 镜像与分发 | P60 | `F09-09`、`F09-07` | f09-anchor |
 | `F09-11` | 安全响应 | P40 | `F09-10`、`F09-08` | f09-anchor |
 | `F09-12` | 生态合作 | P60 | `F09-11`、`F09-09` | f09-anchor |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `F09-01` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `F09-08` | std-catalog |
+| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST） | P80 | `F09-06` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative） | P80 | `F09-03` | std-catalog |
+| `STD-osi-osd` | 标准 · 开源定义（OSI） | P80 | `F09-05`、`F09-07`、`F09-09` | std-catalog |
+| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP） | P80 | `F09-11` | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX） | P80 | `F09-02`、`F09-10`、`F09-12` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `F09-04` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +54,14 @@
 | `F09-镜像与分发` | `F09-10` |
 | `F09-安全响应` | `F09-11` |
 | `F09-生态合作` | `F09-12` |
+| `std-creativecommons` | `STD-creativecommons` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-nist-800-188` | `STD-nist-800-188` |
+| `std-oasis-openapi` | `STD-oasis-openapi` |
+| `std-osi-osd` | `STD-osi-osd` |
+| `std-owasp-llm` | `STD-owasp-llm` |
+| `std-spdx-licenses` | `STD-spdx-licenses` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +73,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     f09-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "F09-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +93,17 @@ concept_graph:
         - "F09-10"
         - "F09-11"
         - "F09-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-creativecommons"
+        - "STD-mlcommons-bench"
+        - "STD-nist-800-188"
+        - "STD-oasis-openapi"
+        - "STD-osi-osd"
+        - "STD-owasp-llm"
+        - "STD-spdx-licenses"
+        - "STD-w3c-epub33"
   nodes:
     - id: "F09-01"
       name: "开源许可选择"
@@ -181,6 +209,74 @@ concept_graph:
         - "F09-09"
       provenance:
         - "f09-anchor"
+    - id: "STD-creativecommons"
+      name: "标准 · 许可与权利表达"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-01"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-800-188"
+      name: "标准 · SP 800-188 去标识化"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oasis-openapi"
+      name: "标准 · OpenAPI 3.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-osi-osd"
+      name: "标准 · 开源定义"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-05"
+        - "F09-07"
+        - "F09-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-owasp-llm"
+      name: "标准 · LLM 应用十大风险"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-licenses"
+      name: "标准 · SPDX 许可证清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-02"
+        - "F09-10"
+        - "F09-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F09-04"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

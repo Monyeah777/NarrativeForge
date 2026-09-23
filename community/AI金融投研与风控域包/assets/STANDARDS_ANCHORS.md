@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D04-01` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-02` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-03` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-04` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-05` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-06` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-07` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-08` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-09` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-10` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-11` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `D04-12` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D04-01` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；域码 D04 专属绑定（轮换 0）） |
+| `D04-02` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；域码 D04 专属绑定（轮换 0）） |
+| `D04-03` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；域码 D04 专属绑定（轮换 0）） |
+| `D04-04` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；域码 D04 专属绑定（轮换 0）） |
+| `D04-05` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `cncf-cloudevents` CloudEvents 1.0（CNCF；关键词「事件|消息|通道」命中） |
+| `D04-06` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；关键词「金融|投研|风控|保险|绩效」命中） |
+| `D04-07` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；域码 D04 专属绑定（轮换 0）） |
+| `D04-08` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D04-09` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D04-10` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；关键词「金融|投研|风控|保险|绩效」命中） |
+| `D04-11` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；域码 D04 专属绑定（轮换 0）） |
+| `D04-12` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；域码 D04 专属绑定（轮换 0）） |
 
 ## 2. 使用边界
 

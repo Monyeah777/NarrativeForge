@@ -16,6 +16,14 @@ flowchart TD
     B17-10
     B17-12
   end
+  subgraph P80[P80]
+    STD-frictionless-package
+    STD-frictionless-table
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+    STD-onnx
+    STD-w3c-tabular-data
+  end
   B17-01 --> B17-02
   B17-02 --> B17-03
   B17-03 --> B17-04
@@ -36,3 +44,15 @@ flowchart TD
   B17-08 --> B17-11
   B17-11 --> B17-12
   B17-09 --> B17-12
+  B17-01 --> STD-frictionless-package
+  B17-03 --> STD-frictionless-table
+  B17-06 --> STD-frictionless-table
+  B17-09 --> STD-frictionless-table
+  B17-11 --> STD-frictionless-table
+  B17-04 --> STD-ietf-json-schema
+  B17-07 --> STD-ietf-json-schema
+  B17-10 --> STD-ietf-json-schema
+  B17-12 --> STD-mlcommons-bench
+  B17-02 --> STD-onnx
+  B17-05 --> STD-w3c-tabular-data
+  B17-08 --> STD-w3c-tabular-data

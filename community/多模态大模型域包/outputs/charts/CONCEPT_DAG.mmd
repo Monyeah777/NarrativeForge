@@ -16,6 +16,15 @@ flowchart TD
     A02-10
     A02-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-table
+    STD-mcp
+    STD-mlcommons-bench
+    STD-mlcommons-croissant
+    STD-oci-image
+    STD-w3c-svg2
+  end
   A02-01 --> A02-03
   A02-02 --> A02-03
   A02-03 --> A02-04
@@ -26,3 +35,15 @@ flowchart TD
   A02-12 --> A02-09
   A02-09 --> A02-10
   A02-06 --> A02-11
+  A02-06 --> STD-commonmark
+  A02-07 --> STD-frictionless-table
+  A02-11 --> STD-mcp
+  A02-01 --> STD-mlcommons-bench
+  A02-09 --> STD-mlcommons-bench
+  A02-04 --> STD-mlcommons-croissant
+  A02-08 --> STD-mlcommons-croissant
+  A02-12 --> STD-mlcommons-croissant
+  A02-05 --> STD-oci-image
+  A02-02 --> STD-w3c-svg2
+  A02-03 --> STD-w3c-svg2
+  A02-10 --> STD-w3c-svg2

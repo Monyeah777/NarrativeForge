@@ -14,6 +14,8 @@
       "anchor": "https://pypi.org/project/sumy/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 scoring（特征清单）、selection（贪心/ILP）与 redundancy（MMR 等去冗余方式 + 参数）。",
       "pitfall": "无去冗余导致句子重复；打分特征未声明导致不可复现。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/1704.04368",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 length_constraint（min/max token）、copy_mechanism（有|无）与 faithfulness_check 方法。",
       "pitfall": "长度不设上限导致「摘要」比原文还长；无忠实度检查。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://arxiv.org/abs/1906.01749",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-epub33",
+      "standard_why": "关键词「文档|出版|排版|校对」命中",
       "check": "声明 doc_count（集合规模）、cross_doc_dedup（策略）与 provenance（每条要点可回指源文 id）。",
       "pitfall": "要点不可回指来源（无法核实）；同一事实被算作多个要点。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://groups.inf.ed.ac.uk/ami/corpus/",
       "anchor_kind": "dataset",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 speaker_attribution（required|optional）、decision_extraction（有|无）与 action_item_format（字段清单）。",
       "pitfall": "决议与闲聊混在一起；行动项缺负责人与截止日期字段。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://arxiv.org/abs/1912.08777",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 levels（层级数 + 每层长度）、abstraction_check（下层要点须被上层覆盖）与 loss_policy（超预算截断规则）。",
       "pitfall": "上层摘要出现下层没有的新事实（幻觉升级）；每层长度不设预算。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://pypi.org/project/yake/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 granularity（句|段|全文）、dedup_threshold（相似度阈值）与 schema（输出字段清单）。",
       "pitfall": "要点粒度不一致导致计数类结论失真；输出无 schema 无法机读。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://arxiv.org/abs/2004.05150",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 ratio_metric（char|token|info-unit）、target_ratio 与 clamp（截断策略）。",
       "pitfall": "不同压缩比定义混比；超长输入未分块导致中段信息丢失。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/2111.09525",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 method（NLI|QA|规则）、sample_size 与 threshold（判定阈值），并给不一致率。",
       "pitfall": "只报流畅度不报不一致率；抽样规模过小却下总体结论。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://pypi.org/project/sumy/",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 weight_source（频次|位置|模型）、tie_break（并列处理）与 stability（重跑排序一致率）。",
       "pitfall": "并列键无确定处理导致输出抖动；权重来源未声明导致不可比。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2010.11934",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 langs（语言清单）、eval_mode（同语|跨语）与 length_unit（char|token）。",
       "pitfall": "中英混用同一长度单位导致预算失真；跨语评测用单语指标替代。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/1904.09675",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
       "check": "声明 rouge_variant（R1/R2/RL + 版本）、semantic_metric（如 BERTScore）与 human_coverage（要点覆盖统计）。",
       "pitfall": "只报 ROUGE-L 且不报版本；用参考摘要唯一性强的数据集下泛化结论。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/1906.01749",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 trigger（时间|事件|长度）、reuse_policy（重建|追加|合并）与 consistency_check（新旧摘要冲突处理）。",
       "pitfall": "每次全量重写（成本不可控）；新旧摘要矛盾未处理。"
     }

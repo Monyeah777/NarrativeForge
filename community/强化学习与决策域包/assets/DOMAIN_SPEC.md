@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 |
-|---|---|---|---|---|
-| `A12-01` | 策略梯度与 PPO | 策略梯度与 PPO 的口径：优势估计方式、裁剪范围、每轮采样量与种子数。 | 声明 advantage（GAE λ|MC）、clip_range、steps_per_update 与 seeds（≥3，报均值±方差）。 | 单种子报峰值成绩；裁剪范围与优势估计未声明导致不可复现。 |
-| `A12-02` | 离线强化学习 | 离线强化学习的口径：数据集来源与覆盖度、是否在线交互、以及 OOD 动作处理。 | 声明 dataset（来源 + 转移数）、online_interaction（none|limited）与 ood_handling（约束/惩罚/无）。 | 离线算法带在线交互却与纯离线基线比较；数据集覆盖不足时结论不成立。 |
-| `A12-03` | 世界模型强化学习 | 世界模型强化学习的口径：隐状态维度、想象 rollout 长度与真实环境回测比例。 | 声明 latent_dim、imagination_horizon 与 real_eval_ratio（策略在真实环境回测的比例）。 | 只在想象环境评测（乐观偏差）；隐状态维度未声明导致显存结论失真。 |
-| `A12-04` | 多臂老虎机与 A/B | 多臂老虎机与 A/B 的口径：探索策略（ε/UCB/Thompson）、样本量与显著性口径。 | 声明 policy（ε-greedy|UCB|TS + 参数）、sample_size 与 significance（检验方法 + α + 是否多重比较校正）。 | 不做多重比较校正（假阳性）；样本量不足就宣布胜出。 |
-| `A12-05` | 奖励函数设计 | 奖励函数设计的口径：奖励项组成、权重与奖励黑客的检测方式。 | 声明 reward_terms（清单）、weights（数值）与 hacking_check（对抗样本 / 人工审看结果）。 | 只报回报曲线不查奖励黑客；奖励权重变更未记录。 |
-| `A12-06` | 仿真环境搭建 | 仿真环境搭建的口径：环境版本、观测 / 动作空间定义与随机性控制（种子）。 | 声明 env_id（含版本）、obs_space/action_space（维度与范围）与 seed_policy（固定 + 重置规则）。 | 环境版本升级未记录（行为已变）；种子不固定导致结果抖动。 |
-| `A12-07` | 多智能体博弈 | 多智能体博弈的口径：智能体数量与角色、信息结构（完全 / 不完全）与均衡指标。 | 声明 n_agents、information（full|partial）、training_scheme（集中训练分散执行等）与 equilibrium_metric。 | 把自博（self-play）胜率当泛化能力；信息结构未声明。 |
-| `A12-08` | 规划与搜索（MCTS） | 规划与搜索（MCTS）的口径：搜索预算、价值 / 策略先验来源与树复用策略。 | 声明 budget（模拟次数）、prior（网络|rollout）与 tree_reuse（是否跨步复用 + 规则）。 | 搜索预算与被比方法不同；先验来自测试环境（泄漏）。 |
-| `A12-09` | 推荐系统 RL | 推荐系统 RL 的口径：交互日志来源、奖励定义与离线评估的偏差校正。 | 声明 log_source（真实|模拟）、reward（点击/时长/转化）与 offpolicy_correction（IPS/DR 等）。 | 离线日志直接评估（分布偏移未校正）；奖励定义与业务目标脱节。 |
-| `A12-10` | 资源调度优化 | 资源调度优化的口径：目标函数、约束与在线 / 离线求解方式。 | 声明 objective（makespan|成本|SLA 违背率）、constraints（清单）与 solving（在线|离线 + 预算）。 | 目标与约束混写（不可判定）；离线最优当在线结果。 |
-| `A12-11` | RLHF 中的 RL | RLHF 中的 RL 的口径：偏好模型来源、KL 约束系数与奖励归一化方式。 | 声明 rm_source（人工偏好规模 + 模型 id）、kl_coef 与 reward_norm（是否归一化 + 方式）。 | 无 KL 约束导致策略崩坏；奖励未归一化导致超参不可迁移。 |
-| `A12-12` | 训练稳定性与探索 | 训练稳定性与探索的口径：探索机制、梯度 / 分布异常监控与重跑协议。 | 声明 exploration（ε|熵奖励|RND）、anomaly_monitors（KL/梯度范数/回报）与 rerun_protocol（几次 + 报告口径）。 | 只报最好一次运行；异常监控缺失导致崩溃无据可查。 |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
+|---|---|---|---|---|---|
+| `A12-01` | 策略梯度与 PPO | 策略梯度与 PPO 的口径：优势估计方式、裁剪范围、每轮采样量与种子数。 | 声明 advantage（GAE λ|MC）、clip_range、steps_per_update 与 seeds（≥3，报均值±方差）。 | 单种子报峰值成绩；裁剪范围与优势估计未声明导致不可复现。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A12-02` | 离线强化学习 | 离线强化学习的口径：数据集来源与覆盖度、是否在线交互、以及 OOD 动作处理。 | 声明 dataset（来源 + 转移数）、online_interaction（none|limited）与 ood_handling（约束/惩罚/无）。 | 离线算法带在线交互却与纯离线基线比较；数据集覆盖不足时结论不成立。 | `nist-ai-rmf` AI 风险管理框架（NIST） |
+| `A12-03` | 世界模型强化学习 | 世界模型强化学习的口径：隐状态维度、想象 rollout 长度与真实环境回测比例。 | 声明 latent_dim、imagination_horizon 与 real_eval_ratio（策略在真实环境回测的比例）。 | 只在想象环境评测（乐观偏差）；隐状态维度未声明导致显存结论失真。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
+| `A12-04` | 多臂老虎机与 A/B | 多臂老虎机与 A/B 的口径：探索策略（ε/UCB/Thompson）、样本量与显著性口径。 | 声明 policy（ε-greedy|UCB|TS + 参数）、sample_size 与 significance（检验方法 + α + 是否多重比较校正）。 | 不做多重比较校正（假阳性）；样本量不足就宣布胜出。 | `nist-ai-rmf` AI 风险管理框架（NIST） |
+| `A12-05` | 奖励函数设计 | 奖励函数设计的口径：奖励项组成、权重与奖励黑客的检测方式。 | 声明 reward_terms（清单）、weights（数值）与 hacking_check（对抗样本 / 人工审看结果）。 | 只报回报曲线不查奖励黑客；奖励权重变更未记录。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A12-06` | 仿真环境搭建 | 仿真环境搭建的口径：环境版本、观测 / 动作空间定义与随机性控制（种子）。 | 声明 env_id（含版本）、obs_space/action_space（维度与范围）与 seed_policy（固定 + 重置规则）。 | 环境版本升级未记录（行为已变）；种子不固定导致结果抖动。 | `nist-ai-rmf` AI 风险管理框架（NIST） |
+| `A12-07` | 多智能体博弈 | 多智能体博弈的口径：智能体数量与角色、信息结构（完全 / 不完全）与均衡指标。 | 声明 n_agents、information（full|partial）、training_scheme（集中训练分散执行等）与 equilibrium_metric。 | 把自博（self-play）胜率当泛化能力；信息结构未声明。 | `mcp` Model Context Protocol（Anthropic/MCP） |
+| `A12-08` | 规划与搜索（MCTS） | 规划与搜索（MCTS）的口径：搜索预算、价值 / 策略先验来源与树复用策略。 | 声明 budget（模拟次数）、prior（网络|rollout）与 tree_reuse（是否跨步复用 + 规则）。 | 搜索预算与被比方法不同；先验来自测试环境（泄漏）。 | `nist-ai-rmf` AI 风险管理框架（NIST） |
+| `A12-09` | 推荐系统 RL | 推荐系统 RL 的口径：交互日志来源、奖励定义与离线评估的偏差校正。 | 声明 log_source（真实|模拟）、reward（点击/时长/转化）与 offpolicy_correction（IPS/DR 等）。 | 离线日志直接评估（分布偏移未校正）；奖励定义与业务目标脱节。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A12-10` | 资源调度优化 | 资源调度优化的口径：目标函数、约束与在线 / 离线求解方式。 | 声明 objective（makespan|成本|SLA 违背率）、constraints（清单）与 solving（在线|离线 + 预算）。 | 目标与约束混写（不可判定）；离线最优当在线结果。 | `nist-ai-rmf` AI 风险管理框架（NIST） |
+| `A12-11` | RLHF 中的 RL | RLHF 中的 RL 的口径：偏好模型来源、KL 约束系数与奖励归一化方式。 | 声明 rm_source（人工偏好规模 + 模型 id）、kl_coef 与 reward_norm（是否归一化 + 方式）。 | 无 KL 约束导致策略崩坏；奖励未归一化导致超参不可迁移。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A12-12` | 训练稳定性与探索 | 训练稳定性与探索的口径：探索机制、梯度 / 分布异常监控与重跑协议。 | 声明 exploration（ε|熵奖励|RND）、anomaly_monitors（KL/梯度范数/回报）与 rerun_protocol（几次 + 报告口径）。 | 只报最好一次运行；异常监控缺失导致崩溃无据可查。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
 
 ## 3. 机读投影契约
 

@@ -16,6 +16,13 @@ flowchart TD
     E14-10
     E14-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-table
+    STD-vega-lite
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E14-01 --> E14-02
   E14-02 --> E14-03
   E14-03 --> E14-04
@@ -36,3 +43,15 @@ flowchart TD
   E14-08 --> E14-11
   E14-11 --> E14-12
   E14-09 --> E14-12
+  E14-01 --> STD-commonmark
+  E14-07 --> STD-commonmark
+  E14-10 --> STD-commonmark
+  E14-04 --> STD-frictionless-table
+  E14-12 --> STD-frictionless-table
+  E14-03 --> STD-vega-lite
+  E14-09 --> STD-vega-lite
+  E14-06 --> STD-w3c-epub33
+  E14-02 --> STD-w3c-tabular-data
+  E14-05 --> STD-w3c-tabular-data
+  E14-08 --> STD-w3c-tabular-data
+  E14-11 --> STD-w3c-tabular-data

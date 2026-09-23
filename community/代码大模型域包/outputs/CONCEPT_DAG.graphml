@@ -52,6 +52,34 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-cwe">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-package">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-gfm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-lsp">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-osv">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A09-01" target="A09-02">
       <data key="provenance">['a09-anchor']</data>
     </edge>
@@ -81,6 +109,42 @@
     </edge>
     <edge source="A09-11" target="A09-12">
       <data key="provenance">['a09-anchor']</data>
+    </edge>
+    <edge source="A09-02" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-05" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-08" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-03" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-01" target="STD-gfm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-06" target="STD-lsp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-09" target="STD-lsp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-11" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-04" target="STD-osv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-07" target="STD-osv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-10" target="STD-osv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A09-12" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

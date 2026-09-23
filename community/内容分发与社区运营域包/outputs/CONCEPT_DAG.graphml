@@ -52,6 +52,22 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-ai-rmf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-epub33">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-tabular-data">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="E19-01" target="E19-02">
       <data key="provenance">['e19-anchor']</data>
     </edge>
@@ -111,6 +127,42 @@
     </edge>
     <edge source="E19-09" target="E19-12">
       <data key="provenance">['e19-anchor']</data>
+    </edge>
+    <edge source="E19-01" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-04" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-10" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-07" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-03" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-06" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-09" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-12" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-02" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-05" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-08" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E19-11" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

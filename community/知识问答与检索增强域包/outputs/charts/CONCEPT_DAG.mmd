@@ -16,6 +16,14 @@ flowchart TD
     B06-10
     B06-12
   end
+  subgraph P80[P80]
+    STD-frictionless-package
+    STD-frictionless-table
+    STD-gfm
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+    STD-w3c-tabular-data
+  end
   B06-02 --> B06-01
   B06-09 --> B06-01
   B06-01 --> B06-03
@@ -26,3 +34,15 @@ flowchart TD
   B06-04 --> B06-08
   B06-07 --> B06-10
   B06-10 --> B06-12
+  B06-01 --> STD-frictionless-package
+  B06-04 --> STD-frictionless-package
+  B06-03 --> STD-frictionless-table
+  B06-08 --> STD-frictionless-table
+  B06-09 --> STD-frictionless-table
+  B06-12 --> STD-frictionless-table
+  B06-02 --> STD-gfm
+  B06-06 --> STD-gfm
+  B06-07 --> STD-ietf-json-schema
+  B06-10 --> STD-ietf-json-schema
+  B06-11 --> STD-mlcommons-bench
+  B06-05 --> STD-w3c-tabular-data

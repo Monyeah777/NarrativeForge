@@ -16,6 +16,12 @@ flowchart TD
     D18-10
     D18-12
   end
+  subgraph P80[P80]
+    STD-ieee-754
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-w3c-prov-o
+  end
   D18-01 --> D18-02
   D18-02 --> D18-03
   D18-03 --> D18-04
@@ -36,3 +42,15 @@ flowchart TD
   D18-08 --> D18-11
   D18-11 --> D18-12
   D18-09 --> D18-12
+  D18-03 --> STD-ieee-754
+  D18-06 --> STD-iso-iec-25010
+  D18-09 --> STD-iso-iec-25010
+  D18-12 --> STD-iso-iec-25010
+  D18-01 --> STD-nist-ai-rmf
+  D18-04 --> STD-nist-ai-rmf
+  D18-07 --> STD-nist-ai-rmf
+  D18-10 --> STD-nist-ai-rmf
+  D18-02 --> STD-w3c-prov-o
+  D18-05 --> STD-w3c-prov-o
+  D18-08 --> STD-w3c-prov-o
+  D18-11 --> STD-w3c-prov-o

@@ -16,6 +16,14 @@ flowchart TD
     A10-10
     A10-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-ieee-754
+    STD-mlcommons-bench
+    STD-onnx
+    STD-peps
+    STD-w3c-mathml3
+  end
   A10-02 --> A10-03
   A10-05 --> A10-06
   A10-09 --> A10-06
@@ -26,3 +34,15 @@ flowchart TD
   A10-08 --> A10-11
   A10-10 --> A10-12
   A10-07 --> A10-12
+  A10-12 --> STD-cncf-otel-semconv
+  A10-10 --> STD-ieee-754
+  A10-06 --> STD-mlcommons-bench
+  A10-01 --> STD-onnx
+  A10-07 --> STD-onnx
+  A10-09 --> STD-onnx
+  A10-11 --> STD-onnx
+  A10-08 --> STD-peps
+  A10-02 --> STD-w3c-mathml3
+  A10-03 --> STD-w3c-mathml3
+  A10-04 --> STD-w3c-mathml3
+  A10-05 --> STD-w3c-mathml3

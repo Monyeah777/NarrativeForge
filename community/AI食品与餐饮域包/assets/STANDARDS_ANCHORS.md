@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D16-01` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-02` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-03` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-04` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-05` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-06` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-07` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-08` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-09` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-10` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-11` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
-| `D16-12` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D16-01` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-02` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-03` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-04` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-05` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-06` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；关键词「风险|伦理|责任」命中） |
+| `D16-07` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-08` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-09` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-10` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-11` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D16-12` | spec | https://www.fao.org/food-safety/en/ | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
 
 ## 2. 使用边界
 

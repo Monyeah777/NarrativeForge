@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「评测与基准」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（评测与基准:M01）与收口模块（评测与基准:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（F05-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（F05-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,12 @@
 | `F05-10` | 评测报告规范 | P60 | `F05-09`、`F05-07` | f05-anchor |
 | `F05-11` | 回归门禁 | P40 | `F05-10`、`F05-08` | f05-anchor |
 | `F05-12` | 榜单治理 | P60 | `F05-11`、`F05-09` | f05-anchor |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `F05-03` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `F05-01`、`F05-02`、`F05-06`、`F05-07`、`F05-09`、`F05-10` | std-catalog |
+| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST） | P80 | `F05-12` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `F05-04` | std-catalog |
+| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP） | P80 | `F05-08` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `F05-05`、`F05-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +52,12 @@
 | `F05-评测报告规范` | `F05-10` |
 | `F05-回归门禁` | `F05-11` |
 | `F05-榜单治理` | `F05-12` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-nist-800-188` | `STD-nist-800-188` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-owasp-llm` | `STD-owasp-llm` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +69,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     f05-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "F05-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +89,15 @@ concept_graph:
         - "F05-10"
         - "F05-11"
         - "F05-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-frictionless-table"
+        - "STD-mlcommons-bench"
+        - "STD-nist-800-188"
+        - "STD-nist-ai-rmf"
+        - "STD-owasp-llm"
+        - "STD-w3c-prov-o"
   nodes:
     - id: "F05-01"
       name: "能力基准"
@@ -181,6 +203,60 @@ concept_graph:
         - "F05-09"
       provenance:
         - "f05-anchor"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F05-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F05-01"
+        - "F05-02"
+        - "F05-06"
+        - "F05-07"
+        - "F05-09"
+        - "F05-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-800-188"
+      name: "标准 · SP 800-188 去标识化"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F05-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F05-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-owasp-llm"
+      name: "标准 · LLM 应用十大风险"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F05-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F05-05"
+        - "F05-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 |
-|---|---|---|---|---|
-| `B07-01` | 人设与语气一致性 | 人设与语气一致性的口径：人设维度（身份 / 口癖 / 知识边界）、判定方式与漂移检测。 | 声明 persona_dims（维度清单）、judge（规则|模型|人工 + 版本）与 drift_check（跨轮一致率）。 | 只凭第一轮判断一致性；口癖与知识边界未列入维度（漂移不可测）。 |
-| `B07-02` | 角色卡字段规范 | 角色卡字段规范的口径：必填字段、类型约束与版本兼容策略。 | 声明 required_fields（清单）、type_constraints（每字段类型）与 version_policy（字段增删时的兼容规则）。 | 字段随意扩展（不同客户端读不懂）；旧卡无版本号导致迁移不可判。 |
-| `B07-03` | 世界书与设定注入 | 世界书与设定注入的口径：注入位置、触发方式（关键词 / 向量）与预算上限。 | 声明 inject_position（前/后/分层）、trigger（keyword|embedding）与 token_budget。 | 关键设定注入在长上下文中段（被忽略）；预算无上限导致挤掉对话历史。 |
-| `B07-04` | 对话状态与上下文管理 | 对话状态与上下文管理的口径：状态字段、截断策略与关键信息保留规则。 | 声明 state_fields（清单）、truncation（滑窗|摘要|分层）与 must_keep（不可丢字段规则）。 | 按时间截断丢掉早期关键设定；状态字段未定型导致回放不一致。 |
-| `B07-05` | 多角色群聊调度 | 多角色群聊调度的口径：发言者选择策略、轮次上限与并发冲突处理。 | 声明 speaker_selection（规则|模型）、max_turns 与 conflict_policy（同轮多发言的合并/排队）。 | 角色被长期冷落（发言分布失衡）；同轮并发输出未定义合并规则。 |
-| `B07-06` | 越界与安全边界 | 越界与安全边界的口径：越界类型（自伤 / 违规 / 未成年内容）、拦截点与善后话术。 | 声明 boundary_types（枚举）、interception_point（生成前|生成后）与 post_action（改写|拒答|转人工）。 | 只在生成后过滤（已泄露）；边界类型不枚举导致漏检靠运气。 |
-| `B07-07` | 情感走向与关系进度 | 情感走向与关系进度的口径：关系维度（亲密度 / 信任）、进度台阶与回退规则。 | 声明 relation_dims（维度 + 取值域）、progress_levels（台阶定义）与 regress_rule（何时回退）。 | 关系只升不降（不真实）；台阶未定义导致进度无法机检。 |
-| `B07-08` | 场景切换与时间线 | 场景切换与时间线管理的口径：时间线基准、场景切换触发与并行线合并规则。 | 声明 time_base（回合|剧情时间）、switch_trigger（显式|条件）与 merge_rule（并行线如何归一）。 | 时间倒流无检测；并行线合并无规则导致设定冲突。 |
-| `B07-09` | 开场白与示例对话 | 开场白与示例对话的口径：示例数量、示例与设定的关系与首轮引导要求。 | 声明 example_count、example_source（人工|生成）与 first_turn_guidance（必须出现的引导要素）。 | 示例与设定矛盾（模型学到错设定）；示例全由模型生成（风格自锁）。 |
-| `B07-10` | 长期记忆与回溯 | 长期记忆与回溯的口径：记忆写入判据、摘要粒度与召回方式。 | 声明 write_criterion（何时写入记忆）、summary_granularity 与 recall（关键词|向量|混合）。 | 什么都写进记忆（噪声淹没）；回溯命中率未测。 |
-| `B07-11` | 角色扮演评测 | 角色扮演评测的口径：评测维度（人设 / 剧情 / 语言）、评分者与一致性。 | 声明 eval_dims（分列）、raters（人数 / 是否模型）与 agreement（kappa 或一致率）。 | 用模型自评替代人类偏好；维度合并成一个总分（无法定位）。 |
-| `B07-12` | 沉浸感与打断处理 | 沉浸感与打断处理的口径：打断检测、恢复策略与沉浸感评测方式。 | 声明 interruption_detection（方式）、recovery（回滚|续接）与 immersion_metric（量表 / 代理指标）。 | 打断后从零开始（丢失上下文）；沉浸感无量表只凭感觉。 |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
+|---|---|---|---|---|---|
+| `B07-01` | 人设与语气一致性 | 人设与语气一致性的口径：人设维度（身份 / 口癖 / 知识边界）、判定方式与漂移检测。 | 声明 persona_dims（维度清单）、judge（规则|模型|人工 + 版本）与 drift_check（跨轮一致率）。 | 只凭第一轮判断一致性；口癖与知识边界未列入维度（漂移不可测）。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B07-02` | 角色卡字段规范 | 角色卡字段规范的口径：必填字段、类型约束与版本兼容策略。 | 声明 required_fields（清单）、type_constraints（每字段类型）与 version_policy（字段增删时的兼容规则）。 | 字段随意扩展（不同客户端读不懂）；旧卡无版本号导致迁移不可判。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B07-03` | 世界书与设定注入 | 世界书与设定注入的口径：注入位置、触发方式（关键词 / 向量）与预算上限。 | 声明 inject_position（前/后/分层）、trigger（keyword|embedding）与 token_budget。 | 关键设定注入在长上下文中段（被忽略）；预算无上限导致挤掉对话历史。 | `frictionless-table` Table Schema（Frictionless） |
+| `B07-04` | 对话状态与上下文管理 | 对话状态与上下文管理的口径：状态字段、截断策略与关键信息保留规则。 | 声明 state_fields（清单）、truncation（滑窗|摘要|分层）与 must_keep（不可丢字段规则）。 | 按时间截断丢掉早期关键设定；状态字段未定型导致回放不一致。 | `gfm` GFM 扩展（GitHub） |
+| `B07-05` | 多角色群聊调度 | 多角色群聊调度的口径：发言者选择策略、轮次上限与并发冲突处理。 | 声明 speaker_selection（规则|模型）、max_turns 与 conflict_policy（同轮多发言的合并/排队）。 | 角色被长期冷落（发言分布失衡）；同轮并发输出未定义合并规则。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B07-06` | 越界与安全边界 | 越界与安全边界的口径：越界类型（自伤 / 违规 / 未成年内容）、拦截点与善后话术。 | 声明 boundary_types（枚举）、interception_point（生成前|生成后）与 post_action（改写|拒答|转人工）。 | 只在生成后过滤（已泄露）；边界类型不枚举导致漏检靠运气。 | `owasp-llm` LLM 应用十大风险（OWASP） |
+| `B07-07` | 情感走向与关系进度 | 情感走向与关系进度的口径：关系维度（亲密度 / 信任）、进度台阶与回退规则。 | 声明 relation_dims（维度 + 取值域）、progress_levels（台阶定义）与 regress_rule（何时回退）。 | 关系只升不降（不真实）；台阶未定义导致进度无法机检。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B07-08` | 场景切换与时间线 | 场景切换与时间线管理的口径：时间线基准、场景切换触发与并行线合并规则。 | 声明 time_base（回合|剧情时间）、switch_trigger（显式|条件）与 merge_rule（并行线如何归一）。 | 时间倒流无检测；并行线合并无规则导致设定冲突。 | `w3c-owl-time` OWL-Time 时间本体（W3C） |
+| `B07-09` | 开场白与示例对话 | 开场白与示例对话的口径：示例数量、示例与设定的关系与首轮引导要求。 | 声明 example_count、example_source（人工|生成）与 first_turn_guidance（必须出现的引导要素）。 | 示例与设定矛盾（模型学到错设定）；示例全由模型生成（风格自锁）。 | `frictionless-table` Table Schema（Frictionless） |
+| `B07-10` | 长期记忆与回溯 | 长期记忆与回溯的口径：记忆写入判据、摘要粒度与召回方式。 | 声明 write_criterion（何时写入记忆）、summary_granularity 与 recall（关键词|向量|混合）。 | 什么都写进记忆（噪声淹没）；回溯命中率未测。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B07-11` | 角色扮演评测 | 角色扮演评测的口径：评测维度（人设 / 剧情 / 语言）、评分者与一致性。 | 声明 eval_dims（分列）、raters（人数 / 是否模型）与 agreement（kappa 或一致率）。 | 用模型自评替代人类偏好；维度合并成一个总分（无法定位）。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `B07-12` | 沉浸感与打断处理 | 沉浸感与打断处理的口径：打断检测、恢复策略与沉浸感评测方式。 | 声明 interruption_detection（方式）、recovery（回滚|续接）与 immersion_metric（量表 / 代理指标）。 | 打断后从零开始（丢失上下文）；沉浸感无量表只凭感觉。 | `frictionless-table` Table Schema（Frictionless） |
 
 ## 3. 机读投影契约
 

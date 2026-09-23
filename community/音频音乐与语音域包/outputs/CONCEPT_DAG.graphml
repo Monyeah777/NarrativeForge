@@ -52,6 +52,22 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-epub33">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-tabular-data">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-webaudio">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="E09-01" target="E09-02">
       <data key="provenance">['e09-anchor']</data>
     </edge>
@@ -111,6 +127,42 @@
     </edge>
     <edge source="E09-09" target="E09-12">
       <data key="provenance">['e09-anchor']</data>
+    </edge>
+    <edge source="E09-01" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-07" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-03" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-06" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-09" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-05" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-08" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-11" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-02" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-04" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-10" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E09-12" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

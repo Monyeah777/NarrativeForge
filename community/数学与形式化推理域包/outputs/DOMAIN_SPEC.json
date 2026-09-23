@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/2201.11903",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 chain_granularity（步级/自由）、tools（allowed|none）与 answer_vs_process（是否分开报告）。",
       "pitfall": "只报最终答案对错（过程不可核）；用工具却宣称纯推理能力。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://leanprover.github.io/",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "w3c-mathml3",
+      "standard_why": "关键词「公式|数学|符号|证明」命中",
       "check": "声明 prover（Lean/Coq/Isabelle + 版本）、axioms（允许清单）与 pass_criterion（编译零错误 + 无 sorry/admit）。",
       "pitfall": "用 sorry 占位通过编译；公理未声明（证明不成立却算通过）。"
     },
@@ -34,6 +38,8 @@
       "anchor": "http://us.metamath.org/",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "w3c-mathml3",
+      "standard_why": "关键词「公式|数学|符号|证明」命中",
       "check": "声明 budget（秒 + 节点数上限）、heuristic（来源）与 success_definition（在预算内完成才算成功）。",
       "pitfall": "不计预算报成功率（时间无上限无意义）；启发式来自测试集（泄漏）。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://docs.sympy.org/latest/index.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "w3c-mathml3",
+      "standard_why": "关键词「公式|数学|符号|证明」命中",
       "check": "声明 cas（SymPy/Mathematica 等 + 版本）、normalize（展开/因式/三角化简）与 equivalence（符号等价判定方法）。",
       "pitfall": "用字符串比较判等价（形式不同即判错）；CAS 版本差异导致结果不同。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://arxiv.org/abs/2110.14168",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-mathml3",
+      "standard_why": "关键词「公式|数学|符号|证明」命中",
       "check": "声明 source（数据集 id）、answer_format（数值/表达式/区间）与 tolerance（相对误差或小数位）。",
       "pitfall": "容差不声明（数值题判分不可复现）；漏写单位扣分规则未定。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://arxiv.org/abs/2103.03874",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
       "check": "声明 benchmark（id + 版本）、scoring（exact|人工 + 人数）与 contamination_check（是否与训练集重叠核验）。",
       "pitfall": "用训练题评测（污染）；人工评分无一致性统计。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://arxiv.org/abs/2305.20050",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 step_labels（人工|自动）、aggregation（min|mean|last）与 corr_with_outcome（与最终正确率的相关性）。",
       "pitfall": "过程奖励与结果不相关却用于搜索（放大噪声）；标注来源不明。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/2203.11171",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "peps",
+      "standard_why": "域码 A10 专属绑定（轮换 1）",
       "check": "声明 samples（采样数）、aggregation（多数表决|加权）与 verifier（是否存在独立校验器 + 类型）。",
       "pitfall": "自洽性当正确性（一致错也算对）；无独立校验器。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://networkx.org/documentation/stable/",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 instance_size（顶点/边量级）、representation（邻接表/边表）与 check_method（构造可验证 vs 仅结论）。",
       "pitfall": "只报结论不报构造（无法验证）；规模未声明导致复杂度结论失真。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://docs.python.org/3/tutorial/floatingpoint.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "ieee-754",
+      "standard_why": "关键词「浮点|数值|精度|误差」命中",
       "check": "声明 fp_model（fp16|fp32|fp64）、rounding（IEEE 默认|特定）与 error_metric（绝对/相对/ULP）。",
       "pitfall": "混合精度下比较精度结论；误差度量不声明（绝对/相对混用）。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/2305.14251",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 hallucination_types（枚举分列）、detector（人工|规则|模型 + 版本）与 rate（分类型比率）。",
       "pitfall": "只给总体幻觉率（无法定位）；检测器与被测模型同源（自评）。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/2211.10438",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "cncf-otel-semconv",
+      "standard_why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
       "check": "声明 cost_metric（token|调用|ms）、quality_floor（可接受质量下限）与 baseline（同任务未优化对照）。",
       "pitfall": "只报省了多少不报质量掉了多少；无基线对照。"
     }

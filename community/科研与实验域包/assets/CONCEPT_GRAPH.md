@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「科研与实验」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（科研与实验:M01）与收口模块（科研与实验:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（D20-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D20-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,10 @@
 | `D20-10` | 专利检索 | P60 | `D20-09`、`D20-07` | d20-anchor |
 | `D20-11` | 模拟仿真 | P40 | `D20-10`、`D20-08` | d20-anchor |
 | `D20-12` | 科研伦理审查 | P60 | `D20-11`、`D20-09` | d20-anchor |
+| `STD-datacite` | 标准 · 元数据内核（DataCite） | P80 | `D20-02`、`D20-04`、`D20-06`、`D20-08` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `D20-01`、`D20-10` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `D20-12` | std-catalog |
+| `STD-rocrate` | 标准 · RO-Crate 1.1（Research Object） | P80 | `D20-03`、`D20-05`、`D20-07`、`D20-09`、`D20-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +50,10 @@
 | `D20-专利检索` | `D20-10` |
 | `D20-模拟仿真` | `D20-11` |
 | `D20-科研伦理审查` | `D20-12` |
+| `std-datacite` | `STD-datacite` |
+| `std-frictionless-package` | `STD-frictionless-package` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-rocrate` | `STD-rocrate` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +65,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     d20-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "D20-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +85,13 @@ concept_graph:
         - "D20-10"
         - "D20-11"
         - "D20-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-datacite"
+        - "STD-frictionless-package"
+        - "STD-nist-ai-rmf"
+        - "STD-rocrate"
   nodes:
     - id: "D20-01"
       name: "文献检索与综述"
@@ -181,6 +197,46 @@ concept_graph:
         - "D20-09"
       provenance:
         - "d20-anchor"
+    - id: "STD-datacite"
+      name: "标准 · 元数据内核"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-02"
+        - "D20-04"
+        - "D20-06"
+        - "D20-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-01"
+        - "D20-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-rocrate"
+      name: "标准 · RO-Crate 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-03"
+        - "D20-05"
+        - "D20-07"
+        - "D20-09"
+        - "D20-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

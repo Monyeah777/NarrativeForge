@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B01-01` | paper | https://arxiv.org/abs/2210.06774 | ✓ 200 |
-| `B01-02` | paper | https://arxiv.org/abs/1909.05858 | ✓ 200 |
-| `B01-03` | paper | https://arxiv.org/abs/1910.10683 | ✓ 200 |
-| `B01-04` | paper | https://arxiv.org/abs/1603.07252 | ✓ 200 |
-| `B01-05` | paper | https://arxiv.org/abs/1506.03340 | ✓ 200 |
-| `B01-06` | doc | https://www.ftc.gov/business-guidance/resources/advertising-faqs-guide-small-business | ✓ 200 |
-| `B01-07` | spec | https://www.rfc-editor.org/rfc/rfc7322.txt | ✓ 200 |
-| `B01-08` | paper | https://arxiv.org/abs/1805.04833 | ✓ 200 |
-| `B01-09` | paper | https://arxiv.org/abs/1906.04043 | ✓ 200 |
-| `B01-10` | paper | https://arxiv.org/abs/2305.14251 | ✓ 200 |
-| `B01-11` | paper | https://arxiv.org/abs/2208.11663 | ✓ 200 |
-| `B01-12` | paper | https://arxiv.org/abs/2303.16634 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B01-01` | paper | https://arxiv.org/abs/2210.06774 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-02` | paper | https://arxiv.org/abs/1909.05858 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-03` | paper | https://arxiv.org/abs/1910.10683 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-04` | paper | https://arxiv.org/abs/1603.07252 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-05` | paper | https://arxiv.org/abs/1506.03340 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-06` | doc | https://www.ftc.gov/business-guidance/resources/advertising-faqs-guide-small-business | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-07` | spec | https://www.rfc-editor.org/rfc/rfc7322.txt | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-08` | paper | https://arxiv.org/abs/1805.04833 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-09` | paper | https://arxiv.org/abs/1906.04043 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-10` | paper | https://arxiv.org/abs/2305.14251 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-11` | paper | https://arxiv.org/abs/2208.11663 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B01-12` | paper | https://arxiv.org/abs/2303.16634 | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
 
 ## 2. 使用边界
 

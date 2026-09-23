@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「版权与知识产权」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（版权与知识产权:M01）与收口模块（版权与知识产权:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（F04-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（F04-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `F04-10` | 字体与音乐授权 | P60 | `F04-09`、`F04-07` | f04-anchor |
 | `F04-11` | 署名与引用 | P40 | `F04-10`、`F04-08` | f04-anchor |
 | `F04-12` | 商用风险清单 | P60 | `F04-11`、`F04-09` | f04-anchor |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `F04-02`、`F04-03`、`F04-05`、`F04-09`、`F04-10`、`F04-11` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `F04-07` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `F04-01` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `F04-12` | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX） | P80 | `F04-04`、`F04-06`、`F04-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `F04-字体与音乐授权` | `F04-10` |
 | `F04-署名与引用` | `F04-11` |
 | `F04-商用风险清单` | `F04-12` |
+| `std-creativecommons` | `STD-creativecommons` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-spdx-licenses` | `STD-spdx-licenses` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     f04-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "F04-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "F04-10"
         - "F04-11"
         - "F04-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-creativecommons"
+        - "STD-gdpr"
+        - "STD-mlcommons-bench"
+        - "STD-nist-ai-rmf"
+        - "STD-spdx-licenses"
   nodes:
     - id: "F04-01"
       name: "训练数据来源审查"
@@ -181,6 +200,53 @@ concept_graph:
         - "F04-09"
       provenance:
         - "f04-anchor"
+    - id: "STD-creativecommons"
+      name: "标准 · 许可与权利表达"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F04-02"
+        - "F04-03"
+        - "F04-05"
+        - "F04-09"
+        - "F04-10"
+        - "F04-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F04-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F04-01"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F04-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-licenses"
+      name: "标准 · SPDX 许可证清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F04-04"
+        - "F04-06"
+        - "F04-08"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

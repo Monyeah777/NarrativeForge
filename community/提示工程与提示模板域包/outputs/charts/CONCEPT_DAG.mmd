@@ -16,6 +16,12 @@ flowchart TD
     C13-10
     C13-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-table
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+  end
   C13-01 --> C13-02
   C13-02 --> C13-03
   C13-03 --> C13-04
@@ -36,3 +42,15 @@ flowchart TD
   C13-08 --> C13-11
   C13-11 --> C13-12
   C13-09 --> C13-12
+  C13-06 --> STD-commonmark
+  C13-07 --> STD-commonmark
+  C13-08 --> STD-commonmark
+  C13-09 --> STD-commonmark
+  C13-10 --> STD-commonmark
+  C13-11 --> STD-commonmark
+  C13-12 --> STD-commonmark
+  C13-03 --> STD-frictionless-table
+  C13-01 --> STD-ietf-json-schema
+  C13-04 --> STD-ietf-json-schema
+  C13-02 --> STD-mlcommons-bench
+  C13-05 --> STD-mlcommons-bench

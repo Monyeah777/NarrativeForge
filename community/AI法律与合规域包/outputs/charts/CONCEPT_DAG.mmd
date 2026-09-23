@@ -16,6 +16,16 @@ flowchart TD
     D03-10
     D03-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-creativecommons
+    STD-frictionless-package
+    STD-frictionless-table
+    STD-gdpr
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-w3c-prov-o
+  end
   D03-01 --> D03-02
   D03-02 --> D03-03
   D03-03 --> D03-04
@@ -36,3 +46,15 @@ flowchart TD
   D03-08 --> D03-11
   D03-11 --> D03-12
   D03-09 --> D03-12
+  D03-03 --> STD-commonmark
+  D03-08 --> STD-creativecommons
+  D03-01 --> STD-frictionless-package
+  D03-11 --> STD-frictionless-table
+  D03-06 --> STD-gdpr
+  D03-07 --> STD-gdpr
+  D03-09 --> STD-iso-iec-25010
+  D03-12 --> STD-iso-iec-25010
+  D03-04 --> STD-nist-ai-rmf
+  D03-10 --> STD-nist-ai-rmf
+  D03-02 --> STD-w3c-prov-o
+  D03-05 --> STD-w3c-prov-o

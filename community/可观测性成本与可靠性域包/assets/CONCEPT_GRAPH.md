@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「可观测性、成本与可靠性」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（可观测性成本与可靠性:M01）与收口模块（可观测性成本与可靠性:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C18-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C18-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,12 @@
 | `C18-10` | 回放与复现 | P60 | `C18-09`、`C18-07` | c18-anchor |
 | `C18-11` | 数据回流 | P40 | `C18-10`、`C18-08` | c18-anchor |
 | `C18-12` | 事故复盘 | P60 | `C18-11`、`C18-09` | c18-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C18-01`、`C18-02`、`C18-04`、`C18-06`、`C18-10` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `C18-07` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `C18-08` | std-catalog |
+| `STD-onvif-ucum` | 标准 · 统一计量单位代码（UCUM） | P80 | `C18-03` | std-catalog |
+| `STD-openmetrics` | 标准 · OpenMetrics 1.0（OpenMetrics） | P80 | `C18-09`、`C18-12` | std-catalog |
+| `STD-prometheus-exposition` | 标准 · 指标暴露格式（Prometheus） | P80 | `C18-05`、`C18-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +52,12 @@
 | `C18-回放与复现` | `C18-10` |
 | `C18-数据回流` | `C18-11` |
 | `C18-事故复盘` | `C18-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-onnx` | `STD-onnx` |
+| `std-onvif-ucum` | `STD-onvif-ucum` |
+| `std-openmetrics` | `STD-openmetrics` |
+| `std-prometheus-exposition` | `STD-prometheus-exposition` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +69,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c18-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C18-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +89,15 @@ concept_graph:
         - "C18-10"
         - "C18-11"
         - "C18-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-frictionless-table"
+        - "STD-onnx"
+        - "STD-onvif-ucum"
+        - "STD-openmetrics"
+        - "STD-prometheus-exposition"
   nodes:
     - id: "C18-01"
       name: "链路追踪"
@@ -181,6 +203,60 @@ concept_graph:
         - "C18-09"
       provenance:
         - "c18-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C18-01"
+        - "C18-02"
+        - "C18-04"
+        - "C18-06"
+        - "C18-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C18-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C18-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onvif-ucum"
+      name: "标准 · 统一计量单位代码"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C18-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-openmetrics"
+      name: "标准 · OpenMetrics 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C18-09"
+        - "C18-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-prometheus-exposition"
+      name: "标准 · 指标暴露格式"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C18-05"
+        - "C18-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

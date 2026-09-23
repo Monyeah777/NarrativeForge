@@ -167,7 +167,7 @@
         "id": "https://narrativeforge.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "1b48a787e37edb90",
+        "invocationId": "9fcc515d75d6aa70",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -278,13 +278,13 @@
     },
     {
       "digest": {
-        "sha256": "eda8e447862e4564a2c48d126be4a6302f3768e0e3c4f5787324a835910319fb"
+        "sha256": "d7b8fec550a8fb40272f47f22e7a8f6555d5767c04d4281f5d27a0496566045a"
       },
       "name": "protocol/conformance_report.json"
     },
     {
       "digest": {
-        "sha256": "1589bf2f780c430cef667fdc1d96dd68bd07d307f08ef74311716933d4bf9823"
+        "sha256": "fd2b2f7b40308aa93aee8238e96a44b2056b7e5de65ce72e022a8cabeff1b149"
       },
       "name": "protocol/asset_line_baseline.json"
     },
@@ -350,7 +350,7 @@
     },
     {
       "digest": {
-        "sha256": "ce951a3322dd7a4827c39d68826aee9e3945986e5c64bd0b4b1fa1741ff72b32"
+        "sha256": "3687b2b499f33d927a37a072eb3e48df690a73056f3124ed38a86b7dab14c7e4"
       },
       "name": "protocol/data_contracts.json"
     },

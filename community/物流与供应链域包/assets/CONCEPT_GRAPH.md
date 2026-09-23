@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「物流与供应链」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（物流与供应链:M01）与收口模块（物流与供应链:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（D12-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D12-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,13 @@
 | `D12-10` | 碳排核算 | P60 | `D12-09`、`D12-07` | d12-anchor |
 | `D12-11` | 末端配送 | P40 | `D12-10`、`D12-08` | d12-anchor |
 | `D12-12` | 供应链风险预警 | P60 | `D12-11`、`D12-09` | d12-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `D12-07` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `D12-06` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `D12-09` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `D12-01`、`D12-04`、`D12-10` | std-catalog |
+| `STD-spdx-3` | 标准 · SPDX 3.0（含 AI profile）（SPDX） | P80 | `D12-12` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `D12-02`、`D12-05`、`D12-08`、`D12-11` | std-catalog |
+| `STD-w3c-wot` | 标准 · Web of Things Thing Description（W3C） | P80 | `D12-03` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +53,13 @@
 | `D12-碳排核算` | `D12-10` |
 | `D12-末端配送` | `D12-11` |
 | `D12-供应链风险预警` | `D12-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-spdx-3` | `STD-spdx-3` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
+| `std-w3c-wot` | `STD-w3c-wot` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +71,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     d12-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "D12-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +91,16 @@ concept_graph:
         - "D12-10"
         - "D12-11"
         - "D12-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-frictionless-table"
+        - "STD-gdpr"
+        - "STD-nist-ai-rmf"
+        - "STD-spdx-3"
+        - "STD-w3c-prov-o"
+        - "STD-w3c-wot"
   nodes:
     - id: "D12-01"
       name: "路径规划"
@@ -181,6 +206,67 @@ concept_graph:
         - "D12-09"
       provenance:
         - "d12-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D12-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D12-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D12-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D12-01"
+        - "D12-04"
+        - "D12-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-3"
+      name: "标准 · SPDX 3.0（含 AI profile）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D12-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D12-02"
+        - "D12-05"
+        - "D12-08"
+        - "D12-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-wot"
+      name: "标准 · Web of Things Thing Description"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D12-03"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

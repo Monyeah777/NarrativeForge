@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B15-01` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-03` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-04` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-05` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-06` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-07` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-08` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-09` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-11` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B15-12` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B15-01` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-02` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-03` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-04` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `B15-05` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-06` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-07` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-08` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-09` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `B15-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B15-11` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `B15-12` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

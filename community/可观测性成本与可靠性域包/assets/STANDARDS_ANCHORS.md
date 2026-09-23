@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C18-01` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-02` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-03` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-04` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-05` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-06` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-07` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-08` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-09` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-10` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-11` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
-| `C18-12` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C18-01` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；域码 C18 专属绑定（轮换 0）） |
+| `C18-02` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `C18-03` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `onvif-ucum` 统一计量单位代码（UCUM；关键词「单位|量纲|计量」命中） |
+| `C18-04` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `C18-05` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；域码 C18 专属绑定（轮换 0）） |
+| `C18-06` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `C18-07` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `C18-08` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `C18-09` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；域码 C18 专属绑定（轮换 0）） |
+| `C18-10` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；域码 C18 专属绑定（轮换 0）） |
+| `C18-11` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；域码 C18 专属绑定（轮换 0）） |
+| `C18-12` | spec | https://opentelemetry.io/docs/specs/semconv/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；域码 C18 专属绑定（轮换 0）） |
 
 ## 2. 使用边界
 

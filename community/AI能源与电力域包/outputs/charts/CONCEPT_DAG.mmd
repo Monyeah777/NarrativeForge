@@ -16,6 +16,16 @@ flowchart TD
     D09-10
     D09-12
   end
+  subgraph P80[P80]
+    STD-cwe
+    STD-gdpr
+    STD-hl7-fhir
+    STD-iso-iec-25010
+    STD-iso-iec-42010
+    STD-nist-ai-rmf
+    STD-owasp-llm
+    STD-w3c-prov-o
+  end
   D09-01 --> D09-02
   D09-02 --> D09-03
   D09-03 --> D09-04
@@ -36,3 +46,15 @@ flowchart TD
   D09-08 --> D09-11
   D09-11 --> D09-12
   D09-09 --> D09-12
+  D09-02 --> STD-cwe
+  D09-11 --> STD-gdpr
+  D09-07 --> STD-hl7-fhir
+  D09-09 --> STD-iso-iec-25010
+  D09-01 --> STD-iso-iec-42010
+  D09-03 --> STD-iso-iec-42010
+  D09-04 --> STD-iso-iec-42010
+  D09-12 --> STD-iso-iec-42010
+  D09-10 --> STD-nist-ai-rmf
+  D09-06 --> STD-owasp-llm
+  D09-05 --> STD-w3c-prov-o
+  D09-08 --> STD-w3c-prov-o

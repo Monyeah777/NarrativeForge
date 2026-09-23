@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「产业与商业落地」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（产业与商业落地:M01）与收口模块（产业与商业落地:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（F10-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（F10-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `F10-10` | 行业方案打包 | P60 | `F10-09`、`F10-07` | f10-anchor |
 | `F10-11` | 服务定价 | P40 | `F10-10`、`F10-08` | f10-anchor |
 | `F10-12` | 项目复盘 | P60 | `F10-11`、`F10-09` | f10-anchor |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `F10-01`、`F10-04`、`F10-07`、`F10-10` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative） | P80 | `F10-11` | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX） | P80 | `F10-03`、`F10-06`、`F10-09`、`F10-12` | std-catalog |
+| `STD-unesco-ai` | 标准 · AI 伦理建议书（UNESCO） | P80 | `F10-08` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `F10-02`、`F10-05` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `F10-行业方案打包` | `F10-10` |
 | `F10-服务定价` | `F10-11` |
 | `F10-项目复盘` | `F10-12` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-oasis-openapi` | `STD-oasis-openapi` |
+| `std-spdx-licenses` | `STD-spdx-licenses` |
+| `std-unesco-ai` | `STD-unesco-ai` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     f10-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "F10-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "F10-10"
         - "F10-11"
         - "F10-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-nist-ai-rmf"
+        - "STD-oasis-openapi"
+        - "STD-spdx-licenses"
+        - "STD-unesco-ai"
+        - "STD-w3c-prov-o"
   nodes:
     - id: "F10-01"
       name: "需求评估"
@@ -181,6 +200,53 @@ concept_graph:
         - "F10-09"
       provenance:
         - "f10-anchor"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-01"
+        - "F10-04"
+        - "F10-07"
+        - "F10-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oasis-openapi"
+      name: "标准 · OpenAPI 3.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-licenses"
+      name: "标准 · SPDX 许可证清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-03"
+        - "F10-06"
+        - "F10-09"
+        - "F10-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-unesco-ai"
+      name: "标准 · AI 伦理建议书"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-02"
+        - "F10-05"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

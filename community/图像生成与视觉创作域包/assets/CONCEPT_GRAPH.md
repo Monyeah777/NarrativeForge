@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「图像生成与视觉创作」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（图像生成与视觉创作:M01）与收口模块（图像生成与视觉创作:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E07-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E07-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `E07-10` | 商用授权 | P60 | `E07-09`、`E07-07` | e07-anchor |
 | `E07-11` | 图文排版 | P40 | `E07-10`、`E07-08` | e07-anchor |
 | `E07-12` | 色彩管理 | P60 | `E07-11`、`E07-09` | e07-anchor |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E07-01`、`E07-04`、`E07-07` | std-catalog |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `E07-10` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `E07-09` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E07-03`、`E07-06`、`E07-11`、`E07-12` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E07-02`、`E07-05`、`E07-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `E07-商用授权` | `E07-10` |
 | `E07-图文排版` | `E07-11` |
 | `E07-色彩管理` | `E07-12` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-creativecommons` | `STD-creativecommons` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e07-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E07-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "E07-10"
         - "E07-11"
         - "E07-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-commonmark"
+        - "STD-creativecommons"
+        - "STD-gdpr"
+        - "STD-w3c-epub33"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "E07-01"
       name: "提示词结构"
@@ -181,6 +200,53 @@ concept_graph:
         - "E07-09"
       provenance:
         - "e07-anchor"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-01"
+        - "E07-04"
+        - "E07-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-creativecommons"
+      name: "标准 · 许可与权利表达"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-03"
+        - "E07-06"
+        - "E07-11"
+        - "E07-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-02"
+        - "E07-05"
+        - "E07-08"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

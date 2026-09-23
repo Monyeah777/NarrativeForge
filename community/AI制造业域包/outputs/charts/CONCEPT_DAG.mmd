@@ -16,6 +16,15 @@ flowchart TD
     D08-10
     D08-12
   end
+  subgraph P80[P80]
+    STD-frictionless-table
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-owasp-llm
+    STD-spdx-3
+    STD-w3c-prov-o
+    STD-w3c-svg2
+  end
   D08-01 --> D08-02
   D08-02 --> D08-03
   D08-03 --> D08-04
@@ -36,3 +45,15 @@ flowchart TD
   D08-08 --> D08-11
   D08-11 --> D08-12
   D08-09 --> D08-12
+  D08-05 --> STD-frictionless-table
+  D08-12 --> STD-frictionless-table
+  D08-06 --> STD-iso-iec-25010
+  D08-01 --> STD-nist-ai-rmf
+  D08-04 --> STD-nist-ai-rmf
+  D08-10 --> STD-nist-ai-rmf
+  D08-09 --> STD-owasp-llm
+  D08-07 --> STD-spdx-3
+  D08-02 --> STD-w3c-prov-o
+  D08-08 --> STD-w3c-prov-o
+  D08-11 --> STD-w3c-prov-o
+  D08-03 --> STD-w3c-svg2

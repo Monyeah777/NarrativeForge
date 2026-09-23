@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「大语言模型」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（大语言模型:M01）与收口模块（大语言模型:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（A01-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A01-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `A01-10` | 模型合并与权重插值 | P60 | `A01-07`、`A01-09` | a01-anchor |
 | `A01-11` | 量化格式与权重存储 | P40 | `A01-02` | a01-anchor |
 | `A01-12` | 推理参数与采样策略 | P60 | `A01-06` | a01-anchor |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `A01-08` | std-catalog |
+| `STD-gfm` | 标准 · GFM 扩展（GitHub） | P80 | `A01-05` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A01-04`、`A01-06`、`A01-09` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `A01-01`、`A01-02`、`A01-07`、`A01-10`、`A01-11`、`A01-12` | std-catalog |
+| `STD-w3c-skos` | 标准 · SKOS 词表（W3C） | P80 | `A01-03` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `A01-模型合并与权重插值` | `A01-10` |
 | `A01-量化格式与权重存储` | `A01-11` |
 | `A01-推理参数与采样策略` | `A01-12` |
+| `std-creativecommons` | `STD-creativecommons` |
+| `std-gfm` | `STD-gfm` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-onnx` | `STD-onnx` |
+| `std-w3c-skos` | `STD-w3c-skos` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     a01-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "A01-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "A01-10"
         - "A01-11"
         - "A01-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-creativecommons"
+        - "STD-gfm"
+        - "STD-mlcommons-bench"
+        - "STD-onnx"
+        - "STD-w3c-skos"
   nodes:
     - id: "A01-01"
       name: "基座模型选型与对比"
@@ -171,6 +190,53 @@ concept_graph:
         - "A01-06"
       provenance:
         - "a01-anchor"
+    - id: "STD-creativecommons"
+      name: "标准 · 许可与权利表达"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A01-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gfm"
+      name: "标准 · GFM 扩展"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A01-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A01-04"
+        - "A01-06"
+        - "A01-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A01-01"
+        - "A01-02"
+        - "A01-07"
+        - "A01-10"
+        - "A01-11"
+        - "A01-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-skos"
+      name: "标准 · SKOS 词表"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A01-03"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

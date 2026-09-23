@@ -16,6 +16,14 @@ flowchart TD
     C06-10
     C06-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-commonmark
+    STD-frictionless-table
+    STD-mlcommons-bench
+    STD-onnx
+    STD-owasp-llm
+  end
   C06-01 --> C06-02
   C06-02 --> C06-03
   C06-03 --> C06-04
@@ -36,3 +44,15 @@ flowchart TD
   C06-08 --> C06-11
   C06-11 --> C06-12
   C06-09 --> C06-12
+  C06-01 --> STD-cncf-otel-semconv
+  C06-04 --> STD-cncf-otel-semconv
+  C06-07 --> STD-cncf-otel-semconv
+  C06-02 --> STD-commonmark
+  C06-03 --> STD-frictionless-table
+  C06-06 --> STD-frictionless-table
+  C06-12 --> STD-frictionless-table
+  C06-05 --> STD-mlcommons-bench
+  C06-08 --> STD-mlcommons-bench
+  C06-09 --> STD-mlcommons-bench
+  C06-10 --> STD-onnx
+  C06-11 --> STD-owasp-llm

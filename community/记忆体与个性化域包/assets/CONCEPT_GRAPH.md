@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「记忆体与个性化」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（记忆体与个性化:M01）与收口模块（记忆体与个性化:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C14-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C14-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `C14-10` | 记忆形态选型 | P60 | `C14-09`、`C14-07` | c14-anchor |
 | `C14-11` | 记忆注入污染 | P40 | `C14-10`、`C14-08` | c14-anchor |
 | `C14-12` | 个性化冷启动 | P60 | `C14-11`、`C14-09` | c14-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C14-01`、`C14-07`、`C14-10` | std-catalog |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `C14-06` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `C14-04` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `C14-03`、`C14-12` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `C14-02`、`C14-05`、`C14-08`、`C14-09`、`C14-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `C14-记忆形态选型` | `C14-10` |
 | `C14-记忆注入污染` | `C14-11` |
 | `C14-个性化冷启动` | `C14-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-creativecommons` | `STD-creativecommons` |
+| `std-frictionless-package` | `STD-frictionless-package` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c14-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C14-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "C14-10"
         - "C14-11"
         - "C14-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-creativecommons"
+        - "STD-frictionless-package"
+        - "STD-frictionless-table"
+        - "STD-mlcommons-bench"
   nodes:
     - id: "C14-01"
       name: "短期与长期记忆划分"
@@ -181,6 +200,53 @@ concept_graph:
         - "C14-09"
       provenance:
         - "c14-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C14-01"
+        - "C14-07"
+        - "C14-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-creativecommons"
+      name: "标准 · 许可与权利表达"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C14-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C14-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C14-03"
+        - "C14-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C14-02"
+        - "C14-05"
+        - "C14-08"
+        - "C14-09"
+        - "C14-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D09-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D09-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D09-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `iso-iec-42010` 架构描述（ISO/IEC；关键词「能源|电力|电网」命中） |
+| `D09-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `cwe` CWE 缺陷枚举（MITRE；关键词「漏洞|缺陷|弱点」命中） |
+| `D09-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `iso-iec-42010` 架构描述（ISO/IEC；关键词「能源|电力|电网」命中） |
+| `D09-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `iso-iec-42010` 架构描述（ISO/IEC；关键词「能源|电力|电网」命中） |
+| `D09-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D09-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `D09-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；关键词「医疗|临床|病历|诊断」命中） |
+| `D09-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D09-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D09-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D09-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D09-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `iso-iec-42010` 架构描述（ISO/IEC；关键词「能源|电力|电网」命中） |
 
 ## 2. 使用边界
 

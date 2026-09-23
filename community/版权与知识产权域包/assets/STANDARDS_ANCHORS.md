@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F04-01` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-02` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-03` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-04` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-05` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-06` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-07` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-08` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-09` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-10` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-11` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `F04-12` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F04-01` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `F04-02` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `F04-03` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；域码 F04 专属绑定（轮换 0）） |
+| `F04-04` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；域码 F04 专属绑定（轮换 0）） |
+| `F04-05` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；域码 F04 专属绑定（轮换 0）） |
+| `F04-06` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；域码 F04 专属绑定（轮换 0）） |
+| `F04-07` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F04-08` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；域码 F04 专属绑定（轮换 0）） |
+| `F04-09` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；域码 F04 专属绑定（轮换 0）） |
+| `F04-10` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `F04-11` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；域码 F04 专属绑定（轮换 0）） |
+| `F04-12` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；关键词「风险|伦理|责任」命中） |
 
 ## 2. 使用边界
 

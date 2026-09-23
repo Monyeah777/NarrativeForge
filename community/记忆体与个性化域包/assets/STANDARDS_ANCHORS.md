@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C14-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C14-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C14-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `C14-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `C14-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C14-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C14-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

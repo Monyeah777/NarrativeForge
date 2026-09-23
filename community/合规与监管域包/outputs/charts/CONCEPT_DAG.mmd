@@ -16,6 +16,13 @@ flowchart TD
     F02-10
     F02-12
   end
+  subgraph P80[P80]
+    STD-gdpr
+    STD-nist-ai-rmf
+    STD-oasis-openapi
+    STD-spdx-licenses
+    STD-w3c-prov-o
+  end
   F02-01 --> F02-02
   F02-02 --> F02-03
   F02-03 --> F02-04
@@ -36,3 +43,15 @@ flowchart TD
   F02-08 --> F02-11
   F02-11 --> F02-12
   F02-09 --> F02-12
+  F02-05 --> STD-gdpr
+  F02-07 --> STD-gdpr
+  F02-08 --> STD-gdpr
+  F02-10 --> STD-gdpr
+  F02-11 --> STD-gdpr
+  F02-04 --> STD-nist-ai-rmf
+  F02-01 --> STD-oasis-openapi
+  F02-03 --> STD-spdx-licenses
+  F02-06 --> STD-spdx-licenses
+  F02-12 --> STD-spdx-licenses
+  F02-02 --> STD-w3c-prov-o
+  F02-09 --> STD-w3c-prov-o

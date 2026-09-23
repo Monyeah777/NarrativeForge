@@ -16,6 +16,16 @@ flowchart TD
     D07-10
     D07-12
   end
+  subgraph P80[P80]
+    STD-gdpr
+    STD-iso-iec-25010
+    STD-mermaid
+    STD-nist-800-188
+    STD-oasis-openapi
+    STD-oecd-ai
+    STD-w3c-prov-o
+    STD-w3c-wcag22
+  end
   D07-01 --> D07-02
   D07-02 --> D07-03
   D07-03 --> D07-04
@@ -36,3 +46,15 @@ flowchart TD
   D07-08 --> D07-11
   D07-11 --> D07-12
   D07-09 --> D07-12
+  D07-07 --> STD-gdpr
+  D07-06 --> STD-iso-iec-25010
+  D07-04 --> STD-mermaid
+  D07-09 --> STD-nist-800-188
+  D07-11 --> STD-nist-800-188
+  D07-08 --> STD-oasis-openapi
+  D07-01 --> STD-oecd-ai
+  D07-03 --> STD-oecd-ai
+  D07-10 --> STD-oecd-ai
+  D07-02 --> STD-w3c-prov-o
+  D07-05 --> STD-w3c-prov-o
+  D07-12 --> STD-w3c-wcag22

@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「模型运营与成本」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（模型运营与成本:M01）与收口模块（模型运营与成本:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（F07-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（F07-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,12 @@
 | `F07-10` | 供应商比价 | P60 | `F07-09`、`F07-07` | f07-anchor |
 | `F07-11` | 容量规划 | P40 | `F07-10`、`F07-08` | f07-anchor |
 | `F07-12` | 故障演练 | P60 | `F07-11`、`F07-09` | f07-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `F07-07`、`F07-09` | std-catalog |
+| `STD-gfm` | 标准 · GFM 扩展（GitHub） | P80 | `F07-02` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `F07-01`、`F07-10` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `F07-04`、`F07-05` | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX） | P80 | `F07-03`、`F07-06`、`F07-12` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `F07-08`、`F07-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +52,12 @@
 | `F07-供应商比价` | `F07-10` |
 | `F07-容量规划` | `F07-11` |
 | `F07-故障演练` | `F07-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-gfm` | `STD-gfm` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-onnx` | `STD-onnx` |
+| `std-spdx-licenses` | `STD-spdx-licenses` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +69,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     f07-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "F07-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +89,15 @@ concept_graph:
         - "F07-10"
         - "F07-11"
         - "F07-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-gfm"
+        - "STD-nist-ai-rmf"
+        - "STD-onnx"
+        - "STD-spdx-licenses"
+        - "STD-w3c-prov-o"
   nodes:
     - id: "F07-01"
       name: "路由与降级"
@@ -181,6 +203,60 @@ concept_graph:
         - "F07-09"
       provenance:
         - "f07-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F07-07"
+        - "F07-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gfm"
+      name: "标准 · GFM 扩展"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F07-02"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F07-01"
+        - "F07-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F07-04"
+        - "F07-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-licenses"
+      name: "标准 · SPDX 许可证清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F07-03"
+        - "F07-06"
+        - "F07-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F07-08"
+        - "F07-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

@@ -16,6 +16,12 @@ flowchart TD
     D16-10
     D16-12
   end
+  subgraph P80[P80]
+    STD-gdpr
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-w3c-prov-o
+  end
   D16-01 --> D16-02
   D16-02 --> D16-03
   D16-03 --> D16-04
@@ -36,3 +42,15 @@ flowchart TD
   D16-08 --> D16-11
   D16-11 --> D16-12
   D16-09 --> D16-12
+  D16-12 --> STD-gdpr
+  D16-03 --> STD-iso-iec-25010
+  D16-09 --> STD-iso-iec-25010
+  D16-01 --> STD-nist-ai-rmf
+  D16-04 --> STD-nist-ai-rmf
+  D16-06 --> STD-nist-ai-rmf
+  D16-07 --> STD-nist-ai-rmf
+  D16-10 --> STD-nist-ai-rmf
+  D16-02 --> STD-w3c-prov-o
+  D16-05 --> STD-w3c-prov-o
+  D16-08 --> STD-w3c-prov-o
+  D16-11 --> STD-w3c-prov-o

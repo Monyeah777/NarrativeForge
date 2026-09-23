@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B08-01` | paper | https://arxiv.org/abs/2108.07732 | ✓ 200 |
-| `B08-02` | paper | https://arxiv.org/abs/2306.03091 | ✓ 200 |
-| `B08-03` | spec | https://peps.python.org/pep-0257/ | ✓ 200 |
-| `B08-04` | paper | https://arxiv.org/abs/2006.03511 | ✓ 200 |
-| `B08-05` | doc | https://docs.python.org/3/library/re.html | ✓ 200 |
-| `B08-06` | spec | https://spec.openapis.org/oas/v3.1.0 | ✓ 200 |
-| `B08-07` | doc | https://developer.hashicorp.com/terraform/language | ✓ 200 |
-| `B08-08` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `B08-09` | paper | https://arxiv.org/abs/2310.06770 | ✓ 200 |
-| `B08-10` | spec | https://spdx.org/licenses/ | ✓ 200 |
-| `B08-11` | spec | https://osv.dev/ | ✓ 200 |
-| `B08-12` | doc | https://microsoft.github.io/language-server-protocol/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B08-01` | paper | https://arxiv.org/abs/2108.07732 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-02` | paper | https://arxiv.org/abs/2306.03091 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-03` | spec | https://peps.python.org/pep-0257/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-04` | paper | https://arxiv.org/abs/2006.03511 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-05` | doc | https://docs.python.org/3/library/re.html | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-06` | spec | https://spec.openapis.org/oas/v3.1.0 | ✓ 200 | `oasis-openapi` OpenAPI 3.1（OpenAPI Initiative；关键词「接口|API|端点|服务|部署」命中） |
+| `B08-07` | doc | https://developer.hashicorp.com/terraform/language | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-08` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-09` | paper | https://arxiv.org/abs/2310.06770 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B08-10` | spec | https://spdx.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `B08-11` | spec | https://osv.dev/ | ✓ 200 | `oasis-openapi` OpenAPI 3.1（OpenAPI Initiative；关键词「接口|API|端点|服务|部署」命中） |
+| `B08-12` | doc | https://microsoft.github.io/language-server-protocol/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

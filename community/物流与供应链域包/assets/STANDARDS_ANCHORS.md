@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D12-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D12-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D12-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D12-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D12-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `w3c-wot` Web of Things Thing Description（W3C；关键词「物流|仓储|运输」命中） |
+| `D12-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D12-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D12-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `D12-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `D12-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D12-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D12-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D12-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D12-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `spdx-3` SPDX 3.0（含 AI profile）（SPDX；关键词「供应链|依赖」命中） |
 
 ## 2. 使用边界
 

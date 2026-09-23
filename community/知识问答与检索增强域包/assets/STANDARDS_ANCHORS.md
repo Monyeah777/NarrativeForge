@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B06-01` | paper | https://arxiv.org/abs/2005.11401 | ✓ 200 |
-| `B06-02` | paper | https://arxiv.org/abs/2004.05150 | ✓ 200 |
-| `B06-03` | paper | https://arxiv.org/abs/2305.15294 | ✓ 200 |
-| `B06-04` | paper | https://arxiv.org/abs/2210.11934 | ✓ 200 |
-| `B06-05` | paper | https://arxiv.org/abs/1908.10084 | ✓ 200 |
-| `B06-06` | paper | https://arxiv.org/abs/2310.04408 | ✓ 200 |
-| `B06-07` | paper | https://arxiv.org/abs/2305.14627 | ✓ 200 |
-| `B06-08` | paper | https://arxiv.org/abs/1809.09600 | ✓ 200 |
-| `B06-09` | paper | https://arxiv.org/abs/2005.11401 | ✓ 200 |
-| `B06-10` | paper | https://arxiv.org/abs/2207.05221 | ✓ 200 |
-| `B06-11` | paper | https://arxiv.org/abs/2309.15217 | ✓ 200 |
-| `B06-12` | paper | https://arxiv.org/abs/2305.14251 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B06-01` | paper | https://arxiv.org/abs/2005.11401 | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `B06-02` | paper | https://arxiv.org/abs/2004.05150 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `B06-03` | paper | https://arxiv.org/abs/2305.15294 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B06-04` | paper | https://arxiv.org/abs/2210.11934 | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `B06-05` | paper | https://arxiv.org/abs/1908.10084 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B06-06` | paper | https://arxiv.org/abs/2310.04408 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `B06-07` | paper | https://arxiv.org/abs/2305.14627 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B06-08` | paper | https://arxiv.org/abs/1809.09600 | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `B06-09` | paper | https://arxiv.org/abs/2005.11401 | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `B06-10` | paper | https://arxiv.org/abs/2207.05221 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B06-11` | paper | https://arxiv.org/abs/2309.15217 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `B06-12` | paper | https://arxiv.org/abs/2305.14251 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

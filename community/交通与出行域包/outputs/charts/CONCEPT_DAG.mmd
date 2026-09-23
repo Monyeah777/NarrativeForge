@@ -16,6 +16,15 @@ flowchart TD
     D13-10
     D13-12
   end
+  subgraph P80[P80]
+    STD-a2a
+    STD-covesa-vss
+    STD-frictionless-table
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-owasp-llm
+    STD-w3c-prov-o
+  end
   D13-01 --> D13-02
   D13-02 --> D13-03
   D13-03 --> D13-04
@@ -36,3 +45,15 @@ flowchart TD
   D13-08 --> D13-11
   D13-11 --> D13-12
   D13-09 --> D13-12
+  D13-08 --> STD-a2a
+  D13-01 --> STD-covesa-vss
+  D13-05 --> STD-covesa-vss
+  D13-06 --> STD-frictionless-table
+  D13-03 --> STD-iso-iec-25010
+  D13-09 --> STD-iso-iec-25010
+  D13-04 --> STD-nist-ai-rmf
+  D13-07 --> STD-nist-ai-rmf
+  D13-10 --> STD-nist-ai-rmf
+  D13-12 --> STD-owasp-llm
+  D13-02 --> STD-w3c-prov-o
+  D13-11 --> STD-w3c-prov-o

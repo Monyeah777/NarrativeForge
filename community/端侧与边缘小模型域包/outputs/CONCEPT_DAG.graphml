@@ -52,6 +52,46 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-a2a">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-covesa-vss">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-gdpr">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ieee-754">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mcp">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oasis-openapi">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-uptane">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A14-01" target="A14-02">
       <data key="provenance">['a14-anchor']</data>
     </edge>
@@ -81,6 +121,42 @@
     </edge>
     <edge source="A14-05" target="A14-12">
       <data key="provenance">['a14-anchor']</data>
+    </edge>
+    <edge source="A14-06" target="STD-a2a">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-09" target="STD-covesa-vss">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-05" target="STD-gdpr">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-04" target="STD-ieee-754">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-08" target="STD-ieee-754">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-10" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-07" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-02" target="STD-oasis-openapi">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-01" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-03" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-12" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-11" target="STD-uptane">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

@@ -16,6 +16,11 @@ flowchart TD
     D15-10
     D15-12
   end
+  subgraph P80[P80]
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-w3c-prov-o
+  end
   D15-01 --> D15-02
   D15-02 --> D15-03
   D15-03 --> D15-04
@@ -36,3 +41,15 @@ flowchart TD
   D15-08 --> D15-11
   D15-11 --> D15-12
   D15-09 --> D15-12
+  D15-03 --> STD-iso-iec-25010
+  D15-06 --> STD-iso-iec-25010
+  D15-09 --> STD-iso-iec-25010
+  D15-12 --> STD-iso-iec-25010
+  D15-01 --> STD-nist-ai-rmf
+  D15-04 --> STD-nist-ai-rmf
+  D15-07 --> STD-nist-ai-rmf
+  D15-10 --> STD-nist-ai-rmf
+  D15-02 --> STD-w3c-prov-o
+  D15-05 --> STD-w3c-prov-o
+  D15-08 --> STD-w3c-prov-o
+  D15-11 --> STD-w3c-prov-o

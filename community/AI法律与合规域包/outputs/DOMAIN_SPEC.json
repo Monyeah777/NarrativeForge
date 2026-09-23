@@ -14,6 +14,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "frictionless-package",
+      "standard_why": "关键词「检索|向量|嵌入|召回」命中",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "w3c-prov-o",
+      "standard_why": "D 段默认绑定（轮换 1）",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "commonmark",
+      "standard_why": "关键词「提示|指令|模板」命中",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "nist-ai-rmf",
+      "standard_why": "D 段默认绑定（轮换 0）",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "w3c-prov-o",
+      "standard_why": "D 段默认绑定（轮换 1）",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "gdpr",
+      "standard_why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "gdpr",
+      "standard_why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "creativecommons",
+      "standard_why": "关键词「许可|版权|知识产权|授权」命中",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "iso-iec-25010",
+      "standard_why": "D 段默认绑定（轮换 2）",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "nist-ai-rmf",
+      "standard_why": "D 段默认绑定（轮换 0）",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "关键词「问答|知识库」命中",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "iso-iec-25010",
+      "standard_why": "D 段默认绑定（轮换 2）",
       "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
     }

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E06-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E06-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E06-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
+| `E06-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E06-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `E06-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E06-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E06-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E06-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E06-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `E06-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E06-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `E06-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `rfc3339` 时间戳（IETF；关键词「时间戳|时区」命中） |
+| `E06-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
 
 ## 2. 使用边界
 

@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「视频生成与剪辑」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（视频生成与剪辑:M01）与收口模块（视频生成与剪辑:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E08-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E08-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `E08-10` | 竖屏适配 | P60 | `E08-09`、`E08-07` | e08-anchor |
 | `E08-11` | 封面与缩略图 | P40 | `E08-10`、`E08-08` | e08-anchor |
 | `E08-12` | 成片审看 | P60 | `E08-11`、`E08-09` | e08-anchor |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E08-01`、`E08-07`、`E08-10` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `E08-08` | std-catalog |
+| `STD-oci-image` | 标准 · 镜像清单（OCI） | P80 | `E08-02`、`E08-04`、`E08-05`、`E08-09` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E08-03`、`E08-06`、`E08-12` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E08-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `E08-竖屏适配` | `E08-10` |
 | `E08-封面与缩略图` | `E08-11` |
 | `E08-成片审看` | `E08-12` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-package` | `STD-frictionless-package` |
+| `std-oci-image` | `STD-oci-image` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e08-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E08-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "E08-10"
         - "E08-11"
         - "E08-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-commonmark"
+        - "STD-frictionless-package"
+        - "STD-oci-image"
+        - "STD-w3c-epub33"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "E08-01"
       name: "分镜脚本"
@@ -181,6 +200,53 @@ concept_graph:
         - "E08-09"
       provenance:
         - "e08-anchor"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E08-01"
+        - "E08-07"
+        - "E08-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E08-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oci-image"
+      name: "标准 · 镜像清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E08-02"
+        - "E08-04"
+        - "E08-05"
+        - "E08-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E08-03"
+        - "E08-06"
+        - "E08-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E08-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

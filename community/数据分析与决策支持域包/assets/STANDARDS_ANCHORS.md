@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E14-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E14-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E14-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `vega-lite` Vega-Lite v5（Vega；关键词「图表|可视化|看板」命中） |
+| `E14-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `E14-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `vega-lite` Vega-Lite v5（Vega；关键词「图表|可视化|看板」命中） |
+| `E14-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E14-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
 
 ## 2. 使用边界
 

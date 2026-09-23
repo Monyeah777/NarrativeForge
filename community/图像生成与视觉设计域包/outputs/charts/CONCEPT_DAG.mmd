@@ -16,6 +16,13 @@ flowchart TD
     B15-10
     B15-12
   end
+  subgraph P80[P80]
+    STD-creativecommons
+    STD-frictionless-table
+    STD-ietf-json-schema
+    STD-w3c-svg2
+    STD-w3c-tabular-data
+  end
   B15-01 --> B15-02
   B15-02 --> B15-03
   B15-03 --> B15-04
@@ -36,3 +43,15 @@ flowchart TD
   B15-08 --> B15-11
   B15-11 --> B15-12
   B15-09 --> B15-12
+  B15-09 --> STD-creativecommons
+  B15-03 --> STD-frictionless-table
+  B15-06 --> STD-frictionless-table
+  B15-12 --> STD-frictionless-table
+  B15-01 --> STD-ietf-json-schema
+  B15-07 --> STD-ietf-json-schema
+  B15-10 --> STD-ietf-json-schema
+  B15-04 --> STD-w3c-svg2
+  B15-11 --> STD-w3c-svg2
+  B15-02 --> STD-w3c-tabular-data
+  B15-05 --> STD-w3c-tabular-data
+  B15-08 --> STD-w3c-tabular-data

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B12-01` | paper | https://arxiv.org/abs/1507.05717 | ✓ 200 |
-| `B12-02` | paper | https://arxiv.org/abs/1912.09545 | ✓ 200 |
-| `B12-03` | paper | https://arxiv.org/abs/2110.00061 | ✓ 200 |
-| `B12-04` | spec | https://www.w3.org/TR/MathML3/ | ✓ 200 |
-| `B12-05` | paper | https://arxiv.org/abs/1904.01906 | ✓ 200 |
-| `B12-06` | paper | https://arxiv.org/abs/2103.14470 | ✓ 200 |
-| `B12-07` | spec | https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf | ✓ 200 |
-| `B12-08` | paper | https://arxiv.org/abs/1912.09545 | ✓ 200 |
-| `B12-09` | paper | https://arxiv.org/abs/2112.12463 | ✓ 200 |
-| `B12-10` | paper | https://arxiv.org/abs/2104.08663 | ✓ 200 |
-| `B12-11` | paper | https://arxiv.org/abs/1706.04599 | ✓ 200 |
-| `B12-12` | spec | https://www.unicode.org/versions/Unicode15.1.0/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B12-01` | paper | https://arxiv.org/abs/1507.05717 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-02` | paper | https://arxiv.org/abs/1912.09545 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-03` | paper | https://arxiv.org/abs/2110.00061 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；关键词「表格|CSV|列式」命中） |
+| `B12-04` | spec | https://www.w3.org/TR/MathML3/ | ✓ 200 | `w3c-mathml3` MathML 3（W3C；关键词「公式|数学|符号|证明」命中） |
+| `B12-05` | paper | https://arxiv.org/abs/1904.01906 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-06` | paper | https://arxiv.org/abs/2103.14470 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-07` | spec | https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-08` | paper | https://arxiv.org/abs/1912.09545 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-09` | paper | https://arxiv.org/abs/2112.12463 | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `B12-10` | paper | https://arxiv.org/abs/2104.08663 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-11` | paper | https://arxiv.org/abs/1706.04599 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；域码 B12 专属绑定（轮换 0）） |
+| `B12-12` | spec | https://www.unicode.org/versions/Unicode15.1.0/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
 
 ## 2. 使用边界
 

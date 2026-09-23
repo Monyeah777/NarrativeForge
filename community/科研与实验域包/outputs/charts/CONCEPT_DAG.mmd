@@ -16,6 +16,12 @@ flowchart TD
     D20-10
     D20-12
   end
+  subgraph P80[P80]
+    STD-datacite
+    STD-frictionless-package
+    STD-nist-ai-rmf
+    STD-rocrate
+  end
   D20-01 --> D20-02
   D20-02 --> D20-03
   D20-03 --> D20-04
@@ -36,3 +42,15 @@ flowchart TD
   D20-08 --> D20-11
   D20-11 --> D20-12
   D20-09 --> D20-12
+  D20-02 --> STD-datacite
+  D20-04 --> STD-datacite
+  D20-06 --> STD-datacite
+  D20-08 --> STD-datacite
+  D20-01 --> STD-frictionless-package
+  D20-10 --> STD-frictionless-package
+  D20-12 --> STD-nist-ai-rmf
+  D20-03 --> STD-rocrate
+  D20-05 --> STD-rocrate
+  D20-07 --> STD-rocrate
+  D20-09 --> STD-rocrate
+  D20-11 --> STD-rocrate

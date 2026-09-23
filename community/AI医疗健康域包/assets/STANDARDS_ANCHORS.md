@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D01-01` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-02` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-03` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-04` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-05` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-06` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-07` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-08` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-09` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-10` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-11` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
-| `D01-12` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D01-01` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；关键词「医疗|临床|病历|诊断」命中） |
+| `D01-02` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；关键词「医疗|临床|病历|诊断」命中） |
+| `D01-03` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；关键词「医疗|临床|病历|诊断」命中） |
+| `D01-04` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
+| `D01-05` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；域码 D01 专属绑定（轮换 0）） |
+| `D01-06` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；域码 D01 专属绑定（轮换 0）） |
+| `D01-07` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
+| `D01-08` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；关键词「医疗|临床|病历|诊断」命中） |
+| `D01-09` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；域码 D01 专属绑定（轮换 0）） |
+| `D01-10` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `hl7-fhir` FHIR（资源扩展机制）（HL7；关键词「医疗|临床|病历|诊断」命中） |
+| `D01-11` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `D01-12` | spec | https://www.who.int/health-topics/artificial-intelligence | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
 
 ## 2. 使用边界
 

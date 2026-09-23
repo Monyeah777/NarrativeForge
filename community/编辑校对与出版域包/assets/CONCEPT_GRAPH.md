@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「编辑校对与出版」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（编辑校对与出版:M01）与收口模块（编辑校对与出版:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E10-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E10-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `E10-10` | 电子书转换 | P60 | `E10-09`、`E10-07` | e10-anchor |
 | `E10-11` | 版权与署名 | P40 | `E10-10`、`E10-08` | e10-anchor |
 | `E10-12` | 读者反馈处理 | P60 | `E10-11`、`E10-09` | e10-anchor |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `E10-11` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid） | P80 | `E10-06` | std-catalog |
+| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons） | P80 | `E10-09` | std-catalog |
+| `STD-w3c-epub-a11y` | 标准 · EPUB 无障碍 1.1（W3C） | P80 | `E10-02`、`E10-04`、`E10-08`、`E10-10`、`E10-12` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E10-01`、`E10-03`、`E10-05`、`E10-07` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `E10-电子书转换` | `E10-10` |
 | `E10-版权与署名` | `E10-11` |
 | `E10-读者反馈处理` | `E10-12` |
+| `std-creativecommons` | `STD-creativecommons` |
+| `std-mermaid` | `STD-mermaid` |
+| `std-mlcommons-croissant` | `STD-mlcommons-croissant` |
+| `std-w3c-epub-a11y` | `STD-w3c-epub-a11y` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e10-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E10-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "E10-10"
         - "E10-11"
         - "E10-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-creativecommons"
+        - "STD-mermaid"
+        - "STD-mlcommons-croissant"
+        - "STD-w3c-epub-a11y"
+        - "STD-w3c-epub33"
   nodes:
     - id: "E10-01"
       name: "错别字与标点"
@@ -181,6 +200,53 @@ concept_graph:
         - "E10-09"
       provenance:
         - "e10-anchor"
+    - id: "STD-creativecommons"
+      name: "标准 · 许可与权利表达"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E10-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E10-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-croissant"
+      name: "标准 · Croissant 数据集元数据"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E10-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub-a11y"
+      name: "标准 · EPUB 无障碍 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E10-02"
+        - "E10-04"
+        - "E10-08"
+        - "E10-10"
+        - "E10-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E10-01"
+        - "E10-03"
+        - "E10-05"
+        - "E10-07"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

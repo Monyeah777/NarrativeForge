@@ -16,6 +16,13 @@ flowchart TD
     E10-10
     E10-12
   end
+  subgraph P80[P80]
+    STD-creativecommons
+    STD-mermaid
+    STD-mlcommons-croissant
+    STD-w3c-epub-a11y
+    STD-w3c-epub33
+  end
   E10-01 --> E10-02
   E10-02 --> E10-03
   E10-03 --> E10-04
@@ -36,3 +43,15 @@ flowchart TD
   E10-08 --> E10-11
   E10-11 --> E10-12
   E10-09 --> E10-12
+  E10-11 --> STD-creativecommons
+  E10-06 --> STD-mermaid
+  E10-09 --> STD-mlcommons-croissant
+  E10-02 --> STD-w3c-epub-a11y
+  E10-04 --> STD-w3c-epub-a11y
+  E10-08 --> STD-w3c-epub-a11y
+  E10-10 --> STD-w3c-epub-a11y
+  E10-12 --> STD-w3c-epub-a11y
+  E10-01 --> STD-w3c-epub33
+  E10-03 --> STD-w3c-epub33
+  E10-05 --> STD-w3c-epub33
+  E10-07 --> STD-w3c-epub33

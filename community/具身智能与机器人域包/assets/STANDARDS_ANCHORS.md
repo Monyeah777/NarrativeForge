@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A13-01` | doc | https://moveit.picknik.ai/ | ✓ 200 |
-| `A13-02` | paper | https://arxiv.org/abs/1710.01330 | ✓ 200 |
-| `A13-03` | paper | https://arxiv.org/abs/2212.06817 | ✓ 200 |
-| `A13-04` | paper | https://arxiv.org/abs/1709.10087 | ✓ 200 |
-| `A13-05` | paper | https://arxiv.org/abs/1703.06907 | ✓ 200 |
-| `A13-06` | repo | https://pypi.org/project/filterpy/ | ✓ 200 |
-| `A13-07` | paper | https://arxiv.org/abs/2204.01691 | ✓ 200 |
-| `A13-08` | spec | https://eur-lex.europa.eu/eli/reg/2023/1230/oj | ✓ 200 |
-| `A13-09` | doc | https://docs.nav2.org/ | ✓ 200 |
-| `A13-10` | doc | https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html | ✓ 200 |
-| `A13-11` | paper | https://arxiv.org/abs/2303.04137 | ✓ 200 |
-| `A13-12` | paper | https://arxiv.org/abs/2303.03378 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A13-01` | doc | https://moveit.picknik.ai/ | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；关键词「机械|机器人|协作」命中） |
+| `A13-02` | paper | https://arxiv.org/abs/1710.01330 | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；域码 A13 专属绑定（轮换 0）） |
+| `A13-03` | paper | https://arxiv.org/abs/2212.06817 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A13-04` | paper | https://arxiv.org/abs/1709.10087 | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；域码 A13 专属绑定（轮换 0）） |
+| `A13-05` | paper | https://arxiv.org/abs/1703.06907 | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；域码 A13 专属绑定（轮换 0）） |
+| `A13-06` | repo | https://pypi.org/project/filterpy/ | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；域码 A13 专属绑定（轮换 0）） |
+| `A13-07` | paper | https://arxiv.org/abs/2204.01691 | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；域码 A13 专属绑定（轮换 0）） |
+| `A13-08` | spec | https://eur-lex.europa.eu/eli/reg/2023/1230/oj | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `A13-09` | doc | https://docs.nav2.org/ | ✓ 200 | `covesa-vss` Vehicle Signal Specification（COVESA；关键词「交通|出行|车机|车辆|导航」命中） |
+| `A13-10` | doc | https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；关键词「机械|机器人|协作」命中） |
+| `A13-11` | paper | https://arxiv.org/abs/2303.04137 | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `A13-12` | paper | https://arxiv.org/abs/2303.03378 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；关键词「工具调用|智能体|工作流|Agent」命中） |
 
 ## 2. 使用边界
 

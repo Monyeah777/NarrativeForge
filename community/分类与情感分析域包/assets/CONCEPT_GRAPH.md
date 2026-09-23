@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「分类与情感分析」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（分类与情感分析:M01）与收口模块（分类与情感分析:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（B04-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（B04-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,10 @@
 | `B04-10` | 阈值与概率校准 | P60 | `B04-06` | b04-anchor |
 | `B04-11` | 标注一致性校验 | P40 | — | b04-anchor |
 | `B04-12` | 分类评测指标 | P60 | `B04-10`、`B04-11`、`B04-05` | b04-anchor |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `B04-03`、`B04-06`、`B04-09` | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `B04-01`、`B04-04`、`B04-07`、`B04-10`、`B04-11` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `B04-12` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `B04-02`、`B04-05`、`B04-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +50,10 @@
 | `B04-阈值与概率校准` | `B04-10` |
 | `B04-标注一致性校验` | `B04-11` |
 | `B04-分类评测指标` | `B04-12` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +65,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     b04-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "B04-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +85,13 @@ concept_graph:
         - "B04-10"
         - "B04-11"
         - "B04-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-frictionless-table"
+        - "STD-ietf-json-schema"
+        - "STD-mlcommons-bench"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "B04-01"
       name: "意图识别"
@@ -171,6 +187,46 @@ concept_graph:
         - "B04-05"
       provenance:
         - "b04-anchor"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B04-03"
+        - "B04-06"
+        - "B04-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B04-01"
+        - "B04-04"
+        - "B04-07"
+        - "B04-10"
+        - "B04-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B04-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B04-02"
+        - "B04-05"
+        - "B04-08"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

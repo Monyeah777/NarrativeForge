@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B03-01` | paper | https://arxiv.org/abs/1609.08144 | ✓ 200 |
-| `B03-02` | dataset | https://iate.europa.eu/ | ✓ 200 |
-| `B03-03` | doc | https://www.statmt.org/ | ✓ 200 |
-| `B03-04` | dataset | https://opus.nlpl.eu/ | ✓ 200 |
-| `B03-05` | spec | https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.html | ✓ 200 |
-| `B03-06` | paper | https://arxiv.org/abs/2207.04672 | ✓ 200 |
-| `B03-07` | repo | https://pypi.org/project/translate-toolkit/ | ✓ 200 |
-| `B03-08` | spec | https://cldr.unicode.org/ | ✓ 200 |
-| `B03-09` | spec | https://themqm.org/ | ✓ 200 |
-| `B03-10` | repo | https://www.masakhane.io/ | ✓ 200 |
-| `B03-11` | paper | https://arxiv.org/abs/2009.09025 | ✓ 200 |
-| `B03-12` | spec | https://www.w3.org/International/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B03-01` | paper | https://arxiv.org/abs/1609.08144 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B03-02` | dataset | https://iate.europa.eu/ | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
+| `B03-03` | doc | https://www.statmt.org/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B03-04` | dataset | https://opus.nlpl.eu/ | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `B03-05` | spec | https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.html | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B03-06` | paper | https://arxiv.org/abs/2207.04672 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B03-07` | repo | https://pypi.org/project/translate-toolkit/ | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
+| `B03-08` | spec | https://cldr.unicode.org/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B03-09` | spec | https://themqm.org/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B03-10` | repo | https://www.masakhane.io/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B03-11` | paper | https://arxiv.org/abs/2009.09025 | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `B03-12` | spec | https://www.w3.org/International/ | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
 
 ## 2. 使用边界
 

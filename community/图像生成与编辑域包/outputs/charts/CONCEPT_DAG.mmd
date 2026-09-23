@@ -16,6 +16,13 @@ flowchart TD
     A07-10
     A07-12
   end
+  subgraph P80[P80]
+    STD-c2pa-spec
+    STD-commonmark
+    STD-mlcommons-bench
+    STD-onnx
+    STD-w3c-svg2
+  end
   A07-01 --> A07-02
   A07-01 --> A07-03
   A07-03 --> A07-04
@@ -26,3 +33,15 @@ flowchart TD
   A07-09 --> A07-10
   A07-10 --> A07-12
   A07-11 --> A07-12
+  A07-11 --> STD-c2pa-spec
+  A07-10 --> STD-commonmark
+  A07-02 --> STD-mlcommons-bench
+  A07-05 --> STD-mlcommons-bench
+  A07-08 --> STD-mlcommons-bench
+  A07-09 --> STD-mlcommons-bench
+  A07-12 --> STD-mlcommons-bench
+  A07-01 --> STD-onnx
+  A07-03 --> STD-onnx
+  A07-04 --> STD-w3c-svg2
+  A07-06 --> STD-w3c-svg2
+  A07-07 --> STD-w3c-svg2

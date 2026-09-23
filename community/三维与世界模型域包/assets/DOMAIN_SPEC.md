@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 |
-|---|---|---|---|---|
-| `A08-01` | 三维重建与辐射场 | 三维重建与辐射场的口径：输入视图数、坐标约定、指标（PSNR/SSIM/LPIPS）与视角划分。 | 声明 views（训练/测试视角数）、coord_system（右手/左手 + 上轴）与 metric（PSNR/SSIM/LPIPS + 下采样口径）。 | 测试视角与训练视角重叠（虚高）；分辨率与下采样口径不同直接比 PSNR。 |
-| `A08-02` | 点云处理 | 点云处理的口径：点云来源（扫描/生成）、采样密度与旋转平移不变性设定。 | 声明 source（lidar|rgbd|generated）、density（点/平方米或总点数）与 invariance（旋转|平移|尺度 是否要求）。 | 训练/测试采样密度不同；宣称旋转不变却未做旋转增强测试。 |
-| `A08-03` | 纹理与材质生成 | 纹理与材质生成的口径：材质表示（PBR 通道）、分辨率与光照一致性要求。 | 声明 pbr_channels（albedo/normal/roughness/metallic 等）、texture_resolution 与 lighting_consistency（是否做重光照检验）。 | 只有 albedo 却宣称材质完整；生成纹理烘焙进光照（不可重光照）。 |
-| `A08-04` | 文生 3D 资产 | 文生 3D 资产的口径：表示形式（网格/高斯/隐式）、面数与多视角一致性判据。 | 声明 representation（mesh|gaussian|implicit）、face_count（或点数）与 multiview_consistency（一致性指标 + 采样视角数）。 | 只展示单视角好看；面数不声明导致不可用于下游管线。 |
-| `A08-05` | 场景生成与布局 | 场景生成与布局的口径：房间类型 / 布局约束、可通行性检查与物理合理性。 | 声明 room_types、constraints（可通行/支撑面/无穿插）与 physics_check（碰撞检测是否执行）。 | 生成结果物体穿插或悬空；无通行性检查导致不可用。 |
-| `A08-06` | 物理仿真与碰撞 | 物理仿真与碰撞的口径：求解器、时间步长、接触模型与稳定性判据。 | 声明 solver（含版本）、dt（时间步长 s）、contact_model 与 stability_check（能量守恒/穿透深度上限）。 | 时间步长过大导致穿透（结论无效）；求解器版本未记录。 |
-| `A08-07` | 世界模型与状态预测 | 世界模型与状态预测的口径：状态表示、预测时域与 rollout 误差累积报告。 | 声明 state_repr（字段/维度）、horizon（预测步数）与 rollout_error（分步误差曲线，不只报单步）。 | 只报一步预测误差；长时域误差发散未报告。 |
-| `A08-08` | SLAM 与定位 | SLAM 与定位的口径：传感器配置、轨迹误差指标（ATE/RPE）与失败场景记录。 | 声明 sensors（相机/IMU/LiDAR）、metric（ATE|RPE + 对齐方式）与 failure_cases（动态物体/弱纹理等）。 | 只在理想序列评测；对齐方式（SE3/Sim3）未声明导致尺度误差被掩盖。 |
-| `A08-09` | 数字孪生 | 数字孪生的口径：孪生粒度、同步频率与偏差监控指标。 | 声明 twin_granularity（设备/产线/园区）、sync_hz 与 drift_metric（孪生与实测偏差）。 | 孪生只做静态建模（无同步）；偏差无监控（孪生与实际脱节不可见）。 |
-| `A08-10` | 3D 资产格式与管线 | 3D 资产格式与管线的口径：格式（glTF/USD/FBX）、坐标系、单位与压缩策略。 | 声明 format（含版本）、up_axis、unit（米/厘米）与 compression（Draco/USDZ 等）。 | 单位与上轴不一致导致缩放/朝向错；压缩后属性丢失未核。 |
-| `A08-11` | 骨骼绑定与动画 | 骨骼绑定与动画的口径：骨骼层级、蒙皮权重与动画重定向误差。 | 声明 skeleton_joints、skin_weight_norm（是否归一化）与 retarget_error（关节位置误差 mm/度）。 | 权重未归一化导致蒙皮坍缩；重定向误差不报导致动画不可用。 |
-| `A08-12` | 三维评测 | 三维评测的口径：几何指标（Chamfer/F-score）、感知指标与评测集划分。 | 声明 geom_metric（Chamfer|F-score + 阈值）、perceptual_metric 与 split（同类别内 vs 跨类别）。 | 只报 Chamfer 不报感知质量；跨类别评测当同类别结论。 |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
+|---|---|---|---|---|---|
+| `A08-01` | 三维重建与辐射场 | 三维重建与辐射场的口径：输入视图数、坐标约定、指标（PSNR/SSIM/LPIPS）与视角划分。 | 声明 views（训练/测试视角数）、coord_system（右手/左手 + 上轴）与 metric（PSNR/SSIM/LPIPS + 下采样口径）。 | 测试视角与训练视角重叠（虚高）；分辨率与下采样口径不同直接比 PSNR。 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC） |
+| `A08-02` | 点云处理 | 点云处理的口径：点云来源（扫描/生成）、采样密度与旋转平移不变性设定。 | 声明 source（lidar|rgbd|generated）、density（点/平方米或总点数）与 invariance（旋转|平移|尺度 是否要求）。 | 训练/测试采样密度不同；宣称旋转不变却未做旋转增强测试。 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC） |
+| `A08-03` | 纹理与材质生成 | 纹理与材质生成的口径：材质表示（PBR 通道）、分辨率与光照一致性要求。 | 声明 pbr_channels（albedo/normal/roughness/metallic 等）、texture_resolution 与 lighting_consistency（是否做重光照检验）。 | 只有 albedo 却宣称材质完整；生成纹理烘焙进光照（不可重光照）。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
+| `A08-04` | 文生 3D 资产 | 文生 3D 资产的口径：表示形式（网格/高斯/隐式）、面数与多视角一致性判据。 | 声明 representation（mesh|gaussian|implicit）、face_count（或点数）与 multiview_consistency（一致性指标 + 采样视角数）。 | 只展示单视角好看；面数不声明导致不可用于下游管线。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `A08-05` | 场景生成与布局 | 场景生成与布局的口径：房间类型 / 布局约束、可通行性检查与物理合理性。 | 声明 room_types、constraints（可通行/支撑面/无穿插）与 physics_check（碰撞检测是否执行）。 | 生成结果物体穿插或悬空；无通行性检查导致不可用。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A08-06` | 物理仿真与碰撞 | 物理仿真与碰撞的口径：求解器、时间步长、接触模型与稳定性判据。 | 声明 solver（含版本）、dt（时间步长 s）、contact_model 与 stability_check（能量守恒/穿透深度上限）。 | 时间步长过大导致穿透（结论无效）；求解器版本未记录。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
+| `A08-07` | 世界模型与状态预测 | 世界模型与状态预测的口径：状态表示、预测时域与 rollout 误差累积报告。 | 声明 state_repr（字段/维度）、horizon（预测步数）与 rollout_error（分步误差曲线，不只报单步）。 | 只报一步预测误差；长时域误差发散未报告。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
+| `A08-08` | SLAM 与定位 | SLAM 与定位的口径：传感器配置、轨迹误差指标（ATE/RPE）与失败场景记录。 | 声明 sensors（相机/IMU/LiDAR）、metric（ATE|RPE + 对齐方式）与 failure_cases（动态物体/弱纹理等）。 | 只在理想序列评测；对齐方式（SE3/Sim3）未声明导致尺度误差被掩盖。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A08-09` | 数字孪生 | 数字孪生的口径：孪生粒度、同步频率与偏差监控指标。 | 声明 twin_granularity（设备/产线/园区）、sync_hz 与 drift_metric（孪生与实测偏差）。 | 孪生只做静态建模（无同步）；偏差无监控（孪生与实际脱节不可见）。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
+| `A08-10` | 3D 资产格式与管线 | 3D 资产格式与管线的口径：格式（glTF/USD/FBX）、坐标系、单位与压缩策略。 | 声明 format（含版本）、up_axis、unit（米/厘米）与 compression（Draco/USDZ 等）。 | 单位与上轴不一致导致缩放/朝向错；压缩后属性丢失未核。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `A08-11` | 骨骼绑定与动画 | 骨骼绑定与动画的口径：骨骼层级、蒙皮权重与动画重定向误差。 | 声明 skeleton_joints、skin_weight_norm（是否归一化）与 retarget_error（关节位置误差 mm/度）。 | 权重未归一化导致蒙皮坍缩；重定向误差不报导致动画不可用。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| `A08-12` | 三维评测 | 三维评测的口径：几何指标（Chamfer/F-score）、感知指标与评测集划分。 | 声明 geom_metric（Chamfer|F-score + 阈值）、perceptual_metric 与 split（同类别内 vs 跨类别）。 | 只报 Chamfer 不报感知质量；跨类别评测当同类别结论。 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC） |
 
 ## 3. 机读投影契约
 

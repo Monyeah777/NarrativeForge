@@ -52,6 +52,30 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-gdpr">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-unesco-ai">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-epub33">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-tabular-data">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="E15-01" target="E15-02">
       <data key="provenance">['e15-anchor']</data>
     </edge>
@@ -111,6 +135,42 @@
     </edge>
     <edge source="E15-09" target="E15-12">
       <data key="provenance">['e15-anchor']</data>
+    </edge>
+    <edge source="E15-04" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-10" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-02" target="STD-gdpr">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-03" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-01" target="STD-unesco-ai">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-07" target="STD-unesco-ai">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-11" target="STD-unesco-ai">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-12" target="STD-unesco-ai">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-06" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-09" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-05" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E15-08" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A01-01` | paper | https://arxiv.org/abs/2303.18223 | ✓ 200 |
-| `A01-02` | paper | https://arxiv.org/abs/2001.08361 | ✓ 200 |
-| `A01-03` | paper | https://arxiv.org/abs/1508.07909 | ✓ 200 |
-| `A01-04` | paper | https://arxiv.org/abs/2101.00027 | ✓ 200 |
-| `A01-05` | paper | https://arxiv.org/abs/2104.09864 | ✓ 200 |
-| `A01-06` | paper | https://arxiv.org/abs/1706.03762 | ✓ 200 |
-| `A01-07` | paper | https://arxiv.org/abs/2206.07682 | ✓ 200 |
-| `A01-08` | spec | https://spdx.org/licenses/ | ✓ 200 |
-| `A01-09` | paper | https://arxiv.org/abs/1503.02531 | ✓ 200 |
-| `A01-10` | paper | https://arxiv.org/abs/2203.05482 | ✓ 200 |
-| `A01-11` | paper | https://arxiv.org/abs/2210.17323 | ✓ 200 |
-| `A01-12` | paper | https://arxiv.org/abs/1904.09751 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A01-01` | paper | https://arxiv.org/abs/2303.18223 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A01-02` | paper | https://arxiv.org/abs/2001.08361 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A01-03` | paper | https://arxiv.org/abs/1508.07909 | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
+| `A01-04` | paper | https://arxiv.org/abs/2101.00027 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `A01-05` | paper | https://arxiv.org/abs/2104.09864 | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `A01-06` | paper | https://arxiv.org/abs/1706.03762 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；域码 A01 专属绑定（轮换 0）） |
+| `A01-07` | paper | https://arxiv.org/abs/2206.07682 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A01-08` | spec | https://spdx.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `A01-09` | paper | https://arxiv.org/abs/1503.02531 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `A01-10` | paper | https://arxiv.org/abs/2203.05482 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A01-11` | paper | https://arxiv.org/abs/2210.17323 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A01-12` | paper | https://arxiv.org/abs/1904.09751 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
 
 ## 2. 使用边界
 

@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「音频音乐与语音」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（音频音乐与语音:M01）与收口模块（音频音乐与语音:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E09-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E09-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,10 @@
 | `E09-10` | 语音克隆伦理 | P60 | `E09-09`、`E09-07` | e09-anchor |
 | `E09-11` | 多语发音 | P40 | `E09-10`、`E09-08` | e09-anchor |
 | `E09-12` | 音频对齐 | P60 | `E09-11`、`E09-09` | e09-anchor |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E09-01`、`E09-07` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E09-03`、`E09-06`、`E09-09` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E09-05`、`E09-08`、`E09-11` | std-catalog |
+| `STD-w3c-webaudio` | 标准 · Web Audio API（W3C） | P80 | `E09-02`、`E09-04`、`E09-10`、`E09-12` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +50,10 @@
 | `E09-语音克隆伦理` | `E09-10` |
 | `E09-多语发音` | `E09-11` |
 | `E09-音频对齐` | `E09-12` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
+| `std-w3c-webaudio` | `STD-w3c-webaudio` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +65,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e09-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E09-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +85,13 @@ concept_graph:
         - "E09-10"
         - "E09-11"
         - "E09-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-commonmark"
+        - "STD-w3c-epub33"
+        - "STD-w3c-tabular-data"
+        - "STD-w3c-webaudio"
   nodes:
     - id: "E09-01"
       name: "音色设计"
@@ -181,6 +197,46 @@ concept_graph:
         - "E09-09"
       provenance:
         - "e09-anchor"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E09-01"
+        - "E09-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E09-03"
+        - "E09-06"
+        - "E09-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E09-05"
+        - "E09-08"
+        - "E09-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-webaudio"
+      name: "标准 · Web Audio API"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E09-02"
+        - "E09-04"
+        - "E09-10"
+        - "E09-12"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

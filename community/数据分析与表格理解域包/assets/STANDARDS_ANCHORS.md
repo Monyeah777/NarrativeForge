@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B11-01` | paper | https://arxiv.org/abs/1909.00754 | ✓ 200 |
-| `B11-02` | paper | https://arxiv.org/abs/2004.07360 | ✓ 200 |
-| `B11-03` | spec | https://vega.github.io/schema/vega-lite/v5.json | ✓ 200 |
-| `B11-04` | spec | https://specs.frictionlessdata.io/table-schema/ | ✓ 200 |
-| `B11-05` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 |
-| `B11-06` | doc | https://www.sqlite.org/lang.html | ✓ 200 |
-| `B11-07` | doc | https://scikit-learn.org/stable/modules/outlier_detection.html | ✓ 200 |
-| `B11-08` | doc | https://www.statsmodels.org/stable/tsa.html | ✓ 200 |
-| `B11-09` | doc | https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/view-dashboard-json-model/ | ✓ 200 |
-| `B11-10` | paper | https://arxiv.org/abs/2305.14251 | ✓ 200 |
-| `B11-11` | paper | https://arxiv.org/abs/1706.04599 | ✓ 200 |
-| `B11-12` | spec | https://csrc.nist.gov/pubs/sp/800/188/final | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B11-01` | paper | https://arxiv.org/abs/1909.00754 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；关键词「表格|CSV|列式」命中） |
+| `B11-02` | paper | https://arxiv.org/abs/2004.07360 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `B11-03` | spec | https://vega.github.io/schema/vega-lite/v5.json | ✓ 200 | `vega-lite` Vega-Lite v5（Vega；关键词「图表|可视化|看板」命中） |
+| `B11-04` | spec | https://specs.frictionlessdata.io/table-schema/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `B11-05` | spec | https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B11-06` | doc | https://www.sqlite.org/lang.html | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B11-07` | doc | https://scikit-learn.org/stable/modules/outlier_detection.html | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `B11-08` | doc | https://www.statsmodels.org/stable/tsa.html | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B11-09` | doc | https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/view-dashboard-json-model/ | ✓ 200 | `vega-lite` Vega-Lite v5（Vega；关键词「图表|可视化|看板」命中） |
+| `B11-10` | paper | https://arxiv.org/abs/2305.14251 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B11-11` | paper | https://arxiv.org/abs/1706.04599 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B11-12` | spec | https://csrc.nist.gov/pubs/sp/800/188/final | ✓ 200 | `nist-800-188` SP 800-188 去标识化（NIST；关键词「权限|访问控制|治理」命中） |
 
 ## 2. 使用边界
 

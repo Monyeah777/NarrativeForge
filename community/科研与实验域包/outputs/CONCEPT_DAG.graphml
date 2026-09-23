@@ -52,6 +52,22 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-datacite">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-package">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-ai-rmf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-rocrate">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="D20-01" target="D20-02">
       <data key="provenance">['d20-anchor']</data>
     </edge>
@@ -111,6 +127,42 @@
     </edge>
     <edge source="D20-09" target="D20-12">
       <data key="provenance">['d20-anchor']</data>
+    </edge>
+    <edge source="D20-02" target="STD-datacite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-04" target="STD-datacite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-06" target="STD-datacite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-08" target="STD-datacite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-01" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-10" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-12" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-03" target="STD-rocrate">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-05" target="STD-rocrate">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-07" target="STD-rocrate">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-09" target="STD-rocrate">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D20-11" target="STD-rocrate">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

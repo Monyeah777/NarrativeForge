@@ -16,6 +16,15 @@ flowchart TD
     C15-10
     C15-12
   end
+  subgraph P80[P80]
+    STD-arrow
+    STD-cncf-otel-semconv
+    STD-frictionless-package
+    STD-mlcommons-bench
+    STD-mlcommons-croissant
+    STD-nist-800-188
+    STD-parquet
+  end
   C15-01 --> C15-02
   C15-02 --> C15-03
   C15-03 --> C15-04
@@ -36,3 +45,15 @@ flowchart TD
   C15-08 --> C15-11
   C15-11 --> C15-12
   C15-09 --> C15-12
+  C15-01 --> STD-arrow
+  C15-12 --> STD-cncf-otel-semconv
+  C15-04 --> STD-frictionless-package
+  C15-06 --> STD-frictionless-package
+  C15-07 --> STD-frictionless-package
+  C15-09 --> STD-mlcommons-bench
+  C15-03 --> STD-mlcommons-croissant
+  C15-10 --> STD-nist-800-188
+  C15-02 --> STD-parquet
+  C15-05 --> STD-parquet
+  C15-08 --> STD-parquet
+  C15-11 --> STD-parquet

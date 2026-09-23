@@ -16,6 +16,12 @@ flowchart TD
     E03-10
     E03-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-package
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E03-01 --> E03-02
   E03-02 --> E03-03
   E03-03 --> E03-04
@@ -36,3 +42,15 @@ flowchart TD
   E03-08 --> E03-11
   E03-11 --> E03-12
   E03-09 --> E03-12
+  E03-01 --> STD-commonmark
+  E03-04 --> STD-commonmark
+  E03-07 --> STD-commonmark
+  E03-10 --> STD-commonmark
+  E03-12 --> STD-frictionless-package
+  E03-03 --> STD-w3c-epub33
+  E03-06 --> STD-w3c-epub33
+  E03-09 --> STD-w3c-epub33
+  E03-02 --> STD-w3c-tabular-data
+  E03-05 --> STD-w3c-tabular-data
+  E03-08 --> STD-w3c-tabular-data
+  E03-11 --> STD-w3c-tabular-data

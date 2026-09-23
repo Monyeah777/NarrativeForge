@@ -52,6 +52,34 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-cncf-cloudevents">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-creativecommons">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json-schema">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-opengeospatial">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-webaudio">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A05-03" target="A05-01">
       <data key="provenance">['a05-anchor']</data>
     </edge>
@@ -81,6 +109,42 @@
     </edge>
     <edge source="A05-04" target="A05-12">
       <data key="provenance">['a05-anchor']</data>
+    </edge>
+    <edge source="A05-06" target="STD-cncf-cloudevents">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-09" target="STD-creativecommons">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-04" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-02" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-08" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-12" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-03" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-07" target="STD-opengeospatial">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-01" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-05" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-10" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A05-11" target="STD-w3c-webaudio">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

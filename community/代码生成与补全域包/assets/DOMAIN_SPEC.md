@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 |
-|---|---|---|---|---|
-| `B08-01` | 函数级生成 | 函数级生成的口径：签名与文档字符串给定度、测试用例判据与通过率统计方式。 | 声明 signature_given（true|false）、test_based（通过判据 = 执行测试）与 pass_rate（含采样数 k）。 | 用文本相似度当通过（虚高）；采样数不报导致 pass@k 不可比。 |
-| `B08-02` | 跨文件补全 | 跨文件补全的口径：检索 / 索引范围、跨文件依赖解析与上下文预算。 | 声明 retrieval_scope（同文件|仓库）、dependency_parse（导入图|无）与 context_budget（token）。 | 只做同文件补全却宣称仓库级；预算未声明导致截断不可见。 |
-| `B08-03` | 注释到代码 | 注释到代码的口径：注释粒度、歧义处理与生成后可执行性。 | 声明 comment_granularity（函数|行|模块）、ambiguity_policy（追问|假设并标注）与 executability（实测通过率）。 | 注释含糊时静默假设（结果跑偏）；不验证可执行性。 |
-| `B08-04` | 代码翻译与迁移 | 代码翻译与迁移的口径：语言对、目标版本与等价性验证（测试驱动）。 | 声明 lang_pair（含版本）、equivalence（测试执行|人工）与 coverage（迁移后测试覆盖率）。 | 只做语法层翻译（行为不等价）；目标语言版本未声明。 |
-| `B08-05` | 正则与脚本生成 | 正则与脚本生成的口径：方言（PCRE / Python re）、性能约束与边界样例验证。 | 声明 flavor（PCRE|re|JS）、complexity_limit（回溯风险上限）与 edge_cases（正负样例数）。 | 生成灾难性回溯正则；未经边界样例验证就上线。 |
-| `B08-06` | API 调用示例 | API 调用示例的口径：接口契约来源、参数必填 / 默认与示例可运行性。 | 声明 contract_source（OpenAPI 文档 id + 版本）、required_params（逐条）与 runnable（示例实测可运行）。 | 编造不存在的参数（幻觉 API）；示例未实跑。 |
-| `B08-07` | 配置与基础设施代码 | 配置与基础设施代码的口径：目标平台与版本、幂等性与变更预览（plan / dry-run）。 | 声明 platform（含版本）、idempotent（true|false）与 plan_preview（是否提供 dry-run 输出）。 | 配置不可重复应用（幂等破坏）；无 plan 预览直接改生产。 |
-| `B08-08` | 风格与团队约定遵循 | 风格与团队约定遵循的口径：规范来源、检查工具与自动修复边界。 | 声明 style_guide（来源）、linter（工具 + 版本）与 autofix_scope（允许自动改的范围）。 | 自动修复改到语义（越界）；规范来源不明导致评审争议。 |
-| `B08-09` | 生成代码可执行性验证 | 生成代码可执行性验证的口径：测试执行环境、失败分类与复现命令。 | 声明 env（镜像 / 依赖锁）、failure_taxonomy（语法|导入|断言|超时）与 reproduce_cmd（可复制命令）。 | 只报通过率不分类失败；无复现命令（结论不可核）。 |
-| `B08-10` | 许可证与来源合规 | 许可证与来源合规的口径：生成代码的许可风险、相似度检测与出处标注。 | 声明 license_scan（工具 + 阈值）、similarity_check（与公开语料的相似度上限）与 attribution（出处标注规则）。 | 整段复制受版权代码（无标注）；不做相似度检测。 |
-| `B08-11` | 幻觉 API 识别 | 幻觉 API 识别的口径：存在性校验来源、版本匹配与不可用时的替代建议。 | 声明 existence_check（包索引 / 官方文档来源）、version_check（目标版本存在）与 fallback（替代 API 建议）。 | 建议不存在的包（供应链风险）；不校验版本兼容。 |
-| `B08-12` | 补全延迟与体验 | 补全延迟与体验的口径：首 token / 整段延迟、取消语义与体验阈值。 | 声明 ttft_ms、full_latency_ms、cancel_semantics（是否可中断）与 ux_threshold（可接受上限）。 | 只报平均延迟；不可取消导致输入被阻塞。 |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
+|---|---|---|---|---|---|
+| `B08-01` | 函数级生成 | 函数级生成的口径：签名与文档字符串给定度、测试用例判据与通过率统计方式。 | 声明 signature_given（true|false）、test_based（通过判据 = 执行测试）与 pass_rate（含采样数 k）。 | 用文本相似度当通过（虚高）；采样数不报导致 pass@k 不可比。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B08-02` | 跨文件补全 | 跨文件补全的口径：检索 / 索引范围、跨文件依赖解析与上下文预算。 | 声明 retrieval_scope（同文件|仓库）、dependency_parse（导入图|无）与 context_budget（token）。 | 只做同文件补全却宣称仓库级；预算未声明导致截断不可见。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B08-03` | 注释到代码 | 注释到代码的口径：注释粒度、歧义处理与生成后可执行性。 | 声明 comment_granularity（函数|行|模块）、ambiguity_policy（追问|假设并标注）与 executability（实测通过率）。 | 注释含糊时静默假设（结果跑偏）；不验证可执行性。 | `frictionless-table` Table Schema（Frictionless） |
+| `B08-04` | 代码翻译与迁移 | 代码翻译与迁移的口径：语言对、目标版本与等价性验证（测试驱动）。 | 声明 lang_pair（含版本）、equivalence（测试执行|人工）与 coverage（迁移后测试覆盖率）。 | 只做语法层翻译（行为不等价）；目标语言版本未声明。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B08-05` | 正则与脚本生成 | 正则与脚本生成的口径：方言（PCRE / Python re）、性能约束与边界样例验证。 | 声明 flavor（PCRE|re|JS）、complexity_limit（回溯风险上限）与 edge_cases（正负样例数）。 | 生成灾难性回溯正则；未经边界样例验证就上线。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B08-06` | API 调用示例 | API 调用示例的口径：接口契约来源、参数必填 / 默认与示例可运行性。 | 声明 contract_source（OpenAPI 文档 id + 版本）、required_params（逐条）与 runnable（示例实测可运行）。 | 编造不存在的参数（幻觉 API）；示例未实跑。 | `oasis-openapi` OpenAPI 3.1（OpenAPI Initiative） |
+| `B08-07` | 配置与基础设施代码 | 配置与基础设施代码的口径：目标平台与版本、幂等性与变更预览（plan / dry-run）。 | 声明 platform（含版本）、idempotent（true|false）与 plan_preview（是否提供 dry-run 输出）。 | 配置不可重复应用（幂等破坏）；无 plan 预览直接改生产。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B08-08` | 风格与团队约定遵循 | 风格与团队约定遵循的口径：规范来源、检查工具与自动修复边界。 | 声明 style_guide（来源）、linter（工具 + 版本）与 autofix_scope（允许自动改的范围）。 | 自动修复改到语义（越界）；规范来源不明导致评审争议。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B08-09` | 生成代码可执行性验证 | 生成代码可执行性验证的口径：测试执行环境、失败分类与复现命令。 | 声明 env（镜像 / 依赖锁）、failure_taxonomy（语法|导入|断言|超时）与 reproduce_cmd（可复制命令）。 | 只报通过率不分类失败；无复现命令（结论不可核）。 | `frictionless-table` Table Schema（Frictionless） |
+| `B08-10` | 许可证与来源合规 | 许可证与来源合规的口径：生成代码的许可风险、相似度检测与出处标注。 | 声明 license_scan（工具 + 阈值）、similarity_check（与公开语料的相似度上限）与 attribution（出处标注规则）。 | 整段复制受版权代码（无标注）；不做相似度检测。 | `creativecommons` 许可与权利表达（Creative Commons） |
+| `B08-11` | 幻觉 API 识别 | 幻觉 API 识别的口径：存在性校验来源、版本匹配与不可用时的替代建议。 | 声明 existence_check（包索引 / 官方文档来源）、version_check（目标版本存在）与 fallback（替代 API 建议）。 | 建议不存在的包（供应链风险）；不校验版本兼容。 | `oasis-openapi` OpenAPI 3.1（OpenAPI Initiative） |
+| `B08-12` | 补全延迟与体验 | 补全延迟与体验的口径：首 token / 整段延迟、取消语义与体验阈值。 | 声明 ttft_ms、full_latency_ms、cancel_semantics（是否可中断）与 ux_threshold（可接受上限）。 | 只报平均延迟；不可取消导致输入被阻塞。 | `frictionless-table` Table Schema（Frictionless） |
 
 ## 3. 机读投影契约
 

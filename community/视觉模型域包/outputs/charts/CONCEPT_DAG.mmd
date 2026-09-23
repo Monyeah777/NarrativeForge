@@ -16,6 +16,16 @@ flowchart TD
     A03-10
     A03-12
   end
+  subgraph P80[P80]
+    STD-cwe
+    STD-dicom
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+    STD-oci-image
+    STD-onnx
+    STD-opengeospatial
+    STD-w3c-svg2
+  end
   A03-01 --> A03-02
   A03-01 --> A03-03
   A03-02 --> A03-03
@@ -26,3 +36,15 @@ flowchart TD
   A03-09 --> A03-11
   A03-10 --> A03-11
   A03-05 --> A03-12
+  A03-10 --> STD-cwe
+  A03-09 --> STD-dicom
+  A03-04 --> STD-ietf-json-schema
+  A03-02 --> STD-mlcommons-bench
+  A03-12 --> STD-mlcommons-bench
+  A03-08 --> STD-oci-image
+  A03-03 --> STD-onnx
+  A03-06 --> STD-onnx
+  A03-05 --> STD-opengeospatial
+  A03-11 --> STD-opengeospatial
+  A03-01 --> STD-w3c-svg2
+  A03-07 --> STD-w3c-svg2

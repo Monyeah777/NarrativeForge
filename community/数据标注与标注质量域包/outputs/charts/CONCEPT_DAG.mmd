@@ -16,6 +16,13 @@ flowchart TD
     C02-10
     C02-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-frictionless-table
+    STD-gdpr
+    STD-mlcommons-bench
+    STD-mlcommons-croissant
+  end
   C02-01 --> C02-02
   C02-02 --> C02-03
   C02-03 --> C02-04
@@ -36,3 +43,15 @@ flowchart TD
   C02-08 --> C02-11
   C02-11 --> C02-12
   C02-09 --> C02-12
+  C02-04 --> STD-cncf-otel-semconv
+  C02-06 --> STD-frictionless-table
+  C02-10 --> STD-gdpr
+  C02-08 --> STD-mlcommons-bench
+  C02-01 --> STD-mlcommons-croissant
+  C02-02 --> STD-mlcommons-croissant
+  C02-03 --> STD-mlcommons-croissant
+  C02-05 --> STD-mlcommons-croissant
+  C02-07 --> STD-mlcommons-croissant
+  C02-09 --> STD-mlcommons-croissant
+  C02-11 --> STD-mlcommons-croissant
+  C02-12 --> STD-mlcommons-croissant

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C01-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
-| `C01-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C01-01` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `C01-02` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；域码 C01 专属绑定（轮换 0）） |
+| `C01-03` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；域码 C01 专属绑定（轮换 0）） |
+| `C01-04` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；域码 C01 专属绑定（轮换 0）） |
+| `C01-05` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `C01-06` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `C01-07` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `C01-08` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；域码 C01 专属绑定（轮换 0）） |
+| `C01-09` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；域码 C01 专属绑定（轮换 0）） |
+| `C01-10` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；域码 C01 专属绑定（轮换 0）） |
+| `C01-11` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `C01-12` | spec | https://mlcommons.org/benchmarks/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；域码 C01 专属绑定（轮换 0）） |
 
 ## 2. 使用边界
 

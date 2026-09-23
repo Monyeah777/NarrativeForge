@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E18-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E18-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E18-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `E18-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E18-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

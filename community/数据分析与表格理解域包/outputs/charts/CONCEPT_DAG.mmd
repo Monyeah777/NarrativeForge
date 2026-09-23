@@ -16,6 +16,14 @@ flowchart TD
     B11-10
     B11-12
   end
+  subgraph P80[P80]
+    STD-frictionless-table
+    STD-ietf-json-schema
+    STD-nist-800-188
+    STD-onnx
+    STD-vega-lite
+    STD-w3c-tabular-data
+  end
   B11-01 --> B11-02
   B11-02 --> B11-06
   B11-04 --> B11-07
@@ -26,3 +34,15 @@ flowchart TD
   B11-07 --> B11-11
   B11-06 --> B11-11
   B11-11 --> B11-12
+  B11-04 --> STD-frictionless-table
+  B11-06 --> STD-frictionless-table
+  B11-07 --> STD-frictionless-table
+  B11-10 --> STD-ietf-json-schema
+  B11-12 --> STD-nist-800-188
+  B11-02 --> STD-onnx
+  B11-03 --> STD-vega-lite
+  B11-09 --> STD-vega-lite
+  B11-01 --> STD-w3c-tabular-data
+  B11-05 --> STD-w3c-tabular-data
+  B11-08 --> STD-w3c-tabular-data
+  B11-11 --> STD-w3c-tabular-data

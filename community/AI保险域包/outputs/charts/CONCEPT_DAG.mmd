@@ -16,6 +16,13 @@ flowchart TD
     D05-10
     D05-12
   end
+  subgraph P80[P80]
+    STD-gdpr
+    STD-gips
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-w3c-prov-o
+  end
   D05-01 --> D05-02
   D05-02 --> D05-03
   D05-03 --> D05-04
@@ -36,3 +43,15 @@ flowchart TD
   D05-08 --> D05-11
   D05-11 --> D05-12
   D05-09 --> D05-12
+  D05-08 --> STD-gdpr
+  D05-10 --> STD-gdpr
+  D05-01 --> STD-gips
+  D05-07 --> STD-gips
+  D05-03 --> STD-iso-iec-25010
+  D05-06 --> STD-iso-iec-25010
+  D05-09 --> STD-iso-iec-25010
+  D05-12 --> STD-iso-iec-25010
+  D05-04 --> STD-nist-ai-rmf
+  D05-11 --> STD-nist-ai-rmf
+  D05-02 --> STD-w3c-prov-o
+  D05-05 --> STD-w3c-prov-o

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D14-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D14-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D14-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `gips` GIPS 绩效标准（CFA Institute；关键词「金融|投研|风控|保险|绩效」命中） |
+| `D14-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
+| `D14-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `D14-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D14-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
 
 ## 2. 使用边界
 

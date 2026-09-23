@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「数据标注与标注质量」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（数据标注与标注质量:M01）与收口模块（数据标注与标注质量:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C02-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C02-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `C02-10` | 标注隐私与合规 | P60 | `C02-09`、`C02-07` | c02-anchor |
 | `C02-11` | 标注验收与返工 | P40 | `C02-10`、`C02-08` | c02-anchor |
 | `C02-12` | 标注外包管理 | P60 | `C02-11`、`C02-09` | c02-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C02-04` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `C02-06` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `C02-10` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `C02-08` | std-catalog |
+| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons） | P80 | `C02-01`、`C02-02`、`C02-03`、`C02-05`、`C02-07`、`C02-09`、`C02-11`、`C02-12` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `C02-标注隐私与合规` | `C02-10` |
 | `C02-标注验收与返工` | `C02-11` |
 | `C02-标注外包管理` | `C02-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-mlcommons-croissant` | `STD-mlcommons-croissant` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c02-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C02-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "C02-10"
         - "C02-11"
         - "C02-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-frictionless-table"
+        - "STD-gdpr"
+        - "STD-mlcommons-bench"
+        - "STD-mlcommons-croissant"
   nodes:
     - id: "C02-01"
       name: "标注规范撰写"
@@ -181,6 +200,53 @@ concept_graph:
         - "C02-09"
       provenance:
         - "c02-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C02-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C02-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C02-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C02-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-croissant"
+      name: "标准 · Croissant 数据集元数据"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C02-01"
+        - "C02-02"
+        - "C02-03"
+        - "C02-05"
+        - "C02-07"
+        - "C02-09"
+        - "C02-11"
+        - "C02-12"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

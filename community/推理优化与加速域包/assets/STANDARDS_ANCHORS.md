@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C10-01` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-02` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-03` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-04` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-05` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-06` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-07` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-08` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-09` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-10` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-11` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
-| `C10-12` | doc | https://onnxruntime.ai/docs/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C10-01` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `C10-02` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-03` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-04` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-05` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-06` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-07` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-08` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-09` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-10` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `C10-11` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；C 段默认绑定（轮换 0）） |
+| `C10-12` | doc | https://onnxruntime.ai/docs/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

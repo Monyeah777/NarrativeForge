@@ -16,6 +16,16 @@ flowchart TD
     E06-10
     E06-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-table
+    STD-ietf-json-schema
+    STD-oci-image
+    STD-rfc3339
+    STD-w3c-epub33
+    STD-w3c-skos
+    STD-w3c-tabular-data
+  end
   E06-01 --> E06-02
   E06-02 --> E06-03
   E06-03 --> E06-04
@@ -36,3 +46,15 @@ flowchart TD
   E06-08 --> E06-11
   E06-11 --> E06-12
   E06-09 --> E06-12
+  E06-04 --> STD-commonmark
+  E06-07 --> STD-commonmark
+  E06-12 --> STD-frictionless-table
+  E06-08 --> STD-ietf-json-schema
+  E06-03 --> STD-oci-image
+  E06-11 --> STD-rfc3339
+  E06-06 --> STD-w3c-epub33
+  E06-09 --> STD-w3c-epub33
+  E06-10 --> STD-w3c-epub33
+  E06-01 --> STD-w3c-skos
+  E06-02 --> STD-w3c-tabular-data
+  E06-05 --> STD-w3c-tabular-data

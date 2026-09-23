@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 |
-|---|---|---|---|---|
-| `B12-01` | OCR 文本识别 | OCR 文本识别的口径：字符级 / 词级错误率（CER/WER）、语言与版面类型覆盖。 | 声明 metric（CER|WER + 归一化规则）、langs（语言清单）与 layout_types（覆盖类型）。 | 不声明文本归一化（大小写/空格）导致 CER 不可比；只测印刷体。 |
-| `B12-02` | 版面与阅读顺序 | 版面与阅读顺序的口径：区域类型体系、阅读顺序判定与多栏处理规则。 | 声明 region_types（枚举）、reading_order（判定规则）与 multicolumn（处理方式）。 | 多栏文档串行错乱；区域类型体系不同却横向比。 |
-| `B12-03` | 表格结构还原 | 表格结构还原的口径：结构表示（HTML / 单元格坐标）、合并单元格与表头层级。 | 声明 structure_repr（html|cell-coord）、merged_cells（true|false 处理）与 header_levels（层级数）。 | 扁平化丢失合并单元格语义；表头层级不还原导致列错位。 |
-| `B12-04` | 公式识别 | 公式识别的口径：输出格式（LaTeX / MathML）、符号表与等价性判定。 | 声明 output_format（latex|mathml）、symbol_set（符号范围）与 equivalence（符号等价判定方法）。 | 只比字符串（等价式子判错）；符号集未声明导致覆盖率虚高。 |
-| `B12-05` | 手写体识别 | 手写体识别的口径：书写者独立性、采集条件与拒识机制。 | 声明 writer_independence（true|false）、capture（扫描/拍照/笔迹坐标）与 reject_option（置信度拒识）。 | 同一书写者跨训练与测试（虚高）；无拒识（错字照样输出）。 |
-| `B12-06` | 票据与表单 | 票据与表单的口径：模板依赖度、字段定位方式与勾选框处理。 | 声明 template_dependency（per-template|generic）、field_localization（坐标|语义）与 checkbox（处理方式）。 | 每票种一套规则（不可扩展）；勾选框被忽略（字段缺失）。 |
-| `B12-07` | PDF 与扫描件处理 | PDF 与扫描件处理的口径：文本层可用性判定、图像预处理与降级路径。 | 声明 text_layer_check（判定方法）、preprocess（去噪/纠偏清单）与 fallback（无文本层时的路径）。 | 对损坏 PDF 静默返回空文本；无降级路径。 |
-| `B12-08` | 多栏与图注关联 | 多栏与图注关联的口径：图注绑定规则、跨页处理与引用关系。 | 声明 caption_binding（规则）、cross_page（true|false）与 reference_link（正文引用 → 图号映射）。 | 图注与图分离（语义丢失）；跨页图表被截断。 |
-| `B12-09` | 文档分类与归档 | 文档分类与归档的口径：分类体系、置信阈值与人工复核分流。 | 声明 taxonomy（体系 + 版本）、threshold（分流阈值）与 human_review_ratio（复核比例）。 | 无阈值分流（全自动错分）；分类体系随业务变动未版本化。 |
-| `B12-10` | 关键信息定位 | 关键信息定位的口径：定位粒度（页 / 块 / 字符区间）、返回形式与可核验性。 | 声明 granularity（page|block|span）、return_form（坐标 + 文本）与 verifiable（能否按坐标回查原文）。 | 只给答案不给位置（无法复核）；坐标体系与渲染不一致。 |
-| `B12-11` | 解析置信度与复核 | 解析置信度与复核的口径：置信度来源（模型概率 / 规则），低置信回退与抽检比例。 | 声明 confidence_source（概率|规则）、low_conf_action（人工|重试|标注）与 audit_ratio（抽检比例）。 | 置信度不校准（阈值无意义）；低置信结果直接入库。 |
-| `B12-12` | 多语言文档 | 多语言文档的口径：语言覆盖、混排处理与评估分组报告。 | 声明 langs（清单）、mixed_script（混排处理）与 per_lang_report（逐语言指标，禁只报平均）。 | 只报总体平均（弱语言崩坏被掩盖）；混排不处理导致断词错误。 |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
+|---|---|---|---|---|---|
+| `B12-01` | OCR 文本识别 | OCR 文本识别的口径：字符级 / 词级错误率（CER/WER）、语言与版面类型覆盖。 | 声明 metric（CER|WER + 归一化规则）、langs（语言清单）与 layout_types（覆盖类型）。 | 不声明文本归一化（大小写/空格）导致 CER 不可比；只测印刷体。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B12-02` | 版面与阅读顺序 | 版面与阅读顺序的口径：区域类型体系、阅读顺序判定与多栏处理规则。 | 声明 region_types（枚举）、reading_order（判定规则）与 multicolumn（处理方式）。 | 多栏文档串行错乱；区域类型体系不同却横向比。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B12-03` | 表格结构还原 | 表格结构还原的口径：结构表示（HTML / 单元格坐标）、合并单元格与表头层级。 | 声明 structure_repr（html|cell-coord）、merged_cells（true|false 处理）与 header_levels（层级数）。 | 扁平化丢失合并单元格语义；表头层级不还原导致列错位。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B12-04` | 公式识别 | 公式识别的口径：输出格式（LaTeX / MathML）、符号表与等价性判定。 | 声明 output_format（latex|mathml）、symbol_set（符号范围）与 equivalence（符号等价判定方法）。 | 只比字符串（等价式子判错）；符号集未声明导致覆盖率虚高。 | `w3c-mathml3` MathML 3（W3C） |
+| `B12-05` | 手写体识别 | 手写体识别的口径：书写者独立性、采集条件与拒识机制。 | 声明 writer_independence（true|false）、capture（扫描/拍照/笔迹坐标）与 reject_option（置信度拒识）。 | 同一书写者跨训练与测试（虚高）；无拒识（错字照样输出）。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B12-06` | 票据与表单 | 票据与表单的口径：模板依赖度、字段定位方式与勾选框处理。 | 声明 template_dependency（per-template|generic）、field_localization（坐标|语义）与 checkbox（处理方式）。 | 每票种一套规则（不可扩展）；勾选框被忽略（字段缺失）。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B12-07` | PDF 与扫描件处理 | PDF 与扫描件处理的口径：文本层可用性判定、图像预处理与降级路径。 | 声明 text_layer_check（判定方法）、preprocess（去噪/纠偏清单）与 fallback（无文本层时的路径）。 | 对损坏 PDF 静默返回空文本；无降级路径。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B12-08` | 多栏与图注关联 | 多栏与图注关联的口径：图注绑定规则、跨页处理与引用关系。 | 声明 caption_binding（规则）、cross_page（true|false）与 reference_link（正文引用 → 图号映射）。 | 图注与图分离（语义丢失）；跨页图表被截断。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B12-09` | 文档分类与归档 | 文档分类与归档的口径：分类体系、置信阈值与人工复核分流。 | 声明 taxonomy（体系 + 版本）、threshold（分流阈值）与 human_review_ratio（复核比例）。 | 无阈值分流（全自动错分）；分类体系随业务变动未版本化。 | `w3c-epub33` EPUB 3.3（W3C） |
+| `B12-10` | 关键信息定位 | 关键信息定位的口径：定位粒度（页 / 块 / 字符区间）、返回形式与可核验性。 | 声明 granularity（page|block|span）、return_form（坐标 + 文本）与 verifiable（能否按坐标回查原文）。 | 只给答案不给位置（无法复核）；坐标体系与渲染不一致。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
+| `B12-11` | 解析置信度与复核 | 解析置信度与复核的口径：置信度来源（模型概率 / 规则），低置信回退与抽检比例。 | 声明 confidence_source（概率|规则）、low_conf_action（人工|重试|标注）与 audit_ratio（抽检比例）。 | 置信度不校准（阈值无意义）；低置信结果直接入库。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
+| `B12-12` | 多语言文档 | 多语言文档的口径：语言覆盖、混排处理与评估分组报告。 | 声明 langs（清单）、mixed_script（混排处理）与 per_lang_report（逐语言指标，禁只报平均）。 | 只报总体平均（弱语言崩坏被掩盖）；混排不处理导致断词错误。 | `w3c-epub33` EPUB 3.3（W3C） |
 
 ## 3. 机读投影契约
 

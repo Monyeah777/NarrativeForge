@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A08-01` | paper | https://arxiv.org/abs/2003.08934 | ✓ 200 |
-| `A08-02` | paper | https://arxiv.org/abs/1612.00593 | ✓ 200 |
-| `A08-03` | paper | https://arxiv.org/abs/2201.05989 | ✓ 200 |
-| `A08-04` | paper | https://arxiv.org/abs/2209.14988 | ✓ 200 |
-| `A08-05` | paper | https://arxiv.org/abs/1702.04405 | ✓ 200 |
-| `A08-06` | doc | https://mitsuba.readthedocs.io/ | ✓ 200 |
-| `A08-07` | paper | https://arxiv.org/abs/1803.10122 | ✓ 200 |
-| `A08-08` | paper | https://arxiv.org/abs/1502.00956 | ✓ 200 |
-| `A08-09` | doc | https://docs.omniverse.nvidia.com/ | ✓ 200 |
-| `A08-10` | spec | https://www.khronos.org/gltf/ | ✓ 200 |
-| `A08-11` | paper | https://arxiv.org/abs/1904.05866 | ✓ 200 |
-| `A08-12` | paper | https://arxiv.org/abs/1512.03012 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A08-01` | paper | https://arxiv.org/abs/2003.08934 | ✓ 200 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC；关键词「地理|遥感|地图|空间|三维|点云」命中） |
+| `A08-02` | paper | https://arxiv.org/abs/1612.00593 | ✓ 200 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC；关键词「地理|遥感|地图|空间|三维|点云」命中） |
+| `A08-03` | paper | https://arxiv.org/abs/2201.05989 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-04` | paper | https://arxiv.org/abs/2209.14988 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-05` | paper | https://arxiv.org/abs/1702.04405 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-06` | doc | https://mitsuba.readthedocs.io/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-07` | paper | https://arxiv.org/abs/1803.10122 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A08-08` | paper | https://arxiv.org/abs/1502.00956 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-09` | doc | https://docs.omniverse.nvidia.com/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-10` | spec | https://www.khronos.org/gltf/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-11` | paper | https://arxiv.org/abs/1904.05866 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A08-12` | paper | https://arxiv.org/abs/1512.03012 | ✓ 200 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC；关键词「地理|遥感|地图|空间|三维|点云」命中） |
 
 ## 2. 使用边界
 

@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F10-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F10-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F10-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
+| `F10-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F10-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `oasis-openapi` OpenAPI 3.1（OpenAPI Initiative；关键词「接口|API|端点|服务|部署」命中） |
+| `F10-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

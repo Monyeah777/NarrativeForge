@@ -16,6 +16,13 @@ flowchart TD
     C17-10
     C17-12
   end
+  subgraph P80[P80]
+    STD-a2a
+    STD-cncf-cloudevents
+    STD-cncf-otel-semconv
+    STD-mcp
+    STD-mlcommons-bench
+  end
   C17-01 --> C17-02
   C17-02 --> C17-03
   C17-03 --> C17-04
@@ -36,3 +43,15 @@ flowchart TD
   C17-08 --> C17-11
   C17-11 --> C17-12
   C17-09 --> C17-12
+  C17-01 --> STD-a2a
+  C17-03 --> STD-a2a
+  C17-07 --> STD-a2a
+  C17-12 --> STD-a2a
+  C17-02 --> STD-cncf-cloudevents
+  C17-09 --> STD-cncf-otel-semconv
+  C17-11 --> STD-cncf-otel-semconv
+  C17-04 --> STD-mcp
+  C17-05 --> STD-mcp
+  C17-06 --> STD-mcp
+  C17-08 --> STD-mcp
+  C17-10 --> STD-mlcommons-bench

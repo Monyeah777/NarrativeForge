@@ -52,6 +52,34 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-a2a">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-covesa-vss">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-table">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-iso-iec-25010">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-ai-rmf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-prov-o">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="D13-01" target="D13-02">
       <data key="provenance">['d13-anchor']</data>
     </edge>
@@ -111,6 +139,42 @@
     </edge>
     <edge source="D13-09" target="D13-12">
       <data key="provenance">['d13-anchor']</data>
+    </edge>
+    <edge source="D13-08" target="STD-a2a">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-01" target="STD-covesa-vss">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-05" target="STD-covesa-vss">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-06" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-03" target="STD-iso-iec-25010">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-09" target="STD-iso-iec-25010">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-04" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-07" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-10" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-12" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-02" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D13-11" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

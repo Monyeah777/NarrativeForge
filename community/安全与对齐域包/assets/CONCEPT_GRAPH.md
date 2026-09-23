@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「安全与对齐」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（安全与对齐:M01）与收口模块（安全与对齐:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（F01-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（F01-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,12 @@
 | `F01-10` | 安全评测 | P60 | `F01-09`、`F01-07` | f01-anchor |
 | `F01-11` | 应急演练 | P40 | `F01-10`、`F01-08` | f01-anchor |
 | `F01-12` | 安全运营 | P60 | `F01-11`、`F01-09` | f01-anchor |
+| `STD-c2pa-spec` | 标准 · 内容凭证规范（C2PA） | P80 | `F01-07` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `F01-02` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `F01-04` | std-catalog |
+| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP） | P80 | `F01-01`、`F01-06`、`F01-10`、`F01-12` | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX） | P80 | `F01-03`、`F01-09` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `F01-05`、`F01-08`、`F01-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +52,12 @@
 | `F01-安全评测` | `F01-10` |
 | `F01-应急演练` | `F01-11` |
 | `F01-安全运营` | `F01-12` |
+| `std-c2pa-spec` | `STD-c2pa-spec` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-owasp-llm` | `STD-owasp-llm` |
+| `std-spdx-licenses` | `STD-spdx-licenses` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +69,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     f01-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "F01-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +89,15 @@ concept_graph:
         - "F01-10"
         - "F01-11"
         - "F01-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-c2pa-spec"
+        - "STD-commonmark"
+        - "STD-mlcommons-bench"
+        - "STD-owasp-llm"
+        - "STD-spdx-licenses"
+        - "STD-w3c-prov-o"
   nodes:
     - id: "F01-01"
       name: "越狱与红队"
@@ -181,6 +203,60 @@ concept_graph:
         - "F01-09"
       provenance:
         - "f01-anchor"
+    - id: "STD-c2pa-spec"
+      name: "标准 · 内容凭证规范"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F01-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F01-02"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F01-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-owasp-llm"
+      name: "标准 · LLM 应用十大风险"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F01-01"
+        - "F01-06"
+        - "F01-10"
+        - "F01-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-licenses"
+      name: "标准 · SPDX 许可证清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F01-03"
+        - "F01-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F01-05"
+        - "F01-08"
+        - "F01-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

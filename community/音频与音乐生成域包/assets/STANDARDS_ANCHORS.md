@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A05-01` | paper | https://arxiv.org/abs/2306.05284 | ✓ 200 |
-| `A05-02` | repo | https://pypi.org/project/spleeter/ | ✓ 200 |
-| `A05-03` | spec | https://www.w3.org/2021/06/musicxml40/ | ✓ 200 |
-| `A05-04` | repo | https://pypi.org/project/essentia/ | ✓ 200 |
-| `A05-05` | repo | https://pypi.org/project/demucs/ | ✓ 200 |
-| `A05-06` | spec | https://dcase.community/ | ✓ 200 |
-| `A05-07` | spec | https://www.w3.org/TR/webaudio/ | ✓ 200 |
-| `A05-08` | paper | https://arxiv.org/abs/2209.15352 | ✓ 200 |
-| `A05-09` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `A05-10` | repo | https://pypi.org/project/recbole/ | ✓ 200 |
-| `A05-11` | paper | https://arxiv.org/abs/2105.02446 | ✓ 200 |
-| `A05-12` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A05-01` | paper | https://arxiv.org/abs/2306.05284 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `A05-02` | repo | https://pypi.org/project/spleeter/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A05-03` | spec | https://www.w3.org/2021/06/musicxml40/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A05-04` | repo | https://pypi.org/project/essentia/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A05-05` | repo | https://pypi.org/project/demucs/ | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `A05-06` | spec | https://dcase.community/ | ✓ 200 | `cncf-cloudevents` CloudEvents 1.0（CNCF；关键词「事件|消息|通道」命中） |
+| `A05-07` | spec | https://www.w3.org/TR/webaudio/ | ✓ 200 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC；关键词「地理|遥感|地图|空间|三维|点云」命中） |
+| `A05-08` | paper | https://arxiv.org/abs/2209.15352 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A05-09` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `A05-10` | repo | https://pypi.org/project/recbole/ | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `A05-11` | paper | https://arxiv.org/abs/2105.02446 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `A05-12` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

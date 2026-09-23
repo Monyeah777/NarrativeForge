@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「文旅与酒店」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（文旅与酒店:M01）与收口模块（文旅与酒店:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（D19-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D19-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,12 @@
 | `D19-10` | 会展策划 | P60 | `D19-09`、`D19-07` | d19-anchor |
 | `D19-11` | 签证与出入境 | P40 | `D19-10`、`D19-08` | d19-anchor |
 | `D19-12` | 景区安全预警 | P60 | `D19-11`、`D19-09` | d19-anchor |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `D19-05` | std-catalog |
+| `STD-iso-iec-25010` | 标准 · SQuaRE 质量模型（ISO/IEC） | P80 | `D19-03`、`D19-09` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `D19-01`、`D19-04`、`D19-07`、`D19-10` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative） | P80 | `D19-06` | std-catalog |
+| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP） | P80 | `D19-12` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `D19-02`、`D19-08`、`D19-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +52,12 @@
 | `D19-会展策划` | `D19-10` |
 | `D19-签证与出入境` | `D19-11` |
 | `D19-景区安全预警` | `D19-12` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-iso-iec-25010` | `STD-iso-iec-25010` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-oasis-openapi` | `STD-oasis-openapi` |
+| `std-owasp-llm` | `STD-owasp-llm` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +69,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     d19-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "D19-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +89,15 @@ concept_graph:
         - "D19-10"
         - "D19-11"
         - "D19-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-frictionless-table"
+        - "STD-iso-iec-25010"
+        - "STD-nist-ai-rmf"
+        - "STD-oasis-openapi"
+        - "STD-owasp-llm"
+        - "STD-w3c-prov-o"
   nodes:
     - id: "D19-01"
       name: "行程规划"
@@ -181,6 +203,60 @@ concept_graph:
         - "D19-09"
       provenance:
         - "d19-anchor"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D19-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-iso-iec-25010"
+      name: "标准 · SQuaRE 质量模型"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D19-03"
+        - "D19-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D19-01"
+        - "D19-04"
+        - "D19-07"
+        - "D19-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oasis-openapi"
+      name: "标准 · OpenAPI 3.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D19-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-owasp-llm"
+      name: "标准 · LLM 应用十大风险"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D19-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D19-02"
+        - "D19-08"
+        - "D19-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

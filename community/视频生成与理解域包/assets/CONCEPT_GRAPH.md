@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「视频生成与理解」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（视频生成与理解:M01）与收口模块（视频生成与理解:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（A06-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A06-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,10 @@
 | `A06-10` | 视频检索 | P60 | `A06-08` | a06-anchor |
 | `A06-11` | 口型同步与数字人驱动 | P40 | — | a06-anchor |
 | `A06-12` | 视频生成评测 | P60 | `A06-11` | a06-anchor |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `A06-07` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A06-05`、`A06-11`、`A06-12` | std-catalog |
+| `STD-oci-image` | 标准 · 镜像清单（OCI） | P80 | `A06-01`、`A06-02`、`A06-03`、`A06-04`、`A06-08`、`A06-09`、`A06-10` | std-catalog |
+| `STD-w3c-owl-time` | 标准 · OWL-Time 时间本体（W3C） | P80 | `A06-06` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +50,10 @@
 | `A06-视频检索` | `A06-10` |
 | `A06-口型同步与数字人驱动` | `A06-11` |
 | `A06-视频生成评测` | `A06-12` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-oci-image` | `STD-oci-image` |
+| `std-w3c-owl-time` | `STD-w3c-owl-time` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +65,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     a06-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "A06-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +85,13 @@ concept_graph:
         - "A06-10"
         - "A06-11"
         - "A06-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-ietf-json-schema"
+        - "STD-mlcommons-bench"
+        - "STD-oci-image"
+        - "STD-w3c-owl-time"
   nodes:
     - id: "A06-01"
       name: "文生视频"
@@ -171,6 +187,46 @@ concept_graph:
         - "A06-11"
       provenance:
         - "a06-anchor"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A06-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A06-05"
+        - "A06-11"
+        - "A06-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oci-image"
+      name: "标准 · 镜像清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A06-01"
+        - "A06-02"
+        - "A06-03"
+        - "A06-04"
+        - "A06-08"
+        - "A06-09"
+        - "A06-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-owl-time"
+      name: "标准 · OWL-Time 时间本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A06-06"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

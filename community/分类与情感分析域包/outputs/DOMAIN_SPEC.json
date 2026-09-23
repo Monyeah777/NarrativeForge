@@ -14,6 +14,8 @@
       "anchor": "https://pypi.org/project/Rasa/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 intent_set（封闭词表 id 或 none 兜底）、oos_policy（reject|unknown 类）与 threshold（置信阈值）。",
       "pitfall": "无兜底类导致域外输入被硬分到某意图；阈值未声明导致拒答率不可控。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/1509.01626",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 label_taxonomy（体系 + 版本）、multilabel（true|false）与 long_tail_report（尾类单独指标）。",
       "pitfall": "只报 macro/micro 平均掩盖尾类归零；标签体系版本漂移未记录。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://pypi.org/project/textblob/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 polarity_levels（二/三/五级）、negation_handling（规则 id）与 neutral_rule（中性的判定条件）。",
       "pitfall": "中性类定义随数据集漂移；否定与转折未处理导致极性反转漏判。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://arxiv.org/abs/2005.00547",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 emotion_taxonomy（体系来源）、annotators_per_item（人数）与 agreement（kappa 或 alpha）。",
       "pitfall": "单标注者数据当金标准；情绪体系混杂（Ekman 与 Plutchik 混用）。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://aclanthology.org/S16-1003/",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 target_entity（须绑定目标 id）、stance_values（枚举）与 notarget_policy（跳过|单列）。",
       "pitfall": "不绑定目标就判立场（同一句对不同目标立场可相反）；目标缺失样本混入分母。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://www.perspectiveapi.com/",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 violation_taxonomy、threshold（按类分别给）与 appeal_path（申诉与复核机制声明）。",
       "pitfall": "单阈值覆盖所有违规类（误伤高）；无申诉机制（不可运营）。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://pypi.org/project/vaderSentiment/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 intensity_scale（如 −4..4）、time_bucket（小时/天）与 evolution_metric（差分 / 斜率）。",
       "pitfall": "强度标尺未声明导致跨研究不可比；时间切片改变后趋势结论反转。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/2209.11055",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 shots_per_class（每类样本数）、selection（随机|语义）、prompt_form（有|无）与同池基线对照。",
       "pitfall": "样本选择偏向易例；只报少样本结果不与全监督基线对照。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://pypi.org/project/scikit-multilearn/",
       "anchor_kind": "repo",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 hierarchy_depth、parent_child_constraint（是否强制）与 violation_rate（越层预测占比）。",
       "pitfall": "预测出无父节点的子类（结构非法）；层级深度不同却比较 F1。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/1706.04599",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 threshold_policy（按类 / 全局 + 选取数据）、calibration（none|温度|等渗）与 ECE（含分箱数）。",
       "pitfall": "在测试集上选阈值（泄漏）；只报准确率不报校准误差。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "关键词「约束|校验|schema|形状|契约」命中",
       "check": "声明 agreement_metric（kappa|alpha）、accept_floor（可接受下限）与 arbitration（裁决人 / 规则）。",
       "pitfall": "一致性低仍直接训练（噪声放大）；无裁决流程导致冲突永久滞留。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://scikit-learn.org/stable/modules/model_evaluation.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
       "check": "声明 metric_set、averaging（macro|micro|weighted）与 CI（bootstrap 次数或区间方法）。",
       "pitfall": "averaging 不同却比较 F1；无置信区间就断言「更优」。"
     }

@@ -52,6 +52,34 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-table">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mcp">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-croissant">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oci-image">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-svg2">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A02-01" target="A02-03">
       <data key="provenance">['a02-anchor']</data>
     </edge>
@@ -81,6 +109,42 @@
     </edge>
     <edge source="A02-06" target="A02-11">
       <data key="provenance">['a02-anchor']</data>
+    </edge>
+    <edge source="A02-06" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-07" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-11" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-01" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-09" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-04" target="STD-mlcommons-croissant">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-08" target="STD-mlcommons-croissant">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-12" target="STD-mlcommons-croissant">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-05" target="STD-oci-image">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-02" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-03" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A02-10" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

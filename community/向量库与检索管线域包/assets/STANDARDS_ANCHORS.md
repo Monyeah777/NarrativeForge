@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C15-01` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-02` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-03` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-04` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-05` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-06` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-07` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-08` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-09` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-10` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-11` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
-| `C15-12` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C15-01` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `arrow` Arrow 列式格式（Apache；域码 C15 专属绑定（轮换 0）） |
+| `C15-02` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `arrow` Arrow 列式格式（Apache；域码 C15 专属绑定（轮换 0）） |
+| `C15-03` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `mlcommons-croissant` Croissant 数据集元数据（MLCommons；关键词「数据集|元数据|标注」命中） |
+| `C15-04` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `C15-05` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `arrow` Arrow 列式格式（Apache；域码 C15 专属绑定（轮换 0）） |
+| `C15-06` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `arrow` Arrow 列式格式（Apache；域码 C15 专属绑定（轮换 0）） |
+| `C15-07` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `C15-08` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `arrow` Arrow 列式格式（Apache；域码 C15 专属绑定（轮换 0）） |
+| `C15-09` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C15-10` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `nist-800-188` SP 800-188 去标识化（NIST；关键词「权限|访问控制|治理」命中） |
+| `C15-11` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `arrow` Arrow 列式格式（Apache；域码 C15 专属绑定（轮换 0）） |
+| `C15-12` | paper | https://arxiv.org/abs/1603.09320 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
 
 ## 2. 使用边界
 

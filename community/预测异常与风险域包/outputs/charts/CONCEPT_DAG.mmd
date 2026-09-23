@@ -16,6 +16,15 @@ flowchart TD
     B18-10
     B18-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-frictionless-table
+    STD-gips
+    STD-ietf-json-schema
+    STD-onnx
+    STD-w3c-owl-time
+    STD-w3c-tabular-data
+  end
   B18-01 --> B18-02
   B18-02 --> B18-03
   B18-03 --> B18-04
@@ -36,3 +45,15 @@ flowchart TD
   B18-08 --> B18-11
   B18-11 --> B18-12
   B18-09 --> B18-12
+  B18-11 --> STD-cncf-otel-semconv
+  B18-03 --> STD-frictionless-table
+  B18-06 --> STD-frictionless-table
+  B18-09 --> STD-frictionless-table
+  B18-05 --> STD-gips
+  B18-10 --> STD-gips
+  B18-04 --> STD-ietf-json-schema
+  B18-07 --> STD-ietf-json-schema
+  B18-12 --> STD-onnx
+  B18-01 --> STD-w3c-owl-time
+  B18-02 --> STD-w3c-tabular-data
+  B18-08 --> STD-w3c-tabular-data

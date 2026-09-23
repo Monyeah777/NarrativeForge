@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A04-01` | paper | https://arxiv.org/abs/1512.02595 | ✓ 200 |
-| `A04-02` | repo | https://pypi.org/project/webrtcvad/ | ✓ 200 |
-| `A04-03` | paper | https://arxiv.org/abs/2003.12687 | ✓ 200 |
-| `A04-04` | dataset | https://commonvoice.mozilla.org/ | ✓ 200 |
-| `A04-05` | repo | https://pypi.org/project/noisereduce/ | ✓ 200 |
-| `A04-06` | paper | https://arxiv.org/abs/2010.10759 | ✓ 200 |
-| `A04-07` | paper | https://arxiv.org/abs/1712.05884 | ✓ 200 |
-| `A04-08` | paper | https://arxiv.org/abs/1802.06006 | ✓ 200 |
-| `A04-09` | paper | https://arxiv.org/abs/1904.06022 | ✓ 200 |
-| `A04-10` | paper | https://arxiv.org/abs/2212.04356 | ✓ 200 |
-| `A04-11` | paper | https://arxiv.org/abs/2104.01378 | ✓ 200 |
-| `A04-12` | paper | https://arxiv.org/abs/2303.00747 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A04-01` | paper | https://arxiv.org/abs/1512.02595 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `A04-02` | repo | https://pypi.org/project/webrtcvad/ | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `A04-03` | paper | https://arxiv.org/abs/2003.12687 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A04-04` | dataset | https://commonvoice.mozilla.org/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A04-05` | repo | https://pypi.org/project/noisereduce/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A04-06` | paper | https://arxiv.org/abs/2010.10759 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A04-07` | paper | https://arxiv.org/abs/1712.05884 | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `A04-08` | paper | https://arxiv.org/abs/1802.06006 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A04-09` | paper | https://arxiv.org/abs/1904.06022 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A04-10` | paper | https://arxiv.org/abs/2212.04356 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A04-11` | paper | https://arxiv.org/abs/2104.01378 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `A04-12` | paper | https://arxiv.org/abs/2303.00747 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
 
 ## 2. 使用边界
 

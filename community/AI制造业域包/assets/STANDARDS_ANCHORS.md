@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D08-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D08-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D08-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D08-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D08-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `D08-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D08-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `D08-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D08-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `spdx-3` SPDX 3.0（含 AI profile）（SPDX；关键词「供应链|依赖」命中） |
+| `D08-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D08-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `D08-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D08-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D08-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
 
 ## 2. 使用边界
 

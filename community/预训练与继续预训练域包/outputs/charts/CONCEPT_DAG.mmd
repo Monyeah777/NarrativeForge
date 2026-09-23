@@ -16,6 +16,12 @@ flowchart TD
     C04-10
     C04-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-frictionless-table
+    STD-mlcommons-bench
+    STD-w3c-skos
+  end
   C04-01 --> C04-02
   C04-02 --> C04-03
   C04-03 --> C04-04
@@ -36,3 +42,15 @@ flowchart TD
   C04-08 --> C04-11
   C04-11 --> C04-12
   C04-09 --> C04-12
+  C04-01 --> STD-cncf-otel-semconv
+  C04-04 --> STD-cncf-otel-semconv
+  C04-08 --> STD-cncf-otel-semconv
+  C04-09 --> STD-cncf-otel-semconv
+  C04-10 --> STD-cncf-otel-semconv
+  C04-03 --> STD-frictionless-table
+  C04-02 --> STD-mlcommons-bench
+  C04-05 --> STD-mlcommons-bench
+  C04-06 --> STD-mlcommons-bench
+  C04-11 --> STD-mlcommons-bench
+  C04-12 --> STD-mlcommons-bench
+  C04-07 --> STD-w3c-skos

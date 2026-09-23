@@ -16,6 +16,14 @@ flowchart TD
     C16-10
     C16-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-ietf-json-schema
+    STD-mcp
+    STD-mlcommons-bench
+    STD-nist-800-188
+    STD-oasis-openapi
+  end
   C16-01 --> C16-02
   C16-02 --> C16-03
   C16-03 --> C16-04
@@ -36,3 +44,15 @@ flowchart TD
   C16-08 --> C16-11
   C16-11 --> C16-12
   C16-09 --> C16-12
+  C16-12 --> STD-cncf-otel-semconv
+  C16-02 --> STD-ietf-json-schema
+  C16-04 --> STD-ietf-json-schema
+  C16-01 --> STD-mcp
+  C16-03 --> STD-mcp
+  C16-05 --> STD-mcp
+  C16-09 --> STD-mcp
+  C16-11 --> STD-mlcommons-bench
+  C16-07 --> STD-nist-800-188
+  C16-06 --> STD-oasis-openapi
+  C16-08 --> STD-oasis-openapi
+  C16-10 --> STD-oasis-openapi

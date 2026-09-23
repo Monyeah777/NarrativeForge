@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E09-01` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-02` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-03` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-04` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-05` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-06` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-07` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-08` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-09` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-10` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-11` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
-| `E09-12` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E09-01` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-02` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `E09-03` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-04` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `E09-05` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-06` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-07` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-08` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-09` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-10` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
+| `E09-11` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E09-12` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
 
 ## 2. 使用边界
 

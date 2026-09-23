@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F07-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F07-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F07-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F07-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `F07-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F07-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `F07-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `F07-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F07-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `F07-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F07-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `F07-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F07-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F07-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

@@ -58,6 +58,8 @@
           "anchor",
           "anchor_kind",
           "anchor_status",
+          "standard_ref",
+          "standard_why",
           "check",
           "pitfall"
         ],
@@ -90,6 +92,14 @@
           "anchor_status": {
             "type": "integer",
             "minimum": 0
+          },
+          "standard_ref": {
+            "type": "string",
+            "minLength": 2
+          },
+          "standard_why": {
+            "type": "string",
+            "minLength": 3
           },
           "check": {
             "type": "string",

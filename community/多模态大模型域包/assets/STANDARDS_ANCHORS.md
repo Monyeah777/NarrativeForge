@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A02-01` | paper | https://arxiv.org/abs/2103.00020 | ✓ 200 |
-| `A02-02` | paper | https://arxiv.org/abs/2010.11929 | ✓ 200 |
-| `A02-03` | paper | https://arxiv.org/abs/2301.12597 | ✓ 200 |
-| `A02-04` | paper | https://arxiv.org/abs/2204.14198 | ✓ 200 |
-| `A02-05` | paper | https://arxiv.org/abs/2306.12925 | ✓ 200 |
-| `A02-06` | paper | https://arxiv.org/abs/2304.08485 | ✓ 200 |
-| `A02-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `A02-08` | paper | https://arxiv.org/abs/2305.10355 | ✓ 200 |
-| `A02-09` | paper | https://arxiv.org/abs/1610.01465 | ✓ 200 |
-| `A02-10` | paper | https://arxiv.org/abs/1608.00272 | ✓ 200 |
-| `A02-11` | paper | https://arxiv.org/abs/2303.08774 | ✓ 200 |
-| `A02-12` | paper | https://arxiv.org/abs/2310.03744 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A02-01` | paper | https://arxiv.org/abs/2103.00020 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `A02-02` | paper | https://arxiv.org/abs/2010.11929 | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `A02-03` | paper | https://arxiv.org/abs/2301.12597 | ✓ 200 | `w3c-svg2` SVG 2（W3C；域码 A02 专属绑定（轮换 0）） |
+| `A02-04` | paper | https://arxiv.org/abs/2204.14198 | ✓ 200 | `w3c-svg2` SVG 2（W3C；域码 A02 专属绑定（轮换 0）） |
+| `A02-05` | paper | https://arxiv.org/abs/2306.12925 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A02-06` | paper | https://arxiv.org/abs/2304.08485 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `A02-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `A02-08` | paper | https://arxiv.org/abs/2305.10355 | ✓ 200 | `w3c-svg2` SVG 2（W3C；域码 A02 专属绑定（轮换 0）） |
+| `A02-09` | paper | https://arxiv.org/abs/1610.01465 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `A02-10` | paper | https://arxiv.org/abs/1608.00272 | ✓ 200 | `w3c-svg2` SVG 2（W3C；关键词「图像|视觉|扩散|超分|抠图」命中） |
+| `A02-11` | paper | https://arxiv.org/abs/2303.08774 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；关键词「工具调用|智能体|工作流|Agent」命中） |
+| `A02-12` | paper | https://arxiv.org/abs/2310.03744 | ✓ 200 | `w3c-svg2` SVG 2（W3C；域码 A02 专属绑定（轮换 0）） |
 
 ## 2. 使用边界
 

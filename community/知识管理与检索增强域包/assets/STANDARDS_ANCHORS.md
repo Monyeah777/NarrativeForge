@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E11-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E11-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E11-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E11-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `E11-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `E11-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E11-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E11-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `E11-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `c2pa-spec` 内容凭证规范（C2PA；关键词「水印|溯源|凭证|内容来源」命中） |
+| `E11-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `E11-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `E11-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `nist-800-188` SP 800-188 去标识化（NIST；关键词「权限|访问控制|治理」命中） |
+| `E11-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `E11-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `nist-800-188` SP 800-188 去标识化（NIST；关键词「权限|访问控制|治理」命中） |
 
 ## 2. 使用边界
 

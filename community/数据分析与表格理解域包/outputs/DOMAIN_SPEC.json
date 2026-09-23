@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/1909.00754",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "关键词「表格|CSV|列式」命中",
       "check": "声明 schema_given（true|false）、answer_form（cell|aggregate|list）与 execution_check（是否执行校验）。",
       "pitfall": "只比字符串（聚合类答案判错）；表结构变化后结论不可迁移。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/2004.07360",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 join_key（来源：模式|推断）、join_type（inner|left|full）与 cardinality_check（是否校验行数爆炸）。",
       "pitfall": "隐式连接导致行数爆炸（结论失真）；关联键靠猜。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://vega.github.io/schema/vega-lite/v5.json",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "vega-lite",
+      "standard_why": "关键词「图表|可视化|看板」命中",
       "check": "声明 chart_type、axis_mapping（字段 → 轴）与 underlying_data（是否输出可复算数据表）。",
       "pitfall": "只给图片不给数据（无法复算）；轴单位错导致误读。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://specs.frictionlessdata.io/table-schema/",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
       "check": "声明 missing_policy（drop|impute + 方法）、dup_policy 与 impact_report（清洗前后行数与分布变化）。",
       "pitfall": "静默填充（结论被污染）；不报清洗影响。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 metric_id（唯一）、definition（分子/分母/窗口/过滤四要素）与 change_log（口径变更记录）。",
       "pitfall": "同名异义（跨报告不可比）；口径变更不留痕。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://www.sqlite.org/lang.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 dialect（sqlite|postgres 等 + 版本）、equivalence（结果集比对）与 readonly（是否禁写）。",
       "pitfall": "生成写操作（生产风险）；仅比 SQL 文本。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://scikit-learn.org/stable/modules/outlier_detection.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
       "check": "声明 method（IQR|z-score|模型）、threshold（来源）与 action（标记|剔除|保留 + 依据）。",
       "pitfall": "阈值拍脑袋；把业务极端值当异常剔除。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://www.statsmodels.org/stable/tsa.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 trend_test（Mann-Kendall 等）、seasonality（处理方式）与 attribution（分解方法 + 残差比例）。",
       "pitfall": "把季节性当趋势；归因残差过大仍下结论。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/view-dashboard-json-model/",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "vega-lite",
+      "standard_why": "关键词「图表|可视化|看板」命中",
       "check": "声明 metric_refs（引用指标 id 而非内联公式）、refresh（频率）与 permission（数据权限绑定）。",
       "pitfall": "看板内联公式（与指标口径漂移）；权限越界展示敏感数据。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2305.14251",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 claim_evidence（每条结论绑数据引用 id）、figure_refs（图表引用）与 uncertainty（区间或置信声明）。",
       "pitfall": "结论无证据链（回到拍脑袋）；不报不确定性。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/1706.04599",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 steps（可复核步骤）、assumptions（假设清单）与 counterfactual（关键假设变动后的结论敏感性）。",
       "pitfall": "只给结论不给假设；不做敏感性检查。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://csrc.nist.gov/pubs/sp/800/188/final",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "nist-800-188",
+      "standard_why": "关键词「权限|访问控制|治理」命中",
       "check": "声明 data_class（分级标签）、masking（脱敏规则）与 audit_log（访问留痕字段）。",
       "pitfall": "分析把明细外发（泄露）；无审计留痕。"
     }

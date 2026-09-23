@@ -52,6 +52,26 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-dicom">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-gdpr">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-hl7-fhir">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-unesco-ai">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-skos">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="D01-01" target="D01-02">
       <data key="provenance">['d01-anchor']</data>
     </edge>
@@ -111,6 +131,42 @@
     </edge>
     <edge source="D01-09" target="D01-12">
       <data key="provenance">['d01-anchor']</data>
+    </edge>
+    <edge source="D01-06" target="STD-dicom">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-11" target="STD-gdpr">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-12" target="STD-gdpr">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-01" target="STD-hl7-fhir">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-02" target="STD-hl7-fhir">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-03" target="STD-hl7-fhir">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-05" target="STD-hl7-fhir">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-08" target="STD-hl7-fhir">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-09" target="STD-hl7-fhir">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-10" target="STD-hl7-fhir">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-07" target="STD-unesco-ai">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D01-04" target="STD-w3c-skos">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

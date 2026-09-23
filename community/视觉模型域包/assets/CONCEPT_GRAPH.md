@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「视觉模型」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（视觉模型:M01）与收口模块（视觉模型:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（A03-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A03-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,14 @@
 | `A03-10` | 工业缺陷检测 | P60 | — | a03-anchor |
 | `A03-11` | 遥感与航拍解译 | P40 | `A03-09`、`A03-10` | a03-anchor |
 | `A03-12` | 数据增强与预训练策略 | P60 | `A03-05` | a03-anchor |
+| `STD-cwe` | 标准 · CWE 缺陷枚举（MITRE） | P80 | `A03-10` | std-catalog |
+| `STD-dicom` | 标准 · DICOM 标准（DICOM） | P80 | `A03-09` | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `A03-04` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A03-02`、`A03-12` | std-catalog |
+| `STD-oci-image` | 标准 · 镜像清单（OCI） | P80 | `A03-08` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `A03-03`、`A03-06` | std-catalog |
+| `STD-opengeospatial` | 标准 · OGC 标准（含 GeoJSON/3D Tiles）（OGC） | P80 | `A03-05`、`A03-11` | std-catalog |
+| `STD-w3c-svg2` | 标准 · SVG 2（W3C） | P80 | `A03-01`、`A03-07` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +54,14 @@
 | `A03-工业缺陷检测` | `A03-10` |
 | `A03-遥感与航拍解译` | `A03-11` |
 | `A03-数据增强与预训练策略` | `A03-12` |
+| `std-cwe` | `STD-cwe` |
+| `std-dicom` | `STD-dicom` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-oci-image` | `STD-oci-image` |
+| `std-onnx` | `STD-onnx` |
+| `std-opengeospatial` | `STD-opengeospatial` |
+| `std-w3c-svg2` | `STD-w3c-svg2` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +73,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     a03-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "A03-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +93,17 @@ concept_graph:
         - "A03-10"
         - "A03-11"
         - "A03-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cwe"
+        - "STD-dicom"
+        - "STD-ietf-json-schema"
+        - "STD-mlcommons-bench"
+        - "STD-oci-image"
+        - "STD-onnx"
+        - "STD-opengeospatial"
+        - "STD-w3c-svg2"
   nodes:
     - id: "A03-01"
       name: "图像分类与主干网络"
@@ -171,6 +199,74 @@ concept_graph:
         - "A03-05"
       provenance:
         - "a03-anchor"
+    - id: "STD-cwe"
+      name: "标准 · CWE 缺陷枚举"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-dicom"
+      name: "标准 · DICOM 标准"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-04"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-02"
+        - "A03-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oci-image"
+      name: "标准 · 镜像清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-03"
+        - "A03-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-opengeospatial"
+      name: "标准 · OGC 标准（含 GeoJSON/3D Tiles）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-05"
+        - "A03-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-svg2"
+      name: "标准 · SVG 2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-01"
+        - "A03-07"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

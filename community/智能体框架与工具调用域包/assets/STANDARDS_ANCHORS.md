@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `C16-01` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-02` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-03` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-04` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-05` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-06` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-07` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-08` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-09` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-10` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-11` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
-| `C16-12` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `C16-01` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；域码 C16 专属绑定（轮换 0）） |
+| `C16-02` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `C16-03` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；域码 C16 专属绑定（轮换 0）） |
+| `C16-04` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `C16-05` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；域码 C16 专属绑定（轮换 0）） |
+| `C16-06` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；域码 C16 专属绑定（轮换 0）） |
+| `C16-07` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `nist-800-188` SP 800-188 去标识化（NIST；关键词「权限|访问控制|治理」命中） |
+| `C16-08` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；域码 C16 专属绑定（轮换 0）） |
+| `C16-09` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；域码 C16 专属绑定（轮换 0）） |
+| `C16-10` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mcp` Model Context Protocol（Anthropic/MCP；域码 C16 专属绑定（轮换 0）） |
+| `C16-11` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `C16-12` | spec | https://modelcontextprotocol.io/specification/2025-06-18 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
 
 ## 2. 使用边界
 

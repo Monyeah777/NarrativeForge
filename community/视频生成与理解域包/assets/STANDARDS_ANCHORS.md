@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `A06-01` | paper | https://arxiv.org/abs/2204.03458 | ✓ 200 |
-| `A06-02` | paper | https://arxiv.org/abs/2311.15127 | ✓ 200 |
-| `A06-03` | paper | https://arxiv.org/abs/2212.11565 | ✓ 200 |
-| `A06-04` | paper | https://arxiv.org/abs/2104.13371 | ✓ 200 |
-| `A06-05` | paper | https://arxiv.org/abs/2008.04838 | ✓ 200 |
-| `A06-06` | paper | https://arxiv.org/abs/2311.17982 | ✓ 200 |
-| `A06-07` | paper | https://arxiv.org/abs/2302.05543 | ✓ 200 |
-| `A06-08` | paper | https://arxiv.org/abs/1705.00754 | ✓ 200 |
-| `A06-09` | paper | https://arxiv.org/abs/1809.01696 | ✓ 200 |
-| `A06-10` | paper | https://arxiv.org/abs/2104.08860 | ✓ 200 |
-| `A06-11` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `A06-12` | paper | https://arxiv.org/abs/1812.01717 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `A06-01` | paper | https://arxiv.org/abs/2204.03458 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A06-02` | paper | https://arxiv.org/abs/2311.15127 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A06-03` | paper | https://arxiv.org/abs/2212.11565 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A06-04` | paper | https://arxiv.org/abs/2104.13371 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A06-05` | paper | https://arxiv.org/abs/2008.04838 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A06-06` | paper | https://arxiv.org/abs/2311.17982 | ✓ 200 | `w3c-owl-time` OWL-Time 时间本体（W3C；关键词「时间线|时序|日期」命中） |
+| `A06-07` | paper | https://arxiv.org/abs/2302.05543 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A06-08` | paper | https://arxiv.org/abs/1705.00754 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A06-09` | paper | https://arxiv.org/abs/1809.01696 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A06-10` | paper | https://arxiv.org/abs/2104.08860 | ✓ 200 | `oci-image` 镜像清单（OCI；关键词「视频|剪辑|字幕」命中） |
+| `A06-11` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
+| `A06-12` | paper | https://arxiv.org/abs/1812.01717 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

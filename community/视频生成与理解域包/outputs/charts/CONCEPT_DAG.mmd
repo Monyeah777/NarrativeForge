@@ -16,6 +16,12 @@ flowchart TD
     A06-10
     A06-12
   end
+  subgraph P80[P80]
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+    STD-oci-image
+    STD-w3c-owl-time
+  end
   A06-01 --> A06-02
   A06-02 --> A06-03
   A06-07 --> A06-03
@@ -26,3 +32,15 @@ flowchart TD
   A06-08 --> A06-09
   A06-08 --> A06-10
   A06-11 --> A06-12
+  A06-07 --> STD-ietf-json-schema
+  A06-05 --> STD-mlcommons-bench
+  A06-11 --> STD-mlcommons-bench
+  A06-12 --> STD-mlcommons-bench
+  A06-01 --> STD-oci-image
+  A06-02 --> STD-oci-image
+  A06-03 --> STD-oci-image
+  A06-04 --> STD-oci-image
+  A06-08 --> STD-oci-image
+  A06-09 --> STD-oci-image
+  A06-10 --> STD-oci-image
+  A06-06 --> STD-w3c-owl-time

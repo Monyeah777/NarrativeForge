@@ -16,6 +16,12 @@ flowchart TD
     B12-10
     B12-12
   end
+  subgraph P80[P80]
+    STD-ietf-json-schema
+    STD-w3c-epub33
+    STD-w3c-mathml3
+    STD-w3c-tabular-data
+  end
   B12-01 --> B12-02
   B12-02 --> B12-03
   B12-04 --> B12-05
@@ -26,3 +32,15 @@ flowchart TD
   B12-09 --> B12-10
   B12-07 --> B12-11
   B12-11 --> B12-12
+  B12-02 --> STD-ietf-json-schema
+  B12-06 --> STD-ietf-json-schema
+  B12-08 --> STD-ietf-json-schema
+  B12-10 --> STD-ietf-json-schema
+  B12-09 --> STD-w3c-epub33
+  B12-12 --> STD-w3c-epub33
+  B12-04 --> STD-w3c-mathml3
+  B12-01 --> STD-w3c-tabular-data
+  B12-03 --> STD-w3c-tabular-data
+  B12-05 --> STD-w3c-tabular-data
+  B12-07 --> STD-w3c-tabular-data
+  B12-11 --> STD-w3c-tabular-data

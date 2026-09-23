@@ -16,6 +16,15 @@ flowchart TD
     A09-10
     A09-12
   end
+  subgraph P80[P80]
+    STD-cwe
+    STD-frictionless-package
+    STD-gfm
+    STD-lsp
+    STD-mlcommons-bench
+    STD-osv
+    STD-owasp-llm
+  end
   A09-01 --> A09-02
   A09-02 --> A09-03
   A09-01 --> A09-04
@@ -26,3 +35,15 @@ flowchart TD
   A09-05 --> A09-11
   A09-08 --> A09-12
   A09-11 --> A09-12
+  A09-02 --> STD-cwe
+  A09-05 --> STD-cwe
+  A09-08 --> STD-cwe
+  A09-03 --> STD-frictionless-package
+  A09-01 --> STD-gfm
+  A09-06 --> STD-lsp
+  A09-09 --> STD-lsp
+  A09-11 --> STD-mlcommons-bench
+  A09-04 --> STD-osv
+  A09-07 --> STD-osv
+  A09-10 --> STD-osv
+  A09-12 --> STD-owasp-llm

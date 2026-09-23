@@ -16,6 +16,12 @@ flowchart TD
     D11-10
     D11-12
   end
+  subgraph P80[P80]
+    STD-gdpr
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-w3c-prov-o
+  end
   D11-01 --> D11-02
   D11-02 --> D11-03
   D11-03 --> D11-04
@@ -36,3 +42,15 @@ flowchart TD
   D11-08 --> D11-11
   D11-11 --> D11-12
   D11-09 --> D11-12
+  D11-10 --> STD-gdpr
+  D11-03 --> STD-iso-iec-25010
+  D11-06 --> STD-iso-iec-25010
+  D11-09 --> STD-iso-iec-25010
+  D11-12 --> STD-iso-iec-25010
+  D11-01 --> STD-nist-ai-rmf
+  D11-04 --> STD-nist-ai-rmf
+  D11-07 --> STD-nist-ai-rmf
+  D11-02 --> STD-w3c-prov-o
+  D11-05 --> STD-w3c-prov-o
+  D11-08 --> STD-w3c-prov-o
+  D11-11 --> STD-w3c-prov-o

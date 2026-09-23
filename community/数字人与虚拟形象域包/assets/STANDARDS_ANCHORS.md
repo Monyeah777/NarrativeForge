@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E20-01` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-02` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-03` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-04` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-05` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-06` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-07` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-08` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-09` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-10` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-11` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
-| `E20-12` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E20-01` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-02` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-03` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-04` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-05` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-06` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-07` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-08` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-09` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `E20-10` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `E20-11` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
+| `E20-12` | paper | https://arxiv.org/abs/2008.10010 | ✓ 200 | `khronos-gltf` glTF（Khronos；域码 E20 专属绑定（轮换 0）） |
 
 ## 2. 使用边界
 

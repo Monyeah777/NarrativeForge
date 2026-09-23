@@ -16,6 +16,11 @@ flowchart TD
     E05-10
     E05-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E05-01 --> E05-02
   E05-02 --> E05-03
   E05-03 --> E05-04
@@ -36,3 +41,15 @@ flowchart TD
   E05-08 --> E05-11
   E05-11 --> E05-12
   E05-09 --> E05-12
+  E05-01 --> STD-commonmark
+  E05-04 --> STD-commonmark
+  E05-07 --> STD-commonmark
+  E05-10 --> STD-commonmark
+  E05-03 --> STD-w3c-epub33
+  E05-06 --> STD-w3c-epub33
+  E05-09 --> STD-w3c-epub33
+  E05-12 --> STD-w3c-epub33
+  E05-02 --> STD-w3c-tabular-data
+  E05-05 --> STD-w3c-tabular-data
+  E05-08 --> STD-w3c-tabular-data
+  E05-11 --> STD-w3c-tabular-data

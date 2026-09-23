@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D17-01` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-02` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-03` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-04` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-05` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-06` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-07` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-08` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-09` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-10` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-11` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
-| `D17-12` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D17-01` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-02` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-03` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-04` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-05` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-06` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-07` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-08` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-09` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `D17-10` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `vega-lite` Vega-Lite v5（Vega；关键词「图表|可视化|看板」命中） |
+| `D17-11` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D17-12` | spec | https://www.rfc-editor.org/rfc/rfc6973.txt | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

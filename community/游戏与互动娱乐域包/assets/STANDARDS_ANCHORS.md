@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `D18-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `D18-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `D18-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `ieee-754` 浮点运算标准（IEEE；关键词「浮点|数值|精度|误差」命中） |
+| `D18-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
+| `D18-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；D 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

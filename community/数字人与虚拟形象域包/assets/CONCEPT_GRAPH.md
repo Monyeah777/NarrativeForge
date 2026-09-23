@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「数字人与虚拟形象」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（数字人与虚拟形象:M01）与收口模块（数字人与虚拟形象:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E20-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E20-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,10 @@
 | `E20-10` | 合规披露 | P60 | `E20-09`、`E20-07` | e20-anchor |
 | `E20-11` | 商业代言 | P40 | `E20-10`、`E20-08` | e20-anchor |
 | `E20-12` | 人格化边界 | P60 | `E20-11`、`E20-09` | e20-anchor |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `E20-09` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `E20-10` | std-catalog |
+| `STD-khronos-gltf` | 标准 · glTF（Khronos） | P80 | `E20-01`、`E20-03`、`E20-05`、`E20-07`、`E20-11` | std-catalog |
+| `STD-w3c-webaudio` | 标准 · Web Audio API（W3C） | P80 | `E20-02`、`E20-04`、`E20-06`、`E20-08`、`E20-12` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +50,10 @@
 | `E20-合规披露` | `E20-10` |
 | `E20-商业代言` | `E20-11` |
 | `E20-人格化边界` | `E20-12` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-khronos-gltf` | `STD-khronos-gltf` |
+| `std-w3c-webaudio` | `STD-w3c-webaudio` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +65,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e20-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E20-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +85,13 @@ concept_graph:
         - "E20-10"
         - "E20-11"
         - "E20-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cncf-otel-semconv"
+        - "STD-gdpr"
+        - "STD-khronos-gltf"
+        - "STD-w3c-webaudio"
   nodes:
     - id: "E20-01"
       name: "形象设计"
@@ -181,6 +197,46 @@ concept_graph:
         - "E20-09"
       provenance:
         - "e20-anchor"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E20-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E20-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-khronos-gltf"
+      name: "标准 · glTF"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E20-01"
+        - "E20-03"
+        - "E20-05"
+        - "E20-07"
+        - "E20-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-webaudio"
+      name: "标准 · Web Audio API"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E20-02"
+        - "E20-04"
+        - "E20-06"
+        - "E20-08"
+        - "E20-12"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

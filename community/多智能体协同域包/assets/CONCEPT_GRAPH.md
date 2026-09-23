@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「多智能体协同」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（多智能体协同:M01）与收口模块（多智能体协同:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C17-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C17-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `C17-10` | 多智能体评测 | P60 | `C17-09`、`C17-07` | c17-anchor |
 | `C17-11` | 成本与并发控制 | P40 | `C17-10`、`C17-08` | c17-anchor |
 | `C17-12` | 编排模式库 | P60 | `C17-11`、`C17-09` | c17-anchor |
+| `STD-a2a` | 标准 · A2A 协议（Linux Foundation） | P80 | `C17-01`、`C17-03`、`C17-07`、`C17-12` | std-catalog |
+| `STD-cncf-cloudevents` | 标准 · CloudEvents 1.0（CNCF） | P80 | `C17-02` | std-catalog |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C17-09`、`C17-11` | std-catalog |
+| `STD-mcp` | 标准 · Model Context Protocol（Anthropic/MCP） | P80 | `C17-04`、`C17-05`、`C17-06`、`C17-08` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `C17-10` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `C17-多智能体评测` | `C17-10` |
 | `C17-成本与并发控制` | `C17-11` |
 | `C17-编排模式库` | `C17-12` |
+| `std-a2a` | `STD-a2a` |
+| `std-cncf-cloudevents` | `STD-cncf-cloudevents` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-mcp` | `STD-mcp` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c17-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C17-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "C17-10"
         - "C17-11"
         - "C17-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-a2a"
+        - "STD-cncf-cloudevents"
+        - "STD-cncf-otel-semconv"
+        - "STD-mcp"
+        - "STD-mlcommons-bench"
   nodes:
     - id: "C17-01"
       name: "角色分工与协议"
@@ -181,6 +200,53 @@ concept_graph:
         - "C17-09"
       provenance:
         - "c17-anchor"
+    - id: "STD-a2a"
+      name: "标准 · A2A 协议"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C17-01"
+        - "C17-03"
+        - "C17-07"
+        - "C17-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cncf-cloudevents"
+      name: "标准 · CloudEvents 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C17-02"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C17-09"
+        - "C17-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mcp"
+      name: "标准 · Model Context Protocol"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C17-04"
+        - "C17-05"
+        - "C17-06"
+        - "C17-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C17-10"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

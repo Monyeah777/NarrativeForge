@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `B05-01` | paper | https://arxiv.org/abs/1810.04805 | ✓ 200 |
-| `B05-02` | paper | https://arxiv.org/abs/1906.03158 | ✓ 200 |
-| `B05-03` | paper | https://arxiv.org/abs/2004.13625 | ✓ 200 |
-| `B05-04` | paper | https://arxiv.org/abs/2003.02320 | ✓ 200 |
-| `B05-05` | paper | https://arxiv.org/abs/2110.00061 | ✓ 200 |
-| `B05-06` | paper | https://arxiv.org/abs/2110.01799 | ✓ 200 |
-| `B05-07` | repo | https://pypi.org/project/pyresparser/ | ✓ 200 |
-| `B05-08` | paper | https://arxiv.org/abs/2103.14470 | ✓ 200 |
-| `B05-09` | paper | https://arxiv.org/abs/2003.02320 | ✓ 200 |
-| `B05-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 |
-| `B05-11` | paper | https://arxiv.org/abs/2107.06499 | ✓ 200 |
-| `B05-12` | paper | https://arxiv.org/abs/2102.04664 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `B05-01` | paper | https://arxiv.org/abs/1810.04805 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B05-02` | paper | https://arxiv.org/abs/1906.03158 | ✓ 200 | `rdf11` RDF 1.1（W3C；关键词「三元组|关系抽取」命中） |
+| `B05-03` | paper | https://arxiv.org/abs/2004.13625 | ✓ 200 | `cncf-cloudevents` CloudEvents 1.0（CNCF；关键词「事件|消息|通道」命中） |
+| `B05-04` | paper | https://arxiv.org/abs/2003.02320 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B05-05` | paper | https://arxiv.org/abs/2110.00061 | ✓ 200 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C；关键词「表格|CSV|列式」命中） |
+| `B05-06` | paper | https://arxiv.org/abs/2110.01799 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B05-07` | repo | https://pypi.org/project/pyresparser/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B05-08` | paper | https://arxiv.org/abs/2103.14470 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
+| `B05-09` | paper | https://arxiv.org/abs/2003.02320 | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
+| `B05-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `B05-11` | paper | https://arxiv.org/abs/2107.06499 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `B05-12` | paper | https://arxiv.org/abs/2102.04664 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界
 

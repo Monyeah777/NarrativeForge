@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「图像生成与视觉设计」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（图像生成与视觉设计:M01）与收口模块（图像生成与视觉设计:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（B15-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（B15-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `B15-10` | 设计评审与迭代 | P60 | `B15-09`、`B15-07` | b15-anchor |
 | `B15-11` | A/B 视觉测试 | P40 | `B15-10`、`B15-08` | b15-anchor |
 | `B15-12` | 多尺寸批量产出 | P60 | `B15-11`、`B15-09` | b15-anchor |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `B15-09` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `B15-03`、`B15-06`、`B15-12` | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `B15-01`、`B15-07`、`B15-10` | std-catalog |
+| `STD-w3c-svg2` | 标准 · SVG 2（W3C） | P80 | `B15-04`、`B15-11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `B15-02`、`B15-05`、`B15-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `B15-设计评审与迭代` | `B15-10` |
 | `B15-A/B-视觉测试` | `B15-11` |
 | `B15-多尺寸批量产出` | `B15-12` |
+| `std-creativecommons` | `STD-creativecommons` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-w3c-svg2` | `STD-w3c-svg2` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     b15-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "B15-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "B15-10"
         - "B15-11"
         - "B15-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-creativecommons"
+        - "STD-frictionless-table"
+        - "STD-ietf-json-schema"
+        - "STD-w3c-svg2"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "B15-01"
       name: "海报与 Banner"
@@ -181,6 +200,53 @@ concept_graph:
         - "B15-09"
       provenance:
         - "b15-anchor"
+    - id: "STD-creativecommons"
+      name: "标准 · 许可与权利表达"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B15-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B15-03"
+        - "B15-06"
+        - "B15-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B15-01"
+        - "B15-07"
+        - "B15-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-svg2"
+      name: "标准 · SVG 2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B15-04"
+        - "B15-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B15-02"
+        - "B15-05"
+        - "B15-08"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

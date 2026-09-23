@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「多模态大模型」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（多模态大模型:M01）与收口模块（多模态大模型:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（A02-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A02-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,13 @@
 | `A02-10` | 视觉定位与引用 | P60 | `A02-09` | a02-anchor |
 | `A02-11` | 多模态 Agent | P40 | `A02-06` | a02-anchor |
 | `A02-12` | 任意分辨率与切图策略 | P60 | — | a02-anchor |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `A02-06` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `A02-07` | std-catalog |
+| `STD-mcp` | 标准 · Model Context Protocol（Anthropic/MCP） | P80 | `A02-11` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A02-01`、`A02-09` | std-catalog |
+| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons） | P80 | `A02-04`、`A02-08`、`A02-12` | std-catalog |
+| `STD-oci-image` | 标准 · 镜像清单（OCI） | P80 | `A02-05` | std-catalog |
+| `STD-w3c-svg2` | 标准 · SVG 2（W3C） | P80 | `A02-02`、`A02-03`、`A02-10` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +53,13 @@
 | `A02-视觉定位与引用` | `A02-10` |
 | `A02-多模态-Agent` | `A02-11` |
 | `A02-任意分辨率与切图策略` | `A02-12` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-mcp` | `STD-mcp` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-mlcommons-croissant` | `STD-mlcommons-croissant` |
+| `std-oci-image` | `STD-oci-image` |
+| `std-w3c-svg2` | `STD-w3c-svg2` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +71,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     a02-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "A02-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +91,16 @@ concept_graph:
         - "A02-10"
         - "A02-11"
         - "A02-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-commonmark"
+        - "STD-frictionless-table"
+        - "STD-mcp"
+        - "STD-mlcommons-bench"
+        - "STD-mlcommons-croissant"
+        - "STD-oci-image"
+        - "STD-w3c-svg2"
   nodes:
     - id: "A02-01"
       name: "图文对齐与对比学习"
@@ -171,6 +196,67 @@ concept_graph:
       prereqs: []
       provenance:
         - "a02-anchor"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A02-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A02-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mcp"
+      name: "标准 · Model Context Protocol"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A02-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A02-01"
+        - "A02-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-croissant"
+      name: "标准 · Croissant 数据集元数据"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A02-04"
+        - "A02-08"
+        - "A02-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oci-image"
+      name: "标准 · 镜像清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A02-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-svg2"
+      name: "标准 · SVG 2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A02-02"
+        - "A02-03"
+        - "A02-10"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

@@ -16,6 +16,15 @@ flowchart TD
     C03-10
     C03-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-commonmark
+    STD-creativecommons
+    STD-frictionless-table
+    STD-mlcommons-bench
+    STD-mlcommons-croissant
+    STD-onnx
+  end
   C03-01 --> C03-02
   C03-02 --> C03-03
   C03-03 --> C03-04
@@ -36,3 +45,15 @@ flowchart TD
   C03-08 --> C03-11
   C03-11 --> C03-12
   C03-09 --> C03-12
+  C03-04 --> STD-cncf-otel-semconv
+  C03-07 --> STD-cncf-otel-semconv
+  C03-01 --> STD-commonmark
+  C03-09 --> STD-creativecommons
+  C03-03 --> STD-frictionless-table
+  C03-02 --> STD-mlcommons-bench
+  C03-08 --> STD-mlcommons-bench
+  C03-10 --> STD-mlcommons-bench
+  C03-11 --> STD-mlcommons-bench
+  C03-05 --> STD-mlcommons-croissant
+  C03-12 --> STD-mlcommons-croissant
+  C03-06 --> STD-onnx

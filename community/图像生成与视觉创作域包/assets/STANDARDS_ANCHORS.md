@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E07-01` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-02` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-03` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-04` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-05` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-06` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-07` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-08` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-09` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-10` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-11` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
-| `E07-12` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E07-01` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `E07-02` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E07-03` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E07-04` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E07-05` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E07-06` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E07-07` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E07-08` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E07-09` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `E07-10` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
+| `E07-11` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `E07-12` | paper | https://arxiv.org/abs/2006.11239 | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

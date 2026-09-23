@@ -14,6 +14,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "w3c-owl-time",
+      "standard_why": "关键词「时间线|时序|日期」命中",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "gips",
+      "standard_why": "关键词「金融|投研|风控|保险|绩效」命中",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "gips",
+      "standard_why": "关键词「金融|投研|风控|保险|绩效」命中",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "cncf-otel-semconv",
+      "standard_why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     }

@@ -16,6 +16,14 @@ flowchart TD
     D19-10
     D19-12
   end
+  subgraph P80[P80]
+    STD-frictionless-table
+    STD-iso-iec-25010
+    STD-nist-ai-rmf
+    STD-oasis-openapi
+    STD-owasp-llm
+    STD-w3c-prov-o
+  end
   D19-01 --> D19-02
   D19-02 --> D19-03
   D19-03 --> D19-04
@@ -36,3 +44,15 @@ flowchart TD
   D19-08 --> D19-11
   D19-11 --> D19-12
   D19-09 --> D19-12
+  D19-05 --> STD-frictionless-table
+  D19-03 --> STD-iso-iec-25010
+  D19-09 --> STD-iso-iec-25010
+  D19-01 --> STD-nist-ai-rmf
+  D19-04 --> STD-nist-ai-rmf
+  D19-07 --> STD-nist-ai-rmf
+  D19-10 --> STD-nist-ai-rmf
+  D19-06 --> STD-oasis-openapi
+  D19-12 --> STD-owasp-llm
+  D19-02 --> STD-w3c-prov-o
+  D19-08 --> STD-w3c-prov-o
+  D19-11 --> STD-w3c-prov-o

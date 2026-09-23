@@ -16,6 +16,15 @@ flowchart TD
     A05-10
     A05-12
   end
+  subgraph P80[P80]
+    STD-cncf-cloudevents
+    STD-creativecommons
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+    STD-onnx
+    STD-opengeospatial
+    STD-w3c-webaudio
+  end
   A05-03 --> A05-01
   A05-01 --> A05-02
   A05-07 --> A05-08
@@ -26,3 +35,15 @@ flowchart TD
   A05-05 --> A05-12
   A05-08 --> A05-12
   A05-04 --> A05-12
+  A05-06 --> STD-cncf-cloudevents
+  A05-09 --> STD-creativecommons
+  A05-04 --> STD-ietf-json-schema
+  A05-02 --> STD-mlcommons-bench
+  A05-08 --> STD-mlcommons-bench
+  A05-12 --> STD-mlcommons-bench
+  A05-03 --> STD-onnx
+  A05-07 --> STD-opengeospatial
+  A05-01 --> STD-w3c-webaudio
+  A05-05 --> STD-w3c-webaudio
+  A05-10 --> STD-w3c-webaudio
+  A05-11 --> STD-w3c-webaudio

@@ -16,6 +16,18 @@ flowchart TD
     A14-10
     A14-12
   end
+  subgraph P80[P80]
+    STD-a2a
+    STD-covesa-vss
+    STD-gdpr
+    STD-ieee-754
+    STD-mcp
+    STD-mlcommons-bench
+    STD-oasis-openapi
+    STD-onnx
+    STD-owasp-llm
+    STD-uptane
+  end
   A14-01 --> A14-02
   A14-02 --> A14-03
   A14-03 --> A14-04
@@ -26,3 +38,15 @@ flowchart TD
   A14-03 --> A14-10
   A14-04 --> A14-11
   A14-05 --> A14-12
+  A14-06 --> STD-a2a
+  A14-09 --> STD-covesa-vss
+  A14-05 --> STD-gdpr
+  A14-04 --> STD-ieee-754
+  A14-08 --> STD-ieee-754
+  A14-10 --> STD-mcp
+  A14-07 --> STD-mlcommons-bench
+  A14-02 --> STD-oasis-openapi
+  A14-01 --> STD-onnx
+  A14-03 --> STD-onnx
+  A14-12 --> STD-owasp-llm
+  A14-11 --> STD-uptane

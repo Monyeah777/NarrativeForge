@@ -52,6 +52,38 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-cwe">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-dicom">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json-schema">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-oci-image">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-opengeospatial">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-svg2">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A03-01" target="A03-02">
       <data key="provenance">['a03-anchor']</data>
     </edge>
@@ -81,6 +113,42 @@
     </edge>
     <edge source="A03-05" target="A03-12">
       <data key="provenance">['a03-anchor']</data>
+    </edge>
+    <edge source="A03-10" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-09" target="STD-dicom">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-04" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-02" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-12" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-08" target="STD-oci-image">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-03" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-06" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-05" target="STD-opengeospatial">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-11" target="STD-opengeospatial">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-01" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A03-07" target="STD-w3c-svg2">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

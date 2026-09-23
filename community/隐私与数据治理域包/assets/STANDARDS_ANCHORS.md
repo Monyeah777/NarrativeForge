@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F03-01` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-02` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-03` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-04` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-05` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-06` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-07` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-08` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-09` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-10` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-11` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
-| `F03-12` | spec | https://www.nist.gov/privacy-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F03-01` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
+| `F03-02` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F03-03` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F03-04` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F03-05` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F03-06` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-800-188` SP 800-188 去标识化（NIST；关键词「权限|访问控制|治理」命中） |
+| `F03-07` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F03-08` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F03-09` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F03-10` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F03-11` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F03-12` | spec | https://www.nist.gov/privacy-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
 
 ## 2. 使用边界
 

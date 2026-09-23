@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/2108.07732",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 signature_given（true|false）、test_based（通过判据 = 执行测试）与 pass_rate（含采样数 k）。",
       "pitfall": "用文本相似度当通过（虚高）；采样数不报导致 pass@k 不可比。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/2306.03091",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 retrieval_scope（同文件|仓库）、dependency_parse（导入图|无）与 context_budget（token）。",
       "pitfall": "只做同文件补全却宣称仓库级；预算未声明导致截断不可见。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://peps.python.org/pep-0257/",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 comment_granularity（函数|行|模块）、ambiguity_policy（追问|假设并标注）与 executability（实测通过率）。",
       "pitfall": "注释含糊时静默假设（结果跑偏）；不验证可执行性。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://arxiv.org/abs/2006.03511",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 lang_pair（含版本）、equivalence（测试执行|人工）与 coverage（迁移后测试覆盖率）。",
       "pitfall": "只做语法层翻译（行为不等价）；目标语言版本未声明。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://docs.python.org/3/library/re.html",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 flavor（PCRE|re|JS）、complexity_limit（回溯风险上限）与 edge_cases（正负样例数）。",
       "pitfall": "生成灾难性回溯正则；未经边界样例验证就上线。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://spec.openapis.org/oas/v3.1.0",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "oasis-openapi",
+      "standard_why": "关键词「接口|API|端点|服务|部署」命中",
       "check": "声明 contract_source（OpenAPI 文档 id + 版本）、required_params（逐条）与 runnable（示例实测可运行）。",
       "pitfall": "编造不存在的参数（幻觉 API）；示例未实跑。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://developer.hashicorp.com/terraform/language",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 platform（含版本）、idempotent（true|false）与 plan_preview（是否提供 dry-run 输出）。",
       "pitfall": "配置不可重复应用（幂等破坏）；无 plan 预览直接改生产。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://peps.python.org/pep-0008/",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 style_guide（来源）、linter（工具 + 版本）与 autofix_scope（允许自动改的范围）。",
       "pitfall": "自动修复改到语义（越界）；规范来源不明导致评审争议。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://arxiv.org/abs/2310.06770",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 env（镜像 / 依赖锁）、failure_taxonomy（语法|导入|断言|超时）与 reproduce_cmd（可复制命令）。",
       "pitfall": "只报通过率不分类失败；无复现命令（结论不可核）。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://spdx.org/licenses/",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "creativecommons",
+      "standard_why": "关键词「许可|版权|知识产权|授权」命中",
       "check": "声明 license_scan（工具 + 阈值）、similarity_check（与公开语料的相似度上限）与 attribution（出处标注规则）。",
       "pitfall": "整段复制受版权代码（无标注）；不做相似度检测。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://osv.dev/",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "oasis-openapi",
+      "standard_why": "关键词「接口|API|端点|服务|部署」命中",
       "check": "声明 existence_check（包索引 / 官方文档来源）、version_check（目标版本存在）与 fallback（替代 API 建议）。",
       "pitfall": "建议不存在的包（供应链风险）；不校验版本兼容。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://microsoft.github.io/language-server-protocol/",
       "anchor_kind": "doc",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 ttft_ms、full_latency_ms、cancel_semantics（是否可中断）与 ux_threshold（可接受上限）。",
       "pitfall": "只报平均延迟；不可取消导致输入被阻塞。"
     }

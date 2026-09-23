@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E13-01` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-02` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-03` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-04` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-05` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-06` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-07` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-08` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-09` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-10` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-11` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
-| `E13-12` | spec | https://peps.python.org/pep-0008/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E13-01` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `peps` PEP 体系（含 8/257/621）（Python；域码 E13 专属绑定（轮换 0）） |
+| `E13-02` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `peps` PEP 体系（含 8/257/621）（Python；域码 E13 专属绑定（轮换 0）） |
+| `E13-03` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `peps` PEP 体系（含 8/257/621）（Python；域码 E13 专属绑定（轮换 0）） |
+| `E13-04` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `peps` PEP 体系（含 8/257/621）（Python；域码 E13 专属绑定（轮换 0）） |
+| `E13-05` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `cwe` CWE 缺陷枚举（MITRE；关键词「漏洞|缺陷|弱点」命中） |
+| `E13-06` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `spdx-3` SPDX 3.0（含 AI profile）（SPDX；关键词「供应链|依赖」命中） |
+| `E13-07` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `w3c-epub33` EPUB 3.3（W3C；关键词「文档|出版|排版|校对」命中） |
+| `E13-08` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `peps` PEP 体系（含 8/257/621）（Python；域码 E13 专属绑定（轮换 0）） |
+| `E13-09` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `E13-10` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `E13-11` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `eu-machinery` 机械条例 2023/1230（EU；关键词「机械|机器人|协作」命中） |
+| `E13-12` | spec | https://peps.python.org/pep-0008/ | ✓ 200 | `peps` PEP 体系（含 8/257/621）（Python；域码 E13 专属绑定（轮换 0）） |
 
 ## 2. 使用边界
 

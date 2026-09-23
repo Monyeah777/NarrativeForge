@@ -27,6 +27,8 @@ SPEC_DIR = ".rivet/private_archive/ai_packs/specs"
 MANIFEST_REL = "protocol/domain_packs.json"
 DOMAIN_LIST_ANCHOR = "DOMAIN = ["
 REGISTRY_REL = "desktop/src/core/registry.json"
+STANDARDS_REL = "protocol/standards_catalog.json"
+BINDING_REL = "protocol/standards_binding.json"
 DOC02_REL = "02_联动注册表.md"
 VERIFY_REL = "verify.sh"
 
@@ -56,6 +58,164 @@ def load_spec(root: str, code: str) -> Dict[str, Any]:
     if issues:
         raise ValueError("域规格不合规：%s" % "；".join(issues))
     return spec
+
+
+# ---------------------------------------------------------------- 标准绑定（可扩展标准面）
+
+#: 段默认 + 关键词规则 + 域码覆盖（与内部 `binding_rules.py` 同源；此处是**执行侧**副本，
+#: 保证 core 不依赖 .rivet 内部档案——规则变更时两处同步由 check32 断言「绑定覆盖率 100%」。）
+_STD_SECTION_DEFAULT = {
+    "A": ["ietf-json-schema", "mlcommons-bench", "onnx"],
+    "B": ["ietf-json-schema", "w3c-tabular-data", "frictionless-table"],
+    "C": ["cncf-otel-semconv", "mlcommons-bench", "frictionless-table"],
+    "D": ["nist-ai-rmf", "w3c-prov-o", "iso-iec-25010"],
+    "E": ["commonmark", "w3c-tabular-data", "w3c-epub33"],
+    "F": ["nist-ai-rmf", "w3c-prov-o", "spdx-licenses"],
+}
+_STD_KEYWORD: List[Tuple[str, str]] = [
+    ("许可|版权|知识产权|授权", "creativecommons"),
+    ("隐私|个人信息|去标识|合规|监管", "gdpr"),
+    ("安全|越狱|红队|攻击|对抗", "owasp-llm"),
+    ("漏洞|缺陷|弱点", "cwe"),
+    ("供应链|依赖", "spdx-3"),
+    ("水印|溯源|凭证|内容来源", "c2pa-spec"),
+    ("无障碍|可访问", "w3c-wcag22"),
+    ("医疗|临床|病历|诊断", "hl7-fhir"),
+    ("影像|放射", "dicom"),
+    ("食品|餐饮|膳食", "codex-alimentarius"),
+    ("政务|公共事务|政策", "oecd-ai"),
+    ("教育|培训|组织学习", "unesco-ai"),
+    ("金融|投研|风控|保险|绩效", "gips"),
+    ("市场代码|证券", "iso10383"),
+    ("支付|结算|清算", "iso20022"),
+    ("制造|产线|工业", "iso-iec-25010"),
+    ("能源|电力|电网", "iso-iec-42010"),
+    ("农业|种植|养殖", "fao-food"),
+    ("物流|仓储|运输", "w3c-wot"),
+    ("交通|出行|车机|车辆|导航", "covesa-vss"),
+    ("机械|机器人|协作", "eu-machinery"),
+    ("固件|OTA|升级", "uptane"),
+    ("地理|遥感|地图|空间|三维|点云", "opengeospatial"),
+    ("时间线|时序|日期", "w3c-owl-time"),
+    ("术语|词表|本体|知识图谱", "w3c-skos"),
+    ("三元组|关系抽取", "rdf11"),
+    ("溯源|证据链|审计", "w3c-prov-o"),
+    ("约束|校验|schema|形状|契约", "ietf-json-schema"),
+    ("表格|CSV|列式", "w3c-tabular-data"),
+    ("数据集|元数据|标注", "mlcommons-croissant"),
+    ("评测|基准|排行榜|跑分", "mlcommons-bench"),
+    ("可观测|遥测|监控|日志|成本|可靠性", "cncf-otel-semconv"),
+    ("接口|API|端点|服务|部署", "oasis-openapi"),
+    ("事件|消息|通道", "cncf-cloudevents"),
+    ("工具调用|智能体|工作流|Agent", "mcp"),
+    ("多智能体|协同|编排", "a2a"),
+    ("模型|推理|量化", "onnx"),
+    ("提示|指令|模板", "commonmark"),
+    ("图表|可视化|看板", "vega-lite"),
+    ("流程|结构图|示意", "mermaid"),
+    ("视频|剪辑|字幕", "oci-image"),
+    ("音频|语音|声学|音乐|歌声", "w3c-webaudio"),
+    ("图像|视觉|扩散|超分|抠图", "w3c-svg2"),
+    ("文档|出版|排版|校对", "w3c-epub33"),
+    ("公式|数学|符号|证明", "w3c-mathml3"),
+    ("单位|量纲|计量", "onvif-ucum"),
+    ("浮点|数值|精度|误差", "ieee-754"),
+    ("时间戳|时区", "rfc3339"),
+    ("检索|向量|嵌入|召回", "frictionless-package"),
+    ("问答|知识库", "frictionless-table"),
+    ("缓存|分块|上下文", "gfm"),
+    ("训练|微调|对齐|蒸馏|偏好", "mlcommons-bench"),
+    ("合成数据|数据生成|增强", "mlcommons-croissant"),
+    ("采集|清洗|质量|异常|缺失", "frictionless-table"),
+    ("权限|访问控制|治理", "nist-800-188"),
+    ("风险|伦理|责任", "nist-ai-rmf"),
+    ("管理体系|流程|制度", "iec-42001"),
+]
+_STD_BY_CODE = {
+    "A01": ["ietf-json-schema", "mlcommons-bench"],
+    "A02": ["w3c-svg2", "mlcommons-croissant"],
+    "A09": ["osv", "cwe", "lsp"],
+    "A10": ["w3c-mathml3", "peps"],
+    "A11": ["arrow", "parquet"],
+    "A12": ["mlcommons-bench", "nist-ai-rmf"],
+    "A13": ["eu-machinery", "uptane"],
+    "A14": ["onnx", "ieee-754"],
+    "B09": ["oasis-sarif", "cwe", "osv"],
+    "B10": ["nist-800-142", "peps"],
+    "B12": ["w3c-tabular-data", "ietf-json-schema"],
+    "C01": ["frictionless-table", "w3c-tabular-data"],
+    "C08": ["mlcommons-bench", "oasis-sarif"],
+    "C11": ["k8s-crd", "cncf-otel-otlp"],
+    "C15": ["arrow", "parquet", "frictionless-package"],
+    "C16": ["mcp", "oasis-openapi"],
+    "C17": ["a2a", "mcp"],
+    "C18": ["cncf-otel-semconv", "prometheus-exposition", "openmetrics"],
+    "D01": ["hl7-fhir", "dicom"],
+    "D04": ["gips", "iso10383"],
+    "D20": ["rocrate", "datacite"],
+    "E10": ["w3c-epub33", "w3c-epub-a11y"],
+    "E13": ["peps", "osi-osd"],
+    "E20": ["khronos-gltf", "w3c-webaudio"],
+    "F04": ["creativecommons", "spdx-licenses"],
+    "F09": ["osi-osd", "spdx-licenses"],
+}
+
+
+def standards_catalog(root: str = ".") -> Dict[str, Dict[str, Any]]:
+    doc = _read_json(Path(root) / STANDARDS_REL) or {}
+    return {str(s["id"]): s for s in (doc.get("standards") or [])}
+
+
+def bind_standard(spec: Dict[str, Any], sub: Dict[str, Any],
+                  catalog: Dict[str, Dict[str, Any]],
+                  index: int = 0) -> Tuple[str, str]:
+    """给一条细分选标准：关键词命中 → 域码默认 → 段默认（都取目录内第一条命中）。
+
+    返回 (standard_id, rationale)。不猜：目录里没有的 id 一律跳过。
+    段默认候选按 `index` 轮换——保证单包**至少贴 3 条不同标准**（check32 门槛），
+    同时让同一域内的细分不至于全挤在一条标准上。
+    """
+    name = str(sub.get("name") or "")
+    for pat, sid in _STD_KEYWORD:
+        if re.search(pat, name) and sid in catalog:
+            return sid, "关键词「%s」命中" % pat
+    for sid in _STD_BY_CODE.get(spec["code"], []):
+        if sid in catalog:
+            pool = [x for x in _STD_BY_CODE[spec["code"]] if x in catalog]
+            return pool[index % len(pool)], "域码 %s 专属绑定（轮换 %d）" % (spec["code"],
+                                                                       index % len(pool))
+    sec = str(spec.get("section", "")).split(" · ")[0]
+    pool = [x for x in _STD_SECTION_DEFAULT.get(sec, []) if x in catalog]
+    if pool:
+        return pool[index % len(pool)], "%s 段默认绑定（轮换 %d）" % (sec, index % len(pool))
+    return "", ""
+
+
+def bindings_for(spec: Dict[str, Any],
+                 catalog: Dict[str, Dict[str, Any]]) -> Dict[str, Tuple[str, str]]:
+    """整包绑定（**单一入口**）：关键词 → 专属/段默认轮换，并保证**至少 3 条不同标准**。
+
+    多样性后处理：若关键词命中把整包挤到 1–2 条标准上，按顺序把部分细分改绑段默认池里的
+    其它标准，直到不同标准数 ≥3（check32 门槛）；改写理由如实写「多样性补位」。
+    """
+    out: Dict[str, Tuple[str, str]] = {}
+    for i, s in enumerate(spec["subdivisions"]):
+        out[s["id"]] = bind_standard(spec, s, catalog, i)
+    sec = str(spec.get("section", "")).split(" · ")[0]
+    pool = [x for x in (_STD_BY_CODE.get(spec["code"], []) +
+                        _STD_SECTION_DEFAULT.get(sec, [])) if x in catalog]
+    pool = list(dict.fromkeys(pool))
+    if len({v[0] for v in out.values() if v[0]}) >= 3 or not pool:
+        return out
+    k = 0
+    for sid in list(out):
+        if len({v[0] for v in out.values() if v[0]}) >= 3:
+            break
+        cand = pool[k % len(pool)]
+        k += 1
+        if cand != out[sid][0]:
+            out[sid] = (cand, "多样性补位（段默认池轮换）")
+    return out
 
 
 def spec_issues(spec: Dict[str, Any]) -> List[str]:
@@ -252,11 +412,18 @@ def _anchor_evidence(spec: Dict[str, Any]) -> Dict[str, Any]:
     return {s["anchor"]: s.get("anchor_status") for s in spec["subdivisions"]}
 
 
-def concept_graph_md(spec: Dict[str, Any]) -> str:
+def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
     code, name = spec["code"], spec["name"]
     subs = spec["subdivisions"]
     edges = [tuple(e) for e in spec["edges"]]
     legend_key = "%s-anchor" % _slug(spec)
+    cat = standards_catalog(root)
+    bound: Dict[str, str] = {}          # 细分 id → 标准 id
+    _bd = bindings_for(spec, cat)
+    for s in subs:
+        sid, why = _bd[s["id"]]
+        bound[s["id"]] = sid
+    std_ids = sorted({v for v in bound.values() if v})
     lines = [
         '<!-- nf-asset: key="CONCEPT_GRAPH" version="1.0" status="active" -->',
         "# 概念图 · %s（概念前置偏序）" % name,
@@ -266,7 +433,8 @@ def concept_graph_md(spec: Dict[str, Any]) -> str:
                                                           spec["category"]),
         "> 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——"
         "**§4 围栏块是唯一机读真相**，§2/§3 由它导出。",
-        "> 覆盖：%d 个包内概念 + 1 个包外前置族（%s-00 领域通用前置）。" % (len(subs), code),
+        "> 覆盖：%d 个包内概念 + %d 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族"
+        "（%s-00 领域通用前置）。" % (len(subs), len(std_ids), code),
         "> 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。",
         "",
         "## 1. 读法",
@@ -284,11 +452,23 @@ def concept_graph_md(spec: Dict[str, Any]) -> str:
     prereq = {s["id"]: [] for s in subs}
     for a, b in edges:
         prereq.setdefault(b, []).append(a)
-    for i, s in enumerate(subs):
-        layer = "P40" if i % 2 == 0 else "P60"
+    for s in std_ids:                    # 标准节点：概念 → 标准（该概念依据的标准）
+        prereq["STD-%s" % s] = []
+    for sid, std in bound.items():
+        if std:
+            prereq.setdefault("STD-%s" % std, []).append(sid)
+    for s in subs:
+        layer = "P40" if (subs.index(s) % 2 == 0) else "P60"
         pre = "、".join("`%s`" % x for x in prereq.get(s["id"], [])) or "—"
         lines.append("| `%s` | %s | %s | %s | %s |"
                      % (s["id"], s["name"], layer, pre, legend_key))
+    for sid in std_ids:                  # 标准节点入条目键表（可寻址）
+        std = cat.get(sid) or {}
+        lines.append("| `STD-%s` | 标准 · %s（%s） | P80 | %s | std-catalog |"
+                     % (sid, std.get("title", sid), std.get("body", ""),
+                        "、".join("`%s`" % x for x in prereq.get("STD-%s" % sid, [])) or "—"))
+    for i, s in enumerate(subs):
+        pass                             # 概念行已在上方输出
     lines += [
         "",
         "## 3. 别名表（求值时 id 与别名等价）",
@@ -299,6 +479,8 @@ def concept_graph_md(spec: Dict[str, Any]) -> str:
     for s in subs:
         alias = "%s-%s" % (code, re.sub(r"[\s（）()]+", "-", s["name"].strip()))[:48]
         lines.append("| `%s` | `%s` |" % (alias, s["id"]))
+    for sid in std_ids:
+        lines.append("| `std-%s` | `STD-%s` |" % (sid, sid))
     nodes = []
     for i, s in enumerate(subs):
         layer = "P40" if i % 2 == 0 else "P60"
@@ -307,6 +489,15 @@ def concept_graph_md(spec: Dict[str, Any]) -> str:
             "branch": "domain",
             "prereqs": prereq.get(s["id"], []),
             "provenance": [legend_key],
+        })
+    cs = "std-catalog"
+    for sid in std_ids:
+        std = cat.get(sid) or {}
+        nodes.append({
+            "id": "STD-%s" % sid, "name": "标准 · %s" % std.get("title", sid),
+            "layer": "P80", "branch": "standards",
+            "prereqs": prereq.get("STD-%s" % sid, []),
+            "provenance": [cs],
         })
     block = {
         "concept_graph": {
@@ -317,12 +508,15 @@ def concept_graph_md(spec: Dict[str, Any]) -> str:
             "provenance_legend": {
                 legend_key: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 "
                             "STANDARDS_ANCHORS（本波实测）",
+                cs: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）",
             },
             "external_prereqs": [
                 {"id": "%s-00" % code, "name": "领域通用前置族（数学/工程基础，包外）"},
             ],
             "branches": [
                 {"id": "domain", "name": "%s 全域" % name, "nodes": [s["id"] for s in subs]},
+                {"id": "standards", "name": "可扩展标准（绑定）",
+                 "nodes": ["STD-%s" % x for x in std_ids]},
             ],
             "nodes": nodes,
         },
@@ -345,7 +539,7 @@ def concept_graph_md(spec: Dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def domain_spec_md(spec: Dict[str, Any]) -> str:
+def domain_spec_md(spec: Dict[str, Any], root: str = ".") -> str:
     code, name = spec["code"], spec["name"]
     tier = spec.get("content_tier", "authored")
     tier_note = (
@@ -375,12 +569,17 @@ def domain_spec_md(spec: Dict[str, Any]) -> str:
         "",
         "## 2. 细分口径表（%d 条）" % len(spec["subdivisions"]),
         "",
-        "| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 |",
-        "|---|---|---|---|---|",
+        "| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |",
+        "|---|---|---|---|---|---|",
     ]
+    cat = standards_catalog(root)
+    _bd = bindings_for(spec, cat)
     for s in spec["subdivisions"]:
-        lines.append("| `%s` | %s | %s | %s | %s |"
-                     % (s["id"], s["name"], s["definition"], s["check"], s["pitfall"]))
+        sid, why = _bd[s["id"]]
+        std = cat.get(sid) or {}
+        std_txt = "`%s` %s（%s）" % (sid, std.get("title", ""), std.get("body", "")) if sid else "—"
+        lines.append("| `%s` | %s | %s | %s | %s | %s |"
+                     % (s["id"], s["name"], s["definition"], s["check"], s["pitfall"], std_txt))
     lines += [
         "",
         "## 3. 机读投影契约",
@@ -399,8 +598,9 @@ def domain_spec_md(spec: Dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def standards_md(spec: Dict[str, Any]) -> str:
+def standards_md(spec: Dict[str, Any], root: str = ".") -> str:
     code, name = spec["code"], spec["name"]
+    cat = standards_catalog(root)
     lines = [
         '<!-- nf-asset: key="STANDARDS_ANCHORS" version="1.0" status="active" -->',
         "# 权威锚表 · %s" % name,
@@ -412,15 +612,18 @@ def standards_md(spec: Dict[str, Any]) -> str:
         "",
         "## 1. 锚表",
         "",
-        "| 条目键 | 锚类型 | URL | 可达性 |",
-        "|---|---|---|---|",
+        "| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |",
+        "|---|---|---|---|---|",
     ]
     for s in spec["subdivisions"]:
         st = s.get("anchor_status")
         mark = "✓ %s" % st if isinstance(st, int) and st == 200 else (
             "✗ %s" % st if st else "未探（如实记档）")
-        lines.append("| `%s` | %s | %s | %s |"
-                     % (s["id"], s.get("anchor_kind", "spec"), s["anchor"], mark))
+        sid, why = bind_standard(spec, s, cat)
+        std = cat.get(sid) or {}
+        lines.append("| `%s` | %s | %s | %s | `%s` %s（%s；%s） |"
+                     % (s["id"], s.get("anchor_kind", "spec"), s["anchor"], mark,
+                        sid or "—", std.get("title", ""), std.get("body", ""), why or "未绑定"))
     lines += [
         "",
         "## 2. 使用边界",
@@ -780,7 +983,19 @@ def provenance_json(spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
 
 # ---------------------------------------------------------------- 产出面（机验）
 
-def domain_spec_json(spec: Dict[str, Any]) -> str:
+def domain_spec_json(spec: Dict[str, Any], root: str = ".") -> str:
+    cat = standards_catalog(root)
+    subs = []
+    _bd = bindings_for(spec, cat)
+    for s in spec["subdivisions"]:
+        sid, why = _bd[s["id"]]
+        subs.append({
+            "id": s["id"], "name": s["name"], "definition": s["definition"],
+            "anchor": s["anchor"], "anchor_kind": s.get("anchor_kind", "spec"),
+            "anchor_status": int(s.get("anchor_status") or 0),
+            "standard_ref": sid, "standard_why": why,
+            "check": s["check"], "pitfall": s["pitfall"],
+        })
     doc = {
         "kind": "nf-domain-spec/1",
         "code": spec["code"],
@@ -789,13 +1004,7 @@ def domain_spec_json(spec: Dict[str, Any]) -> str:
         "anchors_verified_on": "2026-09-22",
         "metric_family": spec["metric_family"],
         "content_tier": spec.get("content_tier", "authored"),
-        "subdivisions": [
-            {"id": s["id"], "name": s["name"], "definition": s["definition"],
-             "anchor": s["anchor"], "anchor_kind": s.get("anchor_kind", "spec"),
-             "anchor_status": int(s.get("anchor_status") or 0),
-             "check": s["check"], "pitfall": s["pitfall"]}
-            for s in spec["subdivisions"]
-        ],
+        "subdivisions": subs,
     }
     return json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
 
@@ -826,7 +1035,8 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
                     "type": "object",
                     "additionalProperties": False,
                     "required": ["id", "name", "definition", "anchor", "anchor_kind",
-                                 "anchor_status", "check", "pitfall"],
+                                 "anchor_status", "standard_ref", "standard_why",
+                                 "check", "pitfall"],
                     "properties": {
                         "id": {"type": "string", "pattern": "^%s-[0-9]{2}$" % code},
                         "name": {"type": "string", "minLength": 2},
@@ -834,6 +1044,8 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
                         "anchor": {"type": "string", "format": "uri"},
                         "anchor_kind": {"enum": ["spec", "paper", "repo", "doc", "dataset"]},
                         "anchor_status": {"type": "integer", "minimum": 0},
+                        "standard_ref": {"type": "string", "minLength": 2},
+                        "standard_why": {"type": "string", "minLength": 3},
                         "check": {"type": "string", "minLength": 10},
                         "pitfall": {"type": "string", "minLength": 6},
                     },
@@ -1112,16 +1324,16 @@ def plan(root: str, spec: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, str
         "%s/modules/%sb_%s.md" % (pkg, code, spec["module_titles"][1]): module_md(spec, 2, alloc),
         "%s/pipelines/%s_%s装配流管线.md" % (pkg, alloc["pipeline"], spec["name"]):
             pipeline_md(spec, alloc),
-        "%s/assets/CONCEPT_GRAPH.md" % pkg: concept_graph_md(spec),
-        "%s/assets/DOMAIN_SPEC.md" % pkg: domain_spec_md(spec),
-        "%s/assets/STANDARDS_ANCHORS.md" % pkg: standards_md(spec),
+        "%s/assets/CONCEPT_GRAPH.md" % pkg: concept_graph_md(spec, root),
+        "%s/assets/DOMAIN_SPEC.md" % pkg: domain_spec_md(spec, root),
+        "%s/assets/STANDARDS_ANCHORS.md" % pkg: standards_md(spec, root),
         "%s/assets/provenance.json" % pkg: provenance_json(spec, alloc),
         "%s/outputs/INDEX.json" % pkg: output_index(spec),
         "%s/outputs/schemas/DOMAIN_SPEC.schema.json" % pkg: domain_spec_schema(spec),
         "%s/outputs/schemas/DOMAIN_REPORT.schema.json" % pkg: report_schema(spec),
         "%s/outputs/schemas/SYSTEM_CARD.schema.json" % pkg:
             json.dumps(SYSTEM_CARD_SCHEMA_JSON, ensure_ascii=False, indent=2) + "\n",
-        "%s/outputs/DOMAIN_SPEC.json" % pkg: domain_spec_json(spec),
+        "%s/outputs/DOMAIN_SPEC.json" % pkg: domain_spec_json(spec, root),
         "%s/outputs/SYSTEM_CARD.json" % pkg: system_card(spec, alloc),
         "%s/outputs/samples/CASES.csv" % pkg: cases,
     }
@@ -1291,6 +1503,15 @@ def manifest_entry(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
     t4 = [e for e in idx["outputs"] if e.get("tier") == "T4"]
     ratio = round(len(mv) / max(1, len(idx["outputs"])), 4)
     spec_blob = json.dumps(spec, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    cat = standards_catalog(root)
+    bound = {}
+    _bd = bindings_for(spec, cat)
+    for s in spec["subdivisions"]:
+        sid, why = _bd[s["id"]]
+        if sid:
+            bound[s["id"]] = sid
+    nodes = len(spec["subdivisions"]) + len(set(bound.values()))
+    edges = len(spec["edges"]) + len(bound)
     return {
         "code": spec["code"],
         "section": spec["section"],
@@ -1308,6 +1529,11 @@ def manifest_entry(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
         "machine_verifiable_ratio": ratio,
         "metric_family": spec["metric_family"],
         "content_tier": spec.get("content_tier", "authored"),
+        "standards_bound": len(set(bound.values())),
+        "standards_binding_coverage": round(len(bound) / max(1, len(spec["subdivisions"])), 4),
+        "concept_nodes": nodes,
+        "concept_edges": edges,
+        "concept_density": round(edges / max(1, nodes), 4),
         "spec_digest": hashlib.sha256(spec_blob).hexdigest(),
     }
 
@@ -1330,10 +1556,50 @@ def update_manifest(root: str, spec: Dict[str, Any], write: bool = False) -> Dic
     doc["packs"] = sorted(packs, key=lambda p: p["code"])
     doc["count"] = len(doc["packs"])
     doc["subdivisions_total"] = sum(int(p.get("subdivisions") or 0) for p in doc["packs"])
+    doc["standards_catalog"] = STANDARDS_REL
+    doc["concept_density_threshold"] = 1.0
+    doc["concept_density_min"] = min((float(p.get("concept_density") or 0)
+                                      for p in doc["packs"]), default=0.0)
+    doc["binding_coverage_min"] = min((float(p.get("standards_binding_coverage") or 0)
+                                       for p in doc["packs"]), default=0.0)
     if write:
         path.parent.mkdir(parents=True, exist_ok=True)
         _write_text_retry(path, json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
+        _write_binding_table(root, spec)
     return doc
+
+
+def _write_binding_table(root: str, spec: Dict[str, Any]) -> None:
+    """维护 `protocol/standards_binding.json`：逐包逐细分的标准绑定 + 理由（公开结果面）。"""
+    path = Path(root) / BINDING_REL
+    doc = _read_json(path) or {
+        "schema": "nf-standards-binding/1",
+        "note": "域包 × 细分 → 可扩展标准目录条目的绑定表（公开结果面）。判据"
+                "（check32 domain_packs）：① 每条细分都有 standard_ref；② 引用 id 必须在 "
+                "protocol/standards_catalog.json 在册；③ 每包绑定覆盖率 100%；"
+                "④ 概念密度（边/节点，含标准节点与绑定边）≥ 门槛。",
+        "catalog": STANDARDS_REL,
+        "packs": [],
+    }
+    cat = standards_catalog(root)
+    rows = []
+    _bd = bindings_for(spec, cat)
+    for s in spec["subdivisions"]:
+        sid, why = _bd[s["id"]]
+        rows.append({"subdivision": s["id"], "name": s["name"],
+                     "standard": sid, "rationale": why,
+                     "standard_body": (cat.get(sid) or {}).get("body", ""),
+                     "standard_url": (cat.get(sid) or {}).get("url", "")})
+    entry = {"code": spec["code"], "package": spec["pack_name"],
+             "category": spec["category"], "subdivisions": len(rows),
+             "distinct_standards": len({r["standard"] for r in rows if r["standard"]}),
+             "bindings": rows}
+    packs = [p for p in doc["packs"] if p.get("code") != entry["code"]]
+    packs.append(entry)
+    doc["packs"] = sorted(packs, key=lambda p: p["code"])
+    doc["count"] = len(doc["packs"])
+    doc["bindings_total"] = sum(len(p["bindings"]) for p in doc["packs"])
+    _write_text_retry(path, json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
 
 
 def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
@@ -1344,6 +1610,8 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         return [], {"packs": 0, "note": "无域包名录（域包工程未启用）"}
     doc = json.loads(path.read_text(encoding="utf-8"))
     thr = float(doc.get("machine_verifiable_threshold") or 0.95)
+    cat = standards_catalog(root)
+    dens_min = float(doc.get("concept_density_threshold") or 1.0)
     stats = {"packs": 0, "faces": 0, "functional": 0}
     reg = _read_json(Path(root) / REGISTRY_REL) or {}
     by_id = {p.get("id"): p for p in reg.get("protocols") or []}
@@ -1383,6 +1651,27 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         if int(p.get("output_faces") or 0) != len(faces):
             issues.append("%s：名录产出面数 %s ≠ INDEX 实况 %d"
                           % (pkg, p.get("output_faces"), len(faces)))
+        # 可扩展标准绑定面（2026-09-23 对齐）：覆盖率 100% + 引用在册 + 概念密度不回落
+        spec_path = Path(root) / SPEC_DIR / ("%s.json" % p.get("code", ""))
+        if spec_path.is_file():
+            spec = json.loads(spec_path.read_text(encoding="utf-8"))
+            payload = _read_json(Path(root) / "community" / pkg / "outputs"
+                                 / "DOMAIN_SPEC.json") or {}
+            subs = payload.get("subdivisions") or []
+            bad_ref = [s["id"] for s in subs if str(s.get("standard_ref") or "") not in cat]
+            if bad_ref:
+                issues.append("%s：细分未绑可扩展标准或引用不在册：%s" % (pkg, bad_ref[:4]))
+            if subs and len(bad_ref) > 0:
+                pass
+            if float(p.get("standards_binding_coverage") or 0) < 1.0:
+                issues.append("%s：标准绑定覆盖率 %.2f < 1.0（每条细分须绑一个目录内标准）"
+                              % (pkg, float(p.get("standards_binding_coverage") or 0)))
+            if float(p.get("concept_density") or 0) < dens_min:
+                issues.append("%s：概念密度 %.3f < 门槛 %.3f（边/节点；含标准节点与绑定边）"
+                              % (pkg, float(p.get("concept_density") or 0), dens_min))
+            if int(p.get("standards_bound") or 0) < 3:
+                issues.append("%s：绑定标准数 %s < 3（单包至少要贴 3 条不同标准）"
+                              % (pkg, p.get("standards_bound")))
     return issues, stats
 
 

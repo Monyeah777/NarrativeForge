@@ -52,6 +52,26 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-creativecommons">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mermaid">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-croissant">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-epub-a11y">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-epub33">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="E10-01" target="E10-02">
       <data key="provenance">['e10-anchor']</data>
     </edge>
@@ -111,6 +131,42 @@
     </edge>
     <edge source="E10-09" target="E10-12">
       <data key="provenance">['e10-anchor']</data>
+    </edge>
+    <edge source="E10-11" target="STD-creativecommons">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-06" target="STD-mermaid">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-09" target="STD-mlcommons-croissant">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-02" target="STD-w3c-epub-a11y">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-04" target="STD-w3c-epub-a11y">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-08" target="STD-w3c-epub-a11y">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-10" target="STD-w3c-epub-a11y">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-12" target="STD-w3c-epub-a11y">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-01" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-03" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-05" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="E10-07" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

@@ -16,6 +16,12 @@ flowchart TD
     B09-10
     B09-12
   end
+  subgraph P80[P80]
+    STD-cwe
+    STD-oasis-sarif
+    STD-osv
+    STD-spdx-3
+  end
   B09-01 --> B09-02
   B09-01 --> B09-03
   B09-04 --> B09-05
@@ -26,3 +32,15 @@ flowchart TD
   B09-07 --> B09-11
   B09-10 --> B09-12
   B09-11 --> B09-12
+  B09-02 --> STD-cwe
+  B09-05 --> STD-cwe
+  B09-08 --> STD-cwe
+  B09-11 --> STD-cwe
+  B09-01 --> STD-oasis-sarif
+  B09-07 --> STD-oasis-sarif
+  B09-10 --> STD-oasis-sarif
+  B09-03 --> STD-osv
+  B09-06 --> STD-osv
+  B09-09 --> STD-osv
+  B09-12 --> STD-osv
+  B09-04 --> STD-spdx-3

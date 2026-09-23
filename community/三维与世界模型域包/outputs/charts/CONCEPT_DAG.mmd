@@ -16,6 +16,12 @@ flowchart TD
     A08-10
     A08-12
   end
+  subgraph P80[P80]
+    STD-ietf-json-schema
+    STD-mlcommons-bench
+    STD-onnx
+    STD-opengeospatial
+  end
   A08-01 --> A08-03
   A08-01 --> A08-04
   A08-02 --> A08-05
@@ -26,3 +32,15 @@ flowchart TD
   A08-05 --> A08-09
   A08-10 --> A08-11
   A08-07 --> A08-12
+  A08-04 --> STD-ietf-json-schema
+  A08-10 --> STD-ietf-json-schema
+  A08-05 --> STD-mlcommons-bench
+  A08-08 --> STD-mlcommons-bench
+  A08-11 --> STD-mlcommons-bench
+  A08-03 --> STD-onnx
+  A08-06 --> STD-onnx
+  A08-07 --> STD-onnx
+  A08-09 --> STD-onnx
+  A08-01 --> STD-opengeospatial
+  A08-02 --> STD-opengeospatial
+  A08-12 --> STD-opengeospatial

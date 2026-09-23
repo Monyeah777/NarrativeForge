@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E15-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E15-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E15-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
+| `E15-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `E15-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `E15-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E15-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E15-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E15-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
+| `E15-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E15-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E15-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E15-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
+| `E15-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `unesco-ai` AI 伦理建议书（UNESCO；关键词「教育|培训|组织学习」命中） |
 
 ## 2. 使用边界
 

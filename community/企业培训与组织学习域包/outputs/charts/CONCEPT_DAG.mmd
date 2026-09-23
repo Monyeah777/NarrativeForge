@@ -16,6 +16,14 @@ flowchart TD
     E15-10
     E15-12
   end
+  subgraph P80[P80]
+    STD-commonmark
+    STD-gdpr
+    STD-mlcommons-bench
+    STD-unesco-ai
+    STD-w3c-epub33
+    STD-w3c-tabular-data
+  end
   E15-01 --> E15-02
   E15-02 --> E15-03
   E15-03 --> E15-04
@@ -36,3 +44,15 @@ flowchart TD
   E15-08 --> E15-11
   E15-11 --> E15-12
   E15-09 --> E15-12
+  E15-04 --> STD-commonmark
+  E15-10 --> STD-commonmark
+  E15-02 --> STD-gdpr
+  E15-03 --> STD-mlcommons-bench
+  E15-01 --> STD-unesco-ai
+  E15-07 --> STD-unesco-ai
+  E15-11 --> STD-unesco-ai
+  E15-12 --> STD-unesco-ai
+  E15-06 --> STD-w3c-epub33
+  E15-09 --> STD-w3c-epub33
+  E15-05 --> STD-w3c-tabular-data
+  E15-08 --> STD-w3c-tabular-data

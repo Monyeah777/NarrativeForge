@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「AI+保险」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（AI保险:M01）与收口模块（AI保险:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（D05-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D05-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `D05-10` | 保险法律合规 | P60 | `D05-09`、`D05-07` | d05-anchor |
 | `D05-11` | 再保与风险 | P40 | `D05-10`、`D05-08` | d05-anchor |
 | `D05-12` | 保单结构化 | P60 | `D05-11`、`D05-09` | d05-anchor |
+| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `D05-08`、`D05-10` | std-catalog |
+| `STD-gips` | 标准 · GIPS 绩效标准（CFA Institute） | P80 | `D05-01`、`D05-07` | std-catalog |
+| `STD-iso-iec-25010` | 标准 · SQuaRE 质量模型（ISO/IEC） | P80 | `D05-03`、`D05-06`、`D05-09`、`D05-12` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `D05-04`、`D05-11` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `D05-02`、`D05-05` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `D05-保险法律合规` | `D05-10` |
 | `D05-再保与风险` | `D05-11` |
 | `D05-保单结构化` | `D05-12` |
+| `std-gdpr` | `STD-gdpr` |
+| `std-gips` | `STD-gips` |
+| `std-iso-iec-25010` | `STD-iso-iec-25010` |
+| `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     d05-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "D05-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "D05-10"
         - "D05-11"
         - "D05-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-gdpr"
+        - "STD-gips"
+        - "STD-iso-iec-25010"
+        - "STD-nist-ai-rmf"
+        - "STD-w3c-prov-o"
   nodes:
     - id: "D05-01"
       name: "保险条款解读"
@@ -181,6 +200,53 @@ concept_graph:
         - "D05-09"
       provenance:
         - "d05-anchor"
+    - id: "STD-gdpr"
+      name: "标准 · GDPR"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D05-08"
+        - "D05-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gips"
+      name: "标准 · GIPS 绩效标准"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D05-01"
+        - "D05-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-iso-iec-25010"
+      name: "标准 · SQuaRE 质量模型"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D05-03"
+        - "D05-06"
+        - "D05-09"
+        - "D05-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-ai-rmf"
+      name: "标准 · AI 风险管理框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D05-04"
+        - "D05-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D05-02"
+        - "D05-05"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

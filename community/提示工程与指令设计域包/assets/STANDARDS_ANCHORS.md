@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E01-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
-| `E01-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E01-01` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `E01-02` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `E01-03` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E01-04` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E01-05` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
+| `E01-06` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `a2a` A2A 协议（Linux Foundation；关键词「多智能体|协同|编排」命中） |
+| `E01-07` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `gfm` GFM 扩展（GitHub；关键词「缓存|分块|上下文」命中） |
+| `E01-08` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `E01-09` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `E01-10` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `E01-11` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| `E01-12` | spec | https://spec.commonmark.org/0.31.2/ | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

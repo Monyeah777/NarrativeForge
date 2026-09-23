@@ -16,6 +16,14 @@ flowchart TD
     F03-10
     F03-12
   end
+  subgraph P80[P80]
+    STD-frictionless-table
+    STD-gdpr
+    STD-nist-800-188
+    STD-nist-ai-rmf
+    STD-spdx-licenses
+    STD-w3c-prov-o
+  end
   F03-01 --> F03-02
   F03-02 --> F03-03
   F03-03 --> F03-04
@@ -36,3 +44,15 @@ flowchart TD
   F03-08 --> F03-11
   F03-11 --> F03-12
   F03-09 --> F03-12
+  F03-01 --> STD-frictionless-table
+  F03-02 --> STD-gdpr
+  F03-03 --> STD-gdpr
+  F03-12 --> STD-gdpr
+  F03-06 --> STD-nist-800-188
+  F03-04 --> STD-nist-ai-rmf
+  F03-07 --> STD-nist-ai-rmf
+  F03-10 --> STD-nist-ai-rmf
+  F03-09 --> STD-spdx-licenses
+  F03-05 --> STD-w3c-prov-o
+  F03-08 --> STD-w3c-prov-o
+  F03-11 --> STD-w3c-prov-o

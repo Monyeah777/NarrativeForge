@@ -16,6 +16,12 @@ flowchart TD
     A11-10
     A11-12
   end
+  subgraph P80[P80]
+    STD-arrow
+    STD-frictionless-package
+    STD-mlcommons-bench
+    STD-onnx
+  end
   A11-05 --> A11-02
   A11-02 --> A11-03
   A11-01 --> A11-04
@@ -26,3 +32,15 @@ flowchart TD
   A11-02 --> A11-11
   A11-07 --> A11-12
   A11-04 --> A11-12
+  A11-05 --> STD-arrow
+  A11-11 --> STD-arrow
+  A11-02 --> STD-frictionless-package
+  A11-04 --> STD-frictionless-package
+  A11-06 --> STD-frictionless-package
+  A11-07 --> STD-frictionless-package
+  A11-08 --> STD-frictionless-package
+  A11-09 --> STD-frictionless-package
+  A11-12 --> STD-frictionless-package
+  A11-10 --> STD-mlcommons-bench
+  A11-01 --> STD-onnx
+  A11-03 --> STD-onnx

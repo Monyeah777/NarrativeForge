@@ -16,6 +16,16 @@ flowchart TD
     F09-10
     F09-12
   end
+  subgraph P80[P80]
+    STD-creativecommons
+    STD-mlcommons-bench
+    STD-nist-800-188
+    STD-oasis-openapi
+    STD-osi-osd
+    STD-owasp-llm
+    STD-spdx-licenses
+    STD-w3c-epub33
+  end
   F09-01 --> F09-02
   F09-02 --> F09-03
   F09-03 --> F09-04
@@ -36,3 +46,15 @@ flowchart TD
   F09-08 --> F09-11
   F09-11 --> F09-12
   F09-09 --> F09-12
+  F09-01 --> STD-creativecommons
+  F09-08 --> STD-mlcommons-bench
+  F09-06 --> STD-nist-800-188
+  F09-03 --> STD-oasis-openapi
+  F09-05 --> STD-osi-osd
+  F09-07 --> STD-osi-osd
+  F09-09 --> STD-osi-osd
+  F09-11 --> STD-owasp-llm
+  F09-02 --> STD-spdx-licenses
+  F09-10 --> STD-spdx-licenses
+  F09-12 --> STD-spdx-licenses
+  F09-04 --> STD-w3c-epub33

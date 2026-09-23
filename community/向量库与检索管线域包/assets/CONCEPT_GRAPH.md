@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「向量库与检索管线」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（向量库与检索管线:M01）与收口模块（向量库与检索管线:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C15-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C15-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,13 @@
 | `C15-10` | 权限与脱敏 | P60 | `C15-09`、`C15-07` | c15-anchor |
 | `C15-11` | 容量规划 | P40 | `C15-10`、`C15-08` | c15-anchor |
 | `C15-12` | 检索可观测性 | P60 | `C15-11`、`C15-09` | c15-anchor |
+| `STD-arrow` | 标准 · Arrow 列式格式（Apache） | P80 | `C15-01` | std-catalog |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C15-12` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `C15-04`、`C15-06`、`C15-07` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `C15-09` | std-catalog |
+| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons） | P80 | `C15-03` | std-catalog |
+| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST） | P80 | `C15-10` | std-catalog |
+| `STD-parquet` | 标准 · Parquet 格式（Apache） | P80 | `C15-02`、`C15-05`、`C15-08`、`C15-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +53,13 @@
 | `C15-权限与脱敏` | `C15-10` |
 | `C15-容量规划` | `C15-11` |
 | `C15-检索可观测性` | `C15-12` |
+| `std-arrow` | `STD-arrow` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-frictionless-package` | `STD-frictionless-package` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-mlcommons-croissant` | `STD-mlcommons-croissant` |
+| `std-nist-800-188` | `STD-nist-800-188` |
+| `std-parquet` | `STD-parquet` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +71,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c15-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C15-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +91,16 @@ concept_graph:
         - "C15-10"
         - "C15-11"
         - "C15-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-arrow"
+        - "STD-cncf-otel-semconv"
+        - "STD-frictionless-package"
+        - "STD-mlcommons-bench"
+        - "STD-mlcommons-croissant"
+        - "STD-nist-800-188"
+        - "STD-parquet"
   nodes:
     - id: "C15-01"
       name: "索引与分片"
@@ -181,6 +206,67 @@ concept_graph:
         - "C15-09"
       provenance:
         - "c15-anchor"
+    - id: "STD-arrow"
+      name: "标准 · Arrow 列式格式"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-01"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-04"
+        - "C15-06"
+        - "C15-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-croissant"
+      name: "标准 · Croissant 数据集元数据"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-800-188"
+      name: "标准 · SP 800-188 去标识化"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-parquet"
+      name: "标准 · Parquet 格式"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-02"
+        - "C15-05"
+        - "C15-08"
+        - "C15-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

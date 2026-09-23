@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F06-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F06-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F06-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F06-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `F06-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation；关键词「模型|推理|量化」命中） |
+| `F06-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F06-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `w3c-prov-o` PROV-O 溯源本体（W3C；关键词「溯源|证据链|审计」命中） |
+| `F06-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `w3c-prov-o` PROV-O 溯源本体（W3C；关键词「溯源|证据链|审计」命中） |
+| `F06-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F06-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F06-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；关键词「风险|伦理|责任」命中） |
+| `F06-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；关键词「风险|伦理|责任」命中） |
+| `F06-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `gdpr` GDPR（EU；关键词「隐私|个人信息|去标识|合规|监管」命中） |
+| `F06-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
 
 ## 2. 使用边界
 

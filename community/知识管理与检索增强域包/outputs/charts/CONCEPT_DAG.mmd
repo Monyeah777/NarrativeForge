@@ -16,6 +16,16 @@ flowchart TD
     E11-10
     E11-12
   end
+  subgraph P80[P80]
+    STD-c2pa-spec
+    STD-commonmark
+    STD-frictionless-package
+    STD-frictionless-table
+    STD-mlcommons-bench
+    STD-nist-800-188
+    STD-onnx
+    STD-w3c-tabular-data
+  end
   E11-01 --> E11-02
   E11-02 --> E11-03
   E11-03 --> E11-04
@@ -36,3 +46,15 @@ flowchart TD
   E11-08 --> E11-11
   E11-11 --> E11-12
   E11-09 --> E11-12
+  E11-07 --> STD-c2pa-spec
+  E11-01 --> STD-commonmark
+  E11-04 --> STD-commonmark
+  E11-03 --> STD-frictionless-package
+  E11-06 --> STD-frictionless-table
+  E11-08 --> STD-frictionless-table
+  E11-09 --> STD-frictionless-table
+  E11-11 --> STD-mlcommons-bench
+  E11-10 --> STD-nist-800-188
+  E11-12 --> STD-nist-800-188
+  E11-02 --> STD-onnx
+  E11-05 --> STD-w3c-tabular-data

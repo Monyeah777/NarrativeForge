@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「推理服务与部署」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（推理服务与部署:M01）与收口模块（推理服务与部署:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（C11-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C11-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,13 @@
 | `C11-10` | 成本核算 | P60 | `C11-09`、`C11-07` | c11-anchor |
 | `C11-11` | 私有化部署 | P40 | `C11-10`、`C11-08` | c11-anchor |
 | `C11-12` | SLA 与容量规划 | P60 | `C11-11`、`C11-09` | c11-anchor |
+| `STD-a2a` | 标准 · A2A 协议（Linux Foundation） | P80 | `C11-03` | std-catalog |
+| `STD-cncf-otel-otlp` | 标准 · OTLP 协议（OpenTelemetry） | P80 | `C11-02`、`C11-04`、`C11-12` | std-catalog |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C11-09`、`C11-10` | std-catalog |
+| `STD-gfm` | 标准 · GFM 扩展（GitHub） | P80 | `C11-06` | std-catalog |
+| `STD-k8s-crd` | 标准 · Kubernetes CRD/API 扩展（CNCF） | P80 | `C11-05`、`C11-07` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative） | P80 | `C11-01`、`C11-11` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `C11-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +53,13 @@
 | `C11-成本核算` | `C11-10` |
 | `C11-私有化部署` | `C11-11` |
 | `C11-SLA-与容量规划` | `C11-12` |
+| `std-a2a` | `STD-a2a` |
+| `std-cncf-otel-otlp` | `STD-cncf-otel-otlp` |
+| `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-gfm` | `STD-gfm` |
+| `std-k8s-crd` | `STD-k8s-crd` |
+| `std-oasis-openapi` | `STD-oasis-openapi` |
+| `std-onnx` | `STD-onnx` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +71,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     c11-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "C11-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +91,16 @@ concept_graph:
         - "C11-10"
         - "C11-11"
         - "C11-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-a2a"
+        - "STD-cncf-otel-otlp"
+        - "STD-cncf-otel-semconv"
+        - "STD-gfm"
+        - "STD-k8s-crd"
+        - "STD-oasis-openapi"
+        - "STD-onnx"
   nodes:
     - id: "C11-01"
       name: "推理服务框架"
@@ -181,6 +206,67 @@ concept_graph:
         - "C11-09"
       provenance:
         - "c11-anchor"
+    - id: "STD-a2a"
+      name: "标准 · A2A 协议"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C11-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cncf-otel-otlp"
+      name: "标准 · OTLP 协议"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C11-02"
+        - "C11-04"
+        - "C11-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cncf-otel-semconv"
+      name: "标准 · 语义约定（可扩展注册表）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C11-09"
+        - "C11-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gfm"
+      name: "标准 · GFM 扩展"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C11-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-k8s-crd"
+      name: "标准 · Kubernetes CRD/API 扩展"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C11-05"
+        - "C11-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-oasis-openapi"
+      name: "标准 · OpenAPI 3.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C11-01"
+        - "C11-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-onnx"
+      name: "标准 · ONNX（opset 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C11-08"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

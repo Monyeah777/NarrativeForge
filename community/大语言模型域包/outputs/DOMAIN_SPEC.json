@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/2303.18223",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "选型单必须含四字段：license_id（合法 SPDX 表达式）、context_limit（正整数 token）、benchmark_scores（≥2 个基准 + 各自版本号）、cost_per_1k_calls（数值 + 单位）；缺一即口径未定。",
       "pitfall": "只用榜单排名决策而忽略许可与上下文限制；混用不同榜单版本导致数字不可比。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/2001.08361",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "参数表须给 total_params 与 active_params（MoE 必填；稠密模型两者相等）并注明是否含嵌入层；两值均为正整数且 active ≤ total。",
       "pitfall": "把 MoE 总参数量当作计算量；把词表嵌入算进计算参数造成成本高估。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://arxiv.org/abs/1508.07909",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-skos",
+      "standard_why": "关键词「术语|词表|本体|知识图谱」命中",
       "check": "vocab_size 必须等于实际 tokenizer 长度；normalization 与 byte_fallback 两项取值显式登记（none/nfkc 等枚举）。",
       "pitfall": "用字符数近似 token 数做上下文预算；多语言场景未标 byte_fallback 导致计数系统偏差。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://arxiv.org/abs/2101.00027",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
       "check": "数据卡须给 source 清单（每源 license）、dedup_ratio（0–1 数值）、contamination_check（基准名 + 命中率）；三项缺一即数据口径未定。",
       "pitfall": "缺污染检测使评测分数不可比；去重只在单源内做导致跨源重复泄漏。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://arxiv.org/abs/2104.09864",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "gfm",
+      "standard_why": "关键词「缓存|分块|上下文」命中",
       "check": "同时声明 train_ctx 与 effective_ctx；effective > train 时必须附外推方法与长文验证基准名，否则判夸大。",
       "pitfall": "把「支持 1M 上下文」当成「在 1M 上可靠」；外推未在长文基准验证。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://arxiv.org/abs/1706.03762",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "域码 A01 专属绑定（轮换 1）",
       "check": "必须声明 kv_heads（正整数）与 attn_impl（枚举，如 eager/flash_attention_2）；有窗口者给 window_size。",
       "pitfall": "只报总头数不报 KV 头数，导致显存与吞吐估算失真。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://arxiv.org/abs/2206.07682",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "失效清单每条须含 trigger（可复现输入模式）+ observed（可观察行为）+ severity（枚举 低/中/高）；「偶发」类描述不接受。",
       "pitfall": "用「偶发」描述失效导致不可复现；把 prompt 敏感问题一律归因于模型缺陷。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://spdx.org/licenses/",
       "anchor_kind": "spec",
       "anchor_status": 200,
+      "standard_ref": "creativecommons",
+      "standard_why": "关键词「许可|版权|知识产权|授权」命中",
       "check": "license_id 须为合法 SPDX 表达式；商用 / 分发 / 衍生三项各给 allow|deny|conditional，conditional 须附条件文本。",
       "pitfall": "把「开源模型」等同「可商用」；忽略输出内容的使用限制条款。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://arxiv.org/abs/1503.02531",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
       "check": "声明 teacher_id、distill_target（枚举 logits|sequence|hidden）、temperature（数值 >0）；教师许可须允许衍生，否则判越界。",
       "pitfall": "教师许可禁衍生却产出学生权重；只在 logits 上蒸馏却宣称「能力对齐」。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2203.05482",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "合并卡须给 method、source_models（≥2 + 各自许可）、coefficients（和=1 或显式说明），并报告合并前后每个基准的变化（不只平均分）。",
       "pitfall": "合并许可不兼容的权重；只报平均分掩盖单基准退化。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/2210.17323",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "声明 quant_scheme、bits（枚举 4|8|16|bf16）、group_size（分组量化必填）与质量变化量（困惑度或基准差值）。",
       "pitfall": "只报显存节省不报质量损失；混合精度未标注哪些层保持高精度。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/1904.09751",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "onnx",
+      "standard_why": "关键词「模型|推理|量化」命中",
       "check": "生成请求须记录 temperature、top_p、seed（若支持）与 stop 条件；同 seed 同参数须可复现，不可复现须显式声明原因。",
       "pitfall": "未固定 seed 却宣称「同输入同输出」；temperature 与 top_p 同时激进导致跨系统不可比。"
     }

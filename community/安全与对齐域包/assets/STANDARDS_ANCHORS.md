@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `F01-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
-| `F01-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `F01-01` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `F01-02` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；关键词「提示|指令|模板」命中） |
+| `F01-03` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F01-04` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `F01-05` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F01-06` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `F01-07` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `c2pa-spec` 内容凭证规范（C2PA；关键词「水印|溯源|凭证|内容来源」命中） |
+| `F01-08` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F01-09` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F01-10` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
+| `F01-11` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `nist-ai-rmf` AI 风险管理框架（NIST；F 段默认绑定（轮换 0）） |
+| `F01-12` | spec | https://www.nist.gov/itl/ai-risk-management-framework | ✓ 200 | `owasp-llm` LLM 应用十大风险（OWASP；关键词「安全|越狱|红队|攻击|对抗」命中） |
 
 ## 2. 使用边界
 

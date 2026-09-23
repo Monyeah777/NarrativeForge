@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「数据分析与决策支持」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（数据分析与决策支持:M01）与收口模块（数据分析与决策支持:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（E14-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E14-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,11 @@
 | `E14-10` | 假设检验 | P60 | `E14-09`、`E14-07` | e14-anchor |
 | `E14-11` | 决策备忘 | P40 | `E14-10`、`E14-08` | e14-anchor |
 | `E14-12` | 数据质量 | P60 | `E14-11`、`E14-09` | e14-anchor |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E14-01`、`E14-07`、`E14-10` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `E14-04`、`E14-12` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega） | P80 | `E14-03`、`E14-09` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E14-06` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E14-02`、`E14-05`、`E14-08`、`E14-11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +51,11 @@
 | `E14-假设检验` | `E14-10` |
 | `E14-决策备忘` | `E14-11` |
 | `E14-数据质量` | `E14-12` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-table` | `STD-frictionless-table` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-epub33` | `STD-w3c-epub33` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +67,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     e14-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "E14-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +87,14 @@ concept_graph:
         - "E14-10"
         - "E14-11"
         - "E14-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-commonmark"
+        - "STD-frictionless-table"
+        - "STD-vega-lite"
+        - "STD-w3c-epub33"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "E14-01"
       name: "指标口径"
@@ -181,6 +200,53 @@ concept_graph:
         - "E14-09"
       provenance:
         - "e14-anchor"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E14-01"
+        - "E14-07"
+        - "E14-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-table"
+      name: "标准 · Table Schema"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E14-04"
+        - "E14-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E14-03"
+        - "E14-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-epub33"
+      name: "标准 · EPUB 3.3"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E14-06"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E14-02"
+        - "E14-05"
+        - "E14-08"
+        - "E14-11"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

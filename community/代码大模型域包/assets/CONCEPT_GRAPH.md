@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「代码大模型」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（代码大模型:M01）与收口模块（代码大模型:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 1 个包外前置族（A09-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A09-00 领域通用前置）。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,6 +29,13 @@
 | `A09-10` | 代码解释与注释 | P60 | `A09-07` | a09-anchor |
 | `A09-11` | 代码评测基准 | P40 | `A09-05` | a09-anchor |
 | `A09-12` | 私有代码安全 | P60 | `A09-08`、`A09-11` | a09-anchor |
+| `STD-cwe` | 标准 · CWE 缺陷枚举（MITRE） | P80 | `A09-02`、`A09-05`、`A09-08` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `A09-03` | std-catalog |
+| `STD-gfm` | 标准 · GFM 扩展（GitHub） | P80 | `A09-01` | std-catalog |
+| `STD-lsp` | 标准 · Language Server Protocol（Microsoft） | P80 | `A09-06`、`A09-09` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A09-11` | std-catalog |
+| `STD-osv` | 标准 · OSV 漏洞格式（Google/OSV） | P80 | `A09-04`、`A09-07`、`A09-10` | std-catalog |
+| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP） | P80 | `A09-12` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -46,6 +53,13 @@
 | `A09-代码解释与注释` | `A09-10` |
 | `A09-代码评测基准` | `A09-11` |
 | `A09-私有代码安全` | `A09-12` |
+| `std-cwe` | `STD-cwe` |
+| `std-frictionless-package` | `STD-frictionless-package` |
+| `std-gfm` | `STD-gfm` |
+| `std-lsp` | `STD-lsp` |
+| `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-osv` | `STD-osv` |
+| `std-owasp-llm` | `STD-owasp-llm` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -57,6 +71,7 @@ concept_graph:
   provenance_strength: "external"
   provenance_legend:
     a09-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+    std-catalog: "可扩展标准目录条目（protocol/standards_catalog.json，本机可达性实测）"
   external_prereqs:
     - id: "A09-00"
       name: "领域通用前置族（数学/工程基础，包外）"
@@ -76,6 +91,16 @@ concept_graph:
         - "A09-10"
         - "A09-11"
         - "A09-12"
+    - id: "standards"
+      name: "可扩展标准（绑定）"
+      nodes:
+        - "STD-cwe"
+        - "STD-frictionless-package"
+        - "STD-gfm"
+        - "STD-lsp"
+        - "STD-mlcommons-bench"
+        - "STD-osv"
+        - "STD-owasp-llm"
   nodes:
     - id: "A09-01"
       name: "代码补全与上下文"
@@ -171,6 +196,67 @@ concept_graph:
         - "A09-11"
       provenance:
         - "a09-anchor"
+    - id: "STD-cwe"
+      name: "标准 · CWE 缺陷枚举"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A09-02"
+        - "A09-05"
+        - "A09-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A09-03"
+      provenance:
+        - "std-catalog"
+    - id: "STD-gfm"
+      name: "标准 · GFM 扩展"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A09-01"
+      provenance:
+        - "std-catalog"
+    - id: "STD-lsp"
+      name: "标准 · Language Server Protocol"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A09-06"
+        - "A09-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mlcommons-bench"
+      name: "标准 · MLPerf 基准（可扩展场景）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A09-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-osv"
+      name: "标准 · OSV 漏洞格式"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A09-04"
+        - "A09-07"
+        - "A09-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-owasp-llm"
+      name: "标准 · LLM 应用十大风险"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A09-12"
+      provenance:
+        - "std-catalog"
 ```
 
 ## 5. 证据与边界

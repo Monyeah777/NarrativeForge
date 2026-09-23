@@ -1,0 +1,2462 @@
+{
+  "schema": "nf-standards-catalog/1",
+  "note": "可扩展标准目录（真源）。每条 = 一个**带扩展机制**的开放标准/规范：body（发布机构）/ title / url / ext_points（扩展点或扩展注册表）/ layer（该标准在 NF 里落哪一层：data 数据 · iface 接口 · form 形态 · gov 治理 · eng 工程）/ evidence（本机可达性实测：状态 + 取样标题 + sha256）。外部标准只作**口径与机制参照**，不作品质背书（STRATEGY §3.2/§3.3）。",
+  "coverage": {
+    "standards": 126,
+    "reachable": 115,
+    "unreachable": 11,
+    "by_layer": {
+      "data": 38,
+      "eng": 8,
+      "form": 13,
+      "gov": 38,
+      "iface": 29
+    },
+    "bodies": 65
+  },
+  "standards": [
+    {
+      "id": "mcp",
+      "body": "Anthropic/MCP",
+      "title": "Model Context Protocol",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "ext_points": [
+        "server-capability",
+        "extension-method"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Specification - Model Context Protocol",
+        "sha256_sample": "e7150ed8853d76d4481295ebbc4081fb38ee522ffcf0509bd6df98e792adb8f3",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "arrow",
+      "body": "Apache",
+      "title": "Arrow 列式格式",
+      "url": "https://arrow.apache.org/docs/format/Columnar.html",
+      "ext_points": [
+        "extension-type",
+        "metadata"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Arrow Columnar Format &#8212; Apache Arrow v25.0.1",
+        "sha256_sample": "a58412b191fd8374cfc70d0d14e1a4d83e438475dbb24c80411fe3122a51b381",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "avro",
+      "body": "Apache",
+      "title": "Avro 规范",
+      "url": "https://avro.apache.org/docs/1.11.1/specification/",
+      "ext_points": [
+        "schema-resolution",
+        "logical-type"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Specification | Apache Avro",
+        "sha256_sample": "42181e10142904e6fc30b11bd4380b2ab72739f511d8b6c6a7725c7f145ad933",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "parquet",
+      "body": "Apache",
+      "title": "Parquet 格式",
+      "url": "https://github.com/apache/parquet-format",
+      "ext_points": [
+        "logical-type-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "GitHub - apache/parquet-format: Apache Parquet Format · GitHub",
+        "sha256_sample": "b10cb750aba0bd0c0fd6549c7ee271fd8ab58f3db7bddf4239d692ea4aa084b0",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oasis-asyncapi",
+      "body": "AsyncAPI",
+      "title": "AsyncAPI 3.0",
+      "url": "https://www.asyncapi.com/docs/reference/specification/v3.0.0",
+      "ext_points": [
+        "extension",
+        "bindings"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "3.0.0 | AsyncAPI Initiative for event-driven APIs",
+        "sha256_sample": "ca6046ffe85c27dea71ca95fc291156a1b6a6c70cfe0f62439a7c4d1cce8aaf8",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "autosar-ap",
+      "body": "AUTOSAR",
+      "title": "Adaptive Platform",
+      "url": "https://www.autosar.org/",
+      "ext_points": [
+        "manifest-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": false,
+        "http_status": 0,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)>"
+      }
+    },
+    {
+      "id": "c2pa-spec",
+      "body": "C2PA",
+      "title": "内容凭证规范",
+      "url": "https://c2pa.org/specifications/specifications/1.3/index.html",
+      "ext_points": [
+        "assertion-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "C2PA Specifications :: C2PA Specifications",
+        "sha256_sample": "c9a46b41953b3179b9858f126e46604379861135e06c678f72db6074350ea246",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "gips",
+      "body": "CFA Institute",
+      "title": "GIPS 绩效标准",
+      "url": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "ext_points": [
+        "composite-definition",
+        "disclosure"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "GIPS® Standards: Performance Ethics &amp; Reporting | RPC",
+        "sha256_sample": "1e0b0608160c1a1618c5aadbab4448e399662f4f6154f43bb0664ca8230bdf19",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cncf-cloudevents",
+      "body": "CNCF",
+      "title": "CloudEvents 1.0",
+      "url": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md",
+      "ext_points": [
+        "extension-attribute"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "spec/cloudevents/spec.md at main · cloudevents/spec · GitHub",
+        "sha256_sample": "e6403c49cf3033c76a48f1b61bfcbcc6b9764429663b08c3fe6f6419ef8b16c5",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "k8s-crd",
+      "body": "CNCF",
+      "title": "Kubernetes CRD/API 扩展",
+      "url": "https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/",
+      "ext_points": [
+        "crd-versioning",
+        "admission"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Custom Resources | Kubernetes",
+        "sha256_sample": "0aae60830977f6beacaaef667f157d9228653cc68ac7235b83027e0744612ccc",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "codex-alimentarius",
+      "body": "Codex",
+      "title": "国际食品法典",
+      "url": "https://www.fao.org/fao-who-codexalimentarius/en/",
+      "ext_points": [
+        "standard-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Home&nbsp;&#124; CODEXALIMENTARIUS FAO-WHO",
+        "sha256_sample": "a57eb0f9feaa24c9da620b403dac15f7e68f503b9344e27d8144dbfd9cf1a004",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "commonmark",
+      "body": "CommonMark",
+      "title": "CommonMark 0.31.2",
+      "url": "https://spec.commonmark.org/0.31.2/",
+      "ext_points": [
+        "extension-blocks"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "CommonMark Spec",
+        "sha256_sample": "1fe01e006d685b3bef138a0fcdcfc9048e5b16c7ab17daa5ef7fa30008ff81f4",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "covesa-vss",
+      "body": "COVESA",
+      "title": "Vehicle Signal Specification",
+      "url": "https://covesa.global/",
+      "ext_points": [
+        "overlay-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "COVESA, the Connected Vehicle Systems Alliance",
+        "sha256_sample": "1e3cea17372ef4abd569d05ef8ec71fc14357c766e15cbcdcd3980e6f9a8aedd",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "creativecommons",
+      "body": "Creative Commons",
+      "title": "许可与权利表达",
+      "url": "https://creativecommons.org/licenses/",
+      "ext_points": [
+        "license-versioning",
+        "rights-statements"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Licenses List - Creative Commons",
+        "sha256_sample": "683c35234eafcf352f2f025640e60de6d0c96f5a102fc3457922e8caa2d113e8",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cyclonedx-mlbom",
+      "body": "CycloneDX",
+      "title": "ML-BOM 能力",
+      "url": "https://cyclonedx.org/capabilities/mlbom/",
+      "ext_points": [
+        "component-extension",
+        "property"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Machine Learning Bill of Materials (AI/ML-BOM) | CycloneDX",
+        "sha256_sample": "859d244e042c48ef419e9a3d78f228ee5a402645207318a8cb3fdda8b9d987c1",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "datacite",
+      "body": "DataCite",
+      "title": "元数据内核",
+      "url": "https://schema.datacite.org/meta/kernel-4.6/",
+      "ext_points": [
+        "profile"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "f6dbdb7cfc9bacade4487f91ebcff1a83fd1936576a62b8411c1da2f33ca0477",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "dicom",
+      "body": "DICOM",
+      "title": "DICOM 标准",
+      "url": "https://www.dicomstandard.org/",
+      "ext_points": [
+        "private-attributes",
+        "supplement"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "DICOM",
+        "sha256_sample": "0dbf8992eb1629594ae75f17ae131a39796484d6ca402a41ebc19cf9aed29195",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "eu-ai-act",
+      "body": "EU",
+      "title": "AI 法案（技术文档/风险分级）",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "ext_points": [
+        "annex-iv-doc",
+        "harmonised-standards"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": false,
+        "http_status": 202,
+        "title": "",
+        "sha256_sample": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "eu-machinery",
+      "body": "EU",
+      "title": "机械条例 2023/1230",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/1230/oj",
+      "ext_points": [
+        "standard-harmonisation"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": false,
+        "http_status": 202,
+        "title": "",
+        "sha256_sample": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "gdpr",
+      "body": "EU",
+      "title": "GDPR",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+      "ext_points": [
+        "codes-of-conduct",
+        "certification"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": false,
+        "http_status": 202,
+        "title": "",
+        "sha256_sample": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "fao-food",
+      "body": "FAO",
+      "title": "食品安全与质量",
+      "url": "https://www.fao.org/food-safety/en/",
+      "ext_points": [
+        "codex-alignment"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Home | Food Safety and Quality | FAO",
+        "sha256_sample": "95a913d7af81e6f8c2552395bf39ee6759b7e27387e11fedad0f029cb6e360a7",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "frictionless-package",
+      "body": "Frictionless",
+      "title": "Data Package",
+      "url": "https://specs.frictionlessdata.io/data-package/",
+      "ext_points": [
+        "profile",
+        "resource-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Data Package | Data Package (v1)",
+        "sha256_sample": "dca696119aa109780334d0ff6ddac7ba4f98d3a38eedf74f675c9b8645a627e2",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "frictionless-table",
+      "body": "Frictionless",
+      "title": "Table Schema",
+      "url": "https://specs.frictionlessdata.io/table-schema/",
+      "ext_points": [
+        "custom-constraint",
+        "profile"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Table Schema | Data Package (v1)",
+        "sha256_sample": "2679b8bb17921a9e4eb3c894168bc980d7d7fca438ac05deb3182c8171e57956",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "gfm",
+      "body": "GitHub",
+      "title": "GFM 扩展",
+      "url": "https://github.github.com/gfm/",
+      "ext_points": [
+        "extension"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "GitHub Flavored Markdown Spec",
+        "sha256_sample": "ae0ccccbfd97bab6bac44319b6cd6e0643ff826909ba79a45b5d5811b3896d2b",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "gleif-lei",
+      "body": "GLEIF",
+      "title": "ISO 17442 LEI",
+      "url": "https://www.gleif.org/en/about-lei/iso-17442-the-lei-code-structure",
+      "ext_points": [
+        "vLEI-ecosystem"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "The Legal Entity Identifier (LEI) - LEI &amp; vLEI - Organizational Identity – GLEIF",
+        "sha256_sample": "fca13ceb661068516847bb6ecfb19d95e3ab9e37c8583def5b217e599b817f25",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "protobuf",
+      "body": "Google",
+      "title": "Protocol Buffers proto3",
+      "url": "https://protobuf.dev/programming-guides/proto3/",
+      "ext_points": [
+        "reserved-fields",
+        "custom-options"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Language Guide (proto 3) | Protocol Buffers Documentation",
+        "sha256_sample": "a9dddcf5bc612e3010ad8f4f59afcf268c50ab07e2ebc7f5a8916a4084c3d41d",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "osv",
+      "body": "Google/OSV",
+      "title": "OSV 漏洞格式",
+      "url": "https://osv.dev/",
+      "ext_points": [
+        "ecosystem-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OSV - Open Source Vulnerabilities",
+        "sha256_sample": "577510d07b6d725167417cf900987ded296f9ba3c878b355e7ec24a6ab3b405a",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "grafana-dashboard",
+      "body": "Grafana",
+      "title": "Dashboard JSON model",
+      "url": "https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/view-dashboard-json-model/",
+      "ext_points": [
+        "panel-plugin",
+        "schema-version"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "JSON model | Grafana documentation",
+        "sha256_sample": "f22f2d4a592e9517c8c5c542a74891dfe01deb16d6e9c05ccb9645f758fe32e2",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "graphml",
+      "body": "GraphML",
+      "title": "GraphML 1.0",
+      "url": "http://graphml.graphdrawing.org/specification.html",
+      "ext_points": [
+        "key-extension"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "GraphML Specification",
+        "sha256_sample": "cf8d3b2a42d7c8a9b95beb709bfdd1663dc1637fd0b89a3446dd40d08323f6ac",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "graphql",
+      "body": "GraphQL Foundation",
+      "title": "GraphQL SDL",
+      "url": "https://spec.graphql.org/October2021/",
+      "ext_points": [
+        "directive-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "GraphQL",
+        "sha256_sample": "67c1b6fded5f0ae9bd51756f88e21ac8e9c5780bf8b6e70617e831690849bdf1",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "graphviz",
+      "body": "Graphviz",
+      "title": "DOT 语言",
+      "url": "https://graphviz.org/doc/info/lang.html",
+      "ext_points": [
+        "attribute-extension"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "DOT Language | Graphviz",
+        "sha256_sample": "db41d38941e21304864c09915b1d60e816ad69c52bb27d169e76aa0fb61ff7e5",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "fhir-shorthand",
+      "body": "HL7",
+      "title": "FHIR Shorthand（扩展定义语言）",
+      "url": "https://hl7.org/fhir/uv/shorthand/",
+      "ext_points": [
+        "extension-definition"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "FHIR Shorthand - FHIR Shorthand v3.0.0",
+        "sha256_sample": "8f82ce41147d2e322f68a53638201c575b117377839b107c414cfb62cddfbb29",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "hl7-fhir",
+      "body": "HL7",
+      "title": "FHIR（资源扩展机制）",
+      "url": "https://hl7.org/fhir/",
+      "ext_points": [
+        "extension",
+        "profile-ig"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Index - FHIR v5.0.0",
+        "sha256_sample": "c0d85b5610dc0638b70390a6ad3dfebf8d23b047580dc05e70df54f81e287fe3",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ieee-7000",
+      "body": "IEEE",
+      "title": "IEEE 7000 系列（伦理对齐）",
+      "url": "https://standards.ieee.org/initiatives/autonomous-intelligence-systems/",
+      "ext_points": [
+        "process-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "IEEE SA - Autonomous and Intelligent Systems (AIS)",
+        "sha256_sample": "6891ae2e0081b22d648d0a575b33097de980691d527eb17a7f2d3ca3aafe29c1",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ieee-754",
+      "body": "IEEE",
+      "title": "浮点运算标准",
+      "url": "https://standards.ieee.org/ieee/754/6210/",
+      "ext_points": [
+        "format-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "IEEE SA - IEEE 754-2019",
+        "sha256_sample": "3922a95cbdc5b761ff25db77dad0881ee932fec72d263f41a2ea82c44811313f",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "bagit",
+      "body": "IETF",
+      "title": "BagIt (RFC 8493)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8493.txt",
+      "ext_points": [
+        "tag-file-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "a400b4fb324c6bad391b83a6ec581d6bb72f6e89cd9f3d55e231957685e7549a",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cbor",
+      "body": "IETF",
+      "title": "CBOR (RFC 8949)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8949.txt",
+      "ext_points": [
+        "tag-registry"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "40bad49ffee4fc06bce3b90e1cad206423558bbfed0756f6455be8ef74ee3c67",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-bcp47",
+      "body": "IETF",
+      "title": "语言标签 (RFC 5646)",
+      "url": "https://www.rfc-editor.org/rfc/rfc5646.txt",
+      "ext_points": [
+        "extension-subtag",
+        "registry"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "b0cade646c726fc61743d117c9c26b15152e7d281dacde71097941d43806eacf",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-http",
+      "body": "IETF",
+      "title": "HTTP 语义 (RFC 9110)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.txt",
+      "ext_points": [
+        "extension-headers",
+        "content-negotiation"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "0e4a56639c258b839e5e2708af604026a0eff0f479bac66333f13f8053e4db17",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-ixdtf",
+      "body": "IETF",
+      "title": "IXDTF (RFC 9557)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9557.txt",
+      "ext_points": [
+        "annotation-suffix"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "be9723da3a9d7e4ec06bc4b09fc244de49af3be447af3685598b35e35181cf9e",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-json",
+      "body": "IETF",
+      "title": "JSON (RFC 8259)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8259.txt",
+      "ext_points": [
+        "member-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "61a5378f4255c720beb2a4b4a63b29540147c140f36988bf086291989b4cd2d7",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-nip-19",
+      "body": "IETF",
+      "title": "NIP-19 编码（可扩展前缀）",
+      "url": "https://www.rfc-editor.org/rfc/rfc9457.txt",
+      "ext_points": [
+        "prefix-registry"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "You do not have enough credit.",
+        "sha256_sample": "e2d4143729c0292bebb75121eec643c02c8eed146c4b1534eb101a8304bab605",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-problem",
+      "body": "IETF",
+      "title": "Problem Details (RFC 9457)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9457.txt",
+      "ext_points": [
+        "extension-members"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "You do not have enough credit.",
+        "sha256_sample": "e2d4143729c0292bebb75121eec643c02c8eed146c4b1534eb101a8304bab605",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-robots",
+      "body": "IETF",
+      "title": "robots.txt (RFC 9309)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9309.txt",
+      "ext_points": [
+        "extension-directive"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "f633915daaa15b943cae56545d333bcf3ba4d156599e4555499686d6699fb207",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-webpush",
+      "body": "IETF",
+      "title": "Web Push (RFC 8291)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8291.txt",
+      "ext_points": [
+        "header-registry"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "d7130962cbe0940465ca375a9fcecfaaa33afb0febd71dd58e2712502fdc0504",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "rfc3339",
+      "body": "IETF",
+      "title": "时间戳",
+      "url": "https://www.rfc-editor.org/rfc/rfc3339.txt",
+      "ext_points": [
+        "profile"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "779c8b5ee4323a58cc83d4a84b2649c5e409246e8d656aabc1480f0919d0155a",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ietf-json-schema",
+      "body": "IETF/JSON Schema",
+      "title": "JSON Schema 2020-12",
+      "url": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "ext_points": [
+        "vocabulary",
+        "format-annotation"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "JSON Schema: A Media Type for Describing JSON Documents",
+        "sha256_sample": "b27dca71852e402f5f4ddced514390aaf5bcb08487b8b531d1049e2957c3d6d7",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "iso-8601",
+      "body": "ISO",
+      "title": "日期时间（含 8601-2 扩展）",
+      "url": "https://www.iso.org/standard/70907.html",
+      "ext_points": [
+        "interval-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "iso10383",
+      "body": "ISO",
+      "title": "ISO 10383 MIC",
+      "url": "https://www.iso20022.org/market-identifier-codes",
+      "ext_points": [
+        "code-list"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Market identifier codes | ISO20022",
+        "sha256_sample": "973bff91b58ff70a50a8c5533e60a49f8f0dd09329533a9a18f36b3000d71d45",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "iso20022",
+      "body": "ISO",
+      "title": "ISO 20022 报文（可扩展元素）",
+      "url": "https://www.iso20022.org/iso-20022-message-definitions",
+      "ext_points": [
+        "message-definition-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "sepa-iso20022",
+      "body": "ISO",
+      "title": "ISO 20022 报文定义库",
+      "url": "https://www.iso20022.org/iso-20022-message-definitions",
+      "ext_points": [
+        "message-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "iec-42001",
+      "body": "ISO/IEC",
+      "title": "AI 管理体系",
+      "url": "https://www.iso.org/standard/42001",
+      "ext_points": [
+        "management-system-clauses"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "iso-iec-25010",
+      "body": "ISO/IEC",
+      "title": "SQuaRE 质量模型",
+      "url": "https://www.iso.org/standard/78176.html",
+      "ext_points": [
+        "characteristic-extension"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "iso-iec-26511",
+      "body": "ISO/IEC",
+      "title": "术语工作（Terminology）",
+      "url": "https://www.iso.org/standard/43122.html",
+      "ext_points": [
+        "concept-relation"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "iso-iec-42010",
+      "body": "ISO/IEC",
+      "title": "架构描述",
+      "url": "https://www.iso.org/standard/74393.html",
+      "ext_points": [
+        "viewpoint-extension"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": false,
+        "http_status": 403,
+        "title": "",
+        "sha256_sample": "",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": "HTTPError: Forbidden"
+      }
+    },
+    {
+      "id": "jsonrpc",
+      "body": "JSON-RPC",
+      "title": "JSON-RPC 2.0",
+      "url": "https://www.jsonrpc.org/specification",
+      "ext_points": [
+        "extension-method"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "JSON-RPC 2.0 Specification",
+        "sha256_sample": "8fe1edfdca511d309e712e47447457ea5159b728ec02071a84593aed692aefeb",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "jsonapi",
+      "body": "JSON:API",
+      "title": "JSON:API 1.1",
+      "url": "https://jsonapi.org/format/",
+      "ext_points": [
+        "extension-member"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "JSON:API &mdash; Latest Specification (v1.1)",
+        "sha256_sample": "e15c5472ddc0cc549c69d6a2c3a95f6d6b09196fdb35a6480e5ecb68a4671d95",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "jsonlines",
+      "body": "jsonlines.org",
+      "title": "JSON Lines",
+      "url": "https://jsonlines.org/",
+      "ext_points": [
+        "record-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "JSON Lines",
+        "sha256_sample": "a1da59ce6ac1009dff7a19ee1701d78c9e130896e1f8b47ac6c8846d035d4d59",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "khronos-gltf",
+      "body": "Khronos",
+      "title": "glTF",
+      "url": "https://www.khronos.org/gltf/",
+      "ext_points": [
+        "extension-mechanism",
+        "vendor-extensions"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "glTF - Runtime 3D Asset Delivery",
+        "sha256_sample": "896a745d5d5b4b8f0f5f4cfa66691eca843e681d6b72ef15b31a762d8a91eb87",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "a2a",
+      "body": "Linux Foundation",
+      "title": "A2A 协议",
+      "url": "https://a2a-protocol.org/latest/specification/",
+      "ext_points": [
+        "agent-card-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Overview - A2A Protocol",
+        "sha256_sample": "79fdee760fe4b310248764526c67a3f4a51e3f6dc4da65f118f0059b777ce3e4",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "onnx",
+      "body": "Linux Foundation",
+      "title": "ONNX（opset 扩展）",
+      "url": "https://github.com/onnx/onnx/blob/main/docs/IR.md",
+      "ext_points": [
+        "opset-version",
+        "function-op"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "onnx/docs/IR.md at main · onnx/onnx · GitHub",
+        "sha256_sample": "b26260bf8303d21a6e7a0a2ffbe48c9dafec8e0fe6460d50bf938fd9e67a74c4",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "tbx-lisa",
+      "body": "LISA/ISO",
+      "title": "TBX 术语交换格式",
+      "url": "https://www.tbxinfo.net/",
+      "ext_points": [
+        "dialect-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Introduction to TermBase eXchange (TBX)",
+        "sha256_sample": "f5080e194c809484dfccf93e8e54cd365a376fd4e57ddc0f427652b6b7e3d042",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "mermaid",
+      "body": "Mermaid",
+      "title": "Mermaid 图语言",
+      "url": "https://mermaid.js.org/intro/",
+      "ext_points": [
+        "diagram-type-extension"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "About Mermaid | Mermaid",
+        "sha256_sample": "b1720390e6f66001c55f5a2c100822140d6d990fcb8fc64717ec44244f9e0239",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "lsp",
+      "body": "Microsoft",
+      "title": "Language Server Protocol",
+      "url": "https://microsoft.github.io/language-server-protocol/",
+      "ext_points": [
+        "custom-method",
+        "capability"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Official page for Language Server Protocol",
+        "sha256_sample": "45aa028d7009af86f800060d4b515a1782b95fef7875ee3df922d7c10dc81b27",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cwe",
+      "body": "MITRE",
+      "title": "CWE 缺陷枚举",
+      "url": "https://cwe.mitre.org/",
+      "ext_points": [
+        "view",
+        "category-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "CWE - Common Weakness Enumeration",
+        "sha256_sample": "147d2e7ff5b14c9c26a720c1cfb580222242c91d61869de082237eaf3f00cdf3",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "mlcommons-bench",
+      "body": "MLCommons",
+      "title": "MLPerf 基准（可扩展场景）",
+      "url": "https://mlcommons.org/benchmarks/",
+      "ext_points": [
+        "scenario-extension"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Benchmark Work | Benchmarks MLCommons",
+        "sha256_sample": "2bd4327625e9af25cb1f38de0f935a9c1734ca93ae3f5557eb53392a41a762b5",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "mlcommons-croissant",
+      "body": "MLCommons",
+      "title": "Croissant 数据集元数据",
+      "url": "https://docs.mlcommons.org/croissant/docs/croissant-spec.html",
+      "ext_points": [
+        "additional-property"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Croissant Format Specification | Croissant site",
+        "sha256_sample": "115d37c7ee154fcf3f1dd06356b1798b354b275915010c9deedf80aeca255aab",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "nist-100-2",
+      "body": "NIST",
+      "title": "AI 100-2 对抗机器学习分类",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2023.pdf",
+      "ext_points": [
+        "taxonomy"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "19aac6f91bad88f5c766f96b59e6b9db390ba654d8aa7e4512a3d8d79036d22a",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "nist-800-142",
+      "body": "NIST",
+      "title": "SP 800-142 组合测试实践",
+      "url": "https://csrc.nist.gov/pubs/sp/800/142/final",
+      "ext_points": [
+        "methodology"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "SP 800-142, Practical Combinatorial Testing | CSRC",
+        "sha256_sample": "94e904826cc49e91eb8795007796efbc053ce46872bb812f0d26f6004bf4ff96",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "nist-800-188",
+      "body": "NIST",
+      "title": "SP 800-188 去标识化",
+      "url": "https://csrc.nist.gov/pubs/sp/800/188/final",
+      "ext_points": [
+        "technique-catalog"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "SP 800-188, De-Identifying Government Datasets: Techniques and Governance | CSRC",
+        "sha256_sample": "b57ecd26f0d17659ec8693bc6fe908360b1609c3f73b66dd279a6ac051fab1c2",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "nist-ai-rmf",
+      "body": "NIST",
+      "title": "AI 风险管理框架",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "ext_points": [
+        "profile",
+        "playbook"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "AI Risk Management Framework | NIST",
+        "sha256_sample": "61dbac83b12f1115d76af1b1f0cf73ee9cc4d354f5cbdc9bf4247b92f7051c5d",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "nist-privacy",
+      "body": "NIST",
+      "title": "隐私框架",
+      "url": "https://www.nist.gov/privacy-framework",
+      "ext_points": [
+        "profile"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Privacy Framework | NIST",
+        "sha256_sample": "98fe0907a87b4f739b2b65bd684a8ae9068cc12b5dda12bcd9fe062fef5177d4",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oasis-odata",
+      "body": "OASIS",
+      "title": "OData v4.01",
+      "url": "https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html",
+      "ext_points": [
+        "vocabulary-extensions",
+        "annotations"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OData Version 4.01. Part 1: Protocol",
+        "sha256_sample": "d1749d3f71a560db9f8214e81dd95701ab62c8935ddc8938933a15808a330344",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oasis-sarif",
+      "body": "OASIS",
+      "title": "SARIF 2.1.0",
+      "url": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html",
+      "ext_points": [
+        "property-bag",
+        "taxonomies"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Static Analysis Results Interchange Format (SARIF) Version 2.1.0 Plus Errata 01",
+        "sha256_sample": "bca777f0d5db8c91d52867b3d9a125cde6e456a9f86647acfa08e8cbd936716b",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oasis-xlf",
+      "body": "OASIS",
+      "title": "XLIFF 2.1",
+      "url": "https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.html",
+      "ext_points": [
+        "module-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "XLIFF Version 2.1",
+        "sha256_sample": "1cddf60eee4df4b8bbac73f7b39c126249867b576861f38260478bd0ac86b3e3",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oci-image",
+      "body": "OCI",
+      "title": "镜像清单",
+      "url": "https://github.com/opencontainers/image-spec/blob/main/manifest.md",
+      "ext_points": [
+        "annotation",
+        "media-type"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "image-spec/manifest.md at main · opencontainers/image-spec · GitHub",
+        "sha256_sample": "df8f9d2c33da370a482ee913a41511dc7889ee67be85b4c33182155a4b8b63db",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oecd-ai",
+      "body": "OECD",
+      "title": "OECD AI 原则",
+      "url": "https://oecd.ai/en/ai-principles",
+      "ext_points": [
+        "policy-observatory"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "AI Principles Overview - OECD.AI",
+        "sha256_sample": "f3cd6e739391630660f720fba777ea60f807084b14e7ddab14a20ee6ea759e0e",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "ogc-3dtiles",
+      "body": "OGC",
+      "title": "3D Tiles",
+      "url": "https://docs.ogc.org/cs/22-025r4/22-025r4.html",
+      "ext_points": [
+        "extension-mechanism"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "3D Tiles Specification",
+        "sha256_sample": "da0bd7cc7aeb08add979fa6b50b78907bfed2f431d8a6f0f3784c49f5a0b13fa",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "opengeospatial",
+      "body": "OGC",
+      "title": "OGC 标准（含 GeoJSON/3D Tiles）",
+      "url": "https://www.ogc.org/standards/",
+      "ext_points": [
+        "extension-package"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OGC Standards | WMS, WFS, GeoPackage &amp; 80+ Open Geospatial Specs",
+        "sha256_sample": "b198ca205c1a1f8fc614bb66e5d374d330c18706869976e90718c624453ac729",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "opengis-wms",
+      "body": "OGC",
+      "title": "WMS 实现规范（可扩展）",
+      "url": "https://www.ogc.org/standard/wms/",
+      "ext_points": [
+        "vendor-parameters"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Web Map Service - Open Geospatial Consortium",
+        "sha256_sample": "24c0d797d2e59072c9a6e89cd642111e80d73ac7a1d9499d43402d9aafb48601",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "oasis-openapi",
+      "body": "OpenAPI Initiative",
+      "title": "OpenAPI 3.1",
+      "url": "https://spec.openapis.org/oas/v3.1.0",
+      "ext_points": [
+        "x-extension",
+        "specification-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OpenAPI Specification v3.1.0",
+        "sha256_sample": "55bd8998693ca08acfc835d65f643ac20bccbd18c28c7abcc1031207444481a7",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "openmetrics",
+      "body": "OpenMetrics",
+      "title": "OpenMetrics 1.0",
+      "url": "https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md",
+      "ext_points": [
+        "metric-family-extension"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OpenMetrics/specification/OpenMetrics.md at main · prometheus/OpenMetrics · GitHub",
+        "sha256_sample": "d3acad675f5bcf3f8fab2ddf649fa6256472bc16bfe68ebddcdcf046297d4bbb",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cncf-otel-otlp",
+      "body": "OpenTelemetry",
+      "title": "OTLP 协议",
+      "url": "https://opentelemetry.io/docs/specs/otlp/",
+      "ext_points": [
+        "proto-extension",
+        "http-json"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OTLP Specification 1.11.0 | OpenTelemetry",
+        "sha256_sample": "e02d34f98bef463bd552a9b9e3724aecd0a80c92460f04d7c9e874a978ce67a3",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "cncf-otel-semconv",
+      "body": "OpenTelemetry",
+      "title": "语义约定（可扩展注册表）",
+      "url": "https://opentelemetry.io/docs/specs/semconv/",
+      "ext_points": [
+        "attribute-registry",
+        "stability-scope"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OpenTelemetry semantic conventions 1.44.0 | OpenTelemetry",
+        "sha256_sample": "da6fcbe42a9fbaba3412e9c8762baa91890f6bbfe38e4ccc1175fd3580b49a92",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "osi-osd",
+      "body": "OSI",
+      "title": "开源定义",
+      "url": "https://opensource.org/osd",
+      "ext_points": [
+        "license-review"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "The Open Source Definition &#8211; Open Source Initiative",
+        "sha256_sample": "11d9448cdb142bb95775ee1b089670879d5c4467709c2efa4a475880b6754368",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "owasp-llm",
+      "body": "OWASP",
+      "title": "LLM 应用十大风险",
+      "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "ext_points": [
+        "category-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OWASP Foundation",
+        "sha256_sample": "a6ef75a45826f704eb1b9bf8639bedd9adb396ac4b60d12efc7420f9f63358f2",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "owasp-top10",
+      "body": "OWASP",
+      "title": "Web 十大风险",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "ext_points": [
+        "category-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OWASP Top 10 | OWASP Foundation",
+        "sha256_sample": "da09d0fda96b2d22b02c8888199a848b988fbc4013d825ac6ea8f3cb426ab286",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "prometheus-exposition",
+      "body": "Prometheus",
+      "title": "指标暴露格式",
+      "url": "https://prometheus.io/docs/instrumenting/exposition_formats/",
+      "ext_points": [
+        "metric-suffix"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Exposition formats | Prometheus",
+        "sha256_sample": "95198098ba69a854f0df1def8cd1499ce47f38f3862eff8b9a56e4ba49d3b358",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "peps",
+      "body": "Python",
+      "title": "PEP 体系（含 8/257/621）",
+      "url": "https://peps.python.org/",
+      "ext_points": [
+        "new-pep"
+      ],
+      "layer": "eng",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "PEP 0 – Index of Python Enhancement Proposals (PEPs) | peps.python.org",
+        "sha256_sample": "f5b8704be964f720aaf9666cf5a45717d4b98dbd3e5f48e3525c39785d1acbc8",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "rocrate",
+      "body": "Research Object",
+      "title": "RO-Crate 1.1",
+      "url": "https://www.researchobject.org/ro-crate/specification.html",
+      "ext_points": [
+        "profiles"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Specification | Research Object Crate (RO-Crate)",
+        "sha256_sample": "a2fb73ffd72eeb6313da4d5e6a8d561c9b42d9900ba253e4d6b542af296b052c",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "schema-org",
+      "body": "Schema.org",
+      "title": "结构化数据词表",
+      "url": "https://schema.org/Dataset",
+      "ext_points": [
+        "extension",
+        "pending"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "9561ffc152ba01449b6b775d20451146b03ee917399982a6d96bd3a48168911e",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "spdx-3",
+      "body": "SPDX",
+      "title": "SPDX 3.0（含 AI profile）",
+      "url": "https://spdx.github.io/spdx-spec/v3.0/",
+      "ext_points": [
+        "profile",
+        "extension-class"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Redirecting",
+        "sha256_sample": "9281b3a21aeb60cc6adae7122d304f90e092ac22c02e25558454437cd40a0a2a",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "spdx-licenses",
+      "body": "SPDX",
+      "title": "SPDX 许可证清单",
+      "url": "https://spdx.org/licenses/",
+      "ext_points": [
+        "license-expression",
+        "license-ref"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "SPDX License List | Software Package Data Exchange (SPDX)",
+        "sha256_sample": "a0a148a2d5e30d9bcc5f486229bd3498225861db9ede54d546815bd61b603ef1",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "toml",
+      "body": "TOML",
+      "title": "TOML 1.0",
+      "url": "https://toml.io/en/v1.0.0",
+      "ext_points": [
+        "table-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "TOML: English v1.0.0",
+        "sha256_sample": "d228b85aef4712168f948b3ffe85c910f6a473ab4ce5b8ce0b1ba21c5783fbdc",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "onvif-ucum",
+      "body": "UCUM",
+      "title": "统一计量单位代码",
+      "url": "https://ucum.org/ucum",
+      "ext_points": [
+        "unit-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "UCUM / UCUM Specification",
+        "sha256_sample": "b30bc35a92053483ebd5290b0b93bb2dd6809b513530f9581cb94beecc6690d7",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "unesco-ai",
+      "body": "UNESCO",
+      "title": "AI 伦理建议书",
+      "url": "https://www.unesco.org/en/artificial-intelligence/recommendation-ethics",
+      "ext_points": [
+        "readiness-assessment"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Ethics of Artificial Intelligence - AI | UNESCO",
+        "sha256_sample": "e779ca7f2c12542587940fc3a205104455a50b03156b1a77b8001e16355d4080",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "unicode-cldr",
+      "body": "Unicode",
+      "title": "CLDR 本地化数据",
+      "url": "https://cldr.unicode.org/",
+      "ext_points": [
+        "locale-variants",
+        "annotation"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Unicode CLDR Project",
+        "sha256_sample": "568f2807041188a7f715f8b64bbc27c50be5a49bdf972821a90c2f39cde08261",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "unicode-uca",
+      "body": "Unicode",
+      "title": "UAX/UTS 系列（含 #15 归一化、#31 标识符）",
+      "url": "https://www.unicode.org/reports/",
+      "ext_points": [
+        "tailorable",
+        "property-alias"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Technical Reports",
+        "sha256_sample": "ef7fe230a93833980bbea591aa73d3a7b98c411c963ffe5ce4ebd9cd2c555b53",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "uptane",
+      "body": "Uptane",
+      "title": "OTA 安全框架",
+      "url": "https://uptane.org/",
+      "ext_points": [
+        "director-repository"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Uptane | Uptane",
+        "sha256_sample": "a0e8ab53fcc0adf99427d12f020301e8374856f46e40707d04d956eb87322665",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "vega-datasets",
+      "body": "Vega",
+      "title": "Vega 数据集与规范",
+      "url": "https://vega.github.io/vega-lite/",
+      "ext_points": [
+        "spec-extension"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "A High-Level Grammar of Interactive Graphics | Vega-Lite",
+        "sha256_sample": "2064f3499486a4bb80a2cf9e02dcb690c8dabcdd5a1c10228135f71761cbb854",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "vega-lite",
+      "body": "Vega",
+      "title": "Vega-Lite v5",
+      "url": "https://vega.github.io/schema/vega-lite/v5.json",
+      "ext_points": [
+        "config-extension"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "",
+        "sha256_sample": "316c7c72a64086baa0e2953663bd288e84dedacadc9beb17036545f7ebf80d16",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "rdf11",
+      "body": "W3C",
+      "title": "RDF 1.1",
+      "url": "https://www.w3.org/TR/rdf11-concepts/",
+      "ext_points": [
+        "vocabulary-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "RDF 1.1 Concepts and Abstract Syntax",
+        "sha256_sample": "8cafac910657874e5c8c2d4ae0ace016bc22c0560562a1f110ce854a41ba9a58",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "sparql11",
+      "body": "W3C",
+      "title": "SPARQL 1.1 Protocol",
+      "url": "https://www.w3.org/TR/sparql11-protocol/",
+      "ext_points": [
+        "extension-function"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "SPARQL 1.1 Protocol",
+        "sha256_sample": "f860514aa3a800288e70bbe518eba48c37fba2e8e88887ef642434cfed02b79c",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-css",
+      "body": "W3C",
+      "title": "CSS 快照（分级扩展）",
+      "url": "https://www.w3.org/TR/CSS/",
+      "ext_points": [
+        "module-level"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "CSS Snapshot 2026",
+        "sha256_sample": "8175215670bd0368b80a088548a14ac5cddf3ae3c271aa7c930e935190d2efce",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-did",
+      "body": "W3C",
+      "title": "DID Core",
+      "url": "https://www.w3.org/TR/did-core/",
+      "ext_points": [
+        "method-registry"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Decentralized Identifiers (DIDs) v1.0",
+        "sha256_sample": "3e13937edf1a29715145a30b26bfba56683536736bd23788ff4e1704fa73a52b",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-epub-a11y",
+      "body": "W3C",
+      "title": "EPUB 无障碍 1.1",
+      "url": "https://www.w3.org/TR/epub-a11y-11/",
+      "ext_points": [
+        "metadata-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "EPUB Accessibility 1.1",
+        "sha256_sample": "dcd2b184330b0becc6ba920cc6337b060865e55959b622a17b493c4569c1997c",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-epub33",
+      "body": "W3C",
+      "title": "EPUB 3.3",
+      "url": "https://www.w3.org/TR/epub-33/",
+      "ext_points": [
+        "foreign-resources",
+        "manifest-properties"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "EPUB 3.3",
+        "sha256_sample": "451619577ab2173eabb58faa46429d5b82450f2288ba8aeb12300888fc6658f9",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-json-ld",
+      "body": "W3C",
+      "title": "JSON-LD 1.1",
+      "url": "https://www.w3.org/TR/json-ld11/",
+      "ext_points": [
+        "context",
+        "vocab-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "JSON-LD 1.1",
+        "sha256_sample": "1108a518a991e6f41e15b773f442aefb51aa95a258d5c9d28b7f952cab8c7447",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-mathml3",
+      "body": "W3C",
+      "title": "MathML 3",
+      "url": "https://www.w3.org/TR/MathML3/",
+      "ext_points": [
+        "namespace-extension"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Mathematical Markup Language (MathML) Version 3.0 2nd Edition",
+        "sha256_sample": "2042eb351b26a262343daeb778181fef084a6dc86340fb2a2b5435ec90e577eb",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-owl-time",
+      "body": "W3C",
+      "title": "OWL-Time 时间本体",
+      "url": "https://www.w3.org/TR/owl-time/",
+      "ext_points": [
+        "temporal-entity",
+        "extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Time Ontology in OWL",
+        "sha256_sample": "3b9ae376794d8429027c860b2727930ea9e2ffdc6a0f46c99960a96c202d4722",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-owl2",
+      "body": "W3C",
+      "title": "OWL 2 本体语言",
+      "url": "https://www.w3.org/TR/owl2-overview/",
+      "ext_points": [
+        "profile",
+        "import"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "OWL 2 Web Ontology Language Document Overview (Second Edition)",
+        "sha256_sample": "af40919abfc72f5ee30d6175d1b1a5246cd29b7428da3015df28132aff3d3df6",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-prov-o",
+      "body": "W3C",
+      "title": "PROV-O 溯源本体",
+      "url": "https://www.w3.org/TR/prov-o/",
+      "ext_points": [
+        "subclass",
+        "extension-module"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "PROV-O: The PROV Ontology",
+        "sha256_sample": "0b41a8eeffbb8a1abdd54ba0beb7a19ecce1dabf4adaae96ea13ed7c6857af6a",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-shacl",
+      "body": "W3C",
+      "title": "SHACL 形状约束",
+      "url": "https://www.w3.org/TR/shacl/",
+      "ext_points": [
+        "constraint-component",
+        "tag-based-rules"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Shapes Constraint Language (SHACL)",
+        "sha256_sample": "ae4ed3f4fb01c2d9aedf523720afc7dac05512abe31c69c827cbd0250fa86fc3",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-skos",
+      "body": "W3C",
+      "title": "SKOS 词表",
+      "url": "https://www.w3.org/TR/skos-reference/",
+      "ext_points": [
+        "concept-scheme",
+        "semantic-relation"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "SKOS Simple Knowledge Organization System Reference",
+        "sha256_sample": "31adfa06004c02ae8ea29fe0606003b9e04dd02cfa385638fa09595d748aa404",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-svg2",
+      "body": "W3C",
+      "title": "SVG 2",
+      "url": "https://www.w3.org/TR/SVG2/",
+      "ext_points": [
+        "foreign-object",
+        "extension-elements"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Scalable Vector Graphics (SVG) 2",
+        "sha256_sample": "eca45c833ff02d589f15cbf95821e8dba986497a2593a576b70de2c87f72b606",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-tabular-data",
+      "body": "W3C",
+      "title": "Tabular Data Model (CSVW)",
+      "url": "https://www.w3.org/TR/tabular-data-model/",
+      "ext_points": [
+        "annotation",
+        "dialect"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Model for Tabular Data and Metadata on the Web",
+        "sha256_sample": "64799c1fd2e23d04a88fcbc6a98e5fa2d2da4452d747240f8a3428bfb1d7e7f5",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-turtle",
+      "body": "W3C",
+      "title": "Turtle 1.1",
+      "url": "https://www.w3.org/TR/turtle/",
+      "ext_points": [
+        "prefix-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "RDF 1.1 Turtle",
+        "sha256_sample": "a577bba26c2c41613743cb946c3cd55b40860dbad32dae94f97328b3fa53f952",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-vc",
+      "body": "W3C",
+      "title": "Verifiable Credentials 2.0",
+      "url": "https://www.w3.org/TR/vc-data-model-2.0/",
+      "ext_points": [
+        "extension-property",
+        "status-list"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Verifiable Credentials Data Model v2.0",
+        "sha256_sample": "0a5c590c5f9c7964121bc1c70bc5dc86fde387951c4e07281bd127a78117870a",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-wcag22",
+      "body": "W3C",
+      "title": "WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "ext_points": [
+        "techniques",
+        "conformance-claims"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Web Content Accessibility Guidelines (WCAG) 2.2",
+        "sha256_sample": "6935a0432b7860578d0c32907227357934499431d0a41bce4d180764362c5353",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-webaudio",
+      "body": "W3C",
+      "title": "Web Audio API",
+      "url": "https://www.w3.org/TR/webaudio/",
+      "ext_points": [
+        "audioworklet"
+      ],
+      "layer": "form",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Web Audio API 1.1",
+        "sha256_sample": "22ce0a1f2f872147938bcfadb3dee70d4952469b864129e50b6c6466fb2dee7c",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-wot",
+      "body": "W3C",
+      "title": "Web of Things Thing Description",
+      "url": "https://www.w3.org/TR/wot-thing-description11/",
+      "ext_points": [
+        "extension-vocabulary",
+        "thing-model"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Web of Things (WoT) Thing Description 1.1",
+        "sha256_sample": "d98d25f1e4023765d6baa62e4188c3b996151ebb80089ee5cd17ae563684c365",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "w3c-xml",
+      "body": "W3C",
+      "title": "XML 1.0",
+      "url": "https://www.w3.org/TR/xml/",
+      "ext_points": [
+        "namespace",
+        "xml-schema"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Extensible Markup Language (XML) 1.0 (Fifth Edition)",
+        "sha256_sample": "b7dcf8ba188b5830f2f617e00651888e4ad41f614bfa055b7c8fd41628e11635",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "wsdl20",
+      "body": "W3C",
+      "title": "WSDL 2.0",
+      "url": "https://www.w3.org/TR/wsdl20/",
+      "ext_points": [
+        "feature-extension"
+      ],
+      "layer": "iface",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Web Services Description Language (WSDL) Version 2.0 Part 1: Core Language",
+        "sha256_sample": "b73c313d25f5f266525138564c78b2495726a415f6b9360d98ce90ab253b9e6f",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "xmlschema11",
+      "body": "W3C",
+      "title": "XML Schema 1.1",
+      "url": "https://www.w3.org/TR/xmlschema11-1/",
+      "ext_points": [
+        "wildcard",
+        "extension-point"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "W3C XML Schema Definition Language (XSD) 1.1 Part 1: Structures",
+        "sha256_sample": "9df9fd4d47b9e5d254fa69623e630cf34e5050405d51f42cb2c1306718d64e44",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "who-ai",
+      "body": "WHO",
+      "title": "健康 AI 指南",
+      "url": "https://www.who.int/health-topics/artificial-intelligence",
+      "ext_points": [
+        "guidance-extension"
+      ],
+      "layer": "gov",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "Health topics",
+        "sha256_sample": "5f331442e5e5ab487631d9b709e731de52e1918d3ddd11106015bf86f1c18ec2",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    },
+    {
+      "id": "yaml12",
+      "body": "YAML",
+      "title": "YAML 1.2.2",
+      "url": "https://yaml.org/spec/1.2.2/",
+      "ext_points": [
+        "tag-extension"
+      ],
+      "layer": "data",
+      "evidence": {
+        "reachable": true,
+        "http_status": 200,
+        "title": "YAML Ain’t Markup Language (YAML™) revision 1.2.2",
+        "sha256_sample": "876a5976f56df674197766f07217496afd5460a2df8d8565c34fae384492b9a5",
+        "probe_date": "2026-09-23",
+        "probe_method": "本机 GET（32KB 取样 / 单条超时 25s）",
+        "error": ""
+      }
+    }
+  ]
+}

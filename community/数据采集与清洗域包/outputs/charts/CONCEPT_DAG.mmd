@@ -16,6 +16,11 @@ flowchart TD
     C01-10
     C01-12
   end
+  subgraph P80[P80]
+    STD-frictionless-table
+    STD-gdpr
+    STD-w3c-tabular-data
+  end
   C01-01 --> C01-02
   C01-02 --> C01-03
   C01-03 --> C01-04
@@ -36,3 +41,15 @@ flowchart TD
   C01-08 --> C01-11
   C01-11 --> C01-12
   C01-09 --> C01-12
+  C01-03 --> STD-frictionless-table
+  C01-05 --> STD-frictionless-table
+  C01-07 --> STD-frictionless-table
+  C01-09 --> STD-frictionless-table
+  C01-11 --> STD-frictionless-table
+  C01-01 --> STD-gdpr
+  C01-06 --> STD-gdpr
+  C01-02 --> STD-w3c-tabular-data
+  C01-04 --> STD-w3c-tabular-data
+  C01-08 --> STD-w3c-tabular-data
+  C01-10 --> STD-w3c-tabular-data
+  C01-12 --> STD-w3c-tabular-data

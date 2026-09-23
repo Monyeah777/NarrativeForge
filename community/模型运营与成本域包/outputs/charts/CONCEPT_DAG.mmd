@@ -16,6 +16,14 @@ flowchart TD
     F07-10
     F07-12
   end
+  subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-gfm
+    STD-nist-ai-rmf
+    STD-onnx
+    STD-spdx-licenses
+    STD-w3c-prov-o
+  end
   F07-01 --> F07-02
   F07-02 --> F07-03
   F07-03 --> F07-04
@@ -36,3 +44,15 @@ flowchart TD
   F07-08 --> F07-11
   F07-11 --> F07-12
   F07-09 --> F07-12
+  F07-07 --> STD-cncf-otel-semconv
+  F07-09 --> STD-cncf-otel-semconv
+  F07-02 --> STD-gfm
+  F07-01 --> STD-nist-ai-rmf
+  F07-10 --> STD-nist-ai-rmf
+  F07-04 --> STD-onnx
+  F07-05 --> STD-onnx
+  F07-03 --> STD-spdx-licenses
+  F07-06 --> STD-spdx-licenses
+  F07-12 --> STD-spdx-licenses
+  F07-08 --> STD-w3c-prov-o
+  F07-11 --> STD-w3c-prov-o

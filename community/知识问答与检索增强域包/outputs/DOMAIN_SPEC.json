@@ -14,6 +14,8 @@
       "anchor": "https://arxiv.org/abs/2005.11401",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-package",
+      "standard_why": "关键词「检索|向量|嵌入|召回」命中",
       "check": "声明 stages（清单）、io_contract（每阶段字段）与 fallback（检索为空时的行为）。",
       "pitfall": "检索为空仍强答（幻觉）；阶段契约缺失导致不可替换组件。"
     },
@@ -24,6 +26,8 @@
       "anchor": "https://arxiv.org/abs/2004.05150",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "gfm",
+      "standard_why": "关键词「缓存|分块|上下文」命中",
       "check": "声明 chunk_unit（char|token）、chunk_size、overlap_ratio 与 boundary_rule（句/段/标题）。",
       "pitfall": "块过大导致噪声进上下文；重叠比例未声明导致召回率不可复现。"
     },
@@ -34,6 +38,8 @@
       "anchor": "https://arxiv.org/abs/2305.15294",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 rewrite_strategy（HyDE|多查询|同义扩展）、max_rewrites 与 keep_original（true|false）。",
       "pitfall": "改写丢失原查询语义（漂移）；改写次数不限导致成本失控。"
     },
@@ -44,6 +50,8 @@
       "anchor": "https://arxiv.org/abs/2210.11934",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-package",
+      "standard_why": "关键词「检索|向量|嵌入|召回」命中",
       "check": "声明 fusion（rrf|weighted）、weights 与 score_norm，并给出各路的单独召回作对照。",
       "pitfall": "只报融合后效果（无法归因）；分数未归一化。"
     },
@@ -54,6 +62,8 @@
       "anchor": "https://arxiv.org/abs/1908.10084",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "w3c-tabular-data",
+      "standard_why": "B 段默认绑定（轮换 1）",
       "check": "声明 candidates、rerank_depth 与 latency_budget_ms，并报告重排前后指标变化。",
       "pitfall": "重排带来延迟却未报延迟；深度变化后结论不可比。"
     },
@@ -64,6 +74,8 @@
       "anchor": "https://arxiv.org/abs/2310.04408",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "gfm",
+      "standard_why": "关键词「缓存|分块|上下文」命中",
       "check": "声明 compression_ratio、keep_priority（规则）与 loss_check（压缩前后答案一致率）。",
       "pitfall": "压缩掉关键证据却不行核查；压缩比随查询浮动未声明。"
     },
@@ -74,6 +86,8 @@
       "anchor": "https://arxiv.org/abs/2305.14627",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 citation_granularity、citation_verification（逐条核验通过率）与 no_citation_policy。",
       "pitfall": "引用与原文不符（假引用）；无引用仍输出断言。"
     },
@@ -84,6 +98,8 @@
       "anchor": "https://arxiv.org/abs/1809.09600",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "关键词「问答|知识库」命中",
       "check": "声明 hop_count、evidence_per_hop（要求每跳证据）与 step_accuracy（逐跳正确率）。",
       "pitfall": "只报最终答案（中间错也满分）；跳数未定义导致可比性缺失。"
     },
@@ -94,6 +110,8 @@
       "anchor": "https://arxiv.org/abs/2005.11401",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "关键词「问答|知识库」命中",
       "check": "声明 source_license（逐源）、update_freq（小时/天）与 invalidation（下线与重建触发规则）。",
       "pitfall": "过期内容不下线（知识污染）；来源许可未登记。"
     },
@@ -104,6 +122,8 @@
       "anchor": "https://arxiv.org/abs/2207.05221",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "ietf-json-schema",
+      "standard_why": "B 段默认绑定（轮换 0）",
       "check": "声明 abstain_criterion（阈值 + 依据）、abstain_rate 与 false_abstain_rate（本可回答却拒答）。",
       "pitfall": "无拒答机制（必答即编）；只报拒答率不报误拒。"
     },
@@ -114,6 +134,8 @@
       "anchor": "https://arxiv.org/abs/2309.15217",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "mlcommons-bench",
+      "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
       "check": "声明 retrieval_metrics、generation_metrics 与 ablation（有/无检索对照），并说明端到端指标定义。",
       "pitfall": "只报端到端分数（无法定位问题）；无消融对照。"
     },
@@ -124,6 +146,8 @@
       "anchor": "https://arxiv.org/abs/2305.14251",
       "anchor_kind": "paper",
       "anchor_status": 200,
+      "standard_ref": "frictionless-table",
+      "standard_why": "B 段默认绑定（轮换 2）",
       "check": "声明 conflict_detection（方法）、resolution_policy（来源优先级 / 时间优先 / 人工）与 escalation（升级条件）。",
       "pitfall": "冲突静默取一个（不可追溯）；无人工升级路径。"
     }

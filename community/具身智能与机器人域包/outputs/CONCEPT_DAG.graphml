@@ -52,6 +52,34 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-covesa-vss">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-eu-machinery">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mcp">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mlcommons-croissant">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-owasp-llm">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-uptane">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <edge source="A13-01" target="A13-02">
       <data key="provenance">['a13-anchor']</data>
     </edge>
@@ -81,6 +109,42 @@
     </edge>
     <edge source="A13-07" target="A13-12">
       <data key="provenance">['a13-anchor']</data>
+    </edge>
+    <edge source="A13-09" target="STD-covesa-vss">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-01" target="STD-eu-machinery">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-05" target="STD-eu-machinery">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-07" target="STD-eu-machinery">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-10" target="STD-eu-machinery">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-12" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-11" target="STD-mlcommons-croissant">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-03" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-08" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-02" target="STD-uptane">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-04" target="STD-uptane">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A13-06" target="STD-uptane">
+      <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>
 </graphml>

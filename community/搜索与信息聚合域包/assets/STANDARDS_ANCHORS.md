@@ -6,20 +6,20 @@
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 |
-|---|---|---|---|
-| `E17-01` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-02` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-03` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-04` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-05` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-06` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-07` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-08` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-09` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-10` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-11` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
-| `E17-12` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 |
+| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
+|---|---|---|---|---|
+| `E17-01` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-02` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-03` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-04` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-05` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-06` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-07` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `cncf-otel-semconv` 语义约定（可扩展注册表）（OpenTelemetry；关键词「可观测|遥测|监控|日志|成本|可靠性」命中） |
+| `E17-08` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-09` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `commonmark` CommonMark 0.31.2（CommonMark；E 段默认绑定（轮换 0）） |
+| `E17-10` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「问答|知识库」命中） |
+| `E17-11` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `frictionless-package` Data Package（Frictionless；关键词「检索|向量|嵌入|召回」命中） |
+| `E17-12` | spec | https://www.rfc-editor.org/rfc/rfc9309.txt | ✓ 200 | `frictionless-table` Table Schema（Frictionless；关键词「采集|清洗|质量|异常|缺失」命中） |
 
 ## 2. 使用边界
 
