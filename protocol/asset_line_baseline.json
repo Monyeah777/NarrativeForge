@@ -115,10 +115,24 @@
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/数据分析与表格理解域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "数据分析与表格理解域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
       "dir": "community/文本生成与创作域包/assets",
       "files": 3,
       "lines": 249,
       "package": "文本生成与创作域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/文档解析与版面理解域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "文档解析与版面理解域包"
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
@@ -133,6 +147,13 @@
       "files": 29,
       "lines": 1575,
       "package": "校园情感领域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/测试与用例生成域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "测试与用例生成域包"
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",

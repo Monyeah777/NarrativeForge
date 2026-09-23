@@ -15,7 +15,7 @@ subjects:
   - docs/domain-packs.md:7b61173388a7e6f636d0dedc18e2e2f83a50ba28bb4f2cb3bcb1a6398d3b4b87
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
-  - verify.sh:f14c8e40f7501a54bd6132ae571492e975bc747c1288d7a7dcdd1929399395f2
+  - verify.sh:f4fd5b2aff8a57246ab64c435fc44cc2f472d5c04942b018c079c13288a6846c
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

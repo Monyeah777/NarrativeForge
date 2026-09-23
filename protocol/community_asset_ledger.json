@@ -861,6 +861,42 @@
     },
     {
       "key": "CONCEPT_GRAPH",
+      "package": "数据分析与表格理解域包",
+      "file": "community/数据分析与表格理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "数据分析与表格理解域包",
+      "file": "community/数据分析与表格理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "数据分析与表格理解域包",
+      "file": "community/数据分析与表格理解域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "数据分析与表格理解域包",
+      "file": "community/数据分析与表格理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "数据分析与表格理解域包",
+      "file": "community/数据分析与表格理解域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "数据分析与表格理解域包",
+      "file": "community/数据分析与表格理解域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
       "package": "文本生成与创作域包",
       "file": "community/文本生成与创作域包/assets/CONCEPT_GRAPH.md",
       "line": 1
@@ -893,6 +929,42 @@
       "key": "STANDARDS_ANCHORS",
       "package": "文本生成与创作域包",
       "file": "community/文本生成与创作域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "文档解析与版面理解域包",
+      "file": "community/文档解析与版面理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "文档解析与版面理解域包",
+      "file": "community/文档解析与版面理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "文档解析与版面理解域包",
+      "file": "community/文档解析与版面理解域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "文档解析与版面理解域包",
+      "file": "community/文档解析与版面理解域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "文档解析与版面理解域包",
+      "file": "community/文档解析与版面理解域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "文档解析与版面理解域包",
+      "file": "community/文档解析与版面理解域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {
@@ -1667,6 +1739,42 @@
       "key": "WRITING_STYLE",
       "package": "校园情感领域包",
       "file": "community/校园情感领域包/assets/WRITING_STYLE.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "测试与用例生成域包",
+      "file": "community/测试与用例生成域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "测试与用例生成域包",
+      "file": "community/测试与用例生成域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "测试与用例生成域包",
+      "file": "community/测试与用例生成域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "测试与用例生成域包",
+      "file": "community/测试与用例生成域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "测试与用例生成域包",
+      "file": "community/测试与用例生成域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "测试与用例生成域包",
+      "file": "community/测试与用例生成域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {

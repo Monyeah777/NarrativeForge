@@ -97,13 +97,31 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "数据分析与表格理解域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "文本生成与创作域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "文档解析与版面理解域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "机器翻译与本地化域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "测试与用例生成域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -154,9 +172,9 @@
   },
   "schema": "nf-output-forms-baseline/1",
   "totals": {
-    "functional": 25,
-    "machine_verifiable": 244,
-    "machine_verifiable_ratio": 0.7673,
-    "prose_assets": 74
+    "functional": 28,
+    "machine_verifiable": 274,
+    "machine_verifiable_ratio": 0.7675,
+    "prose_assets": 83
   }
 }

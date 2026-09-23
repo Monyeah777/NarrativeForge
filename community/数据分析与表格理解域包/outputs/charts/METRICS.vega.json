@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "mae",
+        "value": 0.112225
+      },
+      {
+        "metric": "mape",
+        "value": 15.174802
+      },
+      {
+        "metric": "mape_samples",
+        "value": 16.0
+      },
+      {
+        "metric": "n",
+        "value": 16.0
+      },
+      {
+        "metric": "r2",
+        "value": 0.98559
+      },
+      {
+        "metric": "rmse",
+        "value": 0.13578
+      }
+    ]
+  },
+  "description": "数据分析与表格理解 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

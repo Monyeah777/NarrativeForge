@@ -531,6 +531,20 @@
     },
     {
       "conformance": "L2",
+      "id": "数据分析与表格理解:M01",
+      "layer": "P40",
+      "name": "分析口径登记",
+      "source": "community/数据分析与表格理解域包/modules/B11a_分析口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数据分析与表格理解:M02",
+      "layer": "P60",
+      "name": "分析面收口与形态派生",
+      "source": "community/数据分析与表格理解域包/modules/B11b_分析面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "文本生成与创作:M01",
       "layer": "P40",
       "name": "创作口径登记",
@@ -545,6 +559,20 @@
     },
     {
       "conformance": "L2",
+      "id": "文档解析与版面理解:M01",
+      "layer": "P40",
+      "name": "解析口径登记",
+      "source": "community/文档解析与版面理解域包/modules/B12a_解析口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "文档解析与版面理解:M02",
+      "layer": "P60",
+      "name": "解析面收口与形态派生",
+      "source": "community/文档解析与版面理解域包/modules/B12b_解析面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "机器翻译与本地化:M01",
       "layer": "P40",
       "name": "翻译口径登记",
@@ -556,6 +584,20 @@
       "layer": "P60",
       "name": "本地化面收口与形态派生",
       "source": "community/机器翻译与本地化域包/modules/B03b_本地化面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "测试与用例生成:M01",
+      "layer": "P40",
+      "name": "测试口径登记",
+      "source": "community/测试与用例生成域包/modules/B10a_测试口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "测试与用例生成:M02",
+      "layer": "P60",
+      "name": "测试面收口与形态派生",
+      "source": "community/测试与用例生成域包/modules/B10b_测试面收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -665,10 +707,10 @@
   ],
   "coverage": {
     "asset_entries": 2,
-    "contract_covered": 94,
-    "module_docs": 94,
-    "pipelines": 33,
-    "protocols": 30,
+    "contract_covered": 100,
+    "module_docs": 100,
+    "pipelines": 36,
+    "protocols": 33,
     "schema_issues": 0
   },
   "event_closure": {
@@ -696,6 +738,9 @@
       "b07_spec_ready",
       "b08_spec_ready",
       "b09_spec_ready",
+      "b10_spec_ready",
+      "b11_spec_ready",
+      "b12_spec_ready",
       "beat_tick",
       "chaos_event",
       "combat_result",
@@ -727,7 +772,7 @@
       "tick_day",
       "travel_event"
     ],
-    "modules": 94,
+    "modules": 100,
     "pub_only_by_module": {
       "a01_report_conflict": [
         "大语言模型:M02"
@@ -936,6 +981,33 @@
       "b09_spec_conflict": [
         "代码审查与缺陷检测:M01"
       ],
+      "b10_report_conflict": [
+        "测试与用例生成:M02"
+      ],
+      "b10_report_ready": [
+        "测试与用例生成:M02"
+      ],
+      "b10_spec_conflict": [
+        "测试与用例生成:M01"
+      ],
+      "b11_report_conflict": [
+        "数据分析与表格理解:M02"
+      ],
+      "b11_report_ready": [
+        "数据分析与表格理解:M02"
+      ],
+      "b11_spec_conflict": [
+        "数据分析与表格理解:M01"
+      ],
+      "b12_report_conflict": [
+        "文档解析与版面理解:M02"
+      ],
+      "b12_report_ready": [
+        "文档解析与版面理解:M02"
+      ],
+      "b12_spec_conflict": [
+        "文档解析与版面理解:M01"
+      ],
       "backtest_spec_conflict": [
         "量化金融:M32"
       ],
@@ -1046,6 +1118,15 @@
       "b09_report_conflict",
       "b09_report_ready",
       "b09_spec_conflict",
+      "b10_report_conflict",
+      "b10_report_ready",
+      "b10_spec_conflict",
+      "b11_report_conflict",
+      "b11_report_ready",
+      "b11_spec_conflict",
+      "b12_report_conflict",
+      "b12_report_ready",
+      "b12_spec_conflict",
       "backtest_spec_conflict",
       "backtest_spec_ready",
       "campus_anonymous_gift",
@@ -1138,10 +1219,16 @@
     "摘要与信息压缩:M02",
     "数学与形式化推理:M01",
     "数学与形式化推理:M02",
+    "数据分析与表格理解:M01",
+    "数据分析与表格理解:M02",
     "文本生成与创作:M01",
     "文本生成与创作:M02",
+    "文档解析与版面理解:M01",
+    "文档解析与版面理解:M02",
     "机器翻译与本地化:M01",
     "机器翻译与本地化:M02",
+    "测试与用例生成:M01",
+    "测试与用例生成:M02",
     "生存:M10",
     "知识问答与检索增强:M01",
     "知识问答与检索增强:M02",
@@ -1193,6 +1280,9 @@
     "P32_多轮对话与角色扮演装配流管线.md",
     "P33_代码生成与补全装配流管线.md",
     "P34_代码审查与缺陷检测装配流管线.md",
+    "P35_测试与用例生成装配流管线.md",
+    "P36_数据分析与表格理解装配流管线.md",
+    "P37_文档解析与版面理解装配流管线.md",
     "P90_技术文档生成管线.md"
   ],
   "protocol_files": [
@@ -1213,10 +1303,13 @@
     "community/技术文档域包/protocol.yaml",
     "community/摘要与信息压缩域包/protocol.yaml",
     "community/数学与形式化推理域包/protocol.yaml",
+    "community/数据分析与表格理解域包/protocol.yaml",
     "community/文本生成与创作域包/protocol.yaml",
+    "community/文档解析与版面理解域包/protocol.yaml",
     "community/机器翻译与本地化域包/protocol.yaml",
     "community/校园情感领域包/protocol.yaml",
     "community/校园西幻轻混组合包/protocol.yaml",
+    "community/测试与用例生成域包/protocol.yaml",
     "community/知识问答与检索增强域包/protocol.yaml",
     "community/端侧与边缘小模型域包/protocol.yaml",
     "community/西幻生存领域包/protocol.yaml",

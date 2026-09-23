@@ -1440,6 +1440,111 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "测试与用例生成域包",
+      "name": "测试与用例生成域包",
+      "pipeline": "P35",
+      "categories": [
+        "测试与用例生成"
+      ],
+      "module_ids": [
+        "测试与用例生成:M01",
+        "测试与用例生成:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "测试与用例生成:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "测试与用例生成:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "数据分析与表格理解域包",
+      "name": "数据分析与表格理解域包",
+      "pipeline": "P36",
+      "categories": [
+        "数据分析与表格理解"
+      ],
+      "module_ids": [
+        "数据分析与表格理解:M01",
+        "数据分析与表格理解:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "数据分析与表格理解:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "数据分析与表格理解:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "文档解析与版面理解域包",
+      "name": "文档解析与版面理解域包",
+      "pipeline": "P37",
+      "categories": [
+        "文档解析与版面理解"
+      ],
+      "module_ids": [
+        "文档解析与版面理解:M01",
+        "文档解析与版面理解:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "文档解析与版面理解:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "文档解析与版面理解:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

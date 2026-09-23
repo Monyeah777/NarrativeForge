@@ -485,8 +485,71 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "spec_digest": "6834e7504d8606a6bb1ac110a280cf7e1d2f0717398e90db566cb06a11ed19a6"
+    },
+    {
+      "code": "B10",
+      "section": "B · 任务类型",
+      "name": "测试与用例生成",
+      "package": "测试与用例生成域包",
+      "category": "测试与用例生成",
+      "pipeline": "P35",
+      "module_ids": [
+        "测试与用例生成:M01",
+        "测试与用例生成:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "exact_judgement",
+      "spec_digest": "5a6404480c909bdd160e6d22cc46aa345e86ff3dcbbf0ba3ad2b49bc7e0aefc1"
+    },
+    {
+      "code": "B11",
+      "section": "B · 任务类型",
+      "name": "数据分析与表格理解",
+      "package": "数据分析与表格理解域包",
+      "category": "数据分析与表格理解",
+      "pipeline": "P36",
+      "module_ids": [
+        "数据分析与表格理解:M01",
+        "数据分析与表格理解:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "spec_digest": "51783bb018a80d618b5eebe01a7cc95a53ad201607bd7383a314a9415cd191ce"
+    },
+    {
+      "code": "B12",
+      "section": "B · 任务类型",
+      "name": "文档解析与版面理解",
+      "package": "文档解析与版面理解域包",
+      "category": "文档解析与版面理解",
+      "pipeline": "P37",
+      "module_ids": [
+        "文档解析与版面理解:M01",
+        "文档解析与版面理解:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "spec_digest": "b8faf7a35523d3429dc2109d34748ccee7fcb99f5cd10c86a5fa96a02828031d"
     }
   ],
-  "count": 23,
-  "subdivisions_total": 276
+  "count": 26,
+  "subdivisions_total": 312
 }

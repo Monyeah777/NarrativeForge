@@ -1,5 +1,5 @@
 {
-  "count": 94,
+  "count": 100,
   "modules": {
     "AI系统:M25": {
       "digest": "9eba42619fd91017080e670d5f60d17ba4255d2444d87243f5f440d6ed55c8db",
@@ -301,6 +301,14 @@
       "digest": "221a5336c5938f8b2ccc39667f16152428bc572036a601f4fb601421dba801e6",
       "path": "community/数学与形式化推理域包/modules/A10b_推理面收口与形态派生.md"
     },
+    "数据分析与表格理解:M01": {
+      "digest": "52f4731d871bed4842548139d0853c8322fafcf0353b9f0b192a061fea3e8abe",
+      "path": "community/数据分析与表格理解域包/modules/B11a_分析口径登记.md"
+    },
+    "数据分析与表格理解:M02": {
+      "digest": "8a8d17e66d59370b82ccdc0a13e3689378d0639298112ab60bc0397dbe42db24",
+      "path": "community/数据分析与表格理解域包/modules/B11b_分析面收口与形态派生.md"
+    },
     "文本生成与创作:M01": {
       "digest": "f50cece7400987c81db6e0bcdb168b16e7159f4e8c4d7f9609d738929a74ffa2",
       "path": "community/文本生成与创作域包/modules/B01a_创作口径登记.md"
@@ -309,6 +317,14 @@
       "digest": "78a7e862f976ddb374eb1af471b615e4cd885db8d6966cefd9e473302e31e9a5",
       "path": "community/文本生成与创作域包/modules/B01b_创作面收口与形态派生.md"
     },
+    "文档解析与版面理解:M01": {
+      "digest": "313cd93a94030123c39dcea173ca2b90c0200eed14d9455cf1839a3401501962",
+      "path": "community/文档解析与版面理解域包/modules/B12a_解析口径登记.md"
+    },
+    "文档解析与版面理解:M02": {
+      "digest": "7fe653ce0c8584810024da76394ad37ebb93ecf4f9f9269ea0b1d3950d982e4a",
+      "path": "community/文档解析与版面理解域包/modules/B12b_解析面收口与形态派生.md"
+    },
     "机器翻译与本地化:M01": {
       "digest": "f681be8e1b41788535723888de7f022295e94684f864cdc44bb830365821e215",
       "path": "community/机器翻译与本地化域包/modules/B03a_翻译口径登记.md"
@@ -316,6 +332,14 @@
     "机器翻译与本地化:M02": {
       "digest": "fb80d8180cbd45b68497d5e8c82ecdcabe5c776e1e615c58ea253bf8db038e18",
       "path": "community/机器翻译与本地化域包/modules/B03b_本地化面收口与形态派生.md"
+    },
+    "测试与用例生成:M01": {
+      "digest": "62d1be84ac8d0248539c8fd1d2d649e357f206c1169194cc6bbb120687b4279b",
+      "path": "community/测试与用例生成域包/modules/B10a_测试口径登记.md"
+    },
+    "测试与用例生成:M02": {
+      "digest": "136a6c3b5afe2fa930730c2f3820fd28a28debfbce8c9d5f2c41107e560a0e39",
+      "path": "community/测试与用例生成域包/modules/B10b_测试面收口与形态派生.md"
     },
     "知识问答与检索增强:M01": {
       "digest": "10dd4fb7eb70427170c66ebc70c0c1fe2a6929bcca52a7ab771b22853373db39",
