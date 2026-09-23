@@ -10,6 +10,13 @@
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/三维与世界模型域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "三维与世界模型域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
       "dir": "community/代码大模型域包/assets",
       "files": 3,
       "lines": 249,
@@ -58,11 +65,25 @@
       "package": "嵌入与检索表示域包"
     },
     {
+      "digest": "0b3c8cfe7b99ebccee50896abc740406196db37959a3f6a754dc7c4dc7df85d4",
+      "dir": "community/强化学习与决策域包/assets",
+      "files": 3,
+      "lines": 248,
+      "package": "强化学习与决策域包"
+    },
+    {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
       "dir": "community/摘要与信息压缩域包/assets",
       "files": 3,
       "lines": 249,
       "package": "摘要与信息压缩域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/数学与形式化推理域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "数学与形式化推理域包"
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
@@ -84,6 +105,13 @@
       "files": 29,
       "lines": 1575,
       "package": "校园情感领域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/端侧与边缘小模型域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "端侧与边缘小模型域包"
     },
     {
       "digest": "508b486b5ac3e545a7f6381b4b2f8fe3bdd9a39dca228e1ec67e50fa6ebd9997",

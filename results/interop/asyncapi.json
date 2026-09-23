@@ -421,6 +421,66 @@
         "type": "nf.a07_spec_ready"
       }
     },
+    "nf/a08_report_conflict": {
+      "address": "nf/a08_report_conflict",
+      "messages": {
+        "nf.a08_report_conflict": {
+          "$ref": "#/components/messages/a08_report_conflict"
+        }
+      },
+      "title": "a08_report_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a08_report_conflict"
+      }
+    },
+    "nf/a08_report_ready": {
+      "address": "nf/a08_report_ready",
+      "messages": {
+        "nf.a08_report_ready": {
+          "$ref": "#/components/messages/a08_report_ready"
+        }
+      },
+      "title": "a08_report_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a08_report_ready"
+      }
+    },
+    "nf/a08_spec_conflict": {
+      "address": "nf/a08_spec_conflict",
+      "messages": {
+        "nf.a08_spec_conflict": {
+          "$ref": "#/components/messages/a08_spec_conflict"
+        }
+      },
+      "title": "a08_spec_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a08_spec_conflict"
+      }
+    },
+    "nf/a08_spec_ready": {
+      "address": "nf/a08_spec_ready",
+      "messages": {
+        "nf.a08_spec_ready": {
+          "$ref": "#/components/messages/a08_spec_ready"
+        }
+      },
+      "title": "a08_spec_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a08_spec_ready"
+      }
+    },
     "nf/a09_report_conflict": {
       "address": "nf/a09_report_conflict",
       "messages": {
@@ -479,6 +539,66 @@
         "source": "urn:nf:repo",
         "specversion": "1.0",
         "type": "nf.a09_spec_ready"
+      }
+    },
+    "nf/a10_report_conflict": {
+      "address": "nf/a10_report_conflict",
+      "messages": {
+        "nf.a10_report_conflict": {
+          "$ref": "#/components/messages/a10_report_conflict"
+        }
+      },
+      "title": "a10_report_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a10_report_conflict"
+      }
+    },
+    "nf/a10_report_ready": {
+      "address": "nf/a10_report_ready",
+      "messages": {
+        "nf.a10_report_ready": {
+          "$ref": "#/components/messages/a10_report_ready"
+        }
+      },
+      "title": "a10_report_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a10_report_ready"
+      }
+    },
+    "nf/a10_spec_conflict": {
+      "address": "nf/a10_spec_conflict",
+      "messages": {
+        "nf.a10_spec_conflict": {
+          "$ref": "#/components/messages/a10_spec_conflict"
+        }
+      },
+      "title": "a10_spec_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a10_spec_conflict"
+      }
+    },
+    "nf/a10_spec_ready": {
+      "address": "nf/a10_spec_ready",
+      "messages": {
+        "nf.a10_spec_ready": {
+          "$ref": "#/components/messages/a10_spec_ready"
+        }
+      },
+      "title": "a10_spec_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a10_spec_ready"
       }
     },
     "nf/a11_report_conflict": {
@@ -541,6 +661,66 @@
         "type": "nf.a11_spec_ready"
       }
     },
+    "nf/a12_report_conflict": {
+      "address": "nf/a12_report_conflict",
+      "messages": {
+        "nf.a12_report_conflict": {
+          "$ref": "#/components/messages/a12_report_conflict"
+        }
+      },
+      "title": "a12_report_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a12_report_conflict"
+      }
+    },
+    "nf/a12_report_ready": {
+      "address": "nf/a12_report_ready",
+      "messages": {
+        "nf.a12_report_ready": {
+          "$ref": "#/components/messages/a12_report_ready"
+        }
+      },
+      "title": "a12_report_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a12_report_ready"
+      }
+    },
+    "nf/a12_spec_conflict": {
+      "address": "nf/a12_spec_conflict",
+      "messages": {
+        "nf.a12_spec_conflict": {
+          "$ref": "#/components/messages/a12_spec_conflict"
+        }
+      },
+      "title": "a12_spec_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a12_spec_conflict"
+      }
+    },
+    "nf/a12_spec_ready": {
+      "address": "nf/a12_spec_ready",
+      "messages": {
+        "nf.a12_spec_ready": {
+          "$ref": "#/components/messages/a12_spec_ready"
+        }
+      },
+      "title": "a12_spec_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a12_spec_ready"
+      }
+    },
     "nf/a13_report_conflict": {
       "address": "nf/a13_report_conflict",
       "messages": {
@@ -599,6 +779,66 @@
         "source": "urn:nf:repo",
         "specversion": "1.0",
         "type": "nf.a13_spec_ready"
+      }
+    },
+    "nf/a14_report_conflict": {
+      "address": "nf/a14_report_conflict",
+      "messages": {
+        "nf.a14_report_conflict": {
+          "$ref": "#/components/messages/a14_report_conflict"
+        }
+      },
+      "title": "a14_report_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a14_report_conflict"
+      }
+    },
+    "nf/a14_report_ready": {
+      "address": "nf/a14_report_ready",
+      "messages": {
+        "nf.a14_report_ready": {
+          "$ref": "#/components/messages/a14_report_ready"
+        }
+      },
+      "title": "a14_report_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a14_report_ready"
+      }
+    },
+    "nf/a14_spec_conflict": {
+      "address": "nf/a14_spec_conflict",
+      "messages": {
+        "nf.a14_spec_conflict": {
+          "$ref": "#/components/messages/a14_spec_conflict"
+        }
+      },
+      "title": "a14_spec_conflict",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a14_spec_conflict"
+      }
+    },
+    "nf/a14_spec_ready": {
+      "address": "nf/a14_spec_ready",
+      "messages": {
+        "nf.a14_spec_ready": {
+          "$ref": "#/components/messages/a14_spec_ready"
+        }
+      },
+      "title": "a14_spec_ready",
+      "x-nf-cloudevents": {
+        "datacontenttype": "application/json",
+        "source": "urn:nf:repo",
+        "specversion": "1.0",
+        "type": "nf.a14_spec_ready"
       }
     },
     "nf/b01_report_conflict": {
@@ -2105,6 +2345,94 @@
         },
         "x-nf-note": "证据:模块正文事件契约 payload 收割"
       },
+      "a08_report_conflict": {
+        "contentType": "application/json",
+        "name": "a08_report_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a08_report_ready": {
+        "contentType": "application/json",
+        "name": "a08_report_ready",
+        "payload": {
+          "properties": {
+            "family": {
+              "description": "string",
+              "type": "string"
+            },
+            "metrics": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a08_spec_conflict": {
+        "contentType": "application/json",
+        "name": "a08_spec_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a08_spec_ready": {
+        "contentType": "application/json",
+        "name": "a08_spec_ready",
+        "payload": {
+          "properties": {
+            "checked": {
+              "description": "number",
+              "type": "number"
+            },
+            "subdivisions": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
       "a09_report_conflict": {
         "contentType": "application/json",
         "name": "a09_report_conflict",
@@ -2174,6 +2502,94 @@
       "a09_spec_ready": {
         "contentType": "application/json",
         "name": "a09_spec_ready",
+        "payload": {
+          "properties": {
+            "checked": {
+              "description": "number",
+              "type": "number"
+            },
+            "subdivisions": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a10_report_conflict": {
+        "contentType": "application/json",
+        "name": "a10_report_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a10_report_ready": {
+        "contentType": "application/json",
+        "name": "a10_report_ready",
+        "payload": {
+          "properties": {
+            "family": {
+              "description": "string",
+              "type": "string"
+            },
+            "metrics": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a10_spec_conflict": {
+        "contentType": "application/json",
+        "name": "a10_spec_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a10_spec_ready": {
+        "contentType": "application/json",
+        "name": "a10_spec_ready",
         "payload": {
           "properties": {
             "checked": {
@@ -2281,6 +2697,94 @@
         },
         "x-nf-note": "证据:模块正文事件契约 payload 收割"
       },
+      "a12_report_conflict": {
+        "contentType": "application/json",
+        "name": "a12_report_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a12_report_ready": {
+        "contentType": "application/json",
+        "name": "a12_report_ready",
+        "payload": {
+          "properties": {
+            "family": {
+              "description": "string",
+              "type": "string"
+            },
+            "metrics": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a12_spec_conflict": {
+        "contentType": "application/json",
+        "name": "a12_spec_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a12_spec_ready": {
+        "contentType": "application/json",
+        "name": "a12_spec_ready",
+        "payload": {
+          "properties": {
+            "checked": {
+              "description": "number",
+              "type": "number"
+            },
+            "subdivisions": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
       "a13_report_conflict": {
         "contentType": "application/json",
         "name": "a13_report_conflict",
@@ -2350,6 +2854,94 @@
       "a13_spec_ready": {
         "contentType": "application/json",
         "name": "a13_spec_ready",
+        "payload": {
+          "properties": {
+            "checked": {
+              "description": "number",
+              "type": "number"
+            },
+            "subdivisions": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a14_report_conflict": {
+        "contentType": "application/json",
+        "name": "a14_report_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a14_report_ready": {
+        "contentType": "application/json",
+        "name": "a14_report_ready",
+        "payload": {
+          "properties": {
+            "family": {
+              "description": "string",
+              "type": "string"
+            },
+            "metrics": {
+              "description": "number",
+              "type": "number"
+            },
+            "tick": {
+              "description": "number",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a14_spec_conflict": {
+        "contentType": "application/json",
+        "name": "a14_spec_conflict",
+        "payload": {
+          "properties": {
+            "blocking": {
+              "description": "boolean",
+              "type": "boolean"
+            },
+            "field": {
+              "description": "string",
+              "type": "string"
+            },
+            "reason": {
+              "description": "string",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "x-nf-note": "证据:模块正文事件契约 payload 收割"
+      },
+      "a14_spec_ready": {
+        "contentType": "application/json",
+        "name": "a14_spec_ready",
         "payload": {
           "properties": {
             "checked": {
@@ -4154,6 +4746,30 @@
         "$ref": "#/channels/nf/a07_spec_ready"
       }
     },
+    "publish/a08_report_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a08_report_conflict"
+      }
+    },
+    "publish/a08_report_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a08_report_ready"
+      }
+    },
+    "publish/a08_spec_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a08_spec_conflict"
+      }
+    },
+    "publish/a08_spec_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a08_spec_ready"
+      }
+    },
     "publish/a09_report_conflict": {
       "action": "send",
       "channel": {
@@ -4176,6 +4792,30 @@
       "action": "send",
       "channel": {
         "$ref": "#/channels/nf/a09_spec_ready"
+      }
+    },
+    "publish/a10_report_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a10_report_conflict"
+      }
+    },
+    "publish/a10_report_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a10_report_ready"
+      }
+    },
+    "publish/a10_spec_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a10_spec_conflict"
+      }
+    },
+    "publish/a10_spec_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a10_spec_ready"
       }
     },
     "publish/a11_report_conflict": {
@@ -4202,6 +4842,30 @@
         "$ref": "#/channels/nf/a11_spec_ready"
       }
     },
+    "publish/a12_report_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a12_report_conflict"
+      }
+    },
+    "publish/a12_report_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a12_report_ready"
+      }
+    },
+    "publish/a12_spec_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a12_spec_conflict"
+      }
+    },
+    "publish/a12_spec_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a12_spec_ready"
+      }
+    },
     "publish/a13_report_conflict": {
       "action": "send",
       "channel": {
@@ -4224,6 +4888,30 @@
       "action": "send",
       "channel": {
         "$ref": "#/channels/nf/a13_spec_ready"
+      }
+    },
+    "publish/a14_report_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a14_report_conflict"
+      }
+    },
+    "publish/a14_report_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a14_report_ready"
+      }
+    },
+    "publish/a14_spec_conflict": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a14_spec_conflict"
+      }
+    },
+    "publish/a14_spec_ready": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/nf/a14_spec_ready"
       }
     },
     "publish/b01_report_conflict": {
@@ -4581,5 +5269,5 @@
       }
     }
   },
-  "x-nf-events": 99
+  "x-nf-events": 115
 }

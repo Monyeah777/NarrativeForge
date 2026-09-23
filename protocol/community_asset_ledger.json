@@ -303,6 +303,42 @@
     },
     {
       "key": "CONCEPT_GRAPH",
+      "package": "三维与世界模型域包",
+      "file": "community/三维与世界模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "三维与世界模型域包",
+      "file": "community/三维与世界模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "三维与世界模型域包",
+      "file": "community/三维与世界模型域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "三维与世界模型域包",
+      "file": "community/三维与世界模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "三维与世界模型域包",
+      "file": "community/三维与世界模型域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "三维与世界模型域包",
+      "file": "community/三维与世界模型域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
       "package": "代码大模型域包",
       "file": "community/代码大模型域包/assets/CONCEPT_GRAPH.md",
       "line": 1
@@ -573,6 +609,42 @@
     },
     {
       "key": "CONCEPT_GRAPH",
+      "package": "强化学习与决策域包",
+      "file": "community/强化学习与决策域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "强化学习与决策域包",
+      "file": "community/强化学习与决策域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "强化学习与决策域包",
+      "file": "community/强化学习与决策域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "强化学习与决策域包",
+      "file": "community/强化学习与决策域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "强化学习与决策域包",
+      "file": "community/强化学习与决策域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "强化学习与决策域包",
+      "file": "community/强化学习与决策域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
       "package": "摘要与信息压缩域包",
       "file": "community/摘要与信息压缩域包/assets/CONCEPT_GRAPH.md",
       "line": 1
@@ -605,6 +677,42 @@
       "key": "STANDARDS_ANCHORS",
       "package": "摘要与信息压缩域包",
       "file": "community/摘要与信息压缩域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "数学与形式化推理域包",
+      "file": "community/数学与形式化推理域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "数学与形式化推理域包",
+      "file": "community/数学与形式化推理域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "数学与形式化推理域包",
+      "file": "community/数学与形式化推理域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "数学与形式化推理域包",
+      "file": "community/数学与形式化推理域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "数学与形式化推理域包",
+      "file": "community/数学与形式化推理域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "数学与形式化推理域包",
+      "file": "community/数学与形式化推理域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {
@@ -1415,6 +1523,42 @@
       "key": "WRITING_STYLE",
       "package": "校园情感领域包",
       "file": "community/校园情感领域包/assets/WRITING_STYLE.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "端侧与边缘小模型域包",
+      "file": "community/端侧与边缘小模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "端侧与边缘小模型域包",
+      "file": "community/端侧与边缘小模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "端侧与边缘小模型域包",
+      "file": "community/端侧与边缘小模型域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "端侧与边缘小模型域包",
+      "file": "community/端侧与边缘小模型域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "端侧与边缘小模型域包",
+      "file": "community/端侧与边缘小模型域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "端侧与边缘小模型域包",
+      "file": "community/端侧与边缘小模型域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {

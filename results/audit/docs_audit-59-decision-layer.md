@@ -6,7 +6,7 @@ scope: 作者指令「拉取 jev 或 laya 这种模型作为决策层」——�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:4d9797d6fe85f76e50ed4c080f64c704a3d9aecc73ce626d9bf8e70234c1b5f5
+  - verify.sh:daaaa2cd371e8618af7ddd575b77a700f4ac84af1aafe4a3644369d263991e5c
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - protocol/normative.json:4b47f2ff9c70cb58ad1f379d75891a5d7652c4a23c079ea0f7a4c4c8ed46ca6a
   - protocol/data_contracts.json:ce951a3322dd7a4827c39d68826aee9e3945986e5c64bd0b4b1fa1741ff72b32

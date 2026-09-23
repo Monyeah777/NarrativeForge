@@ -1125,6 +1125,146 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "三维与世界模型域包",
+      "name": "三维与世界模型域包",
+      "pipeline": "P25",
+      "categories": [
+        "三维与世界模型"
+      ],
+      "module_ids": [
+        "三维与世界模型:M01",
+        "三维与世界模型:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "三维与世界模型:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "三维与世界模型:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "数学与形式化推理域包",
+      "name": "数学与形式化推理域包",
+      "pipeline": "P26",
+      "categories": [
+        "数学与形式化推理"
+      ],
+      "module_ids": [
+        "数学与形式化推理:M01",
+        "数学与形式化推理:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "数学与形式化推理:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "数学与形式化推理:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "强化学习与决策域包",
+      "name": "强化学习与决策域包",
+      "pipeline": "P27",
+      "categories": [
+        "强化学习与决策"
+      ],
+      "module_ids": [
+        "强化学习与决策:M01",
+        "强化学习与决策:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "强化学习与决策:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "强化学习与决策:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "端侧与边缘小模型域包",
+      "name": "端侧与边缘小模型域包",
+      "pipeline": "P28",
+      "categories": [
+        "端侧与边缘小模型"
+      ],
+      "module_ids": [
+        "端侧与边缘小模型:M01",
+        "端侧与边缘小模型:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "端侧与边缘小模型:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "端侧与边缘小模型:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "k",
+        "value": 4.0
+      },
+      {
+        "metric": "n",
+        "value": 16.0
+      },
+      {
+        "metric": "pass_at_1",
+        "value": 0.6875
+      },
+      {
+        "metric": "pass_at_k",
+        "value": 1.0
+      },
+      {
+        "metric": "tasks",
+        "value": 4.0
+      },
+      {
+        "metric": "tasks_skipped_insufficient_samples",
+        "value": 0.0
+      },
+      {
+        "metric": "tasks_used_for_passk",
+        "value": 4.0
+      }
+    ]
+  },
+  "description": "数学与形式化推理 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

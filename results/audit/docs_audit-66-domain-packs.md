@@ -12,11 +12,10 @@ subjects:
   - desktop/src/core/quality_depth_scan.py:2af96a08d6b8e0e07e3a86b041507c706c9de1d4609fdbf4f8eae8b4b598b59e
   - desktop/src/core/doc_hygiene.py:ee315d685c82a6e1841aeb7859fb885684a9fa52f856f951e05484201afffc74
   - scripts/nf.py:9bb0ad2964d938a9d52ee2a693023ece2a09c4d1088ba186eed4389222d976ee
-  - protocol/domain_packs.json:ba51de7c28722da1f54c47053c57eee21f7c1ecba4dfd39a3775916da6e2297a
   - docs/domain-packs.md:7b61173388a7e6f636d0dedc18e2e2f83a50ba28bb4f2cb3bcb1a6398d3b4b87
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
-  - verify.sh:4d9797d6fe85f76e50ed4c080f64c704a3d9aecc73ce626d9bf8e70234c1b5f5
+  - verify.sh:daaaa2cd371e8618af7ddd575b77a700f4ac84af1aafe4a3644369d263991e5c
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

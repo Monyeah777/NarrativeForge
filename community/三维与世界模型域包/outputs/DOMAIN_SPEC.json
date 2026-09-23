@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "A08",
+  "domain": "三维与世界模型",
+  "section": "A · 模型与能力",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "regression",
+  "subdivisions": [
+    {
+      "id": "A08-01",
+      "name": "三维重建与辐射场",
+      "definition": "三维重建与辐射场的口径：输入视图数、坐标约定、指标（PSNR/SSIM/LPIPS）与视角划分。",
+      "anchor": "https://arxiv.org/abs/2003.08934",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 views（训练/测试视角数）、coord_system（右手/左手 + 上轴）与 metric（PSNR/SSIM/LPIPS + 下采样口径）。",
+      "pitfall": "测试视角与训练视角重叠（虚高）；分辨率与下采样口径不同直接比 PSNR。"
+    },
+    {
+      "id": "A08-02",
+      "name": "点云处理",
+      "definition": "点云处理的口径：点云来源（扫描/生成）、采样密度与旋转平移不变性设定。",
+      "anchor": "https://arxiv.org/abs/1612.00593",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 source（lidar|rgbd|generated）、density（点/平方米或总点数）与 invariance（旋转|平移|尺度 是否要求）。",
+      "pitfall": "训练/测试采样密度不同；宣称旋转不变却未做旋转增强测试。"
+    },
+    {
+      "id": "A08-03",
+      "name": "纹理与材质生成",
+      "definition": "纹理与材质生成的口径：材质表示（PBR 通道）、分辨率与光照一致性要求。",
+      "anchor": "https://arxiv.org/abs/2201.05989",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 pbr_channels（albedo/normal/roughness/metallic 等）、texture_resolution 与 lighting_consistency（是否做重光照检验）。",
+      "pitfall": "只有 albedo 却宣称材质完整；生成纹理烘焙进光照（不可重光照）。"
+    },
+    {
+      "id": "A08-04",
+      "name": "文生 3D 资产",
+      "definition": "文生 3D 资产的口径：表示形式（网格/高斯/隐式）、面数与多视角一致性判据。",
+      "anchor": "https://arxiv.org/abs/2209.14988",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 representation（mesh|gaussian|implicit）、face_count（或点数）与 multiview_consistency（一致性指标 + 采样视角数）。",
+      "pitfall": "只展示单视角好看；面数不声明导致不可用于下游管线。"
+    },
+    {
+      "id": "A08-05",
+      "name": "场景生成与布局",
+      "definition": "场景生成与布局的口径：房间类型 / 布局约束、可通行性检查与物理合理性。",
+      "anchor": "https://arxiv.org/abs/1702.04405",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 room_types、constraints（可通行/支撑面/无穿插）与 physics_check（碰撞检测是否执行）。",
+      "pitfall": "生成结果物体穿插或悬空；无通行性检查导致不可用。"
+    },
+    {
+      "id": "A08-06",
+      "name": "物理仿真与碰撞",
+      "definition": "物理仿真与碰撞的口径：求解器、时间步长、接触模型与稳定性判据。",
+      "anchor": "https://mitsuba.readthedocs.io/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 solver（含版本）、dt（时间步长 s）、contact_model 与 stability_check（能量守恒/穿透深度上限）。",
+      "pitfall": "时间步长过大导致穿透（结论无效）；求解器版本未记录。"
+    },
+    {
+      "id": "A08-07",
+      "name": "世界模型与状态预测",
+      "definition": "世界模型与状态预测的口径：状态表示、预测时域与 rollout 误差累积报告。",
+      "anchor": "https://arxiv.org/abs/1803.10122",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 state_repr（字段/维度）、horizon（预测步数）与 rollout_error（分步误差曲线，不只报单步）。",
+      "pitfall": "只报一步预测误差；长时域误差发散未报告。"
+    },
+    {
+      "id": "A08-08",
+      "name": "SLAM 与定位",
+      "definition": "SLAM 与定位的口径：传感器配置、轨迹误差指标（ATE/RPE）与失败场景记录。",
+      "anchor": "https://arxiv.org/abs/1502.00956",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 sensors（相机/IMU/LiDAR）、metric（ATE|RPE + 对齐方式）与 failure_cases（动态物体/弱纹理等）。",
+      "pitfall": "只在理想序列评测；对齐方式（SE3/Sim3）未声明导致尺度误差被掩盖。"
+    },
+    {
+      "id": "A08-09",
+      "name": "数字孪生",
+      "definition": "数字孪生的口径：孪生粒度、同步频率与偏差监控指标。",
+      "anchor": "https://docs.omniverse.nvidia.com/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 twin_granularity（设备/产线/园区）、sync_hz 与 drift_metric（孪生与实测偏差）。",
+      "pitfall": "孪生只做静态建模（无同步）；偏差无监控（孪生与实际脱节不可见）。"
+    },
+    {
+      "id": "A08-10",
+      "name": "3D 资产格式与管线",
+      "definition": "3D 资产格式与管线的口径：格式（glTF/USD/FBX）、坐标系、单位与压缩策略。",
+      "anchor": "https://www.khronos.org/gltf/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 format（含版本）、up_axis、unit（米/厘米）与 compression（Draco/USDZ 等）。",
+      "pitfall": "单位与上轴不一致导致缩放/朝向错；压缩后属性丢失未核。"
+    },
+    {
+      "id": "A08-11",
+      "name": "骨骼绑定与动画",
+      "definition": "骨骼绑定与动画的口径：骨骼层级、蒙皮权重与动画重定向误差。",
+      "anchor": "https://arxiv.org/abs/1904.05866",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 skeleton_joints、skin_weight_norm（是否归一化）与 retarget_error（关节位置误差 mm/度）。",
+      "pitfall": "权重未归一化导致蒙皮坍缩；重定向误差不报导致动画不可用。"
+    },
+    {
+      "id": "A08-12",
+      "name": "三维评测",
+      "definition": "三维评测的口径：几何指标（Chamfer/F-score）、感知指标与评测集划分。",
+      "anchor": "https://arxiv.org/abs/1512.03012",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 geom_metric（Chamfer|F-score + 阈值）、perceptual_metric 与 split（同类别内 vs 跨类别）。",
+      "pitfall": "只报 Chamfer 不报感知质量；跨类别评测当同类别结论。"
+    }
+  ]
+}

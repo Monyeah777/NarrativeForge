@@ -7,6 +7,12 @@
       "machine_verifiable_ratio": 0.8571,
       "prose_assets": 1
     },
+    "三维与世界模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "代码大模型域包": {
       "functional": 1,
       "machine_verifiable": 10,
@@ -49,7 +55,19 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "强化学习与决策域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "摘要与信息压缩域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "数学与形式化推理域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -62,6 +80,12 @@
       "prose_assets": 3
     },
     "机器翻译与本地化域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "端侧与边缘小模型域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -100,9 +124,9 @@
   },
   "schema": "nf-output-forms-baseline/1",
   "totals": {
-    "functional": 16,
-    "machine_verifiable": 154,
-    "machine_verifiable_ratio": 0.7662,
-    "prose_assets": 47
+    "functional": 20,
+    "machine_verifiable": 194,
+    "machine_verifiable_ratio": 0.7668,
+    "prose_assets": 59
   }
 }

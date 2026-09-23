@@ -4,7 +4,7 @@
     "algorithm": "RFC6962-style sha256 domain-separated",
     "count": 49,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "a4f0f6642c84ebf7a2c9f06119170de0f27178173a84cb96cf9374959eb246ce",
+    "root": "5326df1b233772134c691fc773eca5b34f21959aeca93e61558fdefee1763241",
     "scope": "protocol"
   },
   "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
@@ -23,7 +23,7 @@
     },
     {
       "digest": {
-        "sha256": "83f4e50e97bf8b50c140b5c33814f0f7bf00f5b6d2ff9bd0f63f624db03ca4e9"
+        "sha256": "2629cee1235015d8e3723d9741486fe07fa3d0f3b500b024c9f63095f0674f4a"
       },
       "name": "02_联动注册表.md"
     },
@@ -59,7 +59,7 @@
     },
     {
       "digest": {
-        "sha256": "badc86d306bd246216e7deb013f8fd534fe5f7cbc7288e591762f4673afb6ba7"
+        "sha256": "a4309824ea9647fa4b7dfc666c3c347c4c95570264d055bb07968b495acde4de"
       },
       "name": "protocol/event_registry.json"
     },
@@ -77,7 +77,7 @@
     },
     {
       "digest": {
-        "sha256": "203fbf3ab0b08115c94edad92b84ebe111d870a3a2d667e55b107d682125a55e"
+        "sha256": "1ffc8deaf9ea092936e517421e783c3145920018ef9dc0bc150d31cc065aefa8"
       },
       "name": "protocol/community_asset_ledger.json"
     },
@@ -95,7 +95,7 @@
     },
     {
       "digest": {
-        "sha256": "512a9b867f154ba143603126e80e9deb500f156032104254836074bbae462185"
+        "sha256": "811f03fb3f74ee8f2c702d86aada9b9c39a67ddf9ecc0c63e304fad828a37896"
       },
       "name": "protocol/pipeline_advisory.json"
     },
@@ -107,19 +107,19 @@
     },
     {
       "digest": {
-        "sha256": "98aaee4ba119009693387e5affad5fc84acad87be0a58de6b06654d5b8765f5c"
+        "sha256": "a19a05fee6453ba0b209f268099fc7e67275fb88f8b2121621129b4c515d9fe9"
       },
       "name": "protocol/module_signatures.json"
     },
     {
       "digest": {
-        "sha256": "479827b4f8ccb6ab63d33ee1973eb2557d0593407f48cddffbf7f1fa05128e05"
+        "sha256": "5ee1aa4de3a50154ef5167273991a2d68744fbb789268dfd7e1d797c79c2ee3c"
       },
       "name": "protocol/conformance_report.json"
     },
     {
       "digest": {
-        "sha256": "e76e6f45ae0aba1fc6e0bff49a76ac8adaa4f8995b29a4a9de77a14d64d10633"
+        "sha256": "fbcf536213ac1a4316725bfa51e4cddb2e502480f7fddaa5055277e827d0359b"
       },
       "name": "protocol/asset_line_baseline.json"
     },
@@ -251,7 +251,7 @@
     },
     {
       "digest": {
-        "sha256": "3cfacf95f2f0c4600be13a2e6a07476a8ff8b648275622c5dc48b330175cb8fd"
+        "sha256": "552eb646fba72aeeda09da9796f4e0a0335456c52f65706a9b153011077fd24a"
       },
       "name": "desktop/src/core/registry.json"
     },

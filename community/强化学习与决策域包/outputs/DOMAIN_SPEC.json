@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "A12",
+  "domain": "强化学习与决策",
+  "section": "A · 模型与能力",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "regression",
+  "subdivisions": [
+    {
+      "id": "A12-01",
+      "name": "策略梯度与 PPO",
+      "definition": "策略梯度与 PPO 的口径：优势估计方式、裁剪范围、每轮采样量与种子数。",
+      "anchor": "https://arxiv.org/abs/1707.06347",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 advantage（GAE λ|MC）、clip_range、steps_per_update 与 seeds（≥3，报均值±方差）。",
+      "pitfall": "单种子报峰值成绩；裁剪范围与优势估计未声明导致不可复现。"
+    },
+    {
+      "id": "A12-02",
+      "name": "离线强化学习",
+      "definition": "离线强化学习的口径：数据集来源与覆盖度、是否在线交互、以及 OOD 动作处理。",
+      "anchor": "https://arxiv.org/abs/2006.04779",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 dataset（来源 + 转移数）、online_interaction（none|limited）与 ood_handling（约束/惩罚/无）。",
+      "pitfall": "离线算法带在线交互却与纯离线基线比较；数据集覆盖不足时结论不成立。"
+    },
+    {
+      "id": "A12-03",
+      "name": "世界模型强化学习",
+      "definition": "世界模型强化学习的口径：隐状态维度、想象 rollout 长度与真实环境回测比例。",
+      "anchor": "https://arxiv.org/abs/2301.04104",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 latent_dim、imagination_horizon 与 real_eval_ratio（策略在真实环境回测的比例）。",
+      "pitfall": "只在想象环境评测（乐观偏差）；隐状态维度未声明导致显存结论失真。"
+    },
+    {
+      "id": "A12-04",
+      "name": "多臂老虎机与 A/B",
+      "definition": "多臂老虎机与 A/B 的口径：探索策略（ε/UCB/Thompson）、样本量与显著性口径。",
+      "anchor": "https://arxiv.org/abs/1204.5721",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 policy（ε-greedy|UCB|TS + 参数）、sample_size 与 significance（检验方法 + α + 是否多重比较校正）。",
+      "pitfall": "不做多重比较校正（假阳性）；样本量不足就宣布胜出。"
+    },
+    {
+      "id": "A12-05",
+      "name": "奖励函数设计",
+      "definition": "奖励函数设计的口径：奖励项组成、权重与奖励黑客的检测方式。",
+      "anchor": "https://arxiv.org/abs/1706.03741",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 reward_terms（清单）、weights（数值）与 hacking_check（对抗样本 / 人工审看结果）。",
+      "pitfall": "只报回报曲线不查奖励黑客；奖励权重变更未记录。"
+    },
+    {
+      "id": "A12-06",
+      "name": "仿真环境搭建",
+      "definition": "仿真环境搭建的口径：环境版本、观测 / 动作空间定义与随机性控制（种子）。",
+      "anchor": "https://gymnasium.farama.org/",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 env_id（含版本）、obs_space/action_space（维度与范围）与 seed_policy（固定 + 重置规则）。",
+      "pitfall": "环境版本升级未记录（行为已变）；种子不固定导致结果抖动。"
+    },
+    {
+      "id": "A12-07",
+      "name": "多智能体博弈",
+      "definition": "多智能体博弈的口径：智能体数量与角色、信息结构（完全 / 不完全）与均衡指标。",
+      "anchor": "https://arxiv.org/abs/1706.02275",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 n_agents、information（full|partial）、training_scheme（集中训练分散执行等）与 equilibrium_metric。",
+      "pitfall": "把自博（self-play）胜率当泛化能力；信息结构未声明。"
+    },
+    {
+      "id": "A12-08",
+      "name": "规划与搜索（MCTS）",
+      "definition": "规划与搜索（MCTS）的口径：搜索预算、价值 / 策略先验来源与树复用策略。",
+      "anchor": "https://arxiv.org/abs/1911.08265",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 budget（模拟次数）、prior（网络|rollout）与 tree_reuse（是否跨步复用 + 规则）。",
+      "pitfall": "搜索预算与被比方法不同；先验来自测试环境（泄漏）。"
+    },
+    {
+      "id": "A12-09",
+      "name": "推荐系统 RL",
+      "definition": "推荐系统 RL 的口径：交互日志来源、奖励定义与离线评估的偏差校正。",
+      "anchor": "https://arxiv.org/abs/1909.04847",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 log_source（真实|模拟）、reward（点击/时长/转化）与 offpolicy_correction（IPS/DR 等）。",
+      "pitfall": "离线日志直接评估（分布偏移未校正）；奖励定义与业务目标脱节。"
+    },
+    {
+      "id": "A12-10",
+      "name": "资源调度优化",
+      "definition": "资源调度优化的口径：目标函数、约束与在线 / 离线求解方式。",
+      "anchor": "https://arxiv.org/abs/1810.01963",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 objective（makespan|成本|SLA 违背率）、constraints（清单）与 solving（在线|离线 + 预算）。",
+      "pitfall": "目标与约束混写（不可判定）；离线最优当在线结果。"
+    },
+    {
+      "id": "A12-11",
+      "name": "RLHF 中的 RL",
+      "definition": "RLHF 中的 RL 的口径：偏好模型来源、KL 约束系数与奖励归一化方式。",
+      "anchor": "https://arxiv.org/abs/2203.02155",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 rm_source（人工偏好规模 + 模型 id）、kl_coef 与 reward_norm（是否归一化 + 方式）。",
+      "pitfall": "无 KL 约束导致策略崩坏；奖励未归一化导致超参不可迁移。"
+    },
+    {
+      "id": "A12-12",
+      "name": "训练稳定性与探索",
+      "definition": "训练稳定性与探索的口径：探索机制、梯度 / 分布异常监控与重跑协议。",
+      "anchor": "https://arxiv.org/abs/1709.06560",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 exploration（ε|熵奖励|RND）、anomaly_monitors（KL/梯度范数/回报）与 rerun_protocol（几次 + 报告口径）。",
+      "pitfall": "只报最好一次运行；异常监控缺失导致崩溃无据可查。"
+    }
+  ]
+}

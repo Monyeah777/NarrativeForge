@@ -6,7 +6,7 @@ scope: 作者指令「遗留全部补上」——处置 AUD-0009 §五 列出的
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:4d9797d6fe85f76e50ed4c080f64c704a3d9aecc73ce626d9bf8e70234c1b5f5
+  - verify.sh:daaaa2cd371e8618af7ddd575b77a700f4ac84af1aafe4a3644369d263991e5c
   - desktop/src/core/transparency_log.py:ffb298d1a55611f03ee8dca1a57aa6148fd06bfaeb4cbd6a07dade279ebddd00
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
   - desktop/src/core/interop_export.py:1fc35ff29f0b7b0a95ae8fa150f8e05534a7e65bf821f6749d95491dcd1ab8a6
