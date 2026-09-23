@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="layer" for="node" attr.name="layer" attr.type="string"/>
+  <key id="branch" for="node" attr.name="branch" attr.type="string"/>
+  <key id="provenance" for="edge" attr.name="provenance" attr.type="string"/>
+  <graph id="concept-graph" edgedefault="directed">
+    <node id="B06-01">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-02">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-03">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-04">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-05">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-06">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-07">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-08">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-09">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-10">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-11">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="B06-12">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <edge source="B06-02" target="B06-01">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-09" target="B06-01">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-01" target="B06-03">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-03" target="B06-04">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-04" target="B06-05">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-05" target="B06-06">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-01" target="B06-07">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-04" target="B06-08">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-07" target="B06-10">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+    <edge source="B06-10" target="B06-12">
+      <data key="provenance">['b06-anchor']</data>
+    </edge>
+  </graph>
+</graphml>

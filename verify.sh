@@ -456,7 +456,7 @@ import yaml
 # DOMAIN = 领域包显式登记（③ 独占类别互斥 + ⑤ 编号在册/M91-99 不占用专属）——领域包语义依赖
 # 02 §8.1/8.2 段落结构（segmap）与「不占 M91-99 社区段」规则（通用 M93-96/轻混 M91-92 合法占段，
 # 不能内容推导纳入领域检查）；新增领域包须在此登记 + 02 §8 开新段 + registry 条目（登记三要件②）。
-DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/大语言模型域包', 'community/多模态大模型域包', 'community/视觉模型域包', 'community/语音识别与合成域包', 'community/音频与音乐生成域包', 'community/视频生成与理解域包', 'community/图像生成与编辑域包', 'community/文本生成与创作域包', 'community/摘要与信息压缩域包', 'community/机器翻译与本地化域包', 'community/分类与情感分析域包', 'community/代码大模型域包', 'community/嵌入与检索表示域包', 'community/具身智能与机器人域包', 'community/三维与世界模型域包', 'community/数学与形式化推理域包', 'community/强化学习与决策域包', 'community/端侧与边缘小模型域包']
+DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/大语言模型域包', 'community/多模态大模型域包', 'community/视觉模型域包', 'community/语音识别与合成域包', 'community/音频与音乐生成域包', 'community/视频生成与理解域包', 'community/图像生成与编辑域包', 'community/文本生成与创作域包', 'community/摘要与信息压缩域包', 'community/机器翻译与本地化域包', 'community/分类与情感分析域包', 'community/代码大模型域包', 'community/嵌入与检索表示域包', 'community/具身智能与机器人域包', 'community/三维与世界模型域包', 'community/数学与形式化推理域包', 'community/强化学习与决策域包', 'community/端侧与边缘小模型域包', 'community/信息抽取与结构化域包', 'community/知识问答与检索增强域包']
 # LEGACY_BARE = 存量既有领域包（v1.1 迁出模块沿用原编号不改号，包内裸号属既有）；其余包**新增**
 # 编号须落 M91-M99 机制段或 <独占类别>:Mxx 类内段（01 §1.6.11 编号命名空间扩展；每类 00-99 独立）。
 LEGACY_BARE = set(DOMAIN)

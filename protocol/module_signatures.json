@@ -1,5 +1,5 @@
 {
-  "count": 84,
+  "count": 88,
   "modules": {
     "AI系统:M25": {
       "digest": "9eba42619fd91017080e670d5f60d17ba4255d2444d87243f5f440d6ed55c8db",
@@ -197,6 +197,14 @@
       "digest": "6c61821f4be4a0bcf6ccd1c65278c0646f76667f2fd234e214bb892dcd413ffc",
       "path": "community/代码大模型域包/modules/A09b_代码面收口与形态派生.md"
     },
+    "信息抽取与结构化:M01": {
+      "digest": "31808a6bcf6fce64e224dd637191ba5daa3cf3abf452e0503980d5b19ef86523",
+      "path": "community/信息抽取与结构化域包/modules/B05a_抽取口径登记.md"
+    },
+    "信息抽取与结构化:M02": {
+      "digest": "7b15b6c94bab5c5d3b71e106b49aae85ca3b035b9e74a760512f4ecbde2405f3",
+      "path": "community/信息抽取与结构化域包/modules/B05b_抽取面收口与形态派生.md"
+    },
     "具身智能与机器人:M01": {
       "digest": "1ab13725776e402604585d87d931ec25a0cb40cc926b9f5270c68889338c27c0",
       "path": "community/具身智能与机器人域包/modules/A13a_具身口径登记.md"
@@ -284,6 +292,14 @@
     "机器翻译与本地化:M02": {
       "digest": "fb80d8180cbd45b68497d5e8c82ecdcabe5c776e1e615c58ea253bf8db038e18",
       "path": "community/机器翻译与本地化域包/modules/B03b_本地化面收口与形态派生.md"
+    },
+    "知识问答与检索增强:M01": {
+      "digest": "10dd4fb7eb70427170c66ebc70c0c1fe2a6929bcca52a7ab771b22853373db39",
+      "path": "community/知识问答与检索增强域包/modules/B06a_RAG 口径登记.md"
+    },
+    "知识问答与检索增强:M02": {
+      "digest": "a8b0f326073ece12a0d2467ae897b6bbc8bcadbcd88e584c9902cb4b77766985",
+      "path": "community/知识问答与检索增强域包/modules/B06b_RAG 面收口与形态派生.md"
     },
     "端侧与边缘小模型:M01": {
       "digest": "39871f5ba1c9945ccda905cbab82313654ecda6be78d7aa7530ca0837be2cdee",

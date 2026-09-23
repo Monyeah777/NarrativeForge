@@ -375,6 +375,42 @@
     },
     {
       "key": "CONCEPT_GRAPH",
+      "package": "信息抽取与结构化域包",
+      "file": "community/信息抽取与结构化域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "信息抽取与结构化域包",
+      "file": "community/信息抽取与结构化域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "信息抽取与结构化域包",
+      "file": "community/信息抽取与结构化域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "信息抽取与结构化域包",
+      "file": "community/信息抽取与结构化域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "信息抽取与结构化域包",
+      "file": "community/信息抽取与结构化域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "信息抽取与结构化域包",
+      "file": "community/信息抽取与结构化域包/assets/STANDARDS_ANCHORS.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
       "package": "具身智能与机器人域包",
       "file": "community/具身智能与机器人域包/assets/CONCEPT_GRAPH.md",
       "line": 1
@@ -1523,6 +1559,42 @@
       "key": "WRITING_STYLE",
       "package": "校园情感领域包",
       "file": "community/校园情感领域包/assets/WRITING_STYLE.md",
+      "line": 1
+    },
+    {
+      "key": "CONCEPT_GRAPH",
+      "package": "知识问答与检索增强域包",
+      "file": "community/知识问答与检索增强域包/assets/CONCEPT_GRAPH.md",
+      "line": 1
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "知识问答与检索增强域包",
+      "file": "community/知识问答与检索增强域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "DOMAIN_SPEC",
+      "package": "知识问答与检索增强域包",
+      "file": "community/知识问答与检索增强域包/assets/DOMAIN_SPEC.md",
+      "line": 1
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "知识问答与检索增强域包",
+      "file": "community/知识问答与检索增强域包/assets/CONCEPT_GRAPH.md",
+      "line": 7
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "知识问答与检索增强域包",
+      "file": "community/知识问答与检索增强域包/assets/DOMAIN_SPEC.md",
+      "line": 11
+    },
+    {
+      "key": "STANDARDS_ANCHORS",
+      "package": "知识问答与检索增强域包",
+      "file": "community/知识问答与检索增强域包/assets/STANDARDS_ANCHORS.md",
       "line": 1
     },
     {

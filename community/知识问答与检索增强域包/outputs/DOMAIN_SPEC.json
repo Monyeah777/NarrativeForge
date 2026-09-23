@@ -1,0 +1,130 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B06",
+  "domain": "知识问答与检索增强",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "retrieval",
+  "subdivisions": [
+    {
+      "id": "B06-01",
+      "name": "检索-生成管线设计",
+      "definition": "检索-生成管线设计的口径：阶段划分、每阶段输入输出契约与失败回退。",
+      "anchor": "https://arxiv.org/abs/2005.11401",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 stages（清单）、io_contract（每阶段字段）与 fallback（检索为空时的行为）。",
+      "pitfall": "检索为空仍强答（幻觉）；阶段契约缺失导致不可替换组件。"
+    },
+    {
+      "id": "B06-02",
+      "name": "分块策略",
+      "definition": "分块策略的口径：块大小单位（字符 / token）、重叠比例与语义边界规则。",
+      "anchor": "https://arxiv.org/abs/2004.05150",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 chunk_unit（char|token）、chunk_size、overlap_ratio 与 boundary_rule（句/段/标题）。",
+      "pitfall": "块过大导致噪声进上下文；重叠比例未声明导致召回率不可复现。"
+    },
+    {
+      "id": "B06-03",
+      "name": "查询改写与扩展",
+      "definition": "查询改写与扩展的口径：改写策略、改写次数与原始查询保留规则。",
+      "anchor": "https://arxiv.org/abs/2305.15294",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 rewrite_strategy（HyDE|多查询|同义扩展）、max_rewrites 与 keep_original（true|false）。",
+      "pitfall": "改写丢失原查询语义（漂移）；改写次数不限导致成本失控。"
+    },
+    {
+      "id": "B06-04",
+      "name": "混合检索",
+      "definition": "混合检索的口径：稀疏 / 稠密融合方式、权重与归一化（与 A11 同口径）。",
+      "anchor": "https://arxiv.org/abs/2210.11934",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 fusion（rrf|weighted）、weights 与 score_norm，并给出各路的单独召回作对照。",
+      "pitfall": "只报融合后效果（无法归因）；分数未归一化。"
+    },
+    {
+      "id": "B06-05",
+      "name": "重排序",
+      "definition": "重排序的口径：候选数、重排深度与延迟预算（与 A11 同口径）。",
+      "anchor": "https://arxiv.org/abs/1908.10084",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 candidates、rerank_depth 与 latency_budget_ms，并报告重排前后指标变化。",
+      "pitfall": "重排带来延迟却未报延迟；深度变化后结论不可比。"
+    },
+    {
+      "id": "B06-06",
+      "name": "上下文压缩",
+      "definition": "上下文压缩的口径：压缩比、保留优先级与信息损失核查。",
+      "anchor": "https://arxiv.org/abs/2310.04408",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 compression_ratio、keep_priority（规则）与 loss_check（压缩前后答案一致率）。",
+      "pitfall": "压缩掉关键证据却不行核查；压缩比随查询浮动未声明。"
+    },
+    {
+      "id": "B06-07",
+      "name": "引用与归因",
+      "definition": "引用与归因的口径：引用粒度（句 / 段 / 文档）、引用真实性校验与无引用时的处理。",
+      "anchor": "https://arxiv.org/abs/2305.14627",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 citation_granularity、citation_verification（逐条核验通过率）与 no_citation_policy。",
+      "pitfall": "引用与原文不符（假引用）；无引用仍输出断言。"
+    },
+    {
+      "id": "B06-08",
+      "name": "多跳问答",
+      "definition": "多跳问答的口径：跳数定义、中间证据要求与逐步正确性报告。",
+      "anchor": "https://arxiv.org/abs/1809.09600",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 hop_count、evidence_per_hop（要求每跳证据）与 step_accuracy（逐跳正确率）。",
+      "pitfall": "只报最终答案（中间错也满分）；跳数未定义导致可比性缺失。"
+    },
+    {
+      "id": "B06-09",
+      "name": "知识库构建与更新",
+      "definition": "知识库构建与更新的口径：来源许可、更新频率与失效内容下线机制。",
+      "anchor": "https://arxiv.org/abs/2005.11401",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 source_license（逐源）、update_freq（小时/天）与 invalidation（下线与重建触发规则）。",
+      "pitfall": "过期内容不下线（知识污染）；来源许可未登记。"
+    },
+    {
+      "id": "B06-10",
+      "name": "拒答与不确定性",
+      "definition": "拒答与不确定性的口径：拒答判据（检索分 / 覆盖度）、拒答率与误拒代价。",
+      "anchor": "https://arxiv.org/abs/2207.05221",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 abstain_criterion（阈值 + 依据）、abstain_rate 与 false_abstain_rate（本可回答却拒答）。",
+      "pitfall": "无拒答机制（必答即编）；只报拒答率不报误拒。"
+    },
+    {
+      "id": "B06-11",
+      "name": "检索增强评测",
+      "definition": "检索增强评测的口径：检索与生成指标分列、消融对照与端到端指标。",
+      "anchor": "https://arxiv.org/abs/2309.15217",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 retrieval_metrics、generation_metrics 与 ablation（有/无检索对照），并说明端到端指标定义。",
+      "pitfall": "只报端到端分数（无法定位问题）；无消融对照。"
+    },
+    {
+      "id": "B06-12",
+      "name": "幻觉与冲突消解",
+      "definition": "幻觉与冲突消解的口径：冲突检测（多来源矛盾）、裁决优先级与人工升级路径。",
+      "anchor": "https://arxiv.org/abs/2305.14251",
+      "anchor_kind": "paper",
+      "anchor_status": 200,
+      "check": "声明 conflict_detection（方法）、resolution_policy（来源优先级 / 时间优先 / 人工）与 escalation（升级条件）。",
+      "pitfall": "冲突静默取一个（不可追溯）；无人工升级路径。"
+    }
+  ]
+}

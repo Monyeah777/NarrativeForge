@@ -24,6 +24,13 @@
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/信息抽取与结构化域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "信息抽取与结构化域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
       "dir": "community/具身智能与机器人域包/assets",
       "files": 3,
       "lines": 249,
@@ -105,6 +112,13 @@
       "files": 29,
       "lines": 1575,
       "package": "校园情感领域包"
+    },
+    {
+      "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",
+      "dir": "community/知识问答与检索增强域包/assets",
+      "files": 3,
+      "lines": 249,
+      "package": "知识问答与检索增强域包"
     },
     {
       "digest": "2900d510ba79ee0b59188386ce3365cc4307463c0b769d763ba343ac39a750b0",

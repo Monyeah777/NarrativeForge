@@ -380,8 +380,50 @@
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
       "spec_digest": "b1de95804b72d6f1b471010795fdd44d6cbf2790be9e9040fed3341b56833368"
+    },
+    {
+      "code": "B05",
+      "section": "B · 任务类型",
+      "name": "信息抽取与结构化",
+      "package": "信息抽取与结构化域包",
+      "category": "信息抽取与结构化",
+      "pipeline": "P29",
+      "module_ids": [
+        "信息抽取与结构化:M01",
+        "信息抽取与结构化:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "spec_digest": "9c9cdaf412f7a5bce64daf106d79ba8e471cfa6cb73b29a3074a26820dd3876e"
+    },
+    {
+      "code": "B06",
+      "section": "B · 任务类型",
+      "name": "知识问答与检索增强",
+      "package": "知识问答与检索增强域包",
+      "category": "知识问答与检索增强",
+      "pipeline": "P31",
+      "module_ids": [
+        "知识问答与检索增强:M01",
+        "知识问答与检索增强:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "retrieval",
+      "spec_digest": "212baa8acfb3a8aa2621695e7974ad5e7b0ddc6cfffc79be815e68fce34bfc08"
     }
   ],
-  "count": 18,
-  "subdivisions_total": 216
+  "count": 20,
+  "subdivisions_total": 240
 }

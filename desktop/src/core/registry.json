@@ -1265,6 +1265,76 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "信息抽取与结构化域包",
+      "name": "信息抽取与结构化域包",
+      "pipeline": "P29",
+      "categories": [
+        "信息抽取与结构化"
+      ],
+      "module_ids": [
+        "信息抽取与结构化:M01",
+        "信息抽取与结构化:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "信息抽取与结构化:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "信息抽取与结构化:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "知识问答与检索增强域包",
+      "name": "知识问答与检索增强域包",
+      "pipeline": "P31",
+      "categories": [
+        "知识问答与检索增强"
+      ],
+      "module_ids": [
+        "知识问答与检索增强:M01",
+        "知识问答与检索增强:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "知识问答与检索增强:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "知识问答与检索增强:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

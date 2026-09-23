@@ -19,6 +19,12 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "信息抽取与结构化域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "具身智能与机器人域包": {
       "functional": 1,
       "machine_verifiable": 10,
@@ -85,6 +91,12 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "知识问答与检索增强域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "端侧与边缘小模型域包": {
       "functional": 1,
       "machine_verifiable": 10,
@@ -124,9 +136,9 @@
   },
   "schema": "nf-output-forms-baseline/1",
   "totals": {
-    "functional": 20,
-    "machine_verifiable": 194,
-    "machine_verifiable_ratio": 0.7668,
-    "prose_assets": 59
+    "functional": 22,
+    "machine_verifiable": 214,
+    "machine_verifiable_ratio": 0.767,
+    "prose_assets": 65
   }
 }
