@@ -6,7 +6,7 @@ package:
   conformance: "L2"
   id: 校园西幻轻混组合包         # 包目录名（机读唯一标识，与 02 §8.4 在册一致）
   name: 校园西幻轻混组合包       # 显示名（与 README 标题一致）
-  version: "1.0.0"    # 包内容版本（v2.5.0 Wave2 版本槽位，V1 只增不删）
+  version: "1.1.0"    # additive：补齐 references（M43/M22/M40 三个事件发布方），见 02 §9.6
   pipeline: P04                 # 自带装载管线（R3；P04 轻混装配流）
   module_id_range:              # 模块编号清单（R2 + M91-M99 规则；组合包新增编号落社区预留段）
     - "M91"                     # 自带：异界身份桥（轻混决策：情感表达通道 × 身份秘密权衡）
@@ -22,6 +22,18 @@ package:
       module_id: M55            # 匿名情书（校园侧情感表达通道；原模块不改号）
       source_schema_version: "2"
       asset_readonly: true      # 资产只读授权（源包资产不复制，运行时经 asset_get 借阅）
+    - source_package: 校园情感领域包
+      module_id: M43            # 情敌系统：confession_event 发布方（组合引擎实测的事件闭包缺口，2026-09-23 补齐）
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 校园情感领域包
+      module_id: 情感:M22       # 三冲动驱动：npc_action 发布方（同上；源包内该编号与官方 事件:M22 重号，故用类别限定写法）
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 校园情感领域包
+      module_id: M40            # 关系深度：relationship_change 发布方（同上）
+      source_schema_version: "2"
+      asset_readonly: true
     - source_package: 西幻生存领域包
       module_id: M17            # 生产制造（西幻侧产出源；原模块不改号）
       source_schema_version: "2"

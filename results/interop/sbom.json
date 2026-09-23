@@ -3,7 +3,7 @@
   "comment": "派生面非真源；created = max(仓内声明日期: score_baseline / provenance / approvals)（保确定性，非墙钟）。",
   "creationInfo": {
     "comment": "由纯度扫描登记面（HARD_ALLOW / SOFT_IMPORTS）实时派生；created = 仓内声明日期最大值（非墙钟，保确定性）",
-    "created": "2026-09-23T00:00:00Z",
+    "created": "2026-09-24T00:00:00Z",
     "creators": [
       "Tool: nf interop --kind sbom"
     ]

@@ -141,6 +141,7 @@ def dependencies(pkg_id: str,
     entry = prots.get(pkg_id) or {}
     refs = list(entry.get("references") or [])
     stack: List[Tuple[str, List[str]]] = []
+    pushed: set = set()      # 同一源包的多条 references = **一条包级依赖**（去重，勿判成环）
     for r in refs:
         sp = r.get("source_package")
         if not sp:
@@ -148,6 +149,9 @@ def dependencies(pkg_id: str,
         if sp not in data:
             issues.append(f"依赖闭包源包不可读: {sp}")
             continue
+        if sp in pushed:
+            continue
+        pushed.add(sp)
         stack.append((sp, list(_pkg_deps(data, sp).get("core_modules") or [])))
 
     seen: set = set()

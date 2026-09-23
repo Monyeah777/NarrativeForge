@@ -447,18 +447,18 @@
       ],
       "mount_layers": {
         "P40": {
-          "available": [],
+          "name": "行为决策",
           "default": [
             "M91"
           ],
-          "name": "行为决策"
+          "available": []
         },
         "P50": {
-          "available": [],
+          "name": "交互执行",
           "default": [
             "M92"
           ],
-          "name": "交互执行"
+          "available": []
         }
       },
       "name": "校园西幻轻混组合包",
@@ -471,6 +471,24 @@
           "asset_readonly": true
         },
         {
+          "source_package": "校园情感领域包",
+          "module_id": "M43",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园情感领域包",
+          "module_id": "情感:M22",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园情感领域包",
+          "module_id": "M40",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
           "source_package": "西幻生存领域包",
           "module_id": "M17",
           "source_schema_version": "2",
@@ -478,7 +496,7 @@
         }
       ],
       "schema_version": "2",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "assets": {

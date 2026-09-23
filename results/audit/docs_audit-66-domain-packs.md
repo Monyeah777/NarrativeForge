@@ -9,13 +9,13 @@ subjects:
   - desktop/src/core/domain_pack.py:2df8735455953d9ea168167269e16f961fc5589393ce57ae9870521a398173ac
   - desktop/src/core/domain_metrics.py:a870ce5e38e1efb1c4be35407876718c6c3f19cda0bbc40e934433f1f510c397
   - desktop/src/core/output_forms.py:50830a219470f9e3aadfd461c7b45212810cad4a5e4dbcc21810a79d56c85a5e
-  - desktop/src/core/quality_depth_scan.py:2af96a08d6b8e0e07e3a86b041507c706c9de1d4609fdbf4f8eae8b4b598b59e
-  - desktop/src/core/doc_hygiene.py:ee315d685c82a6e1841aeb7859fb885684a9fa52f856f951e05484201afffc74
-  - scripts/nf.py:3484f46ff1fcde7180a6c8fa5a46d8b406181782304140e820a26e83e5bdc54d
+  - desktop/src/core/quality_depth_scan.py:ef33e0c52da8370134c34da56943f3d9188c0f3212727a4b4eea5a80f0732fb1
+  - desktop/src/core/doc_hygiene.py:b4906f5459116d12d1e30f58ef083dad8f2b9841e4e46a43b8921e38f14088f1
+  - scripts/nf.py:cf468963a45f6027262011cc19c89d89c9587c5c4c4e2554ab459d6d4662610c
   - docs/domain-packs.md:fd3bbbef5d6475e3a095c79a34cdeb9342be077f227af41e01429feedba93428
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
-  - verify.sh:d0d318c28c61f49be63065fd7e5e5686e998677f80a849f07155c762293252e9
+  - verify.sh:c3df035ba67d693c355bfc8a5211506e7794a9a6b93768baaab9194e6934baea
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

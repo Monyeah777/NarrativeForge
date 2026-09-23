@@ -25,6 +25,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     from core import domain_pack as dpk
     from core import instruction_step_audit as isa
     from core import output_forms as of
+    from core import pack_combo as pcb
     from core import payload_consumer as pc
     from core import payload_registry as pr
     from core import tool_face as tf
@@ -39,6 +40,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                      ("concept_graph", cg.scan),
                      ("output_forms", of.scan),
                      ("domain_packs", dpk.scan),
+                     ("combos", pcb.scan),
                      ("asset_density", ad.scan),
                      ("asset_thickness", ad.thickness_scan),
                      ("asset_usage_strict", lambda r: ad.usage_scan(r))):

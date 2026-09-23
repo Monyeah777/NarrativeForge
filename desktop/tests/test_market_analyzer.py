@@ -58,6 +58,19 @@ class DependenciesTest(unittest.TestCase):
         self.assertEqual(seen, set())
         self.assertEqual(issues, [])
 
+    def test_multi_reference_same_source_is_one_edge(self):
+        """负例回归（2026-09-23 实测）：同一源包的多条 references = 一条包级依赖，
+        不得被判成「依赖闭包成环」（轻混包补 3 条校园引用后曾误报 3 次成环）。"""
+        prots = dict(self.prots)
+        prots["多引用测试包"] = {
+            "id": "多引用测试包", "references": [
+                {"source_package": "校园情感领域包", "module_id": "M43"},
+                {"source_package": "校园情感领域包", "module_id": "情感:M22"},
+                {"source_package": "校园情感领域包", "module_id": "M40"}]}
+        seen, issues = dependencies("多引用测试包", prots, self.data)
+        self.assertEqual(issues, [])
+        self.assertEqual(seen, {"校园情感领域包"})
+
     def test_cycle_detected(self):
         """构造源包含 references → 检出「嵌套 references」（verify 判据：不支持多层组合）。
 

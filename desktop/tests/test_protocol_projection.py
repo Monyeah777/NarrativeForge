@@ -53,7 +53,9 @@ class ProjectionAnchorTest(unittest.TestCase):
         """轻混组合包 references 入产物（含 asset_readonly/source_schema_version）。"""
         gen = self.entries["校园西幻轻混组合包"]
         reg = self.prots["校园西幻轻混组合包"]
-        self.assertEqual(len(gen["references"]), 2)
+        # 条数从声明件推导（原硬编码 2：2026-09-23 补 references 后即误报；
+        # 组合引擎要求「事件闭包可证」→ 引用条数会随真实依赖增长，判据只认双源一致）
+        self.assertGreaterEqual(len(gen["references"]), 2)
         self.assertEqual(gen["references"], reg["references"])
         for r in gen["references"]:
             for k in ("source_package", "module_id", "source_schema_version", "asset_readonly"):

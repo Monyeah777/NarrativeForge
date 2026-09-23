@@ -6,15 +6,15 @@ scope: 作者指令「拉取 jev 或 laya 这种模型作为决策层」——�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:d0d318c28c61f49be63065fd7e5e5686e998677f80a849f07155c762293252e9
+  - verify.sh:c3df035ba67d693c355bfc8a5211506e7794a9a6b93768baaab9194e6934baea
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - protocol/normative.json:4b47f2ff9c70cb58ad1f379d75891a5d7652c4a23c079ea0f7a4c4c8ed46ca6a
-  - protocol/data_contracts.json:3687b2b499f33d927a37a072eb3e48df690a73056f3124ed38a86b7dab14c7e4
+  - protocol/data_contracts.json:c0fec5b67151fd86f9a17e522a1d61238ebd974ec14b0ad41993cb47af533ae1
   - desktop/src/core/decision_layer.py:44f194ec3f2803a35669f6bdec179685bbf6c42fe43856bf11d8fae469f6e80f
   - desktop/src/core/receipts.py:fe47442de32dcda71ca186e5c57c32697235fc50fad7c1e95a7607c087f97022
-  - desktop/src/core/doc_hygiene.py:ee315d685c82a6e1841aeb7859fb885684a9fa52f856f951e05484201afffc74
+  - desktop/src/core/doc_hygiene.py:b4906f5459116d12d1e30f58ef083dad8f2b9841e4e46a43b8921e38f14088f1
   - desktop/tests/test_decision_layer.py:40521a5b641df92f0c4b4f28386c2a4118e5bee44ae050f924a3206fc74d3bc9
-  - scripts/nf.py:3484f46ff1fcde7180a6c8fa5a46d8b406181782304140e820a26e83e5bdc54d
+  - scripts/nf.py:cf468963a45f6027262011cc19c89d89c9587c5c4c4e2554ab459d6d4662610c
   - scripts/pull_decision_model.py:5e61f8d48a590943e915ab501f35172a13eb5fd41368a378abe386eebecdc227
   - docs/decision-layer.md:85ac1dc81c879cf98a15a0c089ba1c825c67649fe3ee431a9172336c09b04314
 ---

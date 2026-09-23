@@ -167,7 +167,7 @@
         "id": "https://narrativeforge.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "84f3a74f0852fcd1",
+        "invocationId": "1af4047fbf3c79a1",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -188,7 +188,7 @@
     },
     {
       "digest": {
-        "sha256": "0eafb1ad59a57264cda2b6ea883ba5307a776997eee2d01a8b83eec9a0fff82b"
+        "sha256": "0c12d7cfffcb003b2c7874b66b2fe6b866b3b0418a4a17191a356c0b05e47532"
       },
       "name": "02_联动注册表.md"
     },
@@ -278,7 +278,7 @@
     },
     {
       "digest": {
-        "sha256": "d7b8fec550a8fb40272f47f22e7a8f6555d5767c04d4281f5d27a0496566045a"
+        "sha256": "a73dc32d8aa0957f0ae1e607c0e6a6a3e3d6ffd5d32ae8886acfb0b5ae3fd7b2"
       },
       "name": "protocol/conformance_report.json"
     },
@@ -350,7 +350,7 @@
     },
     {
       "digest": {
-        "sha256": "3687b2b499f33d927a37a072eb3e48df690a73056f3124ed38a86b7dab14c7e4"
+        "sha256": "c0fec5b67151fd86f9a17e522a1d61238ebd974ec14b0ad41993cb47af533ae1"
       },
       "name": "protocol/data_contracts.json"
     },
@@ -416,7 +416,7 @@
     },
     {
       "digest": {
-        "sha256": "f32eb5b5ce1b483234f46793772c3b98bd012e2dc875e62ae9e03e997a03d0bc"
+        "sha256": "a9fda72a0eb53ad6a5e6934aef162a8633e0b1fdeae32f58933446e6561ff902"
       },
       "name": "desktop/src/core/registry.json"
     },

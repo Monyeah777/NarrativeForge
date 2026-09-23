@@ -5,6 +5,15 @@
   "rule_prefixes": ["check", "assertion:"],
   "contracts": [
     {
+      "id": "combo-certificates",
+      "artifact": "protocol/combo_certificates.json",
+      "quality_rule": "check32",
+      "owner": "组合引擎（core/pack_combo.py）+ check32 combos 子扫描",
+      "status": "active",
+      "freshness": "重签：nf combine plan --certify（每条证书按 packs+extra_modules 复算）",
+      "consumers": ["check32 combos", "nf combine verify", "docs/combos.md"]
+    },
+    {
       "id": "standards-catalog",
       "artifact": "protocol/standards_catalog.json",
       "quality_rule": "check32",

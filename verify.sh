@@ -781,9 +781,14 @@ for d in PKGS:
             errs.append('①%s references.module_id 不在源包 %s modules[] 在列: %s' % (pid, sp, mid))
     # ② 依赖闭包：以 references 起点沿源包 dependencies.core_modules 递归展开，无环/无悬空，叶 ⊆ OFFICIAL13
     stack = []
+    _pushed_sp = set()   # 同一源包的多条 references = 一条包级依赖（去重；2026-09-23 实测：
+                         # 轻混包补 3 条校园引用后，同源多引被本段误判「依赖闭包成环」）
     for r in refs:
         sp = r.get('source_package')
+        if sp in _pushed_sp:
+            continue
         if sp in dir_by_id:
+            _pushed_sp.add(sp)
             stack.append((sp, data[dir_by_id[sp]]['package'].get('dependencies', {}).get('core_modules', [])))
         else:
             errs.append('②%s 依赖闭包源包不可读（缺 community 目录 protocol.yaml）: %s' % (pid, sp))

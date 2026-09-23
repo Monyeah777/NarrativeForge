@@ -624,6 +624,31 @@ def _build_parser() -> argparse.ArgumentParser:
     dm_l = dmsub.add_parser("specs", help="列出内部域规格与其状态",
                             description="列域规格：域码 / 名称 / 度量族 / 是否已建包")
     dm_l.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    cb = sub.add_parser("combine",
+                        help="域包自由组合（任意 n 元 / 组件级；五不变量 + 可复算证书）",
+                        description="组合引擎：任选若干域包（或直接点模块/资产）→ 层位堆叠 / 依赖闭包 / "
+                                    "事件闭包 / 资产借阅 / 合法性判定 → 可复算证书（T4）；"
+                                    "`breadth` 对全部两两 + 抽样三元/四元跑同一套不变量证明广度。")
+    cbsub = cb.add_subparsers(dest="combine_cmd")
+    cb_p = cbsub.add_parser("plan", help="组合一个（打印/落证书）",
+                            description="组合：--packs 逗号分隔包名；--modules/--assets 组件级取用；"
+                                        "--certify 写进 protocol/combo_certificates.json")
+    cb_p.add_argument("--packs", default="", help="包名，逗号分隔（如 大语言模型域包,视觉模型域包）")
+    cb_p.add_argument("--modules", default="", help="组件级：模块 id，逗号分隔（可跨包）")
+    cb_p.add_argument("--assets", default="", help="组件级：资产，`包名:资产键`，逗号分隔")
+    cb_p.add_argument("--label", default="", help="证书标签")
+    cb_p.add_argument("--note", default="", help="证书说明")
+    cb_p.add_argument("--certify", action="store_true", help="写入证书台账")
+    cb_p.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    cb_b = cbsub.add_parser("breadth", help="广度证明（全部两两 + 抽样三元/四元）",
+                            description="广度证明：对 C(N,2) 全部两两组合与定种子抽样的三元/四元组合"
+                                        "跑同一套不变量（依赖闭合 / 事件闭合 / 层栈 / 资产可寻址）")
+    cb_b.add_argument("--triples", type=int, default=400, help="三元抽样数（缺省 400）")
+    cb_b.add_argument("--quads", type=int, default=200, help="四元抽样数（缺省 200）")
+    cb_b.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    cb_v = cbsub.add_parser("verify", help="证书复算（T4：与在盘证书逐字段比对）",
+                            description="证书复算：读 protocol/combo_certificates.json 逐条重算并比对")
+    cb_v.add_argument("--json", action="store_true", help="输出结构化 JSON")
     dc = sub.add_parser("decide",
                         help="决策层（typed-decision 三原语 choice/noul/score：候选集上报概率 + argmax）",
                         description="决策层端口：把选择写成类型化问题交给决策模型；"
@@ -2426,6 +2451,72 @@ def _cmd_decide(args):
             print("  （适配器 %s · calibrated=%s · 决策层不出现在门禁路径）"
                   % (meta.get("adapter"), meta.get("calibrated")))
     return 0 if out.get("status") == "ok" else 1
+
+
+def _cmd_combine(args):
+    """nf combine：域包自由组合（plan / breadth / verify）。"""
+    import json as _json
+
+    from core import pack_combo as pc
+
+    sub = getattr(args, "combine_cmd", "") or "plan"
+    if sub == "breadth":
+        stats = pc.breadth(ROOT, triple_sample=args.triples, quad_sample=args.quads)
+        if args.json:
+            print(_json.dumps(stats, ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print("  域包 %d · 两两 %d/%d 合法 · 三元 %d/%d · 四元 %d/%d · 全合法=%s"
+                  % (stats["packs"], stats["pairs_legal"], stats["pairs"],
+                     stats["triples_legal"], stats["triples"],
+                     stats["quads_legal"], stats["quads"], stats["all_legal"]))
+            for f in stats["failures"][:5]:
+                print("  [FAIL] %s" % f)
+        return 0 if stats["all_legal"] else 1
+    if sub == "verify":
+        doc = pc.declared(ROOT)
+        bad = 0
+        rows = []
+        for cert in doc.get("certificates") or []:
+            issues, st = pc.verify_certificate(ROOT, cert)
+            label = cert.get("label") or "+".join(cert.get("packs") or [])
+            rows.append({"label": label, "legal": st.get("legal"),
+                         "modules": st.get("modules"), "issues": issues})
+            bad += 1 if issues else 0
+        if args.json:
+            print(_json.dumps({"certificates": len(rows), "failed": bad, "rows": rows},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            for r in rows:
+                print("  %s %-34s 模块 %-4s %s"
+                      % ("✓" if not r["issues"] else "✗", r["label"], r["modules"],
+                         "" if not r["issues"] else r["issues"][:1]))
+            print("  —— 证书 %d 条，失败 %d" % (len(rows), bad))
+        return 1 if bad else 0
+    packs = [x.strip() for x in args.packs.split(",") if x.strip()]
+    mods = [x.strip() for x in getattr(args, "modules", "").split(",") if x.strip()]
+    assets = [x.strip() for x in getattr(args, "assets", "").split(",") if x.strip()]
+    if not packs and not mods:
+        print("  需给 --packs 或 --modules（也可 `nf combine breadth`）", file=sys.stderr)
+        return 2
+    cert = pc.combine(ROOT, packs=packs, extra_modules=mods, extra_assets=assets)
+    if getattr(args, "certify", False):
+        cert = pc.certify(ROOT, packs=packs, label=args.label, note=args.note,
+                          extra_modules=mods, write=True)
+    if args.json:
+        print(_json.dumps(cert, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("  组合：%s%s" % ("、".join(cert["packs"]) or "（组件级）",
+                              ("＋" + "、".join(cert["extra_modules"])) if cert["extra_modules"] else ""))
+        print("  合法=%s · 模块 %d · 层栈 %s"
+              % (cert["legal"], cert["module_count"],
+                 {k: len(v) for k, v in cert["layer_stacks"].items()}))
+        print("  依赖悬挂 %d · 未桥事件 %d · 资产借阅 %d · 摘要 %s"
+              % (len(cert["dependency_closure"]["dangling"]),
+                 len(cert["event_closure"]["unbridged"]),
+                 len(cert["assets_borrowed"]), cert["digest"]))
+        if getattr(args, "certify", False):
+            print("  ✓ 证书已写入 %s" % pc.CERT_REL)
+    return 0 if cert["legal"] else 1
 
 
 def _cmd_domain(args):
@@ -4314,6 +4405,8 @@ def main(argv=None) -> int:
         return _cmd_output(args)
     if args.cmd == "domain":
         return _cmd_domain(args)
+    if args.cmd == "combine":
+        return _cmd_combine(args)
     if args.cmd == "decide":
         return _cmd_decide(args)
     if args.cmd == "workloop":
