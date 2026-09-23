@@ -1,0 +1,66 @@
+{
+  "code": "C08",
+  "domain": "评测、基准与排行榜",
+  "family": "drift",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "buckets": 8,
+    "detail": [
+      {
+        "actual": 0.172001,
+        "bucket": "b0",
+        "expected": 0.190701,
+        "term": 0.00193
+      },
+      {
+        "actual": 0.073301,
+        "bucket": "b1",
+        "expected": 0.091901,
+        "term": 0.004206
+      },
+      {
+        "actual": 0.151501,
+        "bucket": "b2",
+        "expected": 0.148701,
+        "term": 5.2e-05
+      },
+      {
+        "actual": 0.113201,
+        "bucket": "b3",
+        "expected": 0.086801,
+        "term": 0.00701
+      },
+      {
+        "actual": 0.049201,
+        "bucket": "b4",
+        "expected": 0.075901,
+        "term": 0.011575
+      },
+      {
+        "actual": 0.087401,
+        "bucket": "b5",
+        "expected": 0.058301,
+        "term": 0.011782
+      },
+      {
+        "actual": 0.081001,
+        "bucket": "b6",
+        "expected": 0.067001,
+        "term": 0.002657
+      },
+      {
+        "actual": 0.200901,
+        "bucket": "b7",
+        "expected": 0.189901,
+        "term": 0.000619
+      }
+    ],
+    "digits": 6,
+    "family": "drift",
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "psi": 0.039832,
+    "smoothing_epsilon": 1e-06
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 8
+}

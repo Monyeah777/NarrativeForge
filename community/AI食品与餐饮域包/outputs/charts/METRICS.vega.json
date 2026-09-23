@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "mae",
+        "value": 0.142894
+      },
+      {
+        "metric": "mape",
+        "value": 0.478941
+      },
+      {
+        "metric": "mape_samples",
+        "value": 16.0
+      },
+      {
+        "metric": "n",
+        "value": 16.0
+      },
+      {
+        "metric": "r2",
+        "value": 0.969999
+      },
+      {
+        "metric": "rmse",
+        "value": 0.161809
+      }
+    ]
+  },
+  "description": "AI+食品与餐饮 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

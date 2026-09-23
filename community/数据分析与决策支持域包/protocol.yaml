@@ -1,0 +1,36 @@
+# protocol.yaml — 第三方协议声明（数据分析与决策支持域包，清单 E14 · E · 人机与内容创作）
+# 依据 01 §6.1 Schema 模板骨架 + 02 §8.3 第三方协议登记；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ 断言）
+protocol:
+  schema_version: "2"
+package:
+  conformance: "L2"
+  id: 数据分析与决策支持域包
+  name: 数据分析与决策支持域包
+  version: "1.0.0"
+  pipeline: P92
+  module_id_range:
+    - "数据分析与决策支持:M01"
+    - "数据分析与决策支持:M02"
+  categories:
+    - 数据分析与决策支持
+  dependencies:
+    core_only: true
+    core_modules: [M00, 通用:M10, M50, M80]
+    cross_package: []
+  references: []
+  modules:
+    - id: "数据分析与决策支持:M01"
+      desc: 数据分析与决策支持口径登记（12 条细分的定义 / 可机检判据 / 失效模式登记与冲突上报）
+    - id: "数据分析与决策支持:M02"
+      desc: 数据分析与决策支持收口与形态派生（度量复算 T4 + 概念图派生 + 与口径表同源收口）
+  assets:
+    count: 3
+    readme: README.md
+  outputs:
+    index: outputs/INDEX.json
+    count: 9
+    machine_verifiable: 9
+    functional: 1
+  mount_layers:
+    P40 行为决策: {default: [数据分析与决策支持:M01], available: []}
+    P60 长期演变: {default: [数据分析与决策支持:M02], available: []}

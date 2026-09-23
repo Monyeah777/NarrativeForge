@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "D20",
+  "domain": "科研与实验",
+  "section": "D · AI+行业",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "extraction",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "D20-01",
+      "name": "文献检索与综述",
+      "definition": "文献检索与综述：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-02",
+      "name": "实验设计",
+      "definition": "实验设计：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-03",
+      "name": "数据分析与统计",
+      "definition": "数据分析与统计：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-04",
+      "name": "代码复现",
+      "definition": "代码复现：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-05",
+      "name": "材料筛选",
+      "definition": "材料筛选：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-06",
+      "name": "生物信息注释",
+      "definition": "生物信息注释：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-07",
+      "name": "论文写作与投稿",
+      "definition": "论文写作与投稿：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-08",
+      "name": "评议辅助",
+      "definition": "评议辅助：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-09",
+      "name": "基金申报",
+      "definition": "基金申报：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-10",
+      "name": "专利检索",
+      "definition": "专利检索：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-11",
+      "name": "模拟仿真",
+      "definition": "模拟仿真：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D20-12",
+      "name": "科研伦理审查",
+      "definition": "科研伦理审查：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards",
+      "anchor_kind": "doc",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "D04",
+  "domain": "AI+金融投研与风控",
+  "section": "D · AI+行业",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "regression",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "D04-01",
+      "name": "财报解析与摘要",
+      "definition": "财报解析与摘要：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-02",
+      "name": "研报生成",
+      "definition": "研报生成：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-03",
+      "name": "估值建模",
+      "definition": "估值建模：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-04",
+      "name": "行业研究",
+      "definition": "行业研究：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-05",
+      "name": "舆情与事件驱动",
+      "definition": "舆情与事件驱动：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-06",
+      "name": "风控规则与评分",
+      "definition": "风控规则与评分：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-07",
+      "name": "反洗钱",
+      "definition": "反洗钱：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-08",
+      "name": "合规审查",
+      "definition": "合规审查：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-09",
+      "name": "投顾话术合规",
+      "definition": "投顾话术合规：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-10",
+      "name": "金融问答",
+      "definition": "金融问答：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-11",
+      "name": "市场数据分析",
+      "definition": "市场数据分析：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D04-12",
+      "name": "披露与免责",
+      "definition": "披露与免责：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

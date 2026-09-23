@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B18",
+  "domain": "预测、异常与风险",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "classification",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "B18-01",
+      "name": "时序预测",
+      "definition": "时序预测：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-02",
+      "name": "需求预测与补货",
+      "definition": "需求预测与补货：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-03",
+      "name": "异常检测",
+      "definition": "异常检测：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-04",
+      "name": "根因分析",
+      "definition": "根因分析：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-05",
+      "name": "风控评分卡",
+      "definition": "风控评分卡：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-06",
+      "name": "反欺诈",
+      "definition": "反欺诈：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-07",
+      "name": "信用评估",
+      "definition": "信用评估：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-08",
+      "name": "设备预测性维护",
+      "definition": "设备预测性维护：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-09",
+      "name": "舆情预警",
+      "definition": "舆情预警：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-10",
+      "name": "保险定价",
+      "definition": "保险定价：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-11",
+      "name": "模型漂移监控",
+      "definition": "模型漂移监控：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B18-12",
+      "name": "不确定性量化",
+      "definition": "不确定性量化：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

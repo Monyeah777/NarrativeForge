@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B15",
+  "domain": "图像生成与视觉设计",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "classification",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "B15-01",
+      "name": "海报与 Banner",
+      "definition": "海报与 Banner：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-02",
+      "name": "电商主图与场景图",
+      "definition": "电商主图与场景图：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-03",
+      "name": "插画与概念设定",
+      "definition": "插画与概念设定：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-04",
+      "name": "品牌视觉一致性",
+      "definition": "品牌视觉一致性：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-05",
+      "name": "版式与配色建议",
+      "definition": "版式与配色建议：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-06",
+      "name": "素材扩图与适配",
+      "definition": "素材扩图与适配：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-07",
+      "name": "图标与 UI 素材",
+      "definition": "图标与 UI 素材：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-08",
+      "name": "印刷与色彩管理",
+      "definition": "印刷与色彩管理：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-09",
+      "name": "生成版权与商用边界",
+      "definition": "生成版权与商用边界：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-10",
+      "name": "设计评审与迭代",
+      "definition": "设计评审与迭代：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-11",
+      "name": "A/B 视觉测试",
+      "definition": "A/B 视觉测试：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B15-12",
+      "name": "多尺寸批量产出",
+      "definition": "多尺寸批量产出：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

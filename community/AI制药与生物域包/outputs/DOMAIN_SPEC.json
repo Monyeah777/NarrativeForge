@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "D02",
+  "domain": "AI+制药与生物",
+  "section": "D · AI+行业",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "extraction",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "D02-01",
+      "name": "靶点与分子筛选",
+      "definition": "靶点与分子筛选：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-02",
+      "name": "蛋白结构预测",
+      "definition": "蛋白结构预测：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-03",
+      "name": "化合物库分析",
+      "definition": "化合物库分析：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-04",
+      "name": "临床试验方案生成",
+      "definition": "临床试验方案生成：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-05",
+      "name": "药物警戒信号",
+      "definition": "药物警戒信号：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-06",
+      "name": "法规申报文档",
+      "definition": "法规申报文档：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-07",
+      "name": "生物信息学流程",
+      "definition": "生物信息学流程：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-08",
+      "name": "基因数据解读",
+      "definition": "基因数据解读：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-09",
+      "name": "电子实验记录",
+      "definition": "电子实验记录：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-10",
+      "name": "科研文献图谱",
+      "definition": "科研文献图谱：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-11",
+      "name": "专利与独占分析",
+      "definition": "专利与独占分析：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "D02-12",
+      "name": "研发知识管理",
+      "definition": "研发知识管理：口径 = 业务目标 / 数据许可 / 专家复核 / 可追溯 四件齐备（本条目按 D 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 领域目标与度量 / 逐源许可 / 复核人资质与比例 / 结论到证据的引用链；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "用通用指标代替领域指标；专家复核缺失导致结论越界（D 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

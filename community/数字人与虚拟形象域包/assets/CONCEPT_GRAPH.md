@@ -1,0 +1,190 @@
+<!-- nf-asset: key="CONCEPT_GRAPH" version="1.0" status="active" -->
+# 概念图 · 数字人与虚拟形象（概念前置偏序）
+
+> 用途：本域包的**前置闭包求值输入面**——把「数字人与虚拟形象」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（数字人与虚拟形象:M01）与收口模块（数字人与虚拟形象:M02）消费。
+> 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
+> 覆盖：12 个包内概念 + 1 个包外前置族（E20-00 领域通用前置）。
+> 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
+
+## 1. 读法
+
+- **概念**：一个可独立装载的知识单元（本域第 N 条细分）。
+- **前置**：装载该概念之前必须先具备的概念（边方向「前置 → 后继」）。
+- **层**：该概念在 NF 九层位中的合理驻留层（P00–P80），用于装配定位，不是执行顺序。
+- **证据**：节点来源锚（见 §5 图例）；本图所有节点均挂外部可复核锚。
+
+## 2. 条目键表（一概念一键，asset_get 寻址）
+
+| 条目键 | 概念 | 层 | 直接前置 | 证据 |
+|---|---|---|---|---|
+| `E20-01` | 形象设计 | P40 | — | e20-anchor |
+| `E20-02` | 口型驱动 | P60 | `E20-01` | e20-anchor |
+| `E20-03` | 动作捕捉 | P40 | `E20-02` | e20-anchor |
+| `E20-04` | 情绪表达 | P60 | `E20-03`、`E20-01` | e20-anchor |
+| `E20-05` | 直播互动 | P40 | `E20-04`、`E20-02` | e20-anchor |
+| `E20-06` | IP 设定 | P60 | `E20-05`、`E20-03` | e20-anchor |
+| `E20-07` | 多语播报 | P40 | `E20-06`、`E20-04` | e20-anchor |
+| `E20-08` | 人设一致性 | P60 | `E20-07`、`E20-05` | e20-anchor |
+| `E20-09` | 算力与成本 | P40 | `E20-08`、`E20-06` | e20-anchor |
+| `E20-10` | 合规披露 | P60 | `E20-09`、`E20-07` | e20-anchor |
+| `E20-11` | 商业代言 | P40 | `E20-10`、`E20-08` | e20-anchor |
+| `E20-12` | 人格化边界 | P60 | `E20-11`、`E20-09` | e20-anchor |
+
+## 3. 别名表（求值时 id 与别名等价）
+
+| 别名 | 概念 id |
+|---|---|
+| `E20-形象设计` | `E20-01` |
+| `E20-口型驱动` | `E20-02` |
+| `E20-动作捕捉` | `E20-03` |
+| `E20-情绪表达` | `E20-04` |
+| `E20-直播互动` | `E20-05` |
+| `E20-IP-设定` | `E20-06` |
+| `E20-多语播报` | `E20-07` |
+| `E20-人设一致性` | `E20-08` |
+| `E20-算力与成本` | `E20-09` |
+| `E20-合规披露` | `E20-10` |
+| `E20-商业代言` | `E20-11` |
+| `E20-人格化边界` | `E20-12` |
+
+## 4. 机器可读块（唯一机读真相）
+
+```yaml
+concept_graph:
+  version: "1.0"
+  domain: "数字人与虚拟形象"
+  code: "E20"
+  provenance_strength: "external"
+  provenance_legend:
+    e20-anchor: "域内权威锚（规范 / 论文 / 参考实现），逐条 URL 与可达性实证见资产 STANDARDS_ANCHORS（本波实测）"
+  external_prereqs:
+    - id: "E20-00"
+      name: "领域通用前置族（数学/工程基础，包外）"
+  branches:
+    - id: "domain"
+      name: "数字人与虚拟形象 全域"
+      nodes:
+        - "E20-01"
+        - "E20-02"
+        - "E20-03"
+        - "E20-04"
+        - "E20-05"
+        - "E20-06"
+        - "E20-07"
+        - "E20-08"
+        - "E20-09"
+        - "E20-10"
+        - "E20-11"
+        - "E20-12"
+  nodes:
+    - id: "E20-01"
+      name: "形象设计"
+      layer: "P40"
+      branch: "domain"
+      prereqs: []
+      provenance:
+        - "e20-anchor"
+    - id: "E20-02"
+      name: "口型驱动"
+      layer: "P60"
+      branch: "domain"
+      prereqs:
+        - "E20-01"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-03"
+      name: "动作捕捉"
+      layer: "P40"
+      branch: "domain"
+      prereqs:
+        - "E20-02"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-04"
+      name: "情绪表达"
+      layer: "P60"
+      branch: "domain"
+      prereqs:
+        - "E20-03"
+        - "E20-01"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-05"
+      name: "直播互动"
+      layer: "P40"
+      branch: "domain"
+      prereqs:
+        - "E20-04"
+        - "E20-02"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-06"
+      name: "IP 设定"
+      layer: "P60"
+      branch: "domain"
+      prereqs:
+        - "E20-05"
+        - "E20-03"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-07"
+      name: "多语播报"
+      layer: "P40"
+      branch: "domain"
+      prereqs:
+        - "E20-06"
+        - "E20-04"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-08"
+      name: "人设一致性"
+      layer: "P60"
+      branch: "domain"
+      prereqs:
+        - "E20-07"
+        - "E20-05"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-09"
+      name: "算力与成本"
+      layer: "P40"
+      branch: "domain"
+      prereqs:
+        - "E20-08"
+        - "E20-06"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-10"
+      name: "合规披露"
+      layer: "P60"
+      branch: "domain"
+      prereqs:
+        - "E20-09"
+        - "E20-07"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-11"
+      name: "商业代言"
+      layer: "P40"
+      branch: "domain"
+      prereqs:
+        - "E20-10"
+        - "E20-08"
+      provenance:
+        - "e20-anchor"
+    - id: "E20-12"
+      name: "人格化边界"
+      layer: "P60"
+      branch: "domain"
+      prereqs:
+        - "E20-11"
+        - "E20-09"
+      provenance:
+        - "e20-anchor"
+```
+
+## 5. 证据与边界
+
+- 每个节点的来源锚（外部规范 / 论文 / 参考实现）逐条登记于 `STANDARDS_ANCHORS`，本图 `provenance_strength = external`（全覆盖，可复核）。
+- 图只声明**结构前置**（装载顺序），不声明掌握程度；边为「先具备 → 后展开」的域内常识序。
+- 包外前置族（E20-00）不随包交付，装载方须自备领域基础。

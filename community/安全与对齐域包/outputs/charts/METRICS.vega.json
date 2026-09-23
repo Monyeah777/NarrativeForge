@@ -1,0 +1,48 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "cohen_kappa",
+        "value": 0.8
+      },
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "expected_agreement",
+        "value": 0.5
+      },
+      {
+        "metric": "labels",
+        "value": 2.0
+      },
+      {
+        "metric": "n",
+        "value": 20.0
+      },
+      {
+        "metric": "observed_agreement",
+        "value": 0.9
+      }
+    ]
+  },
+  "description": "安全与对齐 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "char_f1",
+        "value": 0.871032
+      },
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "exact_match",
+        "value": 0.5
+      },
+      {
+        "metric": "n",
+        "value": 12.0
+      },
+      {
+        "metric": "token_set_f1",
+        "value": 0.5
+      }
+    ]
+  },
+  "description": "语音合成与配音 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

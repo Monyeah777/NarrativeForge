@@ -5,6 +5,7 @@
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
   "metric_family": "exact_judgement",
+  "content_tier": "authored",
   "subdivisions": [
     {
       "id": "A13-01",
@@ -82,7 +83,7 @@
       "definition": "人机协作安全的口径：安全标准引用、速度与力限制、急停与风险评估。",
       "anchor": "https://eur-lex.europa.eu/eli/reg/2023/1230/oj",
       "anchor_kind": "spec",
-      "anchor_status": 202,
+      "anchor_status": 200,
       "check": "声明 safety_standard（如 ISO/TS 15066）、speed_force_limits（数值 + 依据）与 e_stop（响应时间 ms）。",
       "pitfall": "安全限值无标准依据；急停响应时间未实测。"
     },

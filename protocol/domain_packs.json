@@ -22,6 +22,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
+      "content_tier": "authored",
       "spec_digest": "dfa47bccbc248b33859d492d2dcc7b42e416c00e7ecb3f641b8950f9f532e885"
     },
     {
@@ -43,6 +44,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
+      "content_tier": "authored",
       "spec_digest": "7e8d903a3ea03dfc3bd800bda089e3b2e9535ae5b2d261db5fc75894da7e3e74"
     },
     {
@@ -64,6 +66,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
+      "content_tier": "authored",
       "spec_digest": "d0b571307f570aefa02edb8cec120d6fa2955902e161289cca85d52bdb768e0a"
     },
     {
@@ -85,7 +88,8 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
-      "spec_digest": "ae249ad49a1c1a2b07375dd04aa00809a23547cc8bbd01e2e29b13b92e1fcf0e"
+      "content_tier": "authored",
+      "spec_digest": "097e87b79aa71db62e4f41caa1669014f92321648da022eceea953a77ba074e6"
     },
     {
       "code": "A05",
@@ -106,7 +110,8 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
-      "spec_digest": "49d6c9157cf8ec3f6e0512e5252d2bbc3a0cd91d652a44797c5bbedca871bad8"
+      "content_tier": "authored",
+      "spec_digest": "a64420eb5c20bb745f80bae32d1581c9b44f812285e24f627f2dcfee5ccca02c"
     },
     {
       "code": "A06",
@@ -127,6 +132,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "retrieval",
+      "content_tier": "authored",
       "spec_digest": "cc9732ee59eb9c86ab004b6e74f08f82bee27f19a6c0b1ca5b5c0177533eb196"
     },
     {
@@ -148,6 +154,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
+      "content_tier": "authored",
       "spec_digest": "78c00531d22881fbf5e32db8ff22ce7db8ec318f188442d06af78709b3ce37c7"
     },
     {
@@ -169,6 +176,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
+      "content_tier": "authored",
       "spec_digest": "7f4ba7931fdf35a4491c08e007bc608d98c2db57cd50b435695192a6f9650a1d"
     },
     {
@@ -190,6 +198,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
+      "content_tier": "authored",
       "spec_digest": "26b7df4f5f9746b5778f8640f961316fcdd1b7f3775d000dc51f72e0215833ba"
     },
     {
@@ -211,6 +220,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
+      "content_tier": "authored",
       "spec_digest": "3a6b1a8377542405bf2dfb1c63818625b6c2058a783afe798e2746a5e585d504"
     },
     {
@@ -232,6 +242,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "retrieval",
+      "content_tier": "authored",
       "spec_digest": "8538e40ba179fa09770a785f058e4fcd56eb5c53bb443281a790ef4a5ab95d10"
     },
     {
@@ -253,6 +264,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
+      "content_tier": "authored",
       "spec_digest": "b1e44c1fe98b53c617da1b35cbe2884433386b556e5a64157d3a75281e715497"
     },
     {
@@ -274,7 +286,8 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
-      "spec_digest": "4fd106de52b6e62d92f40fc7db35a153487cbc36aace5f55ba66f1096aeabff4"
+      "content_tier": "authored",
+      "spec_digest": "dc492691c36a1077ca2710fc766d7c2d26548cf9bda41505d98a00a20bd0bef3"
     },
     {
       "code": "A14",
@@ -295,6 +308,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "latency_cost",
+      "content_tier": "authored",
       "spec_digest": "ce655a48a7371b4c3f91067f64779bc23ed65ed86e96b665f6168bffd68aa0ed"
     },
     {
@@ -316,6 +330,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
+      "content_tier": "authored",
       "spec_digest": "e3fb158557bb4f4481882e84314f50abf93f037233f44a173fd3769c5d4c9b6b"
     },
     {
@@ -337,6 +352,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
+      "content_tier": "authored",
       "spec_digest": "f9f44d8b9a105474017c13276c303e250056d89cdbd1f38dd8f921137661da98"
     },
     {
@@ -358,6 +374,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "generation",
+      "content_tier": "authored",
       "spec_digest": "3aa7961fdf8f7f4fe75e5db051fbd3f0b1633b602bae41416b85ab3a4047a96d"
     },
     {
@@ -379,6 +396,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
+      "content_tier": "authored",
       "spec_digest": "b1de95804b72d6f1b471010795fdd44d6cbf2790be9e9040fed3341b56833368"
     },
     {
@@ -400,6 +418,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
+      "content_tier": "authored",
       "spec_digest": "9c9cdaf412f7a5bce64daf106d79ba8e471cfa6cb73b29a3074a26820dd3876e"
     },
     {
@@ -421,6 +440,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "retrieval",
+      "content_tier": "authored",
       "spec_digest": "212baa8acfb3a8aa2621695e7974ad5e7b0ddc6cfffc79be815e68fce34bfc08"
     },
     {
@@ -442,6 +462,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "preference",
+      "content_tier": "authored",
       "spec_digest": "a003a78f20fd0e2533bbcb402be0354e31160e2a379b2aaab7b6e8a5080d7e43"
     },
     {
@@ -463,6 +484,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
+      "content_tier": "authored",
       "spec_digest": "97b156a40f5faee9c9609e59827919273540d81981668a449113659b5405538a"
     },
     {
@@ -484,6 +506,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "classification",
+      "content_tier": "authored",
       "spec_digest": "6834e7504d8606a6bb1ac110a280cf7e1d2f0717398e90db566cb06a11ed19a6"
     },
     {
@@ -505,6 +528,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "exact_judgement",
+      "content_tier": "authored",
       "spec_digest": "5a6404480c909bdd160e6d22cc46aa345e86ff3dcbbf0ba3ad2b49bc7e0aefc1"
     },
     {
@@ -526,6 +550,7 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "regression",
+      "content_tier": "authored",
       "spec_digest": "51783bb018a80d618b5eebe01a7cc95a53ad201607bd7383a314a9415cd191ce"
     },
     {
@@ -547,9 +572,1638 @@
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
       "metric_family": "extraction",
+      "content_tier": "authored",
       "spec_digest": "b8faf7a35523d3429dc2109d34748ccee7fcb99f5cd10c86a5fa96a02828031d"
+    },
+    {
+      "code": "B13",
+      "section": "B · 任务类型",
+      "name": "语音转写与会议记录",
+      "package": "语音转写与会议记录域包",
+      "category": "语音转写与会议记录",
+      "pipeline": "P38",
+      "module_ids": [
+        "语音转写与会议记录:M01",
+        "语音转写与会议记录:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "6ab213bd67ec75c52c17706d1599b2ce71aa56fa31c786bb99db58b06b59b893"
+    },
+    {
+      "code": "B14",
+      "section": "B · 任务类型",
+      "name": "语音合成与配音",
+      "package": "语音合成与配音域包",
+      "category": "语音合成与配音",
+      "pipeline": "P39",
+      "module_ids": [
+        "语音合成与配音:M01",
+        "语音合成与配音:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "2a12d818e760c942e67206f5789731ba690af7da9810e964767cbe3b397fbc9a"
+    },
+    {
+      "code": "B15",
+      "section": "B · 任务类型",
+      "name": "图像生成与视觉设计",
+      "package": "图像生成与视觉设计域包",
+      "category": "图像生成与视觉设计",
+      "pipeline": "P41",
+      "module_ids": [
+        "图像生成与视觉设计:M01",
+        "图像生成与视觉设计:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "3c29d3a401f1da34a7f37e8c958954fb034f093e0fb28abf418f770877a2f400"
+    },
+    {
+      "code": "B16",
+      "section": "B · 任务类型",
+      "name": "视频生成与自动剪辑",
+      "package": "视频生成与自动剪辑域包",
+      "category": "视频生成与自动剪辑",
+      "pipeline": "P42",
+      "module_ids": [
+        "视频生成与自动剪辑:M01",
+        "视频生成与自动剪辑:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "ca8bc7fc5c4bd099fab4dcac312a62751f85e37164be3197c889009739f781be"
+    },
+    {
+      "code": "B17",
+      "section": "B · 任务类型",
+      "name": "推荐、排序与广告",
+      "package": "推荐排序与广告域包",
+      "category": "推荐排序与广告",
+      "pipeline": "P118",
+      "module_ids": [
+        "推荐排序与广告:M01",
+        "推荐排序与广告:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "bc74e1b4169357ee98160161fe6f9a98a848933a8dad3f4f8fef38cc12f10cfb"
+    },
+    {
+      "code": "B18",
+      "section": "B · 任务类型",
+      "name": "预测、异常与风险",
+      "package": "预测异常与风险域包",
+      "category": "预测异常与风险",
+      "pipeline": "P119",
+      "module_ids": [
+        "预测异常与风险:M01",
+        "预测异常与风险:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "76cc0305c6ecc56d259414b46c4594992fed1d1866a001f5fe85a91ddc911977"
+    },
+    {
+      "code": "C01",
+      "section": "C · AI 工程与运维",
+      "name": "数据采集与清洗",
+      "package": "数据采集与清洗域包",
+      "category": "数据采集与清洗",
+      "pipeline": "P45",
+      "module_ids": [
+        "数据采集与清洗:M01",
+        "数据采集与清洗:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "latency_cost",
+      "content_tier": "derived",
+      "spec_digest": "cef629a8ee1abd2610a76f7408e67435c4579135d696d27109ddb57e43786b09"
+    },
+    {
+      "code": "C02",
+      "section": "C · AI 工程与运维",
+      "name": "数据标注与标注质量",
+      "package": "数据标注与标注质量域包",
+      "category": "数据标注与标注质量",
+      "pipeline": "P46",
+      "module_ids": [
+        "数据标注与标注质量:M01",
+        "数据标注与标注质量:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "drift",
+      "content_tier": "derived",
+      "spec_digest": "037bdde5dba14bceeadfdbda791e286102b5277089a5a2f4b618531c64e488e7"
+    },
+    {
+      "code": "C03",
+      "section": "C · AI 工程与运维",
+      "name": "合成数据生成",
+      "package": "合成数据生成域包",
+      "category": "合成数据生成",
+      "pipeline": "P47",
+      "module_ids": [
+        "合成数据生成:M01",
+        "合成数据生成:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "42fa948faf58336c1ab2c12fa8c167888b0ee732f407f06c74db0105326b1958"
+    },
+    {
+      "code": "C04",
+      "section": "C · AI 工程与运维",
+      "name": "预训练与继续预训练",
+      "package": "预训练与继续预训练域包",
+      "category": "预训练与继续预训练",
+      "pipeline": "P48",
+      "module_ids": [
+        "预训练与继续预训练:M01",
+        "预训练与继续预训练:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "latency_cost",
+      "content_tier": "derived",
+      "spec_digest": "360e15dc92133c915928c31df2ce2ef5e62c69880913821504bd3cc405937d08"
+    },
+    {
+      "code": "C05",
+      "section": "C · AI 工程与运维",
+      "name": "监督微调",
+      "package": "监督微调域包",
+      "category": "监督微调",
+      "pipeline": "P107",
+      "module_ids": [
+        "监督微调:M01",
+        "监督微调:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "drift",
+      "content_tier": "derived",
+      "spec_digest": "1d7e69b7db9cdb9f4b57cfef2e7a24273d8ded022462fd87f1e2fb0c08fd9df8"
+    },
+    {
+      "code": "C06",
+      "section": "C · AI 工程与运维",
+      "name": "参数高效微调",
+      "package": "参数高效微调域包",
+      "category": "参数高效微调",
+      "pipeline": "P49",
+      "module_ids": [
+        "参数高效微调:M01",
+        "参数高效微调:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "cab0e6519f1c7a7b6c3c6f3a514cb8a95ef11f649fb2827b480e8afcd7977672"
+    },
+    {
+      "code": "C07",
+      "section": "C · AI 工程与运维",
+      "name": "对齐与偏好优化",
+      "package": "对齐与偏好优化域包",
+      "category": "对齐与偏好优化",
+      "pipeline": "P51",
+      "module_ids": [
+        "对齐与偏好优化:M01",
+        "对齐与偏好优化:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "latency_cost",
+      "content_tier": "derived",
+      "spec_digest": "d822bec0af5f8bf7d009bf01d3c14e436abbdccf7b0520d1474b96477c12b980"
+    },
+    {
+      "code": "C08",
+      "section": "C · AI 工程与运维",
+      "name": "评测、基准与排行榜",
+      "package": "评测基准与排行榜域包",
+      "category": "评测基准与排行榜",
+      "pipeline": "P120",
+      "module_ids": [
+        "评测基准与排行榜:M01",
+        "评测基准与排行榜:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "drift",
+      "content_tier": "derived",
+      "spec_digest": "a65cb8fbbc9110e6d771f4c0f4b4cc453dfcf58c935f8b7ac235c73cd51a31be"
+    },
+    {
+      "code": "C09",
+      "section": "C · AI 工程与运维",
+      "name": "红队、越狱与安全测试",
+      "package": "红队越狱与安全测试域包",
+      "category": "红队越狱与安全测试",
+      "pipeline": "P121",
+      "module_ids": [
+        "红队越狱与安全测试:M01",
+        "红队越狱与安全测试:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "527dcd71432d16804b356ed72273e225dadaa6ec917c6ba13f724354eacb3794"
+    },
+    {
+      "code": "C10",
+      "section": "C · AI 工程与运维",
+      "name": "推理优化与加速",
+      "package": "推理优化与加速域包",
+      "category": "推理优化与加速",
+      "pipeline": "P53",
+      "module_ids": [
+        "推理优化与加速:M01",
+        "推理优化与加速:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "latency_cost",
+      "content_tier": "derived",
+      "spec_digest": "2a154c679673e82612172bd2ef05675166f551afa14fc9b0f874ae180e405e97"
+    },
+    {
+      "code": "C11",
+      "section": "C · AI 工程与运维",
+      "name": "推理服务与部署",
+      "package": "推理服务与部署域包",
+      "category": "推理服务与部署",
+      "pipeline": "P54",
+      "module_ids": [
+        "推理服务与部署:M01",
+        "推理服务与部署:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "drift",
+      "content_tier": "derived",
+      "spec_digest": "2359638dc8c68b21ee3f5e156210877de585ad9eeb7216fb9e13b96d88826a4b"
+    },
+    {
+      "code": "C12",
+      "section": "C · AI 工程与运维",
+      "name": "上下文工程与长上下文",
+      "package": "上下文工程与长上下文域包",
+      "category": "上下文工程与长上下文",
+      "pipeline": "P55",
+      "module_ids": [
+        "上下文工程与长上下文:M01",
+        "上下文工程与长上下文:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "51614af0ecf5aa5f14e07fccaa06f902341f62bff52607bca179b3643acb3fda"
+    },
+    {
+      "code": "C13",
+      "section": "C · AI 工程与运维",
+      "name": "提示工程与提示模板",
+      "package": "提示工程与提示模板域包",
+      "category": "提示工程与提示模板",
+      "pipeline": "P56",
+      "module_ids": [
+        "提示工程与提示模板:M01",
+        "提示工程与提示模板:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "latency_cost",
+      "content_tier": "derived",
+      "spec_digest": "3caaa5395fed1499baf1b8fcf23e16912a5bf39fe2888449ad1e6dd0c7025184"
+    },
+    {
+      "code": "C14",
+      "section": "C · AI 工程与运维",
+      "name": "记忆体与个性化",
+      "package": "记忆体与个性化域包",
+      "category": "记忆体与个性化",
+      "pipeline": "P57",
+      "module_ids": [
+        "记忆体与个性化:M01",
+        "记忆体与个性化:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "drift",
+      "content_tier": "derived",
+      "spec_digest": "f68c2d576faebfe0b01d058a7896a25a045f1076fa89ece0eaf551b53f7c87fa"
+    },
+    {
+      "code": "C15",
+      "section": "C · AI 工程与运维",
+      "name": "向量库与检索管线",
+      "package": "向量库与检索管线域包",
+      "category": "向量库与检索管线",
+      "pipeline": "P58",
+      "module_ids": [
+        "向量库与检索管线:M01",
+        "向量库与检索管线:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "2363a07658eee8ff2f9b15a358e27698d66cb76d921041e59428387d0ae94ef7"
+    },
+    {
+      "code": "C16",
+      "section": "C · AI 工程与运维",
+      "name": "智能体框架与工具调用",
+      "package": "智能体框架与工具调用域包",
+      "category": "智能体框架与工具调用",
+      "pipeline": "P59",
+      "module_ids": [
+        "智能体框架与工具调用:M01",
+        "智能体框架与工具调用:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "latency_cost",
+      "content_tier": "derived",
+      "spec_digest": "753f5542e17920f237c1f4ca04f52dcd05c7ee43075abc3ff9939c143ce8c3c9"
+    },
+    {
+      "code": "C17",
+      "section": "C · AI 工程与运维",
+      "name": "多智能体协同",
+      "package": "多智能体协同域包",
+      "category": "多智能体协同",
+      "pipeline": "P61",
+      "module_ids": [
+        "多智能体协同:M01",
+        "多智能体协同:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "drift",
+      "content_tier": "derived",
+      "spec_digest": "25ae6e21345e8a8f34a26d759bf1ed253bee393e4205807d1d21b831dd8d6e53"
+    },
+    {
+      "code": "C18",
+      "section": "C · AI 工程与运维",
+      "name": "可观测性、成本与可靠性",
+      "package": "可观测性成本与可靠性域包",
+      "category": "可观测性成本与可靠性",
+      "pipeline": "P122",
+      "module_ids": [
+        "可观测性成本与可靠性:M01",
+        "可观测性成本与可靠性:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "0446bc480c51c0a3bc6a7c203119385e43ac782b135931f46c5eef81ac4e4bdd"
+    },
+    {
+      "code": "D01",
+      "section": "D · AI+行业",
+      "name": "AI+医疗健康",
+      "package": "AI医疗健康域包",
+      "category": "AI医疗健康",
+      "pipeline": "P123",
+      "module_ids": [
+        "AI医疗健康:M01",
+        "AI医疗健康:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "content_tier": "derived",
+      "spec_digest": "59498427db28e5da0a3615de8bc34ea9306c0ab072e25cc5df1df3ac2898df33"
+    },
+    {
+      "code": "D02",
+      "section": "D · AI+行业",
+      "name": "AI+制药与生物",
+      "package": "AI制药与生物域包",
+      "category": "AI制药与生物",
+      "pipeline": "P124",
+      "module_ids": [
+        "AI制药与生物:M01",
+        "AI制药与生物:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "79c29b93f63115f885780de798eafc2c4b47faffac7ee364b127a42b19b1c21b"
+    },
+    {
+      "code": "D03",
+      "section": "D · AI+行业",
+      "name": "AI+法律与合规",
+      "package": "AI法律与合规域包",
+      "category": "AI法律与合规",
+      "pipeline": "P125",
+      "module_ids": [
+        "AI法律与合规:M01",
+        "AI法律与合规:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "bc46f539bfecade58a50f80146d231e56d8bc79c7b0b9cf092d4d10d47910bcc"
+    },
+    {
+      "code": "D04",
+      "section": "D · AI+行业",
+      "name": "AI+金融投研与风控",
+      "package": "AI金融投研与风控域包",
+      "category": "AI金融投研与风控",
+      "pipeline": "P126",
+      "module_ids": [
+        "AI金融投研与风控:M01",
+        "AI金融投研与风控:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "content_tier": "derived",
+      "spec_digest": "f325cdcf109723ff4e5698cff1eb27af7812c34bb2e5ad6497bc2fac805b3888"
+    },
+    {
+      "code": "D05",
+      "section": "D · AI+行业",
+      "name": "AI+保险",
+      "package": "AI保险域包",
+      "category": "AI保险",
+      "pipeline": "P127",
+      "module_ids": [
+        "AI保险:M01",
+        "AI保险:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "a42108cb33f84a46b707bde184077a56490186a895c7ab5ad06d44ac236a7a86"
+    },
+    {
+      "code": "D06",
+      "section": "D · AI+行业",
+      "name": "AI+教育",
+      "package": "AI教育域包",
+      "category": "AI教育",
+      "pipeline": "P128",
+      "module_ids": [
+        "AI教育:M01",
+        "AI教育:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "41873ad4840e42d11f9d8ffe328e1856edf74b9564e75f816719a2900f24da01"
+    },
+    {
+      "code": "D07",
+      "section": "D · AI+行业",
+      "name": "AI+政务与公共事务",
+      "package": "AI政务与公共事务域包",
+      "category": "AI政务与公共事务",
+      "pipeline": "P129",
+      "module_ids": [
+        "AI政务与公共事务:M01",
+        "AI政务与公共事务:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "content_tier": "derived",
+      "spec_digest": "def936488a7c81a07f8f9da5f8121ec9023dcc18a3bbd6657266384f1bbbb211"
+    },
+    {
+      "code": "D08",
+      "section": "D · AI+行业",
+      "name": "AI+制造业",
+      "package": "AI制造业域包",
+      "category": "AI制造业",
+      "pipeline": "P130",
+      "module_ids": [
+        "AI制造业:M01",
+        "AI制造业:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "e5bba7ef48e280a4c256653190f7d7e44e931d8bfaaaec5beb9d67d80363555c"
+    },
+    {
+      "code": "D09",
+      "section": "D · AI+行业",
+      "name": "AI+能源与电力",
+      "package": "AI能源与电力域包",
+      "category": "AI能源与电力",
+      "pipeline": "P131",
+      "module_ids": [
+        "AI能源与电力:M01",
+        "AI能源与电力:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "1e7fa312a6e6b987b8e796ceb94224133979b158098ce5967c50fae54f3185cb"
+    },
+    {
+      "code": "D10",
+      "section": "D · AI+行业",
+      "name": "AI+农业",
+      "package": "AI农业域包",
+      "category": "AI农业",
+      "pipeline": "P132",
+      "module_ids": [
+        "AI农业:M01",
+        "AI农业:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "content_tier": "derived",
+      "spec_digest": "313c1a4020afb5017aff1eba72c1841267bab7e9e70be84c61e5ba3d115a023d"
+    },
+    {
+      "code": "D11",
+      "section": "D · AI+行业",
+      "name": "零售与电商",
+      "package": "零售与电商域包",
+      "category": "零售与电商",
+      "pipeline": "P117",
+      "module_ids": [
+        "零售与电商:M01",
+        "零售与电商:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "ace61419a2641d09c477d6e61aad5c2cebd7a08adb7cc4078cb72512a7c7d562"
+    },
+    {
+      "code": "D12",
+      "section": "D · AI+行业",
+      "name": "物流与供应链",
+      "package": "物流与供应链域包",
+      "category": "物流与供应链",
+      "pipeline": "P71",
+      "module_ids": [
+        "物流与供应链:M01",
+        "物流与供应链:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "81c93d85197eb6093ea2c79078d3303152afa95fbb185c44d5841271d826b0b4"
+    },
+    {
+      "code": "D13",
+      "section": "D · AI+行业",
+      "name": "交通与出行",
+      "package": "交通与出行域包",
+      "category": "交通与出行",
+      "pipeline": "P72",
+      "module_ids": [
+        "交通与出行:M01",
+        "交通与出行:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "content_tier": "derived",
+      "spec_digest": "86c098ac0c1839854f102867bd9bdccd93d6fe8b534dae64f137adad571a1572"
+    },
+    {
+      "code": "D14",
+      "section": "D · AI+行业",
+      "name": "AI+人力资源与招聘",
+      "package": "AI人力资源与招聘域包",
+      "category": "AI人力资源与招聘",
+      "pipeline": "P133",
+      "module_ids": [
+        "AI人力资源与招聘:M01",
+        "AI人力资源与招聘:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "93dc0b44044329a7c340801127a3a2e7fc6b2135a2d529ecd38ad64d4da9fa45"
+    },
+    {
+      "code": "D15",
+      "section": "D · AI+行业",
+      "name": "建筑与房地产",
+      "package": "建筑与房地产域包",
+      "category": "建筑与房地产",
+      "pipeline": "P74",
+      "module_ids": [
+        "建筑与房地产:M01",
+        "建筑与房地产:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "75c0ad2f1b3c32784ace955b5adc63f307cd40d728f0fa42963087c55cf63a05"
+    },
+    {
+      "code": "D16",
+      "section": "D · AI+行业",
+      "name": "AI+食品与餐饮",
+      "package": "AI食品与餐饮域包",
+      "category": "AI食品与餐饮",
+      "pipeline": "P43",
+      "module_ids": [
+        "AI食品与餐饮:M01",
+        "AI食品与餐饮:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "content_tier": "derived",
+      "spec_digest": "b18ee2c659854a458619cb67fc50bdb84ab6e4d6a86f2a069bb4b9cd55ff080f"
+    },
+    {
+      "code": "D17",
+      "section": "D · AI+行业",
+      "name": "传媒与新闻",
+      "package": "传媒与新闻域包",
+      "category": "传媒与新闻",
+      "pipeline": "P76",
+      "module_ids": [
+        "传媒与新闻:M01",
+        "传媒与新闻:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "edba7c7870faab1c9bd7595b967d8890f44d815a152b3feffb65ea5a03ec555d"
+    },
+    {
+      "code": "D18",
+      "section": "D · AI+行业",
+      "name": "游戏与互动娱乐",
+      "package": "游戏与互动娱乐域包",
+      "category": "游戏与互动娱乐",
+      "pipeline": "P112",
+      "module_ids": [
+        "游戏与互动娱乐:M01",
+        "游戏与互动娱乐:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "7611055862918b1a187e9bc25bef668031e87012293cfea2ff5dfc9c4fc6193b"
+    },
+    {
+      "code": "D19",
+      "section": "D · AI+行业",
+      "name": "文旅与酒店",
+      "package": "文旅与酒店域包",
+      "category": "文旅与酒店",
+      "pipeline": "P77",
+      "module_ids": [
+        "文旅与酒店:M01",
+        "文旅与酒店:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "regression",
+      "content_tier": "derived",
+      "spec_digest": "e2e3eefb20727ed026d413f28c4f53e69c505d614ce6608839a6c4ca04daff01"
+    },
+    {
+      "code": "D20",
+      "section": "D · AI+行业",
+      "name": "科研与实验",
+      "package": "科研与实验域包",
+      "category": "科研与实验",
+      "pipeline": "P78",
+      "module_ids": [
+        "科研与实验:M01",
+        "科研与实验:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "d31d257b075ffaa873bdac7d3341a02a9f9f0c5668d46bac236b9e8c6c699470"
+    },
+    {
+      "code": "E01",
+      "section": "E · 人机与内容创作",
+      "name": "提示工程与指令设计",
+      "package": "提示工程与指令设计域包",
+      "category": "提示工程与指令设计",
+      "pipeline": "P79",
+      "module_ids": [
+        "提示工程与指令设计:M01",
+        "提示工程与指令设计:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "content_tier": "derived",
+      "spec_digest": "d80e69111756eccfb3be8869b5820a61f5e449fffeb4a73a151637452a915421"
+    },
+    {
+      "code": "E02",
+      "section": "E · 人机与内容创作",
+      "name": "角色扮演与角色卡",
+      "package": "角色扮演与角色卡域包",
+      "category": "角色扮演与角色卡",
+      "pipeline": "P113",
+      "module_ids": [
+        "角色扮演与角色卡:M01",
+        "角色扮演与角色卡:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "2a6eb8d7854f6ea6daac0322e85a7a0728f13a26aff48eb8a0f0b15fa7df9fc0"
+    },
+    {
+      "code": "E03",
+      "section": "E · 人机与内容创作",
+      "name": "世界书与设定库",
+      "package": "世界书与设定库域包",
+      "category": "世界书与设定库",
+      "pipeline": "P81",
+      "module_ids": [
+        "世界书与设定库:M01",
+        "世界书与设定库:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "791d030520811b70dfaf114996fe2c06ff5ebddeda949e4142c9dafc5d146d36"
+    },
+    {
+      "code": "E04",
+      "section": "E · 人机与内容创作",
+      "name": "长文本与小说创作",
+      "package": "长文本与小说创作域包",
+      "category": "长文本与小说创作",
+      "pipeline": "P82",
+      "module_ids": [
+        "长文本与小说创作:M01",
+        "长文本与小说创作:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "content_tier": "derived",
+      "spec_digest": "036bf69528e32d759153bf43420d70f3ecdf69648ffc31cf4780663c2b861efe"
+    },
+    {
+      "code": "E05",
+      "section": "E · 人机与内容创作",
+      "name": "内容改写与风格迁移",
+      "package": "内容改写与风格迁移域包",
+      "category": "内容改写与风格迁移",
+      "pipeline": "P83",
+      "module_ids": [
+        "内容改写与风格迁移:M01",
+        "内容改写与风格迁移:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "d898dcb1de812845f6a7b06658d17a0bc648b2ca7647f512b438fb55622ed10b"
+    },
+    {
+      "code": "E06",
+      "section": "E · 人机与内容创作",
+      "name": "多语翻译与本地化",
+      "package": "多语翻译与本地化域包",
+      "category": "多语翻译与本地化",
+      "pipeline": "P84",
+      "module_ids": [
+        "多语翻译与本地化:M01",
+        "多语翻译与本地化:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "ae1c02523e8118231cd9e237a1da7672c6971760dcf480d422447b4bfad02ee1"
+    },
+    {
+      "code": "E07",
+      "section": "E · 人机与内容创作",
+      "name": "图像生成与视觉创作",
+      "package": "图像生成与视觉创作域包",
+      "category": "图像生成与视觉创作",
+      "pipeline": "P85",
+      "module_ids": [
+        "图像生成与视觉创作:M01",
+        "图像生成与视觉创作:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "content_tier": "derived",
+      "spec_digest": "5b61b882ab160eeebde286e13a16683b326902a4b3320af681dabd0fa63ca95f"
+    },
+    {
+      "code": "E08",
+      "section": "E · 人机与内容创作",
+      "name": "视频生成与剪辑",
+      "package": "视频生成与剪辑域包",
+      "category": "视频生成与剪辑",
+      "pipeline": "P86",
+      "module_ids": [
+        "视频生成与剪辑:M01",
+        "视频生成与剪辑:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "4433218bdae0ee68a988e0a17354dd3ef3c96d81eb77893efad4fc6b3af5b919"
+    },
+    {
+      "code": "E09",
+      "section": "E · 人机与内容创作",
+      "name": "音频音乐与语音",
+      "package": "音频音乐与语音域包",
+      "category": "音频音乐与语音",
+      "pipeline": "P87",
+      "module_ids": [
+        "音频音乐与语音:M01",
+        "音频音乐与语音:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "c404473f2070b9ce917e9c439bb7c2b0ecc5ea684e7fea9033a0f7a2e8caebca"
+    },
+    {
+      "code": "E10",
+      "section": "E · 人机与内容创作",
+      "name": "编辑校对与出版",
+      "package": "编辑校对与出版域包",
+      "category": "编辑校对与出版",
+      "pipeline": "P88",
+      "module_ids": [
+        "编辑校对与出版:M01",
+        "编辑校对与出版:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "content_tier": "derived",
+      "spec_digest": "5f6541267f9536c5386bb6eef360c47fefb7cf54d93b738ef22d7653b052ea32"
+    },
+    {
+      "code": "E11",
+      "section": "E · 人机与内容创作",
+      "name": "知识管理与检索增强",
+      "package": "知识管理与检索增强域包",
+      "category": "知识管理与检索增强",
+      "pipeline": "P114",
+      "module_ids": [
+        "知识管理与检索增强:M01",
+        "知识管理与检索增强:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "794295cc658e301d5e28739ae539324433406fe0029c298b3f38f980d43218fa"
+    },
+    {
+      "code": "E12",
+      "section": "E · 人机与内容创作",
+      "name": "智能体与工作流编排",
+      "package": "智能体与工作流编排域包",
+      "category": "智能体与工作流编排",
+      "pipeline": "P89",
+      "module_ids": [
+        "智能体与工作流编排:M01",
+        "智能体与工作流编排:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "4c9cf0cf009c7729951045c6dc9213a8b92bc81fc009bdc25666ccc62d54f392"
+    },
+    {
+      "code": "E13",
+      "section": "E · 人机与内容创作",
+      "name": "代码与软件工程",
+      "package": "代码与软件工程域包",
+      "category": "代码与软件工程",
+      "pipeline": "P91",
+      "module_ids": [
+        "代码与软件工程:M01",
+        "代码与软件工程:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "content_tier": "derived",
+      "spec_digest": "2f9daaa3151df73c00a371886e73aeb30e281d82d1f1fb50e58220b1e6dfa1e0"
+    },
+    {
+      "code": "E14",
+      "section": "E · 人机与内容创作",
+      "name": "数据分析与决策支持",
+      "package": "数据分析与决策支持域包",
+      "category": "数据分析与决策支持",
+      "pipeline": "P92",
+      "module_ids": [
+        "数据分析与决策支持:M01",
+        "数据分析与决策支持:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "d39034d7f4af036894eb39fd383918df92260195c95320fa1d900851211365d2"
+    },
+    {
+      "code": "E15",
+      "section": "E · 人机与内容创作",
+      "name": "企业培训与组织学习",
+      "package": "企业培训与组织学习域包",
+      "category": "企业培训与组织学习",
+      "pipeline": "P115",
+      "module_ids": [
+        "企业培训与组织学习:M01",
+        "企业培训与组织学习:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "b7902a0a58bcc4b26b9b4275c64632485fbf7b5ad709d19077aaf66cfe6bbda9"
+    },
+    {
+      "code": "E16",
+      "section": "E · 人机与内容创作",
+      "name": "个人助理与日常生活",
+      "package": "个人助理与日常生活域包",
+      "category": "个人助理与日常生活",
+      "pipeline": "P93",
+      "module_ids": [
+        "个人助理与日常生活:M01",
+        "个人助理与日常生活:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "content_tier": "derived",
+      "spec_digest": "28c06ac5b4750c922303d3a1e34591e5ab25303c4a370834bc46fda76ba03019"
+    },
+    {
+      "code": "E17",
+      "section": "E · 人机与内容创作",
+      "name": "搜索与信息聚合",
+      "package": "搜索与信息聚合域包",
+      "category": "搜索与信息聚合",
+      "pipeline": "P94",
+      "module_ids": [
+        "搜索与信息聚合:M01",
+        "搜索与信息聚合:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "a5df33844d55ae5c6f91d9f4598706714b4d18c8bb80752338e4489832a45050"
+    },
+    {
+      "code": "E18",
+      "section": "E · 人机与内容创作",
+      "name": "对话与客服",
+      "package": "对话与客服域包",
+      "category": "对话与客服",
+      "pipeline": "P116",
+      "module_ids": [
+        "对话与客服:M01",
+        "对话与客服:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "generation",
+      "content_tier": "derived",
+      "spec_digest": "c37a76557f1657da455d17345c89534a80ef37af85ed9f1e5e879d667fe0854d"
+    },
+    {
+      "code": "E19",
+      "section": "E · 人机与内容创作",
+      "name": "内容分发与社区运营",
+      "package": "内容分发与社区运营域包",
+      "category": "内容分发与社区运营",
+      "pipeline": "P95",
+      "module_ids": [
+        "内容分发与社区运营:M01",
+        "内容分发与社区运营:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "preference",
+      "content_tier": "derived",
+      "spec_digest": "9b5bff3712991af28c603314124c187093f9bf2eb1187eba723baa1286994f38"
+    },
+    {
+      "code": "E20",
+      "section": "E · 人机与内容创作",
+      "name": "数字人与虚拟形象",
+      "package": "数字人与虚拟形象域包",
+      "category": "数字人与虚拟形象",
+      "pipeline": "P96",
+      "module_ids": [
+        "数字人与虚拟形象:M01",
+        "数字人与虚拟形象:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "extraction",
+      "content_tier": "derived",
+      "spec_digest": "aab642f18366974d098a895aa9da6d4a40c0d6752d0ddf98904660f19d89f549"
+    },
+    {
+      "code": "F01",
+      "section": "F · 治理、安全与产业生态",
+      "name": "安全与对齐",
+      "package": "安全与对齐域包",
+      "category": "安全与对齐",
+      "pipeline": "P97",
+      "module_ids": [
+        "安全与对齐:M01",
+        "安全与对齐:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "agreement",
+      "content_tier": "derived",
+      "spec_digest": "cfc29068d59fabd52807197321f3846a7473130057438c239549c4075ad7cf2a"
+    },
+    {
+      "code": "F02",
+      "section": "F · 治理、安全与产业生态",
+      "name": "合规与监管",
+      "package": "合规与监管域包",
+      "category": "合规与监管",
+      "pipeline": "P98",
+      "module_ids": [
+        "合规与监管:M01",
+        "合规与监管:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "ee77502c5a6138fdc62b9d8431100c49fd7a1a5fd89ae9b317cf0768ac5a2c40"
+    },
+    {
+      "code": "F03",
+      "section": "F · 治理、安全与产业生态",
+      "name": "隐私与数据治理",
+      "package": "隐私与数据治理域包",
+      "category": "隐私与数据治理",
+      "pipeline": "P99",
+      "module_ids": [
+        "隐私与数据治理:M01",
+        "隐私与数据治理:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "c3806e0c28a00d1f4d4c74fad8729427070df541e67e54d8bcb6553574c864e5"
+    },
+    {
+      "code": "F04",
+      "section": "F · 治理、安全与产业生态",
+      "name": "版权与知识产权",
+      "package": "版权与知识产权域包",
+      "category": "版权与知识产权",
+      "pipeline": "P100",
+      "module_ids": [
+        "版权与知识产权:M01",
+        "版权与知识产权:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "agreement",
+      "content_tier": "derived",
+      "spec_digest": "aae4860ade6e4fb586f8d77b41b556da0b8a85d730ac2339f067ed528102c83d"
+    },
+    {
+      "code": "F05",
+      "section": "F · 治理、安全与产业生态",
+      "name": "评测与基准",
+      "package": "评测与基准域包",
+      "category": "评测与基准",
+      "pipeline": "P101",
+      "module_ids": [
+        "评测与基准:M01",
+        "评测与基准:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "d5d894fbcd45bf1990145af1c69692eb41bec2e83a13eb4858b784644d4ec037"
+    },
+    {
+      "code": "F06",
+      "section": "F · 治理、安全与产业生态",
+      "name": "可解释性与审计",
+      "package": "可解释性与审计域包",
+      "category": "可解释性与审计",
+      "pipeline": "P102",
+      "module_ids": [
+        "可解释性与审计:M01",
+        "可解释性与审计:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "b25f38b510bbbdc087f9f8d47bef3aeb9f214620e8a956536b52157738936922"
+    },
+    {
+      "code": "F07",
+      "section": "F · 治理、安全与产业生态",
+      "name": "模型运营与成本",
+      "package": "模型运营与成本域包",
+      "category": "模型运营与成本",
+      "pipeline": "P103",
+      "module_ids": [
+        "模型运营与成本:M01",
+        "模型运营与成本:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "agreement",
+      "content_tier": "derived",
+      "spec_digest": "36d6f278ebf8f6ff43554362666b76a4b025973aec000ac2d39b8c13156cef70"
+    },
+    {
+      "code": "F08",
+      "section": "F · 治理、安全与产业生态",
+      "name": "平台与基础设施",
+      "package": "平台与基础设施域包",
+      "category": "平台与基础设施",
+      "pipeline": "P104",
+      "module_ids": [
+        "平台与基础设施:M01",
+        "平台与基础设施:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "classification",
+      "content_tier": "derived",
+      "spec_digest": "58ec01ccac77d3c029167272edc42db3e51ebf329d388fe5c4e850037b724a54"
+    },
+    {
+      "code": "F09",
+      "section": "F · 治理、安全与产业生态",
+      "name": "开源与开发者生态",
+      "package": "开源与开发者生态域包",
+      "category": "开源与开发者生态",
+      "pipeline": "P105",
+      "module_ids": [
+        "开源与开发者生态:M01",
+        "开源与开发者生态:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "contract_compliance",
+      "content_tier": "derived",
+      "spec_digest": "4568eee306c4a473fa9538644e280e2585f7ff43d6e0dd9ab3d8b73501809998"
+    },
+    {
+      "code": "F10",
+      "section": "F · 治理、安全与产业生态",
+      "name": "产业与商业落地",
+      "package": "产业与商业落地域包",
+      "category": "产业与商业落地",
+      "pipeline": "P106",
+      "module_ids": [
+        "产业与商业落地:M01",
+        "产业与商业落地:M02"
+      ],
+      "modules": 2,
+      "subdivisions": 12,
+      "assets": 3,
+      "output_faces": 10,
+      "machine_verifiable_faces": 10,
+      "functional_faces": 1,
+      "machine_verifiable_ratio": 1.0,
+      "metric_family": "agreement",
+      "content_tier": "derived",
+      "spec_digest": "521f85120acf063522fb5d58f574860a868667816e406eee17f17075ba86ca74"
     }
   ],
-  "count": 26,
-  "subdivisions_total": 312
+  "count": 100,
+  "subdivisions_total": 1200
 }

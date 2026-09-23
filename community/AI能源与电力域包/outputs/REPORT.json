@@ -1,0 +1,44 @@
+{
+  "code": "D09",
+  "domain": "AI+能源与电力",
+  "family": "classification",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "accuracy": 0.833333,
+    "confusion": {
+      "neg": {
+        "neg": 12,
+        "pos": 4
+      },
+      "pos": {
+        "neg": 0,
+        "pos": 8
+      }
+    },
+    "digits": 6,
+    "family": "classification",
+    "macro": {
+      "f1": 0.828572,
+      "precision": 0.833333,
+      "recall": 0.875
+    },
+    "n": 24,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "per_label": {
+      "neg": {
+        "f1": 0.857143,
+        "precision": 1.0,
+        "recall": 0.75,
+        "support": 16
+      },
+      "pos": {
+        "f1": 0.8,
+        "precision": 0.666667,
+        "recall": 1.0,
+        "support": 8
+      }
+    }
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 24
+}

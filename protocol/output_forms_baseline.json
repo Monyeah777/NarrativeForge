@@ -1,13 +1,121 @@
 {
   "note": "机验率/功能面基线（可重签工件）。低于基线即 check32 失败——产出形态不得从数据/契约退回散文。重签：nf output meter --write",
   "packages": {
+    "AI人力资源与招聘域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI保险域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI农业域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI制药与生物域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI制造业域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI医疗健康域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI政务与公共事务域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI教育域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI法律与合规域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "AI系统域包": {
       "functional": 1,
       "machine_verifiable": 6,
       "machine_verifiable_ratio": 0.8571,
       "prose_assets": 1
     },
+    "AI能源与电力域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI金融投研与风控域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "AI食品与餐饮域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "三维与世界模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "上下文工程与长上下文域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "世界书与设定库域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "个人助理与日常生活域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "交通与出行域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "产业与商业落地域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "代码与软件工程域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -31,6 +139,18 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "企业培训与组织学习域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "传媒与新闻域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "信息抽取与结构化域包": {
       "functional": 1,
       "machine_verifiable": 10,
@@ -43,7 +163,55 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "内容分发与社区运营域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "内容改写与风格迁移域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "分类与情感分析域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "参数高效微调域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "可观测性成本与可靠性域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "可解释性与审计域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "合成数据生成域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "合规与监管域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "向量库与检索管线域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -55,7 +223,31 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "图像生成与视觉创作域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "图像生成与视觉设计域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "多智能体协同域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "多模态大模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "多语翻译与本地化域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -73,7 +265,43 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "安全与对齐域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "对话与客服域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "对齐与偏好优化域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "嵌入与检索表示域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "平台与基础设施域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "建筑与房地产域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "开源与开发者生态域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -85,7 +313,49 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "推理优化与加速域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "推理服务与部署域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "推荐排序与广告域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "提示工程与指令设计域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "提示工程与提示模板域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "搜索与信息聚合域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "摘要与信息压缩域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "数字人与虚拟形象域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -97,7 +367,31 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "数据分析与决策支持域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "数据分析与表格理解域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "数据标注与标注质量域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "数据采集与清洗域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "文旅与酒店域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -115,7 +409,25 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "智能体与工作流编排域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "智能体框架与工具调用域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "机器翻译与本地化域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "模型运营与成本域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -127,7 +439,43 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "游戏与互动娱乐域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "版权与知识产权域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "物流与供应链域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "监督微调域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "知识管理与检索增强域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "知识问答与检索增强域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "科研与实验域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -139,7 +487,25 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "红队越狱与安全测试域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "编辑校对与出版域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "视觉模型域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "视频生成与剪辑域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -151,7 +517,49 @@
       "machine_verifiable_ratio": 0.7692,
       "prose_assets": 3
     },
+    "视频生成与自动剪辑域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "角色扮演与角色卡域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "记忆体与个性化域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "评测与基准域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "评测基准与排行榜域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "语音合成与配音域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "语音识别与合成域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "语音转写与会议记录域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -163,7 +571,43 @@
       "machine_verifiable_ratio": 0.6667,
       "prose_assets": 4
     },
+    "长文本与小说创作域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "隐私与数据治理域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "零售与电商域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
     "音频与音乐生成域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "音频音乐与语音域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "预测异常与风险域包": {
+      "functional": 1,
+      "machine_verifiable": 10,
+      "machine_verifiable_ratio": 0.7692,
+      "prose_assets": 3
+    },
+    "预训练与继续预训练域包": {
       "functional": 1,
       "machine_verifiable": 10,
       "machine_verifiable_ratio": 0.7692,
@@ -172,9 +616,9 @@
   },
   "schema": "nf-output-forms-baseline/1",
   "totals": {
-    "functional": 28,
-    "machine_verifiable": 274,
-    "machine_verifiable_ratio": 0.7675,
-    "prose_assets": 83
+    "functional": 102,
+    "machine_verifiable": 1014,
+    "machine_verifiable_ratio": 0.7688,
+    "prose_assets": 305
   }
 }

@@ -9,10 +9,10 @@
 | 条目键 | 锚类型 | URL | 可达性 |
 |---|---|---|---|
 | `A04-01` | paper | https://arxiv.org/abs/1512.02595 | ✓ 200 |
-| `A04-02` | repo | https://github.com/snakers4/silero-vad | ✓ 200 |
+| `A04-02` | repo | https://pypi.org/project/webrtcvad/ | ✓ 200 |
 | `A04-03` | paper | https://arxiv.org/abs/2003.12687 | ✓ 200 |
 | `A04-04` | dataset | https://commonvoice.mozilla.org/ | ✓ 200 |
-| `A04-05` | repo | https://github.com/microsoft/DNS-Challenge | ✓ 200 |
+| `A04-05` | repo | https://pypi.org/project/noisereduce/ | ✓ 200 |
 | `A04-06` | paper | https://arxiv.org/abs/2010.10759 | ✓ 200 |
 | `A04-07` | paper | https://arxiv.org/abs/1712.05884 | ✓ 200 |
 | `A04-08` | paper | https://arxiv.org/abs/1802.06006 | ✓ 200 |

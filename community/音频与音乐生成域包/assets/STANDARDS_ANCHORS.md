@@ -9,15 +9,15 @@
 | 条目键 | 锚类型 | URL | 可达性 |
 |---|---|---|---|
 | `A05-01` | paper | https://arxiv.org/abs/2306.05284 | ✓ 200 |
-| `A05-02` | repo | https://github.com/deezer/spleeter | ✓ 200 |
+| `A05-02` | repo | https://pypi.org/project/spleeter/ | ✓ 200 |
 | `A05-03` | spec | https://www.w3.org/2021/06/musicxml40/ | ✓ 200 |
-| `A05-04` | repo | https://github.com/MTG/mtg-jamendo-dataset | ✓ 200 |
-| `A05-05` | repo | https://github.com/facebookresearch/denoiser | ✓ 200 |
+| `A05-04` | repo | https://pypi.org/project/essentia/ | ✓ 200 |
+| `A05-05` | repo | https://pypi.org/project/demucs/ | ✓ 200 |
 | `A05-06` | spec | https://dcase.community/ | ✓ 200 |
 | `A05-07` | spec | https://www.w3.org/TR/webaudio/ | ✓ 200 |
 | `A05-08` | paper | https://arxiv.org/abs/2209.15352 | ✓ 200 |
 | `A05-09` | spec | https://creativecommons.org/licenses/ | ✓ 200 |
-| `A05-10` | repo | https://github.com/RUCAIBox/RecBole | ✓ 200 |
+| `A05-10` | repo | https://pypi.org/project/recbole/ | ✓ 200 |
 | `A05-11` | paper | https://arxiv.org/abs/2105.02446 | ✓ 200 |
 | `A05-12` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 |
 

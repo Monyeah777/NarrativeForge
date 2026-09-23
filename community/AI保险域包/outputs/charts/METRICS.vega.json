@@ -1,0 +1,60 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "exact_match",
+        "value": 0.833333
+      },
+      {
+        "metric": "field_f1",
+        "value": 0.956522
+      },
+      {
+        "metric": "field_precision",
+        "value": 0.916667
+      },
+      {
+        "metric": "field_recall",
+        "value": 1.0
+      },
+      {
+        "metric": "fn",
+        "value": 0.0
+      },
+      {
+        "metric": "fp",
+        "value": 2.0
+      },
+      {
+        "metric": "n",
+        "value": 12.0
+      },
+      {
+        "metric": "tp",
+        "value": 22.0
+      }
+    ]
+  },
+  "description": "AI+保险 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

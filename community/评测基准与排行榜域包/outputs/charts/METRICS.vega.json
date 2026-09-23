@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "buckets",
+        "value": 8.0
+      },
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "psi",
+        "value": 0.039832
+      },
+      {
+        "metric": "smoothing_epsilon",
+        "value": 1e-06
+      }
+    ]
+  },
+  "description": "评测、基准与排行榜 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

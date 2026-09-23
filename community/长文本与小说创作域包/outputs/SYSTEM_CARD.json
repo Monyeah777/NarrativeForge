@@ -1,0 +1,119 @@
+{
+  "kind": "nf-system-card/1",
+  "system": {
+    "id": "NF-E04-PACK",
+    "name": "长文本与小说创作域包",
+    "version": "1.0.0",
+    "kind_of_system": "domain-package",
+    "model_agnostic": true
+  },
+  "intended_use": {
+    "purpose": "把「长文本与小说创作」这一域的 12 条细分协议化：口径可判定、判据可机检、锚可复核，并产出可复算的域报告与可机验的形态面。",
+    "consumers": [
+      "装配运行时（P82 管线）",
+      "需要该域口径清单的内容/评测生产方",
+      "下游域包（同源引用本域口径面）"
+    ],
+    "in_scope": [
+      "12 条细分的定义口径与可机检判据",
+      "概念前置偏序与装载序",
+      "样例集上的域度量复算（T4）"
+    ]
+  },
+  "limitations": [
+    "覆盖以本节声明的 12 条细分为界：域内相邻主题未列入者不自动继承",
+    "域报告是**样例集（合成夹具）上的口径值**，不代表真实模型/系统能力",
+    "外部权威锚只作口径参照，未做逐条规范全文比对",
+    "包外前置族（E04-00）不随包交付，装载方须自备领域基础"
+  ],
+  "data": {
+    "sources": [
+      {
+        "id": "DOMAIN_SPEC",
+        "kind": "self-authored",
+        "note": "域口径表正文自撰；外部锚仅登记 URL 与可达性，不复制外部文本"
+      },
+      {
+        "id": "CASES",
+        "kind": "generated",
+        "note": "度量夹具为确定性合成数据（core/domain_metrics.synthesize，种子 = 域码）"
+      }
+    ],
+    "provenance_policy": "外部输入只作机制借鉴与口径参照（逐条实测可达性），不作立项理由或质量背书（STRATEGY §3.2/§3.3）",
+    "personal_data": "synthetic-only"
+  },
+  "evaluation": {
+    "method": "内部机检链：verify 门禁（check14/23/32/33）+ 域报告复算（T4）+ 单测",
+    "faces": [
+      {
+        "name": "登记与投影一致",
+        "gate": "check14 ⑦",
+        "result": "protocol.yaml ↔ registry protocols[] ↔ 02 §8 三处一致"
+      },
+      {
+        "name": "资产供应链闭合",
+        "gate": "check23",
+        "result": "3 件资产头 ↔ provenance.json 双源一致"
+      },
+      {
+        "name": "概念图健康",
+        "gate": "check32 concept_graph",
+        "result": "无环 / 无悬空 / 边有溯源 / 层位合法 / 别名唯一 / 分支完备"
+      },
+      {
+        "name": "产出形态与机验率",
+        "gate": "check32 output_forms",
+        "result": "9 面全部 ≥T2（可机验占比 100%）；T4 面复算一致"
+      }
+    ],
+    "reproduce_command": "python scripts/nf.py output verify --json",
+    "not_measured": [
+      "真实模型在该域的能力（本包不含模型，也不做能力声明）",
+      "外部客户端装载实测（外部接触按 STRATEGY 封存）",
+      "锚规范全文一致性（只登记入口与可达性）"
+    ]
+  },
+  "human_oversight": [
+    "口径条目变更须走资产表 + 机读投影双改，并重跑门禁（禁止只改 JSON）",
+    "不可达锚由维护者复核后更新（本表如实记 ✗，不假装可达）",
+    "域包公开面只放结果（资产 + 模块 + 产出面 + 收口注记）"
+  ],
+  "risk_management": {
+    "framework": "NIST AI RMF 1.0",
+    "functions": {
+      "GOVERN": [
+        "登记三要件由 check14 硬门守住（protocol.yaml / 02 §8 / registry）",
+        "公开文案纪律：只写结果与状态"
+      ],
+      "MAP": [
+        "域边界 = 本节 12 条细分表：不覆盖处以新条目显式登记",
+        "前置关系显式成图（CONCEPT_GRAPH）"
+      ],
+      "MEASURE": [
+        "度量族口径显式（preference）并可复算（T4）",
+        "产出面档位与机验率落基线（回退即 FAIL）"
+      ],
+      "MANAGE": [
+        "资产/模块状态位支持淘汰流转",
+        "机验率回退即门禁失败"
+      ]
+    },
+    "residual_risks": [
+      "夹具为合成数据，不能替代真实评测",
+      "锚版本漂移需人工复核",
+      "域内细分边界存在主观性（已声明覆盖边界）"
+    ]
+  },
+  "out_of_scope": [
+    "该域的教学内容",
+    "具体模型权重与推理运行时",
+    "外部服务的可用性与定价承诺"
+  ],
+  "not_claims": [
+    "不做模型能力结论（域报告是样例口径值）",
+    "不宣称外部兼容性（未做客户端装载实测）",
+    "口径表不宣称完备：覆盖以本节声明边界为准",
+    "NIST AI RMF 段为字段映射陈述，不构成合规认证",
+    "本包内容为 **derived 档**：细分名与框架判据已登记，领域细则待作者补全——不得当作领域专家级口径使用"
+  ]
+}

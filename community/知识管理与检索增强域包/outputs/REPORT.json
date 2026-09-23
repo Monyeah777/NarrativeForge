@@ -1,0 +1,21 @@
+{
+  "code": "E11",
+  "domain": "知识管理与检索增强",
+  "family": "extraction",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "digits": 6,
+    "exact_match": 0.75,
+    "family": "extraction",
+    "field_f1": 0.938776,
+    "field_precision": 0.884615,
+    "field_recall": 1.0,
+    "fn": 0,
+    "fp": 3,
+    "n": 12,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "tp": 23
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 12
+}

@@ -31,12 +31,17 @@ DOC02_REL = "02_联动注册表.md"
 VERIFY_REL = "verify.sh"
 
 #: 可用管线 id 池（避开层位 id P00/P10…/P80、官方 P00/P01/P90、既有包 P02–P08）
+#: 管线 id 池（两位段）——避开层位 id（P00/P10/…/P80）、官方 P00/P01/P90 与既有包 P02–P08。
+#: 两位段共 90 个；AI 品类清单有 100 类，**两位段不够**（2026-09-23 实测：第 83 个域包起无号可用），
+#: 故按「模块号命名空间扩展」同源做法扩到三位：`P[0-9]{2,3}`（schema 已同步）。
 PIPELINE_POOL: List[str] = (
     ["P09"] + ["P1%d" % i for i in range(1, 10)] + ["P2%d" % i for i in range(1, 10)]
     + ["P3%d" % i for i in range(1, 10)] + ["P4%d" % i for i in range(1, 10)]
     + ["P5%d" % i for i in range(1, 10)] + ["P6%d" % i for i in range(1, 10)]
     + ["P7%d" % i for i in range(1, 10)] + ["P8%d" % i for i in range(1, 10)]
     + ["P9%d" % i for i in range(1, 10)]
+    # 三位段（P100–P199）：给清单剩下的域包用，避免与两位段/层位/官方号冲突
+    + ["P%03d" % i for i in range(100, 200)]
 )
 
 SUB_COUNT = 12
@@ -96,6 +101,30 @@ def spec_issues(spec: Dict[str, Any]) -> List[str]:
 
 def _read_json(path: Path) -> Any:
     """读 JSON；缺件/坏件返回 None（工厂在局部树上也要能工作——由调用方决定语义）。"""
+
+    return _read_json_raw(path)
+
+
+def _write_text_retry(path: Path, text: str, tries: int = 5) -> None:
+    """带重试的落盘（Windows 实测：杀软/句柄扫描会让 write_text 偶发 EINVAL(22)）。
+
+    只重试写盘本身（内容已确定），不改语义；最终失败仍抛错，不静默。
+    """
+    import time
+
+    last: Exception | None = None
+    for i in range(tries):
+        try:
+            path.write_text(text, encoding="utf-8", newline="\n")
+            return
+        except OSError as exc:
+            last = exc
+            time.sleep(0.4 * (i + 1))
+    raise last  # type: ignore[misc]
+
+
+def _read_json_raw(path: Path) -> Any:
+    """读 JSON；缺件/坏件返回 None（工厂在局部树上也要能工作——由调用方决定语义）。"""
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
@@ -137,14 +166,15 @@ def allocate(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
     proto = Path(root) / "community" / spec["pack_name"] / "protocol.yaml"
     if proto.is_file():
         text = proto.read_text(encoding="utf-8")
-        pipe = re.search(r"(?m)^\s*pipeline:\s*(P\d{2})\s*$", text)
+        pipe = re.search(r"(?m)^\s*pipeline:\s*(P\d{2,3})\s*$", text)
         ids = re.findall(r'(?m)^\s*-\s*"([^"]+:M\d{2})"\s*$', text)
         if pipe and len(ids) == 2:
             return {"pipeline": pipe.group(1), "exist": True, "module_ids": ids,
                     "stems": ["%sa" % code, "%sb" % code]}
     reg = _read_json(Path(root) / REGISTRY_REL) or {}
     for p in reg.get("protocols") or []:
-        if p.get("id") == spec["pack_name"]:
+        if p.get("id") == spec["pack_name"] and re.fullmatch(r"P\d{2,3}",
+                                                             str(p.get("pipeline") or "")):
             return {"pipeline": p["pipeline"], "exist": True,
                     "module_ids": [str(x) for x in p.get("module_ids") or []]}
     used = set(used_pipeline_ids(root))
@@ -317,6 +347,13 @@ def concept_graph_md(spec: Dict[str, Any]) -> str:
 
 def domain_spec_md(spec: Dict[str, Any]) -> str:
     code, name = spec["code"], spec["name"]
+    tier = spec.get("content_tier", "authored")
+    tier_note = (
+        "> **内容档位（如实标注）**：本包为 **derived 档**——12 条细分名取自品类清单，"
+        "判据/失效模式按所属段的**工程口径框架**（输入规格 / 处理参数 / 输出契约 / 验收判据）登记，"
+        "**领域细则待作者逐条补全**；权威锚为段级参照，不做领域专属断言。"
+        if tier == "derived" else
+        "> **内容档位**：authored（逐条撰写，含领域专属判据与权威锚）。")
     lines = [
         '<!-- nf-asset: key="DOMAIN_SPEC" version="1.0" status="active" -->',
         "# 域口径表 · %s" % name,
@@ -325,6 +362,7 @@ def domain_spec_md(spec: Dict[str, Any]) -> str:
         "可判定的口径（定义 / 可机验判据 / 常见失效模式），并逐条挂权威锚。" % (name, len(spec["subdivisions"])),
         "> 资产键：`DOMAIN_SPEC`｜机读同源面 = `outputs/DOMAIN_SPEC.json`（双源一致由 "
         "check32 output_forms 断言；**本表是唯一人读真相，JSON 是它的机读投影**）。",
+        tier_note,
         "",
         "## 1. 口径纪律",
         "",
@@ -750,6 +788,7 @@ def domain_spec_json(spec: Dict[str, Any]) -> str:
         "section": spec["section"],
         "anchors_verified_on": "2026-09-22",
         "metric_family": spec["metric_family"],
+        "content_tier": spec.get("content_tier", "authored"),
         "subdivisions": [
             {"id": s["id"], "name": s["name"], "definition": s["definition"],
              "anchor": s["anchor"], "anchor_kind": s.get("anchor_kind", "spec"),
@@ -772,9 +811,10 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
         "type": "object",
         "additionalProperties": False,
         "required": ["kind", "code", "domain", "section", "anchors_verified_on",
-                     "metric_family", "subdivisions"],
+                     "metric_family", "subdivisions", "content_tier"],
         "properties": {
             "kind": {"const": "nf-domain-spec/1"},
+            "content_tier": {"enum": ["authored", "derived"]},
             "code": {"const": code},
             "domain": {"type": "string", "minLength": 1},
             "section": {"type": "string", "minLength": 1},
@@ -996,7 +1036,10 @@ def system_card(spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
         "not_claims": ["不做模型能力结论（域报告是样例口径值）",
                        "不宣称外部兼容性（未做客户端装载实测）",
                        "口径表不宣称完备：覆盖以本节声明边界为准",
-                       "NIST AI RMF 段为字段映射陈述，不构成合规认证"],
+                       "NIST AI RMF 段为字段映射陈述，不构成合规认证"]
+        + (["本包内容为 **derived 档**：细分名与框架判据已登记，领域细则待作者补全——"
+            "不得当作领域专家级口径使用"]
+           if spec.get("content_tier") == "derived" else []),
     }
     return json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
 
@@ -1124,7 +1167,7 @@ def _append_section02(root: str, spec: Dict[str, Any], alloc: Dict[str, Any]) ->
         "",
     ])
     text = text[:m.start()] + seg + text[m.start():]
-    doc_path.write_text(text, encoding="utf-8", newline="\n")
+    _write_text_retry(doc_path, text)
     return True
 
 
@@ -1142,7 +1185,7 @@ def _append_domain_list(root: str, spec: Dict[str, Any]) -> bool:
     if not inner.rstrip().endswith(","):
         inner = inner.rstrip() + ","
     new = m.group(1) + inner + " " + entry + m.group(3)
-    p.write_text(text[:m.start()] + new + text[m.end():], encoding="utf-8", newline="\n")
+    _write_text_retry(p, text[:m.start()] + new + text[m.end():])
     return True
 
 
@@ -1166,8 +1209,7 @@ def _register_protocols(root: str, spec: Dict[str, Any], alloc: Dict[str, Any]) 
             [json.dumps(p, sort_keys=True, ensure_ascii=False) for p in cur]:
         return "已登记（幂等，无变化）"
     reg["protocols"] = merged
-    path.write_text(json.dumps(reg, ensure_ascii=False, indent=2) + "\n",
-                    encoding="utf-8", newline="\n")
+    _write_text_retry(path, json.dumps(reg, ensure_ascii=False, indent=2) + "\n")
     return "已写入（protocols[] %d → %d）" % (len(cur), len(merged))
 
 
@@ -1188,7 +1230,7 @@ def build(root: str, spec: Dict[str, Any], write: bool = False,
             changed.append(rel)
             if write:
                 p.parent.mkdir(parents=True, exist_ok=True)
-                p.write_text(content, encoding="utf-8", newline="\n")
+                _write_text_retry(p, content)
                 written.append(rel)
     reg = {"section02": False, "domain_list": False, "render": []}
     if write:
@@ -1265,6 +1307,7 @@ def manifest_entry(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
         "functional_faces": len(t4),
         "machine_verifiable_ratio": ratio,
         "metric_family": spec["metric_family"],
+        "content_tier": spec.get("content_tier", "authored"),
         "spec_digest": hashlib.sha256(spec_blob).hexdigest(),
     }
 
@@ -1289,8 +1332,7 @@ def update_manifest(root: str, spec: Dict[str, Any], write: bool = False) -> Dic
     doc["subdivisions_total"] = sum(int(p.get("subdivisions") or 0) for p in doc["packs"])
     if write:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
-                        encoding="utf-8", newline="\n")
+        _write_text_retry(path, json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
     return doc
 
 

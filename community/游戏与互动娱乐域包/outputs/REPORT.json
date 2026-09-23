@@ -1,0 +1,44 @@
+{
+  "code": "D18",
+  "domain": "游戏与互动娱乐",
+  "family": "classification",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "accuracy": 0.791667,
+    "confusion": {
+      "neg": {
+        "neg": 9,
+        "pos": 1
+      },
+      "pos": {
+        "neg": 4,
+        "pos": 10
+      }
+    },
+    "digits": 6,
+    "family": "classification",
+    "macro": {
+      "f1": 0.791305,
+      "precision": 0.8007,
+      "recall": 0.807143
+    },
+    "n": 24,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "per_label": {
+      "neg": {
+        "f1": 0.782609,
+        "precision": 0.692308,
+        "recall": 0.9,
+        "support": 10
+      },
+      "pos": {
+        "f1": 0.8,
+        "precision": 0.909091,
+        "recall": 0.714286,
+        "support": 14
+      }
+    }
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 24
+}

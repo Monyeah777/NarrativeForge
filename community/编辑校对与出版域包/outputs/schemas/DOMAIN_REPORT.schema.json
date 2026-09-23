@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narrativeforge.local/schema/domain-report-e10.schema.json",
+  "title": "编辑校对与出版 域报告（可复算）",
+  "description": "样例集上的口径值报告（T4）：由 outputs/samples/CASES.csv 经 core/domain_metrics 重算并逐字段比对。**非模型能力声明**。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "code",
+    "domain",
+    "family",
+    "sample",
+    "sample_rows",
+    "metrics"
+  ],
+  "properties": {
+    "kind": {
+      "const": "nf-domain-report/1"
+    },
+    "code": {
+      "const": "E10"
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "family": {
+      "type": "string",
+      "minLength": 3
+    },
+    "sample": {
+      "type": "string",
+      "pattern": "^outputs/samples/"
+    },
+    "sample_rows": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "metrics": {
+      "type": "object",
+      "minProperties": 3
+    }
+  }
+}

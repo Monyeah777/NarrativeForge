@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "agreement",
+        "value": 0.75
+      },
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "loss",
+        "value": 7.0
+      },
+      {
+        "metric": "n",
+        "value": 16.0
+      },
+      {
+        "metric": "tie",
+        "value": 3.0
+      },
+      {
+        "metric": "win",
+        "value": 6.0
+      },
+      {
+        "metric": "win_rate_excl_tie",
+        "value": 0.461538
+      }
+    ]
+  },
+  "description": "内容分发与社区运营 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "schema": "nf-output-index/1",
+  "package": "开源与开发者生态域包",
+  "note": "机验产出面清单（域包工厂生成；check14/check32 与 nf output 按此判定）。role 语义：schema 契约 / data 数据 / chart 图表 / diagram 图示 / functional 可复算。",
+  "outputs": [
+    {
+      "path": "outputs/schemas/DOMAIN_SPEC.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "口径表机读投影契约"
+    },
+    {
+      "path": "outputs/schemas/DOMAIN_REPORT.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "域报告契约（可复算面）"
+    },
+    {
+      "path": "outputs/schemas/SYSTEM_CARD.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "系统卡契约"
+    },
+    {
+      "path": "outputs/DOMAIN_SPEC.json",
+      "form": "domain-spec",
+      "tier": "T3",
+      "role": "data",
+      "schema": "outputs/schemas/DOMAIN_SPEC.schema.json",
+      "dual_source": {
+        "markdown": "assets/DOMAIN_SPEC.md",
+        "field": "id",
+        "key_pattern": "`(F09-[0-9]{2})`"
+      },
+      "note": "口径表机读投影（与资产双向一致）"
+    },
+    {
+      "path": "outputs/samples/CASES.csv",
+      "form": "csv",
+      "tier": "T2",
+      "role": "data",
+      "note": "度量夹具（确定性合成；口径可复算，非真实测量）"
+    },
+    {
+      "path": "outputs/REPORT.json",
+      "form": "domain-report",
+      "tier": "T4",
+      "role": "functional",
+      "schema": "outputs/schemas/DOMAIN_REPORT.schema.json",
+      "recompute": {
+        "id": "domain-report",
+        "inputs": [
+          "outputs/samples/CASES.csv"
+        ],
+        "params": {
+          "family": "contract_compliance",
+          "code": "F09",
+          "domain": "开源与开发者生态"
+        }
+      },
+      "note": "度量族复算报告（check32 重算比对）"
+    },
+    {
+      "path": "outputs/charts/METRICS.vega.json",
+      "form": "vega-lite",
+      "tier": "T3",
+      "role": "chart",
+      "render": {
+        "id": "vega-metrics",
+        "inputs": [
+          "outputs/REPORT.json"
+        ],
+        "params": {
+          "title": "开源与开发者生态 · 样例口径值"
+        }
+      },
+      "note": "指标条形图（由报告确定性生成）"
+    },
+    {
+      "path": "outputs/CONCEPT_DAG.graphml",
+      "form": "graphml",
+      "tier": "T3",
+      "role": "diagram",
+      "render": {
+        "id": "graphml-concept-dag",
+        "graph": "community/开源与开发者生态域包/assets/CONCEPT_GRAPH.md"
+      },
+      "note": "概念前置图（图交换形态；边端点引用完整性由形态校验器判定）"
+    },
+    {
+      "path": "outputs/charts/CONCEPT_DAG.mmd",
+      "form": "mermaid",
+      "tier": "T3",
+      "role": "diagram",
+      "render": {
+        "id": "mermaid-concept-dag",
+        "graph": "community/开源与开发者生态域包/assets/CONCEPT_GRAPH.md"
+      },
+      "note": "概念前置图（按层分组的 Mermaid 形态）"
+    },
+    {
+      "path": "outputs/SYSTEM_CARD.json",
+      "form": "system-card",
+      "tier": "T3",
+      "role": "data",
+      "schema": "outputs/schemas/SYSTEM_CARD.schema.json",
+      "note": "域包系统卡（用途 / 限制 / 数据 / 评测 / 人审 / 风险治理 / 不宣称）"
+    }
+  ]
+}

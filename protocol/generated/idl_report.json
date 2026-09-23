@@ -6,6 +6,132 @@
   "contracts": [
     {
       "conformance": "L2",
+      "id": "AI人力资源与招聘:M01",
+      "layer": "P40",
+      "name": "AI人力资源与招聘口径登记",
+      "source": "community/AI人力资源与招聘域包/modules/D14a_AI人力资源与招聘口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI人力资源与招聘:M02",
+      "layer": "P60",
+      "name": "AI人力资源与招聘收口与形态派生",
+      "source": "community/AI人力资源与招聘域包/modules/D14b_AI人力资源与招聘收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI保险:M01",
+      "layer": "P40",
+      "name": "AI保险口径登记",
+      "source": "community/AI保险域包/modules/D05a_AI保险口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI保险:M02",
+      "layer": "P60",
+      "name": "AI保险收口与形态派生",
+      "source": "community/AI保险域包/modules/D05b_AI保险收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI农业:M01",
+      "layer": "P40",
+      "name": "AI农业口径登记",
+      "source": "community/AI农业域包/modules/D10a_AI农业口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI农业:M02",
+      "layer": "P60",
+      "name": "AI农业收口与形态派生",
+      "source": "community/AI农业域包/modules/D10b_AI农业收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI制药与生物:M01",
+      "layer": "P40",
+      "name": "AI制药与生物口径登记",
+      "source": "community/AI制药与生物域包/modules/D02a_AI制药与生物口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI制药与生物:M02",
+      "layer": "P60",
+      "name": "AI制药与生物收口与形态派生",
+      "source": "community/AI制药与生物域包/modules/D02b_AI制药与生物收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI制造业:M01",
+      "layer": "P40",
+      "name": "AI制造业口径登记",
+      "source": "community/AI制造业域包/modules/D08a_AI制造业口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI制造业:M02",
+      "layer": "P60",
+      "name": "AI制造业收口与形态派生",
+      "source": "community/AI制造业域包/modules/D08b_AI制造业收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI医疗健康:M01",
+      "layer": "P40",
+      "name": "AI医疗健康口径登记",
+      "source": "community/AI医疗健康域包/modules/D01a_AI医疗健康口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI医疗健康:M02",
+      "layer": "P60",
+      "name": "AI医疗健康收口与形态派生",
+      "source": "community/AI医疗健康域包/modules/D01b_AI医疗健康收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI政务与公共事务:M01",
+      "layer": "P40",
+      "name": "AI政务与公共事务口径登记",
+      "source": "community/AI政务与公共事务域包/modules/D07a_AI政务与公共事务口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI政务与公共事务:M02",
+      "layer": "P60",
+      "name": "AI政务与公共事务收口与形态派生",
+      "source": "community/AI政务与公共事务域包/modules/D07b_AI政务与公共事务收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI教育:M01",
+      "layer": "P40",
+      "name": "AI教育口径登记",
+      "source": "community/AI教育域包/modules/D06a_AI教育口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI教育:M02",
+      "layer": "P60",
+      "name": "AI教育收口与形态派生",
+      "source": "community/AI教育域包/modules/D06b_AI教育收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI法律与合规:M01",
+      "layer": "P40",
+      "name": "AI法律与合规口径登记",
+      "source": "community/AI法律与合规域包/modules/D03a_AI法律与合规口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI法律与合规:M02",
+      "layer": "P60",
+      "name": "AI法律与合规收口与形态派生",
+      "source": "community/AI法律与合规域包/modules/D03b_AI法律与合规收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "AI系统:M25",
       "layer": "P40",
       "name": "前置闭包求值",
@@ -17,6 +143,48 @@
       "layer": "P60",
       "name": "装载序与就绪门",
       "source": "community/AI系统域包/modules/M26_装载序就绪门.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI能源与电力:M01",
+      "layer": "P40",
+      "name": "AI能源与电力口径登记",
+      "source": "community/AI能源与电力域包/modules/D09a_AI能源与电力口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI能源与电力:M02",
+      "layer": "P60",
+      "name": "AI能源与电力收口与形态派生",
+      "source": "community/AI能源与电力域包/modules/D09b_AI能源与电力收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI金融投研与风控:M01",
+      "layer": "P40",
+      "name": "AI金融投研与风控口径登记",
+      "source": "community/AI金融投研与风控域包/modules/D04a_AI金融投研与风控口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI金融投研与风控:M02",
+      "layer": "P60",
+      "name": "AI金融投研与风控收口与形态派生",
+      "source": "community/AI金融投研与风控域包/modules/D04b_AI金融投研与风控收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI食品与餐饮:M01",
+      "layer": "P40",
+      "name": "AI食品与餐饮口径登记",
+      "source": "community/AI食品与餐饮域包/modules/D16a_AI食品与餐饮口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "AI食品与餐饮:M02",
+      "layer": "P60",
+      "name": "AI食品与餐饮收口与形态派生",
+      "source": "community/AI食品与餐饮域包/modules/D16b_AI食品与餐饮收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -328,10 +496,94 @@
     },
     {
       "conformance": "L2",
+      "id": "上下文工程与长上下文:M01",
+      "layer": "P40",
+      "name": "上下文工程与长上下文口径登记",
+      "source": "community/上下文工程与长上下文域包/modules/C12a_上下文工程与长上下文口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "上下文工程与长上下文:M02",
+      "layer": "P60",
+      "name": "上下文工程与长上下文收口与形态派生",
+      "source": "community/上下文工程与长上下文域包/modules/C12b_上下文工程与长上下文收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "世界书与设定库:M01",
+      "layer": "P40",
+      "name": "世界书与设定库口径登记",
+      "source": "community/世界书与设定库域包/modules/E03a_世界书与设定库口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "世界书与设定库:M02",
+      "layer": "P60",
+      "name": "世界书与设定库收口与形态派生",
+      "source": "community/世界书与设定库域包/modules/E03b_世界书与设定库收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "个人助理与日常生活:M01",
+      "layer": "P40",
+      "name": "个人助理与日常生活口径登记",
+      "source": "community/个人助理与日常生活域包/modules/E16a_个人助理与日常生活口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "个人助理与日常生活:M02",
+      "layer": "P60",
+      "name": "个人助理与日常生活收口与形态派生",
+      "source": "community/个人助理与日常生活域包/modules/E16b_个人助理与日常生活收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "事件:M22",
       "layer": "P30",
       "name": "事件叙事",
       "source": "04_模块库/事件类/M22_事件叙事.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "交通与出行:M01",
+      "layer": "P40",
+      "name": "交通与出行口径登记",
+      "source": "community/交通与出行域包/modules/D13a_交通与出行口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "交通与出行:M02",
+      "layer": "P60",
+      "name": "交通与出行收口与形态派生",
+      "source": "community/交通与出行域包/modules/D13b_交通与出行收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "产业与商业落地:M01",
+      "layer": "P40",
+      "name": "产业与商业落地口径登记",
+      "source": "community/产业与商业落地域包/modules/F10a_产业与商业落地口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "产业与商业落地:M02",
+      "layer": "P60",
+      "name": "产业与商业落地收口与形态派生",
+      "source": "community/产业与商业落地域包/modules/F10b_产业与商业落地收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "代码与软件工程:M01",
+      "layer": "P40",
+      "name": "代码与软件工程口径登记",
+      "source": "community/代码与软件工程域包/modules/E13a_代码与软件工程口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "代码与软件工程:M02",
+      "layer": "P60",
+      "name": "代码与软件工程收口与形态派生",
+      "source": "community/代码与软件工程域包/modules/E13b_代码与软件工程收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -377,6 +629,34 @@
     },
     {
       "conformance": "L2",
+      "id": "企业培训与组织学习:M01",
+      "layer": "P40",
+      "name": "企业培训与组织学习口径登记",
+      "source": "community/企业培训与组织学习域包/modules/E15a_企业培训与组织学习口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "企业培训与组织学习:M02",
+      "layer": "P60",
+      "name": "企业培训与组织学习收口与形态派生",
+      "source": "community/企业培训与组织学习域包/modules/E15b_企业培训与组织学习收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "传媒与新闻:M01",
+      "layer": "P40",
+      "name": "传媒与新闻口径登记",
+      "source": "community/传媒与新闻域包/modules/D17a_传媒与新闻口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "传媒与新闻:M02",
+      "layer": "P60",
+      "name": "传媒与新闻收口与形态派生",
+      "source": "community/传媒与新闻域包/modules/D17b_传媒与新闻收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "信息抽取与结构化:M01",
       "layer": "P40",
       "name": "抽取口径登记",
@@ -405,6 +685,34 @@
     },
     {
       "conformance": "L2",
+      "id": "内容分发与社区运营:M01",
+      "layer": "P40",
+      "name": "内容分发与社区运营口径登记",
+      "source": "community/内容分发与社区运营域包/modules/E19a_内容分发与社区运营口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "内容分发与社区运营:M02",
+      "layer": "P60",
+      "name": "内容分发与社区运营收口与形态派生",
+      "source": "community/内容分发与社区运营域包/modules/E19b_内容分发与社区运营收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "内容改写与风格迁移:M01",
+      "layer": "P40",
+      "name": "内容改写与风格迁移口径登记",
+      "source": "community/内容改写与风格迁移域包/modules/E05a_内容改写与风格迁移口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "内容改写与风格迁移:M02",
+      "layer": "P60",
+      "name": "内容改写与风格迁移收口与形态派生",
+      "source": "community/内容改写与风格迁移域包/modules/E05b_内容改写与风格迁移收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "分类与情感分析:M01",
       "layer": "P40",
       "name": "分类口径登记",
@@ -416,6 +724,90 @@
       "layer": "P60",
       "name": "分类面收口与形态派生",
       "source": "community/分类与情感分析域包/modules/B04b_分类面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "参数高效微调:M01",
+      "layer": "P40",
+      "name": "参数高效微调口径登记",
+      "source": "community/参数高效微调域包/modules/C06a_参数高效微调口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "参数高效微调:M02",
+      "layer": "P60",
+      "name": "参数高效微调收口与形态派生",
+      "source": "community/参数高效微调域包/modules/C06b_参数高效微调收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "可观测性成本与可靠性:M01",
+      "layer": "P40",
+      "name": "可观测性成本与可靠性口径登记",
+      "source": "community/可观测性成本与可靠性域包/modules/C18a_可观测性成本与可靠性口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "可观测性成本与可靠性:M02",
+      "layer": "P60",
+      "name": "可观测性成本与可靠性收口与形态派生",
+      "source": "community/可观测性成本与可靠性域包/modules/C18b_可观测性成本与可靠性收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "可解释性与审计:M01",
+      "layer": "P40",
+      "name": "可解释性与审计口径登记",
+      "source": "community/可解释性与审计域包/modules/F06a_可解释性与审计口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "可解释性与审计:M02",
+      "layer": "P60",
+      "name": "可解释性与审计收口与形态派生",
+      "source": "community/可解释性与审计域包/modules/F06b_可解释性与审计收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "合成数据生成:M01",
+      "layer": "P40",
+      "name": "合成数据生成口径登记",
+      "source": "community/合成数据生成域包/modules/C03a_合成数据生成口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "合成数据生成:M02",
+      "layer": "P60",
+      "name": "合成数据生成收口与形态派生",
+      "source": "community/合成数据生成域包/modules/C03b_合成数据生成收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "合规与监管:M01",
+      "layer": "P40",
+      "name": "合规与监管口径登记",
+      "source": "community/合规与监管域包/modules/F02a_合规与监管口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "合规与监管:M02",
+      "layer": "P60",
+      "name": "合规与监管收口与形态派生",
+      "source": "community/合规与监管域包/modules/F02b_合规与监管收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "向量库与检索管线:M01",
+      "layer": "P40",
+      "name": "向量库与检索管线口径登记",
+      "source": "community/向量库与检索管线域包/modules/C15a_向量库与检索管线口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "向量库与检索管线:M02",
+      "layer": "P60",
+      "name": "向量库与检索管线收口与形态派生",
+      "source": "community/向量库与检索管线域包/modules/C15b_向量库与检索管线收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -433,6 +825,48 @@
     },
     {
       "conformance": "L2",
+      "id": "图像生成与视觉创作:M01",
+      "layer": "P40",
+      "name": "图像生成与视觉创作口径登记",
+      "source": "community/图像生成与视觉创作域包/modules/E07a_图像生成与视觉创作口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "图像生成与视觉创作:M02",
+      "layer": "P60",
+      "name": "图像生成与视觉创作收口与形态派生",
+      "source": "community/图像生成与视觉创作域包/modules/E07b_图像生成与视觉创作收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "图像生成与视觉设计:M01",
+      "layer": "P40",
+      "name": "图像生成与视觉设计口径登记",
+      "source": "community/图像生成与视觉设计域包/modules/B15a_图像生成与视觉设计口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "图像生成与视觉设计:M02",
+      "layer": "P60",
+      "name": "图像生成与视觉设计收口与形态派生",
+      "source": "community/图像生成与视觉设计域包/modules/B15b_图像生成与视觉设计收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "多智能体协同:M01",
+      "layer": "P40",
+      "name": "多智能体协同口径登记",
+      "source": "community/多智能体协同域包/modules/C17a_多智能体协同口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "多智能体协同:M02",
+      "layer": "P60",
+      "name": "多智能体协同收口与形态派生",
+      "source": "community/多智能体协同域包/modules/C17b_多智能体协同收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "多模态大模型:M01",
       "layer": "P40",
       "name": "多模态口径登记",
@@ -444,6 +878,20 @@
       "layer": "P60",
       "name": "多模态面收口与形态派生",
       "source": "community/多模态大模型域包/modules/A02b_多模态面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "多语翻译与本地化:M01",
+      "layer": "P40",
+      "name": "多语翻译与本地化口径登记",
+      "source": "community/多语翻译与本地化域包/modules/E06a_多语翻译与本地化口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "多语翻译与本地化:M02",
+      "layer": "P60",
+      "name": "多语翻译与本地化收口与形态派生",
+      "source": "community/多语翻译与本地化域包/modules/E06b_多语翻译与本地化收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -475,6 +923,48 @@
     },
     {
       "conformance": "L2",
+      "id": "安全与对齐:M01",
+      "layer": "P40",
+      "name": "安全与对齐口径登记",
+      "source": "community/安全与对齐域包/modules/F01a_安全与对齐口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "安全与对齐:M02",
+      "layer": "P60",
+      "name": "安全与对齐收口与形态派生",
+      "source": "community/安全与对齐域包/modules/F01b_安全与对齐收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "对话与客服:M01",
+      "layer": "P40",
+      "name": "对话与客服口径登记",
+      "source": "community/对话与客服域包/modules/E18a_对话与客服口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "对话与客服:M02",
+      "layer": "P60",
+      "name": "对话与客服收口与形态派生",
+      "source": "community/对话与客服域包/modules/E18b_对话与客服收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "对齐与偏好优化:M01",
+      "layer": "P40",
+      "name": "对齐与偏好优化口径登记",
+      "source": "community/对齐与偏好优化域包/modules/C07a_对齐与偏好优化口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "对齐与偏好优化:M02",
+      "layer": "P60",
+      "name": "对齐与偏好优化收口与形态派生",
+      "source": "community/对齐与偏好优化域包/modules/C07b_对齐与偏好优化收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "嵌入与检索表示:M01",
       "layer": "P40",
       "name": "嵌入口径登记",
@@ -486,6 +976,48 @@
       "layer": "P60",
       "name": "嵌入面收口与形态派生",
       "source": "community/嵌入与检索表示域包/modules/A11b_嵌入面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "平台与基础设施:M01",
+      "layer": "P40",
+      "name": "平台与基础设施口径登记",
+      "source": "community/平台与基础设施域包/modules/F08a_平台与基础设施口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "平台与基础设施:M02",
+      "layer": "P60",
+      "name": "平台与基础设施收口与形态派生",
+      "source": "community/平台与基础设施域包/modules/F08b_平台与基础设施收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "建筑与房地产:M01",
+      "layer": "P40",
+      "name": "建筑与房地产口径登记",
+      "source": "community/建筑与房地产域包/modules/D15a_建筑与房地产口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "建筑与房地产:M02",
+      "layer": "P60",
+      "name": "建筑与房地产收口与形态派生",
+      "source": "community/建筑与房地产域包/modules/D15b_建筑与房地产收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "开源与开发者生态:M01",
+      "layer": "P40",
+      "name": "开源与开发者生态口径登记",
+      "source": "community/开源与开发者生态域包/modules/F09a_开源与开发者生态口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "开源与开发者生态:M02",
+      "layer": "P60",
+      "name": "开源与开发者生态收口与形态派生",
+      "source": "community/开源与开发者生态域包/modules/F09b_开源与开发者生态收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -503,6 +1035,90 @@
     },
     {
       "conformance": "L2",
+      "id": "推理优化与加速:M01",
+      "layer": "P40",
+      "name": "推理优化与加速口径登记",
+      "source": "community/推理优化与加速域包/modules/C10a_推理优化与加速口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "推理优化与加速:M02",
+      "layer": "P60",
+      "name": "推理优化与加速收口与形态派生",
+      "source": "community/推理优化与加速域包/modules/C10b_推理优化与加速收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "推理服务与部署:M01",
+      "layer": "P40",
+      "name": "推理服务与部署口径登记",
+      "source": "community/推理服务与部署域包/modules/C11a_推理服务与部署口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "推理服务与部署:M02",
+      "layer": "P60",
+      "name": "推理服务与部署收口与形态派生",
+      "source": "community/推理服务与部署域包/modules/C11b_推理服务与部署收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "推荐排序与广告:M01",
+      "layer": "P40",
+      "name": "推荐排序与广告口径登记",
+      "source": "community/推荐排序与广告域包/modules/B17a_推荐排序与广告口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "推荐排序与广告:M02",
+      "layer": "P60",
+      "name": "推荐排序与广告收口与形态派生",
+      "source": "community/推荐排序与广告域包/modules/B17b_推荐排序与广告收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "提示工程与指令设计:M01",
+      "layer": "P40",
+      "name": "提示工程与指令设计口径登记",
+      "source": "community/提示工程与指令设计域包/modules/E01a_提示工程与指令设计口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "提示工程与指令设计:M02",
+      "layer": "P60",
+      "name": "提示工程与指令设计收口与形态派生",
+      "source": "community/提示工程与指令设计域包/modules/E01b_提示工程与指令设计收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "提示工程与提示模板:M01",
+      "layer": "P40",
+      "name": "提示工程与提示模板口径登记",
+      "source": "community/提示工程与提示模板域包/modules/C13a_提示工程与提示模板口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "提示工程与提示模板:M02",
+      "layer": "P60",
+      "name": "提示工程与提示模板收口与形态派生",
+      "source": "community/提示工程与提示模板域包/modules/C13b_提示工程与提示模板收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "搜索与信息聚合:M01",
+      "layer": "P40",
+      "name": "搜索与信息聚合口径登记",
+      "source": "community/搜索与信息聚合域包/modules/E17a_搜索与信息聚合口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "搜索与信息聚合:M02",
+      "layer": "P60",
+      "name": "搜索与信息聚合收口与形态派生",
+      "source": "community/搜索与信息聚合域包/modules/E17b_搜索与信息聚合收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "摘要与信息压缩:M01",
       "layer": "P40",
       "name": "摘要口径登记",
@@ -514,6 +1130,20 @@
       "layer": "P60",
       "name": "摘要面收口与形态派生",
       "source": "community/摘要与信息压缩域包/modules/B02b_摘要面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数字人与虚拟形象:M01",
+      "layer": "P40",
+      "name": "数字人与虚拟形象口径登记",
+      "source": "community/数字人与虚拟形象域包/modules/E20a_数字人与虚拟形象口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数字人与虚拟形象:M02",
+      "layer": "P60",
+      "name": "数字人与虚拟形象收口与形态派生",
+      "source": "community/数字人与虚拟形象域包/modules/E20b_数字人与虚拟形象收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -531,6 +1161,20 @@
     },
     {
       "conformance": "L2",
+      "id": "数据分析与决策支持:M01",
+      "layer": "P40",
+      "name": "数据分析与决策支持口径登记",
+      "source": "community/数据分析与决策支持域包/modules/E14a_数据分析与决策支持口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数据分析与决策支持:M02",
+      "layer": "P60",
+      "name": "数据分析与决策支持收口与形态派生",
+      "source": "community/数据分析与决策支持域包/modules/E14b_数据分析与决策支持收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "数据分析与表格理解:M01",
       "layer": "P40",
       "name": "分析口径登记",
@@ -542,6 +1186,48 @@
       "layer": "P60",
       "name": "分析面收口与形态派生",
       "source": "community/数据分析与表格理解域包/modules/B11b_分析面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数据标注与标注质量:M01",
+      "layer": "P40",
+      "name": "数据标注与标注质量口径登记",
+      "source": "community/数据标注与标注质量域包/modules/C02a_数据标注与标注质量口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数据标注与标注质量:M02",
+      "layer": "P60",
+      "name": "数据标注与标注质量收口与形态派生",
+      "source": "community/数据标注与标注质量域包/modules/C02b_数据标注与标注质量收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数据采集与清洗:M01",
+      "layer": "P40",
+      "name": "数据采集与清洗口径登记",
+      "source": "community/数据采集与清洗域包/modules/C01a_数据采集与清洗口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "数据采集与清洗:M02",
+      "layer": "P60",
+      "name": "数据采集与清洗收口与形态派生",
+      "source": "community/数据采集与清洗域包/modules/C01b_数据采集与清洗收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "文旅与酒店:M01",
+      "layer": "P40",
+      "name": "文旅与酒店口径登记",
+      "source": "community/文旅与酒店域包/modules/D19a_文旅与酒店口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "文旅与酒店:M02",
+      "layer": "P60",
+      "name": "文旅与酒店收口与形态派生",
+      "source": "community/文旅与酒店域包/modules/D19b_文旅与酒店收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -573,6 +1259,34 @@
     },
     {
       "conformance": "L2",
+      "id": "智能体与工作流编排:M01",
+      "layer": "P40",
+      "name": "智能体与工作流编排口径登记",
+      "source": "community/智能体与工作流编排域包/modules/E12a_智能体与工作流编排口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "智能体与工作流编排:M02",
+      "layer": "P60",
+      "name": "智能体与工作流编排收口与形态派生",
+      "source": "community/智能体与工作流编排域包/modules/E12b_智能体与工作流编排收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "智能体框架与工具调用:M01",
+      "layer": "P40",
+      "name": "智能体框架与工具调用口径登记",
+      "source": "community/智能体框架与工具调用域包/modules/C16a_智能体框架与工具调用口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "智能体框架与工具调用:M02",
+      "layer": "P60",
+      "name": "智能体框架与工具调用收口与形态派生",
+      "source": "community/智能体框架与工具调用域包/modules/C16b_智能体框架与工具调用收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "机器翻译与本地化:M01",
       "layer": "P40",
       "name": "翻译口径登记",
@@ -584,6 +1298,20 @@
       "layer": "P60",
       "name": "本地化面收口与形态派生",
       "source": "community/机器翻译与本地化域包/modules/B03b_本地化面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "模型运营与成本:M01",
+      "layer": "P40",
+      "name": "模型运营与成本口径登记",
+      "source": "community/模型运营与成本域包/modules/F07a_模型运营与成本口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "模型运营与成本:M02",
+      "layer": "P60",
+      "name": "模型运营与成本收口与形态派生",
+      "source": "community/模型运营与成本域包/modules/F07b_模型运营与成本收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -601,6 +1329,76 @@
     },
     {
       "conformance": "L2",
+      "id": "游戏与互动娱乐:M01",
+      "layer": "P40",
+      "name": "游戏与互动娱乐口径登记",
+      "source": "community/游戏与互动娱乐域包/modules/D18a_游戏与互动娱乐口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "游戏与互动娱乐:M02",
+      "layer": "P60",
+      "name": "游戏与互动娱乐收口与形态派生",
+      "source": "community/游戏与互动娱乐域包/modules/D18b_游戏与互动娱乐收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "版权与知识产权:M01",
+      "layer": "P40",
+      "name": "版权与知识产权口径登记",
+      "source": "community/版权与知识产权域包/modules/F04a_版权与知识产权口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "版权与知识产权:M02",
+      "layer": "P60",
+      "name": "版权与知识产权收口与形态派生",
+      "source": "community/版权与知识产权域包/modules/F04b_版权与知识产权收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "物流与供应链:M01",
+      "layer": "P40",
+      "name": "物流与供应链口径登记",
+      "source": "community/物流与供应链域包/modules/D12a_物流与供应链口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "物流与供应链:M02",
+      "layer": "P60",
+      "name": "物流与供应链收口与形态派生",
+      "source": "community/物流与供应链域包/modules/D12b_物流与供应链收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "监督微调:M01",
+      "layer": "P40",
+      "name": "监督微调口径登记",
+      "source": "community/监督微调域包/modules/C05a_监督微调口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "监督微调:M02",
+      "layer": "P60",
+      "name": "监督微调收口与形态派生",
+      "source": "community/监督微调域包/modules/C05b_监督微调收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "知识管理与检索增强:M01",
+      "layer": "P40",
+      "name": "知识管理与检索增强口径登记",
+      "source": "community/知识管理与检索增强域包/modules/E11a_知识管理与检索增强口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "知识管理与检索增强:M02",
+      "layer": "P60",
+      "name": "知识管理与检索增强收口与形态派生",
+      "source": "community/知识管理与检索增强域包/modules/E11b_知识管理与检索增强收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "知识问答与检索增强:M01",
       "layer": "P40",
       "name": "RAG 口径登记",
@@ -612,6 +1410,20 @@
       "layer": "P60",
       "name": "RAG 面收口与形态派生",
       "source": "community/知识问答与检索增强域包/modules/B06b_RAG 面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "科研与实验:M01",
+      "layer": "P40",
+      "name": "科研与实验口径登记",
+      "source": "community/科研与实验域包/modules/D20a_科研与实验口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "科研与实验:M02",
+      "layer": "P60",
+      "name": "科研与实验收口与形态派生",
+      "source": "community/科研与实验域包/modules/D20b_科研与实验收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -629,6 +1441,34 @@
     },
     {
       "conformance": "L2",
+      "id": "红队越狱与安全测试:M01",
+      "layer": "P40",
+      "name": "红队越狱与安全测试口径登记",
+      "source": "community/红队越狱与安全测试域包/modules/C09a_红队越狱与安全测试口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "红队越狱与安全测试:M02",
+      "layer": "P60",
+      "name": "红队越狱与安全测试收口与形态派生",
+      "source": "community/红队越狱与安全测试域包/modules/C09b_红队越狱与安全测试收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "编辑校对与出版:M01",
+      "layer": "P40",
+      "name": "编辑校对与出版口径登记",
+      "source": "community/编辑校对与出版域包/modules/E10a_编辑校对与出版口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "编辑校对与出版:M02",
+      "layer": "P60",
+      "name": "编辑校对与出版收口与形态派生",
+      "source": "community/编辑校对与出版域包/modules/E10b_编辑校对与出版收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "视觉模型:M01",
       "layer": "P40",
       "name": "视觉任务口径登记",
@@ -640,6 +1480,20 @@
       "layer": "P60",
       "name": "视觉面收口与形态派生",
       "source": "community/视觉模型域包/modules/A03b_视觉面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "视频生成与剪辑:M01",
+      "layer": "P40",
+      "name": "视频生成与剪辑口径登记",
+      "source": "community/视频生成与剪辑域包/modules/E08a_视频生成与剪辑口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "视频生成与剪辑:M02",
+      "layer": "P60",
+      "name": "视频生成与剪辑收口与形态派生",
+      "source": "community/视频生成与剪辑域包/modules/E08b_视频生成与剪辑收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -657,6 +1511,90 @@
     },
     {
       "conformance": "L2",
+      "id": "视频生成与自动剪辑:M01",
+      "layer": "P40",
+      "name": "视频生成与自动剪辑口径登记",
+      "source": "community/视频生成与自动剪辑域包/modules/B16a_视频生成与自动剪辑口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "视频生成与自动剪辑:M02",
+      "layer": "P60",
+      "name": "视频生成与自动剪辑收口与形态派生",
+      "source": "community/视频生成与自动剪辑域包/modules/B16b_视频生成与自动剪辑收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "角色扮演与角色卡:M01",
+      "layer": "P40",
+      "name": "角色扮演与角色卡口径登记",
+      "source": "community/角色扮演与角色卡域包/modules/E02a_角色扮演与角色卡口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "角色扮演与角色卡:M02",
+      "layer": "P60",
+      "name": "角色扮演与角色卡收口与形态派生",
+      "source": "community/角色扮演与角色卡域包/modules/E02b_角色扮演与角色卡收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "记忆体与个性化:M01",
+      "layer": "P40",
+      "name": "记忆体与个性化口径登记",
+      "source": "community/记忆体与个性化域包/modules/C14a_记忆体与个性化口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "记忆体与个性化:M02",
+      "layer": "P60",
+      "name": "记忆体与个性化收口与形态派生",
+      "source": "community/记忆体与个性化域包/modules/C14b_记忆体与个性化收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "评测与基准:M01",
+      "layer": "P40",
+      "name": "评测与基准口径登记",
+      "source": "community/评测与基准域包/modules/F05a_评测与基准口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "评测与基准:M02",
+      "layer": "P60",
+      "name": "评测与基准收口与形态派生",
+      "source": "community/评测与基准域包/modules/F05b_评测与基准收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "评测基准与排行榜:M01",
+      "layer": "P40",
+      "name": "评测基准与排行榜口径登记",
+      "source": "community/评测基准与排行榜域包/modules/C08a_评测基准与排行榜口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "评测基准与排行榜:M02",
+      "layer": "P60",
+      "name": "评测基准与排行榜收口与形态派生",
+      "source": "community/评测基准与排行榜域包/modules/C08b_评测基准与排行榜收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "语音合成与配音:M01",
+      "layer": "P40",
+      "name": "语音合成与配音口径登记",
+      "source": "community/语音合成与配音域包/modules/B14a_语音合成与配音口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "语音合成与配音:M02",
+      "layer": "P60",
+      "name": "语音合成与配音收口与形态派生",
+      "source": "community/语音合成与配音域包/modules/B14b_语音合成与配音收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "语音识别与合成:M01",
       "layer": "P40",
       "name": "语音口径登记",
@@ -668,6 +1606,20 @@
       "layer": "P60",
       "name": "语音面收口与形态派生",
       "source": "community/语音识别与合成域包/modules/A04b_语音面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "语音转写与会议记录:M01",
+      "layer": "P40",
+      "name": "语音转写与会议记录口径登记",
+      "source": "community/语音转写与会议记录域包/modules/B13a_语音转写与会议记录口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "语音转写与会议记录:M02",
+      "layer": "P60",
+      "name": "语音转写与会议记录收口与形态派生",
+      "source": "community/语音转写与会议记录域包/modules/B13b_语音转写与会议记录收口与形态派生.md"
     },
     {
       "conformance": "L2",
@@ -692,6 +1644,48 @@
     },
     {
       "conformance": "L2",
+      "id": "长文本与小说创作:M01",
+      "layer": "P40",
+      "name": "长文本与小说创作口径登记",
+      "source": "community/长文本与小说创作域包/modules/E04a_长文本与小说创作口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "长文本与小说创作:M02",
+      "layer": "P60",
+      "name": "长文本与小说创作收口与形态派生",
+      "source": "community/长文本与小说创作域包/modules/E04b_长文本与小说创作收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "隐私与数据治理:M01",
+      "layer": "P40",
+      "name": "隐私与数据治理口径登记",
+      "source": "community/隐私与数据治理域包/modules/F03a_隐私与数据治理口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "隐私与数据治理:M02",
+      "layer": "P60",
+      "name": "隐私与数据治理收口与形态派生",
+      "source": "community/隐私与数据治理域包/modules/F03b_隐私与数据治理收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "零售与电商:M01",
+      "layer": "P40",
+      "name": "零售与电商口径登记",
+      "source": "community/零售与电商域包/modules/D11a_零售与电商口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "零售与电商:M02",
+      "layer": "P60",
+      "name": "零售与电商收口与形态派生",
+      "source": "community/零售与电商域包/modules/D11b_零售与电商收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
       "id": "音频与音乐生成:M01",
       "layer": "P40",
       "name": "音频音乐口径登记",
@@ -703,14 +1697,56 @@
       "layer": "P60",
       "name": "音频面收口与形态派生",
       "source": "community/音频与音乐生成域包/modules/A05b_音频面收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "音频音乐与语音:M01",
+      "layer": "P40",
+      "name": "音频音乐与语音口径登记",
+      "source": "community/音频音乐与语音域包/modules/E09a_音频音乐与语音口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "音频音乐与语音:M02",
+      "layer": "P60",
+      "name": "音频音乐与语音收口与形态派生",
+      "source": "community/音频音乐与语音域包/modules/E09b_音频音乐与语音收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "预测异常与风险:M01",
+      "layer": "P40",
+      "name": "预测异常与风险口径登记",
+      "source": "community/预测异常与风险域包/modules/B18a_预测异常与风险口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "预测异常与风险:M02",
+      "layer": "P60",
+      "name": "预测异常与风险收口与形态派生",
+      "source": "community/预测异常与风险域包/modules/B18b_预测异常与风险收口与形态派生.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "预训练与继续预训练:M01",
+      "layer": "P40",
+      "name": "预训练与继续预训练口径登记",
+      "source": "community/预训练与继续预训练域包/modules/C04a_预训练与继续预训练口径登记.md"
+    },
+    {
+      "conformance": "L2",
+      "id": "预训练与继续预训练:M02",
+      "layer": "P60",
+      "name": "预训练与继续预训练收口与形态派生",
+      "source": "community/预训练与继续预训练域包/modules/C04b_预训练与继续预训练收口与形态派生.md"
     }
   ],
   "coverage": {
     "asset_entries": 2,
-    "contract_covered": 100,
-    "module_docs": 100,
-    "pipelines": 36,
-    "protocols": 33,
+    "contract_covered": 248,
+    "module_docs": 248,
+    "pipelines": 110,
+    "protocols": 107,
     "schema_issues": 0
   },
   "event_closure": {
@@ -741,15 +1777,89 @@
       "b10_spec_ready",
       "b11_spec_ready",
       "b12_spec_ready",
+      "b13_spec_ready",
+      "b14_spec_ready",
+      "b15_spec_ready",
+      "b16_spec_ready",
+      "b17_spec_ready",
+      "b18_spec_ready",
       "beat_tick",
+      "c01_spec_ready",
+      "c02_spec_ready",
+      "c03_spec_ready",
+      "c04_spec_ready",
+      "c05_spec_ready",
+      "c06_spec_ready",
+      "c07_spec_ready",
+      "c08_spec_ready",
+      "c09_spec_ready",
+      "c10_spec_ready",
+      "c11_spec_ready",
+      "c12_spec_ready",
+      "c13_spec_ready",
+      "c14_spec_ready",
+      "c15_spec_ready",
+      "c16_spec_ready",
+      "c17_spec_ready",
+      "c18_spec_ready",
       "chaos_event",
       "combat_result",
       "concept_closure_ready",
       "confession_event",
+      "d01_spec_ready",
+      "d02_spec_ready",
+      "d03_spec_ready",
+      "d04_spec_ready",
+      "d05_spec_ready",
+      "d06_spec_ready",
+      "d07_spec_ready",
+      "d08_spec_ready",
+      "d09_spec_ready",
+      "d10_spec_ready",
+      "d11_spec_ready",
+      "d12_spec_ready",
+      "d13_spec_ready",
+      "d14_spec_ready",
+      "d15_spec_ready",
+      "d16_spec_ready",
+      "d17_spec_ready",
+      "d18_spec_ready",
+      "d19_spec_ready",
+      "d20_spec_ready",
       "death_trigger",
       "decision_brief",
       "doc_delta_committed",
       "doc_structure_ready",
+      "e01_spec_ready",
+      "e02_spec_ready",
+      "e03_spec_ready",
+      "e04_spec_ready",
+      "e05_spec_ready",
+      "e06_spec_ready",
+      "e07_spec_ready",
+      "e08_spec_ready",
+      "e09_spec_ready",
+      "e10_spec_ready",
+      "e11_spec_ready",
+      "e12_spec_ready",
+      "e13_spec_ready",
+      "e14_spec_ready",
+      "e15_spec_ready",
+      "e16_spec_ready",
+      "e17_spec_ready",
+      "e18_spec_ready",
+      "e19_spec_ready",
+      "e20_spec_ready",
+      "f01_spec_ready",
+      "f02_spec_ready",
+      "f03_spec_ready",
+      "f04_spec_ready",
+      "f05_spec_ready",
+      "f06_spec_ready",
+      "f07_spec_ready",
+      "f08_spec_ready",
+      "f09_spec_ready",
+      "f10_spec_ready",
       "factor_spec_conflict",
       "factor_spec_ready",
       "ghost_event",
@@ -772,7 +1882,7 @@
       "tick_day",
       "travel_event"
     ],
-    "modules": 100,
+    "modules": 248,
     "pub_only_by_module": {
       "a01_report_conflict": [
         "大语言模型:M02"
@@ -1008,17 +2118,683 @@
       "b12_spec_conflict": [
         "文档解析与版面理解:M01"
       ],
+      "b13_report_conflict": [
+        "语音转写与会议记录:M02"
+      ],
+      "b13_report_ready": [
+        "语音转写与会议记录:M02"
+      ],
+      "b13_spec_conflict": [
+        "语音转写与会议记录:M01"
+      ],
+      "b14_report_conflict": [
+        "语音合成与配音:M02"
+      ],
+      "b14_report_ready": [
+        "语音合成与配音:M02"
+      ],
+      "b14_spec_conflict": [
+        "语音合成与配音:M01"
+      ],
+      "b15_report_conflict": [
+        "图像生成与视觉设计:M02"
+      ],
+      "b15_report_ready": [
+        "图像生成与视觉设计:M02"
+      ],
+      "b15_spec_conflict": [
+        "图像生成与视觉设计:M01"
+      ],
+      "b16_report_conflict": [
+        "视频生成与自动剪辑:M02"
+      ],
+      "b16_report_ready": [
+        "视频生成与自动剪辑:M02"
+      ],
+      "b16_spec_conflict": [
+        "视频生成与自动剪辑:M01"
+      ],
+      "b17_report_conflict": [
+        "推荐排序与广告:M02"
+      ],
+      "b17_report_ready": [
+        "推荐排序与广告:M02"
+      ],
+      "b17_spec_conflict": [
+        "推荐排序与广告:M01"
+      ],
+      "b18_report_conflict": [
+        "预测异常与风险:M02"
+      ],
+      "b18_report_ready": [
+        "预测异常与风险:M02"
+      ],
+      "b18_spec_conflict": [
+        "预测异常与风险:M01"
+      ],
       "backtest_spec_conflict": [
         "量化金融:M32"
       ],
       "backtest_spec_ready": [
         "量化金融:M32"
       ],
+      "c01_report_conflict": [
+        "数据采集与清洗:M02"
+      ],
+      "c01_report_ready": [
+        "数据采集与清洗:M02"
+      ],
+      "c01_spec_conflict": [
+        "数据采集与清洗:M01"
+      ],
+      "c02_report_conflict": [
+        "数据标注与标注质量:M02"
+      ],
+      "c02_report_ready": [
+        "数据标注与标注质量:M02"
+      ],
+      "c02_spec_conflict": [
+        "数据标注与标注质量:M01"
+      ],
+      "c03_report_conflict": [
+        "合成数据生成:M02"
+      ],
+      "c03_report_ready": [
+        "合成数据生成:M02"
+      ],
+      "c03_spec_conflict": [
+        "合成数据生成:M01"
+      ],
+      "c04_report_conflict": [
+        "预训练与继续预训练:M02"
+      ],
+      "c04_report_ready": [
+        "预训练与继续预训练:M02"
+      ],
+      "c04_spec_conflict": [
+        "预训练与继续预训练:M01"
+      ],
+      "c05_report_conflict": [
+        "监督微调:M02"
+      ],
+      "c05_report_ready": [
+        "监督微调:M02"
+      ],
+      "c05_spec_conflict": [
+        "监督微调:M01"
+      ],
+      "c06_report_conflict": [
+        "参数高效微调:M02"
+      ],
+      "c06_report_ready": [
+        "参数高效微调:M02"
+      ],
+      "c06_spec_conflict": [
+        "参数高效微调:M01"
+      ],
+      "c07_report_conflict": [
+        "对齐与偏好优化:M02"
+      ],
+      "c07_report_ready": [
+        "对齐与偏好优化:M02"
+      ],
+      "c07_spec_conflict": [
+        "对齐与偏好优化:M01"
+      ],
+      "c08_report_conflict": [
+        "评测基准与排行榜:M02"
+      ],
+      "c08_report_ready": [
+        "评测基准与排行榜:M02"
+      ],
+      "c08_spec_conflict": [
+        "评测基准与排行榜:M01"
+      ],
+      "c09_report_conflict": [
+        "红队越狱与安全测试:M02"
+      ],
+      "c09_report_ready": [
+        "红队越狱与安全测试:M02"
+      ],
+      "c09_spec_conflict": [
+        "红队越狱与安全测试:M01"
+      ],
+      "c10_report_conflict": [
+        "推理优化与加速:M02"
+      ],
+      "c10_report_ready": [
+        "推理优化与加速:M02"
+      ],
+      "c10_spec_conflict": [
+        "推理优化与加速:M01"
+      ],
+      "c11_report_conflict": [
+        "推理服务与部署:M02"
+      ],
+      "c11_report_ready": [
+        "推理服务与部署:M02"
+      ],
+      "c11_spec_conflict": [
+        "推理服务与部署:M01"
+      ],
+      "c12_report_conflict": [
+        "上下文工程与长上下文:M02"
+      ],
+      "c12_report_ready": [
+        "上下文工程与长上下文:M02"
+      ],
+      "c12_spec_conflict": [
+        "上下文工程与长上下文:M01"
+      ],
+      "c13_report_conflict": [
+        "提示工程与提示模板:M02"
+      ],
+      "c13_report_ready": [
+        "提示工程与提示模板:M02"
+      ],
+      "c13_spec_conflict": [
+        "提示工程与提示模板:M01"
+      ],
+      "c14_report_conflict": [
+        "记忆体与个性化:M02"
+      ],
+      "c14_report_ready": [
+        "记忆体与个性化:M02"
+      ],
+      "c14_spec_conflict": [
+        "记忆体与个性化:M01"
+      ],
+      "c15_report_conflict": [
+        "向量库与检索管线:M02"
+      ],
+      "c15_report_ready": [
+        "向量库与检索管线:M02"
+      ],
+      "c15_spec_conflict": [
+        "向量库与检索管线:M01"
+      ],
+      "c16_report_conflict": [
+        "智能体框架与工具调用:M02"
+      ],
+      "c16_report_ready": [
+        "智能体框架与工具调用:M02"
+      ],
+      "c16_spec_conflict": [
+        "智能体框架与工具调用:M01"
+      ],
+      "c17_report_conflict": [
+        "多智能体协同:M02"
+      ],
+      "c17_report_ready": [
+        "多智能体协同:M02"
+      ],
+      "c17_spec_conflict": [
+        "多智能体协同:M01"
+      ],
+      "c18_report_conflict": [
+        "可观测性成本与可靠性:M02"
+      ],
+      "c18_report_ready": [
+        "可观测性成本与可靠性:M02"
+      ],
+      "c18_spec_conflict": [
+        "可观测性成本与可靠性:M01"
+      ],
       "campus_anonymous_gift": [
         "M92"
       ],
       "campus_gift_intent": [
         "M91"
+      ],
+      "d01_report_conflict": [
+        "AI医疗健康:M02"
+      ],
+      "d01_report_ready": [
+        "AI医疗健康:M02"
+      ],
+      "d01_spec_conflict": [
+        "AI医疗健康:M01"
+      ],
+      "d02_report_conflict": [
+        "AI制药与生物:M02"
+      ],
+      "d02_report_ready": [
+        "AI制药与生物:M02"
+      ],
+      "d02_spec_conflict": [
+        "AI制药与生物:M01"
+      ],
+      "d03_report_conflict": [
+        "AI法律与合规:M02"
+      ],
+      "d03_report_ready": [
+        "AI法律与合规:M02"
+      ],
+      "d03_spec_conflict": [
+        "AI法律与合规:M01"
+      ],
+      "d04_report_conflict": [
+        "AI金融投研与风控:M02"
+      ],
+      "d04_report_ready": [
+        "AI金融投研与风控:M02"
+      ],
+      "d04_spec_conflict": [
+        "AI金融投研与风控:M01"
+      ],
+      "d05_report_conflict": [
+        "AI保险:M02"
+      ],
+      "d05_report_ready": [
+        "AI保险:M02"
+      ],
+      "d05_spec_conflict": [
+        "AI保险:M01"
+      ],
+      "d06_report_conflict": [
+        "AI教育:M02"
+      ],
+      "d06_report_ready": [
+        "AI教育:M02"
+      ],
+      "d06_spec_conflict": [
+        "AI教育:M01"
+      ],
+      "d07_report_conflict": [
+        "AI政务与公共事务:M02"
+      ],
+      "d07_report_ready": [
+        "AI政务与公共事务:M02"
+      ],
+      "d07_spec_conflict": [
+        "AI政务与公共事务:M01"
+      ],
+      "d08_report_conflict": [
+        "AI制造业:M02"
+      ],
+      "d08_report_ready": [
+        "AI制造业:M02"
+      ],
+      "d08_spec_conflict": [
+        "AI制造业:M01"
+      ],
+      "d09_report_conflict": [
+        "AI能源与电力:M02"
+      ],
+      "d09_report_ready": [
+        "AI能源与电力:M02"
+      ],
+      "d09_spec_conflict": [
+        "AI能源与电力:M01"
+      ],
+      "d10_report_conflict": [
+        "AI农业:M02"
+      ],
+      "d10_report_ready": [
+        "AI农业:M02"
+      ],
+      "d10_spec_conflict": [
+        "AI农业:M01"
+      ],
+      "d11_report_conflict": [
+        "零售与电商:M02"
+      ],
+      "d11_report_ready": [
+        "零售与电商:M02"
+      ],
+      "d11_spec_conflict": [
+        "零售与电商:M01"
+      ],
+      "d12_report_conflict": [
+        "物流与供应链:M02"
+      ],
+      "d12_report_ready": [
+        "物流与供应链:M02"
+      ],
+      "d12_spec_conflict": [
+        "物流与供应链:M01"
+      ],
+      "d13_report_conflict": [
+        "交通与出行:M02"
+      ],
+      "d13_report_ready": [
+        "交通与出行:M02"
+      ],
+      "d13_spec_conflict": [
+        "交通与出行:M01"
+      ],
+      "d14_report_conflict": [
+        "AI人力资源与招聘:M02"
+      ],
+      "d14_report_ready": [
+        "AI人力资源与招聘:M02"
+      ],
+      "d14_spec_conflict": [
+        "AI人力资源与招聘:M01"
+      ],
+      "d15_report_conflict": [
+        "建筑与房地产:M02"
+      ],
+      "d15_report_ready": [
+        "建筑与房地产:M02"
+      ],
+      "d15_spec_conflict": [
+        "建筑与房地产:M01"
+      ],
+      "d16_report_conflict": [
+        "AI食品与餐饮:M02"
+      ],
+      "d16_report_ready": [
+        "AI食品与餐饮:M02"
+      ],
+      "d16_spec_conflict": [
+        "AI食品与餐饮:M01"
+      ],
+      "d17_report_conflict": [
+        "传媒与新闻:M02"
+      ],
+      "d17_report_ready": [
+        "传媒与新闻:M02"
+      ],
+      "d17_spec_conflict": [
+        "传媒与新闻:M01"
+      ],
+      "d18_report_conflict": [
+        "游戏与互动娱乐:M02"
+      ],
+      "d18_report_ready": [
+        "游戏与互动娱乐:M02"
+      ],
+      "d18_spec_conflict": [
+        "游戏与互动娱乐:M01"
+      ],
+      "d19_report_conflict": [
+        "文旅与酒店:M02"
+      ],
+      "d19_report_ready": [
+        "文旅与酒店:M02"
+      ],
+      "d19_spec_conflict": [
+        "文旅与酒店:M01"
+      ],
+      "d20_report_conflict": [
+        "科研与实验:M02"
+      ],
+      "d20_report_ready": [
+        "科研与实验:M02"
+      ],
+      "d20_spec_conflict": [
+        "科研与实验:M01"
+      ],
+      "e01_report_conflict": [
+        "提示工程与指令设计:M02"
+      ],
+      "e01_report_ready": [
+        "提示工程与指令设计:M02"
+      ],
+      "e01_spec_conflict": [
+        "提示工程与指令设计:M01"
+      ],
+      "e02_report_conflict": [
+        "角色扮演与角色卡:M02"
+      ],
+      "e02_report_ready": [
+        "角色扮演与角色卡:M02"
+      ],
+      "e02_spec_conflict": [
+        "角色扮演与角色卡:M01"
+      ],
+      "e03_report_conflict": [
+        "世界书与设定库:M02"
+      ],
+      "e03_report_ready": [
+        "世界书与设定库:M02"
+      ],
+      "e03_spec_conflict": [
+        "世界书与设定库:M01"
+      ],
+      "e04_report_conflict": [
+        "长文本与小说创作:M02"
+      ],
+      "e04_report_ready": [
+        "长文本与小说创作:M02"
+      ],
+      "e04_spec_conflict": [
+        "长文本与小说创作:M01"
+      ],
+      "e05_report_conflict": [
+        "内容改写与风格迁移:M02"
+      ],
+      "e05_report_ready": [
+        "内容改写与风格迁移:M02"
+      ],
+      "e05_spec_conflict": [
+        "内容改写与风格迁移:M01"
+      ],
+      "e06_report_conflict": [
+        "多语翻译与本地化:M02"
+      ],
+      "e06_report_ready": [
+        "多语翻译与本地化:M02"
+      ],
+      "e06_spec_conflict": [
+        "多语翻译与本地化:M01"
+      ],
+      "e07_report_conflict": [
+        "图像生成与视觉创作:M02"
+      ],
+      "e07_report_ready": [
+        "图像生成与视觉创作:M02"
+      ],
+      "e07_spec_conflict": [
+        "图像生成与视觉创作:M01"
+      ],
+      "e08_report_conflict": [
+        "视频生成与剪辑:M02"
+      ],
+      "e08_report_ready": [
+        "视频生成与剪辑:M02"
+      ],
+      "e08_spec_conflict": [
+        "视频生成与剪辑:M01"
+      ],
+      "e09_report_conflict": [
+        "音频音乐与语音:M02"
+      ],
+      "e09_report_ready": [
+        "音频音乐与语音:M02"
+      ],
+      "e09_spec_conflict": [
+        "音频音乐与语音:M01"
+      ],
+      "e10_report_conflict": [
+        "编辑校对与出版:M02"
+      ],
+      "e10_report_ready": [
+        "编辑校对与出版:M02"
+      ],
+      "e10_spec_conflict": [
+        "编辑校对与出版:M01"
+      ],
+      "e11_report_conflict": [
+        "知识管理与检索增强:M02"
+      ],
+      "e11_report_ready": [
+        "知识管理与检索增强:M02"
+      ],
+      "e11_spec_conflict": [
+        "知识管理与检索增强:M01"
+      ],
+      "e12_report_conflict": [
+        "智能体与工作流编排:M02"
+      ],
+      "e12_report_ready": [
+        "智能体与工作流编排:M02"
+      ],
+      "e12_spec_conflict": [
+        "智能体与工作流编排:M01"
+      ],
+      "e13_report_conflict": [
+        "代码与软件工程:M02"
+      ],
+      "e13_report_ready": [
+        "代码与软件工程:M02"
+      ],
+      "e13_spec_conflict": [
+        "代码与软件工程:M01"
+      ],
+      "e14_report_conflict": [
+        "数据分析与决策支持:M02"
+      ],
+      "e14_report_ready": [
+        "数据分析与决策支持:M02"
+      ],
+      "e14_spec_conflict": [
+        "数据分析与决策支持:M01"
+      ],
+      "e15_report_conflict": [
+        "企业培训与组织学习:M02"
+      ],
+      "e15_report_ready": [
+        "企业培训与组织学习:M02"
+      ],
+      "e15_spec_conflict": [
+        "企业培训与组织学习:M01"
+      ],
+      "e16_report_conflict": [
+        "个人助理与日常生活:M02"
+      ],
+      "e16_report_ready": [
+        "个人助理与日常生活:M02"
+      ],
+      "e16_spec_conflict": [
+        "个人助理与日常生活:M01"
+      ],
+      "e17_report_conflict": [
+        "搜索与信息聚合:M02"
+      ],
+      "e17_report_ready": [
+        "搜索与信息聚合:M02"
+      ],
+      "e17_spec_conflict": [
+        "搜索与信息聚合:M01"
+      ],
+      "e18_report_conflict": [
+        "对话与客服:M02"
+      ],
+      "e18_report_ready": [
+        "对话与客服:M02"
+      ],
+      "e18_spec_conflict": [
+        "对话与客服:M01"
+      ],
+      "e19_report_conflict": [
+        "内容分发与社区运营:M02"
+      ],
+      "e19_report_ready": [
+        "内容分发与社区运营:M02"
+      ],
+      "e19_spec_conflict": [
+        "内容分发与社区运营:M01"
+      ],
+      "e20_report_conflict": [
+        "数字人与虚拟形象:M02"
+      ],
+      "e20_report_ready": [
+        "数字人与虚拟形象:M02"
+      ],
+      "e20_spec_conflict": [
+        "数字人与虚拟形象:M01"
+      ],
+      "f01_report_conflict": [
+        "安全与对齐:M02"
+      ],
+      "f01_report_ready": [
+        "安全与对齐:M02"
+      ],
+      "f01_spec_conflict": [
+        "安全与对齐:M01"
+      ],
+      "f02_report_conflict": [
+        "合规与监管:M02"
+      ],
+      "f02_report_ready": [
+        "合规与监管:M02"
+      ],
+      "f02_spec_conflict": [
+        "合规与监管:M01"
+      ],
+      "f03_report_conflict": [
+        "隐私与数据治理:M02"
+      ],
+      "f03_report_ready": [
+        "隐私与数据治理:M02"
+      ],
+      "f03_spec_conflict": [
+        "隐私与数据治理:M01"
+      ],
+      "f04_report_conflict": [
+        "版权与知识产权:M02"
+      ],
+      "f04_report_ready": [
+        "版权与知识产权:M02"
+      ],
+      "f04_spec_conflict": [
+        "版权与知识产权:M01"
+      ],
+      "f05_report_conflict": [
+        "评测与基准:M02"
+      ],
+      "f05_report_ready": [
+        "评测与基准:M02"
+      ],
+      "f05_spec_conflict": [
+        "评测与基准:M01"
+      ],
+      "f06_report_conflict": [
+        "可解释性与审计:M02"
+      ],
+      "f06_report_ready": [
+        "可解释性与审计:M02"
+      ],
+      "f06_spec_conflict": [
+        "可解释性与审计:M01"
+      ],
+      "f07_report_conflict": [
+        "模型运营与成本:M02"
+      ],
+      "f07_report_ready": [
+        "模型运营与成本:M02"
+      ],
+      "f07_spec_conflict": [
+        "模型运营与成本:M01"
+      ],
+      "f08_report_conflict": [
+        "平台与基础设施:M02"
+      ],
+      "f08_report_ready": [
+        "平台与基础设施:M02"
+      ],
+      "f08_spec_conflict": [
+        "平台与基础设施:M01"
+      ],
+      "f09_report_conflict": [
+        "开源与开发者生态:M02"
+      ],
+      "f09_report_ready": [
+        "开源与开发者生态:M02"
+      ],
+      "f09_spec_conflict": [
+        "开源与开发者生态:M01"
+      ],
+      "f10_report_conflict": [
+        "产业与商业落地:M02"
+      ],
+      "f10_report_ready": [
+        "产业与商业落地:M02"
+      ],
+      "f10_spec_conflict": [
+        "产业与商业落地:M01"
       ],
       "faction_event": [
         "M15"
@@ -1127,10 +2903,232 @@
       "b12_report_conflict",
       "b12_report_ready",
       "b12_spec_conflict",
+      "b13_report_conflict",
+      "b13_report_ready",
+      "b13_spec_conflict",
+      "b14_report_conflict",
+      "b14_report_ready",
+      "b14_spec_conflict",
+      "b15_report_conflict",
+      "b15_report_ready",
+      "b15_spec_conflict",
+      "b16_report_conflict",
+      "b16_report_ready",
+      "b16_spec_conflict",
+      "b17_report_conflict",
+      "b17_report_ready",
+      "b17_spec_conflict",
+      "b18_report_conflict",
+      "b18_report_ready",
+      "b18_spec_conflict",
       "backtest_spec_conflict",
       "backtest_spec_ready",
+      "c01_report_conflict",
+      "c01_report_ready",
+      "c01_spec_conflict",
+      "c02_report_conflict",
+      "c02_report_ready",
+      "c02_spec_conflict",
+      "c03_report_conflict",
+      "c03_report_ready",
+      "c03_spec_conflict",
+      "c04_report_conflict",
+      "c04_report_ready",
+      "c04_spec_conflict",
+      "c05_report_conflict",
+      "c05_report_ready",
+      "c05_spec_conflict",
+      "c06_report_conflict",
+      "c06_report_ready",
+      "c06_spec_conflict",
+      "c07_report_conflict",
+      "c07_report_ready",
+      "c07_spec_conflict",
+      "c08_report_conflict",
+      "c08_report_ready",
+      "c08_spec_conflict",
+      "c09_report_conflict",
+      "c09_report_ready",
+      "c09_spec_conflict",
+      "c10_report_conflict",
+      "c10_report_ready",
+      "c10_spec_conflict",
+      "c11_report_conflict",
+      "c11_report_ready",
+      "c11_spec_conflict",
+      "c12_report_conflict",
+      "c12_report_ready",
+      "c12_spec_conflict",
+      "c13_report_conflict",
+      "c13_report_ready",
+      "c13_spec_conflict",
+      "c14_report_conflict",
+      "c14_report_ready",
+      "c14_spec_conflict",
+      "c15_report_conflict",
+      "c15_report_ready",
+      "c15_spec_conflict",
+      "c16_report_conflict",
+      "c16_report_ready",
+      "c16_spec_conflict",
+      "c17_report_conflict",
+      "c17_report_ready",
+      "c17_spec_conflict",
+      "c18_report_conflict",
+      "c18_report_ready",
+      "c18_spec_conflict",
       "campus_anonymous_gift",
       "campus_gift_intent",
+      "d01_report_conflict",
+      "d01_report_ready",
+      "d01_spec_conflict",
+      "d02_report_conflict",
+      "d02_report_ready",
+      "d02_spec_conflict",
+      "d03_report_conflict",
+      "d03_report_ready",
+      "d03_spec_conflict",
+      "d04_report_conflict",
+      "d04_report_ready",
+      "d04_spec_conflict",
+      "d05_report_conflict",
+      "d05_report_ready",
+      "d05_spec_conflict",
+      "d06_report_conflict",
+      "d06_report_ready",
+      "d06_spec_conflict",
+      "d07_report_conflict",
+      "d07_report_ready",
+      "d07_spec_conflict",
+      "d08_report_conflict",
+      "d08_report_ready",
+      "d08_spec_conflict",
+      "d09_report_conflict",
+      "d09_report_ready",
+      "d09_spec_conflict",
+      "d10_report_conflict",
+      "d10_report_ready",
+      "d10_spec_conflict",
+      "d11_report_conflict",
+      "d11_report_ready",
+      "d11_spec_conflict",
+      "d12_report_conflict",
+      "d12_report_ready",
+      "d12_spec_conflict",
+      "d13_report_conflict",
+      "d13_report_ready",
+      "d13_spec_conflict",
+      "d14_report_conflict",
+      "d14_report_ready",
+      "d14_spec_conflict",
+      "d15_report_conflict",
+      "d15_report_ready",
+      "d15_spec_conflict",
+      "d16_report_conflict",
+      "d16_report_ready",
+      "d16_spec_conflict",
+      "d17_report_conflict",
+      "d17_report_ready",
+      "d17_spec_conflict",
+      "d18_report_conflict",
+      "d18_report_ready",
+      "d18_spec_conflict",
+      "d19_report_conflict",
+      "d19_report_ready",
+      "d19_spec_conflict",
+      "d20_report_conflict",
+      "d20_report_ready",
+      "d20_spec_conflict",
+      "e01_report_conflict",
+      "e01_report_ready",
+      "e01_spec_conflict",
+      "e02_report_conflict",
+      "e02_report_ready",
+      "e02_spec_conflict",
+      "e03_report_conflict",
+      "e03_report_ready",
+      "e03_spec_conflict",
+      "e04_report_conflict",
+      "e04_report_ready",
+      "e04_spec_conflict",
+      "e05_report_conflict",
+      "e05_report_ready",
+      "e05_spec_conflict",
+      "e06_report_conflict",
+      "e06_report_ready",
+      "e06_spec_conflict",
+      "e07_report_conflict",
+      "e07_report_ready",
+      "e07_spec_conflict",
+      "e08_report_conflict",
+      "e08_report_ready",
+      "e08_spec_conflict",
+      "e09_report_conflict",
+      "e09_report_ready",
+      "e09_spec_conflict",
+      "e10_report_conflict",
+      "e10_report_ready",
+      "e10_spec_conflict",
+      "e11_report_conflict",
+      "e11_report_ready",
+      "e11_spec_conflict",
+      "e12_report_conflict",
+      "e12_report_ready",
+      "e12_spec_conflict",
+      "e13_report_conflict",
+      "e13_report_ready",
+      "e13_spec_conflict",
+      "e14_report_conflict",
+      "e14_report_ready",
+      "e14_spec_conflict",
+      "e15_report_conflict",
+      "e15_report_ready",
+      "e15_spec_conflict",
+      "e16_report_conflict",
+      "e16_report_ready",
+      "e16_spec_conflict",
+      "e17_report_conflict",
+      "e17_report_ready",
+      "e17_spec_conflict",
+      "e18_report_conflict",
+      "e18_report_ready",
+      "e18_spec_conflict",
+      "e19_report_conflict",
+      "e19_report_ready",
+      "e19_spec_conflict",
+      "e20_report_conflict",
+      "e20_report_ready",
+      "e20_spec_conflict",
+      "f01_report_conflict",
+      "f01_report_ready",
+      "f01_spec_conflict",
+      "f02_report_conflict",
+      "f02_report_ready",
+      "f02_spec_conflict",
+      "f03_report_conflict",
+      "f03_report_ready",
+      "f03_spec_conflict",
+      "f04_report_conflict",
+      "f04_report_ready",
+      "f04_spec_conflict",
+      "f05_report_conflict",
+      "f05_report_ready",
+      "f05_spec_conflict",
+      "f06_report_conflict",
+      "f06_report_ready",
+      "f06_spec_conflict",
+      "f07_report_conflict",
+      "f07_report_ready",
+      "f07_spec_conflict",
+      "f08_report_conflict",
+      "f08_report_ready",
+      "f08_spec_conflict",
+      "f09_report_conflict",
+      "f09_report_ready",
+      "f09_spec_conflict",
+      "f10_report_conflict",
+      "f10_report_ready",
+      "f10_spec_conflict",
       "faction_event",
       "group_chat_event",
       "load_order_ready",
@@ -1145,8 +3143,32 @@
     "sub_only_events": []
   },
   "evidence_ids": [
+    "AI人力资源与招聘:M01",
+    "AI人力资源与招聘:M02",
+    "AI保险:M01",
+    "AI保险:M02",
+    "AI农业:M01",
+    "AI农业:M02",
+    "AI制药与生物:M01",
+    "AI制药与生物:M02",
+    "AI制造业:M01",
+    "AI制造业:M02",
+    "AI医疗健康:M01",
+    "AI医疗健康:M02",
+    "AI政务与公共事务:M01",
+    "AI政务与公共事务:M02",
+    "AI教育:M01",
+    "AI教育:M02",
+    "AI法律与合规:M01",
+    "AI法律与合规:M02",
     "AI系统:M25",
     "AI系统:M26",
+    "AI能源与电力:M01",
+    "AI能源与电力:M02",
+    "AI金融投研与风控:M01",
+    "AI金融投研与风控:M02",
+    "AI食品与餐饮:M01",
+    "AI食品与餐饮:M02",
     "M00",
     "M01",
     "M02",
@@ -1189,62 +3211,186 @@
     "M98",
     "三维与世界模型:M01",
     "三维与世界模型:M02",
+    "上下文工程与长上下文:M01",
+    "上下文工程与长上下文:M02",
+    "世界书与设定库:M01",
+    "世界书与设定库:M02",
+    "个人助理与日常生活:M01",
+    "个人助理与日常生活:M02",
     "事件:M22",
+    "交通与出行:M01",
+    "交通与出行:M02",
+    "产业与商业落地:M01",
+    "产业与商业落地:M02",
+    "代码与软件工程:M01",
+    "代码与软件工程:M02",
     "代码大模型:M01",
     "代码大模型:M02",
     "代码审查与缺陷检测:M01",
     "代码审查与缺陷检测:M02",
     "代码生成与补全:M01",
     "代码生成与补全:M02",
+    "企业培训与组织学习:M01",
+    "企业培训与组织学习:M02",
+    "传媒与新闻:M01",
+    "传媒与新闻:M02",
     "信息抽取与结构化:M01",
     "信息抽取与结构化:M02",
     "具身智能与机器人:M01",
     "具身智能与机器人:M02",
+    "内容分发与社区运营:M01",
+    "内容分发与社区运营:M02",
+    "内容改写与风格迁移:M01",
+    "内容改写与风格迁移:M02",
     "分类与情感分析:M01",
     "分类与情感分析:M02",
+    "参数高效微调:M01",
+    "参数高效微调:M02",
+    "可观测性成本与可靠性:M01",
+    "可观测性成本与可靠性:M02",
+    "可解释性与审计:M01",
+    "可解释性与审计:M02",
+    "合成数据生成:M01",
+    "合成数据生成:M02",
+    "合规与监管:M01",
+    "合规与监管:M02",
+    "向量库与检索管线:M01",
+    "向量库与检索管线:M02",
     "图像生成与编辑:M01",
     "图像生成与编辑:M02",
+    "图像生成与视觉创作:M01",
+    "图像生成与视觉创作:M02",
+    "图像生成与视觉设计:M01",
+    "图像生成与视觉设计:M02",
+    "多智能体协同:M01",
+    "多智能体协同:M02",
     "多模态大模型:M01",
     "多模态大模型:M02",
+    "多语翻译与本地化:M01",
+    "多语翻译与本地化:M02",
     "多轮对话与角色扮演:M01",
     "多轮对话与角色扮演:M02",
     "大语言模型:M01",
     "大语言模型:M02",
+    "安全与对齐:M01",
+    "安全与对齐:M02",
+    "对话与客服:M01",
+    "对话与客服:M02",
+    "对齐与偏好优化:M01",
+    "对齐与偏好优化:M02",
     "嵌入与检索表示:M01",
     "嵌入与检索表示:M02",
+    "平台与基础设施:M01",
+    "平台与基础设施:M02",
+    "建筑与房地产:M01",
+    "建筑与房地产:M02",
+    "开源与开发者生态:M01",
+    "开源与开发者生态:M02",
     "强化学习与决策:M01",
     "强化学习与决策:M02",
     "情感:M22",
+    "推理优化与加速:M01",
+    "推理优化与加速:M02",
+    "推理服务与部署:M01",
+    "推理服务与部署:M02",
+    "推荐排序与广告:M01",
+    "推荐排序与广告:M02",
+    "提示工程与指令设计:M01",
+    "提示工程与指令设计:M02",
+    "提示工程与提示模板:M01",
+    "提示工程与提示模板:M02",
+    "搜索与信息聚合:M01",
+    "搜索与信息聚合:M02",
     "摘要与信息压缩:M01",
     "摘要与信息压缩:M02",
+    "数字人与虚拟形象:M01",
+    "数字人与虚拟形象:M02",
     "数学与形式化推理:M01",
     "数学与形式化推理:M02",
+    "数据分析与决策支持:M01",
+    "数据分析与决策支持:M02",
     "数据分析与表格理解:M01",
     "数据分析与表格理解:M02",
+    "数据标注与标注质量:M01",
+    "数据标注与标注质量:M02",
+    "数据采集与清洗:M01",
+    "数据采集与清洗:M02",
+    "文旅与酒店:M01",
+    "文旅与酒店:M02",
     "文本生成与创作:M01",
     "文本生成与创作:M02",
     "文档解析与版面理解:M01",
     "文档解析与版面理解:M02",
+    "智能体与工作流编排:M01",
+    "智能体与工作流编排:M02",
+    "智能体框架与工具调用:M01",
+    "智能体框架与工具调用:M02",
     "机器翻译与本地化:M01",
     "机器翻译与本地化:M02",
+    "模型运营与成本:M01",
+    "模型运营与成本:M02",
     "测试与用例生成:M01",
     "测试与用例生成:M02",
+    "游戏与互动娱乐:M01",
+    "游戏与互动娱乐:M02",
+    "版权与知识产权:M01",
+    "版权与知识产权:M02",
+    "物流与供应链:M01",
+    "物流与供应链:M02",
     "生存:M10",
+    "监督微调:M01",
+    "监督微调:M02",
+    "知识管理与检索增强:M01",
+    "知识管理与检索增强:M02",
     "知识问答与检索增强:M01",
     "知识问答与检索增强:M02",
+    "科研与实验:M01",
+    "科研与实验:M02",
     "端侧与边缘小模型:M01",
     "端侧与边缘小模型:M02",
+    "红队越狱与安全测试:M01",
+    "红队越狱与安全测试:M02",
+    "编辑校对与出版:M01",
+    "编辑校对与出版:M02",
     "视觉模型:M01",
     "视觉模型:M02",
+    "视频生成与剪辑:M01",
+    "视频生成与剪辑:M02",
     "视频生成与理解:M01",
     "视频生成与理解:M02",
+    "视频生成与自动剪辑:M01",
+    "视频生成与自动剪辑:M02",
+    "角色扮演与角色卡:M01",
+    "角色扮演与角色卡:M02",
+    "记忆体与个性化:M01",
+    "记忆体与个性化:M02",
+    "评测与基准:M01",
+    "评测与基准:M02",
+    "评测基准与排行榜:M01",
+    "评测基准与排行榜:M02",
+    "语音合成与配音:M01",
+    "语音合成与配音:M02",
     "语音识别与合成:M01",
     "语音识别与合成:M02",
+    "语音转写与会议记录:M01",
+    "语音转写与会议记录:M02",
     "通用:M10",
     "量化金融:M31",
     "量化金融:M32",
+    "长文本与小说创作:M01",
+    "长文本与小说创作:M02",
+    "隐私与数据治理:M01",
+    "隐私与数据治理:M02",
+    "零售与电商:M01",
+    "零售与电商:M02",
     "音频与音乐生成:M01",
-    "音频与音乐生成:M02"
+    "音频与音乐生成:M02",
+    "音频音乐与语音:M01",
+    "音频音乐与语音:M02",
+    "预测异常与风险:M01",
+    "预测异常与风险:M02",
+    "预训练与继续预训练:M01",
+    "预训练与继续预训练:M02"
   ],
   "generated_by": "43 A4 protocol_golden（schema 定义 → 校验摘要，确定性渲染）",
   "pipeline_files": [
@@ -1258,8 +3404,38 @@
     "P07_AI系统域装配流管线.md",
     "P08_量化金融域装配流管线.md",
     "P09_大语言模型装配流管线.md",
+    "P100_版权与知识产权装配流管线.md",
+    "P101_评测与基准装配流管线.md",
+    "P102_可解释性与审计装配流管线.md",
+    "P103_模型运营与成本装配流管线.md",
+    "P104_平台与基础设施装配流管线.md",
+    "P105_开源与开发者生态装配流管线.md",
+    "P106_产业与商业落地装配流管线.md",
+    "P107_监督微调装配流管线.md",
+    "P112_游戏与互动娱乐装配流管线.md",
+    "P113_角色扮演与角色卡装配流管线.md",
+    "P114_知识管理与检索增强装配流管线.md",
+    "P115_企业培训与组织学习装配流管线.md",
+    "P116_对话与客服装配流管线.md",
+    "P117_零售与电商装配流管线.md",
+    "P118_推荐、排序与广告装配流管线.md",
+    "P119_预测、异常与风险装配流管线.md",
     "P11_多模态大模型装配流管线.md",
+    "P120_评测、基准与排行榜装配流管线.md",
+    "P121_红队、越狱与安全测试装配流管线.md",
+    "P122_可观测性、成本与可靠性装配流管线.md",
+    "P123_AI+医疗健康装配流管线.md",
+    "P124_AI+制药与生物装配流管线.md",
+    "P125_AI+法律与合规装配流管线.md",
+    "P126_AI+金融投研与风控装配流管线.md",
+    "P127_AI+保险装配流管线.md",
+    "P128_AI+教育装配流管线.md",
+    "P129_AI+政务与公共事务装配流管线.md",
     "P12_视觉模型装配流管线.md",
+    "P130_AI+制造业装配流管线.md",
+    "P131_AI+能源与电力装配流管线.md",
+    "P132_AI+农业装配流管线.md",
+    "P133_AI+人力资源与招聘装配流管线.md",
     "P13_语音识别与合成装配流管线.md",
     "P14_音频与音乐生成装配流管线.md",
     "P15_视频生成与理解装配流管线.md",
@@ -1283,42 +3459,160 @@
     "P35_测试与用例生成装配流管线.md",
     "P36_数据分析与表格理解装配流管线.md",
     "P37_文档解析与版面理解装配流管线.md",
-    "P90_技术文档生成管线.md"
+    "P38_语音转写与会议记录装配流管线.md",
+    "P39_语音合成与配音装配流管线.md",
+    "P41_图像生成与视觉设计装配流管线.md",
+    "P42_视频生成与自动剪辑装配流管线.md",
+    "P43_AI+食品与餐饮装配流管线.md",
+    "P45_数据采集与清洗装配流管线.md",
+    "P46_数据标注与标注质量装配流管线.md",
+    "P47_合成数据生成装配流管线.md",
+    "P48_预训练与继续预训练装配流管线.md",
+    "P49_参数高效微调装配流管线.md",
+    "P51_对齐与偏好优化装配流管线.md",
+    "P53_推理优化与加速装配流管线.md",
+    "P54_推理服务与部署装配流管线.md",
+    "P55_上下文工程与长上下文装配流管线.md",
+    "P56_提示工程与提示模板装配流管线.md",
+    "P57_记忆体与个性化装配流管线.md",
+    "P58_向量库与检索管线装配流管线.md",
+    "P59_智能体框架与工具调用装配流管线.md",
+    "P61_多智能体协同装配流管线.md",
+    "P71_物流与供应链装配流管线.md",
+    "P72_交通与出行装配流管线.md",
+    "P74_建筑与房地产装配流管线.md",
+    "P76_传媒与新闻装配流管线.md",
+    "P77_文旅与酒店装配流管线.md",
+    "P78_科研与实验装配流管线.md",
+    "P79_提示工程与指令设计装配流管线.md",
+    "P81_世界书与设定库装配流管线.md",
+    "P82_长文本与小说创作装配流管线.md",
+    "P83_内容改写与风格迁移装配流管线.md",
+    "P84_多语翻译与本地化装配流管线.md",
+    "P85_图像生成与视觉创作装配流管线.md",
+    "P86_视频生成与剪辑装配流管线.md",
+    "P87_音频音乐与语音装配流管线.md",
+    "P88_编辑校对与出版装配流管线.md",
+    "P89_智能体与工作流编排装配流管线.md",
+    "P90_技术文档生成管线.md",
+    "P91_代码与软件工程装配流管线.md",
+    "P92_数据分析与决策支持装配流管线.md",
+    "P93_个人助理与日常生活装配流管线.md",
+    "P94_搜索与信息聚合装配流管线.md",
+    "P95_内容分发与社区运营装配流管线.md",
+    "P96_数字人与虚拟形象装配流管线.md",
+    "P97_安全与对齐装配流管线.md",
+    "P98_合规与监管装配流管线.md",
+    "P99_隐私与数据治理装配流管线.md"
   ],
   "protocol_files": [
+    "community/AI人力资源与招聘域包/protocol.yaml",
+    "community/AI保险域包/protocol.yaml",
+    "community/AI农业域包/protocol.yaml",
+    "community/AI制药与生物域包/protocol.yaml",
+    "community/AI制造业域包/protocol.yaml",
+    "community/AI医疗健康域包/protocol.yaml",
+    "community/AI政务与公共事务域包/protocol.yaml",
+    "community/AI教育域包/protocol.yaml",
+    "community/AI法律与合规域包/protocol.yaml",
     "community/AI系统域包/protocol.yaml",
+    "community/AI能源与电力域包/protocol.yaml",
+    "community/AI金融投研与风控域包/protocol.yaml",
+    "community/AI食品与餐饮域包/protocol.yaml",
     "community/三维与世界模型域包/protocol.yaml",
+    "community/上下文工程与长上下文域包/protocol.yaml",
+    "community/世界书与设定库域包/protocol.yaml",
+    "community/个人助理与日常生活域包/protocol.yaml",
+    "community/交通与出行域包/protocol.yaml",
+    "community/产业与商业落地域包/protocol.yaml",
+    "community/代码与软件工程域包/protocol.yaml",
     "community/代码大模型域包/protocol.yaml",
     "community/代码审查与缺陷检测域包/protocol.yaml",
     "community/代码生成与补全域包/protocol.yaml",
+    "community/企业培训与组织学习域包/protocol.yaml",
+    "community/传媒与新闻域包/protocol.yaml",
     "community/信息抽取与结构化域包/protocol.yaml",
     "community/具身智能与机器人域包/protocol.yaml",
+    "community/内容分发与社区运营域包/protocol.yaml",
+    "community/内容改写与风格迁移域包/protocol.yaml",
     "community/分类与情感分析域包/protocol.yaml",
+    "community/参数高效微调域包/protocol.yaml",
+    "community/可观测性成本与可靠性域包/protocol.yaml",
+    "community/可解释性与审计域包/protocol.yaml",
+    "community/合成数据生成域包/protocol.yaml",
+    "community/合规与监管域包/protocol.yaml",
+    "community/向量库与检索管线域包/protocol.yaml",
     "community/图像生成与编辑域包/protocol.yaml",
+    "community/图像生成与视觉创作域包/protocol.yaml",
+    "community/图像生成与视觉设计域包/protocol.yaml",
+    "community/多智能体协同域包/protocol.yaml",
     "community/多模态大模型域包/protocol.yaml",
+    "community/多语翻译与本地化域包/protocol.yaml",
     "community/多轮对话与角色扮演域包/protocol.yaml",
     "community/大语言模型域包/protocol.yaml",
+    "community/安全与对齐域包/protocol.yaml",
+    "community/对话与客服域包/protocol.yaml",
+    "community/对齐与偏好优化域包/protocol.yaml",
     "community/嵌入与检索表示域包/protocol.yaml",
+    "community/平台与基础设施域包/protocol.yaml",
+    "community/建筑与房地产域包/protocol.yaml",
+    "community/开源与开发者生态域包/protocol.yaml",
     "community/强化学习与决策域包/protocol.yaml",
     "community/技术文档域包/protocol.yaml",
+    "community/推理优化与加速域包/protocol.yaml",
+    "community/推理服务与部署域包/protocol.yaml",
+    "community/推荐排序与广告域包/protocol.yaml",
+    "community/提示工程与指令设计域包/protocol.yaml",
+    "community/提示工程与提示模板域包/protocol.yaml",
+    "community/搜索与信息聚合域包/protocol.yaml",
     "community/摘要与信息压缩域包/protocol.yaml",
+    "community/数字人与虚拟形象域包/protocol.yaml",
     "community/数学与形式化推理域包/protocol.yaml",
+    "community/数据分析与决策支持域包/protocol.yaml",
     "community/数据分析与表格理解域包/protocol.yaml",
+    "community/数据标注与标注质量域包/protocol.yaml",
+    "community/数据采集与清洗域包/protocol.yaml",
+    "community/文旅与酒店域包/protocol.yaml",
     "community/文本生成与创作域包/protocol.yaml",
     "community/文档解析与版面理解域包/protocol.yaml",
+    "community/智能体与工作流编排域包/protocol.yaml",
+    "community/智能体框架与工具调用域包/protocol.yaml",
     "community/机器翻译与本地化域包/protocol.yaml",
     "community/校园情感领域包/protocol.yaml",
     "community/校园西幻轻混组合包/protocol.yaml",
+    "community/模型运营与成本域包/protocol.yaml",
     "community/测试与用例生成域包/protocol.yaml",
+    "community/游戏与互动娱乐域包/protocol.yaml",
+    "community/版权与知识产权域包/protocol.yaml",
+    "community/物流与供应链域包/protocol.yaml",
+    "community/监督微调域包/protocol.yaml",
+    "community/知识管理与检索增强域包/protocol.yaml",
     "community/知识问答与检索增强域包/protocol.yaml",
+    "community/科研与实验域包/protocol.yaml",
     "community/端侧与边缘小模型域包/protocol.yaml",
+    "community/红队越狱与安全测试域包/protocol.yaml",
+    "community/编辑校对与出版域包/protocol.yaml",
     "community/西幻生存领域包/protocol.yaml",
     "community/视觉模型域包/protocol.yaml",
+    "community/视频生成与剪辑域包/protocol.yaml",
     "community/视频生成与理解域包/protocol.yaml",
+    "community/视频生成与自动剪辑域包/protocol.yaml",
+    "community/角色扮演与角色卡域包/protocol.yaml",
+    "community/记忆体与个性化域包/protocol.yaml",
+    "community/评测与基准域包/protocol.yaml",
+    "community/评测基准与排行榜域包/protocol.yaml",
+    "community/语音合成与配音域包/protocol.yaml",
     "community/语音识别与合成域包/protocol.yaml",
+    "community/语音转写与会议记录域包/protocol.yaml",
     "community/通用核心基础包/protocol.yaml",
     "community/量化金融域包/protocol.yaml",
-    "community/音频与音乐生成域包/protocol.yaml"
+    "community/长文本与小说创作域包/protocol.yaml",
+    "community/隐私与数据治理域包/protocol.yaml",
+    "community/零售与电商域包/protocol.yaml",
+    "community/音频与音乐生成域包/protocol.yaml",
+    "community/音频音乐与语音域包/protocol.yaml",
+    "community/预测异常与风险域包/protocol.yaml",
+    "community/预训练与继续预训练域包/protocol.yaml"
   ],
   "registry_modules": [
     {

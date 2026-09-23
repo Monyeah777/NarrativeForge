@@ -1545,6 +1545,2596 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "语音转写与会议记录域包",
+      "name": "语音转写与会议记录域包",
+      "pipeline": "P38",
+      "categories": [
+        "语音转写与会议记录"
+      ],
+      "module_ids": [
+        "语音转写与会议记录:M01",
+        "语音转写与会议记录:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "语音转写与会议记录:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "语音转写与会议记录:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "语音合成与配音域包",
+      "name": "语音合成与配音域包",
+      "pipeline": "P39",
+      "categories": [
+        "语音合成与配音"
+      ],
+      "module_ids": [
+        "语音合成与配音:M01",
+        "语音合成与配音:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "语音合成与配音:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "语音合成与配音:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "图像生成与视觉设计域包",
+      "name": "图像生成与视觉设计域包",
+      "pipeline": "P41",
+      "categories": [
+        "图像生成与视觉设计"
+      ],
+      "module_ids": [
+        "图像生成与视觉设计:M01",
+        "图像生成与视觉设计:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "图像生成与视觉设计:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "图像生成与视觉设计:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "视频生成与自动剪辑域包",
+      "name": "视频生成与自动剪辑域包",
+      "pipeline": "P42",
+      "categories": [
+        "视频生成与自动剪辑"
+      ],
+      "module_ids": [
+        "视频生成与自动剪辑:M01",
+        "视频生成与自动剪辑:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "视频生成与自动剪辑:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "视频生成与自动剪辑:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "数据采集与清洗域包",
+      "name": "数据采集与清洗域包",
+      "pipeline": "P45",
+      "categories": [
+        "数据采集与清洗"
+      ],
+      "module_ids": [
+        "数据采集与清洗:M01",
+        "数据采集与清洗:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "数据采集与清洗:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "数据采集与清洗:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "数据标注与标注质量域包",
+      "name": "数据标注与标注质量域包",
+      "pipeline": "P46",
+      "categories": [
+        "数据标注与标注质量"
+      ],
+      "module_ids": [
+        "数据标注与标注质量:M01",
+        "数据标注与标注质量:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "数据标注与标注质量:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "数据标注与标注质量:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "合成数据生成域包",
+      "name": "合成数据生成域包",
+      "pipeline": "P47",
+      "categories": [
+        "合成数据生成"
+      ],
+      "module_ids": [
+        "合成数据生成:M01",
+        "合成数据生成:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "合成数据生成:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "合成数据生成:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "预训练与继续预训练域包",
+      "name": "预训练与继续预训练域包",
+      "pipeline": "P48",
+      "categories": [
+        "预训练与继续预训练"
+      ],
+      "module_ids": [
+        "预训练与继续预训练:M01",
+        "预训练与继续预训练:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "预训练与继续预训练:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "预训练与继续预训练:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "参数高效微调域包",
+      "name": "参数高效微调域包",
+      "pipeline": "P49",
+      "categories": [
+        "参数高效微调"
+      ],
+      "module_ids": [
+        "参数高效微调:M01",
+        "参数高效微调:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "参数高效微调:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "参数高效微调:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "对齐与偏好优化域包",
+      "name": "对齐与偏好优化域包",
+      "pipeline": "P51",
+      "categories": [
+        "对齐与偏好优化"
+      ],
+      "module_ids": [
+        "对齐与偏好优化:M01",
+        "对齐与偏好优化:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "对齐与偏好优化:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "对齐与偏好优化:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "推理优化与加速域包",
+      "name": "推理优化与加速域包",
+      "pipeline": "P53",
+      "categories": [
+        "推理优化与加速"
+      ],
+      "module_ids": [
+        "推理优化与加速:M01",
+        "推理优化与加速:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "推理优化与加速:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "推理优化与加速:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "推理服务与部署域包",
+      "name": "推理服务与部署域包",
+      "pipeline": "P54",
+      "categories": [
+        "推理服务与部署"
+      ],
+      "module_ids": [
+        "推理服务与部署:M01",
+        "推理服务与部署:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "推理服务与部署:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "推理服务与部署:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "上下文工程与长上下文域包",
+      "name": "上下文工程与长上下文域包",
+      "pipeline": "P55",
+      "categories": [
+        "上下文工程与长上下文"
+      ],
+      "module_ids": [
+        "上下文工程与长上下文:M01",
+        "上下文工程与长上下文:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "上下文工程与长上下文:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "上下文工程与长上下文:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "提示工程与提示模板域包",
+      "name": "提示工程与提示模板域包",
+      "pipeline": "P56",
+      "categories": [
+        "提示工程与提示模板"
+      ],
+      "module_ids": [
+        "提示工程与提示模板:M01",
+        "提示工程与提示模板:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "提示工程与提示模板:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "提示工程与提示模板:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "记忆体与个性化域包",
+      "name": "记忆体与个性化域包",
+      "pipeline": "P57",
+      "categories": [
+        "记忆体与个性化"
+      ],
+      "module_ids": [
+        "记忆体与个性化:M01",
+        "记忆体与个性化:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "记忆体与个性化:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "记忆体与个性化:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "向量库与检索管线域包",
+      "name": "向量库与检索管线域包",
+      "pipeline": "P58",
+      "categories": [
+        "向量库与检索管线"
+      ],
+      "module_ids": [
+        "向量库与检索管线:M01",
+        "向量库与检索管线:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "向量库与检索管线:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "向量库与检索管线:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "智能体框架与工具调用域包",
+      "name": "智能体框架与工具调用域包",
+      "pipeline": "P59",
+      "categories": [
+        "智能体框架与工具调用"
+      ],
+      "module_ids": [
+        "智能体框架与工具调用:M01",
+        "智能体框架与工具调用:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "智能体框架与工具调用:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "智能体框架与工具调用:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "多智能体协同域包",
+      "name": "多智能体协同域包",
+      "pipeline": "P61",
+      "categories": [
+        "多智能体协同"
+      ],
+      "module_ids": [
+        "多智能体协同:M01",
+        "多智能体协同:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "多智能体协同:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "多智能体协同:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "物流与供应链域包",
+      "name": "物流与供应链域包",
+      "pipeline": "P71",
+      "categories": [
+        "物流与供应链"
+      ],
+      "module_ids": [
+        "物流与供应链:M01",
+        "物流与供应链:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "物流与供应链:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "物流与供应链:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "交通与出行域包",
+      "name": "交通与出行域包",
+      "pipeline": "P72",
+      "categories": [
+        "交通与出行"
+      ],
+      "module_ids": [
+        "交通与出行:M01",
+        "交通与出行:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "交通与出行:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "交通与出行:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "建筑与房地产域包",
+      "name": "建筑与房地产域包",
+      "pipeline": "P74",
+      "categories": [
+        "建筑与房地产"
+      ],
+      "module_ids": [
+        "建筑与房地产:M01",
+        "建筑与房地产:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "建筑与房地产:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "建筑与房地产:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "传媒与新闻域包",
+      "name": "传媒与新闻域包",
+      "pipeline": "P76",
+      "categories": [
+        "传媒与新闻"
+      ],
+      "module_ids": [
+        "传媒与新闻:M01",
+        "传媒与新闻:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "传媒与新闻:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "传媒与新闻:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "文旅与酒店域包",
+      "name": "文旅与酒店域包",
+      "pipeline": "P77",
+      "categories": [
+        "文旅与酒店"
+      ],
+      "module_ids": [
+        "文旅与酒店:M01",
+        "文旅与酒店:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "文旅与酒店:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "文旅与酒店:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "科研与实验域包",
+      "name": "科研与实验域包",
+      "pipeline": "P78",
+      "categories": [
+        "科研与实验"
+      ],
+      "module_ids": [
+        "科研与实验:M01",
+        "科研与实验:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "科研与实验:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "科研与实验:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "提示工程与指令设计域包",
+      "name": "提示工程与指令设计域包",
+      "pipeline": "P79",
+      "categories": [
+        "提示工程与指令设计"
+      ],
+      "module_ids": [
+        "提示工程与指令设计:M01",
+        "提示工程与指令设计:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "提示工程与指令设计:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "提示工程与指令设计:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "世界书与设定库域包",
+      "name": "世界书与设定库域包",
+      "pipeline": "P81",
+      "categories": [
+        "世界书与设定库"
+      ],
+      "module_ids": [
+        "世界书与设定库:M01",
+        "世界书与设定库:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "世界书与设定库:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "世界书与设定库:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "长文本与小说创作域包",
+      "name": "长文本与小说创作域包",
+      "pipeline": "P82",
+      "categories": [
+        "长文本与小说创作"
+      ],
+      "module_ids": [
+        "长文本与小说创作:M01",
+        "长文本与小说创作:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "长文本与小说创作:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "长文本与小说创作:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "内容改写与风格迁移域包",
+      "name": "内容改写与风格迁移域包",
+      "pipeline": "P83",
+      "categories": [
+        "内容改写与风格迁移"
+      ],
+      "module_ids": [
+        "内容改写与风格迁移:M01",
+        "内容改写与风格迁移:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "内容改写与风格迁移:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "内容改写与风格迁移:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "多语翻译与本地化域包",
+      "name": "多语翻译与本地化域包",
+      "pipeline": "P84",
+      "categories": [
+        "多语翻译与本地化"
+      ],
+      "module_ids": [
+        "多语翻译与本地化:M01",
+        "多语翻译与本地化:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "多语翻译与本地化:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "多语翻译与本地化:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "图像生成与视觉创作域包",
+      "name": "图像生成与视觉创作域包",
+      "pipeline": "P85",
+      "categories": [
+        "图像生成与视觉创作"
+      ],
+      "module_ids": [
+        "图像生成与视觉创作:M01",
+        "图像生成与视觉创作:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "图像生成与视觉创作:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "图像生成与视觉创作:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "视频生成与剪辑域包",
+      "name": "视频生成与剪辑域包",
+      "pipeline": "P86",
+      "categories": [
+        "视频生成与剪辑"
+      ],
+      "module_ids": [
+        "视频生成与剪辑:M01",
+        "视频生成与剪辑:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "视频生成与剪辑:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "视频生成与剪辑:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "音频音乐与语音域包",
+      "name": "音频音乐与语音域包",
+      "pipeline": "P87",
+      "categories": [
+        "音频音乐与语音"
+      ],
+      "module_ids": [
+        "音频音乐与语音:M01",
+        "音频音乐与语音:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "音频音乐与语音:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "音频音乐与语音:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "编辑校对与出版域包",
+      "name": "编辑校对与出版域包",
+      "pipeline": "P88",
+      "categories": [
+        "编辑校对与出版"
+      ],
+      "module_ids": [
+        "编辑校对与出版:M01",
+        "编辑校对与出版:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "编辑校对与出版:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "编辑校对与出版:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "智能体与工作流编排域包",
+      "name": "智能体与工作流编排域包",
+      "pipeline": "P89",
+      "categories": [
+        "智能体与工作流编排"
+      ],
+      "module_ids": [
+        "智能体与工作流编排:M01",
+        "智能体与工作流编排:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "智能体与工作流编排:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "智能体与工作流编排:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "代码与软件工程域包",
+      "name": "代码与软件工程域包",
+      "pipeline": "P91",
+      "categories": [
+        "代码与软件工程"
+      ],
+      "module_ids": [
+        "代码与软件工程:M01",
+        "代码与软件工程:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "代码与软件工程:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "代码与软件工程:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "数据分析与决策支持域包",
+      "name": "数据分析与决策支持域包",
+      "pipeline": "P92",
+      "categories": [
+        "数据分析与决策支持"
+      ],
+      "module_ids": [
+        "数据分析与决策支持:M01",
+        "数据分析与决策支持:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "数据分析与决策支持:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "数据分析与决策支持:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "个人助理与日常生活域包",
+      "name": "个人助理与日常生活域包",
+      "pipeline": "P93",
+      "categories": [
+        "个人助理与日常生活"
+      ],
+      "module_ids": [
+        "个人助理与日常生活:M01",
+        "个人助理与日常生活:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "个人助理与日常生活:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "个人助理与日常生活:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "搜索与信息聚合域包",
+      "name": "搜索与信息聚合域包",
+      "pipeline": "P94",
+      "categories": [
+        "搜索与信息聚合"
+      ],
+      "module_ids": [
+        "搜索与信息聚合:M01",
+        "搜索与信息聚合:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "搜索与信息聚合:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "搜索与信息聚合:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "内容分发与社区运营域包",
+      "name": "内容分发与社区运营域包",
+      "pipeline": "P95",
+      "categories": [
+        "内容分发与社区运营"
+      ],
+      "module_ids": [
+        "内容分发与社区运营:M01",
+        "内容分发与社区运营:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "内容分发与社区运营:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "内容分发与社区运营:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "数字人与虚拟形象域包",
+      "name": "数字人与虚拟形象域包",
+      "pipeline": "P96",
+      "categories": [
+        "数字人与虚拟形象"
+      ],
+      "module_ids": [
+        "数字人与虚拟形象:M01",
+        "数字人与虚拟形象:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "数字人与虚拟形象:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "数字人与虚拟形象:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "安全与对齐域包",
+      "name": "安全与对齐域包",
+      "pipeline": "P97",
+      "categories": [
+        "安全与对齐"
+      ],
+      "module_ids": [
+        "安全与对齐:M01",
+        "安全与对齐:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "安全与对齐:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "安全与对齐:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "合规与监管域包",
+      "name": "合规与监管域包",
+      "pipeline": "P98",
+      "categories": [
+        "合规与监管"
+      ],
+      "module_ids": [
+        "合规与监管:M01",
+        "合规与监管:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "合规与监管:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "合规与监管:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "隐私与数据治理域包",
+      "name": "隐私与数据治理域包",
+      "pipeline": "P99",
+      "categories": [
+        "隐私与数据治理"
+      ],
+      "module_ids": [
+        "隐私与数据治理:M01",
+        "隐私与数据治理:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "隐私与数据治理:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "隐私与数据治理:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "版权与知识产权域包",
+      "name": "版权与知识产权域包",
+      "pipeline": "P100",
+      "categories": [
+        "版权与知识产权"
+      ],
+      "module_ids": [
+        "版权与知识产权:M01",
+        "版权与知识产权:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "版权与知识产权:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "版权与知识产权:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "可解释性与审计域包",
+      "name": "可解释性与审计域包",
+      "pipeline": "P102",
+      "categories": [
+        "可解释性与审计"
+      ],
+      "module_ids": [
+        "可解释性与审计:M01",
+        "可解释性与审计:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "可解释性与审计:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "可解释性与审计:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "模型运营与成本域包",
+      "name": "模型运营与成本域包",
+      "pipeline": "P103",
+      "categories": [
+        "模型运营与成本"
+      ],
+      "module_ids": [
+        "模型运营与成本:M01",
+        "模型运营与成本:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "模型运营与成本:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "模型运营与成本:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "平台与基础设施域包",
+      "name": "平台与基础设施域包",
+      "pipeline": "P104",
+      "categories": [
+        "平台与基础设施"
+      ],
+      "module_ids": [
+        "平台与基础设施:M01",
+        "平台与基础设施:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "平台与基础设施:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "平台与基础设施:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "产业与商业落地域包",
+      "name": "产业与商业落地域包",
+      "pipeline": "P106",
+      "categories": [
+        "产业与商业落地"
+      ],
+      "module_ids": [
+        "产业与商业落地:M01",
+        "产业与商业落地:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "产业与商业落地:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "产业与商业落地:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "监督微调域包",
+      "name": "监督微调域包",
+      "pipeline": "P107",
+      "categories": [
+        "监督微调"
+      ],
+      "module_ids": [
+        "监督微调:M01",
+        "监督微调:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "监督微调:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "监督微调:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "零售与电商域包",
+      "name": "零售与电商域包",
+      "pipeline": "P117",
+      "categories": [
+        "零售与电商"
+      ],
+      "module_ids": [
+        "零售与电商:M01",
+        "零售与电商:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "零售与电商:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "零售与电商:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "游戏与互动娱乐域包",
+      "name": "游戏与互动娱乐域包",
+      "pipeline": "P112",
+      "categories": [
+        "游戏与互动娱乐"
+      ],
+      "module_ids": [
+        "游戏与互动娱乐:M01",
+        "游戏与互动娱乐:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "游戏与互动娱乐:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "游戏与互动娱乐:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "角色扮演与角色卡域包",
+      "name": "角色扮演与角色卡域包",
+      "pipeline": "P113",
+      "categories": [
+        "角色扮演与角色卡"
+      ],
+      "module_ids": [
+        "角色扮演与角色卡:M01",
+        "角色扮演与角色卡:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "角色扮演与角色卡:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "角色扮演与角色卡:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "知识管理与检索增强域包",
+      "name": "知识管理与检索增强域包",
+      "pipeline": "P114",
+      "categories": [
+        "知识管理与检索增强"
+      ],
+      "module_ids": [
+        "知识管理与检索增强:M01",
+        "知识管理与检索增强:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "知识管理与检索增强:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "知识管理与检索增强:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "企业培训与组织学习域包",
+      "name": "企业培训与组织学习域包",
+      "pipeline": "P115",
+      "categories": [
+        "企业培训与组织学习"
+      ],
+      "module_ids": [
+        "企业培训与组织学习:M01",
+        "企业培训与组织学习:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "企业培训与组织学习:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "企业培训与组织学习:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "对话与客服域包",
+      "name": "对话与客服域包",
+      "pipeline": "P116",
+      "categories": [
+        "对话与客服"
+      ],
+      "module_ids": [
+        "对话与客服:M01",
+        "对话与客服:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "对话与客服:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "对话与客服:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "评测与基准域包",
+      "name": "评测与基准域包",
+      "pipeline": "P101",
+      "categories": [
+        "评测与基准"
+      ],
+      "module_ids": [
+        "评测与基准:M01",
+        "评测与基准:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "评测与基准:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "评测与基准:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "开源与开发者生态域包",
+      "name": "开源与开发者生态域包",
+      "pipeline": "P105",
+      "categories": [
+        "开源与开发者生态"
+      ],
+      "module_ids": [
+        "开源与开发者生态:M01",
+        "开源与开发者生态:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "开源与开发者生态:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "开源与开发者生态:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "推荐排序与广告域包",
+      "name": "推荐排序与广告域包",
+      "pipeline": "P118",
+      "categories": [
+        "推荐排序与广告"
+      ],
+      "module_ids": [
+        "推荐排序与广告:M01",
+        "推荐排序与广告:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "推荐排序与广告:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "推荐排序与广告:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "预测异常与风险域包",
+      "name": "预测异常与风险域包",
+      "pipeline": "P119",
+      "categories": [
+        "预测异常与风险"
+      ],
+      "module_ids": [
+        "预测异常与风险:M01",
+        "预测异常与风险:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "预测异常与风险:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "预测异常与风险:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "评测基准与排行榜域包",
+      "name": "评测基准与排行榜域包",
+      "pipeline": "P120",
+      "categories": [
+        "评测基准与排行榜"
+      ],
+      "module_ids": [
+        "评测基准与排行榜:M01",
+        "评测基准与排行榜:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "评测基准与排行榜:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "评测基准与排行榜:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "红队越狱与安全测试域包",
+      "name": "红队越狱与安全测试域包",
+      "pipeline": "P121",
+      "categories": [
+        "红队越狱与安全测试"
+      ],
+      "module_ids": [
+        "红队越狱与安全测试:M01",
+        "红队越狱与安全测试:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "红队越狱与安全测试:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "红队越狱与安全测试:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "可观测性成本与可靠性域包",
+      "name": "可观测性成本与可靠性域包",
+      "pipeline": "P122",
+      "categories": [
+        "可观测性成本与可靠性"
+      ],
+      "module_ids": [
+        "可观测性成本与可靠性:M01",
+        "可观测性成本与可靠性:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "可观测性成本与可靠性:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "可观测性成本与可靠性:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI医疗健康域包",
+      "name": "AI医疗健康域包",
+      "pipeline": "P123",
+      "categories": [
+        "AI医疗健康"
+      ],
+      "module_ids": [
+        "AI医疗健康:M01",
+        "AI医疗健康:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI医疗健康:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI医疗健康:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI制药与生物域包",
+      "name": "AI制药与生物域包",
+      "pipeline": "P124",
+      "categories": [
+        "AI制药与生物"
+      ],
+      "module_ids": [
+        "AI制药与生物:M01",
+        "AI制药与生物:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI制药与生物:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI制药与生物:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI法律与合规域包",
+      "name": "AI法律与合规域包",
+      "pipeline": "P125",
+      "categories": [
+        "AI法律与合规"
+      ],
+      "module_ids": [
+        "AI法律与合规:M01",
+        "AI法律与合规:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI法律与合规:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI法律与合规:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI金融投研与风控域包",
+      "name": "AI金融投研与风控域包",
+      "pipeline": "P126",
+      "categories": [
+        "AI金融投研与风控"
+      ],
+      "module_ids": [
+        "AI金融投研与风控:M01",
+        "AI金融投研与风控:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI金融投研与风控:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI金融投研与风控:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI保险域包",
+      "name": "AI保险域包",
+      "pipeline": "P127",
+      "categories": [
+        "AI保险"
+      ],
+      "module_ids": [
+        "AI保险:M01",
+        "AI保险:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI保险:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI保险:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI教育域包",
+      "name": "AI教育域包",
+      "pipeline": "P128",
+      "categories": [
+        "AI教育"
+      ],
+      "module_ids": [
+        "AI教育:M01",
+        "AI教育:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI教育:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI教育:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI政务与公共事务域包",
+      "name": "AI政务与公共事务域包",
+      "pipeline": "P129",
+      "categories": [
+        "AI政务与公共事务"
+      ],
+      "module_ids": [
+        "AI政务与公共事务:M01",
+        "AI政务与公共事务:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI政务与公共事务:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI政务与公共事务:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI制造业域包",
+      "name": "AI制造业域包",
+      "pipeline": "P130",
+      "categories": [
+        "AI制造业"
+      ],
+      "module_ids": [
+        "AI制造业:M01",
+        "AI制造业:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI制造业:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI制造业:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI能源与电力域包",
+      "name": "AI能源与电力域包",
+      "pipeline": "P131",
+      "categories": [
+        "AI能源与电力"
+      ],
+      "module_ids": [
+        "AI能源与电力:M01",
+        "AI能源与电力:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI能源与电力:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI能源与电力:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI农业域包",
+      "name": "AI农业域包",
+      "pipeline": "P132",
+      "categories": [
+        "AI农业"
+      ],
+      "module_ids": [
+        "AI农业:M01",
+        "AI农业:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI农业:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI农业:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI人力资源与招聘域包",
+      "name": "AI人力资源与招聘域包",
+      "pipeline": "P133",
+      "categories": [
+        "AI人力资源与招聘"
+      ],
+      "module_ids": [
+        "AI人力资源与招聘:M01",
+        "AI人力资源与招聘:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI人力资源与招聘:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI人力资源与招聘:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "AI食品与餐饮域包",
+      "name": "AI食品与餐饮域包",
+      "pipeline": "P43",
+      "categories": [
+        "AI食品与餐饮"
+      ],
+      "module_ids": [
+        "AI食品与餐饮:M01",
+        "AI食品与餐饮:M02"
+      ],
+      "assets": {
+        "count": 3,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "行为决策",
+          "default": [
+            "AI食品与餐饮:M01"
+          ],
+          "available": []
+        },
+        "P60": {
+          "name": "长期演变",
+          "default": [
+            "AI食品与餐饮:M02"
+          ],
+          "available": []
+        }
+      },
+      "references": [],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

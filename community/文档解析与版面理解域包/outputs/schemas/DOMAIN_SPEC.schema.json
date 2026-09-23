@@ -12,11 +12,18 @@
     "section",
     "anchors_verified_on",
     "metric_family",
-    "subdivisions"
+    "subdivisions",
+    "content_tier"
   ],
   "properties": {
     "kind": {
       "const": "nf-domain-spec/1"
+    },
+    "content_tier": {
+      "enum": [
+        "authored",
+        "derived"
+      ]
     },
     "code": {
       "const": "B12"

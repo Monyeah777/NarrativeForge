@@ -1,0 +1,17 @@
+{
+  "code": "E06",
+  "domain": "多语翻译与本地化",
+  "family": "generation",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "char_f1": 0.691468,
+    "digits": 6,
+    "exact_match": 0.25,
+    "family": "generation",
+    "n": 12,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "token_set_f1": 0.25
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 12
+}

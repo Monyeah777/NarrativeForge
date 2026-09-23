@@ -1,0 +1,19 @@
+{
+  "code": "D07",
+  "domain": "AI+政务与公共事务",
+  "family": "regression",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "digits": 6,
+    "family": "regression",
+    "mae": 0.124244,
+    "mape": 0.876649,
+    "mape_samples": 16,
+    "n": 16,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "r2": 0.984448,
+    "rmse": 0.139465
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 16
+}

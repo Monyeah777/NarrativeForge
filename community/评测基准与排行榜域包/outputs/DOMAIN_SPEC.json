@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "C08",
+  "domain": "评测、基准与排行榜",
+  "section": "C · AI 工程与运维",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "drift",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "C08-01",
+      "name": "基准集选型",
+      "definition": "基准集选型：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-02",
+      "name": "私有评测集构建",
+      "definition": "私有评测集构建：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-03",
+      "name": "评测指标设计",
+      "definition": "评测指标设计：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-04",
+      "name": "LLM-as-judge",
+      "definition": "LLM-as-judge：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-05",
+      "name": "人类评估协议",
+      "definition": "人类评估协议：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-06",
+      "name": "竞技场 Elo",
+      "definition": "竞技场 Elo：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-07",
+      "name": "领域能力评测",
+      "definition": "领域能力评测：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-08",
+      "name": "鲁棒性与扰动",
+      "definition": "鲁棒性与扰动：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-09",
+      "name": "长上下文评测",
+      "definition": "长上下文评测：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-10",
+      "name": "Agent 任务评测",
+      "definition": "Agent 任务评测：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-11",
+      "name": "评测污染检测",
+      "definition": "评测污染检测：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C08-12",
+      "name": "评测报告规范",
+      "definition": "评测报告规范：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://mlcommons.org/benchmarks/inference-datacenter/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "code": "E01",
+  "domain": "提示工程与指令设计",
+  "family": "preference",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "agreement": 0.9375,
+    "digits": 6,
+    "family": "preference",
+    "loss": 8,
+    "n": 16,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "tie": 0,
+    "win": 8,
+    "win_rate_excl_tie": 0.5
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 16
+}

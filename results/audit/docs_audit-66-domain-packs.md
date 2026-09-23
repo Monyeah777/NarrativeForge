@@ -6,7 +6,7 @@ scope: 作者指令「八小时内按 AI 品类清单逐项建域包；参照 AI
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/domain_pack.py:59ef53148d9874f130912b25faf704d500981388ec4310f714c4a9752249ae2c
+  - desktop/src/core/domain_pack.py:7aef1d71a497c0e7fa61879c84c4d5fce018bcbf41e8fc882f90b31dfda9a58b
   - desktop/src/core/domain_metrics.py:a870ce5e38e1efb1c4be35407876718c6c3f19cda0bbc40e934433f1f510c397
   - desktop/src/core/output_forms.py:50830a219470f9e3aadfd461c7b45212810cad4a5e4dbcc21810a79d56c85a5e
   - desktop/src/core/quality_depth_scan.py:2af96a08d6b8e0e07e3a86b041507c706c9de1d4609fdbf4f8eae8b4b598b59e
@@ -15,7 +15,7 @@ subjects:
   - docs/domain-packs.md:7b61173388a7e6f636d0dedc18e2e2f83a50ba28bb4f2cb3bcb1a6398d3b4b87
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
-  - verify.sh:f4fd5b2aff8a57246ab64c435fc44cc2f472d5c04942b018c079c13288a6846c
+  - verify.sh:d0d318c28c61f49be63065fd7e5e5686e998677f80a849f07155c762293252e9
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

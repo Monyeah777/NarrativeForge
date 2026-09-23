@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "C18",
+  "domain": "可观测性、成本与可靠性",
+  "section": "C · AI 工程与运维",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "contract_compliance",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "C18-01",
+      "name": "链路追踪",
+      "definition": "链路追踪：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-02",
+      "name": "日志与提示留存",
+      "definition": "日志与提示留存：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-03",
+      "name": "Token 计量与计费",
+      "definition": "Token 计量与计费：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-04",
+      "name": "成本归因",
+      "definition": "成本归因：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-05",
+      "name": "延迟分解",
+      "definition": "延迟分解：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-06",
+      "name": "SLA 监控",
+      "definition": "SLA 监控：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-07",
+      "name": "异常检测与降级",
+      "definition": "异常检测与降级：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-08",
+      "name": "模型版本管理",
+      "definition": "模型版本管理：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-09",
+      "name": "实验平台",
+      "definition": "实验平台：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-10",
+      "name": "回放与复现",
+      "definition": "回放与复现：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-11",
+      "name": "数据回流",
+      "definition": "数据回流：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C18-12",
+      "name": "事故复盘",
+      "definition": "事故复盘：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://opentelemetry.io/docs/specs/semconv/",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

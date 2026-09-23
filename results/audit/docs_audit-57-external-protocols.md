@@ -6,7 +6,7 @@ scope: 作者指示的七项任务（NF 深析 / 外部协议清单 ≥100 条 /
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:f4fd5b2aff8a57246ab64c435fc44cc2f472d5c04942b018c079c13288a6846c
+  - verify.sh:d0d318c28c61f49be63065fd7e5e5686e998677f80a849f07155c762293252e9
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
   - desktop/src/core/text_hygiene.py:44f22d14c2ab470a2d30a5484b484a81c57baaf3111a5a1fcec0005a9d0cdeae
   - desktop/src/core/interop_export.py:1fc35ff29f0b7b0a95ae8fa150f8e05534a7e65bf821f6749d95491dcd1ab8a6

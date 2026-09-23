@@ -144,7 +144,9 @@ class TestMcpRuntime(unittest.TestCase):
         """G2 + 44 + A3：resources/list 分页返回快照+仓库资源元数据——条目绝无 text。"""
         resources = []
         cursor = None
-        for _ in range(30):
+        # 分页上限随仓库规模增长（2026-09-23 实测：AI 品类域包 100 包后 30 页取不完
+        # ——模块 248 / 管线 107 / 资产 ~300，资源面总量翻数倍）；改为大步长上限。
+        for _ in range(2000):
             params = {} if cursor is None else {"cursor": cursor}
             resp = self.srv.handle(_req(50, "resources/list", params))
             page = resp["result"]["resources"]
@@ -219,7 +221,7 @@ class TestMcpRuntime(unittest.TestCase):
         """44 深化：资源面与内容工具端到端自检（模块/管线/资产三类代表件全可读）。"""
         uris = set()
         cursor = None
-        for _ in range(30):
+        for _ in range(2000):
             params = {} if cursor is None else {"cursor": cursor}
             resp = self.srv.handle(_req(40, "resources/list", params))
             page = resp["result"]["resources"]

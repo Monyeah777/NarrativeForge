@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "F08",
+  "domain": "平台与基础设施",
+  "section": "F · 治理、安全与产业生态",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "classification",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "F08-01",
+      "name": "训练框架",
+      "definition": "训练框架：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-02",
+      "name": "分布式训练",
+      "definition": "分布式训练：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-03",
+      "name": "数据管道",
+      "definition": "数据管道：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-04",
+      "name": "特征存储",
+      "definition": "特征存储：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-05",
+      "name": "推理服务",
+      "definition": "推理服务：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-06",
+      "name": "算力调度",
+      "definition": "算力调度：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-07",
+      "name": "模型仓库",
+      "definition": "模型仓库：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-08",
+      "name": "版本与回滚",
+      "definition": "版本与回滚：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-09",
+      "name": "监控告警",
+      "definition": "监控告警：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-10",
+      "name": "私有化部署",
+      "definition": "私有化部署：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-11",
+      "name": "边缘推理",
+      "definition": "边缘推理：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "F08-12",
+      "name": "混合云",
+      "definition": "混合云：口径 = 法规或标准引用 / 证据物 / 审计留痕 / 责任人 四件齐备（本条目按 F 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

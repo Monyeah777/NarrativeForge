@@ -1,0 +1,76 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "cost_per_1k_calls",
+        "value": 0.0
+      },
+      {
+        "metric": "cost_total",
+        "value": 0.0
+      },
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "max_ms",
+        "value": 854.5
+      },
+      {
+        "metric": "mean_ms",
+        "value": 526.545
+      },
+      {
+        "metric": "n",
+        "value": 20.0
+      },
+      {
+        "metric": "p50_ms",
+        "value": 526.5
+      },
+      {
+        "metric": "p95_ms",
+        "value": 844.6
+      },
+      {
+        "metric": "p99_ms",
+        "value": 854.5
+      },
+      {
+        "metric": "price_per_1k_in",
+        "value": 0.0
+      },
+      {
+        "metric": "price_per_1k_out",
+        "value": 0.0
+      },
+      {
+        "metric": "tokens_in",
+        "value": 21085.0
+      },
+      {
+        "metric": "tokens_out",
+        "value": 6690.0
+      }
+    ]
+  },
+  "description": "预训练与继续预训练 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

@@ -19,9 +19,12 @@ def _keys_of(path: Path) -> List[str]:
         head = path.read_text(encoding="utf-8")[:6000]
     except OSError:
         return sorted(keys)
-    keys.update(re.findall(r"`([A-Z][A-Z0-9_]{2,})`", head))
-    keys.update(re.findall(r"\"([A-Z][A-Z0-9_]{2,})\"\s*:", head))
-    keys.update(re.findall(r"##\s*([A-Z][A-Z0-9_]{2,})", head))
+    # 条目键面（2026-09-23 对齐）：除大写下划线键外，仓库里还大量使用**带连字符的条目键**
+    # （如域包的 `C01-01` / `A08-07` —— 经 asset_get('<资产键>','<条目键>') 真实可寻址）。
+    # 原字符集 `[A-Z0-9_]` 看不见它们 → 密度被系统性低估（AI 品类域包扩面后实测暴露）。
+    keys.update(re.findall(r"`([A-Z][A-Z0-9_-]{2,})`", head))
+    keys.update(re.findall(r"\"([A-Z][A-Z0-9_-]{2,})\"\s*:", head))
+    keys.update(re.findall(r"##\s*([A-Z][A-Z0-9_-]{2,})", head))
     return sorted(keys)
 
 

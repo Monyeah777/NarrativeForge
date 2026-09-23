@@ -1,0 +1,36 @@
+# protocol.yaml — 第三方协议声明（AI制造业域包，清单 D08 · D · AI+行业）
+# 依据 01 §6.1 Schema 模板骨架 + 02 §8.3 第三方协议登记；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ 断言）
+protocol:
+  schema_version: "2"
+package:
+  conformance: "L2"
+  id: AI制造业域包
+  name: AI制造业域包
+  version: "1.0.0"
+  pipeline: P130
+  module_id_range:
+    - "AI制造业:M01"
+    - "AI制造业:M02"
+  categories:
+    - AI制造业
+  dependencies:
+    core_only: true
+    core_modules: [M00, 通用:M10, M50, M80]
+    cross_package: []
+  references: []
+  modules:
+    - id: "AI制造业:M01"
+      desc: AI制造业口径登记（12 条细分的定义 / 可机检判据 / 失效模式登记与冲突上报）
+    - id: "AI制造业:M02"
+      desc: AI制造业收口与形态派生（度量复算 T4 + 概念图派生 + 与口径表同源收口）
+  assets:
+    count: 3
+    readme: README.md
+  outputs:
+    index: outputs/INDEX.json
+    count: 9
+    machine_verifiable: 9
+    functional: 1
+  mount_layers:
+    P40 行为决策: {default: [AI制造业:M01], available: []}
+    P60 长期演变: {default: [AI制造业:M02], available: []}

@@ -5,6 +5,7 @@
   "section": "B · 任务类型",
   "anchors_verified_on": "2026-09-22",
   "metric_family": "classification",
+  "content_tier": "authored",
   "subdivisions": [
     {
       "id": "B09-01",

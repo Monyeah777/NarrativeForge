@@ -15,7 +15,7 @@
 | `A13-05` | paper | https://arxiv.org/abs/1703.06907 | ✓ 200 |
 | `A13-06` | repo | https://pypi.org/project/filterpy/ | ✓ 200 |
 | `A13-07` | paper | https://arxiv.org/abs/2204.01691 | ✓ 200 |
-| `A13-08` | spec | https://eur-lex.europa.eu/eli/reg/2023/1230/oj | ✗ 202 |
+| `A13-08` | spec | https://eur-lex.europa.eu/eli/reg/2023/1230/oj | ✓ 200 |
 | `A13-09` | doc | https://docs.nav2.org/ | ✓ 200 |
 | `A13-10` | doc | https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html | ✓ 200 |
 | `A13-11` | paper | https://arxiv.org/abs/2303.04137 | ✓ 200 |

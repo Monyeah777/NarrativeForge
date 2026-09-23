@@ -1872,6 +1872,438 @@
       "note": "证据:模块正文事件契约 payload 收割",
       "payload_status": "declared"
     },
+    "b13_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b13_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b13_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b13_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b14_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b14_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b14_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b14_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b15_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b15_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b15_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b15_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b16_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b16_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b16_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b16_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b17_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b17_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b17_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b17_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b18_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b18_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b18_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "b18_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
     "backtest_spec_conflict": {
       "fields": {
         "blocking": {
@@ -1928,6 +2360,1302 @@
         }
       },
       "note": "证据:M94_通用节拍桥.md 发布行+payload 同段",
+      "payload_status": "declared"
+    },
+    "c01_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c01_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c01_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c01_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c02_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c02_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c02_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c02_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c03_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c03_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c03_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c03_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c04_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c04_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c04_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c04_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c05_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c05_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c05_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c05_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c06_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c06_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c06_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c06_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c07_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c07_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c07_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c07_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c08_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c08_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c08_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c08_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c09_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c09_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c09_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c09_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c10_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c10_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c10_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c10_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c11_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c11_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c11_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c11_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c12_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c12_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c12_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c12_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c13_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c13_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c13_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c13_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c14_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c14_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c14_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c14_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c15_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c15_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c15_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c15_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c16_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c16_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c16_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c16_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c17_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c17_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c17_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c17_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c18_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c18_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c18_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "c18_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
       "payload_status": "declared"
     },
     "campus_anonymous_gift": {
@@ -2078,6 +3806,1446 @@
       "note": "证据:M43_情敌系统.md 发布行+payload 同段",
       "payload_status": "declared"
     },
+    "d01_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d01_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d01_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d01_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d02_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d02_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d02_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d02_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d03_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d03_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d03_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d03_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d04_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d04_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d04_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d04_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d05_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d05_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d05_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d05_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d06_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d06_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d06_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d06_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d07_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d07_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d07_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d07_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d08_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d08_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d08_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d08_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d09_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d09_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d09_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d09_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d10_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d10_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d10_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d10_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d11_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d11_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d11_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d11_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d12_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d12_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d12_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d12_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d13_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d13_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d13_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d13_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d14_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d14_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d14_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d14_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d15_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d15_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d15_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d15_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d16_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d16_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d16_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d16_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d17_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d17_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d17_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d17_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d18_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d18_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d18_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d18_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d19_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d19_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d19_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d19_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d20_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d20_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d20_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "d20_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
     "death_trigger": {
       "fields": {
         "blessing": {
@@ -2172,6 +5340,2166 @@
         }
       },
       "note": "45_M3 techdoc 载荷提案经作者确认（2026-09-09）",
+      "payload_status": "declared"
+    },
+    "e01_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e01_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e01_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e01_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e02_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e02_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e02_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e02_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e03_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e03_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e03_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e03_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e04_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e04_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e04_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e04_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e05_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e05_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e05_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e05_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e06_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e06_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e06_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e06_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e07_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e07_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e07_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e07_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e08_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e08_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e08_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e08_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e09_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e09_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e09_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e09_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e10_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e10_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e10_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e10_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e11_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e11_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e11_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e11_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e12_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e12_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e12_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e12_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e13_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e13_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e13_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e13_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e14_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e14_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e14_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e14_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e15_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e15_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e15_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e15_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e16_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e16_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e16_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e16_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e17_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e17_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e17_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e17_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e18_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e18_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e18_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e18_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e19_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e19_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e19_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e19_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e20_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e20_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e20_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "e20_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f01_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f01_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f01_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f01_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f02_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f02_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f02_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f02_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f03_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f03_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f03_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f03_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f04_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f04_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f04_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f04_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f05_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f05_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f05_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f05_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f06_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f06_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f06_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f06_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f07_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f07_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f07_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f07_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f08_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f08_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f08_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f08_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f09_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f09_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f09_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f09_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f10_report_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f10_report_ready": {
+      "fields": {
+        "family": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "metrics": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f10_spec_conflict": {
+      "fields": {
+        "blocking": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "boolean"
+        },
+        "field": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        },
+        "reason": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "string"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
+      "payload_status": "declared"
+    },
+    "f10_spec_ready": {
+      "fields": {
+        "checked": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "subdivisions": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        },
+        "tick": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "number"
+        }
+      },
+      "note": "证据:模块正文事件契约 payload 收割",
       "payload_status": "declared"
     },
     "faction_event": {

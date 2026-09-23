@@ -5,6 +5,7 @@
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
   "metric_family": "generation",
+  "content_tier": "authored",
   "subdivisions": [
     {
       "id": "A04-01",
@@ -20,7 +21,7 @@
       "id": "A04-02",
       "name": "语音活动检测与切分",
       "definition": "语音活动检测与切分的口径：判定阈值、最短语音段、最大静音切分与尾部保留。",
-      "anchor": "https://github.com/snakers4/silero-vad",
+      "anchor": "https://pypi.org/project/webrtcvad/",
       "anchor_kind": "repo",
       "anchor_status": 200,
       "check": "声明 vad_threshold、min_speech_ms、max_silence_ms、tail_padding_ms 四个数值。",
@@ -50,7 +51,7 @@
       "id": "A04-05",
       "name": "噪声与远场鲁棒",
       "definition": "噪声与远场鲁棒的口径：信噪比范围、混响时间与增强前端是否进入链路。",
-      "anchor": "https://github.com/microsoft/DNS-Challenge",
+      "anchor": "https://pypi.org/project/noisereduce/",
       "anchor_kind": "repo",
       "anchor_status": 200,
       "check": "声明 snr_db（范围）、t60_s（混响时间）、enhancement（none|denoise|dereverb）三项，并给各噪声条件下的 WER。",

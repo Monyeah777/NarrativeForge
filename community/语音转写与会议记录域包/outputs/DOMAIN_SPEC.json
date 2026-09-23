@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "B13",
+  "domain": "语音转写与会议记录",
+  "section": "B · 任务类型",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "extraction",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "B13-01",
+      "name": "实时转写",
+      "definition": "实时转写：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-02",
+      "name": "说话人分段",
+      "definition": "说话人分段：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-03",
+      "name": "会议摘要与待办",
+      "definition": "会议摘要与待办：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-04",
+      "name": "专有名词与热词",
+      "definition": "专有名词与热词：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-05",
+      "name": "术语纠错",
+      "definition": "术语纠错：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-06",
+      "name": "时间戳与章节",
+      "definition": "时间戳与章节：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-07",
+      "name": "双语会议",
+      "definition": "双语会议：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-08",
+      "name": "语音搜索索引",
+      "definition": "语音搜索索引：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-09",
+      "name": "转写质量评测",
+      "definition": "转写质量评测：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-10",
+      "name": "录音隐私与合规",
+      "definition": "录音隐私与合规：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-11",
+      "name": "方言会议",
+      "definition": "方言会议：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "B13-12",
+      "name": "行动项跟踪",
+      "definition": "行动项跟踪：口径 = 任务定义 / 输入形态 / 输出契约 / 判定口径 四件齐备（本条目按 B 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

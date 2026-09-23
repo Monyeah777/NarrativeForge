@@ -1,0 +1,36 @@
+# protocol.yaml — 第三方协议声明（合规与监管域包，清单 F02 · F · 治理、安全与产业生态）
+# 依据 01 §6.1 Schema 模板骨架 + 02 §8.3 第三方协议登记；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ 断言）
+protocol:
+  schema_version: "2"
+package:
+  conformance: "L2"
+  id: 合规与监管域包
+  name: 合规与监管域包
+  version: "1.0.0"
+  pipeline: P98
+  module_id_range:
+    - "合规与监管:M01"
+    - "合规与监管:M02"
+  categories:
+    - 合规与监管
+  dependencies:
+    core_only: true
+    core_modules: [M00, 通用:M10, M50, M80]
+    cross_package: []
+  references: []
+  modules:
+    - id: "合规与监管:M01"
+      desc: 合规与监管口径登记（12 条细分的定义 / 可机检判据 / 失效模式登记与冲突上报）
+    - id: "合规与监管:M02"
+      desc: 合规与监管收口与形态派生（度量复算 T4 + 概念图派生 + 与口径表同源收口）
+  assets:
+    count: 3
+    readme: README.md
+  outputs:
+    index: outputs/INDEX.json
+    count: 9
+    machine_verifiable: 9
+    functional: 1
+  mount_layers:
+    P40 行为决策: {default: [合规与监管:M01], available: []}
+    P60 长期演变: {default: [合规与监管:M02], available: []}

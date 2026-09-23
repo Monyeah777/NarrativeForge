@@ -1,0 +1,131 @@
+{
+  "kind": "nf-domain-spec/1",
+  "code": "C16",
+  "domain": "智能体框架与工具调用",
+  "section": "C · AI 工程与运维",
+  "anchors_verified_on": "2026-09-22",
+  "metric_family": "latency_cost",
+  "content_tier": "derived",
+  "subdivisions": [
+    {
+      "id": "C16-01",
+      "name": "工具 Schema 设计",
+      "definition": "工具 Schema 设计：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-02",
+      "name": "函数调用契约",
+      "definition": "函数调用契约：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-03",
+      "name": "工具选择与路由",
+      "definition": "工具选择与路由：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-04",
+      "name": "参数校验与纠错",
+      "definition": "参数校验与纠错：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-05",
+      "name": "多步任务规划",
+      "definition": "多步任务规划：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-06",
+      "name": "失败重试与回滚",
+      "definition": "失败重试与回滚：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-07",
+      "name": "沙箱与权限",
+      "definition": "沙箱与权限：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-08",
+      "name": "工具结果解析",
+      "definition": "工具结果解析：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-09",
+      "name": "MCP 与协议对接",
+      "definition": "MCP 与协议对接：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-10",
+      "name": "并发与状态管理",
+      "definition": "并发与状态管理：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-11",
+      "name": "工具评测",
+      "definition": "工具评测：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    },
+    {
+      "id": "C16-12",
+      "name": "成本与步数控制",
+      "definition": "成本与步数控制：口径 = 输入规格 / 处理参数 / 输出契约 / 验收判据 四件齐备（本条目按 C 段口径框架登记，领域细则待作者补全）。",
+      "anchor": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "anchor_kind": "spec",
+      "anchor_status": 200,
+      "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
+      "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
+    }
+  ]
+}

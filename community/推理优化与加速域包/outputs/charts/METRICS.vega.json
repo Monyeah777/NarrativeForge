@@ -1,0 +1,76 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "metric": "cost_per_1k_calls",
+        "value": 0.0
+      },
+      {
+        "metric": "cost_total",
+        "value": 0.0
+      },
+      {
+        "metric": "digits",
+        "value": 6.0
+      },
+      {
+        "metric": "max_ms",
+        "value": 877.8
+      },
+      {
+        "metric": "mean_ms",
+        "value": 470.58
+      },
+      {
+        "metric": "n",
+        "value": 20.0
+      },
+      {
+        "metric": "p50_ms",
+        "value": 474.9
+      },
+      {
+        "metric": "p95_ms",
+        "value": 854.3
+      },
+      {
+        "metric": "p99_ms",
+        "value": 877.8
+      },
+      {
+        "metric": "price_per_1k_in",
+        "value": 0.0
+      },
+      {
+        "metric": "price_per_1k_out",
+        "value": 0.0
+      },
+      {
+        "metric": "tokens_in",
+        "value": 20871.0
+      },
+      {
+        "metric": "tokens_out",
+        "value": 6722.0
+      }
+    ]
+  },
+  "description": "推理优化与加速 · 样例口径值",
+  "encoding": {
+    "x": {
+      "field": "value",
+      "title": "口径值",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "metric",
+      "sort": "-x",
+      "title": "指标",
+      "type": "nominal"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

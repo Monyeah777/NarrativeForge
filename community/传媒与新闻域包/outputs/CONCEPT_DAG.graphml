@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="layer" for="node" attr.name="layer" attr.type="string"/>
+  <key id="branch" for="node" attr.name="branch" attr.type="string"/>
+  <key id="provenance" for="edge" attr.name="provenance" attr.type="string"/>
+  <graph id="concept-graph" edgedefault="directed">
+    <node id="D17-01">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-02">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-03">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-04">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-05">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-06">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-07">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-08">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-09">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-10">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-11">
+      <data key="layer">P40</data>
+      <data key="branch">domain</data>
+    </node>
+    <node id="D17-12">
+      <data key="layer">P60</data>
+      <data key="branch">domain</data>
+    </node>
+    <edge source="D17-01" target="D17-02">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-02" target="D17-03">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-03" target="D17-04">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-01" target="D17-04">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-04" target="D17-05">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-02" target="D17-05">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-05" target="D17-06">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-03" target="D17-06">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-06" target="D17-07">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-04" target="D17-07">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-07" target="D17-08">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-05" target="D17-08">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-08" target="D17-09">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-06" target="D17-09">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-09" target="D17-10">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-07" target="D17-10">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-10" target="D17-11">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-08" target="D17-11">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-11" target="D17-12">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+    <edge source="D17-09" target="D17-12">
+      <data key="provenance">['d17-anchor']</data>
+    </edge>
+  </graph>
+</graphml>

@@ -1,0 +1,44 @@
+{
+  "code": "B15",
+  "domain": "图像生成与视觉设计",
+  "family": "classification",
+  "kind": "nf-domain-report/1",
+  "metrics": {
+    "accuracy": 0.875,
+    "confusion": {
+      "neg": {
+        "neg": 10,
+        "pos": 1
+      },
+      "pos": {
+        "neg": 2,
+        "pos": 11
+      }
+    },
+    "digits": 6,
+    "family": "classification",
+    "macro": {
+      "f1": 0.874783,
+      "precision": 0.875,
+      "recall": 0.877622
+    },
+    "n": 24,
+    "note": "样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）",
+    "per_label": {
+      "neg": {
+        "f1": 0.869565,
+        "precision": 0.833333,
+        "recall": 0.909091,
+        "support": 11
+      },
+      "pos": {
+        "f1": 0.88,
+        "precision": 0.916667,
+        "recall": 0.846154,
+        "support": 13
+      }
+    }
+  },
+  "sample": "outputs/samples/CASES.csv",
+  "sample_rows": 24
+}
