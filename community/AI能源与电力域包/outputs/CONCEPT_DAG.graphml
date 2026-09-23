@@ -52,7 +52,19 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-common-criteria">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-cwe">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-package">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-frictionless-table">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -64,11 +76,19 @@
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
-    <node id="STD-iso-iec-25010">
+    <node id="STD-ietf-bcp47">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
-    <node id="STD-iso-iec-42010">
+    <node id="STD-ietf-json">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json-schema">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mermaid">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -80,7 +100,23 @@
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
+    <node id="STD-owasp-top10">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-rdf11">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-vega-lite">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-w3c-prov-o">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-tabular-data">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -144,7 +180,19 @@
     <edge source="D09-09" target="D09-12">
       <data key="provenance">['d09-anchor']</data>
     </edge>
+    <edge source="D09-03" target="STD-common-criteria">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-09" target="STD-common-criteria">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="D09-02" target="STD-cwe">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-12" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-frictionless-package" target="STD-frictionless-table">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="D09-11" target="STD-gdpr">
@@ -153,19 +201,31 @@
     <edge source="D09-07" target="STD-hl7-fhir">
       <data key="provenance">['std-catalog']</data>
     </edge>
-    <edge source="D09-09" target="STD-iso-iec-25010">
+    <edge source="D09-01" target="STD-ietf-json-schema">
       <data key="provenance">['std-catalog']</data>
     </edge>
-    <edge source="D09-01" target="STD-iso-iec-42010">
+    <edge source="D09-05" target="STD-ietf-json-schema">
       <data key="provenance">['std-catalog']</data>
     </edge>
-    <edge source="D09-03" target="STD-iso-iec-42010">
+    <edge source="D09-06" target="STD-ietf-json-schema">
       <data key="provenance">['std-catalog']</data>
     </edge>
-    <edge source="D09-04" target="STD-iso-iec-42010">
+    <edge source="D09-11" target="STD-ietf-json-schema">
       <data key="provenance">['std-catalog']</data>
     </edge>
-    <edge source="D09-12" target="STD-iso-iec-42010">
+    <edge source="STD-ietf-json" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-04" target="STD-mermaid">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-09" target="STD-mermaid">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-01" target="STD-nist-ai-rmf">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-04" target="STD-nist-ai-rmf">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="D09-10" target="STD-nist-ai-rmf">
@@ -174,10 +234,40 @@
     <edge source="D09-06" target="STD-owasp-llm">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-owasp-top10" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-02" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-03" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json-schema" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="D09-05" target="STD-w3c-prov-o">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="D09-08" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-07" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-12" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-rdf11" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-08" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="D09-10" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-bcp47" target="STD-w3c-tabular-data">
       <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>

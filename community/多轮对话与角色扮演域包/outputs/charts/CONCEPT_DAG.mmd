@@ -17,12 +17,23 @@ flowchart TD
     B07-12
   end
   subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
     STD-gfm
+    STD-ietf-bcp47
+    STD-ietf-ixdtf
+    STD-ietf-json
     STD-ietf-json-schema
     STD-mlcommons-bench
     STD-owasp-llm
+    STD-owasp-top10
+    STD-rdf11
+    STD-rfc3339
+    STD-vega-lite
     STD-w3c-owl-time
+    STD-w3c-owl2
+    STD-w3c-prov-o
     STD-w3c-tabular-data
   end
   B07-02 --> B07-01
@@ -35,15 +46,36 @@ flowchart TD
   B07-10 --> B07-11
   B07-08 --> B07-11
   B07-06 --> B07-12
+  B07-07 --> STD-commonmark
+  B07-09 --> STD-commonmark
   B07-03 --> STD-frictionless-table
   B07-09 --> STD-frictionless-table
   B07-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B07-04 --> STD-gfm
+  STD-commonmark --> STD-gfm
+  B07-08 --> STD-ietf-ixdtf
+  STD-rfc3339 --> STD-ietf-ixdtf
   B07-01 --> STD-ietf-json-schema
   B07-07 --> STD-ietf-json-schema
   B07-10 --> STD-ietf-json-schema
+  B07-02 --> STD-ietf-json-schema
+  B07-06 --> STD-ietf-json-schema
+  B07-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B07-11 --> STD-mlcommons-bench
   B07-06 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
+  B07-01 --> STD-vega-lite
+  B07-03 --> STD-vega-lite
+  B07-05 --> STD-vega-lite
+  B07-10 --> STD-vega-lite
+  B07-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   B07-08 --> STD-w3c-owl-time
+  STD-w3c-owl2 --> STD-w3c-owl-time
+  B07-04 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B07-02 --> STD-w3c-tabular-data
   B07-05 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

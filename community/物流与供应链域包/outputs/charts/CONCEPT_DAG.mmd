@@ -18,11 +18,19 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-otel-semconv
+    STD-frictionless-package
     STD-frictionless-table
     STD-gdpr
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
+    STD-rdf11
     STD-spdx-3
+    STD-vega-lite
     STD-w3c-prov-o
+    STD-w3c-tabular-data
     STD-w3c-wot
   end
   D12-01 --> D12-02
@@ -47,13 +55,30 @@ flowchart TD
   D12-09 --> D12-12
   D12-07 --> STD-cncf-otel-semconv
   D12-06 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   D12-09 --> STD-gdpr
+  D12-01 --> STD-ietf-json-schema
+  D12-05 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  D12-04 --> STD-mermaid
+  D12-09 --> STD-mermaid
+  D12-11 --> STD-mermaid
   D12-01 --> STD-nist-ai-rmf
   D12-04 --> STD-nist-ai-rmf
   D12-10 --> STD-nist-ai-rmf
   D12-12 --> STD-spdx-3
+  D12-02 --> STD-vega-lite
+  D12-03 --> STD-vega-lite
+  D12-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D12-02 --> STD-w3c-prov-o
   D12-05 --> STD-w3c-prov-o
   D12-08 --> STD-w3c-prov-o
   D12-11 --> STD-w3c-prov-o
+  D12-06 --> STD-w3c-prov-o
+  D12-07 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  D12-08 --> STD-w3c-tabular-data
+  D12-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
   D12-03 --> STD-w3c-wot

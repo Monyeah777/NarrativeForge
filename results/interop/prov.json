@@ -67,7 +67,7 @@
     {
       "@id": "nf:file/02_联动注册表.md",
       "@type": "prov:Entity",
-      "nf:sha256": "0c12d7cfffcb003b2c7874b66b2fe6b866b3b0418a4a17191a356c0b05e47532"
+      "nf:sha256": "ab81b6066472d9be00773a55598d87a3d60f257dd5fc037b0bd0d3274171b721"
     },
     {
       "@id": "nf:file/06_Agent执行协议.md",
@@ -107,7 +107,7 @@
     {
       "@id": "nf:file/desktop/src/core/registry.json",
       "@type": "prov:Entity",
-      "nf:sha256": "a9fda72a0eb53ad6a5e6934aef162a8633e0b1fdeae32f58933446e6561ff902"
+      "nf:sha256": "581dab88b1c8fa0f8ae31e28d0c3a74a43a4c0b414ecec1efb27edd1eab34ae8"
     },
     {
       "@id": "nf:file/library/ALIAS.md",
@@ -137,7 +137,7 @@
     {
       "@id": "nf:file/protocol/asset_line_baseline.json",
       "@type": "prov:Entity",
-      "nf:sha256": "1076f0e3541a36a97199598e40893b034d399b7fd421e2bbcf1b4d3dd37e2d3e"
+      "nf:sha256": "15e29d124e0ab6bcf09f00b709ceae7153bfafba19777c5fbc6dfe52b48242e7"
     },
     {
       "@id": "nf:file/protocol/audit.json",
@@ -152,7 +152,7 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "a73dc32d8aa0957f0ae1e607c0e6a6a3e3d6ffd5d32ae8886acfb0b5ae3fd7b2"
+      "nf:sha256": "3f7323909e04bd4c8476cbedd8bf77814684fc81dcbdfeab421d7d7176aa8baa"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",
@@ -222,7 +222,7 @@
     {
       "@id": "nf:file/protocol/module_signatures.json",
       "@type": "prov:Entity",
-      "nf:sha256": "8fb0fee17d146cf0f6ccb64ad6e912ff66988af401e2fe807de9253c86dbe4b4"
+      "nf:sha256": "fceaa24b1e80bdbbb7058cc1e9c213a358bae15f930ee0d732dfe82677241a1a"
     },
     {
       "@id": "nf:file/protocol/normative.json",
@@ -232,7 +232,7 @@
     {
       "@id": "nf:file/protocol/pipeline_advisory.json",
       "@type": "prov:Entity",
-      "nf:sha256": "c99864b1b926e05852737cc6b06b9828ed108a794df93bb06b4ca39bd0c58fba"
+      "nf:sha256": "acd2225351b2344a9344f4c4aedfda75eb4d2f721f6e34caac6a7db2f929426b"
     },
     {
       "@id": "nf:file/protocol/postmortem.json",
@@ -252,7 +252,7 @@
     {
       "@id": "nf:file/protocol/schema/contract.schema.json",
       "@type": "prov:Entity",
-      "nf:sha256": "23a46a2010ce1bc143063fc3b7d60e1ae1959e884bf251901d9a6680bcd43ef7"
+      "nf:sha256": "12de90b153bc72ba944889090d16f544bec1537424155fa41934ea1546941826"
     },
     {
       "@id": "nf:file/protocol/schema/module.schema.json",

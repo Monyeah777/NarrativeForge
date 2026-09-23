@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="layer" for="node" attr.name="layer" attr.type="string"/>
+  <graph id="combo" edgedefault="directed">
+    <node id="向量库与检索管线:M01"><data key="layer">P40</data></node>
+    <node id="向量库与检索管线:M02"><data key="layer">P60</data></node>
+    <node id="大语言模型:M01"><data key="layer">P40</data></node>
+    <node id="大语言模型:M02"><data key="layer">P60</data></node>
+    <node id="嵌入与检索表示:M01"><data key="layer">P40</data></node>
+    <node id="嵌入与检索表示:M02"><data key="layer">P60</data></node>
+    <edge source="向量库与检索管线:M02" target="向量库与检索管线:M01"/>
+    <edge source="大语言模型:M02" target="大语言模型:M01"/>
+    <edge source="嵌入与检索表示:M02" target="嵌入与检索表示:M01"/>
+  </graph>
+</graphml>

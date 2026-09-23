@@ -17,11 +17,19 @@ flowchart TD
     B02-12
   end
   subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-mlcommons-bench
+    STD-rdf11
+    STD-vega-lite
     STD-w3c-epub33
+    STD-w3c-prov-o
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   B02-01 --> B02-02
   B02-02 --> B02-03
@@ -33,15 +41,33 @@ flowchart TD
   B02-05 --> B02-10
   B02-08 --> B02-11
   B02-03 --> B02-12
+  B02-03 --> STD-commonmark
+  B02-07 --> STD-commonmark
+  B02-09 --> STD-commonmark
   B02-06 --> STD-frictionless-table
   B02-09 --> STD-frictionless-table
   B02-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B02-01 --> STD-ietf-json-schema
   B02-04 --> STD-ietf-json-schema
   B02-07 --> STD-ietf-json-schema
   B02-10 --> STD-ietf-json-schema
+  B02-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B02-11 --> STD-mlcommons-bench
+  B02-01 --> STD-vega-lite
+  B02-02 --> STD-vega-lite
+  B02-05 --> STD-vega-lite
+  B02-06 --> STD-vega-lite
+  B02-10 --> STD-vega-lite
+  B02-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   B02-03 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
+  B02-04 --> STD-w3c-prov-o
+  B02-08 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B02-02 --> STD-w3c-tabular-data
   B02-05 --> STD-w3c-tabular-data
   B02-08 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

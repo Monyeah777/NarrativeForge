@@ -4,8 +4,31 @@
   "domain": "音频与音乐生成",
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "preference",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "cncf-cloudevents",
+      "creativecommons",
+      "ietf-json-schema",
+      "mlcommons-bench",
+      "onnx",
+      "opengeospatial",
+      "spdx-licenses",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data",
+      "w3c-webaudio"
+    ]
+  },
   "subdivisions": [
     {
       "id": "A05-01",
@@ -16,6 +39,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-webaudio",
       "standard_why": "关键词「音频|语音|声学|音乐|歌声」命中",
+      "standards": [
+        {
+          "ref": "w3c-webaudio",
+          "role": "primary",
+          "why": "关键词「音频|语音|声学|音乐|歌声」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 condition_type（text|chord|melody）、max_duration_s、sample_rate（Hz）、structure_control（none|段标记）。",
       "pitfall": "不报生成时长上限就把短片段质量当整曲质量；采样率不一致导致听测不可比。"
     },
@@ -28,6 +77,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 stems（声道枚举 2|4|6）、metric（SDR|SIR|SAR 组合）、以及测试混合来源（同源|跨源）。",
       "pitfall": "用同源混合测试再宣称真实录音性能；只报 SDR 不报干扰与伪影分量。"
     },
@@ -40,6 +115,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "A 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 2）",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 input_format、quantization（如 1/16 音符）、tempo_basis（BPM 来源）与调号处理。",
       "pitfall": "量化精度不同导致音符数不可比；拍速基准缺失造成节奏类结论失真。"
     },
@@ -52,6 +155,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "A 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 tag_taxonomy（体系来源）、multilabel（true|false）、split（artist-wise|random）。",
       "pitfall": "随机切分让同一艺人跨集，指标虚高；标签体系不同却比较 mAP。"
     },
@@ -64,6 +195,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-webaudio",
       "standard_why": "关键词「音频|语音|声学|音乐|歌声」命中",
+      "standards": [
+        {
+          "ref": "w3c-webaudio",
+          "role": "primary",
+          "why": "关键词「音频|语音|声学|音乐|歌声」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 degradation_type（枚举）、input_snr_db（范围）、以及是否端到端（end_to_end true|false）。",
       "pitfall": "只报降噪后 PESQ 不报引入的伪影；训练噪声与测试噪声同源。"
     },
@@ -76,6 +233,34 @@
       "anchor_status": 200,
       "standard_ref": "cncf-cloudevents",
       "standard_why": "关键词「事件|消息|通道」命中",
+      "standards": [
+        {
+          "ref": "cncf-cloudevents",
+          "role": "primary",
+          "why": "关键词「事件|消息|通道」命中",
+          "layer": "iface",
+          "body": "CNCF",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 event_taxonomy、temporal_resolution（segment|frame + 时长）、overlap_policy（allow|exclude）。",
       "pitfall": "段级与帧级指标混比；重叠事件被排除却宣称覆盖真实场景。"
     },
@@ -88,6 +273,32 @@
       "anchor_status": 200,
       "standard_ref": "opengeospatial",
       "standard_why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+      "standards": [
+        {
+          "ref": "opengeospatial",
+          "role": "primary",
+          "why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+          "layer": "data",
+          "body": "OGC",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 channel_layout（mono|stereo|5.1|ambisonic）、renderer（HRTF|amplitude panning）、listening_env（耳机|音箱）。",
       "pitfall": "不同渲染方式直接比主观分；听测环境未声明导致结论不可复现。"
     },
@@ -100,6 +311,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 condition（text|audio-ref）、max_duration_s、controllable_dims（音色|空间|时长）。",
       "pitfall": "无法控时长却宣称音效库可替代；参考音频来源未标许可。"
     },
@@ -112,6 +349,30 @@
       "anchor_status": 200,
       "standard_ref": "creativecommons",
       "standard_why": "关键词「许可|版权|知识产权|授权」命中",
+      "standards": [
+        {
+          "ref": "creativecommons",
+          "role": "primary",
+          "why": "关键词「许可|版权|知识产权|授权」命中",
+          "layer": "gov",
+          "body": "Creative Commons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "spdx-licenses",
+          "role": "support",
+          "why": "载体锚：产出形态「授权」的承载标准",
+          "layer": "gov",
+          "body": "SPDX",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 data_license（每个来源的 CC/商业许可枚举）、sample_provenance（可追溯标识）与 output_ownership 声明。",
       "pitfall": "训练集含未授权采样却在输出端宣称可商用；许可链未逐源登记。"
     },
@@ -124,6 +385,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-webaudio",
       "standard_why": "关键词「音频|语音|声学|音乐|歌声」命中",
+      "standards": [
+        {
+          "ref": "w3c-webaudio",
+          "role": "primary",
+          "why": "关键词「音频|语音|声学|音乐|歌声」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 candidate_size、objective（CTR|时长|完播）、offline_metric 与 online_metric 各自口径。",
       "pitfall": "用离线召回率替代在线完播结论；候选集规模未声明导致可比性断裂。"
     },
@@ -136,6 +423,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-webaudio",
       "standard_why": "关键词「音频|语音|声学|音乐|歌声」命中",
+      "standards": [
+        {
+          "ref": "w3c-webaudio",
+          "role": "primary",
+          "why": "关键词「音频|语音|声学|音乐|歌声」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 input_representation（phoneme+note|lyrics+melody）、duration_control（none|explicit）与评测方法（MOS|A/B）。",
       "pitfall": "自评 MOS 无听测人数与筛查标准；时长控制缺失导致翻唱对不上拍。"
     },
@@ -148,6 +461,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「评测|基准|排行榜|跑分」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明客观指标清单 + 版本口径、主观协议（人数 / 筛查 / 量表）、以及退化条件（采样率、码率）。",
       "pitfall": "用不同采样率下的 PESQ 比较；主观听测人数不足且无筛查标准。"
     }

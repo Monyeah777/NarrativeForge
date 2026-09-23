@@ -4153,6 +4153,356 @@
       "references": [],
       "schema_version": "2",
       "version": "1.0.0"
+    },
+    {
+      "id": "组合包-检索栈",
+      "name": "组合包-检索栈",
+      "pipeline": "P109",
+      "categories": [
+        "组合域-检索栈"
+      ],
+      "module_ids": [],
+      "assets": {
+        "count": 0,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "",
+          "default": [],
+          "available": [
+            "向量库与检索管线:M01",
+            "大语言模型:M01",
+            "嵌入与检索表示:M01"
+          ]
+        },
+        "P60": {
+          "name": "",
+          "default": [],
+          "available": [
+            "向量库与检索管线:M02",
+            "大语言模型:M02",
+            "嵌入与检索表示:M02"
+          ]
+        }
+      },
+      "references": [
+        {
+          "source_package": "向量库与检索管线域包",
+          "module_id": "向量库与检索管线:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "向量库与检索管线域包",
+          "module_id": "向量库与检索管线:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "大语言模型域包",
+          "module_id": "大语言模型:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "大语言模型域包",
+          "module_id": "大语言模型:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "嵌入与检索表示域包",
+          "module_id": "嵌入与检索表示:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "嵌入与检索表示域包",
+          "module_id": "嵌入与检索表示:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        }
+      ],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "组合包-数据管线",
+      "name": "组合包-数据管线",
+      "pipeline": "P108",
+      "categories": [
+        "组合域-数据管线"
+      ],
+      "module_ids": [],
+      "assets": {
+        "count": 0,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "",
+          "default": [],
+          "available": [
+            "合成数据生成:M01",
+            "数据采集与清洗:M01",
+            "评测基准与排行榜:M01",
+            "预训练与继续预训练:M01"
+          ]
+        },
+        "P60": {
+          "name": "",
+          "default": [],
+          "available": [
+            "合成数据生成:M02",
+            "数据采集与清洗:M02",
+            "评测基准与排行榜:M02",
+            "预训练与继续预训练:M02"
+          ]
+        }
+      },
+      "references": [
+        {
+          "source_package": "合成数据生成域包",
+          "module_id": "合成数据生成:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "合成数据生成域包",
+          "module_id": "合成数据生成:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "数据采集与清洗域包",
+          "module_id": "数据采集与清洗:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "数据采集与清洗域包",
+          "module_id": "数据采集与清洗:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "评测基准与排行榜域包",
+          "module_id": "评测基准与排行榜:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "评测基准与排行榜域包",
+          "module_id": "评测基准与排行榜:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "预训练与继续预训练域包",
+          "module_id": "预训练与继续预训练:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "预训练与继续预训练域包",
+          "module_id": "预训练与继续预训练:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        }
+      ],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "组合包-受监管行业",
+      "name": "组合包-受监管行业",
+      "pipeline": "P110",
+      "categories": [
+        "组合域-受监管行业"
+      ],
+      "module_ids": [],
+      "assets": {
+        "count": 0,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "",
+          "default": [],
+          "available": [
+            "AI法律与合规:M01",
+            "AI金融投研与风控:M01",
+            "可解释性与审计:M01",
+            "隐私与数据治理:M01"
+          ]
+        },
+        "P60": {
+          "name": "",
+          "default": [],
+          "available": [
+            "AI法律与合规:M02",
+            "AI金融投研与风控:M02",
+            "可解释性与审计:M02",
+            "隐私与数据治理:M02"
+          ]
+        }
+      },
+      "references": [
+        {
+          "source_package": "AI法律与合规域包",
+          "module_id": "AI法律与合规:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "AI法律与合规域包",
+          "module_id": "AI法律与合规:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "AI金融投研与风控域包",
+          "module_id": "AI金融投研与风控:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "AI金融投研与风控域包",
+          "module_id": "AI金融投研与风控:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "可解释性与审计域包",
+          "module_id": "可解释性与审计:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "可解释性与审计域包",
+          "module_id": "可解释性与审计:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "隐私与数据治理域包",
+          "module_id": "隐私与数据治理:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "隐私与数据治理域包",
+          "module_id": "隐私与数据治理:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        }
+      ],
+      "schema_version": "2",
+      "version": "1.0.0"
+    },
+    {
+      "id": "组合包-轻混与保险",
+      "name": "组合包-轻混与保险",
+      "pipeline": "P111",
+      "categories": [
+        "组合域-轻混与保险"
+      ],
+      "module_ids": [],
+      "assets": {
+        "count": 0,
+        "readme": "README.md"
+      },
+      "mount_layers": {
+        "P40": {
+          "name": "",
+          "default": [],
+          "available": [
+            "AI保险:M01",
+            "M22",
+            "M40",
+            "M41",
+            "M43",
+            "M55",
+            "M91"
+          ]
+        },
+        "P50": {
+          "name": "",
+          "default": [],
+          "available": [
+            "M17",
+            "M92"
+          ]
+        },
+        "P60": {
+          "name": "",
+          "default": [],
+          "available": [
+            "AI保险:M02",
+            "M07",
+            "M09"
+          ]
+        }
+      },
+      "references": [
+        {
+          "source_package": "AI保险域包",
+          "module_id": "AI保险:M01",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "AI保险域包",
+          "module_id": "AI保险:M02",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园情感领域包",
+          "module_id": "M55",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园情感领域包",
+          "module_id": "M43",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园情感领域包",
+          "module_id": "情感:M22",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园情感领域包",
+          "module_id": "M40",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园西幻轻混组合包",
+          "module_id": "M91",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "校园西幻轻混组合包",
+          "module_id": "M92",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        },
+        {
+          "source_package": "西幻生存领域包",
+          "module_id": "M17",
+          "source_schema_version": "2",
+          "asset_readonly": true
+        }
+      ],
+      "schema_version": "2",
+      "version": "1.0.0"
     }
   ]
 }

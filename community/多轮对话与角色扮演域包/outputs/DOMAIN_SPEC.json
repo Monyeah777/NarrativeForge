@@ -4,8 +4,31 @@
   "domain": "多轮对话与角色扮演",
   "section": "B · 任务类型",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "preference",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "commonmark",
+      "frictionless-table",
+      "gfm",
+      "ietf-ixdtf",
+      "ietf-json-schema",
+      "mlcommons-bench",
+      "owasp-llm",
+      "vega-lite",
+      "w3c-owl-time",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "B07-01",
@@ -16,6 +39,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 persona_dims（维度清单）、judge（规则|模型|人工 + 版本）与 drift_check（跨轮一致率）。",
       "pitfall": "只凭第一轮判断一致性；口癖与知识边界未列入维度（漂移不可测）。"
     },
@@ -28,6 +79,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "B 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "载体锚：产出形态「契约」的承载标准",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 required_fields（清单）、type_constraints（每字段类型）与 version_policy（字段增删时的兼容规则）。",
       "pitfall": "字段随意扩展（不同客户端读不懂）；旧卡无版本号导致迁移不可判。"
     },
@@ -40,6 +119,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "B 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 2）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 inject_position（前/后/分层）、trigger（keyword|embedding）与 token_budget。",
       "pitfall": "关键设定注入在长上下文中段（被忽略）；预算无上限导致挤掉对话历史。"
     },
@@ -52,6 +159,34 @@
       "anchor_status": 200,
       "standard_ref": "gfm",
       "standard_why": "关键词「缓存|分块|上下文」命中",
+      "standards": [
+        {
+          "ref": "gfm",
+          "role": "primary",
+          "why": "关键词「缓存|分块|上下文」命中",
+          "layer": "form",
+          "body": "GitHub",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "commonmark"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "B 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 state_fields（清单）、truncation（滑窗|摘要|分层）与 must_keep（不可丢字段规则）。",
       "pitfall": "按时间截断丢掉早期关键设定；状态字段未定型导致回放不一致。"
     },
@@ -64,6 +199,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "B 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 speaker_selection（规则|模型）、max_turns 与 conflict_policy（同轮多发言的合并/排队）。",
       "pitfall": "角色被长期冷落（发言分布失衡）；同轮并发输出未定义合并规则。"
     },
@@ -76,6 +239,34 @@
       "anchor_status": 200,
       "standard_ref": "owasp-llm",
       "standard_why": "关键词「安全|越狱|红队|攻击|对抗」命中",
+      "standards": [
+        {
+          "ref": "owasp-llm",
+          "role": "primary",
+          "why": "关键词「安全|越狱|红队|攻击|对抗」命中",
+          "layer": "gov",
+          "body": "OWASP",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "owasp-top10"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 boundary_types（枚举）、interception_point（生成前|生成后）与 post_action（改写|拒答|转人工）。",
       "pitfall": "只在生成后过滤（已泄露）；边界类型不枚举导致漏检靠运气。"
     },
@@ -88,6 +279,32 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 relation_dims（维度 + 取值域）、progress_levels（台阶定义）与 regress_rule（何时回退）。",
       "pitfall": "关系只升不降（不真实）；台阶未定义导致进度无法机检。"
     },
@@ -100,6 +317,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-owl-time",
       "standard_why": "关键词「时间线|时序|日期」命中",
+      "standards": [
+        {
+          "ref": "w3c-owl-time",
+          "role": "primary",
+          "why": "关键词「时间线|时序|日期」命中",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-owl2"
+          ]
+        },
+        {
+          "ref": "ietf-ixdtf",
+          "role": "support",
+          "why": "载体锚：产出形态「时间」的承载标准",
+          "layer": "data",
+          "body": "IETF",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rfc3339"
+          ]
+        }
+      ],
       "check": "声明 time_base（回合|剧情时间）、switch_trigger（显式|条件）与 merge_rule（并行线如何归一）。",
       "pitfall": "时间倒流无检测；并行线合并无规则导致设定冲突。"
     },
@@ -112,6 +357,32 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "B 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 2）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 example_count、example_source（人工|生成）与 first_turn_guidance（必须出现的引导要素）。",
       "pitfall": "示例与设定矛盾（模型学到错设定）；示例全由模型生成（风格自锁）。"
     },
@@ -124,6 +395,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 write_criterion（何时写入记忆）、summary_granularity 与 recall（关键词|向量|混合）。",
       "pitfall": "什么都写进记忆（噪声淹没）；回溯命中率未测。"
     },
@@ -136,6 +435,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「评测|基准|排行榜|跑分」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 eval_dims（分列）、raters（人数 / 是否模型）与 agreement（kappa 或一致率）。",
       "pitfall": "用模型自评替代人类偏好；维度合并成一个总分（无法定位）。"
     },
@@ -148,6 +473,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "B 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 2）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 interruption_detection（方式）、recovery（回滚|续接）与 immersion_metric（量表 / 代理指标）。",
       "pitfall": "打断后从零开始（丢失上下文）；沉浸感无量表只凭感觉。"
     }

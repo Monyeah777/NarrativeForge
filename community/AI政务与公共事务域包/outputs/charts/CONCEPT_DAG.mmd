@@ -17,13 +17,23 @@ flowchart TD
     D07-12
   end
   subgraph P80[P80]
+    STD-cncf-cloudevents
+    STD-common-criteria
+    STD-commonmark
     STD-gdpr
-    STD-iso-iec-25010
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
     STD-mermaid
     STD-nist-800-188
+    STD-nist-privacy
     STD-oasis-openapi
     STD-oecd-ai
+    STD-rdf11
+    STD-vega-lite
     STD-w3c-prov-o
+    STD-w3c-tabular-data
+    STD-w3c-vc
     STD-w3c-wcag22
   end
   D07-01 --> D07-02
@@ -46,15 +56,35 @@ flowchart TD
   D07-08 --> D07-11
   D07-11 --> D07-12
   D07-09 --> D07-12
+  D07-04 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
+  D07-06 --> STD-common-criteria
+  D07-02 --> STD-commonmark
   D07-07 --> STD-gdpr
-  D07-06 --> STD-iso-iec-25010
+  D07-01 --> STD-ietf-json-schema
+  D07-05 --> STD-ietf-json-schema
+  D07-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   D07-04 --> STD-mermaid
+  D07-09 --> STD-mermaid
   D07-09 --> STD-nist-800-188
   D07-11 --> STD-nist-800-188
+  STD-nist-privacy --> STD-nist-800-188
   D07-08 --> STD-oasis-openapi
+  D07-12 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
   D07-01 --> STD-oecd-ai
   D07-03 --> STD-oecd-ai
   D07-10 --> STD-oecd-ai
+  D07-03 --> STD-vega-lite
+  D07-07 --> STD-vega-lite
+  D07-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D07-02 --> STD-w3c-prov-o
   D07-05 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  D07-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
+  D07-11 --> STD-w3c-vc
+  STD-rdf11 --> STD-w3c-vc
   D07-12 --> STD-w3c-wcag22

@@ -56,7 +56,19 @@
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-frictionless-package">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json-schema">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mermaid">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -65,6 +77,22 @@
       <data key="branch">standards</data>
     </node>
     <node id="STD-onnx">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-protobuf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-rdf11">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-vega-lite">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-prov-o">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -104,6 +132,9 @@
     <edge source="A11-11" target="STD-arrow">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="A11-01" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="A11-02" target="STD-frictionless-package">
       <data key="provenance">['std-catalog']</data>
     </edge>
@@ -125,6 +156,15 @@
     <edge source="A11-12" target="STD-frictionless-package">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-ietf-json-schema" target="STD-frictionless-package">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-04" target="STD-mermaid">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-09" target="STD-mermaid">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="A11-10" target="STD-mlcommons-bench">
       <data key="provenance">['std-catalog']</data>
     </edge>
@@ -132,6 +172,42 @@
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="A11-03" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-protobuf" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-02" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-03" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-06" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-07" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-08" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-11" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-12" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json-schema" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-05" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A11-10" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-rdf11" target="STD-w3c-prov-o">
       <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>

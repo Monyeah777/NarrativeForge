@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
-|---|---|---|---|---|---|
-| `B06-01` | 检索-生成管线设计 | 检索-生成管线设计的口径：阶段划分、每阶段输入输出契约与失败回退。 | 声明 stages（清单）、io_contract（每阶段字段）与 fallback（检索为空时的行为）。 | 检索为空仍强答（幻觉）；阶段契约缺失导致不可替换组件。 | `frictionless-package` Data Package（Frictionless） |
-| `B06-02` | 分块策略 | 分块策略的口径：块大小单位（字符 / token）、重叠比例与语义边界规则。 | 声明 chunk_unit（char|token）、chunk_size、overlap_ratio 与 boundary_rule（句/段/标题）。 | 块过大导致噪声进上下文；重叠比例未声明导致召回率不可复现。 | `gfm` GFM 扩展（GitHub） |
-| `B06-03` | 查询改写与扩展 | 查询改写与扩展的口径：改写策略、改写次数与原始查询保留规则。 | 声明 rewrite_strategy（HyDE|多查询|同义扩展）、max_rewrites 与 keep_original（true|false）。 | 改写丢失原查询语义（漂移）；改写次数不限导致成本失控。 | `frictionless-table` Table Schema（Frictionless） |
-| `B06-04` | 混合检索 | 混合检索的口径：稀疏 / 稠密融合方式、权重与归一化（与 A11 同口径）。 | 声明 fusion（rrf|weighted）、weights 与 score_norm，并给出各路的单独召回作对照。 | 只报融合后效果（无法归因）；分数未归一化。 | `frictionless-package` Data Package（Frictionless） |
-| `B06-05` | 重排序 | 重排序的口径：候选数、重排深度与延迟预算（与 A11 同口径）。 | 声明 candidates、rerank_depth 与 latency_budget_ms，并报告重排前后指标变化。 | 重排带来延迟却未报延迟；深度变化后结论不可比。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
-| `B06-06` | 上下文压缩 | 上下文压缩的口径：压缩比、保留优先级与信息损失核查。 | 声明 compression_ratio、keep_priority（规则）与 loss_check（压缩前后答案一致率）。 | 压缩掉关键证据却不行核查；压缩比随查询浮动未声明。 | `gfm` GFM 扩展（GitHub） |
-| `B06-07` | 引用与归因 | 引用与归因的口径：引用粒度（句 / 段 / 文档）、引用真实性校验与无引用时的处理。 | 声明 citation_granularity、citation_verification（逐条核验通过率）与 no_citation_policy。 | 引用与原文不符（假引用）；无引用仍输出断言。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B06-08` | 多跳问答 | 多跳问答的口径：跳数定义、中间证据要求与逐步正确性报告。 | 声明 hop_count、evidence_per_hop（要求每跳证据）与 step_accuracy（逐跳正确率）。 | 只报最终答案（中间错也满分）；跳数未定义导致可比性缺失。 | `frictionless-table` Table Schema（Frictionless） |
-| `B06-09` | 知识库构建与更新 | 知识库构建与更新的口径：来源许可、更新频率与失效内容下线机制。 | 声明 source_license（逐源）、update_freq（小时/天）与 invalidation（下线与重建触发规则）。 | 过期内容不下线（知识污染）；来源许可未登记。 | `frictionless-table` Table Schema（Frictionless） |
-| `B06-10` | 拒答与不确定性 | 拒答与不确定性的口径：拒答判据（检索分 / 覆盖度）、拒答率与误拒代价。 | 声明 abstain_criterion（阈值 + 依据）、abstain_rate 与 false_abstain_rate（本可回答却拒答）。 | 无拒答机制（必答即编）；只报拒答率不报误拒。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B06-11` | 检索增强评测 | 检索增强评测的口径：检索与生成指标分列、消融对照与端到端指标。 | 声明 retrieval_metrics、generation_metrics 与 ablation（有/无检索对照），并说明端到端指标定义。 | 只报端到端分数（无法定位问题）；无消融对照。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
-| `B06-12` | 幻觉与冲突消解 | 幻觉与冲突消解的口径：冲突检测（多来源矛盾）、裁决优先级与人工升级路径。 | 声明 conflict_detection（方法）、resolution_policy（来源优先级 / 时间优先 / 人工）与 escalation（升级条件）。 | 冲突静默取一个（不可追溯）；无人工升级路径。 | `frictionless-table` Table Schema（Frictionless） |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|---|
+| `B06-01` | 检索-生成管线设计 | 检索-生成管线设计的口径：阶段划分、每阶段输入输出契约与失败回退。 | 声明 stages（清单）、io_contract（每阶段字段）与 fallback（检索为空时的行为）。 | 检索为空仍强答（幻觉）；阶段契约缺失导致不可替换组件。 | `frictionless-package` Data Package（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B06-02` | 分块策略 | 分块策略的口径：块大小单位（字符 / token）、重叠比例与语义边界规则。 | 声明 chunk_unit（char|token）、chunk_size、overlap_ratio 与 boundary_rule（句/段/标题）。 | 块过大导致噪声进上下文；重叠比例未声明导致召回率不可复现。 | `gfm` GFM 扩展（form｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `B06-03` | 查询改写与扩展 | 查询改写与扩展的口径：改写策略、改写次数与原始查询保留规则。 | 声明 rewrite_strategy（HyDE|多查询|同义扩展）、max_rewrites 与 keep_original（true|false）。 | 改写丢失原查询语义（漂移）；改写次数不限导致成本失控。 | `frictionless-table` Table Schema（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B06-04` | 混合检索 | 混合检索的口径：稀疏 / 稠密融合方式、权重与归一化（与 A11 同口径）。 | 声明 fusion（rrf|weighted）、weights 与 score_norm，并给出各路的单独召回作对照。 | 只报融合后效果（无法归因）；分数未归一化。 | `frictionless-package` Data Package（data｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B06-05` | 重排序 | 重排序的口径：候选数、重排深度与延迟预算（与 A11 同口径）。 | 声明 candidates、rerank_depth 与 latency_budget_ms，并报告重排前后指标变化。 | 重排带来延迟却未报延迟；深度变化后结论不可比。 | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B06-06` | 上下文压缩 | 上下文压缩的口径：压缩比、保留优先级与信息损失核查。 | 声明 compression_ratio、keep_priority（规则）与 loss_check（压缩前后答案一致率）。 | 压缩掉关键证据却不行核查；压缩比随查询浮动未声明。 | `gfm` GFM 扩展（form｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B06-07` | 引用与归因 | 引用与归因的口径：引用粒度（句 / 段 / 文档）、引用真实性校验与无引用时的处理。 | 声明 citation_granularity、citation_verification（逐条核验通过率）与 no_citation_policy。 | 引用与原文不符（假引用）；无引用仍输出断言。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B06-08` | 多跳问答 | 多跳问答的口径：跳数定义、中间证据要求与逐步正确性报告。 | 声明 hop_count、evidence_per_hop（要求每跳证据）与 step_accuracy（逐跳正确率）。 | 只报最终答案（中间错也满分）；跳数未定义导致可比性缺失。 | `frictionless-table` Table Schema（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B06-09` | 知识库构建与更新 | 知识库构建与更新的口径：来源许可、更新频率与失效内容下线机制。 | 声明 source_license（逐源）、update_freq（小时/天）与 invalidation（下线与重建触发规则）。 | 过期内容不下线（知识污染）；来源许可未登记。 | `frictionless-table` Table Schema（data｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B06-10` | 拒答与不确定性 | 拒答与不确定性的口径：拒答判据（检索分 / 覆盖度）、拒答率与误拒代价。 | 声明 abstain_criterion（阈值 + 依据）、abstain_rate 与 false_abstain_rate（本可回答却拒答）。 | 无拒答机制（必答即编）；只报拒答率不报误拒。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B06-11` | 检索增强评测 | 检索增强评测的口径：检索与生成指标分列、消融对照与端到端指标。 | 声明 retrieval_metrics、generation_metrics 与 ablation（有/无检索对照），并说明端到端指标定义。 | 只报端到端分数（无法定位问题）；无消融对照。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（eng｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B06-12` | 幻觉与冲突消解 | 幻觉与冲突消解的口径：冲突检测（多来源矛盾）、裁决优先级与人工升级路径。 | 声明 conflict_detection（方法）、resolution_policy（来源优先级 / 时间优先 / 人工）与 escalation（升级条件）。 | 冲突静默取一个（不可追溯）；无人工升级路径。 | `frictionless-table` Table Schema（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
 
 ## 3. 机读投影契约
 

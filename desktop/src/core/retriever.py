@@ -160,18 +160,31 @@ def referenced_by(module_id: str, path=None) -> List[dict]:
     （referrer = 声明引用该模块的 protocol/包 id；source_package.module_id =
     被引目标）。模块 id 匹配支持裸号（M55）与限定 id（情感:M55）；path 缺省 =
     registry.json 默认位置（同 load_registry）。
+
+    匹配口径（类别感知，防跨类别误命中）：
+    - 查询带类别（情感:M55）→ 命中同类别声明（情感:M55）与裸号声明（M55）；
+      不命中其它类别同号声明（法律:M55）。
+    - 查询裸号（M55）→ 命中所有同裸号声明（含各类别），保持裸号查询的检索便利。
     """
     try:
         from .registry_loader import load_registry
         registry = load_registry(path)
     except Exception:
         return []
-    bare = str(module_id).split(":")[-1] if ":" in str(module_id) else str(module_id)
+    q = str(module_id)
+    q_cat, q_bare = (q.split(":", 1)[0], q.split(":", 1)[1]) if ":" in q else ("", q)
     refs_out: List[dict] = []
     for p in (registry.protocols or []):
         for r in (p.get("references") or []):
             mid = str(r.get("module_id", ""))
-            if mid == module_id or (mid and mid.split(":")[-1] == bare):
+            m_cat, m_bare = (mid.split(":", 1)[0], mid.split(":", 1)[1]) if ":" in mid else ("", mid)
+            hit = False
+            if mid and q:
+                if not q_cat:
+                    hit = m_bare == q_bare
+                else:
+                    hit = (m_cat == q_cat and m_bare == q_bare) or (not m_cat and m_bare == q_bare)
+            if hit:
                 refs_out.append({
                     "referrer": p.get("id"),
                     "source_package": r.get("source_package"),

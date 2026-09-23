@@ -4,8 +4,31 @@
   "domain": "具身智能与机器人",
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "exact_judgement",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "covesa-vss",
+      "eu-machinery",
+      "ietf-json-schema",
+      "mcp",
+      "mermaid",
+      "mlcommons-croissant",
+      "onnx",
+      "owasp-llm",
+      "uptane",
+      "vega-lite",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "A13-01",
@@ -16,6 +39,32 @@
       "anchor_status": 200,
       "standard_ref": "eu-machinery",
       "standard_why": "关键词「机械|机器人|协作」命中",
+      "standards": [
+        {
+          "ref": "eu-machinery",
+          "role": "primary",
+          "why": "关键词「机械|机器人|协作」命中",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 planning_space（joint|task）、constraints（清单）、plan_timeout_ms 与 success_rate（含试验次数）。",
       "pitfall": "只报单次成功（不给试验次数）；约束未写全导致「成功」不可复现。"
     },
@@ -28,6 +77,34 @@
       "anchor_status": 200,
       "standard_ref": "uptane",
       "standard_why": "域码 A13 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "uptane",
+          "role": "primary",
+          "why": "域码 A13 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "Uptane",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "jose"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 grasp_repr（6DoF|top-down）、success_definition（阈值）与 failure_taxonomy（滑落/碰撞/未接触等）。",
       "pitfall": "成功定义含糊（抬升算不算）；失败不分类型导致无法迭代。"
     },
@@ -40,6 +117,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 action_space（关节增量|末端位姿 + 频率）、obs_modalities（枚举）与 instruction_following（评测集 id）。",
       "pitfall": "动作频率未声明导致轨迹不可执行；指令跟随只用训练分布内指令评测。"
     },
@@ -52,6 +157,32 @@
       "anchor_status": 200,
       "standard_ref": "uptane",
       "standard_why": "域码 A13 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "uptane",
+          "role": "primary",
+          "why": "域码 A13 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "Uptane",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "jose"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 teleop_latency_ms、demo_episodes（条数）与 quality_filter（成功/人工剔除规则）。",
       "pitfall": "示教含失败样本未过滤；时延未声明导致遥操作可用性结论无效。"
     },
@@ -64,6 +195,32 @@
       "anchor_status": 200,
       "standard_ref": "eu-machinery",
       "standard_why": "域码 A13 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "eu-machinery",
+          "role": "primary",
+          "why": "域码 A13 专属绑定（轮换 0）",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 randomization_dims（清单）、real_steps（真机样本量）与 sim2real_gap（仿真与真机指标差）。",
       "pitfall": "只报仿真成绩；真机样本量与落差未报告。"
     },
@@ -76,6 +233,34 @@
       "anchor_status": 200,
       "standard_ref": "uptane",
       "standard_why": "域码 A13 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "uptane",
+          "role": "primary",
+          "why": "域码 A13 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "Uptane",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "jose"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 sensors（枚举）、sync（硬件触发|软同步 + 容差 ms）与 fusion_level（early|late|hybrid）。",
       "pitfall": "时间同步容差不声明导致融合结果不可复现；传感器缺失时无降级策略。"
     },
@@ -88,6 +273,32 @@
       "anchor_status": 200,
       "standard_ref": "eu-machinery",
       "standard_why": "域码 A13 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "eu-machinery",
+          "role": "primary",
+          "why": "域码 A13 专属绑定（轮换 0）",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 skill_repr（参数化|policy）、preconditions（字段清单）与 composition_api（调用契约）。",
       "pitfall": "技能无前置条件（组合即失败）；接口无契约导致复用不了。"
     },
@@ -100,6 +311,34 @@
       "anchor_status": 200,
       "standard_ref": "owasp-llm",
       "standard_why": "关键词「安全|越狱|红队|攻击|对抗」命中",
+      "standards": [
+        {
+          "ref": "owasp-llm",
+          "role": "primary",
+          "why": "关键词「安全|越狱|红队|攻击|对抗」命中",
+          "layer": "gov",
+          "body": "OWASP",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "owasp-top10"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 safety_standard（如 ISO/TS 15066）、speed_force_limits（数值 + 依据）与 e_stop（响应时间 ms）。",
       "pitfall": "安全限值无标准依据；急停响应时间未实测。"
     },
@@ -112,6 +351,30 @@
       "anchor_status": 200,
       "standard_ref": "covesa-vss",
       "standard_why": "关键词「交通|出行|车机|车辆|导航」命中",
+      "standards": [
+        {
+          "ref": "covesa-vss",
+          "role": "primary",
+          "why": "关键词「交通|出行|车机|车辆|导航」命中",
+          "layer": "iface",
+          "body": "COVESA",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 localization（lidar|视觉|融合 + 精度 cm）、mapping_metric（ATE/RPE）与 nav_success（含场景数）。",
       "pitfall": "只报里程计误差不报闭环一致性；导航成功率未给场景分布。"
     },
@@ -124,6 +387,32 @@
       "anchor_status": 200,
       "standard_ref": "eu-machinery",
       "standard_why": "关键词「机械|机器人|协作」命中",
+      "standards": [
+        {
+          "ref": "eu-machinery",
+          "role": "primary",
+          "why": "关键词「机械|机器人|协作」命中",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 calibration_method（手眼|DH）、residual（mm / 度）与 recalibration_interval（小时或次数）。",
       "pitfall": "标定残差不公开（精度无据）；无复检周期导致漂移未被发现。"
     },
@@ -136,6 +425,34 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-croissant",
       "standard_why": "关键词「数据集|元数据|标注」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-croissant",
+          "role": "primary",
+          "why": "关键词「数据集|元数据|标注」命中",
+          "layer": "data",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "schema-org"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 task_count、modalities（枚举）与 split_policy（按任务|按场景|随机）。",
       "pitfall": "随机切分让同一任务跨训练与测试；模态清单与实际不符。"
     },
@@ -148,6 +465,34 @@
       "anchor_status": 200,
       "standard_ref": "mcp",
       "standard_why": "关键词「工具调用|智能体|工作流|Agent」命中",
+      "standards": [
+        {
+          "ref": "mcp",
+          "role": "primary",
+          "why": "关键词「工具调用|智能体|工作流|Agent」命中",
+          "layer": "iface",
+          "body": "Anthropic/MCP",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "jsonrpc"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 state_repr（字段清单）、action_primitives（枚举）与 long_horizon_success（分步数与成功率曲线）。",
       "pitfall": "长程任务只报最终成功（中间失败被掩盖）；动作原语未封闭。"
     }

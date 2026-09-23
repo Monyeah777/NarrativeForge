@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「监督微调」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（监督微调:M01）与收口模块（监督微调:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 6 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C05-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 15 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（C05-00 领域通用前置）；节点 27 · 边 49 · 密度 1.8148。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,12 +29,21 @@
 | `C05-10` | LoRA 与全参取舍 | P60 | `C05-09`、`C05-07` | c05-anchor |
 | `C05-11` | 评测对比 | P40 | `C05-10`、`C05-08` | c05-anchor |
 | `C05-12` | SFT 数据许可 | P60 | `C05-11`、`C05-09` | c05-anchor |
-| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C05-04`、`C05-07`、`C05-10` | std-catalog |
-| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `C05-03` | std-catalog |
-| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `C05-12` | std-catalog |
-| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `C05-06` | std-catalog |
-| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `C05-02`、`C05-05`、`C05-08`、`C05-09`、`C05-11` | std-catalog |
-| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons） | P80 | `C05-01` | std-catalog |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry｜eng｜实测 ✓） | P80 | `C05-04`、`C05-07`、`C05-10`、`C05-03` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `C05-03` | std-catalog |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons｜gov｜实测 ✓） | P80 | `C05-12` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless｜data｜实测 ✓） | P80 | `C05-06`、`STD-frictionless-package` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `C05-05`、`C05-11`、`STD-ietf-json` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `C05-04`、`C05-09` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons｜eng｜实测 ✓） | P80 | `C05-02`、`C05-05`、`C05-08`、`C05-09`、`C05-11` | std-catalog |
+| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons｜data｜实测 ✓） | P80 | `C05-01`、`STD-schema-org` | std-catalog |
+| `STD-schema-org` | 标准 · 结构化数据词表（Schema.org｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX｜gov｜实测 ✓） | P80 | `C05-12` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `C05-01`、`C05-06`、`C05-07`、`C05-08`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `C05-02`、`C05-10`、`STD-ietf-bcp47` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -55,9 +64,18 @@
 | `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
 | `std-commonmark` | `STD-commonmark` |
 | `std-creativecommons` | `STD-creativecommons` |
+| `std-frictionless-package` | `STD-frictionless-package` |
 | `std-frictionless-table` | `STD-frictionless-table` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-mlcommons-bench` | `STD-mlcommons-bench` |
 | `std-mlcommons-croissant` | `STD-mlcommons-croissant` |
+| `std-schema-org` | `STD-schema-org` |
+| `std-spdx-licenses` | `STD-spdx-licenses` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -95,9 +113,18 @@ concept_graph:
         - "STD-cncf-otel-semconv"
         - "STD-commonmark"
         - "STD-creativecommons"
+        - "STD-frictionless-package"
         - "STD-frictionless-table"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
+        - "STD-ietf-json-schema"
+        - "STD-mermaid"
         - "STD-mlcommons-bench"
         - "STD-mlcommons-croissant"
+        - "STD-schema-org"
+        - "STD-spdx-licenses"
+        - "STD-vega-lite"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "C05-01"
       name: "指令数据集构造"
@@ -211,6 +238,7 @@ concept_graph:
         - "C05-04"
         - "C05-07"
         - "C05-10"
+        - "C05-03"
       provenance:
         - "std-catalog"
     - id: "STD-commonmark"
@@ -229,12 +257,53 @@ concept_graph:
         - "C05-12"
       provenance:
         - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-frictionless-table"
       name: "标准 · Table Schema"
       layer: "P80"
       branch: "standards"
       prereqs:
         - "C05-06"
+        - "STD-frictionless-package"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C05-05"
+        - "C05-11"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C05-04"
+        - "C05-09"
       provenance:
         - "std-catalog"
     - id: "STD-mlcommons-bench"
@@ -255,6 +324,44 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "C05-01"
+        - "STD-schema-org"
+      provenance:
+        - "std-catalog"
+    - id: "STD-schema-org"
+      name: "标准 · 结构化数据词表"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-licenses"
+      name: "标准 · SPDX 许可证清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C05-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C05-01"
+        - "C05-06"
+        - "C05-07"
+        - "C05-08"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C05-02"
+        - "C05-10"
+        - "STD-ietf-bcp47"
       provenance:
         - "std-catalog"
 ```

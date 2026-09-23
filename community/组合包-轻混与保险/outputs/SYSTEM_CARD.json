@@ -1,0 +1,87 @@
+{
+  "kind": "nf-system-card/1",
+  "system": {
+    "id": "NF-COMBO----------",
+    "name": "组合包-轻混与保险",
+    "version": "1.0.0",
+    "kind_of_system": "domain-package",
+    "model_agnostic": true
+  },
+  "intended_use": {
+    "purpose": "把 2 个域包按声明组合成一个可装载装配单元：层位堆叠、依赖与事件闭包、只读借阅全部由组合证书机验。",
+    "consumers": [
+      "装配运行时（）",
+      "组合调用方"
+    ],
+    "in_scope": [
+      "组合合法性（五不变量）",
+      "层位堆叠与装载序",
+      "只读借阅索引"
+    ]
+  },
+  "limitations": [
+    "组合包不改源包：借阅只读，模块不改号、资产不复制",
+    "组合只保证结构合法与可复算，不保证组合内容的领域质量",
+    "广度证明为两两全集 + 定种子抽样，非 2^N 全枚举"
+  ],
+  "data": {
+    "sources": [
+      {
+        "id": "COMBO_CERT",
+        "kind": "generated",
+        "note": "证书由组合引擎确定性生成并可复算"
+      }
+    ],
+    "provenance_policy": "源包资产经 references 只读借阅；组合不新增内容资产",
+    "personal_data": "none"
+  },
+  "evaluation": {
+    "method": "组合五不变量 + 证书 T4 复算 + check32 combos 子扫描",
+    "faces": [
+      {
+        "name": "组合合法性",
+        "gate": "check32 combos",
+        "result": "五不变量全成立"
+      }
+    ],
+    "reproduce_command": "python scripts/nf.py combine verify",
+    "not_measured": [
+      "组合内容质量",
+      "高阶组合的全枚举"
+    ]
+  },
+  "human_oversight": [
+    "组合声明变更须重跑 materialize 与门禁",
+    "借阅边界由 references 白名单控制"
+  ],
+  "risk_management": {
+    "framework": "NIST AI RMF 1.0",
+    "functions": {
+      "GOVERN": [
+        "借阅白名单可审计"
+      ],
+      "MAP": [
+        "组合构成表（源包 → 模块）"
+      ],
+      "MEASURE": [
+        "证书 T4 复算 + 广度证明"
+      ],
+      "MANAGE": [
+        "组合非法即拒（fail-closed）"
+      ]
+    },
+    "residual_risks": [
+      "抽样广度非全枚举",
+      "源包演进会使组合证书过期（须重签）"
+    ]
+  },
+  "out_of_scope": [
+    "新增内容资产",
+    "替代源包职责"
+  ],
+  "not_claims": [
+    "不宣称组合内容质量",
+    "不宣称已穷举所有高阶组合",
+    "不宣称组合包等价于任何源包"
+  ]
+}

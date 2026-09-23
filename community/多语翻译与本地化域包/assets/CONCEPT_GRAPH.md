@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「多语翻译与本地化」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（多语翻译与本地化:M01）与收口模块（多语翻译与本地化:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E06-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 15 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（E06-00 领域通用前置）；节点 27 · 边 50 · 密度 1.8519。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,14 +29,21 @@
 | `E06-10` | 多语排版 | P60 | `E06-09`、`E06-07` | e06-anchor |
 | `E06-11` | 格式与时区 | P40 | `E06-10`、`E06-08` | e06-anchor |
 | `E06-12` | 质量评估 | P60 | `E06-11`、`E06-09` | e06-anchor |
-| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E06-04`、`E06-07` | std-catalog |
-| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `E06-12` | std-catalog |
-| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `E06-08` | std-catalog |
-| `STD-oci-image` | 标准 · 镜像清单（OCI） | P80 | `E06-03` | std-catalog |
-| `STD-rfc3339` | 标准 · 时间戳（IETF） | P80 | `E06-11` | std-catalog |
-| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E06-06`、`E06-09`、`E06-10` | std-catalog |
-| `STD-w3c-skos` | 标准 · SKOS 词表（W3C） | P80 | `E06-01` | std-catalog |
-| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E06-02`、`E06-05` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `E06-04`、`E06-07`、`E06-01`、`E06-02`、`E06-05`、`E06-08`、`E06-11`、`E06-12` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless｜data｜实测 ✓） | P80 | `E06-12`、`STD-frictionless-package` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `E06-08`、`E06-06`、`STD-ietf-json` | std-catalog |
+| `STD-iso-8601` | 标准 · 日期时间（含 8601-2 扩展）（ISO｜data｜实测 ✗） | P80 | — | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `E06-03` | std-catalog |
+| `STD-oci-image` | 标准 · 镜像清单（OCI｜iface｜实测 ✓） | P80 | `E06-03` | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rfc3339` | 标准 · 时间戳（IETF｜data｜实测 ✓） | P80 | `E06-11`、`STD-iso-8601` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C｜form｜实测 ✓） | P80 | `E06-06`、`E06-09`、`E06-10`、`STD-w3c-xml` | std-catalog |
+| `STD-w3c-skos` | 标准 · SKOS 词表（W3C｜data｜实测 ✓） | P80 | `E06-01`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `E06-02`、`E06-05`、`E06-04`、`E06-07`、`E06-09`、`E06-10`、`STD-ietf-bcp47` | std-catalog |
+| `STD-w3c-xml` | 标准 · XML 1.0（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -55,13 +62,20 @@
 | `E06-格式与时区` | `E06-11` |
 | `E06-质量评估` | `E06-12` |
 | `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-package` | `STD-frictionless-package` |
 | `std-frictionless-table` | `STD-frictionless-table` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
 | `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-iso-8601` | `STD-iso-8601` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-oci-image` | `STD-oci-image` |
+| `std-rdf11` | `STD-rdf11` |
 | `std-rfc3339` | `STD-rfc3339` |
 | `std-w3c-epub33` | `STD-w3c-epub33` |
 | `std-w3c-skos` | `STD-w3c-skos` |
 | `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
+| `std-w3c-xml` | `STD-w3c-xml` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -97,13 +111,20 @@ concept_graph:
       name: "可扩展标准（绑定）"
       nodes:
         - "STD-commonmark"
+        - "STD-frictionless-package"
         - "STD-frictionless-table"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
         - "STD-ietf-json-schema"
+        - "STD-iso-8601"
+        - "STD-mermaid"
         - "STD-oci-image"
+        - "STD-rdf11"
         - "STD-rfc3339"
         - "STD-w3c-epub33"
         - "STD-w3c-skos"
         - "STD-w3c-tabular-data"
+        - "STD-w3c-xml"
   nodes:
     - id: "E06-01"
       name: "术语库"
@@ -216,6 +237,19 @@ concept_graph:
       prereqs:
         - "E06-04"
         - "E06-07"
+        - "E06-01"
+        - "E06-02"
+        - "E06-05"
+        - "E06-08"
+        - "E06-11"
+        - "E06-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-frictionless-table"
@@ -224,6 +258,21 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "E06-12"
+        - "STD-frictionless-package"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-ietf-json-schema"
@@ -232,6 +281,23 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "E06-08"
+        - "E06-06"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-iso-8601"
+      name: "标准 · 日期时间（含 8601-2 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E06-03"
       provenance:
         - "std-catalog"
     - id: "STD-oci-image"
@@ -242,12 +308,20 @@ concept_graph:
         - "E06-03"
       provenance:
         - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-rfc3339"
       name: "标准 · 时间戳"
       layer: "P80"
       branch: "standards"
       prereqs:
         - "E06-11"
+        - "STD-iso-8601"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-epub33"
@@ -258,6 +332,7 @@ concept_graph:
         - "E06-06"
         - "E06-09"
         - "E06-10"
+        - "STD-w3c-xml"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-skos"
@@ -266,6 +341,7 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "E06-01"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-tabular-data"
@@ -275,6 +351,18 @@ concept_graph:
       prereqs:
         - "E06-02"
         - "E06-05"
+        - "E06-04"
+        - "E06-07"
+        - "E06-09"
+        - "E06-10"
+        - "STD-ietf-bcp47"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-xml"
+      name: "标准 · XML 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
 ```

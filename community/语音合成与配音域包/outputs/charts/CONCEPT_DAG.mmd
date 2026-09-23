@@ -17,10 +17,18 @@ flowchart TD
     B14-12
   end
   subgraph P80[P80]
+    STD-commonmark
     STD-creativecommons
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-mlcommons-bench
+    STD-rdf11
+    STD-spdx-licenses
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-tabular-data
     STD-w3c-webaudio
   end
@@ -44,15 +52,32 @@ flowchart TD
   B14-08 --> B14-11
   B14-11 --> B14-12
   B14-09 --> B14-12
+  B14-07 --> STD-commonmark
+  B14-09 --> STD-commonmark
   B14-08 --> STD-creativecommons
   B14-03 --> STD-frictionless-table
   B14-06 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B14-01 --> STD-ietf-json-schema
   B14-04 --> STD-ietf-json-schema
   B14-07 --> STD-ietf-json-schema
   B14-10 --> STD-ietf-json-schema
+  B14-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B14-09 --> STD-mlcommons-bench
   B14-12 --> STD-mlcommons-bench
+  B14-08 --> STD-spdx-licenses
+  B14-01 --> STD-vega-lite
+  B14-02 --> STD-vega-lite
+  B14-03 --> STD-vega-lite
+  B14-05 --> STD-vega-lite
+  B14-06 --> STD-vega-lite
+  B14-10 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B14-04 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B14-02 --> STD-w3c-tabular-data
   B14-05 --> STD-w3c-tabular-data
+  B14-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
   B14-11 --> STD-w3c-webaudio

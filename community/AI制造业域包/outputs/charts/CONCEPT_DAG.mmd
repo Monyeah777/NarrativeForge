@@ -17,13 +17,24 @@ flowchart TD
     D08-12
   end
   subgraph P80[P80]
+    STD-common-criteria
+    STD-frictionless-package
     STD-frictionless-table
-    STD-iso-iec-25010
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
+    STD-opcua
     STD-owasp-llm
+    STD-owasp-top10
+    STD-rdf11
     STD-spdx-3
+    STD-vega-lite
     STD-w3c-prov-o
     STD-w3c-svg2
+    STD-w3c-tabular-data
+    STD-w3c-xml
   end
   D08-01 --> D08-02
   D08-02 --> D08-03
@@ -45,15 +56,34 @@ flowchart TD
   D08-08 --> D08-11
   D08-11 --> D08-12
   D08-09 --> D08-12
+  D08-06 --> STD-common-criteria
   D08-05 --> STD-frictionless-table
   D08-12 --> STD-frictionless-table
-  D08-06 --> STD-iso-iec-25010
+  STD-frictionless-package --> STD-frictionless-table
+  D08-01 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  D08-04 --> STD-mermaid
+  D08-09 --> STD-mermaid
+  D08-11 --> STD-mermaid
   D08-01 --> STD-nist-ai-rmf
   D08-04 --> STD-nist-ai-rmf
   D08-10 --> STD-nist-ai-rmf
+  D08-02 --> STD-opcua
   D08-09 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
   D08-07 --> STD-spdx-3
-  D08-02 --> STD-w3c-prov-o
+  D08-03 --> STD-vega-lite
+  D08-06 --> STD-vega-lite
+  D08-07 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D08-08 --> STD-w3c-prov-o
   D08-11 --> STD-w3c-prov-o
+  D08-02 --> STD-w3c-prov-o
+  D08-05 --> STD-w3c-prov-o
+  D08-12 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   D08-03 --> STD-w3c-svg2
+  STD-w3c-xml --> STD-w3c-svg2
+  D08-08 --> STD-w3c-tabular-data
+  D08-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

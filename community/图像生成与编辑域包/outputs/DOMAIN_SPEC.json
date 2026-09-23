@@ -4,8 +4,31 @@
   "domain": "图像生成与编辑",
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "classification",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "c2pa-spec",
+      "cncf-cloudevents",
+      "commonmark",
+      "ietf-json-schema",
+      "mermaid",
+      "mlcommons-bench",
+      "onnx",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-svg2",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "A07-01",
@@ -16,6 +39,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 noise_schedule（linear|cosine）、sample_steps、guidance_scale（数值）与 seed 策略（固定|随机 + 次数）。",
       "pitfall": "不同采样步数直接比画质；只报单张最好结果不报种子方差。"
     },
@@ -28,6 +79,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "cncf-cloudevents",
+          "role": "support",
+          "why": "载体锚：产出形态「事件」的承载标准",
+          "layer": "iface",
+          "body": "CNCF",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 path（linear|cosine）、t_sampling（uniform|logit-normal）、solver（euler|heun）+ 步数。",
       "pitfall": "求解器与步数不同却比较生成质量；路径定义未记录导致训练不可复现。"
     },
@@ -40,6 +117,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "A 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 2）",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 condition_modality（枚举）、control_weight（0–1）与条件保真度指标（如 F1 of edges）。",
       "pitfall": "只报美观不报结构遵循度；控制权重未声明导致复现不出同一结果。"
     },
@@ -52,6 +157,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-svg2",
       "standard_why": "关键词「图像|视觉|扩散|超分|抠图」命中",
+      "standards": [
+        {
+          "ref": "w3c-svg2",
+          "role": "primary",
+          "why": "关键词「图像|视觉|扩散|超分|抠图」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-xml"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "载体锚：产出形态「图」的承载标准",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 mask_source（手工|自动）、outpaint_ratio（外扩比例）与 boundary_metric（边界一致性指标）。",
       "pitfall": "掩码过小导致任务过易（虚高）；扩图边界接缝未评测。"
     },
@@ -64,6 +197,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 style_refs（数量）、content_fidelity（指标 + 阈值）与 style_strength（0–1 或枚举）。",
       "pitfall": "只报风格相似不报内容保持；风格强度未声明导致对比不公平。"
     },
@@ -76,6 +235,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-svg2",
       "standard_why": "关键词「图像|视觉|扩散|超分|抠图」命中",
+      "standards": [
+        {
+          "ref": "w3c-svg2",
+          "role": "primary",
+          "why": "关键词「图像|视觉|扩散|超分|抠图」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-xml"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 degradation_model、scale_factor 与双指标（PSNR/SSIM + LPIPS 或 NIQE）。",
       "pitfall": "只报 PSNR 掩盖过度平滑；退化模型与实际不符导致结论不可迁移。"
     },
@@ -88,6 +275,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-svg2",
       "standard_why": "关键词「图像|视觉|扩散|超分|抠图」命中",
+      "standards": [
+        {
+          "ref": "w3c-svg2",
+          "role": "primary",
+          "why": "关键词「图像|视觉|扩散|超分|抠图」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-xml"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "载体锚：产出形态「图」的承载标准",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 alpha_metric（MAD|MSE|Gradient）、semi_transparent（handled|ignored）与 relight（true|false）。",
       "pitfall": "只测不透明区域（发丝与半透明处忽略）；合成后光照不一致未评测。"
     },
@@ -100,6 +315,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "必须给出 allowed_ops 与 forbidden_ops 两张清单 + consent_required（true）+ traceability（输入输出指纹口径）。",
       "pitfall": "默认同意缺失（无授权换脸）；无输入输出指纹导致不可追责。"
     },
@@ -112,6 +353,30 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 train_set_size、rank（r）、lr 与 overfit_check（留出集 + 阈值）。",
       "pitfall": "用训练图自测（必然「像」）；秩与学习率未记录导致无法复现。"
     },
@@ -124,6 +389,32 @@
       "anchor_status": 200,
       "standard_ref": "commonmark",
       "standard_why": "关键词「提示|指令|模板」命中",
+      "standards": [
+        {
+          "ref": "commonmark",
+          "role": "primary",
+          "why": "关键词「提示|指令|模板」命中",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 prompt_template（结构）、negative_prompt（是否使用）与 aesthetic_score（模型 id + 版本或人工量表）。",
       "pitfall": "用模型自己打的美学分当人类偏好；提示模板未固定导致跨报告不可比。"
     },
@@ -136,6 +427,35 @@
       "anchor_status": 200,
       "standard_ref": "c2pa-spec",
       "standard_why": "关键词「水印|溯源|凭证|内容来源」命中",
+      "standards": [
+        {
+          "ref": "c2pa-spec",
+          "role": "primary",
+          "why": "关键词「水印|溯源|凭证|内容来源」命中",
+          "layer": "gov",
+          "body": "C2PA",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "cbor",
+            "cose"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "载体锚：产出形态「溯源」的承载标准",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 watermark_method、robustness_tests（裁剪/压缩/重采样各一）与 manifest 形态（字段清单引用）。",
       "pitfall": "只声明「含水印」不做鲁棒性测试；清单字段缺失导致溯源断裂。"
     },
@@ -148,6 +468,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「评测|基准|排行榜|跑分」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 fid_set_size、text_alignment_metric 与 human_pref（人数 / 一致性 kappa），三者缺一即评测不全。",
       "pitfall": "FID 用小样本集；只报 FID 不报文本一致性（提示遵循被掩盖）。"
     }

@@ -19,9 +19,17 @@ flowchart TD
   subgraph P80[P80]
     STD-creativecommons
     STD-gdpr
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-nist-ai-rmf
+    STD-rdf11
     STD-spdx-licenses
+    STD-vega-lite
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   F04-01 --> F04-02
   F04-02 --> F04-03
@@ -50,8 +58,24 @@ flowchart TD
   F04-10 --> STD-creativecommons
   F04-11 --> STD-creativecommons
   F04-07 --> STD-gdpr
+  F04-06 --> STD-ietf-json-schema
+  F04-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  F04-05 --> STD-mermaid
   F04-01 --> STD-mlcommons-bench
   F04-12 --> STD-nist-ai-rmf
   F04-04 --> STD-spdx-licenses
   F04-06 --> STD-spdx-licenses
   F04-08 --> STD-spdx-licenses
+  F04-02 --> STD-spdx-licenses
+  F04-09 --> STD-spdx-licenses
+  F04-10 --> STD-spdx-licenses
+  F04-03 --> STD-vega-lite
+  F04-04 --> STD-vega-lite
+  F04-07 --> STD-vega-lite
+  F04-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  F04-01 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  F04-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

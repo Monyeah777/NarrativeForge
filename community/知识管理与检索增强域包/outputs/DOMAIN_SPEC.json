@@ -4,8 +4,33 @@
   "domain": "知识管理与检索增强",
   "section": "E · 人机与内容创作",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "extraction",
   "content_tier": "derived",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "c2pa-spec",
+      "commonmark",
+      "frictionless-package",
+      "frictionless-table",
+      "ietf-json-schema",
+      "mermaid",
+      "mlcommons-bench",
+      "nist-800-188",
+      "onnx",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data",
+      "w3c-vc"
+    ]
+  },
   "subdivisions": [
     {
       "id": "E11-01",
@@ -16,6 +41,32 @@
       "anchor_status": 200,
       "standard_ref": "commonmark",
       "standard_why": "E 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "commonmark",
+          "role": "primary",
+          "why": "E 段默认绑定（轮换 0）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "E 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -28,6 +79,32 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "E 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -40,6 +117,32 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-package",
       "standard_why": "关键词「检索|向量|嵌入|召回」命中",
+      "standards": [
+        {
+          "ref": "frictionless-package",
+          "role": "primary",
+          "why": "关键词「检索|向量|嵌入|召回」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "E 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -52,6 +155,32 @@
       "anchor_status": 200,
       "standard_ref": "commonmark",
       "standard_why": "E 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "commonmark",
+          "role": "primary",
+          "why": "E 段默认绑定（轮换 0）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "E 段载体锚（轮换 3；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -64,6 +193,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "E 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "E 段默认绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "载体锚：产出形态「图」的承载标准",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -76,6 +233,32 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「问答|知识库」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「问答|知识库」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "E 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -88,6 +271,35 @@
       "anchor_status": 200,
       "standard_ref": "c2pa-spec",
       "standard_why": "关键词「水印|溯源|凭证|内容来源」命中",
+      "standards": [
+        {
+          "ref": "c2pa-spec",
+          "role": "primary",
+          "why": "关键词「水印|溯源|凭证|内容来源」命中",
+          "layer": "gov",
+          "body": "C2PA",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "cbor",
+            "cose"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "载体锚：产出形态「溯源」的承载标准",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -100,6 +312,32 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「问答|知识库」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「问答|知识库」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "E 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -112,6 +350,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「采集|清洗|质量|异常|缺失」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "E 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -124,6 +390,34 @@
       "anchor_status": 200,
       "standard_ref": "nist-800-188",
       "standard_why": "关键词「权限|访问控制|治理」命中",
+      "standards": [
+        {
+          "ref": "nist-800-188",
+          "role": "primary",
+          "why": "关键词「权限|访问控制|治理」命中",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "nist-privacy"
+          ]
+        },
+        {
+          "ref": "w3c-vc",
+          "role": "support",
+          "why": "载体锚：产出形态「身份」的承载标准",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -136,6 +430,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「评测|基准|排行榜|跑分」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "E 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -148,6 +468,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-800-188",
       "standard_why": "关键词「权限|访问控制|治理」命中",
+      "standards": [
+        {
+          "ref": "nist-800-188",
+          "role": "primary",
+          "why": "关键词「权限|访问控制|治理」命中",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "nist-privacy"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "E 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 形态清单 / 受众与可读性口径 / 跨件一致规则 / 可机验项；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只评「好看好用」无判据；跨件风格漂移无规则（E 段常见失效模式；领域专属失效模式待补）。"
     }

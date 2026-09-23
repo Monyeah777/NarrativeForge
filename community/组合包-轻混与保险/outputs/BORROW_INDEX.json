@@ -1,0 +1,43 @@
+{
+  "borrowed": [
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "AI保险:M01",
+        "AI保险:M02"
+      ],
+      "source_package": "AI保险域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "M22",
+        "M40",
+        "M41",
+        "M43",
+        "M55"
+      ],
+      "source_package": "校园情感领域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "M91",
+        "M92"
+      ],
+      "source_package": "校园西幻轻混组合包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "M07",
+        "M09",
+        "M17"
+      ],
+      "source_package": "西幻生存领域包"
+    }
+  ],
+  "note": "借阅索引：本组合包不复制资产/模块，全部经 references 只读访问",
+  "package": "组合包-轻混与保险",
+  "schema": "nf-combo-borrow/1"
+}

@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「视觉模型」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（视觉模型:M01）与收口模块（视觉模型:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（A03-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 17 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（A03-00 领域通用前置）；节点 29 · 边 40 · 密度 1.3793。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,14 +29,23 @@
 | `A03-10` | 工业缺陷检测 | P60 | — | a03-anchor |
 | `A03-11` | 遥感与航拍解译 | P40 | `A03-09`、`A03-10` | a03-anchor |
 | `A03-12` | 数据增强与预训练策略 | P60 | `A03-05` | a03-anchor |
-| `STD-cwe` | 标准 · CWE 缺陷枚举（MITRE） | P80 | `A03-10` | std-catalog |
-| `STD-dicom` | 标准 · DICOM 标准（DICOM） | P80 | `A03-09` | std-catalog |
-| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `A03-04` | std-catalog |
-| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `A03-02`、`A03-12` | std-catalog |
-| `STD-oci-image` | 标准 · 镜像清单（OCI） | P80 | `A03-08` | std-catalog |
-| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `A03-03`、`A03-06` | std-catalog |
-| `STD-opengeospatial` | 标准 · OGC 标准（含 GeoJSON/3D Tiles）（OGC） | P80 | `A03-05`、`A03-11` | std-catalog |
-| `STD-w3c-svg2` | 标准 · SVG 2（W3C） | P80 | `A03-01`、`A03-07` | std-catalog |
+| `STD-cwe` | 标准 · CWE 缺陷枚举（MITRE｜gov｜实测 ✓） | P80 | `A03-10` | std-catalog |
+| `STD-dicom` | 标准 · DICOM 标准（DICOM｜data｜实测 ✓） | P80 | `A03-09` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `A03-04`、`A03-06`、`A03-10`、`STD-ietf-json` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `A03-09` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons｜eng｜实测 ✓） | P80 | `A03-02`、`A03-12` | std-catalog |
+| `STD-oci-image` | 标准 · 镜像清单（OCI｜iface｜实测 ✓） | P80 | `A03-08` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation｜iface｜实测 ✓） | P80 | `A03-03`、`A03-06`、`STD-protobuf` | std-catalog |
+| `STD-opengeospatial` | 标准 · OGC 标准（含 GeoJSON/3D Tiles）（OGC｜data｜实测 ✓） | P80 | `A03-05`、`A03-11` | std-catalog |
+| `STD-protobuf` | 标准 · Protocol Buffers proto3（Google｜iface｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `A03-01`、`A03-03`、`A03-07`、`A03-08`、`A03-11`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `A03-04`、`A03-05`、`STD-rdf11` | std-catalog |
+| `STD-w3c-svg2` | 标准 · SVG 2（W3C｜form｜实测 ✓） | P80 | `A03-01`、`A03-07`、`STD-w3c-xml` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `A03-02`、`A03-12`、`STD-ietf-bcp47` | std-catalog |
+| `STD-w3c-xml` | 标准 · XML 1.0（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -56,12 +65,21 @@
 | `A03-数据增强与预训练策略` | `A03-12` |
 | `std-cwe` | `STD-cwe` |
 | `std-dicom` | `STD-dicom` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
 | `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-mlcommons-bench` | `STD-mlcommons-bench` |
 | `std-oci-image` | `STD-oci-image` |
 | `std-onnx` | `STD-onnx` |
 | `std-opengeospatial` | `STD-opengeospatial` |
+| `std-protobuf` | `STD-protobuf` |
+| `std-rdf11` | `STD-rdf11` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 | `std-w3c-svg2` | `STD-w3c-svg2` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
+| `std-w3c-xml` | `STD-w3c-xml` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -98,12 +116,21 @@ concept_graph:
       nodes:
         - "STD-cwe"
         - "STD-dicom"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
         - "STD-ietf-json-schema"
+        - "STD-mermaid"
         - "STD-mlcommons-bench"
         - "STD-oci-image"
         - "STD-onnx"
         - "STD-opengeospatial"
+        - "STD-protobuf"
+        - "STD-rdf11"
+        - "STD-vega-lite"
+        - "STD-w3c-prov-o"
         - "STD-w3c-svg2"
+        - "STD-w3c-tabular-data"
+        - "STD-w3c-xml"
   nodes:
     - id: "A03-01"
       name: "图像分类与主干网络"
@@ -215,12 +242,37 @@ concept_graph:
         - "A03-09"
       provenance:
         - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-ietf-json-schema"
       name: "标准 · JSON Schema 2020-12"
       layer: "P80"
       branch: "standards"
       prereqs:
         - "A03-04"
+        - "A03-06"
+        - "A03-10"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-09"
       provenance:
         - "std-catalog"
     - id: "STD-mlcommons-bench"
@@ -247,6 +299,7 @@ concept_graph:
       prereqs:
         - "A03-03"
         - "A03-06"
+        - "STD-protobuf"
       provenance:
         - "std-catalog"
     - id: "STD-opengeospatial"
@@ -258,6 +311,43 @@ concept_graph:
         - "A03-11"
       provenance:
         - "std-catalog"
+    - id: "STD-protobuf"
+      name: "标准 · Protocol Buffers proto3"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-01"
+        - "A03-03"
+        - "A03-07"
+        - "A03-08"
+        - "A03-11"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-04"
+        - "A03-05"
+        - "STD-rdf11"
+      provenance:
+        - "std-catalog"
     - id: "STD-w3c-svg2"
       name: "标准 · SVG 2"
       layer: "P80"
@@ -265,6 +355,24 @@ concept_graph:
       prereqs:
         - "A03-01"
         - "A03-07"
+        - "STD-w3c-xml"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "A03-02"
+        - "A03-12"
+        - "STD-ietf-bcp47"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-xml"
+      name: "标准 · XML 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
 ```

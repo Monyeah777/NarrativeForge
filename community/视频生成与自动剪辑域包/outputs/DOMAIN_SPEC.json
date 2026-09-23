@@ -4,8 +4,29 @@
   "domain": "视频生成与自动剪辑",
   "section": "B · 任务类型",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "extraction",
   "content_tier": "derived",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "commonmark",
+      "frictionless-package",
+      "frictionless-table",
+      "gdpr",
+      "ietf-json-schema",
+      "oci-image",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "B16-01",
@@ -16,6 +37,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -28,6 +77,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -40,6 +115,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -52,6 +153,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "B 段载体锚（轮换 3；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -64,6 +193,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "B 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -76,6 +233,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "B 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 2）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "载体锚：产出形态「图」的承载标准",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -88,6 +273,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-package",
       "standard_why": "关键词「检索|向量|嵌入|召回」命中",
+      "standards": [
+        {
+          "ref": "frictionless-package",
+          "role": "primary",
+          "why": "关键词「检索|向量|嵌入|召回」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -100,6 +313,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -112,6 +351,32 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "B 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 2）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -124,6 +389,32 @@
       "anchor_status": 200,
       "standard_ref": "gdpr",
       "standard_why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+      "standards": [
+        {
+          "ref": "gdpr",
+          "role": "primary",
+          "why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -136,6 +427,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "B 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -148,6 +465,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「采集|清洗|质量|异常|缺失」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 输入契约 / 输出 schema / 判据 / 抽样口径；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "判据不明（对错无标准）；抽样规模不报（B 段常见失效模式；领域专属失效模式待补）。"
     }

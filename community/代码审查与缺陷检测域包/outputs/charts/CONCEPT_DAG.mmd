@@ -17,10 +17,18 @@ flowchart TD
     B09-12
   end
   subgraph P80[P80]
+    STD-commonmark
     STD-cwe
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
     STD-oasis-sarif
     STD-osv
+    STD-rdf11
     STD-spdx-3
+    STD-vega-lite
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   B09-01 --> B09-02
   B09-01 --> B09-03
@@ -32,15 +40,32 @@ flowchart TD
   B09-07 --> B09-11
   B09-10 --> B09-12
   B09-11 --> B09-12
+  B09-04 --> STD-commonmark
+  B09-09 --> STD-commonmark
   B09-02 --> STD-cwe
   B09-05 --> STD-cwe
   B09-08 --> STD-cwe
   B09-11 --> STD-cwe
+  B09-01 --> STD-ietf-json-schema
+  B09-05 --> STD-ietf-json-schema
+  B09-06 --> STD-ietf-json-schema
+  B09-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B09-01 --> STD-oasis-sarif
   B09-07 --> STD-oasis-sarif
   B09-10 --> STD-oasis-sarif
+  STD-ietf-json-schema --> STD-oasis-sarif
   B09-03 --> STD-osv
   B09-06 --> STD-osv
   B09-09 --> STD-osv
   B09-12 --> STD-osv
   B09-04 --> STD-spdx-3
+  B09-03 --> STD-vega-lite
+  B09-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B09-10 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  B09-02 --> STD-w3c-tabular-data
+  B09-07 --> STD-w3c-tabular-data
+  B09-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

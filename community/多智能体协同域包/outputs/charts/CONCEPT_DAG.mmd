@@ -20,8 +20,15 @@ flowchart TD
     STD-a2a
     STD-cncf-cloudevents
     STD-cncf-otel-semconv
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-jsonrpc
     STD-mcp
+    STD-mermaid
     STD-mlcommons-bench
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C17-01 --> C17-02
   C17-02 --> C17-03
@@ -48,10 +55,27 @@ flowchart TD
   C17-07 --> STD-a2a
   C17-12 --> STD-a2a
   C17-02 --> STD-cncf-cloudevents
+  C17-05 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
   C17-09 --> STD-cncf-otel-semconv
   C17-11 --> STD-cncf-otel-semconv
+  C17-01 --> STD-ietf-json-schema
+  C17-06 --> STD-ietf-json-schema
+  C17-09 --> STD-ietf-json-schema
+  C17-10 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   C17-04 --> STD-mcp
   C17-05 --> STD-mcp
   C17-06 --> STD-mcp
   C17-08 --> STD-mcp
+  STD-jsonrpc --> STD-mcp
+  C17-04 --> STD-mermaid
   C17-10 --> STD-mlcommons-bench
+  C17-03 --> STD-vega-lite
+  C17-08 --> STD-vega-lite
+  C17-11 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C17-02 --> STD-w3c-tabular-data
+  C17-07 --> STD-w3c-tabular-data
+  C17-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

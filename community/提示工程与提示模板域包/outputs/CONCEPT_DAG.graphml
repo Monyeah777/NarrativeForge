@@ -52,11 +52,27 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-cncf-otel-semconv">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-commonmark">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
+    <node id="STD-frictionless-package">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-frictionless-table">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-bcp47">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -65,6 +81,14 @@
       <data key="branch">standards</data>
     </node>
     <node id="STD-mlcommons-bench">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-vega-lite">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-tabular-data">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -128,6 +152,18 @@
     <edge source="C13-09" target="C13-12">
       <data key="provenance">['c13-anchor']</data>
     </edge>
+    <edge source="C13-04" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-08" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-09" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-10" target="STD-cncf-otel-semconv">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="C13-06" target="STD-commonmark">
       <data key="provenance">['std-catalog']</data>
     </edge>
@@ -152,16 +188,52 @@
     <edge source="C13-03" target="STD-frictionless-table">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-frictionless-package" target="STD-frictionless-table">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="C13-01" target="STD-ietf-json-schema">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="C13-04" target="STD-ietf-json-schema">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="C13-05" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-06" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-11" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="C13-02" target="STD-mlcommons-bench">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="C13-05" target="STD-mlcommons-bench">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-01" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-03" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json-schema" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-02" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-07" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="C13-12" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-bcp47" target="STD-w3c-tabular-data">
       <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>

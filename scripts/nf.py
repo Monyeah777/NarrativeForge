@@ -628,7 +628,8 @@ def _build_parser() -> argparse.ArgumentParser:
                         help="域包自由组合（任意 n 元 / 组件级；五不变量 + 可复算证书）",
                         description="组合引擎：任选若干域包（或直接点模块/资产）→ 层位堆叠 / 依赖闭包 / "
                                     "事件闭包 / 资产借阅 / 合法性判定 → 可复算证书（T4）；"
-                                    "`breadth` 对全部两两 + 抽样三元/四元跑同一套不变量证明广度。")
+                                    "`breadth` 对全部两两 + 抽样三元/四元/五元/六元跑同一套不变量证明广度；"
+                                    "`materialize` 把组合落成可装载的组合包（派生协议/管线/借阅索引/机验产出面）。")
     cbsub = cb.add_subparsers(dest="combine_cmd")
     cb_p = cbsub.add_parser("plan", help="组合一个（打印/落证书）",
                             description="组合：--packs 逗号分隔包名；--modules/--assets 组件级取用；"
@@ -640,15 +641,27 @@ def _build_parser() -> argparse.ArgumentParser:
     cb_p.add_argument("--note", default="", help="证书说明")
     cb_p.add_argument("--certify", action="store_true", help="写入证书台账")
     cb_p.add_argument("--json", action="store_true", help="输出结构化 JSON")
-    cb_b = cbsub.add_parser("breadth", help="广度证明（全部两两 + 抽样三元/四元）",
+    cb_b = cbsub.add_parser("breadth", help="广度证明（全部两两 + 抽样三元/四元/五元/六元）",
                             description="广度证明：对 C(N,2) 全部两两组合与定种子抽样的三元/四元组合"
                                         "跑同一套不变量（依赖闭合 / 事件闭合 / 层栈 / 资产可寻址）")
     cb_b.add_argument("--triples", type=int, default=400, help="三元抽样数（缺省 400）")
     cb_b.add_argument("--quads", type=int, default=200, help="四元抽样数（缺省 200）")
+    cb_b.add_argument("--quints", type=int, default=120, help="五元抽样数（缺省 120）")
+    cb_b.add_argument("--sexts", type=int, default=60, help="六元抽样数（缺省 60）")
     cb_b.add_argument("--json", action="store_true", help="输出结构化 JSON")
     cb_v = cbsub.add_parser("verify", help="证书复算（T4：与在盘证书逐字段比对）",
                             description="证书复算：读 protocol/combo_certificates.json 逐条重算并比对")
     cb_v.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    cb_m = cbsub.add_parser("materialize",
+                            help="把组合落成可装载的组合包（派生协议/管线/借阅索引/机验产出面）",
+                            description="组合包产物化：0 自有模块 + references 只读借阅 + available 层栈 + "
+                                        "派生 P00 管线 + 8 件机验产出面（含 T4 证书）；"
+                                        "--write 落盘并按域包工厂同一套登记流程登记")
+    cb_m.add_argument("--packs", required=True, help="包名，逗号分隔")
+    cb_m.add_argument("--id", default="", help="组合包名（缺省 组合包-<前两包>）")
+    cb_m.add_argument("--category", default="", help="独占类别（缺省 组合域-<名>）")
+    cb_m.add_argument("--write", action="store_true", help="落盘并登记（缺省 dry-run）")
+    cb_m.add_argument("--json", action="store_true", help="输出结构化 JSON")
     dc = sub.add_parser("decide",
                         help="决策层（typed-decision 三原语 choice/noul/score：候选集上报概率 + argmax）",
                         description="决策层端口：把选择写成类型化问题交给决策模型；"
@@ -2454,21 +2467,25 @@ def _cmd_decide(args):
 
 
 def _cmd_combine(args):
-    """nf combine：域包自由组合（plan / breadth / verify）。"""
+    """nf combine：域包自由组合（plan / breadth / verify / materialize）。"""
     import json as _json
 
     from core import pack_combo as pc
 
     sub = getattr(args, "combine_cmd", "") or "plan"
     if sub == "breadth":
-        stats = pc.breadth(ROOT, triple_sample=args.triples, quad_sample=args.quads)
+        stats = pc.breadth(ROOT, triple_sample=args.triples, quad_sample=args.quads,
+                           quint_sample=args.quints, sext_sample=args.sexts)
         if args.json:
             print(_json.dumps(stats, ensure_ascii=False, indent=2, sort_keys=True))
         else:
-            print("  域包 %d · 两两 %d/%d 合法 · 三元 %d/%d · 四元 %d/%d · 全合法=%s"
+            print("  参与包 %d · 两两 %d/%d 合法 · 三元 %d/%d · 四元 %d/%d · 五元 %d/%d · "
+                  "六元 %d/%d · 全合法=%s"
                   % (stats["packs"], stats["pairs_legal"], stats["pairs"],
                      stats["triples_legal"], stats["triples"],
-                     stats["quads_legal"], stats["quads"], stats["all_legal"]))
+                     stats["quads_legal"], stats["quads"],
+                     stats["quints_legal"], stats["quints"],
+                     stats["sexts_legal"], stats["sexts"], stats["all_legal"]))
             for f in stats["failures"][:5]:
                 print("  [FAIL] %s" % f)
         return 0 if stats["all_legal"] else 1
@@ -2492,6 +2509,40 @@ def _cmd_combine(args):
                          "" if not r["issues"] else r["issues"][:1]))
             print("  —— 证书 %d 条，失败 %d" % (len(rows), bad))
         return 1 if bad else 0
+    if sub == "materialize":
+        out = pc.materialize(ROOT, packs=[x.strip() for x in args.packs.split(",") if x.strip()],
+                             combo_id=args.id, category=args.category, write=args.write)
+        if not out.get("ok"):
+            print("  ✗ %s" % out.get("reason"), file=sys.stderr)
+            if args.json:
+                import json as _j
+                print(_j.dumps(out, ensure_ascii=False, indent=2, sort_keys=True))
+            return 1
+        reg = {"02": False, "dom": False, "protocols": ""}
+        if args.write:
+            r = pc.combo_register(ROOT, out["package"], out["category"], out["pipeline"],
+                                  [x.strip() for x in args.packs.split(",") if x.strip()],
+                                  out["references"], out["certificate"])
+            reg = {"02": r["section02"], "dom": r["domain_list"],
+                   "protocols": r["protocols"]}
+        if args.json:
+            import json as _j
+            print(_j.dumps({**out, "registry": reg}, ensure_ascii=False, indent=2,
+                           sort_keys=True))
+        else:
+            print("  组合包 %s（管线 %s · 类别 %s）" % (out["package"], out["pipeline"],
+                                                    out["category"]))
+            print("  借阅模块 %d · references %d · 层栈 %s"
+                  % (out["modules"], out["references"],
+                     {k: v for k, v in out["layers"].items()}))
+            print("  文件 %d 件，%s %d 件%s"
+                  % (out["files"], "已落盘" if args.write else "待落盘（--write 才写）",
+                     out["written"] if args.write else out["changed"],
+                     "" if args.write else "（差异件）"))
+            if args.write:
+                print("  登记：02 %s · DOMAIN %s · registry %s"
+                      % (reg["02"], reg["dom"], reg["protocols"]))
+        return 0
     packs = [x.strip() for x in args.packs.split(",") if x.strip()]
     mods = [x.strip() for x in getattr(args, "modules", "").split(",") if x.strip()]
     assets = [x.strip() for x in getattr(args, "assets", "").split(",") if x.strip()]
@@ -2509,7 +2560,7 @@ def _cmd_combine(args):
                               ("＋" + "、".join(cert["extra_modules"])) if cert["extra_modules"] else ""))
         print("  合法=%s · 模块 %d · 层栈 %s"
               % (cert["legal"], cert["module_count"],
-                 {k: len(v) for k, v in cert["layer_stacks"].items()}))
+                 {r["layer"]: len(r["modules"]) for r in cert["layer_stacks"]}))
         print("  依赖悬挂 %d · 未桥事件 %d · 资产借阅 %d · 摘要 %s"
               % (len(cert["dependency_closure"]["dangling"]),
                  len(cert["event_closure"]["unbridged"]),

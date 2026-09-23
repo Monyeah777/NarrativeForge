@@ -4,8 +4,29 @@
   "domain": "可解释性与审计",
   "section": "F · 治理、安全与产业生态",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "contract_compliance",
   "content_tier": "derived",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "gdpr",
+      "ietf-json-schema",
+      "mermaid",
+      "nist-ai-rmf",
+      "onnx",
+      "spdx-3",
+      "spdx-licenses",
+      "vega-lite",
+      "w3c-prov-o"
+    ]
+  },
   "subdivisions": [
     {
       "id": "F06-01",
@@ -16,6 +37,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "F 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "F 段默认绑定（轮换 0）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "F 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -28,6 +75,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "F 段载体锚（轮换 1；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -40,6 +115,32 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "spdx-3",
+          "role": "support",
+          "why": "F 段载体锚（轮换 2；与主锚异层）",
+          "layer": "gov",
+          "body": "SPDX",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -52,6 +153,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "F 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "F 段默认绑定（轮换 0）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "F 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -64,6 +191,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-prov-o",
       "standard_why": "关键词「溯源|证据链|审计」命中",
+      "standards": [
+        {
+          "ref": "w3c-prov-o",
+          "role": "primary",
+          "why": "关键词「溯源|证据链|审计」命中",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "F 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -76,6 +231,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-prov-o",
       "standard_why": "关键词「溯源|证据链|审计」命中",
+      "standards": [
+        {
+          "ref": "w3c-prov-o",
+          "role": "primary",
+          "why": "关键词「溯源|证据链|审计」命中",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "F 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -88,6 +271,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "F 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "F 段默认绑定（轮换 0）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "F 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -100,6 +309,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-prov-o",
       "standard_why": "F 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-prov-o",
+          "role": "primary",
+          "why": "F 段默认绑定（轮换 1）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "F 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -112,6 +347,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "关键词「风险|伦理|责任」命中",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "关键词「风险|伦理|责任」命中",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "F 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -124,6 +385,30 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "关键词「风险|伦理|责任」命中",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "关键词「风险|伦理|责任」命中",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "F 段载体锚（轮换 4；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -136,6 +421,32 @@
       "anchor_status": 200,
       "standard_ref": "gdpr",
       "standard_why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+      "standards": [
+        {
+          "ref": "gdpr",
+          "role": "primary",
+          "why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "F 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -148,6 +459,32 @@
       "anchor_status": 200,
       "standard_ref": "spdx-licenses",
       "standard_why": "F 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "spdx-licenses",
+          "role": "primary",
+          "why": "F 段默认绑定（轮换 2）",
+          "layer": "gov",
+          "body": "SPDX",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "F 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 条款引用 / 证据物清单 / 留痕字段 / 责任角色；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只写「合规」不引条款；证据物与留痕缺失导致不可审计（F 段常见失效模式；领域专属失效模式待补）。"
     }

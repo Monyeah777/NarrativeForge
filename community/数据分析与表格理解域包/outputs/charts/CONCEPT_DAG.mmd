@@ -17,12 +17,22 @@ flowchart TD
     B11-12
   end
   subgraph P80[P80]
+    STD-cncf-otel-semconv
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-nist-800-188
+    STD-nist-privacy
     STD-onnx
+    STD-protobuf
+    STD-rdf11
     STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-tabular-data
+    STD-w3c-vc
   end
   B11-01 --> B11-02
   B11-02 --> B11-06
@@ -34,15 +44,35 @@ flowchart TD
   B11-07 --> B11-11
   B11-06 --> B11-11
   B11-11 --> B11-12
+  B11-05 --> STD-cncf-otel-semconv
+  B11-04 --> STD-commonmark
+  B11-11 --> STD-commonmark
   B11-04 --> STD-frictionless-table
   B11-06 --> STD-frictionless-table
   B11-07 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B11-10 --> STD-ietf-json-schema
+  B11-09 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B11-12 --> STD-nist-800-188
+  STD-nist-privacy --> STD-nist-800-188
   B11-02 --> STD-onnx
+  STD-protobuf --> STD-onnx
   B11-03 --> STD-vega-lite
   B11-09 --> STD-vega-lite
+  B11-01 --> STD-vega-lite
+  B11-06 --> STD-vega-lite
+  B11-07 --> STD-vega-lite
+  B11-10 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B11-08 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B11-01 --> STD-w3c-tabular-data
   B11-05 --> STD-w3c-tabular-data
   B11-08 --> STD-w3c-tabular-data
   B11-11 --> STD-w3c-tabular-data
+  B11-02 --> STD-w3c-tabular-data
+  B11-03 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
+  B11-12 --> STD-w3c-vc
+  STD-rdf11 --> STD-w3c-vc

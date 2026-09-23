@@ -11,9 +11,11 @@
     "domain",
     "section",
     "anchors_verified_on",
+    "standard_anchors_verified_on",
     "metric_family",
     "subdivisions",
-    "content_tier"
+    "content_tier",
+    "data_authenticity"
   ],
   "properties": {
     "kind": {
@@ -40,9 +42,71 @@
       "type": "string",
       "format": "date"
     },
+    "standard_anchors_verified_on": {
+      "type": "string",
+      "minLength": 4
+    },
     "metric_family": {
       "type": "string",
       "minLength": 3
+    },
+    "data_authenticity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "standard_bindings",
+        "in_catalog_ratio",
+        "reachable_ratio",
+        "probe_evidence_ratio",
+        "anchor_probed_ratio",
+        "score",
+        "threshold",
+        "bound_standards"
+      ],
+      "properties": {
+        "standard_bindings": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "in_catalog_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reachable_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "probe_evidence_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "anchor_probed_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "bound_standards": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        }
+      }
     },
     "subdivisions": {
       "type": "array",
@@ -60,6 +124,7 @@
           "anchor_status",
           "standard_ref",
           "standard_why",
+          "standards",
           "check",
           "pitfall"
         ],
@@ -100,6 +165,73 @@
           "standard_why": {
             "type": "string",
             "minLength": 3
+          },
+          "standards": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "ref",
+                "role",
+                "why",
+                "layer",
+                "body",
+                "reachable",
+                "http_status",
+                "probe_date",
+                "depends_on"
+              ],
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "minLength": 2
+                },
+                "role": {
+                  "enum": [
+                    "primary",
+                    "support"
+                  ]
+                },
+                "why": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "layer": {
+                  "enum": [
+                    "data",
+                    "iface",
+                    "form",
+                    "gov",
+                    "eng"
+                  ]
+                },
+                "body": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "reachable": {
+                  "type": "boolean"
+                },
+                "http_status": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "probe_date": {
+                  "type": "string",
+                  "minLength": 4
+                },
+                "depends_on": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 2
+                  }
+                }
+              }
+            }
           },
           "check": {
             "type": "string",

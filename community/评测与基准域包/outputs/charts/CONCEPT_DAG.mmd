@@ -17,11 +17,21 @@ flowchart TD
     F05-12
   end
   subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-nist-800-188
     STD-nist-ai-rmf
+    STD-nist-privacy
     STD-owasp-llm
+    STD-owasp-top10
+    STD-rdf11
+    STD-spdx-3
+    STD-vega-lite
     STD-w3c-prov-o
   end
   F05-01 --> F05-02
@@ -44,7 +54,13 @@ flowchart TD
   F05-08 --> F05-11
   F05-11 --> F05-12
   F05-09 --> F05-12
+  F05-06 --> STD-commonmark
   F05-03 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
+  F05-01 --> STD-ietf-json-schema
+  F05-05 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  F05-10 --> STD-mermaid
   F05-01 --> STD-mlcommons-bench
   F05-02 --> STD-mlcommons-bench
   F05-06 --> STD-mlcommons-bench
@@ -52,7 +68,19 @@ flowchart TD
   F05-09 --> STD-mlcommons-bench
   F05-10 --> STD-mlcommons-bench
   F05-12 --> STD-nist-800-188
+  STD-nist-privacy --> STD-nist-800-188
   F05-04 --> STD-nist-ai-rmf
   F05-08 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
+  F05-03 --> STD-spdx-3
+  F05-04 --> STD-vega-lite
+  F05-08 --> STD-vega-lite
+  F05-09 --> STD-vega-lite
+  F05-11 --> STD-vega-lite
+  F05-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   F05-05 --> STD-w3c-prov-o
   F05-11 --> STD-w3c-prov-o
+  F05-02 --> STD-w3c-prov-o
+  F05-07 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o

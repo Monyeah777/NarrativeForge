@@ -17,12 +17,22 @@ flowchart TD
     C18-12
   end
   subgraph P80[P80]
+    STD-cncf-cloudevents
     STD-cncf-otel-semconv
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-onnx
     STD-onvif-ucum
     STD-openmetrics
     STD-prometheus-exposition
+    STD-protobuf
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C18-01 --> C18-02
   C18-02 --> C18-03
@@ -44,15 +54,34 @@ flowchart TD
   C18-08 --> C18-11
   C18-11 --> C18-12
   C18-09 --> C18-12
+  C18-11 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
   C18-01 --> STD-cncf-otel-semconv
   C18-02 --> STD-cncf-otel-semconv
   C18-04 --> STD-cncf-otel-semconv
   C18-06 --> STD-cncf-otel-semconv
   C18-10 --> STD-cncf-otel-semconv
+  C18-02 --> STD-commonmark
   C18-07 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
+  C18-01 --> STD-ietf-json-schema
+  C18-05 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  C18-04 --> STD-mermaid
+  C18-09 --> STD-mermaid
   C18-08 --> STD-onnx
+  STD-protobuf --> STD-onnx
   C18-03 --> STD-onvif-ucum
   C18-09 --> STD-openmetrics
   C18-12 --> STD-openmetrics
+  STD-prometheus-exposition --> STD-openmetrics
   C18-05 --> STD-prometheus-exposition
   C18-11 --> STD-prometheus-exposition
+  C18-03 --> STD-vega-lite
+  C18-07 --> STD-vega-lite
+  C18-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C18-06 --> STD-w3c-tabular-data
+  C18-10 --> STD-w3c-tabular-data
+  C18-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

@@ -52,7 +52,23 @@
       <data key="layer">P60</data>
       <data key="branch">domain</data>
     </node>
+    <node id="STD-commonmark">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-creativecommons">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json-schema">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mermaid">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -61,6 +77,10 @@
       <data key="branch">standards</data>
     </node>
     <node id="STD-nist-800-188">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-nist-privacy">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -76,11 +96,27 @@
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
+    <node id="STD-owasp-top10">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-spdx-3">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-spdx-licenses">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
+    <node id="STD-vega-lite">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-w3c-epub33">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-xml">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -144,7 +180,25 @@
     <edge source="F09-09" target="F09-12">
       <data key="provenance">['f09-anchor']</data>
     </edge>
+    <edge source="F09-04" target="STD-commonmark">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="F09-01" target="STD-creativecommons">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-06" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-11" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-05" target="STD-mermaid">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-10" target="STD-mermaid">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="F09-08" target="STD-mlcommons-bench">
@@ -153,7 +207,13 @@
     <edge source="F09-06" target="STD-nist-800-188">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-nist-privacy" target="STD-nist-800-188">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="F09-03" target="STD-oasis-openapi">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json-schema" target="STD-oasis-openapi">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="F09-05" target="STD-osi-osd">
@@ -168,6 +228,15 @@
     <edge source="F09-11" target="STD-owasp-llm">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-owasp-top10" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-03" target="STD-spdx-3">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-08" target="STD-spdx-3">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="F09-02" target="STD-spdx-licenses">
       <data key="provenance">['std-catalog']</data>
     </edge>
@@ -177,7 +246,28 @@
     <edge source="F09-12" target="STD-spdx-licenses">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="F09-01" target="STD-spdx-licenses">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-09" target="STD-spdx-licenses">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-02" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-07" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="F09-12" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json-schema" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="F09-04" target="STD-w3c-epub33">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-w3c-xml" target="STD-w3c-epub33">
       <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>

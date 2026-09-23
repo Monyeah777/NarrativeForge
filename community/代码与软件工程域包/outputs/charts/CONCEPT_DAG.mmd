@@ -20,11 +20,20 @@ flowchart TD
     STD-commonmark
     STD-cwe
     STD-eu-machinery
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-osi-osd
     STD-owasp-llm
+    STD-owasp-top10
     STD-peps
+    STD-rst-docutils
     STD-spdx-3
+    STD-vega-lite
     STD-w3c-epub33
+    STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E13-01 --> E13-02
   E13-02 --> E13-03
@@ -47,14 +56,32 @@ flowchart TD
   E13-11 --> E13-12
   E13-09 --> E13-12
   E13-09 --> STD-commonmark
+  E13-02 --> STD-commonmark
+  E13-07 --> STD-commonmark
+  E13-12 --> STD-commonmark
   E13-05 --> STD-cwe
   E13-11 --> STD-eu-machinery
+  E13-01 --> STD-ietf-json-schema
+  E13-06 --> STD-ietf-json-schema
+  E13-09 --> STD-ietf-json-schema
+  E13-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  E13-03 --> STD-mermaid
+  E13-08 --> STD-mermaid
   E13-02 --> STD-osi-osd
   E13-04 --> STD-osi-osd
   E13-08 --> STD-osi-osd
   E13-12 --> STD-osi-osd
   E13-10 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
   E13-01 --> STD-peps
   E13-03 --> STD-peps
+  STD-rst-docutils --> STD-peps
   E13-06 --> STD-spdx-3
+  E13-04 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E13-07 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
+  E13-05 --> STD-w3c-tabular-data
+  E13-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

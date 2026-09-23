@@ -18,11 +18,23 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-otel-semconv
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
     STD-gips
+    STD-ietf-bcp47
+    STD-ietf-ixdtf
+    STD-ietf-json
     STD-ietf-json-schema
     STD-onnx
+    STD-opcua
+    STD-protobuf
+    STD-rdf11
+    STD-rfc3339
+    STD-vega-lite
     STD-w3c-owl-time
+    STD-w3c-owl2
+    STD-w3c-prov-o
     STD-w3c-tabular-data
   end
   B18-01 --> B18-02
@@ -46,14 +58,34 @@ flowchart TD
   B18-11 --> B18-12
   B18-09 --> B18-12
   B18-11 --> STD-cncf-otel-semconv
+  B18-07 --> STD-commonmark
+  B18-09 --> STD-commonmark
   B18-03 --> STD-frictionless-table
   B18-06 --> STD-frictionless-table
   B18-09 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B18-05 --> STD-gips
   B18-10 --> STD-gips
+  B18-01 --> STD-ietf-ixdtf
+  STD-rfc3339 --> STD-ietf-ixdtf
   B18-04 --> STD-ietf-json-schema
   B18-07 --> STD-ietf-json-schema
+  B18-05 --> STD-ietf-json-schema
+  B18-10 --> STD-ietf-json-schema
+  B18-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B18-12 --> STD-onnx
+  STD-protobuf --> STD-onnx
+  B18-08 --> STD-opcua
+  B18-02 --> STD-vega-lite
+  B18-03 --> STD-vega-lite
+  B18-06 --> STD-vega-lite
+  B18-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   B18-01 --> STD-w3c-owl-time
+  STD-w3c-owl2 --> STD-w3c-owl-time
+  B18-04 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B18-02 --> STD-w3c-tabular-data
-  B18-08 --> STD-w3c-tabular-data
+  B18-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

@@ -18,10 +18,18 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-creativecommons
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
+    STD-rdf11
+    STD-spdx-licenses
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-svg2
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   B15-01 --> B15-02
   B15-02 --> B15-03
@@ -47,11 +55,29 @@ flowchart TD
   B15-03 --> STD-frictionless-table
   B15-06 --> STD-frictionless-table
   B15-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B15-01 --> STD-ietf-json-schema
   B15-07 --> STD-ietf-json-schema
   B15-10 --> STD-ietf-json-schema
+  B15-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  B15-09 --> STD-spdx-licenses
+  B15-01 --> STD-vega-lite
+  B15-02 --> STD-vega-lite
+  B15-03 --> STD-vega-lite
+  B15-05 --> STD-vega-lite
+  B15-06 --> STD-vega-lite
+  B15-07 --> STD-vega-lite
+  B15-10 --> STD-vega-lite
+  B15-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B15-04 --> STD-w3c-prov-o
+  B15-08 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B15-04 --> STD-w3c-svg2
   B15-11 --> STD-w3c-svg2
+  STD-w3c-xml --> STD-w3c-svg2
   B15-02 --> STD-w3c-tabular-data
   B15-05 --> STD-w3c-tabular-data
   B15-08 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

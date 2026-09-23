@@ -17,9 +17,16 @@ flowchart TD
     D15-12
   end
   subgraph P80[P80]
-    STD-iso-iec-25010
+    STD-common-criteria
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
+    STD-rdf11
+    STD-vega-lite
     STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   D15-01 --> D15-02
   D15-02 --> D15-03
@@ -41,15 +48,31 @@ flowchart TD
   D15-08 --> D15-11
   D15-11 --> D15-12
   D15-09 --> D15-12
-  D15-03 --> STD-iso-iec-25010
-  D15-06 --> STD-iso-iec-25010
-  D15-09 --> STD-iso-iec-25010
-  D15-12 --> STD-iso-iec-25010
+  D15-03 --> STD-common-criteria
+  D15-06 --> STD-common-criteria
+  D15-09 --> STD-common-criteria
+  D15-12 --> STD-common-criteria
+  D15-05 --> STD-ietf-json-schema
+  D15-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  D15-04 --> STD-mermaid
+  D15-09 --> STD-mermaid
+  D15-11 --> STD-mermaid
   D15-01 --> STD-nist-ai-rmf
   D15-04 --> STD-nist-ai-rmf
   D15-07 --> STD-nist-ai-rmf
   D15-10 --> STD-nist-ai-rmf
+  D15-01 --> STD-vega-lite
+  D15-02 --> STD-vega-lite
+  D15-03 --> STD-vega-lite
+  D15-07 --> STD-vega-lite
+  D15-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D15-02 --> STD-w3c-prov-o
   D15-05 --> STD-w3c-prov-o
   D15-08 --> STD-w3c-prov-o
   D15-11 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  D15-08 --> STD-w3c-tabular-data
+  D15-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

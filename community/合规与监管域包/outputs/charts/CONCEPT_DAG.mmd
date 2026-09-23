@@ -18,9 +18,14 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-gdpr
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
     STD-oasis-openapi
+    STD-rdf11
     STD-spdx-licenses
+    STD-vega-lite
     STD-w3c-prov-o
   end
   F02-01 --> F02-02
@@ -48,10 +53,26 @@ flowchart TD
   F02-08 --> STD-gdpr
   F02-10 --> STD-gdpr
   F02-11 --> STD-gdpr
+  F02-01 --> STD-ietf-json-schema
+  F02-06 --> STD-ietf-json-schema
+  F02-09 --> STD-ietf-json-schema
+  F02-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  F02-05 --> STD-mermaid
+  F02-10 --> STD-mermaid
   F02-04 --> STD-nist-ai-rmf
   F02-01 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
   F02-03 --> STD-spdx-licenses
   F02-06 --> STD-spdx-licenses
   F02-12 --> STD-spdx-licenses
+  F02-02 --> STD-vega-lite
+  F02-03 --> STD-vega-lite
+  F02-04 --> STD-vega-lite
+  F02-07 --> STD-vega-lite
+  F02-08 --> STD-vega-lite
+  F02-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   F02-02 --> STD-w3c-prov-o
   F02-09 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o

@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「科研与实验」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（科研与实验:M01）与收口模块（科研与实验:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D20-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 16 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（D20-00 领域通用前置）；节点 28 · 边 52 · 密度 1.8571。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,10 +29,22 @@
 | `D20-10` | 专利检索 | P60 | `D20-09`、`D20-07` | d20-anchor |
 | `D20-11` | 模拟仿真 | P40 | `D20-10`、`D20-08` | d20-anchor |
 | `D20-12` | 科研伦理审查 | P60 | `D20-11`、`D20-09` | d20-anchor |
-| `STD-datacite` | 标准 · 元数据内核（DataCite） | P80 | `D20-02`、`D20-04`、`D20-06`、`D20-08` | std-catalog |
-| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `D20-01`、`D20-10` | std-catalog |
-| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `D20-12` | std-catalog |
-| `STD-rocrate` | 标准 · RO-Crate 1.1（Research Object） | P80 | `D20-03`、`D20-05`、`D20-07`、`D20-09`、`D20-11` | std-catalog |
+| `STD-bagit` | 标准 · BagIt (RFC 8493)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `D20-07` | std-catalog |
+| `STD-datacite` | 标准 · 元数据内核（DataCite｜gov｜实测 ✓） | P80 | `D20-02`、`D20-04`、`D20-06`、`D20-08`、`STD-w3c-xml` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | `D20-01`、`D20-10`、`STD-ietf-json-schema` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `D20-06`、`D20-11`、`STD-ietf-json` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `D20-04`、`D20-09` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST｜gov｜实测 ✓） | P80 | `D20-12` | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rocrate` | 标准 · RO-Crate 1.1（Research Object｜gov｜实测 ✓） | P80 | `D20-03`、`D20-05`、`D20-07`、`D20-09`、`D20-11`、`STD-bagit`、`STD-w3c-json-ld` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `D20-02`、`D20-03`、`D20-08`、`D20-12`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-json-ld` | 标准 · JSON-LD 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `D20-01`、`D20-10`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `D20-05`、`STD-ietf-bcp47` | std-catalog |
+| `STD-w3c-xml` | 标准 · XML 1.0（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -50,10 +62,22 @@
 | `D20-专利检索` | `D20-10` |
 | `D20-模拟仿真` | `D20-11` |
 | `D20-科研伦理审查` | `D20-12` |
+| `std-bagit` | `STD-bagit` |
+| `std-commonmark` | `STD-commonmark` |
 | `std-datacite` | `STD-datacite` |
 | `std-frictionless-package` | `STD-frictionless-package` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
+| `std-rdf11` | `STD-rdf11` |
 | `std-rocrate` | `STD-rocrate` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-json-ld` | `STD-w3c-json-ld` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
+| `std-w3c-xml` | `STD-w3c-xml` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -88,10 +112,22 @@ concept_graph:
     - id: "standards"
       name: "可扩展标准（绑定）"
       nodes:
+        - "STD-bagit"
+        - "STD-commonmark"
         - "STD-datacite"
         - "STD-frictionless-package"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
+        - "STD-ietf-json-schema"
+        - "STD-mermaid"
         - "STD-nist-ai-rmf"
+        - "STD-rdf11"
         - "STD-rocrate"
+        - "STD-vega-lite"
+        - "STD-w3c-json-ld"
+        - "STD-w3c-prov-o"
+        - "STD-w3c-tabular-data"
+        - "STD-w3c-xml"
   nodes:
     - id: "D20-01"
       name: "文献检索与综述"
@@ -197,6 +233,21 @@ concept_graph:
         - "D20-09"
       provenance:
         - "d20-anchor"
+    - id: "STD-bagit"
+      name: "标准 · BagIt (RFC 8493)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-07"
+      provenance:
+        - "std-catalog"
     - id: "STD-datacite"
       name: "标准 · 元数据内核"
       layer: "P80"
@@ -206,6 +257,7 @@ concept_graph:
         - "D20-04"
         - "D20-06"
         - "D20-08"
+        - "STD-w3c-xml"
       provenance:
         - "std-catalog"
     - id: "STD-frictionless-package"
@@ -215,6 +267,40 @@ concept_graph:
       prereqs:
         - "D20-01"
         - "D20-10"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-06"
+        - "D20-11"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-04"
+        - "D20-09"
       provenance:
         - "std-catalog"
     - id: "STD-nist-ai-rmf"
@@ -223,6 +309,13 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "D20-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-rocrate"
@@ -235,6 +328,53 @@ concept_graph:
         - "D20-07"
         - "D20-09"
         - "D20-11"
+        - "STD-bagit"
+        - "STD-w3c-json-ld"
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-02"
+        - "D20-03"
+        - "D20-08"
+        - "D20-12"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-json-ld"
+      name: "标准 · JSON-LD 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-01"
+        - "D20-10"
+        - "STD-rdf11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D20-05"
+        - "STD-ietf-bcp47"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-xml"
+      name: "标准 · XML 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
 ```

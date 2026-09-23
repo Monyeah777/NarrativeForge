@@ -17,11 +17,18 @@ flowchart TD
     E14-12
   end
   subgraph P80[P80]
+    STD-cncf-otel-semconv
     STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-vega-lite
     STD-w3c-epub33
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E14-01 --> E14-02
   E14-02 --> E14-03
@@ -43,15 +50,32 @@ flowchart TD
   E14-08 --> E14-11
   E14-11 --> E14-12
   E14-09 --> E14-12
+  E14-01 --> STD-cncf-otel-semconv
   E14-01 --> STD-commonmark
   E14-07 --> STD-commonmark
   E14-10 --> STD-commonmark
+  E14-02 --> STD-commonmark
+  E14-05 --> STD-commonmark
+  E14-12 --> STD-commonmark
   E14-04 --> STD-frictionless-table
   E14-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
+  E14-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  E14-11 --> STD-mermaid
   E14-03 --> STD-vega-lite
   E14-09 --> STD-vega-lite
+  E14-04 --> STD-vega-lite
+  E14-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E14-06 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
   E14-02 --> STD-w3c-tabular-data
   E14-05 --> STD-w3c-tabular-data
   E14-08 --> STD-w3c-tabular-data
   E14-11 --> STD-w3c-tabular-data
+  E14-03 --> STD-w3c-tabular-data
+  E14-07 --> STD-w3c-tabular-data
+  E14-09 --> STD-w3c-tabular-data
+  E14-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

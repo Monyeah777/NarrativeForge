@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「知识管理与检索增强」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（知识管理与检索增强:M01）与收口模块（知识管理与检索增强:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E11-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 20 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（E11-00 领域通用前置）；节点 32 · 边 55 · 密度 1.7188。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,14 +29,26 @@
 | `E11-10` | 权限与保密 | P60 | `E11-09`、`E11-07` | e11-anchor |
 | `E11-11` | 检索评测 | P40 | `E11-10`、`E11-08` | e11-anchor |
 | `E11-12` | 失效知识治理 | P60 | `E11-11`、`E11-09` | e11-anchor |
-| `STD-c2pa-spec` | 标准 · 内容凭证规范（C2PA） | P80 | `E11-07` | std-catalog |
-| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E11-01`、`E11-04` | std-catalog |
-| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `E11-03` | std-catalog |
-| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `E11-06`、`E11-08`、`E11-09` | std-catalog |
-| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `E11-11` | std-catalog |
-| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST） | P80 | `E11-10`、`E11-12` | std-catalog |
-| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `E11-02` | std-catalog |
-| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E11-05` | std-catalog |
+| `STD-c2pa-spec` | 标准 · 内容凭证规范（C2PA｜gov｜实测 ✓） | P80 | `E11-07`、`STD-cbor`、`STD-cose` | std-catalog |
+| `STD-cbor` | 标准 · CBOR (RFC 8949)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `E11-01`、`E11-04`、`E11-02`、`E11-06`、`E11-12` | std-catalog |
+| `STD-cose` | 标准 · COSE 签名与加密（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | `E11-03`、`STD-ietf-json-schema` | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless｜data｜实测 ✓） | P80 | `E11-06`、`E11-08`、`E11-09`、`STD-frictionless-package` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `E11-01`、`E11-11`、`STD-ietf-json` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `E11-03`、`E11-08` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons｜eng｜实测 ✓） | P80 | `E11-11` | std-catalog |
+| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST｜gov｜实测 ✓） | P80 | `E11-10`、`E11-12`、`STD-nist-privacy` | std-catalog |
+| `STD-nist-privacy` | 标准 · 隐私框架（NIST｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation｜iface｜实测 ✓） | P80 | `E11-02`、`STD-protobuf` | std-catalog |
+| `STD-protobuf` | 标准 · Protocol Buffers proto3（Google｜iface｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `E11-05`、`E11-09`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `E11-07`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `E11-05`、`E11-04`、`STD-ietf-bcp47` | std-catalog |
+| `STD-w3c-vc` | 标准 · Verifiable Credentials 2.0（W3C｜gov｜实测 ✓） | P80 | `E11-10`、`STD-rdf11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -55,13 +67,25 @@
 | `E11-检索评测` | `E11-11` |
 | `E11-失效知识治理` | `E11-12` |
 | `std-c2pa-spec` | `STD-c2pa-spec` |
+| `std-cbor` | `STD-cbor` |
 | `std-commonmark` | `STD-commonmark` |
+| `std-cose` | `STD-cose` |
 | `std-frictionless-package` | `STD-frictionless-package` |
 | `std-frictionless-table` | `STD-frictionless-table` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-mlcommons-bench` | `STD-mlcommons-bench` |
 | `std-nist-800-188` | `STD-nist-800-188` |
+| `std-nist-privacy` | `STD-nist-privacy` |
 | `std-onnx` | `STD-onnx` |
+| `std-protobuf` | `STD-protobuf` |
+| `std-rdf11` | `STD-rdf11` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 | `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
+| `std-w3c-vc` | `STD-w3c-vc` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -97,13 +121,25 @@ concept_graph:
       name: "可扩展标准（绑定）"
       nodes:
         - "STD-c2pa-spec"
+        - "STD-cbor"
         - "STD-commonmark"
+        - "STD-cose"
         - "STD-frictionless-package"
         - "STD-frictionless-table"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
+        - "STD-ietf-json-schema"
+        - "STD-mermaid"
         - "STD-mlcommons-bench"
         - "STD-nist-800-188"
+        - "STD-nist-privacy"
         - "STD-onnx"
+        - "STD-protobuf"
+        - "STD-rdf11"
+        - "STD-vega-lite"
+        - "STD-w3c-prov-o"
         - "STD-w3c-tabular-data"
+        - "STD-w3c-vc"
   nodes:
     - id: "E11-01"
       name: "切片策略"
@@ -215,6 +251,15 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "E11-07"
+        - "STD-cbor"
+        - "STD-cose"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cbor"
+      name: "标准 · CBOR (RFC 8949)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-commonmark"
@@ -224,6 +269,16 @@ concept_graph:
       prereqs:
         - "E11-01"
         - "E11-04"
+        - "E11-02"
+        - "E11-06"
+        - "E11-12"
+      provenance:
+        - "std-catalog"
+    - id: "STD-cose"
+      name: "标准 · COSE 签名与加密"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-frictionless-package"
@@ -232,6 +287,7 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "E11-03"
+        - "STD-ietf-json-schema"
       provenance:
         - "std-catalog"
     - id: "STD-frictionless-table"
@@ -242,6 +298,40 @@ concept_graph:
         - "E11-06"
         - "E11-08"
         - "E11-09"
+        - "STD-frictionless-package"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E11-01"
+        - "E11-11"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E11-03"
+        - "E11-08"
       provenance:
         - "std-catalog"
     - id: "STD-mlcommons-bench"
@@ -259,6 +349,14 @@ concept_graph:
       prereqs:
         - "E11-10"
         - "E11-12"
+        - "STD-nist-privacy"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-privacy"
+      name: "标准 · 隐私框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-onnx"
@@ -267,6 +365,40 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "E11-02"
+        - "STD-protobuf"
+      provenance:
+        - "std-catalog"
+    - id: "STD-protobuf"
+      name: "标准 · Protocol Buffers proto3"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E11-05"
+        - "E11-09"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E11-07"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-tabular-data"
@@ -275,6 +407,17 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "E11-05"
+        - "E11-04"
+        - "STD-ietf-bcp47"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-vc"
+      name: "标准 · Verifiable Credentials 2.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E11-10"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
 ```

@@ -4,8 +4,27 @@
   "domain": "文档解析与版面理解",
   "section": "B · 任务类型",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "extraction",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "commonmark",
+      "ietf-json-schema",
+      "vega-lite",
+      "w3c-epub33",
+      "w3c-mathml3",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "B12-01",
@@ -16,6 +35,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 B12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 0）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "载体锚：产出形态「文本」的承载标准",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 metric（CER|WER + 归一化规则）、langs（语言清单）与 layout_types（覆盖类型）。",
       "pitfall": "不声明文本归一化（大小写/空格）导致 CER 不可比；只测印刷体。"
     },
@@ -28,6 +73,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "域码 B12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 region_types（枚举）、reading_order（判定规则）与 multicolumn（处理方式）。",
       "pitfall": "多栏文档串行错乱；区域类型体系不同却横向比。"
     },
@@ -40,6 +113,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "关键词「表格|CSV|列式」命中",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "关键词「表格|CSV|列式」命中",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 structure_repr（html|cell-coord）、merged_cells（true|false 处理）与 header_levels（层级数）。",
       "pitfall": "扁平化丢失合并单元格语义；表头层级不还原导致列错位。"
     },
@@ -52,6 +151,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-mathml3",
       "standard_why": "关键词「公式|数学|符号|证明」命中",
+      "standards": [
+        {
+          "ref": "w3c-mathml3",
+          "role": "primary",
+          "why": "关键词「公式|数学|符号|证明」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-xml"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "B 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 output_format（latex|mathml）、symbol_set（符号范围）与 equivalence（符号等价判定方法）。",
       "pitfall": "只比字符串（等价式子判错）；符号集未声明导致覆盖率虚高。"
     },
@@ -64,6 +191,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 B12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 0）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 writer_independence（true|false）、capture（扫描/拍照/笔迹坐标）与 reject_option（置信度拒识）。",
       "pitfall": "同一书写者跨训练与测试（虚高）；无拒识（错字照样输出）。"
     },
@@ -76,6 +231,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "域码 B12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "载体锚：产出形态「表」的承载标准",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 template_dependency（per-template|generic）、field_localization（坐标|语义）与 checkbox（处理方式）。",
       "pitfall": "每票种一套规则（不可扩展）；勾选框被忽略（字段缺失）。"
     },
@@ -88,6 +271,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 B12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 0）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 text_layer_check（判定方法）、preprocess（去噪/纠偏清单）与 fallback（无文本层时的路径）。",
       "pitfall": "对损坏 PDF 静默返回空文本；无降级路径。"
     },
@@ -100,6 +309,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "域码 B12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "载体锚：产出形态「图」的承载标准",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 caption_binding（规则）、cross_page（true|false）与 reference_link（正文引用 → 图号映射）。",
       "pitfall": "图注与图分离（语义丢失）；跨页图表被截断。"
     },
@@ -112,6 +349,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-epub33",
       "standard_why": "关键词「文档|出版|排版|校对」命中",
+      "standards": [
+        {
+          "ref": "w3c-epub33",
+          "role": "primary",
+          "why": "关键词「文档|出版|排版|校对」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-xml"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "载体锚：产出形态「文本」的承载标准",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 taxonomy（体系 + 版本）、threshold（分流阈值）与 human_review_ratio（复核比例）。",
       "pitfall": "无阈值分流（全自动错分）；分类体系随业务变动未版本化。"
     },
@@ -124,6 +387,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "域码 B12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 granularity（page|block|span）、return_form（坐标 + 文本）与 verifiable（能否按坐标回查原文）。",
       "pitfall": "只给答案不给位置（无法复核）；坐标体系与渲染不一致。"
     },
@@ -136,6 +427,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 B12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 B12 专属绑定（轮换 0）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 confidence_source（概率|规则）、low_conf_action（人工|重试|标注）与 audit_ratio（抽检比例）。",
       "pitfall": "置信度不校准（阈值无意义）；低置信结果直接入库。"
     },
@@ -148,6 +465,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-epub33",
       "standard_why": "关键词「文档|出版|排版|校对」命中",
+      "standards": [
+        {
+          "ref": "w3c-epub33",
+          "role": "primary",
+          "why": "关键词「文档|出版|排版|校对」命中",
+          "layer": "form",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-xml"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "载体锚：产出形态「文本」的承载标准",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 langs（清单）、mixed_script（混排处理）与 per_lang_report（逐语言指标，禁只报平均）。",
       "pitfall": "只报总体平均（弱语言崩坏被掩盖）；混排不处理导致断词错误。"
     }

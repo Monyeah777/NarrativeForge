@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {
+        "layer": "P40",
+        "modules": 4
+      },
+      {
+        "layer": "P60",
+        "modules": 4
+      }
+    ]
+  },
+  "description": "组合包-受监管行业 · 层位堆叠",
+  "encoding": {
+    "x": {
+      "field": "layer",
+      "sort": null,
+      "title": "层位",
+      "type": "nominal"
+    },
+    "y": {
+      "field": "modules",
+      "title": "模块数",
+      "type": "quantitative"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  }
+}

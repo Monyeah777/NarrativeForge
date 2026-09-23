@@ -4,8 +4,28 @@
   "domain": "数据采集与清洗",
   "section": "C · AI 工程与运维",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "contract_compliance",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "cncf-otel-semconv",
+      "frictionless-table",
+      "gdpr",
+      "ietf-json-schema",
+      "mermaid",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "C01-01",
@@ -16,6 +36,32 @@
       "anchor_status": 200,
       "standard_ref": "gdpr",
       "standard_why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+      "standards": [
+        {
+          "ref": "gdpr",
+          "role": "primary",
+          "why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "C 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 robots_policy（遵守 true / 例外清单）、rate_limit（QPS 或并发上限）与 content_license（逐站点许可来源）。",
       "pitfall": "无视 robots 与条款批量抓取；限速缺失导致被封禁并污染采集统计。"
     },
@@ -28,6 +74,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 C01 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 C01 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "C 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 dedup_unit（doc|paragraph|line）、method（minhash|simhash|embedding）、threshold 与 keep_policy（最新 / 最长 / 来源优先）。",
       "pitfall": "只做精确去重（近似重复泄漏进训练集）；阈值未声明导致去重率不可复现。"
     },
@@ -40,6 +114,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "域码 C01 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "域码 C01 专属绑定（轮换 0）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "C 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 noise_types（枚举）、rules（规则集 + 版本）与 false_drop_rate（人工抽检误删率）。",
       "pitfall": "正则过宽把正文一起删（误删率不测）；模板变体未覆盖导致噪声残留。"
     },
@@ -52,6 +154,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 C01 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 C01 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "support",
+          "why": "C 段载体锚（轮换 3；与主锚异层）",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 encoding（UTF-8 强制 + NFC/NFKC 选择）、newline（LF）、whitespace_rule 与 field_schema（结构化字段）。",
       "pitfall": "混用 NFC/NFKC 导致同一文本两种形态；全角半角未归一造成检索漏召。"
     },
@@ -64,6 +192,32 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「采集|清洗|质量|异常|缺失」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "support",
+          "why": "C 段载体锚（轮换 4；与主锚异层）",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 missing_semantics（空|NaN|哨兵值）、outlier_method（IQR|z-score|业务规则）与 action（丢弃|插补|标注）。",
       "pitfall": "把缺失当 0（统计失真）；插补未记录（无法回溯真实缺失率）。"
     },
@@ -76,6 +230,32 @@
       "anchor_status": 200,
       "standard_ref": "gdpr",
       "standard_why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+      "standards": [
+        {
+          "ref": "gdpr",
+          "role": "primary",
+          "why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "C 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 pii_types（枚举）、method（mask|generalize|hash + 盐）与 reversibility（不可逆 true/false + 依据）。",
       "pitfall": "只脱敏手机号而漏掉地址与身份证；哈希无盐可被字典反查。"
     },
@@ -88,6 +268,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「采集|清洗|质量|异常|缺失」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "C 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 lid_method（fasttext|规则 + 版本）、mixed_script_policy 与 per_lang_report（逐语言指标，禁只报平均）。",
       "pitfall": "用单语规则清多语数据（弱语言被清空）；只报总体平均掩盖单语崩塌。"
     },
@@ -100,6 +308,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 C01 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 C01 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "support",
+          "why": "C 段载体锚（轮换 3；与主锚异层）",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 ratio_target（逐源目标占比 ± 容差）、unit（char|token|doc）与 dist_report（域分布统计）。",
       "pitfall": "配比按文档数而非 token（实际权重偏差数倍）；统计口径未声明导致跨版本不可比。"
     },
@@ -112,6 +346,32 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "域码 C01 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "域码 C01 专属绑定（轮换 0）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "C 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 version_scheme（日期 + 序号或内容哈希）、snapshot_granularity（全量|增量）与 restore_cmd（可复现还原命令）。",
       "pitfall": "覆盖式更新（无法回到旧版本）；快照无校验和导致还原不可验证。"
     },
@@ -124,6 +384,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 C01 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 C01 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "载体锚：产出形态「溯源」的承载标准",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 source_ids（逐源标识）、transform_log（步骤 + 工具版本）与 field_lineage（字段级是否可追）。",
       "pitfall": "只记整表级血缘（字段错无法定位）；转换脚本版本未记录。"
     },
@@ -136,6 +424,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「采集|清洗|质量|异常|缺失」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "C 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 score_dims（维度清单）、weights（合计 1.0）与 thresholds（三段阈值 + 分流动作）。",
       "pitfall": "打分维度与业务目标无关（分数好看但不可用）；阈值未声明导致入池标准漂移。"
     },
@@ -148,6 +464,32 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "域码 C01 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "域码 C01 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "support",
+          "why": "C 段载体锚（轮换 3；与主锚异层）",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 discovery_channel（监控|抽样|上报）、impact_analysis（受影响数据集与版本清单）与 rollback（修复或回滚命令）。",
       "pitfall": "脏数据已入训练却无影响面清单（无法评估后果）；无回滚路径。"
     }

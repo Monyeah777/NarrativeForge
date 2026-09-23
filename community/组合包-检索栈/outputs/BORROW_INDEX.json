@@ -1,0 +1,31 @@
+{
+  "borrowed": [
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "向量库与检索管线:M01",
+        "向量库与检索管线:M02"
+      ],
+      "source_package": "向量库与检索管线域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "大语言模型:M01",
+        "大语言模型:M02"
+      ],
+      "source_package": "大语言模型域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "嵌入与检索表示:M01",
+        "嵌入与检索表示:M02"
+      ],
+      "source_package": "嵌入与检索表示域包"
+    }
+  ],
+  "note": "借阅索引：本组合包不复制资产/模块，全部经 references 只读访问",
+  "package": "组合包-检索栈",
+  "schema": "nf-combo-borrow/1"
+}

@@ -4,8 +4,28 @@
   "domain": "三维与世界模型",
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "regression",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "ietf-json-schema",
+      "mermaid",
+      "mlcommons-bench",
+      "onnx",
+      "opengeospatial",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "A08-01",
@@ -16,6 +36,32 @@
       "anchor_status": 200,
       "standard_ref": "opengeospatial",
       "standard_why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+      "standards": [
+        {
+          "ref": "opengeospatial",
+          "role": "primary",
+          "why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+          "layer": "data",
+          "body": "OGC",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 views（训练/测试视角数）、coord_system（右手/左手 + 上轴）与 metric（PSNR/SSIM/LPIPS + 下采样口径）。",
       "pitfall": "测试视角与训练视角重叠（虚高）；分辨率与下采样口径不同直接比 PSNR。"
     },
@@ -28,6 +74,32 @@
       "anchor_status": 200,
       "standard_ref": "opengeospatial",
       "standard_why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+      "standards": [
+        {
+          "ref": "opengeospatial",
+          "role": "primary",
+          "why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+          "layer": "data",
+          "body": "OGC",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 source（lidar|rgbd|generated）、density（点/平方米或总点数）与 invariance（旋转|平移|尺度 是否要求）。",
       "pitfall": "训练/测试采样密度不同；宣称旋转不变却未做旋转增强测试。"
     },
@@ -40,6 +112,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "A 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 2）",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 pbr_channels（albedo/normal/roughness/metallic 等）、texture_resolution 与 lighting_consistency（是否做重光照检验）。",
       "pitfall": "只有 albedo 却宣称材质完整；生成纹理烘焙进光照（不可重光照）。"
     },
@@ -52,6 +152,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "A 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 representation（mesh|gaussian|implicit）、face_count（或点数）与 multiview_consistency（一致性指标 + 采样视角数）。",
       "pitfall": "只展示单视角好看；面数不声明导致不可用于下游管线。"
     },
@@ -64,6 +192,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 room_types、constraints（可通行/支撑面/无穿插）与 physics_check（碰撞检测是否执行）。",
       "pitfall": "生成结果物体穿插或悬空；无通行性检查导致不可用。"
     },
@@ -76,6 +230,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "A 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 2）",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 solver（含版本）、dt（时间步长 s）、contact_model 与 stability_check（能量守恒/穿透深度上限）。",
       "pitfall": "时间步长过大导致穿透（结论无效）；求解器版本未记录。"
     },
@@ -88,6 +270,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 state_repr（字段/维度）、horizon（预测步数）与 rollout_error（分步误差曲线，不只报单步）。",
       "pitfall": "只报一步预测误差；长时域误差发散未报告。"
     },
@@ -100,6 +310,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 sensors（相机/IMU/LiDAR）、metric（ATE|RPE + 对齐方式）与 failure_cases（动态物体/弱纹理等）。",
       "pitfall": "只在理想序列评测；对齐方式（SE3/Sim3）未声明导致尺度误差被掩盖。"
     },
@@ -112,6 +348,32 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "A 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 2）",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 twin_granularity（设备/产线/园区）、sync_hz 与 drift_metric（孪生与实测偏差）。",
       "pitfall": "孪生只做静态建模（无同步）；偏差无监控（孪生与实际脱节不可见）。"
     },
@@ -124,6 +386,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "A 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 format（含版本）、up_axis、unit（米/厘米）与 compression（Draco/USDZ 等）。",
       "pitfall": "单位与上轴不一致导致缩放/朝向错；压缩后属性丢失未核。"
     },
@@ -136,6 +426,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 skeleton_joints、skin_weight_norm（是否归一化）与 retarget_error（关节位置误差 mm/度）。",
       "pitfall": "权重未归一化导致蒙皮坍缩；重定向误差不报导致动画不可用。"
     },
@@ -148,6 +464,32 @@
       "anchor_status": 200,
       "standard_ref": "opengeospatial",
       "standard_why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+      "standards": [
+        {
+          "ref": "opengeospatial",
+          "role": "primary",
+          "why": "关键词「地理|遥感|地图|空间|三维|点云」命中",
+          "layer": "data",
+          "body": "OGC",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 geom_metric（Chamfer|F-score + 阈值）、perceptual_metric 与 split（同类别内 vs 跨类别）。",
       "pitfall": "只报 Chamfer 不报感知质量；跨类别评测当同类别结论。"
     }

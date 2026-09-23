@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
-|---|---|---|---|---|---|
-| `B09-01` | 静态审查规则 | 静态分析与规则引擎的口径：规则集与版本、扫描范围与规则命中口径。 | 声明 ruleset（来源 + 版本）、scan_scope（路径 / 语言）与 hit_definition（单条=一处代码位置）。 | 规则集版本漂移（两次扫描结果不同）；命中定义不同（按文件/按行）导致计数不可比。 | `oasis-sarif` SARIF 2.1.0（OASIS） |
-| `B09-02` | 漏洞模式识别 | 漏洞类型与分类体系的口径：CWE / OWASP 映射与严重度分级依据。 | 声明 taxonomy（CWE|OWASP + 版本）、severity_scheme（CVSS 或自定义 + 依据）与 mapping（逐条映射表）。 | 严重度凭感觉（不可比）；无分类映射导致修复优先级失真。 | `cwe` CWE 缺陷枚举（MITRE） |
-| `B09-03` | 代码异味 | 代码异味与复杂度的口径：度量（圈复杂度 / 认知复杂度 / 函数长度）与阈值来源。 | 声明 metrics（度量清单）、thresholds（各项阈值 + 来源）与 counting_rule（是否含布尔分支）。 | 阈值不声明（结论不可复现）；复杂度计数规则不同横向比。 | `osv` OSV 漏洞格式（Google/OSV） |
-| `B09-04` | 依赖与供应链风险 | 依赖与供应链风险的口径：依赖清单来源、漏洞库版本与可修复性判定。 | 声明 lockfile（来源与格式）、vuln_db（OSV/NVD + 抓取日期）与 fixability（有无可用升级版本）。 | 漏洞库过期（漏报）；不区分「可修/不可修」导致告警积压。 | `spdx-3` SPDX 3.0（含 AI profile）（SPDX） |
-| `B09-05` | 提交信息与 PR 描述 | 密钥与敏感信息泄露的口径：检测规则、误报基线与泄露后的处置流程。 | 声明 rules（规则集 + 版本）、false_positive_baseline（对照基线）与 response_sop（轮换 / 撤销步骤）。 | 只扫不处置（密钥仍在）；无基线导致误报淹没真报。 | `cwe` CWE 缺陷枚举（MITRE） |
-| `B09-06` | 变更影响面分析 | 测试覆盖与回归的口径：覆盖率口径（行 / 分支）、增量覆盖与回归门阈值。 | 声明 coverage_kind（line|branch）、delta_coverage（增量 vs 全量）与 gate_threshold（合入阈值）。 | 只看全量覆盖率（新增代码裸奔）；口径（行/分支）混用。 | `osv` OSV 漏洞格式（Google/OSV） |
-| `B09-07` | 测试覆盖缺口 | 审查意见质量与去噪的口径：意见可操作性、优先级与噪声率控制。 | 声明 actionability（每条须含位置 + 建议）、priority（分级规则）与 noise_rate（被作者标记为无效的比例）。 | 泛泛而谈（不可执行）；噪声率不统计导致审查疲劳。 | `oasis-sarif` SARIF 2.1.0（OASIS） |
-| `B09-08` | 性能反模式 | 增量审查与 diff 范围的口径：审查范围定义、历史上下文取舍与重复评论抑制。 | 声明 review_scope（diff|文件|全仓）、history_context（是否带历史）与 dedup_rule（同问题不重复报）。 | 每次全仓重报（噪声爆炸）；diff 基线不明导致漏审。 | `cwe` CWE 缺陷枚举（MITRE） |
-| `B09-09` | 审查意见生成 | 缺陷预测与排序的口径：特征 / 模型来源、排序指标与人工复核比例。 | 声明 prediction_source（规则|模型 + 版本）、ranking_metric（如 recall@10）与 human_audit_ratio。 | 只报准确率不报排序质量（前几条没用）；不抽检。 | `osv` OSV 漏洞格式（Google/OSV） |
-| `B09-10` | 误报率控制 | 修复建议与补丁正确性的口径：补丁验证方式（测试驱动）、回归风险与回滚点。 | 声明 patch_validation（测试执行 + 通过判据）、regression_check（原有测试是否仍过）与 rollback_point。 | 补丁未经测试就建议合入；不查回归。 | `oasis-sarif` SARIF 2.1.0（OASIS） |
-| `B09-11` | 审查优先级排序 | 误报治理与基线的口径：误报定义、基线快照与抑制规则的生命周期。 | 声明 fp_definition（判据）、baseline_snapshot（时间 + 计数）与 suppression_ttl（抑制有效期 + 复审）。 | 抑制无期限（永久掩盖）；基线不更新导致趋势失真。 | `cwe` CWE 缺陷枚举（MITRE） |
-| `B09-12` | 自动化门禁集成 | 审查结果可机验的口径：输出格式（SARIF 等）、字段完整性与消费方。 | 声明 output_format（SARIF 2.1.0 等）、required_fields（ruleId/level/location）与 consumers（IDE|CI|门禁）。 | 输出纯文本（无法门禁化）；字段缺失导致定位失败。 | `osv` OSV 漏洞格式（Google/OSV） |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|---|
+| `B09-01` | 静态审查规则 | 静态分析与规则引擎的口径：规则集与版本、扫描范围与规则命中口径。 | 声明 ruleset（来源 + 版本）、scan_scope（路径 / 语言）与 hit_definition（单条=一处代码位置）。 | 规则集版本漂移（两次扫描结果不同）；命中定义不同（按文件/按行）导致计数不可比。 | `oasis-sarif` SARIF 2.1.0（iface｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B09-02` | 漏洞模式识别 | 漏洞类型与分类体系的口径：CWE / OWASP 映射与严重度分级依据。 | 声明 taxonomy（CWE|OWASP + 版本）、severity_scheme（CVSS 或自定义 + 依据）与 mapping（逐条映射表）。 | 严重度凭感觉（不可比）；无分类映射导致修复优先级失真。 | `cwe` CWE 缺陷枚举（gov｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `B09-03` | 代码异味 | 代码异味与复杂度的口径：度量（圈复杂度 / 认知复杂度 / 函数长度）与阈值来源。 | 声明 metrics（度量清单）、thresholds（各项阈值 + 来源）与 counting_rule（是否含布尔分支）。 | 阈值不声明（结论不可复现）；复杂度计数规则不同横向比。 | `osv` OSV 漏洞格式（gov｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B09-04` | 依赖与供应链风险 | 依赖与供应链风险的口径：依赖清单来源、漏洞库版本与可修复性判定。 | 声明 lockfile（来源与格式）、vuln_db（OSV/NVD + 抓取日期）与 fixability（有无可用升级版本）。 | 漏洞库过期（漏报）；不区分「可修/不可修」导致告警积压。 | `spdx-3` SPDX 3.0（含 AI profile）（gov｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B09-05` | 提交信息与 PR 描述 | 密钥与敏感信息泄露的口径：检测规则、误报基线与泄露后的处置流程。 | 声明 rules（规则集 + 版本）、false_positive_baseline（对照基线）与 response_sop（轮换 / 撤销步骤）。 | 只扫不处置（密钥仍在）；无基线导致误报淹没真报。 | `cwe` CWE 缺陷枚举（gov｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B09-06` | 变更影响面分析 | 测试覆盖与回归的口径：覆盖率口径（行 / 分支）、增量覆盖与回归门阈值。 | 声明 coverage_kind（line|branch）、delta_coverage（增量 vs 全量）与 gate_threshold（合入阈值）。 | 只看全量覆盖率（新增代码裸奔）；口径（行/分支）混用。 | `osv` OSV 漏洞格式（gov｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B09-07` | 测试覆盖缺口 | 审查意见质量与去噪的口径：意见可操作性、优先级与噪声率控制。 | 声明 actionability（每条须含位置 + 建议）、priority（分级规则）与 noise_rate（被作者标记为无效的比例）。 | 泛泛而谈（不可执行）；噪声率不统计导致审查疲劳。 | `oasis-sarif` SARIF 2.1.0（iface｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `B09-08` | 性能反模式 | 增量审查与 diff 范围的口径：审查范围定义、历史上下文取舍与重复评论抑制。 | 声明 review_scope（diff|文件|全仓）、history_context（是否带历史）与 dedup_rule（同问题不重复报）。 | 每次全仓重报（噪声爆炸）；diff 基线不明导致漏审。 | `cwe` CWE 缺陷枚举（gov｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B09-09` | 审查意见生成 | 缺陷预测与排序的口径：特征 / 模型来源、排序指标与人工复核比例。 | 声明 prediction_source（规则|模型 + 版本）、ranking_metric（如 recall@10）与 human_audit_ratio。 | 只报准确率不报排序质量（前几条没用）；不抽检。 | `osv` OSV 漏洞格式（gov｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B09-10` | 误报率控制 | 修复建议与补丁正确性的口径：补丁验证方式（测试驱动）、回归风险与回滚点。 | 声明 patch_validation（测试执行 + 通过判据）、regression_check（原有测试是否仍过）与 rollback_point。 | 补丁未经测试就建议合入；不查回归。 | `oasis-sarif` SARIF 2.1.0（iface｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `B09-11` | 审查优先级排序 | 误报治理与基线的口径：误报定义、基线快照与抑制规则的生命周期。 | 声明 fp_definition（判据）、baseline_snapshot（时间 + 计数）与 suppression_ttl（抑制有效期 + 复审）。 | 抑制无期限（永久掩盖）；基线不更新导致趋势失真。 | `cwe` CWE 缺陷枚举（gov｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B09-12` | 自动化门禁集成 | 审查结果可机验的口径：输出格式（SARIF 等）、字段完整性与消费方。 | 声明 output_format（SARIF 2.1.0 等）、required_fields（ruleId/level/location）与 consumers（IDE|CI|门禁）。 | 输出纯文本（无法门禁化）；字段缺失导致定位失败。 | `osv` OSV 漏洞格式（gov｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
 
 ## 3. 机读投影契约
 

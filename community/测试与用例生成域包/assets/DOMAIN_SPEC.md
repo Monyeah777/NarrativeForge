@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
-|---|---|---|---|---|---|
-| `B10-01` | 单元测试生成 | 单元测试生成的口径：被测签名给定度、断言质量（每个测试的断言数）与可执行性验证。 | 声明 signature_given（true|false）、assertions_per_test（数值下限）与 executability（生成用例实测通过率）。 | 生成无断言的空测试（覆盖率虚高）；不实跑验证。 | `nist-800-142` SP 800-142 组合测试实践（NIST） |
-| `B10-02` | 边界与等价类 | 边界与等价类的口径：边界值来源（规格 / 代码）、等价类划分方式与用例数覆盖。 | 声明 boundary_source（规格|代码）、equivalence_partition（划分方法）与 coverage（每等价类用例数）。 | 只测正常值（边界缺陷漏出）；等价类不划分（用例重复）。 | `peps` PEP 体系（含 8/257/621）（Python） |
-| `B10-03` | 模糊测试用例 | 模糊测试用例的口径：变异策略、种子语料来源与崩溃去重方式。 | 声明 mutation（策略）、seed_corpus（来源 + 许可）与 crash_dedup（栈哈希 / 分类规则）。 | 崩溃不去重（同一缺陷计多次）；种子语料含私密数据。 | `nist-800-142` SP 800-142 组合测试实践（NIST） |
-| `B10-04` | 接口与契约测试 | 接口与契约测试的口径：契约来源（OpenAPI / proto）、正向与反向用例比例。 | 声明 contract_source（规格 id + 版本）、positive_ratio（正/反向用例比）与 schema_validation（响应 schema 校验）。 | 只测 200 路径（错误分支无覆盖）；契约版本漂移未同步用例。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B10-05` | UI 自动化脚本 | UI 自动化脚本的口径：选择器策略、等待机制与稳定性指标（flaky 率）。 | 声明 selector_strategy（语义|CSS|XPath）、wait_policy（显式条件等待）与 flaky_rate（重跑不一致率）。 | 用固定 sleep（脆弱）；选择器随 UI 改动即失效。 | `nist-800-142` SP 800-142 组合测试实践（NIST） |
-| `B10-06` | 测试数据构造 | 测试数据构造的口径：数据来源（合成 / 脱敏生产）、覆盖率与可复现种子。 | 声明 data_source（synthetic|masked prod）、coverage（场景覆盖清单）与 seed（固定）。 | 用未脱敏生产数据（合规风险）；随机数据不可复现。 | `peps` PEP 体系（含 8/257/621）（Python） |
-| `B10-07` | 回归用例挑选 | 回归用例挑选的口径：影响面分析依据、挑选比例与漏测风险声明。 | 声明 impact_analysis（依赖图|覆盖率）、selection_ratio（挑选比例）与 miss_risk（未覆盖变更的声明）。 | 只挑“快”的用例（漏测）；不声明漏测范围。 | `nist-800-142` SP 800-142 组合测试实践（NIST） |
-| `B10-08` | 覆盖率提升策略 | 覆盖率提升策略的口径：覆盖率口径（行 / 分支 / 变异）、目标与增量门槛。 | 声明 coverage_kind（line|branch|mutation）、target（目标值）与 delta_gate（增量门槛）。 | 只追行覆盖（分支错误仍漏）；目标不区分增量与全量。 | `peps` PEP 体系（含 8/257/621）（Python） |
-| `B10-09` | 失败归因与复现 | 失败归因与复现的口径：失败分类、最小复现步骤与 flaky 与真失败区分。 | 声明 failure_taxonomy（枚举）、min_repro（最小复现命令）与 flaky_rule（重跑判定规则）。 | 把 flaky 当真实失败（浪费排查）；无最小复现步骤。 | `nist-800-142` SP 800-142 组合测试实践（NIST） |
-| `B10-10` | 端到端场景编排 | 端到端场景编排的口径：场景来源（需求 / 日志）、步骤可回滚与数据隔离。 | 声明 scenario_source（需求|日志）、rollback（可回滚 true|false）与环境隔离（独立命名空间/租户）。 | 场景间数据串扰（互相污染）；失败后环境不复原。 | `a2a` A2A 协议（Linux Foundation） |
-| `B10-11` | 测试可维护性 | 测试可维护性的口径：用例命名规范、重复度与失效用例清理机制。 | 声明 naming_rule（规范）、duplication（重复用例度量）与 cleanup（失效用例下线流程）。 | 用例只增不删（套件臃肿）；命名无法定位被测行为。 | `nist-800-142` SP 800-142 组合测试实践（NIST） |
-| `B10-12` | CI 集成 | CI 集成的口径：触发条件、并行策略与门禁阈值（阻断 vs 告警）。 | 声明 triggers（事件清单）、parallelism（分片策略）与 gate_policy（阻断项 + 阈值）。 | 门禁全为告警（无人修）；无分片导致 CI 时长失控。 | `peps` PEP 体系（含 8/257/621）（Python） |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|---|
+| `B10-01` | 单元测试生成 | 单元测试生成的口径：被测签名给定度、断言质量（每个测试的断言数）与可执行性验证。 | 声明 signature_given（true|false）、assertions_per_test（数值下限）与 executability（生成用例实测通过率）。 | 生成无断言的空测试（覆盖率虚高）；不实跑验证。 | `nist-800-142` SP 800-142 组合测试实践（eng｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B10-02` | 边界与等价类 | 边界与等价类的口径：边界值来源（规格 / 代码）、等价类划分方式与用例数覆盖。 | 声明 boundary_source（规格|代码）、equivalence_partition（划分方法）与 coverage（每等价类用例数）。 | 只测正常值（边界缺陷漏出）；等价类不划分（用例重复）。 | `peps` PEP 体系（含 8/257/621）（eng｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `B10-03` | 模糊测试用例 | 模糊测试用例的口径：变异策略、种子语料来源与崩溃去重方式。 | 声明 mutation（策略）、seed_corpus（来源 + 许可）与 crash_dedup（栈哈希 / 分类规则）。 | 崩溃不去重（同一缺陷计多次）；种子语料含私密数据。 | `nist-800-142` SP 800-142 组合测试实践（eng｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B10-04` | 接口与契约测试 | 接口与契约测试的口径：契约来源（OpenAPI / proto）、正向与反向用例比例。 | 声明 contract_source（规格 id + 版本）、positive_ratio（正/反向用例比）与 schema_validation（响应 schema 校验）。 | 只测 200 路径（错误分支无覆盖）；契约版本漂移未同步用例。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `oasis-openapi` OpenAPI 3.1（iface｜✓） |
+| `B10-05` | UI 自动化脚本 | UI 自动化脚本的口径：选择器策略、等待机制与稳定性指标（flaky 率）。 | 声明 selector_strategy（语义|CSS|XPath）、wait_policy（显式条件等待）与 flaky_rate（重跑不一致率）。 | 用固定 sleep（脆弱）；选择器随 UI 改动即失效。 | `nist-800-142` SP 800-142 组合测试实践（eng｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `B10-06` | 测试数据构造 | 测试数据构造的口径：数据来源（合成 / 脱敏生产）、覆盖率与可复现种子。 | 声明 data_source（synthetic|masked prod）、coverage（场景覆盖清单）与 seed（固定）。 | 用未脱敏生产数据（合规风险）；随机数据不可复现。 | `peps` PEP 体系（含 8/257/621）（eng｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B10-07` | 回归用例挑选 | 回归用例挑选的口径：影响面分析依据、挑选比例与漏测风险声明。 | 声明 impact_analysis（依赖图|覆盖率）、selection_ratio（挑选比例）与 miss_risk（未覆盖变更的声明）。 | 只挑“快”的用例（漏测）；不声明漏测范围。 | `nist-800-142` SP 800-142 组合测试实践（eng｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `B10-08` | 覆盖率提升策略 | 覆盖率提升策略的口径：覆盖率口径（行 / 分支 / 变异）、目标与增量门槛。 | 声明 coverage_kind（line|branch|mutation）、target（目标值）与 delta_gate（增量门槛）。 | 只追行覆盖（分支错误仍漏）；目标不区分增量与全量。 | `peps` PEP 体系（含 8/257/621）（eng｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B10-09` | 失败归因与复现 | 失败归因与复现的口径：失败分类、最小复现步骤与 flaky 与真失败区分。 | 声明 failure_taxonomy（枚举）、min_repro（最小复现命令）与 flaky_rule（重跑判定规则）。 | 把 flaky 当真实失败（浪费排查）；无最小复现步骤。 | `nist-800-142` SP 800-142 组合测试实践（eng｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B10-10` | 端到端场景编排 | 端到端场景编排的口径：场景来源（需求 / 日志）、步骤可回滚与数据隔离。 | 声明 scenario_source（需求|日志）、rollback（可回滚 true|false）与环境隔离（独立命名空间/租户）。 | 场景间数据串扰（互相污染）；失败后环境不复原。 | `a2a` A2A 协议（iface｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `B10-11` | 测试可维护性 | 测试可维护性的口径：用例命名规范、重复度与失效用例清理机制。 | 声明 naming_rule（规范）、duplication（重复用例度量）与 cleanup（失效用例下线流程）。 | 用例只增不删（套件臃肿）；命名无法定位被测行为。 | `nist-800-142` SP 800-142 组合测试实践（eng｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B10-12` | CI 集成 | CI 集成的口径：触发条件、并行策略与门禁阈值（阻断 vs 告警）。 | 声明 triggers（事件清单）、parallelism（分片策略）与 gate_policy（阻断项 + 阈值）。 | 门禁全为告警（无人修）；无分片导致 CI 时长失控。 | `peps` PEP 体系（含 8/257/621）（eng｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
 
 ## 3. 机读投影契约
 

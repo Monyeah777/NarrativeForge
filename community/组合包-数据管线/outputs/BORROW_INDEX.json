@@ -1,0 +1,39 @@
+{
+  "borrowed": [
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "合成数据生成:M01",
+        "合成数据生成:M02"
+      ],
+      "source_package": "合成数据生成域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "数据采集与清洗:M01",
+        "数据采集与清洗:M02"
+      ],
+      "source_package": "数据采集与清洗域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "评测基准与排行榜:M01",
+        "评测基准与排行榜:M02"
+      ],
+      "source_package": "评测基准与排行榜域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "预训练与继续预训练:M01",
+        "预训练与继续预训练:M02"
+      ],
+      "source_package": "预训练与继续预训练域包"
+    }
+  ],
+  "note": "借阅索引：本组合包不复制资产/模块，全部经 references 只读访问",
+  "package": "组合包-数据管线",
+  "schema": "nf-combo-borrow/1"
+}

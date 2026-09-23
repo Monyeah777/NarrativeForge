@@ -68,7 +68,7 @@ _STD_SECTION_DEFAULT = {
     "A": ["ietf-json-schema", "mlcommons-bench", "onnx"],
     "B": ["ietf-json-schema", "w3c-tabular-data", "frictionless-table"],
     "C": ["cncf-otel-semconv", "mlcommons-bench", "frictionless-table"],
-    "D": ["nist-ai-rmf", "w3c-prov-o", "iso-iec-25010"],
+    "D": ["nist-ai-rmf", "w3c-prov-o", "common-criteria"],
     "E": ["commonmark", "w3c-tabular-data", "w3c-epub33"],
     "F": ["nist-ai-rmf", "w3c-prov-o", "spdx-licenses"],
 }
@@ -88,7 +88,7 @@ _STD_KEYWORD: List[Tuple[str, str]] = [
     ("金融|投研|风控|保险|绩效", "gips"),
     ("市场代码|证券", "iso10383"),
     ("支付|结算|清算", "iso20022"),
-    ("制造|产线|工业", "iso-iec-25010"),
+    ("制造|产线|设备|工业", "opcua"),
     ("能源|电力|电网", "iso-iec-42010"),
     ("农业|种植|养殖", "fao-food"),
     ("物流|仓储|运输", "w3c-wot"),
@@ -166,6 +166,66 @@ def standards_catalog(root: str = ".") -> Dict[str, Dict[str, Any]]:
     return {str(s["id"]): s for s in (doc.get("standards") or [])}
 
 
+#: 数据真实性门槛（check32 domain_packs）：每包的「在册 + 本机实测」复合分
+AUTHENTICITY_THRESHOLD = 0.95
+#: 概念密度门槛（边/节点）：本轮扩到「双锚 + 标准依赖边」后的对齐基线
+#: （上一波实测最小 1.0476 → 本波实测最小 1.2647；门槛按「只增不减」定在实测下界之下）
+DENSITY_THRESHOLD = 1.25
+#: 绑定标准的本机实测可达率门槛（bot 防护 / 付费墙类如实计入不可达）
+REACHABLE_RATIO_THRESHOLD = 0.9
+#: 锚（细分权威锚）已探率门槛（anchor_status 非空/非 0）
+ANCHOR_PROBED_THRESHOLD = 0.95
+
+#: 载体锚（辅锚）关键词规则：细分名命中 → 该细分**产出承载形态**对应的标准。
+#: 与主锚（域口径锚）分工：主锚 = 这条细分依据什么口径；辅锚 = 这条细分的产出靠什么承载/交换。
+_STD_SUPPORT_KEYWORD: List[Tuple[str, str]] = [
+    ("契约|schema|形状|校验|约束|字段", "ietf-json-schema"),
+    ("表|CSV|列式|清单|台账", "w3c-tabular-data"),
+    ("图|图表|可视化|看板|仪表", "vega-lite"),
+    ("图示|流程|结构图|示意|拓扑", "mermaid"),
+    ("溯源|来源|证据链|血缘|审计", "w3c-prov-o"),
+    ("时间|时序|时间线|日期|时效", "ietf-ixdtf"),
+    ("单位|量纲|计量", "onvif-ucum"),
+    ("数值|精度|误差|浮点", "ieee-754"),
+    ("遥测|监控|指标|成本|可靠性", "cncf-otel-semconv"),
+    ("水印|凭证|内容来源|生成标识", "c2pa-spec"),
+    ("依赖|供应链|SBOM|资产清单", "spdx-3"),
+    ("文本|长文|提示|文档|写作", "commonmark"),
+    ("授权|许可|版权|开源", "spdx-licenses"),
+    ("身份|DID|权限|访问控制", "w3c-vc"),
+    ("接口|API|端点|服务|部署", "oasis-openapi"),
+    ("事件|消息|流|通道", "cncf-cloudevents"),
+]
+
+#: 载体锚的段默认池（无关键词命中时按 index 轮换；优先与主锚**异层**）
+_STD_SUPPORT_SECTION: Dict[str, List[str]] = {
+    "A": ["ietf-json-schema", "w3c-tabular-data", "vega-lite", "mermaid", "w3c-prov-o"],
+    "B": ["ietf-json-schema", "w3c-tabular-data", "vega-lite", "commonmark", "w3c-prov-o"],
+    "C": ["ietf-json-schema", "w3c-tabular-data", "vega-lite", "mermaid", "cncf-otel-semconv"],
+    "D": ["ietf-json-schema", "w3c-prov-o", "vega-lite", "mermaid", "w3c-tabular-data"],
+    "E": ["ietf-json-schema", "commonmark", "mermaid", "vega-lite", "w3c-tabular-data"],
+    "F": ["ietf-json-schema", "w3c-prov-o", "spdx-3", "vega-lite", "mermaid"],
+}
+
+
+def _std_reachable(catalog: Dict[str, Dict[str, Any]], sid: str) -> bool:
+    """该标准是否有**本机实测可达**证据（false 一律如实计入不可达）。"""
+    return bool(((catalog.get(sid) or {}).get("evidence") or {}).get("reachable"))
+
+
+def _std_probe_date(catalog: Dict[str, Dict[str, Any]], sid: str) -> str:
+    return str(((catalog.get(sid) or {}).get("evidence") or {}).get("probe_date") or "")
+
+
+def _std_layer(catalog: Dict[str, Dict[str, Any]], sid: str) -> str:
+    return str((catalog.get(sid) or {}).get("layer") or "")
+
+
+def _reachable_first(ids: List[str], catalog: Dict[str, Dict[str, Any]]) -> List[str]:
+    """可达优先排序（真实证据优先，不改变候选集合）。"""
+    return sorted(ids, key=lambda x: (not _std_reachable(catalog, x), ids.index(x)))
+
+
 def bind_standard(spec: Dict[str, Any], sub: Dict[str, Any],
                   catalog: Dict[str, Dict[str, Any]],
                   index: int = 0) -> Tuple[str, str]:
@@ -174,21 +234,137 @@ def bind_standard(spec: Dict[str, Any], sub: Dict[str, Any],
     返回 (standard_id, rationale)。不猜：目录里没有的 id 一律跳过。
     段默认候选按 `index` 轮换——保证单包**至少贴 3 条不同标准**（check32 门槛），
     同时让同一域内的细分不至于全挤在一条标准上。
+    可达优先：同一命中位若有**本机实测可达**的候选，先取可达者（数据真实性口径）。
     """
     name = str(sub.get("name") or "")
+    fallback: Tuple[str, str] = ("", "")
     for pat, sid in _STD_KEYWORD:
         if re.search(pat, name) and sid in catalog:
-            return sid, "关键词「%s」命中" % pat
+            why = "关键词「%s」命中" % pat
+            if _std_reachable(catalog, sid):
+                return sid, why
+            if not fallback[0]:
+                fallback = (sid, why + "（本机实测不可达，如实记录）")
     for sid in _STD_BY_CODE.get(spec["code"], []):
         if sid in catalog:
-            pool = [x for x in _STD_BY_CODE[spec["code"]] if x in catalog]
+            pool = _reachable_first([x for x in _STD_BY_CODE[spec["code"]] if x in catalog], catalog)
             return pool[index % len(pool)], "域码 %s 专属绑定（轮换 %d）" % (spec["code"],
                                                                        index % len(pool))
     sec = str(spec.get("section", "")).split(" · ")[0]
-    pool = [x for x in _STD_SECTION_DEFAULT.get(sec, []) if x in catalog]
+    pool = _reachable_first([x for x in _STD_SECTION_DEFAULT.get(sec, []) if x in catalog], catalog)
     if pool:
         return pool[index % len(pool)], "%s 段默认绑定（轮换 %d）" % (sec, index % len(pool))
-    return "", ""
+    return fallback
+
+
+def bind_support(spec: Dict[str, Any], sub: Dict[str, Any],
+                 catalog: Dict[str, Dict[str, Any]],
+                 index: int, primary: str) -> Tuple[str, str]:
+    """给一条细分选**载体锚**（辅锚）：产出形态的承载/交换标准，与主锚异层优先。
+
+    规则：关键词（产出形态）→ 段载体池轮换；候选一律要求「在目录内 + ≠ 主锚」，
+    可达优先，并优先取与本条主锚**不同层**的标准（口径锚与承载锚分属不同层才有信息量）。
+    """
+    name = str(sub.get("name") or "")
+    for pat, sid in _STD_SUPPORT_KEYWORD:
+        if sid in catalog and sid != primary and re.search(pat, name):
+            return sid, "载体锚：产出形态「%s」的承载标准" % pat.split("|")[0]
+    sec = str(spec.get("section", "")).split(" · ")[0]
+    pool = [x for x in _STD_SUPPORT_SECTION.get(sec, [])
+            if x in catalog and x != primary]
+    if not pool:
+        return "", ""
+    pool = _reachable_first(pool, catalog)
+    pl = _std_layer(catalog, primary)
+    for k in range(len(pool)):
+        sid = pool[(index + k) % len(pool)]
+        if _std_layer(catalog, sid) != pl:
+            return sid, "%s 段载体锚（轮换 %d；与主锚异层）" % (
+                sec, (index + k) % len(pool))
+    return pool[index % len(pool)], "%s 段载体锚（轮换 %d）" % (sec, index % len(pool))
+
+
+def bindings_full(spec: Dict[str, Any],
+                  catalog: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Tuple[str, str]]]:
+    """整包**双锚**绑定：主锚（域口径）+ 辅锚（产出承载）。单一入口，判据与文档同源。"""
+    prim = bindings_for(spec, catalog)
+    out: Dict[str, Dict[str, Tuple[str, str]]] = {}
+    for i, s in enumerate(spec["subdivisions"]):
+        p_sid, p_why = prim[s["id"]]
+        s_sid, s_why = bind_support(spec, s, catalog, i, p_sid)
+        out[s["id"]] = {"primary": (p_sid, p_why), "support": (s_sid, s_why)}
+    return out
+
+
+def concept_index(spec: Dict[str, Any], catalog: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+    """概念图索引（单源）：概念节点 + 主/辅锚标准节点 + **标准依赖边**（depends_on）。
+
+    边三类：① 细分前置边（spec.edges）；② 概念 → 主锚；③ 概念 → 辅锚；④ 标准依赖边
+    （被依赖 → 依赖；依赖目标亦入图，保证「有边必有端点」）。
+    """
+    bd = bindings_full(spec, catalog)
+    prim = {k: v["primary"][0] for k, v in bd.items()}
+    supp = {k: v["support"][0] for k, v in bd.items()}
+    stds = {x for x in list(prim.values()) + list(supp.values()) if x}
+    dep_edges: List[Tuple[str, str]] = []
+    for sid in sorted(stds):
+        for dep in (catalog.get(sid) or {}).get("depends_on") or []:
+            if dep in catalog:
+                dep_edges.append((dep, sid))
+                stds.add(dep)
+    nodes = len(spec["subdivisions"]) + len(stds)
+    edges = (len(spec["edges"]) + len([1 for v in prim.values() if v])
+             + len([1 for v in supp.values() if v]) + len(dep_edges))
+    return {"primary": prim, "support": supp, "std_ids": sorted(stds),
+            "dep_edges": sorted(dep_edges), "nodes": nodes, "edges": edges,
+            "density": round(edges / max(1, nodes), 4), "bindings": bd}
+
+
+def _std_cell(catalog: Dict[str, Dict[str, Any]], sid: str) -> str:
+    """标准单元格（人读面）：id + 标题 + 层 + 实测状态。"""
+    if not sid:
+        return "—"
+    std = catalog.get(sid) or {}
+    ev = std.get("evidence") or {}
+    mark = "✓" if ev.get("reachable") else "✗"
+    return "`%s` %s（%s｜%s）" % (sid, std.get("title", ""), std.get("layer", ""), mark)
+
+
+def authenticity(spec: Dict[str, Any], catalog: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+    """数据真实性（单源口径，落 DOMAIN_SPEC.json 与名录，check32 硬判）。
+
+    三要素（每包逐条复算，不抽样）：
+    1. `in_catalog_ratio`：绑定标准在 `protocol/standards_catalog.json` 在册率（须 1.0）；
+    2. `reachable_ratio`：绑定标准**本机实测可达**率（bot 防护/付费墙如实计入不可达）；
+    3. `probe_evidence_ratio`：绑定标准的实测记录（探针日期 + 取样指纹）齐备率（须 1.0）。
+    复合分 `score` = 在册 × (0.5 + 0.5 × 可达) × 证据齐备（乘法口径：任一环缺即降分，
+    不用加权和掩盖缺口），门槛见 AUTHENTICITY_THRESHOLD。
+    """
+    bd = bindings_full(spec, catalog)
+    refs: List[str] = []
+    for v in bd.values():
+        for role in ("primary", "support"):
+            if v[role][0]:
+                refs.append(v[role][0])
+    total = len(refs)
+    in_cat = [r for r in refs if r in catalog]
+    reach = [r for r in in_cat if _std_reachable(catalog, r)]
+    ev_ok = [r for r in in_cat
+             if _std_probe_date(catalog, r)
+             and str(((catalog[r].get("evidence") or {}).get("sha256_sample") or ""))]
+    anchors = [s.get("anchor_status") for s in spec["subdivisions"]]
+    probed = [a for a in anchors if a]
+    r_in = round(len(in_cat) / max(1, total), 4)
+    r_reach = round(len(reach) / max(1, total), 4)
+    r_ev = round(len(ev_ok) / max(1, total), 4)
+    r_anchor = round(len(probed) / max(1, len(anchors)), 4)
+    score = round(r_in * (0.5 + 0.5 * r_reach) * r_ev, 4)
+    return {"standard_bindings": total, "in_catalog_ratio": r_in,
+            "reachable_ratio": r_reach, "probe_evidence_ratio": r_ev,
+            "anchor_probed_ratio": r_anchor, "score": score,
+            "threshold": AUTHENTICITY_THRESHOLD,
+            "bound_standards": sorted(set(refs)),
+            "reachable_standards": sorted(set(reach))}
 
 
 def bindings_for(spec: Dict[str, Any],
@@ -419,11 +595,10 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
     legend_key = "%s-anchor" % _slug(spec)
     cat = standards_catalog(root)
     bound: Dict[str, str] = {}          # 细分 id → 标准 id
-    _bd = bindings_for(spec, cat)
-    for s in subs:
-        sid, why = _bd[s["id"]]
-        bound[s["id"]] = sid
-    std_ids = sorted({v for v in bound.values() if v})
+    _ci = concept_index(spec, cat)
+    bound = {k: v for k, v in _ci["primary"].items()}
+    supp = {k: v for k, v in _ci["support"].items()}
+    std_ids = _ci["std_ids"]
     lines = [
         '<!-- nf-asset: key="CONCEPT_GRAPH" version="1.0" status="active" -->',
         "# 概念图 · %s（概念前置偏序）" % name,
@@ -433,8 +608,10 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
                                                           spec["category"]),
         "> 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——"
         "**§4 围栏块是唯一机读真相**，§2/§3 由它导出。",
-        "> 覆盖：%d 个包内概念 + %d 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族"
-        "（%s-00 领域通用前置）。" % (len(subs), len(std_ids), code),
+        "> 覆盖：%d 个包内概念 + %d 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、"
+        "概念 → 辅锚、标准依赖边）+ 1 个包外前置族（%s-00 领域通用前置）；"
+        "节点 %d · 边 %d · 密度 %.4f。" % (len(subs), len(std_ids), code,
+                                       _ci["nodes"], _ci["edges"], _ci["density"]),
         "> 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。",
         "",
         "## 1. 读法",
@@ -457,6 +634,11 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
     for sid, std in bound.items():
         if std:
             prereq.setdefault("STD-%s" % std, []).append(sid)
+    for sid, std in supp.items():        # 概念 → 辅锚（产出承载标准）
+        if std:
+            prereq.setdefault("STD-%s" % std, []).append(sid)
+    for dep, sid in _ci["dep_edges"]:    # 标准依赖边：被依赖 → 依赖
+        prereq.setdefault("STD-%s" % sid, []).append("STD-%s" % dep)
     for s in subs:
         layer = "P40" if (subs.index(s) % 2 == 0) else "P60"
         pre = "、".join("`%s`" % x for x in prereq.get(s["id"], [])) or "—"
@@ -464,8 +646,10 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
                      % (s["id"], s["name"], layer, pre, legend_key))
     for sid in std_ids:                  # 标准节点入条目键表（可寻址）
         std = cat.get(sid) or {}
-        lines.append("| `STD-%s` | 标准 · %s（%s） | P80 | %s | std-catalog |"
-                     % (sid, std.get("title", sid), std.get("body", ""),
+        ev = std.get("evidence") or {}
+        lines.append("| `STD-%s` | 标准 · %s（%s｜%s｜实测 %s） | P80 | %s | std-catalog |"
+                     % (sid, std.get("title", sid), std.get("body", ""), std.get("layer", ""),
+                        ("✓" if ev.get("reachable") else "✗"),
                         "、".join("`%s`" % x for x in prereq.get("STD-%s" % sid, [])) or "—"))
     for i, s in enumerate(subs):
         pass                             # 概念行已在上方输出
@@ -569,17 +753,16 @@ def domain_spec_md(spec: Dict[str, Any], root: str = ".") -> str:
         "",
         "## 2. 细分口径表（%d 条）" % len(spec["subdivisions"]),
         "",
-        "| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |",
-        "|---|---|---|---|---|---|",
+        "| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |",
+        "|---|---|---|---|---|---|---|",
     ]
     cat = standards_catalog(root)
-    _bd = bindings_for(spec, cat)
+    _bd = bindings_full(spec, cat)
     for s in spec["subdivisions"]:
-        sid, why = _bd[s["id"]]
-        std = cat.get(sid) or {}
-        std_txt = "`%s` %s（%s）" % (sid, std.get("title", ""), std.get("body", "")) if sid else "—"
-        lines.append("| `%s` | %s | %s | %s | %s | %s |"
-                     % (s["id"], s["name"], s["definition"], s["check"], s["pitfall"], std_txt))
+        a0 = _std_cell(cat, _bd[s["id"]]["primary"][0])
+        a1 = _std_cell(cat, _bd[s["id"]]["support"][0])
+        lines.append("| `%s` | %s | %s | %s | %s | %s | %s |"
+                     % (s["id"], s["name"], s["definition"], s["check"], s["pitfall"], a0, a1))
     lines += [
         "",
         "## 3. 机读投影契约",
@@ -601,35 +784,51 @@ def domain_spec_md(spec: Dict[str, Any], root: str = ".") -> str:
 def standards_md(spec: Dict[str, Any], root: str = ".") -> str:
     code, name = spec["code"], spec["name"]
     cat = standards_catalog(root)
+    bd = bindings_full(spec, cat)
     lines = [
         '<!-- nf-asset: key="STANDARDS_ANCHORS" version="1.0" status="active" -->',
         "# 权威锚表 · %s" % name,
         "",
         "> 用途：本域 %d 条细分各自的**外部权威锚**（规范 / 论文 / 参考实现）与**可达性实证**。"
         "外部锚只作口径与机制参照，**不作品质背书**（STRATEGY §3.2/§3.3）。" % len(spec["subdivisions"]),
-        "> 资产键：`STANDARDS_ANCHORS`｜实测日期：2026-09-22（本机 GET，HTTP 状态见下表；"
-        "不可达如实记 `✗`，不假装可达）。",
+        "> 资产键：`STANDARDS_ANCHORS`｜细分锚实测日期：2026-09-22（本机 GET，HTTP 状态见下表；"
+        "不可达如实记 `✗`，不假装可达）｜标准锚实测日期见下表「标准锚」列（取自 "
+        "`protocol/standards_catalog.json` 的本机探针记录）。",
         "",
         "## 1. 锚表",
         "",
-        "| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |",
-        "|---|---|---|---|---|",
+        "| 条目键 | 锚类型 | URL | 可达性 | 主锚（域口径标准） | 辅锚（产出承载标准） |",
+        "|---|---|---|---|---|---|",
     ]
     for s in spec["subdivisions"]:
         st = s.get("anchor_status")
         mark = "✓ %s" % st if isinstance(st, int) and st == 200 else (
             "✗ %s" % st if st else "未探（如实记档）")
-        sid, why = bind_standard(spec, s, cat)
-        std = cat.get(sid) or {}
-        lines.append("| `%s` | %s | %s | %s | `%s` %s（%s；%s） |"
+        cells = []
+        for role in ("primary", "support"):
+            sid, why = bd[s["id"]][role]
+            std = cat.get(sid) or {}
+            ev = std.get("evidence") or {}
+            if not sid:
+                cells.append("—")
+                continue
+            cells.append("`%s` %s（%s｜%s｜%s；%s）"
+                         % (sid, std.get("title", ""), std.get("body", ""), std.get("layer", ""),
+                            ("✓ %s" % ev.get("probe_date", "")) if ev.get("reachable")
+                            else "✗ %s" % (ev.get("http_status") or ""), why or "—"))
+        lines.append("| `%s` | %s | %s | %s | %s | %s |"
                      % (s["id"], s.get("anchor_kind", "spec"), s["anchor"], mark,
-                        sid or "—", std.get("title", ""), std.get("body", ""), why or "未绑定"))
+                        cells[0], cells[1]))
     lines += [
         "",
         "## 2. 使用边界",
         "",
         "- 锚用于**口径复核**（该细分的通行定义/评测口径从何而来），不表示 NF 复制了外部文本；"
         "本包正文自撰。",
+        "- **双锚分工**：主锚 = 该细分依据的域口径标准（可能与细分锚不同源，形成第二证据链）；"
+        "辅锚 = 该细分产出（数据 / 契约 / 图表 / 图示 / 溯源）所承载的开放标准。",
+        "- 标准锚取自 `protocol/standards_catalog.json` 的**本机实测记录**（含取样标题与 sha256），"
+        "可达性 false 如实标注，不假装可达。",
         "- 锚不可达时按不可达记档，不影响本包口径面的机检（判据落在本包 schema 与度量族）。",
         "- 锚版本漂移（规范改版）由维护者按需复核；本表不做自动追踪。",
     ]
@@ -660,14 +859,16 @@ def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:
                 "越界或缺项即发布口径冲突事件" % len(spec["subdivisions"]))
         outs = ["domain_spec", "spec_conflict_list"]
         pub = [ready_ev, conflict_ev]
-        sub_ev: List[str] = []
+        # 事件面闭合（2026-09-23 实测修）：本模块发布的 spec_* 必须有人订阅，否则 check16 ③
+        # 判「发布面 ⊄ 邻居订阅面」；收口层订阅 spec_ready/spec_conflict = 口径 ↔ 收口反馈对。
+        sub_ev = _event_names(spec, 2)[:]      # [report_ready, report_conflict]
         assets = "CONCEPT_GRAPH, DOMAIN_SPEC, STANDARDS_ANCHORS"
     else:
         duty = ("把口径面收口为**可复算产出**：由样例与度量族重算域报告（T4），并从概念图派生图形态；"
                 "报告与图与口径表三段同源，任一漂移即发布收口冲突事件")
         outs = ["domain_report", "closure_conflict_list"]
         pub = [ready_ev, conflict_ev]
-        sub_ev = [_event_names(spec, 1)[0]]
+        sub_ev = [_event_names(spec, 1)[0], _event_names(spec, 1)[1]]
         assets = "DOMAIN_SPEC, CONCEPT_GRAPH"
     lines = [
         "# 模块 %s · %s" % (mid, title),
@@ -986,24 +1187,55 @@ def provenance_json(spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
 def domain_spec_json(spec: Dict[str, Any], root: str = ".") -> str:
     cat = standards_catalog(root)
     subs = []
-    _bd = bindings_for(spec, cat)
+    _bd = bindings_full(spec, cat)
+    probe_dates: List[str] = []
     for s in spec["subdivisions"]:
-        sid, why = _bd[s["id"]]
+        sid, why = _bd[s["id"]]["primary"]
+        anchors = []
+        for role in ("primary", "support"):
+            rid, rwhy = _bd[s["id"]][role]
+            if not rid:
+                continue
+            std = cat.get(rid) or {}
+            ev = std.get("evidence") or {}
+            if ev.get("probe_date"):
+                probe_dates.append(str(ev["probe_date"]))
+            anchors.append({
+                "ref": rid, "role": role, "why": rwhy,
+                "layer": std.get("layer", ""), "body": std.get("body", ""),
+                "reachable": bool(ev.get("reachable")),
+                "http_status": int(ev.get("http_status") or 0),
+                "probe_date": str(ev.get("probe_date") or ""),
+                "depends_on": list(std.get("depends_on") or []),
+            })
         subs.append({
             "id": s["id"], "name": s["name"], "definition": s["definition"],
             "anchor": s["anchor"], "anchor_kind": s.get("anchor_kind", "spec"),
             "anchor_status": int(s.get("anchor_status") or 0),
             "standard_ref": sid, "standard_why": why,
+            "standards": anchors,
             "check": s["check"], "pitfall": s["pitfall"],
         })
+    auth = authenticity(spec, cat)
     doc = {
         "kind": "nf-domain-spec/1",
         "code": spec["code"],
         "domain": spec["name"],
         "section": spec["section"],
         "anchors_verified_on": "2026-09-22",
+        "standard_anchors_verified_on": max(probe_dates) if probe_dates else "",
         "metric_family": spec["metric_family"],
         "content_tier": spec.get("content_tier", "authored"),
+        "data_authenticity": {
+            "standard_bindings": auth["standard_bindings"],
+            "in_catalog_ratio": auth["in_catalog_ratio"],
+            "reachable_ratio": auth["reachable_ratio"],
+            "probe_evidence_ratio": auth["probe_evidence_ratio"],
+            "anchor_probed_ratio": auth["anchor_probed_ratio"],
+            "score": auth["score"],
+            "threshold": auth["threshold"],
+            "bound_standards": auth["bound_standards"],
+        },
         "subdivisions": subs,
     }
     return json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
@@ -1020,7 +1252,8 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
         "type": "object",
         "additionalProperties": False,
         "required": ["kind", "code", "domain", "section", "anchors_verified_on",
-                     "metric_family", "subdivisions", "content_tier"],
+                     "standard_anchors_verified_on", "metric_family", "subdivisions",
+                     "content_tier", "data_authenticity"],
         "properties": {
             "kind": {"const": "nf-domain-spec/1"},
             "content_tier": {"enum": ["authored", "derived"]},
@@ -1028,7 +1261,25 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
             "domain": {"type": "string", "minLength": 1},
             "section": {"type": "string", "minLength": 1},
             "anchors_verified_on": {"type": "string", "format": "date"},
+            "standard_anchors_verified_on": {"type": "string", "minLength": 4},
             "metric_family": {"type": "string", "minLength": 3},
+            "data_authenticity": {
+                "type": "object", "additionalProperties": False,
+                "required": ["standard_bindings", "in_catalog_ratio", "reachable_ratio",
+                             "probe_evidence_ratio", "anchor_probed_ratio", "score",
+                             "threshold", "bound_standards"],
+                "properties": {
+                    "standard_bindings": {"type": "integer", "minimum": 1},
+                    "in_catalog_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+                    "reachable_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+                    "probe_evidence_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+                    "anchor_probed_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+                    "score": {"type": "number", "minimum": 0, "maximum": 1},
+                    "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+                    "bound_standards": {"type": "array", "minItems": 1,
+                                        "items": {"type": "string", "minLength": 2}},
+                },
+            },
             "subdivisions": {
                 "type": "array", "minItems": SUB_COUNT, "maxItems": SUB_COUNT,
                 "items": {
@@ -1036,7 +1287,7 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
                     "additionalProperties": False,
                     "required": ["id", "name", "definition", "anchor", "anchor_kind",
                                  "anchor_status", "standard_ref", "standard_why",
-                                 "check", "pitfall"],
+                                 "standards", "check", "pitfall"],
                     "properties": {
                         "id": {"type": "string", "pattern": "^%s-[0-9]{2}$" % code},
                         "name": {"type": "string", "minLength": 2},
@@ -1046,6 +1297,29 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
                         "anchor_status": {"type": "integer", "minimum": 0},
                         "standard_ref": {"type": "string", "minLength": 2},
                         "standard_why": {"type": "string", "minLength": 3},
+                        "standards": {
+                            "type": "array", "minItems": 1, "maxItems": 4,
+                            "items": {
+                                "type": "object", "additionalProperties": False,
+                                "required": ["ref", "role", "why", "layer", "body",
+                                             "reachable", "http_status", "probe_date",
+                                             "depends_on"],
+                                "properties": {
+                                    "ref": {"type": "string", "minLength": 2},
+                                    "role": {"enum": ["primary", "support"]},
+                                    "why": {"type": "string", "minLength": 3},
+                                    "layer": {"enum": ["data", "iface", "form", "gov", "eng"]},
+                                    "body": {"type": "string", "minLength": 1},
+                                    "reachable": {"type": "boolean"},
+                                    "http_status": {"type": "integer", "minimum": 0},
+                                    "probe_date": {"type": "string", "minLength": 4},
+                                    "depends_on": {
+                                        "type": "array",
+                                        "items": {"type": "string", "minLength": 2},
+                                    },
+                                },
+                            },
+                        },
                         "check": {"type": "string", "minLength": 10},
                         "pitfall": {"type": "string", "minLength": 6},
                     },
@@ -1531,14 +1805,12 @@ def manifest_entry(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
     ratio = round(len(mv) / max(1, len(idx["outputs"])), 4)
     spec_blob = json.dumps(spec, ensure_ascii=False, sort_keys=True).encode("utf-8")
     cat = standards_catalog(root)
-    bound = {}
-    _bd = bindings_for(spec, cat)
-    for s in spec["subdivisions"]:
-        sid, why = _bd[s["id"]]
-        if sid:
-            bound[s["id"]] = sid
-    nodes = len(spec["subdivisions"]) + len(set(bound.values()))
-    edges = len(spec["edges"]) + len(bound)
+    ci = concept_index(spec, cat)
+    auth = authenticity(spec, cat)
+    n_sub = max(1, len(spec["subdivisions"]))
+    bound_std = {x for x in list(ci["primary"].values()) + list(ci["support"].values()) if x}
+    prim_std = {x for x in ci["primary"].values() if x}
+    sup_std = {x for x in ci["support"].values() if x}
     return {
         "code": spec["code"],
         "section": spec["section"],
@@ -1556,11 +1828,19 @@ def manifest_entry(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
         "machine_verifiable_ratio": ratio,
         "metric_family": spec["metric_family"],
         "content_tier": spec.get("content_tier", "authored"),
-        "standards_bound": len(set(bound.values())),
-        "standards_binding_coverage": round(len(bound) / max(1, len(spec["subdivisions"])), 4),
-        "concept_nodes": nodes,
-        "concept_edges": edges,
-        "concept_density": round(edges / max(1, nodes), 4),
+        "standards_bound": len(bound_std),
+        "standards_bound_primary": len(prim_std),
+        "standards_bound_support": len(sup_std),
+        "standards_binding_coverage": round(
+            len([1 for v in ci["primary"].values() if v]) / n_sub, 4),
+        "support_binding_coverage": round(
+            len([1 for v in ci["support"].values() if v]) / n_sub, 4),
+        "standards_dep_edges": len(ci["dep_edges"]),
+        "standards_reachable_ratio": auth["reachable_ratio"],
+        "data_authenticity": auth["score"],
+        "concept_nodes": ci["nodes"],
+        "concept_edges": ci["edges"],
+        "concept_density": ci["density"],
         "spec_digest": hashlib.sha256(spec_blob).hexdigest(),
     }
 
@@ -1584,11 +1864,19 @@ def update_manifest(root: str, spec: Dict[str, Any], write: bool = False) -> Dic
     doc["count"] = len(doc["packs"])
     doc["subdivisions_total"] = sum(int(p.get("subdivisions") or 0) for p in doc["packs"])
     doc["standards_catalog"] = STANDARDS_REL
-    doc["concept_density_threshold"] = 1.0
+    doc["concept_density_threshold"] = DENSITY_THRESHOLD
     doc["concept_density_min"] = min((float(p.get("concept_density") or 0)
                                       for p in doc["packs"]), default=0.0)
     doc["binding_coverage_min"] = min((float(p.get("standards_binding_coverage") or 0)
                                        for p in doc["packs"]), default=0.0)
+    doc["support_binding_coverage_min"] = min((float(p.get("support_binding_coverage") or 0)
+                                               for p in doc["packs"]), default=0.0)
+    doc["data_authenticity_threshold"] = AUTHENTICITY_THRESHOLD
+    doc["data_authenticity_min"] = min((float(p.get("data_authenticity") or 0)
+                                        for p in doc["packs"]), default=0.0)
+    doc["reachable_ratio_threshold"] = REACHABLE_RATIO_THRESHOLD
+    doc["standards_dep_edges_min"] = min((int(p.get("standards_dep_edges") or 0)
+                                          for p in doc["packs"]), default=0)
     if write:
         path.parent.mkdir(parents=True, exist_ok=True)
         _write_text_retry(path, json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
@@ -1604,28 +1892,50 @@ def _write_binding_table(root: str, spec: Dict[str, Any]) -> None:
         "note": "域包 × 细分 → 可扩展标准目录条目的绑定表（公开结果面）。判据"
                 "（check32 domain_packs）：① 每条细分都有 standard_ref；② 引用 id 必须在 "
                 "protocol/standards_catalog.json 在册；③ 每包绑定覆盖率 100%；"
-                "④ 概念密度（边/节点，含标准节点与绑定边）≥ 门槛。",
+                "④ 概念密度（边/节点，含主锚/辅锚标准节点、绑定边与标准依赖边）≥ 门槛；"
+                "⑤ **双锚**：每细分另有 support_standard（产出承载标准，与主锚异层优先）；"
+                "⑥ 数据真实性：引用标准的本机实测记录（reachable/probe_date）逐条落 row。",
         "catalog": STANDARDS_REL,
         "packs": [],
     }
     cat = standards_catalog(root)
     rows = []
-    _bd = bindings_for(spec, cat)
+    _bd = bindings_full(spec, cat)
     for s in spec["subdivisions"]:
-        sid, why = _bd[s["id"]]
-        rows.append({"subdivision": s["id"], "name": s["name"],
-                     "standard": sid, "rationale": why,
-                     "standard_body": (cat.get(sid) or {}).get("body", ""),
-                     "standard_url": (cat.get(sid) or {}).get("url", "")})
+        rec = {"subdivision": s["id"], "name": s["name"]}
+        for role, key in (("primary", "standard"), ("support", "support_standard")):
+            sid, why = _bd[s["id"]][role]
+            std = cat.get(sid) or {}
+            ev = std.get("evidence") or {}
+            rec[key] = sid
+            rec[key + "_rationale"] = why
+            rec[key + "_layer"] = std.get("layer", "")
+            rec[key + "_body"] = std.get("body", "")
+            rec[key + "_url"] = std.get("url", "")
+            rec[key + "_reachable"] = bool(ev.get("reachable"))
+            rec[key + "_probe_date"] = str(ev.get("probe_date") or "")
+        rows.append(rec)
+    auth = authenticity(spec, cat)
     entry = {"code": spec["code"], "package": spec["pack_name"],
              "category": spec["category"], "subdivisions": len(rows),
              "distinct_standards": len({r["standard"] for r in rows if r["standard"]}),
+             "distinct_standards_with_support": len(
+                 {r["standard"] for r in rows if r["standard"]}
+                 | {r["support_standard"] for r in rows if r["support_standard"]}),
+             "data_authenticity": auth["score"],
+             "reachable_ratio": auth["reachable_ratio"],
+             "probe_evidence_ratio": auth["probe_evidence_ratio"],
              "bindings": rows}
     packs = [p for p in doc["packs"] if p.get("code") != entry["code"]]
     packs.append(entry)
     doc["packs"] = sorted(packs, key=lambda p: p["code"])
     doc["count"] = len(doc["packs"])
     doc["bindings_total"] = sum(len(p["bindings"]) for p in doc["packs"])
+    doc["support_bindings_total"] = sum(
+        len([r for r in p["bindings"] if r.get("support_standard")]) for p in doc["packs"])
+    doc["data_authenticity_min"] = min(
+        (float(p.get("data_authenticity") or 0) for p in doc["packs"]), default=0.0)
+    doc["data_authenticity_threshold"] = AUTHENTICITY_THRESHOLD
     _write_text_retry(path, json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
 
 
@@ -1639,11 +1949,16 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     thr = float(doc.get("machine_verifiable_threshold") or 0.95)
     cat = standards_catalog(root)
     dens_min = float(doc.get("concept_density_threshold") or 1.0)
+    auth_min = float(doc.get("data_authenticity_threshold") or AUTHENTICITY_THRESHOLD)
+    reach_min = float(doc.get("reachable_ratio_threshold") or REACHABLE_RATIO_THRESHOLD)
     stats = {"packs": 0, "faces": 0, "functional": 0}
     reg = _read_json(Path(root) / REGISTRY_REL) or {}
     by_id = {p.get("id"): p for p in reg.get("protocols") or []}
+    _bind = _read_json(Path(root) / BINDING_REL) or {}
+    bind_by = {b.get("code"): b for b in _bind.get("packs") or []}
     for p in doc.get("packs") or []:
         pkg = str(p.get("package") or "")
+        bp = bind_by.get(p.get("code")) or {}
         stats["packs"] += 1
         stats["faces"] += int(p.get("output_faces") or 0)
         stats["functional"] += int(p.get("functional_faces") or 0)
@@ -1699,6 +2014,28 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
             if int(p.get("standards_bound") or 0) < 3:
                 issues.append("%s：绑定标准数 %s < 3（单包至少要贴 3 条不同标准）"
                               % (pkg, p.get("standards_bound")))
+            # 双锚 + 数据真实性（2026-09-24 对齐）：主锚/辅锚齐备、引用有本机实测证据
+            if float(p.get("support_binding_coverage") or 0) < 1.0:
+                issues.append("%s：辅锚覆盖率 %.2f < 1.0（每条细分须另绑一条产出承载标准）"
+                              % (pkg, float(p.get("support_binding_coverage") or 0)))
+            if int(p.get("standards_dep_edges") or 0) < 1:
+                issues.append("%s：概念图无标准依赖边（绑定标准的 depends_on 未入图）" % pkg)
+            auth = float(p.get("data_authenticity") or 0)
+            if auth < auth_min:
+                issues.append("%s：数据真实性分 %.4f < 门槛 %.2f（在册 × 实测可达 × 证据齐备）"
+                              % (pkg, auth, auth_min))
+            rr = float(p.get("standards_reachable_ratio") or 0)
+            if rr < reach_min:
+                issues.append("%s：绑定标准本机实测可达率 %.4f < 门槛 %.2f"
+                              % (pkg, rr, reach_min))
+            bad_binding = [r for r in (bp.get("bindings") or [])
+                           if str(r.get("standard") or "") not in cat
+                           or str(r.get("support_standard") or "") not in cat
+                           or not str(r.get("standard_probe_date") or "")
+                           or not str(r.get("support_standard_probe_date") or "")]
+            if bad_binding:
+                issues.append("%s：绑定表缺在册证明或实测记录：%s"
+                              % (pkg, [r.get("subdivision") for r in bad_binding[:4]]))
     return issues, stats
 
 

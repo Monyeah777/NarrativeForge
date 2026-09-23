@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
-|---|---|---|---|---|---|
-| `B11-01` | 表格问答 | 表格问答的口径：表结构给定度、答案形式（单元格 / 聚合）与可执行验证。 | 声明 schema_given（true|false）、answer_form（cell|aggregate|list）与 execution_check（是否执行校验）。 | 只比字符串（聚合类答案判错）；表结构变化后结论不可迁移。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
-| `B11-02` | 多表关联推理 | 多表关联推理的口径：关联键来源、连接类型与结果基数控制。 | 声明 join_key（来源：模式|推断）、join_type（inner|left|full）与 cardinality_check（是否校验行数爆炸）。 | 隐式连接导致行数爆炸（结论失真）；关联键靠猜。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
-| `B11-03` | 图表理解与生成 | 图表理解与生成的口径：图表类型、轴与单位映射、以及可复算的底层数据。 | 声明 chart_type、axis_mapping（字段 → 轴）与 underlying_data（是否输出可复算数据表）。 | 只给图片不给数据（无法复算）；轴单位错导致误读。 | `vega-lite` Vega-Lite v5（Vega） |
-| `B11-04` | 数据清洗建议 | 数据清洗建议的口径：缺失 / 重复 / 异常处理策略与变更影响报告。 | 声明 missing_policy（drop|impute + 方法）、dup_policy 与 impact_report（清洗前后行数与分布变化）。 | 静默填充（结论被污染）；不报清洗影响。 | `frictionless-table` Table Schema（Frictionless） |
-| `B11-05` | 指标口径定义 | 指标口径定义的口径：指标名唯一性、口径四要素（分子/分母/时间窗/过滤）与变更留痕。 | 声明 metric_id（唯一）、definition（分子/分母/窗口/过滤四要素）与 change_log（口径变更记录）。 | 同名异义（跨报告不可比）；口径变更不留痕。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
-| `B11-06` | SQL 与自然语言互译 | SQL 与自然语言互译的口径：方言与版本、结果等价判定与只读约束。 | 声明 dialect（sqlite|postgres 等 + 版本）、equivalence（结果集比对）与 readonly（是否禁写）。 | 生成写操作（生产风险）；仅比 SQL 文本。 | `frictionless-table` Table Schema（Frictionless） |
-| `B11-07` | 异常值识别 | 异常值识别的口径：判定方法（统计 / 业务规则）、阈值来源与处置建议。 | 声明 method（IQR|z-score|模型）、threshold（来源）与 action（标记|剔除|保留 + 依据）。 | 阈值拍脑袋；把业务极端值当异常剔除。 | `frictionless-table` Table Schema（Frictionless） |
-| `B11-08` | 趋势与归因分析 | 趋势与归因分析的口径：趋势检验方法、季节性处理与归因分解方式。 | 声明 trend_test（Mann-Kendall 等）、seasonality（处理方式）与 attribution（分解方法 + 残差比例）。 | 把季节性当趋势；归因残差过大仍下结论。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
-| `B11-09` | BI 看板配置 | BI 看板配置的口径：指标定义引用、刷新频率与权限绑定。 | 声明 metric_refs（引用指标 id 而非内联公式）、refresh（频率）与 permission（数据权限绑定）。 | 看板内联公式（与指标口径漂移）；权限越界展示敏感数据。 | `vega-lite` Vega-Lite v5（Vega） |
-| `B11-10` | 数据故事讲述 | 数据故事讲述的口径：结论与证据绑定、图表引用与不确定性声明。 | 声明 claim_evidence（每条结论绑数据引用 id）、figure_refs（图表引用）与 uncertainty（区间或置信声明）。 | 结论无证据链（回到拍脑袋）；不报不确定性。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B11-11` | 分析结论可解释性 | 分析结论可解释性的口径：推导步骤、假设清单与反事实检查。 | 声明 steps（可复核步骤）、assumptions（假设清单）与 counterfactual（关键假设变动后的结论敏感性）。 | 只给结论不给假设；不做敏感性检查。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
-| `B11-12` | 数据权限与敏感 | 数据权限与敏感的口径：数据分级、脱敏要求与访问审计。 | 声明 data_class（分级标签）、masking（脱敏规则）与 audit_log（访问留痕字段）。 | 分析把明细外发（泄露）；无审计留痕。 | `nist-800-188` SP 800-188 去标识化（NIST） |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|---|
+| `B11-01` | 表格问答 | 表格问答的口径：表结构给定度、答案形式（单元格 / 聚合）与可执行验证。 | 声明 schema_given（true|false）、answer_form（cell|aggregate|list）与 execution_check（是否执行校验）。 | 只比字符串（聚合类答案判错）；表结构变化后结论不可迁移。 | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B11-02` | 多表关联推理 | 多表关联推理的口径：关联键来源、连接类型与结果基数控制。 | 声明 join_key（来源：模式|推断）、join_type（inner|left|full）与 cardinality_check（是否校验行数爆炸）。 | 隐式连接导致行数爆炸（结论失真）；关联键靠猜。 | `onnx` ONNX（opset 扩展）（iface｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `B11-03` | 图表理解与生成 | 图表理解与生成的口径：图表类型、轴与单位映射、以及可复算的底层数据。 | 声明 chart_type、axis_mapping（字段 → 轴）与 underlying_data（是否输出可复算数据表）。 | 只给图片不给数据（无法复算）；轴单位错导致误读。 | `vega-lite` Vega-Lite v5（form｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `B11-04` | 数据清洗建议 | 数据清洗建议的口径：缺失 / 重复 / 异常处理策略与变更影响报告。 | 声明 missing_policy（drop|impute + 方法）、dup_policy 与 impact_report（清洗前后行数与分布变化）。 | 静默填充（结论被污染）；不报清洗影响。 | `frictionless-table` Table Schema（data｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B11-05` | 指标口径定义 | 指标口径定义的口径：指标名唯一性、口径四要素（分子/分母/时间窗/过滤）与变更留痕。 | 声明 metric_id（唯一）、definition（分子/分母/窗口/过滤四要素）与 change_log（口径变更记录）。 | 同名异义（跨报告不可比）；口径变更不留痕。 | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） | `cncf-otel-semconv` 语义约定（可扩展注册表）（eng｜✓） |
+| `B11-06` | SQL 与自然语言互译 | SQL 与自然语言互译的口径：方言与版本、结果等价判定与只读约束。 | 声明 dialect（sqlite|postgres 等 + 版本）、equivalence（结果集比对）与 readonly（是否禁写）。 | 生成写操作（生产风险）；仅比 SQL 文本。 | `frictionless-table` Table Schema（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B11-07` | 异常值识别 | 异常值识别的口径：判定方法（统计 / 业务规则）、阈值来源与处置建议。 | 声明 method（IQR|z-score|模型）、threshold（来源）与 action（标记|剔除|保留 + 依据）。 | 阈值拍脑袋；把业务极端值当异常剔除。 | `frictionless-table` Table Schema（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B11-08` | 趋势与归因分析 | 趋势与归因分析的口径：趋势检验方法、季节性处理与归因分解方式。 | 声明 trend_test（Mann-Kendall 等）、seasonality（处理方式）与 attribution（分解方法 + 残差比例）。 | 把季节性当趋势；归因残差过大仍下结论。 | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `B11-09` | BI 看板配置 | BI 看板配置的口径：指标定义引用、刷新频率与权限绑定。 | 声明 metric_refs（引用指标 id 而非内联公式）、refresh（频率）与 permission（数据权限绑定）。 | 看板内联公式（与指标口径漂移）；权限越界展示敏感数据。 | `vega-lite` Vega-Lite v5（form｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B11-10` | 数据故事讲述 | 数据故事讲述的口径：结论与证据绑定、图表引用与不确定性声明。 | 声明 claim_evidence（每条结论绑数据引用 id）、figure_refs（图表引用）与 uncertainty（区间或置信声明）。 | 结论无证据链（回到拍脑袋）；不报不确定性。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B11-11` | 分析结论可解释性 | 分析结论可解释性的口径：推导步骤、假设清单与反事实检查。 | 声明 steps（可复核步骤）、assumptions（假设清单）与 counterfactual（关键假设变动后的结论敏感性）。 | 只给结论不给假设；不做敏感性检查。 | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B11-12` | 数据权限与敏感 | 数据权限与敏感的口径：数据分级、脱敏要求与访问审计。 | 声明 data_class（分级标签）、masking（脱敏规则）与 audit_log（访问留痕字段）。 | 分析把明细外发（泄露）；无审计留痕。 | `nist-800-188` SP 800-188 去标识化（gov｜✓） | `w3c-vc` Verifiable Credentials 2.0（gov｜✓） |
 
 ## 3. 机读投影契约
 

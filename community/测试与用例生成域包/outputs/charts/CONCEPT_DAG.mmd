@@ -18,9 +18,18 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-a2a
+    STD-commonmark
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-nist-800-142
+    STD-oasis-openapi
     STD-peps
+    STD-rdf11
+    STD-rst-docutils
+    STD-vega-lite
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   B10-02 --> B10-01
   B10-02 --> B10-03
@@ -33,14 +42,32 @@ flowchart TD
   B10-01 --> B10-11
   B10-10 --> B10-12
   B10-10 --> STD-a2a
+  B10-09 --> STD-commonmark
   B10-04 --> STD-ietf-json-schema
+  B10-01 --> STD-ietf-json-schema
+  B10-06 --> STD-ietf-json-schema
+  B10-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B10-01 --> STD-nist-800-142
   B10-03 --> STD-nist-800-142
   B10-05 --> STD-nist-800-142
   B10-07 --> STD-nist-800-142
   B10-09 --> STD-nist-800-142
   B10-11 --> STD-nist-800-142
+  B10-04 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
   B10-02 --> STD-peps
   B10-06 --> STD-peps
   B10-08 --> STD-peps
   B10-12 --> STD-peps
+  STD-rst-docutils --> STD-peps
+  B10-03 --> STD-vega-lite
+  B10-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B10-05 --> STD-w3c-prov-o
+  B10-10 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  B10-02 --> STD-w3c-tabular-data
+  B10-07 --> STD-w3c-tabular-data
+  B10-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

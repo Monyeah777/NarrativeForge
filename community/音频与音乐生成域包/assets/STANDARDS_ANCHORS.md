@@ -2,27 +2,29 @@
 # 权威锚表 · 音频与音乐生成
 
 > 用途：本域 12 条细分各自的**外部权威锚**（规范 / 论文 / 参考实现）与**可达性实证**。外部锚只作口径与机制参照，**不作品质背书**（STRATEGY §3.2/§3.3）。
-> 资产键：`STANDARDS_ANCHORS`｜实测日期：2026-09-22（本机 GET，HTTP 状态见下表；不可达如实记 `✗`，不假装可达）。
+> 资产键：`STANDARDS_ANCHORS`｜细分锚实测日期：2026-09-22（本机 GET，HTTP 状态见下表；不可达如实记 `✗`，不假装可达）｜标准锚实测日期见下表「标准锚」列（取自 `protocol/standards_catalog.json` 的本机探针记录）。
 
 ## 1. 锚表
 
-| 条目键 | 锚类型 | URL | 可达性 | 可扩展标准（绑定） |
-|---|---|---|---|---|
-| `A05-01` | paper | https://arxiv.org/abs/2306.05284 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
-| `A05-02` | repo | https://pypi.org/project/spleeter/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
-| `A05-03` | spec | https://www.w3.org/2021/06/musicxml40/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
-| `A05-04` | repo | https://pypi.org/project/essentia/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
-| `A05-05` | repo | https://pypi.org/project/demucs/ | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
-| `A05-06` | spec | https://dcase.community/ | ✓ 200 | `cncf-cloudevents` CloudEvents 1.0（CNCF；关键词「事件|消息|通道」命中） |
-| `A05-07` | spec | https://www.w3.org/TR/webaudio/ | ✓ 200 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC；关键词「地理|遥感|地图|空间|三维|点云」命中） |
-| `A05-08` | paper | https://arxiv.org/abs/2209.15352 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；A 段默认绑定（轮换 0）） |
-| `A05-09` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons；关键词「许可|版权|知识产权|授权」命中） |
-| `A05-10` | repo | https://pypi.org/project/recbole/ | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
-| `A05-11` | paper | https://arxiv.org/abs/2105.02446 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C；关键词「音频|语音|声学|音乐|歌声」命中） |
-| `A05-12` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
+| 条目键 | 锚类型 | URL | 可达性 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|
+| `A05-01` | paper | https://arxiv.org/abs/2306.05284 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C｜form｜✓ 2026-09-24；关键词「音频|语音|声学|音乐|歌声」命中） | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema｜data｜✓ 2026-09-24；A 段载体锚（轮换 0；与主锚异层）） |
+| `A05-02` | repo | https://pypi.org/project/spleeter/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons｜eng｜✓ 2026-09-24；A 段默认绑定（轮换 1）） | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C｜data｜✓ 2026-09-24；A 段载体锚（轮换 1；与主锚异层）） |
+| `A05-03` | spec | https://www.w3.org/2021/06/musicxml40/ | ✓ 200 | `onnx` ONNX（opset 扩展）（Linux Foundation｜iface｜✓ 2026-09-24；A 段默认绑定（轮换 2）） | `vega-lite` Vega-Lite v5（Vega｜form｜✓ 2026-09-24；A 段载体锚（轮换 2；与主锚异层）） |
+| `A05-04` | repo | https://pypi.org/project/essentia/ | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema｜data｜✓ 2026-09-24；A 段默认绑定（轮换 0）） | `w3c-prov-o` PROV-O 溯源本体（W3C｜gov｜✓ 2026-09-24；A 段载体锚（轮换 3；与主锚异层）） |
+| `A05-05` | repo | https://pypi.org/project/demucs/ | ✓ 200 | `w3c-webaudio` Web Audio API（W3C｜form｜✓ 2026-09-24；关键词「音频|语音|声学|音乐|歌声」命中） | `w3c-prov-o` PROV-O 溯源本体（W3C｜gov｜✓ 2026-09-24；A 段载体锚（轮换 4；与主锚异层）） |
+| `A05-06` | spec | https://dcase.community/ | ✓ 200 | `cncf-cloudevents` CloudEvents 1.0（CNCF｜iface｜✓ 2026-09-24；关键词「事件|消息|通道」命中） | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema｜data｜✓ 2026-09-24；A 段载体锚（轮换 0；与主锚异层）） |
+| `A05-07` | spec | https://www.w3.org/TR/webaudio/ | ✓ 200 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC｜data｜✓ 2026-09-24；关键词「地理|遥感|地图|空间|三维|点云」命中） | `vega-lite` Vega-Lite v5（Vega｜form｜✓ 2026-09-24；A 段载体锚（轮换 2；与主锚异层）） |
+| `A05-08` | paper | https://arxiv.org/abs/2209.15352 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons｜eng｜✓ 2026-09-24；A 段默认绑定（轮换 1）） | `vega-lite` Vega-Lite v5（Vega｜form｜✓ 2026-09-24；A 段载体锚（轮换 2；与主锚异层）） |
+| `A05-09` | spec | https://creativecommons.org/licenses/ | ✓ 200 | `creativecommons` 许可与权利表达（Creative Commons｜gov｜✓ 2026-09-24；关键词「许可|版权|知识产权|授权」命中） | `spdx-licenses` SPDX 许可证清单（SPDX｜gov｜✓ 2026-09-24；载体锚：产出形态「授权」的承载标准） |
+| `A05-10` | repo | https://pypi.org/project/recbole/ | ✓ 200 | `w3c-webaudio` Web Audio API（W3C｜form｜✓ 2026-09-24；关键词「音频|语音|声学|音乐|歌声」命中） | `w3c-prov-o` PROV-O 溯源本体（W3C｜gov｜✓ 2026-09-24；A 段载体锚（轮换 4；与主锚异层）） |
+| `A05-11` | paper | https://arxiv.org/abs/2105.02446 | ✓ 200 | `w3c-webaudio` Web Audio API（W3C｜form｜✓ 2026-09-24；关键词「音频|语音|声学|音乐|歌声」命中） | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema｜data｜✓ 2026-09-24；A 段载体锚（轮换 0；与主锚异层）） |
+| `A05-12` | spec | https://www.itu.int/rec/T-REC-P.862 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons｜eng｜✓ 2026-09-24；关键词「评测|基准|排行榜|跑分」命中） | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C｜data｜✓ 2026-09-24；A 段载体锚（轮换 1；与主锚异层）） |
 
 ## 2. 使用边界
 
 - 锚用于**口径复核**（该细分的通行定义/评测口径从何而来），不表示 NF 复制了外部文本；本包正文自撰。
+- **双锚分工**：主锚 = 该细分依据的域口径标准（可能与细分锚不同源，形成第二证据链）；辅锚 = 该细分产出（数据 / 契约 / 图表 / 图示 / 溯源）所承载的开放标准。
+- 标准锚取自 `protocol/standards_catalog.json` 的**本机实测记录**（含取样标题与 sha256），可达性 false 如实标注，不假装可达。
 - 锚不可达时按不可达记档，不影响本包口径面的机检（判据落在本包 schema 与度量族）。
 - 锚版本漂移（规范改版）由维护者按需复核；本表不做自动追踪。

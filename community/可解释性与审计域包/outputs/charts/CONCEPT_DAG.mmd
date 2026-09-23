@@ -18,9 +18,16 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-gdpr
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
     STD-onnx
+    STD-protobuf
+    STD-rdf11
+    STD-spdx-3
     STD-spdx-licenses
+    STD-vega-lite
     STD-w3c-prov-o
   end
   F06-01 --> F06-02
@@ -44,6 +51,12 @@ flowchart TD
   F06-11 --> F06-12
   F06-09 --> F06-12
   F06-11 --> STD-gdpr
+  F06-01 --> STD-ietf-json-schema
+  F06-05 --> STD-ietf-json-schema
+  F06-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  F06-08 --> STD-mermaid
+  F06-10 --> STD-mermaid
   F06-01 --> STD-nist-ai-rmf
   F06-04 --> STD-nist-ai-rmf
   F06-07 --> STD-nist-ai-rmf
@@ -51,7 +64,17 @@ flowchart TD
   F06-10 --> STD-nist-ai-rmf
   F06-02 --> STD-onnx
   F06-03 --> STD-onnx
+  STD-protobuf --> STD-onnx
+  F06-03 --> STD-spdx-3
   F06-12 --> STD-spdx-licenses
+  F06-04 --> STD-vega-lite
+  F06-06 --> STD-vega-lite
+  F06-07 --> STD-vega-lite
+  F06-09 --> STD-vega-lite
+  F06-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   F06-05 --> STD-w3c-prov-o
   F06-06 --> STD-w3c-prov-o
   F06-08 --> STD-w3c-prov-o
+  F06-02 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o

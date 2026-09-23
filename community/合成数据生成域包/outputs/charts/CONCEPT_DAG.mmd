@@ -20,10 +20,20 @@ flowchart TD
     STD-cncf-otel-semconv
     STD-commonmark
     STD-creativecommons
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-mlcommons-croissant
     STD-onnx
+    STD-protobuf
+    STD-schema-org
+    STD-spdx-licenses
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C03-01 --> C03-02
   C03-02 --> C03-03
@@ -47,13 +57,31 @@ flowchart TD
   C03-09 --> C03-12
   C03-04 --> STD-cncf-otel-semconv
   C03-07 --> STD-cncf-otel-semconv
+  C03-05 --> STD-cncf-otel-semconv
   C03-01 --> STD-commonmark
   C03-09 --> STD-creativecommons
   C03-03 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
+  C03-01 --> STD-ietf-json-schema
+  C03-06 --> STD-ietf-json-schema
+  C03-10 --> STD-ietf-json-schema
+  C03-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  C03-04 --> STD-mermaid
   C03-02 --> STD-mlcommons-bench
   C03-08 --> STD-mlcommons-bench
   C03-10 --> STD-mlcommons-bench
   C03-11 --> STD-mlcommons-bench
   C03-05 --> STD-mlcommons-croissant
   C03-12 --> STD-mlcommons-croissant
+  STD-schema-org --> STD-mlcommons-croissant
   C03-06 --> STD-onnx
+  STD-protobuf --> STD-onnx
+  C03-09 --> STD-spdx-licenses
+  C03-03 --> STD-vega-lite
+  C03-07 --> STD-vega-lite
+  C03-08 --> STD-vega-lite
+  C03-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C03-02 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

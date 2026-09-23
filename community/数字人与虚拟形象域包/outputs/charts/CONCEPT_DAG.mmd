@@ -18,8 +18,15 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-otel-semconv
+    STD-commonmark
     STD-gdpr
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
     STD-khronos-gltf
+    STD-mermaid
+    STD-vega-lite
+    STD-w3c-tabular-data
     STD-w3c-webaudio
   end
   E20-01 --> E20-02
@@ -43,12 +50,27 @@ flowchart TD
   E20-11 --> E20-12
   E20-09 --> E20-12
   E20-09 --> STD-cncf-otel-semconv
+  E20-01 --> STD-commonmark
+  E20-05 --> STD-commonmark
+  E20-07 --> STD-commonmark
+  E20-11 --> STD-commonmark
   E20-10 --> STD-gdpr
+  E20-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   E20-01 --> STD-khronos-gltf
   E20-03 --> STD-khronos-gltf
   E20-05 --> STD-khronos-gltf
   E20-07 --> STD-khronos-gltf
   E20-11 --> STD-khronos-gltf
+  E20-03 --> STD-mermaid
+  E20-09 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  E20-02 --> STD-w3c-tabular-data
+  E20-04 --> STD-w3c-tabular-data
+  E20-08 --> STD-w3c-tabular-data
+  E20-10 --> STD-w3c-tabular-data
+  E20-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
   E20-02 --> STD-w3c-webaudio
   E20-04 --> STD-w3c-webaudio
   E20-06 --> STD-w3c-webaudio

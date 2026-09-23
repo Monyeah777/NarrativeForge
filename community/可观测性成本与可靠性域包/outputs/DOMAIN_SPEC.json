@@ -4,8 +4,32 @@
   "domain": "可观测性、成本与可靠性",
   "section": "C · AI 工程与运维",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "contract_compliance",
   "content_tier": "derived",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "cncf-cloudevents",
+      "cncf-otel-semconv",
+      "commonmark",
+      "frictionless-table",
+      "ietf-json-schema",
+      "mermaid",
+      "onnx",
+      "onvif-ucum",
+      "openmetrics",
+      "prometheus-exposition",
+      "vega-lite",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "C18-01",
@@ -16,6 +40,32 @@
       "anchor_status": 200,
       "standard_ref": "cncf-otel-semconv",
       "standard_why": "域码 C18 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "primary",
+          "why": "域码 C18 专属绑定（轮换 0）",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "C 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -28,6 +78,30 @@
       "anchor_status": 200,
       "standard_ref": "cncf-otel-semconv",
       "standard_why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
+      "standards": [
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "primary",
+          "why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "载体锚：产出形态「文本」的承载标准",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -40,6 +114,32 @@
       "anchor_status": 200,
       "standard_ref": "onvif-ucum",
       "standard_why": "关键词「单位|量纲|计量」命中",
+      "standards": [
+        {
+          "ref": "onvif-ucum",
+          "role": "primary",
+          "why": "关键词「单位|量纲|计量」命中",
+          "layer": "data",
+          "body": "UCUM",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "C 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -52,6 +152,30 @@
       "anchor_status": 200,
       "standard_ref": "cncf-otel-semconv",
       "standard_why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
+      "standards": [
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "primary",
+          "why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "C 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -64,6 +188,32 @@
       "anchor_status": 200,
       "standard_ref": "prometheus-exposition",
       "standard_why": "域码 C18 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "prometheus-exposition",
+          "role": "primary",
+          "why": "域码 C18 专属绑定（轮换 1）",
+          "layer": "eng",
+          "body": "Prometheus",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "C 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -76,6 +226,32 @@
       "anchor_status": 200,
       "standard_ref": "cncf-otel-semconv",
       "standard_why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
+      "standards": [
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "primary",
+          "why": "关键词「可观测|遥测|监控|日志|成本|可靠性」命中",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "C 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -88,6 +264,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "关键词「采集|清洗|质量|异常|缺失」命中",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "关键词「采集|清洗|质量|异常|缺失」命中",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "C 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -100,6 +304,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "C 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -112,6 +344,32 @@
       "anchor_status": 200,
       "standard_ref": "openmetrics",
       "standard_why": "域码 C18 专属绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "openmetrics",
+          "role": "primary",
+          "why": "域码 C18 专属绑定（轮换 2）",
+          "layer": "eng",
+          "body": "OpenMetrics",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "prometheus-exposition"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "C 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -124,6 +382,32 @@
       "anchor_status": 200,
       "standard_ref": "cncf-otel-semconv",
       "standard_why": "域码 C18 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "cncf-otel-semconv",
+          "role": "primary",
+          "why": "域码 C18 专属绑定（轮换 0）",
+          "layer": "eng",
+          "body": "OpenTelemetry",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "C 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -136,6 +420,32 @@
       "anchor_status": 200,
       "standard_ref": "prometheus-exposition",
       "standard_why": "域码 C18 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "prometheus-exposition",
+          "role": "primary",
+          "why": "域码 C18 专属绑定（轮换 1）",
+          "layer": "eng",
+          "body": "Prometheus",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "cncf-cloudevents",
+          "role": "support",
+          "why": "载体锚：产出形态「事件」的承载标准",
+          "layer": "iface",
+          "body": "CNCF",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     },
@@ -148,6 +458,34 @@
       "anchor_status": 200,
       "standard_ref": "openmetrics",
       "standard_why": "域码 C18 专属绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "openmetrics",
+          "role": "primary",
+          "why": "域码 C18 专属绑定（轮换 2）",
+          "layer": "eng",
+          "body": "OpenMetrics",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "prometheus-exposition"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "C 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 版本 / 关键参数 / 对照基线 / 复现命令；四项缺一即判「口径未定」（本判据为段级框架，领域专属判据待补）。",
       "pitfall": "只报最优单次结果不报方差；工具与数据版本漂移未记录（C 段常见失效模式；领域专属失效模式待补）。"
     }

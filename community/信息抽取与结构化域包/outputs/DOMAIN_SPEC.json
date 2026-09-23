@@ -4,8 +4,30 @@
   "domain": "信息抽取与结构化",
   "section": "B · 任务类型",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "extraction",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "cncf-cloudevents",
+      "commonmark",
+      "frictionless-table",
+      "ietf-json-schema",
+      "mlcommons-bench",
+      "rdf11",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-skos",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "B05-01",
@@ -16,6 +38,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 entity_types（体系 + 版本）、tagging_scheme（BIO|BIOES|其他）与 nested（allow|forbid）。",
       "pitfall": "类型体系不同直接比 F1；嵌套实体被截断却按平铺计算。"
     },
@@ -28,6 +78,32 @@
       "anchor_status": 200,
       "standard_ref": "rdf11",
       "standard_why": "关键词「三元组|关系抽取」命中",
+      "standards": [
+        {
+          "ref": "rdf11",
+          "role": "primary",
+          "why": "关键词「三元组|关系抽取」命中",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 relation_types（含方向）、evidence（是否要求触发词证据）与 cross_sentence（allow|forbid）。",
       "pitfall": "忽略方向（A→B 与 B→A 混算）；跨句关系未声明却宣称句子级能力。"
     },
@@ -40,6 +116,34 @@
       "anchor_status": 200,
       "standard_ref": "cncf-cloudevents",
       "standard_why": "关键词「事件|消息|通道」命中",
+      "standards": [
+        {
+          "ref": "cncf-cloudevents",
+          "role": "primary",
+          "why": "关键词「事件|消息|通道」命中",
+          "layer": "iface",
+          "body": "CNCF",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 event_types、argument_roles（角色清单）与 trigger_labeling（人工|规则）以及 multi_event（allow|forbid）。",
       "pitfall": "论元角色缺失（只报事件类型）；同句多事件被合并。"
     },
@@ -52,6 +156,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "B 段载体锚（轮换 3；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 attribute_vocab（来源）、value_types（类型清单）与 normalization（单位/日期格式规则）。",
       "pitfall": "值不归一化（\"1万元\" 与 \"10000元\" 视为不同）；属性词表漂移未记版本。"
     },
@@ -64,6 +196,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "关键词「表格|CSV|列式」命中",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "关键词「表格|CSV|列式」命中",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 header_detection（有|无 + 方法）、merged_cells（处理策略）与 output_schema（字段清单）。",
       "pitfall": "合并单元格错位导致串行；输出无 schema（不可机读）。"
     },
@@ -76,6 +236,34 @@
       "anchor_status": 200,
       "standard_ref": "frictionless-table",
       "standard_why": "B 段默认绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "frictionless-table",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 2）",
+          "layer": "data",
+          "body": "Frictionless",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "frictionless-package"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 clause_types（体系）、cross_reference（是否解析条款互引）与 key_fields（清单 + 类型）。",
       "pitfall": "互引条款不解析（义务链断裂）；金额未标币种与含税口径。"
     },
@@ -88,6 +276,32 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "B 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 field_schema（清单）、date_normalization（ISO 8601）与 formats（pdf|docx|html 覆盖）。",
       "pitfall": "工作经历区间不归一（无法计算年限）；格式覆盖未声明导致抽样偏差。"
     },
@@ -100,6 +314,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-tabular-data",
       "standard_why": "B 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "w3c-tabular-data",
+          "role": "primary",
+          "why": "B 段默认绑定（轮换 1）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "B 段载体锚（轮换 3；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 invoice_types（票种清单）、field_accuracy（逐字段）与 amount_check（价税合计数学校验规则）。",
       "pitfall": "只报整票准确率（关键字段错也判对）；不做金额合计校验。"
     },
@@ -112,6 +354,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-skos",
       "standard_why": "关键词「术语|词表|本体|知识图谱」命中",
+      "standards": [
+        {
+          "ref": "w3c-skos",
+          "role": "primary",
+          "why": "关键词「术语|词表|本体|知识图谱」命中",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "载体锚：产出形态「图」的承载标准",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 ontology（来源 + 版本）、disambiguation（规则/模型）与 conflict_policy（合并|拒绝|保留双值 + 依据）。",
       "pitfall": "同名实体不消歧（图谱污染）；冲突三元组静默覆盖。"
     },
@@ -124,6 +394,34 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "关键词「约束|校验|schema|形状|契约」命中",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "关键词「约束|校验|schema|形状|契约」命中",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 schema_lang（JSON Schema 2020-12 等 + 版本）、required_fields 与 on_invalid（reject|repair|flag）。",
       "pitfall": "校验不通过就静默补默认值（掩盖抽取失败）；schema 无版本。"
     },
@@ -136,6 +434,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 align_key（字段组合）、similarity_threshold 与 precedence（来源优先规则）。",
       "pitfall": "对齐键不稳定（同实体两条记录）；阈值未声明导致去重率不可复现。"
     },
@@ -148,6 +472,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「评测|基准|排行榜|跑分」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 field_metrics（逐字段 P/R/F1）、gold_source（人工|规则|模型）与 human_audit_ratio（抽检比例）。",
       "pitfall": "只报整条精确匹配（细节错误被掩盖）；金标准由被测模型生成（自证）。"
     }

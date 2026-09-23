@@ -19,12 +19,21 @@ flowchart TD
   subgraph P80[P80]
     STD-cwe
     STD-dicom
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-oci-image
     STD-onnx
     STD-opengeospatial
+    STD-protobuf
+    STD-rdf11
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-svg2
+    STD-w3c-tabular-data
+    STD-w3c-xml
   end
   A03-01 --> A03-02
   A03-01 --> A03-03
@@ -39,12 +48,30 @@ flowchart TD
   A03-10 --> STD-cwe
   A03-09 --> STD-dicom
   A03-04 --> STD-ietf-json-schema
+  A03-06 --> STD-ietf-json-schema
+  A03-10 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  A03-09 --> STD-mermaid
   A03-02 --> STD-mlcommons-bench
   A03-12 --> STD-mlcommons-bench
   A03-08 --> STD-oci-image
   A03-03 --> STD-onnx
   A03-06 --> STD-onnx
+  STD-protobuf --> STD-onnx
   A03-05 --> STD-opengeospatial
   A03-11 --> STD-opengeospatial
+  A03-01 --> STD-vega-lite
+  A03-03 --> STD-vega-lite
+  A03-07 --> STD-vega-lite
+  A03-08 --> STD-vega-lite
+  A03-11 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  A03-04 --> STD-w3c-prov-o
+  A03-05 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   A03-01 --> STD-w3c-svg2
   A03-07 --> STD-w3c-svg2
+  STD-w3c-xml --> STD-w3c-svg2
+  A03-02 --> STD-w3c-tabular-data
+  A03-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

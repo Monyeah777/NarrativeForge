@@ -18,11 +18,17 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-otel-semconv
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-nist-ai-rmf
     STD-oasis-openapi
     STD-onnx
+    STD-protobuf
+    STD-rdf11
     STD-spdx-licenses
+    STD-vega-lite
     STD-w3c-prov-o
   end
   F08-01 --> F08-02
@@ -46,14 +52,31 @@ flowchart TD
   F08-11 --> F08-12
   F08-09 --> F08-12
   F08-09 --> STD-cncf-otel-semconv
+  F08-01 --> STD-ietf-json-schema
+  F08-06 --> STD-ietf-json-schema
+  F08-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  F08-05 --> STD-mermaid
+  F08-08 --> STD-mermaid
+  F08-10 --> STD-mermaid
   F08-01 --> STD-mlcommons-bench
   F08-02 --> STD-mlcommons-bench
   F08-04 --> STD-nist-ai-rmf
   F08-05 --> STD-oasis-openapi
   F08-10 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
   F08-07 --> STD-onnx
   F08-11 --> STD-onnx
+  STD-protobuf --> STD-onnx
   F08-03 --> STD-spdx-licenses
   F08-06 --> STD-spdx-licenses
   F08-12 --> STD-spdx-licenses
+  F08-03 --> STD-vega-lite
+  F08-04 --> STD-vega-lite
+  F08-09 --> STD-vega-lite
+  F08-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   F08-08 --> STD-w3c-prov-o
+  F08-02 --> STD-w3c-prov-o
+  F08-07 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o

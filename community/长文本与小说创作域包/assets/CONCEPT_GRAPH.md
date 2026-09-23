@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「长文本与小说创作」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（长文本与小说创作:M01）与收口模块（长文本与小说创作:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 3 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E04-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 9 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（E04-00 领域通用前置）；节点 21 · 边 48 · 密度 2.2857。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,9 +29,15 @@
 | `E04-10` | 续写与改写 | P60 | `E04-09`、`E04-07` | e04-anchor |
 | `E04-11` | 一致性对账 | P40 | `E04-10`、`E04-08` | e04-anchor |
 | `E04-12` | 连载节奏 | P60 | `E04-11`、`E04-09` | e04-anchor |
-| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E04-01`、`E04-04`、`E04-07`、`E04-10` | std-catalog |
-| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E04-03`、`E04-06`、`E04-09`、`E04-12` | std-catalog |
-| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E04-02`、`E04-05`、`E04-08`、`E04-11` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `E04-01`、`E04-04`、`E04-07`、`E04-10`、`E04-02`、`E04-05` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `E04-01`、`E04-06`、`STD-ietf-json` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `E04-11` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `E04-08`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C｜form｜实测 ✓） | P80 | `E04-03`、`E04-06`、`E04-09`、`E04-12`、`STD-w3c-xml` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `E04-02`、`E04-05`、`E04-08`、`E04-11`、`E04-03`、`E04-04`、`E04-07`、`E04-09`、`E04-10`、`E04-12`、`STD-ietf-bcp47` | std-catalog |
+| `STD-w3c-xml` | 标准 · XML 1.0（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -50,8 +56,14 @@
 | `E04-一致性对账` | `E04-11` |
 | `E04-连载节奏` | `E04-12` |
 | `std-commonmark` | `STD-commonmark` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
+| `std-vega-lite` | `STD-vega-lite` |
 | `std-w3c-epub33` | `STD-w3c-epub33` |
 | `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
+| `std-w3c-xml` | `STD-w3c-xml` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -87,8 +99,14 @@ concept_graph:
       name: "可扩展标准（绑定）"
       nodes:
         - "STD-commonmark"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
+        - "STD-ietf-json-schema"
+        - "STD-mermaid"
+        - "STD-vega-lite"
         - "STD-w3c-epub33"
         - "STD-w3c-tabular-data"
+        - "STD-w3c-xml"
   nodes:
     - id: "E04-01"
       name: "长篇大纲"
@@ -203,6 +221,49 @@ concept_graph:
         - "E04-04"
         - "E04-07"
         - "E04-10"
+        - "E04-02"
+        - "E04-05"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E04-01"
+        - "E04-06"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E04-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E04-08"
+        - "STD-ietf-json-schema"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-epub33"
@@ -214,6 +275,7 @@ concept_graph:
         - "E04-06"
         - "E04-09"
         - "E04-12"
+        - "STD-w3c-xml"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-tabular-data"
@@ -225,6 +287,20 @@ concept_graph:
         - "E04-05"
         - "E04-08"
         - "E04-11"
+        - "E04-03"
+        - "E04-04"
+        - "E04-07"
+        - "E04-09"
+        - "E04-10"
+        - "E04-12"
+        - "STD-ietf-bcp47"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-xml"
+      name: "标准 · XML 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
 ```

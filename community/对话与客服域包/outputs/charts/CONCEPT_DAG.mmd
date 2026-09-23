@@ -18,9 +18,16 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
+    STD-vega-lite
     STD-w3c-epub33
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E18-01 --> E18-02
   E18-02 --> E18-03
@@ -46,11 +53,28 @@ flowchart TD
   E18-04 --> STD-commonmark
   E18-07 --> STD-commonmark
   E18-10 --> STD-commonmark
+  E18-02 --> STD-commonmark
+  E18-05 --> STD-commonmark
   E18-03 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
+  E18-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  E18-03 --> STD-mermaid
+  E18-11 --> STD-mermaid
+  E18-01 --> STD-vega-lite
+  E18-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E18-06 --> STD-w3c-epub33
   E18-09 --> STD-w3c-epub33
   E18-12 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
   E18-02 --> STD-w3c-tabular-data
   E18-05 --> STD-w3c-tabular-data
   E18-08 --> STD-w3c-tabular-data
   E18-11 --> STD-w3c-tabular-data
+  E18-04 --> STD-w3c-tabular-data
+  E18-07 --> STD-w3c-tabular-data
+  E18-09 --> STD-w3c-tabular-data
+  E18-10 --> STD-w3c-tabular-data
+  E18-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

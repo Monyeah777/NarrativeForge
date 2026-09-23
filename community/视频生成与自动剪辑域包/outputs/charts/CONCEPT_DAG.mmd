@@ -17,11 +17,17 @@ flowchart TD
     B16-12
   end
   subgraph P80[P80]
+    STD-commonmark
     STD-frictionless-package
     STD-frictionless-table
     STD-gdpr
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-oci-image
+    STD-rdf11
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-tabular-data
   end
   B16-01 --> B16-02
@@ -44,15 +50,33 @@ flowchart TD
   B16-08 --> B16-11
   B16-11 --> B16-12
   B16-09 --> B16-12
+  B16-09 --> STD-commonmark
+  B16-11 --> STD-commonmark
   B16-07 --> STD-frictionless-package
+  STD-ietf-json-schema --> STD-frictionless-package
   B16-06 --> STD-frictionless-table
   B16-09 --> STD-frictionless-table
   B16-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B16-10 --> STD-gdpr
   B16-01 --> STD-ietf-json-schema
   B16-04 --> STD-ietf-json-schema
+  B16-10 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B16-02 --> STD-oci-image
   B16-03 --> STD-oci-image
   B16-08 --> STD-oci-image
+  B16-01 --> STD-vega-lite
+  B16-03 --> STD-vega-lite
+  B16-05 --> STD-vega-lite
+  B16-06 --> STD-vega-lite
+  B16-07 --> STD-vega-lite
+  B16-08 --> STD-vega-lite
+  B16-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B16-04 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B16-05 --> STD-w3c-tabular-data
   B16-11 --> STD-w3c-tabular-data
+  B16-02 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

@@ -17,11 +17,21 @@ flowchart TD
     E10-12
   end
   subgraph P80[P80]
+    STD-cncf-cloudevents
+    STD-commonmark
     STD-creativecommons
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
     STD-mermaid
     STD-mlcommons-croissant
+    STD-schema-org
+    STD-spdx-licenses
+    STD-vega-lite
     STD-w3c-epub-a11y
     STD-w3c-epub33
+    STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E10-01 --> E10-02
   E10-02 --> E10-03
@@ -43,15 +53,34 @@ flowchart TD
   E10-08 --> E10-11
   E10-11 --> E10-12
   E10-09 --> E10-12
+  E10-06 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
+  E10-02 --> STD-commonmark
+  E10-12 --> STD-commonmark
   E10-11 --> STD-creativecommons
+  E10-01 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   E10-06 --> STD-mermaid
+  E10-08 --> STD-mermaid
   E10-09 --> STD-mlcommons-croissant
+  STD-schema-org --> STD-mlcommons-croissant
+  E10-11 --> STD-spdx-licenses
+  E10-04 --> STD-vega-lite
+  E10-09 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E10-02 --> STD-w3c-epub-a11y
   E10-04 --> STD-w3c-epub-a11y
   E10-08 --> STD-w3c-epub-a11y
   E10-10 --> STD-w3c-epub-a11y
   E10-12 --> STD-w3c-epub-a11y
+  STD-w3c-epub33 --> STD-w3c-epub-a11y
   E10-01 --> STD-w3c-epub33
   E10-03 --> STD-w3c-epub33
   E10-05 --> STD-w3c-epub33
   E10-07 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
+  E10-03 --> STD-w3c-tabular-data
+  E10-05 --> STD-w3c-tabular-data
+  E10-07 --> STD-w3c-tabular-data
+  E10-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「信息抽取与结构化」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（信息抽取与结构化:M01）与收口模块（信息抽取与结构化:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（B05-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 13 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（B05-00 领域通用前置）；节点 25 · 边 41 · 密度 1.6400。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,13 +29,19 @@
 | `B05-10` | Schema 定义与校验 | P60 | — | b05-anchor |
 | `B05-11` | 结果对齐与去重 | P40 | `B05-10` | b05-anchor |
 | `B05-12` | 抽取质量评测 | P60 | `B05-11` | b05-anchor |
-| `STD-cncf-cloudevents` | 标准 · CloudEvents 1.0（CNCF） | P80 | `B05-03` | std-catalog |
-| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `B05-06` | std-catalog |
-| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `B05-01`、`B05-04`、`B05-07`、`B05-10` | std-catalog |
-| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `B05-11`、`B05-12` | std-catalog |
-| `STD-rdf11` | 标准 · RDF 1.1（W3C） | P80 | `B05-02` | std-catalog |
-| `STD-w3c-skos` | 标准 · SKOS 词表（W3C） | P80 | `B05-09` | std-catalog |
-| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `B05-05`、`B05-08` | std-catalog |
+| `STD-cncf-cloudevents` | 标准 · CloudEvents 1.0（CNCF｜iface｜实测 ✓） | P80 | `B05-03`、`STD-ietf-json-schema` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `B05-07` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless｜data｜实测 ✓） | P80 | `B05-06`、`STD-frictionless-package` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `B05-01`、`B05-04`、`B05-07`、`B05-10`、`B05-11`、`STD-ietf-json` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons｜eng｜实测 ✓） | P80 | `B05-11`、`B05-12` | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | `B05-02` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `B05-01`、`B05-02`、`B05-03`、`B05-05`、`B05-06`、`B05-09`、`B05-10`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `B05-04`、`B05-08`、`STD-rdf11` | std-catalog |
+| `STD-w3c-skos` | 标准 · SKOS 词表（W3C｜data｜实测 ✓） | P80 | `B05-09`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `B05-05`、`B05-08`、`B05-12`、`STD-ietf-bcp47` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -54,10 +60,16 @@
 | `B05-结果对齐与去重` | `B05-11` |
 | `B05-抽取质量评测` | `B05-12` |
 | `std-cncf-cloudevents` | `STD-cncf-cloudevents` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-package` | `STD-frictionless-package` |
 | `std-frictionless-table` | `STD-frictionless-table` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
 | `std-ietf-json-schema` | `STD-ietf-json-schema` |
 | `std-mlcommons-bench` | `STD-mlcommons-bench` |
 | `std-rdf11` | `STD-rdf11` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 | `std-w3c-skos` | `STD-w3c-skos` |
 | `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
@@ -95,10 +107,16 @@ concept_graph:
       name: "可扩展标准（绑定）"
       nodes:
         - "STD-cncf-cloudevents"
+        - "STD-commonmark"
+        - "STD-frictionless-package"
         - "STD-frictionless-table"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
         - "STD-ietf-json-schema"
         - "STD-mlcommons-bench"
         - "STD-rdf11"
+        - "STD-vega-lite"
+        - "STD-w3c-prov-o"
         - "STD-w3c-skos"
         - "STD-w3c-tabular-data"
   nodes:
@@ -202,6 +220,22 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "B05-03"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B05-07"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-frictionless-table"
@@ -210,6 +244,21 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "B05-06"
+        - "STD-frictionless-package"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-ietf-json-schema"
@@ -221,6 +270,8 @@ concept_graph:
         - "B05-04"
         - "B05-07"
         - "B05-10"
+        - "B05-11"
+        - "STD-ietf-json"
       provenance:
         - "std-catalog"
     - id: "STD-mlcommons-bench"
@@ -240,12 +291,38 @@ concept_graph:
         - "B05-02"
       provenance:
         - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B05-01"
+        - "B05-02"
+        - "B05-03"
+        - "B05-05"
+        - "B05-06"
+        - "B05-09"
+        - "B05-10"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B05-04"
+        - "B05-08"
+        - "STD-rdf11"
+      provenance:
+        - "std-catalog"
     - id: "STD-w3c-skos"
       name: "标准 · SKOS 词表"
       layer: "P80"
       branch: "standards"
       prereqs:
         - "B05-09"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-tabular-data"
@@ -255,6 +332,8 @@ concept_graph:
       prereqs:
         - "B05-05"
         - "B05-08"
+        - "B05-12"
+        - "STD-ietf-bcp47"
       provenance:
         - "std-catalog"
 ```

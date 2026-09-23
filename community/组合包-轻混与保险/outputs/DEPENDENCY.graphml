@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="layer" for="node" attr.name="layer" attr.type="string"/>
+  <graph id="combo" edgedefault="directed">
+    <node id="AI保险:M01"><data key="layer">P40</data></node>
+    <node id="AI保险:M02"><data key="layer">P60</data></node>
+    <node id="M07"><data key="layer">P60</data></node>
+    <node id="M09"><data key="layer">P60</data></node>
+    <node id="M17"><data key="layer">P50</data></node>
+    <node id="M22"><data key="layer">P40</data></node>
+    <node id="M40"><data key="layer">P40</data></node>
+    <node id="M41"><data key="layer">P40</data></node>
+    <node id="M43"><data key="layer">P40</data></node>
+    <node id="M55"><data key="layer">P40</data></node>
+    <node id="M91"><data key="layer">P40</data></node>
+    <node id="M92"><data key="layer">P50</data></node>
+    <edge source="AI保险:M02" target="AI保险:M01"/>
+    <edge source="M09" target="M07"/>
+    <edge source="M09" target="M17"/>
+    <edge source="M22" target="M40"/>
+    <edge source="M41" target="M40"/>
+    <edge source="M43" target="M40"/>
+    <edge source="M43" target="M41"/>
+  </graph>
+</graphml>

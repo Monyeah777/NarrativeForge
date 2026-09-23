@@ -19,11 +19,22 @@ flowchart TD
   subgraph P80[P80]
     STD-covesa-vss
     STD-eu-machinery
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-jose
+    STD-jsonrpc
     STD-mcp
+    STD-mermaid
     STD-mlcommons-croissant
     STD-onnx
     STD-owasp-llm
+    STD-owasp-top10
+    STD-protobuf
+    STD-schema-org
     STD-uptane
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   A13-01 --> A13-02
   A13-02 --> A13-03
@@ -40,10 +51,30 @@ flowchart TD
   A13-05 --> STD-eu-machinery
   A13-07 --> STD-eu-machinery
   A13-10 --> STD-eu-machinery
+  A13-01 --> STD-ietf-json-schema
+  A13-05 --> STD-ietf-json-schema
+  A13-06 --> STD-ietf-json-schema
+  A13-10 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   A13-12 --> STD-mcp
+  STD-jsonrpc --> STD-mcp
+  A13-04 --> STD-mermaid
+  A13-09 --> STD-mermaid
   A13-11 --> STD-mlcommons-croissant
+  STD-schema-org --> STD-mlcommons-croissant
   A13-03 --> STD-onnx
+  STD-protobuf --> STD-onnx
   A13-08 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
   A13-02 --> STD-uptane
   A13-04 --> STD-uptane
   A13-06 --> STD-uptane
+  STD-jose --> STD-uptane
+  A13-03 --> STD-vega-lite
+  A13-08 --> STD-vega-lite
+  A13-11 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  A13-02 --> STD-w3c-tabular-data
+  A13-07 --> STD-w3c-tabular-data
+  A13-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

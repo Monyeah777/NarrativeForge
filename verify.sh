@@ -456,7 +456,7 @@ import yaml
 # DOMAIN = 领域包显式登记（③ 独占类别互斥 + ⑤ 编号在册/M91-99 不占用专属）——领域包语义依赖
 # 02 §8.1/8.2 段落结构（segmap）与「不占 M91-99 社区段」规则（通用 M93-96/轻混 M91-92 合法占段，
 # 不能内容推导纳入领域检查）；新增领域包须在此登记 + 02 §8 开新段 + registry 条目（登记三要件②）。
-DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/大语言模型域包', 'community/多模态大模型域包', 'community/视觉模型域包', 'community/语音识别与合成域包', 'community/音频与音乐生成域包', 'community/视频生成与理解域包', 'community/图像生成与编辑域包', 'community/文本生成与创作域包', 'community/摘要与信息压缩域包', 'community/机器翻译与本地化域包', 'community/分类与情感分析域包', 'community/代码大模型域包', 'community/嵌入与检索表示域包', 'community/具身智能与机器人域包', 'community/三维与世界模型域包', 'community/数学与形式化推理域包', 'community/强化学习与决策域包', 'community/端侧与边缘小模型域包', 'community/信息抽取与结构化域包', 'community/知识问答与检索增强域包', 'community/多轮对话与角色扮演域包', 'community/代码生成与补全域包', 'community/代码审查与缺陷检测域包', 'community/测试与用例生成域包', 'community/数据分析与表格理解域包', 'community/文档解析与版面理解域包', 'community/语音转写与会议记录域包', 'community/语音合成与配音域包', 'community/图像生成与视觉设计域包', 'community/视频生成与自动剪辑域包', 'community/数据采集与清洗域包', 'community/数据标注与标注质量域包', 'community/合成数据生成域包', 'community/预训练与继续预训练域包', 'community/参数高效微调域包', 'community/对齐与偏好优化域包', 'community/推理优化与加速域包', 'community/推理服务与部署域包', 'community/上下文工程与长上下文域包', 'community/提示工程与提示模板域包', 'community/记忆体与个性化域包', 'community/向量库与检索管线域包', 'community/智能体框架与工具调用域包', 'community/多智能体协同域包', 'community/物流与供应链域包', 'community/交通与出行域包', 'community/建筑与房地产域包', 'community/传媒与新闻域包', 'community/文旅与酒店域包', 'community/科研与实验域包', 'community/提示工程与指令设计域包', 'community/世界书与设定库域包', 'community/长文本与小说创作域包', 'community/内容改写与风格迁移域包', 'community/多语翻译与本地化域包', 'community/图像生成与视觉创作域包', 'community/视频生成与剪辑域包', 'community/音频音乐与语音域包', 'community/编辑校对与出版域包', 'community/智能体与工作流编排域包', 'community/代码与软件工程域包', 'community/数据分析与决策支持域包', 'community/个人助理与日常生活域包', 'community/搜索与信息聚合域包', 'community/内容分发与社区运营域包', 'community/数字人与虚拟形象域包', 'community/安全与对齐域包', 'community/合规与监管域包', 'community/隐私与数据治理域包', 'community/版权与知识产权域包', 'community/可解释性与审计域包', 'community/模型运营与成本域包', 'community/平台与基础设施域包', 'community/产业与商业落地域包', 'community/监督微调域包', 'community/零售与电商域包', 'community/游戏与互动娱乐域包', 'community/角色扮演与角色卡域包', 'community/知识管理与检索增强域包', 'community/企业培训与组织学习域包', 'community/对话与客服域包', 'community/评测与基准域包', 'community/开源与开发者生态域包', 'community/推荐排序与广告域包', 'community/预测异常与风险域包', 'community/评测基准与排行榜域包', 'community/红队越狱与安全测试域包', 'community/可观测性成本与可靠性域包', 'community/AI医疗健康域包', 'community/AI制药与生物域包', 'community/AI法律与合规域包', 'community/AI金融投研与风控域包', 'community/AI保险域包', 'community/AI教育域包', 'community/AI政务与公共事务域包', 'community/AI制造业域包', 'community/AI能源与电力域包', 'community/AI农业域包', 'community/AI人力资源与招聘域包', 'community/AI食品与餐饮域包']
+DOMAIN = ['community/校园情感领域包', 'community/西幻生存领域包', 'community/大语言模型域包', 'community/多模态大模型域包', 'community/视觉模型域包', 'community/语音识别与合成域包', 'community/音频与音乐生成域包', 'community/视频生成与理解域包', 'community/图像生成与编辑域包', 'community/文本生成与创作域包', 'community/摘要与信息压缩域包', 'community/机器翻译与本地化域包', 'community/分类与情感分析域包', 'community/代码大模型域包', 'community/嵌入与检索表示域包', 'community/具身智能与机器人域包', 'community/三维与世界模型域包', 'community/数学与形式化推理域包', 'community/强化学习与决策域包', 'community/端侧与边缘小模型域包', 'community/信息抽取与结构化域包', 'community/知识问答与检索增强域包', 'community/多轮对话与角色扮演域包', 'community/代码生成与补全域包', 'community/代码审查与缺陷检测域包', 'community/测试与用例生成域包', 'community/数据分析与表格理解域包', 'community/文档解析与版面理解域包', 'community/语音转写与会议记录域包', 'community/语音合成与配音域包', 'community/图像生成与视觉设计域包', 'community/视频生成与自动剪辑域包', 'community/数据采集与清洗域包', 'community/数据标注与标注质量域包', 'community/合成数据生成域包', 'community/预训练与继续预训练域包', 'community/参数高效微调域包', 'community/对齐与偏好优化域包', 'community/推理优化与加速域包', 'community/推理服务与部署域包', 'community/上下文工程与长上下文域包', 'community/提示工程与提示模板域包', 'community/记忆体与个性化域包', 'community/向量库与检索管线域包', 'community/智能体框架与工具调用域包', 'community/多智能体协同域包', 'community/物流与供应链域包', 'community/交通与出行域包', 'community/建筑与房地产域包', 'community/传媒与新闻域包', 'community/文旅与酒店域包', 'community/科研与实验域包', 'community/提示工程与指令设计域包', 'community/世界书与设定库域包', 'community/长文本与小说创作域包', 'community/内容改写与风格迁移域包', 'community/多语翻译与本地化域包', 'community/图像生成与视觉创作域包', 'community/视频生成与剪辑域包', 'community/音频音乐与语音域包', 'community/编辑校对与出版域包', 'community/智能体与工作流编排域包', 'community/代码与软件工程域包', 'community/数据分析与决策支持域包', 'community/个人助理与日常生活域包', 'community/搜索与信息聚合域包', 'community/内容分发与社区运营域包', 'community/数字人与虚拟形象域包', 'community/安全与对齐域包', 'community/合规与监管域包', 'community/隐私与数据治理域包', 'community/版权与知识产权域包', 'community/可解释性与审计域包', 'community/模型运营与成本域包', 'community/平台与基础设施域包', 'community/产业与商业落地域包', 'community/监督微调域包', 'community/零售与电商域包', 'community/游戏与互动娱乐域包', 'community/角色扮演与角色卡域包', 'community/知识管理与检索增强域包', 'community/企业培训与组织学习域包', 'community/对话与客服域包', 'community/评测与基准域包', 'community/开源与开发者生态域包', 'community/推荐排序与广告域包', 'community/预测异常与风险域包', 'community/评测基准与排行榜域包', 'community/红队越狱与安全测试域包', 'community/可观测性成本与可靠性域包', 'community/AI医疗健康域包', 'community/AI制药与生物域包', 'community/AI法律与合规域包', 'community/AI金融投研与风控域包', 'community/AI保险域包', 'community/AI教育域包', 'community/AI政务与公共事务域包', 'community/AI制造业域包', 'community/AI能源与电力域包', 'community/AI农业域包', 'community/AI人力资源与招聘域包', 'community/AI食品与餐饮域包', 'community/组合包-检索栈', 'community/组合包-数据管线', 'community/组合包-受监管行业', 'community/组合包-轻混与保险']
 # LEGACY_BARE = 存量既有领域包（v1.1 迁出模块沿用原编号不改号，包内裸号属既有）；其余包**新增**
 # 编号须落 M91-M99 机制段或 <独占类别>:Mxx 类内段（01 §1.6.11 编号命名空间扩展；每类 00-99 独立）。
 LEGACY_BARE = set(DOMAIN)
@@ -805,8 +805,19 @@ for d in PKGS:
                 errs.append('②%s 依赖闭包叶节点越界官方核心 13 件: %s（源包 %s core_modules）' % (pid, x, sp))
         # 源包嵌套 references（package 层——references 与 dependencies 平级，见
         # protocol.yaml 结构；原取 deps.get('references') 恒空 = 死检查，31 方案瑶光发现修复）
-        if pkg2.get('references'):
-            errs.append('②%s 依赖闭包检测到源包 %s 嵌套 references（当前不支持多层组合，须闭合官方核心）' % (pid, sp))
+        # 2026-09-23 精化：嵌套引用**允许**，但必须**显式闭合**——引用方须把源包的全部
+        # references（source_package, module_id）逐条登记在自己白名单里；否则依赖链存在隐藏层。
+        # 这既支撑「组合包再组合」（组合引擎产物化），又保住本规则的原始意图（无隐式多层依赖）。
+        _nested = [x for x in (pkg2.get('references') or []) if isinstance(x, dict)]
+        if _nested:
+            _have = {(x.get('source_package'), str(x.get('module_id')))
+                     for x in refs if isinstance(x, dict)}
+            _miss = [(x.get('source_package'), str(x.get('module_id')))
+                     for x in _nested
+                     if (x.get('source_package'), str(x.get('module_id'))) not in _have]
+            if _miss:
+                errs.append('②%s 源包 %s 的嵌套 references 未显式闭合（缺 %s；修复指引：'
+                            '把源包的 references 逐条登记进本包白名单）' % (pid, sp, _miss[:3]))
     # ③ 挂载层冲突：组合包各层 default 与源包同层 default 取交集非空即冲突
     ml = data[d]['package'].get('mount_layers', {})
     if isinstance(ml, dict):
@@ -989,6 +1000,13 @@ def find_module_file(pkg, mid):
     mod_dir = os.path.join(pkg, 'modules')
     if not os.path.isdir(mod_dir):
         return None
+    # ① 先按**机读契约声明 id**匹配（2026-09-23 实测修正）：AI 品类域包的模块文件名 stem 是
+    #    包内 token（如 A01a_…），权威 id 在 machine_contract.id（如 大语言模型:M01）——
+    #    只按文件名裸号定位会漏判「源模块文件缺失」。契约 id 优先，文件名裸号兜底（官方 04 模块库）。
+    for f in sorted(glob.glob(os.path.join(mod_dir, '*.md'))):
+        mc = extract_mc(f)
+        if isinstance(mc, dict) and str(mc.get('id') or '') in (mid, bare):
+            return f
     for f in sorted(glob.glob(os.path.join(mod_dir, '*.md'))):
         b = os.path.basename(f)
         if b.startswith(bare + '_') or b == bare + '.md':
@@ -1007,6 +1025,21 @@ for pid, p in prots.items():
         mc = extract_mc(f)
         if isinstance(mc, dict):
             nsub |= set((mc.get('events') or {}).get('subscribe') or [])
+    # 邻居订阅面 = 本包自有模块 ∪ **本包引用的源模块**（2026-09-23 修正）：组合包的装配单元
+    # 就是「自有 + 借阅」的模块集；组合包自有模块为 0 时（产物化组合包），若只数自有模块，
+    # 借阅模块的发布面必然被判「无邻居订阅」而误报契约断裂。
+    # 再 ∪ **官方核心订阅面**（核心永远随任意组合装载；production_output / market_event 等
+    # 由核心模块消费，漏算即误报——2026-09-23 实测）。
+    for _r in refs:
+        _sf = find_module_file(pkg_dir.get(_r.get('source_package') or '', ''), _r.get('module_id'))
+        if _sf:
+            _smc = extract_mc(_sf)
+            if isinstance(_smc, dict):
+                nsub |= set((_smc.get('events') or {}).get('subscribe') or [])
+    for _cf in sorted(glob.glob(os.path.join('04_模块库', '*', '*.md'))):
+        _cmc = extract_mc(_cf)
+        if isinstance(_cmc, dict):
+            nsub |= set((_cmc.get('events') or {}).get('subscribe') or [])
     for r in refs:
         assembly += 1
         sp, mid = r.get('source_package'), r.get('module_id')
@@ -1023,7 +1056,9 @@ for pid, p in prots.items():
             errs.append('③%s 源模块机读块缺失，契约仲裁无法执行: %s（%s）' % (pid, mid, sf))
             continue
         pub = set((smc.get('events') or {}).get('publish') or [])
-        miss = pub - nsub
+        # 宿主消费的终端事件：**显式声明**后豁免（未声明即仍判缺失）
+        _host = set((smc.get('events') or {}).get('host_consumed') or [])
+        miss = pub - nsub - _host
         if miss:
             errs.append('③契约断裂 FAIL：%s 引用 %s 发布面 ⊄ 邻居订阅面——越界/缺失事件=%s（判据 02 §8.4 规则④ + 01 §1 events publish⊆subscribe）' % (pid, mid, sorted(miss)))
 print('契约仲裁汇总：①官方核心 13 件机读结构解析 %d 件；②社区模块扫描 %d 件（机读完备 %d / 未完备 %d）；③references 装配仲裁样本 %d 条' % (len(CORE13), scanned, scanned - len(incomplete), len(incomplete), assembly))
@@ -1073,7 +1108,14 @@ for sp in sorted(prots):
     if sp in declared:
         files = sorted(glob.glob(os.path.join('community', sp, 'assets', '*.md')))
         if not files:
-            errs.append('③%s 白名单内但源包 assets 无 .md，无法验证可寻址行为' % sp)
+            # 借阅型源包（组合包等）声明 assets.count: 0：白名单内无内容资产可寻址，
+            # 此时须与声明一致——查到 count: 0 则判「不虚标可寻址」，缺声明才判违约。
+            py = os.path.join('community', sp, 'protocol.yaml')
+            txt = open(py, encoding='utf-8').read() if os.path.isfile(py) else ''
+            if 'count: 0' not in txt:
+                errs.append('③%s 白名单内但源包 assets 无 .md 且未声明 assets.count: 0，无法验证可寻址行为' % sp)
+            elif r.asset_get(sp, 'README') is not None:
+                errs.append('③%s 声明 0 自有资产却 asset_get 返回非 None（虚标可寻址）' % sp)
             continue
         key = os.path.basename(files[0])[:-3]
         got = r.asset_get(sp, key)

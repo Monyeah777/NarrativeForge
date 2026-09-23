@@ -17,14 +17,23 @@ flowchart TD
     F09-12
   end
   subgraph P80[P80]
+    STD-commonmark
     STD-creativecommons
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-nist-800-188
+    STD-nist-privacy
     STD-oasis-openapi
     STD-osi-osd
     STD-owasp-llm
+    STD-owasp-top10
+    STD-spdx-3
     STD-spdx-licenses
+    STD-vega-lite
     STD-w3c-epub33
+    STD-w3c-xml
   end
   F09-01 --> F09-02
   F09-02 --> F09-03
@@ -46,15 +55,33 @@ flowchart TD
   F09-08 --> F09-11
   F09-11 --> F09-12
   F09-09 --> F09-12
+  F09-04 --> STD-commonmark
   F09-01 --> STD-creativecommons
+  F09-06 --> STD-ietf-json-schema
+  F09-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  F09-05 --> STD-mermaid
+  F09-10 --> STD-mermaid
   F09-08 --> STD-mlcommons-bench
   F09-06 --> STD-nist-800-188
+  STD-nist-privacy --> STD-nist-800-188
   F09-03 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
   F09-05 --> STD-osi-osd
   F09-07 --> STD-osi-osd
   F09-09 --> STD-osi-osd
   F09-11 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
+  F09-03 --> STD-spdx-3
+  F09-08 --> STD-spdx-3
   F09-02 --> STD-spdx-licenses
   F09-10 --> STD-spdx-licenses
   F09-12 --> STD-spdx-licenses
+  F09-01 --> STD-spdx-licenses
+  F09-09 --> STD-spdx-licenses
+  F09-02 --> STD-vega-lite
+  F09-07 --> STD-vega-lite
+  F09-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   F09-04 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33

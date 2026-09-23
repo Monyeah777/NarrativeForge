@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="layer" for="node" attr.name="layer" attr.type="string"/>
+  <graph id="combo" edgedefault="directed">
+    <node id="AI法律与合规:M01"><data key="layer">P40</data></node>
+    <node id="AI法律与合规:M02"><data key="layer">P60</data></node>
+    <node id="AI金融投研与风控:M01"><data key="layer">P40</data></node>
+    <node id="AI金融投研与风控:M02"><data key="layer">P60</data></node>
+    <node id="可解释性与审计:M01"><data key="layer">P40</data></node>
+    <node id="可解释性与审计:M02"><data key="layer">P60</data></node>
+    <node id="隐私与数据治理:M01"><data key="layer">P40</data></node>
+    <node id="隐私与数据治理:M02"><data key="layer">P60</data></node>
+    <edge source="AI法律与合规:M02" target="AI法律与合规:M01"/>
+    <edge source="AI金融投研与风控:M02" target="AI金融投研与风控:M01"/>
+    <edge source="可解释性与审计:M02" target="可解释性与审计:M01"/>
+    <edge source="隐私与数据治理:M02" target="隐私与数据治理:M01"/>
+  </graph>
+</graphml>

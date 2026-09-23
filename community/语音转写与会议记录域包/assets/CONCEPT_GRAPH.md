@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「语音转写与会议记录」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（语音转写与会议记录:M01）与收口模块（语音转写与会议记录:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 8 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（B13-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 17 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（B13-00 领域通用前置）；节点 29 · 边 52 · 密度 1.7931。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,14 +29,23 @@
 | `B13-10` | 录音隐私与合规 | P60 | `B13-09`、`B13-07` | b13-anchor |
 | `B13-11` | 方言会议 | P40 | `B13-10`、`B13-08` | b13-anchor |
 | `B13-12` | 行动项跟踪 | P60 | `B13-11`、`B13-09` | b13-anchor |
-| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `B13-03`、`B13-12` | std-catalog |
-| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `B13-10` | std-catalog |
-| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `B13-01`、`B13-04`、`B13-07` | std-catalog |
-| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `B13-09` | std-catalog |
-| `STD-rfc3339` | 标准 · 时间戳（IETF） | P80 | `B13-06` | std-catalog |
-| `STD-w3c-skos` | 标准 · SKOS 词表（W3C） | P80 | `B13-05` | std-catalog |
-| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `B13-02`、`B13-11` | std-catalog |
-| `STD-w3c-webaudio` | 标准 · Web Audio API（W3C） | P80 | `B13-08` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `B13-07`、`B13-09`、`B13-11` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless｜data｜实测 ✓） | P80 | `B13-03`、`B13-12`、`STD-frictionless-package` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU｜gov｜实测 ✓） | P80 | `B13-10` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-ixdtf` | 标准 · IXDTF (RFC 9557)（IETF｜data｜实测 ✓） | P80 | `B13-06`、`STD-rfc3339` | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `B13-01`、`B13-04`、`B13-07`、`B13-10`、`STD-ietf-json` | std-catalog |
+| `STD-iso-8601` | 标准 · 日期时间（含 8601-2 扩展）（ISO｜data｜实测 ✗） | P80 | — | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons｜eng｜实测 ✓） | P80 | `B13-09` | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rfc3339` | 标准 · 时间戳（IETF｜data｜实测 ✓） | P80 | `B13-06`、`STD-iso-8601` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `B13-01`、`B13-02`、`B13-03`、`B13-12`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `B13-04`、`B13-05`、`B13-08`、`STD-rdf11` | std-catalog |
+| `STD-w3c-skos` | 标准 · SKOS 词表（W3C｜data｜实测 ✓） | P80 | `B13-05`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `B13-02`、`B13-11`、`STD-ietf-bcp47` | std-catalog |
+| `STD-w3c-webaudio` | 标准 · Web Audio API（W3C｜form｜实测 ✓） | P80 | `B13-08` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -54,11 +63,20 @@
 | `B13-录音隐私与合规` | `B13-10` |
 | `B13-方言会议` | `B13-11` |
 | `B13-行动项跟踪` | `B13-12` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-package` | `STD-frictionless-package` |
 | `std-frictionless-table` | `STD-frictionless-table` |
 | `std-gdpr` | `STD-gdpr` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-ixdtf` | `STD-ietf-ixdtf` |
+| `std-ietf-json` | `STD-ietf-json` |
 | `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-iso-8601` | `STD-iso-8601` |
 | `std-mlcommons-bench` | `STD-mlcommons-bench` |
+| `std-rdf11` | `STD-rdf11` |
 | `std-rfc3339` | `STD-rfc3339` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 | `std-w3c-skos` | `STD-w3c-skos` |
 | `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 | `std-w3c-webaudio` | `STD-w3c-webaudio` |
@@ -96,11 +114,20 @@ concept_graph:
     - id: "standards"
       name: "可扩展标准（绑定）"
       nodes:
+        - "STD-commonmark"
+        - "STD-frictionless-package"
         - "STD-frictionless-table"
         - "STD-gdpr"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-ixdtf"
+        - "STD-ietf-json"
         - "STD-ietf-json-schema"
+        - "STD-iso-8601"
         - "STD-mlcommons-bench"
+        - "STD-rdf11"
         - "STD-rfc3339"
+        - "STD-vega-lite"
+        - "STD-w3c-prov-o"
         - "STD-w3c-skos"
         - "STD-w3c-tabular-data"
         - "STD-w3c-webaudio"
@@ -209,6 +236,23 @@ concept_graph:
         - "B13-09"
       provenance:
         - "b13-anchor"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B13-07"
+        - "B13-09"
+        - "B13-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-frictionless-table"
       name: "标准 · Table Schema"
       layer: "P80"
@@ -216,6 +260,7 @@ concept_graph:
       prereqs:
         - "B13-03"
         - "B13-12"
+        - "STD-frictionless-package"
       provenance:
         - "std-catalog"
     - id: "STD-gdpr"
@@ -226,6 +271,29 @@ concept_graph:
         - "B13-10"
       provenance:
         - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-ixdtf"
+      name: "标准 · IXDTF (RFC 9557)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B13-06"
+        - "STD-rfc3339"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-ietf-json-schema"
       name: "标准 · JSON Schema 2020-12"
       layer: "P80"
@@ -234,6 +302,15 @@ concept_graph:
         - "B13-01"
         - "B13-04"
         - "B13-07"
+        - "B13-10"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-iso-8601"
+      name: "标准 · 日期时间（含 8601-2 扩展）"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-mlcommons-bench"
@@ -244,12 +321,43 @@ concept_graph:
         - "B13-09"
       provenance:
         - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-rfc3339"
       name: "标准 · 时间戳"
       layer: "P80"
       branch: "standards"
       prereqs:
         - "B13-06"
+        - "STD-iso-8601"
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B13-01"
+        - "B13-02"
+        - "B13-03"
+        - "B13-12"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B13-04"
+        - "B13-05"
+        - "B13-08"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-skos"
@@ -258,6 +366,7 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "B13-05"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-tabular-data"
@@ -267,6 +376,7 @@ concept_graph:
       prereqs:
         - "B13-02"
         - "B13-11"
+        - "STD-ietf-bcp47"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-webaudio"

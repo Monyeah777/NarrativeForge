@@ -18,10 +18,15 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-otel-semconv
+    STD-frictionless-package
     STD-frictionless-table
     STD-gdpr
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-mlcommons-croissant
+    STD-schema-org
+    STD-vega-lite
   end
   C02-01 --> C02-02
   C02-02 --> C02-03
@@ -44,8 +49,15 @@ flowchart TD
   C02-11 --> C02-12
   C02-09 --> C02-12
   C02-04 --> STD-cncf-otel-semconv
+  C02-05 --> STD-cncf-otel-semconv
+  C02-07 --> STD-cncf-otel-semconv
+  C02-10 --> STD-cncf-otel-semconv
   C02-06 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   C02-10 --> STD-gdpr
+  C02-02 --> STD-mermaid
+  C02-04 --> STD-mermaid
+  C02-09 --> STD-mermaid
   C02-08 --> STD-mlcommons-bench
   C02-01 --> STD-mlcommons-croissant
   C02-02 --> STD-mlcommons-croissant
@@ -55,3 +67,11 @@ flowchart TD
   C02-09 --> STD-mlcommons-croissant
   C02-11 --> STD-mlcommons-croissant
   C02-12 --> STD-mlcommons-croissant
+  STD-schema-org --> STD-mlcommons-croissant
+  C02-01 --> STD-vega-lite
+  C02-03 --> STD-vega-lite
+  C02-06 --> STD-vega-lite
+  C02-08 --> STD-vega-lite
+  C02-11 --> STD-vega-lite
+  C02-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite

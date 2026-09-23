@@ -1,0 +1,57 @@
+# protocol.yaml — 组合包协议声明（组合引擎产物化：组合包-数据管线）
+# 由 `nf combine materialize` 生成；机读真相 = 本文件，人读速览 = README.md（双源一致）
+protocol:
+  schema_version: "2"
+package:
+  conformance: "L2"
+  id: 组合包-数据管线
+  name: 组合包-数据管线
+  version: "1.0.0"
+  pipeline: P108
+  module_id_range: []          # 组合包不新增模块（全部经 references 只读借阅）
+  categories:
+    - 组合域-数据管线
+  dependencies:
+    core_only: true
+    core_modules: [M00, 通用:M10, M08, M23, M24, M50, M80, 事件:M22, M06, M12, M13, M20, M90]
+    cross_package: []
+  references:
+    - source_package: 合成数据生成域包
+      module_id: 合成数据生成:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 合成数据生成域包
+      module_id: 合成数据生成:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 数据采集与清洗域包
+      module_id: 数据采集与清洗:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 数据采集与清洗域包
+      module_id: 数据采集与清洗:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 评测基准与排行榜域包
+      module_id: 评测基准与排行榜:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 评测基准与排行榜域包
+      module_id: 评测基准与排行榜:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 预训练与继续预训练域包
+      module_id: 预训练与继续预训练:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 预训练与继续预训练域包
+      module_id: 预训练与继续预训练:M02
+      source_schema_version: "2"
+      asset_readonly: true
+  modules: []
+  assets:
+    count: 0
+    readme: README.md
+  mount_layers:          # 堆叠写入 available（default 留空，规避同层 default 冲突）
+    P40: {default: [], available: [合成数据生成:M01, 数据采集与清洗:M01, 评测基准与排行榜:M01, 预训练与继续预训练:M01]}
+    P60: {default: [], available: [合成数据生成:M02, 数据采集与清洗:M02, 评测基准与排行榜:M02, 预训练与继续预训练:M02]}

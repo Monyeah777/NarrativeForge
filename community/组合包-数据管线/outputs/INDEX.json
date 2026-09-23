@@ -1,0 +1,101 @@
+{
+  "schema": "nf-output-index/1",
+  "package": "组合包-数据管线",
+  "note": "组合包产出面（由组合引擎生成；check32 output_forms 与 nf output 按此判定）。",
+  "outputs": [
+    {
+      "path": "outputs/schemas/COMBO_CERT.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "组合证书契约"
+    },
+    {
+      "path": "outputs/COMBO_CERT.json",
+      "form": "combo-cert",
+      "tier": "T4",
+      "role": "functional",
+      "schema": "outputs/schemas/COMBO_CERT.schema.json",
+      "recompute": {
+        "id": "combo-cert",
+        "params": {
+          "packs": [
+            "合成数据生成域包",
+            "数据采集与清洗域包",
+            "评测基准与排行榜域包",
+            "预训练与继续预训练域包"
+          ],
+          "extra_modules": [],
+          "label": "组合包 组合包-数据管线",
+          "note": "由 nf combine materialize 产物化；组合合法性由五不变量给出"
+        }
+      },
+      "note": "组合证书（T4：按 packs+extra_modules 重算逐字段比对）"
+    },
+    {
+      "path": "outputs/schemas/BORROW_INDEX.schema.json",
+      "form": "json-schema",
+      "tier": "T2",
+      "role": "schema",
+      "note": "借阅索引契约"
+    },
+    {
+      "path": "outputs/BORROW_INDEX.json",
+      "form": "json",
+      "tier": "T2",
+      "role": "data",
+      "schema": "outputs/schemas/BORROW_INDEX.schema.json",
+      "note": "借阅索引（源包 → 模块，只读）"
+    },
+    {
+      "path": "outputs/charts/LAYER_STACK.vega.json",
+      "form": "vega-lite",
+      "tier": "T3",
+      "role": "chart",
+      "render": {
+        "id": "vega-layer-stack",
+        "inputs": [
+          "outputs/COMBO_CERT.json"
+        ],
+        "params": {
+          "title": "组合包-数据管线 · 层位堆叠"
+        }
+      },
+      "note": "层位堆叠条形图（由证书确定性生成）"
+    },
+    {
+      "path": "outputs/charts/LOAD_ORDER.mmd",
+      "form": "mermaid",
+      "tier": "T3",
+      "role": "diagram",
+      "render": {
+        "id": "mermaid-layer-load",
+        "inputs": [
+          "outputs/COMBO_CERT.json"
+        ]
+      },
+      "note": "装载序图（按层分组的 Mermaid）"
+    },
+    {
+      "path": "outputs/DEPENDENCY.graphml",
+      "form": "graphml",
+      "tier": "T3",
+      "role": "diagram",
+      "render": {
+        "id": "graphml-module-deps",
+        "inputs": [
+          "outputs/COMBO_CERT.json"
+        ]
+      },
+      "note": "模块依赖图（GraphML；端点引用完整性由形态校验器判定）"
+    },
+    {
+      "path": "outputs/SYSTEM_CARD.json",
+      "form": "system-card",
+      "tier": "T3",
+      "role": "data",
+      "schema": "outputs/schemas/SYSTEM_CARD.schema.json",
+      "note": "组合包系统卡（用途 / 限制 / 借阅边界 / 不宣称）"
+    }
+  ]
+}

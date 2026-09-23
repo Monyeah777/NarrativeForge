@@ -18,12 +18,21 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-a2a
+    STD-cncf-cloudevents
+    STD-common-criteria
     STD-covesa-vss
+    STD-frictionless-package
     STD-frictionless-table
-    STD-iso-iec-25010
+    STD-ietf-bcp47
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
     STD-owasp-llm
+    STD-owasp-top10
+    STD-rdf11
+    STD-vega-lite
     STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   D13-01 --> D13-02
   D13-02 --> D13-03
@@ -46,14 +55,32 @@ flowchart TD
   D13-11 --> D13-12
   D13-09 --> D13-12
   D13-08 --> STD-a2a
+  D13-01 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
+  D13-03 --> STD-common-criteria
+  D13-09 --> STD-common-criteria
   D13-01 --> STD-covesa-vss
   D13-05 --> STD-covesa-vss
   D13-06 --> STD-frictionless-table
-  D13-03 --> STD-iso-iec-25010
-  D13-09 --> STD-iso-iec-25010
+  STD-frictionless-package --> STD-frictionless-table
+  D13-04 --> STD-mermaid
+  D13-09 --> STD-mermaid
+  D13-11 --> STD-mermaid
   D13-04 --> STD-nist-ai-rmf
   D13-07 --> STD-nist-ai-rmf
   D13-10 --> STD-nist-ai-rmf
   D13-12 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
+  D13-02 --> STD-vega-lite
+  D13-03 --> STD-vega-lite
+  D13-07 --> STD-vega-lite
+  D13-08 --> STD-vega-lite
+  D13-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D13-02 --> STD-w3c-prov-o
   D13-11 --> STD-w3c-prov-o
+  D13-06 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  D13-05 --> STD-w3c-tabular-data
+  D13-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

@@ -69,6 +69,7 @@ _FORM_MAX_TIER = {
     "graphml": "T3", "json-graph-format": "T3", "quant-metrics": "T3",
     "performance-report": "T4", "concept-closure": "T4", "system-card": "T3",
     "domain-spec": "T3", "domain-report": "T4",
+    "combo-cert": "T4",
 }
 
 
@@ -163,6 +164,8 @@ def detect(root: str, rel: str) -> Tuple[str, str]:
             kind = str(data.get("kind") or "")
             if kind.startswith("nf-domain-spec"):
                 form = "domain-spec"
+            elif str(data.get("schema") or "").startswith("nf-combo/1"):
+                form = "combo-cert"
             elif kind.startswith("nf-domain-report"):
                 form = "domain-report"
             elif kind.startswith("nf-system-card"):
@@ -643,6 +646,8 @@ _FORM_CHECK: Dict[str, Callable[[str, str], List[str]]] = {
     "quant-metrics": _check_quant_metrics, "performance-report": _check_json,
     "concept-closure": _check_json, "system-card": _check_json,
     "domain-spec": _check_domain_spec, "domain-report": _check_domain_report,
+    # 惰性引用：_check_combo_cert 定义在本表之后（避免前向引用 NameError）
+    "combo-cert": lambda r, x: _check_combo_cert(r, x),
 }
 
 
@@ -781,6 +786,135 @@ def _gen_vega_metrics(root: str, entry: dict):
     }, []
 
 
+def _gen_combo_cert(root: str, entry: dict):
+    """组合包 T4 面：按 INDEX 声明的 packs/extra_modules 重算组合证书。"""
+    from core import pack_combo as pc
+
+    spec = entry.get("recompute") or {}
+    params = dict(spec.get("params") or {})
+    packs = list(params.get("packs") or [])
+    mods = list(params.get("extra_modules") or [])
+    if not packs and not mods:
+        return None, ["组合证书缺 packs/extra_modules（无输入即无复算）"]
+    cert = pc.combine(root, packs=packs, extra_modules=mods)
+    if params.get("label"):
+        cert["label"] = params["label"]
+    if params.get("note"):
+        cert["note"] = params["note"]
+    return cert, []
+
+
+def _combo_doc(root: str, entry: dict) -> Tuple[Any, str]:
+    """读证书输入（供图表/图示生成器复用）。"""
+    spec = entry.get("render") or {}
+    rel = (spec.get("inputs") or ["outputs/COMBO_CERT.json"])[0]
+    data, err = _read_json(_rel(root, _pkg_rel(entry, rel)))
+    return (data, "") if not err else (None, "输入 %s %s" % (rel, err))
+
+
+def _gen_vega_layer_stack(root: str, entry: dict):
+    data, err = _combo_doc(root, entry)
+    if err:
+        return None, [err]
+    rows = [{"layer": k, "modules": len(v)}
+            for k, v in _stack_pairs(data.get("layer_stacks"))]
+    if not rows:
+        return None, ["证书无 layer_stacks（无可画数据）"]
+    return {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": (entry.get("render") or {}).get("params", {}).get("title", "层位堆叠"),
+        "data": {"values": rows},
+        "mark": {"type": "bar"},
+        "encoding": {"x": {"field": "layer", "type": "nominal", "title": "层位",
+                           "sort": None},
+                     "y": {"field": "modules", "type": "quantitative", "title": "模块数"}},
+    }, []
+
+
+def _gen_mermaid_layer_load(root: str, entry: dict):
+    data, err = _combo_doc(root, entry)
+    if err:
+        return None, [err]
+    lines = ["%% 组合包装载序（由 COMBO_CERT.json 确定性派生）", "flowchart LR"]
+    for lay, mods in _stack_pairs(data.get("layer_stacks")):
+        tag = lay.replace("-", "")
+        lines.append('  %s["%s"]' % (tag, lay))
+        for i, m in enumerate(mods):
+            node = "%s_%d" % (tag, i)
+            lines.append('  %s["%s"]' % (node, m))
+            lines.append("  %s --> %s" % (tag, node))
+    return "\n".join(lines) + "\n", []
+
+
+def _gen_graphml_module_deps(root: str, entry: dict):
+    data, err = _combo_doc(root, entry)
+    if err:
+        return None, [err]
+    mods = list(data.get("modules") or [])
+    explicit = set((data.get("dependency_closure") or {}).get("explicit") or [])
+    out = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<graphml xmlns="http://graphml.graphdrawing.org/xmlns">',
+           '  <key id="layer" for="node" attr.name="layer" attr.type="string"/>',
+           '  <graph id="combo" edgedefault="directed">']
+    for m in mods:
+        lay = ""
+        for k, v in _stack_pairs(data.get("layer_stacks")):
+            if m in v:
+                lay = k
+                break
+        out.append('    <node id="%s"><data key="layer">%s</data></node>' % (m, lay))
+    for m in mods:                      # 依赖边：模块 → 其显式依赖（在组合内的）
+        rec = _combo_module_inputs(root, entry, m)
+        for dep in rec:
+            if dep in explicit and dep != m:
+                out.append('    <edge source="%s" target="%s"/>' % (m, dep))
+    out += ["  </graph>", "</graphml>"]
+    return "\n".join(out) + "\n", []
+
+
+def _combo_module_inputs(root: str, entry: dict, module_id: str) -> List[str]:
+    from core import pack_combo as pc
+
+    rec = pc.prof_get_module(root, module_id)
+    return [str(x) for x in (rec.get("inputs") or [])]
+
+
+def _stack_pairs(stacks: Any) -> List[Tuple[str, List[str]]]:
+    """层栈两种历史形态兼容：列表（当前）[{layer, modules}] 与字典 {P40: [...]}。"""
+    if isinstance(stacks, list):
+        return [(str(r.get("layer") or ""), [str(x) for x in (r.get("modules") or [])])
+                for r in stacks if isinstance(r, dict)]
+    if isinstance(stacks, dict):
+        return [(str(k), [str(x) for x in v]) for k, v in sorted(stacks.items())]
+    return []
+
+
+def _check_combo_cert(root: str, rel: str) -> List[str]:
+    """组合证书：schema + 五不变量（复算一致由 recompute 面判）。"""
+    from core import pack_combo as pc
+
+    issues = _check_json(root, rel)
+    data, err = _read_json(_rel(root, rel))
+    if err or not isinstance(data, dict):
+        return issues + ([err] if err else [])
+    unsup: List[str] = []
+    issues += ["证书不合 schema：%s" % e
+               for e in pc.CERT_SCHEMA and json_schema_check(data, pc.CERT_SCHEMA,
+                                                             unsupported=unsup)[:4]]
+    if unsup:
+        issues.append("证书校验器遇不支持关键字：%s" % sorted(set(unsup))[:2])
+    fresh, perr = _gen_combo_cert(root, {"recompute": {"params": {
+        "packs": data.get("packs"), "extra_modules": data.get("extra_modules")}}})
+    if fresh is None:
+        issues += ["复算失败：%s" % e for e in perr]
+    else:
+        if fresh.get("legal") is not True:
+            issues.append("组合非法（五不变量未全成立）")
+        if fresh.get("digest") != data.get("digest"):
+            issues.append("证书摘要与实时复算不一致（组合输入已变）")
+    return issues
+
+
 def _gen_mermaid_concept_dag(root: str, entry: dict):
     """概念图 → Mermaid（按层分组的流程图）；图即数据，节点/边由概念图导出。"""
     from core import concept_graph as cg
@@ -868,6 +1002,10 @@ GENERATORS: Dict[str, Callable[[str, dict], Tuple[Any, List[str]]]] = {
     "graphml-concept-dag": _gen_graphml_concept_dag,
     "domain-report": _gen_domain_report,
     "vega-metrics": _gen_vega_metrics,
+    "combo-cert": _gen_combo_cert,
+    "vega-layer-stack": _gen_vega_layer_stack,
+    "mermaid-layer-load": _gen_mermaid_layer_load,
+    "graphml-module-deps": _gen_graphml_module_deps,
 }
 
 

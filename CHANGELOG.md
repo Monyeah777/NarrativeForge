@@ -2,6 +2,21 @@
 
 ## [2.12.0] - 未发布
 
+- **可扩展标准目录扩面 126 → 370 条 + 全 100 包「双锚 × 数据真实性」对齐 + 概念图纵深**（**作者指令**：先搜集所有可扩展标准，把所有域包在概念密度与数据真实性上对齐，且质量纵深发展，默认可用决策模型与检索）：
+  ① **标准目录扩面**：`protocol/standards_catalog.json` 由 **126 → 370 条**标准（新增 **244 条**，机构 65 → **194 家**；层分布 data 148 / iface 84 / gov 71 / eng 38 / form 29），覆盖数据格式（ORC/Iceberg/Delta/HDF5/NetCDF/Zarr/CityGML/point-cloud/LAS/JPEG XL/AVIF/OpenEXR/USD/IFC…）、接口（gRPC/GraphQL 之外补 OAuth2·OIDC·SAML·SCIM·WebAuthn·GNAP·QUIC/TLS1.3/HTTP 语义/MQTT5/AMQP/Kafka/Matrix/ActivityPub/OPC UA/Modbus/BACnet/OCPP/SunSpec/Matter/ROS 2/MAVLink…）、形态（Vega/AsciiDoc/RST/OPC-OOXML/OMML/ODF/ARIA/ATAG/ITS/WebVTT/TTML/SSML…）、治理（NIST 800-53/CSF/800-63/800-207/OSCAL/FedRAMP/PCI DSS/HIPAA/巴塞尔 III/FATF/IFRS/ISSB/GHG/CIS/ASVS/SOC 2/EN 301 549/Section 508/EAA…）、工程（SemVer/Conventional Commits/TAP/JUnit XML/可重现构建/SLSA/in-toto/Sigstore/**CT v2（RFC 9162）**/SCITT/OpenVEX/CSAF/SSVC/OpenChain/REUSE/OPA/CUE/BPMN·DMN·UML·SysML/ArchiMate/TOGAF/FinOps/SCI…）。
+  ② **真实依赖边**：为目录新增 `depends_on`（**206 条**规范层面真实依赖边，如 OpenAPI→JSON Schema、COSE/C2PA→CBOR、Vega-Lite→JSON Schema、EPUB→XML、3D Tiles→glTF、ONNX→Protobuf、SEPA→ISO 20022、W3C 词汇族→RDF），**存量 126 条逐条补录**（56 条有据可查者），依赖边进入每条域包的概念图（「被依赖 → 依赖」，依赖目标一并入图为端点）。
+  ③ **双锚绑定（2400 条）**：每条细分由「一条标准」升级为**主锚（域口径标准）+ 辅锚（产出承载标准）**——辅锚按产出形态关键词（契约/数据表/图表/图示/溯源/时间/单位/数值/遥测/凭证/清单/文本/许可/身份/接口/事件）选择，**优先与主锚异层**（口径锚 vs 承载锚），辅锚覆盖率 100%；主锚选择改**可达优先**（同命中位先取本机实测可达者），并把 D 段默认锚由 ISO 25010（iso.org 403 付费墙）改为 **Common Criteria（ISO 15408，可扩展保护轮廓）**、制造类关键词锚改为 **OPC UA**——两处同时提升可达性与语义贴合度。绑定表逐条落 `layer/body/url/reachable/probe_date`，**实测证据跟着绑定走**。
+  ④ **概念密度纵深**：域包概念图 standards 分支由「概念 → 主锚」单边扩为**三类边**（概念 → 主锚、概念 → 辅锚、标准 → 标准依赖），实测 **节点 21–34 · 边 38–60 · 依赖边 3–12/包 · 最小密度 1.2647（均值 1.8566）**（上一波最小 1.0476）；门槛按「只增不减」上调至 **1.25**，并新增三条硬门（辅锚覆盖率 = 1.0 / 标准依赖边 ≥ 1 / 数据真实性 ≥ 0.95 + 实测可达率 ≥ 0.9）。
+  ⑤ **数据真实性（可复算复合分）**：`data_authenticity = 在册率 × (0.5 + 0.5 × 本机实测可达率) × 证据齐备率`（**乘法口径**：任一环缺即降分，不用加权和掩盖缺口），逐包复算三要素 + 细分锚已探率，落 `DOMAIN_SPEC.json`（`data_authenticity` 块）与名录；实测 **100/100 包 = 1.0000**（在册 1.0 · 可达 1.0 · 证据齐备 1.0）；schema 同步扩到 `standard_anchors_verified_on` / `data_authenticity` / 每细分 `standards[]`（三处同源生成，仍逐字节可复现）。
+  ⑥ **本轮修掉的两处门禁根因（含一处真缺陷）**：`check16-B` 原假设「被 `asset_readonly` 白名单引用的源包必有 `assets/*.md`」→ 对**声明 0 自有资产的借阅型组合包**（校园西幻轻混组合包）误判 FAIL，改为「查到 `assets.count: 0` 即判不虚标可寻址、缺声明才违约」；`test_retriever` 硬编码期望（`referenced_by("M91") == []`）过期后暴露**真缺陷**——`referenced_by` 对**类别限定 id** 只按裸号尾部匹配，导致跨类别误命中（查 `AI保险:M01` 会返回 `数据采集与清洗:M01`／`法律与合规:M01` 的引用方）→ 改为**类别感知匹配**（同类别或裸号声明命中，异类别同号不命中）+ 把测试期望改为「按声明侧类别感知复算」并加跨类别回归断言。
+  ⑦ **文档/口径**：`docs/domain-packs.md` 全面改写（370 条目录 / 双锚 2400 条 / 七条门禁 / 密度与真实性口径 / 100 包分段落表 / 新增边界「标准对齐 ≠ 遵从认证」）；审计片 **AUD-0022**。
+
+- **组合包产物化（4 个组合包）+ 广度证明扩到五元/六元 + 声明证书 13 → 17**（**作者指令**：任意组合要能落成可装载的包，且组合包本身也能当组合成员）：
+  ① **产物化**：`nf combine materialize --packs … [--id …] [--write]` —— 把求解通过的组合落成**真协议包**：`protocol.yaml`（**0 自有模块** `module_id_range: []` + `references` 逐条只读借阅 + `mount_layers` 写 `available`、`default` 留空以规避同层 default 冲突）、派生 P00 骨架装配流管线（`allowed_modules` = 官方核心 ∪ 借阅模块）、**8 件机验产出面**（借阅索引 / 系统卡 / 层栈图 Vega-Lite / 装载序图 Mermaid / 依赖图 GraphML / 三件 schema / **T4 组合证书**），并一次走完登记三要件（02 §8 段含 `模块（0）` / `verify.sh` DOMAIN 名单 / `registry protocols[]` 投影）。已落 4 包：`组合包-检索栈`（P109）· `组合包-数据管线`（P108）· `组合包-受监管行业`（P110）· `组合包-轻混与保险`（P111）。
+  ② **广度扩面**：`nf combine breadth` 新增 `--quints`/`--sexts`，把**组合包本身也纳入参与面**——实测参与包 **111**（100 域包 + 4 组合包 + 既有社区包），**两两全集 6105/6105 合法**、三元 400/400、四元 200/200、**五元 120/120、六元 60/60**，极限（全 111 包同装）**合法 · 235 模块**；check32 `combos` 子扫描的不成立判据同步扩到五元/六元。
+  ③ **证书台账**：新增 4 条**组合包产物化证书**（输入 = 该组合包 `references` 的源包集合 + 被借模块集合，可复算），极限证书刷新为 111 包并把被取代的 107 包旧快照清出台账（去重键 = 组合输入本身，不是摘要）——**13 → 17 条**，`nf combine verify` 17 条全过。
+  ④ **文档**：`docs/combos.md` 新增「组合包产物化」章节（产物表 / 只读借阅纪律 / 4 包清单）+ 广度表与证书口径更新；审计片 **AUD-0021**。
+
 - **域包自由组合引擎（任意 n 元 × 任意组件）· 五不变量 · 传递闭包 · 广度证明 · 可复算证书**（**作者目标**：任意几个域包可自由组合、包内组件可自由组合、理论广度无限、深度质量保证、产出组合可机验）：
   ① **引擎**：新增 `core/pack_combo.py` + `nf combine plan|breadth|verify` —— 任取若干包（或直接点模块/资产）→ 求解**五条不变量**（模块可定位 / 依赖闭合 / 事件闭合 / 层位堆叠确定 / 资产可寻址）+ **传递闭包**（`references` 借入递归拉入其 inputs 与事件发布方，逐步记理由）。
   ② **广度证明（不靠枚举）**：**全部两两 5671 组 100% 合法**、定种子抽样三元 **400/400**、四元 **200/200**、**极限（全 107 包同装）合法**（235 模块 / 0 悬挂 / 0 未桥）；check32 新增 `combos` 子扫描（证书复算 + 广度）≈ 3 s；单次组合求解 < 2 ms（画像 + 索引进程级缓存，初版 174 s → 3.2 s）。

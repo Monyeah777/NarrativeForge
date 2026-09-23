@@ -1,0 +1,39 @@
+{
+  "borrowed": [
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "AI法律与合规:M01",
+        "AI法律与合规:M02"
+      ],
+      "source_package": "AI法律与合规域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "AI金融投研与风控:M01",
+        "AI金融投研与风控:M02"
+      ],
+      "source_package": "AI金融投研与风控域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "可解释性与审计:M01",
+        "可解释性与审计:M02"
+      ],
+      "source_package": "可解释性与审计域包"
+    },
+    {
+      "mode": "asset_readonly",
+      "modules": [
+        "隐私与数据治理:M01",
+        "隐私与数据治理:M02"
+      ],
+      "source_package": "隐私与数据治理域包"
+    }
+  ],
+  "note": "借阅索引：本组合包不复制资产/模块，全部经 references 只读访问",
+  "package": "组合包-受监管行业",
+  "schema": "nf-combo-borrow/1"
+}

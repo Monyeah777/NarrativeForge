@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
-|---|---|---|---|---|---|
-| `B05-01` | 命名实体识别 | 命名实体识别的口径：实体类型体系、边界判定（BIO/BIOES）与嵌套实体处理。 | 声明 entity_types（体系 + 版本）、tagging_scheme（BIO|BIOES|其他）与 nested（allow|forbid）。 | 类型体系不同直接比 F1；嵌套实体被截断却按平铺计算。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B05-02` | 关系抽取 | 关系抽取的口径：关系类型、方向性、触发词来源与跨句处理。 | 声明 relation_types（含方向）、evidence（是否要求触发词证据）与 cross_sentence（allow|forbid）。 | 忽略方向（A→B 与 B→A 混算）；跨句关系未声明却宣称句子级能力。 | `rdf11` RDF 1.1（W3C） |
-| `B05-03` | 事件抽取 | 事件抽取的口径：事件类型与论元角色、触发器标注与多事件共存处理。 | 声明 event_types、argument_roles（角色清单）与 trigger_labeling（人工|规则）以及 multi_event（allow|forbid）。 | 论元角色缺失（只报事件类型）；同句多事件被合并。 | `cncf-cloudevents` CloudEvents 1.0（CNCF） |
-| `B05-04` | 属性值抽取 | 属性值抽取的口径：属性词表、值类型（数值/日期/枚举）与归一化规则。 | 声明 attribute_vocab（来源）、value_types（类型清单）与 normalization（单位/日期格式规则）。 | 值不归一化（"1万元" 与 "10000元" 视为不同）；属性词表漂移未记版本。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B05-05` | 表格转结构化 | 表格转结构化的口径：表头识别、跨页 / 合并单元格处理与输出 schema。 | 声明 header_detection（有|无 + 方法）、merged_cells（处理策略）与 output_schema（字段清单）。 | 合并单元格错位导致串行；输出无 schema（不可机读）。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
-| `B05-06` | 合同与条款抽取 | 合同与条款抽取的口径：条款类型体系、引用关系与关键字段（期限 / 金额 / 义务方）。 | 声明 clause_types（体系）、cross_reference（是否解析条款互引）与 key_fields（清单 + 类型）。 | 互引条款不解析（义务链断裂）；金额未标币种与含税口径。 | `frictionless-table` Table Schema（Frictionless） |
-| `B05-07` | 简历解析 | 简历解析的口径：字段体系、时间区间归一化与多语言 / 多格式兼容。 | 声明 field_schema（清单）、date_normalization（ISO 8601）与 formats（pdf|docx|html 覆盖）。 | 工作经历区间不归一（无法计算年限）；格式覆盖未声明导致抽样偏差。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B05-08` | 发票与票据识别 | 发票与票据识别的口径：票种覆盖、字段级准确率与金额校验规则。 | 声明 invoice_types（票种清单）、field_accuracy（逐字段）与 amount_check（价税合计数学校验规则）。 | 只报整票准确率（关键字段错也判对）；不做金额合计校验。 | `w3c-tabular-data` Tabular Data Model (CSVW)（W3C） |
-| `B05-09` | 知识图谱构建 | 知识图谱构建的口径：本体来源、实体消歧规则与三元组冲突处理。 | 声明 ontology（来源 + 版本）、disambiguation（规则/模型）与 conflict_policy（合并|拒绝|保留双值 + 依据）。 | 同名实体不消歧（图谱污染）；冲突三元组静默覆盖。 | `w3c-skos` SKOS 词表（W3C） |
-| `B05-10` | Schema 定义与校验 | Schema 定义与校验的口径：schema 语言与版本、必填 / 枚举约束与校验失败处理。 | 声明 schema_lang（JSON Schema 2020-12 等 + 版本）、required_fields 与 on_invalid（reject|repair|flag）。 | 校验不通过就静默补默认值（掩盖抽取失败）；schema 无版本。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `B05-11` | 结果对齐与去重 | 结果对齐与去重的口径：跨源对齐键、相似度阈值与冲突优先级。 | 声明 align_key（字段组合）、similarity_threshold 与 precedence（来源优先规则）。 | 对齐键不稳定（同实体两条记录）；阈值未声明导致去重率不可复现。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
-| `B05-12` | 抽取质量评测 | 抽取质量评测的口径：字段级 P/R/F1、金标准来源与人工复核比例。 | 声明 field_metrics（逐字段 P/R/F1）、gold_source（人工|规则|模型）与 human_audit_ratio（抽检比例）。 | 只报整条精确匹配（细节错误被掩盖）；金标准由被测模型生成（自证）。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|---|
+| `B05-01` | 命名实体识别 | 命名实体识别的口径：实体类型体系、边界判定（BIO/BIOES）与嵌套实体处理。 | 声明 entity_types（体系 + 版本）、tagging_scheme（BIO|BIOES|其他）与 nested（allow|forbid）。 | 类型体系不同直接比 F1；嵌套实体被截断却按平铺计算。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B05-02` | 关系抽取 | 关系抽取的口径：关系类型、方向性、触发词来源与跨句处理。 | 声明 relation_types（含方向）、evidence（是否要求触发词证据）与 cross_sentence（allow|forbid）。 | 忽略方向（A→B 与 B→A 混算）；跨句关系未声明却宣称句子级能力。 | `rdf11` RDF 1.1（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B05-03` | 事件抽取 | 事件抽取的口径：事件类型与论元角色、触发器标注与多事件共存处理。 | 声明 event_types、argument_roles（角色清单）与 trigger_labeling（人工|规则）以及 multi_event（allow|forbid）。 | 论元角色缺失（只报事件类型）；同句多事件被合并。 | `cncf-cloudevents` CloudEvents 1.0（iface｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B05-04` | 属性值抽取 | 属性值抽取的口径：属性词表、值类型（数值/日期/枚举）与归一化规则。 | 声明 attribute_vocab（来源）、value_types（类型清单）与 normalization（单位/日期格式规则）。 | 值不归一化（"1万元" 与 "10000元" 视为不同）；属性词表漂移未记版本。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `B05-05` | 表格转结构化 | 表格转结构化的口径：表头识别、跨页 / 合并单元格处理与输出 schema。 | 声明 header_detection（有|无 + 方法）、merged_cells（处理策略）与 output_schema（字段清单）。 | 合并单元格错位导致串行；输出无 schema（不可机读）。 | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B05-06` | 合同与条款抽取 | 合同与条款抽取的口径：条款类型体系、引用关系与关键字段（期限 / 金额 / 义务方）。 | 声明 clause_types（体系）、cross_reference（是否解析条款互引）与 key_fields（清单 + 类型）。 | 互引条款不解析（义务链断裂）；金额未标币种与含税口径。 | `frictionless-table` Table Schema（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B05-07` | 简历解析 | 简历解析的口径：字段体系、时间区间归一化与多语言 / 多格式兼容。 | 声明 field_schema（清单）、date_normalization（ISO 8601）与 formats（pdf|docx|html 覆盖）。 | 工作经历区间不归一（无法计算年限）；格式覆盖未声明导致抽样偏差。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `commonmark` CommonMark 0.31.2（form｜✓） |
+| `B05-08` | 发票与票据识别 | 发票与票据识别的口径：票种覆盖、字段级准确率与金额校验规则。 | 声明 invoice_types（票种清单）、field_accuracy（逐字段）与 amount_check（价税合计数学校验规则）。 | 只报整票准确率（关键字段错也判对）；不做金额合计校验。 | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `B05-09` | 知识图谱构建 | 知识图谱构建的口径：本体来源、实体消歧规则与三元组冲突处理。 | 声明 ontology（来源 + 版本）、disambiguation（规则/模型）与 conflict_policy（合并|拒绝|保留双值 + 依据）。 | 同名实体不消歧（图谱污染）；冲突三元组静默覆盖。 | `w3c-skos` SKOS 词表（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B05-10` | Schema 定义与校验 | Schema 定义与校验的口径：schema 语言与版本、必填 / 枚举约束与校验失败处理。 | 声明 schema_lang（JSON Schema 2020-12 等 + 版本）、required_fields 与 on_invalid（reject|repair|flag）。 | 校验不通过就静默补默认值（掩盖抽取失败）；schema 无版本。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `B05-11` | 结果对齐与去重 | 结果对齐与去重的口径：跨源对齐键、相似度阈值与冲突优先级。 | 声明 align_key（字段组合）、similarity_threshold 与 precedence（来源优先规则）。 | 对齐键不稳定（同实体两条记录）；阈值未声明导致去重率不可复现。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（eng｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `B05-12` | 抽取质量评测 | 抽取质量评测的口径：字段级 P/R/F1、金标准来源与人工复核比例。 | 声明 field_metrics（逐字段 P/R/F1）、gold_source（人工|规则|模型）与 human_audit_ratio（抽检比例）。 | 只报整条精确匹配（细节错误被掩盖）；金标准由被测模型生成（自证）。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（eng｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
 
 ## 3. 机读投影契约
 

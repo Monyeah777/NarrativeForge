@@ -1745,120 +1745,420 @@
     "asset_entries": 2,
     "contract_covered": 248,
     "module_docs": 248,
-    "pipelines": 110,
-    "protocols": 107,
+    "pipelines": 114,
+    "protocols": 111,
     "schema_issues": 0
   },
   "event_closure": {
     "linked_events": [
+      "a01_report_conflict",
+      "a01_report_ready",
+      "a01_spec_conflict",
       "a01_spec_ready",
+      "a02_report_conflict",
+      "a02_report_ready",
+      "a02_spec_conflict",
       "a02_spec_ready",
+      "a03_report_conflict",
+      "a03_report_ready",
+      "a03_spec_conflict",
       "a03_spec_ready",
+      "a04_report_conflict",
+      "a04_report_ready",
+      "a04_spec_conflict",
       "a04_spec_ready",
+      "a05_report_conflict",
+      "a05_report_ready",
+      "a05_spec_conflict",
       "a05_spec_ready",
+      "a06_report_conflict",
+      "a06_report_ready",
+      "a06_spec_conflict",
       "a06_spec_ready",
+      "a07_report_conflict",
+      "a07_report_ready",
+      "a07_spec_conflict",
       "a07_spec_ready",
+      "a08_report_conflict",
+      "a08_report_ready",
+      "a08_spec_conflict",
       "a08_spec_ready",
+      "a09_report_conflict",
+      "a09_report_ready",
+      "a09_spec_conflict",
       "a09_spec_ready",
+      "a10_report_conflict",
+      "a10_report_ready",
+      "a10_spec_conflict",
       "a10_spec_ready",
+      "a11_report_conflict",
+      "a11_report_ready",
+      "a11_spec_conflict",
       "a11_spec_ready",
+      "a12_report_conflict",
+      "a12_report_ready",
+      "a12_spec_conflict",
       "a12_spec_ready",
+      "a13_report_conflict",
+      "a13_report_ready",
+      "a13_spec_conflict",
       "a13_spec_ready",
+      "a14_report_conflict",
+      "a14_report_ready",
+      "a14_spec_conflict",
       "a14_spec_ready",
+      "b01_report_conflict",
+      "b01_report_ready",
+      "b01_spec_conflict",
       "b01_spec_ready",
+      "b02_report_conflict",
+      "b02_report_ready",
+      "b02_spec_conflict",
       "b02_spec_ready",
+      "b03_report_conflict",
+      "b03_report_ready",
+      "b03_spec_conflict",
       "b03_spec_ready",
+      "b04_report_conflict",
+      "b04_report_ready",
+      "b04_spec_conflict",
       "b04_spec_ready",
+      "b05_report_conflict",
+      "b05_report_ready",
+      "b05_spec_conflict",
       "b05_spec_ready",
+      "b06_report_conflict",
+      "b06_report_ready",
+      "b06_spec_conflict",
       "b06_spec_ready",
+      "b07_report_conflict",
+      "b07_report_ready",
+      "b07_spec_conflict",
       "b07_spec_ready",
+      "b08_report_conflict",
+      "b08_report_ready",
+      "b08_spec_conflict",
       "b08_spec_ready",
+      "b09_report_conflict",
+      "b09_report_ready",
+      "b09_spec_conflict",
       "b09_spec_ready",
+      "b10_report_conflict",
+      "b10_report_ready",
+      "b10_spec_conflict",
       "b10_spec_ready",
+      "b11_report_conflict",
+      "b11_report_ready",
+      "b11_spec_conflict",
       "b11_spec_ready",
+      "b12_report_conflict",
+      "b12_report_ready",
+      "b12_spec_conflict",
       "b12_spec_ready",
+      "b13_report_conflict",
+      "b13_report_ready",
+      "b13_spec_conflict",
       "b13_spec_ready",
+      "b14_report_conflict",
+      "b14_report_ready",
+      "b14_spec_conflict",
       "b14_spec_ready",
+      "b15_report_conflict",
+      "b15_report_ready",
+      "b15_spec_conflict",
       "b15_spec_ready",
+      "b16_report_conflict",
+      "b16_report_ready",
+      "b16_spec_conflict",
       "b16_spec_ready",
+      "b17_report_conflict",
+      "b17_report_ready",
+      "b17_spec_conflict",
       "b17_spec_ready",
+      "b18_report_conflict",
+      "b18_report_ready",
+      "b18_spec_conflict",
       "b18_spec_ready",
       "beat_tick",
+      "c01_report_conflict",
+      "c01_report_ready",
+      "c01_spec_conflict",
       "c01_spec_ready",
+      "c02_report_conflict",
+      "c02_report_ready",
+      "c02_spec_conflict",
       "c02_spec_ready",
+      "c03_report_conflict",
+      "c03_report_ready",
+      "c03_spec_conflict",
       "c03_spec_ready",
+      "c04_report_conflict",
+      "c04_report_ready",
+      "c04_spec_conflict",
       "c04_spec_ready",
+      "c05_report_conflict",
+      "c05_report_ready",
+      "c05_spec_conflict",
       "c05_spec_ready",
+      "c06_report_conflict",
+      "c06_report_ready",
+      "c06_spec_conflict",
       "c06_spec_ready",
+      "c07_report_conflict",
+      "c07_report_ready",
+      "c07_spec_conflict",
       "c07_spec_ready",
+      "c08_report_conflict",
+      "c08_report_ready",
+      "c08_spec_conflict",
       "c08_spec_ready",
+      "c09_report_conflict",
+      "c09_report_ready",
+      "c09_spec_conflict",
       "c09_spec_ready",
+      "c10_report_conflict",
+      "c10_report_ready",
+      "c10_spec_conflict",
       "c10_spec_ready",
+      "c11_report_conflict",
+      "c11_report_ready",
+      "c11_spec_conflict",
       "c11_spec_ready",
+      "c12_report_conflict",
+      "c12_report_ready",
+      "c12_spec_conflict",
       "c12_spec_ready",
+      "c13_report_conflict",
+      "c13_report_ready",
+      "c13_spec_conflict",
       "c13_spec_ready",
+      "c14_report_conflict",
+      "c14_report_ready",
+      "c14_spec_conflict",
       "c14_spec_ready",
+      "c15_report_conflict",
+      "c15_report_ready",
+      "c15_spec_conflict",
       "c15_spec_ready",
+      "c16_report_conflict",
+      "c16_report_ready",
+      "c16_spec_conflict",
       "c16_spec_ready",
+      "c17_report_conflict",
+      "c17_report_ready",
+      "c17_spec_conflict",
       "c17_spec_ready",
+      "c18_report_conflict",
+      "c18_report_ready",
+      "c18_spec_conflict",
       "c18_spec_ready",
       "chaos_event",
       "combat_result",
       "concept_closure_ready",
       "confession_event",
+      "d01_report_conflict",
+      "d01_report_ready",
+      "d01_spec_conflict",
       "d01_spec_ready",
+      "d02_report_conflict",
+      "d02_report_ready",
+      "d02_spec_conflict",
       "d02_spec_ready",
+      "d03_report_conflict",
+      "d03_report_ready",
+      "d03_spec_conflict",
       "d03_spec_ready",
+      "d04_report_conflict",
+      "d04_report_ready",
+      "d04_spec_conflict",
       "d04_spec_ready",
+      "d05_report_conflict",
+      "d05_report_ready",
+      "d05_spec_conflict",
       "d05_spec_ready",
+      "d06_report_conflict",
+      "d06_report_ready",
+      "d06_spec_conflict",
       "d06_spec_ready",
+      "d07_report_conflict",
+      "d07_report_ready",
+      "d07_spec_conflict",
       "d07_spec_ready",
+      "d08_report_conflict",
+      "d08_report_ready",
+      "d08_spec_conflict",
       "d08_spec_ready",
+      "d09_report_conflict",
+      "d09_report_ready",
+      "d09_spec_conflict",
       "d09_spec_ready",
+      "d10_report_conflict",
+      "d10_report_ready",
+      "d10_spec_conflict",
       "d10_spec_ready",
+      "d11_report_conflict",
+      "d11_report_ready",
+      "d11_spec_conflict",
       "d11_spec_ready",
+      "d12_report_conflict",
+      "d12_report_ready",
+      "d12_spec_conflict",
       "d12_spec_ready",
+      "d13_report_conflict",
+      "d13_report_ready",
+      "d13_spec_conflict",
       "d13_spec_ready",
+      "d14_report_conflict",
+      "d14_report_ready",
+      "d14_spec_conflict",
       "d14_spec_ready",
+      "d15_report_conflict",
+      "d15_report_ready",
+      "d15_spec_conflict",
       "d15_spec_ready",
+      "d16_report_conflict",
+      "d16_report_ready",
+      "d16_spec_conflict",
       "d16_spec_ready",
+      "d17_report_conflict",
+      "d17_report_ready",
+      "d17_spec_conflict",
       "d17_spec_ready",
+      "d18_report_conflict",
+      "d18_report_ready",
+      "d18_spec_conflict",
       "d18_spec_ready",
+      "d19_report_conflict",
+      "d19_report_ready",
+      "d19_spec_conflict",
       "d19_spec_ready",
+      "d20_report_conflict",
+      "d20_report_ready",
+      "d20_spec_conflict",
       "d20_spec_ready",
       "death_trigger",
       "decision_brief",
       "doc_delta_committed",
       "doc_structure_ready",
+      "e01_report_conflict",
+      "e01_report_ready",
+      "e01_spec_conflict",
       "e01_spec_ready",
+      "e02_report_conflict",
+      "e02_report_ready",
+      "e02_spec_conflict",
       "e02_spec_ready",
+      "e03_report_conflict",
+      "e03_report_ready",
+      "e03_spec_conflict",
       "e03_spec_ready",
+      "e04_report_conflict",
+      "e04_report_ready",
+      "e04_spec_conflict",
       "e04_spec_ready",
+      "e05_report_conflict",
+      "e05_report_ready",
+      "e05_spec_conflict",
       "e05_spec_ready",
+      "e06_report_conflict",
+      "e06_report_ready",
+      "e06_spec_conflict",
       "e06_spec_ready",
+      "e07_report_conflict",
+      "e07_report_ready",
+      "e07_spec_conflict",
       "e07_spec_ready",
+      "e08_report_conflict",
+      "e08_report_ready",
+      "e08_spec_conflict",
       "e08_spec_ready",
+      "e09_report_conflict",
+      "e09_report_ready",
+      "e09_spec_conflict",
       "e09_spec_ready",
+      "e10_report_conflict",
+      "e10_report_ready",
+      "e10_spec_conflict",
       "e10_spec_ready",
+      "e11_report_conflict",
+      "e11_report_ready",
+      "e11_spec_conflict",
       "e11_spec_ready",
+      "e12_report_conflict",
+      "e12_report_ready",
+      "e12_spec_conflict",
       "e12_spec_ready",
+      "e13_report_conflict",
+      "e13_report_ready",
+      "e13_spec_conflict",
       "e13_spec_ready",
+      "e14_report_conflict",
+      "e14_report_ready",
+      "e14_spec_conflict",
       "e14_spec_ready",
+      "e15_report_conflict",
+      "e15_report_ready",
+      "e15_spec_conflict",
       "e15_spec_ready",
+      "e16_report_conflict",
+      "e16_report_ready",
+      "e16_spec_conflict",
       "e16_spec_ready",
+      "e17_report_conflict",
+      "e17_report_ready",
+      "e17_spec_conflict",
       "e17_spec_ready",
+      "e18_report_conflict",
+      "e18_report_ready",
+      "e18_spec_conflict",
       "e18_spec_ready",
+      "e19_report_conflict",
+      "e19_report_ready",
+      "e19_spec_conflict",
       "e19_spec_ready",
+      "e20_report_conflict",
+      "e20_report_ready",
+      "e20_spec_conflict",
       "e20_spec_ready",
+      "f01_report_conflict",
+      "f01_report_ready",
+      "f01_spec_conflict",
       "f01_spec_ready",
+      "f02_report_conflict",
+      "f02_report_ready",
+      "f02_spec_conflict",
       "f02_spec_ready",
+      "f03_report_conflict",
+      "f03_report_ready",
+      "f03_spec_conflict",
       "f03_spec_ready",
+      "f04_report_conflict",
+      "f04_report_ready",
+      "f04_spec_conflict",
       "f04_spec_ready",
+      "f05_report_conflict",
+      "f05_report_ready",
+      "f05_spec_conflict",
       "f05_spec_ready",
+      "f06_report_conflict",
+      "f06_report_ready",
+      "f06_spec_conflict",
       "f06_spec_ready",
+      "f07_report_conflict",
+      "f07_report_ready",
+      "f07_spec_conflict",
       "f07_spec_ready",
+      "f08_report_conflict",
+      "f08_report_ready",
+      "f08_spec_conflict",
       "f08_spec_ready",
+      "f09_report_conflict",
+      "f09_report_ready",
+      "f09_spec_conflict",
       "f09_spec_ready",
+      "f10_report_conflict",
+      "f10_report_ready",
+      "f10_spec_conflict",
       "f10_spec_ready",
       "factor_spec_conflict",
       "factor_spec_ready",
@@ -1884,917 +2184,17 @@
     ],
     "modules": 248,
     "pub_only_by_module": {
-      "a01_report_conflict": [
-        "大语言模型:M02"
-      ],
-      "a01_report_ready": [
-        "大语言模型:M02"
-      ],
-      "a01_spec_conflict": [
-        "大语言模型:M01"
-      ],
-      "a02_report_conflict": [
-        "多模态大模型:M02"
-      ],
-      "a02_report_ready": [
-        "多模态大模型:M02"
-      ],
-      "a02_spec_conflict": [
-        "多模态大模型:M01"
-      ],
-      "a03_report_conflict": [
-        "视觉模型:M02"
-      ],
-      "a03_report_ready": [
-        "视觉模型:M02"
-      ],
-      "a03_spec_conflict": [
-        "视觉模型:M01"
-      ],
-      "a04_report_conflict": [
-        "语音识别与合成:M02"
-      ],
-      "a04_report_ready": [
-        "语音识别与合成:M02"
-      ],
-      "a04_spec_conflict": [
-        "语音识别与合成:M01"
-      ],
-      "a05_report_conflict": [
-        "音频与音乐生成:M02"
-      ],
-      "a05_report_ready": [
-        "音频与音乐生成:M02"
-      ],
-      "a05_spec_conflict": [
-        "音频与音乐生成:M01"
-      ],
-      "a06_report_conflict": [
-        "视频生成与理解:M02"
-      ],
-      "a06_report_ready": [
-        "视频生成与理解:M02"
-      ],
-      "a06_spec_conflict": [
-        "视频生成与理解:M01"
-      ],
-      "a07_report_conflict": [
-        "图像生成与编辑:M02"
-      ],
-      "a07_report_ready": [
-        "图像生成与编辑:M02"
-      ],
-      "a07_spec_conflict": [
-        "图像生成与编辑:M01"
-      ],
-      "a08_report_conflict": [
-        "三维与世界模型:M02"
-      ],
-      "a08_report_ready": [
-        "三维与世界模型:M02"
-      ],
-      "a08_spec_conflict": [
-        "三维与世界模型:M01"
-      ],
-      "a09_report_conflict": [
-        "代码大模型:M02"
-      ],
-      "a09_report_ready": [
-        "代码大模型:M02"
-      ],
-      "a09_spec_conflict": [
-        "代码大模型:M01"
-      ],
-      "a10_report_conflict": [
-        "数学与形式化推理:M02"
-      ],
-      "a10_report_ready": [
-        "数学与形式化推理:M02"
-      ],
-      "a10_spec_conflict": [
-        "数学与形式化推理:M01"
-      ],
-      "a11_report_conflict": [
-        "嵌入与检索表示:M02"
-      ],
-      "a11_report_ready": [
-        "嵌入与检索表示:M02"
-      ],
-      "a11_spec_conflict": [
-        "嵌入与检索表示:M01"
-      ],
-      "a12_report_conflict": [
-        "强化学习与决策:M02"
-      ],
-      "a12_report_ready": [
-        "强化学习与决策:M02"
-      ],
-      "a12_spec_conflict": [
-        "强化学习与决策:M01"
-      ],
-      "a13_report_conflict": [
-        "具身智能与机器人:M02"
-      ],
-      "a13_report_ready": [
-        "具身智能与机器人:M02"
-      ],
-      "a13_spec_conflict": [
-        "具身智能与机器人:M01"
-      ],
-      "a14_report_conflict": [
-        "端侧与边缘小模型:M02"
-      ],
-      "a14_report_ready": [
-        "端侧与边缘小模型:M02"
-      ],
-      "a14_spec_conflict": [
-        "端侧与边缘小模型:M01"
-      ],
-      "b01_report_conflict": [
-        "文本生成与创作:M02"
-      ],
-      "b01_report_ready": [
-        "文本生成与创作:M02"
-      ],
-      "b01_spec_conflict": [
-        "文本生成与创作:M01"
-      ],
-      "b02_report_conflict": [
-        "摘要与信息压缩:M02"
-      ],
-      "b02_report_ready": [
-        "摘要与信息压缩:M02"
-      ],
-      "b02_spec_conflict": [
-        "摘要与信息压缩:M01"
-      ],
-      "b03_report_conflict": [
-        "机器翻译与本地化:M02"
-      ],
-      "b03_report_ready": [
-        "机器翻译与本地化:M02"
-      ],
-      "b03_spec_conflict": [
-        "机器翻译与本地化:M01"
-      ],
-      "b04_report_conflict": [
-        "分类与情感分析:M02"
-      ],
-      "b04_report_ready": [
-        "分类与情感分析:M02"
-      ],
-      "b04_spec_conflict": [
-        "分类与情感分析:M01"
-      ],
-      "b05_report_conflict": [
-        "信息抽取与结构化:M02"
-      ],
-      "b05_report_ready": [
-        "信息抽取与结构化:M02"
-      ],
-      "b05_spec_conflict": [
-        "信息抽取与结构化:M01"
-      ],
-      "b06_report_conflict": [
-        "知识问答与检索增强:M02"
-      ],
-      "b06_report_ready": [
-        "知识问答与检索增强:M02"
-      ],
-      "b06_spec_conflict": [
-        "知识问答与检索增强:M01"
-      ],
-      "b07_report_conflict": [
-        "多轮对话与角色扮演:M02"
-      ],
-      "b07_report_ready": [
-        "多轮对话与角色扮演:M02"
-      ],
-      "b07_spec_conflict": [
-        "多轮对话与角色扮演:M01"
-      ],
-      "b08_report_conflict": [
-        "代码生成与补全:M02"
-      ],
-      "b08_report_ready": [
-        "代码生成与补全:M02"
-      ],
-      "b08_spec_conflict": [
-        "代码生成与补全:M01"
-      ],
-      "b09_report_conflict": [
-        "代码审查与缺陷检测:M02"
-      ],
-      "b09_report_ready": [
-        "代码审查与缺陷检测:M02"
-      ],
-      "b09_spec_conflict": [
-        "代码审查与缺陷检测:M01"
-      ],
-      "b10_report_conflict": [
-        "测试与用例生成:M02"
-      ],
-      "b10_report_ready": [
-        "测试与用例生成:M02"
-      ],
-      "b10_spec_conflict": [
-        "测试与用例生成:M01"
-      ],
-      "b11_report_conflict": [
-        "数据分析与表格理解:M02"
-      ],
-      "b11_report_ready": [
-        "数据分析与表格理解:M02"
-      ],
-      "b11_spec_conflict": [
-        "数据分析与表格理解:M01"
-      ],
-      "b12_report_conflict": [
-        "文档解析与版面理解:M02"
-      ],
-      "b12_report_ready": [
-        "文档解析与版面理解:M02"
-      ],
-      "b12_spec_conflict": [
-        "文档解析与版面理解:M01"
-      ],
-      "b13_report_conflict": [
-        "语音转写与会议记录:M02"
-      ],
-      "b13_report_ready": [
-        "语音转写与会议记录:M02"
-      ],
-      "b13_spec_conflict": [
-        "语音转写与会议记录:M01"
-      ],
-      "b14_report_conflict": [
-        "语音合成与配音:M02"
-      ],
-      "b14_report_ready": [
-        "语音合成与配音:M02"
-      ],
-      "b14_spec_conflict": [
-        "语音合成与配音:M01"
-      ],
-      "b15_report_conflict": [
-        "图像生成与视觉设计:M02"
-      ],
-      "b15_report_ready": [
-        "图像生成与视觉设计:M02"
-      ],
-      "b15_spec_conflict": [
-        "图像生成与视觉设计:M01"
-      ],
-      "b16_report_conflict": [
-        "视频生成与自动剪辑:M02"
-      ],
-      "b16_report_ready": [
-        "视频生成与自动剪辑:M02"
-      ],
-      "b16_spec_conflict": [
-        "视频生成与自动剪辑:M01"
-      ],
-      "b17_report_conflict": [
-        "推荐排序与广告:M02"
-      ],
-      "b17_report_ready": [
-        "推荐排序与广告:M02"
-      ],
-      "b17_spec_conflict": [
-        "推荐排序与广告:M01"
-      ],
-      "b18_report_conflict": [
-        "预测异常与风险:M02"
-      ],
-      "b18_report_ready": [
-        "预测异常与风险:M02"
-      ],
-      "b18_spec_conflict": [
-        "预测异常与风险:M01"
-      ],
       "backtest_spec_conflict": [
         "量化金融:M32"
       ],
       "backtest_spec_ready": [
         "量化金融:M32"
       ],
-      "c01_report_conflict": [
-        "数据采集与清洗:M02"
-      ],
-      "c01_report_ready": [
-        "数据采集与清洗:M02"
-      ],
-      "c01_spec_conflict": [
-        "数据采集与清洗:M01"
-      ],
-      "c02_report_conflict": [
-        "数据标注与标注质量:M02"
-      ],
-      "c02_report_ready": [
-        "数据标注与标注质量:M02"
-      ],
-      "c02_spec_conflict": [
-        "数据标注与标注质量:M01"
-      ],
-      "c03_report_conflict": [
-        "合成数据生成:M02"
-      ],
-      "c03_report_ready": [
-        "合成数据生成:M02"
-      ],
-      "c03_spec_conflict": [
-        "合成数据生成:M01"
-      ],
-      "c04_report_conflict": [
-        "预训练与继续预训练:M02"
-      ],
-      "c04_report_ready": [
-        "预训练与继续预训练:M02"
-      ],
-      "c04_spec_conflict": [
-        "预训练与继续预训练:M01"
-      ],
-      "c05_report_conflict": [
-        "监督微调:M02"
-      ],
-      "c05_report_ready": [
-        "监督微调:M02"
-      ],
-      "c05_spec_conflict": [
-        "监督微调:M01"
-      ],
-      "c06_report_conflict": [
-        "参数高效微调:M02"
-      ],
-      "c06_report_ready": [
-        "参数高效微调:M02"
-      ],
-      "c06_spec_conflict": [
-        "参数高效微调:M01"
-      ],
-      "c07_report_conflict": [
-        "对齐与偏好优化:M02"
-      ],
-      "c07_report_ready": [
-        "对齐与偏好优化:M02"
-      ],
-      "c07_spec_conflict": [
-        "对齐与偏好优化:M01"
-      ],
-      "c08_report_conflict": [
-        "评测基准与排行榜:M02"
-      ],
-      "c08_report_ready": [
-        "评测基准与排行榜:M02"
-      ],
-      "c08_spec_conflict": [
-        "评测基准与排行榜:M01"
-      ],
-      "c09_report_conflict": [
-        "红队越狱与安全测试:M02"
-      ],
-      "c09_report_ready": [
-        "红队越狱与安全测试:M02"
-      ],
-      "c09_spec_conflict": [
-        "红队越狱与安全测试:M01"
-      ],
-      "c10_report_conflict": [
-        "推理优化与加速:M02"
-      ],
-      "c10_report_ready": [
-        "推理优化与加速:M02"
-      ],
-      "c10_spec_conflict": [
-        "推理优化与加速:M01"
-      ],
-      "c11_report_conflict": [
-        "推理服务与部署:M02"
-      ],
-      "c11_report_ready": [
-        "推理服务与部署:M02"
-      ],
-      "c11_spec_conflict": [
-        "推理服务与部署:M01"
-      ],
-      "c12_report_conflict": [
-        "上下文工程与长上下文:M02"
-      ],
-      "c12_report_ready": [
-        "上下文工程与长上下文:M02"
-      ],
-      "c12_spec_conflict": [
-        "上下文工程与长上下文:M01"
-      ],
-      "c13_report_conflict": [
-        "提示工程与提示模板:M02"
-      ],
-      "c13_report_ready": [
-        "提示工程与提示模板:M02"
-      ],
-      "c13_spec_conflict": [
-        "提示工程与提示模板:M01"
-      ],
-      "c14_report_conflict": [
-        "记忆体与个性化:M02"
-      ],
-      "c14_report_ready": [
-        "记忆体与个性化:M02"
-      ],
-      "c14_spec_conflict": [
-        "记忆体与个性化:M01"
-      ],
-      "c15_report_conflict": [
-        "向量库与检索管线:M02"
-      ],
-      "c15_report_ready": [
-        "向量库与检索管线:M02"
-      ],
-      "c15_spec_conflict": [
-        "向量库与检索管线:M01"
-      ],
-      "c16_report_conflict": [
-        "智能体框架与工具调用:M02"
-      ],
-      "c16_report_ready": [
-        "智能体框架与工具调用:M02"
-      ],
-      "c16_spec_conflict": [
-        "智能体框架与工具调用:M01"
-      ],
-      "c17_report_conflict": [
-        "多智能体协同:M02"
-      ],
-      "c17_report_ready": [
-        "多智能体协同:M02"
-      ],
-      "c17_spec_conflict": [
-        "多智能体协同:M01"
-      ],
-      "c18_report_conflict": [
-        "可观测性成本与可靠性:M02"
-      ],
-      "c18_report_ready": [
-        "可观测性成本与可靠性:M02"
-      ],
-      "c18_spec_conflict": [
-        "可观测性成本与可靠性:M01"
-      ],
       "campus_anonymous_gift": [
         "M92"
       ],
       "campus_gift_intent": [
         "M91"
-      ],
-      "d01_report_conflict": [
-        "AI医疗健康:M02"
-      ],
-      "d01_report_ready": [
-        "AI医疗健康:M02"
-      ],
-      "d01_spec_conflict": [
-        "AI医疗健康:M01"
-      ],
-      "d02_report_conflict": [
-        "AI制药与生物:M02"
-      ],
-      "d02_report_ready": [
-        "AI制药与生物:M02"
-      ],
-      "d02_spec_conflict": [
-        "AI制药与生物:M01"
-      ],
-      "d03_report_conflict": [
-        "AI法律与合规:M02"
-      ],
-      "d03_report_ready": [
-        "AI法律与合规:M02"
-      ],
-      "d03_spec_conflict": [
-        "AI法律与合规:M01"
-      ],
-      "d04_report_conflict": [
-        "AI金融投研与风控:M02"
-      ],
-      "d04_report_ready": [
-        "AI金融投研与风控:M02"
-      ],
-      "d04_spec_conflict": [
-        "AI金融投研与风控:M01"
-      ],
-      "d05_report_conflict": [
-        "AI保险:M02"
-      ],
-      "d05_report_ready": [
-        "AI保险:M02"
-      ],
-      "d05_spec_conflict": [
-        "AI保险:M01"
-      ],
-      "d06_report_conflict": [
-        "AI教育:M02"
-      ],
-      "d06_report_ready": [
-        "AI教育:M02"
-      ],
-      "d06_spec_conflict": [
-        "AI教育:M01"
-      ],
-      "d07_report_conflict": [
-        "AI政务与公共事务:M02"
-      ],
-      "d07_report_ready": [
-        "AI政务与公共事务:M02"
-      ],
-      "d07_spec_conflict": [
-        "AI政务与公共事务:M01"
-      ],
-      "d08_report_conflict": [
-        "AI制造业:M02"
-      ],
-      "d08_report_ready": [
-        "AI制造业:M02"
-      ],
-      "d08_spec_conflict": [
-        "AI制造业:M01"
-      ],
-      "d09_report_conflict": [
-        "AI能源与电力:M02"
-      ],
-      "d09_report_ready": [
-        "AI能源与电力:M02"
-      ],
-      "d09_spec_conflict": [
-        "AI能源与电力:M01"
-      ],
-      "d10_report_conflict": [
-        "AI农业:M02"
-      ],
-      "d10_report_ready": [
-        "AI农业:M02"
-      ],
-      "d10_spec_conflict": [
-        "AI农业:M01"
-      ],
-      "d11_report_conflict": [
-        "零售与电商:M02"
-      ],
-      "d11_report_ready": [
-        "零售与电商:M02"
-      ],
-      "d11_spec_conflict": [
-        "零售与电商:M01"
-      ],
-      "d12_report_conflict": [
-        "物流与供应链:M02"
-      ],
-      "d12_report_ready": [
-        "物流与供应链:M02"
-      ],
-      "d12_spec_conflict": [
-        "物流与供应链:M01"
-      ],
-      "d13_report_conflict": [
-        "交通与出行:M02"
-      ],
-      "d13_report_ready": [
-        "交通与出行:M02"
-      ],
-      "d13_spec_conflict": [
-        "交通与出行:M01"
-      ],
-      "d14_report_conflict": [
-        "AI人力资源与招聘:M02"
-      ],
-      "d14_report_ready": [
-        "AI人力资源与招聘:M02"
-      ],
-      "d14_spec_conflict": [
-        "AI人力资源与招聘:M01"
-      ],
-      "d15_report_conflict": [
-        "建筑与房地产:M02"
-      ],
-      "d15_report_ready": [
-        "建筑与房地产:M02"
-      ],
-      "d15_spec_conflict": [
-        "建筑与房地产:M01"
-      ],
-      "d16_report_conflict": [
-        "AI食品与餐饮:M02"
-      ],
-      "d16_report_ready": [
-        "AI食品与餐饮:M02"
-      ],
-      "d16_spec_conflict": [
-        "AI食品与餐饮:M01"
-      ],
-      "d17_report_conflict": [
-        "传媒与新闻:M02"
-      ],
-      "d17_report_ready": [
-        "传媒与新闻:M02"
-      ],
-      "d17_spec_conflict": [
-        "传媒与新闻:M01"
-      ],
-      "d18_report_conflict": [
-        "游戏与互动娱乐:M02"
-      ],
-      "d18_report_ready": [
-        "游戏与互动娱乐:M02"
-      ],
-      "d18_spec_conflict": [
-        "游戏与互动娱乐:M01"
-      ],
-      "d19_report_conflict": [
-        "文旅与酒店:M02"
-      ],
-      "d19_report_ready": [
-        "文旅与酒店:M02"
-      ],
-      "d19_spec_conflict": [
-        "文旅与酒店:M01"
-      ],
-      "d20_report_conflict": [
-        "科研与实验:M02"
-      ],
-      "d20_report_ready": [
-        "科研与实验:M02"
-      ],
-      "d20_spec_conflict": [
-        "科研与实验:M01"
-      ],
-      "e01_report_conflict": [
-        "提示工程与指令设计:M02"
-      ],
-      "e01_report_ready": [
-        "提示工程与指令设计:M02"
-      ],
-      "e01_spec_conflict": [
-        "提示工程与指令设计:M01"
-      ],
-      "e02_report_conflict": [
-        "角色扮演与角色卡:M02"
-      ],
-      "e02_report_ready": [
-        "角色扮演与角色卡:M02"
-      ],
-      "e02_spec_conflict": [
-        "角色扮演与角色卡:M01"
-      ],
-      "e03_report_conflict": [
-        "世界书与设定库:M02"
-      ],
-      "e03_report_ready": [
-        "世界书与设定库:M02"
-      ],
-      "e03_spec_conflict": [
-        "世界书与设定库:M01"
-      ],
-      "e04_report_conflict": [
-        "长文本与小说创作:M02"
-      ],
-      "e04_report_ready": [
-        "长文本与小说创作:M02"
-      ],
-      "e04_spec_conflict": [
-        "长文本与小说创作:M01"
-      ],
-      "e05_report_conflict": [
-        "内容改写与风格迁移:M02"
-      ],
-      "e05_report_ready": [
-        "内容改写与风格迁移:M02"
-      ],
-      "e05_spec_conflict": [
-        "内容改写与风格迁移:M01"
-      ],
-      "e06_report_conflict": [
-        "多语翻译与本地化:M02"
-      ],
-      "e06_report_ready": [
-        "多语翻译与本地化:M02"
-      ],
-      "e06_spec_conflict": [
-        "多语翻译与本地化:M01"
-      ],
-      "e07_report_conflict": [
-        "图像生成与视觉创作:M02"
-      ],
-      "e07_report_ready": [
-        "图像生成与视觉创作:M02"
-      ],
-      "e07_spec_conflict": [
-        "图像生成与视觉创作:M01"
-      ],
-      "e08_report_conflict": [
-        "视频生成与剪辑:M02"
-      ],
-      "e08_report_ready": [
-        "视频生成与剪辑:M02"
-      ],
-      "e08_spec_conflict": [
-        "视频生成与剪辑:M01"
-      ],
-      "e09_report_conflict": [
-        "音频音乐与语音:M02"
-      ],
-      "e09_report_ready": [
-        "音频音乐与语音:M02"
-      ],
-      "e09_spec_conflict": [
-        "音频音乐与语音:M01"
-      ],
-      "e10_report_conflict": [
-        "编辑校对与出版:M02"
-      ],
-      "e10_report_ready": [
-        "编辑校对与出版:M02"
-      ],
-      "e10_spec_conflict": [
-        "编辑校对与出版:M01"
-      ],
-      "e11_report_conflict": [
-        "知识管理与检索增强:M02"
-      ],
-      "e11_report_ready": [
-        "知识管理与检索增强:M02"
-      ],
-      "e11_spec_conflict": [
-        "知识管理与检索增强:M01"
-      ],
-      "e12_report_conflict": [
-        "智能体与工作流编排:M02"
-      ],
-      "e12_report_ready": [
-        "智能体与工作流编排:M02"
-      ],
-      "e12_spec_conflict": [
-        "智能体与工作流编排:M01"
-      ],
-      "e13_report_conflict": [
-        "代码与软件工程:M02"
-      ],
-      "e13_report_ready": [
-        "代码与软件工程:M02"
-      ],
-      "e13_spec_conflict": [
-        "代码与软件工程:M01"
-      ],
-      "e14_report_conflict": [
-        "数据分析与决策支持:M02"
-      ],
-      "e14_report_ready": [
-        "数据分析与决策支持:M02"
-      ],
-      "e14_spec_conflict": [
-        "数据分析与决策支持:M01"
-      ],
-      "e15_report_conflict": [
-        "企业培训与组织学习:M02"
-      ],
-      "e15_report_ready": [
-        "企业培训与组织学习:M02"
-      ],
-      "e15_spec_conflict": [
-        "企业培训与组织学习:M01"
-      ],
-      "e16_report_conflict": [
-        "个人助理与日常生活:M02"
-      ],
-      "e16_report_ready": [
-        "个人助理与日常生活:M02"
-      ],
-      "e16_spec_conflict": [
-        "个人助理与日常生活:M01"
-      ],
-      "e17_report_conflict": [
-        "搜索与信息聚合:M02"
-      ],
-      "e17_report_ready": [
-        "搜索与信息聚合:M02"
-      ],
-      "e17_spec_conflict": [
-        "搜索与信息聚合:M01"
-      ],
-      "e18_report_conflict": [
-        "对话与客服:M02"
-      ],
-      "e18_report_ready": [
-        "对话与客服:M02"
-      ],
-      "e18_spec_conflict": [
-        "对话与客服:M01"
-      ],
-      "e19_report_conflict": [
-        "内容分发与社区运营:M02"
-      ],
-      "e19_report_ready": [
-        "内容分发与社区运营:M02"
-      ],
-      "e19_spec_conflict": [
-        "内容分发与社区运营:M01"
-      ],
-      "e20_report_conflict": [
-        "数字人与虚拟形象:M02"
-      ],
-      "e20_report_ready": [
-        "数字人与虚拟形象:M02"
-      ],
-      "e20_spec_conflict": [
-        "数字人与虚拟形象:M01"
-      ],
-      "f01_report_conflict": [
-        "安全与对齐:M02"
-      ],
-      "f01_report_ready": [
-        "安全与对齐:M02"
-      ],
-      "f01_spec_conflict": [
-        "安全与对齐:M01"
-      ],
-      "f02_report_conflict": [
-        "合规与监管:M02"
-      ],
-      "f02_report_ready": [
-        "合规与监管:M02"
-      ],
-      "f02_spec_conflict": [
-        "合规与监管:M01"
-      ],
-      "f03_report_conflict": [
-        "隐私与数据治理:M02"
-      ],
-      "f03_report_ready": [
-        "隐私与数据治理:M02"
-      ],
-      "f03_spec_conflict": [
-        "隐私与数据治理:M01"
-      ],
-      "f04_report_conflict": [
-        "版权与知识产权:M02"
-      ],
-      "f04_report_ready": [
-        "版权与知识产权:M02"
-      ],
-      "f04_spec_conflict": [
-        "版权与知识产权:M01"
-      ],
-      "f05_report_conflict": [
-        "评测与基准:M02"
-      ],
-      "f05_report_ready": [
-        "评测与基准:M02"
-      ],
-      "f05_spec_conflict": [
-        "评测与基准:M01"
-      ],
-      "f06_report_conflict": [
-        "可解释性与审计:M02"
-      ],
-      "f06_report_ready": [
-        "可解释性与审计:M02"
-      ],
-      "f06_spec_conflict": [
-        "可解释性与审计:M01"
-      ],
-      "f07_report_conflict": [
-        "模型运营与成本:M02"
-      ],
-      "f07_report_ready": [
-        "模型运营与成本:M02"
-      ],
-      "f07_spec_conflict": [
-        "模型运营与成本:M01"
-      ],
-      "f08_report_conflict": [
-        "平台与基础设施:M02"
-      ],
-      "f08_report_ready": [
-        "平台与基础设施:M02"
-      ],
-      "f08_spec_conflict": [
-        "平台与基础设施:M01"
-      ],
-      "f09_report_conflict": [
-        "开源与开发者生态:M02"
-      ],
-      "f09_report_ready": [
-        "开源与开发者生态:M02"
-      ],
-      "f09_spec_conflict": [
-        "开源与开发者生态:M01"
-      ],
-      "f10_report_conflict": [
-        "产业与商业落地:M02"
-      ],
-      "f10_report_ready": [
-        "产业与商业落地:M02"
-      ],
-      "f10_spec_conflict": [
-        "产业与商业落地:M01"
       ],
       "faction_event": [
         "M15"
@@ -2825,310 +2225,10 @@
       ]
     },
     "pub_only_events": [
-      "a01_report_conflict",
-      "a01_report_ready",
-      "a01_spec_conflict",
-      "a02_report_conflict",
-      "a02_report_ready",
-      "a02_spec_conflict",
-      "a03_report_conflict",
-      "a03_report_ready",
-      "a03_spec_conflict",
-      "a04_report_conflict",
-      "a04_report_ready",
-      "a04_spec_conflict",
-      "a05_report_conflict",
-      "a05_report_ready",
-      "a05_spec_conflict",
-      "a06_report_conflict",
-      "a06_report_ready",
-      "a06_spec_conflict",
-      "a07_report_conflict",
-      "a07_report_ready",
-      "a07_spec_conflict",
-      "a08_report_conflict",
-      "a08_report_ready",
-      "a08_spec_conflict",
-      "a09_report_conflict",
-      "a09_report_ready",
-      "a09_spec_conflict",
-      "a10_report_conflict",
-      "a10_report_ready",
-      "a10_spec_conflict",
-      "a11_report_conflict",
-      "a11_report_ready",
-      "a11_spec_conflict",
-      "a12_report_conflict",
-      "a12_report_ready",
-      "a12_spec_conflict",
-      "a13_report_conflict",
-      "a13_report_ready",
-      "a13_spec_conflict",
-      "a14_report_conflict",
-      "a14_report_ready",
-      "a14_spec_conflict",
-      "b01_report_conflict",
-      "b01_report_ready",
-      "b01_spec_conflict",
-      "b02_report_conflict",
-      "b02_report_ready",
-      "b02_spec_conflict",
-      "b03_report_conflict",
-      "b03_report_ready",
-      "b03_spec_conflict",
-      "b04_report_conflict",
-      "b04_report_ready",
-      "b04_spec_conflict",
-      "b05_report_conflict",
-      "b05_report_ready",
-      "b05_spec_conflict",
-      "b06_report_conflict",
-      "b06_report_ready",
-      "b06_spec_conflict",
-      "b07_report_conflict",
-      "b07_report_ready",
-      "b07_spec_conflict",
-      "b08_report_conflict",
-      "b08_report_ready",
-      "b08_spec_conflict",
-      "b09_report_conflict",
-      "b09_report_ready",
-      "b09_spec_conflict",
-      "b10_report_conflict",
-      "b10_report_ready",
-      "b10_spec_conflict",
-      "b11_report_conflict",
-      "b11_report_ready",
-      "b11_spec_conflict",
-      "b12_report_conflict",
-      "b12_report_ready",
-      "b12_spec_conflict",
-      "b13_report_conflict",
-      "b13_report_ready",
-      "b13_spec_conflict",
-      "b14_report_conflict",
-      "b14_report_ready",
-      "b14_spec_conflict",
-      "b15_report_conflict",
-      "b15_report_ready",
-      "b15_spec_conflict",
-      "b16_report_conflict",
-      "b16_report_ready",
-      "b16_spec_conflict",
-      "b17_report_conflict",
-      "b17_report_ready",
-      "b17_spec_conflict",
-      "b18_report_conflict",
-      "b18_report_ready",
-      "b18_spec_conflict",
       "backtest_spec_conflict",
       "backtest_spec_ready",
-      "c01_report_conflict",
-      "c01_report_ready",
-      "c01_spec_conflict",
-      "c02_report_conflict",
-      "c02_report_ready",
-      "c02_spec_conflict",
-      "c03_report_conflict",
-      "c03_report_ready",
-      "c03_spec_conflict",
-      "c04_report_conflict",
-      "c04_report_ready",
-      "c04_spec_conflict",
-      "c05_report_conflict",
-      "c05_report_ready",
-      "c05_spec_conflict",
-      "c06_report_conflict",
-      "c06_report_ready",
-      "c06_spec_conflict",
-      "c07_report_conflict",
-      "c07_report_ready",
-      "c07_spec_conflict",
-      "c08_report_conflict",
-      "c08_report_ready",
-      "c08_spec_conflict",
-      "c09_report_conflict",
-      "c09_report_ready",
-      "c09_spec_conflict",
-      "c10_report_conflict",
-      "c10_report_ready",
-      "c10_spec_conflict",
-      "c11_report_conflict",
-      "c11_report_ready",
-      "c11_spec_conflict",
-      "c12_report_conflict",
-      "c12_report_ready",
-      "c12_spec_conflict",
-      "c13_report_conflict",
-      "c13_report_ready",
-      "c13_spec_conflict",
-      "c14_report_conflict",
-      "c14_report_ready",
-      "c14_spec_conflict",
-      "c15_report_conflict",
-      "c15_report_ready",
-      "c15_spec_conflict",
-      "c16_report_conflict",
-      "c16_report_ready",
-      "c16_spec_conflict",
-      "c17_report_conflict",
-      "c17_report_ready",
-      "c17_spec_conflict",
-      "c18_report_conflict",
-      "c18_report_ready",
-      "c18_spec_conflict",
       "campus_anonymous_gift",
       "campus_gift_intent",
-      "d01_report_conflict",
-      "d01_report_ready",
-      "d01_spec_conflict",
-      "d02_report_conflict",
-      "d02_report_ready",
-      "d02_spec_conflict",
-      "d03_report_conflict",
-      "d03_report_ready",
-      "d03_spec_conflict",
-      "d04_report_conflict",
-      "d04_report_ready",
-      "d04_spec_conflict",
-      "d05_report_conflict",
-      "d05_report_ready",
-      "d05_spec_conflict",
-      "d06_report_conflict",
-      "d06_report_ready",
-      "d06_spec_conflict",
-      "d07_report_conflict",
-      "d07_report_ready",
-      "d07_spec_conflict",
-      "d08_report_conflict",
-      "d08_report_ready",
-      "d08_spec_conflict",
-      "d09_report_conflict",
-      "d09_report_ready",
-      "d09_spec_conflict",
-      "d10_report_conflict",
-      "d10_report_ready",
-      "d10_spec_conflict",
-      "d11_report_conflict",
-      "d11_report_ready",
-      "d11_spec_conflict",
-      "d12_report_conflict",
-      "d12_report_ready",
-      "d12_spec_conflict",
-      "d13_report_conflict",
-      "d13_report_ready",
-      "d13_spec_conflict",
-      "d14_report_conflict",
-      "d14_report_ready",
-      "d14_spec_conflict",
-      "d15_report_conflict",
-      "d15_report_ready",
-      "d15_spec_conflict",
-      "d16_report_conflict",
-      "d16_report_ready",
-      "d16_spec_conflict",
-      "d17_report_conflict",
-      "d17_report_ready",
-      "d17_spec_conflict",
-      "d18_report_conflict",
-      "d18_report_ready",
-      "d18_spec_conflict",
-      "d19_report_conflict",
-      "d19_report_ready",
-      "d19_spec_conflict",
-      "d20_report_conflict",
-      "d20_report_ready",
-      "d20_spec_conflict",
-      "e01_report_conflict",
-      "e01_report_ready",
-      "e01_spec_conflict",
-      "e02_report_conflict",
-      "e02_report_ready",
-      "e02_spec_conflict",
-      "e03_report_conflict",
-      "e03_report_ready",
-      "e03_spec_conflict",
-      "e04_report_conflict",
-      "e04_report_ready",
-      "e04_spec_conflict",
-      "e05_report_conflict",
-      "e05_report_ready",
-      "e05_spec_conflict",
-      "e06_report_conflict",
-      "e06_report_ready",
-      "e06_spec_conflict",
-      "e07_report_conflict",
-      "e07_report_ready",
-      "e07_spec_conflict",
-      "e08_report_conflict",
-      "e08_report_ready",
-      "e08_spec_conflict",
-      "e09_report_conflict",
-      "e09_report_ready",
-      "e09_spec_conflict",
-      "e10_report_conflict",
-      "e10_report_ready",
-      "e10_spec_conflict",
-      "e11_report_conflict",
-      "e11_report_ready",
-      "e11_spec_conflict",
-      "e12_report_conflict",
-      "e12_report_ready",
-      "e12_spec_conflict",
-      "e13_report_conflict",
-      "e13_report_ready",
-      "e13_spec_conflict",
-      "e14_report_conflict",
-      "e14_report_ready",
-      "e14_spec_conflict",
-      "e15_report_conflict",
-      "e15_report_ready",
-      "e15_spec_conflict",
-      "e16_report_conflict",
-      "e16_report_ready",
-      "e16_spec_conflict",
-      "e17_report_conflict",
-      "e17_report_ready",
-      "e17_spec_conflict",
-      "e18_report_conflict",
-      "e18_report_ready",
-      "e18_spec_conflict",
-      "e19_report_conflict",
-      "e19_report_ready",
-      "e19_spec_conflict",
-      "e20_report_conflict",
-      "e20_report_ready",
-      "e20_spec_conflict",
-      "f01_report_conflict",
-      "f01_report_ready",
-      "f01_spec_conflict",
-      "f02_report_conflict",
-      "f02_report_ready",
-      "f02_spec_conflict",
-      "f03_report_conflict",
-      "f03_report_ready",
-      "f03_spec_conflict",
-      "f04_report_conflict",
-      "f04_report_ready",
-      "f04_spec_conflict",
-      "f05_report_conflict",
-      "f05_report_ready",
-      "f05_spec_conflict",
-      "f06_report_conflict",
-      "f06_report_ready",
-      "f06_spec_conflict",
-      "f07_report_conflict",
-      "f07_report_ready",
-      "f07_spec_conflict",
-      "f08_report_conflict",
-      "f08_report_ready",
-      "f08_spec_conflict",
-      "f09_report_conflict",
-      "f09_report_ready",
-      "f09_spec_conflict",
-      "f10_report_conflict",
-      "f10_report_ready",
-      "f10_spec_conflict",
       "faction_event",
       "group_chat_event",
       "load_order_ready",
@@ -3412,6 +2512,10 @@
     "P105_开源与开发者生态装配流管线.md",
     "P106_产业与商业落地装配流管线.md",
     "P107_监督微调装配流管线.md",
+    "P108_组合包-数据管线装配流管线.md",
+    "P109_组合包-检索栈装配流管线.md",
+    "P110_组合包-受监管行业装配流管线.md",
+    "P111_组合包-轻混与保险装配流管线.md",
     "P112_游戏与互动娱乐装配流管线.md",
     "P113_角色扮演与角色卡装配流管线.md",
     "P114_知识管理与检索增强装配流管线.md",
@@ -3591,6 +2695,10 @@
     "community/科研与实验域包/protocol.yaml",
     "community/端侧与边缘小模型域包/protocol.yaml",
     "community/红队越狱与安全测试域包/protocol.yaml",
+    "community/组合包-受监管行业/protocol.yaml",
+    "community/组合包-数据管线/protocol.yaml",
+    "community/组合包-检索栈/protocol.yaml",
+    "community/组合包-轻混与保险/protocol.yaml",
     "community/编辑校对与出版域包/protocol.yaml",
     "community/西幻生存领域包/protocol.yaml",
     "community/视觉模型域包/protocol.yaml",

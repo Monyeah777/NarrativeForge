@@ -18,10 +18,18 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-c2pa-spec
+    STD-cbor
     STD-commonmark
+    STD-cose
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-owasp-llm
+    STD-owasp-top10
+    STD-rdf11
     STD-spdx-licenses
+    STD-vega-lite
     STD-w3c-prov-o
   end
   F01-01 --> F01-02
@@ -45,14 +53,32 @@ flowchart TD
   F01-11 --> F01-12
   F01-09 --> F01-12
   F01-07 --> STD-c2pa-spec
+  STD-cbor --> STD-c2pa-spec
+  STD-cose --> STD-c2pa-spec
   F01-02 --> STD-commonmark
+  F01-01 --> STD-ietf-json-schema
+  F01-05 --> STD-ietf-json-schema
+  F01-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  F01-08 --> STD-mermaid
+  F01-10 --> STD-mermaid
   F01-04 --> STD-mlcommons-bench
   F01-01 --> STD-owasp-llm
   F01-06 --> STD-owasp-llm
   F01-10 --> STD-owasp-llm
   F01-12 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
   F01-03 --> STD-spdx-licenses
   F01-09 --> STD-spdx-licenses
+  F01-03 --> STD-vega-lite
+  F01-04 --> STD-vega-lite
+  F01-09 --> STD-vega-lite
+  F01-11 --> STD-vega-lite
+  F01-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   F01-05 --> STD-w3c-prov-o
   F01-08 --> STD-w3c-prov-o
   F01-11 --> STD-w3c-prov-o
+  F01-02 --> STD-w3c-prov-o
+  F01-07 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o

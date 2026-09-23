@@ -21,7 +21,14 @@ flowchart TD
     STD-creativecommons
     STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
+    STD-spdx-licenses
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C14-01 --> C14-02
   C14-02 --> C14-03
@@ -48,10 +55,27 @@ flowchart TD
   C14-10 --> STD-cncf-otel-semconv
   C14-06 --> STD-creativecommons
   C14-04 --> STD-frictionless-package
+  STD-ietf-json-schema --> STD-frictionless-package
   C14-03 --> STD-frictionless-table
   C14-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
+  C14-01 --> STD-ietf-json-schema
+  C14-05 --> STD-ietf-json-schema
+  C14-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  C14-04 --> STD-mermaid
+  C14-09 --> STD-mermaid
   C14-02 --> STD-mlcommons-bench
   C14-05 --> STD-mlcommons-bench
   C14-08 --> STD-mlcommons-bench
   C14-09 --> STD-mlcommons-bench
   C14-11 --> STD-mlcommons-bench
+  C14-06 --> STD-spdx-licenses
+  C14-03 --> STD-vega-lite
+  C14-07 --> STD-vega-lite
+  C14-08 --> STD-vega-lite
+  C14-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C14-02 --> STD-w3c-tabular-data
+  C14-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

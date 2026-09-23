@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-09-24",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "AUD-0020 / CHANGELOG 补记（引擎连带修的旧实现缺陷）",
+  "note": "标准目录 370 条（可达 332）+ 100 包双锚/数据真实性对齐 + 概念图纵深；组合包产物化 4 包 + 广度五六元（URL 替代后复签）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "a73dc32d8aa0957f0ae1e607c0e6a6a3e3d6ffd5d32ae8886acfb0b5ae3fd7b2"
+  "subject_digest": "3f7323909e04bd4c8476cbedd8bf77814684fc81dcbdfeab421d7d7176aa8baa"
 }

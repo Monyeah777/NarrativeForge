@@ -20,8 +20,16 @@ flowchart TD
     STD-dicom
     STD-gdpr
     STD-hl7-fhir
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
+    STD-rdf11
     STD-unesco-ai
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-skos
+    STD-w3c-tabular-data
   end
   D01-01 --> D01-02
   D01-02 --> D01-03
@@ -53,5 +61,22 @@ flowchart TD
   D01-08 --> STD-hl7-fhir
   D01-09 --> STD-hl7-fhir
   D01-10 --> STD-hl7-fhir
+  D01-01 --> STD-ietf-json-schema
+  D01-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  D01-04 --> STD-mermaid
+  D01-09 --> STD-mermaid
   D01-07 --> STD-unesco-ai
+  D01-03 --> STD-vega-lite
+  D01-07 --> STD-vega-lite
+  D01-08 --> STD-vega-lite
+  D01-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  D01-02 --> STD-w3c-prov-o
+  D01-06 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   D01-04 --> STD-w3c-skos
+  STD-rdf11 --> STD-w3c-skos
+  D01-05 --> STD-w3c-tabular-data
+  D01-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

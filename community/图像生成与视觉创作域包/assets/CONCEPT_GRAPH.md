@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「图像生成与视觉创作」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（图像生成与视觉创作:M01）与收口模块（图像生成与视觉创作:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（E07-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 11 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（E07-00 领域通用前置）；节点 23 · 边 48 · 密度 2.0870。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,11 +29,17 @@
 | `E07-10` | 商用授权 | P60 | `E07-09`、`E07-07` | e07-anchor |
 | `E07-11` | 图文排版 | P40 | `E07-10`、`E07-08` | e07-anchor |
 | `E07-12` | 色彩管理 | P60 | `E07-11`、`E07-09` | e07-anchor |
-| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark） | P80 | `E07-01`、`E07-04`、`E07-07` | std-catalog |
-| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons） | P80 | `E07-10` | std-catalog |
-| `STD-gdpr` | 标准 · GDPR（EU） | P80 | `E07-09` | std-catalog |
-| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C） | P80 | `E07-03`、`E07-06`、`E07-11`、`E07-12` | std-catalog |
-| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `E07-02`、`E07-05`、`E07-08` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `E07-01`、`E07-04`、`E07-07`、`E07-02`、`E07-05` | std-catalog |
+| `STD-creativecommons` | 标准 · 许可与权利表达（Creative Commons｜gov｜实测 ✓） | P80 | `E07-10` | std-catalog |
+| `STD-gdpr` | 标准 · GDPR（EU｜gov｜实测 ✓） | P80 | `E07-09` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `E07-01`、`E07-06`、`STD-ietf-json` | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX｜gov｜实测 ✓） | P80 | `E07-10` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `E07-03`、`E07-08`、`E07-09`、`E07-11`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-epub33` | 标准 · EPUB 3.3（W3C｜form｜实测 ✓） | P80 | `E07-03`、`E07-06`、`E07-11`、`E07-12`、`STD-w3c-xml` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `E07-02`、`E07-05`、`E07-08`、`E07-04`、`E07-07`、`E07-12`、`STD-ietf-bcp47` | std-catalog |
+| `STD-w3c-xml` | 标准 · XML 1.0（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -54,8 +60,14 @@
 | `std-commonmark` | `STD-commonmark` |
 | `std-creativecommons` | `STD-creativecommons` |
 | `std-gdpr` | `STD-gdpr` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-spdx-licenses` | `STD-spdx-licenses` |
+| `std-vega-lite` | `STD-vega-lite` |
 | `std-w3c-epub33` | `STD-w3c-epub33` |
 | `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
+| `std-w3c-xml` | `STD-w3c-xml` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -93,8 +105,14 @@ concept_graph:
         - "STD-commonmark"
         - "STD-creativecommons"
         - "STD-gdpr"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
+        - "STD-ietf-json-schema"
+        - "STD-spdx-licenses"
+        - "STD-vega-lite"
         - "STD-w3c-epub33"
         - "STD-w3c-tabular-data"
+        - "STD-w3c-xml"
   nodes:
     - id: "E07-01"
       name: "提示词结构"
@@ -208,6 +226,8 @@ concept_graph:
         - "E07-01"
         - "E07-04"
         - "E07-07"
+        - "E07-02"
+        - "E07-05"
       provenance:
         - "std-catalog"
     - id: "STD-creativecommons"
@@ -226,6 +246,50 @@ concept_graph:
         - "E07-09"
       provenance:
         - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-01"
+        - "E07-06"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-spdx-licenses"
+      name: "标准 · SPDX 许可证清单"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "E07-03"
+        - "E07-08"
+        - "E07-09"
+        - "E07-11"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
     - id: "STD-w3c-epub33"
       name: "标准 · EPUB 3.3"
       layer: "P80"
@@ -235,6 +299,7 @@ concept_graph:
         - "E07-06"
         - "E07-11"
         - "E07-12"
+        - "STD-w3c-xml"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-tabular-data"
@@ -245,6 +310,17 @@ concept_graph:
         - "E07-02"
         - "E07-05"
         - "E07-08"
+        - "E07-04"
+        - "E07-07"
+        - "E07-12"
+        - "STD-ietf-bcp47"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-xml"
+      name: "标准 · XML 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
 ```

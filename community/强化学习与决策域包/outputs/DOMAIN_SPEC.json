@@ -4,8 +4,29 @@
   "domain": "强化学习与决策",
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "regression",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "ietf-json-schema",
+      "mcp",
+      "mermaid",
+      "mlcommons-bench",
+      "nist-ai-rmf",
+      "onnx",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "A12-01",
@@ -16,6 +37,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "域码 A12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 0）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 advantage（GAE λ|MC）、clip_range、steps_per_update 与 seeds（≥3，报均值±方差）。",
       "pitfall": "单种子报峰值成绩；裁剪范围与优势估计未声明导致不可复现。"
     },
@@ -28,6 +75,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "域码 A12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 dataset（来源 + 转移数）、online_interaction（none|limited）与 ood_handling（约束/惩罚/无）。",
       "pitfall": "离线算法带在线交互却与纯离线基线比较；数据集覆盖不足时结论不成立。"
     },
@@ -40,6 +113,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 latent_dim、imagination_horizon 与 real_eval_ratio（策略在真实环境回测的比例）。",
       "pitfall": "只在想象环境评测（乐观偏差）；隐状态维度未声明导致显存结论失真。"
     },
@@ -52,6 +153,30 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "域码 A12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 policy（ε-greedy|UCB|TS + 参数）、sample_size 与 significance（检验方法 + α + 是否多重比较校正）。",
       "pitfall": "不做多重比较校正（假阳性）；样本量不足就宣布胜出。"
     },
@@ -64,6 +189,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "域码 A12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 0）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 reward_terms（清单）、weights（数值）与 hacking_check（对抗样本 / 人工审看结果）。",
       "pitfall": "只报回报曲线不查奖励黑客；奖励权重变更未记录。"
     },
@@ -76,6 +227,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "域码 A12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 env_id（含版本）、obs_space/action_space（维度与范围）与 seed_policy（固定 + 重置规则）。",
       "pitfall": "环境版本升级未记录（行为已变）；种子不固定导致结果抖动。"
     },
@@ -88,6 +265,34 @@
       "anchor_status": 200,
       "standard_ref": "mcp",
       "standard_why": "关键词「工具调用|智能体|工作流|Agent」命中",
+      "standards": [
+        {
+          "ref": "mcp",
+          "role": "primary",
+          "why": "关键词「工具调用|智能体|工作流|Agent」命中",
+          "layer": "iface",
+          "body": "Anthropic/MCP",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "jsonrpc"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 n_agents、information（full|partial）、training_scheme（集中训练分散执行等）与 equilibrium_metric。",
       "pitfall": "把自博（self-play）胜率当泛化能力；信息结构未声明。"
     },
@@ -100,6 +305,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "域码 A12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 budget（模拟次数）、prior（网络|rollout）与 tree_reuse（是否跨步复用 + 规则）。",
       "pitfall": "搜索预算与被比方法不同；先验来自测试环境（泄漏）。"
     },
@@ -112,6 +343,30 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "域码 A12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 0）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 log_source（真实|模拟）、reward（点击/时长/转化）与 offpolicy_correction（IPS/DR 等）。",
       "pitfall": "离线日志直接评估（分布偏移未校正）；奖励定义与业务目标脱节。"
     },
@@ -124,6 +379,32 @@
       "anchor_status": 200,
       "standard_ref": "nist-ai-rmf",
       "standard_why": "域码 A12 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "nist-ai-rmf",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "NIST",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 objective（makespan|成本|SLA 违背率）、constraints（清单）与 solving（在线|离线 + 预算）。",
       "pitfall": "目标与约束混写（不可判定）；离线最优当在线结果。"
     },
@@ -136,6 +417,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "域码 A12 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "域码 A12 专属绑定（轮换 0）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 rm_source（人工偏好规模 + 模型 id）、kl_coef 与 reward_norm（是否归一化 + 方式）。",
       "pitfall": "无 KL 约束导致策略崩坏；奖励未归一化导致超参不可迁移。"
     },
@@ -148,6 +455,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「训练|微调|对齐|蒸馏|偏好」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 exploration（ε|熵奖励|RND）、anomaly_monitors（KL/梯度范数/回报）与 rerun_protocol（几次 + 报告口径）。",
       "pitfall": "只报最好一次运行；异常监控缺失导致崩溃无据可查。"
     }

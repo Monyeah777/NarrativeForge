@@ -20,10 +20,15 @@ flowchart TD
     STD-a2a
     STD-commonmark
     STD-gfm
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-mlcommons-bench
     STD-onnx
+    STD-protobuf
     STD-w3c-epub33
+    STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E01-01 --> E01-02
   E01-02 --> E01-03
@@ -51,9 +56,26 @@ flowchart TD
   E01-04 --> STD-commonmark
   E01-08 --> STD-commonmark
   E01-09 --> STD-commonmark
+  E01-05 --> STD-commonmark
+  E01-11 --> STD-commonmark
   E01-07 --> STD-gfm
+  STD-commonmark --> STD-gfm
   E01-05 --> STD-ietf-json-schema
+  E01-01 --> STD-ietf-json-schema
+  E01-06 --> STD-ietf-json-schema
+  E01-09 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   E01-11 --> STD-mlcommons-bench
   E01-10 --> STD-onnx
+  STD-protobuf --> STD-onnx
   E01-03 --> STD-w3c-epub33
   E01-12 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
+  E01-02 --> STD-w3c-tabular-data
+  E01-03 --> STD-w3c-tabular-data
+  E01-04 --> STD-w3c-tabular-data
+  E01-07 --> STD-w3c-tabular-data
+  E01-08 --> STD-w3c-tabular-data
+  E01-10 --> STD-w3c-tabular-data
+  E01-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

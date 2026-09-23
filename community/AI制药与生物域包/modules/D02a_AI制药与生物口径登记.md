@@ -15,7 +15,7 @@ machine_contract:
   outputs: [domain_spec, spec_conflict_list]
   events:
     publish: [d02_spec_ready, d02_spec_conflict]
-    subscribe: []
+    subscribe: [d02_report_ready, d02_report_conflict]
   interfaces: [domain_spec_query]
   io_types:
     outputs:
@@ -43,7 +43,7 @@ Module:
   outputs: [domain_spec, spec_conflict_list]
   events:
     publish: [d02_spec_ready, d02_spec_conflict]
-    subscribe: []
+    subscribe: [d02_report_ready, d02_report_conflict]
   core:
     assets: [CONCEPT_GRAPH, DOMAIN_SPEC, STANDARDS_ANCHORS]
     logic:

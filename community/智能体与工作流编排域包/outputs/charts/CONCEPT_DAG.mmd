@@ -21,9 +21,15 @@ flowchart TD
     STD-cncf-cloudevents
     STD-cncf-otel-semconv
     STD-commonmark
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-jsonrpc
     STD-mcp
+    STD-vega-lite
     STD-w3c-epub33
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E12-01 --> E12-02
   E12-02 --> E12-03
@@ -47,13 +53,31 @@ flowchart TD
   E12-09 --> E12-12
   E12-12 --> STD-a2a
   E12-07 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
   E12-10 --> STD-cncf-otel-semconv
   E12-11 --> STD-cncf-otel-semconv
   E12-04 --> STD-commonmark
+  E12-02 --> STD-commonmark
+  E12-05 --> STD-commonmark
+  E12-07 --> STD-commonmark
+  E12-12 --> STD-commonmark
+  E12-01 --> STD-ietf-json-schema
+  E12-06 --> STD-ietf-json-schema
+  E12-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   E12-01 --> STD-mcp
   E12-02 --> STD-mcp
+  STD-jsonrpc --> STD-mcp
+  E12-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E12-03 --> STD-w3c-epub33
   E12-06 --> STD-w3c-epub33
   E12-09 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
   E12-05 --> STD-w3c-tabular-data
   E12-08 --> STD-w3c-tabular-data
+  E12-03 --> STD-w3c-tabular-data
+  E12-04 --> STD-w3c-tabular-data
+  E12-09 --> STD-w3c-tabular-data
+  E12-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

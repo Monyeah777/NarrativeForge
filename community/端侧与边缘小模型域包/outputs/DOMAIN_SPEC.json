@@ -4,8 +4,35 @@
   "domain": "端侧与边缘小模型",
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "latency_cost",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "a2a",
+      "covesa-vss",
+      "gdpr",
+      "ieee-754",
+      "ietf-json-schema",
+      "mcp",
+      "mermaid",
+      "mlcommons-bench",
+      "oasis-openapi",
+      "onnx",
+      "owasp-llm",
+      "uptane",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "A14-01",
@@ -16,6 +43,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 teacher/student（参数量）、distill_target（logits|hidden|sequence）与 accuracy_drop（相对基线落差）。",
       "pitfall": "只报学生模型绝对分不给落差；蒸馏数据与评测集重叠。"
     },
@@ -28,6 +83,34 @@
       "anchor_status": 200,
       "standard_ref": "oasis-openapi",
       "standard_why": "关键词「接口|API|端点|服务|部署」命中",
+      "standards": [
+        {
+          "ref": "oasis-openapi",
+          "role": "primary",
+          "why": "关键词「接口|API|端点|服务|部署」命中",
+          "layer": "iface",
+          "body": "OpenAPI Initiative",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 bits（8|4|2）、group_size、calib_set（来源 + 样本数）与 metric_pair（精度 + 首 token 延迟）。",
       "pitfall": "只报体积缩小；校准集与测试集同源（虚高）。"
     },
@@ -40,6 +123,34 @@
       "anchor_status": 200,
       "standard_ref": "onnx",
       "standard_why": "关键词「模型|推理|量化」命中",
+      "standards": [
+        {
+          "ref": "onnx",
+          "role": "primary",
+          "why": "关键词「模型|推理|量化」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "protobuf"
+          ]
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 runtime（onnxruntime/tflite/mnn 等 + 版本）、backend、threads 与 op_coverage（不支持的算子数与回退策略）。",
       "pitfall": "换后端直接比延迟（不可比）；算子回退到 CPU 未声明。"
     },
@@ -52,6 +163,30 @@
       "anchor_status": 200,
       "standard_ref": "ieee-754",
       "standard_why": "域码 A14 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "ieee-754",
+          "role": "primary",
+          "why": "域码 A14 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "IEEE",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 peak_mem_mb、rss_mb、energy_per_inference（mJ 或 %/次）与 throttling_policy（是否排除降频样本）。",
       "pitfall": "只报平均值掩盖温控降频；能耗口径与设备未声明。"
     },
@@ -64,6 +199,32 @@
       "anchor_status": 200,
       "standard_ref": "gdpr",
       "standard_why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+      "standards": [
+        {
+          "ref": "gdpr",
+          "role": "primary",
+          "why": "关键词「隐私|个人信息|去标识|合规|监管」命中",
+          "layer": "gov",
+          "body": "EU",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 egress（none|摘要|原始）、telemetry_scope（字段清单）与 at_rest_encryption（true|false + 算法）。",
       "pitfall": "默认上传原始输入；遥测字段未列清单（不可审计）。"
     },
@@ -76,6 +237,32 @@
       "anchor_status": 200,
       "standard_ref": "a2a",
       "standard_why": "关键词「多智能体|协同|编排」命中",
+      "standards": [
+        {
+          "ref": "a2a",
+          "role": "primary",
+          "why": "关键词「多智能体|协同|编排」命中",
+          "layer": "iface",
+          "body": "Linux Foundation",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 routing_rule（置信阈值/复杂度）、fallback（离线|弱网条件）与 consistency（端云输出差异容忍度）。",
       "pitfall": "弱网无回退（体验崩塌）；端云输出不一致无容忍度定义。"
     },
@@ -88,6 +275,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「评测|基准|排行榜|跑分」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 size_metric（含是否计入运行时）、cold_vs_warm（分列）与 latency_percentiles（p50/p95/p99）。",
       "pitfall": "只报平均延迟；体积不计运行时导致下载体积失真。"
     },
@@ -100,6 +313,32 @@
       "anchor_status": 200,
       "standard_ref": "ieee-754",
       "standard_why": "域码 A14 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "ieee-754",
+          "role": "primary",
+          "why": "域码 A14 专属绑定（轮换 1）",
+          "layer": "data",
+          "body": "IEEE",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 modalities（枚举）、res_cap（像素上限）与 preprocess（端侧|云端 + 步骤）。",
       "pitfall": "预处理放云端导致隐私与延迟问题未声明；分辨率上限不定导致内存爆炸。"
     },
@@ -112,6 +351,30 @@
       "anchor_status": 200,
       "standard_ref": "covesa-vss",
       "standard_why": "关键词「交通|出行|车机|车辆|导航」命中",
+      "standards": [
+        {
+          "ref": "covesa-vss",
+          "role": "primary",
+          "why": "关键词「交通|出行|车机|车辆|导航」命中",
+          "layer": "iface",
+          "body": "COVESA",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 hw_tier（算力/内存档）、realtime_budget_ms 与 safety_req（如 ASIL 等级或 none）。",
       "pitfall": "在高端档位评测后宣称覆盖全部车机；实时预算不声明。"
     },
@@ -124,6 +387,34 @@
       "anchor_status": 200,
       "standard_ref": "mcp",
       "standard_why": "关键词「工具调用|智能体|工作流|Agent」命中",
+      "standards": [
+        {
+          "ref": "mcp",
+          "role": "primary",
+          "why": "关键词「工具调用|智能体|工作流|Agent」命中",
+          "layer": "iface",
+          "body": "Anthropic/MCP",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "jsonrpc"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 tool_set（枚举）、permissions（可访问能力边界）与 failure_mode（降级/提示/中止）。",
       "pitfall": "工具权限过宽（本地文件/相机无边界）；失败静默。"
     },
@@ -136,6 +427,34 @@
       "anchor_status": 200,
       "standard_ref": "uptane",
       "standard_why": "关键词「固件|OTA|升级」命中",
+      "standards": [
+        {
+          "ref": "uptane",
+          "role": "primary",
+          "why": "关键词「固件|OTA|升级」命中",
+          "layer": "gov",
+          "body": "Uptane",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "jose"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 signature_check（true + 算法）、rollout（分批比例）与 rollback（true|false + 触发条件）。",
       "pitfall": "无签名校验（可被替换）；无回滚导致坏版本不可救。"
     },
@@ -148,6 +467,34 @@
       "anchor_status": 200,
       "standard_ref": "owasp-llm",
       "standard_why": "关键词「安全|越狱|红队|攻击|对抗」命中",
+      "standards": [
+        {
+          "ref": "owasp-llm",
+          "role": "primary",
+          "why": "关键词「安全|越狱|红队|攻击|对抗」命中",
+          "layer": "gov",
+          "body": "OWASP",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "owasp-top10"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 model_protection（加密/签名/混淆）、injection_surface（工具与外部输入面清单）与 leak_guard（日志脱敏规则）。",
       "pitfall": "模型文件明文可提取（资产流失）；日志留存用户原文。"
     }

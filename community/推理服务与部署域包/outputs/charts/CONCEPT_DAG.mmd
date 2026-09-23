@@ -18,12 +18,21 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-a2a
+    STD-cncf-cloudevents
     STD-cncf-otel-otlp
     STD-cncf-otel-semconv
+    STD-commonmark
     STD-gfm
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
     STD-k8s-crd
+    STD-mermaid
     STD-oasis-openapi
     STD-onnx
+    STD-protobuf
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C11-01 --> C11-02
   C11-02 --> C11-03
@@ -46,14 +55,35 @@ flowchart TD
   C11-11 --> C11-12
   C11-09 --> C11-12
   C11-03 --> STD-a2a
+  C11-05 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
   C11-02 --> STD-cncf-otel-otlp
   C11-04 --> STD-cncf-otel-otlp
   C11-12 --> STD-cncf-otel-otlp
+  STD-protobuf --> STD-cncf-otel-otlp
   C11-09 --> STD-cncf-otel-semconv
   C11-10 --> STD-cncf-otel-semconv
   C11-06 --> STD-gfm
+  STD-commonmark --> STD-gfm
+  C11-01 --> STD-ietf-json-schema
+  C11-06 --> STD-ietf-json-schema
+  C11-09 --> STD-ietf-json-schema
+  C11-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   C11-05 --> STD-k8s-crd
   C11-07 --> STD-k8s-crd
+  STD-oasis-openapi --> STD-k8s-crd
+  C11-04 --> STD-mermaid
   C11-01 --> STD-oasis-openapi
   C11-11 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
   C11-08 --> STD-onnx
+  STD-protobuf --> STD-onnx
+  C11-03 --> STD-vega-lite
+  C11-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C11-02 --> STD-w3c-tabular-data
+  C11-07 --> STD-w3c-tabular-data
+  C11-10 --> STD-w3c-tabular-data
+  C11-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

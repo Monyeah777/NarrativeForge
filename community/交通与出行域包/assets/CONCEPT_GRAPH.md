@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「交通与出行」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（交通与出行:M01）与收口模块（交通与出行:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（D13-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 16 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（D13-00 领域通用前置）；节点 28 · 边 50 · 密度 1.7857。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,13 +29,22 @@
 | `D13-10` | 路况播报 | P60 | `D13-09`、`D13-07` | d13-anchor |
 | `D13-11` | 运力撮合 | P40 | `D13-10`、`D13-08` | d13-anchor |
 | `D13-12` | 交通安全宣教 | P60 | `D13-11`、`D13-09` | d13-anchor |
-| `STD-a2a` | 标准 · A2A 协议（Linux Foundation） | P80 | `D13-08` | std-catalog |
-| `STD-covesa-vss` | 标准 · Vehicle Signal Specification（COVESA） | P80 | `D13-01`、`D13-05` | std-catalog |
-| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `D13-06` | std-catalog |
-| `STD-iso-iec-25010` | 标准 · SQuaRE 质量模型（ISO/IEC） | P80 | `D13-03`、`D13-09` | std-catalog |
-| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `D13-04`、`D13-07`、`D13-10` | std-catalog |
-| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP） | P80 | `D13-12` | std-catalog |
-| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `D13-02`、`D13-11` | std-catalog |
+| `STD-a2a` | 标准 · A2A 协议（Linux Foundation｜iface｜实测 ✓） | P80 | `D13-08` | std-catalog |
+| `STD-cncf-cloudevents` | 标准 · CloudEvents 1.0（CNCF｜iface｜实测 ✓） | P80 | `D13-01`、`STD-ietf-json-schema` | std-catalog |
+| `STD-common-criteria` | 标准 · Common Criteria（ISO 15408）（CCRA｜gov｜实测 ✓） | P80 | `D13-03`、`D13-09` | std-catalog |
+| `STD-covesa-vss` | 标准 · Vehicle Signal Specification（COVESA｜iface｜实测 ✓） | P80 | `D13-01`、`D13-05` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless｜data｜实测 ✓） | P80 | `D13-06`、`STD-frictionless-package` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `D13-04`、`D13-09`、`D13-11` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST｜gov｜实测 ✓） | P80 | `D13-04`、`D13-07`、`D13-10` | std-catalog |
+| `STD-owasp-llm` | 标准 · LLM 应用十大风险（OWASP｜gov｜实测 ✓） | P80 | `D13-12`、`STD-owasp-top10` | std-catalog |
+| `STD-owasp-top10` | 标准 · Web 十大风险（OWASP｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `D13-02`、`D13-03`、`D13-07`、`D13-08`、`D13-12`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `D13-02`、`D13-11`、`D13-06`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `D13-05`、`D13-10`、`STD-ietf-bcp47` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -54,12 +63,21 @@
 | `D13-运力撮合` | `D13-11` |
 | `D13-交通安全宣教` | `D13-12` |
 | `std-a2a` | `STD-a2a` |
+| `std-cncf-cloudevents` | `STD-cncf-cloudevents` |
+| `std-common-criteria` | `STD-common-criteria` |
 | `std-covesa-vss` | `STD-covesa-vss` |
+| `std-frictionless-package` | `STD-frictionless-package` |
 | `std-frictionless-table` | `STD-frictionless-table` |
-| `std-iso-iec-25010` | `STD-iso-iec-25010` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
 | `std-owasp-llm` | `STD-owasp-llm` |
+| `std-owasp-top10` | `STD-owasp-top10` |
+| `std-rdf11` | `STD-rdf11` |
+| `std-vega-lite` | `STD-vega-lite` |
 | `std-w3c-prov-o` | `STD-w3c-prov-o` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -95,12 +113,21 @@ concept_graph:
       name: "可扩展标准（绑定）"
       nodes:
         - "STD-a2a"
+        - "STD-cncf-cloudevents"
+        - "STD-common-criteria"
         - "STD-covesa-vss"
+        - "STD-frictionless-package"
         - "STD-frictionless-table"
-        - "STD-iso-iec-25010"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json-schema"
+        - "STD-mermaid"
         - "STD-nist-ai-rmf"
         - "STD-owasp-llm"
+        - "STD-owasp-top10"
+        - "STD-rdf11"
+        - "STD-vega-lite"
         - "STD-w3c-prov-o"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "D13-01"
       name: "交通流预测"
@@ -214,6 +241,24 @@ concept_graph:
         - "D13-08"
       provenance:
         - "std-catalog"
+    - id: "STD-cncf-cloudevents"
+      name: "标准 · CloudEvents 1.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D13-01"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-common-criteria"
+      name: "标准 · Common Criteria（ISO 15408）"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D13-03"
+        - "D13-09"
+      provenance:
+        - "std-catalog"
     - id: "STD-covesa-vss"
       name: "标准 · Vehicle Signal Specification"
       layer: "P80"
@@ -223,21 +268,44 @@ concept_graph:
         - "D13-05"
       provenance:
         - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-frictionless-table"
       name: "标准 · Table Schema"
       layer: "P80"
       branch: "standards"
       prereqs:
         - "D13-06"
+        - "STD-frictionless-package"
       provenance:
         - "std-catalog"
-    - id: "STD-iso-iec-25010"
-      name: "标准 · SQuaRE 质量模型"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
       layer: "P80"
       branch: "standards"
       prereqs:
-        - "D13-03"
+        - "D13-04"
         - "D13-09"
+        - "D13-11"
       provenance:
         - "std-catalog"
     - id: "STD-nist-ai-rmf"
@@ -256,6 +324,34 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "D13-12"
+        - "STD-owasp-top10"
+      provenance:
+        - "std-catalog"
+    - id: "STD-owasp-top10"
+      name: "标准 · Web 十大风险"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D13-02"
+        - "D13-03"
+        - "D13-07"
+        - "D13-08"
+        - "D13-12"
+        - "STD-ietf-json-schema"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-prov-o"
@@ -265,6 +361,18 @@ concept_graph:
       prereqs:
         - "D13-02"
         - "D13-11"
+        - "D13-06"
+        - "STD-rdf11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "D13-05"
+        - "D13-10"
+        - "STD-ietf-bcp47"
       provenance:
         - "std-catalog"
 ```

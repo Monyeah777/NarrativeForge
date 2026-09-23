@@ -1,0 +1,49 @@
+# protocol.yaml — 组合包协议声明（组合引擎产物化：组合包-检索栈）
+# 由 `nf combine materialize` 生成；机读真相 = 本文件，人读速览 = README.md（双源一致）
+protocol:
+  schema_version: "2"
+package:
+  conformance: "L2"
+  id: 组合包-检索栈
+  name: 组合包-检索栈
+  version: "1.0.0"
+  pipeline: P109
+  module_id_range: []          # 组合包不新增模块（全部经 references 只读借阅）
+  categories:
+    - 组合域-检索栈
+  dependencies:
+    core_only: true
+    core_modules: [M00, 通用:M10, M08, M23, M24, M50, M80, 事件:M22, M06, M12, M13, M20, M90]
+    cross_package: []
+  references:
+    - source_package: 向量库与检索管线域包
+      module_id: 向量库与检索管线:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 向量库与检索管线域包
+      module_id: 向量库与检索管线:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 大语言模型域包
+      module_id: 大语言模型:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 大语言模型域包
+      module_id: 大语言模型:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 嵌入与检索表示域包
+      module_id: 嵌入与检索表示:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 嵌入与检索表示域包
+      module_id: 嵌入与检索表示:M02
+      source_schema_version: "2"
+      asset_readonly: true
+  modules: []
+  assets:
+    count: 0
+    readme: README.md
+  mount_layers:          # 堆叠写入 available（default 留空，规避同层 default 冲突）
+    P40: {default: [], available: [向量库与检索管线:M01, 大语言模型:M01, 嵌入与检索表示:M01]}
+    P60: {default: [], available: [向量库与检索管线:M02, 大语言模型:M02, 嵌入与检索表示:M02]}

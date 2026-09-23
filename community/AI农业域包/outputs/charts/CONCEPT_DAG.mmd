@@ -18,13 +18,22 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-c2pa-spec
+    STD-cbor
+    STD-common-criteria
+    STD-cose
     STD-fao-food
     STD-gdpr
-    STD-iso-iec-25010
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
     STD-oecd-ai
     STD-opengeospatial
+    STD-rdf11
+    STD-vega-lite
     STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   D10-01 --> D10-02
   D10-02 --> D10-03
@@ -47,14 +56,32 @@ flowchart TD
   D10-11 --> D10-12
   D10-09 --> D10-12
   D10-09 --> STD-c2pa-spec
+  STD-cbor --> STD-c2pa-spec
+  STD-cose --> STD-c2pa-spec
+  D10-03 --> STD-common-criteria
   D10-06 --> STD-fao-food
   D10-10 --> STD-fao-food
   D10-12 --> STD-gdpr
-  D10-03 --> STD-iso-iec-25010
+  D10-01 --> STD-ietf-json-schema
+  D10-05 --> STD-ietf-json-schema
+  D10-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  D10-04 --> STD-mermaid
   D10-01 --> STD-nist-ai-rmf
   D10-04 --> STD-nist-ai-rmf
   D10-07 --> STD-nist-ai-rmf
   D10-08 --> STD-oecd-ai
   D10-11 --> STD-opengeospatial
+  D10-02 --> STD-vega-lite
+  D10-03 --> STD-vega-lite
+  D10-07 --> STD-vega-lite
+  D10-08 --> STD-vega-lite
+  D10-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D10-02 --> STD-w3c-prov-o
   D10-05 --> STD-w3c-prov-o
+  D10-09 --> STD-w3c-prov-o
+  D10-11 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  D10-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

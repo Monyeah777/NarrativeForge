@@ -17,10 +17,20 @@ flowchart TD
     A12-12
   end
   subgraph P80[P80]
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-jsonrpc
     STD-mcp
+    STD-mermaid
     STD-mlcommons-bench
     STD-nist-ai-rmf
     STD-onnx
+    STD-protobuf
+    STD-rdf11
+    STD-vega-lite
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   A12-02 --> A12-03
   A12-06 --> A12-07
@@ -31,7 +41,15 @@ flowchart TD
   A12-05 --> A12-11
   A12-01 --> A12-12
   A12-10 --> A12-12
+  A12-01 --> STD-ietf-json-schema
+  A12-06 --> STD-ietf-json-schema
+  A12-10 --> STD-ietf-json-schema
+  A12-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   A12-07 --> STD-mcp
+  STD-jsonrpc --> STD-mcp
+  A12-04 --> STD-mermaid
+  A12-09 --> STD-mermaid
   A12-01 --> STD-mlcommons-bench
   A12-05 --> STD-mlcommons-bench
   A12-09 --> STD-mlcommons-bench
@@ -43,3 +61,13 @@ flowchart TD
   A12-08 --> STD-nist-ai-rmf
   A12-10 --> STD-nist-ai-rmf
   A12-03 --> STD-onnx
+  STD-protobuf --> STD-onnx
+  A12-03 --> STD-vega-lite
+  A12-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  A12-05 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  A12-02 --> STD-w3c-tabular-data
+  A12-07 --> STD-w3c-tabular-data
+  A12-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

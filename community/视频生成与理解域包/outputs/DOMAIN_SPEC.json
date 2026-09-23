@@ -4,8 +4,29 @@
   "domain": "视频生成与理解",
   "section": "A · 模型与能力",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "retrieval",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "ietf-ixdtf",
+      "ietf-json-schema",
+      "mermaid",
+      "mlcommons-bench",
+      "oci-image",
+      "vega-lite",
+      "w3c-owl-time",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "A06-01",
@@ -16,6 +37,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 resolution（宽×高）、fps、max_duration_s 与 eval_dims（三者分列），缺一即口径未定。",
       "pitfall": "只报画质不报时序一致性；用短片段成绩代表长视频能力。"
     },
@@ -28,6 +75,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "载体锚：产出形态「图」的承载标准",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 ref_frames（数量与位置）、first_frame_strict（true|false）、motion_control（none|camera|trajectory）。",
       "pitfall": "首帧不严格却宣称「图生视频保真」；运动幅度未控导致评测集不可比。"
     },
@@ -40,6 +113,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 edit_scope（local|global|temporal）、mask_source（手工|模型|自动）与 consistency_loss（有|无 + 权重）。",
       "pitfall": "编辑后未做时序一致性检查导致闪烁；掩码来源未声明使复现不可能。"
     },
@@ -52,6 +151,30 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 degradation_model（枚举 + 参数）、scale_factor（整数）、temporal_consistency_metric（如 tOF/tLP）。",
       "pitfall": "退化模型未声明导致 PSNR 不可比；缺时间一致性指标掩盖闪烁。"
     },
@@ -64,6 +187,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 transition_types（hard|gradual）、threshold（数值）与 keyframe_rule（等间隔|内容自适应）。",
       "pitfall": "只测硬切却在真实素材（含渐变）上宣称可用；阈值不同导致召回不可比。"
     },
@@ -76,6 +225,34 @@
       "anchor_status": 200,
       "standard_ref": "w3c-owl-time",
       "standard_why": "关键词「时间线|时序|日期」命中",
+      "standards": [
+        {
+          "ref": "w3c-owl-time",
+          "role": "primary",
+          "why": "关键词「时间线|时序|日期」命中",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "w3c-owl2"
+          ]
+        },
+        {
+          "ref": "ietf-ixdtf",
+          "role": "support",
+          "why": "载体锚：产出形态「时间」的承载标准",
+          "layer": "data",
+          "body": "IETF",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rfc3339"
+          ]
+        }
+      ],
       "check": "声明 consistency_metric（枚举）、window_s（窗口长度）与 drift_measure（主体 / 背景 / 光照分列）。",
       "pitfall": "只在短窗口内测一致性；主体漂移与背景漂移混为一个数字。"
     },
@@ -88,6 +265,32 @@
       "anchor_status": 200,
       "standard_ref": "ietf-json-schema",
       "standard_why": "A 段默认绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "ietf-json-schema",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 0）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 control_signal（pose|depth|trajectory）、control_strength（0–1）与 fidelity_tradeoff 报告方式。",
       "pitfall": "只报可控性不报保真损失；控制强度未声明导致不可复现。"
     },
@@ -100,6 +303,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "A 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 caption_granularity（clip|video）、temporal_alignment（required|none）与指标（CIDEr|SPICE 等）。",
       "pitfall": "片段级字幕当全片摘要；指标与切分不同导致跨报告不可比。"
     },
@@ -112,6 +341,30 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "mermaid",
+          "role": "support",
+          "why": "A 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "Mermaid",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 q_type_dist（类型分布）、temporal_dependency（yes|no 标注）与 answer_form（open|mc）。",
       "pitfall": "多选题成绩当开放问答能力；时序依赖未标注导致「单帧即可答」混入统计。"
     },
@@ -124,6 +377,32 @@
       "anchor_status": 200,
       "standard_ref": "oci-image",
       "standard_why": "关键词「视频|剪辑|字幕」命中",
+      "standards": [
+        {
+          "ref": "oci-image",
+          "role": "primary",
+          "why": "关键词「视频|剪辑|字幕」命中",
+          "layer": "iface",
+          "body": "OCI",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "A 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 query_modality（text|image|video）、gallery_size 与 metric（R@k / mAP）+ 是否取平均。",
       "pitfall": "候选库规模不同直接比 R@1；多模态查询混在一张表里。"
     },
@@ -136,6 +415,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "A 段默认绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "A 段默认绑定（轮换 1）",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "A 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 driving_signal（audio|text）、sync_metric（LSE-C|LSE-D|人工）与 identity_metric（如 ID 相似度）。",
       "pitfall": "只报同步不报身份漂移；用同一人脸库自测自评。"
     },
@@ -148,6 +453,32 @@
       "anchor_status": 200,
       "standard_ref": "mlcommons-bench",
       "standard_why": "关键词「评测|基准|排行榜|跑分」命中",
+      "standards": [
+        {
+          "ref": "mlcommons-bench",
+          "role": "primary",
+          "why": "关键词「评测|基准|排行榜|跑分」命中",
+          "layer": "eng",
+          "body": "MLCommons",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "A 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 distribution_metric（FVD 等）、per_sample_metrics（清单）、eval_set_size（≥1000 建议）与随机种子数。",
       "pitfall": "用极小的评测集报 FVD；单次采样不报方差导致结论不稳。"
     }

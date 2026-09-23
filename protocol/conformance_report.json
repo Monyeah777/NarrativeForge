@@ -44,8 +44,8 @@
     },
     {
       "description": "管线抽象执行零 hard 缺陷",
-      "detail": "管线 110 条零 hard 缺陷（advisory 1102）",
-      "digest": "e13d5644ce31c36d183a07d062cc0a4b4c7c0cd8ec76dcf060ae12a11e4d895c",
+      "detail": "管线 114 条零 hard 缺陷（advisory 1142）",
+      "digest": "efa38566dcf3d332bf98096806856eaa3433a4d78f601500c325e00815a4a386",
       "id": "pipeline-dryrun",
       "ok": true
     },
@@ -121,8 +121,8 @@
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 30 / 说明件 2272 · 数据契约 29",
-      "digest": "8d3c47107ac305a8728ccee69f36c30ffa35f2a302bf5ad1a838957f15fadcc4",
+      "detail": "词表 12 · 规范件 30 / 说明件 2330 · 数据契约 29",
+      "digest": "5b93e7815bd8553c41bf09fcd04b2a13f24ca463a997561dbd1e575b1de589f6",
       "id": "modeling",
       "ok": true
     },
@@ -149,8 +149,8 @@
     },
     {
       "description": "审计/验收（结论绑定对象 digest + 签收双要素）",
-      "detail": "审计 31 件（带审计头 20 · legacy 11）· 绑定对象 158",
-      "digest": "ef62057a75216bac29c616c5b4547acf75ae00e34b689af8aeab5fb0646bd112",
+      "detail": "审计 33 件（带审计头 22 · legacy 11）· 绑定对象 166",
+      "digest": "ef610b7aaa3c0d65316c38ae3e72de5135668d406e3f85bbce332f77e61b0078",
       "id": "audit",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "8c4610037de3def87c0ac110f6b38c5dee482d24fbaf8a9df4bb4119b6ffb24e",
+  "root": "4d145a0a659f43d84b96ae74e779d2ab94decd38ed6ed687b7764d81eb948941",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

@@ -17,11 +17,18 @@ flowchart TD
     D17-12
   end
   subgraph P80[P80]
+    STD-common-criteria
     STD-creativecommons
-    STD-iso-iec-25010
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
+    STD-rdf11
+    STD-spdx-licenses
     STD-vega-lite
     STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   D17-01 --> D17-02
   D17-02 --> D17-03
@@ -43,15 +50,31 @@ flowchart TD
   D17-08 --> D17-11
   D17-11 --> D17-12
   D17-09 --> D17-12
+  D17-03 --> STD-common-criteria
+  D17-06 --> STD-common-criteria
+  D17-12 --> STD-common-criteria
   D17-09 --> STD-creativecommons
-  D17-03 --> STD-iso-iec-25010
-  D17-06 --> STD-iso-iec-25010
-  D17-12 --> STD-iso-iec-25010
+  D17-01 --> STD-ietf-json-schema
+  D17-05 --> STD-ietf-json-schema
+  D17-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  D17-04 --> STD-mermaid
+  D17-11 --> STD-mermaid
   D17-01 --> STD-nist-ai-rmf
   D17-04 --> STD-nist-ai-rmf
   D17-07 --> STD-nist-ai-rmf
+  D17-09 --> STD-spdx-licenses
   D17-10 --> STD-vega-lite
+  D17-02 --> STD-vega-lite
+  D17-03 --> STD-vega-lite
+  D17-07 --> STD-vega-lite
+  D17-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D17-02 --> STD-w3c-prov-o
   D17-05 --> STD-w3c-prov-o
   D17-08 --> STD-w3c-prov-o
   D17-11 --> STD-w3c-prov-o
+  D17-10 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  D17-08 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

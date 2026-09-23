@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="layer" for="node" attr.name="layer" attr.type="string"/>
+  <graph id="combo" edgedefault="directed">
+    <node id="合成数据生成:M01"><data key="layer">P40</data></node>
+    <node id="合成数据生成:M02"><data key="layer">P60</data></node>
+    <node id="数据采集与清洗:M01"><data key="layer">P40</data></node>
+    <node id="数据采集与清洗:M02"><data key="layer">P60</data></node>
+    <node id="评测基准与排行榜:M01"><data key="layer">P40</data></node>
+    <node id="评测基准与排行榜:M02"><data key="layer">P60</data></node>
+    <node id="预训练与继续预训练:M01"><data key="layer">P40</data></node>
+    <node id="预训练与继续预训练:M02"><data key="layer">P60</data></node>
+    <edge source="合成数据生成:M02" target="合成数据生成:M01"/>
+    <edge source="数据采集与清洗:M02" target="数据采集与清洗:M01"/>
+    <edge source="评测基准与排行榜:M02" target="评测基准与排行榜:M01"/>
+    <edge source="预训练与继续预训练:M02" target="预训练与继续预训练:M01"/>
+  </graph>
+</graphml>

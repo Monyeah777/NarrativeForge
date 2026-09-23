@@ -1,0 +1,169 @@
+{
+  "assets_borrowed": [],
+  "assets_unresolved": [],
+  "dependency_closure": {
+    "core": [
+      "M00",
+      "M06",
+      "M08",
+      "M10",
+      "M12",
+      "M13",
+      "M20",
+      "M22",
+      "M23",
+      "M24",
+      "M50",
+      "M80",
+      "M90",
+      "事件:M22",
+      "通用:M10"
+    ],
+    "dangling": [],
+    "explicit": [
+      "AI保险:M01",
+      "M07",
+      "M17",
+      "M40",
+      "M41"
+    ]
+  },
+  "digest": "fbf479641c598552a6f44cb1438d7963",
+  "event_closure": {
+    "published": [
+      "campus_anonymous_gift",
+      "campus_gift_intent",
+      "confession_event",
+      "d05_report_conflict",
+      "d05_report_ready",
+      "d05_spec_conflict",
+      "d05_spec_ready",
+      "doc_delta_committed",
+      "doc_structure_ready",
+      "intent_received",
+      "interaction_update",
+      "market_event",
+      "minute_tick",
+      "narrative_event",
+      "npc_action",
+      "production_output",
+      "quest_state",
+      "relationship_change",
+      "romance_state_change",
+      "tick_day",
+      "travel_event",
+      "weather_state"
+    ],
+    "unbridged": []
+  },
+  "events_unpublished": [],
+  "extra_modules": [],
+  "label": "组合包 组合包-轻混与保险",
+  "layer_stacks": [
+    {
+      "layer": "P40",
+      "modules": [
+        "AI保险:M01",
+        "M91",
+        "M22",
+        "M40",
+        "M41",
+        "M43",
+        "M55"
+      ]
+    },
+    {
+      "layer": "P50",
+      "modules": [
+        "M92",
+        "M17"
+      ]
+    },
+    {
+      "layer": "P60",
+      "modules": [
+        "AI保险:M02",
+        "M07",
+        "M09"
+      ]
+    }
+  ],
+  "legal": true,
+  "module_count": 12,
+  "module_missing_contract": [],
+  "modules": [
+    "AI保险:M01",
+    "AI保险:M02",
+    "M07",
+    "M09",
+    "M17",
+    "M22",
+    "M40",
+    "M41",
+    "M43",
+    "M55",
+    "M91",
+    "M92"
+  ],
+  "modules_borrowed": [
+    {
+      "by": "M09",
+      "from": "西幻生存领域包",
+      "mode": "closure_pull",
+      "module": "M07",
+      "why": "依赖 M09 的 inputs 需要 M07"
+    },
+    {
+      "by": "M17",
+      "from": "西幻生存领域包",
+      "mode": "closure_pull",
+      "module": "M09",
+      "why": "事件 market_event 需要发布方（M17 订阅）"
+    },
+    {
+      "by": "M43",
+      "from": "校园情感领域包",
+      "mode": "closure_pull",
+      "module": "M41",
+      "why": "依赖 M43 的 inputs 需要 M41"
+    },
+    {
+      "by": "校园西幻轻混组合包",
+      "from": "西幻生存领域包",
+      "mode": "module_borrow",
+      "module": "M17"
+    },
+    {
+      "by": "校园西幻轻混组合包",
+      "from": "校园情感领域包",
+      "mode": "module_borrow",
+      "module": "M22"
+    },
+    {
+      "by": "校园西幻轻混组合包",
+      "from": "校园情感领域包",
+      "mode": "module_borrow",
+      "module": "M40"
+    },
+    {
+      "by": "校园西幻轻混组合包",
+      "from": "校园情感领域包",
+      "mode": "module_borrow",
+      "module": "M43"
+    },
+    {
+      "by": "校园西幻轻混组合包",
+      "from": "校园情感领域包",
+      "mode": "module_borrow",
+      "module": "M55"
+    }
+  ],
+  "note": "由 nf combine materialize 产物化；组合合法性由五不变量给出",
+  "packs": [
+    "AI保险域包",
+    "校园西幻轻混组合包"
+  ],
+  "references_unresolved": [],
+  "schema": "nf-combo/1",
+  "unknown_packs": []
+}

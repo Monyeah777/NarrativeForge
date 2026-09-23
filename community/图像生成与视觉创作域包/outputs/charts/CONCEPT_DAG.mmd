@@ -20,8 +20,14 @@ flowchart TD
     STD-commonmark
     STD-creativecommons
     STD-gdpr
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-spdx-licenses
+    STD-vega-lite
     STD-w3c-epub33
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E07-01 --> E07-02
   E07-02 --> E07-03
@@ -46,12 +52,28 @@ flowchart TD
   E07-01 --> STD-commonmark
   E07-04 --> STD-commonmark
   E07-07 --> STD-commonmark
+  E07-02 --> STD-commonmark
+  E07-05 --> STD-commonmark
   E07-10 --> STD-creativecommons
   E07-09 --> STD-gdpr
+  E07-01 --> STD-ietf-json-schema
+  E07-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  E07-10 --> STD-spdx-licenses
+  E07-03 --> STD-vega-lite
+  E07-08 --> STD-vega-lite
+  E07-09 --> STD-vega-lite
+  E07-11 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E07-03 --> STD-w3c-epub33
   E07-06 --> STD-w3c-epub33
   E07-11 --> STD-w3c-epub33
   E07-12 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
   E07-02 --> STD-w3c-tabular-data
   E07-05 --> STD-w3c-tabular-data
   E07-08 --> STD-w3c-tabular-data
+  E07-04 --> STD-w3c-tabular-data
+  E07-07 --> STD-w3c-tabular-data
+  E07-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

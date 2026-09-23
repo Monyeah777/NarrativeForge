@@ -17,10 +17,17 @@ flowchart TD
     B08-12
   end
   subgraph P80[P80]
+    STD-commonmark
     STD-creativecommons
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-oasis-openapi
+    STD-rdf11
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-tabular-data
   end
   B08-03 --> B08-01
@@ -33,15 +40,33 @@ flowchart TD
   B08-09 --> B08-11
   B08-02 --> B08-12
   B08-11 --> B08-12
+  B08-07 --> STD-commonmark
+  B08-09 --> STD-commonmark
   B08-10 --> STD-creativecommons
   B08-03 --> STD-frictionless-table
   B08-09 --> STD-frictionless-table
   B08-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B08-01 --> STD-ietf-json-schema
   B08-04 --> STD-ietf-json-schema
   B08-07 --> STD-ietf-json-schema
+  B08-06 --> STD-ietf-json-schema
+  B08-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B08-06 --> STD-oasis-openapi
   B08-11 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
+  B08-01 --> STD-vega-lite
+  B08-02 --> STD-vega-lite
+  B08-03 --> STD-vega-lite
+  B08-05 --> STD-vega-lite
+  B08-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B08-04 --> STD-w3c-prov-o
+  B08-08 --> STD-w3c-prov-o
+  B08-10 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B08-02 --> STD-w3c-tabular-data
   B08-05 --> STD-w3c-tabular-data
   B08-08 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

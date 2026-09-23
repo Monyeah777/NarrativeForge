@@ -17,11 +17,21 @@ flowchart TD
     C10-12
   end
   subgraph P80[P80]
+    STD-cncf-cloudevents
     STD-cncf-otel-semconv
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
     STD-gfm
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-onnx
+    STD-protobuf
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C10-01 --> C10-02
   C10-02 --> C10-03
@@ -43,15 +53,34 @@ flowchart TD
   C10-08 --> C10-11
   C10-11 --> C10-12
   C10-09 --> C10-12
+  C10-07 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
   C10-04 --> STD-cncf-otel-semconv
   C10-07 --> STD-cncf-otel-semconv
+  C10-10 --> STD-cncf-otel-semconv
   C10-03 --> STD-frictionless-table
   C10-06 --> STD-frictionless-table
   C10-09 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   C10-10 --> STD-gfm
+  STD-commonmark --> STD-gfm
+  C10-01 --> STD-ietf-json-schema
+  C10-05 --> STD-ietf-json-schema
+  C10-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  C10-04 --> STD-mermaid
+  C10-09 --> STD-mermaid
   C10-02 --> STD-mlcommons-bench
   C10-05 --> STD-mlcommons-bench
   C10-08 --> STD-mlcommons-bench
   C10-11 --> STD-mlcommons-bench
   C10-12 --> STD-mlcommons-bench
   C10-01 --> STD-onnx
+  STD-protobuf --> STD-onnx
+  C10-03 --> STD-vega-lite
+  C10-06 --> STD-vega-lite
+  C10-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C10-02 --> STD-w3c-tabular-data
+  C10-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

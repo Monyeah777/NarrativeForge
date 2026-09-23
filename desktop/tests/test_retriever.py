@@ -201,8 +201,29 @@ class TestReferencedBy(unittest.TestCase):
         refs = referenced_by("M55")
         self.assertTrue(refs, "真实 registry 中 M55 应被引用")
         self.assertIn("校园西幻轻混组合包", [r["referrer"] for r in refs])
-        # M91 官方核心模块不被社区引用（registry 无引用即空）
-        self.assertEqual(referenced_by("M91"), [])
+        # 交叉引用面自洽（不写死期望）：按类别感知口径复算，要求与声明侧一致；
+        # 新增组合包 references 自然纳入，不再出现「过期硬编码期望」。
+        import json
+        from pathlib import Path
+        reg = json.loads(Path("src/core/registry.json").read_text(encoding="utf-8"))
+        rows = []
+        for p in reg.get("protocols") or []:
+            for r in p.get("references") or []:
+                if r.get("module_id"):
+                    rows.append((p["id"], str(r["module_id"])))
+        self.assertTrue(rows, "真实 registry 应存在跨包 references 声明")
+        for mid in sorted({m for _, m in rows}):
+            cat, bare = (mid.split(":", 1) if ":" in mid else ("", mid))
+            expect = {pid for pid, m in rows
+                      if (m == mid) or (bare == m.split(":", 1)[-1]
+                                        and (not cat or not (":" in m) or
+                                             m.split(":", 1)[0] == cat))}
+            got = {r["referrer"] for r in referenced_by(mid)}
+            self.assertEqual(got, expect, "module_id=%s 被引用集合与声明不一致" % mid)
+        # 防跨类别误命中（本波真实缺陷回归）：类别限定查询不得命中其它类别的同号声明。
+        cross = {r["referrer"] for r in referenced_by("AI保险:M01")}
+        self.assertTrue(cross, "AI保险:M01 应存在真实引用方")
+        self.assertNotIn("组合包-数据管线", cross)
 
 
 if __name__ == "__main__":

@@ -18,11 +18,18 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-otel-semconv
+    STD-ietf-json
     STD-ietf-json-schema
+    STD-jsonrpc
     STD-mcp
+    STD-mermaid
     STD-mlcommons-bench
     STD-nist-800-188
+    STD-nist-privacy
     STD-oasis-openapi
+    STD-rdf11
+    STD-vega-lite
+    STD-w3c-vc
   end
   C16-01 --> C16-02
   C16-02 --> C16-03
@@ -45,14 +52,32 @@ flowchart TD
   C16-11 --> C16-12
   C16-09 --> C16-12
   C16-12 --> STD-cncf-otel-semconv
+  C16-04 --> STD-cncf-otel-semconv
+  C16-05 --> STD-cncf-otel-semconv
+  C16-10 --> STD-cncf-otel-semconv
   C16-02 --> STD-ietf-json-schema
   C16-04 --> STD-ietf-json-schema
+  C16-01 --> STD-ietf-json-schema
+  C16-06 --> STD-ietf-json-schema
+  C16-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   C16-01 --> STD-mcp
   C16-03 --> STD-mcp
   C16-05 --> STD-mcp
   C16-09 --> STD-mcp
+  STD-jsonrpc --> STD-mcp
+  C16-09 --> STD-mermaid
+  C16-12 --> STD-mermaid
   C16-11 --> STD-mlcommons-bench
   C16-07 --> STD-nist-800-188
+  STD-nist-privacy --> STD-nist-800-188
   C16-06 --> STD-oasis-openapi
   C16-08 --> STD-oasis-openapi
   C16-10 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
+  C16-02 --> STD-vega-lite
+  C16-03 --> STD-vega-lite
+  C16-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C16-07 --> STD-w3c-vc
+  STD-rdf11 --> STD-w3c-vc

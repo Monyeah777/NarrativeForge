@@ -1,0 +1,57 @@
+# protocol.yaml — 组合包协议声明（组合引擎产物化：组合包-受监管行业）
+# 由 `nf combine materialize` 生成；机读真相 = 本文件，人读速览 = README.md（双源一致）
+protocol:
+  schema_version: "2"
+package:
+  conformance: "L2"
+  id: 组合包-受监管行业
+  name: 组合包-受监管行业
+  version: "1.0.0"
+  pipeline: P110
+  module_id_range: []          # 组合包不新增模块（全部经 references 只读借阅）
+  categories:
+    - 组合域-受监管行业
+  dependencies:
+    core_only: true
+    core_modules: [M00, 通用:M10, M08, M23, M24, M50, M80, 事件:M22, M06, M12, M13, M20, M90]
+    cross_package: []
+  references:
+    - source_package: AI法律与合规域包
+      module_id: AI法律与合规:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: AI法律与合规域包
+      module_id: AI法律与合规:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: AI金融投研与风控域包
+      module_id: AI金融投研与风控:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: AI金融投研与风控域包
+      module_id: AI金融投研与风控:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 可解释性与审计域包
+      module_id: 可解释性与审计:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 可解释性与审计域包
+      module_id: 可解释性与审计:M02
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 隐私与数据治理域包
+      module_id: 隐私与数据治理:M01
+      source_schema_version: "2"
+      asset_readonly: true
+    - source_package: 隐私与数据治理域包
+      module_id: 隐私与数据治理:M02
+      source_schema_version: "2"
+      asset_readonly: true
+  modules: []
+  assets:
+    count: 0
+    readme: README.md
+  mount_layers:          # 堆叠写入 available（default 留空，规避同层 default 冲突）
+    P40: {default: [], available: [AI法律与合规:M01, AI金融投研与风控:M01, 可解释性与审计:M01, 隐私与数据治理:M01]}
+    P60: {default: [], available: [AI法律与合规:M02, AI金融投研与风控:M02, 可解释性与审计:M02, 隐私与数据治理:M02]}

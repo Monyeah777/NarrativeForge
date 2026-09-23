@@ -18,10 +18,16 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-cloudevents
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-mlcommons-bench
     STD-rdf11
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-skos
     STD-w3c-tabular-data
   end
@@ -36,14 +42,33 @@ flowchart TD
   B05-10 --> B05-11
   B05-11 --> B05-12
   B05-03 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
+  B05-07 --> STD-commonmark
   B05-06 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B05-01 --> STD-ietf-json-schema
   B05-04 --> STD-ietf-json-schema
   B05-07 --> STD-ietf-json-schema
   B05-10 --> STD-ietf-json-schema
+  B05-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B05-11 --> STD-mlcommons-bench
   B05-12 --> STD-mlcommons-bench
   B05-02 --> STD-rdf11
+  B05-01 --> STD-vega-lite
+  B05-02 --> STD-vega-lite
+  B05-03 --> STD-vega-lite
+  B05-05 --> STD-vega-lite
+  B05-06 --> STD-vega-lite
+  B05-09 --> STD-vega-lite
+  B05-10 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B05-04 --> STD-w3c-prov-o
+  B05-08 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B05-09 --> STD-w3c-skos
+  STD-rdf11 --> STD-w3c-skos
   B05-05 --> STD-w3c-tabular-data
   B05-08 --> STD-w3c-tabular-data
+  B05-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

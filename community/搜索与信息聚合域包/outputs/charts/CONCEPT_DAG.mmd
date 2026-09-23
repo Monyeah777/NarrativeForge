@@ -21,8 +21,15 @@ flowchart TD
     STD-commonmark
     STD-frictionless-package
     STD-frictionless-table
+    STD-ietf-bcp47
+    STD-ietf-ixdtf
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-rfc3339
+    STD-vega-lite
     STD-w3c-epub33
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E17-01 --> E17-02
   E17-02 --> E17-03
@@ -47,12 +54,31 @@ flowchart TD
   E17-07 --> STD-cncf-otel-semconv
   E17-01 --> STD-commonmark
   E17-04 --> STD-commonmark
+  E17-02 --> STD-commonmark
+  E17-05 --> STD-commonmark
+  E17-07 --> STD-commonmark
+  E17-10 --> STD-commonmark
+  E17-11 --> STD-commonmark
+  E17-12 --> STD-commonmark
   E17-11 --> STD-frictionless-package
+  STD-ietf-json-schema --> STD-frictionless-package
   E17-10 --> STD-frictionless-table
   E17-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
+  E17-04 --> STD-ietf-ixdtf
+  STD-rfc3339 --> STD-ietf-ixdtf
+  E17-01 --> STD-ietf-json-schema
+  E17-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  E17-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E17-03 --> STD-w3c-epub33
   E17-06 --> STD-w3c-epub33
   E17-09 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
   E17-02 --> STD-w3c-tabular-data
   E17-05 --> STD-w3c-tabular-data
   E17-08 --> STD-w3c-tabular-data
+  E17-03 --> STD-w3c-tabular-data
+  E17-09 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

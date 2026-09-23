@@ -21,8 +21,15 @@ flowchart TD
     STD-commonmark
     STD-frictionless-package
     STD-gfm
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
+    STD-vega-lite
     STD-w3c-epub33
+    STD-w3c-tabular-data
+    STD-w3c-xml
   end
   C12-01 --> C12-02
   C12-02 --> C12-03
@@ -46,13 +53,31 @@ flowchart TD
   C12-09 --> C12-12
   C12-07 --> STD-cncf-otel-semconv
   C12-12 --> STD-cncf-otel-semconv
+  C12-04 --> STD-cncf-otel-semconv
+  C12-05 --> STD-cncf-otel-semconv
   C12-05 --> STD-commonmark
+  C12-08 --> STD-commonmark
+  C12-09 --> STD-commonmark
+  C12-10 --> STD-commonmark
   C12-03 --> STD-frictionless-package
+  STD-ietf-json-schema --> STD-frictionless-package
   C12-01 --> STD-gfm
   C12-04 --> STD-gfm
   C12-06 --> STD-gfm
+  STD-commonmark --> STD-gfm
+  C12-01 --> STD-ietf-json-schema
+  C12-06 --> STD-ietf-json-schema
+  C12-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  C12-12 --> STD-mermaid
   C12-02 --> STD-mlcommons-bench
   C12-08 --> STD-mlcommons-bench
   C12-11 --> STD-mlcommons-bench
+  C12-03 --> STD-vega-lite
+  C12-07 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   C12-09 --> STD-w3c-epub33
   C12-10 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
+  C12-02 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

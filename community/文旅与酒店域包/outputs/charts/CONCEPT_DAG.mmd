@@ -17,12 +17,22 @@ flowchart TD
     D19-12
   end
   subgraph P80[P80]
+    STD-cncf-cloudevents
+    STD-common-criteria
+    STD-frictionless-package
     STD-frictionless-table
-    STD-iso-iec-25010
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-nist-ai-rmf
     STD-oasis-openapi
     STD-owasp-llm
+    STD-owasp-top10
+    STD-rdf11
+    STD-vega-lite
     STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   D19-01 --> D19-02
   D19-02 --> D19-03
@@ -44,15 +54,35 @@ flowchart TD
   D19-08 --> D19-11
   D19-11 --> D19-12
   D19-09 --> D19-12
+  D19-04 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
+  D19-03 --> STD-common-criteria
+  D19-09 --> STD-common-criteria
   D19-05 --> STD-frictionless-table
-  D19-03 --> STD-iso-iec-25010
-  D19-09 --> STD-iso-iec-25010
+  STD-frictionless-package --> STD-frictionless-table
+  D19-01 --> STD-ietf-json-schema
+  D19-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  D19-09 --> STD-mermaid
+  D19-11 --> STD-mermaid
   D19-01 --> STD-nist-ai-rmf
   D19-04 --> STD-nist-ai-rmf
   D19-07 --> STD-nist-ai-rmf
   D19-10 --> STD-nist-ai-rmf
   D19-06 --> STD-oasis-openapi
+  STD-ietf-json-schema --> STD-oasis-openapi
   D19-12 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
+  D19-02 --> STD-vega-lite
+  D19-03 --> STD-vega-lite
+  D19-07 --> STD-vega-lite
+  D19-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   D19-02 --> STD-w3c-prov-o
   D19-08 --> STD-w3c-prov-o
   D19-11 --> STD-w3c-prov-o
+  D19-05 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  D19-08 --> STD-w3c-tabular-data
+  D19-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

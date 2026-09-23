@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
-|---|---|---|---|---|---|
-| `A14-01` | 小模型蒸馏与裁剪 | 小模型蒸馏与裁剪的口径：教师 / 学生规模、蒸馏目标与剪裁后精度落差。 | 声明 teacher/student（参数量）、distill_target（logits|hidden|sequence）与 accuracy_drop（相对基线落差）。 | 只报学生模型绝对分不给落差；蒸馏数据与评测集重叠。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
-| `A14-02` | 模型量化压缩部署 | 模型量化压缩部署的口径：量化位宽 / 分组、校准集来源与精度-延迟双指标。 | 声明 bits（8|4|2）、group_size、calib_set（来源 + 样本数）与 metric_pair（精度 + 首 token 延迟）。 | 只报体积缩小；校准集与测试集同源（虚高）。 | `oasis-openapi` OpenAPI 3.1（OpenAPI Initiative） |
-| `A14-03` | 端侧推理框架 | 端侧推理框架的口径：运行时与版本、算子覆盖、后端（CPU/GPU/NPU）与线程数。 | 声明 runtime（onnxruntime/tflite/mnn 等 + 版本）、backend、threads 与 op_coverage（不支持的算子数与回退策略）。 | 换后端直接比延迟（不可比）；算子回退到 CPU 未声明。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
-| `A14-04` | 内存与功耗预算 | 内存与功耗预算的口径：峰值内存、常驻内存、单次推理能耗与温控降频处理。 | 声明 peak_mem_mb、rss_mb、energy_per_inference（mJ 或 %/次）与 throttling_policy（是否排除降频样本）。 | 只报平均值掩盖温控降频；能耗口径与设备未声明。 | `ieee-754` 浮点运算标准（IEEE） |
-| `A14-05` | 隐私本地推理 | 隐私本地推理的口径：数据出域策略、可收集的遥测范围与本地存储加密。 | 声明 egress（none|摘要|原始）、telemetry_scope（字段清单）与 at_rest_encryption（true|false + 算法）。 | 默认上传原始输入；遥测字段未列清单（不可审计）。 | `gdpr` GDPR（EU） |
-| `A14-06` | 端云协同策略 | 端云协同策略的口径：分流判据、回退条件与两侧一致性要求。 | 声明 routing_rule（置信阈值/复杂度）、fallback（离线|弱网条件）与 consistency（端云输出差异容忍度）。 | 弱网无回退（体验崩塌）；端云输出不一致无容忍度定义。 | `a2a` A2A 协议（Linux Foundation） |
-| `A14-07` | 体积与延迟评测 | 体积与延迟评测的口径：模型体积口径、冷启动 / 热启动区分与延迟分位。 | 声明 size_metric（含是否计入运行时）、cold_vs_warm（分列）与 latency_percentiles（p50/p95/p99）。 | 只报平均延迟；体积不计运行时导致下载体积失真。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
-| `A14-08` | 移动端多模态 | 移动端多模态的口径：模态与分辨率上限、相机采集管线与端侧预处理位置。 | 声明 modalities（枚举）、res_cap（像素上限）与 preprocess（端侧|云端 + 步骤）。 | 预处理放云端导致隐私与延迟问题未声明；分辨率上限不定导致内存爆炸。 | `ieee-754` 浮点运算标准（IEEE） |
-| `A14-09` | 车机与 IoT 端侧 | 车机与 IoT 端侧的口径：算力 / 内存档位、实时性预算与功能安全要求。 | 声明 hw_tier（算力/内存档）、realtime_budget_ms 与 safety_req（如 ASIL 等级或 none）。 | 在高端档位评测后宣称覆盖全部车机；实时预算不声明。 | `covesa-vss` Vehicle Signal Specification（COVESA） |
-| `A14-10` | 端侧工具调用 | 端侧工具调用的口径：工具集、权限边界与失败降级。 | 声明 tool_set（枚举）、permissions（可访问能力边界）与 failure_mode（降级/提示/中止）。 | 工具权限过宽（本地文件/相机无边界）；失败静默。 | `mcp` Model Context Protocol（Anthropic/MCP） |
-| `A14-11` | 固件与 OTA 更新 | 固件与 OTA 更新的口径：更新包签名校验、灰度策略与回滚能力。 | 声明 signature_check（true + 算法）、rollout（分批比例）与 rollback（true|false + 触发条件）。 | 无签名校验（可被替换）；无回滚导致坏版本不可救。 | `uptane` OTA 安全框架（Uptane） |
-| `A14-12` | 端侧模型安全 | 端侧模型安全的口径：模型文件保护、提示注入面与本地数据泄露防护。 | 声明 model_protection（加密/签名/混淆）、injection_surface（工具与外部输入面清单）与 leak_guard（日志脱敏规则）。 | 模型文件明文可提取（资产流失）；日志留存用户原文。 | `owasp-llm` LLM 应用十大风险（OWASP） |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|---|
+| `A14-01` | 小模型蒸馏与裁剪 | 小模型蒸馏与裁剪的口径：教师 / 学生规模、蒸馏目标与剪裁后精度落差。 | 声明 teacher/student（参数量）、distill_target（logits|hidden|sequence）与 accuracy_drop（相对基线落差）。 | 只报学生模型绝对分不给落差；蒸馏数据与评测集重叠。 | `onnx` ONNX（opset 扩展）（iface｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `A14-02` | 模型量化压缩部署 | 模型量化压缩部署的口径：量化位宽 / 分组、校准集来源与精度-延迟双指标。 | 声明 bits（8|4|2）、group_size、calib_set（来源 + 样本数）与 metric_pair（精度 + 首 token 延迟）。 | 只报体积缩小；校准集与测试集同源（虚高）。 | `oasis-openapi` OpenAPI 3.1（iface｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `A14-03` | 端侧推理框架 | 端侧推理框架的口径：运行时与版本、算子覆盖、后端（CPU/GPU/NPU）与线程数。 | 声明 runtime（onnxruntime/tflite/mnn 等 + 版本）、backend、threads 与 op_coverage（不支持的算子数与回退策略）。 | 换后端直接比延迟（不可比）；算子回退到 CPU 未声明。 | `onnx` ONNX（opset 扩展）（iface｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `A14-04` | 内存与功耗预算 | 内存与功耗预算的口径：峰值内存、常驻内存、单次推理能耗与温控降频处理。 | 声明 peak_mem_mb、rss_mb、energy_per_inference（mJ 或 %/次）与 throttling_policy（是否排除降频样本）。 | 只报平均值掩盖温控降频；能耗口径与设备未声明。 | `ieee-754` 浮点运算标准（data｜✓） | `mermaid` Mermaid 图语言（form｜✓） |
+| `A14-05` | 隐私本地推理 | 隐私本地推理的口径：数据出域策略、可收集的遥测范围与本地存储加密。 | 声明 egress（none|摘要|原始）、telemetry_scope（字段清单）与 at_rest_encryption（true|false + 算法）。 | 默认上传原始输入；遥测字段未列清单（不可审计）。 | `gdpr` GDPR（gov｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `A14-06` | 端云协同策略 | 端云协同策略的口径：分流判据、回退条件与两侧一致性要求。 | 声明 routing_rule（置信阈值/复杂度）、fallback（离线|弱网条件）与 consistency（端云输出差异容忍度）。 | 弱网无回退（体验崩塌）；端云输出不一致无容忍度定义。 | `a2a` A2A 协议（iface｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `A14-07` | 体积与延迟评测 | 体积与延迟评测的口径：模型体积口径、冷启动 / 热启动区分与延迟分位。 | 声明 size_metric（含是否计入运行时）、cold_vs_warm（分列）与 latency_percentiles（p50/p95/p99）。 | 只报平均延迟；体积不计运行时导致下载体积失真。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（eng｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `A14-08` | 移动端多模态 | 移动端多模态的口径：模态与分辨率上限、相机采集管线与端侧预处理位置。 | 声明 modalities（枚举）、res_cap（像素上限）与 preprocess（端侧|云端 + 步骤）。 | 预处理放云端导致隐私与延迟问题未声明；分辨率上限不定导致内存爆炸。 | `ieee-754` 浮点运算标准（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `A14-09` | 车机与 IoT 端侧 | 车机与 IoT 端侧的口径：算力 / 内存档位、实时性预算与功能安全要求。 | 声明 hw_tier（算力/内存档）、realtime_budget_ms 与 safety_req（如 ASIL 等级或 none）。 | 在高端档位评测后宣称覆盖全部车机；实时预算不声明。 | `covesa-vss` Vehicle Signal Specification（iface｜✓） | `mermaid` Mermaid 图语言（form｜✓） |
+| `A14-10` | 端侧工具调用 | 端侧工具调用的口径：工具集、权限边界与失败降级。 | 声明 tool_set（枚举）、permissions（可访问能力边界）与 failure_mode（降级/提示/中止）。 | 工具权限过宽（本地文件/相机无边界）；失败静默。 | `mcp` Model Context Protocol（iface｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `A14-11` | 固件与 OTA 更新 | 固件与 OTA 更新的口径：更新包签名校验、灰度策略与回滚能力。 | 声明 signature_check（true + 算法）、rollout（分批比例）与 rollback（true|false + 触发条件）。 | 无签名校验（可被替换）；无回滚导致坏版本不可救。 | `uptane` OTA 安全框架（gov｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `A14-12` | 端侧模型安全 | 端侧模型安全的口径：模型文件保护、提示注入面与本地数据泄露防护。 | 声明 model_protection（加密/签名/混淆）、injection_surface（工具与外部输入面清单）与 leak_guard（日志脱敏规则）。 | 模型文件明文可提取（资产流失）；日志留存用户原文。 | `owasp-llm` LLM 应用十大风险（gov｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
 
 ## 3. 机读投影契约
 

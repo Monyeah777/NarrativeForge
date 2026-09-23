@@ -17,10 +17,20 @@ flowchart TD
     A06-12
   end
   subgraph P80[P80]
+    STD-ietf-bcp47
+    STD-ietf-ixdtf
+    STD-ietf-json
     STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-oci-image
+    STD-rdf11
+    STD-rfc3339
+    STD-vega-lite
     STD-w3c-owl-time
+    STD-w3c-owl2
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
   end
   A06-01 --> A06-02
   A06-02 --> A06-03
@@ -32,7 +42,15 @@ flowchart TD
   A06-08 --> A06-09
   A06-08 --> A06-10
   A06-11 --> A06-12
+  A06-06 --> STD-ietf-ixdtf
+  STD-rfc3339 --> STD-ietf-ixdtf
   A06-07 --> STD-ietf-json-schema
+  A06-01 --> STD-ietf-json-schema
+  A06-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  A06-04 --> STD-mermaid
+  A06-07 --> STD-mermaid
+  A06-09 --> STD-mermaid
   A06-05 --> STD-mlcommons-bench
   A06-11 --> STD-mlcommons-bench
   A06-12 --> STD-mlcommons-bench
@@ -43,4 +61,14 @@ flowchart TD
   A06-08 --> STD-oci-image
   A06-09 --> STD-oci-image
   A06-10 --> STD-oci-image
+  A06-02 --> STD-vega-lite
+  A06-03 --> STD-vega-lite
+  A06-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   A06-06 --> STD-w3c-owl-time
+  STD-w3c-owl2 --> STD-w3c-owl-time
+  A06-05 --> STD-w3c-prov-o
+  A06-10 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  A06-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

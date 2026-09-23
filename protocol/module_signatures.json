@@ -2,75 +2,75 @@
   "count": 248,
   "modules": {
     "AI人力资源与招聘:M01": {
-      "digest": "7905244a2024d25af9b84b606ba0f9c0b9cfb15d5dd287b80c03ce6fb5955d5b",
+      "digest": "a51ac986389d43af2d63339c7b0af974d7f02e8afec78fcadc7998cf2458b931",
       "path": "community/AI人力资源与招聘域包/modules/D14a_AI人力资源与招聘口径登记.md"
     },
     "AI人力资源与招聘:M02": {
-      "digest": "28fd1c88a63c298defe7a740e3b330f1243cc46d6968f063edfe47a35f537d98",
+      "digest": "29725c602f515982fbd935f46876eba1c13eed00be49a665fe25efcd1f5e9056",
       "path": "community/AI人力资源与招聘域包/modules/D14b_AI人力资源与招聘收口与形态派生.md"
     },
     "AI保险:M01": {
-      "digest": "84a345d631d3136f183148298b16b185bee88c41a1c10f34badeadfbd0e89066",
+      "digest": "91956388a588e18bbb346f41728b67963e84ea4b6992ac61bf99c3d5dfbcae0d",
       "path": "community/AI保险域包/modules/D05a_AI保险口径登记.md"
     },
     "AI保险:M02": {
-      "digest": "eb866f989c957e92386adaef2a6c0201e183c3a1d61b3cb01a7eca11a0dbcdd4",
+      "digest": "cebb67bc0f42364c5a4d4f655476f07c5c9c73bea20ce85fc90e8d22f9683f55",
       "path": "community/AI保险域包/modules/D05b_AI保险收口与形态派生.md"
     },
     "AI农业:M01": {
-      "digest": "f4e46d72756c8ffe7e28b62745cde31bb35fd1eb1938f422d4cb833002267f14",
+      "digest": "eeb6d3edccab9746006b3d1997d7036645003d03f3e62f4c77f8e445eb6b6c47",
       "path": "community/AI农业域包/modules/D10a_AI农业口径登记.md"
     },
     "AI农业:M02": {
-      "digest": "3110fee9c8393c2b08f3a85f395ce8631aeae3ae0be374fed6196ec786311aa3",
+      "digest": "30f8dd99cbff0bf9989d874d5b30ec3bc4a2cbc37e0b312eef440aa3740275aa",
       "path": "community/AI农业域包/modules/D10b_AI农业收口与形态派生.md"
     },
     "AI制药与生物:M01": {
-      "digest": "0d66aba8ab2b6634800b2dcfa4e468fe56144020c574360898157dcf85b4be29",
+      "digest": "934b917d70adbe407ef6bdd4bacc26d971e0dd727c0330923c1e15db80322622",
       "path": "community/AI制药与生物域包/modules/D02a_AI制药与生物口径登记.md"
     },
     "AI制药与生物:M02": {
-      "digest": "ccdab38a1f290ef242d2e0a1a51c392436e1b5180a94800821c290d7fa29c2fb",
+      "digest": "60fcec24d31eabe90db47d8e1beb04c7f3000aae3858a3c6e23474af0a5db707",
       "path": "community/AI制药与生物域包/modules/D02b_AI制药与生物收口与形态派生.md"
     },
     "AI制造业:M01": {
-      "digest": "f2027ddf1dbd0a27a6e185a313ab1a3ea383256dff5bdb328a377bedfee8c9f8",
+      "digest": "101dd757315e2b576ace056a3f2f6966f9b7c2a846c70562f431ecb7e77d20ad",
       "path": "community/AI制造业域包/modules/D08a_AI制造业口径登记.md"
     },
     "AI制造业:M02": {
-      "digest": "d9e566bb6fd4c705329f55fb60f35edcae9c41d443e1dd4e440c35d6792a59f8",
+      "digest": "fa7f8cd94fcb912d54bd70a2a8fd4f2dffbecdfa969bc17eb2e40aee25fdb725",
       "path": "community/AI制造业域包/modules/D08b_AI制造业收口与形态派生.md"
     },
     "AI医疗健康:M01": {
-      "digest": "f7917bd4d58ef953eb4a5a7eb6e59f10e585bad8de9d4e91788756d092eb4ab9",
+      "digest": "4c1e3515cb71652fc1f5c3a93a2aadf51156791ec379e137dd6a854e2e838c7d",
       "path": "community/AI医疗健康域包/modules/D01a_AI医疗健康口径登记.md"
     },
     "AI医疗健康:M02": {
-      "digest": "9a594563357998f4db701f586a9bc47ba46b26bcccc37e8aee2a582da59f7acf",
+      "digest": "b1080cfe701e88eaea44310d02fae49ef044d61521ceca87f716d4b43a1fc47c",
       "path": "community/AI医疗健康域包/modules/D01b_AI医疗健康收口与形态派生.md"
     },
     "AI政务与公共事务:M01": {
-      "digest": "0baff0820a6aae200d89c3e82412b548b12a01cdae66e9fe645106ecd54802cf",
+      "digest": "0feaaf4c4e9c2645a977d65dd7c85154409c5c74bd80f8b0e6b8612aa0d9da8a",
       "path": "community/AI政务与公共事务域包/modules/D07a_AI政务与公共事务口径登记.md"
     },
     "AI政务与公共事务:M02": {
-      "digest": "d3ab0be6beacd33fb9177c74dfad05cccd6009e25b49cc604fe98d67ea41fa2e",
+      "digest": "bb8edace67092305bac652b8f608c6a79e0a7388f5b3b22f9945b08a1f6d8574",
       "path": "community/AI政务与公共事务域包/modules/D07b_AI政务与公共事务收口与形态派生.md"
     },
     "AI教育:M01": {
-      "digest": "30175446cab4f4b3fc84f94d24100987a11f98ed4caeac8d00c59f9060ba7d75",
+      "digest": "03251cf82bfd979b86e0dab534b21d18d68a0229e86162061a0a5b98f02c387a",
       "path": "community/AI教育域包/modules/D06a_AI教育口径登记.md"
     },
     "AI教育:M02": {
-      "digest": "d16d7f45f274762f7c76f816069b8995e2a2dca0bb561dc9c914e442d4500757",
+      "digest": "cf4e1872b0f4eeb1b31bd6f7eec6a8045e6110a184b31a1726554a42e87a14f0",
       "path": "community/AI教育域包/modules/D06b_AI教育收口与形态派生.md"
     },
     "AI法律与合规:M01": {
-      "digest": "4fd7d8f3486f37972599fbb2dbf5cdd686e6aa9fb2053e753260e4b6b0721b0f",
+      "digest": "8dd56f3d9736eb5e177f75054526032ad44ed4a0de7b295378662dac46226169",
       "path": "community/AI法律与合规域包/modules/D03a_AI法律与合规口径登记.md"
     },
     "AI法律与合规:M02": {
-      "digest": "8241705db50fbbd29b29b78de0630a2578f08b3330bf3b184b0a8d87d92be179",
+      "digest": "77aa1bbc546601ba5dbe789c66ba4e7ca4dfc19932be5f0e840f0c9e80b14c9a",
       "path": "community/AI法律与合规域包/modules/D03b_AI法律与合规收口与形态派生.md"
     },
     "AI系统:M25": {
@@ -82,27 +82,27 @@
       "path": "community/AI系统域包/modules/M26_装载序就绪门.md"
     },
     "AI能源与电力:M01": {
-      "digest": "c39070de4dd3c668199ca2ee94d6afdb9074cf17f0b4072033d8be7158019bf5",
+      "digest": "16756dbf0b4ae5bc984d0483ad31ea279c3805c10eca74aef503d1c885b3c210",
       "path": "community/AI能源与电力域包/modules/D09a_AI能源与电力口径登记.md"
     },
     "AI能源与电力:M02": {
-      "digest": "4a941d8f643a7514e0d65e2ec96c2275fb4cdb75670dab9152312da36d22e619",
+      "digest": "5be5a4131fe7c9a10558c17464446ac5564bd4bb81e48efd330c31de5e0c712d",
       "path": "community/AI能源与电力域包/modules/D09b_AI能源与电力收口与形态派生.md"
     },
     "AI金融投研与风控:M01": {
-      "digest": "5d4f9e75798186b6246ffd4ddab06422214af23f0642c4db53a887de2cb0b368",
+      "digest": "4d4e40d52fbda1fb8ffbd8d78a9fc05c93bf9b39943f49b497ed35cac75aa891",
       "path": "community/AI金融投研与风控域包/modules/D04a_AI金融投研与风控口径登记.md"
     },
     "AI金融投研与风控:M02": {
-      "digest": "3a43796e8aa40acfbe0787d6fce2b1767e2142730dcf30f2ce8185df4cde0a20",
+      "digest": "d1be68d1db8eb672021c8df1c89f7a82d398e8a3c71d222f8073d7f5d09e1623",
       "path": "community/AI金融投研与风控域包/modules/D04b_AI金融投研与风控收口与形态派生.md"
     },
     "AI食品与餐饮:M01": {
-      "digest": "64036053d66722dc5c0342c1324076ef990febbfc40ac8cc364616718e426fab",
+      "digest": "be8cf9b971e0a8f4cee837ac575427d0343efc6082ad8533a86632f74719d080",
       "path": "community/AI食品与餐饮域包/modules/D16a_AI食品与餐饮口径登记.md"
     },
     "AI食品与餐饮:M02": {
-      "digest": "c3e33ecd7ad4133534510782c7adfe2000a4ea40c042660f27111510d70aa601",
+      "digest": "bcf71747c560b5cc72d6046c59cb5dec63c77def2b64cc006bbe6214dacf4b8d",
       "path": "community/AI食品与餐饮域包/modules/D16b_AI食品与餐饮收口与形态派生.md"
     },
     "M00": {
@@ -242,11 +242,11 @@
       "path": "04_模块库/技术文档类/M90_技术文档结构.md"
     },
     "M91": {
-      "digest": "97b6c2911aeb07cf9bbbf848a215d16e91e39d68f0de1d53a0b13e981af47f40",
+      "digest": "7b4563ac5564aed3f109c75149df232d81146373386d1b0380ab8ba745518c2f",
       "path": "community/校园西幻轻混组合包/modules/M91_异界身份桥.md"
     },
     "M92": {
-      "digest": "ff5a11184b0a956931290d52fe52f412d4825988fc30f43c6b297eac22eea652",
+      "digest": "c87d847b4a5a87155b1ac11365921ea40646d0342e8a647c08741eb3c4993fba",
       "path": "community/校园西幻轻混组合包/modules/M92_轻混装配执行.md"
     },
     "M93": {
@@ -274,35 +274,35 @@
       "path": "community/技术文档域包/modules/M98_修订记录.md"
     },
     "三维与世界模型:M01": {
-      "digest": "46c59a497b1edc7dae71faafa616310dcd1c6e995fb072b2b2ae63e7281e0e70",
+      "digest": "926c56eaff6490d77af122533e56df467d3479fa23717c11029f5ca4145e80ba",
       "path": "community/三维与世界模型域包/modules/A08a_三维口径登记.md"
     },
     "三维与世界模型:M02": {
-      "digest": "21c89c2d836aed0b60a4a83495b18ceff6dd601b953e5fd064ef119348d0ee19",
+      "digest": "b274c35552abf4235f6c1da74c468ed28e86d92fa11dd437586d5a44a6da5d16",
       "path": "community/三维与世界模型域包/modules/A08b_三维面收口与形态派生.md"
     },
     "上下文工程与长上下文:M01": {
-      "digest": "818e87dbb7a997d779000292950ed929ca2d8a477d2132f7672ce7718e386db1",
+      "digest": "c9595b10789ad5362832c0f206ef5e5dac47a638fe311d9754ceb54f25bfaf7f",
       "path": "community/上下文工程与长上下文域包/modules/C12a_上下文工程与长上下文口径登记.md"
     },
     "上下文工程与长上下文:M02": {
-      "digest": "97c158743c4703d0a8d7acd727b453f3ea6ef94bd795461e91ff6af2e7df7c6b",
+      "digest": "55c4a7e9c233aa311174c7f12bcfd1c2a61b2bbaf7a9cd2bc7b5b9ee21b14d09",
       "path": "community/上下文工程与长上下文域包/modules/C12b_上下文工程与长上下文收口与形态派生.md"
     },
     "世界书与设定库:M01": {
-      "digest": "61ce56140f384c7f11a93277442a079926863bc2be1ba05253a26d2e93473142",
+      "digest": "0757df1efd31a2fb6b2253719e5c02c553db18da84339e7ea7e466398b4d755e",
       "path": "community/世界书与设定库域包/modules/E03a_世界书与设定库口径登记.md"
     },
     "世界书与设定库:M02": {
-      "digest": "1ca59466279dc9a012c4e630e4fafbc661b7335d55f1615c550798d3d541ee60",
+      "digest": "7fdbd6c3f97c425dd2a97961367ec59086803575895c607e495d583bbeb112af",
       "path": "community/世界书与设定库域包/modules/E03b_世界书与设定库收口与形态派生.md"
     },
     "个人助理与日常生活:M01": {
-      "digest": "1f338bbaf59261dfc84e819da348e775b8cc4b7770575364e0b604d3b73e8cdc",
+      "digest": "6bd64e5711eda12aca3bd3b2c929605c55a5bf9dd82194c64c0db94f51498932",
       "path": "community/个人助理与日常生活域包/modules/E16a_个人助理与日常生活口径登记.md"
     },
     "个人助理与日常生活:M02": {
-      "digest": "bbd4cc610984f7bd18c045fa47fa40d71b49229c7170a0dae77eb14a3806121a",
+      "digest": "2cdccc847c4474b338485b17673b8de933c2cbe8a65f4220cc2cfa9014740e0f",
       "path": "community/个人助理与日常生活域包/modules/E16b_个人助理与日常生活收口与形态派生.md"
     },
     "事件:M22": {
@@ -310,619 +310,619 @@
       "path": "04_模块库/事件类/M22_事件叙事.md"
     },
     "交通与出行:M01": {
-      "digest": "0e72c216eca6d4aebd5133edd05756eeaf51afa8e3d0f7a752dd4c2cdb35abcf",
+      "digest": "b05ba967c3a373bcb52559be6c86170f828ed8a6ccde98f6fc38f055b88b0768",
       "path": "community/交通与出行域包/modules/D13a_交通与出行口径登记.md"
     },
     "交通与出行:M02": {
-      "digest": "cf15b40c89d2737ce5e99701e090840a319136b90924bdd43a54cb5be5f5559a",
+      "digest": "4b4d649d0d238f3cd6b04c8858a86fd598884d42fd23cf1cb43681a5721745ca",
       "path": "community/交通与出行域包/modules/D13b_交通与出行收口与形态派生.md"
     },
     "产业与商业落地:M01": {
-      "digest": "e879ca6c56902946b084bb2021223a74d3933e008fa58d18ac41e1b0463f84ca",
+      "digest": "c36658e878e372dddb444f7bee62766ac80aaac7899045a4109bf0bfa07a175c",
       "path": "community/产业与商业落地域包/modules/F10a_产业与商业落地口径登记.md"
     },
     "产业与商业落地:M02": {
-      "digest": "bc66c3fe96e96248aac89de67e6dfef4b8b1a5c40696134fba0871e5f012ca34",
+      "digest": "dd12f678e609aae5df6639b6836d9b362551acb9b0062d25f8000b635c8c08cc",
       "path": "community/产业与商业落地域包/modules/F10b_产业与商业落地收口与形态派生.md"
     },
     "代码与软件工程:M01": {
-      "digest": "c6f0b8bb8ed6b839b43a9da70f3c07761cc277e64835a15041f31a3885c97fd0",
+      "digest": "c5b0ed180eeb609b13ac02b5c5a70dfea759431ef7859b8f2e85befd64834e86",
       "path": "community/代码与软件工程域包/modules/E13a_代码与软件工程口径登记.md"
     },
     "代码与软件工程:M02": {
-      "digest": "fe4d7363b00e8db0d98224f601eafdee8a384582bf6650713cca5fca620fa0b9",
+      "digest": "c947176e934d0ab813986c9642adba93643eb5aac6c7a6f212da58a2dfce959a",
       "path": "community/代码与软件工程域包/modules/E13b_代码与软件工程收口与形态派生.md"
     },
     "代码大模型:M01": {
-      "digest": "ea2312d10d20fc3ddda3fa62c3247f92394c3b3777f83ae1e5cccea729a695ee",
+      "digest": "932a7c9a277a5549151e03678e2d937e4678da953012eba7a662244ef85c2be9",
       "path": "community/代码大模型域包/modules/A09a_代码口径登记.md"
     },
     "代码大模型:M02": {
-      "digest": "6c61821f4be4a0bcf6ccd1c65278c0646f76667f2fd234e214bb892dcd413ffc",
+      "digest": "1a8c77a78afc9f9a882f74a6cf59cd26313c6ec2e08a10c645f506c4787ee54c",
       "path": "community/代码大模型域包/modules/A09b_代码面收口与形态派生.md"
     },
     "代码审查与缺陷检测:M01": {
-      "digest": "8230ad0f452d714e98118f0ac541c5829db3cabcc8f91aaa8efa0349bc07beaa",
+      "digest": "3e0f8966c43caeda673c29243854144c8681f2c778169b6a5544d5f57fd71ac8",
       "path": "community/代码审查与缺陷检测域包/modules/B09a_审查口径登记.md"
     },
     "代码审查与缺陷检测:M02": {
-      "digest": "ef7750216421e917a3b7cc7db700f4ca696d6de3632a2de2035f496f39f03a20",
+      "digest": "832d128e5ea32662815047bac65f4d5929da14b4657f62cfc44c88e12ecb3525",
       "path": "community/代码审查与缺陷检测域包/modules/B09b_审查面收口与形态派生.md"
     },
     "代码生成与补全:M01": {
-      "digest": "4268269222897e9a3d7909f8148d527e7f8b7175dc341d813fa4c649e41a8ea1",
+      "digest": "92bc65689820747314d48f5a064851c25a7916833399ef62a635a5030487f55d",
       "path": "community/代码生成与补全域包/modules/B08a_代码生成口径登记.md"
     },
     "代码生成与补全:M02": {
-      "digest": "77377c9298351775b9066d6cc3114218b8561d075a6c382b919fd95bc9454493",
+      "digest": "3e2bfc8cec2dcf189af0785a2f3fcb5bc251500f8cd944b500e6a6019f630f67",
       "path": "community/代码生成与补全域包/modules/B08b_生成面收口与形态派生.md"
     },
     "企业培训与组织学习:M01": {
-      "digest": "5b554ade2d7ba6506029e324c5b2ec030047b82c3e44161a4ac27462674b1485",
+      "digest": "3a63150897f964995c4c5181d9245f167af15c14d662876781c159eba70d0fc9",
       "path": "community/企业培训与组织学习域包/modules/E15a_企业培训与组织学习口径登记.md"
     },
     "企业培训与组织学习:M02": {
-      "digest": "fbd87a80acd2a79717cf367382d342b47d83b6d5731e9031f08647ff29a4a493",
+      "digest": "624eaa1ec3d5e3a67c7e1176e8981f3e5eda208ee1c33fe661e6b3cf579cb064",
       "path": "community/企业培训与组织学习域包/modules/E15b_企业培训与组织学习收口与形态派生.md"
     },
     "传媒与新闻:M01": {
-      "digest": "b7a37fe100de89822942e149c09d848ba8e10bc7f20f50d5a495ff04a49aaec9",
+      "digest": "b6bc7abb89538d2af46321a08e350ce77fceabfe43d3641a7be02cf6b29be6c1",
       "path": "community/传媒与新闻域包/modules/D17a_传媒与新闻口径登记.md"
     },
     "传媒与新闻:M02": {
-      "digest": "b59afea52d8cf174d271104f397351f1192c0b2c68a1405ed58e346d80da754f",
+      "digest": "6246e371aff36a0303674faeafed3f1ee273ecd05f9fab0120e1e313c993880c",
       "path": "community/传媒与新闻域包/modules/D17b_传媒与新闻收口与形态派生.md"
     },
     "信息抽取与结构化:M01": {
-      "digest": "31808a6bcf6fce64e224dd637191ba5daa3cf3abf452e0503980d5b19ef86523",
+      "digest": "f58d9f890496368440c952453959d02b8bd4e389a363007ec1d40448a095c3d1",
       "path": "community/信息抽取与结构化域包/modules/B05a_抽取口径登记.md"
     },
     "信息抽取与结构化:M02": {
-      "digest": "7b15b6c94bab5c5d3b71e106b49aae85ca3b035b9e74a760512f4ecbde2405f3",
+      "digest": "468cde120e0b8b7e0d4310e51c9901ec20b66e9d3a00545ef8368fc3f8bb96c4",
       "path": "community/信息抽取与结构化域包/modules/B05b_抽取面收口与形态派生.md"
     },
     "具身智能与机器人:M01": {
-      "digest": "1ab13725776e402604585d87d931ec25a0cb40cc926b9f5270c68889338c27c0",
+      "digest": "c2add2a7a4dbf9b8a21791c78685663ba785a1937e8e8ef24304db1f8f4b72c4",
       "path": "community/具身智能与机器人域包/modules/A13a_具身口径登记.md"
     },
     "具身智能与机器人:M02": {
-      "digest": "2a599fb0d3eaa67498c247b7c01ac57b3e26ab4fe7a8256178b57d02d7c18524",
+      "digest": "fde56e6cef2631e56304ebb1dc564886339dfe68f0cbb7ffba8e8cafd5a8fce2",
       "path": "community/具身智能与机器人域包/modules/A13b_具身面收口与形态派生.md"
     },
     "内容分发与社区运营:M01": {
-      "digest": "5a529f7e02444d031894cd4b0ed71b2282f385ecea2c2eebb606d1f56b2fef76",
+      "digest": "a61ca907327e958f531e00f8c6deb755b75eb065a75b686140a2ff2c3d7e1e08",
       "path": "community/内容分发与社区运营域包/modules/E19a_内容分发与社区运营口径登记.md"
     },
     "内容分发与社区运营:M02": {
-      "digest": "430ea0d399dc50e96d86e83ae26425a564ff1a67afc8f1f9c58139316fab2e8c",
+      "digest": "3f9f7819ba0f22bf5d87dbd034286e9ec665e147df1a23feb4034e3b8bc1505b",
       "path": "community/内容分发与社区运营域包/modules/E19b_内容分发与社区运营收口与形态派生.md"
     },
     "内容改写与风格迁移:M01": {
-      "digest": "3fe2dd3a6974cc89257fb72837fc1b030fd3681f93c552d5f7886cec505fae21",
+      "digest": "298c1b29c00ee2a2519609a14e0275bb993f8136bdbd1e92c230324af1716319",
       "path": "community/内容改写与风格迁移域包/modules/E05a_内容改写与风格迁移口径登记.md"
     },
     "内容改写与风格迁移:M02": {
-      "digest": "2c3cf2b52daf0abcb16dc5bb80b5c4c9f2063b22cf77c154476b0b6a7a8a8003",
+      "digest": "9160c103c09a7ee1278ac1277213a1d46a892187b0428e932abd8d7dd032c9d9",
       "path": "community/内容改写与风格迁移域包/modules/E05b_内容改写与风格迁移收口与形态派生.md"
     },
     "分类与情感分析:M01": {
-      "digest": "6ef54c372f744285cccce7645ded63d1b5124258a2fbe34f143515b411e105c3",
+      "digest": "d2ae9842200714ac50214dd732c6b86df2c4011e2a48892c39575a76bff48698",
       "path": "community/分类与情感分析域包/modules/B04a_分类口径登记.md"
     },
     "分类与情感分析:M02": {
-      "digest": "45d6f153e26113734fc8b144353baace4a76631f281c2c7ac0049719949f6e6f",
+      "digest": "209afb267cfcec1ff980301cca97f8bf925bf3f232f018c515e548ec50f9d438",
       "path": "community/分类与情感分析域包/modules/B04b_分类面收口与形态派生.md"
     },
     "参数高效微调:M01": {
-      "digest": "ce1007af85c97f922a79ea9a7af0b6b1bb7d154e264827eec13aecaceeabf460",
+      "digest": "36779d2d774cd0856eaf800e47652ff37a02de8270b00e1ab18bd6be6906e92e",
       "path": "community/参数高效微调域包/modules/C06a_参数高效微调口径登记.md"
     },
     "参数高效微调:M02": {
-      "digest": "fd756943b221a2201999b040f0d9de26bdc8dff25038ab683cff2879ec342049",
+      "digest": "1f28f0959f2bd32b916170f8fef616753c53a87772ba6340fbce786c6649a3ee",
       "path": "community/参数高效微调域包/modules/C06b_参数高效微调收口与形态派生.md"
     },
     "可观测性成本与可靠性:M01": {
-      "digest": "907d586f34eb920a08df79506370c35b83f34dfcf3c04b83ce82146949435b7b",
+      "digest": "2ba1cd8a993feb89deed7497987a929c5271a9b4230ad1f4a8683fe2d0167021",
       "path": "community/可观测性成本与可靠性域包/modules/C18a_可观测性成本与可靠性口径登记.md"
     },
     "可观测性成本与可靠性:M02": {
-      "digest": "6f34f5023f6418bd06066422ac6e1bba21d56bd36c01bc0a767f89f2af2bd9f4",
+      "digest": "712fc93db6fbf7dfa82e2d90c404f82f81ce5d2ddd600591a74732f25299ab2d",
       "path": "community/可观测性成本与可靠性域包/modules/C18b_可观测性成本与可靠性收口与形态派生.md"
     },
     "可解释性与审计:M01": {
-      "digest": "719d43557f8e756b3f00ed9faf053ebe3371ad27c360a5dcae2e2b71d64fe0db",
+      "digest": "53ff52f8f80a68c41084821bd6fd09dc1d092c696bd390f7f15f41a7e53e8c47",
       "path": "community/可解释性与审计域包/modules/F06a_可解释性与审计口径登记.md"
     },
     "可解释性与审计:M02": {
-      "digest": "e7bde789b250e45c585ffce259801eee65709d283abcafb71b227bfdbe232932",
+      "digest": "38efe1ba60af5b7a0fcbe0402d0f414c30f4d8a0fc7ece802e34c5918fd6588b",
       "path": "community/可解释性与审计域包/modules/F06b_可解释性与审计收口与形态派生.md"
     },
     "合成数据生成:M01": {
-      "digest": "3977c9cb18c67279c69e672db3f2786eda2e32fa9d3a5165f9d0b607482d2b14",
+      "digest": "386cc2facc7070821049f330c074ff564ce701bda922e2ef4e8368d8f2ce9091",
       "path": "community/合成数据生成域包/modules/C03a_合成数据生成口径登记.md"
     },
     "合成数据生成:M02": {
-      "digest": "dad06dd9ef2c4e24a1d2807ca48e836259b324397d102ae529b1c80f63048dcf",
+      "digest": "1351d5a9986b0d063522bda307289c97fe91083ebeda374c932327acd99bb192",
       "path": "community/合成数据生成域包/modules/C03b_合成数据生成收口与形态派生.md"
     },
     "合规与监管:M01": {
-      "digest": "1d19fd7702e2e6aafd06173a0c63a3a52f730c15aa3ccdd83e709fa9093ccdea",
+      "digest": "51ac1060fd11ea917e9d792e7ab4f21aae62eead34a72396cfd74f83c3a200c9",
       "path": "community/合规与监管域包/modules/F02a_合规与监管口径登记.md"
     },
     "合规与监管:M02": {
-      "digest": "e39c97361f04664df468fab081a7f61a534c289e684979f02300d99f3fad7a0e",
+      "digest": "62f45d2ffdf53d6839dd6d67f22a2af51fc001efe551352d8e928c1c4d9c7608",
       "path": "community/合规与监管域包/modules/F02b_合规与监管收口与形态派生.md"
     },
     "向量库与检索管线:M01": {
-      "digest": "5f77a23a23153bbe93e19f3e4cebf3ee8b41eff3f60e3ca2cad0f8d2f6fd8ed0",
+      "digest": "8908795a5eccbef332d42af30ea4955bd5d223d5c33235c7cc77efb1bdc3d675",
       "path": "community/向量库与检索管线域包/modules/C15a_向量库与检索管线口径登记.md"
     },
     "向量库与检索管线:M02": {
-      "digest": "c3a3b864c38ea8f7cd0e6cfb7fa19705f39fce98d25945ded35a71be1e61f065",
+      "digest": "ab8d68edd52fa76aafcf6ce825e2355476cce45177952509dace9499359ac4bb",
       "path": "community/向量库与检索管线域包/modules/C15b_向量库与检索管线收口与形态派生.md"
     },
     "图像生成与编辑:M01": {
-      "digest": "a53ad864c3875017d379a2faa2c7b5d47a47d99078df9699abeb83dfa9b6f4a8",
+      "digest": "62394074e5c39b3fd28e21e250f7c3f11cea8aa27a16ad0450b294b03f4f76bb",
       "path": "community/图像生成与编辑域包/modules/A07a_图像生成口径登记.md"
     },
     "图像生成与编辑:M02": {
-      "digest": "2fe58e3c12a511cde435ff25728b1a165345555e35a0468866f0a231e3a16fc4",
+      "digest": "708cb539d3a964e079135ad2119e60eac3633190d688e0caf9e665f7258d731a",
       "path": "community/图像生成与编辑域包/modules/A07b_生成面收口与形态派生.md"
     },
     "图像生成与视觉创作:M01": {
-      "digest": "67f323f8be9c3e952027b42ea4263446b1f886f1b1a9c84359c7cb50910bc8a8",
+      "digest": "b225db753b3146f4ce812b0d51142b73588620be56e07e86a3aeec1ff4e15267",
       "path": "community/图像生成与视觉创作域包/modules/E07a_图像生成与视觉创作口径登记.md"
     },
     "图像生成与视觉创作:M02": {
-      "digest": "305a40847593222c514da55fb08b2c82493e34d492ee7ca0ffd52fdbe9ca083a",
+      "digest": "a5893dc05aceb96fc0666fe25634cddd786e702ee474eb268364360374bd89a3",
       "path": "community/图像生成与视觉创作域包/modules/E07b_图像生成与视觉创作收口与形态派生.md"
     },
     "图像生成与视觉设计:M01": {
-      "digest": "fbbe1cacacd5f7a74b4e096c78d3bd4a9ad6340aa9cec8cac55e316f67d66c7e",
+      "digest": "c039d8f4168df2164b183a967327320720ade0da46516d121e63848aa9adda31",
       "path": "community/图像生成与视觉设计域包/modules/B15a_图像生成与视觉设计口径登记.md"
     },
     "图像生成与视觉设计:M02": {
-      "digest": "66b778a156c447f931e69265912cc59679d88a353c5d0f0192b1410748d0528d",
+      "digest": "4cf962a604a75f27ce496d727ab9cea40a29d048fbfbbaf702bf02310db2c957",
       "path": "community/图像生成与视觉设计域包/modules/B15b_图像生成与视觉设计收口与形态派生.md"
     },
     "多智能体协同:M01": {
-      "digest": "178b9089e7ab5aff0bfb100757929346a7044a901b466a9e466d717aaedb3090",
+      "digest": "3a3912783f6102c14d0b8a4768fa0e85ff76154a36a36d563288e554e67d542d",
       "path": "community/多智能体协同域包/modules/C17a_多智能体协同口径登记.md"
     },
     "多智能体协同:M02": {
-      "digest": "8da75f79ea4989cca93f1c9844ec695ede4fc3b72918cb3f45b17f838f502afa",
+      "digest": "98df254c0a35afe484a46c8348c7cb5c9b5f820652c16261ab28ffbc45f33e8f",
       "path": "community/多智能体协同域包/modules/C17b_多智能体协同收口与形态派生.md"
     },
     "多模态大模型:M01": {
-      "digest": "dc2fe253e12ca187c1163ef3a5fbd21ad610cf18995757976afc40e9e8e13eea",
+      "digest": "30fe0a0202388f373dae5f5ec87f36abc54cc9eebe68c57e10b35edb196ac881",
       "path": "community/多模态大模型域包/modules/A02a_多模态口径登记.md"
     },
     "多模态大模型:M02": {
-      "digest": "51490a30e6a4de5debc95f2fa34b5bf5efaebc088291a229c45dcb559588bf8b",
+      "digest": "b3827219b51a80c0276922954311cc8a2322d997cbc249cb04cfd2dc996d352a",
       "path": "community/多模态大模型域包/modules/A02b_多模态面收口与形态派生.md"
     },
     "多语翻译与本地化:M01": {
-      "digest": "3182bf5b7965f5be0d1e96e23144b133e02ff8f794e19a1ef1dabf518a8e512d",
+      "digest": "f60c3a39e4afd4fc70e8cdb08d2b3e495da9aaf461833dba6d1084abc0608c88",
       "path": "community/多语翻译与本地化域包/modules/E06a_多语翻译与本地化口径登记.md"
     },
     "多语翻译与本地化:M02": {
-      "digest": "fe3d5e6b634eeba748edfd72648e837263eac568d1d5bdd57c0b2c929ee5ae96",
+      "digest": "7126eaddd2d7d740826f3ff121091cdf5fe9941747d21a41619c0177a44535fb",
       "path": "community/多语翻译与本地化域包/modules/E06b_多语翻译与本地化收口与形态派生.md"
     },
     "多轮对话与角色扮演:M01": {
-      "digest": "1a8711b73d2330af0887ef090bd64818ba5a8ad0126b15a7a8194626c15e16f9",
+      "digest": "b8cc44faf3a29226fad7d31760a0af74aa22f942f0b07841314fda090990270e",
       "path": "community/多轮对话与角色扮演域包/modules/B07a_角色扮演口径登记.md"
     },
     "多轮对话与角色扮演:M02": {
-      "digest": "1601b617bb8df8ea4c6665ed8eee962a71b534880566d4b9ff6d33224db6d96c",
+      "digest": "c8b3274d28c096002a06d77d6569ffa8b6505ce36d749a23f93afc8cb3c42efe",
       "path": "community/多轮对话与角色扮演域包/modules/B07b_对话面收口与形态派生.md"
     },
     "大语言模型:M01": {
-      "digest": "1331056637f5074000f71993012f27a06614b5d158aefd805205f7b9fdfd9e54",
+      "digest": "91ee5a120d447baab9f278a385d6f27d91141d85aa4260b5f5d2783bc7b07c1b",
       "path": "community/大语言模型域包/modules/A01a_模型与能力口径登记.md"
     },
     "大语言模型:M02": {
-      "digest": "5015443192f499379c46a4313ec9feb63a36e3a5282c81fe7b252d1cc837d371",
+      "digest": "d0a4e9f4bf7e3065529e0cf2bc67f7656342ab4021ef3ba20a2320e1aa1b9543",
       "path": "community/大语言模型域包/modules/A01b_能力面收口与形态派生.md"
     },
     "安全与对齐:M01": {
-      "digest": "304cf618dfec3eca9fc84b94523e6c18fdaf2507ac2473fe3e35c7735a8df870",
+      "digest": "831b5f4c583ff0b0446a097123d8702a10250b32928311390479c0618901c471",
       "path": "community/安全与对齐域包/modules/F01a_安全与对齐口径登记.md"
     },
     "安全与对齐:M02": {
-      "digest": "f04e7d56737acf2f71eaebd61155ac538aa18ee58f3217144d1d74247e6b4a75",
+      "digest": "f81fc085072cd0e526c799c2aa6c8834ac36ec2f0a3f42c8f853b35134184f82",
       "path": "community/安全与对齐域包/modules/F01b_安全与对齐收口与形态派生.md"
     },
     "对话与客服:M01": {
-      "digest": "2f9e7f0a25baacb098ae8f2391374bd58d01b7df33d152ec1de27a54ea6ab4c2",
+      "digest": "233b48b620800abe3a8a34cd99f63500cae2fc7ff92bed1d528902f5169380a4",
       "path": "community/对话与客服域包/modules/E18a_对话与客服口径登记.md"
     },
     "对话与客服:M02": {
-      "digest": "3d4efa67d56393aa410442f8201a41af8d3d84f5071c857a55c9be1ae2581435",
+      "digest": "2287e016f2edd314de43159fd09b949e4ea3419538b0fb9497089e615ca29fd5",
       "path": "community/对话与客服域包/modules/E18b_对话与客服收口与形态派生.md"
     },
     "对齐与偏好优化:M01": {
-      "digest": "1a1bcc7ae785f95ed2bd4b7f3d77ee65fe8b74b116f36cb5abfe3f8c04e57d2d",
+      "digest": "fc0d26170b0b33d43812fea056cfce65cea21ccfce3001875f8f0856b20f3675",
       "path": "community/对齐与偏好优化域包/modules/C07a_对齐与偏好优化口径登记.md"
     },
     "对齐与偏好优化:M02": {
-      "digest": "7e48ca5d2c22e270fdfe735091b3dedda3aefbdbc734098e350645eebcb1bd9b",
+      "digest": "ee046f01bf85c6ef3999ab237f2afa2a8ab80749d08a187395fda2f49a9ef131",
       "path": "community/对齐与偏好优化域包/modules/C07b_对齐与偏好优化收口与形态派生.md"
     },
     "嵌入与检索表示:M01": {
-      "digest": "58e20012cdc5e7a16349e6a7c3843d1a173bcaf22e83a09871a710755744e210",
+      "digest": "e683c8370c3cd7862cc18dfe12a2593d352d70ea5c4f3bcca88cd88acfcfe8ab",
       "path": "community/嵌入与检索表示域包/modules/A11a_嵌入口径登记.md"
     },
     "嵌入与检索表示:M02": {
-      "digest": "f7e2668ec6088b258a3d36bcb5a0e699fddc25e04ed99df098554d6f62a53d8f",
+      "digest": "e2b106a54d639c39b2713eae621418910495cf35a7c0039097b6b94fa3b1e690",
       "path": "community/嵌入与检索表示域包/modules/A11b_嵌入面收口与形态派生.md"
     },
     "平台与基础设施:M01": {
-      "digest": "a9dc6a24cea8e94146ff5324f74055536d1340e247a1a55f07d19b4531894fee",
+      "digest": "a6397f777f31bdc94a3e3b4c7bf05f0535115bbac2b2b7ad482758bcfa9af1b1",
       "path": "community/平台与基础设施域包/modules/F08a_平台与基础设施口径登记.md"
     },
     "平台与基础设施:M02": {
-      "digest": "61e03513ddd70fd125b8b03104c5b2512c3cdd43a9dddb78218d0d7e7baa904a",
+      "digest": "a3d67456d85f1533a09a70c07d6dc5fa98b7133d84ecb0b5da0c9301946f753e",
       "path": "community/平台与基础设施域包/modules/F08b_平台与基础设施收口与形态派生.md"
     },
     "建筑与房地产:M01": {
-      "digest": "302b13d5d6584f3aa317f4023e0973947c6a03ea39903fcbc0f7062b375eed06",
+      "digest": "195581ddbaad302e596b1b43f2ea12c7c364c004a68531fc04d741edd79d9603",
       "path": "community/建筑与房地产域包/modules/D15a_建筑与房地产口径登记.md"
     },
     "建筑与房地产:M02": {
-      "digest": "49f83404c44e06a24ab2e27fb025bae11c07420e14ac78ee001ae457a90f9456",
+      "digest": "d522b0d7bf42b85c793e30cc3c70542ecf95361addf0f94f5d210c6b8ff68352",
       "path": "community/建筑与房地产域包/modules/D15b_建筑与房地产收口与形态派生.md"
     },
     "开源与开发者生态:M01": {
-      "digest": "ad9fbb12e3eb63d378e6f4baaf3c82f6711c1e4d012cd5c53459b821122fd39b",
+      "digest": "fe455e6c95c35ba59fd927d44e870888d4f0e3665f3d7dac4ef821a00b9b4b44",
       "path": "community/开源与开发者生态域包/modules/F09a_开源与开发者生态口径登记.md"
     },
     "开源与开发者生态:M02": {
-      "digest": "40e1a45244fbff73394fd58e1e0cdc350c0359475bc16e81a42e32d1beea398b",
+      "digest": "4dcce21dd240f1ac2adb0483e6170351680155064ed535c082892fafe882ca88",
       "path": "community/开源与开发者生态域包/modules/F09b_开源与开发者生态收口与形态派生.md"
     },
     "强化学习与决策:M01": {
-      "digest": "fa2e95c43700527935205afd92796768642b073ed101ba4695988c22d99e4016",
+      "digest": "d1bfbc6fcff9a4181e1dd43a58db3691ee0c97923d650a942f92a16409f45ed5",
       "path": "community/强化学习与决策域包/modules/A12a_决策口径登记.md"
     },
     "强化学习与决策:M02": {
-      "digest": "c379e6dc4f70a3acf77dcd242351ed4396a4c089fb8f468660d3a50211371600",
+      "digest": "6fa6b13fe35f4a9262703f93370ed9ff6cc56a68414070a319c21305daf82d52",
       "path": "community/强化学习与决策域包/modules/A12b_决策面收口与形态派生.md"
     },
     "推理优化与加速:M01": {
-      "digest": "10117219e7d1d4baa7ddfa251c888743c0d96911a3bb6906e4d321ce9d1a04d2",
+      "digest": "fd89b882271fe8935067777435298b692e623f945894d5fa373159cf1c9409f1",
       "path": "community/推理优化与加速域包/modules/C10a_推理优化与加速口径登记.md"
     },
     "推理优化与加速:M02": {
-      "digest": "f591c6aa3ed2c1666c3075ac07d3d73aab4d96d01ba493e3c5095402b5986f09",
+      "digest": "cf00070ff6a6b07817e185426d6e89d0d055b129731a95206b9b8be6b83504a9",
       "path": "community/推理优化与加速域包/modules/C10b_推理优化与加速收口与形态派生.md"
     },
     "推理服务与部署:M01": {
-      "digest": "bde7d204b8e8c027d6e824310962d5b06cbfc8bec174e3323a5dac0389831906",
+      "digest": "04979e786c4999bbbab52758a704d082a718ff9ea966e001ca8b2a8d8ac2424b",
       "path": "community/推理服务与部署域包/modules/C11a_推理服务与部署口径登记.md"
     },
     "推理服务与部署:M02": {
-      "digest": "8c9b7813da8434761e9c572d659dc545a48825a2bcfe54d809d61a9c26e7a4d4",
+      "digest": "bad886a9da0e4ec16568effc09be2ce4951cebdba333305933cb0e8ea9b2feab",
       "path": "community/推理服务与部署域包/modules/C11b_推理服务与部署收口与形态派生.md"
     },
     "推荐排序与广告:M01": {
-      "digest": "ed6301495eb885fbe5664a4e0cada1f276b8cb98889cdd81cc262ee3e4f10df4",
+      "digest": "b38f0b0fc4fa19cb24f07d5c6937837f4541ccf196cb3d4f1210ab204bcc18e1",
       "path": "community/推荐排序与广告域包/modules/B17a_推荐排序与广告口径登记.md"
     },
     "推荐排序与广告:M02": {
-      "digest": "8f2bb62a320ca320eabe131462d4cf81d346381096f6b34ae14b2ed5c65abc65",
+      "digest": "a9175b286c2b535ee03d013f4f378980bd41804de6786dd7d671d9171110631c",
       "path": "community/推荐排序与广告域包/modules/B17b_推荐排序与广告收口与形态派生.md"
     },
     "提示工程与指令设计:M01": {
-      "digest": "8ca617050c8e9aa0bd90c97b5faa4a0b564d5729e6b09a4aa6dcd532b4b122f0",
+      "digest": "649b80ec87db47f3870222834d817f6c01d9e9ca5a86333cadc9623fe07dbc3b",
       "path": "community/提示工程与指令设计域包/modules/E01a_提示工程与指令设计口径登记.md"
     },
     "提示工程与指令设计:M02": {
-      "digest": "26245504ad61795cb5ab49c7450a267a52292b8b92814f4d12fde98485499710",
+      "digest": "d86b7151ef8524a50898a6e4e336c249e91b9be7bae93883b137488266813158",
       "path": "community/提示工程与指令设计域包/modules/E01b_提示工程与指令设计收口与形态派生.md"
     },
     "提示工程与提示模板:M01": {
-      "digest": "c4a219426e0a87f53979e56561dbddb18f46785e03465b445828e75142b39c99",
+      "digest": "8e61efa3c5994c1e676a8beefa7ef944e59cce05951e2440494e243307df610f",
       "path": "community/提示工程与提示模板域包/modules/C13a_提示工程与提示模板口径登记.md"
     },
     "提示工程与提示模板:M02": {
-      "digest": "297167190b9b8a97ed0443acd1bb6bd0dd6cf43b047b43414bee8ebad6e40e8f",
+      "digest": "e0bb4523bac4df9fe7a75ff903b1cf023f95f23d18f7edee5055158fdf83772e",
       "path": "community/提示工程与提示模板域包/modules/C13b_提示工程与提示模板收口与形态派生.md"
     },
     "搜索与信息聚合:M01": {
-      "digest": "78280307089e3f75c1b362bbec3170ae62e2714e30647173e939c8ce77102864",
+      "digest": "188ade7a1abce2628d06380167ba80479ab1ca7fb6d39a552ee4d387e7515163",
       "path": "community/搜索与信息聚合域包/modules/E17a_搜索与信息聚合口径登记.md"
     },
     "搜索与信息聚合:M02": {
-      "digest": "21040bece8ee9a4c4e9677b2b80622a6b0faa7ead7e95e81c243252d855d9044",
+      "digest": "a7165b4898e2d4af7786707aa073c50d2a489925e5bfc9f05cc4389ef0c1ef26",
       "path": "community/搜索与信息聚合域包/modules/E17b_搜索与信息聚合收口与形态派生.md"
     },
     "摘要与信息压缩:M01": {
-      "digest": "19fdfd82ab8bed6558d2b925974d60fa1f12ce2da4f97912b606e5ce06fe318b",
+      "digest": "c1255777caf09f3e17f328f191c997c92edd813031d31f5c008531125088d0e2",
       "path": "community/摘要与信息压缩域包/modules/B02a_摘要口径登记.md"
     },
     "摘要与信息压缩:M02": {
-      "digest": "b2ce24492fd53c15fb00f9c94c2d3096e7a187058f2c03920d4088284823cf38",
+      "digest": "b27dbc555070a788acf73fa1f76bbe5d01d366955287d8ae4941a97266915d3e",
       "path": "community/摘要与信息压缩域包/modules/B02b_摘要面收口与形态派生.md"
     },
     "数字人与虚拟形象:M01": {
-      "digest": "34686f5aa7c8c598159166f9b7be37698aa47a27ae44acbf1d15919a5ab0f748",
+      "digest": "6d9e2a393e29e14ed7fb5ff8b05caf5550cbfdb624fb7b58c4f5413e5ed7bceb",
       "path": "community/数字人与虚拟形象域包/modules/E20a_数字人与虚拟形象口径登记.md"
     },
     "数字人与虚拟形象:M02": {
-      "digest": "8e850a18c7d6081e6aed2b26e40793a91f6cfd57804768b16f1d498da8bde4bc",
+      "digest": "e593e32b2915b1cffdd73878db69cb78150ab7bda00e55bf28d6c46648ec956c",
       "path": "community/数字人与虚拟形象域包/modules/E20b_数字人与虚拟形象收口与形态派生.md"
     },
     "数学与形式化推理:M01": {
-      "digest": "7e84757655f627ed8788708a10c614cdcb972fefc04eed6b7d4e954572845712",
+      "digest": "d9586bbb21e01648dcdcac04b0050a9d35a4323034d6b95a11578881a5ca0e41",
       "path": "community/数学与形式化推理域包/modules/A10a_推理口径登记.md"
     },
     "数学与形式化推理:M02": {
-      "digest": "221a5336c5938f8b2ccc39667f16152428bc572036a601f4fb601421dba801e6",
+      "digest": "7182a9e87d909fd5e7245b734eaf6076f6789d4466e61c1b4850c2f1360bfdc9",
       "path": "community/数学与形式化推理域包/modules/A10b_推理面收口与形态派生.md"
     },
     "数据分析与决策支持:M01": {
-      "digest": "aca669a4a25632ae11372345fe19dc6a1256fb6313e06c614c1ac28659174894",
+      "digest": "a2f37dcdfe29f4981b06341a46d0c4d21cd560455f908634adf75ca56b7da9df",
       "path": "community/数据分析与决策支持域包/modules/E14a_数据分析与决策支持口径登记.md"
     },
     "数据分析与决策支持:M02": {
-      "digest": "0f8ff7d404934d692bfb206bb8dee75373e9f697944951c5d9fddd0cf8496722",
+      "digest": "dac13d5df63c9b1c4a37c46059626e30c90dbb60cf4f1399daedaf5a402779e3",
       "path": "community/数据分析与决策支持域包/modules/E14b_数据分析与决策支持收口与形态派生.md"
     },
     "数据分析与表格理解:M01": {
-      "digest": "52f4731d871bed4842548139d0853c8322fafcf0353b9f0b192a061fea3e8abe",
+      "digest": "13250c76d1e7c6693f9769553d251782459f5a8dc183e65d7125edc005f8cab8",
       "path": "community/数据分析与表格理解域包/modules/B11a_分析口径登记.md"
     },
     "数据分析与表格理解:M02": {
-      "digest": "8a8d17e66d59370b82ccdc0a13e3689378d0639298112ab60bc0397dbe42db24",
+      "digest": "dc36e50cfcf36a241ef1eacc523ffeab2d88ba26785c172e5d3cf76bae250a7e",
       "path": "community/数据分析与表格理解域包/modules/B11b_分析面收口与形态派生.md"
     },
     "数据标注与标注质量:M01": {
-      "digest": "61d186616f61b60284f6db8c0695a9e01fd43288884023d8ec83f2f8b6ea910c",
+      "digest": "072450091962a29fb53c46011be9a9cfcf09f4b6723da852015e6517e55d445f",
       "path": "community/数据标注与标注质量域包/modules/C02a_数据标注与标注质量口径登记.md"
     },
     "数据标注与标注质量:M02": {
-      "digest": "a14e9051af71ff0db413b4db5075c8c0840fd35ad2ae39a9244dd75b7f13e464",
+      "digest": "8033b963e9bc38a1cc780b2c134f16d4c4bafeb3452da3b692647667bee7e0c6",
       "path": "community/数据标注与标注质量域包/modules/C02b_数据标注与标注质量收口与形态派生.md"
     },
     "数据采集与清洗:M01": {
-      "digest": "cbefe0f56d26f4c85887b8b0a2165612a1f57ff23061dffb1ea45b3795e46dbb",
+      "digest": "b0a6ef8d7b9e2bc422c1981baf9e05b23dfb1df153a74b1a7b3e5769e2c18910",
       "path": "community/数据采集与清洗域包/modules/C01a_采集与清洗口径登记.md"
     },
     "数据采集与清洗:M02": {
-      "digest": "dafd06d44a312d1106d3032fa9f90ea70feaf36ad6b931c92bb8151a0cf6bc43",
+      "digest": "3b29f164856eb0bc7f3f35ad8569e881d9a17742ff9bc76f205eb0753bba15e8",
       "path": "community/数据采集与清洗域包/modules/C01b_数据面收口与形态派生.md"
     },
     "文旅与酒店:M01": {
-      "digest": "d756f9a0ab1d5c0bf24b3d97a99166d0f496e1e64ce3e025a9c764458cba260e",
+      "digest": "f0889035ed412627058a3ce0ff38e92bfc64b069dcf5b838f37acf9f580d8863",
       "path": "community/文旅与酒店域包/modules/D19a_文旅与酒店口径登记.md"
     },
     "文旅与酒店:M02": {
-      "digest": "a66c191f77607a3c4b1b3285a2ef5f1a89dae635acccd31008bb3585befcbcaf",
+      "digest": "5e6caf59aedcca22d2d44bd5847a276b60988a4a677827dadb6654b112e3bee0",
       "path": "community/文旅与酒店域包/modules/D19b_文旅与酒店收口与形态派生.md"
     },
     "文本生成与创作:M01": {
-      "digest": "f50cece7400987c81db6e0bcdb168b16e7159f4e8c4d7f9609d738929a74ffa2",
+      "digest": "bd3ee988cbe948b5cc5c1491791021e5d7d55188a667ce79018a185d9f89118c",
       "path": "community/文本生成与创作域包/modules/B01a_创作口径登记.md"
     },
     "文本生成与创作:M02": {
-      "digest": "78a7e862f976ddb374eb1af471b615e4cd885db8d6966cefd9e473302e31e9a5",
+      "digest": "a361d66c166cfc95c1d2acf9504f6f0c900a6fb16720d9206c6ffe0d12116a47",
       "path": "community/文本生成与创作域包/modules/B01b_创作面收口与形态派生.md"
     },
     "文档解析与版面理解:M01": {
-      "digest": "313cd93a94030123c39dcea173ca2b90c0200eed14d9455cf1839a3401501962",
+      "digest": "b6b1829c6c0cccf0ebb6f1d93c8cfe174391230901a17587a8be664c61976611",
       "path": "community/文档解析与版面理解域包/modules/B12a_解析口径登记.md"
     },
     "文档解析与版面理解:M02": {
-      "digest": "7fe653ce0c8584810024da76394ad37ebb93ecf4f9f9269ea0b1d3950d982e4a",
+      "digest": "cfaae51842f24f9c1b4248ec5fc80951bfdb8c3e1a5f860d818c995af6a75876",
       "path": "community/文档解析与版面理解域包/modules/B12b_解析面收口与形态派生.md"
     },
     "智能体与工作流编排:M01": {
-      "digest": "27339a38233291d100969e53dace388da09a7dcf61b03723ddf94150c21275a4",
+      "digest": "242ac5a288e4a9054d967a18ff3b2987a2ab3ada2a9b784af82a98663ea3a954",
       "path": "community/智能体与工作流编排域包/modules/E12a_智能体与工作流编排口径登记.md"
     },
     "智能体与工作流编排:M02": {
-      "digest": "04bc7e0bb0b3b7c2302270f242b5ad70629b5ce22983b0904aa9fd9393df6c48",
+      "digest": "947d3d1fa8a46107f6c3e31e69303d640b36dcb4b67fa29a52853c5d24fce664",
       "path": "community/智能体与工作流编排域包/modules/E12b_智能体与工作流编排收口与形态派生.md"
     },
     "智能体框架与工具调用:M01": {
-      "digest": "f60695326bfcd3fc4df2cb8270bc5359ce171291c502637880c22855abcff5cc",
+      "digest": "c51ae663c2edfa0ababfcb9c92f7def2d7cae13650e4767e86518f58015cb0ad",
       "path": "community/智能体框架与工具调用域包/modules/C16a_智能体框架与工具调用口径登记.md"
     },
     "智能体框架与工具调用:M02": {
-      "digest": "ba798bb16e30266787bfd530ddf0f1e5702ed2df323d5b5f57995ffceaa06d1f",
+      "digest": "13f16512ee9b2bb78a877466c39ef252bcf73b3a7787e7d9096e08f445991664",
       "path": "community/智能体框架与工具调用域包/modules/C16b_智能体框架与工具调用收口与形态派生.md"
     },
     "机器翻译与本地化:M01": {
-      "digest": "f681be8e1b41788535723888de7f022295e94684f864cdc44bb830365821e215",
+      "digest": "2e04e8f95c06f8560aec9b613f6da9d0af45d2ed064d59bbe1195320a8747df6",
       "path": "community/机器翻译与本地化域包/modules/B03a_翻译口径登记.md"
     },
     "机器翻译与本地化:M02": {
-      "digest": "fb80d8180cbd45b68497d5e8c82ecdcabe5c776e1e615c58ea253bf8db038e18",
+      "digest": "d39b8ec79ab5e2af45f082e9be44e7e0447285e536ef020fcbff36b77d7c71f0",
       "path": "community/机器翻译与本地化域包/modules/B03b_本地化面收口与形态派生.md"
     },
     "模型运营与成本:M01": {
-      "digest": "b8b6036ba015e93d3270fb8c077c75b809992e1d7bf540c6ef27845fe8799567",
+      "digest": "6e962f34bafa2f62803a857ea92f470c93f4df8300524305cb91283438094ae5",
       "path": "community/模型运营与成本域包/modules/F07a_模型运营与成本口径登记.md"
     },
     "模型运营与成本:M02": {
-      "digest": "0cf9e230a5e46b825ce7b4483f51d06ab4bf8fca5e77cf9a8b6ccf482d04a45f",
+      "digest": "0947b223299781cc5d9419ccedac943804fe0a7359fe67162415573efefc1dbf",
       "path": "community/模型运营与成本域包/modules/F07b_模型运营与成本收口与形态派生.md"
     },
     "测试与用例生成:M01": {
-      "digest": "62d1be84ac8d0248539c8fd1d2d649e357f206c1169194cc6bbb120687b4279b",
+      "digest": "d02bc350dc18c2625eff3f052477b157f3e5a85a829803c3b789273f5c3ddd3a",
       "path": "community/测试与用例生成域包/modules/B10a_测试口径登记.md"
     },
     "测试与用例生成:M02": {
-      "digest": "136a6c3b5afe2fa930730c2f3820fd28a28debfbce8c9d5f2c41107e560a0e39",
+      "digest": "8233e63553c585bf34118eabab6b57899e4e78e24d38a170a6cbea6c43e7dae0",
       "path": "community/测试与用例生成域包/modules/B10b_测试面收口与形态派生.md"
     },
     "游戏与互动娱乐:M01": {
-      "digest": "1f88fa2687a42e7889a967df0969bf4a1945c8ec4017de7a37c309015d9b8bc0",
+      "digest": "7ffb6f3269daead0830401ad9ac6b35d8fdd3d74b5468809ebd3f31d309572f6",
       "path": "community/游戏与互动娱乐域包/modules/D18a_游戏与互动娱乐口径登记.md"
     },
     "游戏与互动娱乐:M02": {
-      "digest": "2d4e43f9d42c6c6501780dfa6abe306b1fa77b85b0e7e7f8d79f4021493763b9",
+      "digest": "fd31af29d813ca5611936af86dadf60d619d9b26fc658ba6c57d2229222a7eab",
       "path": "community/游戏与互动娱乐域包/modules/D18b_游戏与互动娱乐收口与形态派生.md"
     },
     "版权与知识产权:M01": {
-      "digest": "f45c35ea861fbba26eefe0b52d70c233cb875b4c641cd489b35b1e1d069a69c6",
+      "digest": "3c1f7c340b93d52a7c3c15b29d6e76e1cd74474ae6602984d6415621d5b3e324",
       "path": "community/版权与知识产权域包/modules/F04a_版权与知识产权口径登记.md"
     },
     "版权与知识产权:M02": {
-      "digest": "8e5fab07e6f8f9ee2eb99d4880e43f0c963489fbb95d9cb51609ee768229f7fa",
+      "digest": "057113ea74537ac522431f6af92d309df1bb1071c05de18bdfbdab42fb75e5fa",
       "path": "community/版权与知识产权域包/modules/F04b_版权与知识产权收口与形态派生.md"
     },
     "物流与供应链:M01": {
-      "digest": "a77e6b98659061c9ac750efef8a349b7ca7d076e7a414fc33e3c731d01a1bc32",
+      "digest": "9dedf443663935516e505d2aa509c4aaf9eaaeb567780d2b3c7ed9c8ac7a5997",
       "path": "community/物流与供应链域包/modules/D12a_物流与供应链口径登记.md"
     },
     "物流与供应链:M02": {
-      "digest": "dd15462cf955185e8224d2fa51b4544f82225e6cbfc3f5034c198b2c7c766c05",
+      "digest": "f67a57d2222f05458a86eaea821d228f4f93ffb661cee003c3fa7b627861675d",
       "path": "community/物流与供应链域包/modules/D12b_物流与供应链收口与形态派生.md"
     },
     "监督微调:M01": {
-      "digest": "e891d0ed0fefab294051351abbedf1e206e04813aed8a79d389211b749ec482d",
+      "digest": "25a3b1327fc06cbad971da854d46faf46d3b9d73ba5896ef210b31665d00f6c8",
       "path": "community/监督微调域包/modules/C05a_监督微调口径登记.md"
     },
     "监督微调:M02": {
-      "digest": "a79950ef28261511d5d5f7ed7e9ca8867c39185f13a2cc044266dbf2ed605397",
+      "digest": "69585e66e89c72265bd9e9971edc3d4ff4966c943e9917d93e1e067333445da5",
       "path": "community/监督微调域包/modules/C05b_监督微调收口与形态派生.md"
     },
     "知识管理与检索增强:M01": {
-      "digest": "e7d2eb284d81629e7e40d21b429f1b9867197fcc0286adb48a3e480cea42603f",
+      "digest": "3c65a3c9867178f3b891f4261c267b760dad9a02d4141378306e59d2ea09ebf4",
       "path": "community/知识管理与检索增强域包/modules/E11a_知识管理与检索增强口径登记.md"
     },
     "知识管理与检索增强:M02": {
-      "digest": "f7e5bd1a11f4bf580fe4803c5a4ab12a01fb08a27599bdbc10c2493baa20e204",
+      "digest": "1dce327f26f3ec08ead55db0246e70f38aa1c408a5949b555c07affc78c97702",
       "path": "community/知识管理与检索增强域包/modules/E11b_知识管理与检索增强收口与形态派生.md"
     },
     "知识问答与检索增强:M01": {
-      "digest": "10dd4fb7eb70427170c66ebc70c0c1fe2a6929bcca52a7ab771b22853373db39",
+      "digest": "613ebd82cb5a1ec4181419444d9279c26fca1f935ac4040df889b5dc2bbc8cb5",
       "path": "community/知识问答与检索增强域包/modules/B06a_RAG 口径登记.md"
     },
     "知识问答与检索增强:M02": {
-      "digest": "a8b0f326073ece12a0d2467ae897b6bbc8bcadbcd88e584c9902cb4b77766985",
+      "digest": "435c079ed6bcf8b5278816800886088afe9fced4a42d835b59b7b992ef995a66",
       "path": "community/知识问答与检索增强域包/modules/B06b_RAG 面收口与形态派生.md"
     },
     "科研与实验:M01": {
-      "digest": "9b0aad98bb0889e66477c07103089fcfc8629564b73d14f65df4d32666a36bc5",
+      "digest": "340255f1d06fe4f8ef23036d8be24456ee2883432d1e7f0f6c81fc6e52606d00",
       "path": "community/科研与实验域包/modules/D20a_科研与实验口径登记.md"
     },
     "科研与实验:M02": {
-      "digest": "0ae43a6046e38c1c5b7c89cdee97632a19ed459ea4f54651eb4a7312f1224a59",
+      "digest": "10b12f69e3873f46a5fa234eb1ddf58af1eb4635efe520e9ee0bcf3c38bcac64",
       "path": "community/科研与实验域包/modules/D20b_科研与实验收口与形态派生.md"
     },
     "端侧与边缘小模型:M01": {
-      "digest": "39871f5ba1c9945ccda905cbab82313654ecda6be78d7aa7530ca0837be2cdee",
+      "digest": "251e32955eb799914e4fa7ee5a0d449b80bae2f7f1009d5b72dd7d6b6e8622e6",
       "path": "community/端侧与边缘小模型域包/modules/A14a_端侧口径登记.md"
     },
     "端侧与边缘小模型:M02": {
-      "digest": "d50a43556dc5d72417a8139c4cb327c6dbe8559876ced5ab33dcfb355a87567b",
+      "digest": "e6f0be75f7154b2da8c0bbba8aff45ac006a0fa060bc13b810971156d96f2acb",
       "path": "community/端侧与边缘小模型域包/modules/A14b_端侧面收口与形态派生.md"
     },
     "红队越狱与安全测试:M01": {
-      "digest": "e574fa3024a379704378c83b09b9d04f18a385aac55d4e0cf125e1745e2f0780",
+      "digest": "6511a69f2b5cb4ea74f9cb356cb30e5d07483e98e2887037f0da6093911145cd",
       "path": "community/红队越狱与安全测试域包/modules/C09a_红队越狱与安全测试口径登记.md"
     },
     "红队越狱与安全测试:M02": {
-      "digest": "90632312aa660420125bb0224b0373af9a0069ba8e068c4047d8c0d974345f13",
+      "digest": "8417173cab9f1f4a2f93444cc92223aa0137c64bbd5cf16d407593de59c04604",
       "path": "community/红队越狱与安全测试域包/modules/C09b_红队越狱与安全测试收口与形态派生.md"
     },
     "编辑校对与出版:M01": {
-      "digest": "6cf01c45329e85c0bd8e0a55036e2a84c44a9b34f09c55874390f06372a8b0ef",
+      "digest": "9211f6ba28f4eb7913a1fc8a018d5241e7e469cf7371bf0fe64f578078c30249",
       "path": "community/编辑校对与出版域包/modules/E10a_编辑校对与出版口径登记.md"
     },
     "编辑校对与出版:M02": {
-      "digest": "f8bef1aada6d712749d1e994de855df77d2e089fb59bf2557b404406f1f8e2c5",
+      "digest": "bd09ee24760312edf1f76916581777a69d5a0cb5937b6b4e46106b907ebede4b",
       "path": "community/编辑校对与出版域包/modules/E10b_编辑校对与出版收口与形态派生.md"
     },
     "视觉模型:M01": {
-      "digest": "a57ecbdd5a40e2add25896f21b33a9855e1a6d3dd4946e7cc68cf7c895f50176",
+      "digest": "482fa56568fe73697ac29bbf4c0990c2b3db5d945a0afff87dea7243c0afe257",
       "path": "community/视觉模型域包/modules/A03a_视觉任务口径登记.md"
     },
     "视觉模型:M02": {
-      "digest": "c099364df080b68f5a008d0e067d1ee74e39e07d9bb853ba33b528b46e1e269e",
+      "digest": "e8966676acbeae39996d4f8d2a1e650a127e182b0bda8545827cd36779b846f2",
       "path": "community/视觉模型域包/modules/A03b_视觉面收口与形态派生.md"
     },
     "视频生成与剪辑:M01": {
-      "digest": "036017abf7574b87540afb94b90807188b593d51eef6c02959a8794064297e8a",
+      "digest": "af06775cd1ad1c6ce0e5e455ddde7dc2f5f1919e20655ea0d994916538e3dfc7",
       "path": "community/视频生成与剪辑域包/modules/E08a_视频生成与剪辑口径登记.md"
     },
     "视频生成与剪辑:M02": {
-      "digest": "002cf2b0dac643bf72ee6334cce14f76af86c6174804a777040be2590bb756df",
+      "digest": "27db196dbb60f3fe459bc4953eb11aa63c93384da53e4107f98f57501e21da2c",
       "path": "community/视频生成与剪辑域包/modules/E08b_视频生成与剪辑收口与形态派生.md"
     },
     "视频生成与理解:M01": {
-      "digest": "6f14ae4dff0ae756ee4d5b5720cac01b612da71e5dbbc11087053d87476062f1",
+      "digest": "057d9dc908664e8e71645df86f6565ca9002e4b50e36d349522b7ab5d0c76cb7",
       "path": "community/视频生成与理解域包/modules/A06a_视频口径登记.md"
     },
     "视频生成与理解:M02": {
-      "digest": "ccbbe4ca211c5463ca501c87bd3ec30d7701805f6b9b8bde142c7c070b5560d9",
+      "digest": "a15751b529d14e9842d447564ddcc0fd61b3d6e163d24e5fb01c5c6a0507ba59",
       "path": "community/视频生成与理解域包/modules/A06b_视频面收口与形态派生.md"
     },
     "视频生成与自动剪辑:M01": {
-      "digest": "aaf22ed75d93b8a423e45a380aa567ec38f52bb1ee3a91621bc95ba9fc63b3f3",
+      "digest": "82c9983513f65d82b3f6fbfa415ab55cddf36409ce40abd027e72ae0d0b7d098",
       "path": "community/视频生成与自动剪辑域包/modules/B16a_视频生成与自动剪辑口径登记.md"
     },
     "视频生成与自动剪辑:M02": {
-      "digest": "1baaab90d014b8d61fea0ba8daa06ed40fa8a1f0fa38657c49719fcd8ad07cd7",
+      "digest": "68e33b6911aa81b1b51ba47fdf765d08673eceea575d53ee233d47eac707e444",
       "path": "community/视频生成与自动剪辑域包/modules/B16b_视频生成与自动剪辑收口与形态派生.md"
     },
     "角色扮演与角色卡:M01": {
-      "digest": "726d072bf5832f22b6f612dbc137f132d5a5765c821528feb8fa3da053d5de48",
+      "digest": "0d6aa5ac0f28edf84ab5f100510059c5ac92cbf0eb5fedd6f65ba4e2d20153a4",
       "path": "community/角色扮演与角色卡域包/modules/E02a_角色扮演与角色卡口径登记.md"
     },
     "角色扮演与角色卡:M02": {
-      "digest": "2cbdcc00d437fac96877e0cd7f81d868c63622cf5163ebc62c95a7a69c57d316",
+      "digest": "fb8c4957b22a38eb681cd255a1f1e274bc89b0a3856af1c371f39fc043f0b4b2",
       "path": "community/角色扮演与角色卡域包/modules/E02b_角色扮演与角色卡收口与形态派生.md"
     },
     "记忆体与个性化:M01": {
-      "digest": "cbbd9c97fde6aa908b9551b07250cdfd69efdd4337a46b1b04a0786066b71c77",
+      "digest": "cc0bac2e1ffce57b4b900b757a25e0d5439e9b83a586d11893cd293862278660",
       "path": "community/记忆体与个性化域包/modules/C14a_记忆体与个性化口径登记.md"
     },
     "记忆体与个性化:M02": {
-      "digest": "f93de6605c9b3c3b649bd6fbc26dc4069d5101c19174f5da2f96ce93b0b67d64",
+      "digest": "a7fec9de3fb5a0d11acf0162825bfe564da88b62ef9739aff8b41a5638aeb488",
       "path": "community/记忆体与个性化域包/modules/C14b_记忆体与个性化收口与形态派生.md"
     },
     "评测与基准:M01": {
-      "digest": "b330f160fa57b4b28df4989526cf1424590b343e5f8431d2083cab2ac5d12a87",
+      "digest": "4db700c13f00dcb713bf0ebaac3e003c39dd710a1f28e5bd5d3681713a232e9f",
       "path": "community/评测与基准域包/modules/F05a_评测与基准口径登记.md"
     },
     "评测与基准:M02": {
-      "digest": "83928b14096079651516b890a7ad78c67a140b926d45612a9523a93648d1a7ed",
+      "digest": "c22a4fcc1f86df7f3b875b1eb3da47037fa5e5598c1d807e6716a319759aef13",
       "path": "community/评测与基准域包/modules/F05b_评测与基准收口与形态派生.md"
     },
     "评测基准与排行榜:M01": {
-      "digest": "ccb69622c7637786a2d70daa8148748106a9bf13bf8b0bfc3b267b9a2f1365be",
+      "digest": "8d9f87f551b3ecccdb577b75984aa0fbfe6c3b3e34ce8194a3bc2726c71076ad",
       "path": "community/评测基准与排行榜域包/modules/C08a_评测基准与排行榜口径登记.md"
     },
     "评测基准与排行榜:M02": {
-      "digest": "b8dcd97c6eed00ae86c3a4f1d6c7e382c582569e488125beab6990981e7e1bcc",
+      "digest": "03925b29eeb12e308792ac6e7522f072e494b907ae3b395465dd0c4f211c0d3c",
       "path": "community/评测基准与排行榜域包/modules/C08b_评测基准与排行榜收口与形态派生.md"
     },
     "语音合成与配音:M01": {
-      "digest": "e9f55ee1134af331d1b9df1ccb2198fa32a03d10ce404e4e1ec449492d74f0bd",
+      "digest": "82cdd98d52983963e717545eb4b5a92c5b2bd4297258ec90f61d4dfb4b3b7101",
       "path": "community/语音合成与配音域包/modules/B14a_语音合成与配音口径登记.md"
     },
     "语音合成与配音:M02": {
-      "digest": "3882f2c2edadf0d5dd12bfe4e60a6f2d3df46442bf3f70c90debc23422b2bdd3",
+      "digest": "1316bcecc520fd0d92fb80bdc8ac9899978931d407858c8461f0481377a3ac61",
       "path": "community/语音合成与配音域包/modules/B14b_语音合成与配音收口与形态派生.md"
     },
     "语音识别与合成:M01": {
-      "digest": "806b9dbe847a7cb95795e598562136af54a0142049f4fe3c6ebdc6eeed6d7cdc",
+      "digest": "3e1975946ea1fe720c5aad29f89f6809d2d22e8dc796ea2724bddd7b1e238e75",
       "path": "community/语音识别与合成域包/modules/A04a_语音口径登记.md"
     },
     "语音识别与合成:M02": {
-      "digest": "4919da5cf5e23382059be47fdf1e1996918e0ae5f6fb29ac5e69ff3089042a94",
+      "digest": "4b944dcd2f7fb05c40bd1983ade5094d36df9cc42445f0334a6790f5490f772e",
       "path": "community/语音识别与合成域包/modules/A04b_语音面收口与形态派生.md"
     },
     "语音转写与会议记录:M01": {
-      "digest": "692950c7e5e63f7c80cc3ed887f376f2ed47a2546107a72a419063c8a57c991d",
+      "digest": "afa6793e0817899425b46857fa73f2b4a52fe026ed6a57db283e9b3e6df3757d",
       "path": "community/语音转写与会议记录域包/modules/B13a_语音转写与会议记录口径登记.md"
     },
     "语音转写与会议记录:M02": {
-      "digest": "6d0c72fefde015f24ca4ac5240863f1e0d799c090827fd80eb1170c98400e249",
+      "digest": "cff7ae4fbd365166c967d0c5fa77d9297dcb32bb1c026e447ca32fde52381ca2",
       "path": "community/语音转写与会议记录域包/modules/B13b_语音转写与会议记录收口与形态派生.md"
     },
     "通用:M10": {
@@ -938,59 +938,59 @@
       "path": "community/量化金融域包/modules/M32_回测与绩效口径.md"
     },
     "长文本与小说创作:M01": {
-      "digest": "8c41ff730e10a5dca0612f4bcd9bdacaaa080c3db13bf93dae5588a35ed5066e",
+      "digest": "e0346fc50ea80ae0e38df637fe28264d066d7d8bbfb807dcd83aea0faf13e737",
       "path": "community/长文本与小说创作域包/modules/E04a_长文本与小说创作口径登记.md"
     },
     "长文本与小说创作:M02": {
-      "digest": "328c1f9755f90d259d51c7078c61cd8f34ff8b0da26a8b9e500b50c10631d271",
+      "digest": "f55a99da292f803df5236b8bb1d9cf5f503f94216db6c63ee3df43d31dc19eb9",
       "path": "community/长文本与小说创作域包/modules/E04b_长文本与小说创作收口与形态派生.md"
     },
     "隐私与数据治理:M01": {
-      "digest": "c1f88e1acd4720cb00380100b57f6e82f9c08942f311fc19396d52dc7d8f3ea8",
+      "digest": "e35643643d31619fd6f7712c8659f97bfc858565216ff99d82be1c725fdebf4a",
       "path": "community/隐私与数据治理域包/modules/F03a_隐私与数据治理口径登记.md"
     },
     "隐私与数据治理:M02": {
-      "digest": "113158d58951d7b140ff259c32acffcf448db27cf55af85b777db6c892c31da7",
+      "digest": "7e03d28860062f65c99706dd8eca084168784762e8298e8705d5e938c4b3775c",
       "path": "community/隐私与数据治理域包/modules/F03b_隐私与数据治理收口与形态派生.md"
     },
     "零售与电商:M01": {
-      "digest": "61325a38c428318715eed337f9af53daa98ebff3b3e5b755255443bd443f7baf",
+      "digest": "6e39212dec2dda9f5dac3522db3bb23dfccc6a28f8f4bc4d470227e231d0389d",
       "path": "community/零售与电商域包/modules/D11a_零售与电商口径登记.md"
     },
     "零售与电商:M02": {
-      "digest": "07c2b1931470c7966186a17f97125538d6c231f2aceaf97b1c2eaae0e46e0885",
+      "digest": "9f197bc14ae2335ba787483c7a02749979de1f2ffddbb5a0923b3d3c67521826",
       "path": "community/零售与电商域包/modules/D11b_零售与电商收口与形态派生.md"
     },
     "音频与音乐生成:M01": {
-      "digest": "f080fcc7b0ee9a457f73fa0f91f9ded9b3d7cb4d4e69e1a81bc14f42059423d3",
+      "digest": "4c195177a268e49d853cefd1fba7eaab4dacfc0e0ef161ca9b0ea743dfc30481",
       "path": "community/音频与音乐生成域包/modules/A05a_音频音乐口径登记.md"
     },
     "音频与音乐生成:M02": {
-      "digest": "8491e3821860c8292150419c598d8d9e848b49f43b06fea2edfca019e1fa68d1",
+      "digest": "2a2a56477ec81556833d3c6d4cbd356d424751ced74be1be7df9a8a11d53e2f4",
       "path": "community/音频与音乐生成域包/modules/A05b_音频面收口与形态派生.md"
     },
     "音频音乐与语音:M01": {
-      "digest": "7e9a2ddec504b79385649b3d4009218880cebd9825381f16f162a9926bf6f687",
+      "digest": "431628852a847415b44ae8bbac8d9cd93eebae73b647bac172bdd7ffcff7df1e",
       "path": "community/音频音乐与语音域包/modules/E09a_音频音乐与语音口径登记.md"
     },
     "音频音乐与语音:M02": {
-      "digest": "39ae9673c61e1d1fce01c92c29108bd87023e416b49d6bdca439ae4d3fb49c72",
+      "digest": "1334cb870b99665a5cf91b4cd8577765255df251827e454117c8ad8e11a07271",
       "path": "community/音频音乐与语音域包/modules/E09b_音频音乐与语音收口与形态派生.md"
     },
     "预测异常与风险:M01": {
-      "digest": "04f2116bb11cc7ed2a527414909085cea7812e82ab144474651711d8b4547d61",
+      "digest": "82eeb6e49e1cb4e1c46abe97c43fd9a1d5d70f3f1f5c80d5e92e84bf27853aee",
       "path": "community/预测异常与风险域包/modules/B18a_预测异常与风险口径登记.md"
     },
     "预测异常与风险:M02": {
-      "digest": "869f9871cd8682dda7cdeccb2b86fe56bfd5886466b2cccde0999b0cdf0d111c",
+      "digest": "3918fd834c8233595e3953fbf6f1df7b9c4001e17c6ef9c3840a3631974abba0",
       "path": "community/预测异常与风险域包/modules/B18b_预测异常与风险收口与形态派生.md"
     },
     "预训练与继续预训练:M01": {
-      "digest": "431cb4676d071415e9e6152456ed7e9360153743bd3d59c081ac5b174958c03f",
+      "digest": "b0bfe0b98d20f7600c1ea6928d6e9f1d258697c45be57defb526173fdb81b536",
       "path": "community/预训练与继续预训练域包/modules/C04a_预训练与继续预训练口径登记.md"
     },
     "预训练与继续预训练:M02": {
-      "digest": "dbe5055a4764c3622ae677ea31316c5ed4d71cbf572f4baafd73ca4d36fab074",
+      "digest": "be19043338ef147764d2b83cd82a9740133849d4e3719cde2ee6a0f67a3d8552",
       "path": "community/预训练与继续预训练域包/modules/C04b_预训练与继续预训练收口与形态派生.md"
     }
   },

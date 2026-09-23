@@ -2,66 +2,66 @@
   "note": "社区资产外形基线（文件数 / 行数 / 逐文件行数映射摘要）。内容改动后须显式重签：`nf asset baseline --write`——数字不写在 verify.sh 里，基线变更与内容变更同提交可见。",
   "packages": [
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "39a92dd3d38eaea125209d5ecd8d7d645248b91ba82305b85de0e0a529a16256",
       "dir": "community/AI人力资源与招聘域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 435,
       "package": "AI人力资源与招聘域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "db88d0e65ad3b3a2f2af569c27e2a6285953b523696ba4e4cbb4b3a45a6ac956",
       "dir": "community/AI保险域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 414,
       "package": "AI保险域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "2862163b4b9b0293e0ef041695ca976b63aa6b7db08b5e48dadcdd7f502f6489",
       "dir": "community/AI农业域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 466,
       "package": "AI农业域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "1e4839154abd5e7e67fbf1592e98a528063e6265989e5484fc5309aee52a8056",
       "dir": "community/AI制药与生物域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 446,
       "package": "AI制药与生物域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "99397e500631ddd6087427846221f9a74130fb25af3d9ef1e9134f0284a6c6db",
       "dir": "community/AI制造业域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 477,
       "package": "AI制造业域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "a5799ee611974b8b8f24da6f7d5770fb6614fe69222df9152755e5142c6873b1",
       "dir": "community/AI医疗健康域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 425,
       "package": "AI医疗健康域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "83bd9a120e13688604c1a258a39710d51d7547160105d5789bb2c2298eb91882",
       "dir": "community/AI政务与公共事务域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 478,
       "package": "AI政务与公共事务域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "db88d0e65ad3b3a2f2af569c27e2a6285953b523696ba4e4cbb4b3a45a6ac956",
       "dir": "community/AI教育域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 414,
       "package": "AI教育域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "1e4839154abd5e7e67fbf1592e98a528063e6265989e5484fc5309aee52a8056",
       "dir": "community/AI法律与合规域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 446,
       "package": "AI法律与合规域包"
     },
     {
@@ -72,430 +72,430 @@
       "package": "AI系统域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "2862163b4b9b0293e0ef041695ca976b63aa6b7db08b5e48dadcdd7f502f6489",
       "dir": "community/AI能源与电力域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 466,
       "package": "AI能源与电力域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "979d564fa93bc56c698ea3787e5bf75678a100f6f9980a5fbfce1037830cf0fe",
       "dir": "community/AI金融投研与风控域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 415,
       "package": "AI金融投研与风控域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "0462d6727bae5f7b8585b280521024d02c9b9e217d22638d11b45c344b670ae1",
       "dir": "community/AI食品与餐饮域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 404,
       "package": "AI食品与餐饮域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "12df166969483085ab19f906936729210b123fa91164089e6e3dacecaba0fd34",
       "dir": "community/三维与世界模型域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 405,
       "package": "三维与世界模型域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "b281f91eb742c36409daa8034f62b2365bd45f70d2c5aeb4cc9f9fa25e0be414",
       "dir": "community/上下文工程与长上下文域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 426,
       "package": "上下文工程与长上下文域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "c320e684831ad172be2bc63a67d42d1b197a488116134a467ccd2b05dd1df8e2",
       "dir": "community/世界书与设定库域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 395,
       "package": "世界书与设定库域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "0f8c79d33e4cdb8580648e877f778eee13a2fd63bed5b3373f351c3e8916fa35",
       "dir": "community/个人助理与日常生活域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 384,
       "package": "个人助理与日常生活域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "ee2a93061e250265610d97f603a740b10fbd2f29a4ce8dd83a470cd37e6a2868",
       "dir": "community/交通与出行域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 456,
       "package": "交通与出行域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "a4575c0beb8a80c6ec70a9b103fb0b290ec4ac485e049c87a6a454c332f65474",
       "dir": "community/产业与商业落地域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 394,
       "package": "产业与商业落地域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "2862163b4b9b0293e0ef041695ca976b63aa6b7db08b5e48dadcdd7f502f6489",
       "dir": "community/代码与软件工程域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 466,
       "package": "代码与软件工程域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "ffb95595d05c8e64db391d53def13073cae28550e0a16dd7ae47f085be315ef3",
       "dir": "community/代码大模型域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 447,
       "package": "代码大模型域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "12df166969483085ab19f906936729210b123fa91164089e6e3dacecaba0fd34",
       "dir": "community/代码审查与缺陷检测域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 405,
       "package": "代码审查与缺陷检测域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "77de0ba3dd9f1586118c9a89c87d60bf3c17d8f4f450414a3eddf3cda43ec5a1",
       "dir": "community/代码生成与补全域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 406,
       "package": "代码生成与补全域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "db88d0e65ad3b3a2f2af569c27e2a6285953b523696ba4e4cbb4b3a45a6ac956",
       "dir": "community/企业培训与组织学习域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 414,
       "package": "企业培训与组织学习域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "db88d0e65ad3b3a2f2af569c27e2a6285953b523696ba4e4cbb4b3a45a6ac956",
       "dir": "community/传媒与新闻域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 414,
       "package": "传媒与新闻域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "99b405e9f42f6fbda8ad16478e4c865f2cc32dd9cf724c66ce1bd090d72a7be9",
       "dir": "community/信息抽取与结构化域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 417,
       "package": "信息抽取与结构化域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "f42ddeb91c2571c54a5ec36ce57fc9e1bd4f1c70b48873969fafb1e3b7cf967f",
       "dir": "community/具身智能与机器人域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 468,
       "package": "具身智能与机器人域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "a4575c0beb8a80c6ec70a9b103fb0b290ec4ac485e049c87a6a454c332f65474",
       "dir": "community/内容分发与社区运营域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 394,
       "package": "内容分发与社区运营域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "0f8c79d33e4cdb8580648e877f778eee13a2fd63bed5b3373f351c3e8916fa35",
       "dir": "community/内容改写与风格迁移域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 384,
       "package": "内容改写与风格迁移域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "12df166969483085ab19f906936729210b123fa91164089e6e3dacecaba0fd34",
       "dir": "community/分类与情感分析域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 405,
       "package": "分类与情感分析域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "1e4839154abd5e7e67fbf1592e98a528063e6265989e5484fc5309aee52a8056",
       "dir": "community/参数高效微调域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 446,
       "package": "参数高效微调域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "c0683d40c7427a847666efdd08969403bbff4ec0e2fa0df7fb7da5b9c4294918",
       "dir": "community/可观测性成本与可靠性域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 457,
       "package": "可观测性成本与可靠性域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "db88d0e65ad3b3a2f2af569c27e2a6285953b523696ba4e4cbb4b3a45a6ac956",
       "dir": "community/可解释性与审计域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 414,
       "package": "可解释性与审计域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "2862163b4b9b0293e0ef041695ca976b63aa6b7db08b5e48dadcdd7f502f6489",
       "dir": "community/合成数据生成域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 466,
       "package": "合成数据生成域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "a4575c0beb8a80c6ec70a9b103fb0b290ec4ac485e049c87a6a454c332f65474",
       "dir": "community/合规与监管域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 394,
       "package": "合规与监管域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "39a92dd3d38eaea125209d5ecd8d7d645248b91ba82305b85de0e0a529a16256",
       "dir": "community/向量库与检索管线域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 435,
       "package": "向量库与检索管线域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "e2bbf74c6617be5c23dc62d1236fb9ea6e55718829db46556925576e473d4516",
       "dir": "community/图像生成与编辑域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 469,
       "package": "图像生成与编辑域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "0462d6727bae5f7b8585b280521024d02c9b9e217d22638d11b45c344b670ae1",
       "dir": "community/图像生成与视觉创作域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 404,
       "package": "图像生成与视觉创作域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "b281f91eb742c36409daa8034f62b2365bd45f70d2c5aeb4cc9f9fa25e0be414",
       "dir": "community/图像生成与视觉设计域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 426,
       "package": "图像生成与视觉设计域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "979d564fa93bc56c698ea3787e5bf75678a100f6f9980a5fbfce1037830cf0fe",
       "dir": "community/多智能体协同域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 415,
       "package": "多智能体协同域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "f42ddeb91c2571c54a5ec36ce57fc9e1bd4f1c70b48873969fafb1e3b7cf967f",
       "dir": "community/多模态大模型域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 468,
       "package": "多模态大模型域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "1e4839154abd5e7e67fbf1592e98a528063e6265989e5484fc5309aee52a8056",
       "dir": "community/多语翻译与本地化域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 446,
       "package": "多语翻译与本地化域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "e2bbf74c6617be5c23dc62d1236fb9ea6e55718829db46556925576e473d4516",
       "dir": "community/多轮对话与角色扮演域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 469,
       "package": "多轮对话与角色扮演域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "d13f7c5d914b0e0b2456eff2a7dde5e37ecbe98e2d71881c9b63638316df11c5",
       "dir": "community/大语言模型域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 436,
       "package": "大语言模型域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "d13f7c5d914b0e0b2456eff2a7dde5e37ecbe98e2d71881c9b63638316df11c5",
       "dir": "community/安全与对齐域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 436,
       "package": "安全与对齐域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "12df166969483085ab19f906936729210b123fa91164089e6e3dacecaba0fd34",
       "dir": "community/对话与客服域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 405,
       "package": "对话与客服域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "b281f91eb742c36409daa8034f62b2365bd45f70d2c5aeb4cc9f9fa25e0be414",
       "dir": "community/对齐与偏好优化域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 426,
       "package": "对齐与偏好优化域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "a4575c0beb8a80c6ec70a9b103fb0b290ec4ac485e049c87a6a454c332f65474",
       "dir": "community/嵌入与检索表示域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 394,
       "package": "嵌入与检索表示域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "a5799ee611974b8b8f24da6f7d5770fb6614fe69222df9152755e5142c6873b1",
       "dir": "community/平台与基础设施域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 425,
       "package": "平台与基础设施域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "a4575c0beb8a80c6ec70a9b103fb0b290ec4ac485e049c87a6a454c332f65474",
       "dir": "community/建筑与房地产域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 394,
       "package": "建筑与房地产域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "2862163b4b9b0293e0ef041695ca976b63aa6b7db08b5e48dadcdd7f502f6489",
       "dir": "community/开源与开发者生态域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 466,
       "package": "开源与开发者生态域包"
     },
     {
-      "digest": "f8ae4bab322f23a7bf4731ac1c97614088395c90dc8d9b79aaff2cb81a4fb62a",
+      "digest": "a5799ee611974b8b8f24da6f7d5770fb6614fe69222df9152755e5142c6873b1",
       "dir": "community/强化学习与决策域包/assets",
       "files": 3,
-      "lines": 305,
+      "lines": 425,
       "package": "强化学习与决策域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "ffb95595d05c8e64db391d53def13073cae28550e0a16dd7ae47f085be315ef3",
       "dir": "community/推理优化与加速域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 447,
       "package": "推理优化与加速域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "a97d1d8cfd47e8270b6966fb1d49de5b288f0ff001d38ab2e5321a8483aa4b43",
       "dir": "community/推理服务与部署域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 459,
       "package": "推理服务与部署域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "92d0f9441786d2faf3e940ab547663d7adeb7cb8f20d05c2df1ecb91ec4c8080",
       "dir": "community/推荐排序与广告域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 438,
       "package": "推荐排序与广告域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "979d564fa93bc56c698ea3787e5bf75678a100f6f9980a5fbfce1037830cf0fe",
       "dir": "community/提示工程与指令设计域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 415,
       "package": "提示工程与指令设计域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "a4575c0beb8a80c6ec70a9b103fb0b290ec4ac485e049c87a6a454c332f65474",
       "dir": "community/提示工程与提示模板域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 394,
       "package": "提示工程与提示模板域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "013bb1c7400dbf833fdb9e119b9c03b73b30206180724975a89fc58f85f63b6d",
       "dir": "community/搜索与信息聚合域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 427,
       "package": "搜索与信息聚合域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "14ba47f99b405a1d3c1eb9d33f7165a67caab4dbea9e1fcff8c318c555e411c7",
       "dir": "community/摘要与信息压缩域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 416,
       "package": "摘要与信息压缩域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "3c464886173a185bd3959f73ce6c08d3129d42a58bd41c34bdaf83b8ff097815",
       "dir": "community/数字人与虚拟形象域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 403,
       "package": "数字人与虚拟形象域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "ffb95595d05c8e64db391d53def13073cae28550e0a16dd7ae47f085be315ef3",
       "dir": "community/数学与形式化推理域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 447,
       "package": "数学与形式化推理域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "979d564fa93bc56c698ea3787e5bf75678a100f6f9980a5fbfce1037830cf0fe",
       "dir": "community/数据分析与决策支持域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 415,
       "package": "数据分析与决策支持域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "95dc750b56d42893a72a2900170552483f64267b2fd7a978be0956efcd9d9425",
       "dir": "community/数据分析与表格理解域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 448,
       "package": "数据分析与表格理解域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "39e18527a71b1aa5496170e64c6a871711c7681fffe60c7ebdd54dd85c45882c",
       "dir": "community/数据标注与标注质量域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 393,
       "package": "数据标注与标注质量域包"
     },
     {
-      "digest": "aea2a242a8230534a8ea744715ef4f699c29d793545cbd96acfaa09cb7acc266",
+      "digest": "12df166969483085ab19f906936729210b123fa91164089e6e3dacecaba0fd34",
       "dir": "community/数据采集与清洗域包/assets",
       "files": 3,
-      "lines": 296,
+      "lines": 405,
       "package": "数据采集与清洗域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "700bbef64252be6e49dcb143415f60f67af7386a272b1b3d9598afa4d46cdcfd",
       "dir": "community/文旅与酒店域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 458,
       "package": "文旅与酒店域包"
     },
     {
-      "digest": "aea2a242a8230534a8ea744715ef4f699c29d793545cbd96acfaa09cb7acc266",
+      "digest": "dce5e0635b8bad2b71855a65e1916d1fff74eb103fc1f84706dc56a44062061a",
       "dir": "community/文本生成与创作域包/assets",
       "files": 3,
-      "lines": 296,
+      "lines": 385,
       "package": "文本生成与创作域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "9db80150921109e6a862245ba433cb7f3b6059b98a7fe6cb324f8b2b553e75b3",
       "dir": "community/文档解析与版面理解域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 396,
       "package": "文档解析与版面理解域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "b281f91eb742c36409daa8034f62b2365bd45f70d2c5aeb4cc9f9fa25e0be414",
       "dir": "community/智能体与工作流编排域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 426,
       "package": "智能体与工作流编排域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "b281f91eb742c36409daa8034f62b2365bd45f70d2c5aeb4cc9f9fa25e0be414",
       "dir": "community/智能体框架与工具调用域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 426,
       "package": "智能体框架与工具调用域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "14ba47f99b405a1d3c1eb9d33f7165a67caab4dbea9e1fcff8c318c555e411c7",
       "dir": "community/机器翻译与本地化域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 416,
       "package": "机器翻译与本地化域包"
     },
     {
@@ -506,87 +506,115 @@
       "package": "校园情感领域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "d13f7c5d914b0e0b2456eff2a7dde5e37ecbe98e2d71881c9b63638316df11c5",
       "dir": "community/模型运营与成本域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 436,
       "package": "模型运营与成本域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "14ba47f99b405a1d3c1eb9d33f7165a67caab4dbea9e1fcff8c318c555e411c7",
       "dir": "community/测试与用例生成域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 416,
       "package": "测试与用例生成域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "0462d6727bae5f7b8585b280521024d02c9b9e217d22638d11b45c344b670ae1",
       "dir": "community/游戏与互动娱乐域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 404,
       "package": "游戏与互动娱乐域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "73b62980d99ebb57a260da70ed0dec42cf31ebc04655d0df9163977b9ef3c5f1",
       "dir": "community/版权与知识产权域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 424,
       "package": "版权与知识产权域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "57fe8a7e7e8ea0b4abc82a02466015a46891cc8118d76c569909ade44f86127b",
       "dir": "community/物流与供应链域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 445,
       "package": "物流与供应链域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "57fe8a7e7e8ea0b4abc82a02466015a46891cc8118d76c569909ade44f86127b",
       "dir": "community/监督微调域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 445,
       "package": "监督微调域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "588e4e5e4632f072b16f07d89b6ba9741a96b22447157dc87e79c6a71b793791",
       "dir": "community/知识管理与检索增强域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 501,
       "package": "知识管理与检索增强域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "b2743ab1a6bc67cdd55c3b022c0e11bb750b267514ae6ff8cafd303272b30a0a",
       "dir": "community/知识问答与检索增强域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 386,
       "package": "知识问答与检索增强域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "700bbef64252be6e49dcb143415f60f67af7386a272b1b3d9598afa4d46cdcfd",
       "dir": "community/科研与实验域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 458,
       "package": "科研与实验域包"
     },
     {
-      "digest": "4d58384638f4395c884607b987c3ab0819c36a672d701a7ee4c4ff62a21874f6",
+      "digest": "bb95167d3d233f67ba9d01aff137cc6f773ff507d04a9db017fcad8152b922a4",
       "dir": "community/端侧与边缘小模型域包/assets",
       "files": 3,
-      "lines": 366,
+      "lines": 509,
       "package": "端侧与边缘小模型域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "39a92dd3d38eaea125209d5ecd8d7d645248b91ba82305b85de0e0a529a16256",
       "dir": "community/红队越狱与安全测试域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 435,
       "package": "红队越狱与安全测试域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "dir": "community/组合包-受监管行业/assets",
+      "files": 0,
+      "lines": 0,
+      "package": "组合包-受监管行业"
+    },
+    {
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "dir": "community/组合包-数据管线/assets",
+      "files": 0,
+      "lines": 0,
+      "package": "组合包-数据管线"
+    },
+    {
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "dir": "community/组合包-检索栈/assets",
+      "files": 0,
+      "lines": 0,
+      "package": "组合包-检索栈"
+    },
+    {
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "dir": "community/组合包-轻混与保险/assets",
+      "files": 0,
+      "lines": 0,
+      "package": "组合包-轻混与保险"
+    },
+    {
+      "digest": "ffb95595d05c8e64db391d53def13073cae28550e0a16dd7ae47f085be315ef3",
       "dir": "community/编辑校对与出版域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 447,
       "package": "编辑校对与出版域包"
     },
     {
@@ -597,80 +625,80 @@
       "package": "西幻生存领域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "ee2a93061e250265610d97f603a740b10fbd2f29a4ce8dd83a470cd37e6a2868",
       "dir": "community/视觉模型域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 456,
       "package": "视觉模型域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "12df166969483085ab19f906936729210b123fa91164089e6e3dacecaba0fd34",
       "dir": "community/视频生成与剪辑域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 405,
       "package": "视频生成与剪辑域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "b281f91eb742c36409daa8034f62b2365bd45f70d2c5aeb4cc9f9fa25e0be414",
       "dir": "community/视频生成与理解域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 426,
       "package": "视频生成与理解域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "14ba47f99b405a1d3c1eb9d33f7165a67caab4dbea9e1fcff8c318c555e411c7",
       "dir": "community/视频生成与自动剪辑域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 416,
       "package": "视频生成与自动剪辑域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "979d564fa93bc56c698ea3787e5bf75678a100f6f9980a5fbfce1037830cf0fe",
       "dir": "community/角色扮演与角色卡域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 415,
       "package": "角色扮演与角色卡域包"
     },
     {
-      "digest": "308924ca47fb3a23a5bf988e2bd6de2b20680b865c9e2037038ab46cddde229b",
+      "digest": "979d564fa93bc56c698ea3787e5bf75678a100f6f9980a5fbfce1037830cf0fe",
       "dir": "community/记忆体与个性化域包/assets",
       "files": 3,
-      "lines": 326,
+      "lines": 415,
       "package": "记忆体与个性化域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "ee2a93061e250265610d97f603a740b10fbd2f29a4ce8dd83a470cd37e6a2868",
       "dir": "community/评测与基准域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 456,
       "package": "评测与基准域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "0f8c79d33e4cdb8580648e877f778eee13a2fd63bed5b3373f351c3e8916fa35",
       "dir": "community/评测基准与排行榜域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 384,
       "package": "评测基准与排行榜域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "39a92dd3d38eaea125209d5ecd8d7d645248b91ba82305b85de0e0a529a16256",
       "dir": "community/语音合成与配音域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 435,
       "package": "语音合成与配音域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "ffb95595d05c8e64db391d53def13073cae28550e0a16dd7ae47f085be315ef3",
       "dir": "community/语音识别与合成域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 447,
       "package": "语音识别与合成域包"
     },
     {
-      "digest": "1e5109e262dcbd23c79a87c37d8eae91d1bc13ccaefe743c97dad7aef3338f5d",
+      "digest": "f42ddeb91c2571c54a5ec36ce57fc9e1bd4f1c70b48873969fafb1e3b7cf967f",
       "dir": "community/语音转写与会议记录域包/assets",
       "files": 3,
-      "lines": 356,
+      "lines": 468,
       "package": "语音转写与会议记录域包"
     },
     {
@@ -681,55 +709,55 @@
       "package": "量化金融域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "0f8c79d33e4cdb8580648e877f778eee13a2fd63bed5b3373f351c3e8916fa35",
       "dir": "community/长文本与小说创作域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 384,
       "package": "长文本与小说创作域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "d13f7c5d914b0e0b2456eff2a7dde5e37ecbe98e2d71881c9b63638316df11c5",
       "dir": "community/隐私与数据治理域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 436,
       "package": "隐私与数据治理域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "0462d6727bae5f7b8585b280521024d02c9b9e217d22638d11b45c344b670ae1",
       "dir": "community/零售与电商域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 404,
       "package": "零售与电商域包"
     },
     {
-      "digest": "3a9e305e750ce89a5d2e68476a93afcce9638e332177e1b967e8b5526f0f8836",
+      "digest": "d13f7c5d914b0e0b2456eff2a7dde5e37ecbe98e2d71881c9b63638316df11c5",
       "dir": "community/音频与音乐生成域包/assets",
       "files": 3,
-      "lines": 336,
+      "lines": 436,
       "package": "音频与音乐生成域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "a4575c0beb8a80c6ec70a9b103fb0b290ec4ac485e049c87a6a454c332f65474",
       "dir": "community/音频音乐与语音域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 394,
       "package": "音频音乐与语音域包"
     },
     {
-      "digest": "1b80ec217e7bf5163dc5d912e8c662f0f5d6347d17c00980d9bef4cd5f205d12",
+      "digest": "54b6850dfee29a31548bcfe68d88470586404118fc9a2c5cdba3c6760a770cb9",
       "dir": "community/预测异常与风险域包/assets",
       "files": 3,
-      "lines": 346,
+      "lines": 488,
       "package": "预测异常与风险域包"
     },
     {
-      "digest": "5e603a1475cb019bbdcaa989b3e58b4bd5b07ebb4ced74812aec624ad656d76c",
+      "digest": "979d564fa93bc56c698ea3787e5bf75678a100f6f9980a5fbfce1037830cf0fe",
       "dir": "community/预训练与继续预训练域包/assets",
       "files": 3,
-      "lines": 316,
+      "lines": 415,
       "package": "预训练与继续预训练域包"
     }
   ],
-  "recorded_at": "2026-09-23",
+  "recorded_at": "2026-09-24",
   "schema": "nf-asset-line-baseline/1"
 }

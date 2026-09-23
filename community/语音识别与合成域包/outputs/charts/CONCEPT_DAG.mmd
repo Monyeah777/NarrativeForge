@@ -17,10 +17,21 @@ flowchart TD
     A04-12
   end
   subgraph P80[P80]
+    STD-cncf-cloudevents
+    STD-ietf-bcp47
+    STD-ietf-ixdtf
+    STD-ietf-json
     STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-oci-image
     STD-onnx
+    STD-protobuf
+    STD-rdf11
+    STD-rfc3339
+    STD-vega-lite
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
     STD-w3c-webaudio
   end
   A04-02 --> A04-01
@@ -33,8 +44,16 @@ flowchart TD
   A04-01 --> A04-11
   A04-09 --> A04-11
   A04-06 --> A04-12
+  A04-06 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
+  A04-12 --> STD-ietf-ixdtf
+  STD-rfc3339 --> STD-ietf-ixdtf
   A04-04 --> STD-ietf-json-schema
   A04-10 --> STD-ietf-json-schema
+  A04-01 --> STD-ietf-json-schema
+  A04-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  A04-09 --> STD-mermaid
   A04-05 --> STD-mlcommons-bench
   A04-08 --> STD-mlcommons-bench
   A04-11 --> STD-mlcommons-bench
@@ -43,5 +62,16 @@ flowchart TD
   A04-06 --> STD-onnx
   A04-07 --> STD-onnx
   A04-09 --> STD-onnx
+  STD-protobuf --> STD-onnx
+  A04-03 --> STD-vega-lite
+  A04-08 --> STD-vega-lite
+  A04-10 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  A04-04 --> STD-w3c-prov-o
+  A04-05 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  A04-02 --> STD-w3c-tabular-data
+  A04-07 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
   A04-01 --> STD-w3c-webaudio
   A04-02 --> STD-w3c-webaudio

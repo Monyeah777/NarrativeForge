@@ -22,8 +22,9 @@ class CombineTest(unittest.TestCase):
         c = pc.combine(ROOT, packs=["大语言模型域包", "视觉模型域包"])
         self.assertTrue(c["legal"], c)
         self.assertEqual(c["module_count"], 4)
-        self.assertEqual(sorted(c["layer_stacks"]), ["P40", "P60"])
-        self.assertEqual(len(c["layer_stacks"]["P40"]), 2)   # 同层两包默认 → 堆叠
+        stacks = {r["layer"]: r["modules"] for r in c["layer_stacks"]}
+        self.assertEqual(sorted(stacks), ["P40", "P60"])
+        self.assertEqual(len(stacks["P40"]), 2)   # 同层两包默认 → 堆叠
 
     def test_layer_stack_order_is_canonical(self):
         a = pc.combine(ROOT, packs=["大语言模型域包", "视觉模型域包"])
@@ -51,7 +52,9 @@ class CombineTest(unittest.TestCase):
         c = pc.combine(ROOT, extra_modules=["大语言模型:M01", "视觉模型:M01", "数据采集与清洗:M01"],
                        extra_assets=["量化金融域包:QUANT_METRICS"])
         self.assertTrue(c["legal"], c)
-        self.assertEqual(c["module_count"], 3)
+        # 闭包后不止 3 个：事件面闭合会连带拉入 report 层发布方（引擎设计行为）
+        self.assertGreaterEqual(c["module_count"], 3)
+        self.assertTrue(any("M02" in m for m in c["modules"]), c["modules"])
         self.assertEqual(c["assets_borrowed"][0]["key"], "QUANT_METRICS")
         self.assertEqual(c["assets_borrowed"][0]["mode"], "asset_readonly")
 

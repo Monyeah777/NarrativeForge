@@ -18,8 +18,14 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-cncf-otel-semconv
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-oasis-sarif
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C08-01 --> C08-02
   C08-02 --> C08-03
@@ -42,6 +48,14 @@ flowchart TD
   C08-11 --> C08-12
   C08-09 --> C08-12
   C08-03 --> STD-cncf-otel-semconv
+  C08-01 --> STD-ietf-json-schema
+  C08-05 --> STD-ietf-json-schema
+  C08-06 --> STD-ietf-json-schema
+  C08-10 --> STD-ietf-json-schema
+  C08-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  C08-04 --> STD-mermaid
+  C08-09 --> STD-mermaid
   C08-01 --> STD-mlcommons-bench
   C08-05 --> STD-mlcommons-bench
   C08-07 --> STD-mlcommons-bench
@@ -53,3 +67,11 @@ flowchart TD
   C08-04 --> STD-oasis-sarif
   C08-06 --> STD-oasis-sarif
   C08-08 --> STD-oasis-sarif
+  STD-ietf-json-schema --> STD-oasis-sarif
+  C08-03 --> STD-vega-lite
+  C08-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C08-02 --> STD-w3c-tabular-data
+  C08-07 --> STD-w3c-tabular-data
+  C08-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

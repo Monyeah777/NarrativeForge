@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「预测、异常与风险」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（预测异常与风险:M01）与收口模块（预测异常与风险:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（B18-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 19 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（B18-00 领域通用前置）；节点 31 · 边 52 · 密度 1.6774。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,13 +29,25 @@
 | `B18-10` | 保险定价 | P60 | `B18-09`、`B18-07` | b18-anchor |
 | `B18-11` | 模型漂移监控 | P40 | `B18-10`、`B18-08` | b18-anchor |
 | `B18-12` | 不确定性量化 | P60 | `B18-11`、`B18-09` | b18-anchor |
-| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `B18-11` | std-catalog |
-| `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `B18-03`、`B18-06`、`B18-09` | std-catalog |
-| `STD-gips` | 标准 · GIPS 绩效标准（CFA Institute） | P80 | `B18-05`、`B18-10` | std-catalog |
-| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `B18-04`、`B18-07` | std-catalog |
-| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation） | P80 | `B18-12` | std-catalog |
-| `STD-w3c-owl-time` | 标准 · OWL-Time 时间本体（W3C） | P80 | `B18-01` | std-catalog |
-| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `B18-02`、`B18-08` | std-catalog |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry｜eng｜实测 ✓） | P80 | `B18-11` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `B18-07`、`B18-09` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-frictionless-table` | 标准 · Table Schema（Frictionless｜data｜实测 ✓） | P80 | `B18-03`、`B18-06`、`B18-09`、`STD-frictionless-package` | std-catalog |
+| `STD-gips` | 标准 · GIPS 绩效标准（CFA Institute｜gov｜实测 ✓） | P80 | `B18-05`、`B18-10` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-ixdtf` | 标准 · IXDTF (RFC 9557)（IETF｜data｜实测 ✓） | P80 | `B18-01`、`STD-rfc3339` | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `B18-04`、`B18-07`、`B18-05`、`B18-10`、`B18-11`、`STD-ietf-json` | std-catalog |
+| `STD-onnx` | 标准 · ONNX（opset 扩展）（Linux Foundation｜iface｜实测 ✓） | P80 | `B18-12`、`STD-protobuf` | std-catalog |
+| `STD-opcua` | 标准 · OPC UA 工业互联（OPC Foundation｜iface｜实测 ✓） | P80 | `B18-08` | std-catalog |
+| `STD-protobuf` | 标准 · Protocol Buffers proto3（Google｜iface｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rfc3339` | 标准 · 时间戳（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `B18-02`、`B18-03`、`B18-06`、`B18-08`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-owl-time` | 标准 · OWL-Time 时间本体（W3C｜data｜实测 ✓） | P80 | `B18-01`、`STD-w3c-owl2` | std-catalog |
+| `STD-w3c-owl2` | 标准 · OWL 2 本体语言（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `B18-04`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `B18-02`、`B18-12`、`STD-ietf-bcp47` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -54,11 +66,23 @@
 | `B18-模型漂移监控` | `B18-11` |
 | `B18-不确定性量化` | `B18-12` |
 | `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-frictionless-package` | `STD-frictionless-package` |
 | `std-frictionless-table` | `STD-frictionless-table` |
 | `std-gips` | `STD-gips` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-ixdtf` | `STD-ietf-ixdtf` |
+| `std-ietf-json` | `STD-ietf-json` |
 | `std-ietf-json-schema` | `STD-ietf-json-schema` |
 | `std-onnx` | `STD-onnx` |
+| `std-opcua` | `STD-opcua` |
+| `std-protobuf` | `STD-protobuf` |
+| `std-rdf11` | `STD-rdf11` |
+| `std-rfc3339` | `STD-rfc3339` |
+| `std-vega-lite` | `STD-vega-lite` |
 | `std-w3c-owl-time` | `STD-w3c-owl-time` |
+| `std-w3c-owl2` | `STD-w3c-owl2` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
 | `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
@@ -95,11 +119,23 @@ concept_graph:
       name: "可扩展标准（绑定）"
       nodes:
         - "STD-cncf-otel-semconv"
+        - "STD-commonmark"
+        - "STD-frictionless-package"
         - "STD-frictionless-table"
         - "STD-gips"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-ixdtf"
+        - "STD-ietf-json"
         - "STD-ietf-json-schema"
         - "STD-onnx"
+        - "STD-opcua"
+        - "STD-protobuf"
+        - "STD-rdf11"
+        - "STD-rfc3339"
+        - "STD-vega-lite"
         - "STD-w3c-owl-time"
+        - "STD-w3c-owl2"
+        - "STD-w3c-prov-o"
         - "STD-w3c-tabular-data"
   nodes:
     - id: "B18-01"
@@ -214,6 +250,22 @@ concept_graph:
         - "B18-11"
       provenance:
         - "std-catalog"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B18-07"
+        - "B18-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-frictionless-package"
+      name: "标准 · Data Package"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-frictionless-table"
       name: "标准 · Table Schema"
       layer: "P80"
@@ -222,6 +274,7 @@ concept_graph:
         - "B18-03"
         - "B18-06"
         - "B18-09"
+        - "STD-frictionless-package"
       provenance:
         - "std-catalog"
     - id: "STD-gips"
@@ -233,6 +286,29 @@ concept_graph:
         - "B18-10"
       provenance:
         - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-ixdtf"
+      name: "标准 · IXDTF (RFC 9557)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B18-01"
+        - "STD-rfc3339"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-ietf-json-schema"
       name: "标准 · JSON Schema 2020-12"
       layer: "P80"
@@ -240,6 +316,10 @@ concept_graph:
       prereqs:
         - "B18-04"
         - "B18-07"
+        - "B18-05"
+        - "B18-10"
+        - "B18-11"
+        - "STD-ietf-json"
       provenance:
         - "std-catalog"
     - id: "STD-onnx"
@@ -248,6 +328,48 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "B18-12"
+        - "STD-protobuf"
+      provenance:
+        - "std-catalog"
+    - id: "STD-opcua"
+      name: "标准 · OPC UA 工业互联"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B18-08"
+      provenance:
+        - "std-catalog"
+    - id: "STD-protobuf"
+      name: "标准 · Protocol Buffers proto3"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-rfc3339"
+      name: "标准 · 时间戳"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B18-02"
+        - "B18-03"
+        - "B18-06"
+        - "B18-08"
+        - "STD-ietf-json-schema"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-owl-time"
@@ -256,6 +378,23 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "B18-01"
+        - "STD-w3c-owl2"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-owl2"
+      name: "标准 · OWL 2 本体语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B18-04"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
     - id: "STD-w3c-tabular-data"
@@ -264,7 +403,8 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "B18-02"
-        - "B18-08"
+        - "B18-12"
+        - "STD-ietf-bcp47"
       provenance:
         - "std-catalog"
 ```

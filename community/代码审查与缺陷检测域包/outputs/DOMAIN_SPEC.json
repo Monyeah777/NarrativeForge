@@ -4,8 +4,29 @@
   "domain": "代码审查与缺陷检测",
   "section": "B · 任务类型",
   "anchors_verified_on": "2026-09-22",
+  "standard_anchors_verified_on": "2026-09-24",
   "metric_family": "classification",
   "content_tier": "authored",
+  "data_authenticity": {
+    "standard_bindings": 24,
+    "in_catalog_ratio": 1.0,
+    "reachable_ratio": 1.0,
+    "probe_evidence_ratio": 1.0,
+    "anchor_probed_ratio": 1.0,
+    "score": 1.0,
+    "threshold": 0.95,
+    "bound_standards": [
+      "commonmark",
+      "cwe",
+      "ietf-json-schema",
+      "oasis-sarif",
+      "osv",
+      "spdx-3",
+      "vega-lite",
+      "w3c-prov-o",
+      "w3c-tabular-data"
+    ]
+  },
   "subdivisions": [
     {
       "id": "B09-01",
@@ -16,6 +37,34 @@
       "anchor_status": 200,
       "standard_ref": "oasis-sarif",
       "standard_why": "域码 B09 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "oasis-sarif",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 0）",
+          "layer": "iface",
+          "body": "OASIS",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 ruleset（来源 + 版本）、scan_scope（路径 / 语言）与 hit_definition（单条=一处代码位置）。",
       "pitfall": "规则集版本漂移（两次扫描结果不同）；命中定义不同（按文件/按行）导致计数不可比。"
     },
@@ -28,6 +77,32 @@
       "anchor_status": 200,
       "standard_ref": "cwe",
       "standard_why": "关键词「漏洞|缺陷|弱点」命中",
+      "standards": [
+        {
+          "ref": "cwe",
+          "role": "primary",
+          "why": "关键词「漏洞|缺陷|弱点」命中",
+          "layer": "gov",
+          "body": "MITRE",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 taxonomy（CWE|OWASP + 版本）、severity_scheme（CVSS 或自定义 + 依据）与 mapping（逐条映射表）。",
       "pitfall": "严重度凭感觉（不可比）；无分类映射导致修复优先级失真。"
     },
@@ -40,6 +115,32 @@
       "anchor_status": 200,
       "standard_ref": "osv",
       "standard_why": "域码 B09 专属绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "osv",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 2）",
+          "layer": "gov",
+          "body": "Google/OSV",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 metrics（度量清单）、thresholds（各项阈值 + 来源）与 counting_rule（是否含布尔分支）。",
       "pitfall": "阈值不声明（结论不可复现）；复杂度计数规则不同横向比。"
     },
@@ -52,6 +153,30 @@
       "anchor_status": 200,
       "standard_ref": "spdx-3",
       "standard_why": "关键词「供应链|依赖」命中",
+      "standards": [
+        {
+          "ref": "spdx-3",
+          "role": "primary",
+          "why": "关键词「供应链|依赖」命中",
+          "layer": "gov",
+          "body": "SPDX",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 lockfile（来源与格式）、vuln_db（OSV/NVD + 抓取日期）与 fixability（有无可用升级版本）。",
       "pitfall": "漏洞库过期（漏报）；不区分「可修/不可修」导致告警积压。"
     },
@@ -64,6 +189,32 @@
       "anchor_status": 200,
       "standard_ref": "cwe",
       "standard_why": "域码 B09 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "cwe",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "MITRE",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 rules（规则集 + 版本）、false_positive_baseline（对照基线）与 response_sop（轮换 / 撤销步骤）。",
       "pitfall": "只扫不处置（密钥仍在）；无基线导致误报淹没真报。"
     },
@@ -76,6 +227,32 @@
       "anchor_status": 200,
       "standard_ref": "osv",
       "standard_why": "域码 B09 专属绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "osv",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 2）",
+          "layer": "gov",
+          "body": "Google/OSV",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 coverage_kind（line|branch）、delta_coverage（增量 vs 全量）与 gate_threshold（合入阈值）。",
       "pitfall": "只看全量覆盖率（新增代码裸奔）；口径（行/分支）混用。"
     },
@@ -88,6 +265,34 @@
       "anchor_status": 200,
       "standard_ref": "oasis-sarif",
       "standard_why": "域码 B09 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "oasis-sarif",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 0）",
+          "layer": "iface",
+          "body": "OASIS",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 actionability（每条须含位置 + 建议）、priority（分级规则）与 noise_rate（被作者标记为无效的比例）。",
       "pitfall": "泛泛而谈（不可执行）；噪声率不统计导致审查疲劳。"
     },
@@ -100,6 +305,32 @@
       "anchor_status": 200,
       "standard_ref": "cwe",
       "standard_why": "域码 B09 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "cwe",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "MITRE",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "vega-lite",
+          "role": "support",
+          "why": "B 段载体锚（轮换 2；与主锚异层）",
+          "layer": "form",
+          "body": "Vega",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        }
+      ],
       "check": "声明 review_scope（diff|文件|全仓）、history_context（是否带历史）与 dedup_rule（同问题不重复报）。",
       "pitfall": "每次全仓重报（噪声爆炸）；diff 基线不明导致漏审。"
     },
@@ -112,6 +343,30 @@
       "anchor_status": 200,
       "standard_ref": "osv",
       "standard_why": "域码 B09 专属绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "osv",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 2）",
+          "layer": "gov",
+          "body": "Google/OSV",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "commonmark",
+          "role": "support",
+          "why": "B 段载体锚（轮换 3；与主锚异层）",
+          "layer": "form",
+          "body": "CommonMark",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        }
+      ],
       "check": "声明 prediction_source（规则|模型 + 版本）、ranking_metric（如 recall@10）与 human_audit_ratio。",
       "pitfall": "只报准确率不报排序质量（前几条没用）；不抽检。"
     },
@@ -124,6 +379,34 @@
       "anchor_status": 200,
       "standard_ref": "oasis-sarif",
       "standard_why": "域码 B09 专属绑定（轮换 0）",
+      "standards": [
+        {
+          "ref": "oasis-sarif",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 0）",
+          "layer": "iface",
+          "body": "OASIS",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json-schema"
+          ]
+        },
+        {
+          "ref": "w3c-prov-o",
+          "role": "support",
+          "why": "B 段载体锚（轮换 4；与主锚异层）",
+          "layer": "gov",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "rdf11"
+          ]
+        }
+      ],
       "check": "声明 patch_validation（测试执行 + 通过判据）、regression_check（原有测试是否仍过）与 rollback_point。",
       "pitfall": "补丁未经测试就建议合入；不查回归。"
     },
@@ -136,6 +419,32 @@
       "anchor_status": 200,
       "standard_ref": "cwe",
       "standard_why": "域码 B09 专属绑定（轮换 1）",
+      "standards": [
+        {
+          "ref": "cwe",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 1）",
+          "layer": "gov",
+          "body": "MITRE",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "ietf-json-schema",
+          "role": "support",
+          "why": "B 段载体锚（轮换 0；与主锚异层）",
+          "layer": "data",
+          "body": "IETF/JSON Schema",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-json"
+          ]
+        }
+      ],
       "check": "声明 fp_definition（判据）、baseline_snapshot（时间 + 计数）与 suppression_ttl（抑制有效期 + 复审）。",
       "pitfall": "抑制无期限（永久掩盖）；基线不更新导致趋势失真。"
     },
@@ -148,6 +457,32 @@
       "anchor_status": 200,
       "standard_ref": "osv",
       "standard_why": "域码 B09 专属绑定（轮换 2）",
+      "standards": [
+        {
+          "ref": "osv",
+          "role": "primary",
+          "why": "域码 B09 专属绑定（轮换 2）",
+          "layer": "gov",
+          "body": "Google/OSV",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": []
+        },
+        {
+          "ref": "w3c-tabular-data",
+          "role": "support",
+          "why": "B 段载体锚（轮换 1；与主锚异层）",
+          "layer": "data",
+          "body": "W3C",
+          "reachable": true,
+          "http_status": 200,
+          "probe_date": "2026-09-24",
+          "depends_on": [
+            "ietf-bcp47"
+          ]
+        }
+      ],
       "check": "声明 output_format（SARIF 2.1.0 等）、required_fields（ruleId/level/location）与 consumers（IDE|CI|门禁）。",
       "pitfall": "输出纯文本（无法门禁化）；字段缺失导致定位失败。"
     }

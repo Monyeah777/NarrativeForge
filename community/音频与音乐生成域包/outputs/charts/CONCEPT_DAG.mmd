@@ -19,10 +19,18 @@ flowchart TD
   subgraph P80[P80]
     STD-cncf-cloudevents
     STD-creativecommons
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-mlcommons-bench
     STD-onnx
     STD-opengeospatial
+    STD-protobuf
+    STD-rdf11
+    STD-spdx-licenses
+    STD-vega-lite
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
     STD-w3c-webaudio
   end
   A05-03 --> A05-01
@@ -36,13 +44,31 @@ flowchart TD
   A05-08 --> A05-12
   A05-04 --> A05-12
   A05-06 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
   A05-09 --> STD-creativecommons
   A05-04 --> STD-ietf-json-schema
+  A05-01 --> STD-ietf-json-schema
+  A05-06 --> STD-ietf-json-schema
+  A05-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   A05-02 --> STD-mlcommons-bench
   A05-08 --> STD-mlcommons-bench
   A05-12 --> STD-mlcommons-bench
   A05-03 --> STD-onnx
+  STD-protobuf --> STD-onnx
   A05-07 --> STD-opengeospatial
+  A05-09 --> STD-spdx-licenses
+  A05-03 --> STD-vega-lite
+  A05-07 --> STD-vega-lite
+  A05-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  A05-04 --> STD-w3c-prov-o
+  A05-05 --> STD-w3c-prov-o
+  A05-10 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  A05-02 --> STD-w3c-tabular-data
+  A05-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
   A05-01 --> STD-w3c-webaudio
   A05-05 --> STD-w3c-webaudio
   A05-10 --> STD-w3c-webaudio

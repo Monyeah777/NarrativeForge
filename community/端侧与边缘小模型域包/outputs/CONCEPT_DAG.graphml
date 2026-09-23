@@ -68,7 +68,31 @@
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
+    <node id="STD-ietf-bcp47">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-ietf-json-schema">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-jose">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-jsonrpc">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-mcp">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-mermaid">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -88,7 +112,31 @@
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
+    <node id="STD-owasp-top10">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-protobuf">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-rdf11">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
     <node id="STD-uptane">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-vega-lite">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-prov-o">
+      <data key="layer">P80</data>
+      <data key="branch">standards</data>
+    </node>
+    <node id="STD-w3c-tabular-data">
       <data key="layer">P80</data>
       <data key="branch">standards</data>
     </node>
@@ -137,7 +185,31 @@
     <edge source="A14-08" target="STD-ieee-754">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="A14-01" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-05" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-06" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-11" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json" target="STD-ietf-json-schema">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="A14-10" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-jsonrpc" target="STD-mcp">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-04" target="STD-mermaid">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-09" target="STD-mermaid">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="A14-07" target="STD-mlcommons-bench">
@@ -146,16 +218,55 @@
     <edge source="A14-02" target="STD-oasis-openapi">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-ietf-json-schema" target="STD-oasis-openapi">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="A14-01" target="STD-onnx">
       <data key="provenance">['std-catalog']</data>
     </edge>
     <edge source="A14-03" target="STD-onnx">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-protobuf" target="STD-onnx">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="A14-12" target="STD-owasp-llm">
       <data key="provenance">['std-catalog']</data>
     </edge>
+    <edge source="STD-owasp-top10" target="STD-owasp-llm">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
     <edge source="A14-11" target="STD-uptane">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-jose" target="STD-uptane">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-03" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-08" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-json-schema" target="STD-vega-lite">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-10" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-rdf11" target="STD-w3c-prov-o">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-02" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-07" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="A14-12" target="STD-w3c-tabular-data">
+      <data key="provenance">['std-catalog']</data>
+    </edge>
+    <edge source="STD-ietf-bcp47" target="STD-w3c-tabular-data">
       <data key="provenance">['std-catalog']</data>
     </edge>
   </graph>

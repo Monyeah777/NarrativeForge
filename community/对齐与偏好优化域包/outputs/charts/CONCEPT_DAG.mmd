@@ -17,11 +17,19 @@ flowchart TD
     C07-12
   end
   subgraph P80[P80]
+    STD-cncf-cloudevents
     STD-cncf-otel-semconv
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
     STD-mermaid
     STD-mlcommons-bench
     STD-onnx
     STD-owasp-llm
+    STD-owasp-top10
+    STD-protobuf
+    STD-vega-lite
+    STD-w3c-tabular-data
   end
   C07-01 --> C07-02
   C07-02 --> C07-03
@@ -43,8 +51,17 @@ flowchart TD
   C07-08 --> C07-11
   C07-11 --> C07-12
   C07-09 --> C07-12
+  C07-01 --> STD-cncf-cloudevents
+  STD-ietf-json-schema --> STD-cncf-cloudevents
   C07-07 --> STD-cncf-otel-semconv
+  C07-05 --> STD-ietf-json-schema
+  C07-06 --> STD-ietf-json-schema
+  C07-10 --> STD-ietf-json-schema
+  C07-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   C07-01 --> STD-mermaid
+  C07-04 --> STD-mermaid
+  C07-09 --> STD-mermaid
   C07-02 --> STD-mlcommons-bench
   C07-03 --> STD-mlcommons-bench
   C07-05 --> STD-mlcommons-bench
@@ -54,4 +71,13 @@ flowchart TD
   C07-11 --> STD-mlcommons-bench
   C07-12 --> STD-mlcommons-bench
   C07-04 --> STD-onnx
+  STD-protobuf --> STD-onnx
   C07-06 --> STD-owasp-llm
+  STD-owasp-top10 --> STD-owasp-llm
+  C07-03 --> STD-vega-lite
+  C07-07 --> STD-vega-lite
+  C07-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  C07-02 --> STD-w3c-tabular-data
+  C07-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

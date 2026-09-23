@@ -17,10 +17,17 @@ flowchart TD
     B03-12
   end
   subgraph P80[P80]
+    STD-commonmark
+    STD-frictionless-package
     STD-frictionless-table
     STD-gdpr
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-oci-image
+    STD-rdf11
+    STD-vega-lite
+    STD-w3c-prov-o
     STD-w3c-skos
     STD-w3c-tabular-data
   end
@@ -34,15 +41,33 @@ flowchart TD
   B03-09 --> B03-11
   B03-02 --> B03-11
   B03-08 --> B03-12
+  B03-01 --> STD-commonmark
+  B03-04 --> STD-commonmark
+  B03-09 --> STD-commonmark
   B03-03 --> STD-frictionless-table
   B03-06 --> STD-frictionless-table
   B03-09 --> STD-frictionless-table
   B03-11 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B03-12 --> STD-gdpr
   B03-01 --> STD-ietf-json-schema
   B03-10 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B03-04 --> STD-oci-image
+  B03-02 --> STD-vega-lite
+  B03-03 --> STD-vega-lite
+  B03-05 --> STD-vega-lite
+  B03-06 --> STD-vega-lite
+  B03-07 --> STD-vega-lite
+  B03-10 --> STD-vega-lite
+  B03-11 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
+  B03-08 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
   B03-02 --> STD-w3c-skos
   B03-07 --> STD-w3c-skos
+  STD-rdf11 --> STD-w3c-skos
   B03-05 --> STD-w3c-tabular-data
   B03-08 --> STD-w3c-tabular-data
+  B03-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

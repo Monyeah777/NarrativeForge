@@ -18,8 +18,14 @@ flowchart TD
   end
   subgraph P80[P80]
     STD-commonmark
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
+    STD-vega-lite
     STD-w3c-epub33
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E05-01 --> E05-02
   E05-02 --> E05-03
@@ -45,11 +51,27 @@ flowchart TD
   E05-04 --> STD-commonmark
   E05-07 --> STD-commonmark
   E05-10 --> STD-commonmark
+  E05-02 --> STD-commonmark
+  E05-05 --> STD-commonmark
+  E05-01 --> STD-ietf-json-schema
+  E05-06 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  E05-11 --> STD-mermaid
+  E05-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E05-03 --> STD-w3c-epub33
   E05-06 --> STD-w3c-epub33
   E05-09 --> STD-w3c-epub33
   E05-12 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
   E05-02 --> STD-w3c-tabular-data
   E05-05 --> STD-w3c-tabular-data
   E05-08 --> STD-w3c-tabular-data
   E05-11 --> STD-w3c-tabular-data
+  E05-03 --> STD-w3c-tabular-data
+  E05-04 --> STD-w3c-tabular-data
+  E05-07 --> STD-w3c-tabular-data
+  E05-09 --> STD-w3c-tabular-data
+  E05-10 --> STD-w3c-tabular-data
+  E05-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

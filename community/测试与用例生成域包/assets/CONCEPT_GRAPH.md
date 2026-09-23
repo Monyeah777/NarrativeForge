@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「测试与用例生成」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（测试与用例生成:M01）与收口模块（测试与用例生成:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 4 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（B10-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 13 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（B10-00 领域通用前置）；节点 25 · 边 40 · 密度 1.6000。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,10 +29,19 @@
 | `B10-10` | 端到端场景编排 | P60 | `B10-04`、`B10-05` | b10-anchor |
 | `B10-11` | 测试可维护性 | P40 | `B10-01` | b10-anchor |
 | `B10-12` | CI 集成 | P60 | `B10-10` | b10-anchor |
-| `STD-a2a` | 标准 · A2A 协议（Linux Foundation） | P80 | `B10-10` | std-catalog |
-| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema） | P80 | `B10-04` | std-catalog |
-| `STD-nist-800-142` | 标准 · SP 800-142 组合测试实践（NIST） | P80 | `B10-01`、`B10-03`、`B10-05`、`B10-07`、`B10-09`、`B10-11` | std-catalog |
-| `STD-peps` | 标准 · PEP 体系（含 8/257/621）（Python） | P80 | `B10-02`、`B10-06`、`B10-08`、`B10-12` | std-catalog |
+| `STD-a2a` | 标准 · A2A 协议（Linux Foundation｜iface｜实测 ✓） | P80 | `B10-10` | std-catalog |
+| `STD-commonmark` | 标准 · CommonMark 0.31.2（CommonMark｜form｜实测 ✓） | P80 | `B10-09` | std-catalog |
+| `STD-ietf-bcp47` | 标准 · 语言标签 (RFC 5646)（IETF｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `B10-04`、`B10-01`、`B10-06`、`B10-11`、`STD-ietf-json` | std-catalog |
+| `STD-nist-800-142` | 标准 · SP 800-142 组合测试实践（NIST｜eng｜实测 ✓） | P80 | `B10-01`、`B10-03`、`B10-05`、`B10-07`、`B10-09`、`B10-11` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative｜iface｜实测 ✓） | P80 | `B10-04`、`STD-ietf-json-schema` | std-catalog |
+| `STD-peps` | 标准 · PEP 体系（含 8/257/621）（Python｜eng｜实测 ✓） | P80 | `B10-02`、`B10-06`、`B10-08`、`B10-12`、`STD-rst-docutils` | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-rst-docutils` | 标准 · reStructuredText 指令/角色（Docutils｜form｜实测 ✓） | P80 | — | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `B10-03`、`B10-08`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `B10-05`、`B10-10`、`STD-rdf11` | std-catalog |
+| `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C｜data｜实测 ✓） | P80 | `B10-02`、`B10-07`、`B10-12`、`STD-ietf-bcp47` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -51,9 +60,18 @@
 | `B10-测试可维护性` | `B10-11` |
 | `B10-CI-集成` | `B10-12` |
 | `std-a2a` | `STD-a2a` |
+| `std-commonmark` | `STD-commonmark` |
+| `std-ietf-bcp47` | `STD-ietf-bcp47` |
+| `std-ietf-json` | `STD-ietf-json` |
 | `std-ietf-json-schema` | `STD-ietf-json-schema` |
 | `std-nist-800-142` | `STD-nist-800-142` |
+| `std-oasis-openapi` | `STD-oasis-openapi` |
 | `std-peps` | `STD-peps` |
+| `std-rdf11` | `STD-rdf11` |
+| `std-rst-docutils` | `STD-rst-docutils` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-prov-o` | `STD-w3c-prov-o` |
+| `std-w3c-tabular-data` | `STD-w3c-tabular-data` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -89,9 +107,18 @@ concept_graph:
       name: "可扩展标准（绑定）"
       nodes:
         - "STD-a2a"
+        - "STD-commonmark"
+        - "STD-ietf-bcp47"
+        - "STD-ietf-json"
         - "STD-ietf-json-schema"
         - "STD-nist-800-142"
+        - "STD-oasis-openapi"
         - "STD-peps"
+        - "STD-rdf11"
+        - "STD-rst-docutils"
+        - "STD-vega-lite"
+        - "STD-w3c-prov-o"
+        - "STD-w3c-tabular-data"
   nodes:
     - id: "B10-01"
       name: "单元测试生成"
@@ -195,12 +222,38 @@ concept_graph:
         - "B10-10"
       provenance:
         - "std-catalog"
+    - id: "STD-commonmark"
+      name: "标准 · CommonMark 0.31.2"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B10-09"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-bcp47"
+      name: "标准 · 语言标签 (RFC 5646)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
     - id: "STD-ietf-json-schema"
       name: "标准 · JSON Schema 2020-12"
       layer: "P80"
       branch: "standards"
       prereqs:
         - "B10-04"
+        - "B10-01"
+        - "B10-06"
+        - "B10-11"
+        - "STD-ietf-json"
       provenance:
         - "std-catalog"
     - id: "STD-nist-800-142"
@@ -216,6 +269,15 @@ concept_graph:
         - "B10-11"
       provenance:
         - "std-catalog"
+    - id: "STD-oasis-openapi"
+      name: "标准 · OpenAPI 3.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B10-04"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
     - id: "STD-peps"
       name: "标准 · PEP 体系（含 8/257/621）"
       layer: "P80"
@@ -225,6 +287,52 @@ concept_graph:
         - "B10-06"
         - "B10-08"
         - "B10-12"
+        - "STD-rst-docutils"
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-rst-docutils"
+      name: "标准 · reStructuredText 指令/角色"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B10-03"
+        - "B10-08"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-prov-o"
+      name: "标准 · PROV-O 溯源本体"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B10-05"
+        - "B10-10"
+        - "STD-rdf11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-tabular-data"
+      name: "标准 · Tabular Data Model (CSVW)"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "B10-02"
+        - "B10-07"
+        - "B10-12"
+        - "STD-ietf-bcp47"
       provenance:
         - "std-catalog"
 ```

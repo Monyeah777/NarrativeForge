@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「产业与商业落地」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（产业与商业落地:M01）与收口模块（产业与商业落地:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 5 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（F10-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 10 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（F10-00 领域通用前置）；节点 22 · 边 48 · 密度 2.1818。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,11 +29,16 @@
 | `F10-10` | 行业方案打包 | P60 | `F10-09`、`F10-07` | f10-anchor |
 | `F10-11` | 服务定价 | P40 | `F10-10`、`F10-08` | f10-anchor |
 | `F10-12` | 项目复盘 | P60 | `F10-11`、`F10-09` | f10-anchor |
-| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST） | P80 | `F10-01`、`F10-04`、`F10-07`、`F10-10` | std-catalog |
-| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative） | P80 | `F10-11` | std-catalog |
-| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX） | P80 | `F10-03`、`F10-06`、`F10-09`、`F10-12` | std-catalog |
-| `STD-unesco-ai` | 标准 · AI 伦理建议书（UNESCO） | P80 | `F10-08` | std-catalog |
-| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C） | P80 | `F10-02`、`F10-05` | std-catalog |
+| `STD-ietf-json` | 标准 · JSON (RFC 8259)（IETF｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | `F10-01`、`F10-05`、`F10-06`、`F10-11`、`STD-ietf-json` | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `F10-10` | std-catalog |
+| `STD-nist-ai-rmf` | 标准 · AI 风险管理框架（NIST｜gov｜实测 ✓） | P80 | `F10-01`、`F10-04`、`F10-07`、`F10-10` | std-catalog |
+| `STD-oasis-openapi` | 标准 · OpenAPI 3.1（OpenAPI Initiative｜iface｜实测 ✓） | P80 | `F10-11`、`STD-ietf-json-schema` | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-spdx-licenses` | 标准 · SPDX 许可证清单（SPDX｜gov｜实测 ✓） | P80 | `F10-03`、`F10-06`、`F10-09`、`F10-12` | std-catalog |
+| `STD-unesco-ai` | 标准 · AI 伦理建议书（UNESCO｜gov｜实测 ✓） | P80 | `F10-08` | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `F10-02`、`F10-03`、`F10-04`、`F10-07`、`F10-08`、`F10-09`、`F10-12`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-prov-o` | 标准 · PROV-O 溯源本体（W3C｜gov｜实测 ✓） | P80 | `F10-02`、`F10-05`、`STD-rdf11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -51,10 +56,15 @@
 | `F10-行业方案打包` | `F10-10` |
 | `F10-服务定价` | `F10-11` |
 | `F10-项目复盘` | `F10-12` |
+| `std-ietf-json` | `STD-ietf-json` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-nist-ai-rmf` | `STD-nist-ai-rmf` |
 | `std-oasis-openapi` | `STD-oasis-openapi` |
+| `std-rdf11` | `STD-rdf11` |
 | `std-spdx-licenses` | `STD-spdx-licenses` |
 | `std-unesco-ai` | `STD-unesco-ai` |
+| `std-vega-lite` | `STD-vega-lite` |
 | `std-w3c-prov-o` | `STD-w3c-prov-o` |
 
 ## 4. 机器可读块（唯一机读真相）
@@ -90,10 +100,15 @@ concept_graph:
     - id: "standards"
       name: "可扩展标准（绑定）"
       nodes:
+        - "STD-ietf-json"
+        - "STD-ietf-json-schema"
+        - "STD-mermaid"
         - "STD-nist-ai-rmf"
         - "STD-oasis-openapi"
+        - "STD-rdf11"
         - "STD-spdx-licenses"
         - "STD-unesco-ai"
+        - "STD-vega-lite"
         - "STD-w3c-prov-o"
   nodes:
     - id: "F10-01"
@@ -200,6 +215,33 @@ concept_graph:
         - "F10-09"
       provenance:
         - "f10-anchor"
+    - id: "STD-ietf-json"
+      name: "标准 · JSON (RFC 8259)"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-01"
+        - "F10-05"
+        - "F10-06"
+        - "F10-11"
+        - "STD-ietf-json"
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-10"
+      provenance:
+        - "std-catalog"
     - id: "STD-nist-ai-rmf"
       name: "标准 · AI 风险管理框架"
       layer: "P80"
@@ -217,6 +259,14 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "F10-11"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-spdx-licenses"
@@ -238,6 +288,21 @@ concept_graph:
         - "F10-08"
       provenance:
         - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "F10-02"
+        - "F10-03"
+        - "F10-04"
+        - "F10-07"
+        - "F10-08"
+        - "F10-09"
+        - "F10-12"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
     - id: "STD-w3c-prov-o"
       name: "标准 · PROV-O 溯源本体"
       layer: "P80"
@@ -245,6 +310,7 @@ concept_graph:
       prereqs:
         - "F10-02"
         - "F10-05"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
 ```

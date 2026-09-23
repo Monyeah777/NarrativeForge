@@ -19,10 +19,20 @@ flowchart TD
   subgraph P80[P80]
     STD-cncf-otel-semconv
     STD-ieee-754
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
     STD-mlcommons-bench
     STD-onnx
     STD-peps
+    STD-protobuf
+    STD-rdf11
+    STD-rst-docutils
+    STD-vega-lite
     STD-w3c-mathml3
+    STD-w3c-prov-o
+    STD-w3c-tabular-data
+    STD-w3c-xml
   end
   A10-02 --> A10-03
   A10-05 --> A10-06
@@ -36,13 +46,32 @@ flowchart TD
   A10-07 --> A10-12
   A10-12 --> STD-cncf-otel-semconv
   A10-10 --> STD-ieee-754
+  A10-01 --> STD-ietf-json-schema
+  A10-06 --> STD-ietf-json-schema
+  A10-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   A10-06 --> STD-mlcommons-bench
   A10-01 --> STD-onnx
   A10-07 --> STD-onnx
   A10-09 --> STD-onnx
   A10-11 --> STD-onnx
+  STD-protobuf --> STD-onnx
   A10-08 --> STD-peps
+  STD-rst-docutils --> STD-peps
+  A10-08 --> STD-vega-lite
+  A10-09 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   A10-02 --> STD-w3c-mathml3
   A10-03 --> STD-w3c-mathml3
   A10-04 --> STD-w3c-mathml3
   A10-05 --> STD-w3c-mathml3
+  STD-w3c-xml --> STD-w3c-mathml3
+  A10-03 --> STD-w3c-prov-o
+  A10-04 --> STD-w3c-prov-o
+  A10-05 --> STD-w3c-prov-o
+  A10-10 --> STD-w3c-prov-o
+  STD-rdf11 --> STD-w3c-prov-o
+  A10-02 --> STD-w3c-tabular-data
+  A10-07 --> STD-w3c-tabular-data
+  A10-12 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

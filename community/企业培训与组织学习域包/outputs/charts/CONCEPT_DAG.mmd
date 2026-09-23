@@ -19,10 +19,16 @@ flowchart TD
   subgraph P80[P80]
     STD-commonmark
     STD-gdpr
+    STD-ietf-bcp47
+    STD-ietf-json
+    STD-ietf-json-schema
+    STD-mermaid
     STD-mlcommons-bench
     STD-unesco-ai
+    STD-vega-lite
     STD-w3c-epub33
     STD-w3c-tabular-data
+    STD-w3c-xml
   end
   E15-01 --> E15-02
   E15-02 --> E15-03
@@ -46,13 +52,29 @@ flowchart TD
   E15-09 --> E15-12
   E15-04 --> STD-commonmark
   E15-10 --> STD-commonmark
+  E15-02 --> STD-commonmark
+  E15-05 --> STD-commonmark
+  E15-07 --> STD-commonmark
+  E15-12 --> STD-commonmark
   E15-02 --> STD-gdpr
+  E15-01 --> STD-ietf-json-schema
+  E15-06 --> STD-ietf-json-schema
+  E15-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
+  E15-03 --> STD-mermaid
   E15-03 --> STD-mlcommons-bench
   E15-01 --> STD-unesco-ai
   E15-07 --> STD-unesco-ai
   E15-11 --> STD-unesco-ai
   E15-12 --> STD-unesco-ai
+  E15-04 --> STD-vega-lite
+  E15-08 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   E15-06 --> STD-w3c-epub33
   E15-09 --> STD-w3c-epub33
+  STD-w3c-xml --> STD-w3c-epub33
   E15-05 --> STD-w3c-tabular-data
   E15-08 --> STD-w3c-tabular-data
+  E15-09 --> STD-w3c-tabular-data
+  E15-10 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data

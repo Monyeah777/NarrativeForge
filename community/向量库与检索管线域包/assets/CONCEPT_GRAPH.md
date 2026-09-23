@@ -3,7 +3,7 @@
 
 > 用途：本域包的**前置闭包求值输入面**——把「向量库与检索管线」这一域的 12 个细分概念声明成一张偏序图（DAG），供域内口径模块（向量库与检索管线:M01）与收口模块（向量库与检索管线:M02）消费。
 > 资产键：`CONCEPT_GRAPH`｜形态：人读表（§2）/ 别名表（§3）/ 机器可读块（§4）三形态同源——**§4 围栏块是唯一机读真相**，§2/§3 由它导出。
-> 覆盖：12 个包内概念 + 7 个**可扩展标准节点**（标准目录绑定）+ 1 个包外前置族（C15-00 领域通用前置）。
+> 覆盖：12 个包内概念 + 14 个**可扩展标准节点**（主锚/辅锚/依赖三层入图：概念 → 主锚、概念 → 辅锚、标准依赖边）+ 1 个包外前置族（C15-00 领域通用前置）；节点 26 · 边 49 · 密度 1.8846。
 > 来源：本件正文自撰；每条细分的权威锚见资产 `DOMAIN_SPEC` 与 `STANDARDS_ANCHORS`（逐条可达性实证）。
 
 ## 1. 读法
@@ -29,13 +29,20 @@
 | `C15-10` | 权限与脱敏 | P60 | `C15-09`、`C15-07` | c15-anchor |
 | `C15-11` | 容量规划 | P40 | `C15-10`、`C15-08` | c15-anchor |
 | `C15-12` | 检索可观测性 | P60 | `C15-11`、`C15-09` | c15-anchor |
-| `STD-arrow` | 标准 · Arrow 列式格式（Apache） | P80 | `C15-01` | std-catalog |
-| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry） | P80 | `C15-12` | std-catalog |
-| `STD-frictionless-package` | 标准 · Data Package（Frictionless） | P80 | `C15-04`、`C15-06`、`C15-07` | std-catalog |
-| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons） | P80 | `C15-09` | std-catalog |
-| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons） | P80 | `C15-03` | std-catalog |
-| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST） | P80 | `C15-10` | std-catalog |
-| `STD-parquet` | 标准 · Parquet 格式（Apache） | P80 | `C15-02`、`C15-05`、`C15-08`、`C15-11` | std-catalog |
+| `STD-arrow` | 标准 · Arrow 列式格式（Apache｜data｜实测 ✓） | P80 | `C15-01` | std-catalog |
+| `STD-cncf-otel-semconv` | 标准 · 语义约定（可扩展注册表）（OpenTelemetry｜eng｜实测 ✓） | P80 | `C15-12`、`C15-05` | std-catalog |
+| `STD-frictionless-package` | 标准 · Data Package（Frictionless｜data｜实测 ✓） | P80 | `C15-04`、`C15-06`、`C15-07`、`STD-ietf-json-schema` | std-catalog |
+| `STD-ietf-json-schema` | 标准 · JSON Schema 2020-12（IETF/JSON Schema｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-mermaid` | 标准 · Mermaid 图语言（Mermaid｜form｜实测 ✓） | P80 | `C15-04`、`C15-09`、`C15-12` | std-catalog |
+| `STD-mlcommons-bench` | 标准 · MLPerf 基准（可扩展场景）（MLCommons｜eng｜实测 ✓） | P80 | `C15-09` | std-catalog |
+| `STD-mlcommons-croissant` | 标准 · Croissant 数据集元数据（MLCommons｜data｜实测 ✓） | P80 | `C15-03`、`STD-schema-org` | std-catalog |
+| `STD-nist-800-188` | 标准 · SP 800-188 去标识化（NIST｜gov｜实测 ✓） | P80 | `C15-10`、`STD-nist-privacy` | std-catalog |
+| `STD-nist-privacy` | 标准 · 隐私框架（NIST｜gov｜实测 ✓） | P80 | — | std-catalog |
+| `STD-parquet` | 标准 · Parquet 格式（Apache｜data｜实测 ✓） | P80 | `C15-02`、`C15-05`、`C15-08`、`C15-11` | std-catalog |
+| `STD-rdf11` | 标准 · RDF 1.1（W3C｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-schema-org` | 标准 · 结构化数据词表（Schema.org｜data｜实测 ✓） | P80 | — | std-catalog |
+| `STD-vega-lite` | 标准 · Vega-Lite v5（Vega｜form｜实测 ✓） | P80 | `C15-01`、`C15-02`、`C15-03`、`C15-06`、`C15-07`、`C15-08`、`C15-11`、`STD-ietf-json-schema` | std-catalog |
+| `STD-w3c-vc` | 标准 · Verifiable Credentials 2.0（W3C｜gov｜实测 ✓） | P80 | `C15-10`、`STD-rdf11` | std-catalog |
 
 ## 3. 别名表（求值时 id 与别名等价）
 
@@ -56,10 +63,17 @@
 | `std-arrow` | `STD-arrow` |
 | `std-cncf-otel-semconv` | `STD-cncf-otel-semconv` |
 | `std-frictionless-package` | `STD-frictionless-package` |
+| `std-ietf-json-schema` | `STD-ietf-json-schema` |
+| `std-mermaid` | `STD-mermaid` |
 | `std-mlcommons-bench` | `STD-mlcommons-bench` |
 | `std-mlcommons-croissant` | `STD-mlcommons-croissant` |
 | `std-nist-800-188` | `STD-nist-800-188` |
+| `std-nist-privacy` | `STD-nist-privacy` |
 | `std-parquet` | `STD-parquet` |
+| `std-rdf11` | `STD-rdf11` |
+| `std-schema-org` | `STD-schema-org` |
+| `std-vega-lite` | `STD-vega-lite` |
+| `std-w3c-vc` | `STD-w3c-vc` |
 
 ## 4. 机器可读块（唯一机读真相）
 
@@ -97,10 +111,17 @@ concept_graph:
         - "STD-arrow"
         - "STD-cncf-otel-semconv"
         - "STD-frictionless-package"
+        - "STD-ietf-json-schema"
+        - "STD-mermaid"
         - "STD-mlcommons-bench"
         - "STD-mlcommons-croissant"
         - "STD-nist-800-188"
+        - "STD-nist-privacy"
         - "STD-parquet"
+        - "STD-rdf11"
+        - "STD-schema-org"
+        - "STD-vega-lite"
+        - "STD-w3c-vc"
   nodes:
     - id: "C15-01"
       name: "索引与分片"
@@ -220,6 +241,7 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "C15-12"
+        - "C15-05"
       provenance:
         - "std-catalog"
     - id: "STD-frictionless-package"
@@ -230,6 +252,24 @@ concept_graph:
         - "C15-04"
         - "C15-06"
         - "C15-07"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-ietf-json-schema"
+      name: "标准 · JSON Schema 2020-12"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-mermaid"
+      name: "标准 · Mermaid 图语言"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-04"
+        - "C15-09"
+        - "C15-12"
       provenance:
         - "std-catalog"
     - id: "STD-mlcommons-bench"
@@ -246,6 +286,7 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "C15-03"
+        - "STD-schema-org"
       provenance:
         - "std-catalog"
     - id: "STD-nist-800-188"
@@ -254,6 +295,14 @@ concept_graph:
       branch: "standards"
       prereqs:
         - "C15-10"
+        - "STD-nist-privacy"
+      provenance:
+        - "std-catalog"
+    - id: "STD-nist-privacy"
+      name: "标准 · 隐私框架"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
       provenance:
         - "std-catalog"
     - id: "STD-parquet"
@@ -265,6 +314,44 @@ concept_graph:
         - "C15-05"
         - "C15-08"
         - "C15-11"
+      provenance:
+        - "std-catalog"
+    - id: "STD-rdf11"
+      name: "标准 · RDF 1.1"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-schema-org"
+      name: "标准 · 结构化数据词表"
+      layer: "P80"
+      branch: "standards"
+      prereqs: []
+      provenance:
+        - "std-catalog"
+    - id: "STD-vega-lite"
+      name: "标准 · Vega-Lite v5"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-01"
+        - "C15-02"
+        - "C15-03"
+        - "C15-06"
+        - "C15-07"
+        - "C15-08"
+        - "C15-11"
+        - "STD-ietf-json-schema"
+      provenance:
+        - "std-catalog"
+    - id: "STD-w3c-vc"
+      name: "标准 · Verifiable Credentials 2.0"
+      layer: "P80"
+      branch: "standards"
+      prereqs:
+        - "C15-10"
+        - "STD-rdf11"
       provenance:
         - "std-catalog"
 ```

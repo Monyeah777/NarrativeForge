@@ -15,20 +15,20 @@
 
 ## 2. 细分口径表（12 条）
 
-| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 可扩展标准（绑定） |
-|---|---|---|---|---|---|
-| `A03-01` | 图像分类与主干网络 | 图像分类的口径：类别空间、top-k 报告方式与主干网络口径（层数 / 宽度 / 输入分辨率）。 | 声明 num_classes、top_k（枚举 1|5）、input_resolution（正整数）与 backbone_id；四者齐备方可比较。 | 类别空间不同却直接比 top-1；分辨率提升带来的收益与推理成本未一并报告。 | `w3c-svg2` SVG 2（W3C） |
-| `A03-02` | 目标检测 | 目标检测的口径：IoU 阈值、NMS 参数、置信度阈值与框格式。 | 声明 iou_threshold、nms_iou、score_threshold、box_format（xyxy|xywh）四项；缺一即检测口径未定。 | NMS 阈值变动使 mAP 不可比；框格式未声明导致坐标错位。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
-| `A03-03` | 语义与实例分割 | 语义分割与实例分割的口径：掩码粒度、忽略类、评估指标（mIoU / mask AP）。 | 声明 mask_granularity（semantic|instance|panoptic）、ignore_index（类别 id 或 none）、metric（mIoU|mask_AP）。 | 忽略类处理不同导致 mIoU 虚高；语义与实例指标混用。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
-| `A03-04` | 关键点与姿态估计 | 关键点与姿态估计的口径：关键点数量与顺序、OKS 阈值、单人 / 多人设定。 | 声明 keypoint_count、keypoint_order（定义表引用）、oks_threshold 与 setting（single|multi person）。 | 关键点顺序不同造成精度骤降的假象；阈值未声明导致 AP 不可比。 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema） |
-| `A03-05` | 深度估计与点云 | 深度估计与点云的误差口径：尺度对齐方式、截断阈值与单位。 | 声明 scale_alignment（none|median|least-squares）、max_depth（截断，米）、unit，以及指标（AbsRel|RMSE）。 | 未做尺度对齐就报 AbsRel；截断阈值不同导致跨报告不可比。 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC） |
-| `A03-06` | 人脸识别与活体检测 | 人脸识别与活体检测的口径：阈值选择、误识率口径与活体攻击类型覆盖。 | 声明 far（误识率，如 1e-4）、threshold、以及活体攻击类型清单（print|replay|mask）；三者齐备。 | 只报准确率不报误识率；活体只测打印攻击却宣称防多种攻击。 | `onnx` ONNX（opset 扩展）（Linux Foundation） |
-| `A03-07` | 图像检索与重识别 | 图像检索与重识别的口径：查询库规模、mAP / CMC 口径与跨域设定。 | 声明 gallery_size、mAP 计算口径（是否用 CMC 单查询）、以及跨域测试设定（same|cross domain）。 | gallery 规模不同直接比 mAP；跨域设定未声明导致泛化结论失真。 | `w3c-svg2` SVG 2（W3C） |
-| `A03-08` | 视频理解与动作识别 | 视频理解与动作识别的口径：采样帧数与间隔、时序窗口、clip 级还是视频级判定。 | 声明 frames_per_clip、sampling_rate（帧间隔）、temporal_window（秒）与 granularity（clip|video）。 | 用更多帧换分数却不报推理成本；clip 级精度当视频级结论。 | `oci-image` 镜像清单（OCI） |
-| `A03-09` | 医学影像分析 | 医学影像分析的口径：数据划分（患者级 / 切片级）、敏感度与特异度口径、阅片参考标准。 | 声明 split_level（patient|slice）、sensitivity/specificity（各含阈值）、以及 reference_standard（金标准来源）。 | 切片级划分导致同一患者跨训练与测试集；只报 AUC 不报阈值下的敏感度与特异度。 | `dicom` DICOM 标准（DICOM） |
-| `A03-10` | 工业缺陷检测 | 工业缺陷检测的口径：缺陷类型定义、漏检与误检口径、监督设定。 | 声明 defect_taxonomy（类型清单）、image_level vs pixel_level 指标、以及 setting（supervised|unsupervised）。 | 图级 AUROC 当像素级分割性能；缺陷类型定义随批次变化导致指标漂移。 | `cwe` CWE 缺陷枚举（MITRE） |
-| `A03-11` | 遥感与航拍解译 | 遥感与航拍解译的口径：地物类别体系、影像分辨率与地理划分（按区域切分）。 | 声明 class_taxonomy（类别体系来源）、gsd（地面采样距离，米/像素）、以及 split_by（region|random）。 | 随机切分让相邻瓦片跨集，指标虚高；类别体系不同却比较 mIoU。 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（OGC） |
-| `A03-12` | 数据增强与预训练策略 | 数据增强与预训练策略的口径：增强管线、预训练目标与下游微调设定。 | 声明 aug_policy（策略名 + 版本）、pretrain_objective（对比|掩码|监督）、finetune_epochs；三者齐备。 | 预训练目标不同却只比下游分数（无法归因）；增强策略未记录导致不可复现。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons） |
+| 条目键 | 细分 | 定义口径 | 可机验判据 | 常见失效模式 | 主锚（域口径标准） | 辅锚（产出承载标准） |
+|---|---|---|---|---|---|---|
+| `A03-01` | 图像分类与主干网络 | 图像分类的口径：类别空间、top-k 报告方式与主干网络口径（层数 / 宽度 / 输入分辨率）。 | 声明 num_classes、top_k（枚举 1|5）、input_resolution（正整数）与 backbone_id；四者齐备方可比较。 | 类别空间不同却直接比 top-1；分辨率提升带来的收益与推理成本未一并报告。 | `w3c-svg2` SVG 2（form｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `A03-02` | 目标检测 | 目标检测的口径：IoU 阈值、NMS 参数、置信度阈值与框格式。 | 声明 iou_threshold、nms_iou、score_threshold、box_format（xyxy|xywh）四项；缺一即检测口径未定。 | NMS 阈值变动使 mAP 不可比；框格式未声明导致坐标错位。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（eng｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
+| `A03-03` | 语义与实例分割 | 语义分割与实例分割的口径：掩码粒度、忽略类、评估指标（mIoU / mask AP）。 | 声明 mask_granularity（semantic|instance|panoptic）、ignore_index（类别 id 或 none）、metric（mIoU|mask_AP）。 | 忽略类处理不同导致 mIoU 虚高；语义与实例指标混用。 | `onnx` ONNX（opset 扩展）（iface｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `A03-04` | 关键点与姿态估计 | 关键点与姿态估计的口径：关键点数量与顺序、OKS 阈值、单人 / 多人设定。 | 声明 keypoint_count、keypoint_order（定义表引用）、oks_threshold 与 setting（single|multi person）。 | 关键点顺序不同造成精度骤降的假象；阈值未声明导致 AP 不可比。 | `ietf-json-schema` JSON Schema 2020-12（data｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `A03-05` | 深度估计与点云 | 深度估计与点云的误差口径：尺度对齐方式、截断阈值与单位。 | 声明 scale_alignment（none|median|least-squares）、max_depth（截断，米）、unit，以及指标（AbsRel|RMSE）。 | 未做尺度对齐就报 AbsRel；截断阈值不同导致跨报告不可比。 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（data｜✓） | `w3c-prov-o` PROV-O 溯源本体（gov｜✓） |
+| `A03-06` | 人脸识别与活体检测 | 人脸识别与活体检测的口径：阈值选择、误识率口径与活体攻击类型覆盖。 | 声明 far（误识率，如 1e-4）、threshold、以及活体攻击类型清单（print|replay|mask）；三者齐备。 | 只报准确率不报误识率；活体只测打印攻击却宣称防多种攻击。 | `onnx` ONNX（opset 扩展）（iface｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `A03-07` | 图像检索与重识别 | 图像检索与重识别的口径：查询库规模、mAP / CMC 口径与跨域设定。 | 声明 gallery_size、mAP 计算口径（是否用 CMC 单查询）、以及跨域测试设定（same|cross domain）。 | gallery 规模不同直接比 mAP；跨域设定未声明导致泛化结论失真。 | `w3c-svg2` SVG 2（form｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `A03-08` | 视频理解与动作识别 | 视频理解与动作识别的口径：采样帧数与间隔、时序窗口、clip 级还是视频级判定。 | 声明 frames_per_clip、sampling_rate（帧间隔）、temporal_window（秒）与 granularity（clip|video）。 | 用更多帧换分数却不报推理成本；clip 级精度当视频级结论。 | `oci-image` 镜像清单（iface｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `A03-09` | 医学影像分析 | 医学影像分析的口径：数据划分（患者级 / 切片级）、敏感度与特异度口径、阅片参考标准。 | 声明 split_level（patient|slice）、sensitivity/specificity（各含阈值）、以及 reference_standard（金标准来源）。 | 切片级划分导致同一患者跨训练与测试集；只报 AUC 不报阈值下的敏感度与特异度。 | `dicom` DICOM 标准（data｜✓） | `mermaid` Mermaid 图语言（form｜✓） |
+| `A03-10` | 工业缺陷检测 | 工业缺陷检测的口径：缺陷类型定义、漏检与误检口径、监督设定。 | 声明 defect_taxonomy（类型清单）、image_level vs pixel_level 指标、以及 setting（supervised|unsupervised）。 | 图级 AUROC 当像素级分割性能；缺陷类型定义随批次变化导致指标漂移。 | `cwe` CWE 缺陷枚举（gov｜✓） | `ietf-json-schema` JSON Schema 2020-12（data｜✓） |
+| `A03-11` | 遥感与航拍解译 | 遥感与航拍解译的口径：地物类别体系、影像分辨率与地理划分（按区域切分）。 | 声明 class_taxonomy（类别体系来源）、gsd（地面采样距离，米/像素）、以及 split_by（region|random）。 | 随机切分让相邻瓦片跨集，指标虚高；类别体系不同却比较 mIoU。 | `opengeospatial` OGC 标准（含 GeoJSON/3D Tiles）（data｜✓） | `vega-lite` Vega-Lite v5（form｜✓） |
+| `A03-12` | 数据增强与预训练策略 | 数据增强与预训练策略的口径：增强管线、预训练目标与下游微调设定。 | 声明 aug_policy（策略名 + 版本）、pretrain_objective（对比|掩码|监督）、finetune_epochs；三者齐备。 | 预训练目标不同却只比下游分数（无法归因）；增强策略未记录导致不可复现。 | `mlcommons-bench` MLPerf 基准（可扩展场景）（eng｜✓） | `w3c-tabular-data` Tabular Data Model (CSVW)（data｜✓） |
 
 ## 3. 机读投影契约
 

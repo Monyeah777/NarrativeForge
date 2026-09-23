@@ -17,11 +17,15 @@ flowchart TD
     B06-12
   end
   subgraph P80[P80]
+    STD-commonmark
     STD-frictionless-package
     STD-frictionless-table
     STD-gfm
+    STD-ietf-bcp47
+    STD-ietf-json
     STD-ietf-json-schema
     STD-mlcommons-bench
+    STD-vega-lite
     STD-w3c-tabular-data
   end
   B06-02 --> B06-01
@@ -34,15 +38,33 @@ flowchart TD
   B06-04 --> B06-08
   B06-07 --> B06-10
   B06-10 --> B06-12
+  B06-04 --> STD-commonmark
+  B06-07 --> STD-commonmark
+  B06-09 --> STD-commonmark
   B06-01 --> STD-frictionless-package
   B06-04 --> STD-frictionless-package
+  STD-ietf-json-schema --> STD-frictionless-package
   B06-03 --> STD-frictionless-table
   B06-08 --> STD-frictionless-table
   B06-09 --> STD-frictionless-table
   B06-12 --> STD-frictionless-table
+  STD-frictionless-package --> STD-frictionless-table
   B06-02 --> STD-gfm
   B06-06 --> STD-gfm
+  STD-commonmark --> STD-gfm
   B06-07 --> STD-ietf-json-schema
   B06-10 --> STD-ietf-json-schema
+  B06-06 --> STD-ietf-json-schema
+  B06-11 --> STD-ietf-json-schema
+  STD-ietf-json --> STD-ietf-json-schema
   B06-11 --> STD-mlcommons-bench
+  B06-01 --> STD-vega-lite
+  B06-03 --> STD-vega-lite
+  B06-05 --> STD-vega-lite
+  B06-08 --> STD-vega-lite
+  B06-10 --> STD-vega-lite
+  B06-12 --> STD-vega-lite
+  STD-ietf-json-schema --> STD-vega-lite
   B06-05 --> STD-w3c-tabular-data
+  B06-02 --> STD-w3c-tabular-data
+  STD-ietf-bcp47 --> STD-w3c-tabular-data
