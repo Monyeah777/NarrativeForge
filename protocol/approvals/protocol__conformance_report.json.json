@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-23",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "可扩展标准对齐：126 条目录 + 1200 条绑定 + 概念密度门槛 + AUD-0019 + 数据契约 28 件",
+  "note": "锚状态回填（13 条用当日实测库/标准目录证据）+2 条改挂可达标准入口；全库锚 200 齐备",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "d7b8fec550a8fb40272f47f22e7a8f6555d5767c04d4281f5d27a0496566045a"

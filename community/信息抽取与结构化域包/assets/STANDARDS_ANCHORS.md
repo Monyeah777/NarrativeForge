@@ -18,7 +18,7 @@
 | `B05-08` | paper | https://arxiv.org/abs/2103.14470 | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；B 段默认绑定（轮换 0）） |
 | `B05-09` | paper | https://arxiv.org/abs/2003.02320 | ✓ 200 | `w3c-skos` SKOS 词表（W3C；关键词「术语|词表|本体|知识图谱」命中） |
 | `B05-10` | spec | https://json-schema.org/draft/2020-12/json-schema-core | ✓ 200 | `ietf-json-schema` JSON Schema 2020-12（IETF/JSON Schema；关键词「约束|校验|schema|形状|契约」命中） |
-| `B05-11` | paper | https://arxiv.org/abs/2107.06499 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
+| `B05-11` | spec | https://specs.frictionlessdata.io/table-schema/ | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「训练|微调|对齐|蒸馏|偏好」命中） |
 | `B05-12` | paper | https://arxiv.org/abs/2102.04664 | ✓ 200 | `mlcommons-bench` MLPerf 基准（可扩展场景）（MLCommons；关键词「评测|基准|排行榜|跑分」命中） |
 
 ## 2. 使用边界

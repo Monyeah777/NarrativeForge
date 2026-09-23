@@ -192,8 +192,8 @@
 | 数据分析与表格理解:M02 | L2 | P60 | community/数据分析与表格理解域包/modules/B11b_分析面收口与形态派生.md |
 | 数据标注与标注质量:M01 | L2 | P40 | community/数据标注与标注质量域包/modules/C02a_数据标注与标注质量口径登记.md |
 | 数据标注与标注质量:M02 | L2 | P60 | community/数据标注与标注质量域包/modules/C02b_数据标注与标注质量收口与形态派生.md |
-| 数据采集与清洗:M01 | L2 | P40 | community/数据采集与清洗域包/modules/C01a_数据采集与清洗口径登记.md |
-| 数据采集与清洗:M02 | L2 | P60 | community/数据采集与清洗域包/modules/C01b_数据采集与清洗收口与形态派生.md |
+| 数据采集与清洗:M01 | L2 | P40 | community/数据采集与清洗域包/modules/C01a_采集与清洗口径登记.md |
+| 数据采集与清洗:M02 | L2 | P60 | community/数据采集与清洗域包/modules/C01b_数据面收口与形态派生.md |
 | 文旅与酒店:M01 | L2 | P40 | community/文旅与酒店域包/modules/D19a_文旅与酒店口径登记.md |
 | 文旅与酒店:M02 | L2 | P60 | community/文旅与酒店域包/modules/D19b_文旅与酒店收口与形态派生.md |
 | 文本生成与创作:M01 | L2 | P40 | community/文本生成与创作域包/modules/B01a_创作口径登记.md |

@@ -73,55 +73,25 @@
     <edge source="C01-03" target="C01-04">
       <data key="provenance">['c01-anchor']</data>
     </edge>
-    <edge source="C01-01" target="C01-04">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-04" target="C01-05">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-02" target="C01-05">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
     <edge source="C01-05" target="C01-06">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-03" target="C01-06">
       <data key="provenance">['c01-anchor']</data>
     </edge>
     <edge source="C01-06" target="C01-07">
       <data key="provenance">['c01-anchor']</data>
     </edge>
-    <edge source="C01-04" target="C01-07">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-07" target="C01-08">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-05" target="C01-08">
+    <edge source="C01-04" target="C01-08">
       <data key="provenance">['c01-anchor']</data>
     </edge>
     <edge source="C01-08" target="C01-09">
       <data key="provenance">['c01-anchor']</data>
     </edge>
-    <edge source="C01-06" target="C01-09">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
     <edge source="C01-09" target="C01-10">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-07" target="C01-10">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-10" target="C01-11">
       <data key="provenance">['c01-anchor']</data>
     </edge>
     <edge source="C01-08" target="C01-11">
       <data key="provenance">['c01-anchor']</data>
     </edge>
     <edge source="C01-11" target="C01-12">
-      <data key="provenance">['c01-anchor']</data>
-    </edge>
-    <edge source="C01-09" target="C01-12">
       <data key="provenance">['c01-anchor']</data>
     </edge>
     <edge source="C01-03" target="STD-frictionless-table">

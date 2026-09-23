@@ -3,56 +3,20 @@
   "data": {
     "values": [
       {
-        "metric": "cost_per_1k_calls",
-        "value": 0.0
-      },
-      {
-        "metric": "cost_total",
-        "value": 0.0
+        "metric": "compliance_rate",
+        "value": 0.9
       },
       {
         "metric": "digits",
         "value": 6.0
       },
       {
-        "metric": "max_ms",
-        "value": 849.6
-      },
-      {
-        "metric": "mean_ms",
-        "value": 541.51
-      },
-      {
         "metric": "n",
         "value": 20.0
       },
       {
-        "metric": "p50_ms",
-        "value": 496.7
-      },
-      {
-        "metric": "p95_ms",
-        "value": 834.7
-      },
-      {
-        "metric": "p99_ms",
-        "value": 849.6
-      },
-      {
-        "metric": "price_per_1k_in",
-        "value": 0.0
-      },
-      {
-        "metric": "price_per_1k_out",
-        "value": 0.0
-      },
-      {
-        "metric": "tokens_in",
-        "value": 20193.0
-      },
-      {
-        "metric": "tokens_out",
-        "value": 6430.0
+        "metric": "violations",
+        "value": 2.0
       }
     ]
   },

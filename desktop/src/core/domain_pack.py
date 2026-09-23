@@ -1435,6 +1435,8 @@ def build(root: str, spec: Dict[str, Any], write: bool = False,
     """
     alloc, files = plan(root, spec)
     changed, written = [], []
+    _prune_stale(pkg_dir=Path(root) / "community" / spec["pack_name"],
+                 code=spec["code"], planned=set(files))
     for rel, content in sorted(files.items()):
         p = Path(root) / rel
         cur = p.read_bytes() if p.is_file() else b""
@@ -1458,6 +1460,31 @@ def build(root: str, spec: Dict[str, Any], write: bool = False,
     return {"spec": spec["code"], "pipeline": alloc["pipeline"],
             "module_ids": alloc["module_ids"], "files": len(files),
             "changed": len(changed), "written": len(written), "registry": reg}
+
+
+def _prune_stale(pkg_dir: Path, code: str, planned: set) -> List[str]:
+    """删同前缀陈旧生成物（改名残留）：模块 `<码>a_/b_*`、管线 `P*/<域名>*`、资产同名计划外件。
+
+    实测教训（2026-09-23）：模块标题或管线 id 变更后重建会**新增**文件而旧文件留存，
+    check14 ⑤（裸号同包重复）与 check28（管线 schema）随即红。生成物可复算，删旧即安全。
+    """
+    removed: List[str] = []
+    root_rel = pkg_dir.parents[1]
+    for sub in ("modules", "pipelines"):
+        d = pkg_dir / sub
+        if not d.is_dir():
+            continue
+        for f in sorted(d.glob("*.md")):
+            rel = f.relative_to(root_rel).as_posix()
+            if rel in planned:
+                continue
+            tok = f.name.split("_")[0]
+            keep = (sub == "modules" and tok in ("%sa" % code, "%sb" % code)) or \
+                   (sub == "pipelines" and re.fullmatch(r"P\d{2,3}", tok) is not None)
+            if keep:
+                f.unlink()
+                removed.append(rel)
+    return removed
 
 
 def verify(root: str, spec: Dict[str, Any]) -> Tuple[List[str], Dict[str, Any]]:

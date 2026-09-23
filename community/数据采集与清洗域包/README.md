@@ -12,7 +12,7 @@
 | 自带模块（本包） | 2：数据采集与清洗:M01（P40 口径登记） / 数据采集与清洗:M02（P60 收口与派生） |
 | 资产 | **3 文件**：`CONCEPT_GRAPH.md`（12 概念前置图）· `DOMAIN_SPEC.md`（12 条细分口径）· `STANDARDS_ANCHORS.md`（逐条权威锚 + 可达性实测）
 | 机验产出面 | **9 件**：schema 2 / 数据 2 / 可复算 1（T4）/ 图表 1 / 图结构 2 / 系统卡 1 |
-| 度量族 | `latency_cost`（口径公式见 `docs/domain-packs.md`） |
+| 度量族 | `contract_compliance`（口径公式见 `docs/domain-packs.md`） |
 
 ## 2. 复现命令
 

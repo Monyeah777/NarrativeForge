@@ -28,7 +28,7 @@
       "concept_nodes": 17,
       "concept_edges": 22,
       "concept_density": 1.2941,
-      "spec_digest": "dfa47bccbc248b33859d492d2dcc7b42e416c00e7ecb3f641b8950f9f532e885"
+      "spec_digest": "3a9ab2bf31323c88cff7ce72e9befbe7bc0b6bb99869cb7c047dad4182d54529"
     },
     {
       "code": "A02",
@@ -460,7 +460,7 @@
       "concept_nodes": 18,
       "concept_edges": 22,
       "concept_density": 1.2222,
-      "spec_digest": "3aa7961fdf8f7f4fe75e5db051fbd3f0b1633b602bae41416b85ab3a4047a96d"
+      "spec_digest": "d50cdef63d6228f1c8b277f9f43c464cdff8391a36a14ec2fa11feb837bc1fa8"
     },
     {
       "code": "B04",
@@ -514,7 +514,7 @@
       "concept_nodes": 19,
       "concept_edges": 22,
       "concept_density": 1.1579,
-      "spec_digest": "9c9cdaf412f7a5bce64daf106d79ba8e471cfa6cb73b29a3074a26820dd3876e"
+      "spec_digest": "162b65338a257f0a092051966dcf9d028604993649b77867dc9dc562ea6fa972"
     },
     {
       "code": "B06",
@@ -676,7 +676,7 @@
       "concept_nodes": 18,
       "concept_edges": 22,
       "concept_density": 1.2222,
-      "spec_digest": "51783bb018a80d618b5eebe01a7cc95a53ad201607bd7383a314a9415cd191ce"
+      "spec_digest": "939609bdc2031f0a03fa378b3486e51c9b6b0bc338b798cc7dc17bc770291c26"
     },
     {
       "code": "B12",
@@ -885,14 +885,14 @@
       "machine_verifiable_faces": 10,
       "functional_faces": 1,
       "machine_verifiable_ratio": 1.0,
-      "metric_family": "latency_cost",
-      "content_tier": "derived",
+      "metric_family": "contract_compliance",
+      "content_tier": "authored",
       "standards_bound": 3,
       "standards_binding_coverage": 1.0,
       "concept_nodes": 15,
-      "concept_edges": 32,
-      "concept_density": 2.1333,
-      "spec_digest": "cef629a8ee1abd2610a76f7408e67435c4579135d696d27109ddb57e43786b09"
+      "concept_edges": 22,
+      "concept_density": 1.4667,
+      "spec_digest": "b3b72c00cca4d7bef839128ec4a6ab23a62fac8588c1cdb3c5acedb739d4908d"
     },
     {
       "code": "C02",
@@ -2350,7 +2350,7 @@
       "concept_nodes": 18,
       "concept_edges": 32,
       "concept_density": 1.7778,
-      "spec_digest": "a5df33844d55ae5c6f91d9f4598706714b4d18c8bb80752338e4489832a45050"
+      "spec_digest": "6c944612f51d79d3307627a88889b185868e3bc0ddfbcba1481ef9d8d49b7138"
     },
     {
       "code": "E18",

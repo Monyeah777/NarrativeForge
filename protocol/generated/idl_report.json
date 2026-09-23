@@ -1205,15 +1205,15 @@
       "conformance": "L2",
       "id": "数据采集与清洗:M01",
       "layer": "P40",
-      "name": "数据采集与清洗口径登记",
-      "source": "community/数据采集与清洗域包/modules/C01a_数据采集与清洗口径登记.md"
+      "name": "采集与清洗口径登记",
+      "source": "community/数据采集与清洗域包/modules/C01a_采集与清洗口径登记.md"
     },
     {
       "conformance": "L2",
       "id": "数据采集与清洗:M02",
       "layer": "P60",
-      "name": "数据采集与清洗收口与形态派生",
-      "source": "community/数据采集与清洗域包/modules/C01b_数据采集与清洗收口与形态派生.md"
+      "name": "数据面收口与形态派生",
+      "source": "community/数据采集与清洗域包/modules/C01b_数据面收口与形态派生.md"
     },
     {
       "conformance": "L2",

@@ -687,11 +687,11 @@
     },
     "数据采集与清洗:M01": {
       "digest": "cbefe0f56d26f4c85887b8b0a2165612a1f57ff23061dffb1ea45b3795e46dbb",
-      "path": "community/数据采集与清洗域包/modules/C01a_数据采集与清洗口径登记.md"
+      "path": "community/数据采集与清洗域包/modules/C01a_采集与清洗口径登记.md"
     },
     "数据采集与清洗:M02": {
       "digest": "dafd06d44a312d1106d3032fa9f90ea70feaf36ad6b931c92bb8151a0cf6bc43",
-      "path": "community/数据采集与清洗域包/modules/C01b_数据采集与清洗收口与形态派生.md"
+      "path": "community/数据采集与清洗域包/modules/C01b_数据面收口与形态派生.md"
     },
     "文旅与酒店:M01": {
       "digest": "d756f9a0ab1d5c0bf24b3d97a99166d0f496e1e64ce3e025a9c764458cba260e",

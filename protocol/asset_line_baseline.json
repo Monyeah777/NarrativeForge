@@ -450,10 +450,10 @@
       "package": "数据标注与标注质量域包"
     },
     {
-      "digest": "dabde8b199d593249a4b6c25d9616e05b307060044cd01a1cd6e307169889aa1",
+      "digest": "aea2a242a8230534a8ea744715ef4f699c29d793545cbd96acfaa09cb7acc266",
       "dir": "community/数据采集与清洗域包/assets",
       "files": 3,
-      "lines": 306,
+      "lines": 296,
       "package": "数据采集与清洗域包"
     },
     {

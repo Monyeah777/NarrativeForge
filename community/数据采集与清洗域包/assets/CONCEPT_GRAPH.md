@@ -20,15 +20,15 @@
 | `C01-01` | 网页抓取与合规 | P40 | — | c01-anchor |
 | `C01-02` | 去重与相似度 | P60 | `C01-01` | c01-anchor |
 | `C01-03` | 噪声过滤 | P40 | `C01-02` | c01-anchor |
-| `C01-04` | 格式归一化 | P60 | `C01-03`、`C01-01` | c01-anchor |
-| `C01-05` | 缺失与异常值 | P40 | `C01-04`、`C01-02` | c01-anchor |
-| `C01-06` | 隐私脱敏 | P60 | `C01-05`、`C01-03` | c01-anchor |
-| `C01-07` | 多语言清洗 | P40 | `C01-06`、`C01-04` | c01-anchor |
-| `C01-08` | 语料配比与统计 | P60 | `C01-07`、`C01-05` | c01-anchor |
-| `C01-09` | 数据版本与快照 | P40 | `C01-08`、`C01-06` | c01-anchor |
-| `C01-10` | 数据血缘 | P60 | `C01-09`、`C01-07` | c01-anchor |
-| `C01-11` | 质量打分 | P40 | `C01-10`、`C01-08` | c01-anchor |
-| `C01-12` | 脏数据回溯 | P60 | `C01-11`、`C01-09` | c01-anchor |
+| `C01-04` | 格式归一化 | P60 | `C01-03` | c01-anchor |
+| `C01-05` | 缺失与异常值 | P40 | — | c01-anchor |
+| `C01-06` | 隐私脱敏 | P60 | `C01-05` | c01-anchor |
+| `C01-07` | 多语言清洗 | P40 | `C01-06` | c01-anchor |
+| `C01-08` | 语料配比与统计 | P60 | `C01-04` | c01-anchor |
+| `C01-09` | 数据版本与快照 | P40 | `C01-08` | c01-anchor |
+| `C01-10` | 数据血缘 | P60 | `C01-09` | c01-anchor |
+| `C01-11` | 质量打分 | P40 | `C01-08` | c01-anchor |
+| `C01-12` | 脏数据回溯 | P60 | `C01-11` | c01-anchor |
 | `STD-frictionless-table` | 标准 · Table Schema（Frictionless） | P80 | `C01-03`、`C01-05`、`C01-07`、`C01-09`、`C01-11` | std-catalog |
 | `STD-gdpr` | 标准 · GDPR（EU） | P80 | `C01-01`、`C01-06` | std-catalog |
 | `STD-w3c-tabular-data` | 标准 · Tabular Data Model (CSVW)（W3C） | P80 | `C01-02`、`C01-04`、`C01-08`、`C01-10`、`C01-12` | std-catalog |
@@ -119,16 +119,13 @@ concept_graph:
       branch: "domain"
       prereqs:
         - "C01-03"
-        - "C01-01"
       provenance:
         - "c01-anchor"
     - id: "C01-05"
       name: "缺失与异常值"
       layer: "P40"
       branch: "domain"
-      prereqs:
-        - "C01-04"
-        - "C01-02"
+      prereqs: []
       provenance:
         - "c01-anchor"
     - id: "C01-06"
@@ -137,7 +134,6 @@ concept_graph:
       branch: "domain"
       prereqs:
         - "C01-05"
-        - "C01-03"
       provenance:
         - "c01-anchor"
     - id: "C01-07"
@@ -146,7 +142,6 @@ concept_graph:
       branch: "domain"
       prereqs:
         - "C01-06"
-        - "C01-04"
       provenance:
         - "c01-anchor"
     - id: "C01-08"
@@ -154,8 +149,7 @@ concept_graph:
       layer: "P60"
       branch: "domain"
       prereqs:
-        - "C01-07"
-        - "C01-05"
+        - "C01-04"
       provenance:
         - "c01-anchor"
     - id: "C01-09"
@@ -164,7 +158,6 @@ concept_graph:
       branch: "domain"
       prereqs:
         - "C01-08"
-        - "C01-06"
       provenance:
         - "c01-anchor"
     - id: "C01-10"
@@ -173,7 +166,6 @@ concept_graph:
       branch: "domain"
       prereqs:
         - "C01-09"
-        - "C01-07"
       provenance:
         - "c01-anchor"
     - id: "C01-11"
@@ -181,7 +173,6 @@ concept_graph:
       layer: "P40"
       branch: "domain"
       prereqs:
-        - "C01-10"
         - "C01-08"
       provenance:
         - "c01-anchor"
@@ -191,7 +182,6 @@ concept_graph:
       branch: "domain"
       prereqs:
         - "C01-11"
-        - "C01-09"
       provenance:
         - "c01-anchor"
     - id: "STD-frictionless-table"

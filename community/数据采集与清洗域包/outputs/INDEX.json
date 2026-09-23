@@ -56,7 +56,7 @@
           "outputs/samples/CASES.csv"
         ],
         "params": {
-          "family": "latency_cost",
+          "family": "contract_compliance",
           "code": "C01",
           "domain": "数据采集与清洗"
         }
