@@ -13,7 +13,7 @@ subjects:
   - community/量化金融域包/assets/DATA_CONTRACT.md:3815cd420ce535b571149a1ca0725b2d5c1757660e83d0edd8ed1d5c14ed2af1
   - community/量化金融域包/assets/STRATEGY_SPECS.md:9174638b5caf2d5d8586b80d07ed9aeca5d221e16f01ec19ce0e4c0f50859e65
   - community/量化金融域包/assets/QUANT_GRAPH.md:331d63943effe51462440c41832202df3b8e6bb2553734472947ac77927e094c
-  - .github/workflows/external-links.yml:85b42364e385a25a3920bb0321a2bc0b33c3cfd464eddf6be2d7a41dfb0f6850
+  - .github/workflows/external-links.yml:3aa09434f507dd88969994666f4c25d1bf70eb3dbc940fa132a24eae8565c2dc
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

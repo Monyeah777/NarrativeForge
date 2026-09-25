@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - .github/PULL_REQUEST_TEMPLATE.md:27e7688cf590aded0bbd4574235d0a8e47d5aa1680284ad99450daeda2a8e66d
-  - CONTRIBUTING.md:0a4dc584550fd42508a952c2f74b40b4ffc2af3b7fb54acfe8df628a50ea5899
+  - CONTRIBUTING.md:2a3e7848221cc8a642e6dac9aa4f08da3437a63b2c0fca5a5bfe3473a784efe2
   - desktop/src/core/asset_density.py:6058bf77810a36fc0d62ca489a52e988d017aca812f5fb8a8d45fcf58f916bcb
   - desktop/src/core/asset_line_baseline.py:c62eda98405249b1a31fbd17bf08256b29426eeb171dd3a2bfeb2ecbcd8120e1
 ---

@@ -1,7 +1,7 @@
 {
-  "approved_at": "2026-09-25",
+  "approved_at": "2026-09-24",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "提交快照内重绑审计摘要并重建一致性链",
+  "note": "他证执行后重生成一致性报告与回执，摘要随之更新",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "065fd78adbeacc057b9097cd089b6458e6f16ae8e91194e558e0c710f0355b4e"
