@@ -1,12 +1,12 @@
-# NF 验证卡册（既有 37 条门禁的人读复跑说明）
+# NF 验证卡册（既有 39 条门禁的人读复跑说明）
 
 > 生成日期：2026-09-15 ｜ 生成方式：`bash verify.sh` 的 check 函数逐条抽取（`build_verification_cards.ps1`，可复现）
 > 适用者：**不需要读代码**的人（含作者本人、未来接手的维护者、外部审查者）。
 
 ## 为什么有这份卡册
 
-NF 的门禁是一份 bash 脚本、38 条 check，当前基线声明为 `check1-38` · `PASS=66`（行数与 check 数为 verify.sh 实测；基线取自仓库真源 `quality_baseline.EXPECTED_*`，并由 `nf stats --check` 断言入口文件同步）。
-但「PASS=61」本身不说话——它不告诉你每一条到底断言了什么，也不告诉你哪一条可以自己复跑。
+NF 的门禁是一份 bash 脚本、39 条 check，当前基线声明为 `check1-39` · `PASS=68`（行数与 check 数为 verify.sh 实测；基线取自仓库真源 `quality_baseline.EXPECTED_*`，并由 `nf stats --check` 断言入口文件同步）。
+但「PASS=68」本身不说话——它不告诉你每一条到底断言了什么，也不告诉你哪一条可以自己复跑。
 这份卡册把每条 check 翻译成同一张五格卡：**结论 / 判据 / 步骤 / 谁验 / 记录**。
 
 它不新增任何机制，也不修改门禁本体；它只是把既有门禁的结论变成可继承的说明。
@@ -14,7 +14,7 @@ NF 的门禁是一份 bash 脚本、38 条 check，当前基线声明为 `check1
 ## 怎么用（三步，约 10 分钟）
 
 1. 在仓库根目录执行：`bash verify.sh`（Windows 下用 Git Bash）。
-2. 看最后一行的统计：`PASS=61  WARN=0  FAIL=0`——只有 FAIL 才是阻断，PASS 数以当次输出为准。
+2. 看最后一行的统计：`PASS=68  WARN=0  FAIL=0`——只有 FAIL 才是阻断，PASS 数以当次输出为准。
 3. 若某条不放心，在下表找到它的编号，按卡片里的「复跑命令」单独验证，
    或按卡片里的「记录」字段去找对应日志（**有 FAIL 时脚本会打印日志保留路径**）。
 
@@ -22,11 +22,11 @@ NF 的门禁是一份 bash 脚本、38 条 check，当前基线声明为 `check1
 
 | 项 | 值 |
 |---|---|
-| 卡片总数 | 38（= verify.sh 的 check 函数数，实测） |
-| 门禁脚本 | 1797 行（verify.sh 实测） |
-| 声明基线 | check1-38 · PASS=66（源自 quality_baseline.EXPECTED_*） |
-| 段位分布 | 段A 官方核心 6 · 段B 社区包 5 · 段C 代码层 26 |
-| 断言种类 | 真实单测 6 条 · 语义校验 12 条 · 其余为结构断言 |
+| 卡片总数 | 39（= verify.sh 的 check 函数数，实测） |
+| 门禁脚本 | 2409 行（verify.sh 实测） |
+| 声明基线 | check1-39 · PASS=68（源自 quality_baseline.EXPECTED_*） |
+| 段位分布 | 段A 官方核心 6 · 段B 社区包 5 · 段C 代码层 28 |
+| 断言种类 | 真实单测 6 条 · 语义校验 14 条 · 其余为结构断言 |
 | 复跑入口 | `bash verify.sh`（全量）；单条见各卡片的「复跑命令」 |
 
 ## 卡片索引
@@ -70,6 +70,8 @@ NF 的门禁是一份 bash 脚本、38 条 check，当前基线声明为 `check1
 | 35 | 段C | [35/段C] 深化面门禁（管线抽象执行 / 馆藏回执单根 / 模块边界冻结 / 内容绑定批准 / 一致性报告工件 / 无效语料） | 语义校验（core 模块：conformance_report / pipelinerun / receipts） |
 | 36 | 段C | [36/段C] 治理面门禁（一致性声明 / RFC 版本史 / 指令档机器面路由 / 实践包 / 跑分台 / 端点契约） | 结构断言 |
 | 37 | 段C | [37/段C] 知识层门禁（双源知识：权威分层 / 查询有序 / 时效 / 消化可追溯 / 认知裁剪） | 结构断言 |
+| 38 | 段C | [38/段C] 出口自动化门禁（自述数字 / 他证通道 / GEO 出口 / FDE 样例） | 语义校验（core 模块：repo_stats；scripts：interop_thirdparty_kit / geo_export / fde_sample_run） |
+| 39 | 段C | [39/段C] 终端与端壳残留门禁（端壳退役零回潮 / nf shell 终端入口 / 菜单无死命令 / 输出确定） | 语义校验（core 模块：terminal + 全树端壳残留扫描） |
 
 ---
 
@@ -445,7 +447,28 @@ NF 的门禁是一份 bash 脚本、38 条 check，当前基线声明为 `check1
 | 谁验 | 任何有 Python 3 与 bash 的人；不需要读代码 |
 | 记录 | 运行日志 nf_check37.log（本次运行的临时目录内；有 FAIL 时脚本会打印保留路径） |
 
+### V38 · [38/段C] 出口自动化门禁（自述数字 / 他证通道 / GEO 出口 / FDE 样例）
+
+| 字段 | 内容 |
+|---|---|
+| 结论 | [38/段C] 出口自动化门禁（自述数字 / 他证通道 / GEO 出口 / FDE 样例） |
+| 判据 | 语义校验（core 模块：repo_stats；scripts：interop_thirdparty_kit / geo_export / fde_sample_run 四子扫描） |
+| 复跑命令 | `python scripts/nf.py stats --check`（自述数字）；其余三面随全量门禁执行 |
+| 谁验 | 任何有 Python 3 与 bash 的人；不需要读代码 |
+| 记录 | 运行日志 nf_check38_*.log（本次运行的临时目录内；有 FAIL 时脚本会打印保留路径） |
+
+### V39 · [39/段C] 终端与端壳残留门禁（端壳退役零回潮 / nf shell 终端入口 / 菜单无死命令 / 输出确定）
+
+| 字段 | 内容 |
+|---|---|
+| 结论 | [39/段C] 终端与端壳残留门禁（端壳退役零回潮 / nf shell 终端入口 / 菜单无死命令 / 输出确定） |
+| 判据 | 语义校验（core 模块：terminal；判据 = 残留落点 + 全树源件扫描 + 菜单示例解析 + 两遍输出比对） |
+| 复跑命令 | `python scripts/nf.py shell --exec "/menu" --no-banner`（终端面）；端壳残留随全量门禁执行 |
+| 谁验 | 任何有 Python 3 与 bash 的人；不需要读代码 |
+| 记录 | 运行日志 nf_check39.log（本次运行的临时目录内；有 FAIL 时脚本会打印保留路径） |
+
 ---
 
-> 本册可重建：仓库根执行 `powershell -File ..\build_verification_cards.ps1`，产物逐字节一致。
+> 本册可重建：仓库根执行 `powershell -File ..\build_verification_cards.ps1`（本地生成器，未随仓库分发），产物逐字节一致。
 > 门禁变更后应重新生成（否则卡册与门禁会静默漂移——这正是它想防的那种问题）。
+> 2026-09-25：check38/39 卡片按同一模板补齐，基线行同步为 check1-39 · PASS=68；下次跑生成器即回归逐字节重建。

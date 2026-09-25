@@ -7,7 +7,7 @@
 - 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/`
 - 本仓库全部内容本身就是 markdown 源文件——不存在 HTML 版，因此 llms.txt v2 的 `page.md` 孪生约定天然满足；本文件即仓库描述文件（等价 `rel="describedby"` 指向物）。
 <!-- nf:stats:begin -->
-- 质量凭证（可静态实算）：verify v2.28 · check1-38 · PASS=66（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
+- 质量凭证（可静态实算）：verify v2.29 · check1-39 · PASS=68（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
 - 规模（实算真源 `protocol/repo_stats.json`）：111 登记包 · 363 资产档 · 101 概念图 · 标准目录 370 条（可达 332） · 标准绑定 1200 条 · 馆藏 3 件。
 - 标准目录 GEO 出口（可引用）：`docs/standards/index.md` · 机读 `protocol/geo_export.json`。
 <!-- nf:stats:end -->
@@ -46,7 +46,7 @@
 - [protocol/driver.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/driver.json)：指令档 → 机器面路由（有 MCP 实现就走 MCP；派发失败即停，**禁止回退成文本步骤**）；文档头部 `DRIVER OVERRIDE` 块为声明位
 - [patterns/INDEX.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/patterns/INDEX.md)：实践包（可发布/可消费/可移植的最佳实践；真源 = 各包 `PATTERN.md` frontmatter，本表为投影；`applies_to`/`evidence` 须在仓库内可证）
 - [protocol/endpoint_contract.json](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/protocol/endpoint_contract.json)：服务端点契约（`status: proposed`——服务本体未实现，本契约只固定形状；每个端点 `maps_to` 必须指向现存 CLI 子命令或 MCP 工具）
-- [docs/verification-cards.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/docs/verification-cards.md)：**验证卡册**——把 `verify.sh` 的 37 条 check 逐条译成人读复跑卡（结论 / 判据 / 复跑命令 / 谁验 / 记录；37 = 真实单测 6 + 语义校验 12 + 结构断言 19）；**不读代码**也能判断某条门禁到底断言了什么（产物由 `build_verification_cards.ps1` 可复现生成）
+- [docs/verification-cards.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/docs/verification-cards.md)：**验证卡册**——把 `verify.sh` 的全部 check 逐条译成人读复跑卡（结论 / 判据 / 复跑命令 / 谁验 / 记录）；**不读代码**也能判断某条门禁到底断言了什么（卡数/基线以卡册首页与 `quality_baseline.EXPECTED_*` 为准；产物由本地 `build_verification_cards.ps1` 生成）
 
 ## 装配（产出可交付的完整版）
 
@@ -56,6 +56,7 @@
 
 ## 工具（本地 CLI）
 
+- 终端（人机入口，端壳退役后）：`python scripts/nf.py shell`（能力菜单 + `nf` 命令直通 + 写盘二次确认；`--exec "…"`/`--json` 为非交互机器面；见 `docs/terminal.md`）
 - 全链管道：`python scripts/nf.py run|demo|assemble`
 - 浏览与装配：`market` / `asset` / `module` / `pipeline` / `render`
 - 图书馆：`library ls|show|search|reindex|verify|deprecate|restore|supersede`（真源 = 条目 frontmatter）

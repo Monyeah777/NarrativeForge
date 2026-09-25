@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **NF 终端落地（`nf shell`）+ 端壳残留闭环**（**作者指令**：「删除 NF 中的 GUI，且为 NF 构建一个终端（CLI 开发）」）：
+  ① **GUI 退役状态复核并机制化**（依据 = 内部差距实证：公开面不得留端壳残留）：桌面 GUI 端壳源码 / GUI 入口 / 打包线 / 构建 workflow 已于 2026-09-09 全量移出（commit `5ae202b` + `f8123b6` + 清理波），本次逐项复核后把「已退役」从**历史事实**升级为**常驻判据**——新增 check39「端壳残留零在场」：7 个已知残留落点（`desktop/main.py` · `desktop/src/__main__.py` · `desktop/packaging/` · `build-desktop.yml` · `build-android.yml` · `smoke_zone_g_market.py` · `check_ui_core_links.py`）逐项判在不在，另加全树源件扫描（`zone_*.py` / `test_zone_*.py` / `main_window.py` / `smoke_gui.py`）；GUI 回潮即门禁红。端壳线**不预设恢复**（`STRATEGY.md` §四 + 裁决记录 #16）。
+  ② **终端入口**：新增 `desktop/src/core/terminal.py`（纯 stdlib · 确定性 · 可注入 `runner` 的会话状态机，不反向依赖 `scripts/nf.py`）+ `nf shell`（别名 `nf terminal`）+ 启动器 `scripts/nf`（POSIX）/ `scripts/nf.cmd`（Windows，无参数即进终端）。能力菜单把端壳时代 GUI 七区（导入 / 校验 / 管线 / 生成 / 资产 / 预设 / 社区）映射到**既有**命令面——**不产生第二套命令面**：菜单只许指向真实命令（`terminal.example_resolves`，check39 与单测共用同一判据，指向死命令即红）。
+  ③ **安全闸门与边界**：写入类命令（`--write`/`--apply`/`--register`/`--tag`/`--force`/`--push`/`--rm` 等标记位 + `register`/`import`/`rename`/`release`/`asset add…` 等动词）默认拒跑，须交互 `yes` 或显式 `--yes`（终端不替使用者拍板）；`serve`（长驻 MCP 服务）与 `shell`（递归会话）在会话内只给指引；argparse 的 `SystemExit` 与未预期异常在会话内归一为退出码，不打断终端。
+  ④ **非交互回归面**：`nf shell --exec "命令1; 命令2"` 逐条执行并逐条给 `kind`/`exit`（进程退出码 = 各条最大值），`--json` 出逐条记录（argv/exit/out/err）机器面；同输入两遍**逐字节一致**（确定性由 check39 断言，不靠人读）。
+  ⑤ **门禁与基线**：新增 **check39**（端壳零回潮 + 终端三件在场 + 菜单无死命令 + 输出确定），verify.sh 版本 **v2.28 → v2.29**，期望基线 `quality_baseline.EXPECTED_*` 同步为 **check1-39 · PASS=68**；单测 31 例（`desktop/tests/test_terminal.py`：解析 / 闸门 / 会话 / CLI 集成 / 零依赖面）；文档 `docs/terminal.md` 入 doc_hygiene 四型与指令档清单，README 与 README.en 五分钟上手同步（双语机读事实由 check34 断言一致）；实测 `bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**。
+
 - **安全加固批次 + CI 供应链固定**（开工依据 = 内部差距实证：verify 门禁覆盖盲区 / audit 与五维自评；不引用外部项目作立项理由或质量背书）：
   ① **代收站凭据与内容边界**：`gitee_ingest` 的 Gitee 子令牌改为**只作单次 `push` 的 URL 参数**（不再 `remote set-url` 落盘——push 失败也不再残留 `.git/config`），打印/异常回吐经 `_redact` 统一脱敏；投稿**入库前**拒收疑似明文密钥（回显仅形状前 4 字符，避免用提示把密钥二次分发）与超长正文（`MAX_BODY_CHARS = 256 KiB`，超限拒收并给拆分指引）。
   ② **门禁面收口**：`purity_scan` 的危险 sink 作用域纳入 `.github/scripts/*.py`（此前唯一处理远程不可信输入、且持写权限令牌的代码**不在扫描面内**），类目新增**递归删除面**（`shutil.rmtree` / `os.remove` / `os.rmdir`）。实测 sink 基线 **1 → 5**（`__import__`×1 + `shutil.rmtree`×4），全部在 `SINK_ALLOW` 在册可审计——类目扩大使基线同步上调，断言仍守「真仓库不得出现未登记 sink」。

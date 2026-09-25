@@ -198,6 +198,12 @@
       "id": "AUD-0023",
       "title": "出口自动化四路落地 —— 自述数字实算 / 他证通道 / 标准目录 GEO 出口 / FDE 中游打样",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-09-25",
+      "id": "AUD-0024",
+      "title": "NF 终端落地（nf shell）—— 端壳退役后的人机入口 + 端壳残留门禁（check39）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

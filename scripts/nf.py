@@ -30,6 +30,7 @@ sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 NF_CLI_VERSION = "1.0.0"
 NF_CLI_EPILOG = (
     "入门：\n"
+    "  nf shell              # 交互终端（能力菜单 + 命令直通；端壳退役后的人机入口）\n"
     "  nf --help             # 全命令总览\n"
     "  nf help <cmd>         # 查看任意子命令帮助\n"
     "  nf doctor             # 环境自检（快速只读体检）\n"
@@ -882,6 +883,22 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="执行 WorldModelRuntime：状态校验 + 相位前进 + 轨迹重放")
     wm.add_argument("--state", dest="state_path", metavar="STATE.json",
                     help="具体 M00 状态 JSON；与 --run 联用时按 slot 绑定重放")
+    # ---- 终端（端壳退役后的人机交互入口）----
+    sh = sub.add_parser(
+        "shell", aliases=["terminal"],
+        help="NF 终端：交互式入口（能力菜单 + nf 命令直通；--exec 非交互回归面）",
+        description="NF 终端（端壳退役后的人机交互入口）：把既有 CLI 命令面按能力菜单"
+                    "组织成可交互会话（数字 0-7 看菜单 / 任意 nf 命令直通 / /help /quit）。"
+                    "纯 stdlib、确定性；写入类命令须显式确认（--yes 或交互输入 yes）。"
+                    "命令真源仍是本 CLI 的 argparse 面——菜单不许指向死命令（verify check39）。")
+    sh.add_argument("--exec", dest="exec_script", default="", metavar="\"命令1; 命令2\"",
+                    help="非交互执行一串命令（分号分隔）后退出——CI 与回归用（确定性）")
+    sh.add_argument("--no-banner", action="store_true",
+                    help="不开场横幅（管道/日志场景）")
+    sh.add_argument("--yes", action="store_true",
+                    help="显式放行写入类命令（终端默认拒跑 --write/--apply/--register 等）")
+    sh.add_argument("--json", action="store_true",
+                    help="配合 --exec：输出逐条记录的结构化 JSON")
     return p
 
 
@@ -3958,6 +3975,49 @@ def _cmd_doctor(args):
     return 0 if n_pass == len(checks) else 1
 
 
+def _shell_baseline() -> str:
+    """终端横幅的基线句——数字取自 quality_baseline 真源与 verify.sh 版本头，不手写。"""
+    try:
+        from core import quality_baseline as qb
+    except Exception:  # 尽力而为：基线模块不可读则只印版本（缺口由 check34 另行报出）
+        return ""
+    ver = ""
+    try:
+        with open(os.path.join(ROOT, "verify.sh"), encoding="utf-8") as fh:
+            for ln in fh:
+                if ln.startswith("# 版本 : "):
+                    ver = ln.split(":", 1)[1].strip().split()[0]
+                    break
+    except OSError:
+        ver = ""
+    return "verify %s · check1-%d · PASS=%d" % (ver or "?", qb.EXPECTED_CHECKS,
+                                                qb.EXPECTED_PASS)
+
+
+def _cmd_shell(args) -> int:
+    """nf shell（别名 nf terminal）：终端交互入口（端壳退役后的人机面）。"""
+    from core import terminal as term
+
+    def runner(argv):
+        argv = list(argv)
+        if argv and argv[0] in ("shell", "terminal"):
+            print("  终端内不再开终端（避免递归会话）："
+                  "请另开一个终端窗口运行 nf shell。", file=sys.stderr)
+            return 2
+        return main(argv)
+
+    if args.exec_script:
+        code, text, _records = term.run_script(args.exec_script, runner,
+                                               assume_yes=args.yes,
+                                               as_json=args.json)
+        print(text)
+        return code
+    return term.run_session(runner, sys.stdin, sys.stdout,
+                            assume_yes=args.yes,
+                            show_banner=not args.no_banner,
+                            baseline=_shell_baseline())
+
+
 def _collect_cli_tree():
     """自省 argparse 命令面：命令 × 顶层 flags × 二级子命令（供 completion 生成）。"""
     root = _build_parser()
@@ -4426,6 +4486,8 @@ def main(argv=None) -> int:
     if args.cmd is None:
         _build_parser().print_help()
         return 0
+    if args.cmd in ("shell", "terminal"):
+        return _cmd_shell(args)
     if args.cmd == "help":
         return _cmd_help(args)
     if args.cmd == "stats":

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.28  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）
+# 版本 : v2.29  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）+ 终端线 check39（端壳退役零回潮 + nf shell 终端入口在场 + 菜单无死命令 + 输出确定）
 #        46 吸收七面 check33：MCP dual-era 版本对齐（2026-07-28/2025-11-25 + server/discover）/
 #        内容外挂签名 attestation / 基线相对回归评分 / 机械修复 + LSP / 正文 lint / 图书馆许可证门 / 遥测 semconv
 #        图书馆面 check34：条目 frontmatter 真源（OKF 借鉴）/ INDEX·ALIAS 投影一致（I5）/ 生命周期 /
@@ -2239,9 +2239,125 @@ PYEOF
   fi
 }
 
+check39(){
+  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + NF 终端入口在场 + 菜单不许指向死命令）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check39.log 2>&1
+import importlib.util, io, json, os, sys
+from contextlib import redirect_stdout
+sys.path.insert(0, os.path.join('desktop', 'src'))
+from core import terminal as term
+
+problems, notes = [], []
+
+# ---- ① 端壳残留：GUI 端壳源码/入口/打包线不得再出现在树（字节码缓存不算源件）----
+shell_leftovers = [
+    os.path.join('desktop', 'main.py'),
+    os.path.join('desktop', 'src', '__main__.py'),
+    os.path.join('desktop', 'packaging'),
+    os.path.join('.github', 'workflows', 'build-desktop.yml'),
+    os.path.join('.github', 'workflows', 'build-android.yml'),
+    os.path.join('scripts', 'smoke_zone_g_market.py'),
+    os.path.join('scripts', 'check_ui_core_links.py'),
+]
+for rel in shell_leftovers:
+    if os.path.exists(rel):
+        problems.append('端壳残留在场：%s（修复指引：按 L3 退役裁决删除；GUI 源码已于 '
+                        '2026-09-09 移出，本项即防回潮）' % rel)
+for dirpath, dirnames, filenames in os.walk('.'):
+    dirnames[:] = [d for d in dirnames
+                   if d not in ('.git', '.rivet', '__pycache__', '.ruff_cache',
+                                '.mypy_cache', 'node_modules')]
+    for name in filenames:
+        if not name.endswith('.py'):
+            continue
+        if name.startswith('zone_') or name.startswith('test_zone_') or \
+                name == 'main_window.py' or name == 'smoke_gui.py':
+            problems.append('端壳残留源件：%s（修复指引：端壳能力一律落 CLI，'
+                            '不得在树内保留 GUI 模块）' % os.path.join(dirpath, name))
+    rel_dir = os.path.relpath(dirpath, '.').replace('\\', '/')
+    if rel_dir.endswith('desktop/src/ui'):
+        # 只认「有真件」的残余目录：`__pycache__` 是字节码缓存（可再生、非源件），
+        # 已在上层剪掉——空壳目录不判死，但任何源码/资源残留即 FAIL。
+        if any(n not in ('__pycache__',) for n in dirnames) or filenames:
+            problems.append('端壳残留目录：desktop/src/ui 含源件或资源'
+                            '（修复指引：端壳能力一律落 CLI，该目录不得有真件）')
+
+# ---- ② 终端面在场 + 确定性 + 机器面 ----
+if not os.path.isfile(os.path.join('desktop', 'src', 'core', 'terminal.py')):
+    problems.append('终端核心缺失：desktop/src/core/terminal.py（修复指引：'
+                    '端壳退役后的人机入口须在场，见 docs/terminal.md）')
+if not os.path.isfile('scripts/nf'):
+    problems.append('终端启动器缺失：scripts/nf（修复指引：提供 POSIX 启动器，无参数进终端）')
+if not os.path.isfile(os.path.join('scripts', 'nf.cmd')):
+    problems.append('终端启动器缺失：scripts/nf.cmd（修复指引：提供 Windows 启动器）')
+
+# ---- ③ 命令行面：菜单示例必须指向真实命令（单一判据 terminal.example_resolves）----
+spec = importlib.util.spec_from_file_location('nfcli', os.path.join('scripts', 'nf.py'))
+nf = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(nf)
+tree = nf._collect_cli_tree()
+cmds, flags = set(tree['commands']), set(tree['root_flags'])
+for sub in ('shell', 'terminal'):
+    if sub not in cmds:
+        problems.append('终端子命令缺失：nf %s（修复指引：在 scripts/nf.py 注册 shell）' % sub)
+keys = [z['key'] for z in term.zone_table()]
+if keys != [str(i) for i in range(len(keys))]:
+    problems.append('终端菜单键不连续：%s（修复指引：菜单键从 0 起连续编号）' % keys)
+for item in term.zone_table():
+    for ex in item['examples']:
+        if not term.example_resolves(ex, cmds, flags):
+            problems.append('菜单指向死命令：%s（区 %s；修复指引：先落 CLI 再登记 ZONES）'
+                            % (ex, item['id']))
+
+# ---- ④ 确定性 + JSON 机器面（同输入两遍逐字节一致）----
+captured = []
+for _ in range(2):
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        code = nf.main(['shell', '--exec', '/menu', '--no-banner'])
+    captured.append(buf.getvalue())
+    if code != 0:
+        problems.append('终端非交互模式退出码异常：%s（修复指引：nf shell --exec 只读命令须退出 0）'
+                        % code)
+if captured[0] != captured[1]:
+    problems.append('终端输出不确定（两遍不一致；修复指引：去掉横幅/时间戳等可变面）')
+for item in term.zone_table():
+    if item['title'] not in captured[0]:
+        problems.append('菜单漏出能力区：%s（修复指引：menu() 须逐区列出）' % item['title'])
+buf = io.StringIO()
+with redirect_stdout(buf):
+    nf.main(['shell', '--exec', '/zone 0', '--no-banner', '--json'])
+try:
+    payload = json.loads(buf.getvalue())
+    if payload.get('kind') != 'nf-shell' or payload['records'][0]['kind'] != 'zone':
+        problems.append('终端 JSON 机器面形状异常（修复指引：--json 输出 nf-shell 逐条记录）')
+except Exception as exc:
+    problems.append('终端 JSON 机器面不可解析：%s（修复指引：--json 须输出合法 JSON）' % exc)
+
+for p in problems:
+    print('[FAIL] %s' % p)
+print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
+      % (len(shell_leftovers), len(term.zone_table()),
+         sum(len(z['examples']) for z in term.zone_table())))
+sys.exit(1 if problems else 0)
+PYEOF
+    then
+      ok '端壳残留零在场 + 终端入口在场（check39 子扫描：源件/入口/打包线三类判据）'
+    else
+      no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check39 终端与端壳残留门禁）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '终端与端壳残留门禁全绿（check39：端壳零回潮 + 终端三件在场 + 菜单无死命令 + 输出确定）'
+  fi
+}
+
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.27（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.29（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检 + 终端线 check39 端壳零回潮/终端入口；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -2281,6 +2397,7 @@ check35
 check36
 check37
 check38
+check39
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then

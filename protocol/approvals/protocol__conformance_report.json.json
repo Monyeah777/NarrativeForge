@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-24",
+  "approved_at": "2026-09-25",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "他证执行后重生成一致性报告与回执，摘要随之更新",
+  "note": "终端波：补 AUD-0024 审计建档后重生成一致性报告，摘要随之更新",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "065fd78adbeacc057b9097cd089b6458e6f16ae8e91194e558e0c710f0355b4e"
+  "subject_digest": "536a9ee4499caaef8dbc6c7b16f9a64b4fe97823f2199768a5ff1d6c38958e04"
 }

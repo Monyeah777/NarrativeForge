@@ -6,14 +6,14 @@ scope: 作者指令「自述数字自动化，互操作性从他证，标准目�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:e8cbae9cbd8e8594e8ea5ea5ff62f6e9719428660feeb9c7a77c13f64dd8baba
-  - scripts/nf.py:9f3c09e9bb1461001d88f59d8a1ee1811b26f7dcf31ff7c87df502a2d1d25dcf
+  - verify.sh:0e94959965c35d7d9bcc3008da5747eae26ce460ae5b30dfb8a8f4a14682f08b
+  - scripts/nf.py:bf5c813fb49c37cbec945218dbbf900663576d5005681b35c3264a1aac9bb7cc
   - desktop/src/core/repo_stats.py:acde574e9514ed3f0c9427b7e35f8ee68a1d8acfde3f8365c3e45190141b94a0
-  - desktop/src/core/quality_baseline.py:831e9e43a11d8f00823bae81263bbcb8511207f51071d4f1451a9d8e979c4aa2
+  - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
   - scripts/interop_thirdparty_kit.py:c4b47deae16630a8de3d593e1630388468b205ae6a4710aead289bfe7c9b2f47
   - scripts/geo_export.py:9efa9b6dc79ab783d8cbfe8c9bea0dc5b1f5e01078bd624100034642680a2283
   - scripts/fde_sample_run.py:c7fef8bae2f22afa55362a149ba4721b2b1f0a35b5343a72953148be0df6144e
-  - protocol/CONFORMANCE.md:c46bbcc647a412cbeee6ac1998c9fe4635b1646a43bd5132dbd4a6068eb158e6
+  - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
   - docs/fde-stack.md:d916a683be6058b9a390ab88b1407452c3ef1c4d7cbfd046824b1e50c4e9cfee
   - docs/fde-sample/README.md:c17984ad90f50d39131fd932c37915b978e28bf606f9c397128de1c8417e4168
   - docs/interop-thirdparty.md:637dff4598a4b8ff21f81090c20b625269cea49903d396a3fc2968f2f1e1f2fc

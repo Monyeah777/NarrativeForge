@@ -1,6 +1,6 @@
 # NF 一致性声明（CONFORMANCE）
 > ⛔ 操作指令：本文件是**机检声明**——三段（声明 / 范围 / 排除）由 `nf conformance --declaration` 逐条断言；改数字改不动门禁（版本一律与真源比对）。
-> 最后更新：2026-09-14
+> 最后更新：2026-09-25
 
 > 性质：这是 NF 对「符合什么、管到哪、什么不管」的**显式声明**（机制借鉴 ACP 的 `CONFORMANCE.md`：
 > 声明 + scope 白名单 + **显式排除清单**）。它不替代 `nf conformance` 的**报告**，两者互补——
@@ -14,7 +14,7 @@
 | registry schema | `2` | 02 头部 + `desktop/src/core/registry.json` |
 | machine_contract schema | `1` | `protocol/schema/contract.schema.json` |
 | IDL schema 集 | `5 件` | `protocol/schema/` |
-| 基线 | `v2.28 · check1-38 · PASS=66` | `verify.sh` + `quality_baseline.EXPECTED_*` |
+| 基线 | `v2.29 · check1-39 · PASS=68` | `verify.sh` + `quality_baseline.EXPECTED_*` |
 
 ## 范围
 

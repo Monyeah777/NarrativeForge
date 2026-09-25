@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# NF 终端启动器（POSIX）：无参数 = 直接进交互终端，其余参数原样透传 nf CLI。
+#
+# 用法：
+#   ./scripts/nf                 # 交互终端（能力菜单 + 命令直通）
+#   ./scripts/nf shell --exec "nf doctor"   # 非交互（CI/脚本）
+#   ./scripts/nf market --list   # 任意子命令透传
+#
+# 说明：本文件只是启动器，零逻辑——命令真源始终是 scripts/nf.py。
+set -e
+NF_ROOT=$(cd "$(dirname "$0")" && pwd)
+NF_PY=python3
+command -v python3 >/dev/null 2>&1 || NF_PY=python
+if [ "$#" -eq 0 ]; then
+  exec "$NF_PY" "$NF_ROOT/nf.py" shell
+fi
+exec "$NF_PY" "$NF_ROOT/nf.py" "$@"

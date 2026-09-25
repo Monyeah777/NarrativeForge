@@ -7,7 +7,7 @@
     "contracts": 27,
     "id": "nf:conformance_report",
     "receiptCount": 49,
-    "receiptRoot": "9855e65bac0d65742bf878e30fc3fc928538290dcd870a39a12e6bebd4d5469a",
+    "receiptRoot": "398ab4dc4c604819da01282078695260bce7381f125608850b310c96b79ea6b7",
     "verdict": "conformant"
   },
   "issuer": "执行者（作者授权本波裁决）",
@@ -15,7 +15,7 @@
     "VerifiableCredential",
     "NfConformanceCredential"
   ],
-  "validFrom": "2026-09-24",
+  "validFrom": "2026-09-25",
   "x-nf-note": "派生自 protocol/conformance_report.json + protocol/RECEIPTS.json + protocol/approvals/*（纯派生，不新增真源）",
   "x-nf-proof-status": "unsigned（本仓签名走 ssh 外挂锚 nf attest；未接 JWS/Data Integrity 签名套件——形状可读，不可验证，勿当凭证使用）"
 }

@@ -18,10 +18,11 @@
 人（作者/开发者，5 分钟）：
 
 1. `bash verify.sh`
-2. `python scripts/nf.py demo`
-3. `python scripts/nf.py --help`
-4. `python scripts/nf.py doctor`
-5. `python scripts/nf.py completion bash`
+2. `python scripts/nf.py shell`（交互终端：端壳退役后的人机入口，见 `docs/terminal.md`）
+3. `python scripts/nf.py demo`
+4. `python scripts/nf.py --help`
+5. `python scripts/nf.py doctor`
+6. `python scripts/nf.py completion bash`
 
 AI 装配：
 
@@ -36,7 +37,7 @@ AI 装配：
 <!-- nf:stats:begin -->
 **官方核心**：13 模块 · 3 管线（P00 / P01 / P90） · 核心协议件 01–07
 **社区规模**：111 登记包 · 363 资产档 · 101 概念图 · 100 域包/1200 细分 · 标准目录 370 条（可达 332 / 不可达 38 · 机构 194 · 206 条依赖边） · 标准绑定 1200 条
-**质量凭证**：verify v2.28 · check1-38 · PASS=66（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`） · 馆藏 3 件
+**质量凭证**：verify v2.29 · check1-39 · PASS=68（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`） · 馆藏 3 件
 
 分层：data 148 · eng 38 · form 29 · gov 71 · iface 84 （按标准目录 layer）
 
@@ -52,7 +53,7 @@ AI 装配：
 | 库 | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | 社区 | `community/README.md` · `community/模板制作指令包.md` |
 | AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
-| 工具 | `docs/mcp.md` · `scripts/nf.py` · `scripts/verify.sh` |
+| 工具 | `docs/mcp.md` · `docs/terminal.md` · `scripts/nf.py` · `scripts/verify.sh` |
 | 馆 | `library/INDEX.md` · `ROUTES.md` |
 
 ## 版本块

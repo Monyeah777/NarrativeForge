@@ -3,13 +3,13 @@
   "comment": "派生面非真源；created = max(仓内声明日期: score_baseline / provenance / approvals)（保确定性，非墙钟）。",
   "creationInfo": {
     "comment": "由纯度扫描登记面（HARD_ALLOW / SOFT_IMPORTS）实时派生；created = 仓内声明日期最大值（非墙钟，保确定性）",
-    "created": "2026-09-24T00:00:00Z",
+    "created": "2026-09-25T00:00:00Z",
     "creators": [
       "Tool: nf interop --kind sbom"
     ]
   },
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://narrativeforge.dev/spdx/v2.28",
+  "documentNamespace": "https://narrativeforge.dev/spdx/v2.29",
   "name": "narrativeforge-sbom",
   "packages": [
     {
@@ -19,7 +19,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "NarrativeForge",
-      "versionInfo": "v2.28"
+      "versionInfo": "v2.29"
     },
     {
       "SPDXID": "SPDXRef-Dependency-yaml",

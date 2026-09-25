@@ -122,12 +122,12 @@
     {
       "@id": "nf:file/llms.txt",
       "@type": "prov:Entity",
-      "nf:sha256": "6bfeb867cea1378cfe8f0c6c9f90b89ab257fbc2839690686c644d56b92db805"
+      "nf:sha256": "226450a3a0c88846032aed01ac216c20cb400f654bff68c79f47c92a14b16ffe"
     },
     {
       "@id": "nf:file/protocol/CONFORMANCE.md",
       "@type": "prov:Entity",
-      "nf:sha256": "c46bbcc647a412cbeee6ac1998c9fe4635b1646a43bd5132dbd4a6068eb158e6"
+      "nf:sha256": "566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833"
     },
     {
       "@id": "nf:file/protocol/assertions.json",
@@ -152,7 +152,7 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "065fd78adbeacc057b9097cd089b6458e6f16ae8e91194e558e0c710f0355b4e"
+      "nf:sha256": "536a9ee4499caaef8dbc6c7b16f9a64b4fe97823f2199768a5ff1d6c38958e04"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",

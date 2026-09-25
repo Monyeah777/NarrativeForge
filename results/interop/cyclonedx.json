@@ -32,7 +32,7 @@
   ],
   "metadata": {
     "component": {
-      "bom-ref": "pkg:nf/narrativeforge@v2.28",
+      "bom-ref": "pkg:nf/narrativeforge@v2.29",
       "licenses": [
         {
           "license": {
@@ -53,7 +53,7 @@
         "value": "与 SPDX 面同源；timestamp 取仓内声明日期最大值（非墙钟）。"
       }
     ],
-    "timestamp": "2026-09-24T00:00:00Z",
+    "timestamp": "2026-09-25T00:00:00Z",
     "tools": [
       {
         "name": "nf interop --kind cyclonedx",
@@ -62,7 +62,7 @@
       }
     ]
   },
-  "serialNumber": "urn:uuid:b8c0c60b-fafa-c48a-b17e-31ee6e5047c8",
+  "serialNumber": "urn:uuid:279b6026-48bd-7850-7b4d-2ed41d40c66e",
   "specVersion": "1.5",
   "version": 1
 }

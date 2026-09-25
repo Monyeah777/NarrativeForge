@@ -4,7 +4,7 @@
     "algorithm": "RFC6962-style sha256 domain-separated",
     "count": 49,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "9855e65bac0d65742bf878e30fc3fc928538290dcd870a39a12e6bebd4d5469a",
+    "root": "398ab4dc4c604819da01282078695260bce7381f125608850b310c96b79ea6b7",
     "scope": "protocol"
   },
   "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
@@ -41,7 +41,7 @@
     },
     {
       "digest": {
-        "sha256": "6bfeb867cea1378cfe8f0c6c9f90b89ab257fbc2839690686c644d56b92db805"
+        "sha256": "226450a3a0c88846032aed01ac216c20cb400f654bff68c79f47c92a14b16ffe"
       },
       "name": "llms.txt"
     },
@@ -113,7 +113,7 @@
     },
     {
       "digest": {
-        "sha256": "065fd78adbeacc057b9097cd089b6458e6f16ae8e91194e558e0c710f0355b4e"
+        "sha256": "536a9ee4499caaef8dbc6c7b16f9a64b4fe97823f2199768a5ff1d6c38958e04"
       },
       "name": "protocol/conformance_report.json"
     },
@@ -125,7 +125,7 @@
     },
     {
       "digest": {
-        "sha256": "c46bbcc647a412cbeee6ac1998c9fe4635b1646a43bd5132dbd4a6068eb158e6"
+        "sha256": "566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833"
       },
       "name": "protocol/CONFORMANCE.md"
     },

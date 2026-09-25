@@ -5,7 +5,7 @@
 ## 当前状态
 
 - 公开基础层：`bash verify.sh` 单入口；当前基线（版本/check 数/PASS）见 README 生成区与 `protocol/repo_stats.json`（由 `nf stats --check` 断言），不在此处手写。
-- 端壳层退役：L3 桌面 GUI 端壳与打包线已永久退役移出（2026-09-09，同 APK 裁决 #16 轨）；公开面 = 协议 + core 库 + CLI，不产桌面壳。
+- 端壳层退役：L3 桌面 GUI 端壳与打包线已永久退役移出（2026-09-09，同 APK 裁决 #16 轨）；公开面 = 协议 + core 库 + CLI，不产桌面壳。端壳退役后的人机入口 = **终端**（`nf shell`，见 `docs/terminal.md`），GUI 回潮由 verify check39 判红。
 - 外部实测：封存挂账，由作者决定一次性补测。
 
 ## 版本总览
