@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/pack_combo.py:4c767ec786b38313b8ea3ec7e7c8818f0748bf734b04fa269d33d8135657b5f4
   - desktop/src/core/quality_depth_scan.py:ef33e0c52da8370134c34da56943f3d9188c0f3212727a4b4eea5a80f0732fb1
   - desktop/src/core/doc_hygiene.py:b4906f5459116d12d1e30f58ef083dad8f2b9841e4e46a43b8921e38f14088f1
-  - scripts/nf.py:1efa4aba1fa4d6e03ee5a9da3a562970c4415c5704fb7301999f9d62ec47e2d4
+  - scripts/nf.py:9f3c09e9bb1461001d88f59d8a1ee1811b26f7dcf31ff7c87df502a2d1d25dcf
   - protocol/data_contracts.json:c0fec5b67151fd86f9a17e522a1d61238ebd974ec14b0ad41993cb47af533ae1
   - docs/combos.md:4d25fe6d366687213df7090badd52b815bdf07f774df856e598d7cf8a1d130de
   - desktop/tests/test_pack_combo.py:5da27fbf17a0c6d70d7d30d74286b9d6f3282561979ebb15b1118eb0f3f0cc5d

@@ -4,9 +4,9 @@
     "buildDefinition": {
       "buildType": "https://narrativeforge.dev/buildtypes/local-gate/v1",
       "externalParameters": {
-        "declaredBaseline": "check1-37 PASS=61",
+        "declaredBaseline": "check1-38 PASS=66",
         "gate": "verify.sh",
-        "gateVersion": "v2.27",
+        "gateVersion": "v2.28",
         "note": "参数取自仓内声明件（不引入新真源）"
       },
       "internalParameters": {
@@ -167,7 +167,7 @@
         "id": "https://narrativeforge.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "f15c166204135cc7",
+        "invocationId": "9855e65bac0d6574",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -206,7 +206,7 @@
     },
     {
       "digest": {
-        "sha256": "e3859535d0db046ea6ee4d4d29efb7f9af5b3a8ca2c8d917d2652864334b7375"
+        "sha256": "6bfeb867cea1378cfe8f0c6c9f90b89ab257fbc2839690686c644d56b92db805"
       },
       "name": "llms.txt"
     },
@@ -278,7 +278,7 @@
     },
     {
       "digest": {
-        "sha256": "3f7323909e04bd4c8476cbedd8bf77814684fc81dcbdfeab421d7d7176aa8baa"
+        "sha256": "065fd78adbeacc057b9097cd089b6458e6f16ae8e91194e558e0c710f0355b4e"
       },
       "name": "protocol/conformance_report.json"
     },
@@ -290,7 +290,7 @@
     },
     {
       "digest": {
-        "sha256": "096ca620bdb499fa7f82d77ef276ebe416015cb68d618e6170de31e5ac7d2414"
+        "sha256": "c46bbcc647a412cbeee6ac1998c9fe4635b1646a43bd5132dbd4a6068eb158e6"
       },
       "name": "protocol/CONFORMANCE.md"
     },

@@ -6,7 +6,11 @@
 - 取件基底（raw，喂 AI 用）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`
 - 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/`
 - 本仓库全部内容本身就是 markdown 源文件——不存在 HTML 版，因此 llms.txt v2 的 `page.md` 孪生约定天然满足；本文件即仓库描述文件（等价 `rel="describedby"` 指向物）。
-- 质量凭证（本地真跑，非声明）：`bash verify.sh` → **v2.27 · check1-37 · PASS=61**。
+<!-- nf:stats:begin -->
+- 质量凭证（可静态实算）：verify v2.28 · check1-38 · PASS=66（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
+- 规模（实算真源 `protocol/repo_stats.json`）：111 登记包 · 363 资产档 · 101 概念图 · 标准目录 370 条（可达 332） · 标准绑定 1200 条 · 馆藏 3 件。
+- 标准目录 GEO 出口（可引用）：`docs/standards/index.md` · 机读 `protocol/geo_export.json`。
+<!-- nf:stats:end -->
 - 英文入口（English entry）：`README.en.md`（覆盖同一组机读事实：协议件 / 装载路径 / 质量凭证；由 check34 断言与 `README.md` 一致）。
 
 ## 先读（入口链）

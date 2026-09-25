@@ -1,0 +1,6227 @@
+{
+  "coverage": {
+    "bodies": 194,
+    "by_layer": {
+      "data": 148,
+      "eng": 38,
+      "form": 29,
+      "gov": 71,
+      "iface": 84
+    },
+    "depends_edges": 206,
+    "reachable": 332,
+    "standards": 370,
+    "unreachable": 38
+  },
+  "note": "生成物；真源 protocol/standards_catalog.json + protocol/standards_binding.json。",
+  "schema": "nf-geo-export/1",
+  "standards": [
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "driver-manager",
+        "statement-option"
+      ],
+      "http_status": 200,
+      "id": "adbc",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b25cbb784358a30f3cf4467175a33d673ebfe2bcf4763c18c33cf9c2cadeffa0",
+      "title": "ADBC 数据库访问接口",
+      "url": "https://arrow.apache.org/adbc/"
+    },
+    {
+      "body": "ARIB",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "data-component"
+      ],
+      "http_status": 403,
+      "id": "arib-ttml",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "ARIB 字幕/编成元数据",
+      "url": "https://www.arib.or.jp/english/std_tr/broadcasting/"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 3,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-type",
+        "metadata"
+      ],
+      "http_status": 200,
+      "id": "arrow",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a58412b191fd8374cfc70d0d14e1a4d83e438475dbb24c80411fe3122a51b381",
+      "title": "Arrow 列式格式",
+      "url": "https://arrow.apache.org/docs/format/Columnar.html"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "command-type",
+        "extension-metadata"
+      ],
+      "http_status": 200,
+      "id": "arrow-flight-sql",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "653cd96ef384e0aede6c6f6cc01f2a691419704cb8b5f2fb06cc25e8f8688d92",
+      "title": "Arrow Flight SQL 协议",
+      "url": "https://arrow.apache.org/docs/format/FlightSql.html"
+    },
+    {
+      "body": "AOMedia",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "av1-item",
+        "extended-profile"
+      ],
+      "http_status": 200,
+      "id": "avif",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "de256e62a484dbbd023469832cbe61c7c83214d4502c5dd90f3f9c5d4484acc4",
+      "title": "AVIF 图像格式",
+      "url": "https://aomedia.org/specifications/avif/"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "schema-resolution",
+        "logical-type"
+      ],
+      "http_status": 200,
+      "id": "avro",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "42181e10142904e6fc30b11bd4380b2ab72739f511d8b6c6a7725c7f145ad933",
+      "title": "Avro 规范",
+      "url": "https://avro.apache.org/docs/1.11.1/specification/"
+    },
+    {
+      "body": "Library of Congress",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "vocabulary-extension"
+      ],
+      "http_status": 403,
+      "id": "bibframe",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "BIBFRAME 书目框架",
+      "url": "https://www.loc.gov/bibframe/"
+    },
+    {
+      "body": "MongoDB",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "element-type",
+        "subtype"
+      ],
+      "http_status": 200,
+      "id": "bson",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4eeb35dbd4f2d1767343bc984638d98f3fdd0abd8fd1f2995ae64fbbb8eba731",
+      "title": "BSON 二进制文档",
+      "url": "https://bsonspec.org/spec.html"
+    },
+    {
+      "body": "EBU",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "bext-chunk",
+        "axml-chunk"
+      ],
+      "http_status": 403,
+      "id": "bwf",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "广播 WAV（BWF）",
+      "url": "https://tech.ebu.ch/publications/r98"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tag-registry"
+      ],
+      "http_status": 200,
+      "id": "cbor",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "40bad49ffee4fc06bce3b90e1cad206423558bbfed0756f6455be8ef74ee3c67",
+      "title": "CBOR (RFC 8949)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8949.txt"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "control-operator",
+        "socket-extension"
+      ],
+      "http_status": 200,
+      "id": "cddl",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "017b4388e0f7a9861c85e6b00761ee6bb4226eedc6dd376058e48e57070f11eb",
+      "title": "CDDL 数据定义语言",
+      "url": "https://www.rfc-editor.org/rfc/rfc8610"
+    },
+    {
+      "body": "OGC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "ade-extension",
+        "lod-level"
+      ],
+      "http_status": 200,
+      "id": "citygml",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b1e2aa672cc288492a019603f0284eab94bb5299c2301028917defd68104acf1",
+      "title": "CityGML 城市模型",
+      "url": "https://www.ogc.org/standards/citygml/"
+    },
+    {
+      "body": "CityJSON",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension",
+        "metadata-extension"
+      ],
+      "http_status": 200,
+      "id": "cityjson",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2c144354f447fdd714f521f488e60d598d951bca2f6efe71a83cea99c92faac8",
+      "title": "CityJSON",
+      "url": "https://www.cityjson.org/specs/"
+    },
+    {
+      "body": "COG 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "overview-structure",
+        "internal-tiling"
+      ],
+      "http_status": 200,
+      "id": "cog",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "52dc11628b611551c108c3c5c8b78e2378146d99cda0320798c556db347f807f",
+      "title": "云优化 GeoTIFF",
+      "url": "https://www.cogeo.org/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "algorithm-registry",
+        "header-parameter"
+      ],
+      "http_status": 200,
+      "id": "cose",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4b19ddc02d9e6795c6ff75abe40091611ab4bcec187b94d5422f7d5549733e72",
+      "title": "COSE 签名与加密",
+      "url": "https://www.rfc-editor.org/rfc/rfc9052"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "well-formed-name",
+        "uri-binding"
+      ],
+      "http_status": 200,
+      "id": "cpe",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6964a6dd082a1d645e7d1bdb6c3f01599cd83a2cdb0bbdf0347a17c37cbdd702",
+      "title": "CPE 平台枚举",
+      "url": "https://nvd.nist.gov/products/cpe"
+    },
+    {
+      "body": "Crossref",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "schema-version",
+        "deposit-extension"
+      ],
+      "http_status": 200,
+      "id": "crossref-schema",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0abb435f49e468656f9af1fb87ee11218040d8d56babc537f9481ef945022588",
+      "title": "Crossref 元数据 schema",
+      "url": "https://www.crossref.org/documentation/schema-library/"
+    },
+    {
+      "body": "CVE Program/MITRE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "cve-id-block",
+        "cna-rules"
+      ],
+      "http_status": 200,
+      "id": "cve",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "977c1ed58d9b7ab946861ce56321a46812fead1445d7b7582bd5149160edff0a",
+      "title": "CVE 漏洞编号",
+      "url": "https://www.cve.org/"
+    },
+    {
+      "body": "FIRST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "metric-group",
+        "supplemental-metric"
+      ],
+      "http_status": 200,
+      "id": "cvss",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1c89c710df4c2ecfa6b3b013df07c1ae0cf5d93fa8e62603d5341722bde6f26d",
+      "title": "CVSS 严重度评分",
+      "url": "https://www.first.org/cvss/v4-0/"
+    },
+    {
+      "body": "EU/CEN",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "extension-class"
+      ],
+      "http_status": 200,
+      "id": "datex-ii",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1a4311645639892d0423132f9495a608604bc1f40da35d8b0edf71f3e262a6d7",
+      "title": "DATEX II 交通数据",
+      "url": "https://datex2.eu/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile-class",
+        "property-extension"
+      ],
+      "http_status": 200,
+      "id": "dcat",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b2fa9b2a4b86b5edf82b26bc9163f2d74f73d0e5d99753574f70a455f4230ddc",
+      "title": "DCAT 数据集目录词汇",
+      "url": "https://www.w3.org/TR/vocab-dcat-3/"
+    },
+    {
+      "body": "DDI Alliance",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "lifecycle-module",
+        "controlled-vocabulary"
+      ],
+      "http_status": 200,
+      "id": "ddi",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c703a70a7e3354613ff7135d21a019ec497b2dbb46701a926e04fdddab3957ae",
+      "title": "DDI 社会调查元数据",
+      "url": "https://ddialliance.org/"
+    },
+    {
+      "body": "Linux Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "protocol-version",
+        "table-feature"
+      ],
+      "http_status": 200,
+      "id": "delta-lake",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ddb0d974401e792fc8d475d39e4fec7b97f8e620a13e84b89313c0a3b5411504",
+      "title": "Delta Lake 事务协议",
+      "url": "https://github.com/delta-io/delta/blob/master/PROTOCOL.md"
+    },
+    {
+      "body": "DICOM",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "private-attributes",
+        "supplement"
+      ],
+      "http_status": 200,
+      "id": "dicom",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2afb9b96f07e64c31a1150b87aed38fc06395e1e33d51344fb2842392f6b942d",
+      "title": "DICOM 标准",
+      "url": "https://www.dicomstandard.org/"
+    },
+    {
+      "body": "DICOM/NEMA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "resource-path",
+        "media-type"
+      ],
+      "http_status": 200,
+      "id": "dicomweb",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1adb50e9b3c3ea0bca24cae37801e491aa3fec942ad1bb7dce2982f23b563310",
+      "title": "DICOMweb 服务",
+      "url": "https://www.dicomstandard.org/using/dicomweb"
+    },
+    {
+      "body": "DOI Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "prefix-suffix",
+        "metadata-kernel"
+      ],
+      "http_status": 200,
+      "id": "doi-handbook",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f09390ada1d25d332df2bfc0cdb30e5d5eba714a0e3ad9215047c08354c575a7",
+      "title": "DOI 标识手册",
+      "url": "https://www.doi.org/the-identifier/resources/handbook/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "quality-dimension",
+        "metric-extension"
+      ],
+      "http_status": 200,
+      "id": "dqv",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "488d4b62cc90172089477bb94c420dda91b34a00433f65151c5144f6cfe17f7f",
+      "title": "DQV 数据质量词汇",
+      "url": "https://www.w3.org/TR/vocab-dqv/"
+    },
+    {
+      "body": "Secure Systems Lab",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "payload-type",
+        "signature-envelope"
+      ],
+      "http_status": 200,
+      "id": "dsse",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7304bf58a8188429f9613153635d832adfeba4b9d171dec29583c226453b6061",
+      "title": "DSSE 签名信封",
+      "url": "https://github.com/secure-systems-lab/dsse/blob/master/protocol.md"
+    },
+    {
+      "body": "DCMI",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "encoding-scheme",
+        "application-profile"
+      ],
+      "http_status": 200,
+      "id": "dublin-core",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b33fa213180916b9fdc2cdbb4d38867868a9450cf89052ab81133feae9878cfe",
+      "title": "都柏林核心元数据",
+      "url": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+    },
+    {
+      "body": "EBU",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "extension-vocabulary"
+      ],
+      "http_status": 403,
+      "id": "ebucore",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "EBUCore 媒体元数据",
+      "url": "https://tech.ebu.ch/publications/ebucore"
+    },
+    {
+      "body": "CIPA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tag-extension",
+        "makernote"
+      ],
+      "http_status": 0,
+      "id": "exif",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "Exif 图像元数据",
+      "url": "https://www.cipa.jp/std/documents/e/DC-X008-Translation-2019-E.pdf"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "version-slot",
+        "micro-version"
+      ],
+      "http_status": 200,
+      "id": "ffv1",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "5c803072664ea872831b2a8bc414ad2381a69a59d7202c209306b0d62ea1333b",
+      "title": "FFV1 无损视频编码",
+      "url": "https://www.rfc-editor.org/rfc/rfc9043"
+    },
+    {
+      "body": "NASA/IAU",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "keyword-extension",
+        "convention"
+      ],
+      "http_status": 200,
+      "id": "fits",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1cc2f97e7eca2f609f21a005b891bad1d2e28bd510aff91b27c4454f986fb345",
+      "title": "FITS 天文数据",
+      "url": "https://fits.gsfc.nasa.gov/fits_standard.html"
+    },
+    {
+      "body": "Xiph.Org",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "metadata-block-type",
+        "application-block"
+      ],
+      "http_status": 200,
+      "id": "flac",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "9df0f65529d26cb4c7e250c3ccf8bcb703c05b4c6c71faa11597252fdc94879e",
+      "title": "FLAC 无损音频",
+      "url": "https://xiph.org/flac/format.html"
+    },
+    {
+      "body": "Frictionless",
+      "bound_main": 24,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "resource-extension"
+      ],
+      "http_status": 200,
+      "id": "frictionless-package",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "dca696119aa109780334d0ff6ddac7ba4f98d3a38eedf74f675c9b8645a627e2",
+      "title": "Data Package",
+      "url": "https://specs.frictionlessdata.io/data-package/"
+    },
+    {
+      "body": "Frictionless",
+      "bound_main": 85,
+      "bound_support": 0,
+      "ext_points": [
+        "custom-constraint",
+        "profile"
+      ],
+      "http_status": 200,
+      "id": "frictionless-table",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2679b8bb17921a9e4eb3c894168bc980d7d7fca438ac05deb3182c8171e57956",
+      "title": "Table Schema",
+      "url": "https://specs.frictionlessdata.io/table-schema/"
+    },
+    {
+      "body": "MobilityData",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "versioned-endpoint",
+        "extension-field"
+      ],
+      "http_status": 200,
+      "id": "gbfs",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "501bdae0e72a7674135f37d155b2702921e7323ea2b6109f66aa95d8fcc15c60",
+      "title": "GBFS 共享出行",
+      "url": "https://github.com/MobilityData/gbfs/blob/master/gbfs.md"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "foreign-member",
+        "bbox"
+      ],
+      "http_status": 200,
+      "id": "geojson",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2f7924dd5f478834b66c9cf17f354ef142a41a33adf3315cea8d2aca8ce00d19",
+      "title": "GeoJSON",
+      "url": "https://www.rfc-editor.org/rfc/rfc7946"
+    },
+    {
+      "body": "OGC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "geo-key",
+        "citation"
+      ],
+      "http_status": 200,
+      "id": "geotiff",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3bac5608574d231005f909c82b3dd5cdf8196d28526e7b80d24a8e7be4932be6",
+      "title": "GeoTIFF 地理标签",
+      "url": "https://www.ogc.org/standards/geotiff/"
+    },
+    {
+      "body": "OGC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "application-schema",
+        "profile"
+      ],
+      "http_status": 200,
+      "id": "gml",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d792c5b4c53d268ade4bb0fc0af3157d86f0556ab952c834e150e7f8148cabd0",
+      "title": "GML 地理标记语言",
+      "url": "https://www.ogc.org/standards/gml/"
+    },
+    {
+      "body": "TopoGrafix/OGC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-schema",
+        "wpt-type"
+      ],
+      "http_status": 200,
+      "id": "gpx",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "40c48686959aa723f6c6fbd226c500c182b6ce0394a417d81ccba8a3724e6a0a",
+      "title": "GPX 轨迹交换",
+      "url": "https://www.topografix.com/gpx.asp"
+    },
+    {
+      "body": "GS1",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "event-type-extension",
+        "jsonld-context"
+      ],
+      "http_status": 200,
+      "id": "gs1-epcis",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "bf62d45dd2c1a7ccdc00059ab3ea1c1b0d526a42a83ab3e25db1ad0b97daca87",
+      "title": "EPCIS 供应链事件",
+      "url": "https://ref.gs1.org/standards/epcis/"
+    },
+    {
+      "body": "MobilityData",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "proposal-process",
+        "agency-extension"
+      ],
+      "http_status": 200,
+      "id": "gtfs",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8e48c20ada92cf3c52e9d42704a8ff4682aa347906d6f9aeed8d2ba7bf708200",
+      "title": "GTFS 公共交通静态数据",
+      "url": "https://gtfs.org/documentation/schedule/reference/"
+    },
+    {
+      "body": "MobilityData",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "experimental-field",
+        "extension-attribute"
+      ],
+      "http_status": 200,
+      "id": "gtfs-rt",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "49a931ed48c2085c340092013cc0b55625b057b71276063fa90a88b91d92d658",
+      "title": "GTFS-Realtime",
+      "url": "https://gtfs.org/documentation/realtime/reference/"
+    },
+    {
+      "body": "HDF Group",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "filter-pipeline",
+        "user-block"
+      ],
+      "http_status": 200,
+      "id": "hdf5",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1b44f8c64f133c824debf3a9aa7ea22010037bfa6eabef90d54a3dd6676b0b76",
+      "title": "HDF5 层级数据格式",
+      "url": "https://support.hdfgroup.org/documentation/hdf5/latest/_f_m_t3.html"
+    },
+    {
+      "body": "ISO/IEC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "item-property",
+        "derived-item"
+      ],
+      "http_status": 200,
+      "id": "heif",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "456633e496eccc0aa54b13933802368c3deea0545cef841d4f2c0f46cfa948e6",
+      "title": "HEIF 图像容器",
+      "url": "https://nokiatech.github.io/heif/"
+    },
+    {
+      "body": "HL7",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "template-id",
+        "section-extension"
+      ],
+      "http_status": 202,
+      "id": "hl7-cda",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "title": "HL7 CDA 临床文档",
+      "url": "http://www.hl7.org/implement/standards/product_brief.cfm?product_id=7"
+    },
+    {
+      "body": "HL7",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "z-segment",
+        "table-extension"
+      ],
+      "http_status": 202,
+      "id": "hl7-v2",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "title": "HL7 v2 消息",
+      "url": "https://www.hl7.org/implement/standards/product_brief.cfm?product_id=185"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "table-type",
+        "metadata-payload"
+      ],
+      "http_status": 200,
+      "id": "hudi",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c9c55305ee7a89b1644bb21772cf026310ab3f1f0f456fde536efd6ac0698d31",
+      "title": "Hudi 表格式",
+      "url": "https://hudi.apache.org/docs/table_types/"
+    },
+    {
+      "body": "IANA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "registry-policy",
+        "suffix-tree"
+      ],
+      "http_status": 200,
+      "id": "iana-media-types",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "23d63cbf86df0d8ac24f9716ce51b45b0bbdd7a01e9ac08df3ad00f95991c916",
+      "title": "媒体类型注册表",
+      "url": "https://www.iana.org/assignments/media-types/media-types.xhtml"
+    },
+    {
+      "body": "IANA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "registry-policy",
+        "registration-template"
+      ],
+      "http_status": 200,
+      "id": "iana-registries",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "43eed841477bf7d4f55237d9838ba1cecb0ac83f80cab6a62c111e32e3e56d03",
+      "title": "IANA 协议注册表",
+      "url": "https://www.iana.org/assignments"
+    },
+    {
+      "body": "ICC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tag-type",
+        "private-tag"
+      ],
+      "http_status": 200,
+      "id": "icc",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "65c3571f39432544bc3c64e8478cf96f1ebe8cfd65a83235bd7055d7ae3ab09c",
+      "title": "ICC 色彩特性文件",
+      "url": "https://www.color.org/specification/ICC.1-2022-05.pdf"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "table-metadata-version",
+        "format-version"
+      ],
+      "http_status": 200,
+      "id": "iceberg",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a8bb042272f12a356ba1e25cc8bccfd4e0509ac1cf7bb4dd770377b33feccadc",
+      "title": "Iceberg 表规范",
+      "url": "https://iceberg.apache.org/spec/"
+    },
+    {
+      "body": "IEEE",
+      "bound_main": 4,
+      "bound_support": 0,
+      "ext_points": [
+        "format-extension"
+      ],
+      "http_status": 200,
+      "id": "ieee-754",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1d6831422d322648534c1f8130aa15d9c197c43baebd463efb69000d11a2eca7",
+      "title": "浮点运算标准",
+      "url": "https://standards.ieee.org/ieee/754/6210/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 6,
+      "ext_points": [
+        "annotation-suffix"
+      ],
+      "http_status": 200,
+      "id": "ietf-ixdtf",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "be9723da3a9d7e4ec06bc4b09fc244de49af3be447af3685598b35e35181cf9e",
+      "title": "IXDTF (RFC 9557)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9557.txt"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "member-extension"
+      ],
+      "http_status": 200,
+      "id": "ietf-json",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "61a5378f4255c720beb2a4b4a63b29540147c140f36988bf086291989b4cd2d7",
+      "title": "JSON (RFC 8259)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8259.txt"
+    },
+    {
+      "body": "IETF/JSON Schema",
+      "bound_main": 63,
+      "bound_support": 228,
+      "ext_points": [
+        "vocabulary",
+        "format-annotation"
+      ],
+      "http_status": 200,
+      "id": "ietf-json-schema",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b27dca71852e402f5f4ddced514390aaf5bcb08487b8b531d1049e2957c3d6d7",
+      "title": "JSON Schema 2020-12",
+      "url": "https://json-schema.org/draft/2020-12/json-schema-core"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "prefix-registry"
+      ],
+      "http_status": 200,
+      "id": "ietf-nip-19",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e2d4143729c0292bebb75121eec643c02c8eed146c4b1534eb101a8304bab605",
+      "title": "NIP-19 编码（可扩展前缀）",
+      "url": "https://www.rfc-editor.org/rfc/rfc9457.txt"
+    },
+    {
+      "body": "buildingSMART",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "property-set",
+        "ifc-extension-schema"
+      ],
+      "http_status": 200,
+      "id": "ifc",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "30d6d99b3ec2a26f28e7ae7aee2f2724117394195cbebe1b8b6b903f63d3237d",
+      "title": "IFC 建筑信息模型",
+      "url": "https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/"
+    },
+    {
+      "body": "IPTC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "property-extension",
+        "digitalsourcetype"
+      ],
+      "http_status": 200,
+      "id": "iptc-photometadata",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "01684291f405f00eb21a0defd4f0490ed0386bfde83179a3f19f7851e7897b87",
+      "title": "IPTC 图像元数据",
+      "url": "https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata"
+    },
+    {
+      "body": "ISO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "interval-extension"
+      ],
+      "http_status": 403,
+      "id": "iso-8601",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "日期时间（含 8601-2 扩展）",
+      "url": "https://www.iso.org/standard/70907.html"
+    },
+    {
+      "body": "ISO/IEC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "concept-relation"
+      ],
+      "http_status": 403,
+      "id": "iso-iec-26511",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "术语工作（Terminology）",
+      "url": "https://www.iso.org/standard/43122.html"
+    },
+    {
+      "body": "ISO",
+      "bound_main": 3,
+      "bound_support": 0,
+      "ext_points": [
+        "code-list"
+      ],
+      "http_status": 200,
+      "id": "iso10383",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "12fb97a4c4e4fa996733bf1d8a6696015dfede4cf5c951a3b1d38798020b081f",
+      "title": "ISO 10383 MIC",
+      "url": "https://www.iso20022.org/market-identifier-codes"
+    },
+    {
+      "body": "SIX Group",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "currency-code",
+        "minor-unit"
+      ],
+      "http_status": 0,
+      "id": "iso4217-six",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "ISO 4217 货币代码（维护机构版）",
+      "url": "https://www.six-group.com/en/products-services/financial-information/data-standards.html"
+    },
+    {
+      "body": "ISO/IEC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "box-type-registry",
+        "brand-registry"
+      ],
+      "http_status": 200,
+      "id": "isobmff",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f67daaf29337dea065e8a6c7be6036cfaeaafe902f56e782d91835eb4671b2f1",
+      "title": "ISO 基媒体文件格式（ISOBMFF）",
+      "url": "https://mp4ra.org/"
+    },
+    {
+      "body": "NLM/NISO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tag-set-variant",
+        "custom-element"
+      ],
+      "http_status": 200,
+      "id": "jats",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "9c293bf13c82714b9e59005e065ef038c3732a6ba275fc9103058d77e35f7d6c",
+      "title": "JATS 期刊文章标签集",
+      "url": "https://jats.nlm.nih.gov/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "algorithm-registry",
+        "header-parameter"
+      ],
+      "http_status": 200,
+      "id": "jose",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a9e3cfc7abce8c3f440cda9b333d87180dff2a1c0207d86a0064f8379fde2934",
+      "title": "JOSE 签名与加密（JWS/JWE）",
+      "url": "https://www.rfc-editor.org/rfc/rfc7515"
+    },
+    {
+      "body": "JPEG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "signalling-flag",
+        "box-extension"
+      ],
+      "http_status": 200,
+      "id": "jpeg-xl",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "df61361be2e4de9b150b0ea65c421233df9d18f5754b6665c9029a8fa509c7ac",
+      "title": "JPEG XL",
+      "url": "https://jpeg.org/jpegxl/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "member-semantics"
+      ],
+      "http_status": 200,
+      "id": "json-merge-patch",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "aa7e6a6fb8c9df654a1d4a8c83e53f4e0885f521ed15630325a1f6083873ee6f",
+      "title": "JSON Merge Patch",
+      "url": "https://www.rfc-editor.org/rfc/rfc7386"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "operation-set"
+      ],
+      "http_status": 200,
+      "id": "json-patch",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b4eb323d0fe2df598d4fe75e8f0a61f49334f6f7194b98979c3febfa41ff607e",
+      "title": "JSON Patch 差分",
+      "url": "https://www.rfc-editor.org/rfc/rfc6902"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "escape-sequence"
+      ],
+      "http_status": 200,
+      "id": "json-pointer",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "86c5670728a6600a65ccf73cfd5323bdcf70b7deec01407a941c1c6a3e5172c2",
+      "title": "JSON Pointer 定位",
+      "url": "https://www.rfc-editor.org/rfc/rfc6901"
+    },
+    {
+      "body": "jsonlines.org",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "record-extension"
+      ],
+      "http_status": 200,
+      "id": "jsonlines",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a1da59ce6ac1009dff7a19ee1701d78c9e130896e1f8b47ac6c8846d035d4d59",
+      "title": "JSON Lines",
+      "url": "https://jsonlines.org/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "function-extension",
+        "segment-selector"
+      ],
+      "http_status": 200,
+      "id": "jsonpath",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e09777ceeb7c6dd4e122082125b7674f80485a0df8fe560c2eb15fba7a8da885",
+      "title": "JSONPath 查询",
+      "url": "https://www.rfc-editor.org/rfc/rfc9535"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "key-type",
+        "key-parameter"
+      ],
+      "http_status": 200,
+      "id": "jwk",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "5f5bb9ea3bf4386026693eb10d22447db27eac855e2c0056dcb1fe68e0ef498d",
+      "title": "JWK 密钥表示",
+      "url": "https://www.rfc-editor.org/rfc/rfc7517"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "claim-registry"
+      ],
+      "http_status": 200,
+      "id": "jwt",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7c90fe3dc05e905a326d45435fb1dd92096ed927796b5bdef2246be2cd9ba977",
+      "title": "JWT 令牌",
+      "url": "https://www.rfc-editor.org/rfc/rfc7519"
+    },
+    {
+      "body": "Khronos",
+      "bound_main": 5,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-mechanism",
+        "vendor-extensions"
+      ],
+      "http_status": 200,
+      "id": "khronos-gltf",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "02c4d3ebc29805901e2b5fb6b721dfc71e71a832b38199efcfabc1076e441b27",
+      "title": "glTF",
+      "url": "https://www.khronos.org/gltf/"
+    },
+    {
+      "body": "ASPRS/OGC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "point-data-record-format",
+        "vlr"
+      ],
+      "http_status": 200,
+      "id": "las",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "14f2b673658105e40c79f682af4e73defe555671a839cc6d35f38ac7ae5f67af",
+      "title": "LAS 点云格式",
+      "url": "https://www.ogc.org/standards/las/"
+    },
+    {
+      "body": "Regenstrief",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "answer-list",
+        "loinc-part"
+      ],
+      "http_status": 200,
+      "id": "loinc",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c49b956c7d015d49911e38823842db69eadfca4968bf716a157b6bf29f320137",
+      "title": "LOINC 检验编码",
+      "url": "https://loinc.org/kb/"
+    },
+    {
+      "body": "Library of Congress",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "field-9xx-local",
+        "subfield-extension"
+      ],
+      "http_status": 403,
+      "id": "marc21",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "MARC 21 书目格式",
+      "url": "https://www.loc.gov/marc/"
+    },
+    {
+      "body": "Matroska",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "element-extension",
+        "codec-mapping"
+      ],
+      "http_status": 200,
+      "id": "matroska",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a6a608ce0a3d36be121b657aaa34bc025637fb7934fc2f69992669b1819924af",
+      "title": "Matroska 容器",
+      "url": "https://www.matroska.org/technical/elements.html"
+    },
+    {
+      "body": "Library of Congress",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "extension-schema"
+      ],
+      "http_status": 403,
+      "id": "mets",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "METS 封装元数据",
+      "url": "https://www.loc.gov/standards/mets/"
+    },
+    {
+      "body": "MITRE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "technique-id",
+        "data-source"
+      ],
+      "http_status": 200,
+      "id": "mitre-attack",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1e0b32ee7b4eb9f04d4cf2f899725aafa712e887181e30b67a1559a72ffa3ff5",
+      "title": "ATT&CK 对抗战术库",
+      "url": "https://attack.mitre.org/"
+    },
+    {
+      "body": "MLCommons",
+      "bound_main": 17,
+      "bound_support": 0,
+      "ext_points": [
+        "additional-property"
+      ],
+      "http_status": 200,
+      "id": "mlcommons-croissant",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "115d37c7ee154fcf3f1dd06356b1798b354b275915010c9deedf80aeca255aab",
+      "title": "Croissant 数据集元数据",
+      "url": "https://docs.mlcommons.org/croissant/docs/croissant-spec.html"
+    },
+    {
+      "body": "Library of Congress",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-schema",
+        "role-term"
+      ],
+      "http_status": 403,
+      "id": "mods",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "MODS 书目元数据",
+      "url": "https://www.loc.gov/standards/mods/"
+    },
+    {
+      "body": "MessagePack",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-type"
+      ],
+      "http_status": 200,
+      "id": "msgpack",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "9f54074acaf1ba876151e3846e8b11fdb33599e5ea8ffec4074ae2f7f7c273c1",
+      "title": "MessagePack 二进制序列化",
+      "url": "https://github.com/msgpack/msgpack/blob/master/spec.md"
+    },
+    {
+      "body": "Unidata",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "convention-attribute",
+        "group-hierarchy"
+      ],
+      "http_status": 200,
+      "id": "netcdf",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "9d6e8513bb5fd364efa53b70cc2d7976f618dc1d3ebca68e2c7be18a2033e383",
+      "title": "NetCDF 科学数据",
+      "url": "https://docs.unidata.ucar.edu/nug/current/"
+    },
+    {
+      "body": "CEN",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "frame-extension"
+      ],
+      "http_status": 200,
+      "id": "netex",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2d4c38d6d7cae84989f64010f01a2458ce2249358eebfab309b80a500c76d0b9",
+      "title": "NeTEx 公共交通网络",
+      "url": "https://netex-cen.eu/"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "module-extension"
+      ],
+      "http_status": 200,
+      "id": "oasis-xlf",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "637fa099ed6d355ebc19aa746a70e76020249791351653a360580c22fd4c31c4",
+      "title": "XLIFF 2.1",
+      "url": "https://docs.oasis-open.org/xliff/xliff-core/v2.1/os/xliff-core-v2.1-os.html"
+    },
+    {
+      "body": "OGC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-mechanism"
+      ],
+      "http_status": 200,
+      "id": "ogc-3dtiles",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "da0bd7cc7aeb08add979fa6b50b78907bfed2f431d8a6f0f3784c49f5a0b13fa",
+      "title": "3D Tiles",
+      "url": "https://docs.ogc.org/cs/22-025r4/22-025r4.html"
+    },
+    {
+      "body": "OHDSI",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "vocabulary-mapping",
+        "era-extension"
+      ],
+      "http_status": 200,
+      "id": "omop-cdm",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3604b54bc7e7fbd4f736ecd9c9e75d149182924bee64db11e77042b7ef9459d1",
+      "title": "OMOP 通用数据模型",
+      "url": "https://ohdsi.github.io/CommonDataModel/"
+    },
+    {
+      "body": "EDItEUR",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "codelist-extension",
+        "block-extension"
+      ],
+      "http_status": 202,
+      "id": "onix",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "3b40d32d73a763a8eed7c1b63ca1db6745f16623784b3246ea6a507f3f5b6d9e",
+      "title": "ONIX 出版元数据",
+      "url": "https://www.editeur.org/93/Release-3.0-Downloads/"
+    },
+    {
+      "body": "UCUM",
+      "bound_main": 1,
+      "bound_support": 0,
+      "ext_points": [
+        "unit-extension"
+      ],
+      "http_status": 200,
+      "id": "onvif-ucum",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b30bc35a92053483ebd5290b0b93bb2dd6809b513530f9581cb94beecc6690d7",
+      "title": "统一计量单位代码",
+      "url": "https://ucum.org/ucum"
+    },
+    {
+      "body": "ASAM",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "user-defined-attribute",
+        "extension-registry"
+      ],
+      "http_status": 200,
+      "id": "opendrive",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "aa8bdf6508595f60b3f5c3161b8f101b8ca6dfb2dcb0b53e8771807f1a8f8fc2",
+      "title": "OpenDRIVE 道路网络",
+      "url": "https://www.asam.net/standards/"
+    },
+    {
+      "body": "openEHR",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "archetype",
+        "template-constraint"
+      ],
+      "http_status": 200,
+      "id": "openehr",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4923f00ab887fb1177a6154bbb171af1b0708c7164cc4f1aac462b6a9d7695ec",
+      "title": "openEHR 临床信息模型",
+      "url": "https://specifications.openehr.org/"
+    },
+    {
+      "body": "Academy Software Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "attribute-type",
+        "part-extension"
+      ],
+      "http_status": 200,
+      "id": "openexr",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "08cbbf79722d9defd5275ca2a316e5f50c4b7415a4354ad41932c95d94d85d24",
+      "title": "OpenEXR 图像",
+      "url": "https://openexr.com/en/latest/"
+    },
+    {
+      "body": "OGC",
+      "bound_main": 7,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-package"
+      ],
+      "http_status": 200,
+      "id": "opengeospatial",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b198ca205c1a1f8fc614bb66e5d374d330c18706869976e90718c624453ac729",
+      "title": "OGC 标准（含 GeoJSON/3D Tiles）",
+      "url": "https://www.ogc.org/standards/"
+    },
+    {
+      "body": "OpenLineage/LF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "facet-extension",
+        "custom-model"
+      ],
+      "http_status": 200,
+      "id": "openlineage",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ea181c938e8bfa40ed63ff41604079eb664944a8a97a96730920d318f4f23205",
+      "title": "OpenLineage 血缘事件",
+      "url": "https://openlineage.io/docs/spec/object-model/"
+    },
+    {
+      "body": "Microsoft/Adobe",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "table-registry",
+        "variation-axis"
+      ],
+      "http_status": 0,
+      "id": "opentype",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "OpenType 字体",
+      "url": "https://learn.microsoft.com/en-us/typography/opentype/spec/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "frame-packing",
+        "opus-channel-mapping"
+      ],
+      "http_status": 200,
+      "id": "opus",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "205ee7d26c5a23acb21bd47a4a9b13f92e35bdabe78e1eed110b3b5d83ceb4c9",
+      "title": "Opus 音频编码",
+      "url": "https://www.rfc-editor.org/rfc/rfc6716"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "writer-version",
+        "postscript-metadata"
+      ],
+      "http_status": 200,
+      "id": "orc",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "020a02c7df3082bfd61e833b3207b3f3aa0fb8752a35d4584ca97b854df74ba6",
+      "title": "ORC 列式存储格式",
+      "url": "https://orc.apache.org/specification/"
+    },
+    {
+      "body": "ORCID",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "record-schema",
+        "api-version"
+      ],
+      "http_status": 200,
+      "id": "orcid",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b4fbdca6b45f7155b6e5a56f741857558629a0531fe8dfb7bacbbcc1d7b2c952",
+      "title": "ORCID 研究者标识",
+      "url": "https://info.orcid.org/documentation/"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 4,
+      "bound_support": 0,
+      "ext_points": [
+        "logical-type-extension"
+      ],
+      "http_status": 200,
+      "id": "parquet",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "fa14c37d71a8feefeb1660168b3f466d2c434a7f4ef66a118671fa3bc8f01646",
+      "title": "Parquet 格式",
+      "url": "https://github.com/apache/parquet-format"
+    },
+    {
+      "body": "ISO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-dictionary",
+        "name-registry"
+      ],
+      "http_status": 403,
+      "id": "pdf20",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "PDF 2.0（ISO 32000-2）",
+      "url": "https://www.pdfa.org/resource/iso-32000-pdf/"
+    },
+    {
+      "body": "ISO/PDF Association",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "conformance-level",
+        "profile-extension"
+      ],
+      "http_status": 403,
+      "id": "pdfa",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "PDF/A 长期保存",
+      "url": "https://www.pdfa.org/resource/iso-19005-pdfa/"
+    },
+    {
+      "body": "ISO/PDF Association",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "conformance-level",
+        "structure-extension"
+      ],
+      "http_status": 403,
+      "id": "pdfua",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "PDF/UA 无障碍",
+      "url": "https://pdfa.org/resource/iso-14289-pdfua/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "ancillary-chunk",
+        "private-chunk"
+      ],
+      "http_status": 200,
+      "id": "png3",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ba8098449f5a627e7e2509ddb38df04f8777000ba8724785d2e129989a9b71d5",
+      "title": "PNG 第三版",
+      "url": "https://www.w3.org/TR/png-3/"
+    },
+    {
+      "body": "Library of Congress",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "agent-extension",
+        "event-type"
+      ],
+      "http_status": 403,
+      "id": "premis",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "PREMIS 保存元数据",
+      "url": "https://www.loc.gov/standards/premis/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "quoted-triple",
+        "annotation-syntax"
+      ],
+      "http_status": 200,
+      "id": "rdf-star",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2a0ea80d64f21f6c365639b606a4da7d15952db4f23a34b97a601bf3dbb59d42",
+      "title": "RDF-star 三元组注解",
+      "url": "https://www.w3.org/TR/rdf12-concepts/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 1,
+      "bound_support": 0,
+      "ext_points": [
+        "vocabulary-extension"
+      ],
+      "http_status": 200,
+      "id": "rdf11",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8cafac910657874e5c8c2d4ae0ace016bc22c0560562a1f110ce854a41ba9a58",
+      "title": "RDF 1.1",
+      "url": "https://www.w3.org/TR/rdf11-concepts/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "profile"
+      ],
+      "http_status": 200,
+      "id": "rfc3339",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "779c8b5ee4323a58cc83d4a84b2649c5e409246e8d656aabc1480f0919d0155a",
+      "title": "时间戳",
+      "url": "https://www.rfc-editor.org/rfc/rfc3339.txt"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "version-field",
+        "variant-field"
+      ],
+      "http_status": 200,
+      "id": "rfc9562-uuid",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "11df8f4bbe90c4d934175b6e1e11c70d5acf952af9d9437422324723c69c52f9",
+      "title": "UUID（含 v6/v7/v8）",
+      "url": "https://www.rfc-editor.org/rfc/rfc9562"
+    },
+    {
+      "body": "Microsoft",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "chunk-extension",
+        "fourcc"
+      ],
+      "http_status": 0,
+      "id": "riff",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "RIFF 容器",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-"
+    },
+    {
+      "body": "ROR",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "record-schema",
+        "relationship-type"
+      ],
+      "http_status": 200,
+      "id": "ror",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "69fe29183a1220f10be9af3c5e090c0460841d46ed3d95a31f9fe5d1af2417e3",
+      "title": "ROR 机构标识",
+      "url": "https://ror.readme.io/docs/ror-data-structure"
+    },
+    {
+      "body": "IHO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "product-specification",
+        "feature-catalogue"
+      ],
+      "http_status": 200,
+      "id": "s-100",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0707b5569199f824bb19ed9bbde990a6603130e35b3f4b697e748f9ec9ae536b",
+      "title": "S-100 海洋通用数据模型",
+      "url": "https://iho.int/en/s-100-universal-hydrographic-data-model"
+    },
+    {
+      "body": "Schema.org",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension",
+        "pending"
+      ],
+      "http_status": 200,
+      "id": "schema-org",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "9561ffc152ba01449b6b775d20451146b03ee917399982a6d96bd3a48168911e",
+      "title": "结构化数据词表",
+      "url": "https://schema.org/Dataset"
+    },
+    {
+      "body": "SDMX",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "data-structure-definition",
+        "codelist-extension"
+      ],
+      "http_status": 200,
+      "id": "sdmx",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2bdb51a0dc3b753281d50af8d63c553f947c336482fcf0a8a18f1c82b77ec39b",
+      "title": "SDMX 统计数据交换",
+      "url": "https://sdmx.org/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "shape-map",
+        "semantic-action"
+      ],
+      "http_status": 200,
+      "id": "shex",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3002333b83736f71550beedc94ff6c47811dfb3ff7c257fe8cf221c0516976e9",
+      "title": "ShEx 形状表达式",
+      "url": "https://shex.io/shex-semantics/"
+    },
+    {
+      "body": "SNOMED International",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-edition",
+        "reference-set"
+      ],
+      "http_status": 200,
+      "id": "snomed-ct",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ede0f2c9a149f46015ebc2f0644717539c7758f1f2a8b9f301949b0ff1a3e3f9",
+      "title": "SNOMED CT 临床术语",
+      "url": "https://www.snomed.org/"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "custom-object",
+        "extension-definition"
+      ],
+      "http_status": 200,
+      "id": "stix",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "81a7315409e618723163b199f7d3f34eb1627dd96360b388d0858aa2012b1abf",
+      "title": "STIX 威胁情报",
+      "url": "https://docs.oasis-open.org/cti/stix/v2.1/stix-v2.1.html"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "media-type",
+        "api-extension"
+      ],
+      "http_status": 200,
+      "id": "taxii",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0d77ab7a62dcaea50288f5b53bf68fa3aec567c509db27db310457a2adf0fa05",
+      "title": "TAXII 威胁情报交换",
+      "url": "https://docs.oasis-open.org/cti/taxii/v2.1/taxii-v2.1.html"
+    },
+    {
+      "body": "LISA/ISO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "dialect-extension"
+      ],
+      "http_status": 200,
+      "id": "tbx-lisa",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f5080e194c809484dfccf93e8e54cd365a376fd4e57ddc0f427652b6b7e3d042",
+      "title": "TBX 术语交换格式",
+      "url": "https://www.tbxinfo.net/"
+    },
+    {
+      "body": "TEI Consortium",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "module-selection",
+        "customization-ODD"
+      ],
+      "http_status": 200,
+      "id": "tei",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "88350587fa5826861dc82eac9df398188a9b3d414fe2f2a7ac2da1be01b1d1d1",
+      "title": "TEI 文本编码倡议",
+      "url": "https://tei-c.org/release/doc/tei-p5-doc/en/html/index.html"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "idl-annotation",
+        "protocol-layer"
+      ],
+      "http_status": 200,
+      "id": "thrift",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e5687af3211f11d6c80a52ac398c05cc2a0d2280ed1bc659ad8ac5334c71390d",
+      "title": "Thrift IDL 与协议",
+      "url": "https://thrift.apache.org/docs/idl"
+    },
+    {
+      "body": "ITU-T",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tag-extension",
+        "private-tag"
+      ],
+      "http_status": 200,
+      "id": "tiff",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "059e85c34ca04fd09c41fb61b540b6a59e16c7ad65764c11d3751708aee6241f",
+      "title": "TIFF 图像格式",
+      "url": "https://www.itu.int/rec/T-REC-T.871/en"
+    },
+    {
+      "body": "TOML",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "table-extension"
+      ],
+      "http_status": 200,
+      "id": "toml",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d228b85aef4712168f948b3ffe85c910f6a473ab4ce5b8ce0b1ba21c5783fbdc",
+      "title": "TOML 1.0",
+      "url": "https://toml.io/en/v1.0.0"
+    },
+    {
+      "body": "ULID 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "timestamp-prefix",
+        "randomness"
+      ],
+      "http_status": 200,
+      "id": "ulid",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7d482f47e7d2c7ffa815e92ddc43d224e5914d485e296e37e9cf2383a904cb00",
+      "title": "ULID 有序标识",
+      "url": "https://github.com/ulid/spec"
+    },
+    {
+      "body": "UN",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "region-code",
+        "subregion-code"
+      ],
+      "http_status": 200,
+      "id": "un-m49",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "115273fb95b19c4166b6b2f372843ae76613de8a1128099eeb893049e6f812f6",
+      "title": "UN M49 区域代码",
+      "url": "https://unstats.un.org/unsd/methodology/m49/"
+    },
+    {
+      "body": "Unicode",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tailorable",
+        "property-alias"
+      ],
+      "http_status": 200,
+      "id": "unicode-uca",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ef7fe230a93833980bbea591aa73d3a7b98c411c963ffe5ce4ebd9cd2c555b53",
+      "title": "UAX/UTS 系列（含 #15 归一化、#31 标识符）",
+      "url": "https://www.unicode.org/reports/"
+    },
+    {
+      "body": "UNECE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "location-code",
+        "function-classifier"
+      ],
+      "http_status": 403,
+      "id": "unlocode",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "UN/LOCODE 地点代码",
+      "url": "https://unece.org/trade/cefact/unlocode-code-list-country-and-territory"
+    },
+    {
+      "body": "Pixar/ASWF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "schema-extension",
+        "api-schema"
+      ],
+      "http_status": 200,
+      "id": "usd",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1e54fceaa150e18ca7ceb33edf45b63edd3929102dc6bdb61595fb7976854499",
+      "title": "USD 场景描述",
+      "url": "https://openusd.org/release/index.html"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "context",
+        "vocab-extension"
+      ],
+      "http_status": 200,
+      "id": "w3c-json-ld",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1108a518a991e6f41e15b773f442aefb51aa95a258d5c9d28b7f952cab8c7447",
+      "title": "JSON-LD 1.1",
+      "url": "https://www.w3.org/TR/json-ld11/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 3,
+      "bound_support": 0,
+      "ext_points": [
+        "temporal-entity",
+        "extension"
+      ],
+      "http_status": 200,
+      "id": "w3c-owl-time",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3b9ae376794d8429027c860b2727930ea9e2ffdc6a0f46c99960a96c202d4722",
+      "title": "OWL-Time 时间本体",
+      "url": "https://www.w3.org/TR/owl-time/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "import"
+      ],
+      "http_status": 200,
+      "id": "w3c-owl2",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "af40919abfc72f5ee30d6175d1b1a5246cd29b7428da3015df28132aff3d3df6",
+      "title": "OWL 2 本体语言",
+      "url": "https://www.w3.org/TR/owl2-overview/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "constraint-component",
+        "tag-based-rules"
+      ],
+      "http_status": 200,
+      "id": "w3c-shacl",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ae4ed3f4fb01c2d9aedf523720afc7dac05512abe31c69c827cbd0250fa86fc3",
+      "title": "SHACL 形状约束",
+      "url": "https://www.w3.org/TR/shacl/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 8,
+      "bound_support": 0,
+      "ext_points": [
+        "concept-scheme",
+        "semantic-relation"
+      ],
+      "http_status": 200,
+      "id": "w3c-skos",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "31adfa06004c02ae8ea29fe0606003b9e04dd02cfa385638fa09595d748aa404",
+      "title": "SKOS 词表",
+      "url": "https://www.w3.org/TR/skos-reference/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 95,
+      "bound_support": 198,
+      "ext_points": [
+        "annotation",
+        "dialect"
+      ],
+      "http_status": 200,
+      "id": "w3c-tabular-data",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "64799c1fd2e23d04a88fcbc6a98e5fa2d2da4452d747240f8a3428bfb1d7e7f5",
+      "title": "Tabular Data Model (CSVW)",
+      "url": "https://www.w3.org/TR/tabular-data-model/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "prefix-extension"
+      ],
+      "http_status": 200,
+      "id": "w3c-turtle",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a577bba26c2c41613743cb946c3cd55b40860dbad32dae94f97328b3fa53f952",
+      "title": "Turtle 1.1",
+      "url": "https://www.w3.org/TR/turtle/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "namespace",
+        "xml-schema"
+      ],
+      "http_status": 200,
+      "id": "w3c-xml",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b7dcf8ba188b5830f2f617e00651888e4ad41f614bfa055b7c8fd41628e11635",
+      "title": "XML 1.0",
+      "url": "https://www.w3.org/TR/xml/"
+    },
+    {
+      "body": "Google",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "chunk-extension",
+        "vp8l-feature"
+      ],
+      "http_status": 200,
+      "id": "webp",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "fa0ef4e08b8af28629927ff6fdc3715272f0ed8474ded55a1d62c7cbaddfa827",
+      "title": "WebP 容器与编码",
+      "url": "https://developers.google.com/speed/webp/docs/riff_container"
+    },
+    {
+      "body": "WHO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-code",
+        "postcoordination"
+      ],
+      "http_status": 200,
+      "id": "who-icd11",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1590f5ed2890207bf1da3fcac90979a67fc1a94b8d03204dc2958c57916e44ad",
+      "title": "ICD-11 疾病分类",
+      "url": "https://icd.who.int/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "flavor",
+        "metadata-block"
+      ],
+      "http_status": 200,
+      "id": "woff2",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d2ade1a931f0e19ba9c13e494cbc4ab79d9560edbf7816695f0c8f1bb5d6554e",
+      "title": "WOFF2 字体封装",
+      "url": "https://www.w3.org/TR/WOFF2/"
+    },
+    {
+      "body": "XBRL International",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "taxonomy-extension",
+        "linkbase"
+      ],
+      "http_status": 200,
+      "id": "xbrl",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3801eac18c6971340aee53e3ad6bf280090713db45e36c0cc8e601cc575ca37d",
+      "title": "XBRL 财务报告标记",
+      "url": "https://specifications.xbrl.org/"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-module",
+        "its-mapping"
+      ],
+      "http_status": 200,
+      "id": "xliff21",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "beb2817bb85777f9828214961cf5edb49f4b2324bff5d29d00f91af54fff68c1",
+      "title": "XLIFF 2.1 本地化交换",
+      "url": "https://docs.oasis-open.org/xliff/xliff-core/v2.1/xliff-core-v2.1.html"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "wildcard",
+        "extension-point"
+      ],
+      "http_status": 200,
+      "id": "xmlschema11",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "9df9fd4d47b9e5d254fa69623e630cf34e5050405d51f42cb2c1306718d64e44",
+      "title": "XML Schema 1.1",
+      "url": "https://www.w3.org/TR/xmlschema11-1/"
+    },
+    {
+      "body": "Adobe/ISO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "namespace-schema",
+        "packet-wrapper"
+      ],
+      "http_status": 200,
+      "id": "xmp",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "69e2d2147fc306d5b1770d6af2050bc6668c56aeae645f3c2c53871bb07a5848",
+      "title": "XMP 可扩展元数据",
+      "url": "https://developer.adobe.com/xmp/docs/"
+    },
+    {
+      "body": "YAML",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tag-extension"
+      ],
+      "http_status": 200,
+      "id": "yaml12",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "876a5976f56df674197766f07217496afd5460a2df8d8565c34fae384492b9a5",
+      "title": "YAML 1.2.2",
+      "url": "https://yaml.org/spec/1.2.2/"
+    },
+    {
+      "body": "VirusTotal",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "module-system",
+        "external-variable"
+      ],
+      "http_status": 200,
+      "id": "yara",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "34ce33cb19f4ac90d27b2fbf175b71f5e7ec90b43ab6480b4da83167fa6676b0",
+      "title": "YARA 规则语言",
+      "url": "https://yara.readthedocs.io/"
+    },
+    {
+      "body": "Zarr 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "codec-pipeline",
+        "extension-dtype"
+      ],
+      "http_status": 200,
+      "id": "zarr",
+      "layer": "data",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "92a54339a3142fa3fc9ae6f16027fb43eb57265c1fd4d1a9afd1941b48ffc3d4",
+      "title": "Zarr 分块数组",
+      "url": "https://zarr-specs.readthedocs.io/en/latest/"
+    },
+    {
+      "body": "The Open Group",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "specialization",
+        "exchange-format"
+      ],
+      "http_status": 401,
+      "id": "archimate",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "ArchiMate 3.2 企业架构建模",
+      "url": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+    },
+    {
+      "body": "OMG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-element",
+        "custom-task"
+      ],
+      "http_status": 200,
+      "id": "bpmn2",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "264ac6b8bd824d17214bc16368a1876d45519513c24b394f4179c0e851f465f1",
+      "title": "BPMN 2.0 业务流程建模",
+      "url": "https://www.omg.org/spec/BPMN/2.0/"
+    },
+    {
+      "body": "OpenTelemetry",
+      "bound_main": 46,
+      "bound_support": 27,
+      "ext_points": [
+        "attribute-registry",
+        "stability-scope"
+      ],
+      "http_status": 200,
+      "id": "cncf-otel-semconv",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "da6fcbe42a9fbaba3412e9c8762baa91890f6bbfe38e4ccc1175fd3580b49a92",
+      "title": "语义约定（可扩展注册表）",
+      "url": "https://opentelemetry.io/docs/specs/semconv/"
+    },
+    {
+      "body": "Conventional Commits",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "type-extension",
+        "footer-token"
+      ],
+      "http_status": 200,
+      "id": "conventionalcommits",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1f02d0f99e4a830daafa4cc75d92e1fe4aef50984c6c398aabd50d7c1214091f",
+      "title": "规约式提交信息",
+      "url": "https://www.conventionalcommits.org/en/v1.0.0/"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "product-tree"
+      ],
+      "http_status": 200,
+      "id": "csaf",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "eacf8e9de1590ffd116261d375969e83b05e0d98910e0264cdb9b8d64949e868",
+      "title": "CSAF 安全公告",
+      "url": "https://docs.oasis-open.org/csaf/csaf/v2.0/csaf-v2.0.html"
+    },
+    {
+      "body": "CUE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "definition-constraint",
+        "attribute"
+      ],
+      "http_status": 200,
+      "id": "cue",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "bd64837803d580a5a8922d6452734e6720f24ea759d7c66ded90e018cedb9c2c",
+      "title": "CUE 配置语言",
+      "url": "https://cuelang.org/docs/reference/spec/"
+    },
+    {
+      "body": "CycloneDX",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "vulnerability-state",
+        "analysis-justification"
+      ],
+      "http_status": 200,
+      "id": "cyclonedx-vex",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f9225bdd7e014db66e0cd0a4fdbb8cc21de1050beeae9f863097e9daa4220fb3",
+      "title": "CycloneDX VEX",
+      "url": "https://cyclonedx.org/capabilities/vex/"
+    },
+    {
+      "body": "Dev Container 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "feature-contribution",
+        "lifecycle-hook"
+      ],
+      "http_status": 200,
+      "id": "devcontainer-spec",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4c24e3a270fa1d613820b8a138b06a61204e9f84c837f5bc919571de73b0ee06",
+      "title": "Dev Container 规范",
+      "url": "https://containers.dev/implementors/spec/"
+    },
+    {
+      "body": "OMG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "decision-table-hit-policy",
+        "custom-function"
+      ],
+      "http_status": 200,
+      "id": "dmn",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "cd796f41f14f52f9e6a7c1a8a5335cdacab25f69cdf48f66a2df7d99493f1251",
+      "title": "DMN 决策模型与记法",
+      "url": "https://www.omg.org/spec/DMN/"
+    },
+    {
+      "body": "EditorConfig",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "property-name",
+        "plugin-extension"
+      ],
+      "http_status": 200,
+      "id": "editorconfig",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2de60d98cb5e2d21a58445d4de60cf04d1b4582904acde997d7bab1d25cab84a",
+      "title": "EditorConfig 规范",
+      "url": "https://editorconfig-specification.readthedocs.io/"
+    },
+    {
+      "body": "FinOps Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "capability-extension",
+        "maturity-level"
+      ],
+      "http_status": 200,
+      "id": "finops-framework",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "23da7141e4136790f4fa755a45e8f2a8ed63649449933d5005c8ae9e63d6690f",
+      "title": "FinOps 框架",
+      "url": "https://www.finops.org/framework/"
+    },
+    {
+      "body": "OpenSSF/CNCF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "predicate-type",
+        "statement-subject"
+      ],
+      "http_status": 200,
+      "id": "in-toto",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f2116f587012a9c6a9ec52394e4ad7d3f068b3519bb60f99ccf11582d0b8f831",
+      "title": "in-toto 供应链证明",
+      "url": "https://github.com/in-toto/attestation/blob/main/spec/README.md"
+    },
+    {
+      "body": "ISO/IEC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "characteristic-extension"
+      ],
+      "http_status": 403,
+      "id": "iso-iec-25010",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "SQuaRE 质量模型",
+      "url": "https://www.iso.org/standard/78176.html"
+    },
+    {
+      "body": "ISO/IEC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "viewpoint-extension"
+      ],
+      "http_status": 403,
+      "id": "iso-iec-42010",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "架构描述",
+      "url": "https://www.iso.org/standard/74393.html"
+    },
+    {
+      "body": "JUnit 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "custom-property",
+        "system-out"
+      ],
+      "http_status": 200,
+      "id": "junit-xml",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6028a6f6eb3ed1307f65273aebacd3d7b3324d5d55f1d6204a1f99ac40c0b9e8",
+      "title": "JUnit XML 测试报告",
+      "url": "https://github.com/testmoapp/junitxml"
+    },
+    {
+      "body": "Keep a Changelog",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "change-type-section",
+        "version-anchor"
+      ],
+      "http_status": 200,
+      "id": "keepachangelog",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1fa308fcf1509b4729134faab498e126315138aa3c35939ad847c8390e4a058e",
+      "title": "变更日志规范",
+      "url": "https://keepachangelog.com/en/1.1.0/"
+    },
+    {
+      "body": "MLCommons",
+      "bound_main": 110,
+      "bound_support": 0,
+      "ext_points": [
+        "scenario-extension"
+      ],
+      "http_status": 200,
+      "id": "mlcommons-bench",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2bd4327625e9af25cb1f38de0f935a9c1734ca93ae3f5557eb53392a41a762b5",
+      "title": "MLPerf 基准（可扩展场景）",
+      "url": "https://mlcommons.org/benchmarks/"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 6,
+      "bound_support": 0,
+      "ext_points": [
+        "methodology"
+      ],
+      "http_status": 200,
+      "id": "nist-800-142",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "bb0c92c0a7c17a193fb3a2c32d7e8065b7290324141e2fbb2809a29b4b34aaa7",
+      "title": "SP 800-142 组合测试实践",
+      "url": "https://csrc.nist.gov/pubs/sp/800/142/final"
+    },
+    {
+      "body": "CNCF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "custom-builtin",
+        "policy-bundle"
+      ],
+      "http_status": 200,
+      "id": "opa-rego",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4b383a86d120f27e6d3c17a6f36e3b997d5b2b55536d29d748a20cc9fec3c7a6",
+      "title": "Open Policy Agent / Rego",
+      "url": "https://www.openpolicyagent.org/docs/latest/policy-language/"
+    },
+    {
+      "body": "OpenChain Project",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "conformance-question",
+        "annex"
+      ],
+      "http_status": 200,
+      "id": "openchain",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f6ad0659e8e096b1736704d49f2a4e9d5c77925846691ba8bbe0886d924de45e",
+      "title": "OpenChain 开源合规标准",
+      "url": "https://www.openchainproject.org/spec/"
+    },
+    {
+      "body": "OpenMetrics",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "metric-family-extension"
+      ],
+      "http_status": 200,
+      "id": "openmetrics",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "29249f99ec97a71f58a6f79a6dbccfe87a258b08abd01fe11d344227e68b1d76",
+      "title": "OpenMetrics 1.0",
+      "url": "https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md"
+    },
+    {
+      "body": "OpenSSF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "statement-status",
+        "product-identifier"
+      ],
+      "http_status": 200,
+      "id": "openvex",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0a555a0956cc97bcc01764be671912ed29cedb52a5d43cf99a9dd89574c055c0",
+      "title": "OpenVEX 漏洞可利用性交换",
+      "url": "https://github.com/openvex/spec"
+    },
+    {
+      "body": "OpenSSF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "check-name",
+        "score-detail"
+      ],
+      "http_status": 200,
+      "id": "ossp-scorecard",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "af9aa722b42509e291eb831577dd5a32bbc2d3094bcb81d9c6a8fef853cb6a89",
+      "title": "Scorecard 开源项目健康度",
+      "url": "https://github.com/ossf/scorecard"
+    },
+    {
+      "body": "Python",
+      "bound_main": 7,
+      "bound_support": 0,
+      "ext_points": [
+        "new-pep"
+      ],
+      "http_status": 200,
+      "id": "peps",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f5b8704be964f720aaf9666cf5a45717d4b98dbd3e5f48e3525c39785d1acbc8",
+      "title": "PEP 体系（含 8/257/621）",
+      "url": "https://peps.python.org/"
+    },
+    {
+      "body": "Prometheus",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "metric-suffix"
+      ],
+      "http_status": 200,
+      "id": "prometheus-exposition",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7b59615be1b9f2eb14785551d35be3d2a047fba55e81e255a4a35dfc9c8864a1",
+      "title": "指标暴露格式",
+      "url": "https://prometheus.io/docs/instrumenting/exposition_formats/"
+    },
+    {
+      "body": "Reproducible Builds",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "variation-source",
+        "attestation"
+      ],
+      "http_status": 200,
+      "id": "reproducible-builds",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d6ab255b09a7620c09ad840cb5efddffd094d415804af3bc553d167cccabe694",
+      "title": "可重现构建",
+      "url": "https://reproducible-builds.org/docs/"
+    },
+    {
+      "body": "REUSE/FSFE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "spdx-header",
+        "reuse-toml"
+      ],
+      "http_status": 200,
+      "id": "reuse-3",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0b033840037e3bf4452f112839c890fb64605fa870800ad81d7bd2072eb01a9f",
+      "title": "REUSE 许可声明规范",
+      "url": "https://reuse.software/spec-3.3/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "log-entry-type",
+        "extension-data"
+      ],
+      "http_status": 200,
+      "id": "rfc9162-ct",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "becfa905af3fac035d2c8a84f662394cf9d865002f64da53a8677046dc96bbbd",
+      "title": "证书透明 v2（CT）",
+      "url": "https://www.rfc-editor.org/rfc/rfc9162"
+    },
+    {
+      "body": "Green Software Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "functional-unit",
+        "boundary-definition"
+      ],
+      "http_status": 200,
+      "id": "sci-iso21031",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d4eafe664fc176d6137960c2e4f33de66707045a864105a2bd51d74773c786b7",
+      "title": "软件碳强度（SCI）",
+      "url": "https://sci.greensoftware.foundation/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "signed-statement",
+        "transparency-service"
+      ],
+      "http_status": 200,
+      "id": "scitt",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7b7c96f79ef15ceedb1a11b5b4b5dfe0e25727979464e8ac73627c2926ad56df",
+      "title": "SCITT 供应链透明",
+      "url": "https://datatracker.ietf.org/doc/draft-ietf-scitt-architecture/"
+    },
+    {
+      "body": "SemVer 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "prerelease-identifier",
+        "build-metadata"
+      ],
+      "http_status": 200,
+      "id": "semver",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f9d4b8b1a5e9a0de6621dbbc70d69fdf05310b7a737509317b94a7bddfb9409e",
+      "title": "语义化版本",
+      "url": "https://semver.org/spec/v2.0.0.html"
+    },
+    {
+      "body": "OpenSSF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "bundle-format",
+        "fulcio-extension"
+      ],
+      "http_status": 200,
+      "id": "sigstore",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7d60c5408fa803ff4d60a4b7203d25d267650adabbbb6c25d9091af028a7b34a",
+      "title": "Sigstore 签名与透明日志",
+      "url": "https://docs.sigstore.dev/about/overview/"
+    },
+    {
+      "body": "OpenSSF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "build-level",
+        "threat-model-extension"
+      ],
+      "http_status": 200,
+      "id": "slsa",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "94a6630c0ec4310ad583a35c0d4576a35100a027e1e6dbdd6ba0c9484e593247",
+      "title": "SLSA 供应链等级",
+      "url": "https://slsa.dev/spec/v1.0/"
+    },
+    {
+      "body": "CISA/CERT-CC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "decision-point",
+        "decision-table"
+      ],
+      "http_status": 200,
+      "id": "ssvc",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "481c0c81b2485a36d87565f9aa32a26ccef7293101c74271637549fa736b8d52",
+      "title": "SSVC 漏洞处置决策",
+      "url": "https://github.com/CERTCC/SSVC"
+    },
+    {
+      "body": "OMG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "metadata-definition",
+        "library-extension"
+      ],
+      "http_status": 200,
+      "id": "sysml2",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1794c4e248ee9bb57d1853e23b8a3bf90494d71e1083ea294e040e64c4d2f624",
+      "title": "SysML v2",
+      "url": "https://www.omg.org/spec/SysML/2.0/"
+    },
+    {
+      "body": "TestAnything",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "directive",
+        "yaml-diagnostic"
+      ],
+      "http_status": 200,
+      "id": "tap14",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "aff2dae634bc47d46106f2cc1b07f521ce5869ebdf963fd1fe0c848432e5e4a6",
+      "title": "TAP 测试协议",
+      "url": "https://testanything.org/tap-version-14-specification.html"
+    },
+    {
+      "body": "The Open Group",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "architecture-method-extension",
+        "content-framework"
+      ],
+      "http_status": 401,
+      "id": "togaf",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "TOGAF 企业架构框架",
+      "url": "https://pubs.opengroup.org/togaf-standard/"
+    },
+    {
+      "body": "OMG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "stereotype",
+        "profile"
+      ],
+      "http_status": 200,
+      "id": "uml25",
+      "layer": "eng",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f99054f9dfd4b77bc8e2f2e58cb7ff073c7b89a510f0ffd60f886ef293087c7c",
+      "title": "UML 2.5.1",
+      "url": "https://www.omg.org/spec/UML/2.5.1/"
+    },
+    {
+      "body": "AsciiDoc 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "macro-extension",
+        "block-extension"
+      ],
+      "http_status": 200,
+      "id": "asciidoc",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1b42d694df58523635bbc763f3560f581e78554b7edb213670dd7713d514e09c",
+      "title": "AsciiDoc 标记语言",
+      "url": "https://docs.asciidoctor.org/asciidoc/latest/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "conformance-level",
+        "success-criterion-scope"
+      ],
+      "http_status": 200,
+      "id": "atag20",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7bc7ba26192bfa5c0ea71ac2069fe961437f382bbc97774e08db32bd7e3261e4",
+      "title": "ATAG 2.0 创作工具无障碍",
+      "url": "https://www.w3.org/TR/ATAG20/"
+    },
+    {
+      "body": "Citation File Format 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "schema-version",
+        "custom-field"
+      ],
+      "http_status": 200,
+      "id": "cff",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "64deb2e9e43dc45e673cd58e20d5f30857dc0e5730baf76bdbea93bc3bfb981d",
+      "title": "CITATION.cff 引用文件",
+      "url": "https://citation-file-format.github.io/"
+    },
+    {
+      "body": "CommonMark",
+      "bound_main": 70,
+      "bound_support": 111,
+      "ext_points": [
+        "extension-blocks"
+      ],
+      "http_status": 200,
+      "id": "commonmark",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1fe01e006d685b3bef138a0fcdcfc9048e5b16c7ab17daa5ef7fa30008ff81f4",
+      "title": "CommonMark 0.31.2",
+      "url": "https://spec.commonmark.org/0.31.2/"
+    },
+    {
+      "body": "GitHub",
+      "bound_main": 12,
+      "bound_support": 0,
+      "ext_points": [
+        "extension"
+      ],
+      "http_status": 200,
+      "id": "gfm",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ae0ccccbfd97bab6bac44319b6cd6e0643ff826909ba79a45b5d5811b3896d2b",
+      "title": "GFM 扩展",
+      "url": "https://github.github.com/gfm/"
+    },
+    {
+      "body": "Grafana",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "panel-plugin",
+        "schema-version"
+      ],
+      "http_status": 200,
+      "id": "grafana-dashboard",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f22f2d4a592e9517c8c5c542a74891dfe01deb16d6e9c05ccb9645f758fe32e2",
+      "title": "Dashboard JSON model",
+      "url": "https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/view-dashboard-json-model/"
+    },
+    {
+      "body": "GraphML",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "key-extension"
+      ],
+      "http_status": 200,
+      "id": "graphml",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "cf8d3b2a42d7c8a9b95beb709bfdd1663dc1637fd0b89a3446dd40d08323f6ac",
+      "title": "GraphML 1.0",
+      "url": "http://graphml.graphdrawing.org/specification.html"
+    },
+    {
+      "body": "Graphviz",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "attribute-extension"
+      ],
+      "http_status": 200,
+      "id": "graphviz",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "db41d38941e21304864c09915b1d60e816ad69c52bb27d169e76aa0fb61ff7e5",
+      "title": "DOT 语言",
+      "url": "https://graphviz.org/doc/info/lang.html"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "data-category",
+        "local-markup"
+      ],
+      "http_status": 200,
+      "id": "its20",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "50f8b4c8cb849a65b5991bf1e2f4ccd30aa3928a2fe3c129559bc2199bd2b45f",
+      "title": "ITS 2.0 国际化标签集",
+      "url": "https://www.w3.org/TR/its20/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "member-extension",
+        "display-mode"
+      ],
+      "http_status": 200,
+      "id": "manifest-json",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e2b822c5c1826db8ba64deea01b194ee2e95e644b93667e5339e4fee28f87173",
+      "title": "Web App Manifest",
+      "url": "https://www.w3.org/TR/appmanifest/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "intent-attribute",
+        "operator-dictionary"
+      ],
+      "http_status": 200,
+      "id": "mathml4",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "5cfe522012ba44c19283c380d0d716ad888f54fddfdd83c4ccb2ec4ca2e55ba3",
+      "title": "MathML Core",
+      "url": "https://www.w3.org/TR/mathml-core/"
+    },
+    {
+      "body": "Mermaid",
+      "bound_main": 4,
+      "bound_support": 136,
+      "ext_points": [
+        "diagram-type-extension"
+      ],
+      "http_status": 200,
+      "id": "mermaid",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b1720390e6f66001c55f5a2c100822140d6d990fcb8fc64717ec44244f9e0239",
+      "title": "Mermaid 图语言",
+      "url": "https://mermaid.js.org/intro/"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-namespace",
+        "style-family"
+      ],
+      "http_status": 200,
+      "id": "odf",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ae32b3a06c2922db21d2232d3e2f6847ed7f8bb10929c3d480bf85ff2755d4e3",
+      "title": "OpenDocument Format",
+      "url": "https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office"
+    },
+    {
+      "body": "Microsoft/ECMA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-element",
+        "math-run"
+      ],
+      "http_status": 200,
+      "id": "omml",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "801cc0401ccf2c3b8e3784559927c41958b907ac7daefdbe64c8d13c524e5364",
+      "title": "OMML 数学标记",
+      "url": "https://ecma-international.org/publications-and-standards/standards/ecma-376/"
+    },
+    {
+      "body": "ECMA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "part-naming",
+        "content-type"
+      ],
+      "http_status": 200,
+      "id": "opc-ooxml",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "801cc0401ccf2c3b8e3784559927c41958b907ac7daefdbe64c8d13c524e5364",
+      "title": "Open Packaging Conventions",
+      "url": "https://ecma-international.org/publications-and-standards/standards/ecma-376/"
+    },
+    {
+      "body": "Docutils",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "directive",
+        "role"
+      ],
+      "http_status": 200,
+      "id": "rst-docutils",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d8d461ac00ea26717e7dbb97d9ae52f3eb11ed8276ed896eabf392effe4001d7",
+      "title": "reStructuredText 指令/角色",
+      "url": "https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html"
+    },
+    {
+      "body": "Linux Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "file-tag",
+        "license-identifier"
+      ],
+      "http_status": 200,
+      "id": "spdx-file",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4f42d533660e030893d490a9532b8378bc2b25078e38e745c4104d50d5b5fd88",
+      "title": "SPDX 文件头标注",
+      "url": "https://spdx.dev/learn/handling-license-info/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-attribute",
+        "plugin-element"
+      ],
+      "http_status": 200,
+      "id": "ssml11",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c6b7b48c6f274089728259ee4957258cfaba5e9bfdc945f2c8a9194bbd0a5890",
+      "title": "SSML 1.1 语音合成标记",
+      "url": "https://www.w3.org/TR/speech-synthesis11/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "metadata-element",
+        "extension-designation"
+      ],
+      "http_status": 200,
+      "id": "ttml2",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "659e3af81a99dd0d411184e33403de6a654716d3ed92de7d9dc557d4b262f3f6",
+      "title": "TTML2 时序文本",
+      "url": "https://www.w3.org/TR/ttml2/"
+    },
+    {
+      "body": "Vega/LF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-transform",
+        "config-scope"
+      ],
+      "http_status": 200,
+      "id": "vega",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8225085c1ce88267d7226a796b0c3df9777991e3890cb9488b29532659acdb4c",
+      "title": "Vega 可视化语法",
+      "url": "https://vega.github.io/vega/docs/specification/"
+    },
+    {
+      "body": "Vega",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "spec-extension"
+      ],
+      "http_status": 200,
+      "id": "vega-datasets",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2064f3499486a4bb80a2cf9e02dcb690c8dabcdd5a1c10228135f71761cbb854",
+      "title": "Vega 数据集与规范",
+      "url": "https://vega.github.io/vega-lite/"
+    },
+    {
+      "body": "Vega",
+      "bound_main": 5,
+      "bound_support": 364,
+      "ext_points": [
+        "config-extension"
+      ],
+      "http_status": 200,
+      "id": "vega-lite",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "316c7c72a64086baa0e2953663bd288e84dedacadc9beb17036545f7ebf80d16",
+      "title": "Vega-Lite v5",
+      "url": "https://vega.github.io/schema/vega-lite/v5.json"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "module-level"
+      ],
+      "http_status": 200,
+      "id": "w3c-css",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8175215670bd0368b80a088548a14ac5cddf3ae3c271aa7c930e935190d2efce",
+      "title": "CSS 快照（分级扩展）",
+      "url": "https://www.w3.org/TR/CSS/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 60,
+      "bound_support": 0,
+      "ext_points": [
+        "foreign-resources",
+        "manifest-properties"
+      ],
+      "http_status": 200,
+      "id": "w3c-epub33",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "451619577ab2173eabb58faa46429d5b82450f2288ba8aeb12300888fc6658f9",
+      "title": "EPUB 3.3",
+      "url": "https://www.w3.org/TR/epub-33/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 5,
+      "bound_support": 0,
+      "ext_points": [
+        "namespace-extension"
+      ],
+      "http_status": 200,
+      "id": "w3c-mathml3",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2042eb351b26a262343daeb778181fef084a6dc86340fb2a2b5435ec90e577eb",
+      "title": "MathML 3",
+      "url": "https://www.w3.org/TR/MathML3/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 11,
+      "bound_support": 0,
+      "ext_points": [
+        "foreign-object",
+        "extension-elements"
+      ],
+      "http_status": 200,
+      "id": "w3c-svg2",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "eca45c833ff02d589f15cbf95821e8dba986497a2593a576b70de2c87f72b606",
+      "title": "SVG 2",
+      "url": "https://www.w3.org/TR/SVG2/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 17,
+      "bound_support": 0,
+      "ext_points": [
+        "audioworklet"
+      ],
+      "http_status": 200,
+      "id": "w3c-webaudio",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "22ce0a1f2f872147938bcfadb3dee70d4952469b864129e50b6c6466fb2dee7c",
+      "title": "Web Audio API",
+      "url": "https://www.w3.org/TR/webaudio/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "role-extension",
+        "aria-attribute"
+      ],
+      "http_status": 200,
+      "id": "wai-aria",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "5e2de61da034d4768d77f3d45fcaa8c06b3801b51f4efca0cdadee71a1e009bb",
+      "title": "WAI-ARIA 1.2",
+      "url": "https://www.w3.org/TR/wai-aria-1.2/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "cue-setting",
+        "region-extension"
+      ],
+      "http_status": 200,
+      "id": "webvtt",
+      "layer": "form",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "16e794c2765ae097579b31aad360a9bd4fab634e9d5c9ea1035a21d91064c976",
+      "title": "WebVTT 字幕",
+      "url": "https://www.w3.org/TR/webvtt1/"
+    },
+    {
+      "body": "AICPA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "trust-services-category",
+        "criterion"
+      ],
+      "http_status": 200,
+      "id": "aicpa-soc2",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1ef0cacf9f0cc1d5a58a95804e23f4c19f690e3a7230ba4fb48c20c7a1de9c4e",
+      "title": "SOC 2 信任服务准则",
+      "url": "https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "tag-file-extension"
+      ],
+      "http_status": 200,
+      "id": "bagit",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a400b4fb324c6bad391b83a6ec581d6bb72f6e89cd9f3d55e231957685e7549a",
+      "title": "BagIt (RFC 8493)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8493.txt"
+    },
+    {
+      "body": "BIS/BCBS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "approach-selection",
+        "national-discretion"
+      ],
+      "http_status": 200,
+      "id": "bis-basel-iii",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "25b7ac2e46b722974c6ee79129b3ec57e5a62b80ea02745b79fb9ce5633396c2",
+      "title": "巴塞尔 III 资本框架",
+      "url": "https://www.bis.org/bcbs/publ/d424.htm"
+    },
+    {
+      "body": "C2PA",
+      "bound_main": 4,
+      "bound_support": 0,
+      "ext_points": [
+        "assertion-extension"
+      ],
+      "http_status": 200,
+      "id": "c2pa-spec",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c9a46b41953b3179b9858f126e46604379861135e06c678f72db6074350ea246",
+      "title": "内容凭证规范",
+      "url": "https://c2pa.org/specifications/specifications/1.3/index.html"
+    },
+    {
+      "body": "Center for Internet Security",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile-level",
+        "recommendation-number"
+      ],
+      "http_status": 200,
+      "id": "cis-benchmarks",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "872933eb176c0dded829cc23d39da6f7b6bd8d6d1e4bc37b51db3793b3feab45",
+      "title": "CIS 基线配置",
+      "url": "https://www.cisecurity.org/cis-benchmarks"
+    },
+    {
+      "body": "Center for Internet Security",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "control-number",
+        "implementation-group"
+      ],
+      "http_status": 200,
+      "id": "cis-controls",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3ad0deed97285fd068a0f1cf2e0eddb0ff5ccc04473dc52421a9ee48ee2480db",
+      "title": "CIS Critical Security Controls",
+      "url": "https://www.cisecurity.org/controls"
+    },
+    {
+      "body": "Codex",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "standard-extension"
+      ],
+      "http_status": 200,
+      "id": "codex-alimentarius",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a57eb0f9feaa24c9da620b403dac15f7e68f503b9344e27d8144dbfd9cf1a004",
+      "title": "国际食品法典",
+      "url": "https://www.fao.org/fao-who-codexalimentarius/en/"
+    },
+    {
+      "body": "CCRA",
+      "bound_main": 41,
+      "bound_support": 0,
+      "ext_points": [
+        "protection-profile",
+        "assurance-level"
+      ],
+      "http_status": 200,
+      "id": "common-criteria",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6adef86c67e4bbbcbc8872bedf10c93c33839884a5cb1ca1d36f080444041ca7",
+      "title": "Common Criteria（ISO 15408）",
+      "url": "https://www.commoncriteriaportal.org/"
+    },
+    {
+      "body": "Council of Europe",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "risk-based-approach",
+        "party-declaration"
+      ],
+      "http_status": 403,
+      "id": "council-europe-ai",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "AI 框架公约",
+      "url": "https://www.coe.int/en/web/artificial-intelligence/the-framework-convention-on-artificial-intelligence"
+    },
+    {
+      "body": "Creative Commons",
+      "bound_main": 19,
+      "bound_support": 0,
+      "ext_points": [
+        "license-versioning",
+        "rights-statements"
+      ],
+      "http_status": 200,
+      "id": "creativecommons",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "683c35234eafcf352f2f025640e60de6d0c96f5a102fc3457922e8caa2d113e8",
+      "title": "许可与权利表达",
+      "url": "https://creativecommons.org/licenses/"
+    },
+    {
+      "body": "MITRE",
+      "bound_main": 11,
+      "bound_support": 0,
+      "ext_points": [
+        "view",
+        "category-extension"
+      ],
+      "http_status": 200,
+      "id": "cwe",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "147d2e7ff5b14c9c26a720c1cfb580222242c91d61869de082237eaf3f00cdf3",
+      "title": "CWE 缺陷枚举",
+      "url": "https://cwe.mitre.org/"
+    },
+    {
+      "body": "CycloneDX",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "component-extension",
+        "property"
+      ],
+      "http_status": 200,
+      "id": "cyclonedx-mlbom",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "859d244e042c48ef419e9a3d78f228ee5a402645207318a8cb3fdda8b9d987c1",
+      "title": "ML-BOM 能力",
+      "url": "https://cyclonedx.org/capabilities/mlbom/"
+    },
+    {
+      "body": "DataCite",
+      "bound_main": 4,
+      "bound_support": 0,
+      "ext_points": [
+        "profile"
+      ],
+      "http_status": 200,
+      "id": "datacite",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f6dbdb7cfc9bacade4487f91ebcff1a83fd1936576a62b8411c1da2f33ca0477",
+      "title": "元数据内核",
+      "url": "https://schema.datacite.org/meta/kernel-4.6/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "method-registration",
+        "property-extension"
+      ],
+      "http_status": 200,
+      "id": "did-w3c-methods",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c417a867f1dda882ec4cb5739a066a96b28fcec5d73ad615a850e80f3df76172",
+      "title": "DID 方法注册表",
+      "url": "https://www.w3.org/TR/did-extensions/"
+    },
+    {
+      "body": "EDPB",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "guideline-number",
+        "national-derogation"
+      ],
+      "http_status": 200,
+      "id": "edpb-guidelines",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "010781bb3938e9ed20d30dea6d3a4f36b7c9c22b3857cc2dcd8f4672e76216b2",
+      "title": "EDPB 数据保护指南",
+      "url": "https://www.edpb.europa.eu/our-work-tools/general-guidance/guidelines-recommendations-best-practices_en"
+    },
+    {
+      "body": "EIOPA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "ict-risk-requirement",
+        "register-of-information"
+      ],
+      "http_status": 200,
+      "id": "eiopa-dora",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6e5dfb110f04adab5deab11e675a009fc2ac03761c7579afe8078011c26a22d1",
+      "title": "DORA 数字运营韧性",
+      "url": "https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en"
+    },
+    {
+      "body": "ENISA/EU",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "essential-entity-class",
+        "incident-reporting"
+      ],
+      "http_status": 200,
+      "id": "enisa-nis2",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3f79c9a79640d6b98062479da9581576aea3bdf7fcb449a84effee415b807187",
+      "title": "NIS2 网络安全指令要求",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/nis2-directive"
+    },
+    {
+      "body": "ESMA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "technical-standard",
+        "reporting-field"
+      ],
+      "http_status": 200,
+      "id": "esma-mifid",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6a244057eb80fb3389c74c9d5e92639c32609b340206a67562cecd24b520804d",
+      "title": "MiFID II / MiFIR 监管要求",
+      "url": "https://www.esma.europa.eu/policy-rules/mifid-ii-and-mifir"
+    },
+    {
+      "body": "ETSI",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "clause-number",
+        "procurement-annex"
+      ],
+      "http_status": 200,
+      "id": "etsi-en301549",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4d29d6fb768c84a98feb59814a115a4cf3c5d0fab3506e870e1b59ad86e627f1",
+      "title": "EN 301 549 无障碍要求",
+      "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/"
+    },
+    {
+      "body": "European Commission",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "product-scope",
+        "harmonised-standard"
+      ],
+      "http_status": 0,
+      "id": "eu-accessibility-act",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "欧洲无障碍法案",
+      "url": "https://ec.europa.eu/social/main.jsp?catId=1202"
+    },
+    {
+      "body": "EU",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "annex-iv-doc",
+        "harmonised-standards"
+      ],
+      "http_status": 200,
+      "id": "eu-ai-act",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b8ff9b2679d766fb9171a711e9c7eaa15073a61cd79201c1a2dd4fde11bca55f",
+      "title": "AI 法案（技术文档/风险分级）",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"
+    },
+    {
+      "body": "EU",
+      "bound_main": 5,
+      "bound_support": 0,
+      "ext_points": [
+        "standard-harmonisation"
+      ],
+      "http_status": 200,
+      "id": "eu-machinery",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "721b2f4f47474dcf0dd06662a4d5bb844dc9b729b3373def70e966fac5eb4163",
+      "title": "机械条例 2023/1230",
+      "url": "https://single-market-economy.ec.europa.eu/sectors/mechanical-engineering/machinery_en"
+    },
+    {
+      "body": "FAO",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "codex-alignment"
+      ],
+      "http_status": 200,
+      "id": "fao-food",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "33a282b99fd23c9f292fd1f36b257359c64c8def88b8a4de38d838bbf75619fd",
+      "title": "食品安全与质量",
+      "url": "https://www.fao.org/food-safety/en/"
+    },
+    {
+      "body": "FATF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "recommendation-number",
+        "interpretive-note"
+      ],
+      "http_status": 403,
+      "id": "fatf-recommendations",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "FATF 反洗钱建议",
+      "url": "https://www.fatf-gafi.org/en/topics/fatf-recommendations.html"
+    },
+    {
+      "body": "GSA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "baseline-profile",
+        "control-tailoring"
+      ],
+      "http_status": 200,
+      "id": "fedramp",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "795c14c307fed45f158b2a29af4cfa8773525fea971026415fb0b9d66817c25f",
+      "title": "FedRAMP 授权基线",
+      "url": "https://www.fedramp.gov/"
+    },
+    {
+      "body": "EU",
+      "bound_main": 36,
+      "bound_support": 0,
+      "ext_points": [
+        "codes-of-conduct",
+        "certification"
+      ],
+      "http_status": 200,
+      "id": "gdpr",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8d42e5fb10978eac99fbfcdffc83910c3a5a145a4cb7fbab975e58b73819aab2",
+      "title": "GDPR",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679"
+    },
+    {
+      "body": "GHG Protocol",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "scope-definition",
+        "sector-guidance"
+      ],
+      "http_status": 200,
+      "id": "ghg-protocol",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1c54692b437f23386f1bc9f5af90af283f41bc22d615dbfbe05ff82e632a89b2",
+      "title": "温室气体核算体系",
+      "url": "https://ghgprotocol.org/"
+    },
+    {
+      "body": "CFA Institute",
+      "bound_main": 11,
+      "bound_support": 0,
+      "ext_points": [
+        "composite-definition",
+        "disclosure"
+      ],
+      "http_status": 200,
+      "id": "gips",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "138ad618431354fd8b09822f633ca2a09f62acb4c70e3ae02d5eee589634b40a",
+      "title": "GIPS 绩效标准",
+      "url": "https://www.cfainstitute.org/en/ethics-standards/codes/gips-standards"
+    },
+    {
+      "body": "GLEIF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "vLEI-ecosystem"
+      ],
+      "http_status": 200,
+      "id": "gleif-lei",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3a98fef11b88ac1ec651086b6e31b978ff1d82888ed2d2ba40dffa5d63680469",
+      "title": "ISO 17442 LEI",
+      "url": "https://www.gleif.org/en/about-lei/iso-17442-the-lei-code-structure"
+    },
+    {
+      "body": "HHS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "implementation-specification",
+        "addressable-vs-required"
+      ],
+      "http_status": 403,
+      "id": "hipaa-security",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "HIPAA 安全规则",
+      "url": "https://www.hhs.gov/hipaa/for-professionals/security/index.html"
+    },
+    {
+      "body": "ISO/IEC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "management-system-clauses"
+      ],
+      "http_status": 403,
+      "id": "iec-42001",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "AI 管理体系",
+      "url": "https://www.iso.org/standard/42001"
+    },
+    {
+      "body": "IEEE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "process-extension"
+      ],
+      "http_status": 200,
+      "id": "ieee-7000",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c24a01afbe37001167c073afa0b9eef943363f11de7ec19a367d8cb84b1b60ac",
+      "title": "IEEE 7000 系列（伦理对齐）",
+      "url": "https://standards.ieee.org/initiatives/autonomous-intelligence-systems/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-subtag",
+        "registry"
+      ],
+      "http_status": 200,
+      "id": "ietf-bcp47",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b0cade646c726fc61743d117c9c26b15152e7d281dacde71097941d43806eacf",
+      "title": "语言标签 (RFC 5646)",
+      "url": "https://www.rfc-editor.org/rfc/rfc5646.txt"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-directive"
+      ],
+      "http_status": 200,
+      "id": "ietf-robots",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f633915daaa15b943cae56545d333bcf3ba4d156599e4555499686d6699fb207",
+      "title": "robots.txt (RFC 9309)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9309.txt"
+    },
+    {
+      "body": "IFRS Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "taxonomy-extension",
+        "transition-option"
+      ],
+      "http_status": 200,
+      "id": "ifrs-standards",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "036dd9595fd9bc921a7bfedeecdd58c6740e8fa55b61d91d70a9a03241fa52d0",
+      "title": "IFRS 会计准则",
+      "url": "https://www.ifrs.org/issued-standards/list-of-standards/"
+    },
+    {
+      "body": "ISSB/IFRS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "industry-based-guidance",
+        "transition-relief"
+      ],
+      "http_status": 200,
+      "id": "issb-sustainability",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e9fa3387e96f48535a7c45701c48246fe41946593ded31e3cb98d5e4d256a609",
+      "title": "ISSB 可持续披露准则",
+      "url": "https://www.ifrs.org/issued-standards/ifrs-sustainability-standards-navigator/"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "taxonomy"
+      ],
+      "http_status": 200,
+      "id": "nist-100-2",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "19aac6f91bad88f5c766f96b59e6b9db390ba654d8aa7e4512a3d8d79036d22a",
+      "title": "AI 100-2 对抗机器学习分类",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2023.pdf"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "requirement-family",
+        "assessment-procedure"
+      ],
+      "http_status": 200,
+      "id": "nist-800-171",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d5a82fd9d7752a8e85e1ec784ad165008c4fe5f0766f68985a1441764d8a2316",
+      "title": "SP 800-171 受控非密信息保护",
+      "url": "https://csrc.nist.gov/pubs/sp/800/171/r3/final"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 10,
+      "bound_support": 0,
+      "ext_points": [
+        "technique-catalog"
+      ],
+      "http_status": 200,
+      "id": "nist-800-188",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "543e05ca8fcce90e96f4ecd8c89cfc61a66157a875c4031e3fc377ebb6d0be1b",
+      "title": "SP 800-188 去标识化",
+      "url": "https://csrc.nist.gov/pubs/sp/800/188/final"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "deployment-model",
+        "policy-engine"
+      ],
+      "http_status": 200,
+      "id": "nist-800-207",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3be53cf5bb0cf3f7aa5205e99df39bd1b9a850cd53058c2ced32a2734b91f663",
+      "title": "零信任架构（SP 800-207）",
+      "url": "https://csrc.nist.gov/pubs/sp/800/207/final"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "control-identifier",
+        "control-overlay"
+      ],
+      "http_status": 200,
+      "id": "nist-800-53",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c8227367d3c4449dec43944c6f565f5b9b9bf0c6f2604783defaf6f7d93bd127",
+      "title": "SP 800-53 安全与隐私控制",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "assurance-level",
+        "authenticator-type"
+      ],
+      "http_status": 200,
+      "id": "nist-800-63",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "baad226588358cc8cf5b287738f35e1a8293aa4b401d8b510a2a919fbb1620dc",
+      "title": "SP 800-63 数字身份指南",
+      "url": "https://pages.nist.gov/800-63-4/"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "risk-category",
+        "action-identifier"
+      ],
+      "http_status": 200,
+      "id": "nist-ai-600-1",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8d845f712a236e177a9291e32493c27b326d24f18266cd0451e9935eea276e05",
+      "title": "生成式 AI 风险档案（AI 600-1）",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 74,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "playbook"
+      ],
+      "http_status": 200,
+      "id": "nist-ai-rmf",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8497f8797f446464a6c6ea6e0e3ed7307c8a119dbdf47df1e7ee5f093a11ad71",
+      "title": "AI 风险管理框架",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "function-category",
+        "community-profile"
+      ],
+      "http_status": 200,
+      "id": "nist-csf",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e2f7758f77b2aeef4383e8b3a514f83d9d3607c3955f07b7a1bd294f545e2c92",
+      "title": "网络安全框架 2.0",
+      "url": "https://www.nist.gov/cyberframework"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile"
+      ],
+      "http_status": 200,
+      "id": "nist-privacy",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6494389c7eb171e271d8d19f51de3c2e0232b92bb0472da31cb530bbae620f36",
+      "title": "隐私框架",
+      "url": "https://www.nist.gov/privacy-framework"
+    },
+    {
+      "body": "NTIA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "minimum-element",
+        "extension-field"
+      ],
+      "http_status": 200,
+      "id": "ntia-sbom",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1bae0296751f8608c525cea8804f65e1322f3555e3d659b128eb17f9d0cc7410",
+      "title": "SBOM 最小要素",
+      "url": "https://www.ntia.gov/report/2021/minimum-elements-software-bill-materials-sbom"
+    },
+    {
+      "body": "OECD",
+      "bound_main": 4,
+      "bound_support": 0,
+      "ext_points": [
+        "policy-observatory"
+      ],
+      "http_status": 200,
+      "id": "oecd-ai",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f3cd6e739391630660f720fba777ea60f807084b14e7ddab14a20ee6ea759e0e",
+      "title": "OECD AI 原则",
+      "url": "https://oecd.ai/en/ai-principles"
+    },
+    {
+      "body": "OECD",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "principle-set",
+        "implementation-guidance"
+      ],
+      "http_status": 200,
+      "id": "oecd-privacy",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2d7447c98e31677dab7c7e4d619f5222ec47160cf1ea91b6b20245efb9b4d3e3",
+      "title": "OECD 隐私保护准则",
+      "url": "https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0188"
+    },
+    {
+      "body": "NIST",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "model-extension",
+        "profile-resolution"
+      ],
+      "http_status": 200,
+      "id": "oscal",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "94fd35c46f4459b7eeac566ed28693a175b1f0cf064d2feb6283afe53b095277",
+      "title": "OSCAL 控制与评估交换",
+      "url": "https://pages.nist.gov/OSCAL/"
+    },
+    {
+      "body": "OSI",
+      "bound_main": 7,
+      "bound_support": 0,
+      "ext_points": [
+        "license-review"
+      ],
+      "http_status": 200,
+      "id": "osi-osd",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "11d9448cdb142bb95775ee1b089670879d5c4467709c2efa4a475880b6754368",
+      "title": "开源定义",
+      "url": "https://opensource.org/osd"
+    },
+    {
+      "body": "Google/OSV",
+      "bound_main": 7,
+      "bound_support": 0,
+      "ext_points": [
+        "ecosystem-extension"
+      ],
+      "http_status": 200,
+      "id": "osv",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "325b5a472c041ecc7c831a6d53e1bf067e13c39754f2fb16ae89eac5be178afa",
+      "title": "OSV 漏洞格式",
+      "url": "https://osv.dev/"
+    },
+    {
+      "body": "OWASP",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "chapter-requirement",
+        "level-selection"
+      ],
+      "http_status": 200,
+      "id": "owasp-asvs",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2f3ae1af0f1f90b40b6d638fa1c4e00d61fb30a4928614196ad395145f2b03fb",
+      "title": "ASVS 应用安全验证标准",
+      "url": "https://github.com/OWASP/ASVS"
+    },
+    {
+      "body": "OWASP",
+      "bound_main": 23,
+      "bound_support": 0,
+      "ext_points": [
+        "category-extension"
+      ],
+      "http_status": 200,
+      "id": "owasp-llm",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "14862c1fd1519c4ab6b5008fcfaa27bf03df616b70696986ec924d054fd2a01e",
+      "title": "LLM 应用十大风险",
+      "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
+    },
+    {
+      "body": "OWASP",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "category-extension"
+      ],
+      "http_status": 200,
+      "id": "owasp-top10",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "da09d0fda96b2d22b02c8888199a848b988fbc4013d825ac6ea8f3cb426ab286",
+      "title": "Web 十大风险",
+      "url": "https://owasp.org/www-project-top-ten/"
+    },
+    {
+      "body": "PCI SSC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "requirement-number",
+        "customized-approach"
+      ],
+      "http_status": 200,
+      "id": "pci-dss",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "15d09e222aa9c528efb8f27b593dae7f2ba35c5ce29d862e81a0445d26ac6c74",
+      "title": "PCI DSS 支付卡行业标准",
+      "url": "https://www.pcisecuritystandards.org/document_library/"
+    },
+    {
+      "body": "Research Object",
+      "bound_main": 5,
+      "bound_support": 0,
+      "ext_points": [
+        "profiles"
+      ],
+      "http_status": 200,
+      "id": "rocrate",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a2fb73ffd72eeb6313da4d5e6a8d561c9b42d9900ba253e4d6b542af296b052c",
+      "title": "RO-Crate 1.1",
+      "url": "https://www.researchobject.org/ro-crate/specification.html"
+    },
+    {
+      "body": "SPDX",
+      "bound_main": 4,
+      "bound_support": 4,
+      "ext_points": [
+        "profile",
+        "extension-class"
+      ],
+      "http_status": 200,
+      "id": "spdx-3",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "9281b3a21aeb60cc6adae7122d304f90e092ac22c02e25558454437cd40a0a2a",
+      "title": "SPDX 3.0（含 AI profile）",
+      "url": "https://spdx.github.io/spdx-spec/v3.0/"
+    },
+    {
+      "body": "SPDX",
+      "bound_main": 23,
+      "bound_support": 15,
+      "ext_points": [
+        "license-expression",
+        "license-ref"
+      ],
+      "http_status": 200,
+      "id": "spdx-licenses",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a0a148a2d5e30d9bcc5f486229bd3498225861db9ede54d546815bd61b603ef1",
+      "title": "SPDX 许可证清单",
+      "url": "https://spdx.org/licenses/"
+    },
+    {
+      "body": "UNESCO",
+      "bound_main": 8,
+      "bound_support": 0,
+      "ext_points": [
+        "readiness-assessment"
+      ],
+      "http_status": 200,
+      "id": "unesco-ai",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "4726433bb190c1efaabef1ffabdf523f0b39f6014e4a69e8cc5905c22d70b2b4",
+      "title": "AI 伦理建议书",
+      "url": "https://www.unesco.org/en/artificial-intelligence/recommendation-ethics"
+    },
+    {
+      "body": "Unicode",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "locale-variants",
+        "annotation"
+      ],
+      "http_status": 200,
+      "id": "unicode-cldr",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "568f2807041188a7f715f8b64bbc27c50be5a49bdf972821a90c2f39cde08261",
+      "title": "CLDR 本地化数据",
+      "url": "https://cldr.unicode.org/"
+    },
+    {
+      "body": "Uptane",
+      "bound_main": 4,
+      "bound_support": 0,
+      "ext_points": [
+        "director-repository"
+      ],
+      "http_status": 200,
+      "id": "uptane",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a0e8ab53fcc0adf99427d12f020301e8374856f46e40707d04d956eb87322665",
+      "title": "OTA 安全框架",
+      "url": "https://uptane.org/"
+    },
+    {
+      "body": "US GSA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "ict-standard",
+        "conformance-report"
+      ],
+      "http_status": 200,
+      "id": "us-section508",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "84dcaec82d62e19f6083de956ccd8bb8e3ca638576624a7f2233d65c4fe27043",
+      "title": "Section 508 无障碍",
+      "url": "https://www.section508.gov/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "binding-method",
+        "proof-format"
+      ],
+      "http_status": 200,
+      "id": "vc-controller-bindings",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "82cc9d186efd4e854f109a9cbc65463a9dc088eaac1fd4f29e58c014df6fe7e3",
+      "title": "VC 控制器绑定方法",
+      "url": "https://www.w3.org/TR/controller-document/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "method-registry"
+      ],
+      "http_status": 200,
+      "id": "w3c-did",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3e13937edf1a29715145a30b26bfba56683536736bd23788ff4e1704fa73a52b",
+      "title": "DID Core",
+      "url": "https://www.w3.org/TR/did-core/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 5,
+      "bound_support": 0,
+      "ext_points": [
+        "metadata-extension"
+      ],
+      "http_status": 200,
+      "id": "w3c-epub-a11y",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "dcd2b184330b0becc6ba920cc6337b060865e55959b622a17b493c4569c1997c",
+      "title": "EPUB 无障碍 1.1",
+      "url": "https://www.w3.org/TR/epub-a11y-11/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 69,
+      "bound_support": 88,
+      "ext_points": [
+        "subclass",
+        "extension-module"
+      ],
+      "http_status": 200,
+      "id": "w3c-prov-o",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0b41a8eeffbb8a1abdd54ba0beb7a19ecce1dabf4adaae96ea13ed7c6857af6a",
+      "title": "PROV-O 溯源本体",
+      "url": "https://www.w3.org/TR/prov-o/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 6,
+      "ext_points": [
+        "extension-property",
+        "status-list"
+      ],
+      "http_status": 200,
+      "id": "w3c-vc",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0a5c590c5f9c7964121bc1c70bc5dc86fde387951c4e07281bd127a78117870a",
+      "title": "Verifiable Credentials 2.0",
+      "url": "https://www.w3.org/TR/vc-data-model-2.0/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 1,
+      "bound_support": 0,
+      "ext_points": [
+        "techniques",
+        "conformance-claims"
+      ],
+      "http_status": 200,
+      "id": "w3c-wcag22",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6935a0432b7860578d0c32907227357934499431d0a41bce4d180764362c5353",
+      "title": "WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "evaluation-scope",
+        "sample-selection"
+      ],
+      "http_status": 200,
+      "id": "wcag-em",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "818ed03a1f54d969bbc3490c32f87d0a28571dd7e4d4df81a0ade8a6a11fae23",
+      "title": "WCAG-EM 评估方法",
+      "url": "https://www.w3.org/TR/WCAG-EM/"
+    },
+    {
+      "body": "WHO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "guidance-extension"
+      ],
+      "http_status": 200,
+      "id": "who-ai",
+      "layer": "gov",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3e5b02045028185aa1f880c7f132b6d394103a43abc94ad42f9e87ec75b34d2d",
+      "title": "健康 AI 指南",
+      "url": "https://www.who.int/health-topics/artificial-intelligence"
+    },
+    {
+      "body": "Linux Foundation",
+      "bound_main": 10,
+      "bound_support": 0,
+      "ext_points": [
+        "agent-card-extension"
+      ],
+      "http_status": 200,
+      "id": "a2a",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "79fdee760fe4b310248764526c67a3f4a51e3f6dc4da65f118f0059b777ce3e4",
+      "title": "A2A 协议",
+      "url": "https://a2a-protocol.org/latest/specification/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "challenge-type",
+        "identifier-type"
+      ],
+      "http_status": 200,
+      "id": "acme",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "923fbc40bfe4c131d2aff69e36ba661c21adc17f7f5e1500bc624f4defe351ba",
+      "title": "ACME 证书签发自动化",
+      "url": "https://www.rfc-editor.org/rfc/rfc8555"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "activity-type-extension",
+        "extension-context"
+      ],
+      "http_status": 200,
+      "id": "activitypub",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "2c046e3b8871f7fc2600a2154b32c79f9bc502e0c75be090b8858e6c9d0783bd",
+      "title": "ActivityPub",
+      "url": "https://www.w3.org/TR/activitypub/"
+    },
+    {
+      "body": "ICAO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "message-type",
+        "version-field"
+      ],
+      "http_status": 404,
+      "id": "adsb",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "ADS-B 广播式自动相关监视",
+      "url": "https://www.icao.int/airnavigation/Pages/ADS-B.aspx"
+    },
+    {
+      "body": "ITU",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "message-type",
+        "application-identifier"
+      ],
+      "http_status": 200,
+      "id": "ais-itdma",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "29ac2c6406f1ac9c7ffa57ab1a078ff0036a37d266caffd6ae1e3339fff6ca6b",
+      "title": "AIS 船舶自动识别",
+      "url": "https://www.itu.int/rec/R-REC-M.1371/en"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "performative-extension",
+        "type-encoding"
+      ],
+      "http_status": 200,
+      "id": "amqp10",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "89277f1754ef18ef6255a32c9fb0a04a14b2740119b98eac250f30c19f3485b7",
+      "title": "AMQP 1.0 消息协议",
+      "url": "https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html"
+    },
+    {
+      "body": "AUTOSAR",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "manifest-extension"
+      ],
+      "http_status": 0,
+      "id": "autosar-ap",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "Adaptive Platform",
+      "url": "https://www.autosar.org/"
+    },
+    {
+      "body": "AUTOSAR",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "service-interface",
+        "eventgroup"
+      ],
+      "http_status": 0,
+      "id": "autosar-someip",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "SOME/IP 车载服务通信",
+      "url": "https://www.autosar.org/fileadmin/standards/R22-11/FO/AUTOSAR_SWS_SOMEIPServiceDiscoveryProtocol.pdf"
+    },
+    {
+      "body": "ASHRAE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "proprietary-property",
+        "object-type-extension"
+      ],
+      "http_status": 200,
+      "id": "bacnet",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "958897a45aa7adb5adc0d7a0c31c82edcfb67c336221209a9dbc8f6086248b2b",
+      "title": "BACnet 楼宇自动化",
+      "url": "https://www.bacnet.org/"
+    },
+    {
+      "body": "ISO/CiA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "can-id",
+        "signal-matrix"
+      ],
+      "http_status": 200,
+      "id": "can-fd",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "89251939decabe5494dce09e007f4b91fe54fc233ea8c87dd6d315a49f7b6392",
+      "title": "CAN FD 车载总线",
+      "url": "https://www.can-cia.org/can-knowledge/"
+    },
+    {
+      "body": "IEC/UCA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "cim-extension"
+      ],
+      "http_status": 200,
+      "id": "cim-iec61970",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ae659401800bc93277bffe7916b0343689aeafab840c33626610d32e06437cd8",
+      "title": "IEC 61970 CIM 电网模型",
+      "url": "https://www.ucaiug.org/"
+    },
+    {
+      "body": "CNCF",
+      "bound_main": 5,
+      "bound_support": 14,
+      "ext_points": [
+        "extension-attribute"
+      ],
+      "http_status": 200,
+      "id": "cncf-cloudevents",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "87fa79ba679701411dc9c707ae830bfc8a029d69153becf31e337e61c68411d8",
+      "title": "CloudEvents 1.0",
+      "url": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md"
+    },
+    {
+      "body": "OpenTelemetry",
+      "bound_main": 3,
+      "bound_support": 0,
+      "ext_points": [
+        "proto-extension",
+        "http-json"
+      ],
+      "http_status": 200,
+      "id": "cncf-otel-otlp",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e02d34f98bef463bd552a9b9e3724aecd0a80c92460f04d7c9e874a978ce67a3",
+      "title": "OTLP 协议",
+      "url": "https://opentelemetry.io/docs/specs/otlp/"
+    },
+    {
+      "body": "CNCF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "plugin-capability",
+        "option-field"
+      ],
+      "http_status": 200,
+      "id": "cni",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a6e497bb6be29beb5235870d10d79ecb049982a34c08978d3d1c71b95e782a30",
+      "title": "CNI 容器网络接口",
+      "url": "https://github.com/containernetworking/cni/blob/main/SPEC.md"
+    },
+    {
+      "body": "COVESA",
+      "bound_main": 4,
+      "bound_support": 0,
+      "ext_points": [
+        "overlay-extension"
+      ],
+      "http_status": 200,
+      "id": "covesa-vss",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1e3cea17372ef4abd569d05ef8ec71fc14357c766e15cbcdcd3980e6f9a8aedd",
+      "title": "Vehicle Signal Specification",
+      "url": "https://covesa.global/"
+    },
+    {
+      "body": "DIF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "message-type-registry",
+        "decorator"
+      ],
+      "http_status": 200,
+      "id": "didcomm",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d3bec65e2c1c689fa729bcf7305b1fff70d100e63654dba154bb484aca424659",
+      "title": "DIDComm 消息协议",
+      "url": "https://identity.foundation/didcomm-messaging/spec/"
+    },
+    {
+      "body": "HL7",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-definition"
+      ],
+      "http_status": 200,
+      "id": "fhir-shorthand",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8f82ce41147d2e322f68a53638201c575b117377839b107c414cfb62cddfbb29",
+      "title": "FHIR Shorthand（扩展定义语言）",
+      "url": "https://hl7.org/fhir/uv/shorthand/"
+    },
+    {
+      "body": "FIDO Alliance",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "vendor-command",
+        "extension-map"
+      ],
+      "http_status": 200,
+      "id": "fido-ctap",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "ff55083cd9d98d2027dd8b632ce7cee1042959c9c32fcc1bb1a359e6495129a9",
+      "title": "CTAP 认证器协议",
+      "url": "https://fidoalliance.org/specs/fido-v2.1-ps-20210615/fido-client-to-authenticator-protocol-v2.1-ps-20210615.html"
+    },
+    {
+      "body": "Kubernetes SIG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-ref",
+        "policy-attachment"
+      ],
+      "http_status": 200,
+      "id": "gateway-api",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7ef950f761c220a210e0a9aa944f5e08d8f095ec8e0d0f7843bd49c2643879d1",
+      "title": "Gateway API",
+      "url": "https://gateway-api.sigs.k8s.io/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "grant-request-extension",
+        "interaction-mode"
+      ],
+      "http_status": 200,
+      "id": "gnap",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "69516b32dd021fc1f56c590026cfd5d92313c673e28d024e48ceef58b2501fcb",
+      "title": "GNAP 授权协商",
+      "url": "https://www.rfc-editor.org/rfc/rfc9635"
+    },
+    {
+      "body": "GraphQL Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "directive-extension"
+      ],
+      "http_status": 200,
+      "id": "graphql",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "67c1b6fded5f0ae9bd51756f88e21ac8e9c5780bf8b6e70617e831690849bdf1",
+      "title": "GraphQL SDL",
+      "url": "https://spec.graphql.org/October2021/"
+    },
+    {
+      "body": "CNCF/gRPC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "custom-metadata",
+        "service-config"
+      ],
+      "http_status": 200,
+      "id": "grpc",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8b537be0ebd580f190cfbec6fa1c1263dd4d8afd392ecb2e3f88578fc68b94d2",
+      "title": "gRPC over HTTP/2",
+      "url": "https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md"
+    },
+    {
+      "body": "HL7",
+      "bound_main": 9,
+      "bound_support": 0,
+      "ext_points": [
+        "extension",
+        "profile-ig"
+      ],
+      "http_status": 200,
+      "id": "hl7-fhir",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "c0d85b5610dc0638b70390a6ad3dfebf8d23b047580dc05e70df54f81e287fe3",
+      "title": "FHIR（资源扩展机制）",
+      "url": "https://hl7.org/fhir/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "cache-directive",
+        "field-extension"
+      ],
+      "http_status": 200,
+      "id": "http-caching",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "bf7012a9c85a8c2006d5f203222115c89329689d525d35fbfb7326bbfdb83930",
+      "title": "HTTP 缓存（RFC 9111）",
+      "url": "https://www.rfc-editor.org/rfc/rfc9111"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "method-registry",
+        "field-name-registry",
+        "status-code-registry"
+      ],
+      "http_status": 200,
+      "id": "http-semantics",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0cc96331a26bbfdb31c614d95e24d812cd0f1d954140097aeeef4e7fae7d8284",
+      "title": "HTTP 语义（RFC 9110）",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110"
+    },
+    {
+      "body": "IEEE",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "object-variation",
+        "function-code"
+      ],
+      "http_status": 200,
+      "id": "ieee1815",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "bd2c7c7b7a245d2e82b0f99cdf26463b2eb0dbb7ea4a3a513cbe79ed530dfbe5",
+      "title": "IEEE 1815 DNP3",
+      "url": "https://standards.ieee.org/ieee/1815/5324/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-headers",
+        "content-negotiation"
+      ],
+      "http_status": 200,
+      "id": "ietf-http",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0e4a56639c258b839e5e2708af604026a0eff0f479bac66333f13f8053e4db17",
+      "title": "HTTP 语义 (RFC 9110)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.txt"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-members"
+      ],
+      "http_status": 200,
+      "id": "ietf-problem",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e2d4143729c0292bebb75121eec643c02c8eed146c4b1534eb101a8304bab605",
+      "title": "Problem Details (RFC 9457)",
+      "url": "https://www.rfc-editor.org/rfc/rfc9457.txt"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "header-registry"
+      ],
+      "http_status": 200,
+      "id": "ietf-webpush",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d7130962cbe0940465ca375a9fcecfaaa33afb0febd71dd58e2712502fdc0504",
+      "title": "Web Push (RFC 8291)",
+      "url": "https://www.rfc-editor.org/rfc/rfc8291.txt"
+    },
+    {
+      "body": "Intel",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "manufacturer-specific-command",
+        "sensor-type"
+      ],
+      "http_status": 403,
+      "id": "ipmi",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "IPMI 服务器管理",
+      "url": "https://www.intel.com/content/www/us/en/products/docs/servers/ipmi/ipmi-home.html"
+    },
+    {
+      "body": "ISO/IEC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "application-protocol",
+        "certificate-profile"
+      ],
+      "http_status": 403,
+      "id": "iso15118",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "ISO 15118 车充通信",
+      "url": "https://www.iso.org/standard/77845.html"
+    },
+    {
+      "body": "ISO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "message-definition-extension"
+      ],
+      "http_status": 403,
+      "id": "iso20022",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "ISO 20022 报文（可扩展元素）",
+      "url": "https://www.iso20022.org/iso-20022-message-definitions"
+    },
+    {
+      "body": "JSON:API",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-member"
+      ],
+      "http_status": 200,
+      "id": "jsonapi",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e15c5472ddc0cc549c69d6a2c3a95f6d6b09196fdb35a6480e5ecb68a4671d95",
+      "title": "JSON:API 1.1",
+      "url": "https://jsonapi.org/format/"
+    },
+    {
+      "body": "JSON-RPC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-method"
+      ],
+      "http_status": 200,
+      "id": "jsonrpc",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8fe1edfdca511d309e712e47447457ea5159b728ec02071a84593aed692aefeb",
+      "title": "JSON-RPC 2.0",
+      "url": "https://www.jsonrpc.org/specification"
+    },
+    {
+      "body": "CNCF",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "crd-versioning",
+        "admission"
+      ],
+      "http_status": 200,
+      "id": "k8s-crd",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0aae60830977f6beacaaef667f157d9228653cc68ac7235b83027e0744612ccc",
+      "title": "Kubernetes CRD/API 扩展",
+      "url": "https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"
+    },
+    {
+      "body": "Apache",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "api-key-version",
+        "flexible-version"
+      ],
+      "http_status": 200,
+      "id": "kafka-protocol",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0d455abfaa5371ad354fc8852644fa98e20313a523fc89e5011116f89456b75b",
+      "title": "Kafka 线协议",
+      "url": "https://kafka.apache.org/protocol.html"
+    },
+    {
+      "body": "Microsoft",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "custom-method",
+        "capability"
+      ],
+      "http_status": 200,
+      "id": "lsp",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "45aa028d7009af86f800060d4b515a1782b95fef7875ee3df922d7c10dc81b27",
+      "title": "Language Server Protocol",
+      "url": "https://microsoft.github.io/language-server-protocol/"
+    },
+    {
+      "body": "Matrix.org Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "m-scoped-extension",
+        "room-version"
+      ],
+      "http_status": 200,
+      "id": "matrix",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8be9d36a656c6b8256f52e5141093ec37cd7cd8b7c2eb3bc7e93abd89e3c5cb4",
+      "title": "Matrix 联邦协议",
+      "url": "https://spec.matrix.org/latest/"
+    },
+    {
+      "body": "Connectivity Standards Alliance",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "cluster-extension",
+        "device-type"
+      ],
+      "http_status": 200,
+      "id": "matter",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "74038a8440ae68f04ebd5bc22862b6ffda6d6ce69c13ee19a98e3b0e2cb09f55",
+      "title": "Matter 智能家居",
+      "url": "https://csa-iot.org/all-solutions/matter/"
+    },
+    {
+      "body": "MAVLink 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "custom-message",
+        "message-id-range"
+      ],
+      "http_status": 200,
+      "id": "mavlink",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "dcbc85c199747517dd29534b8ca6d9cd53b6ffe66f78d58095d5d507ee816932",
+      "title": "MAVLink 无人系统协议",
+      "url": "https://mavlink.io/en/"
+    },
+    {
+      "body": "Anthropic/MCP",
+      "bound_main": 14,
+      "bound_support": 0,
+      "ext_points": [
+        "server-capability",
+        "extension-method"
+      ],
+      "http_status": 200,
+      "id": "mcp",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "401fd812a16bce2316e9959042651a83ee7c5c2f99637402b5511e58b8b19d53",
+      "title": "Model Context Protocol",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18"
+    },
+    {
+      "body": "Modbus Organization",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "function-code-extension",
+        "exception-code"
+      ],
+      "http_status": 200,
+      "id": "modbus",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b51805270f00f703279f4918b0ff255154a2e8113a8057a806dda01b14ebea37",
+      "title": "Modbus 通信",
+      "url": "https://modbus.org/"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "user-property",
+        "reason-code"
+      ],
+      "http_status": 200,
+      "id": "mqtt5",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "64f0195408ca3042ed292db12a6b91102f2458f5d11c599eb353918e69b1abd5",
+      "title": "MQTT 5.0",
+      "url": "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html"
+    },
+    {
+      "body": "NMEA",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "sentence-extension",
+        "proprietary-sentence"
+      ],
+      "http_status": 200,
+      "id": "nmea0183",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "75094edfa8897b86d15d90fb79c22468bc7ec69796cb2a307bb3297414c7366f",
+      "title": "NMEA 0183 航海语句",
+      "url": "https://www.nmea.org/standards/"
+    },
+    {
+      "body": "AsyncAPI",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension",
+        "bindings"
+      ],
+      "http_status": 200,
+      "id": "oasis-asyncapi",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d94680b03a8d803906f1de5298ee88a88b239afacd2bf26c22471513f6522a71",
+      "title": "AsyncAPI 3.0",
+      "url": "https://www.asyncapi.com/docs/reference/specification/v3.0.0"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "vocabulary-extensions",
+        "annotations"
+      ],
+      "http_status": 200,
+      "id": "oasis-odata",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d1749d3f71a560db9f8214e81dd95701ab62c8935ddc8938933a15808a330344",
+      "title": "OData v4.01",
+      "url": "https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html"
+    },
+    {
+      "body": "OpenAPI Initiative",
+      "bound_main": 15,
+      "bound_support": 3,
+      "ext_points": [
+        "x-extension",
+        "specification-extension"
+      ],
+      "http_status": 200,
+      "id": "oasis-openapi",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "55bd8998693ca08acfc835d65f643ac20bccbd18c28c7abcc1031207444481a7",
+      "title": "OpenAPI 3.1",
+      "url": "https://spec.openapis.org/oas/v3.1.0"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 7,
+      "bound_support": 0,
+      "ext_points": [
+        "property-bag",
+        "taxonomies"
+      ],
+      "http_status": 200,
+      "id": "oasis-sarif",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3cb911a9cbf8afe97c636ec0098161d69b44e574e41ecd56d764a2862799e947",
+      "title": "SARIF 2.1.0",
+      "url": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "grant-type-registry",
+        "token-type-registry"
+      ],
+      "http_status": 200,
+      "id": "oauth2",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f0acb7a15b60c482fa37124da3500973cb989e1c7733cf3486e4c203b3d6be35",
+      "title": "OAuth 2.0 授权框架",
+      "url": "https://www.rfc-editor.org/rfc/rfc6749"
+    },
+    {
+      "body": "Open Container Initiative",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "media-type",
+        "api-extension"
+      ],
+      "http_status": 200,
+      "id": "oci-distribution",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "98e088248dad690c61157e570969c4a48745880108ec91bb0193d7b98994ed03",
+      "title": "OCI 镜像分发",
+      "url": "https://github.com/opencontainers/distribution-spec"
+    },
+    {
+      "body": "OCI",
+      "bound_main": 19,
+      "bound_support": 0,
+      "ext_points": [
+        "annotation",
+        "media-type"
+      ],
+      "http_status": 200,
+      "id": "oci-image",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "e406d8e8312eb1a72e46106ae7de0a8c614bf3cd53c8f397cf50a215dea96c19",
+      "title": "镜像清单",
+      "url": "https://github.com/opencontainers/image-spec/blob/main/manifest.md"
+    },
+    {
+      "body": "Open Charge Alliance",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "vendor-extension",
+        "profile"
+      ],
+      "http_status": 200,
+      "id": "ocpp",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "3d105437ec4bb029517728871f531f2253f0f28e04033811f107137a9ca044a4",
+      "title": "OCPP 充电桩协议",
+      "url": "https://openchargealliance.org/protocols/open-charge-point-protocol/"
+    },
+    {
+      "body": "OpenID Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "claim-extension",
+        "auth-method"
+      ],
+      "http_status": 200,
+      "id": "oidc",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f45d6686d05d8ef0da4782a3a55cfdd09475c116e85d75bbb37da9999d3a49b3",
+      "title": "OpenID Connect Core",
+      "url": "https://openid.net/specs/openid-connect-core-1_0.html"
+    },
+    {
+      "body": "Linux Foundation",
+      "bound_main": 46,
+      "bound_support": 0,
+      "ext_points": [
+        "opset-version",
+        "function-op"
+      ],
+      "http_status": 200,
+      "id": "onnx",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d1c5bf03b17c2fd2ef16099611fffef18f22bc675bc612d73d62b1c71d115f7b",
+      "title": "ONNX（opset 扩展）",
+      "url": "https://github.com/onnx/onnx/blob/main/docs/IR.md"
+    },
+    {
+      "body": "OPC Foundation",
+      "bound_main": 2,
+      "bound_support": 0,
+      "ext_points": [
+        "companion-specification",
+        "information-model-extension"
+      ],
+      "http_status": 200,
+      "id": "opcua",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "91bbd45e2831adf411da4a042022741acff9afb5b99a9ff19011756b6bb2c6be",
+      "title": "OPC UA 工业互联",
+      "url": "https://reference.opcfoundation.org/"
+    },
+    {
+      "body": "OPC Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "security-policy",
+        "certificate-profile"
+      ],
+      "http_status": 200,
+      "id": "opcua-security",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "744627f41949e5e985ea2a6f1e0a961535ba4f70eb41f0699684961668cb0470",
+      "title": "OPC UA 安全策略",
+      "url": "https://reference.opcfoundation.org/Core/Part2/v105/docs/"
+    },
+    {
+      "body": "OpenADR Alliance",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "profile",
+        "event-extension"
+      ],
+      "http_status": 200,
+      "id": "openadr",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8806f5c91e2c54ad731c90f51ab8462e929b3517db2069bd03f657fa022951a2",
+      "title": "OpenADR 需求响应",
+      "url": "https://openadr.org/"
+    },
+    {
+      "body": "OGC",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "vendor-parameters"
+      ],
+      "http_status": 200,
+      "id": "opengis-wms",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "24c0d797d2e59072c9a6e89cd642111e80d73ac7a1d9499d43402d9aafb48601",
+      "title": "WMS 实现规范（可扩展）",
+      "url": "https://www.ogc.org/standard/wms/"
+    },
+    {
+      "body": "OpenID Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "entity-statement",
+        "metadata-policy"
+      ],
+      "http_status": 200,
+      "id": "openid-federation",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a310fed11f707f6320ba2f2ee319740e73747c26c4e2339c3077b4a0d2f392b1",
+      "title": "OpenID Federation",
+      "url": "https://openid.net/specs/openid-federation-1_0.html"
+    },
+    {
+      "body": "OpenID Foundation",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "credential-format",
+        "extension-parameter"
+      ],
+      "http_status": 200,
+      "id": "openid4vci",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "1dec5f1be623e27ad69373bf32cf353a2f8dfb6fe2bfec0053678217828992ff",
+      "title": "OpenID for Verifiable Credential Issuance",
+      "url": "https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "challenge-method"
+      ],
+      "http_status": 200,
+      "id": "pkce",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0e7a36fd920f3f329bfd71721f7d462297bb3989f7df772313bdf7aa5e3c1b55",
+      "title": "PKCE 授权码保护",
+      "url": "https://www.rfc-editor.org/rfc/rfc7636"
+    },
+    {
+      "body": "Google",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "reserved-fields",
+        "custom-options"
+      ],
+      "http_status": 200,
+      "id": "protobuf",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a9dddcf5bc612e3010ad8f4f59afcf268c50ab07e2ebc7f5a8916a4084c3d41d",
+      "title": "Protocol Buffers proto3",
+      "url": "https://protobuf.dev/programming-guides/proto3/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "transport-parameter",
+        "frame-type"
+      ],
+      "http_status": 200,
+      "id": "quic",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "6a6e4a2ac54488cb8ec7425fe46b7f430e771ebf6cf6e0487c0af5b0f93cd4ea",
+      "title": "QUIC 传输",
+      "url": "https://www.rfc-editor.org/rfc/rfc9000"
+    },
+    {
+      "body": "DMTF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "oem-extension",
+        "schema-registry"
+      ],
+      "http_status": 200,
+      "id": "redfish",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f3bcf4ed0f89034d8162585c6696aff70cf0ede4be6c530e80217fb103d53d47",
+      "title": "Redfish 系统管理",
+      "url": "https://www.dmtf.org/standards/redfish"
+    },
+    {
+      "body": "Open Robotics",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "idl-message",
+        "qos-profile"
+      ],
+      "http_status": 200,
+      "id": "ros2-interface",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "0d960ad1259ae5b36377dd6b86ea3dc462008c0e38374220754f0f8906d0f387",
+      "title": "ROS 2 接口定义",
+      "url": "https://docs.ros.org/en/rolling/Concepts/Basic/About-Interfaces.html"
+    },
+    {
+      "body": "OASIS",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "attribute-profile",
+        "extension-schema"
+      ],
+      "http_status": 200,
+      "id": "saml2",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "debf2a4976884067e8dded626895bf17972ac16dbaaa1ebd1fb28a8149bf72fb",
+      "title": "SAML 2.0 断言",
+      "url": "https://docs.oasis-open.org/security/saml/v2.0/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "schema-extension",
+        "resource-type"
+      ],
+      "http_status": 200,
+      "id": "scim2",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8ec27a0a195f02b0147f4d49aa8c5b21a6fb2bf4427182b53e383d984fddfce6",
+      "title": "SCIM 2.0 跨域身份管理",
+      "url": "https://www.rfc-editor.org/rfc/rfc7644"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "disclosure-frame",
+        "kb-jwt"
+      ],
+      "http_status": 200,
+      "id": "sd-jwt",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "82c08592a90b3f7e36cf85869dfd6b36c7e0c3bc9760be845406833125d21af1",
+      "title": "SD-JWT 选择性披露",
+      "url": "https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/"
+    },
+    {
+      "body": "ISO",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "message-extension"
+      ],
+      "http_status": 403,
+      "id": "sepa-iso20022",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "ISO 20022 报文定义库",
+      "url": "https://www.iso20022.org/iso-20022-message-definitions"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-function"
+      ],
+      "http_status": 200,
+      "id": "sparql11",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f860514aa3a800288e70bbe518eba48c37fba2e8e88887ef642434cfed02b79c",
+      "title": "SPARQL 1.1 Protocol",
+      "url": "https://www.w3.org/TR/sparql11-protocol/"
+    },
+    {
+      "body": "CNCF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "svid-extension",
+        "trust-domain"
+      ],
+      "http_status": 200,
+      "id": "spiffe",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "8300b39d6560168d0db87ddaff628130da0fd7e855899c9c2be10729de60f4a9",
+      "title": "SPIFFE 工作负载身份",
+      "url": "https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/"
+    },
+    {
+      "body": "WHATWG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "event-field",
+        "retry-semantics"
+      ],
+      "http_status": 200,
+      "id": "sse-html",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "7fcd98209deff2ed96aa0aa48fa2456ed9c0c37b7306468552ee7936308668f0",
+      "title": "Server-Sent Events",
+      "url": "https://html.spec.whatwg.org/multipage/server-sent-events.html"
+    },
+    {
+      "body": "SunSpec Alliance",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "model-point-extension",
+        "profile"
+      ],
+      "http_status": 403,
+      "id": "sunspec",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": false,
+      "sha256_sample": "",
+      "title": "SunSpec 逆变器模型",
+      "url": "https://sunspec.org/specifications/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-type",
+        "cipher-suite-registry"
+      ],
+      "http_status": 200,
+      "id": "tls13",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "63524343991f5c20da27a519cb6f98c31e3a3de920591e592c24f74b33309241",
+      "title": "TLS 1.3",
+      "url": "https://www.rfc-editor.org/rfc/rfc8446"
+    },
+    {
+      "body": "Kantara Initiative",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "grant-extension",
+        "scope-format"
+      ],
+      "http_status": 200,
+      "id": "uma2",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "df3a77cb14076e76a3c866d670b98bfd21504f86151661989c283244a5b56622",
+      "title": "UMA 2.0 用户管理访问",
+      "url": "https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-grant-2.0.html"
+    },
+    {
+      "body": "ROS 社区",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-tag",
+        "gazebo-tag"
+      ],
+      "http_status": 200,
+      "id": "urdf",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "63d0c86886dd69c1da15e44b4428dae1ed83ea6a448cb5d52dc4bc490aac630c",
+      "title": "URDF 机器人描述",
+      "url": "https://docs.ros.org/en/rolling/Tutorials/Intermediate/URDF/URDF-Main.html"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "cryptosuite",
+        "proof-purpose"
+      ],
+      "http_status": 200,
+      "id": "vc-data-integrity",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "a401f443bb7d184af1007f491274d05e00abe1e6d28e9a5f3800ef9a82ede168",
+      "title": "可验证凭证数据完整性",
+      "url": "https://www.w3.org/TR/vc-data-integrity/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 1,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-vocabulary",
+        "thing-model"
+      ],
+      "http_status": 200,
+      "id": "w3c-wot",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "d98d25f1e4023765d6baa62e4188c3b996151ebb80089ee5cd17ae563684c365",
+      "title": "Web of Things Thing Description",
+      "url": "https://www.w3.org/TR/wot-thing-description11/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-identifier",
+        "authenticator-attachment"
+      ],
+      "http_status": 200,
+      "id": "webauthn",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "5f6136487d0b08b39716fa272be3081e715213435b1533c4287ad54462d130dd",
+      "title": "WebAuthn",
+      "url": "https://www.w3.org/TR/webauthn-3/"
+    },
+    {
+      "body": "WHATWG",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extended-attribute"
+      ],
+      "http_status": 200,
+      "id": "webidl",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "269d9f30db5da084da64b80bcbb179da44f02a5db58c85ab9d638fe62e46d93d",
+      "title": "Web IDL",
+      "url": "https://webidl.spec.whatwg.org/"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "endpoint-discovery",
+        "vouch-extension"
+      ],
+      "http_status": 200,
+      "id": "webmention",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "f4f2f7c2d2418cff508874ed8c6c279bf6805fc46f2c961127ce890035992759",
+      "title": "Webmention",
+      "url": "https://www.w3.org/TR/webmention/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "extension-negotiation",
+        "subprotocol"
+      ],
+      "http_status": 200,
+      "id": "websocket",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "962aba0d936cbd64d79a38e56e15a3d9745ab8176aed785ba8df754f3ec52da9",
+      "title": "WebSocket 协议",
+      "url": "https://www.rfc-editor.org/rfc/rfc6455"
+    },
+    {
+      "body": "W3C",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "feature-extension"
+      ],
+      "http_status": 200,
+      "id": "wsdl20",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "b73c313d25f5f266525138564c78b2495726a415f6b9360d98ce90ab253b9e6f",
+      "title": "WSDL 2.0",
+      "url": "https://www.w3.org/TR/wsdl20/"
+    },
+    {
+      "body": "IETF",
+      "bound_main": 0,
+      "bound_support": 0,
+      "ext_points": [
+        "xep-extension",
+        "stanza-extension"
+      ],
+      "http_status": 200,
+      "id": "xmpp",
+      "layer": "iface",
+      "probe_date": "2026-09-24",
+      "reachable": true,
+      "sha256_sample": "5989751620e0d42095f04f6cb8234cd647259df4c3604ffb482fc141817e2760",
+      "title": "XMPP 核心",
+      "url": "https://www.rfc-editor.org/rfc/rfc6120"
+    }
+  ]
+}

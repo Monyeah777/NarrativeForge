@@ -5,7 +5,7 @@
 
 ## 为什么有这份卡册
 
-NF 的门禁是一份 1797 行的 bash 脚本、37 条 check，当前基线声明为 `check1-37` · `PASS=61`（行数为 verify.sh 实测；基线取自仓库真源 `quality_baseline.EXPECTED_*`）。
+NF 的门禁是一份 bash 脚本、38 条 check，当前基线声明为 `check1-38` · `PASS=66`（行数与 check 数为 verify.sh 实测；基线取自仓库真源 `quality_baseline.EXPECTED_*`，并由 `nf stats --check` 断言入口文件同步）。
 但「PASS=61」本身不说话——它不告诉你每一条到底断言了什么，也不告诉你哪一条可以自己复跑。
 这份卡册把每条 check 翻译成同一张五格卡：**结论 / 判据 / 步骤 / 谁验 / 记录**。
 
@@ -22,9 +22,9 @@ NF 的门禁是一份 1797 行的 bash 脚本、37 条 check，当前基线声�
 
 | 项 | 值 |
 |---|---|
-| 卡片总数 | 37（= verify.sh 的 check 函数数，实测） |
+| 卡片总数 | 38（= verify.sh 的 check 函数数，实测） |
 | 门禁脚本 | 1797 行（verify.sh 实测） |
-| 声明基线 | check1-37 · PASS=61（源自 quality_baseline.EXPECTED_*） |
+| 声明基线 | check1-38 · PASS=66（源自 quality_baseline.EXPECTED_*） |
 | 段位分布 | 段A 官方核心 6 · 段B 社区包 5 · 段C 代码层 26 |
 | 断言种类 | 真实单测 6 条 · 语义校验 12 条 · 其余为结构断言 |
 | 复跑入口 | `bash verify.sh`（全量）；单条见各卡片的「复跑命令」 |
@@ -449,4 +449,3 @@ NF 的门禁是一份 1797 行的 bash 脚本、37 条 check，当前基线声�
 
 > 本册可重建：仓库根执行 `powershell -File ..\build_verification_cards.ps1`，产物逐字节一致。
 > 门禁变更后应重新生成（否则卡册与门禁会静默漂移——这正是它想防的那种问题）。
-

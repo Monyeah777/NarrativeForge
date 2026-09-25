@@ -18,8 +18,8 @@ _ROOT = Path(__file__).resolve().parents[3]
 
 #: 当前基线声明（verify 每次扩 check 时同步：check 数 + PASS 期望值）。
 #: 本模块以 verify.sh 为单一真值做四处自洽断言，期望值集中在此，避免散落字面量。
-EXPECTED_CHECKS = 37
-EXPECTED_PASS = 61
+EXPECTED_CHECKS = 38
+EXPECTED_PASS = 66
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

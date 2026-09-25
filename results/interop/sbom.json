@@ -9,7 +9,7 @@
     ]
   },
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://narrativeforge.dev/spdx/v2.27",
+  "documentNamespace": "https://narrativeforge.dev/spdx/v2.28",
   "name": "narrativeforge-sbom",
   "packages": [
     {
@@ -19,7 +19,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "NarrativeForge",
-      "versionInfo": "v2.27"
+      "versionInfo": "v2.28"
     },
     {
       "SPDXID": "SPDXRef-Dependency-yaml",

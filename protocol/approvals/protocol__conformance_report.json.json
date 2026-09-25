@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-24",
+  "approved_at": "2026-09-25",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "标准目录 370 条（可达 332）+ 100 包双锚/数据真实性对齐 + 概念图纵深；组合包产物化 4 包 + 广度五六元（URL 替代后复签）",
+  "note": "提交快照内重绑审计摘要并重建一致性链",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "3f7323909e04bd4c8476cbedd8bf77814684fc81dcbdfeab421d7d7176aa8baa"
+  "subject_digest": "065fd78adbeacc057b9097cd089b6458e6f16ae8e91194e558e0c710f0355b4e"
 }

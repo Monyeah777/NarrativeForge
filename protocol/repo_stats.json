@@ -1,0 +1,33 @@
+{
+  "baseline_checks": 38,
+  "baseline_pass": 66,
+  "concept_graphs": 101,
+  "core_modules": 13,
+  "core_pipelines": [
+    "P00",
+    "P01",
+    "P90"
+  ],
+  "domain_packs": 100,
+  "library_items": 3,
+  "pack_assets": 363,
+  "pack_dirs": 111,
+  "registered_packs": 111,
+  "schema": "nf-repo-stats/1",
+  "standard_bindings": 1200,
+  "standards_bodies": 194,
+  "standards_by_layer": {
+    "data": 148,
+    "eng": 38,
+    "form": 29,
+    "gov": 71,
+    "iface": 84
+  },
+  "standards_edges": 206,
+  "standards_reachable": 332,
+  "standards_total": 370,
+  "standards_unreachable": 38,
+  "subdivisions_total": 1200,
+  "verify_checks": 38,
+  "verify_version": "2.28"
+}

@@ -14,7 +14,7 @@
 | registry schema | `2` | 02 头部 + `desktop/src/core/registry.json` |
 | machine_contract schema | `1` | `protocol/schema/contract.schema.json` |
 | IDL schema 集 | `5 件` | `protocol/schema/` |
-| 基线 | `v2.27 · check1-37 · PASS=61` | `verify.sh` + `quality_baseline.EXPECTED_*` |
+| 基线 | `v2.28 · check1-38 · PASS=66` | `verify.sh` + `quality_baseline.EXPECTED_*` |
 
 ## 范围
 

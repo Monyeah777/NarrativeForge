@@ -7,8 +7,8 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/concept_graph.py:5a4f5b6dc61f825c3d51a648eae84e434ac3cc475114db7c3f50e256ae193ca2
-  - verify.sh:2bd50019c0be6325f7eabdd96c2af24fed63bbcd15fe27d28a8e80946076a5fc
-  - README.en.md:3431128ea3b63304bbc0f28a0fae594117c935ef89ba7a83e883fab45063313f
+  - verify.sh:e8cbae9cbd8e8594e8ea5ea5ff62f6e9719428660feeb9c7a77c13f64dd8baba
+  - README.en.md:8234ab5a5086857654f30cb82631b133f31169b639e4d1a93309473ca5eaf47c
   - scripts/check_external_links.py:4167e9e27e453a9f495870c9a69820d9c8886023cfd2d10d4457ae3686f15515
   - community/量化金融域包/assets/DATA_CONTRACT.md:3815cd420ce535b571149a1ca0725b2d5c1757660e83d0edd8ed1d5c14ed2af1
   - community/量化金融域包/assets/STRATEGY_SPECS.md:9174638b5caf2d5d8586b80d07ed9aeca5d221e16f01ec19ce0e4c0f50859e65

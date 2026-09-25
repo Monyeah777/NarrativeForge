@@ -54,6 +54,12 @@ def _build_parser() -> argparse.ArgumentParser:
                    help="显示版本号后退出")
     sub = p.add_subparsers(dest="cmd", required=False)
 
+    st = sub.add_parser("stats", help="自述数字实算与生成（README/README.en/llms.txt 的 marker 区）",
+                        description="出口自动化：README/README.en/llms.txt 的数字由产物实算生成，禁止手改")
+    st.add_argument("--write", action="store_true", help="重写生成区并落 protocol/repo_stats.json")
+    st.add_argument("--check", action="store_true", help="只校验（生成区 == 实算）")
+    st.add_argument("--json", action="store_true", help="打印机读结果")
+
     run = sub.add_parser("run", help="跑全链管道：模块选择→装配→质检→导出", description="跑全链管道：模块选择→装配→质检→导出")
     run.add_argument("--pipeline", required=True,
                      help="管线 md 文件路径（如 community/校园西幻轻混组合包/pipelines/P04_轻混装配流管线.md）")
@@ -4387,6 +4393,34 @@ def _cmd_worldmodel(args):
     return 1 if issues else 0
 
 
+def _cmd_stats(args) -> int:
+    """自述数字实算（出口自动化 · check38 子扫描 1）。"""
+    from core import repo_stats as rs
+
+    if args.write:
+        issues, stats = rs.write(".")
+    else:
+        issues, stats = rs.check(".")
+    if args.json:
+        print(json.dumps(stats, ensure_ascii=False, indent=2, sort_keys=True))
+    else:
+        print("== nf stats（自述数字实算 · 真源 protocol/repo_stats.json）==")
+        print("  官方核心：模块 %d · 管线 %s"
+              % (stats["core_modules"], " / ".join(stats.get("core_pipelines") or [])))
+        print("  社区规模：登记包 %d · 资产档 %d · 概念图 %d · 域包 %d/%d 细分"
+              % (stats["registered_packs"], stats["pack_assets"], stats["concept_graphs"],
+                 stats["domain_packs"], stats["subdivisions_total"]))
+        print("  标准目录：%d 条（可达 %d / 不可达 %d · 机构 %d · %d 边） · 绑定 %d 条"
+              % (stats["standards_total"], stats["standards_reachable"], stats["standards_unreachable"],
+                 stats["standards_bodies"], stats["standards_edges"], stats["standard_bindings"]))
+        print("  质量凭证：verify check1-%d 常驻（脚本 v%s） · 馆藏 %d 件"
+              % (stats["verify_checks"], stats["verify_version"], stats["library_items"]))
+        print("  模式：%s" % ("write（已重写生成区）" if args.write else "check（只校验）"))
+        for i in issues:
+            print("  [FAIL] %s" % i, file=sys.stderr)
+    return 1 if issues else 0
+
+
 def main(argv=None) -> int:
     args = _build_parser().parse_args(argv)
     if args.cmd is None:
@@ -4394,6 +4428,8 @@ def main(argv=None) -> int:
         return 0
     if args.cmd == "help":
         return _cmd_help(args)
+    if args.cmd == "stats":
+        return _cmd_stats(args)
     if args.cmd == "doctor":
         return _cmd_doctor(args)
     if args.cmd == "completion":

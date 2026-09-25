@@ -4,13 +4,13 @@
 
 **一句话**：NF 是内容契约层——定义“AI 稳定产出长内容”的协议、质量与资产标准；叙事只是官方第一域包，协议本身域中立、模型无关。
 
-`verify v2.27 · check1-37 · PASS=61` · `python scripts/nf.py --version`
+`bash verify.sh`（当前基线见下方生成区「质量凭证」行） · `python scripts/nf.py --version`
 
 ## ⚡ 如果你是 AI / Agent
 
 - 这是什么：规范驱动的文档工厂，装模块/管线/资产 → 校验 → 输出。
 - 入口链：`AGENT_START.md`（开工）→ `AI_ROUTING.md`（选线）→ `DEEP_DIVE.md`（懂得深）。
-- 机器凭证：`bash verify.sh` → v2.27，check1-37，PASS=61；机器入口清单见 `llms.txt`，英文入口见 `README.en.md`（两份入口的机读事实由 check34 断言一致）。
+- 机器凭证：`bash verify.sh`（当前基线见下方生成区的「质量凭证」行，由 `nf stats --write` 写入）；机器入口清单见 `llms.txt`，英文入口见 `README.en.md`（两份入口的机读事实由 check34 断言一致）。
 - 要懂 NF 为什么这样设计：读 [DEEP_DIVE.md](DEEP_DIVE.md)。
 
 ## 快速开始
@@ -33,7 +33,15 @@ AI 装配：
 
 ## 能力与资产
 
-48 模块 · 10 管线 · 7 社区包（叙事 3 / 非叙事 3 / 组合 1） · 60 资产档/326 键 · 概念图 2（AI系统 47 + 量化金融 30） · world_model 1（M50） · 馆藏 3 件 · 实践包 3 条 · 知识源 6（合同 3 / 参考 3） · verify check1-37 常驻
+<!-- nf:stats:begin -->
+**官方核心**：13 模块 · 3 管线（P00 / P01 / P90） · 核心协议件 01–07
+**社区规模**：111 登记包 · 363 资产档 · 101 概念图 · 100 域包/1200 细分 · 标准目录 370 条（可达 332 / 不可达 38 · 机构 194 · 206 条依赖边） · 标准绑定 1200 条
+**质量凭证**：verify v2.28 · check1-38 · PASS=66（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`） · 馆藏 3 件
+
+分层：data 148 · eng 38 · form 29 · gov 71 · iface 84 （按标准目录 layer）
+
+> 本区由 `python scripts/nf.py stats --write` 生成，禁止手改；口径与实算真源见 `protocol/repo_stats.json`。
+<!-- nf:stats:end -->
 
 ## 协议链与文档导航
 

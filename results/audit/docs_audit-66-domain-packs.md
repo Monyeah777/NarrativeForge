@@ -11,11 +11,11 @@ subjects:
   - desktop/src/core/output_forms.py:0e87152c7a267e5645825f9c5d447fdc56b53b493ab7f7417a7131bad65348a6
   - desktop/src/core/quality_depth_scan.py:ef33e0c52da8370134c34da56943f3d9188c0f3212727a4b4eea5a80f0732fb1
   - desktop/src/core/doc_hygiene.py:b4906f5459116d12d1e30f58ef083dad8f2b9841e4e46a43b8921e38f14088f1
-  - scripts/nf.py:1efa4aba1fa4d6e03ee5a9da3a562970c4415c5704fb7301999f9d62ec47e2d4
+  - scripts/nf.py:9f3c09e9bb1461001d88f59d8a1ee1811b26f7dcf31ff7c87df502a2d1d25dcf
   - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
-  - verify.sh:2bd50019c0be6325f7eabdd96c2af24fed63bbcd15fe27d28a8e80946076a5fc
+  - verify.sh:e8cbae9cbd8e8594e8ea5ea5ff62f6e9719428660feeb9c7a77c13f64dd8baba
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

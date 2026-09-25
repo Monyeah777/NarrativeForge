@@ -32,7 +32,7 @@
   ],
   "metadata": {
     "component": {
-      "bom-ref": "pkg:nf/narrativeforge@v2.27",
+      "bom-ref": "pkg:nf/narrativeforge@v2.28",
       "licenses": [
         {
           "license": {
@@ -62,7 +62,7 @@
       }
     ]
   },
-  "serialNumber": "urn:uuid:13130a75-63a6-4e99-84ae-ba121396bfbf",
+  "serialNumber": "urn:uuid:b8c0c60b-fafa-c48a-b17e-31ee6e5047c8",
   "specVersion": "1.5",
   "version": 1
 }

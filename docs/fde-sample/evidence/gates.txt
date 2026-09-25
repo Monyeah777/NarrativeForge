@@ -1,0 +1,7 @@
+$ python scripts/fde_sample_run.py --run
+exit=0
+  [PASS] G1_outputs_declared · 声明面 6 · 缺失 0 · 不可解析 0
+  [PASS] G2_contracts · schema↔data 对 2 · 不合规 0
+  [PASS] G3_concept_graph · 节点 48 · 拓扑序 47 · 问题 0 · 证据强度 external
+  [PASS] G4_assembly_chain · 装配链 4 件，缺 0
+  [PASS] G5_midstream_exports · stats.check 问题 0 · geo.check 问题 0

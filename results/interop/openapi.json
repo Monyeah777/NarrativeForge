@@ -337,6 +337,17 @@
     "/library/{id}": {
       "get": {
         "operationId": "library.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-nf-derived": "由 protocol/endpoint_contract.json 的路径模板派生"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {

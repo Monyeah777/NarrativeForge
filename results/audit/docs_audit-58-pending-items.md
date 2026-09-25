@@ -6,10 +6,10 @@ scope: 作者指令「遗留全部补上」——处置 AUD-0009 §五 列出的
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:2bd50019c0be6325f7eabdd96c2af24fed63bbcd15fe27d28a8e80946076a5fc
+  - verify.sh:e8cbae9cbd8e8594e8ea5ea5ff62f6e9719428660feeb9c7a77c13f64dd8baba
   - desktop/src/core/transparency_log.py:ffb298d1a55611f03ee8dca1a57aa6148fd06bfaeb4cbd6a07dade279ebddd00
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
-  - desktop/src/core/interop_export.py:1fc35ff29f0b7b0a95ae8fa150f8e05534a7e65bf821f6749d95491dcd1ab8a6
+  - desktop/src/core/interop_export.py:98be4b86f7b8a83359ee3f894e0b11531cd992a51dc25cb9aa887c6321dcbe93
   - desktop/src/core/ccv3_adapter.py:cb33b76eb4e3af332f73fceefd5ef8e7ed171d76cc4ee02327555f21bb5c9ca1
   - desktop/src/core/export_schema.py:3b80c1b772bb8309d918e461b4adcc80d1ce887aa69882f0cbb48c7bd7780e5b
   - desktop/src/core/mcp_runtime.py:104e72d90c207132a1479297ba5853a50e525e65f17ff12c08524c9520708751

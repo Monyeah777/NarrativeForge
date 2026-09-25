@@ -1,0 +1,5 @@
+{"gate": "G1_outputs_declared", "verdict": "PASS", "detail": "声明面 6 · 缺失 0 · 不可解析 0"}
+{"gate": "G2_contracts", "verdict": "PASS", "detail": "schema↔data 对 2 · 不合规 0"}
+{"gate": "G3_concept_graph", "verdict": "PASS", "detail": "节点 48 · 拓扑序 47 · 问题 0 · 证据强度 external"}
+{"gate": "G4_assembly_chain", "verdict": "PASS", "detail": "装配链 4 件，缺 0"}
+{"gate": "G5_midstream_exports", "verdict": "PASS", "detail": "stats.check 问题 0 · geo.check 问题 0"}

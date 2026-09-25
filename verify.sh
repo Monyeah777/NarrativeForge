@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.27  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）
+# 版本 : v2.28  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）
 #        46 吸收七面 check33：MCP dual-era 版本对齐（2026-07-28/2025-11-25 + server/discover）/
 #        内容外挂签名 attestation / 基线相对回归评分 / 机械修复 + LSP / 正文 lint / 图书馆许可证门 / 遥测 semconv
 #        图书馆面 check34：条目 frontmatter 真源（OKF 借鉴）/ INDEX·ALIAS 投影一致（I5）/ 生命周期 /
@@ -2199,6 +2199,46 @@ check37(){
   fi
 }
 
+check38(){
+  echo '== [38/段C] 出口自动化门禁（自述数字 / 他证通道 / GEO 出口 / FDE 样例）=='
+  local err=0 sub mod label
+  if [ -n "$PY3" ]; then
+    for sub in 'repo_stats:自述数字' 'interop_thirdparty:他证通道' 'geo_export:GEO 出口' 'fde_sample:FDE 样例'; do
+      mod=${sub%%:*}; label=${sub##*:}
+      if "$PY3" - "$mod" "$label" >"$NFL_TMP"/nf_check38_$mod.log 2>&1 <<'PYEOF'
+import importlib.util, os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+mod, label = sys.argv[1], sys.argv[2]
+if mod == 'repo_stats':
+    from core import repo_stats as m
+    issues, stats = m.check('.')
+else:
+    rel = {'interop_thirdparty': 'scripts/interop_thirdparty_kit.py',
+           'geo_export': 'scripts/geo_export.py',
+           'fde_sample': 'scripts/fde_sample_run.py'}[mod]
+    spec = importlib.util.spec_from_file_location(mod, rel)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    issues, stats = m.check('.')
+for i in issues:
+    print('[FAIL] %s' % i)
+print('%s 子扫描：%s' % (label, '零缺口' if not issues else 'FAIL %d' % len(issues)))
+sys.exit(1 if issues else 0)
+PYEOF
+      then
+        ok "出口面全绿：$label（check38 子扫描）"
+      else
+        no "$label 出口面不一致——见 nf_check38_$mod.log：$(tail -2 "$NFL_TMP"/nf_check38_$mod.log 2>/dev/null | tr '\n' ' ')"
+        err=1
+      fi
+    done
+  else
+    wn 'python3 不在 PATH（跳过 check38 出口自动化门禁）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '出口自动化门禁全绿（check38：自述数字 + 他证通道 + GEO 出口 + FDE 样例 四子扫描）'
+  fi
+}
+
 # ================= 主执行体（三段式） =================
 echo '=================================================='
 echo ' NarrativeForge 三段式验收门禁  v2.27（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
@@ -2240,6 +2280,7 @@ check34
 check35
 check36
 check37
+check38
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then

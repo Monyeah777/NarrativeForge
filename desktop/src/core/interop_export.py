@@ -82,6 +82,15 @@ def _schema_for(desc: str) -> Dict[str, Any]:
     return out
 
 
+def _ptr(token: str) -> str:
+    """JSON Pointer 转义（RFC 6901）：`~` → `~0`、`/` → `~1`。
+
+    为什么需要：AsyncAPI 通道键写作 `nf/<事件名>`，而 `$ref` 片段里的 `/` 是层级分隔符；
+    不转义会被官方校验器判为「引用的通道不存在」（2026-09-24 他证实证：443 条 invalid-ref）。
+    """
+    return str(token).replace("~", "~0").replace("/", "~1")
+
+
 def openapi_doc(root: str = ".") -> Dict[str, Any]:
     """服务端点契约 → OpenAPI 3.1 文档（纯派生）。"""
     contract = _read_json(root, CONTRACT_REL)
@@ -127,6 +136,18 @@ def openapi_doc(root: str = ".") -> Dict[str, Any]:
                 "schema": {"type": "string"},
                 "x-nf-streaming": conv.get("streaming", ""),
             }
+        # 路径参数派生（2026-09-24 他证实证修复）：OpenAPI 3.1 要求路径模板变量必须在
+        # operation 或 path item 上声明；此前只派生 operation 本体 → 官方校验器
+        # （openapi-spec-validator）对 `/library/{id}` 报 “Path parameter 'id' ... was not resolved”。
+        # 口径：模板变量名 → path 参数（type=string），与 endpoint_contract 的 {name} 写法同源。
+        tmpl_vars = re.findall(r"\{([^}]+)\}", path)
+        if tmpl_vars:
+            op["parameters"] = [
+                {"name": name, "in": "path", "required": True,
+                 "schema": {"type": "string"},
+                 "x-nf-derived": "由 protocol/endpoint_contract.json 的路径模板派生"}
+                for name in tmpl_vars
+            ]
         if ep.get("deprecated"):
             op["deprecated"] = True
             op["x-nf-sunset"] = ep.get("sunset")
@@ -183,7 +204,7 @@ def asyncapi_doc(root: str = ".") -> Dict[str, Any]:
         channels["nf/%s" % name] = {
             "address": "nf/%s" % name,
             "title": name,
-            "messages": {"nf.%s" % name: {"$ref": "#/components/messages/%s" % name}},
+            "messages": {"nf.%s" % name: {"$ref": "#/components/messages/%s" % _ptr(name)}},
             "x-nf-cloudevents": {"type": "nf.%s" % name, "source": "urn:nf:repo",
                                  "specversion": "1.0",
                                  "datacontenttype": "application/json"},
@@ -204,7 +225,10 @@ def asyncapi_doc(root: str = ".") -> Dict[str, Any]:
         "channels": channels,
         "operations": {
             "publish/%s" % n: {"action": "send",
-                               "channel": {"$ref": "#/channels/nf/%s" % n}}
+                               # 通道键含 `/`，JSON Pointer 必须转义（RFC 6901：`/` → `~1`）。
+                               # 2026-09-24 他证实证修复：此前裸写 → 官方 @asyncapi/cli 报 443 条
+                               # invalid-ref（`#/channels/nf/xxx` does not exist）。
+                               "channel": {"$ref": "#/channels/%s" % _ptr("nf/%s" % n)}}
             for n in sorted(events)},
         "components": {"messages": messages},
         "x-nf-events": len(events),
