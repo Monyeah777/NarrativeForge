@@ -30,9 +30,15 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 仓库根
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 
-# 临时 NF_HOME（Store 构造即建 modules/assets/presets/cache 目录）
-HOME = os.environ.get("NF_TEST_HOME") or os.path.join(tempfile.gettempdir(),
-                                                      "nf_e2e_home")
+# 临时 NF_HOME（Store 构造即建 modules/assets/presets/cache 目录）。
+# 下一行会对它做**递归删除**，故落点先过统一闸门（判据 = core.paths，单一真相源）：
+# 渗透实证 F-10 —— 原实现把 NF_TEST_HOME 原样当删除目标，`=~`/`=<仓库根>`/`=/` 时会
+# 静默递归删除主目录/仓库/盘根（本脚本 CI 每次 push 都跑），与 AGENTS.md 的 rm -rf 红线冲突。
+from core import paths as nf_paths  # noqa: E402  —— 须在 sys.path 就绪之后导入
+
+HOME = nf_paths.guard_recursive_delete_target(
+    os.environ.get("NF_TEST_HOME", ""), root=ROOT,
+    default=os.path.join(tempfile.gettempdir(), "nf_e2e_home"), label="NF_TEST_HOME")
 shutil.rmtree(HOME, ignore_errors=True)
 os.makedirs(HOME, exist_ok=True)
 

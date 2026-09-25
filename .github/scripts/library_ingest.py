@@ -40,6 +40,10 @@ DRY = os.environ.get('DRY_RUN', '') == '1'
 INTAKE_REL = 'library/intake.json'
 GITEE_OWNER = 'monyeah777'
 GITEE_REPO = 'narrative-forge'
+#: 投稿正文长度上限（字符）。零门槛通道下正文会**原样**成为仓库文件并进 CI 检出，
+#: 不设上限则任何人一次投稿即可把仓库撑大 / 拖长每次检出与门禁（可用性面）。
+#: 现役最长条目 ~61k 字符，256k 给了 4 倍余量。
+MAX_BODY_CHARS = 256 * 1024
 B36 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 MAX_SEG = 16
 SEG_RE = re.compile(r'^[A-Za-z0-9]{1,%d}$' % MAX_SEG)
@@ -64,6 +68,41 @@ def load_gate(channel='github'):
     except Exception as exc:
         print(f'⚠ 闸门声明不可读（{exc}）：修复指引：确认 {INTAKE_REL} 存在且为合法 JSON')
     return 'paused', set()
+
+
+#: 疑似明文密钥形状（与 `.github/workflows/ci-verify.yml` 的扫描正则同源，另加 GitLab 令牌形态）
+_SECRET_SHAPES = re.compile(
+    r'ghp_[0-9A-Za-z]{36}|github_pat_[0-9A-Za-z_]{22,}|gho_[0-9A-Za-z]{36}|'
+    r'glpat-[0-9A-Za-z_\-]{20,}|sk-[0-9A-Za-z]{20,}|AIza[0-9A-Za-z_\-]{35}|'
+    r'AKIA[0-9A-Z]{16}|xox[baprs]-[0-9A-Za-z\-]{10,}')
+
+
+def secret_shape_hit(text):
+    """→ 命中的**脱敏**形状前缀（无命中返回空串）。
+
+    只回显前 4 字符：拒绝说明要进公开 Issue 评论，不能把疑似密钥再抄一遍
+    （否则等于用「提示」把密钥第二次分发出去）。
+    """
+    m = _SECRET_SHAPES.search(str(text or ''))
+    return (m.group(0)[:4] + '…') if m else ''
+
+
+def load_rating_vocab():
+    """分级词表真源 = `library/intake.json` 的 `rating.vocabulary`（缺失即用默认词表）。
+
+    机器人为什么也要读它：声明件写明「缺 `rating` 即 FAIL」，入库产物若不带该字段，
+    每次成功入库都会把 verify check34（rating_gate）判红 = 自伤门禁。
+    词表按**声明**走，不在代码里另写死一份。
+    """
+    try:
+        with open(INTAKE_REL, encoding='utf-8') as f:
+            data = json.load(f)
+        vocab = [str(v) for v in ((data.get('rating') or {}).get('vocabulary') or [])]
+        if vocab:
+            return vocab
+    except Exception as exc:
+        print(f'⚠ 分级词表不可读（{exc}）：修复指引：确认 {INTAKE_REL} 存在且 rating.vocabulary 合法')
+    return ['general', 'teen', 'mature', 'unrated']
 
 
 def fail(msg):
@@ -147,10 +186,31 @@ def close_issue():
     api(f'/issues/{N}', {'state': 'closed'}, method='PATCH')
 
 
+def _redact(text):
+    """令牌脱敏：任何要进日志 / 异常 / 回评的字符串都先过这里（CWE-532）。"""
+    out = str(text)
+    if TOKEN:
+        out = out.replace(TOKEN, '***')
+    return out
+
+
 def git(*args):
-    print('$ git', *args)
-    if not DRY:
-        subprocess.run(['git', *args], check=True)
+    """git 调用统一出口：日志与异常一律脱敏（令牌绝不进 CI 日志——CWE-532）。
+
+    输出由本函数捕获后经 `_redact` 回吐：git 在鉴权/网络失败时会把**含凭证的 URL**
+    打进 stderr，直接继承 stdout/stderr 等于把令牌写进 Actions 日志。
+    """
+    print('$ git', *(_redact(a) for a in args))
+    if DRY:
+        return
+    proc = subprocess.run(['git', *args], capture_output=True, text=True,
+                          encoding='utf-8', errors='replace')
+    for stream in (proc.stdout, proc.stderr):
+        if stream:
+            print(_redact(stream), end='')
+    if proc.returncode != 0:
+        raise RuntimeError('git 退出码 %d：%s（修复指引：检查远端可达性与令牌权限）'
+                           % (proc.returncode, _redact(' '.join(args))))
 
 
 def rebuild_alias():
@@ -204,6 +264,13 @@ def main():
     if not BODY.strip():
         comment('⚠️ Issue 正文为空——请按模板粘贴产物全文后再提交。')
         sys.exit(0)
+    if len(BODY) > MAX_BODY_CHARS:
+        comment(f'⚠️ 投稿正文 {len(BODY)} 字符，超过单条上限 {MAX_BODY_CHARS} 字符。'
+                '请拆分或精简后重投——正文会**原样**成为仓库文件并进入每次 CI 检出，'
+                '过长会拖慢全部门禁。')
+        close_issue()
+        print(f'正文超长（{len(BODY)} > {MAX_BODY_CHARS}），已拒绝并关闭')
+        sys.exit(0)
 
     # ---- 2. 解析元信息（--- 之前为元信息区，之后为产物全文）----
     def clean_val(v):
@@ -253,6 +320,30 @@ def main():
     seg2 = clean_val(meta.get('自定义段', ''))
     # 许可列（许可证门判据同源）：投稿写了就用，没写记「未声明」并入库提示挂账
     lic = clean_val(meta.get('许可') or '') or '未声明'
+    # 分级列（rating 门判据同源）：投稿写了就用；没写或越词表 → unrated 入库并提示补齐
+    # （缺字段会被 rating_gate 判 FAIL，故机器人必须显式写出——见 load_rating_vocab 说明）
+    rating_vocab = load_rating_vocab()
+    rating = clean_val(meta.get('分级') or meta.get('rating') or '')
+    rating_note = ''
+    if rating not in rating_vocab:
+        rating_note = ('（投稿未填分级或越词表 → 以 `unrated` 入库；'
+                       '补填 `分级` 后重新开题即可定级）')
+        rating = 'unrated'
+
+    # ---- 2.5 密钥形状拒收（安全边界）----
+    # 为什么必须在入库前拦：投稿正文会**原样发布**到公开仓库 = 把别人的真实密钥再分发一次；
+    # 且 ci-verify 的明文密钥扫描覆盖全仓（含 library/），命中即 CI 红——零门槛通道下
+    # 任何人一条普通投稿就能把门禁打红（远程可触发的可用性缺陷）。
+    secret_hit = secret_shape_hit('\n'.join(
+        [title, topic, one_line, lic, seg1, seg2, body_main]))
+    if secret_hit:
+        comment(f'⛔ 投稿正文/元信息中检出疑似明文密钥（形如 `{secret_hit}`）。'
+                '为避免把密钥**二次公开分发**，本次不予入库。\n\n'
+                '请把真实密钥改为占位符（如 `<REDACTED>`）后重新开题；'
+                '若只是排版示例，也请改成不含密钥前缀的写法。')
+        close_issue()
+        print(f'正文含疑似明文密钥（{secret_hit}），已拒绝并关闭')
+        sys.exit(0)
 
     # ---- 3. 校验档位/自定义段 + 分配编号 ----
     if bool(seg1) != bool(seg2):
@@ -303,6 +394,7 @@ def main():
         f'description: {one_line}\n'
         f'author: {AUTHOR}\n'
         f'license: {lic}\n'
+        f'rating: {rating}\n'
         f'generated: {today}\n'
         'status: active\n'
         'sources:\n'
@@ -313,6 +405,7 @@ def main():
         f'> 📚 **NF 云端图书馆条目 {nfid}** · 入库 {today} · 投稿人：{AUTHOR} · 来源：Issue #{N}\n'
         f'> 形态/领域：{topic} · 一句话：{one_line}\n'
         f'> 许可：{lic}（真源 = 文件头 frontmatter；INDEX 为投影）\n'
+        f'> 分级：{rating}（真源 = 文件头 frontmatter；INDEX 为投影）{rating_note}\n'
         f'> 本文为社区投稿副本，版权归投稿人；引用/衍生请注明来源；如需下架请联系作者。\n'
         f'> 自包含声明：本文件自带「是什么 + 怎么用」，AI 单文件即可正确使用。\n\n---\n\n'
     )
@@ -345,6 +438,7 @@ def main():
         f'- 国内镜像（Gitee · 无需梯子）：`https://gitee.com/{GITEE_OWNER}/{GITEE_REPO}/raw/main/library/{nfid}.md`\n\n'
         f'> 💡 给任意 AI 的启动句：请读取上面的链接，按文档执行。\n'
         f'> 🔤 若 AI 报编号时大小写拿不准：让它读 `library/ALIAS.md` 转译（编号全小写化后匹配）。\n'
+        f'> 📊 已按闸门声明登记：许可 `{lic}` · 分级 `{rating}`{rating_note}\n'
         f'> ⚠ 若内容不合规（非原创/未授权/缺自包含可运行性），联系作者下架。'
     )
     comment(reply)

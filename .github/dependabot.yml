@@ -1,0 +1,26 @@
+# 供应链固定（渗透收口 2026-09-24）：workflow 里的 action 一律按**提交 SHA** 引用——
+# tag 可移动，`@v4` 名义不变而实际代码可被替换，等于把 CI 执行权交给上游标签。
+# 固定到 SHA 后行为与当日 `@v4` 逐字一致（SHA 取自 tags API 的当时解析值），
+# 由本文件负责把固定值**自动跟进**——固定不等于冻结。
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+    labels:
+      - dependencies
+  # CI 工具链版本固定（requirements-ci.txt / requirements-lint.txt）同样要能跟进，
+  # 否则固定会退化成冻结上游安全修复。
+  - package-ecosystem: pip
+    directory: /.github
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+    labels:
+      - dependencies

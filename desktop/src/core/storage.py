@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from .models import Module, AssetPack, Preset, now_str, fid_key
+from . import paths as nf_paths
 
 ENV_HOME = "NARRATIVE_FORGE_HOME"
 
@@ -35,7 +36,15 @@ class Store:
     """对 NF_HOME 下所有本地数据的管理器。"""
 
     def __init__(self, home: Optional[Path | str] = None):
-        self.home = Path(home) if home else default_home()
+        # 落点闸门（渗透 F-11）：NF_HOME 既可由 `--store` 传，也可由环境变量
+        # NARRATIVE_FORGE_HOME 覆盖，而本类会在其下建目录、并在 remove_module 里做
+        # 递归删除——故指向盘根 / 主目录 / 仓库根 / 临时目录本体时一律拒绝：
+        # 那几种落点不会有人真想要，却会把 `~/modules`、`<repo>/assets` 之类建到不该在的地方。
+        repo_root = str(Path(__file__).resolve().parents[3])
+        self.home = Path(nf_paths.guard_recursive_delete_target(
+            str(home) if home else str(default_home()),
+            root=repo_root, default=str(default_home()),
+            label="NF_HOME（--store / %s）" % ENV_HOME))
         self.config_path = self.home / "config.json"
         self.modules_root = self.home / "modules"
         self.assets_root = self.home / "assets"

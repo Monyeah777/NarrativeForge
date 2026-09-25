@@ -34,6 +34,13 @@ from typing import Any, Dict, Optional, Sequence
 AGENT = None          # 进程内单例（模型常驻，避免每请求重载）
 AGENT_LOCK = threading.Lock()
 
+#: 请求体上限（1 MiB）。本服务只吃 `{state, questions}`，正常请求远小于此。
+#: 不设上限时 `self.rfile.read(length)` 会按调用方**自称**的长度无界读入内存，
+#: 且 ThreadingHTTPServer 无并发上限 → 回环场景是本地 DoS，误绑外网即远程 DoS。
+MAX_BODY_BYTES = 1 << 20
+#: 视为「仅本地」的监听地址（其余地址须显式 --allow-non-loopback）
+LOOPBACK_HOSTS = ("127.0.0.1", "localhost", "::1")
+
 
 def _load_agent(model_dir: str, device: str):
     """软依赖装载：缺依赖/缺权重都给可执行修复指引（fail-closed，不静默降级）。"""
@@ -124,6 +131,10 @@ class Handler(BaseHTTPRequestHandler):
             return
         try:
             length = int(self.headers.get("Content-Length") or 0)
+            if length <= 0 or length > MAX_BODY_BYTES:
+                self._send(413, {"error": "请求体须为 1..%d 字节（修复指引：只发 "
+                                          "{state, questions} 两个键）" % MAX_BODY_BYTES})
+                return
             payload = json.loads(self.rfile.read(length).decode("utf-8"))
             state = payload.get("state")
             questions = payload.get("questions") or {}
@@ -143,8 +154,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     help="本地模型目录（由 huggingface_hub 拉取）")
     ap.add_argument("--device", default="cpu", help="cpu / cuda:0")
     ap.add_argument("--host", default="127.0.0.1", help="监听地址（默认仅本地回环）")
+    ap.add_argument("--allow-non-loopback", action="store_true",
+                    help="显式允许绑定非回环地址（本服务无鉴权，默认拒绝）")
     ap.add_argument("--port", type=int, default=8791, help="端口（NF 侧 --endpoint 用同一端口）")
     args = ap.parse_args(argv)
+    if args.host not in LOOPBACK_HOSTS and not args.allow_non_loopback:
+        raise SystemExit(
+            "拒绝绑定非回环地址 %s：本服务无鉴权，暴露即等于把决策接口与模型算力交出去。\n"
+            "修复指引：保持默认 127.0.0.1 由本地消费；确需跨机访问请在前面加带鉴权的反代，"
+            "或显式加 --allow-non-loopback 并自担风险。" % args.host)
     AGENT = _load_agent(args.model_dir, args.device)
     srv = ThreadingHTTPServer((args.host, args.port), Handler)
     print("决策层服务就绪：http://%s:%d/v1/systemone（模型 %s · device=%s）"

@@ -15,11 +15,14 @@ R5 import 面越界：desktop/src/core + scripts 的第三方 import 面必须**
     在 IMPORT_RESIDUE 登记（**WARN 挂账**，带裁决指针，不判死但不得隐身）。
     （内部差距：CONTRIBUTING §4.2「core 零第三方依赖」是成文红线，此前**零判据**。）
 R6 危险 sink 面：desktop/src/core + scripts 不得出现**动态执行 / shell 命令 / 不安全
-    反序列化**（eval / exec / __import__ / os.system / os.popen / subprocess(shell=True) /
-    pickle.load(s) / marshal.loads / yaml.load）——确需使用须在 SINK_ALLOW 登记并写明理由
+    反序列化 / **不可逆的递归删除**（eval / exec / __import__ / os.system / os.popen /
+    subprocess(shell=True) / pickle.load(s) / marshal.loads / yaml.load /
+    shutil.rmtree / os.remove / os.rmdir）——确需使用须在 SINK_ALLOW 登记并写明理由
     （放行可审计；list 参数调用 subprocess 不受限）。
     （内部差距：安全兜底此前**零判据**——NF 只靠人读与本仓之外的 linter；实测 sink 面
     仅 1 处受控 `__import__`，故本条落地即零返工。）
+    2026-09-24 渗透 F-10 补：递归删除面此前**不在类目内**，于是 `NF_TEST_HOME=~`
+    驱动的静默 `shutil.rmtree` 无判据可拦。现纳入类目（基线 1→5，放行点在册可审计）。
 
 check27 自身用变异注入验证捕获力（mutation testing：test_purity_scan 对
 每规则注入典型违规样本，断言可被捕获——「check 的 check」）。
@@ -54,7 +57,11 @@ SOFT_IMPORTS = {
 #: 2026-09-20：唯一一项残留（`scripts/` 下端壳自检旧脚本，属 `.git/info/exclude` 的本地旧副本）
 #: 经作者裁决删除，登记随之清空。
 IMPORT_RESIDUE: dict = {}
-IMPORT_SCAN = ("desktop/src/core/*.py", "scripts/*.py")
+#: 扫描作用域含 `.github/scripts`——那是**唯一处理远程不可信输入**（Issue 标题/正文）
+#: 且持有写权限令牌的代码。此前只在 core + scripts 取件，等于把最高风险的入口
+#: 排除在 R5/R6 之外（渗透实证：同一份含 os.system / subprocess(shell=True) 的文件
+#: 放 scripts/ 被拦、放 .github/scripts/ 命中 0 条）。
+IMPORT_SCAN = ("desktop/src/core/*.py", "scripts/*.py", ".github/scripts/*.py")
 
 #: R6 危险 sink（AST 级；键 = 规范化调用名）+ CWE 对齐（外部缺陷类型编码，便于跨工具对账）
 DANGEROUS_CALLS = {
@@ -67,11 +74,18 @@ DANGEROUS_CALLS = {
     "pickle.loads": "CWE-502 不安全反序列化（可执行任意代码）",
     "marshal.loads": "CWE-502 不安全反序列化",
     "yaml.load": "CWE-502 非安全 YAML 载入（改用 yaml.safe_load）",
+    "shutil.rmtree": "CWE-73 递归删除外部可控路径（须证明落点非主目录/仓库根/盘根）",
+    "os.remove": "CWE-73 删除外部可控路径（须证明来源不可被外部左右）",
+    "os.rmdir": "CWE-73 删除外部可控目录",
 }
 #: R6 已登记放行（键 = "<文件基名>:<调用名>"；放行须可审计）
 SINK_ALLOW = {
     "regression_score.py:__import__":
         "模块名取自内部常量表 SIGNAL_SPECS（非用户输入），用于按名调用既有扫描器",
+    "e2e_desktop_headless.py:shutil.rmtree":
+        "自检专用临时 home 的清理；落点已由 _resolve_test_home 拒绝主目录/仓库根/盘根（见 F-10）",
+    "storage.py:shutil.rmtree":
+        "模块仓内「同 full_id 旧目录」清理；路径由 Store._safe_name 拼装且限于 modules_root 之下",
 }
 _HEAD = re.compile(r"^#{1,6}\s+(.*?)\s*$")
 _ACTION = re.compile(
@@ -131,7 +145,8 @@ def _top_modules(tree: ast.AST) -> list:
 def _is_local(mod: str, root: str) -> bool:
     if mod == "core":
         return True
-    for base in (os.path.join(root, "desktop", "src", "core"), os.path.join(root, "scripts")):
+    for base in (os.path.join(root, "desktop", "src", "core"), os.path.join(root, "scripts"),
+                 os.path.join(root, ".github", "scripts")):
         if os.path.exists(os.path.join(base, mod + ".py")):
             return True
     return False

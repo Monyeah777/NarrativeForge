@@ -1,0 +1,21 @@
+# CI dependency pins (pen-test close-out F-05, 2026-09-24).
+#
+# Why pinned: three workflows used to run `pip install pyyaml PySide6 jsonschema`
+# with no versions -- builds were not reproducible (the same commit could resolve
+# different versions over time) and dependency scanners such as pip-audit had no
+# auditable input. Pinning fixes both.
+#
+# Versions come from the PyPI JSON API `info.version` on 2026-09-24 (latest stable
+# that day), not from guessing. Follow-ups are handled by .github/dependabot.yml (pip).
+#
+# NOTE (important): this file is deliberately **ASCII-only**. pip parses requirements
+# files with the *locale* encoding and does not honour a coding cookie, so non-ASCII
+# comments break `pip install -r` under non-UTF-8 locales (reproduced on Windows/GBK).
+# Keep it ASCII.
+#
+# Scope: this is the CI toolchain, not NF's own package metadata. NF itself stays
+# stdlib-only with soft third-party imports (see purity_scan R5).
+pyyaml==6.0.3
+PySide6==6.11.2
+jsonschema==4.26.0
+coverage==7.16.1

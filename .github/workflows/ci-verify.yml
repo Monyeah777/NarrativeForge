@@ -16,7 +16,7 @@ jobs:
     name: verify-sh-l0-l2
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
       - name: 密钥明文扫描（40 总纲 S8：常见 token 前缀全量正则，命中即红）
         run: |
           if grep -rnEI --exclude-dir=.git --exclude-dir=.gitee 'ghp_[0-9A-Za-z]{36}|github_pat_[0-9A-Za-z_]{22,}|gho_[0-9A-Za-z]{36}|sk-[0-9A-Za-z]{20,}|AIza[0-9A-Za-z_-]{35}|AKIA[0-9A-Z]{16}|xox[baprs]-[0-9A-Za-z-]{10,}' .; then
@@ -24,13 +24,13 @@ jobs:
             exit 1
           fi
           echo '密钥扫描通过（无常见 token 前缀命中）'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
         with:
           python-version: '3.11'
       - name: 安装测试依赖（pyyaml + PySide6 + EGL 系统库——check12/check18 unittest 必要，G1 修复）
         run: |
           sudo apt-get update
           sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
-          pip install pyyaml PySide6 jsonschema
+          pip install -r .github/requirements-ci.txt  # 版本固定见该文件（F-05）
       - name: 分层门禁（verify.sh v2.27，L0-L2 默认锁）
         run: bash verify.sh

@@ -1,0 +1,33 @@
+name: dependency-audit
+# 依赖面审计（渗透收口 F-05 余项 · 2026-09-24）
+#
+# 定位与本仓既有 external-links 同构：**不进 verify 基线**（门禁须静态可复现、零外网依赖），
+# 而把依赖审计做成独立任务——每周 + 手动触发 + push 到 main 时跑，任一已知漏洞即红。
+#
+# 为什么需要它：CI 工具链此前是无版本 `pip install`，依赖面**没有任何可审对象**；
+# 现在版本固定在 .github/requirements-ci.txt，本工作流即对该固定集做 CVE 审计。
+# 注意：审计的是 **CI 工具链版本集**，不是 NF 本体的运行时依赖（NF 本体纯标准库 + 软导入）。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '23 3 * * 1'      # 每周一 03:23 UTC（与 external-links 错开）
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: pip-audit-pinned-ci-toolchain
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.11'
+      - name: 安装审计器（版本固定，见 .github/requirements-audit.txt）
+        run: pip install -r .github/requirements-audit.txt
+      - name: 对固定依赖集做 CVE 审计（命中即红）
+        run: python -m pip_audit -r .github/requirements-ci.txt --progress-spinner off

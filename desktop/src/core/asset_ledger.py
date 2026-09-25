@@ -17,6 +17,8 @@ import json
 import os
 import re
 
+from core import paths
+
 LEDGER_SCHEMA_VERSION = "1"
 LEDGER_FILE = "provenance.json"
 
@@ -111,14 +113,15 @@ def make_entry(file_rel: str, key: str, source: str, module: str = "",
 
 
 def _safe_join(assets_root: str, file_rel: str) -> str:
-    """防路径逃逸：拒绝绝对路径与 .. 段；返回根内绝对路径。"""
-    root = os.path.realpath(assets_root)
-    if os.path.isabs(file_rel) or ".." in file_rel.replace("\\", "/").split("/"):
-        raise AssetLedgerError("file 必须是相对路径且不得含 ..：%s" % file_rel)
-    full = os.path.realpath(os.path.join(root, file_rel))
-    if full != root and not full.startswith(root + os.sep):
-        raise AssetLedgerError("file 逃逸资产根目录：%s" % file_rel)
-    return full
+    """防路径逃逸：拒绝绝对路径与 .. 段；返回根内绝对路径。
+
+    判据收敛到 `core.paths.validate_path`（单一真相源——同一套包含性判据不再各写一份）。
+    """
+    try:
+        return paths.validate_path(assets_root, file_rel)
+    except paths.PathEscapeError as exc:
+        raise AssetLedgerError("file 不合规：%s（修复指引：file 须是资产根内的相对路径）"
+                               % exc) from None
 
 
 def render_header(entry: dict) -> str:

@@ -1,0 +1,6 @@
+# Dependency-audit job only (pen-test close-out F-05, 2026-09-24).
+#
+# Kept separate so the audit job installs exactly one tool: pip-audit itself.
+# Version = the one verified locally during the pen-test run. Bumped by dependabot.
+# ASCII-only on purpose: pip parses requirements files with the locale encoding.
+pip-audit==2.10.1

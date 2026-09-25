@@ -30,7 +30,8 @@ from glob import glob
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # 复用 GitHub 前端的纯函数（36进制 / 文件名解析 / 存量扫描 / ALIAS 重建）
 from library_ingest import (to_b36, parse_nfname, scan_existing, rebuild_alias,
-                            SEG_RE, load_gate, INTAKE_REL)
+                            SEG_RE, load_gate, INTAKE_REL, load_rating_vocab,
+                            secret_shape_hit, MAX_BODY_CHARS)
 
 GITEE_OWNER = 'monyeah777'
 GITEE_REPO = 'narrative-forge'
@@ -38,6 +39,14 @@ GH_REPO = os.environ.get('REPO', 'Monyeah777/NarrativeForge')
 TOKEN = os.environ.get('GITEE_TOKEN', '')
 DRY = os.environ.get('DRY_RUN', '') == '1'
 MAX_SEG = 16
+
+def _redact(text):
+    """令牌脱敏：任何要进日志 / 异常 / 回评的字符串都先过这里（CWE-532）。"""
+    out = str(text)
+    if TOKEN:
+        out = out.replace(TOKEN, '***')
+    return out
+
 
 # 模板残留说明短语（与 GitHub 前端同一套——投稿人 = 蠢用户，机器兜底）
 FILLER_PATS = ('如 校园情感世界', '作品名，同时', '可选，一句话', '可选，编号',
@@ -141,9 +150,22 @@ def already_processed(number):
 
 
 def git(*args):
-    print('$ git', *args)
-    if not DRY:
-        subprocess.run(['git', *args], check=True)
+    """git 调用统一出口：日志与异常一律脱敏（令牌绝不进 CI 日志——CWE-532）。
+
+    输出改由本函数捕获后经 `_redact` 回吐：git 自身在鉴权/网络失败时会把**含凭证的 URL**
+    打进 stderr，直接继承 stdout/stderr 等于把令牌写进 Actions 日志。
+    """
+    print('$ git', *(_redact(a) for a in args))
+    if DRY:
+        return
+    proc = subprocess.run(['git', *args], capture_output=True, text=True,
+                          encoding='utf-8', errors='replace')
+    for stream in (proc.stdout, proc.stderr):
+        if stream:
+            print(_redact(stream), end='')
+    if proc.returncode != 0:
+        raise RuntimeError('git 退出码 %d：%s（修复指引：检查远端可达性与令牌权限）'
+                           % (proc.returncode, _redact(' '.join(args))))
 
 
 def process(issue):
@@ -174,6 +196,13 @@ def process(issue):
     if not body.strip():
         gitee_comment(number, '⚠️ Issue 正文为空——请按模板粘贴产物全文后再提交。')
         gitee_close(number)
+        return
+    if len(body) > MAX_BODY_CHARS:
+        gitee_comment(number, f'⚠️ 投稿正文 {len(body)} 字符，超过单条上限 {MAX_BODY_CHARS} 字符。'
+                             '请拆分或精简后重投——正文会**原样**成为仓库文件并进入每次 CI 检出，'
+                             '过长会拖慢全部门禁。')
+        gitee_close(number)
+        print(f'  ✋ 正文超长（{len(body)} > {MAX_BODY_CHARS}），已拒绝并关闭')
         return
 
     def clean_val_(v):
@@ -210,6 +239,30 @@ def process(issue):
     one_line = clean_val_(meta.get('一句话') or '') or '（见文件）'
     seg1 = clean_val_(meta.get('档位词', ''))
     seg2 = clean_val_(meta.get('自定义段', ''))
+    # 许可 / 分级（license_gate · rating_gate 判据同源）：本通道零门槛，投稿多半不填，
+    # 但**字段必须在场**——缺 rating 会被 rating_gate 判 FAIL（自伤门禁）。
+    lic = clean_val_(meta.get('许可') or '') or '未声明'
+    rating_vocab = load_rating_vocab()
+    rating = clean_val_(meta.get('分级') or meta.get('rating') or '')
+    rating_note = ''
+    if rating not in rating_vocab:
+        rating_note = ('（投稿未填分级或越词表 → 以 `unrated` 入库；'
+                       '补填 `分级` 后重新开题即可定级）')
+        rating = 'unrated'
+
+    # 密钥形状拒收（安全边界，与 GitHub 前端同规）：投稿正文会原样发布到公开仓库，
+    # 检出疑似明文密钥即拒收——既不把别人的密钥二次分发，也不让零门槛通道把 CI 打红
+    # （ci-verify 的明文密钥扫描覆盖全仓含 library/，命中即 exit 1）。
+    secret_hit = secret_shape_hit('\n'.join(
+        [title, topic, one_line, lic, seg1, seg2, body_main]))
+    if secret_hit:
+        gitee_comment(number, f'⛔ 投稿正文/元信息中检出疑似明文密钥（形如 `{secret_hit}`）。'
+                              '为避免把密钥**二次公开分发**，本次不予入库。\n\n'
+                              '请把真实密钥改为占位符（如 `<REDACTED>`）后重新开题；'
+                              '若只是排版示例，也请改成不含密钥前缀的写法。')
+        gitee_close(number)
+        print(f'  ✋ 正文含疑似明文密钥（{secret_hit}），已拒绝并关闭')
+        return
 
     # 段位配对 + 字符/长度校验
     if bool(seg1) != bool(seg2):
@@ -257,7 +310,8 @@ def process(issue):
         f'title: {title}\n'
         f'description: {one_line}\n'
         f'author: {author}\n'
-        'license: 未声明\n'
+        f'license: {lic}\n'
+        f'rating: {rating}\n'
         f'generated: {today}\n'
         'status: active\n'
         'sources:\n'
@@ -267,7 +321,8 @@ def process(issue):
     header = (
         f'> 📚 **NF 云端图书馆条目 {nfid}** · 入库 {today} · 投稿人：{author} · 来源：Gitee Issue #{number}\n'
         f'> 形态/领域：{topic} · 一句话：{one_line}\n'
-        '> 许可：未声明（投稿未填；许可证门挂账，不阻断入库）\n'
+        f'> 许可：{lic}（许可证门判据同源；未声明记挂账，不阻断入库）\n'
+        f'> 分级：{rating}（真源 = 文件头 frontmatter；INDEX 为投影）{rating_note}\n'
         f'> 本文为社区投稿副本，版权归投稿人；引用/衍生请注明来源；如需下架请联系作者。\n'
         f'> 自包含声明：本文件自带「是什么 + 怎么用」，AI 单文件即可正确使用。\n\n---\n\n'
     )
@@ -289,12 +344,10 @@ def process(issue):
     git('config', 'user.email', 'nf-bot@users.noreply.github.com')
     git('add', fname, 'library/INDEX.md', 'library/ALIAS.md')
     git('commit', '-m', f'lib(Y12): Gitee 云端代收 {nfid} 自动入库（Gitee Issue #{number}，投稿人 {author}）')
-    # Gitee push（子令牌注入 remote；避免令牌进 commit 相关输出仅本机可见）
-    git('remote', 'set-url', 'gitee',
-        f'https://{GITEE_OWNER}:{TOKEN}@gitee.com/{GITEE_OWNER}/{GITEE_REPO}.git')
-    git('push', 'gitee', 'HEAD:main')
-    git('remote', 'set-url', 'gitee',
-        f'https://gitee.com/{GITEE_OWNER}/{GITEE_REPO}.git')  # 用完即卸令牌
+    # Gitee push：子令牌**只作本次 push 的 URL 参数**——不写 .git/config（失败也不残留，
+    # CWE-522），参数与 git 回显全程经 _redact 脱敏（CWE-532）。
+    git('push', f'https://{GITEE_OWNER}:{TOKEN}@gitee.com/{GITEE_OWNER}/{GITEE_REPO}.git',
+        'HEAD:main')
     git('push', 'origin', 'HEAD:main')
 
     form = ''

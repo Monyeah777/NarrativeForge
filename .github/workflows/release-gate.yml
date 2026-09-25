@@ -11,15 +11,15 @@ jobs:
     name: release-preflight
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
         with:
           python-version: '3.11'
       - name: 安装测试依赖（verify + 标准对照 + 覆盖率）
         run: |
           sudo apt-get update
           sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
-          pip install pyyaml PySide6 jsonschema coverage
+          pip install -r .github/requirements-ci.txt  # 版本固定见该文件（F-05）
       - name: 发布前体检（verify + 基线自描述一致）
         run: python3 scripts/nf.py release
       - name: 覆盖率门槛（core ≥80）

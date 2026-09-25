@@ -149,11 +149,17 @@ class PurityScanTest(unittest.TestCase):
                 ps.SINK_ALLOW.update(saved)
 
     def test_r6_real_repo_sink_surface_is_declared(self):
-        """真仓库：危险 sink 面只剩已登记项（当前 = regression_score 的受控 __import__）。"""
+        """真仓库：危险 sink 面只剩已登记项。
+
+        2026-09-24（渗透 F-10）起 sink 类目扩了**递归删除面**（shutil.rmtree / os.remove /
+        os.rmdir）——该面此前零判据，正是 F-10 能长期存在的原因。基线由 1（受控 __import__）
+        升到 5：__import__ ×1 + shutil.rmtree ×4（storage.py 三处同键 + e2e 自检一处），
+        全部在 SINK_ALLOW 在册；本断言即「类目扩了、放行仍可审计」的守门。
+        """
         issues, stats = ps.scan(ROOT)
         self.assertEqual([i for i in issues if "危险 sink" in i], [],
                          "真仓库出现未登记 sink 即 FAIL")
-        self.assertLessEqual(stats.get("sinks", 0), 2)
+        self.assertLessEqual(stats.get("sinks", 0), 5)
 
 
 class SinkRegistryTest(unittest.TestCase):
@@ -185,6 +191,23 @@ class SinkRegistryTest(unittest.TestCase):
             ps.SINK_ALLOW.clear()
             ps.SINK_ALLOW.update(original)
         self.assertTrue(any("指向未登记 sink" in i for i in issues), issues)
+
+    def test_mutation_unregistered_rmtree_captured(self):
+        """F-10 同类面：未登记的递归删除须被 R6 捕获（该面此前**零判据**）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "scripts/poc_rmtree.py",
+                   "import shutil\n\n\ndef wipe(p):\n    return shutil.rmtree(p)\n")
+            issues, _ = ps.scan(tmp)
+        hits = [i for i in issues
+                if i.replace("\\", "/").startswith("scripts/poc_rmtree.py")
+                and "shutil.rmtree" in i]
+        self.assertTrue(hits, "未登记的 shutil.rmtree 应被 R6 捕获：%s" % issues)
+
+    def test_registered_rmtree_sites_are_audited(self):
+        """两个已登记放行点须仍在册（放行不能凭空消失）。"""
+        self.assertIn("shutil.rmtree", ps.DANGEROUS_CALLS)
+        self.assertIn("e2e_desktop_headless.py:shutil.rmtree", ps.SINK_ALLOW)
+        self.assertIn("storage.py:shutil.rmtree", ps.SINK_ALLOW)
 
 
 if __name__ == "__main__":

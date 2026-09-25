@@ -116,4 +116,4 @@ python3 -m compileall -q desktop/src scripts
 - **workflow 最小权限**：顶层默认 `contents: read`；需要写 Release/推送的 job 单独声明 `contents: write`——新增 workflow 或步骤前对照现有 permissions 模式（ci-verify/e2e 只读、build job 单提权）。
 - **Release 校验和**：发布资产随行 `sha256sum` 校验和文件（用户下载后可验完整性）。
 - **secret 扫描**：提交前自查常见 token 前缀（`ghp_` / `gho_` / `sk-` 等）；完整自动扫描入 ci-verify 为波 A 项（40 总纲 S8 全量，v2.7）。
-- **沙箱意识**：工具执行限项目目录内；路径逃逸被 validatePath 拦截，不得绕过。
+- **沙箱意识**：工具执行限项目目录内。路径逃逸的拦截由**宿主 harness 的工具层**负责——仓库不对该层作实现承诺（旧文案写「被 validatePath 拦截」，而仓库内并无该实现，属虚假保证；2026-09-24 起文档只写真实载体）。仓库内组件之间的包含性判据 = `desktop/src/core/paths.py::validate_path`（资产台账已收敛到它，有单测 `desktop/tests/test_paths.py`），不得绕过。
