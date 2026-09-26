@@ -87,6 +87,29 @@ ZONES = (
 #: 一行输入的解析结果：kind ∈ empty/quit/help/menu/zone/run/unknown
 Intent = namedtuple("Intent", "kind payload raw")
 
+#: 斜杠命令词表（`/` 后首个词）：既是 `/x` 形态的判据，也是 MSYS 还原的判据
+SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
+               "zone", "z", "区", "doctor", "自检", "version", "ver", "版本")
+
+
+def _slash_intent(body: str, raw: str):
+    """解析斜杠命令体 → Intent；非斜杠命令词返回 None（调用方决定怎么归类）。"""
+    head, _, tail = body.partition(" ")
+    head = head.lower()
+    if head in ("quit", "exit", "q"):
+        return Intent("quit", "", raw)
+    if head in ("help", "?"):
+        return Intent("help", tail.strip(), raw)
+    if head in ("menu", "菜单"):
+        return Intent("menu", "", raw)
+    if head in ("zone", "z", "区"):
+        return Intent("zone", tail.strip(), raw)
+    if head in ("doctor", "自检"):
+        return Intent("run", ["doctor"], raw)
+    if head in ("version", "ver", "版本"):
+        return Intent("run", ["--version"], raw)
+    return None
+
 
 def zone_table() -> tuple:
     """返回能力菜单真源（终端渲染、check39 与文档共用同一份数据，不留第二份）。"""
@@ -128,22 +151,8 @@ def parse(line: str) -> Intent:
     if raw.lower() in QUIT_WORDS:
         return Intent("quit", "", raw)
     if raw.startswith("/"):
-        body = raw[1:].strip()
-        head, _, tail = body.partition(" ")
-        head = head.lower()
-        if head in ("quit", "exit", "q"):
-            return Intent("quit", "", raw)
-        if head in ("help", "?"):
-            return Intent("help", tail.strip(), raw)
-        if head in ("menu", "菜单"):
-            return Intent("menu", "", raw)
-        if head in ("zone", "z", "区"):
-            return Intent("zone", tail.strip(), raw)
-        if head in ("doctor", "自检"):
-            return Intent("run", ["doctor"], raw)
-        if head in ("version", "ver", "版本"):
-            return Intent("run", ["--version"], raw)
-        return Intent("unknown", raw, raw)
+        hit = _slash_intent(raw[1:].strip(), raw)
+        return hit if hit is not None else Intent("unknown", raw, raw)
     if raw.isdigit() and zone_by_key(raw) is not None:
         return Intent("zone", raw, raw)
     argv = _strip_nf(split_args(raw))
@@ -151,6 +160,16 @@ def parse(line: str) -> Intent:
         return Intent("empty", "", raw)
     if argv[0] in ("quit", "exit"):
         return Intent("quit", "", raw)
+    # MSYS/Git-Bash 兼容：`"/zone 4"` 这类以 `/` 开头的参数会被通行层当成 POSIX 路径
+    # 转换成 `C:/…/zone 4`（单 token 的 `/menu` 不受影响）。若首 token 的**末段**是斜杠
+    # 命令词，就还原成该命令——否则 Git Bash 用户会看到一条莫名其妙的 argparse 报错。
+    head_path = argv[0].replace("\\", "/")
+    if "/" in head_path:
+        seg = head_path.rsplit("/", 1)[-1].lower()
+        if seg in SLASH_WORDS:
+            hit = _slash_intent(" ".join([seg] + [str(a) for a in argv[1:]]), raw)
+            if hit is not None:
+                return hit
     return Intent("run", argv, raw)
 
 

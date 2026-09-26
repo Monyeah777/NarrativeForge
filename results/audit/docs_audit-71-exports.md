@@ -8,11 +8,11 @@ auditor: 本轮执行者
 subjects:
   - verify.sh:c5b720488bc7dff44d243e6a94f10504bb3170a9aef3e3adb6a00eed4a700933
   - scripts/nf.py:d4eba21b68225d3088e0f34463a2b711ea79feef31c9f273c4c8e7f67a6fa0fa
-  - desktop/src/core/repo_stats.py:acde574e9514ed3f0c9427b7e35f8ee68a1d8acfde3f8365c3e45190141b94a0
+  - desktop/src/core/repo_stats.py:6a8c111d36556d62878ffcc7c4ad83e85b90dea636d0c0e64ede51fcc5f19560
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
-  - scripts/interop_thirdparty_kit.py:c4b47deae16630a8de3d593e1630388468b205ae6a4710aead289bfe7c9b2f47
-  - scripts/geo_export.py:9efa9b6dc79ab783d8cbfe8c9bea0dc5b1f5e01078bd624100034642680a2283
-  - scripts/fde_sample_run.py:c7fef8bae2f22afa55362a149ba4721b2b1f0a35b5343a72953148be0df6144e
+  - scripts/interop_thirdparty_kit.py:8cce6520081b7bce7e4d97d88f5d26180b2d1a0247110f727bb006e261f37dc3
+  - scripts/geo_export.py:edc802fb3e4e1a0c2fb61f6c5b1c45860e247f0b8400c6daf3ab85af825405ad
+  - scripts/fde_sample_run.py:d270ca8c8281d89da179053b38209e123606cf5e4d593cd0a9b731aa9b6ebe3e
   - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
   - docs/fde-stack.md:d916a683be6058b9a390ab88b1407452c3ef1c4d7cbfd046824b1e50c4e9cfee
   - docs/fde-sample/README.md:c17984ad90f50d39131fd932c37915b978e28bf606f9c397128de1c8417e4168

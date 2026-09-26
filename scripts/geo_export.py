@@ -34,8 +34,10 @@ HEAD = ("> 本页由 `python scripts/geo_export.py --write` 生成，禁止手�
 
 
 def _load(root: str) -> Tuple[List[Dict[str, Any]], Dict[str, Any], Dict[str, Dict[str, int]]]:
-    cat = json.load(open(os.path.join(root, CATALOG_REL), encoding="utf-8"))
-    bind = json.load(open(os.path.join(root, BINDING_REL), encoding="utf-8"))
+    with open(os.path.join(root, CATALOG_REL), encoding="utf-8") as fh:
+        cat = json.load(fh)
+    with open(os.path.join(root, BINDING_REL), encoding="utf-8") as fh:
+        bind = json.load(fh)
     counts: Dict[str, Dict[str, int]] = {}
     for pack in bind.get("packs") or []:
         for b in pack.get("bindings") or []:
@@ -159,7 +161,9 @@ def check(root: str = ROOT) -> Tuple[List[str], Dict[str, Any]]:
         if not os.path.isfile(path):
             issues.append("缺生成物 %s（跑 `geo_export.py --write`）" % rel)
             continue
-        if open(path, encoding="utf-8").read() != text:
+        with open(path, encoding="utf-8") as fh:
+            on_disk = fh.read()
+        if on_disk != text:
             issues.append("%s 与标准目录不一致（跑 `geo_export.py --write` 重写）" % rel)
     standards, coverage, counts = _load(root)
     ids = {s["id"] for s in standards}
@@ -167,7 +171,9 @@ def check(root: str = ROOT) -> Tuple[List[str], Dict[str, Any]]:
     anchored = set()
     if os.path.isfile(idx_path):
         import re
-        anchored = set(re.findall(r"^### `([^`]+)`", open(idx_path, encoding="utf-8").read(), re.M))
+        with open(idx_path, encoding="utf-8") as fh:
+            idx_text = fh.read()
+        anchored = set(re.findall(r"^### `([^`]+)`", idx_text, re.M))
     if anchored != ids:
         issues.append("索引锚点集合 ≠ 目录 id 集合（缺 %d / 多 %d）"
                       % (len(ids - anchored), len(anchored - ids)))

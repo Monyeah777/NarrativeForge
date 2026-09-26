@@ -179,11 +179,13 @@ def _kcid_recompute(base: str) -> Tuple[bool, str]:
 
     path = os.path.join(base, "results/interop/cid.json")
     try:
-        doc = json.load(open(path, encoding="utf-8"))
+        with open(path, encoding="utf-8") as fh:
+            doc = json.load(fh)
     except Exception as e:  # noqa: BLE001
         return False, "cid.json 不可读：%s" % e
     try:
-        rec = json.load(open(os.path.join(base, "protocol/RECEIPTS.json"), encoding="utf-8"))
+        with open(os.path.join(base, "protocol/RECEIPTS.json"), encoding="utf-8") as fh:
+            rec = json.load(fh)
     except Exception as e:  # noqa: BLE001
         return False, "protocol/RECEIPTS.json 不可读：%s（跑 `nf receipts --write` 重签）" % e
     digests = {str(e.get("path")): str(e.get("digest")) for e in (rec.get("entries") or [])}
@@ -197,7 +199,8 @@ def _kcid_recompute(base: str) -> Tuple[bool, str]:
         if not os.path.isfile(p):
             missing.append(rel)
             continue
-        actual = hashlib.sha256(open(p, "rb").read()).hexdigest()
+        with open(p, "rb") as fh:
+            actual = hashlib.sha256(fh.read()).hexdigest()
         if digests.get(rel) != actual:
             stale.append(rel)
         mh = bytes([0x12, 0x20]) + bytes.fromhex(digests.get(rel) or actual)
@@ -243,7 +246,8 @@ def dry_run(base: str = "") -> Tuple[List[str], List[Dict[str, Any]]]:
                 issues.append("%s 的产物缺失：%s" % (f["id"], f["artifact"]))
             else:
                 try:
-                    json.load(open(p, encoding="utf-8"))
+                    with open(p, encoding="utf-8") as fh:
+                        json.load(fh)
                 except Exception as e:  # noqa: BLE001
                     issues.append("%s 的产物不可解析：%s" % (f["id"], e))
     return issues, rows
@@ -310,7 +314,9 @@ def check(base: str = "") -> Tuple[List[str], Dict[str, Any]]:
         return ["缺回填状态表 %s（跑 --emit）" % STATUS_REL], {}
     if not os.path.isfile(dpath):
         issues.append("缺说明页 %s（跑 --emit）" % DOC_REL)
-    rows = [l for l in open(spath, encoding="utf-8").read().splitlines() if l.startswith("| `")]
+    with open(spath, encoding="utf-8") as fh:
+        status_lines = fh.read().splitlines()
+    rows = [l for l in status_lines if l.startswith("| `")]
     seen, filled = {}, 0
     for line in rows:
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
@@ -349,8 +355,10 @@ def record(base: str, evidence_path: str) -> Tuple[List[str], int]:
     spath = os.path.join(base, STATUS_REL)
     if not os.path.isfile(spath):
         return ["缺回填状态表（先 --emit）"], 0
-    rows = [json.loads(l) for l in open(evidence_path, encoding="utf-8") if l.strip()]
-    lines = open(spath, encoding="utf-8").read().splitlines()
+    with open(evidence_path, encoding="utf-8") as fh:
+        rows = [json.loads(l) for l in fh if l.strip()]
+    with open(spath, encoding="utf-8") as fh:
+        lines = fh.read().splitlines()
     issues: List[str] = []
     done = 0
     by_face = {str(r.get("face")): r for r in rows}
@@ -376,7 +384,8 @@ def record(base: str, evidence_path: str) -> Tuple[List[str], int]:
             cells[4] = "`%s`" % str(ev["command"]).replace("|", "\\|")
         lines[i] = "| " + " | ".join(cells) + " |"
         done += 1
-    open(spath, "w", encoding="utf-8", newline="").write("\n".join(lines) + "\n")
+    with open(spath, "w", encoding="utf-8", newline="") as fh:
+        fh.write("\n".join(lines) + "\n")
     return issues, done
 
 

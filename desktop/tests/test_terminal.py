@@ -103,6 +103,26 @@ class ParseTest(unittest.TestCase):
     def test_empty_line(self):
         self.assertEqual(term.parse("   ").kind, "empty")
 
+    def test_msys_mangled_slash_command_is_restored(self):
+        """Git Bash/MSYS 会把 "/zone 4" 路径转换成 "C:/…/zone 4"——须仍被识别（实测坑）。
+
+        单 token 的 `/menu` 不受影响，但带空格的斜杠命令会被通行层改写；还原判据 =
+        首 token 末段命中斜杠命令词表（SLASH_WORDS）。
+        """
+        cases = (("C:/comfyui/Git/zone 4", "zone", "4"),
+                 ("C:/comfyui/Git/menu", "menu", ""),
+                 ("C:/msys64/usr/q", "quit", ""),
+                 ("C:/x/y/help sig", "help", "sig"))
+        for line, kind, payload in cases:
+            intent = term.parse(line)
+            self.assertEqual((intent.kind, intent.payload), (kind, payload), line)
+
+    def test_msys_shim_does_not_eat_real_paths(self):
+        """真实路径（末段不是斜杠命令词）不得被误判成命令。"""
+        intent = term.parse("C:/tools/nf.py doctor")
+        self.assertEqual(intent.kind, "run")
+        self.assertEqual(intent.payload[0], "C:/tools/nf.py")
+
 
 class ConfirmGateTest(unittest.TestCase):
     def test_write_flags_need_confirm(self):

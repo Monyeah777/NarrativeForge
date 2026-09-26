@@ -36,7 +36,8 @@ EV = "docs/fde-sample/evidence"
 
 
 def _sha(path: str) -> str:
-    return hashlib.sha256(open(path, "rb").read()).hexdigest()
+    with open(path, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()
 
 
 def _read_json(path: str) -> Any:
@@ -252,7 +253,8 @@ def check(root: str = ROOT) -> Tuple[List[str], Dict[str, Any]]:
             continue
         if rel.endswith("manifest.json"):
             try:
-                on_disk = json.loads(open(path, encoding="utf-8").read())
+                with open(path, encoding="utf-8") as fh:
+                    on_disk = json.loads(fh.read())
                 fresh = json.loads(text)
                 on_disk.pop("generated_at", None)
                 fresh.pop("generated_at", None)
@@ -260,8 +262,11 @@ def check(root: str = ROOT) -> Tuple[List[str], Dict[str, Any]]:
                     issues.append("%s 与当前仓库状态不一致（跑 `--run` 重跑）" % rel)
             except Exception as e:  # noqa: BLE001
                 issues.append("%s 不可解析：%s" % (rel, e))
-        elif open(path, encoding="utf-8").read() != text:
-            issues.append("%s 与当前仓库状态不一致（跑 `--run` 重跑）" % rel)
+        else:
+            with open(path, encoding="utf-8") as fh:
+                on_disk_text = fh.read()
+            if on_disk_text != text:
+                issues.append("%s 与当前仓库状态不一致（跑 `--run` 重跑）" % rel)
     stats = {"gates": 5, "evidence_files": len(outs)}
     return issues, stats
 

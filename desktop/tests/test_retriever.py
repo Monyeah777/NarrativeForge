@@ -205,7 +205,13 @@ class TestReferencedBy(unittest.TestCase):
         # 新增组合包 references 自然纳入，不再出现「过期硬编码期望」。
         import json
         from pathlib import Path
-        reg = json.loads(Path("src/core/registry.json").read_text(encoding="utf-8"))
+        # 路径相对**测试文件**解析，而不是相对 CWD：CI 的 coverage job 与
+        # scripts/coverage_summary.sh / per_module_coverage.sh 都是从仓库根跑
+        # （`discover -s desktop/tests`），CWD 相对写法会让本测试在覆盖率通道里
+        # 直接 FileNotFoundError（实测：CI「core-coverage-ge-80」同形）。
+        _reg_path = (Path(__file__).resolve().parent.parent
+                     / "src" / "core" / "registry.json")
+        reg = json.loads(_reg_path.read_text(encoding="utf-8"))
         rows = []
         for p in reg.get("protocols") or []:
             for r in p.get("references") or []:

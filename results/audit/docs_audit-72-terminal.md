@@ -6,9 +6,9 @@ scope: 作者指令「删除 NF 中的 GUI，且为 NF 构建一个终端（CLI 
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/terminal.py:d810f1312c0c2c21b0199ceb8afebc9a79a58139a0305405cb3f9cf0c1d0492b
+  - desktop/src/core/terminal.py:ec0b71d4e2c0c3e7f6bb23689c4d6ca1a56182c2991c118e18e7715be7a03608
   - scripts/nf.py:d4eba21b68225d3088e0f34463a2b711ea79feef31c9f273c4c8e7f67a6fa0fa
-  - desktop/tests/test_terminal.py:cb42ec746dbb37d44c307156e20fd1bad2faa3c2d8f7bda14efda427c8ec68ea
+  - desktop/tests/test_terminal.py:cbd02836653016af21ade091af1a9b56c682509503d9ef6f655e326c5bb7721d
   - scripts/nf:332e4512c1970d93858aadc9715d89fee5db61eae4d3dc49bac23de9bce65488
   - scripts/nf.cmd:a2563ccd0cdde64f1c394d3b426e22b3abd7d6438c5b3308f29d2086d9cac15c
   - verify.sh:c5b720488bc7dff44d243e6a94f10504bb3170a9aef3e3adb6a00eed4a700933

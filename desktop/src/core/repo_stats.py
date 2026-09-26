@@ -93,7 +93,8 @@ def compute(root: str = ".") -> Tuple[Dict[str, Any], List[str]]:
 
     vpath = os.path.join(root, "verify.sh")
     try:
-        vtext = open(vpath, encoding="utf-8").read()
+        with open(vpath, encoding="utf-8") as fh:
+            vtext = fh.read()
     except Exception:  # noqa: BLE001
         vtext = ""
         issues.append("取不到 verify.sh（质量凭证口径缺失）")
@@ -198,12 +199,14 @@ def write(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         if not os.path.isfile(path):
             issues.append("缺入口文件 %s（无法写入生成区）" % rel)
             continue
-        text = open(path, encoding="utf-8").read()
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
         new, ok = _replace_block(text, block)
         if not ok:
             issues.append("%s 缺 marker（%s / %s），未写入" % (rel, BEGIN, END))
             continue
-        open(path, "w", encoding="utf-8", newline="").write(new)
+        with open(path, "w", encoding="utf-8", newline="") as fh:
+            fh.write(new)
     out = os.path.join(root, STATS_REL)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8", newline="") as fh:
@@ -220,7 +223,8 @@ def check(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         if not os.path.isfile(path):
             issues.append("缺入口文件 %s" % rel)
             continue
-        text = open(path, encoding="utf-8").read()
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
         new, ok = _replace_block(text, block)
         if not ok:
             issues.append("%s 缺 marker 区" % rel)
