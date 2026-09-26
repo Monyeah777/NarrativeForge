@@ -773,6 +773,116 @@ def render_map(filt: str = "", width=None, color: bool = False) -> str:
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------- 顶尖 CLI 基线
+# 「对标最顶尖 CLI」若只停在观感上，就没法判完成。这一节把它摊成**可复跑的证据表**：
+# 每行 = 一项能力 + 一条证据命令（+ 必须出现/必须不出现的片段）。`nf shell --baseline` 逐行跑，
+# verify check39 逐行断言——于是「顶尖」是逐条可核的事实，而不是形容词。
+#
+# 行只许用**仓库内真实存在**的入口（argv[0] 必须是 shell），且必须**只读**（不许带写盘旗标）。
+
+TERMINAL_BASELINE = (
+    {"id": "discover-commands", "name": "命令面可达（列出全部命令）",
+     "argv": ("shell", "--commands", "--no-banner"), "expect": "nf 命令面"},
+    {"id": "discover-search", "name": "关键词检索（按用途找命令）",
+     "argv": ("shell", "--search", "装配", "--no-banner"), "expect": "命令检索"},
+    {"id": "discover-map", "name": "能力地图（全命令按族策展）",
+     "argv": ("shell", "--map", "--no-banner"), "expect": "能力地图"},
+    {"id": "typo-suggest", "name": "拼错建议（不甩 usage）",
+     "argv": ("shell", "--exec", "nf statss", "--no-banner"), "expect": "你是不是想找",
+     "expect_exit": 2},
+    {"id": "write-gate", "name": "写盘闸门（非交互默认拒跑）",
+     "argv": ("shell", "--exec", "nf stats --write", "--no-banner"),
+     "expect": "确认", "expect_exit": 2},
+    {"id": "nested-shell-guard", "name": "递归/长驻拦截（serve/shell）",
+     "argv": ("shell", "--exec", "nf shell", "--no-banner"),
+     "expect": "另开", "expect_exit": 2},
+    {"id": "complete", "name": "补全（命令 / 子命令 / 旗标）",
+     "argv": ("shell", "--complete", "nf lay", "--no-banner"), "expect": "nf layers"},
+    {"id": "limit-hint", "name": "限长提示（长列表不静默截断）",
+     "argv": ("shell", "--commands", "asset", "--limit", "3", "--no-banner"),
+     "expect": "还有"},
+    {"id": "no-ansi-by-default", "name": "非 TTY 无色（逐字节确定）",
+     "argv": ("shell", "--commands", "asset", "--limit", "3", "--no-banner"),
+     "forbid": "\x1b"},
+    {"id": "script-face", "name": "脚本面（--exec 逐条执行）",
+     "argv": ("shell", "--exec", "/zone 0", "--no-banner"), "expect": "环境自检"},
+    {"id": "form-dry-run", "name": "写盘表单（dry-run 只组装不执行）",
+     "argv": ("shell", "--form", "stats-write", "--json", "--no-banner"),
+     "expect": '"executed": false'},
+    {"id": "machine-face", "name": "机器面（--verify --json 纯 JSON）",
+     "argv": ("shell", "--verify", "--json", "--no-banner"),
+     "expect": '"kind": "shell-verify"'},
+    {"id": "live-selfcheck", "name": "活体自检（真跑一条只读命令）",
+     "argv": ("shell", "--verify", "--deep", "--no-banner"), "expect": "活体"},
+)
+
+#: 基线的写盘禁令：证据行只许只读（出现这些旗标即视为基线自身违规）
+BASELINE_FORBIDDEN_FLAGS = ("--write", "--apply", "--register", "--yes", "--force",
+                            "--tag", "--rm", "--delete")
+
+
+def baseline_table() -> tuple:
+    """顶尖 CLI 基线真源（`nf shell --baseline`、check39、测试共用同一份）。"""
+    return TERMINAL_BASELINE
+
+
+def baseline_argv_issues() -> list:
+    """基线自身的自洽判据：id 唯一、只走 shell、且证据行只读。"""
+    issues = []
+    seen = set()
+    for row in TERMINAL_BASELINE:
+        rid = str(row.get("id"))
+        if not rid or rid in seen:
+            issues.append("基线行 id 缺失或重复：%s" % rid)
+        seen.add(rid)
+        argv = [str(a) for a in row.get("argv") or []]
+        if not argv or argv[0] != "shell":
+            issues.append("基线行 %s 的入口不是 shell：%s" % (rid, argv[:1]))
+        if not row.get("expect") and not row.get("forbid"):
+            issues.append("基线行 %s 既没 expect 也没 forbid（判不出对错）" % rid)
+        for tok in argv:
+            if tok in BASELINE_FORBIDDEN_FLAGS:
+                issues.append("基线行 %s 带写盘旗标 %s（证据必须只读）" % (rid, tok))
+        if int(row.get("expect_exit", 0)) not in (0, 2):
+            issues.append("基线行 %s 的 expect_exit 只许 0 或 2（0 = 该成功，2 = 该被拒）" % rid)
+        if int(row.get("expect_exit", 0)) != 0 and not row.get("expect"):
+            issues.append("基线行 %s 声明了非零 expect_exit，须给 expect 说明拒跑理由" % rid)
+    return issues
+
+
+def run_baseline(runner, rows=None) -> tuple:
+    """逐行跑证据命令 → (results, stats)。`runner(argv) -> (exit_code, 合并输出)`。"""
+    results = []
+    for row in (rows or TERMINAL_BASELINE):
+        code, out = runner([str(a) for a in row.get("argv") or []])
+        text = str(out or "")
+        ok = (code == int(row.get("expect_exit", 0))
+              and (not row.get("expect") or row["expect"] in text)
+              and (not row.get("forbid") or row["forbid"] not in text))
+        results.append({"id": row["id"], "name": row["name"],
+                        "argv": [str(a) for a in row.get("argv") or []],
+                        "exit": code, "expect_exit": int(row.get("expect_exit", 0)),
+                        "ok": bool(ok),
+                        "expect": row.get("expect") or "",
+                        "forbid": row.get("forbid") or ""})
+    stats = {"rows": len(results),
+             "passed": sum(1 for r in results if r["ok"])}
+    return results, stats
+
+
+def render_baseline(results, stats, width=None, color: bool = False) -> str:
+    """渲染基线逐行结果（人读）：一行一项能力 + 判定 + 证据命令。"""
+    w = term_width(width)
+    lines = [style("== 顶尖 CLI 基线（%d 项 · 逐条可复跑）==" % stats["rows"], "head", color),
+             "  通过 %d/%d" % (stats["passed"], stats["rows"])]
+    for r in results:
+        flag = style("✔" if r["ok"] else "✘", "ok" if r["ok"] else "fail", color)
+        lines.append("%s %s nf %s"
+                     % (flag, pad_to(r["name"], 30), " ".join(r["argv"])))
+    lines.append("  单行复跑：直接执行该行的 `nf …`（全部只读，不改仓库）")
+    return "\n".join(lines)
+
+
 def writable_dir_probe(path: str) -> tuple:
     """→ (ok, 说明)：**不落件**地判断某文件落点是否可写（沿祖先上溯到存在的目录再看权限）。
 

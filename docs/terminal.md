@@ -87,6 +87,17 @@ python scripts/nf.py shell --history <文件>      # 跨会话历史（缺省 <N
 
 ## 活体自检与机器面
 
+### 顶尖 CLI 基线（逐条可核，不是形容词）
+
+```bash
+python scripts/nf.py shell --baseline          # 逐行跑证据命令并给判定（13 项）
+python scripts/nf.py shell --baseline --json   # 机器面（纯 JSON：ok / stats / rows）
+```
+
+基线真源在 `desktop/src/core/terminal.py` 的 `TERMINAL_BASELINE`：每行 = 一项能力 + **一条证据命令**（+ 必须出现/必须不出现的片段 + 期望退出码）。当前 13 行覆盖：命令面可达 / 关键词检索 / 能力地图 / 拼错建议 / **写盘闸门（该被拒）** / **递归长驻拦截（该被拒）** / 补全 / 限长提示 / 非 TTY 无色 / 脚本面 / 表单 dry-run / 纯 JSON 机器面 / 活体自检。
+
+三条纪律：① 证据行**只读**（带 `--write`/`--apply`/`--yes` 等旗标会被基线自身判违规）；② 允许声明「该被拒」（`expect_exit: 2` + 拒跑理由），安全面因此也在基线内；③ verify check39 逐行断言同一份表——**「对标顶尖 CLI」的完成度可以逐条核**，不靠观感。
+
 - **`--verify --deep`（活体档）**：在静态面（索引/策展/菜单）之上再核**本机环境**——真跑一条只读命令（`nf layers --verify`）并核对退出码、探测历史/会话落点**可写性**（沿祖先目录判断，**不落探针文件**）、如实报告 TTY / readline / 分页器现状。所有结论与静态档同一套口径（`terminal.deep_check` 调 `self_check`），退出码即结论。
 - **机器面（`--json`）**：`--commands --json`（逐条命令 + 摘要 + 旗标）、`--map --json`（族分区）、`--form --json`（表单真源）/ `--form <id> --json`（组装计划 argv）、`--verify [--deep] --json`（ok / issues / stats）。**输出必须是纯 JSON**——活体输出会被捕获进字段而不是混进 stdout，check39 直接断言这一点。
 

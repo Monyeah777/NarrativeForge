@@ -837,6 +837,75 @@ class CliIntegrationTest(unittest.TestCase):
         self.assertEqual(payload["records"][0]["exit"], 0)
 
 
+class BaselineTest(unittest.TestCase):
+    """顶尖 CLI 基线：真源自洽 + 逐行可复跑（含「该被拒」的行）。"""
+
+    def test_baseline_table_self_consistent(self):
+        issues = term.baseline_argv_issues()
+        self.assertEqual(issues, [])
+        ids = [r["id"] for r in term.baseline_table()]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertTrue(any(r.get("expect_exit") == 2 for r in term.baseline_table()),
+                        "基线须含「该被拒」的行（安全面不能只测成功路径）")
+
+    def test_run_baseline_with_fake_runner(self):
+        rows = ({"id": "ok-row", "name": "A", "argv": ("shell", "--x"),
+                 "expect": "好"},
+                {"id": "refuse-row", "name": "B", "argv": ("shell", "--y"),
+                 "expect": "拒", "expect_exit": 2},
+                {"id": "forbid-row", "name": "C", "argv": ("shell", "--z"),
+                 "forbid": "\x1b"})
+        seen = []
+
+        def _runner(argv):
+            seen.append(list(argv))
+            if argv[-1] == "--x":
+                return 0, "好"
+            if argv[-1] == "--y":
+                return 2, "拒"
+            return 0, "干净"
+
+        results, stats = term.run_baseline(_runner, rows=rows)
+        self.assertEqual(stats, {"rows": 3, "passed": 3})
+        self.assertEqual([r["ok"] for r in results], [True, True, True])
+        self.assertEqual(seen, [["shell", "--x"], ["shell", "--y"], ["shell", "--z"]])
+
+    def test_run_baseline_detects_failures(self):
+        rows = ({"id": "wrong-exit", "name": "A", "argv": ("shell",),
+                 "expect": "x", "expect_exit": 0},)
+        results, stats = term.run_baseline(lambda argv: (2, "x"), rows=rows)
+        self.assertEqual(stats["passed"], 0)
+        self.assertFalse(results[0]["ok"])
+
+    def test_render_baseline_marks_and_no_ansi(self):
+        results, stats = term.run_baseline(lambda argv: (0, "好"),
+                                            rows=({"id": "a", "name": "甲",
+                                                   "argv": ("shell",), "expect": "好"},))
+        text = term.render_baseline(results, stats)
+        self.assertIn("通过 1/1", text)
+        self.assertIn("甲", text)
+        self.assertNotIn("\x1b", text)
+
+
+class BaselineCliTest(unittest.TestCase):
+    def test_cli_baseline_passes_and_json_pure(self):
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = nf.main(["shell", "--baseline", "--no-banner"])
+        text = out.getvalue() + err.getvalue()
+        self.assertEqual(code, 0, text)
+        self.assertIn("顶尖 CLI 基线", text)
+        self.assertIn("通过 13/13", text)
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = nf.main(["shell", "--baseline", "--json", "--no-banner"])
+        self.assertEqual(code, 0)
+        payload = json.loads(out.getvalue())       # 纯 JSON
+        self.assertEqual(payload["kind"], "shell-baseline")
+        self.assertTrue(payload["ok"])
+        self.assertEqual(payload["stats"]["passed"], payload["stats"]["rows"])
+
+
 class DeepCheckTest(unittest.TestCase):
     """活体自检：真跑一条只读命令 + 落点可写性探测（不落件）。"""
 

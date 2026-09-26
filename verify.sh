@@ -2243,12 +2243,12 @@ PYEOF
 }
 
 check39(){
-  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全/输出体验/写盘表单/活体自检在场）=='
+  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 命令面全策展可达 + 顶尖 CLI 基线逐条可核）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check39.log 2>&1
 import importlib.util, io, json, os, sys
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, redirect_stderr
 sys.path.insert(0, os.path.join('desktop', 'src'))
 from core import terminal as term
 
@@ -2378,6 +2378,22 @@ try:
 except Exception as _exc:
     problems.append('机器面不是纯 JSON：nf shell --verify --json（%s；'
                     '修复指引：机器面须捕获活体输出，别混进 stdout）' % _exc)
+# 顶尖 CLI 基线：逐行跑证据命令（含「该被拒」的行），任一行不过即 FAIL——「顶尖」逐条可核
+_bself = term.baseline_argv_issues()
+if _bself:
+    problems.append('顶尖 CLI 基线表自身不合规：%s（修复指引：核对 TERMINAL_BASELINE）'
+                    % '；'.join(_bself[:3]))
+def _cap(argv):
+    _b = io.StringIO()
+    with redirect_stdout(_b), redirect_stderr(_b):
+        _c = nf.main(list(argv))
+    return _c, _b.getvalue()
+_bres, _bstats = term.run_baseline(_cap)
+_bbad = [r for r in _bres if not r['ok']]
+if _bbad:
+    problems.append('顶尖 CLI 基线未过：%d/%d（修复指引：逐条跑 nf shell --baseline；失败项：%s）'
+                    % (_bstats['passed'], _bstats['rows'],
+                       '、'.join(str(r['id']) for r in _bbad[:4])))
 buf = io.StringIO()
 with redirect_stdout(buf):
     c_code = nf.main(['shell', '--commands', '--no-banner'])
@@ -2417,7 +2433,7 @@ print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
 sys.exit(1 if problems else 0)
 PYEOF
     then
-      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色/写盘表单/活体档/纯 JSON 运行时面）'
+      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色/写盘表单/活体档/纯 JSON + 顶尖 CLI 基线 13 行逐条）'
     else
       no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
     fi

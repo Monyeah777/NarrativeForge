@@ -916,6 +916,8 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="终端自检（索引覆盖 / 能力族分区 / 菜单示例可达），退出码即结论")
     sh.add_argument("--deep", action="store_true",
                     help="配合 --verify：活体档——真跑一条只读命令 + 探测历史/会话落点可写性")
+    sh.add_argument("--baseline", action="store_true",
+                    help="跑「顶尖 CLI 基线」：逐行执行证据命令并给判定（与 verify check39 同源）")
     sh.add_argument("--complete", dest="complete_prefix", default="", metavar="前缀",
                     help="补全候选（非交互）：给命令/子命令/旗标/斜杠命令/能力族前缀，未命中退出 2")
     sh.add_argument("--history", default="", metavar="文件",
@@ -4295,6 +4297,35 @@ def _cmd_shell(args) -> int:
                                         color=color_on)
         print(_page_text(text, args.pager))
         return 0 if hits else 2
+    if args.baseline:
+        import contextlib
+        import io
+
+        def _capture(argv):
+            """证据行执行：捕获输出（基线表只判「输出里有没有/有没有违规片段」）。"""
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                code = main(list(argv))
+            return code, buf.getvalue()
+
+        self_issues = term.baseline_argv_issues()
+        results, stats = term.run_baseline(_capture)
+        failed = [r for r in results if not r["ok"]]
+        if args.json:
+            import json as _json
+            print(_json.dumps({"kind": "shell-baseline",
+                               "ok": not self_issues and not failed,
+                               "self_issues": self_issues, "stats": stats,
+                               "rows": results}, ensure_ascii=False, indent=2))
+            return 0 if (not self_issues and not failed) else 1
+        print(term.render_baseline(results, stats, width or None, color_on))
+        for i in self_issues:
+            print("  [FAIL] 基线自身不合规：%s" % i)
+        for r in failed:
+            print("  [FAIL] %s：退出码 %s（证据：nf %s；期望含 %r 且不含 %r）"
+                  % (r["id"], r["exit"], " ".join(r["argv"]), r["expect"], r["forbid"]))
+        return 0 if (not self_issues and not failed) else 1
+
     if args.verify:
         import shutil
         tree = _collect_cli_tree()
