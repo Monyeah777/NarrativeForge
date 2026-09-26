@@ -2,6 +2,15 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v5：输出体验（列宽 / 限长 / 着色 / 分页）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮清单第 1 项「输出体验决定读不读得下去，是与顶尖 CLI 最明显的观感差距」）：
+  ① **CJK 列宽对齐**：新增 `char_width` / `display_width` / `pad_to` / `clip`（East Asian Wide/Fullwidth 实用子集 + emoji 走宽），两列列表按**显示宽度**补位与截断——中文终端里不再歪列；宽度取 `--width` > 环境 `COLUMNS`（≥40 才认）> 100。
+  ② **限长与提示**：`--limit N`（0 = 全部）作用于命令面/检索/补全列表，截断时明确给「… 还有 M 条（`--limit 0` 看全部，或加过滤词收敛）」，不静默截断。
+  ③ **着色克制**：`--color=auto|always|never`（缺省 auto）+ `resolve_color()`——auto 只在真 TTY 且未设 `NO_COLOR` 时上色；`NO_COLOR` 一票否决 auto，`always` 是显式要求不受其影响；会话内新增 **`/set`** 可即时改 `color` / `width` / `limit`（无参数打印当前值）。
+  ④ **确定性契约（硬）**：非 TTY 一律无色无分页、逐字节可复现；verify **check39** 新增断言「默认输出不得含控制字符」+「限长必须给提示」，把这条契约钉进 CI（并入既有 check39，不涨号，基线仍 **PASS=68**）。
+  ⑤ **分页可选**：`--pager=auto` 才在真 TTY 且 `less`/`more` 在场时接管长输出（argv 列表调用、不经 shell，缺件即退化）；缺省 `never`。
+  ⑥ 本波被自家门禁/单测抓出的两处真问题（都已修）：菜单键补宽破坏了 `[0] 标题` 的既有格式契约（既有单测当场判红，已回退）；本机环境自带 `NO_COLOR=1`，测试须显式控制该变量才能验证 auto 分支（已在测试里固定）。
+  ⑦ 实测（本机）：`--commands asset --limit 5` → 5 行 + 「还有 9 条」；`--color always` 出 ANSI、默认（非 TTY）**0 个 ESC**；`test_terminal` **73 例**全绿；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39）；conformance 27/27；receipts 51 件。
+
 - **终端 v4：补全与历史（零依赖口径）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮结论「补全与历史是顶尖 CLI 最直观的体感差距」）：
   ① **补全判据（纯函数）**：`terminal.complete()` 覆盖四类前缀——命令 / 二级子命令 / **旗标**（`nf layers --` → `--json/--verify/--write/--help`）/ 斜杠命令 / 能力族（`/map v`），候选一律由 CLI 的 argparse 索引派生（补全面与命令面同源）。三种入口都能吃：`/complete <前缀>`、**行尾 `Tab`**、`nf shell --complete <前缀>`（未命中退出 2，可进脚本）。
   ② **readline 可选接管**：POSIX 上 `readline` 可用则自动接 Tab 与历史（`install_readline`），Windows 无该模块时走**候选列表回退**；`nf shell --verify` 如实报告当前走哪条路——零第三方依赖红线不破（`readline` 属 stdlib，缺失即降级，判据不依赖它）。

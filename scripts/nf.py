@@ -920,6 +920,14 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="跨会话历史文件（缺省 <NF_HOME>/shell_history；仅交互态写入）")
     sh.add_argument("--no-history", action="store_true",
                     help="不写历史（`--exec`/`--file` 本来就一律不写，以保证确定性）")
+    sh.add_argument("--color", choices=("auto", "always", "never"), default="auto",
+                    help="着色模式（缺省 auto：真 TTY 且未设 NO_COLOR 才上色；非 TTY 恒无色）")
+    sh.add_argument("--width", type=int, default=0, metavar="列宽",
+                    help="渲染宽度（缺省取环境 COLUMNS，否则 100；CJK 按显示宽度对齐）")
+    sh.add_argument("--limit", type=int, default=0, metavar="条数",
+                    help="列表限长（0 = 全部；截断时给「还有 N 条」提示）")
+    sh.add_argument("--pager", choices=("auto", "never"), default="never",
+                    help="分页（缺省 never：非交互面逐字节确定；auto 仅在真 TTY 且 less/more 在场时接管）")
     ly = sub.add_parser(
         "layers",
         help="抽象阶梯（两轴 + 纵切）：四阶真源/接口面 + 资产五子级 + 入口面 + 验证纵切",
@@ -4012,6 +4020,36 @@ def _cmd_doctor(args):
 _SHELL_SUMMARY_MAX = 100
 
 
+#: 终端可用的着色模式（与 core/terminal.resolve_color 同词表）
+_SHELL_COLOR_MODES = ("auto", "always", "never")
+
+
+def _page_text(text: str, mode: str = "never") -> str:
+    """按需经外部分页器（less -R / more）——**只在真 TTY 且 mode=auto** 时接管。
+
+    非 TTY（管道/CI/测试）一律原样返回：逐字节确定性是硬契约，分页只服务人类终端。
+    分页器用 argv 列表调用（不经 shell），缺件即退化。
+    """
+    if str(mode or "never").strip().lower() != "auto":
+        return text
+    try:
+        if not sys.stdout.isatty():
+            return text
+    except Exception:      # 尽力而为：判定不了 TTY 就按非 TTY 处理（无色不分页）
+        return text
+    import shutil
+    import subprocess  # nosec B404 —— argv 列表调用本地分页器，不经 shell
+    pager = shutil.which("less") or shutil.which("more")
+    if not pager:
+        return text
+    args = [pager, "-R"] if os.path.basename(pager).startswith("less") else [pager]
+    try:
+        subprocess.run(args, input=text.encode("utf-8"), check=False)  # nosec B603/B607
+        return ""
+    except OSError:        # 尽力而为：分页器不可执行时退回原样打印
+        return text
+
+
 def _shell_command_index() -> list:
     """终端检索索引：从 argparse 面派生（命令真源 = CLI 面，终端不留第二份）。
 
@@ -4132,6 +4170,7 @@ def _cmd_shell(args) -> int:
     from core import terminal as term
 
     index = _shell_command_index()
+    color_on = term.resolve_color(args.color, sys.stdout)
 
     def runner(argv):
         argv = list(argv)
@@ -4142,14 +4181,18 @@ def _cmd_shell(args) -> int:
         return main(argv)
 
     if args.commands is not None:
-        print(term.render_commands(index, args.commands or ""))
+        print(_page_text(term.render_commands(index, args.commands or "",
+                                              limit=args.limit, width=args.width,
+                                              color=color_on), args.pager))
         return 0
     if args.family_map is not None:
-        print(term.render_map(args.family_map or ""))
+        print(_page_text(term.render_map(args.family_map or "", args.width or None,
+                                         color_on), args.pager))
         return 0
     if args.search:
-        text, hits = term.render_search(index, args.search)
-        print(text)
+        text, hits = term.render_search(index, args.search, width=args.width or None,
+                                        color=color_on)
+        print(_page_text(text, args.pager))
         return 0 if hits else 2
     if args.verify:
         tree = _collect_cli_tree()
@@ -4198,7 +4241,9 @@ def _cmd_shell(args) -> int:
                             assume_yes=args.yes,
                             show_banner=print_banner,
                             baseline=_shell_baseline(), index=index,
-                            history_path=history_path)
+                            history_path=history_path, color=color_on,
+                            width=args.width or None, limit=args.limit,
+                            color_mode=args.color)
 
 
 def _collect_cli_tree():

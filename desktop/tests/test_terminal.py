@@ -397,6 +397,83 @@ class ShellScriptTest(unittest.TestCase):
         self.assertEqual(intent.payload, ["assemble", "含 # 号的需求"])
 
 
+class OutputExperienceTest(unittest.TestCase):
+    """输出体验：CJK 列宽对齐 / 限长提示 / 着色克制（非 TTY 恒无色）。"""
+
+    @staticmethod
+    def _index():
+        return nf._shell_command_index()
+
+    def test_display_width_and_pad(self):
+        self.assertEqual(term.display_width("abc"), 3)
+        self.assertEqual(term.display_width("中文"), 4)
+        self.assertEqual(term.display_width("a中b"), 4)
+        self.assertEqual(term.pad_to("中", 4), "中  ")
+        self.assertEqual(term.display_width(term.pad_to("中文", 6)), 6)
+
+    def test_clip_respects_display_width(self):
+        self.assertEqual(term.clip("abc", 5), "abc")
+        self.assertEqual(term.clip("中文中文", 5), "中文…")
+        self.assertEqual(term.display_width(term.clip("中" * 20, 9)), 9)
+
+    def test_resolve_color_modes(self):
+        class _Tty:
+            @staticmethod
+            def isatty():
+                return True
+
+        class _Pipe:
+            @staticmethod
+            def isatty():
+                return False
+
+        old = os.environ.get("NO_COLOR")
+        os.environ.pop("NO_COLOR", None)      # 环境可能自带 NO_COLOR（本机实测 =1），须显式控制
+        try:
+            self.assertFalse(term.resolve_color("never", _Tty()))
+            self.assertTrue(term.resolve_color("always", _Pipe()))
+            self.assertTrue(term.resolve_color("auto", _Tty()))
+            self.assertFalse(term.resolve_color("auto", _Pipe()))
+            os.environ["NO_COLOR"] = "1"
+            self.assertFalse(term.resolve_color("auto", _Tty()),
+                             "NO_COLOR 一票否决 auto")
+            self.assertTrue(term.resolve_color("always", _Tty()),
+                            "always 是显式要求，NO_COLOR 不否决它")
+        finally:
+            if old is None:
+                os.environ.pop("NO_COLOR", None)
+            else:
+                os.environ["NO_COLOR"] = old
+
+    def test_render_commands_limit_hint_and_color(self):
+        plain = term.render_commands(self._index(), "asset", limit=3)
+        self.assertEqual(len([ln for ln in plain.splitlines()
+                              if ln.lstrip().startswith("nf asset")]), 3)
+        self.assertIn("还有", plain)
+        self.assertNotIn("\x1b", plain, "默认（非 TTY 口径）不得带控制字符")
+        colored = term.render_commands(self._index(), "asset", limit=3, color=True)
+        self.assertIn("\x1b[", colored)
+
+    def test_session_set_changes_settings(self):
+        session = term.Session(lambda argv: 0, index=self._index())
+        kind, code, text = session.handle("/set width=120 limit=2 color=never")
+        self.assertEqual((kind, code), ("set", 0))
+        self.assertIn("width = 120", text)
+        self.assertIn("limit = 2", text)
+        _k, code2, text2 = session.handle("/commands asset")
+        self.assertEqual(code2, 0)
+        self.assertIn("还有", text2)
+        self.assertNotIn("\x1b", text2)
+        _k, code3, text3 = session.handle("/set color=bogus")
+        self.assertEqual(code3, 2)
+        self.assertIn("无法识别", text3)
+
+    def test_menu_and_map_default_plain(self):
+        self.assertNotIn("\x1b", term.menu())
+        self.assertNotIn("\x1b", term.render_map())
+        self.assertIn("\x1b[", term.menu(color=True))
+
+
 class CompletionHistoryTest(unittest.TestCase):
     """补全与历史（顶尖 CLI 的体感面）：补全是纯判据，历史只在交互态写。"""
 
@@ -535,6 +612,16 @@ class CliIntegrationTest(unittest.TestCase):
         code, out = _run(["shell", "--exec", "/map start", "--no-banner"])
         self.assertEqual(code, 0)
         self.assertIn("[start]", out)
+
+    def test_cli_output_experience_flags(self):
+        code, out = _run(["shell", "--commands", "asset", "--limit", "3", "--no-banner"])
+        self.assertEqual(code, 0)
+        self.assertIn("还有", out)
+        self.assertNotIn("\x1b", out, "默认（非 TTY）不得上色：确定性契约")
+        code, out = _run(["shell", "--commands", "asset", "--limit", "3",
+                          "--color", "always", "--no-banner"])
+        self.assertEqual(code, 0)
+        self.assertIn("\x1b[", out)
 
     def test_cli_complete_face(self):
         code, out = _run(["shell", "--complete", "nf lay", "--no-banner"])

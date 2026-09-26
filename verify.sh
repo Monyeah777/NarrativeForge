@@ -2243,7 +2243,7 @@ PYEOF
 }
 
 check39(){
-  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全面在场）=='
+  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全/输出体验在场）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check39.log 2>&1
@@ -2337,6 +2337,17 @@ for _argv, _need in ((['shell', '--map', '--no-banner'], '能力地图'),
     if _code != 0 or _need not in buf.getvalue():
         problems.append('终端自检/地图面失效：nf %s（修复指引：核对 --map / --verify 接线）'
                         % ' '.join(_argv[:2]))
+# 输出体验：默认（非 TTY）必须无色无控制字符，且限长时给「还有 N 条」提示
+buf = io.StringIO()
+with redirect_stdout(buf):
+    _lc = nf.main(['shell', '--commands', 'asset', '--limit', '3', '--no-banner'])
+_lout = buf.getvalue()
+if _lc != 0 or '还有' not in _lout:
+    problems.append('命令面限长提示失效：nf shell --commands asset --limit 3'
+                    '（修复指引：核对 render_commands 的 limit 分支）')
+if '\x1b' in _lout:
+    problems.append('终端默认输出含控制字符：非 TTY 必须逐字节确定'
+                    '（修复指引：颜色只在 --color=always 或真 TTY 的 auto 下生效）')
 buf = io.StringIO()
 with redirect_stdout(buf):
     c_code = nf.main(['shell', '--commands', '--no-banner'])
@@ -2376,7 +2387,7 @@ print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
 sys.exit(1 if problems else 0)
 PYEOF
     then
-      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全运行时面）'
+      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色运行时面）'
     else
       no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
     fi

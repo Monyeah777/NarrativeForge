@@ -54,6 +54,7 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 | `/map [族或片段]` | **能力地图**：把全部顶层命令按能力族策展呈现（8 族），可过滤 |
 | `/complete <前缀>` · 行尾 `Tab` | **补全**：命令 / 二级子命令 / 旗标 / 斜杠命令 / 能力族前缀 |
 | `/history [n]` | 看历史（最近 n 条）；`quit` 与 Tab 行不入历史 |
+| `/set [k=v …]` | 改视图设置（`color` / `width` / `limit`）；无参数打印当前值 |
 | `/help` 或 `/help <cmd>` | 转 CLI 帮助面（等价 `nf help …`） |
 | `nf <args…>` 或 `<args…>` | 直通 CLI（`nf` 前缀可省） |
 | `quit` `exit` `q` `退出` | 退出会话 |
@@ -79,6 +80,14 @@ python scripts/nf.py shell --history <文件>      # 跨会话历史（缺省 <N
 会话内等价形态是 `/map [族]`、`/commands [过滤]` 与 `/find <词>`。三层保证「最全」不是宣称：
 
 ① **索引由 CLI 的 argparse 面派生**（终端不维护第二份命令表）；② **能力地图把每个命令恰好归入一个族**（`start / forge / shelf / verify / library / govern / integrate / meta`），「未策展」即报；③ 判据**单源**——`nf shell --verify`（给人跑）与 verify check39（给门禁跑）调用同一个 `terminal.self_check`，所以「终端说没问题」与「门禁说没问题」永远同一套语义。
+
+## 输出体验（列宽 / 限长 / 着色 / 分页）
+
+- **列宽对齐**：CJK 与 emoji 按**显示宽度 2** 计算（`display_width` / `pad_to` / `clip`），两列列表在中文终端里不歪列；宽度取 `--width`，否则环境 `COLUMNS`，否则 100。
+- **限长与提示**：`--limit N`（0 = 全部）作用于长列表，截断时明确给「… 还有 M 条（`--limit 0` 看全部，或加过滤词收敛）」，不静默截断。
+- **着色克制**：`--color=auto|always|never`（缺省 auto）。auto **只在真 TTY 且未设 `NO_COLOR`** 时上色；`NO_COLOR` 一票否决 auto，而 `always` 是显式要求、不受其影响。会话内 `/set color=never` 可随时关。
+- **确定性契约（硬）**：非 TTY（管道 / CI / 测试 / `--exec` / `--file`）一律**无色、无分页、逐字节可复现**——verify check39 直接断言默认输出不含控制字符。
+- **分页可选**：`--pager=auto` 才会在真 TTY 且 `less` / `more` 在场时接管长输出；缺省 `never`（保证可重定向、可 diff）。
 
 ## 补全与历史（零依赖口径）
 

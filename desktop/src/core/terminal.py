@@ -129,7 +129,8 @@ SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
                "zone", "z", "区", "doctor", "自检", "version", "ver", "版本",
                "find", "search", "找", "查", "commands", "cmd", "cmds", "命令",
                "map", "families", "族", "地图",
-               "history", "hist", "历史", "complete", "补全")
+               "history", "hist", "历史", "complete", "补全",
+               "set", "settings", "设置")
 
 
 def _slash_intent(body: str, raw: str):
@@ -158,12 +159,115 @@ def _slash_intent(body: str, raw: str):
         return Intent("history", tail.strip(), raw)
     if head in ("complete", "补全"):
         return Intent("complete", tail.strip(), raw)
+    if head in ("set", "settings", "设置"):
+        return Intent("set", tail.strip(), raw)
     return None
 
 
 def zone_table() -> tuple:
     """返回能力菜单真源（终端渲染、check39 与文档共用同一份数据，不留第二份）。"""
     return ZONES
+
+
+# ---------------------------------------------------------------- 输出体验
+# 顶尖 CLI 的观感三件：**列宽对齐**（CJK 按两个显示宽度算）、**长列表可收**（限长 + 提示）、
+# **颜色克制**（默认只在真 TTY 上色，`NO_COLOR` 一票否决；非 TTY 逐字节确定——这是硬契约）。
+
+#: East Asian Wide / Fullwidth 码位区间（UAX #11 的实用子集；emoji 走宽）
+_WIDE_RANGES = (
+    (0x1100, 0x115F), (0x2E80, 0x303E), (0x3041, 0x33FF), (0x3400, 0x4DBF),
+    (0x4E00, 0x9FFF), (0xA000, 0xA4CF), (0xAC00, 0xD7A3), (0xF900, 0xFAFF),
+    (0xFE10, 0xFE19), (0xFE30, 0xFE6F), (0xFF00, 0xFF60), (0xFFE0, 0xFFE6),
+    (0x1F300, 0x1F64F), (0x1F900, 0x1F9FF), (0x20000, 0x2FFFD), (0x30000, 0x3FFFD),
+)
+#: 结构着色（ANSI）：只在 color=True 时生效；语义固定、可复算
+_STYLES = {"head": "\033[1m", "cmd": "\033[36m", "ok": "\033[32m",
+           "warn": "\033[33m", "fail": "\033[31m", "dim": "\033[2m"}
+_RESET = "\033[0m"
+
+
+def char_width(ch: str) -> int:
+    """单字符显示宽度（CJK/全角/emoji = 2，其余 = 1，控制字符 = 0）。"""
+    cp = ord(ch)
+    if cp < 32 or cp == 0x7F:
+        return 0
+    for lo, hi in _WIDE_RANGES:
+        if lo <= cp <= hi:
+            return 2
+    return 1
+
+
+def display_width(text: str) -> int:
+    """字符串显示宽度（列对齐用；纯函数、确定性）。"""
+    return sum(char_width(ch) for ch in str(text or ""))
+
+
+def pad_to(text: str, width: int) -> str:
+    """右补空格到指定**显示宽度**（CJK 不歪列）。"""
+    text = str(text or "")
+    gap = int(width) - display_width(text)
+    return text + (" " * gap if gap > 0 else "")
+
+
+def clip(text: str, width: int) -> str:
+    """单行截断到指定显示宽度（超宽加省略号）。"""
+    text = str(text or "")
+    if display_width(text) <= width:
+        return text
+    out, used = [], 0
+    for ch in text:
+        cw = char_width(ch)
+        if used + cw > max(0, int(width) - 1):
+            break
+        out.append(ch)
+        used += cw
+    return "".join(out) + "…"
+
+
+def style(text, kind: str, on: bool = False) -> str:
+    """按语义着色（on=False 原样返回——非 TTY 默认，保逐字节确定）。"""
+    body = str(text)
+    if not on or kind not in _STYLES:
+        return body
+    return "%s%s%s" % (_STYLES[kind], body, _RESET)
+
+
+def resolve_color(mode: str = "auto", stream=None) -> bool:
+    """颜色模式 → 布尔：always / never / auto（auto = 真 TTY 且未设 NO_COLOR）。"""
+    m = str(mode or "auto").strip().lower()
+    if m == "always":
+        return True
+    if m == "never":
+        return False
+    if os.environ.get("NO_COLOR"):
+        return False
+    try:
+        return bool(stream is not None and stream.isatty())
+    except Exception:      # 尽力而为：判定不了就按无色（安全侧）
+        return False
+
+
+def term_width(width=None, env=None, default: int = 100) -> int:
+    """渲染宽度：显式 width > 环境 COLUMNS（≥40 才认）> default。"""
+    if width:
+        try:
+            return max(40, int(width))
+        except (TypeError, ValueError):
+            return default
+    e = env if env is not None else os.environ
+    try:
+        cols = int(e.get("COLUMNS") or 0)
+    except (TypeError, ValueError, AttributeError):
+        cols = 0
+    return cols if cols >= 40 else default
+
+
+def _row(left: str, right: str, width: int, color: bool = False) -> str:
+    """两列行：左列固定宽度（按显示宽度补），右列按剩余宽度截断。"""
+    left_col = 28
+    left_txt = pad_to("  " + left, left_col)
+    remain = max(20, int(width) - left_col)
+    return style(left_txt, "cmd", color) + clip(right, remain)
 
 
 def zone_by_key(key: str):
@@ -272,7 +376,7 @@ def example_resolves(example: str, commands, root_flags) -> bool:
     return head in set(commands) or head in set(root_flags)
 
 
-def banner(baseline: str = "") -> str:
+def banner(baseline: str = "", color: bool = False) -> str:
     """终端开场横幅：版本 + 基线 + 最快上手路径（无时间戳 → 可逐字节复现）。"""
     lines = ["NarrativeForge 终端 v%s（端壳退役后的人机入口；命令真源 = nf CLI）"
              % SHELL_VERSION]
@@ -283,29 +387,34 @@ def banner(baseline: str = "") -> str:
         "  任意 nf 命令可直接直通（例：nf doctor / nf market --list）；行尾 \\ 可续行",
         "  写入类命令（--write/--apply/--register…）须二次确认，终端不替你拍板",
     ]
+    lines[0] = style(lines[0], "head", color)
     return "\n".join(lines)
 
 
-def menu() -> str:
+def menu(width=None, color: bool = False) -> str:
     """渲染能力菜单（人读表 + 可执行示例入口）。"""
-    lines = ["== NF 能力菜单（端壳七区 → CLI 命令面）==", ""]
+    w = term_width(width)
+    lines = [style("== NF 能力菜单（端壳七区 → CLI 命令面）==", "head", color), ""]
     for item in ZONES:
-        lines.append("[%s] %s —— %s" % (item["key"], item["title"], item["summary"]))
+        # 键固定 3 显示宽度（0-7），故不补宽——保持 `[0] 标题 —— 摘要` 的既有格式契约
+        left = style("[%s]" % item["key"], "cmd", color)
+        lines.append("%s %s —— %s"
+                     % (left, item["title"], clip(item["summary"], max(20, w - 30))))
     lines += ["",
               "看某区示例：输入编号（如 4）或 /zone 4；执行：把示例里的命令打进终端。"]
     return "\n".join(lines)
 
 
-def zone_detail(key: str) -> str:
+def zone_detail(key: str, color: bool = False) -> str:
     """渲染单个能力区的示例命令（未命中键 → 给可用键清单，不抛栈）。"""
     item = zone_by_key(key)
     if item is None:
         return ("未识别的菜单键「%s」（可用键：%s；示例：输入 0 看环境自检）"
                 % (key, "、".join(z["key"] for z in ZONES)))
-    lines = ["== [%s] %s ==" % (item["key"], item["title"]),
+    lines = [style("== [%s] %s ==" % (item["key"], item["title"]), "head", color),
              "  %s" % item["summary"],
              "  示例命令（复制即用）："]
-    lines += ["    %s" % ex for ex in item["examples"]]
+    lines += ["    " + style(ex, "cmd", color) for ex in item["examples"]]
     return "\n".join(lines)
 
 
@@ -377,7 +486,8 @@ def search(index, query: str, limit: int = 8) -> list:
     return out[:limit]
 
 
-def render_search(index, query: str, limit: int = 8) -> tuple:
+def render_search(index, query: str, limit: int = 8, width=None,
+                  color: bool = False) -> tuple:
     """渲染检索结果 → (文本, 命中数)。未命中给确定性的下一步指引，不空手而归。"""
     hits = search(index, query, limit=limit)
     if not hits:
@@ -385,14 +495,16 @@ def render_search(index, query: str, limit: int = 8) -> tuple:
         tip = ("；你是不是想找：%s" % "、".join(near)) if near else ""
         return ("未命中命令：「%s」%s\n  （用 /commands 列全部命令面；或用 nf --help 看总览）"
                 % (query, tip), 0)
-    lines = ["== 命令检索：「%s」（%d 命中）==" % (query, len(hits))]
+    w = term_width(width)
+    lines = [style("== 命令检索：「%s」（%d 命中）==" % (query, len(hits)), "head", color)]
     for _score, e in hits:
-        lines.append("  nf %-22s %s" % (e.get("path"), e.get("summary") or ""))
+        lines.append(_row("nf " + str(e.get("path")), str(e.get("summary") or ""), w, color))
     lines.append("  用法：直接输入 `nf <命令> …`；二级见 `nf <命令> --help`")
     return "\n".join(lines), len(hits)
 
 
-def render_commands(index, filt: str = "") -> str:
+def render_commands(index, filt: str = "", limit: int = 0, width=None,
+                    color: bool = False) -> str:
     """列出全部可达命令（可按子串过滤）——把「最全功能」摊开成一张可检视的表。"""
     f = str(filt or "").strip().lower()
     rows = sorted((e for e in index or []
@@ -400,10 +512,16 @@ def render_commands(index, filt: str = "") -> str:
                    or f in str(e.get("summary") or "").lower()),
                   key=lambda e: str(e.get("path")))
     tops = {str(e.get("path")).split(" ")[0] for e in index or []}
-    lines = ["== nf 命令面（顶层 %d · 含二级 %d 条%s）=="
-             % (len(tops), len(rows), ("，过滤：%s" % filt) if f else "")]
-    for e in rows:
-        lines.append("  nf %-24s %s" % (e.get("path"), e.get("summary") or ""))
+    w = term_width(width)
+    lines = [style("== nf 命令面（顶层 %d · 含二级 %d 条%s）=="
+                   % (len(tops), len(rows), ("，过滤：%s" % filt) if f else ""),
+                   "head", color)]
+    shown = rows if not limit or int(limit) <= 0 else rows[:int(limit)]
+    for e in shown:
+        lines.append(_row("nf " + str(e.get("path")), str(e.get("summary") or ""), w, color))
+    if len(shown) < len(rows):
+        lines.append(style("  … 还有 %d 条（--limit 0 看全部，或加过滤词收敛）"
+                           % (len(rows) - len(shown)), "dim", color))
     lines.append("  检索：/find <词>（或 nf shell --search <词>）；菜单：/menu")
     return "\n".join(lines)
 
@@ -422,10 +540,12 @@ def family_of(cmd: str):
     return None
 
 
-def render_map(filt: str = "") -> str:
+def render_map(filt: str = "", width=None, color: bool = False) -> str:
     """渲染能力地图（全功能分面）：每族给一句话定位 + 该族命令清单。"""
     f = str(filt or "").strip().lower()
-    lines = ["== NF 能力地图（%d 族 · 覆盖 CLI 全部顶层命令）==" % len(FAMILIES)]
+    w = term_width(width)
+    lines = [style("== NF 能力地图（%d 族 · 覆盖 CLI 全部顶层命令）==" % len(FAMILIES),
+                   "head", color)]
     for fam in FAMILIES:
         cmds = list(fam["commands"])
         hit = (not f) or f in str(fam["id"]).lower() or f in str(fam["name"]).lower() \
@@ -433,8 +553,10 @@ def render_map(filt: str = "") -> str:
         if not hit:
             continue
         lines.append("")
-        lines.append("[%s] %s —— %s" % (fam["id"], fam["name"], fam["summary"]))
-        lines.append("    " + " · ".join("nf %s" % c for c in cmds))
+        lines.append("%s %s —— %s"
+                     % (style("[%s]" % fam["id"], "cmd", color), fam["name"],
+                        clip(fam["summary"], max(20, w - 34))))
+        lines.append("    " + style(" · ".join("nf %s" % c for c in cmds), "dim", color))
     lines.append("")
     lines.append("  单族用法：/map <族名或命令片段>；命令详情：/find <词>；逐条列出：/commands")
     return "\n".join(lines)
@@ -639,14 +761,15 @@ def complete(partial: str, index, limit: int = 20) -> list:
     return out[:limit]
 
 
-def render_completions(partial: str, cands) -> str:
+def render_completions(partial: str, cands, width=None, color: bool = False) -> str:
     """渲染补全候选（人读）：一行一条，带用途；未命中给下一步指引。"""
     if not cands:
         return ("无补全候选：「%s」（用 /commands 列全部命令、/map 看能力族，"
                 "或 /find <词> 检索）" % partial)
-    lines = ["== 补全：「%s」（%d 条）==" % (partial, len(cands))]
+    w = term_width(width)
+    lines = [style("== 补全：「%s」（%d 条）==" % (partial, len(cands)), "head", color)]
     for c in cands:
-        lines.append("  %-34s %s" % (c.get("text"), c.get("note") or ""))
+        lines.append(_row(str(c.get("text")), str(c.get("note") or ""), w, color))
     return "\n".join(lines)
 
 
@@ -658,7 +781,8 @@ class Session:
     """
 
     def __init__(self, runner, assume_yes: bool = False, index=None,
-                 history_path=None):
+                 history_path=None, color=False, width=None, limit=0,
+                 color_mode="never", stream=None):
         if not callable(runner):
             raise ValueError("Session 需要可调用的 runner(argv) -> int；"
                              "请传入 scripts/nf.py 的 main（终端不自己执行命令）")
@@ -673,6 +797,12 @@ class Session:
         self._tops = {str(e.get("path")).split(" ")[0] for e in self.index}
         # 历史文件（交互态用；None = 不记录）。`--exec` / `--file` 一律不写，保持确定性。
         self.history_path = str(history_path) if history_path else None
+        # 视图设置（`/set` 可改）：颜色 / 宽度 / 列表限长。默认无色——非 TTY 逐字节确定。
+        self.color = bool(color)
+        self.color_mode = str(color_mode or "never")
+        self.width = width
+        self.limit = int(limit or 0)
+        self.stream = stream
 
     def invoke(self, argv: list) -> tuple:
         """执行一条命令 → (exit_code, stdout, stderr)；捕获输出以便落档与比对。
@@ -715,22 +845,29 @@ class Session:
                                                      if intent.payload else []))
             rec.update(exit=code, out=out, err=err)
         elif intent.kind == "menu":
-            rec["note"] = menu()
+            rec["note"] = menu(self.width, self.color)
         elif intent.kind == "zone":
             self.last_zone = intent.payload
-            rec["note"] = zone_detail(intent.payload)
+            rec["note"] = zone_detail(intent.payload, self.color)
         elif intent.kind == "search":
-            text, hits = render_search(self.index, intent.payload)
+            text, hits = render_search(self.index, intent.payload,
+                                       width=self.width, color=self.color)
             rec["note"] = text
             rec["exit"] = 0 if hits else 2
         elif intent.kind == "commands":
-            rec["note"] = render_commands(self.index, intent.payload)
+            rec["note"] = render_commands(self.index, intent.payload, limit=self.limit,
+                                          width=self.width, color=self.color)
         elif intent.kind == "map":
-            rec["note"] = render_map(intent.payload)
+            rec["note"] = render_map(intent.payload, self.width, self.color)
         elif intent.kind == "complete":
             cands = complete(intent.payload, self.index)
-            rec["note"] = render_completions(intent.payload, cands)
+            rec["note"] = render_completions(intent.payload, cands,
+                                             width=self.width, color=self.color)
             rec["exit"] = 0 if cands else 2
+        elif intent.kind == "set":
+            text, ok = self._apply_settings(intent.payload)
+            rec["note"] = text
+            rec["exit"] = 0 if ok else 2
         elif intent.kind == "history":
             rows = load_history(self.history_path, limit=200) if self.history_path else []
             n = 0
@@ -776,6 +913,43 @@ class Session:
         self.history.append(rec)
         return rec
 
+    def _apply_settings(self, payload: str):
+        """`/set [k=v …]` → (文本, ok)：无参数打印当前值，有参数改 color / width / limit。"""
+        bad = []
+        for pair in str(payload or "").split():
+            key, _, value = pair.partition("=")
+            key, value = key.strip().lower(), value.strip()
+            if key == "color":
+                if value not in ("auto", "always", "never"):
+                    bad.append(pair)
+                    continue
+                self.color_mode = value
+                self.color = resolve_color(value, self.stream)
+            elif key == "width":
+                try:
+                    self.width = max(40, int(value)) if value else None
+                except ValueError:
+                    bad.append(pair)
+            elif key == "limit":
+                try:
+                    self.limit = max(0, int(value))
+                except ValueError:
+                    bad.append(pair)
+            elif value == "":
+                pass
+            else:
+                bad.append(pair)
+        lines = ["== 终端设置 ==",
+                 "  color = %s（实际着色：%s；`NO_COLOR` 一票否决 auto）"
+                 % (self.color_mode, "开" if self.color else "关"),
+                 "  width = %s（默认取 COLUMNS，否则 100）" % (self.width or "auto"),
+                 "  limit = %s（列表限长；0 = 全部）" % self.limit,
+                 "  历史 = %s" % (self.history_path or "关闭"),
+                 "  用法：/set color=never width=120 limit=40（可只给其中几项）"]
+        if bad:
+            lines.append("  [FAIL] 无法识别：%s（可用键：color / width / limit）" % "、".join(bad))
+        return "\n".join(lines), not bad
+
     def handle(self, line: str) -> tuple:
         """薄封装：处理一行 → (kind, exit_code, 要打印的文本)。"""
         rec = self.dispatch(line)
@@ -785,7 +959,8 @@ class Session:
 
 def run_session(runner, stdin, stdout, assume_yes: bool = False,
                 show_banner: bool = True, baseline: str = "", index=None,
-                history_path=None) -> int:
+                history_path=None, color=False, width=None, limit=0,
+                color_mode="never") -> int:
     r"""交互会话主循环：读一行 → 分派 → 打印 → 直到 quit / EOF。
 
     写入类命令在交互态**就地追问**（读到 yes 才放行本次）；非交互态仍须 `--yes`。
@@ -795,9 +970,10 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
     行尾 Tab = 补全候选；`history_path` 启用跨会话历史（`--exec`/`--file` 不写，保确定性）。
     """
     session = Session(runner, assume_yes=assume_yes, index=index,
-                      history_path=history_path)
+                      history_path=history_path, color=color, width=width,
+                      limit=limit, color_mode=color_mode, stream=stdout)
     if show_banner:
-        stdout.write(banner(baseline) + "\n")
+        stdout.write(banner(baseline, color) + "\n")
         stdout.flush()
     worst = 0
     while not session.quit:
