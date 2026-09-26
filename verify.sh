@@ -2243,7 +2243,7 @@ PYEOF
 }
 
 check39(){
-  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + NF 终端入口在场 + 菜单不许指向死命令）=='
+  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + NF 终端入口在场 + 菜单不许指向死命令 + 命令面可达）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check39.log 2>&1
@@ -2314,6 +2314,36 @@ for item in term.zone_table():
             problems.append('菜单指向死命令：%s（区 %s；修复指引：先落 CLI 再登记 ZONES）'
                             % (ex, item['id']))
 
+# ---- ③b 可达性：CLI 每个顶层命令都必须在终端索引里**可被检索到**（「最全功能」的可机检形态）----
+index = nf._shell_command_index()
+index_paths = {str(e.get('path')) for e in index}
+index_tops = {p.split(' ')[0] for p in index_paths}
+missing_cmds = sorted(cmds - index_tops)
+if missing_cmds:
+    problems.append('终端索引漏命令：%s（修复指引：索引须从 argparse 面派生并覆盖全部顶层命令）'
+                    % '、'.join(missing_cmds[:5]))
+if len(index_paths) < 2 * len(cmds):
+    problems.append('终端索引疑未含二级子命令：%d 条 / 顶层 %d（修复指引：索引须含 `cmd sub` 形态）'
+                    % (len(index_paths), len(cmds)))
+miss_search = [c for c in sorted(cmds)
+               if not term.search(index, c, limit=1)
+               or str(term.search(index, c, limit=1)[0][1].get('path')) != c]
+if miss_search:
+    problems.append('命令检索不到自身：%s（修复指引：核对 terminal.search 打分档）'
+                    % '、'.join(miss_search[:5]))
+if 'stats' not in term.did_you_mean('statss', sorted(index_tops)):
+    problems.append('拼错建议失效：statss 未指向 stats（修复指引：核对 terminal.did_you_mean）')
+buf = io.StringIO()
+with redirect_stdout(buf):
+    s_code = nf.main(['shell', '--search', 'doctor', '--no-banner'])
+if s_code != 0 or 'doctor' not in buf.getvalue():
+    problems.append('命令检索面失效：nf shell --search doctor（修复指引：核对 render_search）')
+buf = io.StringIO()
+with redirect_stdout(buf):
+    c_code = nf.main(['shell', '--commands', '--no-banner'])
+if c_code != 0 or 'nf doctor' not in buf.getvalue():
+    problems.append('命令面列出失效：nf shell --commands（修复指引：核对 render_commands）')
+
 # ---- ④ 确定性 + JSON 机器面（同输入两遍逐字节一致）----
 captured = []
 for _ in range(2):
@@ -2347,14 +2377,14 @@ print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
 sys.exit(1 if problems else 0)
 PYEOF
     then
-      ok '端壳残留零在场 + 终端入口在场（check39 子扫描：源件/入口/打包线三类判据）'
+      ok '端壳残留零在场 + 终端入口在场 + 命令面全可达（check39 子扫描：源件/入口/打包线 + 索引覆盖/检索自证/拼错建议）'
     else
       no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check39 终端与端壳残留门禁）'
   fi
-  if [ "$err" -eq 0 ]; then ok '终端与端壳残留门禁全绿（check39：端壳零回潮 + 终端三件在场 + 菜单无死命令 + 输出确定）'
+  if [ "$err" -eq 0 ]; then ok '终端与端壳残留门禁全绿（check39：端壳零回潮 + 终端三件在场 + 菜单无死命令 + 命令面全可达 + 输出确定）'
   fi
 }
 

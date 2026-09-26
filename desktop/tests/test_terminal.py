@@ -14,7 +14,9 @@ import contextlib
 import importlib.util
 import io
 import json
+import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -250,6 +252,127 @@ class SessionTest(unittest.TestCase):
                                 stdin, stdout, show_banner=False)
         self.assertEqual(calls, [["stats", "--write"]])
         self.assertEqual(code, 0)
+
+
+class CommandFaceTest(unittest.TestCase):
+    """命令面检索/列出/纠错（「最全功能」的可发现性面）。"""
+
+    @staticmethod
+    def _index():
+        return nf._shell_command_index()
+
+    def test_index_covers_every_top_level_command(self):
+        """索引必须覆盖 CLI 的**全部**顶层命令——否则「最全」就有盲区。"""
+        cmds = _top_commands()
+        paths = {e["path"] for e in self._index()}
+        missing = sorted(cmds - {p.split(" ")[0] for p in paths})
+        self.assertEqual(missing, [], "未被终端索引覆盖的命令：%s" % missing)
+
+    def test_index_includes_nested_subcommands(self):
+        paths = {e["path"] for e in self._index()}
+        self.assertIn("asset ls", paths)
+        self.assertIn("module verify", paths)
+
+    def test_search_prefers_exact_name(self):
+        index = self._index()
+        hits = term.search(index, "doctor")
+        self.assertTrue(hits)
+        self.assertEqual(hits[0][1]["path"], "doctor")
+
+    def test_search_by_summary_keyword(self):
+        hits = term.search(self._index(), "一致性")
+        self.assertTrue(hits)
+        self.assertIn("conformance", [e["path"] for _s, e in hits])
+
+    def test_search_no_hit_gives_next_step(self):
+        text, n = term.render_search(self._index(), "zzzz-不存在-zzzz")
+        self.assertEqual(n, 0)
+        self.assertIn("/commands", text)
+
+    def test_search_is_deterministic(self):
+        index = self._index()
+        self.assertEqual(term.search(index, "asset"), term.search(index, "asset"))
+
+    def test_did_you_mean(self):
+        self.assertIn("stats", term.did_you_mean("statss", ["stats", "run", "layers"]))
+        self.assertEqual(term.did_you_mean("", ["run"]), [])
+        self.assertEqual(term.did_you_mean("run", ["run"]), [])
+
+    def test_render_commands_filters(self):
+        text = term.render_commands(self._index(), "asset")
+        self.assertIn("nf asset ls", text)
+        self.assertNotIn("nf doctor ", text)
+
+
+class ShellScriptTest(unittest.TestCase):
+    """脚本文件面：与交互态共用同一条执行链（同一 Session/索引/闸门）。"""
+
+    def test_run_lines_skips_comments_and_blanks(self):
+        seen = []
+        code, text, records = term.run_lines(
+            ["# 注释", "", "  ", "nf doctor ; # 行尾注释", "nf layers --verify"],
+            lambda argv: seen.append(list(argv)) or 0,
+            index=[{"path": "doctor", "summary": "", "flags": []},
+                   {"path": "layers", "summary": "", "flags": []}])
+        self.assertEqual(code, 0)
+        self.assertEqual(seen, [["doctor"], ["layers", "--verify"]])
+        self.assertEqual([r["kind"] for r in records], ["run", "run"])
+        self.assertIn("[nf shell] >", text)
+
+    def test_run_file_executes_and_reports(self):
+        fd, path = tempfile.mkstemp(suffix=".nf")
+        os.close(fd)
+        try:
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write("# NF 脚本\n\nnf doctor   # 体检\n")
+            code, text, records = term.run_file(
+                path, lambda argv: 0 if argv[0] == "doctor" else 1,
+                index=[{"path": "doctor", "summary": "", "flags": []}])
+            self.assertEqual(code, 0)
+            self.assertEqual(records[0]["argv"], ["doctor"])
+            self.assertIn("doctor", text)
+        finally:
+            os.remove(path)
+
+    def test_inline_comment_stripped_but_quoted_hash_kept(self):
+        self.assertEqual(term.parse("nf doctor   # 说明").payload, ["doctor"])
+        intent = term.parse('nf assemble "含 # 号的需求"')
+        self.assertEqual(intent.payload, ["assemble", "含 # 号的需求"])
+
+
+class ResilienceTest(unittest.TestCase):
+    """健壮性：Ctrl-C 不杀会话、行尾反斜杠续行（对标顶尖 CLI 终端）。"""
+
+    class _KbStdin:
+        """第一次 readline 抛 KeyboardInterrupt，之后按脚本给行。"""
+
+        def __init__(self, lines):
+            self.lines = list(lines)
+            self.calls = 0
+
+        def readline(self):
+            self.calls += 1
+            if self.calls == 1:
+                raise KeyboardInterrupt
+            return self.lines.pop(0) if self.lines else ""
+
+    def test_ctrl_c_cancels_line_not_session(self):
+        stdin = self._KbStdin(["quit\n"])
+        stdout = io.StringIO()
+        code = term.run_session(lambda argv: 0, stdin, stdout, show_banner=False)
+        self.assertEqual(code, 0)
+        self.assertIn("已取消当前输入", stdout.getvalue())
+
+    def test_backslash_continuation_joins_lines(self):
+        seen = []
+        stdin = io.StringIO("nf layers \\\n--verify\nquit\n")
+        stdout = io.StringIO()
+        code = term.run_session(lambda argv: seen.append(list(argv)) or 0,
+                                stdin, stdout, show_banner=False,
+                                index=[{"path": "layers", "summary": "", "flags": []}])
+        self.assertEqual(code, 0)
+        self.assertEqual(seen, [["layers", "--verify"]])
+        self.assertIn("... ", stdout.getvalue())
 
 
 class CliIntegrationTest(unittest.TestCase):

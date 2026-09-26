@@ -89,7 +89,8 @@ Intent = namedtuple("Intent", "kind payload raw")
 
 #: 斜杠命令词表（`/` 后首个词）：既是 `/x` 形态的判据，也是 MSYS 还原的判据
 SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
-               "zone", "z", "区", "doctor", "自检", "version", "ver", "版本")
+               "zone", "z", "区", "doctor", "自检", "version", "ver", "版本",
+               "find", "search", "找", "查", "commands", "cmd", "cmds", "命令")
 
 
 def _slash_intent(body: str, raw: str):
@@ -108,6 +109,10 @@ def _slash_intent(body: str, raw: str):
         return Intent("run", ["doctor"], raw)
     if head in ("version", "ver", "版本"):
         return Intent("run", ["--version"], raw)
+    if head in ("find", "search", "找", "查"):
+        return Intent("search", tail.strip(), raw)
+    if head in ("commands", "cmd", "cmds", "命令"):
+        return Intent("commands", tail.strip(), raw)
     return None
 
 
@@ -139,13 +144,39 @@ def _strip_nf(argv: list) -> list:
     return argv
 
 
+def _strip_comment(line: str) -> str:
+    """剥掉行内注释：`#` 位于**词首**（行首或前一字符为空白）且不在引号内时起始注释。
+
+    与 shell 同语义（`echo a # x` 的 `#` 起注释，`echo "a # x"` 的不算）——脚本文件面
+    因此可以自注释，而带 `#` 的引号参数（如装配需求文本）不会被吃掉。
+    """
+    out, quote, prev = [], None, " "
+    for ch in str(line):
+        if quote:
+            out.append(ch)
+            if ch == quote:
+                quote = None
+            continue
+        if ch in ("'", '"'):
+            quote = ch
+            out.append(ch)
+            prev = ch
+            continue
+        if ch == "#" and prev.isspace():
+            break
+        out.append(ch)
+        prev = ch
+    return "".join(out)
+
+
 def parse(line: str) -> Intent:
     """解析一行输入 → Intent。
 
     支持四类：`/` 命令（/help /menu /quit /zone <k>）、裸菜单键（0-7）、
     `nf <args...>` 直通、纯 quit 词。其余为 unknown（由调用方给指引）。
+    行内注释（词首 `#`）与行尾续行由调用方先行处理；此处只做语句解析。
     """
-    raw = line.strip()
+    raw = _strip_comment(line).strip()
     if not raw:
         return Intent("empty", "", raw)
     if raw.lower() in QUIT_WORDS:
@@ -203,8 +234,8 @@ def banner(baseline: str = "") -> str:
     if baseline:
         lines.append("  基线：%s" % baseline)
     lines += [
-        "  输入数字 0-7 看能力菜单 · /menu 重看菜单 · /help 看用法 · quit 退出",
-        "  任意 nf 命令可直接直通（例：nf doctor / nf market --list）",
+        "  数字 0-7 看能力菜单 · /menu · /find <词> 检索命令面 · /commands 列全部 · quit 退出",
+        "  任意 nf 命令可直接直通（例：nf doctor / nf market --list）；行尾 \\ 可续行",
         "  写入类命令（--write/--apply/--register…）须二次确认，终端不替你拍板",
     ]
     return "\n".join(lines)
@@ -233,6 +264,105 @@ def zone_detail(key: str) -> str:
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------- 命令面检索
+# 「最全功能」的瓶颈不是命令少，而是**找不到**：CLI 有 60+ 顶层命令、70+ 二级子命令，
+# 菜单只能覆盖入口。这一节提供确定性检索/列出/纠错，索引由 CLI 侧从 argparse 面派生
+# （terminal 不 import scripts/nf.py，保持 core 不反向依赖）。
+
+def _lev(a: str, b: str) -> int:
+    """编辑距离（确定性；用于拼错建议）。"""
+    if a == b:
+        return 0
+    if not a:
+        return len(b)
+    if not b:
+        return len(a)
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return prev[-1]
+
+
+def did_you_mean(word: str, names, limit: int = 3) -> list:
+    """最近的候选名（距离 ≤3），按（距离, 名称）排序——拼错时给建议而不是甩 usage。"""
+    word = str(word or "").strip().lower()
+    if not word:
+        return []
+    scored = [( _lev(word, str(n).lower()), str(n)) for n in names]
+    hits = [(d, n) for d, n in scored if d <= 3 and d > 0]
+    hits.sort()
+    return [n for _d, n in hits[:limit]]
+
+
+def search(index, query: str, limit: int = 8) -> list:
+    """在命令面上检索 → [(score, entry)]（确定性：分数降序、路径升序）。
+
+    打分档（不引入模糊权重谜团，全部可复算）：精确名 100 > 名前缀 80 > 名含 60 >
+    摘要含 40 > 名称近似（编辑距离 ≤2）35-5·d。空查询 → 按路径列出前 limit 条。
+    """
+    q = str(query or "").strip().lower()
+    entries = list(index or [])
+    if not q:
+        return [(0, e) for e in sorted(entries, key=lambda x: str(x.get("path")))[:limit]]
+    out = []
+    for e in entries:
+        path = str(e.get("path") or "")
+        low = path.lower()
+        head = low.split(" ")[0]
+        summary = str(e.get("summary") or "").lower()
+        score = 0
+        if low == q or head == q:
+            score = 100
+        elif low.startswith(q) or head.startswith(q):
+            score = 80
+        elif q in low:
+            score = 60
+        elif q in summary:
+            score = 40
+        else:
+            d = min(_lev(q, head), _lev(q, low))
+            if d <= 2:
+                score = 35 - 5 * d
+        if score:
+            out.append((score, e))
+    out.sort(key=lambda x: (-x[0], str(x[1].get("path"))))
+    return out[:limit]
+
+
+def render_search(index, query: str, limit: int = 8) -> tuple:
+    """渲染检索结果 → (文本, 命中数)。未命中给确定性的下一步指引，不空手而归。"""
+    hits = search(index, query, limit=limit)
+    if not hits:
+        near = did_you_mean(query, [str(e.get("path")).split(" ")[0] for e in index or []])
+        tip = ("；你是不是想找：%s" % "、".join(near)) if near else ""
+        return ("未命中命令：「%s」%s\n  （用 /commands 列全部命令面；或用 nf --help 看总览）"
+                % (query, tip), 0)
+    lines = ["== 命令检索：「%s」（%d 命中）==" % (query, len(hits))]
+    for _score, e in hits:
+        lines.append("  nf %-22s %s" % (e.get("path"), e.get("summary") or ""))
+    lines.append("  用法：直接输入 `nf <命令> …`；二级见 `nf <命令> --help`")
+    return "\n".join(lines), len(hits)
+
+
+def render_commands(index, filt: str = "") -> str:
+    """列出全部可达命令（可按子串过滤）——把「最全功能」摊开成一张可检视的表。"""
+    f = str(filt or "").strip().lower()
+    rows = sorted((e for e in index or []
+                   if not f or f in str(e.get("path")).lower()
+                   or f in str(e.get("summary") or "").lower()),
+                  key=lambda e: str(e.get("path")))
+    tops = {str(e.get("path")).split(" ")[0] for e in index or []}
+    lines = ["== nf 命令面（顶层 %d · 含二级 %d 条%s）=="
+             % (len(tops), len(rows), ("，过滤：%s" % filt) if f else "")]
+    for e in rows:
+        lines.append("  nf %-24s %s" % (e.get("path"), e.get("summary") or ""))
+    lines.append("  检索：/find <词>（或 nf shell --search <词>）；菜单：/menu")
+    return "\n".join(lines)
+
+
 class Session:
     """终端会话状态机：解析 → 闸门 → 分派，I/O 全部由调用方注入（可离线单测）。
 
@@ -240,7 +370,7 @@ class Session:
     「该不该跑 / 跑完怎么记」——保证 core 层不依赖 scripts/nf.py。
     """
 
-    def __init__(self, runner, assume_yes: bool = False):
+    def __init__(self, runner, assume_yes: bool = False, index=None):
         if not callable(runner):
             raise ValueError("Session 需要可调用的 runner(argv) -> int；"
                              "请传入 scripts/nf.py 的 main（终端不自己执行命令）")
@@ -249,6 +379,10 @@ class Session:
         self.history = []      # 逐条记录 dict（line/kind/exit/argv/out/err/note）
         self.last_zone = ""
         self.quit = False
+        # 命令面索引（由 CLI 侧从 argparse 面派生）：用于检索 / 列命令 / 拼错建议。
+        # 缺省 None = 不启用预检（core 单测可完全离线，不依赖 CLI 面）。
+        self.index = list(index or [])
+        self._tops = {str(e.get("path")).split(" ")[0] for e in self.index}
 
     def invoke(self, argv: list) -> tuple:
         """执行一条命令 → (exit_code, stdout, stderr)；捕获输出以便落档与比对。
@@ -295,14 +429,29 @@ class Session:
         elif intent.kind == "zone":
             self.last_zone = intent.payload
             rec["note"] = zone_detail(intent.payload)
+        elif intent.kind == "search":
+            text, hits = render_search(self.index, intent.payload)
+            rec["note"] = text
+            rec["exit"] = 0 if hits else 2
+        elif intent.kind == "commands":
+            rec["note"] = render_commands(self.index, intent.payload)
         elif intent.kind == "unknown":
             rec.update(exit=2, note=("未识别：%s（可用：数字 0-7 看菜单 · /menu · "
-                                     "/help · quit · 或直接输入 nf 命令）" % intent.raw))
+                                     "/find <词> · /commands · /help · quit · "
+                                     "或直接输入 nf 命令）" % intent.raw))
         else:  # run
             argv = list(intent.payload)
             rec["argv"] = argv
             blocked = BLOCKED_IN_SHELL.get(argv[0]) if argv else None
-            if blocked:
+            unknown = (argv and self._tops and argv[0] not in self._tops
+                       and argv[0] not in ("help", "--version", "--help", "-h"))
+            if unknown:
+                near = did_you_mean(argv[0], sorted(self._tops))
+                rec.update(exit=2, note=(
+                    "未知命令：%s%s（修复指引：/find <词> 检索命令面，或 /commands 列全部；"
+                    "直接跑 `nf --help` 看总览）"
+                    % (argv[0], "；你是不是想找：%s" % "、".join(near) if near else "")))
+            elif blocked:
                 rec.update(exit=2, note=blocked)
             elif needs_confirm(argv) and not (self.assume_yes or confirmed):
                 rec.update(exit=2, note=(
@@ -322,13 +471,15 @@ class Session:
 
 
 def run_session(runner, stdin, stdout, assume_yes: bool = False,
-                show_banner: bool = True, baseline: str = "") -> int:
-    """交互会话主循环：读一行 → 分派 → 打印 → 直到 quit / EOF。
+                show_banner: bool = True, baseline: str = "", index=None) -> int:
+    r"""交互会话主循环：读一行 → 分派 → 打印 → 直到 quit / EOF。
 
     写入类命令在交互态**就地追问**（读到 yes 才放行本次）；非交互态仍须 `--yes`。
     返回 0（正常结束）或非 0（会话中有命令失败）——供 CI/脚本判红。
+
+    健壮性（对标顶尖 CLI 终端）：Ctrl-C 只取消当前行、不杀会话；行尾 `\` 续行（多行命令）。
     """
-    session = Session(runner, assume_yes=assume_yes)
+    session = Session(runner, assume_yes=assume_yes, index=index)
     if show_banner:
         stdout.write(banner(baseline) + "\n")
         stdout.flush()
@@ -336,10 +487,27 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
     while not session.quit:
         stdout.write(PROMPT)
         stdout.flush()
-        line = stdin.readline()
+        try:
+            line = stdin.readline()
+        except KeyboardInterrupt:      # Ctrl-C 取消当前输入，会话继续（不是退出码 130）
+            stdout.write("\n  （已取消当前输入——会话继续；quit 退出）\n")
+            stdout.flush()
+            continue
         if line == "":                      # EOF（管道/重定向结束）
             stdout.write("\n")
             break
+        # 行尾 `\` 续行：长命令/多行输入（续行提示符为 `… `）
+        while line.rstrip("\n").endswith("\\"):
+            line = line.rstrip("\n")[:-1] + " "
+            stdout.write("... ")
+            stdout.flush()
+            try:
+                nxt = stdin.readline()
+            except KeyboardInterrupt:
+                nxt = ""
+            if nxt == "":
+                break
+            line += nxt
         intent = parse(line)
         confirmed = False
         if intent.kind == "run" and needs_confirm(intent.payload) \
@@ -364,20 +532,27 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
     return worst
 
 
-def run_script(script: str, runner, assume_yes: bool = False,
-               as_json: bool = False) -> tuple:
-    """非交互模式：`--exec "命令1; 命令2"` 逐条执行 → (exit_code, 文本, 记录)。
+def _statements(lines) -> list:
+    """把脚本/`--exec` 文本切成语句：`;` 与换行都是分隔；`#` 开头为注释。"""
+    out = []
+    for raw in lines:
+        for piece in str(raw).split(";"):
+            stmt = piece.strip()
+            if stmt and not stmt.startswith("#"):
+                out.append(stmt)
+    return out
+
+
+def run_lines(lines, runner, assume_yes: bool = False, as_json: bool = False,
+              index=None) -> tuple:
+    """逐条执行语句序列 → (exit_code, 文本, 记录)（`--exec` 与脚本文件共用同一条链）。
 
     记录逐条含 line/kind/exit/argv/out/err —— 既是 CI 判据也是机器面（`--json`）。
-    命令之间用 `;` 分隔（NF 命令面本身不用分号，故不产生歧义）。
     """
-    session = Session(runner, assume_yes=assume_yes)
+    session = Session(runner, assume_yes=assume_yes, index=index)
     records = []
     worst = 0
-    for piece in script.split(";"):
-        raw = piece.strip()
-        if not raw:
-            continue
+    for raw in _statements(lines):
         rec = session.dispatch(raw)
         records.append(rec)
         worst = max(worst, rec["exit"])
@@ -388,11 +563,33 @@ def run_script(script: str, runner, assume_yes: bool = False,
                 json.dumps({"kind": "nf-shell", "shell_version": SHELL_VERSION,
                             "records": records}, ensure_ascii=False, indent=2),
                 records)
-    lines = []
+    out_lines = []
     for rec in records:
-        lines.append("[nf shell] > %s" % rec["line"])
+        out_lines.append("[nf shell] > %s" % rec["line"])
         body = (rec["out"] + rec["err"] + rec["note"]).rstrip("\n")
         if body:
-            lines += ["  " + ln for ln in body.splitlines()]
-        lines.append("  结果：%s（exit=%d）" % (rec["kind"], rec["exit"]))
-    return worst, "\n".join(lines), records
+            out_lines += ["  " + ln for ln in body.splitlines()]
+        out_lines.append("  结果：%s（exit=%d）" % (rec["kind"], rec["exit"]))
+    return worst, "\n".join(out_lines), records
+
+
+def run_script(script: str, runner, assume_yes: bool = False,
+               as_json: bool = False, index=None) -> tuple:
+    """非交互模式：`--exec "命令1; 命令2"` 逐条执行 → (exit_code, 文本, 记录)。
+
+    `;` 与换行都是分隔符；`#` 开头为注释（NF 命令面本身不用分号/井号，故不产生歧义）。
+    """
+    return run_lines(str(script).splitlines() or [str(script)], runner,
+                     assume_yes=assume_yes, as_json=as_json, index=index)
+
+
+def run_file(path: str, runner, assume_yes: bool = False, as_json: bool = False,
+             index=None) -> tuple:
+    """脚本文件模式（`nf shell --file tour.nf`）：逐行执行，`#` 注释与空行跳过。
+
+    与 `--exec` 共用同一条执行链（同一 Session / 索引 / 闸门），差别只在语句来源——
+    于是「终端里能敲的」与「脚本里能跑的」永远是同一套语义。
+    """
+    with open(path, encoding="utf-8") as fh:
+        lines = fh.read().splitlines()
+    return run_lines(lines, runner, assume_yes=assume_yes, as_json=as_json, index=index)

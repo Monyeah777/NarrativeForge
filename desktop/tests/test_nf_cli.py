@@ -147,7 +147,7 @@ class NfCliSmokeTest(unittest.TestCase):
 
     def test_assemble_save_dossier(self):
         """需求档案：--save 把澄清/计划落成八字段回填稿。"""
-        fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+        fd, path = tempfile.mkstemp(suffix=".md")
         os.close(fd)
         try:
             code, out = self._run(["assemble", "西幻生存",
@@ -163,7 +163,7 @@ class NfCliSmokeTest(unittest.TestCase):
                 os.remove(path)
 
     def test_assemble_dossier_merges_answers(self):
-        fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+        fd, path = tempfile.mkstemp(suffix=".md")
         os.close(fd)
         try:
             code, out = self._run(["assemble", "给我做一个世界",
@@ -231,7 +231,7 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn('"kind": "worldmodel-run"', out)
         self.assertIn('"digest"', out)
-        fd, state_path = tempfile.mkstemp(suffix=".json", dir=str(ROOT))
+        fd, state_path = tempfile.mkstemp(suffix=".json")
         os.write(fd, json.dumps({
             "data_bus": {
                 "active_pipeline": "P01",
@@ -256,7 +256,7 @@ class NfCliSmokeTest(unittest.TestCase):
     def test_assemble_rounds_flag(self):
         good = ("回合 1：引用 06 §3 推进，M00 写回 状态快照。\n"
                 "回合 2：引用 06 §3，M80 输出并进入下一回合。\n")
-        fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+        fd, path = tempfile.mkstemp(suffix=".md")
         os.write(fd, good.encode("utf-8"))
         os.close(fd)
         try:
@@ -278,7 +278,7 @@ class NfCliSmokeTest(unittest.TestCase):
 
     def test_assemble_session_memory(self):
         """会话存储：第一轮回填被记忆，第二轮无需重复 --answer。"""
-        fd, sess = tempfile.mkstemp(suffix=".json", dir=str(ROOT))
+        fd, sess = tempfile.mkstemp(suffix=".json")
         os.close(fd)
         try:
             code, _ = self._run(["assemble", "给我做一个世界",
@@ -294,7 +294,7 @@ class NfCliSmokeTest(unittest.TestCase):
                 os.remove(sess)
 
     def test_assemble_trace(self):
-        fd, path = tempfile.mkstemp(suffix=".json", dir=str(ROOT))
+        fd, path = tempfile.mkstemp(suffix=".json")
         os.close(fd)
         try:
             code, out = self._run(["assemble", "西幻生存", "--trace", path])
@@ -310,7 +310,7 @@ class NfCliSmokeTest(unittest.TestCase):
     def test_assemble_check_ok_and_reject(self):
         """nf assemble --check：合格成品过、编造编号成品拒。"""
         def _write(text):
-            fd, path = tempfile.mkstemp(suffix=".md", dir=str(ROOT))
+            fd, path = tempfile.mkstemp(suffix=".md")
             os.write(fd, text.encode("utf-8"))
             os.close(fd)
             return path

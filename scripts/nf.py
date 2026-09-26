@@ -903,6 +903,12 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="显式放行写入类命令（终端默认拒跑 --write/--apply/--register 等）")
     sh.add_argument("--json", action="store_true",
                     help="配合 --exec：输出逐条记录的结构化 JSON")
+    sh.add_argument("--file", dest="script_file", default="", metavar="SCRIPT",
+                    help="脚本文件模式：逐行执行（`#` 注释与空行跳过，行内 `;` 再分隔）")
+    sh.add_argument("--commands", nargs="?", const="", default=None, metavar="过滤词",
+                    help="列出全部可达命令（顶层 + 二级，可按子串过滤）后退出——「最全功能」的可检视面")
+    sh.add_argument("--search", default="", metavar="词",
+                    help="在命令面上检索（不进入终端）：命中打印命令与用途，未命中退出 2")
     ly = sub.add_parser(
         "layers",
         help="抽象阶梯（两轴 + 纵切）：四阶真源/接口面 + 资产五子级 + 入口面 + 验证纵切",
@@ -3991,6 +3997,47 @@ def _cmd_doctor(args):
     return 0 if n_pass == len(checks) else 1
 
 
+#: 终端检索索引里单行摘要的截断长度（列出命令面时保持一行一条）
+_SHELL_SUMMARY_MAX = 100
+
+
+def _shell_command_index() -> list:
+    """终端检索索引：从 argparse 面派生（命令真源 = CLI 面，终端不留第二份）。
+
+    每条 = {path, summary, flags}；path 含二级（如 `asset ls`）。check39 断言索引覆盖
+    **全部**顶层命令——「最全功能」在终端侧的可机检形态就是「每个命令都能被检索到」。
+    """
+    def _flags(parser):
+        out = []
+        for act in parser._actions:
+            if isinstance(act, argparse._SubParsersAction):
+                continue
+            out += list(act.option_strings)
+        return sorted(set(out))
+
+    def _summary(parser):
+        text = (parser.description or "").strip()
+        if not text:
+            return ""
+        first = text.splitlines()[0].strip()
+        return first if len(first) <= _SHELL_SUMMARY_MAX \
+            else first[:_SHELL_SUMMARY_MAX - 1] + "…"
+
+    root = _build_parser()
+    out = []
+    for act in root._actions:
+        if not isinstance(act, argparse._SubParsersAction):
+            continue
+        for name, sp in act.choices.items():
+            out.append({"path": name, "summary": _summary(sp), "flags": _flags(sp)})
+            for act2 in sp._actions:
+                if isinstance(act2, argparse._SubParsersAction):
+                    for n2, sp2 in act2.choices.items():
+                        out.append({"path": "%s %s" % (name, n2),
+                                    "summary": _summary(sp2), "flags": _flags(sp2)})
+    return sorted(out, key=lambda e: e["path"])
+
+
 def _shell_baseline() -> str:
     """终端横幅的基线句——数字取自 quality_baseline 真源与 verify.sh 版本头，不手写。"""
     try:
@@ -4073,6 +4120,8 @@ def _cmd_shell(args) -> int:
     """nf shell（别名 nf terminal）：终端交互入口（端壳退役后的人机面）。"""
     from core import terminal as term
 
+    index = _shell_command_index()
+
     def runner(argv):
         argv = list(argv)
         if argv and argv[0] in ("shell", "terminal"):
@@ -4081,16 +4130,34 @@ def _cmd_shell(args) -> int:
             return 2
         return main(argv)
 
+    if args.commands is not None:
+        print(term.render_commands(index, args.commands or ""))
+        return 0
+    if args.search:
+        text, hits = term.render_search(index, args.search)
+        print(text)
+        return 0 if hits else 2
+    if args.script_file:
+        try:
+            code, text, _records = term.run_file(args.script_file, runner,
+                                                 assume_yes=args.yes,
+                                                 as_json=args.json, index=index)
+        except OSError as exc:
+            print("  ✗ 读不到脚本文件：%s（修复指引：确认路径存在后重试）" % exc,
+                  file=sys.stderr)
+            return 2
+        print(text)
+        return code
     if args.exec_script:
         code, text, _records = term.run_script(args.exec_script, runner,
                                                assume_yes=args.yes,
-                                               as_json=args.json)
+                                               as_json=args.json, index=index)
         print(text)
         return code
     return term.run_session(runner, sys.stdin, sys.stdout,
                             assume_yes=args.yes,
                             show_banner=not args.no_banner,
-                            baseline=_shell_baseline())
+                            baseline=_shell_baseline(), index=index)
 
 
 def _collect_cli_tree():

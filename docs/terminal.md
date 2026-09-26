@@ -49,9 +49,25 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 |---|---|
 | `0`–`7` | 看该能力区的说明与可复制示例 |
 | `/menu` `/zone 4` | 重看菜单 / 看某区示例 |
+| `/find <词>`（`/search` 同义） | 在**全部命令面**上检索（命中给命令 + 一句话用途；未命中给候选） |
+| `/commands [过滤]` | 列出全部可达命令（顶层 + 二级，可按子串过滤） |
 | `/help` 或 `/help <cmd>` | 转 CLI 帮助面（等价 `nf help …`） |
 | `nf <args…>` 或 `<args…>` | 直通 CLI（`nf` 前缀可省） |
 | `quit` `exit` `q` `退出` | 退出会话 |
+
+健壮性（对标顶尖 CLI 终端的几件标配）：**Ctrl-C 只取消当前行、不杀会话**；行尾 `\` **续行**（多行命令）；行内 `#` 起注释（引号内的 `#` 保留）；命令写错时给**拼错建议**（编辑距离 ≤3），而不是把 60 条命令的 usage 甩一脸。
+
+## 命令面检索（「最全功能」的可发现性）
+
+终端的瓶颈从来不是命令少，而是**找不到**——CLI 有 64 个顶层命令、135 条含二级的入口。三条入口解决它：
+
+```bash
+python scripts/nf.py shell --commands            # 列出全部可达命令（顶层 + 二级）
+python scripts/nf.py shell --commands asset      # 按子串过滤
+python scripts/nf.py shell --search 装配         # 按关键词检索（未命中退出 2，可进脚本）
+```
+
+会话内等价形态是 `/commands [过滤]` 与 `/find <词>`。**索引由 CLI 的 argparse 面派生**（终端不维护第二份命令表），并由 verify check39 断言两件事：① 索引覆盖**全部**顶层命令；② 每个命令都能被检索到自身——「最全功能」因此是可机检事实，不是宣称。
 
 会话内**不执行**两类命令（避免卡死终端）：`serve`（长驻 MCP 服务）与 `shell`（递归会话）——
 终端只给指引，请另开一个终端窗口运行。
@@ -71,9 +87,12 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 ```sh
 python scripts/nf.py shell --exec "nf doctor" --no-banner
 python scripts/nf.py shell --exec "/zone 5" --json --no-banner
+python scripts/nf.py shell --file tour.nf                    # 脚本文件（# 注释 / 空行跳过 / 行内 ; 再分隔）
+python scripts/nf.py shell --file tour.nf --json             # 同一执行链的机器面
 ```
 
-- 命令之间用 `;` 分隔，逐条执行并逐条给 `kind/exit`；退出码 = 各条最大值。
+- `--exec` 用 `;` 分隔（换行同样算分隔），`--file` 逐行执行；两者**共用同一条执行链**（同一 Session / 索引 / 写盘闸门），于是「终端里能敲的」与「脚本里能跑的」永远同一套语义。
+- 逐条执行并逐条给 `kind/exit`；退出码 = 各条最大值。
 - `--json` 输出 `{"kind": "nf-shell", …}` 逐条记录（含 argv / exit / out / err）机器面。
 - `--no-banner` 去掉开场横幅（日志场景）。
 

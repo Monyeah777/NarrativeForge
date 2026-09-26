@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v2：命令面全可达（检索 / 命令树 / 纠错 / 脚本面 / 健壮性）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」）：
+  ① **可发现性出口**：`nf shell --commands [过滤]`（列全部可达命令：**64 顶层 / 135 条含二级**）与 `nf shell --search <词>`（关键词检索，未命中退出 2 可进脚本）；会话内等价形态 `/commands`、`/find <词>`。索引**由 CLI 的 argparse 面派生**（终端不留第二份命令表）。
+  ② **可机检的「最全」**：verify **check39** 新增可达性子扫描——索引必须覆盖全部顶层命令、每个命令都能被检索到自身、拼错建议可用；并实测该断言有效（内存里去掉 `doctor` 即被判出）。
+  ③ **顶尖 CLI 的健壮性标配**：Ctrl-C **只取消当前行、不杀会话**；行尾 `\` **续行**；行内 `#` 注释（引号内 `#` 保留）；未知命令给**编辑距离 ≤3 的拼错建议**（而非甩 usage）；`/commands` 与检索结果均可复制即用。
+  ④ **脚本文件面**：`nf shell --file <script.nf>`——逐行执行、`#` 注释与空行跳过、行内 `;` 再分隔；与 `--exec` **共用同一条执行链**（同一 Session / 索引 / 写盘闸门），机器面 `--json` 一致。
+  ⑤ 实测（本机）：`--commands` 64 顶层 / 135 条；`--search 装配` 命中 assemble/run；`--search asssemble`（拼错）仍召回 assemble；`nf statss` → 「你是不是想找：stats」；`test_terminal` 46 例（新增检索/索引覆盖/纠错/脚本面/Ctrl-C/续行）+ 全量 `bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39，可达性并入 check39 不涨号）。
+
 - **NF 终端落地（`nf shell`）+ 端壳残留闭环**（**作者指令**：「删除 NF 中的 GUI，且为 NF 构建一个终端（CLI 开发）」）：
   ① **GUI 退役状态复核并机制化**（依据 = 内部差距实证：公开面不得留端壳残留）：桌面 GUI 端壳源码 / GUI 入口 / 打包线 / 构建 workflow 已于 2026-09-09 全量移出（commit `5ae202b` + `f8123b6` + 清理波），本次逐项复核后把「已退役」从**历史事实**升级为**常驻判据**——新增 check39「端壳残留零在场」：7 个已知残留落点（`desktop/main.py` · `desktop/src/__main__.py` · `desktop/packaging/` · `build-desktop.yml` · `build-android.yml` · `smoke_zone_g_market.py` · `check_ui_core_links.py`）逐项判在不在，另加全树源件扫描（`zone_*.py` / `test_zone_*.py` / `main_window.py` / `smoke_gui.py`）；GUI 回潮即门禁红。端壳线**不预设恢复**（`STRATEGY.md` §四 + 裁决记录 #16）。
   ② **终端入口**：新增 `desktop/src/core/terminal.py`（纯 stdlib · 确定性 · 可注入 `runner` 的会话状态机，不反向依赖 `scripts/nf.py`）+ `nf shell`（别名 `nf terminal`）+ 启动器 `scripts/nf`（POSIX）/ `scripts/nf.cmd`（Windows，无参数即进终端）。能力菜单把端壳时代 GUI 七区（导入 / 校验 / 管线 / 生成 / 资产 / 预设 / 社区）映射到**既有**命令面——**不产生第二套命令面**：菜单只许指向真实命令（`terminal.example_resolves`，check39 与单测共用同一判据，指向死命令即红）。
