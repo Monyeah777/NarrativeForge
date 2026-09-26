@@ -1068,9 +1068,23 @@ class DeepCheckTest(unittest.TestCase):
         issues, stats = term.deep_check(self._index(), tree["commands"],
                                         tree["root_flags"], live_runner=_live)
         self.assertEqual(issues, [])
-        self.assertEqual(calls, [["layers", "--verify"]])
+        self.assertEqual(calls[0], ["layers", "--verify"])
+        self.assertEqual(len(calls), 1 + len(tree["commands"]),
+                         "活体档须逐条跑 nf <cmd> --help（「最全」的可执行层证据）")
         self.assertEqual(stats["live_code"], 0)
+        self.assertEqual(stats["help_sweep_failed"], [])
+        self.assertEqual(stats["help_sweep_total"], len(tree["commands"]))
         self.assertIn("readline", stats)
+
+    def test_deep_check_reports_uncallable_command(self):
+        def _live(argv):
+            return 1 if list(argv) == ["doctor", "--help"] else 0
+
+        tree = nf._collect_cli_tree()
+        issues, stats = term.deep_check(self._index(), tree["commands"],
+                                        tree["root_flags"], live_runner=_live)
+        self.assertEqual(stats["help_sweep_failed"], ["doctor"])
+        self.assertTrue(any("全命令可调用性失败" in i for i in issues), issues)
 
     def test_deep_check_reports_live_failure(self):
         tree = nf._collect_cli_tree()
@@ -1138,6 +1152,9 @@ class MachineFaceTest(unittest.TestCase):
         self.assertTrue(payload["deep"])
         self.assertTrue(payload["ok"])
         self.assertEqual(payload["stats"]["live_code"], 0)
+        self.assertEqual(payload["stats"]["help_sweep_failed"], [],
+                         "真仓库里全部命令的 --help 都必须可调用")
+        self.assertGreaterEqual(payload["stats"]["help_sweep_total"], 60)
 
     def test_exec_blocks_write_without_yes(self):
         code, out = _run(["shell", "--exec", "nf stats --write", "--no-banner"])

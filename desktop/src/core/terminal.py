@@ -876,7 +876,9 @@ TERMINAL_BASELINE = (
      "argv": ("shell", "--verify", "--json", "--no-banner"),
      "expect": '"kind": "shell-verify"'},
     {"id": "live-selfcheck", "name": "活体自检（真跑一条只读命令）",
-     "argv": ("shell", "--verify", "--deep", "--no-banner"), "expect": "活体"},
+     # 同一行承载两条断言：活体档在场 + 全 64 命令逐条 --help 均可调用（只跑一次）
+     "argv": ("shell", "--verify", "--deep", "--no-banner"),
+     "expect": ("活体", "全命令可调用：")},
 )
 
 #: 基线的写盘禁令：证据行只许只读（出现这些旗标即视为基线自身违规）
@@ -913,6 +915,14 @@ def baseline_argv_issues() -> list:
     return issues
 
 
+def _expect_hits(text: str, expect) -> bool:
+    """`expect` 支持单条或多条：多条要求**全部出现**（同一行证据可承载多条断言）。"""
+    if not expect:
+        return True
+    items = expect if isinstance(expect, (list, tuple)) else [expect]
+    return all(str(x) in text for x in items)
+
+
 def run_baseline(runner, rows=None) -> tuple:
     """逐行跑证据命令 → (results, stats)。`runner(argv) -> (exit_code, 合并输出)`。"""
     results = []
@@ -920,7 +930,7 @@ def run_baseline(runner, rows=None) -> tuple:
         code, out = runner([str(a) for a in row.get("argv") or []])
         text = str(out or "")
         ok = (code == int(row.get("expect_exit", 0))
-              and (not row.get("expect") or row["expect"] in text)
+              and _expect_hits(text, row.get("expect"))
               and (not row.get("forbid") or row["forbid"] not in text))
         results.append({"id": row["id"], "name": row["name"],
                         "argv": [str(a) for a in row.get("argv") or []],
@@ -975,14 +985,37 @@ def deep_check(index, commands, root_flags=(), live_runner=None,
     判据只读、不落件：可写性用祖先目录探测，不写探针文件。
     """
     issues, stats = self_check(index, commands, root_flags)
+    # 说明：`live_runner` 可能内部走 argparse 的 --help（SystemExit(0)）——统一在此归一，
+    # 否则一次 help 就把整个深检打断（实测踩过）。
+    def _live(argv):
+        if live_runner is None:
+            return -1
+        try:
+            code = live_runner(list(argv))
+            return code if isinstance(code, int) else 0
+        except SystemExit as exc:
+            return exc.code if isinstance(exc.code, int) else 0
+        except Exception:
+            return 1
+
     # 活体 ①：真跑一条只读命令（覆盖「命令面真的能跑通」而不是「索引里查得到」）
     if live_runner is not None:
-        code = live_runner(["layers", "--verify"])
+        code = _live(["layers", "--verify"])
         stats["live_command"] = "nf layers --verify"
         stats["live_code"] = code
         if code != 0:
             issues.append("活体自检失败：nf layers --verify 退出码 %s"
                           "（修复指引：直接跑该命令看细分；阶梯件或索引可能已漂移）" % code)
+        # 活体 ①b：「最全功能」的可执行层证据——**逐条**跑 `nf <cmd> --help`（只读）
+        failed = []
+        for cmd in sorted({str(c) for c in (commands or [])}):
+            if _live([cmd, "--help"]) != 0:
+                failed.append(cmd)
+        stats["help_sweep_total"] = len(set(commands or []))
+        stats["help_sweep_failed"] = failed
+        if failed:
+            issues.append("全命令可调用性失败：%s（修复指引：逐条跑 nf <cmd> --help 定位；"
+                          "命令面与实况脱钩即「最全」失守）" % "、".join(failed[:6]))
     # 活体 ②：历史 / 会话落点可写（只探测，不落件）
     for label, path in (("历史", history_path), ("会话", session_path)):
         ok, why = writable_dir_probe(path)

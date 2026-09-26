@@ -98,7 +98,7 @@ python scripts/nf.py shell --baseline --json   # 机器面（纯 JSON：ok / sta
 
 三条纪律：① 证据行**只读**（带 `--write`/`--apply`/`--yes` 等旗标会被基线自身判违规）；② 允许声明「该被拒」（`expect_exit: 2` + 拒跑理由），安全面因此也在基线内；③ verify check39 逐行断言同一份表——**「对标顶尖 CLI」的完成度可以逐条核**，不靠观感。
 
-- **`--verify --deep`（活体档）**：在静态面（索引/策展/菜单）之上再核**本机环境**——真跑一条只读命令（`nf layers --verify`）并核对退出码、探测历史/会话落点**可写性**（沿祖先目录判断，**不落探针文件**）、如实报告 TTY / readline / 分页器现状。所有结论与静态档同一套口径（`terminal.deep_check` 调 `self_check`），退出码即结论。
+- **`--verify --deep`（活体档）**：在静态面（索引/策展/菜单）之上再核**本机环境与可执行性**——① 真跑一条只读命令（`nf layers --verify`）核对退出码；② **逐条**跑 `nf <cmd> --help`（当前 64 条，只读，约 11 秒）核对退出码——「最全功能」由此从「索引里查得到」升级为「命令真的跑得通」；③ 探测历史/会话落点**可写性**（沿祖先目录判断，**不落探针文件**）；④ 如实报告 TTY / readline / 分页器现状。所有结论与静态档同一套口径（`terminal.deep_check` 调 `self_check`），退出码即结论。
 - **机器面（`--json`）**：`--commands --json`（逐条命令 + 摘要 + 旗标）、`--map --json`（族分区）、`--form --json`（表单真源）/ `--form <id> --json`（组装计划 argv）、`--verify [--deep] --json`（ok / issues / stats）。**输出必须是纯 JSON**——活体输出会被捕获进字段而不是混进 stdout，check39 直接断言这一点。
 
 ## 写盘表单与会话状态（会改仓库的动作由人安全驱动）

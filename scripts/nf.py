@@ -4335,12 +4335,20 @@ def _cmd_shell(args) -> int:
             live_buf = io.StringIO()
 
             def _live(argv):
-                """活体执行：**捕获**输出（机器面须纯 JSON；人读面另行打印）。"""
-                live_buf.truncate(0)
-                live_buf.seek(0)
-                with contextlib.redirect_stdout(live_buf), \
-                        contextlib.redirect_stderr(live_buf):
-                    return main(list(argv))
+                """活体执行：**捕获**输出（机器面须纯 JSON；人读面另行打印）。
+
+                逐条 `--help` 的扫描输出不留在 `live_buf`——否则人读面会把最后一条 help
+                当成「活体输出」打印（实测踩过）。只保留真正的活体命令输出。
+                """
+                is_help_sweep = len(argv) >= 2 and str(argv[-1]) == "--help"
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                    code = main(list(argv))
+                if not is_help_sweep:
+                    live_buf.truncate(0)
+                    live_buf.seek(0)
+                    live_buf.write(buf.getvalue())
+                return code
 
             issues, stats = term.deep_check(
                 index, tree["commands"], tree["root_flags"],
@@ -4368,6 +4376,11 @@ def _cmd_shell(args) -> int:
             print("  活体：%s 退出码 %s · 历史落点 %s · 会话落点 %s"
                   % (stats.get("live_command", "-"), stats.get("live_code", "-"),
                      stats.get("历史落点", "-"), stats.get("会话落点", "-")))
+            _failed = stats.get("help_sweep_failed") or []
+            print("  全命令可调用：%d/%d（逐条 --help；失败：%s）"
+                  % ((stats.get("help_sweep_total", 0) - len(_failed)),
+                     stats.get("help_sweep_total", 0),
+                     "、".join(_failed[:5]) if _failed else "无"))
             print("  环境：TTY %s · readline %s · 分页器 %s"
                   % ("是" if stats.get("tty") else "否",
                      "可用" if stats.get("readline") else "不可用",
