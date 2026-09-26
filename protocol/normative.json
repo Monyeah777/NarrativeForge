@@ -9,6 +9,7 @@
     {"path": "07_官方核心出厂与社区预设导航.md"},
     {"path": "protocol/CONFORMANCE.md"},
     {"path": "protocol/EXTENSION.md", "covered_by": ["check30"]},
+    {"path": "protocol/LAYERS.json"},
     {"path": "protocol/driver.json"},
     {"path": "protocol/endpoint_contract.json"},
     {"path": "protocol/rfc_index.json"},

@@ -54,7 +54,7 @@ AI assembly:
 | Library | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | Community | `community/README.md` · `community/模板制作指令包.md` |
 | AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
-| Tooling | `docs/mcp.md` · `docs/terminal.md` · `scripts/nf.py` · `scripts/verify.sh` |
+| Tooling | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `scripts/nf.py` · `scripts/verify.sh` |
 | Collection | `library/INDEX.md` · `ROUTES.md` |
 
 ## Version block

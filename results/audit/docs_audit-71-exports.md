@@ -6,8 +6,8 @@ scope: 作者指令「自述数字自动化，互操作性从他证，标准目�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:0e94959965c35d7d9bcc3008da5747eae26ce460ae5b30dfb8a8f4a14682f08b
-  - scripts/nf.py:bf5c813fb49c37cbec945218dbbf900663576d5005681b35c3264a1aac9bb7cc
+  - verify.sh:c5b720488bc7dff44d243e6a94f10504bb3170a9aef3e3adb6a00eed4a700933
+  - scripts/nf.py:d4eba21b68225d3088e0f34463a2b711ea79feef31c9f273c4c8e7f67a6fa0fa
   - desktop/src/core/repo_stats.py:acde574e9514ed3f0c9427b7e35f8ee68a1d8acfde3f8365c3e45190141b94a0
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
   - scripts/interop_thirdparty_kit.py:c4b47deae16630a8de3d593e1630388468b205ae6a4710aead289bfe7c9b2f47

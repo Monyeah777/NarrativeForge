@@ -204,6 +204,12 @@
       "id": "AUD-0024",
       "title": "NF 终端落地（nf shell）—— 端壳退役后的人机入口 + 端壳残留门禁（check39）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-09-26",
+      "id": "AUD-0025",
+      "title": "抽象阶梯 v2 落地 —— 两轴 + 纵切 + 适应度函数（契约/资产/引擎/出口 × 入口面 × 验证纵切）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

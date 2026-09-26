@@ -23,6 +23,12 @@ R6 危险 sink 面：desktop/src/core + scripts 不得出现**动态执行 / she
     仅 1 处受控 `__import__`，故本条落地即零返工。）
     2026-09-24 渗透 F-10 补：递归删除面此前**不在类目内**，于是 `NF_TEST_HOME=~`
     驱动的静默 `shutil.rmtree` 无判据可拦。现纳入类目（基线 1→5，放行点在册可审计）。
+R7 抽象阶梯归属与越界：`protocol/LAYERS.json` 是阶梯唯一真源，语义判据实现在
+    `core/layer_model.py`（L1 真源在位 / L2 归属互斥 / L3 接口面子集 / L4 依赖向下无环 /
+    L5 入口非真源 / L6 引擎不反向 import 入口 / L7 退役阶不被依赖 / L8 判据可解析 /
+    L9 豁免诚实 / L10 生成区==实时渲染）。本规则只做**接线**：把阶梯体检的 issues 汇入
+    纯度报告——落地依据是端壳退役的教训（一阶可以整体退役，当时零判据，只能事后补）。
+    分工遵 ADR-0003：形状类断言进 protocol/assertions.json，语义判据留代码。
 
 check27 自身用变异注入验证捕获力（mutation testing：test_purity_scan 对
 每规则注入典型违规样本，断言可被捕获——「check 的 check」）。
@@ -261,4 +267,19 @@ def scan(root: str = ".") -> tuple:
         if sink not in DANGEROUS_CALLS and sink != "subprocess":
             issues.append("SINK_ALLOW 放行键指向未登记 sink：%s（修复指引：删除放行，"
                           "或先在 DANGEROUS_CALLS 登记该 sink 类目）" % key)
+    # R7：抽象阶梯归属与越界（真源 protocol/LAYERS.json；语义判据在 core/layer_model.py）
+    try:
+        from core import layer_model as _lm
+        if os.path.isfile(os.path.join(root, _lm.DECL_REL)):
+            _ladder_issues, _ladder_stats = _lm.scan(root)
+            stats["layers"] = _ladder_stats
+            issues += _ladder_issues
+        else:
+            # 合成树（单测）通常无阶梯件：缺件不在这里判死——缺席由断言表
+            # `layers-declaration-in-place`（json_value 命中"目标件不存在"）+ 规范性名单
+            # （modeling.verify_normative 断言 norm 件存在）+ RECEIPTS 覆盖面三处另判，不静默。
+            stats["layers"] = {"skipped": "缺 %s（另由断言表与规范性名单判）" % _lm.DECL_REL}
+    except Exception as _exc:
+        issues.append("R7 阶梯体检不可用：%s（修复指引：核对 protocol/LAYERS.json 与 "
+                      "desktop/src/core/layer_model.py 后可读性）" % _exc)
     return issues, stats

@@ -59,7 +59,7 @@ NF 的门禁是一份 bash 脚本、39 条 check，当前基线声明为 `check1
 | 24 | 段C | [24/段C] 模块生命周期门禁（40 总纲 v2.8 波B S5：模块 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用） | 语义校验（core 模块：module_lifecycle） |
 | 25 | 段C | [25/段C] 协议知识签名门禁（41 波C C2：01-36 全量文档签名两遍可复现——知识指纹稳定 = 编译期冲突可发现） | 语义校验（core 模块：knowledge_sig） |
 | 26 | 段C | [26/段C] 语义矛盾扫描门禁（41 波C C3：techdoc 链事件契约断链 + 挂载点/类别漂移——补 check15/21 结构自洽之上的语义空白） | 语义校验（core 模块：semantic_conflict） |
-| 27 | 段C | [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计） | 语义校验（core 模块：purity_scan） |
+| 27 | 段C | [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计 + 抽象阶梯归属与越界 R7） | 语义校验（core 模块：purity_scan + layer_model） |
 | 28 | 段C | [28/段C] 协议层 IDL schema 门禁（43 A1：protocol/schema 五定义在场 + 全量件过 schema——machine_contract/registry 投影/管线声明/协议包/资产台账，任一字段漂移即 FAIL） | 语义校验（core 模块：schema_lint） |
 | 29 | 段C | [29/段C] Conformance 一致性分级门禁（43 A2：01 §1.2 分级——模块机读块/协议包/导出 manifest 声明 ≤ 可证级别，防虚标） | 语义校验（core 模块：conformance_scan） |
 | 30 | 段C | [30/段C] 扩展策略 + bump 迁移门禁（43 A3：EXTENSION 判据在场 + 版本字段结构性变更须带 01 §7/02 §9.3 迁移记录） | 结构断言 |
@@ -337,13 +337,13 @@ NF 的门禁是一份 bash 脚本、39 条 check，当前基线声明为 `check1
 | 谁验 | 任何有 Python 3 与 bash 的人；不需要读代码 |
 | 记录 | 运行日志 nf_check26.log（本次运行的临时目录内；有 FAIL 时脚本会打印保留路径） |
 
-### V27 · [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计）
+### V27 · [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计 + 抽象阶梯归属与越界 R7）
 
 | 字段 | 内容 |
 |---|---|
-| 结论 | [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计） |
-| 判据 | 语义校验（core 模块：purity_scan） |
-| 复跑命令 | python -c "import sys; sys.path.insert(0,'desktop/src'); from core import purity_scan"  # 直接复跑请用下面的整段命令 |
+| 结论 | [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计 + 抽象阶梯归属与越界 R7） |
+| 判据 | 语义校验（core 模块：purity_scan 五规则 + layer_model L1–L10） |
+| 复跑命令 | `python scripts/nf.py layers --verify`（阶梯面）；其余随全量门禁执行（日志 nf_check27.log） |
 | 谁验 | 任何有 Python 3 与 bash 的人；不需要读代码 |
 | 记录 | 运行日志 nf_check27.log（本次运行的临时目录内；有 FAIL 时脚本会打印保留路径） |
 

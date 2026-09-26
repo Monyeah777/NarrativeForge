@@ -209,6 +209,47 @@ class SinkRegistryTest(unittest.TestCase):
         self.assertIn("e2e_desktop_headless.py:shutil.rmtree", ps.SINK_ALLOW)
         self.assertIn("storage.py:shutil.rmtree", ps.SINK_ALLOW)
 
+    # ---- R7：抽象阶梯归属与越界（真源 protocol/LAYERS.json；语义判据在 core/layer_model）----
+    H_MIN = {"schema": "nf-layers/1", "vocabulary": {"status": ["active"]},
+             "rules": [{"id": "L1", "statement": "样例"}],
+             "tiers": [{"id": "contract", "name": "契约", "order": 0, "status": "active",
+                        "change_tier": "bump", "source": {"globs": ["a/*.md"]},
+                        "interface": {"globs": ["a/keep.md"]}, "depends_on": [],
+                        "judged_by": ["check1"]}],
+             "asset_levels": [], "surfaces": [], "derived": []}
+
+    def _ladder_tree(self, tmp, tiers=None):
+        import json as _json
+        from core import layer_model as _lm
+        doc = dict(self.H_MIN)
+        doc["tiers"] = tiers or self.H_MIN["tiers"]
+        _write(tmp, "protocol/LAYERS.json", _json.dumps(doc, ensure_ascii=False))
+        _write(tmp, "protocol/assertions.json", '{"schema": "nf-assertions/1", "assertions": []}')
+        _write(tmp, "verify.sh", "#!/usr/bin/env bash\ncheck1(){\n  :\n}\n")
+        _write(tmp, "a/keep.md", "x\n")
+        _write(tmp, "docs/layers.md",
+               "# t\n\n%s\n%s\n%s\n" % (_lm.MARK_BEGIN, _lm.render_markdown(doc), _lm.MARK_END))
+
+    def test_r7_ladder_violation_is_captured(self):
+        """R7 接线：阶梯违规必须汇入纯度报告（此处用「真源面展开为空」触发 L1）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            self._ladder_tree(tmp, tiers=[{
+                "id": "contract", "name": "契约", "order": 0, "status": "active",
+                "change_tier": "bump", "source": {"globs": ["ghost/*.md"]},
+                "interface": {"globs": ["a/keep.md"]}, "depends_on": [],
+                "judged_by": ["check1"]}])
+            issues, stats = ps.scan(tmp)
+            self.assertTrue(any(i.startswith("L1") for i in issues), issues)
+            self.assertEqual(stats.get("layers", {}).get("tiers"), 1)
+
+    def test_r7_skipped_when_ladder_absent(self):
+        """合成树无阶梯件时 R7 不误伤（缺件由断言表与规范性名单另判，不静默）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "01_核心协议.md", "# 协议\n## 模块协议\n")
+            issues, stats = ps.scan(tmp)
+            self.assertEqual(issues, [])
+            self.assertIn("skipped", stats.get("layers", {}))
+
 
 if __name__ == "__main__":
     unittest.main()

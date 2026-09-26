@@ -114,22 +114,22 @@
     },
     {
       "description": "数据化断言表（形状类断言数据化）",
-      "detail": "断言 11 条（通过 11）· kind 封闭集 4 种",
-      "digest": "c2343c8b278265a97544dc7d86288acef32eb6c4c92238d5fc4ab1477583cef7",
+      "detail": "断言 14 条（通过 14）· kind 封闭集 4 种",
+      "digest": "a56c7e95c1203826c4a33af06b9ffe9108f59b9880b4cdc1331b496c05d13548",
       "id": "assertions",
       "ok": true
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 30 / 说明件 2350 · 数据契约 29",
-      "digest": "fa41ddef18bc009bf86092e9de1f5d4168da30c723802677a0c8629f159b822a",
+      "detail": "词表 12 · 规范件 31 / 说明件 2352 · 数据契约 30",
+      "digest": "a7122e198c6e2ed82e8a2c1c8edb82431adf7b3be8e9b2383129414537ff0761",
       "id": "modeling",
       "ok": true
     },
     {
       "description": "决策记录（ADR：不可改 + 取代链）",
-      "detail": "决策 3 条（accepted 3 · 取代链 0）",
-      "digest": "311b448361453785860f583831730c4f05ed900978b7975b3be2def23869cd7d",
+      "detail": "决策 4 条（accepted 4 · 取代链 0）",
+      "digest": "06a5dbcc0f85e4d1702a36d91a1ae1d18e1a0e2de8f4579e16c24a29e472d543",
       "id": "decisions",
       "ok": true
     },
@@ -149,15 +149,15 @@
     },
     {
       "description": "审计/验收（结论绑定对象 digest + 签收双要素）",
-      "detail": "审计 35 件（带审计头 24 · legacy 11）· 绑定对象 189",
-      "digest": "dfc93713d715eea9f90e4016c49a92463594f5da8e22f39708cc23c37c7c2c0d",
+      "detail": "审计 36 件（带审计头 25 · legacy 11）· 绑定对象 205",
+      "digest": "3361188c53dd04305df419f33e296e84f0beb924955062cb78557963a3fdcbc7",
       "id": "audit",
       "ok": true
     },
     {
       "description": "认知族（术语表 + 执行分档）",
-      "detail": "术语 9 条（使用面 11）· 执行档 2（合格实例 2）",
-      "digest": "9910225ab9917a49301a98636fec86994950fbc16557631d4f4ab0f7cb592d4f",
+      "detail": "术语 11 条（使用面 16）· 执行档 2（合格实例 2）",
+      "digest": "a142d4c9c4c7130b5c6a79fa0d03c6774d4a3984de2168ed22a6b992b3af8665",
       "id": "cognition",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "5d3e06ac8bd0ec1df900271f2703dc3f36b392dbc1d8364d8f962bae4f09bc46",
+  "root": "01b668aa8c3ea6d3ac1441123c1ceefe7a4cd3c3158abaf1da26db0c621504dd",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

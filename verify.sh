@@ -22,6 +22,8 @@
 #        段 A/B = L0/L1（协议一致性 + 内容对账），check12-22 = L2 core（unittest/py_compile/协议投影/
 #        组合/契约/质量/导出/产物schema/文档完整性/registry闭合门/导出物规范体检）；android 相关 check 已随 L3 端壳线退役移出（桌面 GUI 端壳 2026-09-09 同轨退役，见 L3_FROZEN.md）。check12 = desktop unittest 全量 + 全量 py_compile；check13 = 协议版本一致性（两处）+ 迁移完整性；check14 = 社区协议登记门禁：01 §6.1 Schema 必填 12 字段 + 02 §8.3 登记三要件 + registry protocols[] 投影一致；check15 = 组合引用门禁：02 §8.4 references 五断言（在册可寻址/依赖闭包闭合/挂载层冲突/schema 兼容/双源一致）；check16 = 契约仲裁门禁：01 §1.1 machine_contract 机读结构 + 02 §8.4 规则④ references 装配 publish⊆subscribe + 运行时寻址授权一致；check17 = 质量治理门；check18 = 导出契约门；check19 = 导出产物 schema 合规（A1）；check20 = 文档完整性门禁（A3）；check21 = registry 引用图闭合门禁（A4）；check22 = 导出物规范体检门禁（A4，35 方案）；check23 = 资产供应链闭合门禁（40 总纲 S2：溯源键表 provenance.json + 文件头双源一致；check24 = 模块生命周期门禁（40 总纲 v2.8 波B S5：模块头 status 位 + deprecate/restore + 引用门禁——deprecated/retired 不得被引用）；check25 = 协议知识签名门禁（41 波C C2：01-36 全量签名两遍生成逐字节一致 + 结构字段齐备）；check26 = 语义矛盾扫描门禁（41 波C C3：techdoc 链 machine_contract 订阅事件无发布方断链 + 挂载点/类别漂移）；check27 = 架构纯度体检门禁（42 M3：协议层端壳残留/私货可变物/重复标题 grep + core raise 消息修复指引审计））
 # 基准 : 判定逐字对齐 07 §7；04=核心 13 件 / 03=P00+P01+P90 / 05=README+用户自定义；
+#        抽象阶梯（两轴 + 纵切）判据并入 check27 R7——真源 protocol/LAYERS.json，
+#        语义判据在 desktop/src/core/layer_model.py（见 docs/layers.md）。
 #        校园资产 29 文件 1575 行 / 西幻资产 23 文件 4284 行（西幻 4285→4284：2026-09-20 删
 #        11_魔法系统_MAGIC.md 的孤立收尾围栏 1 行；行数基线属**发布基线**，内容改动后须核对更新）。
 # ============================================================
@@ -1412,7 +1414,7 @@ PYEOF
   fi
 }
 check27(){
-  echo '== [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计）=='
+  echo '== [27/段C] 架构纯度体检门禁（42 M3：端壳残留/私货可变物/重复标题 grep 断言族 + core raise 消息修复指引审计 + 抽象阶梯归属与越界 R7）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check27.log 2>&1
@@ -1428,9 +1430,10 @@ for i in issues:
     print('[FAIL] %s' % i)
 for w in stats.get('import_residue') or []:
     print('WARN: %s' % w)
-print('纯度体检统计：文档 %d / raise 审计 %d / 第三方 import %d / import 残留 %d'
+_ly = stats.get('layers') or {}
+print('纯度体检统计：文档 %d / raise 审计 %d / 第三方 import %d / import 残留 %d / 阶梯阶 %d'
       % (stats['docs'], stats['raises'], stats.get('imports', 0),
-         len(stats.get('import_residue') or [])))
+         len(stats.get('import_residue') or []), _ly.get('tiers', 0)))
 sys.exit(1 if issues else 0)
 PYEOF
     then
@@ -1438,7 +1441,7 @@ PYEOF
       while IFS= read -r _purline; do
         case "$_purline" in WARN:*) wn "${_purline#WARN: }" ;; esac
       done < "$NFL_TMP"/nf_check27.log
-      ok '架构纯度体检通过（M3：协议层无端壳残留/私货/重复标题，raise 消息修复指引零缺失）'
+      ok '架构纯度体检通过（M3：协议层无端壳残留/私货/重复标题 + 阶梯归属互斥/接口子集/依赖向下 + raise 消息修复指引零缺失）'
     else
       while IFS= read -r _purline; do
         case "$_purline" in WARN:*) wn "${_purline#WARN: }" ;; esac

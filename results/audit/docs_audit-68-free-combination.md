@@ -8,9 +8,9 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/pack_combo.py:4c767ec786b38313b8ea3ec7e7c8818f0748bf734b04fa269d33d8135657b5f4
   - desktop/src/core/quality_depth_scan.py:ef33e0c52da8370134c34da56943f3d9188c0f3212727a4b4eea5a80f0732fb1
-  - desktop/src/core/doc_hygiene.py:cccbf44726a7a41b820fe3d84b8d97195292fd074a283cc5b811c52e31e61f76
-  - scripts/nf.py:bf5c813fb49c37cbec945218dbbf900663576d5005681b35c3264a1aac9bb7cc
-  - protocol/data_contracts.json:c0fec5b67151fd86f9a17e522a1d61238ebd974ec14b0ad41993cb47af533ae1
+  - desktop/src/core/doc_hygiene.py:2b0acc2498874f2d37ca7d7e51b8f89d17c1bd5171e9532e75667c58d9d5f5fb
+  - scripts/nf.py:d4eba21b68225d3088e0f34463a2b711ea79feef31c9f273c4c8e7f67a6fa0fa
+  - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - docs/combos.md:4d25fe6d366687213df7090badd52b815bdf07f774df856e598d7cf8a1d130de
   - desktop/tests/test_pack_combo.py:5da27fbf17a0c6d70d7d30d74286b9d6f3282561979ebb15b1118eb0f3f0cc5d
   - community/校园西幻轻混组合包/protocol.yaml:093cc817ae089981b7cfe4aaf57ec7f5d2374455bb63fc8b7af06dc2d29a02a3

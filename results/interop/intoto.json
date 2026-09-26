@@ -2,9 +2,9 @@
   "_type": "https://in-toto.io/Statement/v1",
   "predicate": {
     "algorithm": "RFC6962-style sha256 domain-separated",
-    "count": 49,
+    "count": 51,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "398ab4dc4c604819da01282078695260bce7381f125608850b310c96b79ea6b7",
+    "root": "3761dec0fd1c67b8b60b8bd89de52c23e13f4b0056c5d61dff9006458c4850d8",
     "scope": "protocol"
   },
   "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
@@ -113,7 +113,7 @@
     },
     {
       "digest": {
-        "sha256": "536a9ee4499caaef8dbc6c7b16f9a64b4fe97823f2199768a5ff1d6c38958e04"
+        "sha256": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
       },
       "name": "protocol/conformance_report.json"
     },
@@ -167,9 +167,15 @@
     },
     {
       "digest": {
-        "sha256": "4eb0b6ad0ca755daeef0a1d6c4d98eb8515173338ad51abd9bc07dac9f5e18f6"
+        "sha256": "b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102"
       },
       "name": "protocol/assertions.json"
+    },
+    {
+      "digest": {
+        "sha256": "bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c"
+      },
+      "name": "protocol/LAYERS.json"
     },
     {
       "digest": {
@@ -179,19 +185,19 @@
     },
     {
       "digest": {
-        "sha256": "4b47f2ff9c70cb58ad1f379d75891a5d7652c4a23c079ea0f7a4c4c8ed46ca6a"
+        "sha256": "3ea1e37d1879cee532b930e83ba3029fbc171efe99606fd42bc775f0968b84a5"
       },
       "name": "protocol/normative.json"
     },
     {
       "digest": {
-        "sha256": "c0fec5b67151fd86f9a17e522a1d61238ebd974ec14b0ad41993cb47af533ae1"
+        "sha256": "44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588"
       },
       "name": "protocol/data_contracts.json"
     },
     {
       "digest": {
-        "sha256": "af8857826f91886e662925465a0d6d499c45cce7a13fdd7b6f213737b31b4ea0"
+        "sha256": "5f17635586265f67916cd497dc41e13c590659774ca3aff03aca3909b174a1b6"
       },
       "name": "decisions/INDEX.md"
     },
@@ -215,7 +221,7 @@
     },
     {
       "digest": {
-        "sha256": "119dd3449c0255541bf61fde6d9621060d44c89200e03b788db335f64c970b41"
+        "sha256": "4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60"
       },
       "name": "protocol/glossary.json"
     },
@@ -302,6 +308,12 @@
         "sha256": "43ff7428a28389ce1cca04e98bf2aba3109da23ec7511ce49a937e36399f9f4f"
       },
       "name": "decisions/ADR-0003-断言表封闭集.md"
+    },
+    {
+      "digest": {
+        "sha256": "9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674"
+      },
+      "name": "decisions/ADR-0004-抽象阶梯两轴与纵切.md"
     }
   ]
 }

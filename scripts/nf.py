@@ -23,6 +23,10 @@ import sys
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
+# stderr 同样钉 UTF-8：argparse 的用法错误与中文错误信息走 stderr，若随 locale（Windows 上
+# 常为 GBK）落盘/进管道，UTF-8 消费方会解码失败（实测：管道读取方 UnicodeDecodeError）。
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
@@ -899,6 +903,18 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="显式放行写入类命令（终端默认拒跑 --write/--apply/--register 等）")
     sh.add_argument("--json", action="store_true",
                     help="配合 --exec：输出逐条记录的结构化 JSON")
+    ly = sub.add_parser(
+        "layers",
+        help="抽象阶梯（两轴 + 纵切）：四阶真源/接口面 + 资产五子级 + 入口面 + 验证纵切",
+        description="NF 抽象阶梯（真源 = protocol/LAYERS.json，机制借鉴多视图描述 / 稳定依赖 / "
+                    "适应度函数 / 单一真源+生成投影）：抽象轴四阶（契约→资产→引擎→出口）、"
+                    "入口面（只登记角色，永不作为真源）、验证纵切（贯穿四阶的门禁与证据）。"
+                    "判据与 verify check27 的 R7 同源；--write 刷新 docs/layers.md 的生成区。")
+    ly.add_argument("--json", action="store_true", help="输出结构化 JSON（逐阶真源面/接口面/判据）")
+    ly.add_argument("--verify", action="store_true",
+                    help="跑阶梯体检（归属互斥/接口子集/依赖向下/入口非真源/生成区一致）")
+    ly.add_argument("--write", action="store_true",
+                    help="把渲染结果写回 docs/layers.md 生成区（改真源后必跑）")
     return p
 
 
@@ -3994,6 +4010,65 @@ def _shell_baseline() -> str:
                                                 qb.EXPECTED_PASS)
 
 
+def _cmd_layers(args) -> int:
+    """nf layers：抽象阶梯（真源 protocol/LAYERS.json 的投影 + 体检）。"""
+    import json
+
+    from core import layer_model as lm
+
+    if args.write:
+        try:
+            rel = lm.write_region(ROOT)
+        except ValueError as exc:
+            print("  ✗ %s" % exc, file=sys.stderr)
+            return 1
+        print("  ✓ 生成区已刷新：%s（真源 protocol/LAYERS.json）" % rel)
+        return 0
+
+    doc = lm.load(ROOT)
+    issues, stats = lm.scan(ROOT)
+
+    if args.verify:
+        print("== nf layers --verify（阶梯体检 · 与 verify check27 R7 同源）==")
+        for i in issues:
+            print("  [FAIL] %s" % i)
+        ok = not issues
+        print("  阶 %d · 资产子级 %d · 入口面 %d · 纵切件 %d · 规则 %d → %s"
+              % (stats["tiers"], stats["asset_levels"], stats["surfaces"],
+                 stats.get("crosscut", 0), stats["rules"],
+                 "通过" if ok else "FAIL %d" % len(issues)))
+        return 0 if ok else 1
+
+    if args.json:
+        print(json.dumps({
+            "kind": "layers", "schema": doc.get("schema"),
+            "rules": doc.get("rules"), "tiers": doc.get("tiers"),
+            "asset_levels": doc.get("asset_levels"),
+            "surfaces": doc.get("surfaces"), "crosscut": doc.get("crosscut"),
+            "derived": doc.get("derived"), "retirement": doc.get("retirement"),
+            "issues": issues, "stats": stats,
+        }, ensure_ascii=False, indent=2))
+        return 0 if not issues else 1
+
+    print("== nf layers（NF 抽象阶梯 · 两轴 + 纵切）==")
+    for t in doc.get("tiers") or []:
+        print("[%s] %s（%s · 变更档 %s）"
+              % (t.get("order"), t.get("name"), t.get("status"), t.get("change_tier")))
+        print("    真源面：%s" % "、".join((t.get("source") or {}).get("globs") or []))
+        print("    接口面：%s" % "、".join((t.get("interface") or {}).get("globs") or []))
+        print("    实现面：%s" % (t.get("implementation") or {}).get("note", ""))
+        print("    判据：%s" % "、".join(t.get("judged_by") or []))
+    print("  资产阶五子级：%s"
+          % " → ".join(str(lv.get("name")) for lv in doc.get("asset_levels") or []))
+    print("  入口面（不作为真源）：%s"
+          % "、".join(str(sf.get("name")) for sf in doc.get("surfaces") or []))
+    print("  验证纵切：%s"
+          % "、".join(str(c.get("id"))
+                      for c in (doc.get("crosscut") or {}).get("components") or []))
+    print("  体检：nf layers --verify（改真源后跑 --write 刷新 docs/layers.md 生成区）")
+    return 0
+
+
 def _cmd_shell(args) -> int:
     """nf shell（别名 nf terminal）：终端交互入口（端壳退役后的人机面）。"""
     from core import terminal as term
@@ -4488,6 +4563,8 @@ def main(argv=None) -> int:
         return 0
     if args.cmd in ("shell", "terminal"):
         return _cmd_shell(args)
+    if args.cmd == "layers":
+        return _cmd_layers(args)
     if args.cmd == "help":
         return _cmd_help(args)
     if args.cmd == "stats":

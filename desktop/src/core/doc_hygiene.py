@@ -83,6 +83,7 @@ DOC_KINDS = {
     "docs/domain-packs.md": "how-to",
     "docs/combos.md": "how-to",
     "docs/terminal.md": "how-to",
+    "docs/layers.md": "how-to",
 }
 
 #: 需带 last-updated 位的关键文档（协议/导航/接入 + 指令类）
@@ -124,6 +125,7 @@ REQUIRED_DOCS = [
     "docs/text-hygiene.md",
     "docs/decision-layer.md",
     "docs/terminal.md",
+    "docs/layers.md",
 ]
 
 #: 指令类文档（须带 ⛔ 操作指令 标识）
@@ -158,6 +160,7 @@ INSTRUCTION_DOCS = [
     "docs/interop.md",
     "docs/decision-layer.md",
     "docs/terminal.md",
+    "docs/layers.md",
 ]
 
 

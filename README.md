@@ -53,7 +53,7 @@ AI 装配：
 | 库 | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | 社区 | `community/README.md` · `community/模板制作指令包.md` |
 | AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
-| 工具 | `docs/mcp.md` · `docs/terminal.md` · `scripts/nf.py` · `scripts/verify.sh` |
+| 工具 | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `scripts/nf.py` · `scripts/verify.sh` |
 | 馆 | `library/INDEX.md` · `ROUTES.md` |
 
 ## 版本块

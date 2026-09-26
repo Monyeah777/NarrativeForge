@@ -128,6 +128,36 @@
       "message": "数据契约登记表不在位或 schema 未自证",
       "fix": "补 protocol/data_contracts.json（schema=nf-data-contracts/1）",
       "evidence": "nf assertions / 数据契约登记（quality_rule=assertion:data-contracts-face）"
+    },
+    {
+      "id": "layers-declaration-in-place",
+      "severity": "fail",
+      "kind": "json_value",
+      "params": {"path": "protocol/LAYERS.json", "key": "schema",
+                 "op": "equals", "value": "nf-layers/1"},
+      "message": "抽象阶梯真源不在位或 schema 未自证（阶梯体检 R7 会随之失效）",
+      "fix": "补 protocol/LAYERS.json（schema=nf-layers/1）后跑 nf layers --verify",
+      "evidence": "check27 R7 / nf layers / docs/layers.md"
+    },
+    {
+      "id": "layers-generated-region",
+      "severity": "fail",
+      "kind": "regex_present",
+      "params": {"path": "docs/layers.md",
+                 "patterns": ["<!-- nf:layers:begin -->", "<!-- nf:layers:end -->"]},
+      "message": "docs/layers.md 缺生成区标记（阶梯表一旦手写必然与真源漂移）",
+      "fix": "补 begin/end 标记后跑 nf layers --write 刷新生成区",
+      "evidence": "check27 R7（L10：生成区 == 实时渲染）"
+    },
+    {
+      "id": "layers-no-abs-path",
+      "severity": "fail",
+      "kind": "regex_absent",
+      "params": {"globs": ["protocol/LAYERS.json", "docs/layers.md"],
+                 "pattern": "(?<![A-Za-z0-9])[A-Za-z]:[\\\\/]|/Users/|/home/[a-z]"},
+      "message": "阶梯件出现绝对路径（公开面泄漏本机路径）",
+      "fix": "改成仓库相对路径或占位符",
+      "evidence": "check27 R7 / conformance::public-surface"
     }
   ]
 }

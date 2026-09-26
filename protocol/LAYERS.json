@@ -1,0 +1,185 @@
+{
+  "schema": "nf-layers/1",
+  "note": "NF 抽象阶梯（机制借鉴：多视图架构描述 / 稳定依赖与依赖倒置 / 适应度函数 / 单一真源+生成投影）——**两轴 + 纵切**：抽象轴四阶（契约→资产→引擎→出口，越往下越稳定越贵改）、入口面（只登记角色，永不作为真源）、验证纵切（贯穿四阶的门禁与证据）。本件是阶梯唯一真源；`docs/layers.md` 的阶梯表与 `nf layers` 的输出都是它的投影。命名纪律：本阶梯用「阶 / 面 / 纵切」，不复用 L0-L3（依赖治理编号，见 docs/L3_FROZEN.md）、P00-P80（管线层位）、mount_layers（模块挂载层）与标准目录 layer 四套既有词汇；变更档词表复用 protocol/EXTENSION.md 的 editorial/additive/bump。",
+  "vocabulary": {
+    "change_tier": ["editorial", "additive", "bump"],
+    "status": ["active", "retired"]
+  },
+  "rules": [
+    {"id": "L1-source-in-place",
+     "statement": "每阶真源面 / 每资产子级 / 每入口件 / 每纵切件都必须真实存在且非空——声明的路径不许是空气。"},
+    {"id": "L2-tier-exclusive",
+     "statement": "四阶真源面两两互斥（展开 glob 后无交集；派生物按 derived 名单显式豁免）——一件不许同时是两阶的真源。"},
+    {"id": "L3-interface-subset",
+     "statement": "每阶接口面必须非空且是该阶真源面的子集——接口不能凭空长出真源面外的东西。"},
+    {"id": "L4-dependency-downward",
+     "statement": "依赖只许向下：depends_on 指向的阶必须存在、order 更小，且整图无环（稳定依赖方向）。"},
+    {"id": "L5-entry-not-truth",
+     "statement": "入口面只登记角色：is_source_of_truth 必须为 false，serves 必须是真实阶 id，入口件必须在场。"},
+    {"id": "L6-no-upward-import",
+     "statement": "引擎阶不得反向 import 入口面件（desktop/src/core 不许出现 import nf / from scripts …）——端壳退役的教训：入口可以被替换，真源不行。"},
+    {"id": "L7-retired-not-depended",
+     "statement": "退役阶不得被任何在役阶依赖（退役 = 能力已重分派，不是留个空壳在图上）。"},
+    {"id": "L8-judged-by-resolvable",
+     "statement": "judged_by 引用的 check 序号必须在 verify.sh 真实存在，assertion:<id> 必须在 protocol/assertions.json 真实登记——判据不许指向不存在的东西。"},
+    {"id": "L9-derived-honest",
+     "statement": "derived 名单里的每条 glob 必须至少命中一个真实文件——豁免必须诚实，不许拿豁免当遮羞布。"},
+    {"id": "L10-doc-generated-equal",
+     "statement": "docs/layers.md 的生成区必须与该件实时渲染逐字一致（单一真源 + 生成投影）。"}
+  ],
+  "tiers": [
+    {
+      "id": "contract",
+      "name": "契约",
+      "order": 0,
+      "status": "active",
+      "change_tier": "bump",
+      "source": {
+        "globs": ["01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
+                  "07_官方核心出厂与社区预设导航.md", "STRATEGY.md",
+                  "protocol/*.md", "protocol/*.json", "protocol/schema/*.json",
+                  "desktop/src/core/registry.json"],
+        "note": "协议真源 + 方向层（STRATEGY）+ 机读声明件面；protocol/ 下的派生物按 derived 名单豁免。"
+      },
+      "interface": {
+        "globs": ["protocol/schema/*.json", "protocol/CONFORMANCE.md",
+                  "desktop/src/core/registry.json"],
+        "note": "跨阶唯一可依赖面 = IDL 五定义 + 一致性声明 + registry 投影；各声明件的内部结构属实现面。"
+      },
+      "implementation": {"note": "各声明件的内部结构与措辞（改它不改接口，但仍受各自 check 约束）。"},
+      "depends_on": [],
+      "judged_by": ["check13", "check28", "check29", "check30", "check31"]
+    },
+    {
+      "id": "asset",
+      "name": "资产",
+      "order": 1,
+      "status": "active",
+      "change_tier": "additive",
+      "source": {
+        "globs": ["03_管线库/*.md", "04_模块库/*/*.md", "05_资产库/**/*",
+                  "community/**/*", "library/*.md"],
+        "note": "内容真源（管线/模块/资产/域包/馆藏）；结构性变更（编号段、引用语义）按 bump 走 02 §9.3 四步迁移。"
+      },
+      "interface": {
+        "globs": ["community/*/protocol.yaml", "05_资产库/provenance.json"],
+        "note": "跨阶可依赖面 = 包声明件与资产溯源台账；模块 id/类别以 02 §8 登记条目为准（契约阶接口）。"
+      },
+      "implementation": {"note": "模块/管线/词条的正文与措辞（可自由重写，不改 id 与键）。"},
+      "depends_on": ["contract"],
+      "judged_by": ["check7", "check8", "check9", "check10", "check11", "check14",
+                    "check15", "check16", "check23", "check24", "check34"]
+    },
+    {
+      "id": "engine",
+      "name": "引擎",
+      "order": 2,
+      "status": "active",
+      "change_tier": "additive",
+      "source": {
+        "globs": ["desktop/src/core/*.py", "desktop/tests/**/*.py",
+                  "desktop/scripts/*.py", "scripts/*.py", "scripts/*.sh",
+                  "scripts/nf", "scripts/nf.cmd"],
+        "note": "L2 核心逻辑层（真实载体）；零第三方依赖红线见 CONTRIBUTING §4.2 与纯度体检 R5。"
+      },
+      "interface": {
+        "globs": ["scripts/nf.py"],
+        "note": "跨阶唯一稳定面 = CLI 命令面（含退出码矩阵 0/1/2）；core 模块边界由 protocol/module_signatures.json 冻结（契约阶），资产与出口不直接依赖 core 内部。"
+      },
+      "implementation": {"note": "内部实现与函数划分（可任意重构，只要命令面与契约不变）。"},
+      "depends_on": ["contract", "asset"],
+      "judged_by": ["check12", "check17", "check18", "check19", "check20", "check21",
+                    "check22", "check27", "check32", "check33"]
+    },
+    {
+      "id": "export",
+      "name": "出口",
+      "order": 3,
+      "status": "active",
+      "change_tier": "editorial",
+      "source": {
+        "globs": ["results/interop/*.json", "docs/standards/*.md",
+                  "docs/fde-sample/**/*"],
+        "note": "纯派生出口面（互操作面 / 标准目录 GEO 出口 / FDE 打样）；不含真源，改它等于重跑渲染。"
+      },
+      "interface": {
+        "globs": ["results/interop/*.json", "docs/standards/index.md"],
+        "note": "跨阶可依赖面 = 外部标准工具可读的导出形状（形状由 check19/22 钉住）。"
+      },
+      "implementation": {"note": "渲染细节与排版（可重排，只要形状与逐字节可复现不变）。"},
+      "depends_on": ["engine"],
+      "judged_by": ["check18", "check19", "check22", "check33", "check38"]
+    }
+  ],
+  "asset_levels": [
+    {"id": "declaration", "name": "声明", "tier": "asset",
+     "globs": ["community/*/protocol.yaml"],
+     "note": "契约的实例：改它要走登记三要件（01 §6.1 + 02 §8.3 + registry 投影）。",
+     "judged_by": ["check14"]},
+    {"id": "content", "name": "内容", "tier": "asset",
+     "globs": ["03_管线库/*.md", "04_模块库/*/*.md", "community/*/modules/*.md",
+               "community/*/pipelines/*.md"],
+     "note": "模块与管线正文：受编号命名空间与挂载层约束。",
+     "judged_by": ["check7", "check9", "check24"]},
+    {"id": "data", "name": "数据", "tier": "asset",
+     "globs": ["05_资产库/**/*", "community/*/assets/*.md"],
+     "note": "资产键与溯源台账：判据是可寻址 / 可溯源 / 键无孤儿。",
+     "judged_by": ["check8", "check11", "check23"]},
+    {"id": "knowledge", "name": "知识", "tier": "asset",
+     "globs": ["protocol/knowledge_sources.json", "protocol/transform_log.json"],
+     "note": "双源知识层：判据是权威分层 / 查询有序 / 时效 / 消化可追溯（与词条类资产不同口径）。",
+     "judged_by": ["check37"]},
+    {"id": "ontology", "name": "本体", "tier": "asset",
+     "globs": ["protocol/standards_catalog.json", "protocol/standards_binding.json",
+               "protocol/domain_packs.json"],
+     "note": "概念图与标准目录/绑定：判据是概念密度 / 标准可达性 / 数据真实性。",
+     "judged_by": ["check32"]}
+  ],
+  "surfaces": [
+    {"id": "human", "name": "人机入口", "is_source_of_truth": false,
+     "serves": ["engine"],
+     "entries": ["scripts/nf", "scripts/nf.cmd", "scripts/nf.py"],
+     "note": "无参数进终端（nf shell → desktop/src/core/terminal.py）；其余参数透传 CLI。"},
+    {"id": "ai", "name": "AI 装配线", "is_source_of_truth": false,
+     "serves": ["asset"],
+     "entries": ["AGENT_START.md", "agent_组装指令包_v0.2.md", "AI_ROUTING.md"],
+     "note": "任意 agent 仅凭仓库地址自助取件组装「完整版」；与 A 线（人机）同等级，不预设模型。"},
+    {"id": "mcp", "name": "MCP 服务面", "is_source_of_truth": false,
+     "serves": ["engine"],
+     "entries": ["docs/mcp.md", "protocol/mcp_package.json"],
+     "note": "长驻运行时入口 = nf serve（引擎阶 CLI 面）；本面只登记契约与用法文档。"},
+    {"id": "distribution", "name": "图书馆取件面", "is_source_of_truth": false,
+     "serves": ["asset"],
+     "entries": ["ROUTES.md", "library/INDEX.md", "library/ALIAS.md"],
+     "note": "按编号寻址 + 镜像路由；馆藏本体属资产阶，本面只负责「怎么找到它」。"}
+  ],
+  "crosscut": {
+    "name": "验证纵切",
+    "applies_to": ["contract", "asset", "engine", "export"],
+    "components": [
+      {"id": "verify", "artifact": "verify.sh", "judged_by": ["check27"]},
+      {"id": "conformance", "artifact": "protocol/conformance_report.json", "judged_by": ["check35"]},
+      {"id": "audit", "artifact": "results/audit", "judged_by": ["check36"]},
+      {"id": "receipts", "artifact": "protocol/RECEIPTS.json", "judged_by": ["check35"]},
+      {"id": "attest", "artifact": "docs/attest.md", "judged_by": ["check33"]},
+      {"id": "provenance", "artifact": "05_资产库/provenance.json", "judged_by": ["check23"]}
+    ],
+    "note": "纵切不是层：它切过四阶（结论绑被审对象 digest），故不参与 L2 归属互斥。"
+  },
+  "derived": [
+    "protocol/RECEIPTS.json",
+    "protocol/repo_stats.json",
+    "protocol/geo_export.json",
+    "protocol/conformance_report.json",
+    "protocol/generated/*",
+    "protocol/approvals/*"
+  ],
+  "retirement": {
+    "playbook": [
+      "能力重分派清单：该阶的每项能力落到哪个在役阶或入口面（逐条，不留悬空）。",
+      "入口面补齐：能力的新入口必须在场且可用（例：端壳退役 → nf shell 终端 + CLI）。",
+      "判据改判 + 记录：受影响的 check 同步改判，退役事实与理由留档（见 docs/L3_FROZEN.md 体例），并登记作者裁决。"
+    ],
+    "fields": ["status", "retired_on", "retired_reason", "redistributed_to"]
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-25",
+  "approved_at": "2026-09-26",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "终端波：补 AUD-0024 审计建档后重生成一致性报告，摘要随之更新",
+  "note": "抽象阶梯 v2：描述面补齐后重生成一致性报告",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "536a9ee4499caaef8dbc6c7b16f9a64b4fe97823f2199768a5ff1d6c38958e04"
+  "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
 }

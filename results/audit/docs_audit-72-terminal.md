@@ -7,15 +7,15 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/terminal.py:d810f1312c0c2c21b0199ceb8afebc9a79a58139a0305405cb3f9cf0c1d0492b
-  - scripts/nf.py:bf5c813fb49c37cbec945218dbbf900663576d5005681b35c3264a1aac9bb7cc
+  - scripts/nf.py:d4eba21b68225d3088e0f34463a2b711ea79feef31c9f273c4c8e7f67a6fa0fa
   - desktop/tests/test_terminal.py:cb42ec746dbb37d44c307156e20fd1bad2faa3c2d8f7bda14efda427c8ec68ea
   - scripts/nf:332e4512c1970d93858aadc9715d89fee5db61eae4d3dc49bac23de9bce65488
   - scripts/nf.cmd:a2563ccd0cdde64f1c394d3b426e22b3abd7d6438c5b3308f29d2086d9cac15c
-  - verify.sh:0e94959965c35d7d9bcc3008da5747eae26ce460ae5b30dfb8a8f4a14682f08b
+  - verify.sh:c5b720488bc7dff44d243e6a94f10504bb3170a9aef3e3adb6a00eed4a700933
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
-  - desktop/src/core/doc_hygiene.py:cccbf44726a7a41b820fe3d84b8d97195292fd074a283cc5b811c52e31e61f76
+  - desktop/src/core/doc_hygiene.py:2b0acc2498874f2d37ca7d7e51b8f89d17c1bd5171e9532e75667c58d9d5f5fb
   - docs/terminal.md:3ed8ecc10f682c0c448f792308bae1975710965bbda004e6eaef39e6de91f85d
-  - docs/L3_FROZEN.md:a11b59fdf99c0d307fd996decd24e21520197b78c9dc6a60216db6428fdb2197
+  - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
 ---
 
