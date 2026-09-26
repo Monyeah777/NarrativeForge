@@ -14,7 +14,7 @@ subjects:
   - desktop/src/core/text_hygiene.py:44f22d14c2ab470a2d30a5484b484a81c57baaf3111a5a1fcec0005a9d0cdeae
   - desktop/src/core/workloop.py:25df02cccb732a1a06b71e7ca55ddf82cb136bfb273f9488e184fb47c0a58d8d
   - scripts/serve_decision_model.py:130920912feb38b20cd463f1181fa39f4e6fba45b0e4ad059e1dc74a49bfa4f7
-  - scripts/nf.py:480a8614a2b70ed66829d21fc714f2c612ca061ae222da938d0d655f1f35202b
+  - scripts/nf.py:383f8301514e05534ec99e0f6a66d0fe7963785938cbb17b0c88e6ee9aaf3625
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

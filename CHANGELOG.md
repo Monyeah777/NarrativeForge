@@ -2,6 +2,14 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v7：活体自检（`--verify --deep`）+ 机器面补齐（纯 JSON）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮清单第 1/2 项）：
+  ① **活体自检**：`nf shell --verify --deep` 在静态面（索引/策展/菜单）之上再核本机环境——**真跑**一条只读命令（`nf layers --verify`）核对退出码、探测历史/会话落点**可写性**、如实报告 TTY / readline / 分页器现状；判据与静态档同一实现（`deep_check` 调 `self_check`），退出码即结论。
+  ② **可写性探测不落件**：`writable_dir_probe()` 沿祖先目录判断可写性，**不写探针文件**——本环境删除能力受限（策略层拦 `Remove-Item`），且「不留件」对该仓库比「测得准一点」更重要；实测探测后目录仍为空（单测断言）。
+  ③ **机器面补齐**：`--commands --json`（命令面逐条：path/summary/flags）、`--map --json`（能力族分区）、`--form --json`（表单真源）/ `--form <id> --json`（组装计划 argv，`executed:false`）、`--verify [--deep] --json`（ok/issues/stats）。
+  ④ **纯 JSON 契约**：活体命令的输出被**捕获**进字段而非混进 stdout——机器面可被工具直接 `json.loads`；check39 新增两条断言（活体档必须真跑并报告 · `--verify --json` 必须是纯 JSON）。
+  ⑤ 本波被自家测试抓出的两处真问题（都已修）：`--deep` 引用后置定义的 `history_path`（在 `--verify` 路径上直接 NameError，已把历史解析上移到共用位置）；`--deep --json` 把活体输出混进 stdout 破坏 JSON 纯度（已改捕获 + 人读路径另印）。
+  ⑥ 实测（本机）：`--verify --deep` → 活体 `nf layers --verify` 退出码 0 · 历史落点可写 · TTY 否 · readline 不可用 · 分页器在场；`--verify --deep --json` 首字符即 `{`（纯 JSON）；四个 `--json` 面均可解析；`test_terminal` **90 例**全绿；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39）；conformance 27/27；receipts 51 件。
+
 - **终端 v6：会话状态 + 写盘表单（会改仓库的动作由人安全驱动）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮清单第 1 项）：
   ① **写盘表单（8 张）**：`/form [id]`（会话内逐项追问）/ `nf shell --form <id> --answer k=v [--yes]`（非交互 dry-run 优先）。表覆盖真实写盘点：`deprecate-module` / `restore-module` / `types-write` / `stats-write` / `asset-add` / `register-apply` / `rename-apply` / `receipts-write`；模板 argv 逐条按**真实参数签名**拼（如 `asset add {file} --key … --source … --root …`）。
   ② **逐项追问的语义**：必填项空值不放行；**可选项也会被问到**（空行 = 明确跳过，记空串），填齐后打印**组装好的命令**再问 `yes/no`——确认后才执行，且执行仍走同一条**写盘闸门**（终端不绕过、不降级）。空值连同其旗标一起丢弃，不留悬空 `--reason`。

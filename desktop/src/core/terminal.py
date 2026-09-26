@@ -745,18 +745,24 @@ def family_of(cmd: str):
     return None
 
 
+def families_for(filt: str = "") -> list:
+    """按过滤词取能力族（渲染与 `--map --json` 共用同一判据，免得两处漂移）。"""
+    f = str(filt or "").strip().lower()
+    out = []
+    for fam in FAMILIES:
+        if not f or f in str(fam["id"]).lower() or f in str(fam["name"]).lower() \
+                or any(f in c for c in fam["commands"]):
+            out.append(fam)
+    return out
+
+
 def render_map(filt: str = "", width=None, color: bool = False) -> str:
     """渲染能力地图（全功能分面）：每族给一句话定位 + 该族命令清单。"""
-    f = str(filt or "").strip().lower()
     w = term_width(width)
     lines = [style("== NF 能力地图（%d 族 · 覆盖 CLI 全部顶层命令）==" % len(FAMILIES),
                    "head", color)]
-    for fam in FAMILIES:
+    for fam in families_for(filt):
         cmds = list(fam["commands"])
-        hit = (not f) or f in str(fam["id"]).lower() or f in str(fam["name"]).lower() \
-            or any(f in c for c in cmds)
-        if not hit:
-            continue
         lines.append("")
         lines.append("%s %s —— %s"
                      % (style("[%s]" % fam["id"], "cmd", color), fam["name"],
@@ -765,6 +771,60 @@ def render_map(filt: str = "", width=None, color: bool = False) -> str:
     lines.append("")
     lines.append("  单族用法：/map <族名或命令片段>；命令详情：/find <词>；逐条列出：/commands")
     return "\n".join(lines)
+
+
+def writable_dir_probe(path: str) -> tuple:
+    """→ (ok, 说明)：**不落件**地判断某文件落点是否可写（沿祖先上溯到存在的目录再看权限）。
+
+    为什么不上溯到「写一个探针再删」：本环境的删除能力受限（策略层拦 `Remove-Item`），
+    而且探针本身就会留件——对本仓库来说「不留件」比「测得准一点点」更重要。
+    """
+    if not path:
+        return True, "未启用"
+    cur = os.path.dirname(os.path.abspath(path)) or "."
+    while cur and not os.path.isdir(cur):
+        parent = os.path.dirname(cur)
+        if parent == cur:
+            break
+        cur = parent
+    if os.path.isdir(cur) and os.access(cur, os.W_OK):
+        return True, "可写（%s）" % cur
+    return False, "不可写（%s）" % cur
+
+
+def deep_check(index, commands, root_flags=(), live_runner=None,
+               history_path=None, session_path=None, stream=None,
+               pager_ok=None) -> tuple:
+    """活体自检 → (issues, stats)：静态面之上再核**本机环境**与**真跑一条只读命令**。
+
+    `nf shell --verify`（静态）与 `--verify --deep`（活体）共用本函数；调用方注入
+    `live_runner(argv) -> int`（真实执行一条只读命令）与 `pager_ok`（分页器是否在场）。
+    判据只读、不落件：可写性用祖先目录探测，不写探针文件。
+    """
+    issues, stats = self_check(index, commands, root_flags)
+    # 活体 ①：真跑一条只读命令（覆盖「命令面真的能跑通」而不是「索引里查得到」）
+    if live_runner is not None:
+        code = live_runner(["layers", "--verify"])
+        stats["live_command"] = "nf layers --verify"
+        stats["live_code"] = code
+        if code != 0:
+            issues.append("活体自检失败：nf layers --verify 退出码 %s"
+                          "（修复指引：直接跑该命令看细分；阶梯件或索引可能已漂移）" % code)
+    # 活体 ②：历史 / 会话落点可写（只探测，不落件）
+    for label, path in (("历史", history_path), ("会话", session_path)):
+        ok, why = writable_dir_probe(path)
+        stats["%s落点" % label] = why
+        if not ok:
+            issues.append("%s落点不可写：%s（修复指引：--history / --session 指向可写目录）"
+                          % (label, why))
+    # 活体 ③：环境事实（TTY / readline / 分页器）——如实报告，不当判据
+    try:
+        stats["tty"] = bool(stream is not None and stream.isatty())
+    except Exception:      # 尽力而为：判不了就记 False（事实陈述，不影响结论）
+        stats["tty"] = False
+    stats["readline"] = readline_available()
+    stats["pager"] = "在场" if pager_ok else ("不在场" if pager_ok is False else "未探测")
+    return issues, stats
 
 
 def self_check(index, commands, root_flags=(), examples=None) -> tuple:

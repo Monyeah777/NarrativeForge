@@ -836,6 +836,104 @@ class CliIntegrationTest(unittest.TestCase):
         self.assertEqual(payload["records"][0]["kind"], "zone")
         self.assertEqual(payload["records"][0]["exit"], 0)
 
+
+class DeepCheckTest(unittest.TestCase):
+    """活体自检：真跑一条只读命令 + 落点可写性探测（不落件）。"""
+
+    @staticmethod
+    def _index():
+        return nf._shell_command_index()
+
+    def test_writable_probe_does_not_write(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = os.path.join(tmp, "sub", "deep", "history.txt")
+            ok, why = term.writable_dir_probe(target)
+            self.assertTrue(ok, why)
+            self.assertEqual(os.listdir(tmp), [], "探测不得落件（删除能力受限，故用祖先目录判）")
+            self.assertEqual(term.writable_dir_probe(""), (True, "未启用"))
+
+    def test_deep_check_calls_live_runner_and_reports(self):
+        calls = []
+
+        def _live(argv):
+            calls.append(list(argv))
+            return 0
+
+        tree = nf._collect_cli_tree()
+        issues, stats = term.deep_check(self._index(), tree["commands"],
+                                        tree["root_flags"], live_runner=_live)
+        self.assertEqual(issues, [])
+        self.assertEqual(calls, [["layers", "--verify"]])
+        self.assertEqual(stats["live_code"], 0)
+        self.assertIn("readline", stats)
+
+    def test_deep_check_reports_live_failure(self):
+        tree = nf._collect_cli_tree()
+        issues, stats = term.deep_check(self._index(), tree["commands"],
+                                        tree["root_flags"],
+                                        live_runner=lambda argv: 1)
+        self.assertEqual(stats["live_code"], 1)
+        self.assertTrue(any("活体自检失败" in i for i in issues), issues)
+
+    def test_deep_check_reports_unwritable_landing(self):
+        tree = nf._collect_cli_tree()
+        fd, path = tempfile.mkstemp(suffix=".txt")
+        os.close(fd)
+        try:
+            issues, _ = term.deep_check(self._index(), tree["commands"],
+                                        tree["root_flags"],
+                                        live_runner=lambda argv: 0,
+                                        history_path=path)
+            self.assertEqual(issues, [], "可写落点不该报错")
+        finally:
+            os.remove(path)
+
+    def test_families_for_filter(self):
+        self.assertEqual([f["id"] for f in term.families_for("治理")], ["govern"])
+        self.assertEqual(len(term.families_for("")), len(term.family_table()))
+
+
+class MachineFaceTest(unittest.TestCase):
+    """机器面：`--json` 输出必须是**纯 JSON**（可被工具直接消费）。"""
+
+    @staticmethod
+    def _run_io(argv):
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = nf.main(list(argv))
+        return code, out.getvalue() + err.getvalue()
+
+    def test_commands_map_forms_json(self):
+        code, out = self._run_io(["shell", "--commands", "asset", "--json", "--no-banner"])
+        self.assertEqual(code, 0)
+        payload = json.loads(out)
+        self.assertEqual(payload["kind"], "commands")
+        self.assertTrue(payload["rows"])
+        code, out = self._run_io(["shell", "--map", "verify", "--json", "--no-banner"])
+        self.assertEqual(code, 0)
+        payload = json.loads(out)
+        self.assertEqual(payload["kind"], "map")
+        self.assertEqual([f["id"] for f in payload["families"]], ["verify"])
+        code, out = self._run_io(["shell", "--form", "--json", "--no-banner"])
+        self.assertEqual(code, 0)
+        payload = json.loads(out)
+        self.assertEqual(payload["kind"], "forms")
+        self.assertEqual(len(payload["rows"]), len(term.form_table()))
+
+    def test_form_plan_and_verify_json_are_pure(self):
+        code, out = self._run_io(["shell", "--form", "stats-write", "--json", "--no-banner"])
+        self.assertEqual(code, 0)
+        payload = json.loads(out)
+        self.assertEqual(payload["kind"], "form-plan")
+        self.assertEqual(payload["argv"], ["stats", "--write"])
+        self.assertFalse(payload["executed"])
+        code, out = self._run_io(["shell", "--verify", "--deep", "--json", "--no-banner"])
+        self.assertEqual(code, 0, out)
+        payload = json.loads(out)          # 混入活体输出就会在这里炸
+        self.assertTrue(payload["deep"])
+        self.assertTrue(payload["ok"])
+        self.assertEqual(payload["stats"]["live_code"], 0)
+
     def test_exec_blocks_write_without_yes(self):
         code, out = _run(["shell", "--exec", "nf stats --write", "--no-banner"])
         self.assertEqual(code, 2)

@@ -2243,7 +2243,7 @@ PYEOF
 }
 
 check39(){
-  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全/输出体验/写盘表单在场）=='
+  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全/输出体验/写盘表单/活体自检在场）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check39.log 2>&1
@@ -2362,6 +2362,22 @@ with redirect_stdout(buf):
 _fout = buf.getvalue()
 if _fcode != 0 or 'nf stats --write' not in _fout or 'dry-run' not in _fout:
     problems.append('表单 dry-run 失效：nf shell --form stats-write（修复指引：核对 _cmd_shell 的 --form 分支）')
+# 活体档 + 机器面纯度：--verify --deep 须真跑并报告；--verify --json 须是**纯 JSON**
+buf = io.StringIO()
+with redirect_stdout(buf):
+    _dcode = nf.main(['shell', '--verify', '--deep', '--no-banner'])
+if _dcode != 0 or '活体' not in buf.getvalue():
+    problems.append('活体自检失效：nf shell --verify --deep（修复指引：核对 terminal.deep_check 接线）')
+buf = io.StringIO()
+with redirect_stdout(buf):
+    nf.main(['shell', '--verify', '--json', '--no-banner'])
+try:
+    _pay = json.loads(buf.getvalue())
+    if _pay.get('kind') != 'shell-verify' or not _pay.get('ok'):
+        problems.append('机器面形状异常：nf shell --verify --json（修复指引：核对 JSON 面字段）')
+except Exception as _exc:
+    problems.append('机器面不是纯 JSON：nf shell --verify --json（%s；'
+                    '修复指引：机器面须捕获活体输出，别混进 stdout）' % _exc)
 buf = io.StringIO()
 with redirect_stdout(buf):
     c_code = nf.main(['shell', '--commands', '--no-banner'])
@@ -2401,7 +2417,7 @@ print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
 sys.exit(1 if problems else 0)
 PYEOF
     then
-      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色/写盘表单运行时面）'
+      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色/写盘表单/活体档/纯 JSON 运行时面）'
     else
       no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
     fi

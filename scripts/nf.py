@@ -914,6 +914,8 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="打印能力地图（把全部顶层命令按能力族策展呈现），可按族名/片段过滤")
     sh.add_argument("--verify", action="store_true",
                     help="终端自检（索引覆盖 / 能力族分区 / 菜单示例可达），退出码即结论")
+    sh.add_argument("--deep", action="store_true",
+                    help="配合 --verify：活体档——真跑一条只读命令 + 探测历史/会话落点可写性")
     sh.add_argument("--complete", dest="complete_prefix", default="", metavar="前缀",
                     help="补全候选（非交互）：给命令/子命令/旗标/斜杠命令/能力族前缀，未命中退出 2")
     sh.add_argument("--history", default="", metavar="文件",
@@ -4203,7 +4205,21 @@ def _cmd_shell(args) -> int:
         print("  ✗ --session 不得落在仓库内（修复指引：会话状态属本机用户态，请放到 NF_HOME 或临时目录——"
               "仓库内留件会被 git add -A 吞掉，2026-09-26 实测过）", file=sys.stderr)
         return 2
+    # 历史落点（交互态；`--exec`/`--file` 一律不写，保确定性）
+    history_path = None
+    if not args.no_history:
+        history_path = args.history or term.default_history_path()
     if args.form_id is not None and not args.form_id:
+        if args.json:
+            import json as _json
+            print(_json.dumps({"kind": "forms", "count": len(term.form_table()),
+                               "rows": [{"id": f["id"], "title": f["title"],
+                                         "summary": f["summary"],
+                                         "steps": [dict(st) for st in f["steps"]],
+                                         "argv": list(f["argv"])}
+                                        for f in term.form_table()]},
+                              ensure_ascii=False, indent=2))
+            return 0
         print(term.render_forms("", width or None, color_on))
         return 0
     if args.form_id:
@@ -4223,6 +4239,18 @@ def _cmd_shell(args) -> int:
                   % (form["id"], "、".join(missing), missing[0]), file=sys.stderr)
             return 2
         argv = term.build_argv(form, answers)
+        if args.json:
+            import json as _json
+            if not args.yes:
+                print(_json.dumps({"kind": "form-plan", "id": form["id"],
+                                   "argv": argv, "executed": False},
+                                  ensure_ascii=False, indent=2))
+                return 0
+            code = runner(argv)
+            print(_json.dumps({"kind": "form-run", "id": form["id"], "argv": argv,
+                               "executed": True, "exit": code},
+                              ensure_ascii=False, indent=2))
+            return code
         if not args.yes:
             print("== 表单 %s（%s）==" % (form["title"], form["id"]))
             print("  组装命令：nf %s" % " ".join(argv))
@@ -4233,11 +4261,32 @@ def _cmd_shell(args) -> int:
         return runner(argv)
 
     if args.commands is not None:
+        if args.json:
+            import json as _json
+            filt = (args.commands or "").lower()
+            rows = [e for e in index
+                    if not filt or filt in str(e.get("path")).lower()
+                    or filt in str(e.get("summary") or "").lower()]
+            print(_json.dumps({"kind": "commands", "filter": args.commands or "",
+                               "count": len(rows), "rows": rows},
+                              ensure_ascii=False, indent=2))
+            return 0
         print(_page_text(term.render_commands(index, args.commands or "",
                                               limit=limit, width=width or None,
                                               color=color_on), args.pager))
         return 0
     if args.family_map is not None:
+        if args.json:
+            import json as _json
+            fams = term.families_for(args.family_map or "")
+            print(_json.dumps({"kind": "map", "filter": args.family_map or "",
+                               "count": len(fams),
+                               "families": [{"id": f["id"], "name": f["name"],
+                                             "summary": f["summary"],
+                                             "commands": list(f["commands"])}
+                                            for f in fams]},
+                              ensure_ascii=False, indent=2))
+            return 0
         print(_page_text(term.render_map(args.family_map or "", width or None,
                                          color_on), args.pager))
         return 0
@@ -4247,14 +4296,53 @@ def _cmd_shell(args) -> int:
         print(_page_text(text, args.pager))
         return 0 if hits else 2
     if args.verify:
+        import shutil
         tree = _collect_cli_tree()
-        issues, stats = term.self_check(index, tree["commands"], tree["root_flags"])
-        print("== nf shell --verify（终端自检 · 与 verify check39 同源判据）==")
+        if args.deep:
+            import contextlib
+            import io
+            live_buf = io.StringIO()
+
+            def _live(argv):
+                """活体执行：**捕获**输出（机器面须纯 JSON；人读面另行打印）。"""
+                live_buf.truncate(0)
+                live_buf.seek(0)
+                with contextlib.redirect_stdout(live_buf), \
+                        contextlib.redirect_stderr(live_buf):
+                    return main(list(argv))
+
+            issues, stats = term.deep_check(
+                index, tree["commands"], tree["root_flags"],
+                live_runner=_live,
+                history_path=history_path, session_path=args.session_path or None,
+                stream=sys.stdout,
+                pager_ok=bool(shutil.which("less") or shutil.which("more")))
+            stats["live_output"] = term.clip(live_buf.getvalue().strip(), 300)
+        else:
+            issues, stats = term.self_check(index, tree["commands"], tree["root_flags"])
+        if args.json:
+            import json as _json
+            print(_json.dumps({"kind": "shell-verify", "ok": not issues,
+                               "deep": bool(args.deep), "issues": issues,
+                               "stats": stats}, ensure_ascii=False, indent=2))
+            return 0 if not issues else 1
+        print("== nf shell --verify（终端自检 · 与 verify check39 同源判据%s）=="
+              % (" · 活体档" if args.deep else ""))
         for i in issues:
             print("  [FAIL] %s" % i)
         print("  命令 %d · 能力族 %d · 索引条目 %d · 菜单示例 %d → %s"
               % (stats["commands"], stats["families"], stats["index_entries"],
                  stats["examples"], "通过" if not issues else "FAIL %d" % len(issues)))
+        if args.deep:
+            print("  活体：%s 退出码 %s · 历史落点 %s · 会话落点 %s"
+                  % (stats.get("live_command", "-"), stats.get("live_code", "-"),
+                     stats.get("历史落点", "-"), stats.get("会话落点", "-")))
+            print("  环境：TTY %s · readline %s · 分页器 %s"
+                  % ("是" if stats.get("tty") else "否",
+                     "可用" if stats.get("readline") else "不可用",
+                     stats.get("pager", "未探测")))
+            for _ln in str(stats.get("live_output") or "").splitlines():
+                print("  ── 活体输出：%s" % _ln)
         print("  补全：内建候选列表（/complete、行尾 Tab）+ %s"
               % ("readline 已接管" if term.readline_available()
                  else "readline 不可用（本平台无该模块，走零依赖回退）"))
@@ -4282,9 +4370,6 @@ def _cmd_shell(args) -> int:
                                                as_json=args.json, index=index)
         print(text)
         return code
-    history_path = None
-    if not args.no_history:
-        history_path = args.history or term.default_history_path()
     if term.install_readline(lambda text: [c["text"] for c in term.complete(text, index)],
                              history_path):
         pass                                  # readline 接管 Tab 与历史（POSIX）

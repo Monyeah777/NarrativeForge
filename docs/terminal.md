@@ -74,6 +74,8 @@ python scripts/nf.py shell --commands            # 列出全部可达命令（�
 python scripts/nf.py shell --commands asset      # 按子串过滤
 python scripts/nf.py shell --search 装配         # 按关键词检索（未命中退出 2，可进脚本）
 python scripts/nf.py shell --verify              # 终端自检（索引/策展/菜单三面，退出码即结论）
+python scripts/nf.py shell --verify --deep       # 活体档：真跑一条只读命令 + 落点可写性 + 环境事实
+python scripts/nf.py shell --verify --json       # 机器面（纯 JSON：ok / issues / stats）
 python scripts/nf.py shell --complete "/ma"      # 斜杠命令补全 → /map、/menu…
 python scripts/nf.py shell --complete "nf layers --"   # 旗标补全 → --json / --verify / --write
 python scripts/nf.py shell --history <文件>      # 跨会话历史（缺省 <NF_HOME>/shell_history）
@@ -82,6 +84,11 @@ python scripts/nf.py shell --history <文件>      # 跨会话历史（缺省 <N
 会话内等价形态是 `/map [族]`、`/commands [过滤]` 与 `/find <词>`。三层保证「最全」不是宣称：
 
 ① **索引由 CLI 的 argparse 面派生**（终端不维护第二份命令表）；② **能力地图把每个命令恰好归入一个族**（`start / forge / shelf / verify / library / govern / integrate / meta`），「未策展」即报；③ 判据**单源**——`nf shell --verify`（给人跑）与 verify check39（给门禁跑）调用同一个 `terminal.self_check`，所以「终端说没问题」与「门禁说没问题」永远同一套语义。
+
+## 活体自检与机器面
+
+- **`--verify --deep`（活体档）**：在静态面（索引/策展/菜单）之上再核**本机环境**——真跑一条只读命令（`nf layers --verify`）并核对退出码、探测历史/会话落点**可写性**（沿祖先目录判断，**不落探针文件**）、如实报告 TTY / readline / 分页器现状。所有结论与静态档同一套口径（`terminal.deep_check` 调 `self_check`），退出码即结论。
+- **机器面（`--json`）**：`--commands --json`（逐条命令 + 摘要 + 旗标）、`--map --json`（族分区）、`--form --json`（表单真源）/ `--form <id> --json`（组装计划 argv）、`--verify [--deep] --json`（ok / issues / stats）。**输出必须是纯 JSON**——活体输出会被捕获进字段而不是混进 stdout，check39 直接断言这一点。
 
 ## 写盘表单与会话状态（会改仓库的动作由人安全驱动）
 
