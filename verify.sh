@@ -2383,10 +2383,16 @@ _bself = term.baseline_argv_issues()
 if _bself:
     problems.append('顶尖 CLI 基线表自身不合规：%s（修复指引：核对 TERMINAL_BASELINE）'
                     % '；'.join(_bself[:3]))
-def _cap(argv):
+def _cap(argv, stdin_text=None):
     _b = io.StringIO()
-    with redirect_stdout(_b), redirect_stderr(_b):
-        _c = nf.main(list(argv))
+    _old_in = sys.stdin
+    if stdin_text is not None:
+        sys.stdin = io.StringIO(str(stdin_text))
+    try:
+        with redirect_stdout(_b), redirect_stderr(_b):
+            _c = nf.main(list(argv))
+    finally:
+        sys.stdin = _old_in
     return _c, _b.getvalue()
 _bres, _bstats = term.run_baseline(_cap)
 _bbad = [r for r in _bres if not r['ok']]

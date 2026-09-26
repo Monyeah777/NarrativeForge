@@ -4301,11 +4301,17 @@ def _cmd_shell(args) -> int:
         import contextlib
         import io
 
-        def _capture(argv):
+        def _capture(argv, stdin_text=None):
             """证据行执行：捕获输出（基线表只判「输出里有没有/有没有违规片段」）。"""
             buf = io.StringIO()
-            with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-                code = main(list(argv))
+            old_in = sys.stdin
+            if stdin_text is not None:
+                sys.stdin = io.StringIO(str(stdin_text))
+            try:
+                with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+                    code = main(list(argv))
+            finally:
+                sys.stdin = old_in
             return code, buf.getvalue()
 
         self_issues = term.baseline_argv_issues()

@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v11：基线补齐最后两处空白（会话持久化 / 历史落盘）→ 17 行全绿**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮自查缺口：这两条能力此前**只被单测覆盖**，不在基线行内）：
+  ① **基线行新增两种证据能力**：`stdin`（给交互态证据喂输入）与 `expect_file`（断言某文件**真的落盘**）；配套 **`{TMP}` 占位**展开到系统临时目录下的固定目录 `<临时目录>/nf_baseline`（仓库之外；固定名而非 `mkdtemp`——本环境删除能力受限，新建会持续堆积）。runner 契约相应扩为 `runner(argv, stdin_text=None)`（CLI 侧与 check39 侧同步）。
+  ② **新增两行**：`history-persist`（`--history {TMP}/shell_history` + stdin `nf doctor` → 断言历史文件存在）、`session-persist`（`--session {TMP}/shell_session.json` + stdin `/set width=120` → 断言会话文件存在且输出含 `width = 120`）。基线 **15 → 17 行**，`nf shell --baseline` 与 check39 同步（不涨 check 号，仍 PASS=68）。
+  ③ **本波被抓出的真缺陷（已修）**：为「路径规整」加 `os.path.normpath` 时误伤斜杠命令——Windows 上 `/zone 0` 被规整成 `\zone 0`，脚本面与菜单↔族互标两行当场判红；改为**只对含 `{TMP}` 的项**做路径规整。
+  ④ 实测（本机）：`nf shell --baseline` → **通过 17/17**（含两行落盘证据、两条安全行「该被拒」、全命令可调用行）；`test_terminal` **109 例**（新增 stdin/expect_file 正负例）；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39）；conformance 27/27；receipts 51 件。
+
 - **终端 v10：全命令可调用自证（「最全功能」从查得到升级为跑得通）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮结论「覆盖全部 64 命令目前只是**索引层**断言，不是**可执行层**证据」）：
   ① **活体档逐条自证**：`nf shell --verify --deep` 新增第 ② 项——**逐条**跑 `nf <cmd> --help`（当前 **64** 条，只读、约 11 秒）并核对退出码；任一条不可调用即报「全命令可调用性失败」并列出前几个失败项。人读输出新增一行：`全命令可调用：64/64（逐条 --help；失败：无）`；机器面 stats 增 `help_sweep_total` / `help_sweep_failed`。
   ② **基线行升级（不增行数）**：`live-selfcheck` 行改为**同一行承载两条断言**（`expect` 支持多条、须全部命中）——「活体」+「全命令可调用：」，于是 15 行基线不变而覆盖面变硬；check39 逐行跑同一份表，**无需改动 check39 本体**（这正是 v8 建基线机制的收益）。

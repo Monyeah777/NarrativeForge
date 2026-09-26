@@ -20,6 +20,7 @@
 """
 from __future__ import annotations
 
+import tempfile
 import io
 import json
 import os
@@ -839,6 +840,22 @@ def render_map(filt: str = "", width=None, color: bool = False) -> str:
 #
 # 行只许用**仓库内真实存在**的入口（argv[0] 必须是 shell），且必须**只读**（不许带写盘旗标）。
 
+#: 基线里的受控临时路径占位：展开为系统临时目录下的固定目录（**仓库之外**，不污染工作区）。
+#: 定义必须早于 TERMINAL_BASELINE——行里直接引用它（模块级求值）。
+BASELINE_TMP = "{TMP}"
+
+
+def baseline_tmp_dir() -> str:
+    """基线探针目录：`<系统临时目录>/nf_baseline`（固定名 → 多次运行不累积垃圾）。
+
+    为什么不是 `mkdtemp`：本环境删除能力受限（策略层拦 `Remove-Item`），每次新建目录会
+    持续堆积；固定目录 + 覆盖写既干净又确定性。**始终在仓库之外**——证据行依旧不碰仓库。
+    """
+    path = os.path.join(tempfile.gettempdir(), "nf_baseline")
+    os.makedirs(path, exist_ok=True)
+    return path
+
+
 TERMINAL_BASELINE = (
     {"id": "discover-commands", "name": "命令面可达（列出全部命令）",
      "argv": ("shell", "--commands", "--no-banner"), "expect": "nf 命令面"},
@@ -867,6 +884,15 @@ TERMINAL_BASELINE = (
      "argv": ("shell", "--exec", "/zone 0", "--no-banner"), "expect": "环境自检"},
     {"id": "history-replay", "name": "历史重放（!! / !n / !前缀）",
      "argv": ("shell", "--exec", "nf doctor; !!", "--no-banner"), "expect": "重放"},
+    {"id": "history-persist", "name": "历史落盘（交互态写文件）",
+     "argv": ("shell", "--history", BASELINE_TMP + "/shell_history", "--no-banner"),
+     "stdin": "nf doctor\nquit\n",
+     "expect": "体检", "expect_file": BASELINE_TMP + "/shell_history"},
+    {"id": "session-persist", "name": "会话状态持久化（--session）",
+     "argv": ("shell", "--session", BASELINE_TMP + "/shell_session.json",
+              "--no-history", "--no-banner"),
+     "stdin": "/set width=120\nquit\n",
+     "expect": "width = 120", "expect_file": BASELINE_TMP + "/shell_session.json"},
     {"id": "menu-family-crosslink", "name": "菜单↔能力族互标",
      "argv": ("shell", "--exec", "/menu", "--no-banner"), "expect": "未在此列的族"},
     {"id": "form-dry-run", "name": "写盘表单（dry-run 只组装不执行）",
@@ -908,6 +934,10 @@ def baseline_argv_issues() -> list:
         for tok in argv:
             if tok in BASELINE_FORBIDDEN_FLAGS:
                 issues.append("基线行 %s 带写盘旗标 %s（证据必须只读）" % (rid, tok))
+        for tok in argv:
+            if BASELINE_TMP in tok and not os.path.isabs(
+                    tok.replace(BASELINE_TMP, baseline_tmp_dir())):
+                issues.append("基线行 %s 的临时占位展开后不是绝对路径：%s" % (rid, tok))
         if int(row.get("expect_exit", 0)) not in (0, 2):
             issues.append("基线行 %s 的 expect_exit 只许 0 或 2（0 = 该成功，2 = 该被拒）" % rid)
         if int(row.get("expect_exit", 0)) != 0 and not row.get("expect"):
@@ -924,20 +954,36 @@ def _expect_hits(text: str, expect) -> bool:
 
 
 def run_baseline(runner, rows=None) -> tuple:
-    """逐行跑证据命令 → (results, stats)。`runner(argv) -> (exit_code, 合并输出)`。"""
+    """逐行跑证据命令 → (results, stats)。
+
+    `runner(argv, stdin_text=None) -> (exit_code, 合并输出)`；行内 `{TMP}` 展开为受控临时目录，
+    `stdin` 供交互态证据（会话/历史）喂输入，`expect_file` 断言某文件**真的落盘**。
+    """
     results = []
     for row in (rows or TERMINAL_BASELINE):
-        code, out = runner([str(a) for a in row.get("argv") or []])
+        # 注意：**只**对含 `{TMP}` 的项做 normpath——否则 Windows 上会把 `/zone 0` 规整成
+        # `\zone 0`，直接打坏斜杠命令（实测踩到：脚本面与菜单行双双判红）。
+        argv = []
+        for a in row.get("argv") or []:
+            item = str(a)
+            argv.append(os.path.normpath(item.replace(BASELINE_TMP, baseline_tmp_dir()))
+                        if BASELINE_TMP in item else item)
+        code, out = runner(argv, row.get("stdin"))
         text = str(out or "")
+        _exp_raw = str(row.get("expect_file") or "")
+        exp_file = (os.path.normpath(_exp_raw.replace(BASELINE_TMP, baseline_tmp_dir()))
+                    if _exp_raw else "")
         ok = (code == int(row.get("expect_exit", 0))
               and _expect_hits(text, row.get("expect"))
-              and (not row.get("forbid") or row["forbid"] not in text))
+              and (not row.get("forbid") or row["forbid"] not in text)
+              and (not exp_file or os.path.isfile(exp_file)))
         results.append({"id": row["id"], "name": row["name"],
-                        "argv": [str(a) for a in row.get("argv") or []],
+                        "argv": argv,
                         "exit": code, "expect_exit": int(row.get("expect_exit", 0)),
                         "ok": bool(ok),
                         "expect": row.get("expect") or "",
-                        "forbid": row.get("forbid") or ""})
+                        "forbid": row.get("forbid") or "",
+                        "expect_file": exp_file})
     stats = {"rows": len(results),
              "passed": sum(1 for r in results if r["ok"])}
     return results, stats

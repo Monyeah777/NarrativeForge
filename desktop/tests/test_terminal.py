@@ -992,7 +992,7 @@ class BaselineTest(unittest.TestCase):
                  "forbid": "\x1b"})
         seen = []
 
-        def _runner(argv):
+        def _runner(argv, stdin_text=None):
             seen.append(list(argv))
             if argv[-1] == "--x":
                 return 0, "好"
@@ -1008,12 +1008,42 @@ class BaselineTest(unittest.TestCase):
     def test_run_baseline_detects_failures(self):
         rows = ({"id": "wrong-exit", "name": "A", "argv": ("shell",),
                  "expect": "x", "expect_exit": 0},)
-        results, stats = term.run_baseline(lambda argv: (2, "x"), rows=rows)
+        results, stats = term.run_baseline(
+            lambda argv, stdin_text=None: (2, "x"), rows=rows)
         self.assertEqual(stats["passed"], 0)
         self.assertFalse(results[0]["ok"])
 
+    def test_run_baseline_supports_stdin_and_expect_file(self):
+        """交互态证据：stdin 喂输入 + 断言落盘文件真的存在（会话/历史两行就靠它）。"""
+        tmp_dir = term.baseline_tmp_dir()
+        target = os.path.join(tmp_dir, "unit_probe.txt")
+        rows = ({"id": "file-probe", "name": "落盘探针",
+                 "argv": ("shell", term.BASELINE_TMP + "/unit_probe.txt"),
+                 "stdin": "喂给终端的输入\n", "expect": "收到了",
+                 "expect_file": term.BASELINE_TMP + "/unit_probe.txt"},)
+
+        def _runner(argv, stdin_text=None):
+            self.assertEqual(argv[1], target, "`{TMP}` 须展开为受控临时目录下的绝对路径")
+            self.assertEqual(stdin_text, "喂给终端的输入\n")
+            with open(target, "w", encoding="utf-8") as fh:
+                fh.write("x\n")
+            return 0, "收到了"
+
+        results, stats = term.run_baseline(_runner, rows=rows)
+        self.assertEqual(stats["passed"], 1, results)
+        self.assertEqual(results[0]["expect_file"], target)
+        self.assertTrue(os.path.isfile(target))
+        self.assertTrue(term.baseline_tmp_dir().startswith(str(Path(tempfile.gettempdir()))))
+
+    def test_run_baseline_fails_when_expected_file_missing(self):
+        rows = ({"id": "no-file", "name": "缺件", "argv": ("shell",),
+                 "expect": "ok", "expect_file": term.BASELINE_TMP + "/never_written.bin"},)
+        results, stats = term.run_baseline(lambda argv, stdin_text=None: (0, "ok"),
+                                           rows=rows)
+        self.assertEqual(stats["passed"], 0, "声明了 expect_file 就必须真有该文件")
+
     def test_render_baseline_marks_and_no_ansi(self):
-        results, stats = term.run_baseline(lambda argv: (0, "好"),
+        results, stats = term.run_baseline(lambda argv, stdin_text=None: (0, "好"),
                                             rows=({"id": "a", "name": "甲",
                                                    "argv": ("shell",), "expect": "好"},))
         text = term.render_baseline(results, stats)
