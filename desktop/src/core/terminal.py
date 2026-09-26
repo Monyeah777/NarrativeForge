@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import io
 import json
+import os
 import shlex
 import sys
 from collections import namedtuple
@@ -127,7 +128,8 @@ FAMILIES = (
 SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
                "zone", "z", "区", "doctor", "自检", "version", "ver", "版本",
                "find", "search", "找", "查", "commands", "cmd", "cmds", "命令",
-               "map", "families", "族", "地图")
+               "map", "families", "族", "地图",
+               "history", "hist", "历史", "complete", "补全")
 
 
 def _slash_intent(body: str, raw: str):
@@ -152,6 +154,10 @@ def _slash_intent(body: str, raw: str):
         return Intent("commands", tail.strip(), raw)
     if head in ("map", "families", "族", "地图"):
         return Intent("map", tail.strip(), raw)
+    if head in ("history", "hist", "历史"):
+        return Intent("history", tail.strip(), raw)
+    if head in ("complete", "补全"):
+        return Intent("complete", tail.strip(), raw)
     return None
 
 
@@ -494,8 +500,154 @@ def self_check(index, commands, root_flags=(), examples=None) -> tuple:
         issues.append("菜单键不连续：%s（修复指引：从 0 起连续编号）" % keys)
 
     stats = {"commands": len(commands), "families": len(FAMILIES),
-             "index_entries": len(index_paths), "examples": ex_total}
+            "index_entries": len(index_paths), "examples": ex_total}
     return issues, stats
+
+
+# ---------------------------------------------------------------- 补全与历史
+# 顶尖 CLI 终端的体感差距主要在这两件：**打一半能补**、**翻得回上一轮**。
+# 约束：core 零第三方依赖——`readline` 是 stdlib 但 Windows 无该模块，故补全判据本身
+# 做成**纯函数**（任何平台都能用：`/complete <前缀>` 与行尾 Tab 都吃），readline 只在
+# 可用时接管（POSIX），不可用则退化为候选列表。
+
+#: 斜杠命令的展示词表（补全用）：只列拉丁规范词，中文别名仍可直接输入
+SLASH_HELP = (
+    ("menu", "能力菜单"), ("map", "能力地图（8 族）"), ("find", "检索命令面"),
+    ("commands", "列出全部命令"), ("zone", "看某能力区示例"), ("help", "CLI 帮助面"),
+    ("history", "看历史（可给条数）"), ("complete", "补全（可给前缀）"),
+    ("doctor", "环境自检"), ("version", "版本"), ("quit", "退出"),
+)
+
+
+def default_history_path() -> str:
+    """历史文件默认落点：`<NF_HOME>/shell_history`（与 Store 同一 home 约定，不落仓库）。"""
+    try:
+        from core import storage            # 单源：NF_HOME 约定只在 storage 里定义一次
+        home = storage.default_home()
+    except Exception:                       # 尽力而为：storage 不可用时退回同样口径的字面约定
+        home = Path(os.environ.get("NARRATIVE_FORGE_HOME")
+                    or (Path.home() / ".NarrativeForge"))
+    return str(home / "shell_history")
+
+
+def load_history(path: str, limit: int = 200) -> list:
+    """读历史（尾部 limit 条，跳过空行）；文件不存在返回空表（不报错）。"""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            rows = [ln.rstrip("\n") for ln in fh if ln.strip()]
+    except OSError:
+        return []
+    return rows[-int(limit):] if limit else rows
+
+
+def append_history(path: str, line: str) -> bool:
+    """追加一条历史（跳过空行与「与上一条重复」）；返回是否写入。父目录不存在则创建。"""
+    text = str(line).strip()
+    if not text:
+        return False
+    try:
+        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+        prev = load_history(path, limit=1)
+        if prev and prev[-1] == text:
+            return False
+        with open(path, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(text + "\n")
+        return True
+    except OSError:
+        return False
+
+
+def _restore_msys_partial(text: str) -> str:
+    """MSYS/Git-Bash 兼容（**补全面**）：以 `/` 开头的参数会被通行层改写成 `C:/…/ma`。
+
+    与 `parse()` 的还原同判据，但**允许前缀**——补全本来就是打一半：末段若是任一斜杠词的
+    前缀就还原成 `/<段>`。只影响补全候选，不改变任何执行语义。
+    """
+    if "/" not in text and "\\" not in text:
+        return text
+    head, _, tail = text.partition(" ")
+    seg = head.replace("\\", "/").rsplit("/", 1)[-1].lower()
+    if seg and any(str(w).startswith(seg) for w in SLASH_WORDS):
+        return "/" + seg + ((" " + tail) if tail else "")
+    return text
+
+
+def complete(partial: str, index, limit: int = 20) -> list:
+    """补全候选（纯函数，确定性）→ [{"text": …, "note": …}]。
+
+    支持四类前缀：`/`（斜杠命令）、`/map <族>`、`/zone <键>`、`nf <命令>[ <子命令>][ -]`。
+    命令/子命令/旗标都从 CLI 的 argparse 索引派生——补全面与命令面永远同源。
+    """
+    text = str(partial or "")
+    stripped = _restore_msys_partial(text.strip())
+    entries = list(index or [])
+    out = []
+
+    # ① 斜杠命令族
+    if stripped.startswith("/"):
+        body = stripped[1:]
+        head, _, tail = body.partition(" ")
+        if head in ("map", "族", "地图") and " " in body:
+            for fam in FAMILIES:
+                key = str(fam["id"])
+                if tail and not (key.startswith(tail) or tail in str(fam["name"])):
+                    continue
+                out.append({"text": "/map %s" % key, "note": str(fam["name"])})
+            return out[:limit]
+        if head in ("zone", "z", "区") and " " in body:
+            for z in ZONES:
+                if tail and not str(z["key"]).startswith(tail):
+                    continue
+                out.append({"text": "/zone %s" % z["key"], "note": str(z["title"])})
+            return out[:limit]
+        for word, note in SLASH_HELP:
+            if word.startswith(head):
+                out.append({"text": "/" + word, "note": note})
+        return out[:limit]
+
+    # ② nf 命令面
+    has_nf = stripped == "nf" or stripped.startswith("nf ")
+    body = stripped[3:].strip() if stripped.startswith("nf ") else stripped
+    tokens = body.split()
+    base = " ".join(tokens[:-1]) if len(tokens) > 1 else ""
+    prefix = tokens[-1] if tokens else ""
+    if prefix.startswith("-"):
+        resolved = base
+        for e in entries:
+            if str(e.get("path")) == resolved:
+                for flag in e.get("flags") or []:
+                    if str(flag).startswith(prefix):
+                        out.append({"text": ("nf " if has_nf else "") + resolved + " " + flag,
+                                    "note": "旗标"})
+                break
+        return out[:limit]
+    for e in entries:
+        path = str(e.get("path"))
+        if base:
+            if not path.startswith(base + " "):
+                continue
+            rest = path[len(base) + 1:]
+            if " " in rest:
+                continue
+        else:
+            if " " in path:
+                continue
+        if prefix and not path.startswith(prefix):
+            continue
+        out.append({"text": ("nf " + path) if has_nf else path,
+                    "note": str(e.get("summary") or "")})
+    return out[:limit]
+
+
+def render_completions(partial: str, cands) -> str:
+    """渲染补全候选（人读）：一行一条，带用途；未命中给下一步指引。"""
+    if not cands:
+        return ("无补全候选：「%s」（用 /commands 列全部命令、/map 看能力族，"
+                "或 /find <词> 检索）" % partial)
+    lines = ["== 补全：「%s」（%d 条）==" % (partial, len(cands))]
+    for c in cands:
+        lines.append("  %-34s %s" % (c.get("text"), c.get("note") or ""))
+    return "\n".join(lines)
 
 
 class Session:
@@ -505,7 +657,8 @@ class Session:
     「该不该跑 / 跑完怎么记」——保证 core 层不依赖 scripts/nf.py。
     """
 
-    def __init__(self, runner, assume_yes: bool = False, index=None):
+    def __init__(self, runner, assume_yes: bool = False, index=None,
+                 history_path=None):
         if not callable(runner):
             raise ValueError("Session 需要可调用的 runner(argv) -> int；"
                              "请传入 scripts/nf.py 的 main（终端不自己执行命令）")
@@ -518,6 +671,8 @@ class Session:
         # 缺省 None = 不启用预检（core 单测可完全离线，不依赖 CLI 面）。
         self.index = list(index or [])
         self._tops = {str(e.get("path")).split(" ")[0] for e in self.index}
+        # 历史文件（交互态用；None = 不记录）。`--exec` / `--file` 一律不写，保持确定性。
+        self.history_path = str(history_path) if history_path else None
 
     def invoke(self, argv: list) -> tuple:
         """执行一条命令 → (exit_code, stdout, stderr)；捕获输出以便落档与比对。
@@ -572,6 +727,27 @@ class Session:
             rec["note"] = render_commands(self.index, intent.payload)
         elif intent.kind == "map":
             rec["note"] = render_map(intent.payload)
+        elif intent.kind == "complete":
+            cands = complete(intent.payload, self.index)
+            rec["note"] = render_completions(intent.payload, cands)
+            rec["exit"] = 0 if cands else 2
+        elif intent.kind == "history":
+            rows = load_history(self.history_path, limit=200) if self.history_path else []
+            n = 0
+            if str(intent.payload).strip().isdigit():
+                n = int(str(intent.payload).strip())
+            shown = rows[-n:] if n else rows
+            head = ("== 历史（%d 条%s）=="
+                    % (len(rows), "（最近 %d 条）" % n if n else ""))
+            if not self.history_path:
+                rec["note"] = ("未启用历史记录（交互态加 --history <文件> 或去掉 --no-history；"
+                               "`--exec`/`--file` 不写历史以保持确定性）")
+                rec["exit"] = 2
+            elif not shown:
+                rec["note"] = head + "\n  （暂无记录）"
+            else:
+                rec["note"] = "\n".join([head] + ["  %3d  %s" % (i + 1, ln)
+                                                  for i, ln in enumerate(shown)])
         elif intent.kind == "unknown":
             rec.update(exit=2, note=("未识别：%s（可用：数字 0-7 看菜单 · /menu · "
                                      "/map · /find <词> · /commands · /help · quit · "
@@ -608,15 +784,18 @@ class Session:
 
 
 def run_session(runner, stdin, stdout, assume_yes: bool = False,
-                show_banner: bool = True, baseline: str = "", index=None) -> int:
+                show_banner: bool = True, baseline: str = "", index=None,
+                history_path=None) -> int:
     r"""交互会话主循环：读一行 → 分派 → 打印 → 直到 quit / EOF。
 
     写入类命令在交互态**就地追问**（读到 yes 才放行本次）；非交互态仍须 `--yes`。
     返回 0（正常结束）或非 0（会话中有命令失败）——供 CI/脚本判红。
 
-    健壮性（对标顶尖 CLI 终端）：Ctrl-C 只取消当前行、不杀会话；行尾 `\` 续行（多行命令）。
+    健壮性（对标顶尖 CLI 终端）：Ctrl-C 只取消当前行、不杀会话；行尾 `\` 续行（多行命令）；
+    行尾 Tab = 补全候选；`history_path` 启用跨会话历史（`--exec`/`--file` 不写，保确定性）。
     """
-    session = Session(runner, assume_yes=assume_yes, index=index)
+    session = Session(runner, assume_yes=assume_yes, index=index,
+                      history_path=history_path)
     if show_banner:
         stdout.write(banner(baseline) + "\n")
         stdout.flush()
@@ -633,6 +812,13 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
         if line == "":                      # EOF（管道/重定向结束）
             stdout.write("\n")
             break
+        # 行尾 Tab = 补全（零依赖的「Tab 体感」：任何平台都能用；readline 可用时另有接管）
+        if line.rstrip("\n").endswith("\t"):
+            partial = _strip_comment(line).rstrip("\n").rstrip("\t")
+            stdout.write(render_completions(partial, complete(partial, session.index))
+                         + "\n")
+            stdout.flush()
+            continue
         # 行尾 `\` 续行：长命令/多行输入（续行提示符为 `… `）
         while line.rstrip("\n").endswith("\\"):
             line = line.rstrip("\n")[:-1] + " "
@@ -666,7 +852,49 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
             stdout.write(text + "\n")
         stdout.flush()
         worst = max(worst, rec["exit"])
+        # 只记「真执行过的东西」：空行不入，quit/exit 也不入（否则每条会话都多一行噪音）
+        if session.history_path and rec["kind"] not in ("empty", "quit"):
+            append_history(session.history_path, rec["line"])
     return worst
+
+
+def install_readline(completer_text, history_path=None):
+    """可用时接上 readline（POSIX）：Tab 补全 + 历史文件；不可用返回 False（Windows 常态）。
+
+    这是**可选增强**而非依赖：补全判据本身在 `complete()` 里，任何平台都能用。
+    """
+    try:
+        import readline  # noqa: F401  (stdlib；Windows 无该模块)
+    except ImportError:
+        return False
+    try:
+        if history_path:
+            try:
+                readline.read_history_file(history_path)
+            except OSError:
+                pass
+            readline.set_history_length(200)
+
+        def _completer(text, state):
+            options = completer_text(text) or []
+            if state < len(options):
+                return options[state]
+            return None
+
+        readline.set_completer(_completer)
+        readline.parse_and_bind("tab: complete")
+        return True
+    except Exception:      # 尽力而为：readline 行为异常时不拖垮终端（缺口由补全命令另报）
+        return False
+
+
+def readline_available() -> bool:
+    """只探测 readline 是否可用（不产生副作用——`--verify` 用它报事实，不改当前进程行为）。"""
+    try:
+        import readline  # noqa: F401
+        return True
+    except ImportError:
+        return False
 
 
 def _statements(lines) -> list:

@@ -2243,7 +2243,7 @@ PYEOF
 }
 
 check39(){
-  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达）=='
+  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全面在场）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check39.log 2>&1
@@ -2328,7 +2328,9 @@ with redirect_stdout(buf):
 if s_code != 0 or 'doctor' not in buf.getvalue():
     problems.append('命令检索面失效：nf shell --search doctor（修复指引：核对 render_search）')
 for _argv, _need in ((['shell', '--map', '--no-banner'], '能力地图'),
-                     (['shell', '--verify', '--no-banner'], '通过')):
+                     (['shell', '--verify', '--no-banner'], '通过'),
+                     (['shell', '--complete', 'nf layers --', '--no-banner'],
+                      'nf layers --write')):
     buf = io.StringIO()
     with redirect_stdout(buf):
         _code = nf.main(_argv)
@@ -2374,7 +2376,7 @@ print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
 sys.exit(1 if problems else 0)
 PYEOF
     then
-      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检运行时面）'
+      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全运行时面）'
     else
       no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
     fi

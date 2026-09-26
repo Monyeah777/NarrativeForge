@@ -914,6 +914,12 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="打印能力地图（把全部顶层命令按能力族策展呈现），可按族名/片段过滤")
     sh.add_argument("--verify", action="store_true",
                     help="终端自检（索引覆盖 / 能力族分区 / 菜单示例可达），退出码即结论")
+    sh.add_argument("--complete", dest="complete_prefix", default="", metavar="前缀",
+                    help="补全候选（非交互）：给命令/子命令/旗标/斜杠命令/能力族前缀，未命中退出 2")
+    sh.add_argument("--history", default="", metavar="文件",
+                    help="跨会话历史文件（缺省 <NF_HOME>/shell_history；仅交互态写入）")
+    sh.add_argument("--no-history", action="store_true",
+                    help="不写历史（`--exec`/`--file` 本来就一律不写，以保证确定性）")
     ly = sub.add_parser(
         "layers",
         help="抽象阶梯（两轴 + 纵切）：四阶真源/接口面 + 资产五子级 + 入口面 + 验证纵切",
@@ -4154,7 +4160,16 @@ def _cmd_shell(args) -> int:
         print("  命令 %d · 能力族 %d · 索引条目 %d · 菜单示例 %d → %s"
               % (stats["commands"], stats["families"], stats["index_entries"],
                  stats["examples"], "通过" if not issues else "FAIL %d" % len(issues)))
+        print("  补全：内建候选列表（/complete、行尾 Tab）+ %s"
+              % ("readline 已接管" if term.readline_available()
+                 else "readline 不可用（本平台无该模块，走零依赖回退）"))
+        print("  历史：%s"
+              % (args.history or term.default_history_path()))
         return 0 if not issues else 1
+    if args.complete_prefix:
+        cands = term.complete(args.complete_prefix, index)
+        print(term.render_completions(args.complete_prefix, cands))
+        return 0 if cands else 2
     if args.script_file:
         try:
             code, text, _records = term.run_file(args.script_file, runner,
@@ -4172,10 +4187,18 @@ def _cmd_shell(args) -> int:
                                                as_json=args.json, index=index)
         print(text)
         return code
+    history_path = None
+    if not args.no_history:
+        history_path = args.history or term.default_history_path()
+    if term.install_readline(lambda text: [c["text"] for c in term.complete(text, index)],
+                             history_path):
+        pass                                  # readline 接管 Tab 与历史（POSIX）
+    print_banner = not args.no_banner
     return term.run_session(runner, sys.stdin, sys.stdout,
                             assume_yes=args.yes,
-                            show_banner=not args.no_banner,
-                            baseline=_shell_baseline(), index=index)
+                            show_banner=print_banner,
+                            baseline=_shell_baseline(), index=index,
+                            history_path=history_path)
 
 
 def _collect_cli_tree():

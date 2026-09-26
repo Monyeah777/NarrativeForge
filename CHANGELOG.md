@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v4：补全与历史（零依赖口径）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮结论「补全与历史是顶尖 CLI 最直观的体感差距」）：
+  ① **补全判据（纯函数）**：`terminal.complete()` 覆盖四类前缀——命令 / 二级子命令 / **旗标**（`nf layers --` → `--json/--verify/--write/--help`）/ 斜杠命令 / 能力族（`/map v`），候选一律由 CLI 的 argparse 索引派生（补全面与命令面同源）。三种入口都能吃：`/complete <前缀>`、**行尾 `Tab`**、`nf shell --complete <前缀>`（未命中退出 2，可进脚本）。
+  ② **readline 可选接管**：POSIX 上 `readline` 可用则自动接 Tab 与历史（`install_readline`），Windows 无该模块时走**候选列表回退**；`nf shell --verify` 如实报告当前走哪条路——零第三方依赖红线不破（`readline` 属 stdlib，缺失即降级，判据不依赖它）。
+  ③ **跨会话历史**：仅交互态写 `<NF_HOME>/shell_history`（复用 `core.storage.default_home()` 的同一条 NF_HOME 约定，不落仓库），`--history <文件>` 换路径、`--no-history` 关闭；`quit` 与 Tab 行不入历史；`--exec`/`--file` **一律不写**（单测直接断言 `run_lines` 无历史钩子——脚本面确定性是硬契约）。
+  ④ **门禁接入**：check39 运行时段断言加 `--complete nf lay → nf layers`；并入既有 check39（不涨号），基线仍 **PASS=68**。
+  ⑤ 实测（本机）：真实会话里 `/map start` → 族表、`nf lay<Tab>` → 补全候选、`/history` → 逐条历史、`ninja` 拼错 → 建议（上一波能力）；`nf shell --complete "nf layers --"` → 4 个旗标；`test_terminal` **65 例**全绿（新增补全四类、Tab 行、历史去重/降噪、`--exec` 不写历史、NF_HOME 口径）；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39）。
+
 - **终端 v3：能力地图（策展完备性）+ 终端自检（单源判据）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮实测「52/64 命令只可搜索、未被策展呈现」）：
   ① **能力地图**：`nf shell --map [族或片段]` / 会话内 `/map`——把全部 64 个顶层命令**恰好归入 8 个能力族**（`start` 上手与自检 / `forge` 装配与生产 / `shelf` 资产与货架 / `verify` 质检与验证 / `library` 图书馆与知识 / `govern` 治理与决策 / `integrate` 服务与集成 / `meta` 命令面与终端），每族一句话定位 + 命令清单。菜单（0-7）仍是新手路径，地图是完整分面，两者分工不重叠。
   ② **策展完备性可机检**：`FAMILIES` 是策展真源，判据要求「每个命令恰好一族、不缺 / 不重 / 不虚」——任一命令未登记即判红（「最全功能」= 每个命令都有归属，不再只是可搜索）。

@@ -397,6 +397,91 @@ class ShellScriptTest(unittest.TestCase):
         self.assertEqual(intent.payload, ["assemble", "含 # 号的需求"])
 
 
+class CompletionHistoryTest(unittest.TestCase):
+    """补全与历史（顶尖 CLI 的体感面）：补全是纯判据，历史只在交互态写。"""
+
+    @staticmethod
+    def _index():
+        return nf._shell_command_index()
+
+    def test_complete_command_prefix(self):
+        cands = term.complete("nf lay", self._index())
+        self.assertEqual([c["text"] for c in cands], ["nf layers"])
+
+    def test_complete_flags_for_command(self):
+        texts = [c["text"] for c in term.complete("nf layers --", self._index())]
+        self.assertIn("nf layers --write", texts)
+        self.assertIn("nf layers --verify", texts)
+
+    def test_complete_slash_families_and_zones(self):
+        self.assertIn("/map", [c["text"] for c in term.complete("/ma", [])])
+        self.assertEqual([c["text"] for c in term.complete("/map start", [])],
+                         ["/map start"])
+        self.assertEqual([c["text"] for c in term.complete("/zone 3", [])], ["/zone 3"])
+
+    def test_complete_no_candidates(self):
+        self.assertEqual(term.complete("nf zzzz", self._index()), [])
+        self.assertIn("无补全候选", term.render_completions("nf zzzz", []))
+
+    def test_complete_restores_msys_mangled_slash_prefix(self):
+        """Git Bash 把 `/ma` 改写成 `C:/…/ma`；补全须仍给候选（前缀容错，与 parse 同判据）。"""
+        texts = [c["text"] for c in term.complete("C:/comfyui/Git/ma", [])]
+        self.assertIn("/map", texts)
+        texts = [c["text"] for c in term.complete("C:/comfyui/Git/map verify", [])]
+        self.assertEqual(texts, ["/map verify"])
+
+    def test_tab_line_lists_candidates(self):
+        stdin = io.StringIO("nf lay\t\nquit\n")
+        stdout = io.StringIO()
+        code = term.run_session(lambda argv: 0, stdin, stdout, show_banner=False,
+                                index=self._index())
+        self.assertEqual(code, 0)
+        out = stdout.getvalue()
+        self.assertIn("补全：「nf lay」", out)
+        self.assertIn("nf layers", out)
+
+    def test_history_append_dedupes_and_skips_blank(self):
+        fd, path = tempfile.mkstemp(suffix=".txt")
+        os.close(fd)
+        try:
+            self.assertTrue(term.append_history(path, "nf doctor"))
+            self.assertFalse(term.append_history(path, "nf doctor"))
+            self.assertFalse(term.append_history(path, "   "))
+            self.assertTrue(term.append_history(path, "nf layers"))
+            self.assertEqual(term.load_history(path), ["nf doctor", "nf layers"])
+            self.assertEqual(term.load_history(path, limit=1), ["nf layers"])
+        finally:
+            os.remove(path)
+
+    def test_history_written_only_in_interactive_mode(self):
+        import inspect
+        self.assertNotIn("history_path", inspect.signature(term.run_lines).parameters,
+                         "脚本面（--exec/--file）不得有历史钩子：确定性是硬契约")
+        fd, path = tempfile.mkstemp(suffix=".txt")
+        os.close(fd)
+        try:
+            term.run_lines(["nf doctor"], lambda argv: 0)
+            self.assertEqual(term.load_history(path), [])
+            term.run_session(lambda argv: 0, io.StringIO("nf doctor\nquit\n"),
+                             io.StringIO(), show_banner=False, history_path=path)
+            self.assertEqual(term.load_history(path), ["nf doctor"])
+        finally:
+            os.remove(path)
+
+    def test_default_history_path_honours_nf_home(self):
+        old = os.environ.get("NARRATIVE_FORGE_HOME")
+        probe = str(ROOT / "tmp-home-probe")
+        os.environ["NARRATIVE_FORGE_HOME"] = probe
+        try:
+            self.assertEqual(term.default_history_path(),
+                             os.path.join(probe, "shell_history"))
+        finally:
+            if old is None:
+                os.environ.pop("NARRATIVE_FORGE_HOME", None)
+            else:
+                os.environ["NARRATIVE_FORGE_HOME"] = old
+
+
 class ResilienceTest(unittest.TestCase):
     """健壮性：Ctrl-C 不杀会话、行尾反斜杠续行（对标顶尖 CLI 终端）。"""
 
@@ -450,6 +535,35 @@ class CliIntegrationTest(unittest.TestCase):
         code, out = _run(["shell", "--exec", "/map start", "--no-banner"])
         self.assertEqual(code, 0)
         self.assertIn("[start]", out)
+
+    def test_cli_complete_face(self):
+        code, out = _run(["shell", "--complete", "nf lay", "--no-banner"])
+        self.assertEqual(code, 0)
+        self.assertIn("nf layers", out)
+        code, _out = _run(["shell", "--complete", "nf zzzz", "--no-banner"])
+        self.assertEqual(code, 2)
+
+    def test_cli_interactive_session_writes_history_and_completes(self):
+        """走 CLI 的交互态接线（含 history 默认路径解析 + 行尾 Tab）——此前一轮接线缺口
+        （terminal 忘了 import os）正是靠这类端到端测试兜住。"""
+        fd, hist = tempfile.mkstemp(suffix=".txt")
+        os.close(fd)
+        old_in, old_out = sys.stdin, sys.stdout
+        sys.stdin = io.StringIO("nf lay\t\nnf layers --verify\nquit\n")
+        sys.stdout = io.StringIO()
+        try:
+            code = nf.main(["shell", "--history", hist, "--no-banner"])
+            out = sys.stdout.getvalue()
+        finally:
+            sys.stdin, sys.stdout = old_in, old_out
+        try:
+            self.assertEqual(code, 0, out)
+            self.assertIn("补全：「nf lay」", out)
+            self.assertIn("nf layers", out)
+            # Tab 行与 quit 不入历史：只记真执行过的命令
+            self.assertEqual(term.load_history(hist), ["nf layers --verify"])
+        finally:
+            os.remove(hist)
 
     def test_exec_menu_is_deterministic(self):
         code1, out1 = _run(["shell", "--exec", "/menu", "--no-banner"])
@@ -508,11 +622,14 @@ class ZeroDependencyTest(unittest.TestCase):
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
-                    self.assertIn(alias.name.split(".")[0], sys.stdlib_module_names,
-                                  alias.name)
+                    top = alias.name.split(".")[0]
+                    self.assertTrue(top in sys.stdlib_module_names or top == "core",
+                                    "终端不得依赖第三方：%s" % alias.name)
             elif isinstance(node, ast.ImportFrom) and node.module and node.level == 0:
-                self.assertIn(node.module.split(".")[0], sys.stdlib_module_names,
-                              node.module)
+                top = node.module.split(".")[0]
+                # `core.*` 是同包本地模块（纯度 R5 的 _is_local 同语义），不算第三方
+                self.assertTrue(top in sys.stdlib_module_names or top == "core",
+                                "终端不得依赖第三方：%s" % node.module)
 
 
 if __name__ == "__main__":
