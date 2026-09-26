@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-26",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "终端 v8 顶尖 CLI 基线后重生成一致性报告",
+  "note": "终端 v9 导航一致性与效率面后重生成一致性报告",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

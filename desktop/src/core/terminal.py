@@ -57,30 +57,38 @@ BLOCKED_IN_SHELL = {
 #: 但**只指向既有命令**——新增能力仍须先落 CLI，再登记进本表。
 ZONES = (
     {"key": "0", "id": "doctor", "title": "环境自检",
+     "family": "start",
      "summary": "只读体检：仓库件在场 / 解释器可用 / 基线自描述一致性",
      "examples": ("nf doctor",)},
     {"key": "1", "id": "demo", "title": "一键演示世界",
+     "family": "start",
      "summary": "P04 轻混全链跑一遍（retrieve→compose→gate→export）并产出 CCV3 卡",
      "examples": ("nf demo",)},
     {"key": "2", "id": "assemble", "title": "需求 → 装配计划",
+     "family": "forge",
      "summary": "一句话需求 → 命中预设包或转用户自定义流；--check 验收成品",
      "examples": ("nf assemble \"帮我组装一个西幻生存世界的完整版\"",
                   "nf assemble 西幻生存 --check sample.md")},
     {"key": "3", "id": "run", "title": "全链生产",
+     "family": "forge",
      "summary": "选管线与模块 → 装配 → 质量门 → 导出（--seed 装载官方核心 + 社区包）",
      "examples": ("nf run --pipeline community/校园西幻轻混组合包/pipelines/"
                   "P04_轻混装配流管线.md --modules 通用类:M00,轻混类:M91,"
                   "轻混类:M92,通用类:M80 --seed",)},
     {"key": "4", "id": "validate", "title": "校验与体检",
+     "family": "verify",
      "summary": "正文 lint / 状态前置 / 一致性分级 / 模块引用门禁（端壳时代「校验区」）",
      "examples": ("nf lint sample.md", "nf conformance", "nf module verify")},
     {"key": "5", "id": "market", "title": "货架与资产",
+     "family": "shelf",
      "summary": "市场浏览（--list）/ 单包详情 / 资产货架 / 供应链台账盘点",
      "examples": ("nf market --list", "nf asset ls", "nf asset inventory")},
     {"key": "6", "id": "pipeline", "title": "管线与模块",
+     "family": "shelf",
      "summary": "管线派生（new）/ 抽象执行（dryrun）/ 模块状态位与边界签名",
      "examples": ("nf pipeline new --id P07 --name 演示领域管线", "nf module ls")},
     {"key": "7", "id": "help", "title": "帮助与命令面",
+     "family": "meta",
      "summary": "全命令总览与任意子命令帮助（终端内输入 /help 同效）",
      "examples": ("nf --help", "nf help assemble")},
 )
@@ -132,6 +140,7 @@ SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
                "history", "hist", "历史", "complete", "补全",
                "set", "settings", "设置",
                "form", "forms", "表单", "cancel", "取消")
+SLASH_WORDS = SLASH_WORDS + ("replay", "重放")
 
 
 def _slash_intent(body: str, raw: str):
@@ -166,6 +175,9 @@ def _slash_intent(body: str, raw: str):
         return Intent("form", tail.strip(), raw)
     if head in ("cancel", "取消"):
         return Intent("cancel", tail.strip(), raw)
+    if head in ("replay", "重放"):
+        # `/replay`（无参数）= 列清单；`/replay n` / `/replay 前缀` = 重放
+        return Intent("replay-list" if not tail.strip() else "replay", tail.strip(), raw)
     return None
 
 
@@ -238,7 +250,11 @@ def style(text, kind: str, on: bool = False) -> str:
 
 
 def resolve_color(mode: str = "auto", stream=None) -> bool:
-    """颜色模式 → 布尔：always / never / auto（auto = 真 TTY 且未设 NO_COLOR）。"""
+    """颜色模式 → 布尔：always / never / auto（auto = 真 TTY 且未设 NO_COLOR）。
+
+    额外尊重 `CLICOLOR_FORCE`（非 "0" 即强制开启 auto 档）——与 `NO_COLOR` 同为业界惯例；
+    两者冲突时 `NO_COLOR` 优先（关比开安全）。
+    """
     m = str(mode or "auto").strip().lower()
     if m == "always":
         return True
@@ -246,10 +262,28 @@ def resolve_color(mode: str = "auto", stream=None) -> bool:
         return False
     if os.environ.get("NO_COLOR"):
         return False
+    if str(os.environ.get("CLICOLOR_FORCE") or "").strip() not in ("", "0"):
+        return True
     try:
         return bool(stream is not None and stream.isatty())
     except Exception:      # 尽力而为：判定不了就按无色（安全侧）
         return False
+
+
+def highlight(text, needle, on: bool = False) -> str:
+    """把命中词包成高亮（**仅着色时**；大小写不敏感，只标第一处，避免满屏噪声）。
+
+    必须在**截断/补位之后**调用：ANSI 转义也算字符宽度，先着色会让列对齐失真。
+    """
+    body = str(text or "")
+    key = str(needle or "")
+    if not on or not key:
+        return body
+    idx = body.lower().find(key.lower())
+    if idx < 0:
+        return body
+    return (body[:idx] + style(body[idx:idx + len(key)], "warn", True)
+            + body[idx + len(key):])
 
 
 def term_width(width=None, env=None, default: int = 100) -> int:
@@ -267,12 +301,14 @@ def term_width(width=None, env=None, default: int = 100) -> int:
     return cols if cols >= 40 else default
 
 
-def _row(left: str, right: str, width: int, color: bool = False) -> str:
-    """两列行：左列固定宽度（按显示宽度补），右列按剩余宽度截断。"""
+def _row(left: str, right: str, width: int, color: bool = False,
+         hl: str = "") -> str:
+    """两列行：左列固定宽度（按显示宽度补），右列按剩余宽度截断（可带命中高亮）。"""
     left_col = 28
     left_txt = pad_to("  " + left, left_col)
     remain = max(20, int(width) - left_col)
-    return style(left_txt, "cmd", color) + clip(right, remain)
+    return (style(left_txt, "cmd", color)
+            + highlight(clip(right, remain), hl, color))
 
 
 def zone_by_key(key: str):
@@ -535,6 +571,9 @@ def parse(line: str) -> Intent:
         return Intent("empty", "", raw)
     if raw.lower() in QUIT_WORDS:
         return Intent("quit", "", raw)
+    if raw.startswith("!"):
+        # `!!` = 上一条（剥掉全部前导 `!`）；`!n` = 第 n 条；`!前缀` = 最近一条前缀命中
+        return Intent("replay", raw.lstrip("!").strip(), raw)
     if raw.startswith("/"):
         hit = _slash_intent(raw[1:].strip(), raw)
         return hit if hit is not None else Intent("unknown", raw, raw)
@@ -607,6 +646,11 @@ def menu(width=None, color: bool = False) -> str:
                      % (left, item["title"], clip(item["summary"], max(20, w - 30))))
     lines += ["",
               "看某区示例：输入编号（如 4）或 /zone 4；执行：把示例里的命令打进终端。"]
+    rest = families_without_zone()
+    if rest:
+        lines.append("  本菜单是**任务路径**（8 区）；完整面见 /map（8 族）。"
+                     "未在此列的族：%s（在那几族里用 /find <词> 或 /commands 定位）"
+                     % "、".join(rest))
     return "\n".join(lines)
 
 
@@ -703,7 +747,8 @@ def render_search(index, query: str, limit: int = 8, width=None,
     w = term_width(width)
     lines = [style("== 命令检索：「%s」（%d 命中）==" % (query, len(hits)), "head", color)]
     for _score, e in hits:
-        lines.append(_row("nf " + str(e.get("path")), str(e.get("summary") or ""), w, color))
+        lines.append(_row("nf " + str(e.get("path")), str(e.get("summary") or ""), w,
+                          color, hl=query))
     lines.append("  用法：直接输入 `nf <命令> …`；二级见 `nf <命令> --help`")
     return "\n".join(lines), len(hits)
 
@@ -756,6 +801,17 @@ def families_for(filt: str = "") -> list:
     return out
 
 
+def zones_of_family(fid: str) -> list:
+    """哪些菜单区指向该族（菜单 = 任务路径，族 = 完整面；互标让两者可对照）。"""
+    return [str(z["key"]) for z in ZONES if str(z.get("family")) == str(fid)]
+
+
+def families_without_zone() -> list:
+    """没被任何菜单区指向的族（不是缺陷：菜单只是快捷路径，但它们该被**显式**告知）。"""
+    used = {str(z.get("family")) for z in ZONES}
+    return [str(f["id"]) for f in FAMILIES if str(f["id"]) not in used]
+
+
 def render_map(filt: str = "", width=None, color: bool = False) -> str:
     """渲染能力地图（全功能分面）：每族给一句话定位 + 该族命令清单。"""
     w = term_width(width)
@@ -764,9 +820,12 @@ def render_map(filt: str = "", width=None, color: bool = False) -> str:
     for fam in families_for(filt):
         cmds = list(fam["commands"])
         lines.append("")
-        lines.append("%s %s —— %s"
+        _zones = zones_of_family(fam["id"])
+        lines.append("%s %s —— %s%s"
                      % (style("[%s]" % fam["id"], "cmd", color), fam["name"],
-                        clip(fam["summary"], max(20, w - 34))))
+                        clip(fam["summary"], max(20, w - 34)),
+                        ("　（菜单快捷区：%s）" % "、".join(_zones)) if _zones
+                        else "　（菜单无快捷区——用 /find <词> 或 /commands 定位）"))
         lines.append("    " + style(" · ".join("nf %s" % c for c in cmds), "dim", color))
     lines.append("")
     lines.append("  单族用法：/map <族名或命令片段>；命令详情：/find <词>；逐条列出：/commands")
@@ -806,6 +865,10 @@ TERMINAL_BASELINE = (
      "forbid": "\x1b"},
     {"id": "script-face", "name": "脚本面（--exec 逐条执行）",
      "argv": ("shell", "--exec", "/zone 0", "--no-banner"), "expect": "环境自检"},
+    {"id": "history-replay", "name": "历史重放（!! / !n / !前缀）",
+     "argv": ("shell", "--exec", "nf doctor; !!", "--no-banner"), "expect": "重放"},
+    {"id": "menu-family-crosslink", "name": "菜单↔能力族互标",
+     "argv": ("shell", "--exec", "/menu", "--no-banner"), "expect": "未在此列的族"},
     {"id": "form-dry-run", "name": "写盘表单（dry-run 只组装不执行）",
      "argv": ("shell", "--form", "stats-write", "--json", "--no-banner"),
      "expect": '"executed": false'},
@@ -995,9 +1058,16 @@ def self_check(index, commands, root_flags=(), examples=None) -> tuple:
     keys = [z["key"] for z in ZONES]
     if keys != [str(i) for i in range(len(keys))]:
         issues.append("菜单键不连续：%s（修复指引：从 0 起连续编号）" % keys)
+    fam_ids = {str(f["id"]) for f in FAMILIES}
+    for z in ZONES:
+        if str(z.get("family") or "") not in fam_ids:
+            issues.append("菜单区 %s 的 family 不在能力族名单：%s"
+                          "（修复指引：填 start/forge/shelf/verify/library/govern/integrate/meta）"
+                          % (z["id"], z.get("family")))
 
     stats = {"commands": len(commands), "families": len(FAMILIES),
-            "index_entries": len(index_paths), "examples": ex_total}
+             "index_entries": len(index_paths), "examples": ex_total,
+             "families_without_zone": families_without_zone()}
     return issues, stats
 
 
@@ -1181,6 +1251,8 @@ class Session:
         # 会话状态（`--session <file>`）：视图设置 + 上次分区；None = 不持久化
         self.session_path = str(session_path) if session_path else None
         self.active_form = None      # {"form": …, "answers": {…}} —— 写盘表单进行中
+        # 会话内命令记录（供 `!!` / `!n` / `!前缀` 重放；不含 replay 自身，避免自指）
+        self.commands = []           # [(原始行, …)] 只记「能重放」的类别
 
     def invoke(self, argv: list) -> tuple:
         """执行一条命令 → (exit_code, stdout, stderr)；捕获输出以便落档与比对。
@@ -1271,6 +1343,18 @@ class Session:
                 rec["note"] = "已中止表单 %s（未执行任何写盘动作）" % fid
             else:
                 rec.update(exit=2, note="当前没有进行中的表单（/form 列全部表单）")
+        elif intent.kind == "replay":
+            ok, payload = self.resolve_replay(intent.payload)
+            if not ok:
+                rec.update(exit=2, note=str(payload))
+            else:
+                inner = self.dispatch(payload, confirmed=confirmed)
+                rec.update(kind="replay", argv=inner["argv"], exit=inner["exit"],
+                           out=inner["out"], err=inner["err"])
+                rec["note"] = "重放：%s%s" % (payload, ("\n" + inner["note"])
+                                             if inner["note"] else "")
+        elif intent.kind == "replay-list":
+            rec["note"] = self.render_replay_list()
         elif intent.kind == "history":
             rows = load_history(self.history_path, limit=200) if self.history_path else []
             n = 0
@@ -1314,14 +1398,48 @@ class Session:
                 code, out, err = self.invoke(argv)
                 rec.update(exit=code, out=out, err=err)
         self.history.append(rec)
+        if rec["kind"] in self.REPLAYABLE_KINDS and str(intent.raw).strip():
+            self.commands.append(str(intent.raw).strip())
         return rec
 
     def _apply_settings(self, payload: str):
-        """`/set [k=v …]` → (文本, ok)：无参数打印当前值，有参数改 color / width / limit。"""
+        """`/set [k=v …]` → (文本, ok)：改视图设置；成功且开了会话文件时顺手落盘。"""
         text, ok = self._set_impl(payload)
         if ok and self.session_path:
             save_session_state(self.session_path, self)
         return text, ok
+
+    #: 可重放的输入类别（表单追问的中间回答不算——重放它没有意义）
+    REPLAYABLE_KINDS = ("run", "set", "commands", "search", "map", "complete", "history")
+
+    def resolve_replay(self, spec: str):
+        """解析重放说明 → `(ok, 命令行 | 给用户的说明)`。
+
+        形态：`!!`（上一条）、`!n`（第 n 条，1 起）、`!前缀`（最近一条以该前缀开头）。
+        """
+        spec = str(spec or "").strip()
+        if not self.commands:
+            return False, "本次会话还没有可重放的命令（先跑一条；/replay 看清单）"
+        if not spec:
+            return True, self.commands[-1]
+        if spec.isdigit():
+            n = int(spec)
+            if 1 <= n <= len(self.commands):
+                return True, self.commands[n - 1]
+            return False, ("重放序号越界：!%s（本次会话共 %d 条；/replay 看清单）"
+                           % (spec, len(self.commands)))
+        for line in reversed(self.commands):
+            if line.startswith(spec):
+                return True, line
+        return False, ("没有以「%s」开头的历史命令（/replay 看清单；或直接输入该命令）" % spec)
+
+    def render_replay_list(self) -> str:
+        """列出可重放命令（编号与 `!n` 一致）。"""
+        if not self.commands:
+            return "（本次会话还没有可重放的命令）"
+        lines = ["== 本次会话命令（%d 条 · 重放：!! / !n / !前缀）==" % len(self.commands)]
+        lines += ["  %3d  %s" % (i + 1, ln) for i, ln in enumerate(self.commands)]
+        return "\n".join(lines)
 
     def _handle_form_line(self, text: str):
         """表单进行中的一行输入 → 记录 dict（除 `/cancel`/quit 外都算回答）。"""
@@ -1477,8 +1595,15 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
             line += nxt
         intent = parse(line)
         confirmed = False
-        if intent.kind == "run" and needs_confirm(intent.payload) \
-                and not session.assume_yes:
+        # 重放行要先解析出目标，写盘闸门才对**真正要跑的那条**生效（fail-closed 不变）
+        _need = needs_confirm(intent.payload) if intent.kind == "run" else False
+        if intent.kind == "replay" and intent.payload:
+            _ok, _resolved = session.resolve_replay(intent.payload)
+            if _ok:
+                _target = parse(_resolved)
+                if _target.kind == "run":
+                    _need = needs_confirm(_target.payload)
+        if _need and not session.assume_yes:
             stdout.write("  该命令会写盘：%s\n  确认执行？(yes/no) " % intent.raw)
             stdout.flush()
             confirmed = stdin.readline().strip().lower() in YES_WORDS

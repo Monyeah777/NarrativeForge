@@ -837,6 +837,141 @@ class CliIntegrationTest(unittest.TestCase):
         self.assertEqual(payload["records"][0]["exit"], 0)
 
 
+class NavigationConsistencyTest(unittest.TestCase):
+    """菜单（任务路径）↔ 能力族（完整面）互标：两套结构可对照，不留隐含映射。"""
+
+    def test_every_zone_declares_a_real_family(self):
+        fam_ids = {f["id"] for f in term.family_table()}
+        for z in term.zone_table():
+            self.assertIn(z.get("family"), fam_ids, z["id"])
+
+    def test_menu_states_uncovered_families(self):
+        text = term.menu()
+        rest = term.families_without_zone()
+        self.assertTrue(rest, "当前 8 区覆盖不完 8 族——菜单应显式告知剩余族")
+        for fid in rest:
+            self.assertIn(fid, text)
+        self.assertIn("/map", text)
+
+    def test_map_marks_quick_zones(self):
+        text = term.render_map()
+        for z in term.zone_table():
+            key = z["key"]
+            if term.zones_of_family(z["family"]):
+                self.assertIn("菜单快捷区：", text)
+                break
+        self.assertIn("菜单无快捷区", text, "未被菜单覆盖的族须显式标注")
+        self.assertEqual(term.zones_of_family("start"), ["0", "1"])
+        self.assertEqual(term.zones_of_family("no-such-family"), [])
+
+    def test_self_check_flags_bad_zone_family(self):
+        original = term.ZONES
+        bad = tuple([dict(original[0], family="no-such-family")] + list(original[1:]))
+        term.ZONES = bad
+        try:
+            tree = nf._collect_cli_tree()
+            issues, _ = term.self_check(nf._shell_command_index(), tree["commands"],
+                                        tree["root_flags"])
+            self.assertTrue(any("family 不在能力族名单" in i for i in issues), issues)
+        finally:
+            term.ZONES = original
+
+
+class ReplayAndColorPolishTest(unittest.TestCase):
+    """历史重放（!! / !n / !前缀）与着色细化（CLICOLOR_FORCE / 命中高亮）。"""
+
+    def test_replay_specs(self):
+        session = term.Session(lambda argv: 0)
+        self.assertEqual(session.resolve_replay(""), (False, "本次会话还没有可重放的命令"
+                                                      "（先跑一条；/replay 看清单）"))
+        session.commands[:] = ["nf doctor", "nf layers --verify", "nf stats --check"]
+        self.assertEqual(session.resolve_replay(""), (True, "nf stats --check"))
+        self.assertEqual(session.resolve_replay("2"), (True, "nf layers --verify"))
+        self.assertEqual(session.resolve_replay("!")[:1], (False,))
+        self.assertEqual(session.resolve_replay("9")[0], False)
+        self.assertEqual(session.resolve_replay("nf lay")[1], "nf layers --verify")
+        self.assertEqual(session.resolve_replay("nf zzz")[0], False)
+
+    def test_replay_dispatch_records_and_executes(self):
+        calls = []
+        session = term.Session(lambda argv: calls.append(list(argv)) or 0)
+        session.dispatch("nf doctor")
+        rec = session.dispatch("!!")
+        self.assertEqual(rec["kind"], "replay")
+        self.assertEqual(calls, [["doctor"], ["doctor"]])
+        self.assertIn("重放：nf doctor", rec["note"])
+        self.assertEqual(session.commands, ["nf doctor", "nf doctor"],
+                         "被重放执行的那条也算本次会话命令")
+
+    def test_replay_of_write_still_hits_gate(self):
+        calls = []
+        session = term.Session(lambda argv: calls.append(list(argv)) or 0)
+        session.commands[:] = ["nf stats --write"]
+        rec = session.dispatch("!!")
+        self.assertEqual(rec["exit"], 2, "重放的写盘命令必须仍被闸门拦下（fail-closed）")
+        self.assertIn("确认", rec["note"])
+        self.assertEqual(calls, [])
+
+    def test_render_replay_list(self):
+        session = term.Session(lambda argv: 0)
+        self.assertIn("还没有可重放", session.render_replay_list())
+        session.commands[:] = ["nf doctor"]
+        text = session.render_replay_list()
+        self.assertIn("1  nf doctor", text)
+        self.assertNotIn("\x1b", text)
+
+    def test_clicolor_force_and_no_color_precedence(self):
+        class _Pipe:
+            @staticmethod
+            def isatty():
+                return False
+
+        old_force, old_nc = os.environ.get("CLICOLOR_FORCE"), os.environ.get("NO_COLOR")
+        os.environ.pop("NO_COLOR", None)
+        os.environ["CLICOLOR_FORCE"] = "1"
+        try:
+            self.assertTrue(term.resolve_color("auto", _Pipe()),
+                            "CLICOLOR_FORCE 应在 auto 档强制开启")
+            os.environ["NO_COLOR"] = "1"
+            self.assertFalse(term.resolve_color("auto", _Pipe()),
+                             "NO_COLOR 优先于 CLICOLOR_FORCE（关比开安全）")
+        finally:
+            for k, v in (("CLICOLOR_FORCE", old_force), ("NO_COLOR", old_nc)):
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
+    def test_highlight_only_when_colored(self):
+        plain = term.highlight("一致性报告工件", "一致性", False)
+        self.assertEqual(plain, "一致性报告工件")
+        colored = term.highlight("一致性报告工件", "一致性", True)
+        self.assertIn("\x1b[", colored)
+        self.assertIn("一致性", colored)
+        self.assertEqual(term.highlight("abc", "zzz", True), "abc")
+
+    def test_search_highlight_keeps_alignment(self):
+        index = nf._shell_command_index()
+        plain = term.render_search(index, "装配", color=False)[0]
+        colored = term.render_search(index, "装配", color=True)[0]
+        self.assertNotIn("\x1b", plain)
+        self.assertIn("\x1b[", colored)
+        # 左列（命令列）补位不变：着色的只是右列命中词，剥掉 ANSI 后两版必须逐字对齐
+        import re as _re
+        _strip = lambda s: _re.sub(r"\x1b\[[0-9;]*m", "", s)
+
+        def _lefts(text):
+            out = []
+            for ln in text.splitlines():
+                bare = _strip(ln)
+                if bare.startswith("  nf "):
+                    out.append(bare[:30])
+            return out
+
+        self.assertTrue(_lefts(plain))
+        self.assertEqual(_lefts(plain), _lefts(colored))
+
+
 class BaselineTest(unittest.TestCase):
     """顶尖 CLI 基线：真源自洽 + 逐行可复跑（含「该被拒」的行）。"""
 
@@ -895,7 +1030,8 @@ class BaselineCliTest(unittest.TestCase):
         text = out.getvalue() + err.getvalue()
         self.assertEqual(code, 0, text)
         self.assertIn("顶尖 CLI 基线", text)
-        self.assertIn("通过 13/13", text)
+        self.assertIn("通过 %d/%d" % (len(term.baseline_table()),
+                                      len(term.baseline_table())), text)
         out, err = io.StringIO(), io.StringIO()
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
             code = nf.main(["shell", "--baseline", "--json", "--no-banner"])
