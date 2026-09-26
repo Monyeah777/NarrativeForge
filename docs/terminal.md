@@ -55,6 +55,8 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 | `/complete <前缀>` · 行尾 `Tab` | **补全**：命令 / 二级子命令 / 旗标 / 斜杠命令 / 能力族前缀 |
 | `/history [n]` | 看历史（最近 n 条）；`quit` 与 Tab 行不入历史 |
 | `/set [k=v …]` | 改视图设置（`color` / `width` / `limit`）；无参数打印当前值 |
+| `/form [id]` | **写盘表单**：不带 id 列全部；带 id 开始逐项追问（参数填齐 → 组装命令 → 二次确认） |
+| `/cancel` | 中止进行中的表单 / 动作（不执行任何写盘） |
 | `/help` 或 `/help <cmd>` | 转 CLI 帮助面（等价 `nf help …`） |
 | `nf <args…>` 或 `<args…>` | 直通 CLI（`nf` 前缀可省） |
 | `quit` `exit` `q` `退出` | 退出会话 |
@@ -80,6 +82,23 @@ python scripts/nf.py shell --history <文件>      # 跨会话历史（缺省 <N
 会话内等价形态是 `/map [族]`、`/commands [过滤]` 与 `/find <词>`。三层保证「最全」不是宣称：
 
 ① **索引由 CLI 的 argparse 面派生**（终端不维护第二份命令表）；② **能力地图把每个命令恰好归入一个族**（`start / forge / shelf / verify / library / govern / integrate / meta`），「未策展」即报；③ 判据**单源**——`nf shell --verify`（给人跑）与 verify check39（给门禁跑）调用同一个 `terminal.self_check`，所以「终端说没问题」与「门禁说没问题」永远同一套语义。
+
+## 写盘表单与会话状态（会改仓库的动作由人安全驱动）
+
+`nf` 的写盘命令都要参数齐 + `--yes`，对人是负担。终端把它拆成**逐项追问**：`/form <id>` 开始，一次问一项（可选项**空行跳过**），填齐后打印**组装好的命令**再问 `yes/no`，确认后才执行——而且最终仍走同一条**写盘闸门**（终端不绕过它）。当前 8 张表覆盖真实写盘点：`deprecate-module` / `restore-module` / `types-write` / `stats-write` / `asset-add` / `register-apply` / `rename-apply` / `receipts-write`。
+
+非交互也能用（dry-run 优先）：
+
+```bash
+python scripts/nf.py shell --form                                # 列全部表单
+python scripts/nf.py shell --form stats-write                    # 只组装 + 打印（dry-run）
+python scripts/nf.py shell --form deprecate-module --answer file=community/x/M1.md --answer reason=重复
+python scripts/nf.py shell --form stats-write --yes              # 显式放行才真正执行
+```
+
+- **参数真源**：表单模板里的 `{key}` 由 step 填；模板只能指向**真实 CLI 动词**（check39 断言），空值连同其旗标一起丢弃（不留悬空 `--reason`）。
+- **二次确认**：交互态 `yes/no`；非交互态必须显式 `--yes`（缺省只 dry-run）。
+- **会话状态**：`--session <文件>` 持久化视图设置与上次分区（`/set` 后立即落盘）。守卫：路径须**绝对**且**不得落在仓库内**——仓库里留状态件会被 `git add -A` 吞掉（2026-09-26 实测过一次 tmp 文件事故）。
 
 ## 输出体验（列宽 / 限长 / 着色 / 分页）
 

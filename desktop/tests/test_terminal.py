@@ -397,6 +397,114 @@ class ShellScriptTest(unittest.TestCase):
         self.assertEqual(intent.payload, ["assemble", "含 # 号的需求"])
 
 
+class FormTest(unittest.TestCase):
+    """写盘表单：真源完整性、argv 组装、交互追问流程、会话持久化与守卫。"""
+
+    def test_form_table_integrity(self):
+        cmds = _top_commands()
+        seen = set()
+        for form in term.form_table():
+            self.assertNotIn(form["id"], seen, form["id"])
+            seen.add(form["id"])
+            self.assertTrue(form["title"] and form["summary"], form["id"])
+            keys = {st["key"] for st in form["steps"]}
+            for st in form["steps"]:
+                self.assertTrue(st.get("key") and st.get("prompt"), form["id"])
+            self.assertIn(form["argv"][0], cmds,
+                          "表单 %s 的模板动词不存在：%s" % (form["id"], form["argv"][0]))
+            for tok in form["argv"]:
+                if tok.startswith("{") and tok.endswith("}"):
+                    self.assertIn(tok[1:-1], keys,
+                                  "表单 %s 模板引用了未声明的 step：%s" % (form["id"], tok))
+
+    def test_build_argv_drops_empty_optional_with_flag(self):
+        form = term.form_by_id("deprecate-module")
+        self.assertEqual(term.build_argv(form, {"file": "community/x/M1.md"}),
+                         ["module", "deprecate", "community/x/M1.md"])
+        self.assertEqual(
+            term.build_argv(form, {"file": "a.md", "reason": "重复"}),
+            ["module", "deprecate", "a.md", "--reason", "重复"])
+
+    def test_build_argv_missing_required_guides(self):
+        form = term.form_by_id("asset-add")
+        with self.assertRaises(ValueError) as ctx:
+            term.build_argv(form, {"file": "a.md"})
+        self.assertIn("还缺必填项", str(ctx.exception))
+        self.assertIn("修复指引", str(ctx.exception))
+
+    def test_render_forms_and_form(self):
+        listing = term.render_forms()
+        for form in term.form_table():
+            self.assertIn(form["id"], listing)
+        text = term.render_form(term.form_by_id("deprecate-module"), {})
+        self.assertIn("请回答 file", text)
+        self.assertNotIn("\x1b", text)
+
+    def test_session_form_flow_executes_after_confirm(self):
+        calls = []
+        session = term.Session(lambda argv: calls.append(list(argv)) or 0,
+                               index=[{"path": "module", "summary": "", "flags": []}])
+        kind, code, text = session.handle("/form deprecate-module")
+        self.assertEqual((kind, code), ("form", 0))
+        self.assertIn("请回答 file", text)
+        kind, _code, text = session.handle("community/x/M1.md")      # 位置式回答
+        self.assertEqual(kind, "form")
+        self.assertIn("请回答 reason", text, "可选项也要逐项问到（空行=跳过）")
+        kind, _code, text = session.handle("")                       # 空行 = 跳过可选项
+        self.assertIn("组装命令：nf module deprecate community/x/M1.md", text)
+        kind, code, _text = session.handle("no")                     # 先取消一次
+        self.assertEqual(code, 0)
+        self.assertIsNone(session.active_form)
+        self.assertEqual(calls, [])
+        # 再走一遍：这次补上可选项并确认
+        session.dispatch("/form deprecate-module")
+        session.dispatch("community/x/M1.md")
+        kind, _code, text = session.handle("reason=重复")             # k=v 回答 → settle
+        self.assertIn("组装命令：nf module deprecate community/x/M1.md --reason 重复", text)
+        kind, code, _text = session.handle("yes")
+        self.assertEqual((kind, code), ("run", 0))
+        self.assertEqual(calls, [["module", "deprecate", "community/x/M1.md",
+                                  "--reason", "重复"]])
+        self.assertIsNone(session.active_form)
+
+    def test_session_form_cancel_and_pending_routing(self):
+        calls = []
+        session = term.Session(lambda argv: calls.append(list(argv)) or 0)
+        session.dispatch("/form restore-module")
+        rec = session.dispatch("nf doctor")          # 表单挂起时：普通行=回答，不当命令跑
+        self.assertEqual(rec["kind"], "form")
+        self.assertEqual(calls, [])
+        rec = session.dispatch("/cancel")
+        self.assertIn("已中止", rec["note"])
+        self.assertIsNone(session.active_form)
+        self.assertEqual(calls, [])
+
+    def test_session_state_roundtrip_and_bad_file(self):
+        fd, path = tempfile.mkstemp(suffix=".json")
+        os.close(fd)
+        try:
+            session = term.Session(lambda argv: 0, session_path=path, width=None)
+            session.dispatch("/set width=120 limit=7 color=never")
+            session.last_zone = "5"
+            self.assertTrue(term.save_session_state(path, session))
+            state, warn = term.load_session_state(path)
+            self.assertEqual(warn, "")
+            self.assertEqual(state["settings"]["width"], 120)
+            self.assertEqual(state["settings"]["limit"], 7)
+            self.assertEqual(state["last_zone"], "5")
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write("{ 坏 JSON")
+            state2, warn2 = term.load_session_state(path)
+            self.assertEqual(state2, {})
+            self.assertIn("不是合法 JSON", warn2)
+        finally:
+            os.remove(path)
+
+    def test_load_session_missing_file_is_silent(self):
+        state, warn = term.load_session_state(str(ROOT / "no-such-session.json"))
+        self.assertEqual((state, warn), ({}, ""))
+
+
 class OutputExperienceTest(unittest.TestCase):
     """输出体验：CJK 列宽对齐 / 限长提示 / 着色克制（非 TTY 恒无色）。"""
 
@@ -612,6 +720,62 @@ class CliIntegrationTest(unittest.TestCase):
         code, out = _run(["shell", "--exec", "/map start", "--no-banner"])
         self.assertEqual(code, 0)
         self.assertIn("[start]", out)
+
+    def test_cli_form_faces(self):
+        def _run_io(argv):
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                code = nf.main(list(argv))
+            return code, out.getvalue() + err.getvalue()
+
+        code, out = _run_io(["shell", "--form", "--no-banner"])
+        self.assertEqual(code, 0)
+        self.assertIn("写盘表单", out)
+        self.assertIn("deprecate-module", out)
+        code, out = _run_io(["shell", "--form", "stats-write", "--no-banner"])   # dry-run
+        self.assertEqual(code, 0)
+        self.assertIn("nf stats --write", out)
+        self.assertIn("dry-run", out)
+        code, out = _run_io(["shell", "--form", "asset-add", "--answer", "file=a.md",
+                             "--no-banner"])
+        self.assertEqual(code, 2)
+        self.assertIn("还缺必填项", out)
+        code, out = _run_io(["shell", "--form", "no-such", "--no-banner"])
+        self.assertEqual(code, 2)
+        self.assertIn("未识别的表单", out)
+
+    def test_cli_session_guards_and_persistence(self):
+        def _run_io(argv):
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                code = nf.main(list(argv))
+            return code, out.getvalue() + err.getvalue()
+
+        code, out = _run_io(["shell", "--session", "relative.json", "--no-banner"])
+        self.assertEqual(code, 2)
+        self.assertIn("绝对路径", out)
+        inside = str(ROOT / "tmp-session-guard.json")
+        code, out = _run_io(["shell", "--session", inside, "--no-banner"])
+        self.assertEqual(code, 2)
+        self.assertIn("不得落在仓库内", out)
+        fd, path = tempfile.mkstemp(suffix=".json")
+        os.close(fd)
+        try:
+            old_in, old_out = sys.stdin, sys.stdout
+            sys.stdin = io.StringIO("/set width=130\nquit\n")
+            sys.stdout = io.StringIO()
+            try:
+                code = nf.main(["shell", "--session", path, "--no-banner",
+                                "--no-history"])
+            finally:
+                sys.stdin, sys.stdout = old_in, old_out
+            self.assertEqual(code, 0)
+            state, warn = term.load_session_state(path)
+            self.assertEqual(warn, "")
+            self.assertEqual(state["settings"]["width"], 130,
+                             "会话状态须在 /set 后落盘")
+        finally:
+            os.remove(path)
 
     def test_cli_output_experience_flags(self):
         code, out = _run(["shell", "--commands", "asset", "--limit", "3", "--no-banner"])

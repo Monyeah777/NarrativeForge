@@ -2,6 +2,14 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v6：会话状态 + 写盘表单（会改仓库的动作由人安全驱动）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮清单第 1 项）：
+  ① **写盘表单（8 张）**：`/form [id]`（会话内逐项追问）/ `nf shell --form <id> --answer k=v [--yes]`（非交互 dry-run 优先）。表覆盖真实写盘点：`deprecate-module` / `restore-module` / `types-write` / `stats-write` / `asset-add` / `register-apply` / `rename-apply` / `receipts-write`；模板 argv 逐条按**真实参数签名**拼（如 `asset add {file} --key … --source … --root …`）。
+  ② **逐项追问的语义**：必填项空值不放行；**可选项也会被问到**（空行 = 明确跳过，记空串），填齐后打印**组装好的命令**再问 `yes/no`——确认后才执行，且执行仍走同一条**写盘闸门**（终端不绕过、不降级）。空值连同其旗标一起丢弃，不留悬空 `--reason`。
+  ③ **会话状态**：`--session <文件>` 持久化视图设置（color/width/limit）与上次分区，`/set` 后立即落盘、会话结束再落一次；坏 JSON / schema 不符只给 WARN 不崩（终端不该被状态文件拖死）。守卫：路径须**绝对**且**不得落在仓库内**（仓库内留件会被 `git add -A` 吞——2026-09-26 那次 tmp 事故的教训制度化）。
+  ④ **门禁**：check39 新增「表单模板动词必须是真命令」+「dry-run 必须只组装不执行（输出含 dry-run 标记）」两条运行时断言；并入既有 check39 不涨号，基线仍 **PASS=68**。
+  ⑤ 本波被自家单测抓出的 UX 缺口（已修）：初版把「必填填齐」当成「表单完成」，可选项被静默略过 → 改为**按 step 逐项 settle**（空行跳过），既符合表单直觉也可机检。
+  ⑥ 实测（本机）：`--form` 列 8 张；`--form deprecate-module --answer file=… --answer reason=…` → `nf module deprecate <文件> --reason 重复`（dry-run）；交互流程（回答 → 组装 → `yes` → 假 runner 收到正确 argv）与 `/cancel` 不出手均由单测钉住；`test_terminal` **83 例**全绿；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39）；conformance 27/27；receipts 51 件。
+
 - **终端 v5：输出体验（列宽 / 限长 / 着色 / 分页）**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮清单第 1 项「输出体验决定读不读得下去，是与顶尖 CLI 最明显的观感差距」）：
   ① **CJK 列宽对齐**：新增 `char_width` / `display_width` / `pad_to` / `clip`（East Asian Wide/Fullwidth 实用子集 + emoji 走宽），两列列表按**显示宽度**补位与截断——中文终端里不再歪列；宽度取 `--width` > 环境 `COLUMNS`（≥40 才认）> 100。
   ② **限长与提示**：`--limit N`（0 = 全部）作用于命令面/检索/补全列表，截断时明确给「… 还有 M 条（`--limit 0` 看全部，或加过滤词收敛）」，不静默截断。

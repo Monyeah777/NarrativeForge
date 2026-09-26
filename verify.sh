@@ -2243,7 +2243,7 @@ PYEOF
 }
 
 check39(){
-  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全/输出体验在场）=='
+  echo '== [39/段C] 终端与端壳残留门禁（端壳退役已成事实 + 终端入口在场 + 菜单无死命令 + 命令面全策展可达 + 补全/输出体验/写盘表单在场）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check39.log 2>&1
@@ -2348,6 +2348,20 @@ if _lc != 0 or '还有' not in _lout:
 if '\x1b' in _lout:
     problems.append('终端默认输出含控制字符：非 TTY 必须逐字节确定'
                     '（修复指引：颜色只在 --color=always 或真 TTY 的 auto 下生效）')
+# 写盘表单：模板动词必须是真命令；dry-run 必须只组装不执行（无 --yes 就不得落盘）
+_forms = term.form_table()
+if not _forms:
+    problems.append('写盘表单为空（修复指引：在 core/terminal.py 的 FORMS 登记）')
+_bad_form = [str(f.get('id')) for f in _forms if str((f.get('argv') or [''])[0]) not in cmds]
+if _bad_form:
+    problems.append('表单模板动词不存在：%s（修复指引：模板只能指向真实 CLI 动词）'
+                    % '、'.join(_bad_form[:3]))
+buf = io.StringIO()
+with redirect_stdout(buf):
+    _fcode = nf.main(['shell', '--form', 'stats-write', '--no-banner'])
+_fout = buf.getvalue()
+if _fcode != 0 or 'nf stats --write' not in _fout or 'dry-run' not in _fout:
+    problems.append('表单 dry-run 失效：nf shell --form stats-write（修复指引：核对 _cmd_shell 的 --form 分支）')
 buf = io.StringIO()
 with redirect_stdout(buf):
     c_code = nf.main(['shell', '--commands', '--no-banner'])
@@ -2387,7 +2401,7 @@ print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
 sys.exit(1 if problems else 0)
 PYEOF
     then
-      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色运行时面）'
+      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色/写盘表单运行时面）'
     else
       no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
     fi

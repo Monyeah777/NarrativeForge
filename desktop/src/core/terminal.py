@@ -130,7 +130,8 @@ SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
                "find", "search", "找", "查", "commands", "cmd", "cmds", "命令",
                "map", "families", "族", "地图",
                "history", "hist", "历史", "complete", "补全",
-               "set", "settings", "设置")
+               "set", "settings", "设置",
+               "form", "forms", "表单", "cancel", "取消")
 
 
 def _slash_intent(body: str, raw: str):
@@ -161,6 +162,10 @@ def _slash_intent(body: str, raw: str):
         return Intent("complete", tail.strip(), raw)
     if head in ("set", "settings", "设置"):
         return Intent("set", tail.strip(), raw)
+    if head in ("form", "forms", "表单"):
+        return Intent("form", tail.strip(), raw)
+    if head in ("cancel", "取消"):
+        return Intent("cancel", tail.strip(), raw)
     return None
 
 
@@ -291,6 +296,206 @@ def _strip_nf(argv: list) -> list:
     if argv and argv[0] in ("nf", "nf.py"):
         return argv[1:]
     return argv
+
+
+# ---------------------------------------------------------------- 写盘表单
+# 「会改仓库」的动作不该要求用户一口气敲全参数、再补一个 `--yes`。表单族把它拆成**逐项追问**：
+# 参数真源 = 表单模板（argv 模板里的 `{key}` 由 step 填），执行仍走同一条写盘闸门。
+#
+# 纪律：每张表的模板只能指向**真实存在的 CLI 动词**（check39 断言 argv[0] 在命令面内）；
+# 表单本身不改任何东西——它只把参数问齐，然后交给 CLI 与闸门。
+
+FORMS = (
+    {"id": "deprecate-module", "title": "弃用模块",
+     "summary": "把某个模块文件标记为 deprecated（写文件头状态位）",
+     "steps": ({"key": "file", "prompt": "模块 md 路径", "required": True,
+                "hint": "如 community/<包>/modules/M97_术语管理.md"},
+               {"key": "reason", "prompt": "弃用原因（可空）", "required": False}),
+     "argv": ("module", "deprecate", "{file}", "--reason", "{reason}")},
+    {"id": "restore-module", "title": "恢复模块",
+     "summary": "把 deprecated / retired 的模块恢复为 active",
+     "steps": ({"key": "file", "prompt": "模块 md 路径", "required": True},),
+     "argv": ("module", "restore", "{file}")},
+    {"id": "types-write", "title": "补 I/O 类型面",
+     "summary": "给有机读契约的模块补 io_types（确定性推导，未命中写 untyped）",
+     "steps": (), "argv": ("module", "types", "--write")},
+    {"id": "stats-write", "title": "重写自述数字生成区",
+     "summary": "按实算重写 README / README.en / llms.txt 统计块与 protocol/repo_stats.json",
+     "steps": (), "argv": ("stats", "--write")},
+    {"id": "asset-add", "title": "资产入库",
+     "summary": "资产文件头写 nf-asset 头 + 台账 append（溯源键表自动生成）",
+     "steps": ({"key": "file", "prompt": "资产文件路径（相对 --root）", "required": True},
+               {"key": "key", "prompt": "溯源键（台账内唯一）", "required": True},
+               {"key": "source", "prompt": "溯源说明（源文件/区间/登记日期）", "required": True},
+               {"key": "root", "prompt": "资产根目录", "required": True, "hint": "如 05_资产库"},
+               {"key": "module", "prompt": "消费模块 id（可空）", "required": False},
+               {"key": "version", "prompt": "版本位（可空 = 1.0）", "required": False},
+               {"key": "tier", "prompt": "货架分级 official/community/experimental（可空）",
+                "required": False}),
+     "argv": ("asset", "add", "{file}", "--key", "{key}", "--source", "{source}",
+              "--root", "{root}", "--module", "{module}", "--version", "{version}",
+              "--tier", "{tier}")},
+    {"id": "register-apply", "title": "本地登记写回",
+     "summary": "protocol.yaml → registry protocols[]（校验全过后只增不删合并写）",
+     "steps": ({"key": "pkg_dir", "prompt": "包目录", "required": True,
+                "hint": "如 community/校园西幻轻混组合包"},),
+     "argv": ("register", "{pkg_dir}", "--apply")},
+    {"id": "rename-apply", "title": "模块改名重链",
+     "summary": "批量更新 references 中对该模块的引用后写回",
+     "steps": ({"key": "old_id", "prompt": "旧模块 id", "required": True},
+               {"key": "new_id", "prompt": "新模块 id", "required": True}),
+     "argv": ("rename", "{old_id}", "{new_id}", "--apply")},
+    {"id": "receipts-write", "title": "重签协议层回执",
+     "summary": "内容改动后重新冻结 protocol/RECEIPTS.json（随后通常重跑 conformance / 批准）",
+     "steps": (), "argv": ("receipts", "--scope", "protocol", "--write")},
+)
+
+
+def form_table() -> tuple:
+    """表单真源（终端渲染、`--form`、check39 共用同一份）。"""
+    return FORMS
+
+
+def form_by_id(fid: str):
+    """按 id 取表单；未命中返回 None（调用方给可用清单，不抛栈）。"""
+    for f in FORMS:
+        if str(f["id"]) == str(fid).strip():
+            return f
+    return None
+
+
+def form_missing(form, answers) -> list:
+    """还差哪些**必填** step（未填或空白都算缺）。"""
+    out = []
+    for st in form.get("steps") or []:
+        if st.get("required") and not str((answers or {}).get(st["key"], "")).strip():
+            out.append(st["key"])
+    return out
+
+
+def form_pending(form, answers) -> list:
+    """还没**settle**的 step（未出现在 answers 里；空串 = 已明确跳过）——表单逐项追问用它。"""
+    return [st["key"] for st in form.get("steps") or []
+            if st["key"] not in (answers or {})]
+
+
+def build_argv(form, answers) -> list:
+    """表单 + 回答 → CLI argv（空值连同其旗标一起丢弃；必填缺失即报并给指引）。"""
+    answers = answers or {}
+    missing = form_missing(form, answers)
+    if missing:
+        raise ValueError("表单 %s 还缺必填项：%s（修复指引：用 /form %s 补齐或 --answer %s=…）"
+                         % (form.get("id"), "、".join(missing), form.get("id"),
+                            missing[0]))
+    toks = list(form.get("argv") or [])
+    out = []
+    i = 0
+    while i < len(toks):
+        tok = toks[i]
+        nxt = toks[i + 1] if i + 1 < len(toks) else None
+        if tok.startswith("{") and tok.endswith("}"):
+            val = str(answers.get(tok[1:-1], "")).strip()
+            if val:
+                out.extend(split_args(val))
+            i += 1
+            continue
+        if nxt and nxt.startswith("{") and nxt.endswith("}"):
+            val = str(answers.get(nxt[1:-1], "")).strip()
+            if val:
+                out.append(tok)
+                out.extend(split_args(val))
+            i += 2                    # 空值：旗标与值一起丢，不留悬空旗标
+            continue
+        out.append(tok)
+        i += 1
+    return out
+
+
+def render_forms(filt: str = "", width=None, color: bool = False) -> str:
+    """列出全部写盘表单（可按 id/标题过滤）。"""
+    f = str(filt or "").strip().lower()
+    w = term_width(width)
+    lines = [style("== 写盘表单（%d 张 · 逐项追问 → 组装命令 → 二次确认）==" % len(FORMS),
+                   "head", color)]
+    for form in FORMS:
+        if f and f not in str(form["id"]).lower() and f not in str(form["title"]).lower():
+            continue
+        lines.append(_row("/form " + str(form["id"]),
+                          "%s —— %s" % (form["title"], form["summary"]), w, color))
+    lines.append("  用法：/form <id> 开始追问；/cancel 中止；参数真源见 protocol/LAYERS.json 同级的 CLI 面")
+    return "\n".join(lines)
+
+
+def render_form(form, answers=None, color: bool = False) -> str:
+    """渲染一张表单：已填/待填进度 + 下一个问题。"""
+    answers = answers or {}
+    lines = [style("== 表单：%s（%s）==" % (form["title"], form["id"]), "head", color),
+             "  %s" % form["summary"], ""]
+    for st in form.get("steps") or []:
+        key = st["key"]
+        val = str(answers.get(key, "")).strip()
+        mark = "✔" if val else ("✱" if st.get("required") else "·")
+        shown = ("　%s=%s" % (key, val)) if val else ""
+        lines.append("  [%s] %s（%s）%s%s"
+                     % (mark, key, st["prompt"], shown,
+                        ("  提示：%s" % st["hint"]) if st.get("hint") and not val else ""))
+    missing = form_missing(form, answers)
+    pending = form_pending(form, answers)
+    if pending:
+        nxt = [st for st in form["steps"] if st["key"] == pending[0]][0]
+        tail = "空行 = 跳过（可选项）" if not nxt.get("required") else "必填"
+        lines += ["", "  请回答 %s（%s）：直接输入值（%s）；`/cancel` 中止"
+                  % (nxt["key"], nxt["prompt"], tail)]
+    elif missing:
+        lines += ["", "  [FAIL] 必填项为空：%s" % "、".join(missing)]
+    else:
+        try:
+            argv = build_argv(form, answers)
+            lines += ["", "  组装命令：nf %s" % " ".join(argv),
+                      "  确认执行？(yes/no)"]
+        except ValueError as exc:
+            lines += ["", "  [FAIL] %s" % exc]
+    return "\n".join(lines)
+
+
+#: 会话状态文件 schema（`--session <file>`；仅显式给出时读写）
+SESSION_SCHEMA = "nf-shell-session/1"
+
+
+def load_session_state(path: str):
+    """读会话文件 → (state, warn)：缺件返回空态；坏件给理由但不抛（终端不该被状态文件拖死）。"""
+    if not path:
+        return {}, ""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except FileNotFoundError:
+        return {}, ""
+    except OSError as exc:
+        return {}, "会话文件不可读（%s）：%s" % (path, exc)
+    except json.JSONDecodeError as exc:
+        return {}, "会话文件不是合法 JSON（%s）：%s（修复指引：删除该文件或改成合法 JSON）" \
+            % (path, exc)
+    if str(data.get("schema")) != SESSION_SCHEMA:
+        return {}, "会话文件 schema 不匹配（期望 %s；修复指引：删除后重开）" % SESSION_SCHEMA
+    return data, ""
+
+
+def save_session_state(path: str, session) -> bool:
+    """把会话状态落盘（视图设置 + 上次分区）：父目录不存在则建；失败返回 False（不抛）。"""
+    data = {"schema": SESSION_SCHEMA,
+            "settings": {"color": str(session.color_mode),
+                         "width": int(session.width or 0),
+                         "limit": int(session.limit or 0)},
+            "last_zone": str(session.last_zone or "")}
+    try:
+        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump(data, fh, ensure_ascii=False, indent=2, sort_keys=True)
+            fh.write("\n")
+        return True
+    except OSError:
+        return False
 
 
 def _strip_comment(line: str) -> str:
@@ -782,7 +987,7 @@ class Session:
 
     def __init__(self, runner, assume_yes: bool = False, index=None,
                  history_path=None, color=False, width=None, limit=0,
-                 color_mode="never", stream=None):
+                 color_mode="never", stream=None, session_path=None):
         if not callable(runner):
             raise ValueError("Session 需要可调用的 runner(argv) -> int；"
                              "请传入 scripts/nf.py 的 main（终端不自己执行命令）")
@@ -803,6 +1008,9 @@ class Session:
         self.width = width
         self.limit = int(limit or 0)
         self.stream = stream
+        # 会话状态（`--session <file>`）：视图设置 + 上次分区；None = 不持久化
+        self.session_path = str(session_path) if session_path else None
+        self.active_form = None      # {"form": …, "answers": {…}} —— 写盘表单进行中
 
     def invoke(self, argv: list) -> tuple:
         """执行一条命令 → (exit_code, stdout, stderr)；捕获输出以便落档与比对。
@@ -833,6 +1041,12 @@ class Session:
         `confirmed=True` 表示调用方已就该行取得使用者放行（交互追问拿到 yes）——写入类
         命令据此放行；`assume_yes`（CLI 的 --yes）是整场会话的显式放行开关。
         """
+        # 表单进行中：除 `/cancel` 与 quit 外，输入一律当作**回答**（`k=v` 或按顺序填）
+        if self.active_form is not None:
+            early = self._handle_form_line(_strip_comment(str(line)).strip())
+            if early is not None:
+                self.history.append(early)
+                return early
         intent = parse(line)
         rec = {"line": intent.raw, "kind": intent.kind, "exit": 0,
                "argv": [], "out": "", "err": "", "note": ""}
@@ -868,6 +1082,25 @@ class Session:
             text, ok = self._apply_settings(intent.payload)
             rec["note"] = text
             rec["exit"] = 0 if ok else 2
+        elif intent.kind == "form":
+            if not intent.payload:
+                rec["note"] = render_forms("", self.width, self.color)
+            else:
+                form = form_by_id(intent.payload)
+                if form is None:
+                    rec.update(exit=2, note="未识别的表单：%s（可用：%s；/form 列全部）"
+                               % (intent.payload,
+                                  "、".join(str(f["id"]) for f in FORMS)))
+                else:
+                    self.active_form = {"form": form, "answers": {}}
+                    rec["note"] = render_form(form, {}, self.color)
+        elif intent.kind == "cancel":
+            if self.active_form:
+                fid = self.active_form["form"]["id"]
+                self.active_form = None
+                rec["note"] = "已中止表单 %s（未执行任何写盘动作）" % fid
+            else:
+                rec.update(exit=2, note="当前没有进行中的表单（/form 列全部表单）")
         elif intent.kind == "history":
             rows = load_history(self.history_path, limit=200) if self.history_path else []
             n = 0
@@ -915,6 +1148,65 @@ class Session:
 
     def _apply_settings(self, payload: str):
         """`/set [k=v …]` → (文本, ok)：无参数打印当前值，有参数改 color / width / limit。"""
+        text, ok = self._set_impl(payload)
+        if ok and self.session_path:
+            save_session_state(self.session_path, self)
+        return text, ok
+
+    def _handle_form_line(self, text: str):
+        """表单进行中的一行输入 → 记录 dict（除 `/cancel`/quit 外都算回答）。"""
+        form = self.active_form["form"]
+        answers = self.active_form["answers"]
+        low = text.lower()
+        rec = {"line": text, "kind": "form", "exit": 0, "argv": [], "out": "",
+               "err": "", "note": ""}
+        if text.startswith("/cancel") or low in ("cancel", "取消"):
+            self.active_form = None
+            rec["note"] = "已中止表单 %s（未执行任何写盘动作）" % form["id"]
+            return rec
+        if text.startswith("/") and not text.startswith("/form"):
+            return None                    # 其它斜杠命令照常走 parse（表单保持挂起）
+        if not form_pending(form, answers) and not form_missing(form, answers):
+            if low in YES_WORDS:
+                try:
+                    argv = build_argv(form, answers)
+                except ValueError as exc:
+                    rec.update(exit=2, note=str(exc))
+                    return rec
+                self.active_form = None
+                code, out, err = self.invoke(argv)
+                rec.update(kind="run", argv=argv, exit=code, out=out, err=err)
+                return rec
+            self.active_form = None
+            rec["note"] = ("已取消（未执行）：表单 %s 未提交（重新 /form %s 可再填）"
+                           % (form["id"], form["id"]))
+            return rec
+        return self._answer_form(text)
+
+    def _answer_form(self, text: str):
+        """把一行记进表单：`k=v` 指定键，否则按 steps 顺序填下一个未 settle 项。
+
+        空行 = **明确跳过**当前项（记空串），于是可选项也会被逐项问到、而不是被静默略过。
+        """
+        form = self.active_form["form"]
+        answers = self.active_form["answers"]
+        steps = list(form.get("steps") or [])
+        key, _, val = text.partition("=")
+        key = key.strip()
+        if val and any(st["key"] == key for st in steps):
+            answers[key] = val.strip()
+        else:
+            pend = [st for st in steps if st["key"] not in answers]
+            if not pend:
+                return {"line": text, "kind": "form", "exit": 0, "argv": [],
+                        "out": "", "err": "",
+                        "note": "表单已填完：回答 yes 执行 / no 取消"}
+            answers[pend[0]["key"]] = str(text or "").strip()
+        return {"line": text, "kind": "form", "exit": 0, "argv": [], "out": "",
+                "err": "", "note": render_form(form, answers, self.color)}
+
+    def _set_impl(self, payload: str):
+        """`/set` 的实现（无副作用；落盘由 `_apply_settings` 负责）。"""
         bad = []
         for pair in str(payload or "").split():
             key, _, value = pair.partition("=")
@@ -945,6 +1237,7 @@ class Session:
                  "  width = %s（默认取 COLUMNS，否则 100）" % (self.width or "auto"),
                  "  limit = %s（列表限长；0 = 全部）" % self.limit,
                  "  历史 = %s" % (self.history_path or "关闭"),
+                 "  会话 = %s" % (self.session_path or "未持久化（--session <文件> 开启）"),
                  "  用法：/set color=never width=120 limit=40（可只给其中几项）"]
         if bad:
             lines.append("  [FAIL] 无法识别：%s（可用键：color / width / limit）" % "、".join(bad))
@@ -960,7 +1253,7 @@ class Session:
 def run_session(runner, stdin, stdout, assume_yes: bool = False,
                 show_banner: bool = True, baseline: str = "", index=None,
                 history_path=None, color=False, width=None, limit=0,
-                color_mode="never") -> int:
+                color_mode="never", session_path=None) -> int:
     r"""交互会话主循环：读一行 → 分派 → 打印 → 直到 quit / EOF。
 
     写入类命令在交互态**就地追问**（读到 yes 才放行本次）；非交互态仍须 `--yes`。
@@ -969,11 +1262,16 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
     健壮性（对标顶尖 CLI 终端）：Ctrl-C 只取消当前行、不杀会话；行尾 `\` 续行（多行命令）；
     行尾 Tab = 补全候选；`history_path` 启用跨会话历史（`--exec`/`--file` 不写，保确定性）。
     """
+    state, warn = load_session_state(session_path)
     session = Session(runner, assume_yes=assume_yes, index=index,
                       history_path=history_path, color=color, width=width,
-                      limit=limit, color_mode=color_mode, stream=stdout)
+                      limit=limit, color_mode=color_mode, stream=stdout,
+                      session_path=session_path)
+    session.last_zone = str(state.get("last_zone") or "")
     if show_banner:
         stdout.write(banner(baseline, color) + "\n")
+        if warn:
+            stdout.write("  [WARN] %s\n" % warn)
         stdout.flush()
     worst = 0
     while not session.quit:
@@ -1031,6 +1329,8 @@ def run_session(runner, stdin, stdout, assume_yes: bool = False,
         # 只记「真执行过的东西」：空行不入，quit/exit 也不入（否则每条会话都多一行噪音）
         if session.history_path and rec["kind"] not in ("empty", "quit"):
             append_history(session.history_path, rec["line"])
+    if session.session_path:
+        save_session_state(session.session_path, session)
     return worst
 
 

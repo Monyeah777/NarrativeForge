@@ -920,12 +920,19 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="跨会话历史文件（缺省 <NF_HOME>/shell_history；仅交互态写入）")
     sh.add_argument("--no-history", action="store_true",
                     help="不写历史（`--exec`/`--file` 本来就一律不写，以保证确定性）")
-    sh.add_argument("--color", choices=("auto", "always", "never"), default="auto",
+    sh.add_argument("--color", choices=("auto", "always", "never"), default=None,
                     help="着色模式（缺省 auto：真 TTY 且未设 NO_COLOR 才上色；非 TTY 恒无色）")
     sh.add_argument("--width", type=int, default=0, metavar="列宽",
                     help="渲染宽度（缺省取环境 COLUMNS，否则 100；CJK 按显示宽度对齐）")
-    sh.add_argument("--limit", type=int, default=0, metavar="条数",
+    sh.add_argument("--limit", type=int, default=None, metavar="条数",
                     help="列表限长（0 = 全部；截断时给「还有 N 条」提示）")
+    sh.add_argument("--session", dest="session_path", default="", metavar="文件",
+                    help="会话状态文件（视图设置 + 上次分区；缺省不持久化）")
+    sh.add_argument("--form", dest="form_id", nargs="?", const="", default=None,
+                    metavar="表单id",
+                    help="写盘表单：不带值列全部；带 id 组装命令（配合 --answer k=v；加 --yes 才执行）")
+    sh.add_argument("--answer", action="append", default=None, metavar="k=v",
+                    help="表单回答（可多次；非交互模式下与 --form 配合）")
     sh.add_argument("--pager", choices=("auto", "never"), default="never",
                     help="分页（缺省 never：非交互面逐字节确定；auto 仅在真 TTY 且 less/more 在场时接管）")
     ly = sub.add_parser(
@@ -4170,7 +4177,6 @@ def _cmd_shell(args) -> int:
     from core import terminal as term
 
     index = _shell_command_index()
-    color_on = term.resolve_color(args.color, sys.stdout)
 
     def runner(argv):
         argv = list(argv)
@@ -4180,17 +4186,63 @@ def _cmd_shell(args) -> int:
             return 2
         return main(argv)
 
+    # 会话状态（`--session`）：显式 CLI 参数 > 会话文件 > 缺省
+    state, state_warn = term.load_session_state(args.session_path)
+    _s = (state.get("settings") or {}) if state else {}
+    color_mode = args.color or str(_s.get("color") or "auto")
+    width = args.width or int(_s.get("width") or 0) or 0
+    limit = args.limit if args.limit is not None else int(_s.get("limit") or 0)
+    color_on = term.resolve_color(color_mode, sys.stdout)
+    if state_warn:
+        print("  [WARN] %s" % state_warn, file=sys.stderr)
+    if args.session_path and not os.path.isabs(args.session_path):
+        print("  ✗ --session 须给绝对路径（修复指引：用 <NF_HOME>/shell_session.json 之类的仓库外路径）",
+              file=sys.stderr)
+        return 2
+    if args.session_path and os.path.abspath(args.session_path).startswith(os.path.abspath(ROOT)):
+        print("  ✗ --session 不得落在仓库内（修复指引：会话状态属本机用户态，请放到 NF_HOME 或临时目录——"
+              "仓库内留件会被 git add -A 吞掉，2026-09-26 实测过）", file=sys.stderr)
+        return 2
+    if args.form_id is not None and not args.form_id:
+        print(term.render_forms("", width or None, color_on))
+        return 0
+    if args.form_id:
+        form = term.form_by_id(args.form_id)
+        if form is None:
+            print("  ✗ 未识别的表单：%s（可用：%s；或 nf shell --form 列全部）"
+                  % (args.form_id, "、".join(str(f["id"]) for f in term.form_table())),
+                  file=sys.stderr)
+            return 2
+        answers = {}
+        for pair in args.answer or []:
+            k, _, v = str(pair).partition("=")
+            answers[k.strip()] = v.strip()
+        missing = term.form_missing(form, answers)
+        if missing:
+            print("  [FAIL] 表单 %s 还缺必填项：%s（修复指引：--answer %s=…）"
+                  % (form["id"], "、".join(missing), missing[0]), file=sys.stderr)
+            return 2
+        argv = term.build_argv(form, answers)
+        if not args.yes:
+            print("== 表单 %s（%s）==" % (form["title"], form["id"]))
+            print("  组装命令：nf %s" % " ".join(argv))
+            print("  （dry-run：加 --yes 才执行；交互态用 /form %s 逐项追问）" % form["id"])
+            return 0
+        print("== 表单 %s（%s）· 执行 ==" % (form["title"], form["id"]))
+        print("  nf %s" % " ".join(argv))
+        return runner(argv)
+
     if args.commands is not None:
         print(_page_text(term.render_commands(index, args.commands or "",
-                                              limit=args.limit, width=args.width,
+                                              limit=limit, width=width or None,
                                               color=color_on), args.pager))
         return 0
     if args.family_map is not None:
-        print(_page_text(term.render_map(args.family_map or "", args.width or None,
+        print(_page_text(term.render_map(args.family_map or "", width or None,
                                          color_on), args.pager))
         return 0
     if args.search:
-        text, hits = term.render_search(index, args.search, width=args.width or None,
+        text, hits = term.render_search(index, args.search, width=width or None,
                                         color=color_on)
         print(_page_text(text, args.pager))
         return 0 if hits else 2
@@ -4242,8 +4294,8 @@ def _cmd_shell(args) -> int:
                             show_banner=print_banner,
                             baseline=_shell_baseline(), index=index,
                             history_path=history_path, color=color_on,
-                            width=args.width or None, limit=args.limit,
-                            color_mode=args.color)
+                            width=width or None, limit=limit,
+                            color_mode=color_mode, session_path=args.session_path)
 
 
 def _collect_cli_tree():
