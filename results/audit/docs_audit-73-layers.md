@@ -11,8 +11,8 @@ subjects:
   - desktop/tests/test_layer_model.py:e224d782a0f00daf345702bfe27a50563987233017f3dc0528af41b0f957855f
   - desktop/src/core/purity_scan.py:223ccbb2fc52c4a15362e1eff06b97341fa00de2094c97f93409d5bbadcb676a
   - desktop/tests/test_purity_scan.py:487bc7719509a312779afaf1474002b0fc0e0acf85f36b7628bf2975b008191b
-  - scripts/nf.py:f17a7e2a1a745e6cf789318e56b1c98e6cc54b421bf4221d9be4eeec64cba7cb
-  - verify.sh:e78a7f0afa4346127b1bc6d82227d56e500e8ebb133b86a5254a245764a5b768
+  - scripts/nf.py:442a004f0d7242c6288f018057f2fcb969fecab840f13a93a88d91cc50622e28
+  - verify.sh:b0f56131c064be7c0b85f748fe3403f0cacd5046c017b2c44a31ddf6f1801717
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102

@@ -87,10 +87,47 @@ ZONES = (
 #: 一行输入的解析结果：kind ∈ empty/quit/help/menu/zone/run/unknown
 Intent = namedtuple("Intent", "kind payload raw")
 
+#: 能力地图（**策展真源**）：把 CLI 的每个顶层命令恰好归入一个能力族。
+#: 菜单（0-7）是新手路径；本表是「全功能可见」的完整分面——两者分工不重叠。
+#: check39 与 `nf shell --verify` 共用同一判据：族分区必须恰好覆盖命令集（不缺不重不虚）。
+FAMILIES = (
+    {"id": "start", "name": "上手与自检",
+     "summary": "第一次进 NF：体检、一键演示、自述数字、抽象阶梯",
+     "commands": ("doctor", "demo", "stats", "layers")},
+    {"id": "forge", "name": "装配与生产",
+     "summary": "从需求到产物：装配计划、全链管道、渲染、协议件读写、入库登记",
+     "commands": ("assemble", "run", "render", "spec", "register", "import")},
+    {"id": "shelf", "name": "资产与货架",
+     "summary": "市场、资产台账、模块生命周期、管线派生、组合引擎、域包工厂、产出形态",
+     "commands": ("market", "asset", "module", "pipeline", "combine", "domain",
+                  "output", "rename")},
+    {"id": "verify", "name": "质检与验证",
+     "summary": "正文 lint、一致性报告、断言表、知识签名、评分、差异、解释、状态前置、发布体检、许可证、遥测",
+     "commands": ("lint", "conformance", "assertions", "sig", "score", "diff",
+                  "explain", "st-validate", "release", "license", "telemetry")},
+    {"id": "library", "name": "图书馆与知识",
+     "summary": "馆藏存取、双源知识、行话术语、实践包、协议件版本史、引用关系与影响面",
+     "commands": ("library", "knowledge", "cognition", "patterns", "rfc",
+                  "related", "who-refers", "impact")},
+    {"id": "govern", "name": "治理与决策",
+     "summary": "决策记录（ADR）、审计、背书、回执、交接、复盘、决策层、评审、构建回路、批准、透明日志、设计审计",
+     "commands": ("decisions", "audit", "attest", "receipts", "handover",
+                  "postmortem", "decide", "model", "review", "workloop",
+                  "approve", "transparency", "design")},
+    {"id": "integrate", "name": "服务与集成",
+     "summary": "MCP 服务面、编辑器面、跑分台、端点契约、互操作导出、指令档路由、事件背书、状态前置、世界模型、模块工具面",
+     "commands": ("serve", "lsp", "bench", "endpoint", "interop", "driver",
+                  "events", "state-front", "worldmodel", "toolface")},
+    {"id": "meta", "name": "命令面与终端",
+     "summary": "帮助、补全脚本、终端自身（本命令即在此族）",
+     "commands": ("help", "completion", "shell", "terminal")},
+)
+
 #: 斜杠命令词表（`/` 后首个词）：既是 `/x` 形态的判据，也是 MSYS 还原的判据
 SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
                "zone", "z", "区", "doctor", "自检", "version", "ver", "版本",
-               "find", "search", "找", "查", "commands", "cmd", "cmds", "命令")
+               "find", "search", "找", "查", "commands", "cmd", "cmds", "命令",
+               "map", "families", "族", "地图")
 
 
 def _slash_intent(body: str, raw: str):
@@ -113,6 +150,8 @@ def _slash_intent(body: str, raw: str):
         return Intent("search", tail.strip(), raw)
     if head in ("commands", "cmd", "cmds", "命令"):
         return Intent("commands", tail.strip(), raw)
+    if head in ("map", "families", "族", "地图"):
+        return Intent("map", tail.strip(), raw)
     return None
 
 
@@ -234,7 +273,7 @@ def banner(baseline: str = "") -> str:
     if baseline:
         lines.append("  基线：%s" % baseline)
     lines += [
-        "  数字 0-7 看能力菜单 · /menu · /find <词> 检索命令面 · /commands 列全部 · quit 退出",
+        "  数字 0-7 看能力菜单 · /map 能力地图 · /find <词> 检索 · /commands 列全部 · quit 退出",
         "  任意 nf 命令可直接直通（例：nf doctor / nf market --list）；行尾 \\ 可续行",
         "  写入类命令（--write/--apply/--register…）须二次确认，终端不替你拍板",
     ]
@@ -363,6 +402,102 @@ def render_commands(index, filt: str = "") -> str:
     return "\n".join(lines)
 
 
+def family_table() -> tuple:
+    """能力地图真源（终端渲染、`--map`、自检与 check39 共用同一份）。"""
+    return FAMILIES
+
+
+def family_of(cmd: str):
+    """某命令所属族；未登记返回 None（自检会把它判成策展缺口）。"""
+    name = str(cmd).strip()
+    for fam in FAMILIES:
+        if name in fam["commands"]:
+            return fam
+    return None
+
+
+def render_map(filt: str = "") -> str:
+    """渲染能力地图（全功能分面）：每族给一句话定位 + 该族命令清单。"""
+    f = str(filt or "").strip().lower()
+    lines = ["== NF 能力地图（%d 族 · 覆盖 CLI 全部顶层命令）==" % len(FAMILIES)]
+    for fam in FAMILIES:
+        cmds = list(fam["commands"])
+        hit = (not f) or f in str(fam["id"]).lower() or f in str(fam["name"]).lower() \
+            or any(f in c for c in cmds)
+        if not hit:
+            continue
+        lines.append("")
+        lines.append("[%s] %s —— %s" % (fam["id"], fam["name"], fam["summary"]))
+        lines.append("    " + " · ".join("nf %s" % c for c in cmds))
+    lines.append("")
+    lines.append("  单族用法：/map <族名或命令片段>；命令详情：/find <词>；逐条列出：/commands")
+    return "\n".join(lines)
+
+
+def self_check(index, commands, root_flags=(), examples=None) -> tuple:
+    """终端自检 → (issues, stats)：策展完备性 + 索引覆盖 + 菜单示例可达。
+
+    这是**单源判据**：`nf shell --verify`（给人跑）与 verify check39（给门禁跑）调用同一函数，
+    于是「终端自己说没问题」与「门禁说没问题」永远同一套语义。
+    """
+    issues = []
+    commands = {str(c) for c in commands or []}
+    index = list(index or [])
+    index_paths = {str(e.get("path")) for e in index}
+    index_tops = {p.split(" ")[0] for p in index_paths}
+
+    # ① 索引：覆盖全部顶层命令 + 含二级 + 指向真命令
+    missing = sorted(commands - index_tops)
+    if missing:
+        issues.append("索引漏命令：%s（修复指引：索引须由 argparse 面派生）"
+                      % "、".join(missing[:5]))
+    stray = sorted(index_tops - commands)
+    if stray:
+        issues.append("索引含不存在的命令：%s（修复指引：核对 _shell_command_index）"
+                      % "、".join(stray[:5]))
+    if len(index_paths) < 2 * max(len(commands), 1):
+        issues.append("索引疑未含二级子命令：%d 条 / 顶层 %d（修复指引：索引须含 `cmd sub`）"
+                      % (len(index_paths), len(commands)))
+    for path in sorted(index_paths):
+        if not str(path).strip():
+            issues.append("索引存在空路径条目（修复指引：核对索引派生）")
+
+    # ② 策展：能力族必须恰好分区命令集（不缺 / 不重 / 不虚）
+    seen = {}
+    for fam in FAMILIES:
+        if not fam.get("name") or not fam.get("summary") or not fam.get("commands"):
+            issues.append("能力族 %s 缺 name/summary/commands（修复指引：补齐策展字段）"
+                          % fam.get("id"))
+        for cmd in fam.get("commands") or []:
+            if cmd in seen:
+                issues.append("命令 %s 同时归入 %s 与 %s（修复指引：一命令只归一族）"
+                              % (cmd, seen[cmd], fam.get("id")))
+            seen[cmd] = fam.get("id")
+            if commands and cmd not in commands:
+                issues.append("能力族 %s 含不存在的命令：%s（修复指引：改成真实命令）"
+                              % (fam.get("id"), cmd))
+    uncurated = sorted(commands - set(seen))
+    if uncurated:
+        issues.append("未被能力地图策展的命令：%s（修复指引：登记进 FAMILIES——"
+                      "「最全功能」= 每个命令都有归属）" % "、".join(uncurated[:8]))
+
+    # ③ 菜单：每条示例必须指向真实命令；键须从 0 连续
+    flags = {str(x) for x in root_flags or []}
+    ex_total = 0
+    for item in ZONES:
+        for ex in item["examples"]:
+            ex_total += 1
+            if not example_resolves(ex, commands, flags):
+                issues.append("菜单指向死命令：%s（区 %s）" % (ex, item["id"]))
+    keys = [z["key"] for z in ZONES]
+    if keys != [str(i) for i in range(len(keys))]:
+        issues.append("菜单键不连续：%s（修复指引：从 0 起连续编号）" % keys)
+
+    stats = {"commands": len(commands), "families": len(FAMILIES),
+             "index_entries": len(index_paths), "examples": ex_total}
+    return issues, stats
+
+
 class Session:
     """终端会话状态机：解析 → 闸门 → 分派，I/O 全部由调用方注入（可离线单测）。
 
@@ -435,9 +570,11 @@ class Session:
             rec["exit"] = 0 if hits else 2
         elif intent.kind == "commands":
             rec["note"] = render_commands(self.index, intent.payload)
+        elif intent.kind == "map":
+            rec["note"] = render_map(intent.payload)
         elif intent.kind == "unknown":
             rec.update(exit=2, note=("未识别：%s（可用：数字 0-7 看菜单 · /menu · "
-                                     "/find <词> · /commands · /help · quit · "
+                                     "/map · /find <词> · /commands · /help · quit · "
                                      "或直接输入 nf 命令）" % intent.raw))
         else:  # run
             argv = list(intent.payload)

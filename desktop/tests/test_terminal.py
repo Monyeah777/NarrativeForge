@@ -303,6 +303,63 @@ class CommandFaceTest(unittest.TestCase):
         self.assertIn("nf asset ls", text)
         self.assertNotIn("nf doctor ", text)
 
+    def test_families_partition_all_commands(self):
+        """能力地图必须**恰好分区**命令集：不缺（未策展）、不重（多族）、不虚（无此命令）。"""
+        cmds = _top_commands()
+        seen = {}
+        for fam in term.family_table():
+            self.assertTrue(fam["name"] and fam["summary"] and fam["commands"], fam["id"])
+            for cmd in fam["commands"]:
+                self.assertNotIn(cmd, seen, "%s 同时归入 %s 与 %s" % (cmd, seen.get(cmd), fam["id"]))
+                self.assertIn(cmd, cmds, "族 %s 含不存在的命令 %s" % (fam["id"], cmd))
+                seen[cmd] = fam["id"]
+        self.assertEqual(sorted(cmds - set(seen)), [], "未被策展的命令")
+
+    def test_family_of_lookup(self):
+        self.assertEqual(term.family_of("doctor")["id"], "start")
+        self.assertEqual(term.family_of("layers")["id"], "start")
+        self.assertIsNone(term.family_of("no-such-command"))
+
+    def test_render_map_lists_and_filters(self):
+        text = term.render_map()
+        for fam in term.family_table():
+            self.assertIn(fam["name"], text)
+            for cmd in fam["commands"]:
+                self.assertIn("nf %s" % cmd, text)
+        only = term.render_map("治理")
+        self.assertIn("治理与决策", only)
+        self.assertNotIn("上手与自检", only)
+
+    def test_self_check_clean_on_real_repo(self):
+        tree = nf._collect_cli_tree()
+        issues, stats = term.self_check(self._index(), tree["commands"], tree["root_flags"])
+        self.assertEqual(issues, [])
+        self.assertEqual(stats["families"], len(term.family_table()))
+        self.assertGreaterEqual(stats["index_entries"], 2 * stats["commands"])
+
+    def test_self_check_catches_uncurated_command(self):
+        tree = nf._collect_cli_tree()
+        issues, _ = term.self_check(self._index(), set(tree["commands"]) | {"zzz-fake"},
+                                    tree["root_flags"])
+        self.assertTrue(any("未被能力地图策展" in i for i in issues), issues)
+
+    def test_self_check_catches_unknown_family_command(self):
+        original = term.FAMILIES
+        bad = tuple([dict(original[0], commands=tuple(original[0]["commands"]) + ("zzz-fake",))]
+                    + list(original[1:]))
+        term.FAMILIES = bad
+        try:
+            tree = nf._collect_cli_tree()
+            issues, _ = term.self_check(self._index(), tree["commands"], tree["root_flags"])
+            self.assertTrue(any("含不存在的命令" in i for i in issues), issues)
+        finally:
+            term.FAMILIES = original
+
+    def test_parse_map_words(self):
+        self.assertEqual(term.parse("/map").kind, "map")
+        self.assertEqual(term.parse("/map 治理").payload, "治理")
+        self.assertEqual(term.parse("/族 govern").kind, "map")
+
 
 class ShellScriptTest(unittest.TestCase):
     """脚本文件面：与交互态共用同一条执行链（同一 Session/索引/闸门）。"""
@@ -376,6 +433,24 @@ class ResilienceTest(unittest.TestCase):
 
 
 class CliIntegrationTest(unittest.TestCase):
+    def test_cli_map_and_verify_faces(self):
+        code, out = _run(["shell", "--map", "--no-banner"])
+        self.assertEqual(code, 0)
+        self.assertIn("能力地图", out)
+        self.assertIn("治理与决策", out)
+        code, out = _run(["shell", "--map", "治理", "--no-banner"])
+        self.assertEqual(code, 0)
+        self.assertNotIn("上手与自检", out)
+        code, out = _run(["shell", "--verify", "--no-banner"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("通过", out)
+        self.assertIn("能力族", out)
+
+    def test_session_map_command(self):
+        code, out = _run(["shell", "--exec", "/map start", "--no-banner"])
+        self.assertEqual(code, 0)
+        self.assertIn("[start]", out)
+
     def test_exec_menu_is_deterministic(self):
         code1, out1 = _run(["shell", "--exec", "/menu", "--no-banner"])
         code2, out2 = _run(["shell", "--exec", "/menu", "--no-banner"])

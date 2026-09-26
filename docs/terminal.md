@@ -51,6 +51,7 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 | `/menu` `/zone 4` | 重看菜单 / 看某区示例 |
 | `/find <词>`（`/search` 同义） | 在**全部命令面**上检索（命中给命令 + 一句话用途；未命中给候选） |
 | `/commands [过滤]` | 列出全部可达命令（顶层 + 二级，可按子串过滤） |
+| `/map [族或片段]` | **能力地图**：把全部顶层命令按能力族策展呈现（8 族），可过滤 |
 | `/help` 或 `/help <cmd>` | 转 CLI 帮助面（等价 `nf help …`） |
 | `nf <args…>` 或 `<args…>` | 直通 CLI（`nf` 前缀可省） |
 | `quit` `exit` `q` `退出` | 退出会话 |
@@ -62,12 +63,17 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 终端的瓶颈从来不是命令少，而是**找不到**——CLI 有 64 个顶层命令、135 条含二级的入口。三条入口解决它：
 
 ```bash
+python scripts/nf.py shell --map                 # 能力地图：8 个能力族，覆盖全部 64 个命令
+python scripts/nf.py shell --map 治理            # 只看某一族（也可按命令片段过滤）
 python scripts/nf.py shell --commands            # 列出全部可达命令（顶层 + 二级）
 python scripts/nf.py shell --commands asset      # 按子串过滤
 python scripts/nf.py shell --search 装配         # 按关键词检索（未命中退出 2，可进脚本）
+python scripts/nf.py shell --verify              # 终端自检（索引/策展/菜单三面，退出码即结论）
 ```
 
-会话内等价形态是 `/commands [过滤]` 与 `/find <词>`。**索引由 CLI 的 argparse 面派生**（终端不维护第二份命令表），并由 verify check39 断言两件事：① 索引覆盖**全部**顶层命令；② 每个命令都能被检索到自身——「最全功能」因此是可机检事实，不是宣称。
+会话内等价形态是 `/map [族]`、`/commands [过滤]` 与 `/find <词>`。三层保证「最全」不是宣称：
+
+① **索引由 CLI 的 argparse 面派生**（终端不维护第二份命令表）；② **能力地图把每个命令恰好归入一个族**（`start / forge / shelf / verify / library / govern / integrate / meta`），「未策展」即报；③ 判据**单源**——`nf shell --verify`（给人跑）与 verify check39（给门禁跑）调用同一个 `terminal.self_check`，所以「终端说没问题」与「门禁说没问题」永远同一套语义。
 
 会话内**不执行**两类命令（避免卡死终端）：`serve`（长驻 MCP 服务）与 `shell`（递归会话）——
 终端只给指引，请另开一个终端窗口运行。

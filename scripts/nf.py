@@ -909,6 +909,11 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="列出全部可达命令（顶层 + 二级，可按子串过滤）后退出——「最全功能」的可检视面")
     sh.add_argument("--search", default="", metavar="词",
                     help="在命令面上检索（不进入终端）：命中打印命令与用途，未命中退出 2")
+    sh.add_argument("--map", dest="family_map", nargs="?", const="", default=None,
+                    metavar="族或片段",
+                    help="打印能力地图（把全部顶层命令按能力族策展呈现），可按族名/片段过滤")
+    sh.add_argument("--verify", action="store_true",
+                    help="终端自检（索引覆盖 / 能力族分区 / 菜单示例可达），退出码即结论")
     ly = sub.add_parser(
         "layers",
         help="抽象阶梯（两轴 + 纵切）：四阶真源/接口面 + 资产五子级 + 入口面 + 验证纵切",
@@ -4133,10 +4138,23 @@ def _cmd_shell(args) -> int:
     if args.commands is not None:
         print(term.render_commands(index, args.commands or ""))
         return 0
+    if args.family_map is not None:
+        print(term.render_map(args.family_map or ""))
+        return 0
     if args.search:
         text, hits = term.render_search(index, args.search)
         print(text)
         return 0 if hits else 2
+    if args.verify:
+        tree = _collect_cli_tree()
+        issues, stats = term.self_check(index, tree["commands"], tree["root_flags"])
+        print("== nf shell --verify（终端自检 · 与 verify check39 同源判据）==")
+        for i in issues:
+            print("  [FAIL] %s" % i)
+        print("  命令 %d · 能力族 %d · 索引条目 %d · 菜单示例 %d → %s"
+              % (stats["commands"], stats["families"], stats["index_entries"],
+                 stats["examples"], "通过" if not issues else "FAIL %d" % len(issues)))
+        return 0 if not issues else 1
     if args.script_file:
         try:
             code, text, _records = term.run_file(args.script_file, runner,
