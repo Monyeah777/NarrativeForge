@@ -102,9 +102,13 @@ def _module_docs(root: str) -> List[str]:
     return sorted(out)
 
 
-def _evidence_ids(root: str) -> List[str]:
-    """官方 registry modules[] + community registry protocols[].module_ids（装配在册证据）。"""
-    reg, _ = _read_json(os.path.join(root, "desktop", "src", "core", "registry.json"))
+def _evidence_ids(root: str, reg: Any = None) -> List[str]:
+    """官方 registry modules[] + community registry protocols[].module_ids（装配在册证据）。
+
+    `reg` 可由调用方传入（同一次扫描里 registry.json 只该读一次——见 `scan`）。
+    """
+    if reg is None:
+        reg, _ = _read_json(os.path.join(root, "desktop", "src", "core", "registry.json"))
     ids: List[str] = []
     if isinstance(reg, dict):
         for m in reg.get("modules") or []:
@@ -123,7 +127,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         issues.append("PyYAML 不在（conformance_scan 依赖仓库既有 yaml 依赖）")
         return issues, {"modules_mc": 0, "packages": 0, "export_items": 0}
 
-    evidence = set(_evidence_ids(root))
+    # registry.json 只读一次：过去它在**每个社区包的循环体里**被重读一遍（实测 112 次
+    # ≈ 0.09 s，纯重复 IO + JSON 解析），现在提到扫描开头，两个用处共用同一份。
+    reg, _ = _read_json(os.path.join(root, "desktop", "src", "core", "registry.json"))
+    evidence = set(_evidence_ids(root, reg))
+    reg_ids = {p.get("id") for p in (reg or {}).get("protocols") or []}
 
     modules_mc = 0
     for doc in _module_docs(root):
@@ -169,8 +177,6 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         if declared not in ("L1", "L2", "L3"):
             issues.append(f"{rel}: package 缺/非法 conformance 声明 {declared!r}")
             continue
-        reg, _ = _read_json(os.path.join(root, "desktop", "src", "core", "registry.json"))
-        reg_ids = {p.get("id") for p in (reg or {}).get("protocols") or []}
         provable = 2 if isinstance(pid, str) and pid in reg_ids else 1
         order = {"L1": 1, "L2": 2, "L3": 3}
         if order[declared] > provable:
