@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-27",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "终端 v16：统一 YAML 加载器改 libyaml（逐块等价实证 1395 块）+ 四处热点并入共享入口。",
+  "note": "把重复读/O(n²) 读盘钉成确定性判据（library.search 读取形状 + 纵深扫描单件上限 + 变异样本）。",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

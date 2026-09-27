@@ -5,6 +5,10 @@
 自底向上——馆藏只有 2 件时（单步证明）完全掩盖了它，n≥3 全部折叠不到根。
 """
 import hashlib
+import builtins
+import collections
+import io
+import os
 import subprocess
 import sys
 import tempfile
@@ -42,15 +46,20 @@ class TestLibraryScale(unittest.TestCase):
 
     N = 300
 
-    def _big_library(self, tmp):
+    def _write_entries(self, tmp, n=None):
+        """只造条目件（不含投影/回执）——供检索的形状判据复用。"""
         d = Path(tmp, "library")
         d.mkdir(parents=True, exist_ok=True)
-        for i in range(1, self.N + 1):
+        for i in range(1, (n or self.N) + 1):
             (d / ("NF-%d.md" % i)).write_text(
                 "---\nid: NF-%d\ntype: 规模件\ntitle: 第 %d 件\n"
                 "description: 规模回归样本 %d\nlicense: MIT\ngenerated: 2026-09-14\n"
                 "status: active\nsources:\n  - 规模回归\n---\n\n正文 %d 「雨夜」\n"
                 % (i, i, i, i), encoding="utf-8")
+        return d
+
+    def _big_library(self, tmp):
+        d = self._write_entries(tmp)
         (d / "INDEX.md").write_text(
             "# INDEX\n\n" + lib.BEGIN_INDEX + "\n" + lib.END_INDEX + "\n",
             encoding="utf-8")
@@ -84,6 +93,81 @@ class TestLibraryScale(unittest.TestCase):
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
             entry = [e for e in doc["entries"] if e["id"] == "NF-250"][0]
             self.assertLess(len(entry["proof"]), 12, "300 件的审计路径应远小于条数")
+
+
+class TestLibrarySearchReadShape(unittest.TestCase):
+    """`library.search` 的**读取形状**判据（确定性，不是墙钟）。
+
+    依据：本仓真出过 O(n²)——`search` 曾对**每条命中**重跑一次全量 `entries()`，300 件馆藏
+    实测 93,000 次读盘 / 24.7 s。墙钟断言在 CI 上会抖，读次数不会：把「每件读常数次、
+    总量随件数线性」钉成判据，同类回归立刻红。
+    """
+
+    N = 300
+
+    def _count_opens(self, root, fn):
+        counts: collections.Counter = collections.Counter()
+        orig = io.open
+
+        def spy(file, *a, **k):
+            try:
+                path = os.path.abspath(str(file))
+                if os.path.normcase(path).startswith(os.path.normcase(root)):
+                    counts[os.path.normcase(path)] += 1
+            except Exception:  # noqa: BLE001 - 计数失败不影响被测逻辑
+                pass
+            return orig(file, *a, **k)
+
+        io.open = spy
+        builtins.open = spy
+        try:
+            out = fn()
+        finally:
+            io.open = orig
+            builtins.open = orig
+        return out, counts
+
+    def test_search_reads_each_entry_constant_times(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp, "library")
+            d.mkdir(parents=True, exist_ok=True)
+            for i in range(1, self.N + 1):
+                (d / ("NF-%d.md" % i)).write_text(
+                    "---\nid: NF-%d\ntype: 规模件\ntitle: 第 %d 件\n"
+                    "description: 规模回归样本 %d\nlicense: MIT\ngenerated: 2026-09-14\n"
+                    "status: active\nsources:\n  - 规模回归\n---\n\n正文 %d 「雨夜」\n"
+                    % (i, i, i, i), encoding="utf-8")
+            hits, counts = self._count_opens(tmp, lambda: lib.search("雨夜", tmp, limit=5))
+        self.assertEqual(len(hits), 5)
+        self.assertTrue(counts, "检定未捕获到任何读取（判据失效）")
+        worst = max(counts.values())
+        self.assertLessEqual(worst, 2,
+                             "单件在检索里被读 %d 次（应 ≈1；O(n²) 会随件数放大）" % worst)
+        self.assertLessEqual(
+            sum(counts.values()), 2 * self.N,
+            "总读次数 %d 必须随件数**线性**（O(n²) 会到 n × 命中数）" % sum(counts.values()))
+
+    def test_bound_catches_quadratic_shape(self):
+        """变异注入：把「每条命中重跑一次全量 entries()」的形状重建出来，证明该界限**能抓住**。
+
+        纪律：判据必须有能把它打红的违规样本，否则只是「看起来很严」。
+        """
+        n = 60
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp, "library")
+            d.mkdir(parents=True, exist_ok=True)
+            for i in range(1, n + 1):
+                (d / ("NF-%d.md" % i)).write_text(
+                    "---\nid: NF-%d\ntype: 规模件\ntitle: 第 %d 件\n---\n正文雨夜\n"
+                    % (i, i), encoding="utf-8")
+            ids = [e["id"] for e in lib.entries(tmp)]
+            _, counts = self._count_opens(
+                tmp,
+                # 旧实现的形状：对**每个命中**再走一遍全量 entries()
+                lambda: [next(e for e in lib.entries(tmp) if e["id"] == eid) for eid in ids])
+        worst = max(counts.values())
+        self.assertGreater(worst, 2, "O(n²) 形状应远超单件 2 次的界限（实测 %d）" % worst)
+        self.assertGreater(sum(counts.values()), 2 * n, "O(n²) 形状的总读次数应非线性")
 
 
 if __name__ == "__main__":
