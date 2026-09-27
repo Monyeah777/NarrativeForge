@@ -877,6 +877,49 @@ class NavigationConsistencyTest(unittest.TestCase):
             term.ZONES = original
 
 
+class TerminalEfficiencyTest(unittest.TestCase):
+    """终端效率：唯一前缀补全（少敲键）+ 宽度缓存（渲染热路径）。"""
+
+    @staticmethod
+    def _index():
+        return nf._shell_command_index()
+
+    def test_unique_prefix_is_resolved(self):
+        calls = []
+        session = term.Session(lambda argv: calls.append(list(argv)) or 0,
+                               index=self._index())
+        rec = session.dispatch("nf scor")
+        self.assertEqual(rec["argv"], ["score"], "唯一前缀应自动补全")
+        self.assertIn("唯一前缀补全", rec["note"])
+        self.assertEqual(calls, [["score"]])
+
+    def test_ambiguous_prefix_is_not_guessed(self):
+        calls = []
+        session = term.Session(lambda argv: calls.append(list(argv)) or 0,
+                               index=self._index())
+        rec = session.dispatch("nf stat")            # stats 与 state-front 两候选
+        self.assertEqual(rec["exit"], 2)
+        self.assertIn("未知命令", rec["note"])
+        self.assertIn("你是不是想找", rec["note"])
+        self.assertEqual(calls, [], "有歧义时不许猜着执行")
+
+    def test_parser_and_index_are_cached(self):
+        """效率核心：同一进程内解析器/索引/命令树只构建一次（否则每条命令多付 ~100 ms）。"""
+        self.assertIs(nf._build_parser(), nf._build_parser())
+        self.assertIs(nf._shell_command_index(), nf._shell_command_index())
+        self.assertIs(nf._collect_cli_tree(), nf._collect_cli_tree())
+
+    def test_char_width_cache_wired_and_correct(self):
+        term.char_width.cache_clear()
+        self.assertEqual(term.char_width("中"), 2)
+        self.assertEqual(term.char_width("a"), 1)
+        self.assertEqual(term.char_width("中"), 2)
+        info = term.char_width.cache_info()
+        self.assertGreaterEqual(info.hits, 1, "宽度查询走缓存（渲染热路径）")
+        self.assertGreaterEqual(info.maxsize, 1024)
+        self.assertEqual(term.display_width("中文ab"), 6)
+
+
 class ReplayAndColorPolishTest(unittest.TestCase):
     """历史重放（!! / !n / !前缀）与着色细化（CLICOLOR_FORCE / 命中高亮）。"""
 
@@ -1001,7 +1044,8 @@ class BaselineTest(unittest.TestCase):
             return 0, "干净"
 
         results, stats = term.run_baseline(_runner, rows=rows)
-        self.assertEqual(stats, {"rows": 3, "passed": 3})
+        self.assertEqual((stats["rows"], stats["passed"]), (3, 3))
+        self.assertIn("total_ms", stats)
         self.assertEqual([r["ok"] for r in results], [True, True, True])
         self.assertEqual(seen, [["shell", "--x"], ["shell", "--y"], ["shell", "--z"]])
 
@@ -1041,6 +1085,34 @@ class BaselineTest(unittest.TestCase):
         results, stats = term.run_baseline(lambda argv, stdin_text=None: (0, "ok"),
                                            rows=rows)
         self.assertEqual(stats["passed"], 0, "声明了 expect_file 就必须真有该文件")
+
+    def test_baseline_enforces_latency_budget(self):
+        """时间预算：超时即判「效率退化」（把「极致效率」钉成判据，而非口号）。"""
+        import time as _time
+
+        def _slow(argv, stdin_text=None):
+            _time.sleep(0.02)
+            return 0, "ok"
+
+        rows = ({"id": "tight", "name": "紧预算", "argv": ("shell",), "expect": "ok",
+                 "max_ms": 1},)
+        results, stats = term.run_baseline(_slow, rows=rows)
+        self.assertEqual(stats["passed"], 0, "超预算必须判不过")
+        self.assertGreaterEqual(results[0]["ms"], 10)
+        self.assertEqual(results[0]["max_ms"], 1)
+        rows = ({"id": "loose", "name": "宽预算", "argv": ("shell",), "expect": "ok",
+                 "max_ms": 5000},)
+        results, stats = term.run_baseline(_slow, rows=rows)
+        self.assertEqual(stats["passed"], 1)
+        self.assertEqual(stats["rows"], 1)
+        self.assertGreaterEqual(stats["total_ms"], 10)
+
+    def test_real_baseline_rows_declare_sane_budgets(self):
+        for row in term.baseline_table():
+            budget = float(row.get("max_ms", term.BASELINE_DEFAULT_MAX_MS))
+            self.assertGreater(budget, 0, row["id"])
+            self.assertLessEqual(budget, 10000,
+                                 "%s 的预算过高（>10s），拦不住数量级回归" % row["id"])
 
     def test_render_baseline_marks_and_no_ansi(self):
         results, stats = term.run_baseline(lambda argv, stdin_text=None: (0, "好"),

@@ -26,8 +26,10 @@ import json
 import os
 import shlex
 import sys
+import time
 from collections import namedtuple
 from contextlib import redirect_stderr, redirect_stdout
+from functools import lru_cache
 
 SHELL_VERSION = "1.0.0"
 
@@ -204,8 +206,13 @@ _STYLES = {"head": "\033[1m", "cmd": "\033[36m", "ok": "\033[32m",
 _RESET = "\033[0m"
 
 
+@lru_cache(maxsize=4096)
 def char_width(ch: str) -> int:
-    """单字符显示宽度（CJK/全角/emoji = 2，其余 = 1，控制字符 = 0）。"""
+    """单字符显示宽度（CJK/全角/emoji = 2，其余 = 1，控制字符 = 0）。
+
+    带缓存：列表渲染每个字符都要问一次宽度，`--commands`（135 行）这类场景下是热路径；
+    字符集有限，4096 项缓存足够覆盖任意一次渲染。
+    """
     cp = ord(ch)
     if cp < 32 or cp == 0x7F:
         return 0
@@ -844,6 +851,12 @@ def render_map(filt: str = "", width=None, color: bool = False) -> str:
 #: 定义必须早于 TERMINAL_BASELINE——行里直接引用它（模块级求值）。
 BASELINE_TMP = "{TMP}"
 
+#: 每行证据的**默认延迟预算**（毫秒）：超时即判「效率退化」——把「极致效率」变成门禁。
+#: 标定方法：单跑实测（机器空闲）后留 100× 以上余量——轻行实测 ~1-2 ms，预算 300 ms，
+#: 既能容忍负载抖动，又能拦住**数量级回归**（例：解析器缓存失效会让轻行从 ~2 ms 涨到 ~300 ms
+#: 量级；全命令扫描从 ~2 s 涨回 ~11 s，那一行另有 8000 ms 预算兜底）。
+BASELINE_DEFAULT_MAX_MS = 300
+
 
 def baseline_tmp_dir() -> str:
     """基线探针目录：`<系统临时目录>/nf_baseline`（固定名 → 多次运行不累积垃圾）。
@@ -883,11 +896,13 @@ TERMINAL_BASELINE = (
     {"id": "script-face", "name": "脚本面（--exec 逐条执行）",
      "argv": ("shell", "--exec", "/zone 0", "--no-banner"), "expect": "环境自检"},
     {"id": "history-replay", "name": "历史重放（!! / !n / !前缀）",
-     "argv": ("shell", "--exec", "nf doctor; !!", "--no-banner"), "expect": "重放"},
+     # 本行主题是「重放机制」，用最轻的真实命令（--version）——避免把 `layers --verify`
+     # 那类全仓扫描（~1.5 s/次）的成本记在效率证据上（时间预算是判**机制开销**的）。
+     "argv": ("shell", "--exec", "nf --version; !!", "--no-banner"), "expect": "重放"},
     {"id": "history-persist", "name": "历史落盘（交互态写文件）",
      "argv": ("shell", "--history", BASELINE_TMP + "/shell_history", "--no-banner"),
-     "stdin": "nf doctor\nquit\n",
-     "expect": "体检", "expect_file": BASELINE_TMP + "/shell_history"},
+     "stdin": "nf --version\nquit\n",
+     "expect": "nf 1.0.0", "expect_file": BASELINE_TMP + "/shell_history"},
     {"id": "session-persist", "name": "会话状态持久化（--session）",
      "argv": ("shell", "--session", BASELINE_TMP + "/shell_session.json",
               "--no-history", "--no-banner"),
@@ -904,7 +919,7 @@ TERMINAL_BASELINE = (
     {"id": "live-selfcheck", "name": "活体自检（真跑一条只读命令）",
      # 同一行承载两条断言：活体档在场 + 全 64 命令逐条 --help 均可调用（只跑一次）
      "argv": ("shell", "--verify", "--deep", "--no-banner"),
-     "expect": ("活体", "全命令可调用：")},
+     "expect": ("活体", "全命令可调用："), "max_ms": 8000},
 )
 
 #: 基线的写盘禁令：证据行只许只读（出现这些旗标即视为基线自身违规）
@@ -968,7 +983,9 @@ def run_baseline(runner, rows=None) -> tuple:
             item = str(a)
             argv.append(os.path.normpath(item.replace(BASELINE_TMP, baseline_tmp_dir()))
                         if BASELINE_TMP in item else item)
+        t0 = time.perf_counter()
         code, out = runner(argv, row.get("stdin"))
+        ms = (time.perf_counter() - t0) * 1000.0
         text = str(out or "")
         _exp_raw = str(row.get("expect_file") or "")
         exp_file = (os.path.normpath(_exp_raw.replace(BASELINE_TMP, baseline_tmp_dir()))
@@ -976,16 +993,21 @@ def run_baseline(runner, rows=None) -> tuple:
         ok = (code == int(row.get("expect_exit", 0))
               and _expect_hits(text, row.get("expect"))
               and (not row.get("forbid") or row["forbid"] not in text)
-              and (not exp_file or os.path.isfile(exp_file)))
+              and (not exp_file or os.path.isfile(exp_file))
+              and ms <= float(row.get("max_ms", BASELINE_DEFAULT_MAX_MS)))
         results.append({"id": row["id"], "name": row["name"],
                         "argv": argv,
                         "exit": code, "expect_exit": int(row.get("expect_exit", 0)),
+                        "ms": round(ms, 1),
+                        "max_ms": float(row.get("max_ms", BASELINE_DEFAULT_MAX_MS)),
                         "ok": bool(ok),
                         "expect": row.get("expect") or "",
                         "forbid": row.get("forbid") or "",
                         "expect_file": exp_file})
     stats = {"rows": len(results),
-             "passed": sum(1 for r in results if r["ok"])}
+             "passed": sum(1 for r in results if r["ok"]),
+             "slowest_ms": max([r["ms"] for r in results] or [0.0]),
+             "total_ms": round(sum(r["ms"] for r in results), 1)}
     return results, stats
 
 
@@ -993,11 +1015,14 @@ def render_baseline(results, stats, width=None, color: bool = False) -> str:
     """渲染基线逐行结果（人读）：一行一项能力 + 判定 + 证据命令。"""
     w = term_width(width)
     lines = [style("== 顶尖 CLI 基线（%d 项 · 逐条可复跑）==" % stats["rows"], "head", color),
-             "  通过 %d/%d" % (stats["passed"], stats["rows"])]
+             "  通过 %d/%d · 总耗时 %s ms · 最慢 %s ms（每行有延迟预算，超时即判效率退化）"
+             % (stats["passed"], stats["rows"], stats.get("total_ms", "-"),
+                stats.get("slowest_ms", "-"))]
     for r in results:
         flag = style("✔" if r["ok"] else "✘", "ok" if r["ok"] else "fail", color)
-        lines.append("%s %s nf %s"
-                     % (flag, pad_to(r["name"], 30), " ".join(r["argv"])))
+        lines.append("%s %s %8s ms  nf %s"
+                     % (flag, pad_to(r["name"], 30), r.get("ms", "-"),
+                        " ".join(r["argv"])))
     lines.append("  单行复跑：直接执行该行的 `nf …`（全部只读，不改仓库）")
     return "\n".join(lines)
 
@@ -1458,6 +1483,15 @@ class Session:
         else:  # run
             argv = list(intent.payload)
             rec["argv"] = argv
+            # 效率：**唯一前缀**自动补全（`nf stat` → `nf stats`）——只在恰好一个候选时生效，
+            # 有歧义一律不猜（照旧走下面的未知命令分支给候选）。
+            if argv and self._tops and argv[0] not in self._tops \
+                    and not str(argv[0]).startswith("-"):
+                _cands = sorted(c for c in self._tops if c.startswith(argv[0]))
+                if len(_cands) == 1:
+                    rec["note"] = ("唯一前缀补全：%s → %s" % (argv[0], _cands[0]))
+                    argv = [_cands[0]] + argv[1:]
+                    rec["argv"] = argv
             blocked = BLOCKED_IN_SHELL.get(argv[0]) if argv else None
             unknown = (argv and self._tops and argv[0] not in self._tops
                        and argv[0] not in ("help", "--version", "--help", "-h"))

@@ -2,6 +2,14 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v12：极致效率（命令面缓存 + 延迟预算门禁 + 唯一前缀）**（**作者目标**：「终端极致效率」）：
+  ① **根因是用数据抓的**：`python -m cProfile` + 逐段计时显示 `_build_parser()` **96–118 ms/次且每次重建**，而一条终端命令过去要建 3 次以上（索引 + 命令树 + 真正解析），`--verify --deep` 的 64 条扫描更是 64 次——**~6 s 纯属重复构建**。
+  ② **三处缓存**：`_build_parser()` / `_collect_cli_tree()` / `_shell_command_index()` 进程内缓存（解析器只读复用）；`char_width()` 加 `lru_cache(4096)`（列表渲染逐字符问宽度的热路径）；`--version` 短路（最常调用的探测命令不再建命令面）。
+  ③ **实测前后**：`--verify --deep` **~11.3 s → ~1.9 s**；`nf shell --baseline` 17 行总耗时 **1.95 s**（16 行 ≤ 4.3 ms）；`nf shell --commands` 冷启动 **363 → 281 ms**。
+  ④ **延迟预算入门禁**：基线每行可声明 `max_ms`（默认 300 ms，`--verify --deep` 行 8000 ms）；`run_baseline` 逐行计时，超预算即判不过 → check39 红。人读输出并列 ms（`✔ 命令面可达 1.7 ms nf shell --commands …`）——「快」从此与「对」同权，回归拦在推送之前。
+  ⑤ **少敲键**：唯一前缀补全（输入 `scor` 自动补成 `score`，仅**恰好一个候选**时生效并标注；歧义如 `stat`（stats / state-front 两候选）仍给拼错建议、不猜着执行）；基线两行历史证据换用最轻真实命令（`nf --version`），避免把 `layers --verify` 的全仓扫描成本记到机制证据上。
+  ⑥ 实测：`nf shell --baseline` → **通过 17/17**（含 ms 列与预算判定）；`test_terminal` **115 例**（新增预算正负例、唯一前缀/歧义不猜、三处缓存命中、宽度缓存）；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39）；conformance 27/27；receipts 51 件。
+
 - **终端 v11：基线补齐最后两处空白（会话持久化 / 历史落盘）→ 17 行全绿**（**作者指令**：「对标最顶尖 CLI 终端，实现最全 NF 功能」；开工依据 = 上一轮自查缺口：这两条能力此前**只被单测覆盖**，不在基线行内）：
   ① **基线行新增两种证据能力**：`stdin`（给交互态证据喂输入）与 `expect_file`（断言某文件**真的落盘**）；配套 **`{TMP}` 占位**展开到系统临时目录下的固定目录 `<临时目录>/nf_baseline`（仓库之外；固定名而非 `mkdtemp`——本环境删除能力受限，新建会持续堆积）。runner 契约相应扩为 `runner(argv, stdin_text=None)`（CLI 侧与 check39 侧同步）。
   ② **新增两行**：`history-persist`（`--history {TMP}/shell_history` + stdin `nf doctor` → 断言历史文件存在）、`session-persist`（`--session {TMP}/shell_session.json` + stdin `/set width=120` → 断言会话文件存在且输出含 `width = 120`）。基线 **15 → 17 行**，`nf shell --baseline` 与 check39 同步（不涨 check 号，仍 PASS=68）。

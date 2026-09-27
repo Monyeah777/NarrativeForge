@@ -44,7 +44,24 @@ NF_CLI_EPILOG = (
 )
 
 
+#: 命令面缓存（效率）：argparse 面构建 ≈100 ms/次，而一次终端命令往往要建 3 次以上
+#: （索引 + 命令树 + 真正解析）——`--verify --deep` 的全命令扫描更是 64 次。
+#: 缓存后同一进程内只建一次；解析器只读复用（构建期之外无人改它）。
+_PARSER_CACHE = None
+_TREE_CACHE = None
+_INDEX_CACHE = None
+
+
 def _build_parser() -> argparse.ArgumentParser:
+    """取命令面（**带缓存**）：首次构建，其后复用同一实例（只读）。"""
+    global _PARSER_CACHE
+    if _PARSER_CACHE is None:
+        _PARSER_CACHE = _make_parser()
+    return _PARSER_CACHE
+
+
+def _make_parser() -> argparse.ArgumentParser:
+    """真正构建 argparse 命令面（**只在缓存未命中时调用一次**——见 `_build_parser`）。"""
     p = argparse.ArgumentParser(
         prog="nf", description=(
             "NarrativeForge 全链管道（B2：retrieve→compose→gate→export）。"
@@ -4067,6 +4084,9 @@ def _shell_command_index() -> list:
     每条 = {path, summary, flags}；path 含二级（如 `asset ls`）。check39 断言索引覆盖
     **全部**顶层命令——「最全功能」在终端侧的可机检形态就是「每个命令都能被检索到」。
     """
+    global _INDEX_CACHE
+    if _INDEX_CACHE is not None:
+        return _INDEX_CACHE
     def _flags(parser):
         out = []
         for act in parser._actions:
@@ -4095,7 +4115,8 @@ def _shell_command_index() -> list:
                     for n2, sp2 in act2.choices.items():
                         out.append({"path": "%s %s" % (name, n2),
                                     "summary": _summary(sp2), "flags": _flags(sp2)})
-    return sorted(out, key=lambda e: e["path"])
+    _INDEX_CACHE = sorted(out, key=lambda e: e["path"])
+    return _INDEX_CACHE
 
 
 def _shell_baseline() -> str:
@@ -4435,6 +4456,9 @@ def _cmd_shell(args) -> int:
 
 def _collect_cli_tree():
     """自省 argparse 命令面：命令 × 顶层 flags × 二级子命令（供 completion 生成）。"""
+    global _TREE_CACHE
+    if _TREE_CACHE is not None:
+        return _TREE_CACHE
     root = _build_parser()
 
     def flags(parser):
@@ -4456,11 +4480,12 @@ def _collect_cli_tree():
                     for n2, sp2 in act2.choices.items():
                         nested[n2] = flags(sp2)
             tree[name] = {"flags": flags(sp), "nested": nested}
-    return {
+    _TREE_CACHE = {
         "commands": sorted(tree),
         "root_flags": flags(root),
         "tree": tree,
     }
+    return _TREE_CACHE
 
 
 def _cmd_completion(args):
@@ -4897,6 +4922,11 @@ def _cmd_stats(args) -> int:
 
 
 def main(argv=None) -> int:
+    # 效率：`--version` 是最常被调用的探测命令，而构建 argparse 面 ≈100 ms——
+    # 它不需要命令面，直接短路（输出与 argparse 的 version 动作逐字一致）。
+    if argv is not None and list(argv) == ["--version"]:
+        print("nf %s" % NF_CLI_VERSION)
+        return 0
     args = _build_parser().parse_args(argv)
     if args.cmd is None:
         _build_parser().print_help()
