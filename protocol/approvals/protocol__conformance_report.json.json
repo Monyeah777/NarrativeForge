@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-27",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "修复馆藏检索 O(n²) 读盘（规模回归实测 24.7s→1.07s）。",
+  "note": "终端 v16：统一 YAML 加载器改 libyaml（逐块等价实证 1395 块）+ 四处热点并入共享入口。",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v16：统一 YAML 加载器改用 libyaml（`nf score` 12.6 s → 9.3 s · `nf conformance` 5.1 s → 3.1 s）**（**作者目标**：「终端极致效率」；开工依据 = 逐扫描器归因显示 PyYAML 的纯 Python 扫描器是最后一块大成本）：
+  ① **归因（先测再改）**：`schema_lint.scan` 0.96 s 里的 473 次 YAML 解析**全是首次解析、零重复**（248 份模块契约 + 114 条管线 + 111 份 protocol.yaml）；`concept_graph.scan` 0.98 s 里 0.86 s 是 102 份概念图的真实解析——问题不在重复读，而在**解析器本身**：单块机器契约 ~2 ms，纯 Python 扫描器。
+  ② **换 C 实现**：实测 `CSafeLoader` 比 `SafeLoader` **7.8× 快**（200 份正文 0.164 s → 0.021 s）。新增共享入口 `conformance_scan.load_yaml()`（libyaml 优先、缺则回退纯 Python；缺 PyYAML 即报，不静默降级），热点解析点并入同一入口：共享围栏解析（约 20 个模块共用）、`concept_graph.load_graph`、`pipeline_loader.parse_pipeline_md`、`schema_lint` 的 protocol.yaml。
+  ③ **等价性逐块实证**：本仓全部 **1395 个 YAML 文本块（584 份文件）** 用两种加载器各解析一遍——**值差异 0、异常行为差异 0**；该比对已固化为回归断言（缺 libyaml 时跳过），因为「快」不得改变任何解析结果。
+  ④ **被自家门禁抓出的一条**：首版写的是 `yaml.load(text, Loader=CSafeLoader)`，被纯度扫描 R6 判为 CWE-502 危险 sink（**判据正确**——`yaml.load` 的默认加载器不安全）。改为**直接实例化安全加载器**（与 `yaml.safe_load` 逐字同语义），既有 C 速度、又不把禁用面叫回来。
+  ⑤ **实测**：`nf score` 12.6 → **9.3 s**；`nf conformance` 5.1 → **3.1 s**；`nf doctor` 0.92 → **0.68 s**；`schema_lint.scan` 0.96 → 0.27 s、`concept_graph.scan` 0.98 → 0.25 s；整套单测 206.8 → **187.3 s**。
+
 - **修复：馆藏检索在规模下 O(n²) 读盘（规模回归实测暴露的真缺陷）**（**作者目标**：「终端极致效率」——本轮在归因「整套单测耗时」时抓到）：
   ① **症状**：300 件合成馆藏的规模回归用例耗时 **24.7 s**，其中 **93,000 次读盘**。
   ② **根因**：`library.search` 在**每条命中结果**上都执行 `next(e for e in entries(root) if e["id"] == eid)`——而 `entries()` 是「读出全部馆藏」的全量操作；一次检索产生 310 个候选 → 310 次全量读盘（300 × 310 = 93,000）。

@@ -169,11 +169,11 @@ def parse_pipeline_md(text: str) -> Optional[Pipeline]:
     m = YAML_FENCE_RE.search(text)
     if not m:
         return None
-    try:
-        import yaml  # type: ignore
-        data = yaml.safe_load(m.group(1)) or {}
-    except ImportError:
+    from core import conformance_scan as _csc   # 统一加载器（libyaml 优先，见 _csc.SAFE_LOADER）
+    if _csc.yaml is None:
         data = _parse_yaml_block(m.group(1))
+    else:
+        data = _csc.load_yaml(m.group(1)) or {}
     if not isinstance(data, dict):
         return None
     pnode = data.get("Pipeline", data)

@@ -65,11 +65,11 @@ def load_graph(asset_path: str | Path = DEFAULT_ASSET) -> Dict[str, Any]:
     if not body:
         raise ClosureError("资产缺 `%s:` 机器可读块：%s（修复指引：补 ```yaml 围栏块，"
                            "块内首键为 %s）" % (BLOCK_MARKER, path, BLOCK_MARKER))
+    from core import conformance_scan as _csc   # 统一加载器（libyaml 优先，见 _csc.SAFE_LOADER）
     try:
-        import yaml
-    except ImportError as exc:                    # pragma: no cover - 仓库既有依赖
+        data = _csc.load_yaml(body)
+    except RuntimeError as exc:                   # pragma: no cover - 仓库既有依赖
         raise ClosureError("缺 PyYAML（修复指引：pip install pyyaml）") from exc
-    data = yaml.safe_load(body)
     graph = (data or {}).get(BLOCK_MARKER)
     if not isinstance(graph, dict):
         raise ClosureError("机读块结构非法：%s（修复指引：顶层键须为 %s）" % (path, BLOCK_MARKER))

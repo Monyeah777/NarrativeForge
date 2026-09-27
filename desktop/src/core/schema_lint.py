@@ -23,6 +23,8 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from core import conformance_scan as _csc   # 统一 YAML 加载器 / 围栏解析缓存真源
+
 try:
     import yaml  # PyYAML（仓库既有依赖，check16 同源）
 except Exception:  # pragma: no cover - 环境缺依赖时由调用方提示
@@ -255,7 +257,6 @@ def _fence_yaml(text: str, marker: str) -> Optional[Dict[str, Any]]:
     同一批模块文档（248 份机器契约块），等于同文两遍 PyYAML——现在**同源同一份缓存**，
     语义仍是本模块的「未命中 → None」（见 `conformance_scan._fence_yaml_opt`）。
     """
-    from core import conformance_scan as _csc
     return _csc._fence_yaml_opt(text, marker)
 
 
@@ -349,7 +350,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         rel = os.path.relpath(proto, root).replace(os.sep, "/")
         try:
             with open(proto, encoding="utf-8") as fh:
-                data = yaml.safe_load(fh.read())
+                data = _csc.load_yaml(fh.read())   # 统一加载器（libyaml 优先）
         except Exception as exc:
             issues.append(f"{rel}: protocol.yaml 解析失败 {exc}")
             continue
