@@ -11,10 +11,10 @@ subjects:
   - desktop/tests/test_terminal.py:7bebf34575cb191cf1e0ae5af8185c6896c306e5a0ace9c4a7305715acf73e9c
   - scripts/nf:332e4512c1970d93858aadc9715d89fee5db61eae4d3dc49bac23de9bce65488
   - scripts/nf.cmd:a2563ccd0cdde64f1c394d3b426e22b3abd7d6438c5b3308f29d2086d9cac15c
-  - verify.sh:0c9bb61a5e0ddf4c2a198a717dcfc0fb0ee57812c66ba7ac37a14f422411cd39
+  - verify.sh:39d1f048d380b934b982f1d2f10ac9222deaf08ce94fefb91894be7adace13f8
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
   - desktop/src/core/doc_hygiene.py:2b0acc2498874f2d37ca7d7e51b8f89d17c1bd5171e9532e75667c58d9d5f5fb
-  - docs/terminal.md:baec3731e44d0c54b6553093cac1430c8cf3ce9b3ddc20b91f860a4cb6b2e06e
+  - docs/terminal.md:ec58b34eb1f75250ff704eab077dbdc5da35760f4f29219eacb4021cc3cfccc7
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
 ---

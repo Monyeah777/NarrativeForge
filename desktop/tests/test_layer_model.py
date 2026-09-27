@@ -101,6 +101,44 @@ class LayerScanTest(unittest.TestCase):
             _fixture(tmp)
             self.assertEqual(lm.scan(tmp), lm.scan(tmp))
 
+    def test_expand_fast_path_matches_reference(self):
+        """快路径（子树一次走 + 正则匹配）必须与参考实现 `_expand` 逐 pattern 等价。
+
+        v13 的收益来自「不再为每个 pattern 各走一遍文件系统」，代价是 glob→正则的语义
+        必须守住——本断言即等价性的可执行证据（含字符类回退、固定件直判、缺失子树）。
+        """
+        doc = lm.load(str(ROOT))
+        pats = set()
+
+        def collect(node):
+            if isinstance(node, dict):
+                for key, val in node.items():
+                    if key in ("globs", "derived", "exempt_paths") and isinstance(val, list):
+                        pats.update(str(x) for x in val)
+                    else:
+                        collect(val)
+            elif isinstance(node, list):
+                for item in node:
+                    collect(item)
+
+        collect(doc)
+        # 真源里没有、但快路径必须同样处理的形态：字符类 / 单字符 / 跨目录 ** / 固定件 / 空子树
+        pats |= {"desktop/src/core/[a-z]*.py", "protocol/?.json", "desktop/**/*.py",
+                 "STRATEGY.md", "scripts/nf", "no/such/dir/*.md"}
+        for pattern in sorted(pats):
+            self.assertEqual(lm._expand(str(ROOT), [pattern]),
+                             lm._expand_many(str(ROOT), [pattern], {}), pattern)
+
+    def test_tier_faces_match_reference(self):
+        """每阶真源面（含派生物扣除）也必须与参考实现逐阶一致。"""
+        doc = lm.load(str(ROOT))
+        derived = lm._expand(str(ROOT), doc.get("derived") or [])
+        faces = lm.tier_faces(str(ROOT), doc)
+        for tier in doc.get("tiers") or []:
+            tid = str(tier.get("id"))
+            ref = lm._expand(str(ROOT), (tier.get("source") or {}).get("globs")) - derived
+            self.assertEqual(faces[tid], ref, tid)
+
     def test_mutation_l1_empty_source_face(self):
         with tempfile.TemporaryDirectory() as tmp:
             _fixture(tmp, tiers=[_tier("contract", "契约", 0, ["a/none/*.md"],

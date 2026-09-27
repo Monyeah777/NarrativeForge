@@ -127,6 +127,7 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 - **命令面只构建一次**：argparse 面构建实测 **96–118 ms/次**，而一次终端命令过去要建 3 次以上（索引 + 命令树 + 真正解析），`--verify --deep` 的全命令扫描更是 **64 次**。现在 `_build_parser()` / `_collect_cli_tree()` / `_shell_command_index()` 全部进程内缓存。
 - **`--version` 短路**：最常被调用的探测命令不再构建命令面（输出与 argparse 的 version 动作逐字一致）。
 - **宽度查询缓存**：`char_width()` 带 `lru_cache(4096)`——列表渲染是逐字符问宽度的热路径。
+- **抽象阶梯真源面展开（v13）**：`nf layers --verify` 是唯一仍有 ~1 s 固定成本的只读命令，成本几乎全在 glob 展开——`_rule_issues` 的 L1/L2/L3 会把同一批 43 个 pattern 反复展开（约 10.5k 次 `stat`），L6 还会对 core 全量 `ast.parse`。现在：每次扫描内按 pattern 缓存、每棵子树只 `os.walk` 一次 + glob→正则匹配（字符类等专有语义回退参考实现）、L6 先文本预筛再解析 AST。快路径与参考实现**逐 pattern 等价**（真源 43 个 pattern + 字符类 / `?` / `**` / 固定件 / 空子树 5 类形态，0 处不一致），四阶面规模不变（契约 52 / 资产 2218 / 引擎 256 / 出口 26）。
 
 实测（本机，单跑）：
 
@@ -136,6 +137,7 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 | `nf shell --baseline`（17 行逐条） | 数秒级（受重建拖累） | **1.95 s**（16 行 ≤ 4.3 ms） |
 | `nf shell --commands`（冷启动） | 363 ms | **281 ms** |
 | `nf --version`（冷启动） | 223 ms | **242 ms**（其中解释器 ~60 ms、文件执行/AV ~100 ms、导入 ~20 ms） |
+| `nf layers --verify`（抽象阶梯全仓扫描） | ~1.18 s | **~0.5 s**（`layer_model.scan` 801 ms → 281 ms） |
 
 **② 延迟预算（基线行自带 `max_ms`）**
 

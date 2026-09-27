@@ -40,6 +40,29 @@ ENTRY_MODULE_NAMES = ("nf", "scripts")
 _CHECK_DEF = re.compile(r"^check(\d+)\(\)\{", re.M)
 _JUDGE_CHECK = re.compile(r"^check(\d+)$")
 _JUDGE_ASSERTION = "assertion:"
+#: L6 的**文本预筛**：只把含入口面 import 的文件交给 AST（避免全量解析，见 _rule_issues）
+_ENTRY_IMPORT_RE = re.compile(r"\b(?:import|from)\s+(?:nf|scripts)\b")
+
+
+def _pattern_to_regex(pattern: str):
+    """glob → **逐段**正则（`**` 跨目录、`*` 不跨、`?` 单字符）——只在本相对路径上匹配。"""
+    out, i = [], 0
+    while i < len(pattern):
+        ch = pattern[i]
+        if ch == "*":
+            if i + 1 < len(pattern) and pattern[i + 1] == "*":
+                out.append(".*")
+                i += 2
+                if i < len(pattern) and pattern[i] == "/":
+                    i += 1
+                continue
+            out.append("[^/]*")
+        elif ch == "?":
+            out.append("[^/]")
+        else:
+            out.append(re.escape(ch))
+        i += 1
+    return re.compile("^" + "".join(out) + "$")
 
 
 def load(root: str = ".") -> Dict[str, Any]:
@@ -70,21 +93,86 @@ def _expand(root: str, globs) -> set:
     return out
 
 
+def _expand_many(root: str, globs, cache: dict) -> set:
+    """同一次扫描内按 pattern 缓存展开（**每个子树只走一次文件系统**）。
+
+    效率（实测）：`_rule_issues` 的 L1/L2/L3 会重复展开同一批 glob（约 10.5k 次 `stat`
+    全花在这里）。两层缓存：① 每个子树的文件清单只 `os.walk` 一次；② 每个 pattern 的
+    匹配结果复用。缓存是**每次扫描一份**（不是模块级），所以临时目录/被改动的树不会被
+    陈旧结果污染（单测反复扫同一路径也不受影响）。等价性由 `_expand`（参考实现）兜底：
+    字符类等 Path.glob 专有语义直接回退，其余由 `test_layer_model` 的等价断言守住。
+    """
+    base = Path(root)
+    out = set()
+    for pattern in globs or []:
+        key = ("pat", str(pattern))
+        if key not in cache:
+            cache[key] = _expand_one(base, str(pattern), str(root), cache)
+        out |= cache[key]
+    return out
+
+
+def _is_glob(pattern: str) -> bool:
+    return any(ch in pattern for ch in "*?[")
+
+
+def _glob_root(pattern: str) -> str:
+    """pattern 中**通配符之前**的固定目录前缀（无则 `.`）——用于「同子树只走一次」。"""
+    parts = str(pattern).split("/")
+    keep: List[str] = []
+    for part in parts[:-1] if len(parts) > 1 else []:
+        if _is_glob(part):
+            break
+        keep.append(part)
+    return "/".join(keep) if keep else "."
+
+
+def _walk_files(base: Path, rel_root: str) -> List[str]:
+    """一次 `os.walk` 收集 rel_root 子树下全部文件的**仓库相对 posix 路径**。"""
+    start = base / rel_root if rel_root not in (".", "") else base
+    if not start.is_dir():
+        return []
+    prefix = "" if rel_root in (".", "") else rel_root + "/"
+    out: List[str] = []
+    for dirpath, _dirnames, filenames in os.walk(start):
+        rel_dir = os.path.relpath(dirpath, start).replace(os.sep, "/")
+        head = prefix + ("" if rel_dir == "." else rel_dir + "/")
+        out.extend(head + name for name in filenames)
+    return out
+
+
+def _expand_one(base: Path, pattern: str, ref_root: str, cache: dict) -> set:
+    """单个 glob 的等价快路径：固定件直接探在不在，通配件走子树索引 + 正则。"""
+    if not _is_glob(pattern):
+        return {pattern} if (base / pattern).is_file() else set()
+    if "[" in pattern:                    # 字符类等 Path.glob 专有语义 → 回退参考实现
+        return _expand(ref_root, [pattern])
+    rel_root = _glob_root(pattern)
+    key = ("tree", rel_root)
+    if key not in cache:
+        cache[key] = _walk_files(base, rel_root)
+    rx = _pattern_to_regex(pattern)
+    return {rel for rel in cache[key] if rx.match(rel)}
+
+
 def _exists(root: str, rel: str) -> bool:
     return (Path(root) / str(rel)).exists()
 
 
-def _derived_files(root: str, doc: Dict[str, Any]) -> set:
-    return _expand(root, doc.get("derived") or [])
+def _derived_files(root: str, doc: Dict[str, Any], cache: dict = None) -> set:
+    if cache is None:
+        return _expand(root, doc.get("derived") or [])
+    return _expand_many(root, doc.get("derived") or [], cache)
 
 
 def tier_faces(root: str, doc: Dict[str, Any]) -> Dict[str, set]:
     """每阶真源面（已扣除派生物）→ {tier_id: {rel, …}}。"""
-    derived = _derived_files(root, doc)
+    cache: dict = {}
+    derived = _derived_files(root, doc, cache)
     out = {}
     for tier in doc.get("tiers") or []:
         out[str(tier.get("id"))] = \
-            _expand(root, (tier.get("source") or {}).get("globs")) - derived
+            _expand_many(root, (tier.get("source") or {}).get("globs"), cache) - derived
     return out
 
 
@@ -92,11 +180,12 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
     issues: List[str] = []
     tiers = doc.get("tiers") or []
     tier_ids = [str(t.get("id")) for t in tiers]
-    derived = _derived_files(root, doc)
+    cache: dict = {}                       # 本次扫描的 glob 展开缓存（见 _expand_many）
+    derived = _derived_files(root, doc, cache)
 
     # L1 真源在位
     for tier in tiers:
-        face = _expand(root, (tier.get("source") or {}).get("globs"))
+        face = _expand_many(root, (tier.get("source") or {}).get("globs"), cache)
         if not (tier.get("source") or {}).get("globs"):
             issues.append("L1 阶 %s 未声明真源面（修复指引：在 source.globs 写明真源落点）"
                           % tier.get("id"))
@@ -104,7 +193,7 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
             issues.append("L1 阶 %s 的真源面展开为空：%s（修复指引：核对 globs 与实况）"
                           % (tier.get("id"), (tier.get("source") or {}).get("globs")))
     for lv in doc.get("asset_levels") or []:
-        if not _expand(root, lv.get("globs")):
+        if not _expand_many(root, lv.get("globs"), cache):
             issues.append("L1 资产子级 %s 的真源面为空：%s（修复指引：核对 globs）"
                           % (lv.get("id"), lv.get("globs")))
         if str(lv.get("tier") or "") not in tier_ids:
@@ -121,7 +210,7 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
                           % (comp.get("id"), comp.get("artifact")))
 
     # L2 归属互斥（派生物已扣除）
-    faces = {tid: _expand(root, (t.get("source") or {}).get("globs")) - derived
+    faces = {tid: _expand_many(root, (t.get("source") or {}).get("globs"), cache) - derived
              for t, tid in zip(tiers, tier_ids)}
     for i, a in enumerate(tier_ids):
         for b in tier_ids[i + 1:]:
@@ -134,7 +223,7 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
     # L3 接口面 ⊆ 真源面
     for tier in tiers:
         tid = str(tier.get("id"))
-        iface = _expand(root, (tier.get("interface") or {}).get("globs"))
+        iface = _expand_many(root, (tier.get("interface") or {}).get("globs"), cache)
         if not iface:
             issues.append("L3 阶 %s 未声明接口面（修复指引：在 interface.globs 写明跨阶可依赖面）"
                           % tid)
@@ -189,9 +278,17 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
                               "（修复指引：改成真实阶 id）" % (sf.get("id"), served))
 
     # L6 引擎不反向 import 入口面
-    for rel in sorted(_expand(root, ["desktop/src/core/*.py"])):
+    for rel in sorted(_expand_many(root, ["desktop/src/core/*.py"], cache)):
         try:
-            tree = ast.parse((Path(root) / rel).read_text(encoding="utf-8"))
+            src = (Path(root) / rel).read_text(encoding="utf-8")
+        except OSError:
+            continue
+        # 文本预筛（效率）：L6 只关心「入口面 import」——绝大多数 core 文件不含它，
+        # 先做一次子串/正则预筛，避免为 255 个文件逐个解析 AST（实测 42 万 AST 节点）。
+        if not _ENTRY_IMPORT_RE.search(src):
+            continue
+        try:
+            tree = ast.parse(src)
         except (OSError, SyntaxError):
             continue
         for node in ast.walk(tree):

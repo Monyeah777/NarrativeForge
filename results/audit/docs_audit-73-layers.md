@@ -7,12 +7,12 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
-  - desktop/src/core/layer_model.py:44de798ee24a97e569ad6ec72f1f12932b6971b54c5bac4433c4e7fed31ac686
-  - desktop/tests/test_layer_model.py:e224d782a0f00daf345702bfe27a50563987233017f3dc0528af41b0f957855f
+  - desktop/src/core/layer_model.py:4e68d7e9b2dbf4336dd9edad87bd81fbb5613f8facdf7af4dc7fc825ad3db6c5
+  - desktop/tests/test_layer_model.py:6ed47766f9ba52b0defe76f731ceeafcce5a2d489e639f2adafb81cc59479a5d
   - desktop/src/core/purity_scan.py:223ccbb2fc52c4a15362e1eff06b97341fa00de2094c97f93409d5bbadcb676a
   - desktop/tests/test_purity_scan.py:487bc7719509a312779afaf1474002b0fc0e0acf85f36b7628bf2975b008191b
   - scripts/nf.py:63def6dd569bf98f58a6684f66af6055bef528fa17394404a3eab0b2d73bb585
-  - verify.sh:0c9bb61a5e0ddf4c2a198a717dcfc0fb0ee57812c66ba7ac37a14f422411cd39
+  - verify.sh:39d1f048d380b934b982f1d2f10ac9222deaf08ce94fefb91894be7adace13f8
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102
