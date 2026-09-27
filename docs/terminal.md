@@ -145,7 +145,8 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 | `nf score`（四路信号 + 纵深扫描） | 17.1 s | **13.3 s**（广度证明 4.86 s → 0.30 s） |
 | `nf shell --baseline`（进程内，17 行） | 1.95 s | **0.38 s** |
 | `nf score`（v15 后） | 13.3 s | **12.6 s**（普查同内容不重算） |
-| 整套单测（1241 例，`verify` check12 的主要成本） | 253.3 s | **225.8 s** |
+| 整套单测（1241 例，`verify` check12 的主要成本） | 253.3 s | **206.8 s** |
+| 300 件馆藏的规模回归用例（`library.search` 的 O(n²)） | 25.4 s | **1.07 s** |
 
 **② 延迟预算（基线行自带 `max_ms`）**
 
