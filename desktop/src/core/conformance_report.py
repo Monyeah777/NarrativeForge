@@ -35,7 +35,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from core import receipts
 
@@ -342,8 +342,10 @@ def run(root: str = ".") -> Dict[str, Any]:
             "verdict": "conformant" if all(r["ok"] for r in rows) else "non-conformant"}
 
 
-def write(root: str = ".", rel: str = REPORT_REL) -> str:
-    doc = run(root)
+def write(root: str = ".", rel: str = REPORT_REL,
+          doc: Optional[Dict[str, Any]] = None) -> str:
+    """把实时报告写入盘（`doc` 可由调用方传入，避免为了「写」再跑一遍全量契约）。"""
+    doc = run(root) if doc is None else doc
     p = Path(root) / rel
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
@@ -351,8 +353,14 @@ def write(root: str = ".", rel: str = REPORT_REL) -> str:
     return rel
 
 
-def verify_committed(root: str = ".", rel: str = REPORT_REL) -> Tuple[List[str], Dict[str, Any]]:
-    """在盘报告 == 实时重算？（防「报告是旧的/被改过」）"""
+def verify_committed(root: str = ".", rel: str = REPORT_REL,
+                     live: Optional[Dict[str, Any]] = None) -> Tuple[List[str], Dict[str, Any]]:
+    """在盘报告 == 实时重算？（防「报告是旧的/被改过」）
+
+    效率（实测）：调用方常要先拿到实时报告再比对，于是全套契约（purity / schema_lint /
+    管线 dry-run 十八项）被跑两遍——`nf conformance` 因此把 ~3.5 s 的扫描花成 ~11 s。
+    `live` 可由调用方传入复用（不改判定：比对对象仍是**在盘报告**与这份实时结果）。
+    """
     p = Path(root) / rel
     if not p.is_file():
         return ["缺一致性报告 %s（修复指引：nf conformance --write）" % rel], {}
@@ -360,7 +368,7 @@ def verify_committed(root: str = ".", rel: str = REPORT_REL) -> Tuple[List[str],
         committed = json.loads(p.read_text(encoding="utf-8"))
     except ValueError as exc:
         return ["报告 JSON 不可解析：%s" % exc], {}
-    live = run(root)
+    live = run(root) if live is None else live
     issues: List[str] = []
     if committed.get("root") != live.get("root"):
         issues.append("报告过期或被改：root 记录=%s 实测=%s（修复指引：nf conformance --write）"

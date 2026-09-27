@@ -2151,15 +2151,16 @@ def _cmd_conformance(args):
     from core import conformance_report as cr
     import json as _json
     if args.write:
-        rel = cr.write(ROOT)
         doc = cr.run(ROOT)
+        rel = cr.write(ROOT, doc=doc)
         print("== nf conformance --write ==")
         print("  报告已写入：%s" % rel)
         print("  verdict：%s（%d/%d 契约通过）· root=%s"
               % (doc["verdict"], doc["passed"], doc["total"], doc["root"][:16]))
         return 0 if doc["verdict"] == "conformant" else 1
-    issues, stats = cr.verify_committed(ROOT)
+    # 全套契约只跑一遍：实时结果既用于与在盘报告比对，也用于打印（过去跑两遍，纯重复）
     doc = cr.run(ROOT)
+    issues, stats = cr.verify_committed(ROOT, live=doc)
     if args.json:
         print(_json.dumps({"report": doc, "issues": issues},
                           ensure_ascii=False, indent=2, sort_keys=True))

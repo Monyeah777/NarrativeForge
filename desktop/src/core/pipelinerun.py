@@ -82,16 +82,24 @@ def _resolve(ref: str, index: Dict[str, Dict[str, Any]]) -> Optional[Dict[str, A
 
 
 def graph(pipeline_path: str, root: str = ".",
-          overrides: Optional[Dict[str, List[str]]] = None) -> Dict[str, Any]:
-    """跑一遍管线声明 → 执行图 JSON（hard/issues 与 advisory/notes 分列）。"""
+          overrides: Optional[Dict[str, List[str]]] = None,
+          index: Optional[Dict[str, Dict[str, Any]]] = None,
+          core: Optional[List[str]] = None) -> Dict[str, Any]:
+    """跑一遍管线声明 → 执行图 JSON（hard/issues 与 advisory/notes 分列）。
+
+    `index` / `core` 可由调用方注入：全仓 sweep 下二者对每条管线都是同一份，逐条重建即
+    重复读盘（见 `sweep`）。缺省仍各自现算，单条调用与既有测试行为不变。
+    """
     abs_path = (pipeline_path if os.path.isabs(pipeline_path)
                 else os.path.join(root, pipeline_path))
     pl = load_pipeline_file(abs_path)
     if pl is None:
         raise ValueError("管线解析失败：%s（修复指引：检查 frontmatter 与代码围栏闭合）"
                          % pipeline_path)
-    index = _module_files(root)
-    core = _core_ids(root)
+    if index is None:
+        index = _module_files(root)
+    if core is None:
+        core = _core_ids(root)
     issues: List[str] = []
     notes: List[str] = []
     steps: List[Dict[str, Any]] = []
@@ -230,13 +238,21 @@ def discover(root: str = ".") -> List[str]:
 
 
 def sweep(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
-    """全仓管线扫一遍 → (hard issues, stats)（供门禁聚合）。"""
+    """全仓管线扫一遍 → (hard issues, stats)（供门禁聚合）。
+
+    效率（实测）：228 条管线若各自建索引，就是 228 × 248 份模块文档的 glob + 读 + YAML
+    解析（约 5.6 万次读盘），`nf conformance` 里这一项独占 **40 s**。模块索引在一次 sweep
+    内**只建一次**、逐条复用。刻意**不做进程级常驻**：同进程里「先写模块再扫描」会读到
+    陈旧索引，故共享范围只在本函数这一次调用内。
+    """
     issues: List[str] = []
     total = {"pipelines": 0, "notes": 0, "modules": 0, "core_base": 0}
     buckets: Dict[str, int] = {}
     items: List[Dict[str, str]] = []
+    index = _module_files(root)
+    core = _core_ids(root)
     for p in discover(root):
-        g = graph(p, root)
+        g = graph(p, root, index=index, core=core)
         total["pipelines"] += 1
         total["notes"] += g["stats"]["notes"]
         total["modules"] += g["stats"]["modules"]

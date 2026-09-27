@@ -28,7 +28,6 @@ try:
 except Exception:  # pragma: no cover - 环境缺依赖时由调用方提示
     yaml = None  # type: ignore[assignment]
 
-FENCE = re.compile(r"(?ms)```yaml\s*(.*?)```")
 SCHEMA_DIR = os.path.join("protocol", "schema")
 
 #: 本校验器**实现的 JSON-Schema 方言**（自实现子集的语义归属）。
@@ -250,17 +249,14 @@ def discover(root: str) -> Dict[str, List[str]]:
 
 
 def _fence_yaml(text: str, marker: str) -> Optional[Dict[str, Any]]:
-    for m in FENCE.finditer(text):
-        body = m.group(1)
-        if marker not in body:
-            continue
-        try:
-            parsed = yaml.safe_load(body) if yaml is not None else None
-        except Exception:
-            return None
-        if isinstance(parsed, dict):
-            return parsed
-    return None
+    """取围栏 ```yaml 里含 marker 的第一个块（未命中 → None）。
+
+    效率（实测，`nf conformance`）：本函数与 `conformance_scan._fence_yaml` 过去各自解析
+    同一批模块文档（248 份机器契约块），等于同文两遍 PyYAML——现在**同源同一份缓存**，
+    语义仍是本模块的「未命中 → None」（见 `conformance_scan._fence_yaml_opt`）。
+    """
+    from core import conformance_scan as _csc
+    return _csc._fence_yaml_opt(text, marker)
 
 
 def _read_json(path: str) -> Tuple[Optional[Dict[str, Any]], str]:

@@ -100,52 +100,64 @@ _ACTION = re.compile(
     r"选择|可用|如|缺少|缺|期望|修正|§|文档|帮助|重试|再)")
 
 
-def _iter_raise_messages(tree: ast.AST):
+#: R4–R6 的文本预筛：无 raise / import / try / shell / 任一危险调用名 → 三类事实必然为空，
+#: 连 parse 都不必做（判据等价：AST 里出现的名字必然在源码文本里出现）。
+_NEEDS_AST = re.compile(
+    r"raise|import|try|shell|"
+    + "|".join(re.escape(c.rsplit(".", 1)[-1]) for c in sorted(DANGEROUS_CALLS)))
+
+
+def _try_guards_import(node: ast.Try) -> bool:
+    """该 try 是否兜住了导入失败（ImportError / ModuleNotFoundError / Exception / 裸 except）。"""
+    for h in node.handlers:
+        if h.type is None:
+            return True
+        if isinstance(h.type, ast.Name) and h.type.id in (
+                "ImportError", "ModuleNotFoundError", "Exception"):
+            return True
+        if isinstance(h.type, ast.Tuple):
+            names = {e.id for e in h.type.elts if isinstance(e, ast.Name)}
+            if names & {"ImportError", "ModuleNotFoundError", "Exception"}:
+                return True
+    return False
+
+
+def _ast_facts(tree: ast.AST) -> tuple:
+    """**一次** `ast.walk` 取齐 R4–R6 全部事实（判据与分次遍历逐条等价）。
+
+    效率（实测）：同一棵树过去被 walk **四遍**——R4 的 raise 消息 1 遍、R5 的守卫 import
+    行号 1 遍、R5 的顶层模块 1 遍、R6 的危险 sink 1 遍；`nf conformance` 里 AST 面因此
+    独占约 **7.7 s**（约 210 万次节点访问）。合流后每份文件只 walk 一遍。
+
+    返回 `(raise 消息, 守卫 import 行号集, 顶层模块, 危险调用节点)`；各自的**产出顺序**
+    与原来那次独立遍历完全一致（同一次 walk 顺序）。
+    """
+    raises: list = []
+    guarded: set = set()
+    modules: list = []
+    calls: list = []
     for node in ast.walk(tree):
-        if isinstance(node, ast.Raise) and isinstance(node.exc, ast.Call) \
-                and node.exc.args:
+        if isinstance(node, ast.Raise) and isinstance(node.exc, ast.Call) and node.exc.args:
             arg = node.exc.args[0]
             if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
-                yield node.lineno, arg.value
+                raises.append((node.lineno, arg.value))
             elif isinstance(arg, ast.JoinedStr):
                 parts = [v.value for v in arg.values
                          if isinstance(v, ast.Constant) and isinstance(v.value, str)]
-                yield node.lineno, "".join(parts)
-
-
-def _guarded_import_lines(tree: ast.AST) -> set:
-    """try/except {ImportError|ModuleNotFoundError|Exception|bare} 守卫体内的 import 行号。"""
-    out = set()
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Try):
-            continue
-        catches = False
-        for h in node.handlers:
-            if h.type is None:
-                catches = True
-            elif isinstance(h.type, ast.Name):
-                catches = catches or h.type.id in ("ImportError", "ModuleNotFoundError", "Exception")
-            elif isinstance(h.type, ast.Tuple):
-                names = {e.id for e in h.type.elts if isinstance(e, ast.Name)}
-                catches = catches or bool(names & {"ImportError", "ModuleNotFoundError", "Exception"})
-        if not catches:
-            continue
-        for sub in node.body:
-            for n2 in ast.walk(sub):
-                if isinstance(n2, (ast.Import, ast.ImportFrom)):
-                    out.add(n2.lineno)
-    return out
-
-
-def _top_modules(tree: ast.AST) -> list:
-    """→ [(module_top_name, lineno)]（跳过相对导入）。"""
-    out = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            out += [(a.name.split(".")[0], node.lineno) for a in node.names]
-        elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
-            out.append((node.module.split(".")[0], node.lineno))
-    return out
+                raises.append((node.lineno, "".join(parts)))
+        elif isinstance(node, ast.Import):
+            modules += [(a.name.split(".")[0], node.lineno) for a in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            if node.level == 0 and node.module:
+                modules.append((node.module.split(".")[0], node.lineno))
+        elif isinstance(node, ast.Try) and _try_guards_import(node):
+            for sub in node.body:
+                for n2 in ast.walk(sub):
+                    if isinstance(n2, (ast.Import, ast.ImportFrom)):
+                        guarded.add(n2.lineno)
+        elif isinstance(node, ast.Call):
+            calls.append(node)
+    return raises, guarded, modules, calls
 
 
 def _is_local(mod: str, root: str) -> bool:
@@ -190,18 +202,33 @@ def scan(root: str = ".") -> tuple:
                 issues.append("%s 重复标题「%s」：行 %s"
                               % (name, title, ",".join(map(str, lines))))
     # R4：错误信息审计（desktop/src/core/*.py）
+    # R4/R5/R6 共用一份「读 + parse + walk」：同一批 core/*.py 过去被 R4 与 R5 各自 parse
+    # 一遍、同一棵树被 walk 四遍（见 `_ast_facts`）。事实缓存只活在本函数内——不跨调用
+    # 常驻，故「同一进程里先改文件再扫描」不会读到陈旧结果。
+    facts_cache: dict = {}
+
+    def _facts(fpath: str):
+        if fpath not in facts_cache:
+            got = None
+            try:
+                with open(fpath, encoding="utf-8") as fh:
+                    text = fh.read()
+                if _NEEDS_AST.search(text):
+                    got = _ast_facts(ast.parse(text))
+            except (OSError, SyntaxError):
+                got = None
+            facts_cache[fpath] = got
+        return facts_cache[fpath]
+
     core_dir = os.path.join(root, "desktop", "src", "core")
     if os.path.isdir(core_dir):
         for fname in sorted(os.listdir(core_dir)):
             if not fname.endswith(".py"):
                 continue
-            fpath = os.path.join(core_dir, fname)
-            try:
-                with open(fpath, encoding="utf-8") as fh:
-                    tree = ast.parse(fh.read())
-            except (OSError, SyntaxError):
+            facts = _facts(os.path.join(core_dir, fname))
+            if facts is None:
                 continue
-            for lineno, msg in _iter_raise_messages(tree):
+            for lineno, msg in facts[0]:
                 stats["raises"] += 1
                 if msg and not _ACTION.search(msg):
                     issues.append("%s:%d raise 消息缺修复指引：%s"
@@ -211,14 +238,12 @@ def scan(root: str = ".") -> tuple:
     for rel_pat in IMPORT_SCAN:
         for f in sorted(_glob.glob(os.path.join(root, rel_pat))):
             rel = os.path.relpath(f, root).replace("\\", "/")
-            try:
-                with open(f, encoding="utf-8") as fh:
-                    tree = ast.parse(fh.read())
-            except (OSError, SyntaxError):
+            facts = _facts(f)
+            if facts is None:
                 continue
-            guarded = _guarded_import_lines(tree)
+            _raises, guarded, modules, calls = facts
             residue = IMPORT_RESIDUE.get(rel)
-            for mod, lineno in _top_modules(tree):
+            for mod, lineno in modules:
                 if mod in sys.stdlib_module_names or _is_local(mod, root):
                     continue
                 stats["imports"] += 1
@@ -235,10 +260,8 @@ def scan(root: str = ".") -> tuple:
                        "登记理由，或加入 HARD_ALLOW；端壳残留则登记 IMPORT_RESIDUE）" % (rel, lineno, mod))
                 (stats["import_residue"] if residue else issues).append(
                     "%s（%s）" % (msg, residue) if residue else msg)
-            # R6：危险 sink 面（同一次 AST 遍历复用 tree）
-            for node in ast.walk(tree):
-                if not isinstance(node, ast.Call):
-                    continue
+            # R6：危险 sink 面（同一次 AST 遍历复用同一份事实）
+            for node in calls:
                 call = ast.unparse(node.func)
                 flags = []
                 if call in DANGEROUS_CALLS:

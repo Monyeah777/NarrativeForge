@@ -2,6 +2,17 @@
 
 ## [2.12.0] - 未发布
 
+- **终端 v14：核心扫描热点（conformance 40 s → 5.1 s · 广度证明 16× · 效率收进门禁）**（**作者目标**：「终端极致效率」；开工依据 = v13 之后逐命令实测暴露的数量级热点）：
+  ① **热点是数据抓的**（逐命令实测 + cProfile 归因）：`nf conformance` **~40 s**、`nf score` **~17 s**、`nf doctor` **~1.0 s**（其中 YAML 解析占 74%）。
+  ② **同一套扫描跑两遍 → 一遍（conformance 40 s → 5.1 s）**：`_cmd_conformance` 先 `verify_committed()`（内部 `run()`）再 `run()`，十八项契约全套跑两遍。现在实时报告只跑一次，既用于与**在盘报告**比对、也用于打印（`verify_committed(live=…)` / `write(doc=…)`，判定对象与结论不变）。
+  ③ **同文重复解析 YAML（doctor 的 74%）**：248 份模块文档的机器契约块在一次体检里被解析 **496 次**（1.47 s）。`conformance_scan._fence_yaml` 加**键 = 文本本身**的解析缓存——文本变则键变，**不存在陈旧风险**；返回深拷贝防串味；`schema_lint` 的同名实现并入同一份缓存（语义仍是「未命中 → None」）。
+  ④ **管线 dry-run 的 O(N²·files)**：`sweep()` 给 228 条管线各建一次全仓模块索引（≈5.6 万次读盘，独占 40 s）。改为**一次 sweep 只建一次**、逐条复用（`graph(index=…, core=…)`；单条调用与既有测试行为不变）。
+  ⑤ **纯度扫描的重复 AST**：同一批 `core/*.py` 被 R4 与 R5 各 parse 一遍、同一棵树被 walk **四遍**（AST 面 7.7 s）。现在每份文件**只读一次、只 parse 一次、只 walk 一次**（`_ast_facts` 单遍取齐四类事实 + 文本预筛）；实测 issues 与**全部 stats** 与参考实现逐条一致（raises 53 / imports 15 / sinks 5）。
+  ⑥ **广度证明的每次 `resolve()`**：`pack_combo._cache_key` 用 `Path(root).resolve()`（Windows 上走 `_getfinalpathname` + `stat`，~0.5 ms），6888 次组合每次取键 → 白花 **3.8 s**（占该证明 61%）；改用 `os.path.abspath`（纯字符串）。同时把「(包, 资产键) → 资产」索引并入同一份画像缓存。**breadth 4.86 s → 0.30 s（16×）**，组合数与合法性全等（两两 6105 / 三元 400 / 四元 200 / 五元 120 / 六元 60 全部 legal）。
+  ⑦ **把效率收进门禁**：`live-selfcheck` 行的延迟预算由 **8000 ms 校准为 2000 ms**（该行进程内实测 ~320 ms，留 ~6× 余量）——v12 的 8000 是按**端到端** 1.9 s 估的，等于把该行判据放松了 25 倍。
+  ⑧ 实测（本机，端到端）：`nf conformance` **~40 s → 5.1 s**；`nf score` **17.1 s → 13.3 s**；`nf doctor` **~1.0 s → 0.94 s**（进程内 1.97 s → 0.69 s）；`nf shell --baseline` **1.95 s → 0.38 s**（17/17）；`nf layers --verify` **~1.18 s → 0.58 s**。
+  ⑨ 实测：受测单测 **115 + 92 例**全绿；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（check 数仍 39）。
+
 - **终端 v13：核心扫描热点（抽象阶梯真源面展开 2.9×）**（**作者目标**：「终端极致效率」；开工依据 = v12 之后 `nf layers --verify` 是唯一仍有 ~1 s 固定成本的只读命令，属未收的自家账）：
   ① **热点是数据抓的**：`cProfile` + 逐段计时显示成本几乎全在两处——`_rule_issues` 的 glob 展开（L1/L2/L3 会把同一批 **43 个 pattern** 反复展开，约 **10.5k 次 `stat`**）与 L6「引擎不得反向 import 入口面」对 core **255 个文件全量 `ast.parse`**（约 42 万 AST 节点）。
   ② **三处收敛**：① 每次扫描内**按 pattern 缓存**展开（不再重复走文件系统）；② 每棵子树**只 `os.walk` 一次** + glob→正则匹配（`**` 跨目录 / `*` 不跨 / `?` 单字符；字符类等 `Path.glob` 专有语义**回退参考实现**）；③ L6 改为**文本预筛后再解析 AST**（只把含 `import nf|scripts` 的文件交给 AST）。

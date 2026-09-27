@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-27",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "终端 v13 核心扫描热点 + check39 基线标签去写死（改为逐行 + 打印实际行数，消除 15/17 漂移）。",
+  "note": "终端 v14：核心扫描去重与去系统调用（conformance 单遍 / YAML 同文缓存 / 管线索引单建 / 纯度单遍 AST / 广度证明去 resolve）+ live-selfcheck 预算校准 8000→2000ms。",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
