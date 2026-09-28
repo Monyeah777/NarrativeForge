@@ -285,7 +285,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     落在输入面内」由 `test_conformance_scan.DerivedResultCacheTest` 的同一张表守着（将来给本函数
     加新读取，那条判据会先红、逼着把新输入补进来）。
     """
-    return _csc.memo_pair("schema-lint", LINT_INPUTS, _scan_impl, root)
+    return _csc.memo_pair("schema-lint", LINT_INPUTS, _scan_impl, root,
+                          code_modules=("core.schema_lint",))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:

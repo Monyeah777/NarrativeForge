@@ -78,7 +78,8 @@ def verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     `require_resident=True`：只在常驻语料层在位时才走缓存（那时见证成本几乎为零）。
     """
     return csc.memo_pair("asset-ledger-verify", VERIFY_INPUTS, _verify_impl, root,
-                         require_resident=True)
+                         require_resident=True,
+                         code_modules=("core.asset_ledger_projection",))
 
 
 def _verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

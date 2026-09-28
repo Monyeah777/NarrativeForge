@@ -1170,7 +1170,8 @@ def index_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     hit = _INDEX_CACHE.get(fp)
     if hit is None:
         from core import disk_cache
-        dkey = disk_cache.key("index-verify", fp, root=root)
+        dkey = disk_cache.key("index-verify", fp, root=root,
+                              code_modules=("core.output_forms",))
         cached = disk_cache.load("index-verify", dkey, validate=_csc.result_pair_ok)
         if cached is None:
             with _memo_reads():
@@ -1373,7 +1374,19 @@ def write_baseline(root: str = ".") -> Dict[str, Any]:
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
-    """check32 子扫描入口：形态清单 + 包级产出清单 + 机验率基线三合一。"""
+    """check32 子扫描入口：形态清单 + 包级产出清单 + 机验率基线三合一。
+
+    派生结果按**输入内容指纹**缓存（输入面复用同模块已穷举的 `INDEX_INPUTS`——它正是本入口
+    三个子校验的读面）；宽面 ⇒ `require_resident=True`，只在常驻语料层在位时缓存。
+    """
+    if not _csc.resident_active():
+        return _scan_impl(root)
+    return _csc.memo_pair("output-forms-scan", INDEX_INPUTS, _scan_impl, root,
+                          require_resident=True, code_modules=("core.output_forms",))
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """真算（未命中缓存时走这里）。"""
     issues: List[str] = []
     reg_issues, reg_stats = registry_verify(root)
     issues += ["形态清单: %s" % i for i in reg_issues]

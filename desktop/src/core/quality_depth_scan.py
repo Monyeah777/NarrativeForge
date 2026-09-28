@@ -42,7 +42,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     from core import conformance_scan as _csc
     if _csc.resident_active():
         return _csc.memo_pair("quality-depth", QD_INPUTS, _inner, root,
-                              require_resident=True)
+                              require_resident=True,
+                              code_modules=("core.quality_depth_scan",))
     return _inner(root)
 
 

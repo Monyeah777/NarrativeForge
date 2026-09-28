@@ -259,7 +259,8 @@ def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
     dkey = None
     if hit is None:                        # 进程内没命中 → 再看**持久**层（新进程也免付这笔账）
         from core import disk_cache
-        dkey = disk_cache.key("pack-prof", fp, root=root)
+        dkey = disk_cache.key("pack-prof", fp, root=root,
+                              code_modules=("core.pack_combo",))
         got_disk = disk_cache.load("pack-prof", dkey,
                                    validate=lambda v: isinstance(v, dict) and bool(v))
         if got_disk is not None:
@@ -488,7 +489,8 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
         from core import disk_cache
         dkey = disk_cache.key("pack-breadth", str(_inputs_fingerprint(root)),
                               str(triple_sample), str(quad_sample), str(quint_sample),
-                              str(sext_sample), str(seed), root=root)
+                              str(sext_sample), str(seed), root=root,
+                              code_modules=("core.pack_combo",))
         hit = disk_cache.load("pack-breadth", dkey,
                              validate=lambda v: isinstance(v, dict) and bool(v))
         if hit is not None:
@@ -1068,7 +1070,24 @@ def combo_register(root: str, name: str, category: str, pipeline: str,
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
-    """check32 子扫描入口：在盘组合证书复算（T4）+ 广度证明。"""
+    """check32 子扫描入口：在盘组合证书复算（T4）+ 广度证明。
+
+    派生结果按**输入内容指纹**缓存（输入面见 `SCAN_INPUTS`：各包实况 + 模块契约 + 协议声明 +
+    registry）；宽面 ⇒ `require_resident=True`。
+    """
+    if not csc.resident_active():
+        return _scan_impl(root)
+    return csc.memo_pair("pack-combo-scan", SCAN_INPUTS, _scan_impl, root,
+                         require_resident=True, code_modules=("core.pack_combo",))
+
+
+#: `scan()` 的全部输入（对齐 `_inputs_fingerprint` 覆盖的那几类）。
+SCAN_INPUTS = ("community/**/*", "04_模块库/*/*.md", "protocol/*.json",
+               "desktop/src/core/registry.json")
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """真算（未命中缓存时走这里）。"""
     from core import output_forms as of
 
     issues: List[str] = []

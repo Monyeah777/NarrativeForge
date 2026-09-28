@@ -134,6 +134,25 @@ def clear_resident() -> None:
     _RESIDENT = None
 
 
+def take_resident():
+    """**取走**常驻层并返回（供「代码换版时把它搬到新模块」用）；本来没装 → None。
+
+    背景：守护判定代码换版时会把 `core.*` 整块摘掉重载（保证不跑旧代码），于是新的
+    `conformance_scan` 会是一个**空层**——不把它搬回来，改一行代码就要让下一条重命令把整棵语料
+    重读一遍（实测 ~2 s）。常驻层装的是**仓库事实**（正文 / 目录条目 / 逐件摘要），与代码无关，
+    所以跨代码换版保住它是安全的：它的失效仍然只由监听给出的变更路径驱动。
+    """
+    global _RESIDENT
+    res, _RESIDENT = _RESIDENT, None
+    return res
+
+
+def adopt_resident(res) -> None:
+    """接手一份常驻层（同一份仓库事实，换的只是装着它的模块对象）。"""
+    global _RESIDENT
+    _RESIDENT = res
+
+
 def _resident_key(path) -> str:
     """路径 → 归一化键（`normcase(abspath)`）——**带记忆**。
 
@@ -695,7 +714,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     hit = _SCAN_CACHE.get(fp)
     if hit is None:
         from core import disk_cache
-        dkey = disk_cache.key("scan", fp, root=root)
+        dkey = disk_cache.key("scan", fp, root=root,
+                              code_modules=("core.conformance_scan",))
         cached = disk_cache.load("scan", dkey, validate=result_pair_ok)
         if cached is None:
             got = _scan_impl(root)
@@ -720,7 +740,7 @@ _DERIVED_MEMO: Dict[str, Dict[str, Any]] = {}
 
 
 def memo_pair(tag: str, patterns, impl, root: str = ".",
-              require_resident: bool = False, keep: int = 8):
+              require_resident: bool = False, keep: int = 8, code_modules=None):
     """`(issues, stats)` 形状的派生结果缓存（**进程内 + 持久**两层；键即内容）。
 
     纪律与 `scan()` 完全一致：输入面（`patterns`，须穷举）变 ⇒ 指纹变 ⇒ 必重算；持久层键里
@@ -729,6 +749,9 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
     `require_resident=True` 给**宽输入面**用：只在常驻语料层在位时才走缓存——那时指纹的读盘
     成本几乎为零（正文已在内存，只剩枚举 + 哈希，实测 3.5 MB 语料 ~33 ms），而冷进程里宽面指纹
     要把整棵语料重读一遍（实测 ~1.0 s），比直接算更贵，所以**宁可不缓存**。
+
+    `code_modules`（如 `("core.schema_lint",)`）把**代码面**缩到「这段派生自己的导入闭包」——改别的
+    模块不再换键（闭包算不出/含动态导入时自动退回整块代码面，见 `disk_cache.key`）。
     """
     if require_resident and not resident_active():
         return impl(root)
@@ -737,7 +760,7 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
     hit = mem.get(fp)
     if hit is None:
         from core import disk_cache
-        dkey = disk_cache.key(tag, fp, root=root)
+        dkey = disk_cache.key(tag, fp, root=root, code_modules=code_modules)
         packed = disk_cache.load(tag, dkey, validate=result_pair_ok)
         if packed is None:
             got = impl(root)

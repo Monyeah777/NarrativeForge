@@ -6,8 +6,8 @@ scope: 作者指令「先搜集所有可扩展标准；把所有域包在概念�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/domain_pack.py:d93603055a4aa6df18718a0776fa881ce9766b54bf930fc155c4dbbb7530ab45
-  - desktop/src/core/asset_density.py:dcb0c2468a28ae25a3c9817fad6b603c7365166783c8900da304d0fc2241d82d
+  - desktop/src/core/domain_pack.py:adb16ee6b930dcf0ccf6a3970df29843923f29ef61dd401265a54fc29f61be2e
+  - desktop/src/core/asset_density.py:abcb72400c25eb36255c5884471a90500286df21fb769be5c591bb3ddfdb3f6f
   - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
 ---

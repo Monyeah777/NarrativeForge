@@ -493,7 +493,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     （实测 3.5 MB 语料 ~33 ms）；冷进程里宽面指纹要把语料重读一遍，比直接算更贵，故宁可不算。
     """
     return csc.memo_pair("layer-model", patterns(root), _scan_impl, root,
-                         require_resident=True)
+                         require_resident=True,
+                         code_modules=("core.layer_model",))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

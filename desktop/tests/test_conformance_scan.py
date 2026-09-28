@@ -4,8 +4,10 @@
 import builtins
 import contextlib
 import io
+import json
 import os
 import pathlib
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -17,8 +19,12 @@ sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 from core import asset_density as ad  # noqa: E402
 from core import asset_ledger_projection as alp  # noqa: E402
 from core import conformance_scan as cs  # noqa: E402
+from core import concept_graph as cg  # noqa: E402
+from core import disk_cache  # noqa: E402
+from core import domain_pack as dpk  # noqa: E402
 from core import layer_model as lm  # noqa: E402
 from core import output_forms as of  # noqa: E402
+from core import pack_combo as pcb  # noqa: E402
 from core import purity_scan as ps  # noqa: E402
 from core import quality_depth_scan as qd  # noqa: E402
 from core import schema_lint as sl  # noqa: E402
@@ -358,6 +364,26 @@ class DerivedResultCacheTest(unittest.TestCase):
                 "clear": lambda: cs._DERIVED_MEMO.pop("quality-depth", None),
                 "owner": qd, "impl": "_inner",
                 "run": lambda: qd.scan(ROOT), "resident": True},
+            "concept_graph.scan": {
+                "patterns": cg.CG_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("concept-graph", None),
+                "owner": cg, "impl": "_scan_impl",
+                "run": lambda: cg.scan(ROOT), "resident": True},
+            "output_forms.scan": {
+                "patterns": of.INDEX_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("output-forms-scan", None),
+                "owner": of, "impl": "_scan_impl",
+                "run": lambda: of.scan(ROOT), "resident": True},
+            "domain_pack.scan": {
+                "patterns": dpk.SCAN_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("domain-pack-scan", None),
+                "owner": dpk, "impl": "_scan_impl",
+                "run": lambda: dpk.scan(ROOT), "resident": True},
+            "pack_combo.scan": {
+                "patterns": pcb.SCAN_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("pack-combo-scan", None),
+                "owner": pcb, "impl": "_scan_impl",
+                "run": lambda: pcb.scan(ROOT), "resident": True},
         }
 
     def _run(self, site):
@@ -433,6 +459,100 @@ class DerivedResultCacheTest(unittest.TestCase):
             self.assertEqual(after_first, after_second,
                              "%s() 同内容第二次调用白算了一遍（缓存没生效）" % name)
             self.assertEqual(first, second, "%s() 命中缓存的结果必须与首算一致" % name)
+
+
+class CodeScopeFaceTest(unittest.TestCase):
+    """代码面**按导入闭包**细化（`disk_cache.key(..., code_modules=…)`）：精度 / fail-closed / 完整性。
+
+    动机（实测）：整块代码面 119 件 ⇒ 改**任何**一个 core 文件都会让所有落盘派生换键，下一条重命令
+    付一次全量重建（~4–6 s）；而多数派生只依赖 3–21 件。三条判据分别盯三件事：
+    ① **精度**：闭包只含自己及其依赖（无关件如 `terminal.py` 不得在内）；
+    ② **fail-closed**：闭包里一旦出现动态导入构造（`__import__` / `importlib`）就判「说不清」
+       （返回 None ⇒ 调用方退回整块代码面，绝不拿不完整的闭包当键）；
+    ③ **完整性（运行时）**：在**全新解释器**里真跑一遍该派生，期间被导入的 `core.*` 模块
+       必须全部落在声明闭包内——静态分析漏判会在这里红。
+    """
+
+    #: 站点 → (自己的模块, 真算入口)。与各站点源码里的 `code_modules=` 声明一一对应（漂移即红）。
+    SITES = (("core.schema_lint", "_scan_impl"),
+             ("core.asset_density", "_thickness_impl"),
+             ("core.asset_ledger_projection", "_verify_impl"),
+             ("core.layer_model", "_scan_impl"),
+             ("core.purity_scan", "_scan_impl"),
+             ("core.quality_depth_scan", "_inner"),
+             ("core.conformance_scan", "_scan_impl"),
+             ("core.output_forms", "_index_verify_impl"),
+             ("core.pack_combo", "scan"))
+
+    def test_scope_is_precise_and_fails_closed(self):
+        scope = disk_cache.code_scope_files(ROOT, ("core.schema_lint",))
+        self.assertIsNotNone(scope, "schema_lint 的闭包应当算得出")
+        self.assertIn("desktop/src/core/schema_lint.py", scope)
+        self.assertNotIn("desktop/src/core/terminal.py", scope,
+                         "无关模块不得进闭包（否则等于退回整块代码面）")
+        self.assertLess(len(scope), 20, "闭包应当远小于整块代码面（119 件）")
+        self.assertIsNone(disk_cache.code_scope_files(ROOT, ("core.regression_score",)),
+                          "含动态导入构造（`__import__`）的模块必须判「说不清」→ 退回整块代码面")
+        with tempfile.TemporaryDirectory() as tmp:
+            core = pathlib.Path(tmp) / "desktop" / "src" / "core"
+            core.mkdir(parents=True)
+            (core / "a.py").write_text("from core import b  # noqa\n", encoding="utf-8")
+            (core / "b.py").write_text("x = 1\n", encoding="utf-8")
+            self.assertEqual(("desktop/src/core/a.py", "desktop/src/core/b.py"),
+                             disk_cache.code_scope_files(tmp, ("core.a",)),
+                             "合成树：闭包应含 a 与被 a 依赖的 b")
+            (core / "b.py").write_text("x = __import__('os')\n", encoding="utf-8")
+            self.assertIsNone(disk_cache.code_scope_files(tmp, ("core.a",)),
+                              "合成树：闭包里出现动态导入 ⇒ 判说不清（fail-closed）")
+            (core / "a.py").write_text("def (:\n", encoding="utf-8")   # 真·语法错
+            self.assertIsNone(disk_cache.code_scope_files(tmp, ("core.a",)),
+                              "合成树：解析不出 ⇒ 判说不清")
+
+    def test_every_site_has_a_computable_scope(self):
+        for module, _fn in self.SITES:
+            scope = disk_cache.code_scope_files(ROOT, (module,))
+            self.assertIsNotNone(scope, "%s 的代码闭包算不出（会退回整块代码面）" % module)
+            self.assertIn("desktop/src/core/%s.py" % module.split(".")[-1], scope)
+
+    #: 运行期完整性探针只挑 4 个站点跑（每个都得起一次全新解释器；全跑 9 个会把门禁时间拉长一倍），
+    #: 挑的是「hub + 三类叶子」：conformance_scan（被最多模块依赖）、schema_lint、layer_model、
+    #: asset_density。闭包算法对所有站点是同一个，抽样足够暴露「静态分析漏判」。
+    RUNTIME_SITES = (("core.conformance_scan", "_scan_impl"),
+                     ("core.schema_lint", "_scan_impl"),
+                     ("core.layer_model", "_scan_impl"),
+                     ("core.asset_density", "_thickness_impl"))
+
+    def test_runtime_imports_stay_inside_declared_scope(self):
+        """全新解释器里真跑一遍：**懒导入**的 `core.*` 模块必须都在声明闭包内。
+
+        （静态导入由闭包算法覆盖；这里盯的是「运行期才 import」的那一半——静态分析漏判会当场红。）
+        探针脚本写在**临时目录**里：单测不得往仓库里落任何件。
+        """
+        src = ("import json, os, sys\n"
+               "sys.path.insert(0, os.path.join(sys.argv[1], 'desktop', 'src'))\n"
+               "os.environ['NF_NO_DISK_CACHE'] = '1'\n"
+               "import importlib\n"
+               "mod = importlib.import_module(sys.argv[2])\n"
+               "fn = getattr(mod, sys.argv[3])\n"
+               "before = set(sys.modules)\n"
+               "fn('.')\n"
+               "print(json.dumps(sorted(m for m in set(sys.modules) - before\n"
+               "                        if m.startswith('core.'))))\n")
+        with tempfile.TemporaryDirectory() as tmp:
+            probe = os.path.join(tmp, "scope_probe.py")
+            with open(probe, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(src)
+            for module, fn in self.RUNTIME_SITES:
+                scope = disk_cache.code_scope_files(ROOT, (module,))
+                allowed = {os.path.basename(p)[:-3] for p in scope}
+                out = subprocess.run([sys.executable, probe, ROOT, module, fn], cwd=ROOT,
+                                     capture_output=True, text=True, encoding="utf-8",
+                                     timeout=600)
+                self.assertEqual(0, out.returncode, out.stderr[-400:])
+                lazy = set(json.loads(out.stdout.strip() or "[]"))
+                leak = sorted(m for m in lazy if m.split(".")[-1] not in allowed)
+                self.assertEqual([], leak,
+                                 "%s 运行期导入了闭包外的模块 → 闭包不完整，缓存会陈旧" % module)
 
 
 class ModuleDocsMemoTest(unittest.TestCase):

@@ -52,7 +52,8 @@ ASSET_INPUTS = ("community/*/assets/*.md", "05_资产库/用户自定义/*.md")
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """资产台账面体检（原体见 `_scan_impl`）。派生结果按**输入内容指纹**缓存（键即内容）。"""
-    return csc.memo_pair("asset-density", ASSET_INPUTS, _scan_impl, root)
+    return csc.memo_pair("asset-density", ASSET_INPUTS, _scan_impl, root,
+                          code_modules=("core.asset_density",))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
@@ -121,7 +122,8 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     ckey = h.hexdigest()
     # 落盘键另叠**代码面 + 运行时**（见 core.disk_cache）：改了普查算法必然换键，
     # 不靠"记得手工 bump 版本标签"。
-    dkey = disk_cache.key("census", ckey, root=root)
+    dkey = disk_cache.key("census", ckey, root=root,
+                               code_modules=("core.asset_density",))
     counts = _CENSUS_CACHE.get(ckey)
     if counts is None:
         counts = disk_cache.load("census", dkey,
@@ -151,7 +153,8 @@ def thickness_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     low = 空/过短(<200字) 或 无键且无小节（低信息档候选）；只报告不删（issues 空）。
     派生结果按**输入内容指纹**缓存（输入面与 `scan()` 同：两条资产面）——纯函数，键即内容。
     """
-    return csc.memo_pair("asset-thickness", ASSET_INPUTS, _thickness_impl, root)
+    return csc.memo_pair("asset-thickness", ASSET_INPUTS, _thickness_impl, root,
+                          code_modules=("core.asset_density",))
 
 
 def _thickness_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

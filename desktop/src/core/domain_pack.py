@@ -2041,6 +2041,23 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     return issues, stats
 
 
+#: `scan()` 的全部输入：各包实况（community 全树）+ 名录/登记/绑定三类声明 + 标准目录
+#: （`.rivet` 下的私档目录）+ registry。
+SCAN_INPUTS = ("community/**/*", ".rivet/**/*", "protocol/*.json",
+               "desktop/src/core/registry.json")
+
+
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
-    """check32 子扫描入口：域包名录机检（无名录即中性通过）。"""
+    """check32 子扫描入口：域包名录机检（无名录即中性通过）。
+
+    派生结果按**输入内容指纹**缓存（输入面见 `SCAN_INPUTS`）；宽面 ⇒ `require_resident=True`。
+    """
+    if not csc.resident_active():
+        return _scan_impl(root)
+    return csc.memo_pair("domain-pack-scan", SCAN_INPUTS, _scan_impl, root,
+                         require_resident=True, code_modules=("core.domain_pack",))
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """真算（未命中缓存时走这里）。"""
     return manifest_verify(root)

@@ -301,6 +301,26 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
         self.assertEqual((direct.returncode, direct.stdout, direct.stderr), second,
                          "缓存回放的 (exit, stdout, stderr) 必须与真子进程直跑逐字节相同")
 
+    def test_resident_layer_survives_a_code_reload(self):
+        """**代码换版不得清空常驻语料层**：它装的是仓库事实（正文/目录/逐件摘要），与代码无关。
+
+        依据（2026-09-29 实测）：守护判定代码换版时会把 `core.*` 整块摘掉重载（保证不跑旧代码），
+        于是新模块的常驻层是**空的**——不搬回来，改一行代码就要让下一条重命令把整棵语料重读一遍
+        （实测 ~2 s）。这里把一个临时 NF_HOME 的守护逼到「判代码换版」那条路上，断言层还活着。
+        """
+        self._call(["--version"])
+        csc_live = sys.modules["core.conformance_scan"]
+        csc_live.read_text_cached(os.path.join(ROOT, "protocol", "LAYERS.json"))
+        self.assertGreater(dm.query_stats()["resident"]["text"], 0)
+        real = dm._code_fingerprint
+        dm._code_fingerprint = lambda root: ("forced-code-change",)
+        try:
+            dm._sync_code(Path(ROOT))
+        finally:
+            dm._code_fingerprint = real
+        self.assertGreater(dm.query_stats()["resident"]["text"], 0,
+                           "代码换版后常驻层被清空了 —— 下一条重命令要重读整棵语料（~2 s）")
+
     def test_resident_layer_is_wired_and_unknown_change_clears_it(self):
         """守护**接线**判据：带 `--watch` 的守护必须装上常驻语料层；说不清的变更必须整批作废。
 

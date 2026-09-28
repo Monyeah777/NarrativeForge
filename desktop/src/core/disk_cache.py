@@ -95,10 +95,128 @@ def reset_code_fingerprint(root: Optional[str] = None) -> None:
     _CODE_FP.pop(os.path.normcase(os.path.abspath(str(root))), None)
 
 
-def key(tag: str, *parts: str, root: str = ".") -> str:
-    """算缓存键：标签 + 代码面 + 运行时 + 调用方给的各段。"""
+#: 仓库内模块的**导入图**（懒建、按 (根, 模块) 记忆）：模块名 → (文件相对路径, 依赖, 是否含动态导入)。
+#: 只用来**划定代码面的范围**（谁真的依赖谁的代码），不参与任何判定；解析不出/含动态导入 → 退回整块。
+_IMPORT_MEMO: Dict[Any, Optional[Tuple[str, frozenset, bool]]] = {}
+_CORE_DIR = ("desktop", "src", "core")
+
+
+def _module_info(root: str, name: str):
+    """解析 `desktop/src/core/<name>.py` → (相对路径或 None, 静态依赖, 是否含动态导入构造)。
+
+    - 文件不存在 ⇒ `(None, {}, False)`：这不是模块文件（`from core import <名字>` 里的名字可能来自
+      `core/__init__.py`），调用方据此把它折算成对 `__init__.py` 的依赖，而不是判「说不清」。
+    - 文件在但解析不出 ⇒ `None`：真的说不清，调用方**退回整块代码面**。
+    - 记忆键含 `(mtime_ns, size)`：进程活着的时候代码被改了，图必须跟着变（本轮判据当场抓过：
+      只按 (根, 模块) 记忆会让合成树里的第二版内容读成第一版）。
+    """
+    path = Path(root).joinpath(*_CORE_DIR, str(name) + ".py")
+    try:
+        st = path.stat()
+        stamp = (st.st_mtime_ns, st.st_size)
+    except OSError:
+        return (None, frozenset(), False)
+    rkey = (os.path.normcase(os.path.abspath(str(root))), str(name), stamp)
+    if rkey in _IMPORT_MEMO:
+        return _IMPORT_MEMO[rkey]
+    info = None
+    try:
+        import ast
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        deps: set = set()
+        dyn = False
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name == "core" or alias.name.startswith("core."):
+                        if "." in alias.name:
+                            deps.add(alias.name.split(".")[1])
+            elif isinstance(node, ast.ImportFrom):
+                mod = node.module or ""
+                if mod == "core":
+                    deps.update(a.name for a in node.names)
+                elif mod.startswith("core."):
+                    deps.add(mod.split(".")[1])
+            elif isinstance(node, ast.Call):
+                fn = node.func
+                if isinstance(fn, ast.Name) and fn.id == "__import__":
+                    dyn = True
+                elif isinstance(fn, ast.Attribute) \
+                        and getattr(getattr(fn, "value", None), "id", "") == "importlib":
+                    dyn = True
+        info = ("/".join(_CORE_DIR + (str(name) + ".py",)),
+                frozenset(d for d in deps if d), dyn)
+    except Exception:                                  # noqa: BLE001 - 解析不出即「说不清」
+        info = None
+    _IMPORT_MEMO[rkey] = info
+    return info
+
+
+def code_scope_files(root: str, modules) -> Optional[Tuple[str, ...]]:
+    """`modules` 的**静态导入闭包**（仓库内文件，posix 相对路径）；任何不确定 → `None`。
+
+    fail-closed 三条：① 闭包里任一模块解析不出（缺件/语法错）→ None；② 闭包里出现**动态导入构造**
+    （`__import__` / `importlib`）→ None（静态闭包不再可信，退回整块代码面）；③ 闭包为空 → None。
+    """
+    seen: set = set()
+    stack = [str(m).split(".")[-1] for m in modules]
+    files: set = set()
+    while stack:
+        name = stack.pop()
+        if name in seen:
+            continue
+        info = _module_info(root, name)
+        if info is None or info[2]:
+            return None
+        seen.add(name)
+        if info[0] is None:                        # 不是模块文件 → 折算成 core/__init__.py 的依赖
+            files.add("/".join(_CORE_DIR + ("__init__.py",)))
+            continue
+        files.add(info[0])
+        stack.extend(info[1])
+    return tuple(sorted(files)) if files else None
+
+
+_SCOPE_FP: Dict[Any, Optional[str]] = {}
+
+
+def code_scope_fingerprint(root: str, modules) -> Optional[str]:
+    """闭包的**内容指纹**（按 (根, 模块元组) 记忆）；闭包算不出 → None。"""
+    rkey = (os.path.normcase(os.path.abspath(str(root))), tuple(sorted(map(str, modules))))
+    if rkey in _SCOPE_FP:
+        return _SCOPE_FP[rkey]
+    files = code_scope_files(root, modules)
+    out = None
+    if files is not None:
+        from core import conformance_scan as csc
+        out = csc.content_fingerprint(str(root), files)
+    _SCOPE_FP[rkey] = out
+    return out
+
+
+def reset_code_scope(root: Optional[str] = None) -> None:
+    """清掉导入图与闭包指纹的记忆（守护判定代码已换版后调用）。"""
+    rkey = None if root is None else os.path.normcase(os.path.abspath(str(root)))
+    for memo in (_IMPORT_MEMO, _SCOPE_FP):
+        for k in [k for k in memo if rkey is None or k[0] == rkey]:
+            memo.pop(k, None)
+
+
+def key(tag: str, *parts: str, root: str = ".", code_modules=None) -> str:
+    """算缓存键：标签 + 代码面 + 运行时 + 调用方给的各段。
+
+    `code_modules` 给出「这段派生**自己的**代码闭包」（如 `("core.schema_lint",)`）时，代码面只取闭包
+    ——于是改别的模块不再换键（实测：整块代码面 119 件，多数派生只依赖 3–21 件；改 `terminal.py`
+    这种与派生无关的件不该让全部派生重算）。闭包算不出/含动态导入 → **退回整块代码面**
+    （宁可多算，不可拿旧算法的账当新账）。不给 `code_modules` 时行为与从前完全一致。
+    """
+    if code_modules:
+        scope = code_scope_fingerprint(root, code_modules)
+        code_bit = scope if scope is not None else code_fingerprint(root)
+    else:
+        code_bit = code_fingerprint(root)
     h = hashlib.sha256()
-    for piece in ("v1", str(tag), code_fingerprint(root), runtime_tag()) + tuple(
+    for piece in ("v1", str(tag), code_bit, runtime_tag()) + tuple(
             str(p) for p in parts):
         h.update(piece.encode("utf-8"))
         h.update(b"\x00")

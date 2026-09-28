@@ -166,7 +166,8 @@ def _facts_for(text: str):
     """
     if text in _FACTS_CACHE:
         return _FACTS_CACHE[text]
-    dkey = disk_cache.key("ast-facts", hashlib.sha256(text.encode("utf-8")).hexdigest())
+    dkey = disk_cache.key("ast-facts", hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                              code_modules=("core.purity_scan",))
     packed = disk_cache.load("ast-facts", dkey, validate=_packed_ok)
     got = _unpack_facts(packed) if packed is not None else _FACTS_READ_MISS
     if got is _FACTS_READ_MISS:
@@ -291,7 +292,8 @@ def scan(root: str = ".") -> tuple:
     宽面只在常驻语料层在位时走缓存（`require_resident=True`）——理由见 `layer_model.scan`。
     """
     return csc.memo_pair("purity-scan", patterns(root), _scan_impl, root,
-                         require_resident=True)
+                         require_resident=True,
+                         code_modules=("core.purity_scan",))
 
 
 def _scan_impl(root: str = ".") -> tuple:

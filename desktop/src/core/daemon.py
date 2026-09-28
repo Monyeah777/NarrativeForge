@@ -399,13 +399,32 @@ def _sync_code(root: Path) -> None:
     try:
         from core import disk_cache
         disk_cache.reset_code_fingerprint(str(root))
+        # 导入图/闭包指纹也要跟着清：代码一变，各派生「自己的代码闭包」可能换了成员
+        # （新增 import、换依赖），不清就会拿旧闭包当键。
+        disk_cache.reset_code_scope(str(root))
     except Exception:                                    # noqa: BLE001 - 清不掉不影响重载
         pass
+    # 常驻语料层跨代码换版**保住**：它装的是仓库事实（正文/目录/逐件摘要），与代码无关；
+    # 而 `core.*` 被整块摘掉重载时，新模块会是个**空层**——不搬回来，改一行代码就得让下一条
+    # 重命令把整棵语料重读一遍（实测 ~2 s）。
+    saved = None
+    try:
+        from core import conformance_scan as _csc_old
+        if _csc_old.resident_active():
+            saved = _csc_old.take_resident()
+    except Exception:                                    # noqa: BLE001
+        saved = None
     for name in [m for m in list(sys.modules) if m == "core" or m.startswith("core.")]:
         if name != "core.daemon":           # 守护自身模块留着（改它需重启，见模块 docstring）
             sys.modules.pop(name, None)
     _CLI_CACHE.clear()
     _CLI_CACHE["fp"] = fp
+    if saved is not None:
+        try:
+            from core import conformance_scan as _csc_new       # 重新导入 → 新模块对象
+            _csc_new.adopt_resident(saved)
+        except Exception:                                    # noqa: BLE001 - 搬不回去就下次重读
+            pass
 
 
 def _load_cli(root: Path):
