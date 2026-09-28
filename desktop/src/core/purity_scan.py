@@ -39,6 +39,7 @@ import ast
 import os
 import re
 import sys
+from core import conformance_scan as csc
 
 #: 协议真相源 + 导航文档（R1/R2/R3 作用域）
 PROTO_DOCS = ("01_核心协议.md", "02_联动注册表.md",
@@ -201,8 +202,7 @@ def scan(root: str = ".") -> tuple:
         path = os.path.join(root, name)
         if not os.path.exists(path):
             continue
-        with open(path, encoding="utf-8") as fh:
-            text = fh.read()
+        text = csc.read_text_cached(path)          # 共享语料读：一次只读调用内同件只读一遍
         stats["docs"] += 1
         if name in ("01_核心协议.md", "02_联动注册表.md"):
             for i, ln in enumerate(text.splitlines(), 1):
@@ -238,8 +238,7 @@ def scan(root: str = ".") -> tuple:
         if fpath in facts_cache:
             return facts_cache[fpath]
         try:
-            with open(fpath, encoding="utf-8") as fh:
-                text = fh.read()
+            text = csc.read_text_cached(fpath)     # 同上（L6 与这里的 core/*.py 是同一批件）
         except OSError:
             facts_cache[fpath] = None
             return None

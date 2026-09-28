@@ -27,6 +27,7 @@ import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
+from core import conformance_scan as csc
 
 DECL_REL = "protocol/LAYERS.json"
 SCHEMA = "nf-layers/1"
@@ -278,7 +279,7 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
     # L6 引擎不反向 import 入口面
     for rel in sorted(_expand_many(root, ["desktop/src/core/*.py"], cache)):
         try:
-            src = (Path(root) / rel).read_text(encoding="utf-8")
+            src = csc.read_text_cached(Path(root) / rel)   # 与 purity 的 core/*.py 读同一份语料
         except OSError:
             continue
         # 文本预筛（效率）：L6 只关心「入口面 import」——绝大多数 core 文件不含它，

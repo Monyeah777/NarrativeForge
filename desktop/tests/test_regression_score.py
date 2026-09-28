@@ -25,9 +25,11 @@ class TestRegressionScore(unittest.TestCase):
         """一次 `evaluate` 的**打开次数**上限——共享语料（corpus sharing）的确定性守护。
 
         确定性口径（不是计时，故与机器快慢无关）：接共享语料前一次 evaluate 打开 **7833** 次、
-        单件最多被读 9 次；接完（含键归一化）后 **4178** 次、单件最多 3 次。界限取 6000
-        （~1.4× 余量）：仓库内容增长只让读次数随文件数线性走，而「共享语料被拆掉 / 键又没归一」
-        会立刻回到 7000+ → 当场红。
+        单件最多被读 9 次；接完（含键归一化）后 **4178** 次、单件最多 3 次。此后又收了三波
+        （输入面枚举单遍化 / 嵌套 read_memo 共享 / purity·layer_model·domain_pack·domain_metrics
+        改走共享语料读），实测 **2461** 次、单件最多 **2** 次、不同件 2456——**冗余只剩 5 次**，
+        即"语料一次只读调用内基本只读一遍"。界限取 3400（~1.38× 余量）：仓库内容增长只让读次数
+        随文件数线性走，而「共享语料被拆掉 / 键又没归一」会立刻回到 7000+ → 当场红。
         """
         rs.evaluate(ROOT)                       # 预热（内容键缓存就位）
         counts: collections.Counter = collections.Counter()
@@ -51,8 +53,8 @@ class TestRegressionScore(unittest.TestCase):
             builtins.open = orig
         total = sum(counts.values())
         worst = max(counts.values())
-        self.assertLessEqual(total, 6000, "一次 evaluate 打开 %d 次（共享语料被拆掉？）" % total)
-        self.assertLessEqual(worst, 6, "单份件在一次 evaluate 里被读 %d 次" % worst)
+        self.assertLessEqual(total, 3400, "一次 evaluate 打开 %d 次（共享语料被拆掉？）" % total)
+        self.assertLessEqual(worst, 3, "单份件在一次 evaluate 里被读 %d 次" % worst)
 
     def test_evaluate_bounded_and_reproducible(self):
         """真实仓库：分值有界且两遍一致（可复现 = 可作基线）。"""

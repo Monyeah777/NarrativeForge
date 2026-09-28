@@ -20,6 +20,7 @@ import json
 import math
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Sequence, Tuple
+from core import conformance_scan as csc
 
 DIGITS = 6
 
@@ -37,7 +38,7 @@ def _safe_div(a: float, b: float) -> float:
 def load_rows(path: str | Path) -> Tuple[List[Dict[str, str]], str]:
     p = Path(path)
     try:
-        text = p.read_text(encoding="utf-8")
+        text = csc.read_text_cached(p)      # 共享语料读：同一次只读调用内同件只读一遍
     except OSError as exc:
         return [], "不可读：%s" % exc
     rows = [dict(r) for r in csv.DictReader(text.splitlines())]

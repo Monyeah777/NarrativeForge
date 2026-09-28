@@ -1984,7 +1984,7 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         idx_path = Path(root) / "community" / pkg / "outputs" / "INDEX.json"
         if not idx_path.is_file():
             issues.append("%s：缺 outputs/INDEX.json" % pkg); continue
-        faces = (json.loads(idx_path.read_text(encoding="utf-8")).get("outputs") or [])
+        faces = (json.loads(csc.read_text_cached(idx_path)).get("outputs") or [])
         ratio = round(sum(1 for e in faces if e.get("tier") in ("T2", "T3", "T4"))
                       / max(1, len(faces)), 4)
         if ratio < thr:
@@ -1998,7 +1998,7 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         # 可扩展标准绑定面（2026-09-23 对齐）：覆盖率 100% + 引用在册 + 概念密度不回落
         spec_path = Path(root) / SPEC_DIR / ("%s.json" % p.get("code", ""))
         if spec_path.is_file():
-            spec = json.loads(spec_path.read_text(encoding="utf-8"))
+            spec = json.loads(csc.read_text_cached(spec_path))
             payload = _read_json(Path(root) / "community" / pkg / "outputs"
                                  / "DOMAIN_SPEC.json") or {}
             subs = payload.get("subdivisions") or []
