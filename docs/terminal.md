@@ -23,6 +23,11 @@ CLI 命令面按能力菜单组织成可交互会话——读一行 → 解析 �
 python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 scripts\nf.cmd）
 ```
 
+三条启动路径的定位（**别混用**）：`scripts/nf`（POSIX）带**守护快路**，配合
+`eval "$(nf daemon shell-init bash)"` 才是毫秒级客户端；`scripts\nf.cmd` 是 Windows cmd 的
+**python 直跑**包装（cmd 没有内建套接字，故拿不到快路，只保证可用与等价）；`python scripts/nf.py`
+是唯一真源入口，前两者都只是它的启动器。
+
 进入后：输入 `0`–`7` 看能力区示例，`/menu` 重看菜单，`/help` 看用法，`quit` 退出。
 任意命令可直接直通，例：`nf doctor`、`nf market --list`、`nf assemble "西幻生存"`。
 

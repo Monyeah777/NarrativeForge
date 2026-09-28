@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "零子进程客户端回退修复（未加引号的解释器路径）+ 快路/回退两条行为级判据",
+  "note": "nf.cmd 纯 ASCII 化（cmd.exe 按 OEM 码页读源码）+ 静态/行为两级判据",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

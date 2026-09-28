@@ -57,5 +57,43 @@ class LauncherFallbackTest(unittest.TestCase):
         self.assertIn("{", p.stdout)
 
 
+class WindowsCmdLauncherTest(unittest.TestCase):
+    """Windows 原生启动器 `scripts/nf.cmd`：**静态规则**（必须纯 ASCII）+ 行为级（能跑）。
+
+    依据（2026-09 实测缺陷）：该文件曾是 UTF-8 无 BOM + 中文注释，而 **cmd.exe 按 OEM 码页读
+    .cmd 源码**——注释被误解码后会**裂出可执行垃圾**，于是 `scripts\\nf.cmd <任何参数>` 在
+    python 之前就挂了（实测 rc=255，报错 `'…' is not recognized as an internal or external
+    command`）。这条规则**静态可判**、且与平台无关，所以常驻在单测里；行为级那条只在 Windows 跑。
+    （同一条教训仓库里早有先例：`.github/requirements-ci.txt` 明写 "deliberately ASCII-only"。）
+    """
+
+    def test_windows_launchers_are_ascii_only(self):
+        offenders = []
+        for path in Path(ROOT).rglob("*"):
+            if path.suffix.lower() not in (".cmd", ".bat"):
+                continue
+            if any(part in (".git", ".rivet", "__pycache__") for part in path.parts):
+                continue
+            raw = path.read_bytes()
+            if any(b > 0x7F for b in raw):
+                offenders.append(str(path.relative_to(ROOT)))
+        self.assertEqual([], offenders,
+                         "cmd/bat 源码必须纯 ASCII——cmd.exe 按 OEM 码页读它，非 ASCII 注释会裂成"
+                         "可执行垃圾（实测导致启动器完全不可用）")
+
+    @unittest.skipUnless(os.name == "nt", "仅 Windows 有 cmd.exe")
+    def test_nf_cmd_actually_runs(self):
+        cmd = os.environ.get("COMSPEC") or shutil.which("cmd")
+        if not cmd:
+            self.skipTest("找不到 cmd.exe")
+        p = subprocess.run([cmd, "/c", r"scripts\nf.cmd --version"], cwd=ROOT,
+                           capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", timeout=180)
+        self.assertEqual(0, p.returncode,
+                         "nf.cmd 必须能跑（非 ASCII 注释会让它在 python 之前就挂）\n%s"
+                         % (p.stdout + p.stderr))
+        self.assertIn("nf ", p.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

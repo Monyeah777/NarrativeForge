@@ -1,11 +1,25 @@
 @echo off
-rem NF 终端启动器（Windows）：无参数 = 直接进交互终端，其余参数原样透传 nf CLI。
-rem 用法：scripts\nf.cmd [shell|doctor|assemble ...]
+rem NF terminal launcher (Windows cmd). No arguments = interactive shell; others pass
+rem straight through to the nf CLI.
+rem
+rem Usage: scripts\nf.cmd [shell|doctor|assemble ...]
+rem
+rem KEEP THIS FILE ASCII-ONLY (2026-09 real defect): cmd.exe reads .cmd sources in the
+rem OEM code page, so non-ASCII comments get mis-decoded and can split into executable
+rem garbage -- the launcher then fails before python is ever reached (observed: rc=255,
+rem "'...' is not recognized as an internal or external command"). Same lesson as
+rem .github/requirements-ci.txt ("deliberately ASCII-only"). Guarded by a test.
+rem
+rem Note: the millisecond-class client (daemon socket fast path) is the POSIX launcher
+rem scripts/nf plus "eval $(nf daemon shell-init bash)"; cmd.exe has no built-in socket,
+rem so this wrapper always takes the python direct path.
 setlocal
 set "NF_ROOT=%~dp0"
+set "NF_PY=python"
+where python >nul 2>nul || set "NF_PY=py"
 if "%~1"=="" (
-  python "%NF_ROOT%nf.py" shell
+  "%NF_PY%" "%NF_ROOT%nf.py" shell
 ) else (
-  python "%NF_ROOT%nf.py" %*
+  "%NF_PY%" "%NF_ROOT%nf.py" %*
 )
 endlocal
