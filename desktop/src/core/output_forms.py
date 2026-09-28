@@ -1287,13 +1287,20 @@ def _dual_source_check(root: str, pkg: str, path: str, ds: dict) -> List[str]:
 def meter(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """机验率与功能面计量（不改盘；基线比对见 baseline_verify）。"""
     stats: Dict[str, Any] = {"packages": {}, "totals": {}}
+    # 资产档面一次枚举（共享枚举器：走查/子树清单复用），替代「每个包各一次 glob」——
+    # 实测本仓 111 个包各 glob 一次 `assets/*.md`（106 次落盘遍历），而这一面本来就要被
+    # asset_density / 指纹走一遍。
+    prose_by_pkg: Dict[str, List[str]] = {}
+    for rel in _csc.iter_files(root, "community/*/assets/*.md"):
+        parts = rel.split("/")
+        if len(parts) == 4 and parts[3] != "README.md":
+            prose_by_pkg.setdefault(parts[1], []).append(parts[3])
     for pkg in _pack_dirs(root):
         idx, _err = _read_json(_rel(root, "community/%s/%s" % (pkg, INDEX_REL)))
         entries = (idx or {}).get("outputs") or []
         mv = [e for e in entries if e.get("tier") in ("T2", "T3", "T4")]
         fn_faces = [e for e in entries if e.get("tier") == "T4"]
-        prose = [p.name for p in (_rel(root, "community/%s/assets" % pkg)).glob("*.md")
-                 if p.name != "README.md"] if _rel(root, "community/%s/assets" % pkg).is_dir() else []
+        prose = prose_by_pkg.get(pkg, [])
         denom = len(mv) + len(prose)
         stats["packages"][pkg] = {
             "machine_verifiable": len(mv),

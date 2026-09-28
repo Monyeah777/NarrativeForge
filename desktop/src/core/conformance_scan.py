@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import copy
 import contextlib
+import functools
 import glob
 import hashlib
 import json
@@ -97,6 +98,7 @@ def _fast_glob_supported(pattern: str) -> bool:
     return pat.split("/")[-1] != "**"
 
 
+@functools.lru_cache(maxsize=512)
 def _segment_regex(part: str) -> "re.Pattern[str]":
     """把单个路径段编译成正则：`*` → 任意（不含 `/`），`?` → 单字符（不含 `/`）。"""
     out = []
@@ -108,6 +110,18 @@ def _segment_regex(part: str) -> "re.Pattern[str]":
         else:
             out.append(re.escape(ch))
     return re.compile("^" + "".join(out) + "$")
+
+
+@functools.lru_cache(maxsize=512)
+def _compiled_parts(pattern: str):
+    """把模式**一次**编译成「段 → 正则（`**` 记为 None）」的元组。
+
+    依据（实测）：走查版与清单版过去都**每次调用**重新编译段正则——一次 evaluate 里
+    `_segment_regex` 被调 **31995** 次、`re.escape` **164752** 次（自耗时合计 ~0.29 s）。
+    模式的编译结果是**模式的纯函数**（与文件系统无关），故可长期记忆，不存在陈旧问题。
+    """
+    return tuple(None if part == "**" else _segment_regex(part)
+                 for part in (p for p in str(pattern).split("/") if p != ""))
 
 
 def _scandir_list(path: str):
@@ -129,14 +143,14 @@ def _enumerate_rel(root_abs: str, pattern: str) -> List[str]:
     为什么不用 `Path.glob`：它的 `**` 逐层重入，实测本仓 `community/*/outputs/**/*`（1156 件）
     要 236 ms，而 `os.scandir` 单遍约 90 ms——指纹每次只读调用都要按输入面枚举一遍。
     """
-    parts = [p for p in pattern.split("/") if p != ""]
+    parts = _compiled_parts(pattern)
     out: List[str] = []
 
     def match(dir_abs: str, rel: str, i: int) -> None:
         if i >= len(parts):
             return
-        part = parts[i]
-        if part == "**":
+        rx = parts[i]
+        if rx is None:                                        # `**`
             match(dir_abs, rel, i + 1)                       # 零层：当前目录直接续匹配
             for entry in _scandir_list(dir_abs):
                 try:
@@ -145,7 +159,6 @@ def _enumerate_rel(root_abs: str, pattern: str) -> List[str]:
                 except OSError:
                     continue
             return
-        rx = _segment_regex(part)
         last = (i == len(parts) - 1)
         for entry in _scandir_list(dir_abs):
             if not rx.match(entry.name):
@@ -178,7 +191,7 @@ def iter_files(root, pattern: str) -> List[str]:
     prefix = _fixed_prefix(str(pattern))
     tree = _tree_hit(root_abs, prefix)          # 子树清单已在作用域里 ⇒ 内存里筛，零 IO
     if tree is not None:
-        parts = [p for p in str(pattern).split("/") if p != ""]
+        parts = _compiled_parts(str(pattern))
         got = tuple(rel for rel in tree
                     if _match_parts(rel.split("/"), parts))
     elif _fast_glob_supported(pattern):
@@ -212,18 +225,22 @@ def _match_parts(segments, parts) -> bool:
     与 `_enumerate_rel` 共用 `_segment_regex`，两版的等价性由 `FastGlobTest` 同时覆盖
     （走查版与「子树清单」版各测一遍，防止两条路径漂移）。
     """
-    if not parts:
-        return not segments
-    head = parts[0]
-    if head == "**":
-        if _match_parts(segments, parts[1:]):
-            return True
-        return bool(segments) and _match_parts(segments[1:], parts)
-    if not segments:
-        return False
-    if not _segment_regex(head).match(segments[0]):
-        return False
-    return _match_parts(segments[1:], parts[1:])
+    def step(si: int, pi: int) -> bool:
+        """下标版递归：不做切片（切片在 4.6 万次调用里本身就值 ~0.1 s）。"""
+        if pi >= len(parts):
+            return si >= len(segments)
+        rx = parts[pi]
+        if rx is None:                                   # `**`：零段或多段
+            if step(si, pi + 1):
+                return True
+            return si < len(segments) and step(si + 1, pi)
+        if si >= len(segments):
+            return False
+        if not rx.match(segments[si]):
+            return False
+        return step(si + 1, pi + 1)
+
+    return step(0, 0)
 
 
 def tree_files(root, rel_dir: str = "") -> List[str]:

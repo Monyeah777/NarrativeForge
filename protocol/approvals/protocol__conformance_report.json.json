@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "asset_density 三函数改走共享枚举器（等价性逐字段实测）",
+  "note": "模式预编译（lru）+ meter 改共享枚举（逐包 glob 归零）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
