@@ -217,6 +217,18 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 
 判据面（都落在 check12，机器无关）：AST 事实**内容键**语义（同文命中 / 改文重算）、改文后下一次扫描必须看到新结果、常驻复用（**数 `ast.parse`**：第二次只允许 L6 预筛的极少数且少一个数量级）、**启动器快路快过 python 直跑（POSIX 上 3×）**。
 
+命令面延迟全景（24 条代表命令；冷启 = 新进程直跑，守护 = 常驻热跑；本机实测）：
+
+| 命令 | 冷启 | 守护 |
+|---|---|---|
+| `nf score` | 7729 ms | **3624 ms** |
+| `nf conformance` | 3202 ms | **2403 ms** |
+| `nf layers --verify` / `nf doctor` / `nf pipeline dryrun --all` | 550 / 716 / 555 ms | **304 / 227 / 204 ms** |
+| `nf interop --check` · `nf toolface` · `nf module ls` · `nf worldmodel` · `nf stats --check` | 384 / 407 / 305 / 400 / 315 ms | **135 / 132 / 131 / 100 / 89 ms** |
+| 其余 14 条（audit / decisions / receipts / sig / patterns / library / cognition / state-front / knowledge / market / output / assertions / approve / domain） | 225–313 ms | **2–41 ms** |
+
+即：**除两条「全仓工具」外，命令面全部进入毫秒/百毫秒级**；24 条的退出码与直跑逐一相同。这条全景也有判据守着——11 条轻命令的**打开文件数 ≤ 60**（实测 0–36，全仓约 2354 个文件），谁把全仓扫描塞进轻命令，check12 当场红。
+
 ```sh
 nf daemon start                      # 拉起守护（后台；只绑 127.0.0.1 + 一次性令牌）
 eval "$(nf daemon shell-init bash)"  # 装进当前 shell：零子进程客户端（真毫秒级）

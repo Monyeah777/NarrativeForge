@@ -5,6 +5,8 @@
 覆盖子命令参数面与装配链 smoke（替代手工冒烟；不依赖 GUI/端壳）。
 """
 import argparse
+import builtins
+import collections
 import contextlib
 import importlib.util
 import io
@@ -20,6 +22,57 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 spec = importlib.util.spec_from_file_location("nfcli", ROOT / "scripts" / "nf.py")
 nf = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(nf)
+
+
+class LightCommandReadBudgetTest(unittest.TestCase):
+    """轻命令的**读取面预算**：它们必须只碰少量文件，否则「毫秒级」立刻不成立。
+
+    动机（本轮全景实测）：24 条代表命令里 22 条守护热跑 ≤135 ms（多数 2–40 ms），只有
+    `score` / `conformance` 是「全仓工具」。轻命令之所以轻，是因为**不读全仓**——本判据把
+    「轻」钉成可核事实：一旦有人往轻命令里塞一次全仓扫描（全仓 ≈2354 个文件），打开次数会
+    从个位数跳到四位数，当场红。口径是**计数**（不是计时），与机器快慢、噪声都无关。
+    """
+
+    BUDGET = 60        # 实测 0–36 次；全仓扫描会到 2000+（两个数量级余量）
+    CMDS = (("domain", "ls"), ("assertions", "--check"), ("approve", "--verify"),
+            ("output", "ls"), ("library", "ls"), ("market", "--list"),
+            ("state-front",), ("knowledge", "--check"), ("sig", "--check"),
+            ("patterns", "ls"), ("audit",))
+
+    def _opens(self, argv):
+        counts: collections.Counter = collections.Counter()
+        orig = io.open
+
+        def spy(file, *a, **k):
+            try:
+                path = os.path.normcase(os.path.abspath(str(file)))
+                if ".git" not in path and ".rivet" not in path:
+                    counts[path] += 1
+            except Exception:                    # noqa: BLE001 - 计数失败不影响被测逻辑
+                pass
+            return orig(file, *a, **k)
+
+        io.open = spy
+        builtins.open = spy
+        out = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
+                try:
+                    nf.main(list(argv))
+                except SystemExit:
+                    pass
+        finally:
+            io.open = orig
+            builtins.open = orig
+        return sum(counts.values())
+
+    def test_light_commands_do_not_scan_the_whole_repo(self):
+        for argv in self.CMDS:
+            got = self._opens(argv)
+            self.assertLessEqual(
+                got, self.BUDGET,
+                "`nf %s` 打开了 %d 个文件（>%d）——轻命令里混进了全仓扫描？"
+                % (" ".join(argv), got, self.BUDGET))
 
 
 class NfCliSmokeTest(unittest.TestCase):
