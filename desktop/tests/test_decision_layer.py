@@ -59,12 +59,31 @@ class DecisionLayerTest(unittest.TestCase):
         a = dl.decide(REQ, adapter="stub", root=str(ROOT))
         b = dl.decide(REQ, adapter="stub", root=str(ROOT))
         self.assertEqual(a["status"], "ok")
-        self.assertEqual({k: v for k, v in a.items() if k != "meta"},
-                         {k: v for k, v in b.items() if k != "meta"},
-                         "stub 输出须确定（latency 之外的字段逐一相等）")
+        # 比「决策内容视图」：只排除墙钟 `latency_ms`，`meta` 的其余字段仍逐一比
+        self.assertEqual(dl.decision_view(a), dl.decision_view(b),
+                         "stub 输出须确定（墙钟之外的字段逐一相等）")
         self.assertFalse(a["meta"]["calibrated"])
         self.assertIs(a["meta"]["non_gate"], True)
         self.assertEqual(dl.fingerprint(REQ), dl.fingerprint(json.loads(json.dumps(REQ))))
+
+    def test_scan_is_immune_to_wall_clock_latency(self):
+        """门禁的「stub 确定性」不许把 `meta.latency_ms` 算进比较（2026-09-29 实测假红）。
+
+        事实：`decide()` 会把耗时写进应答，于是机器一忙（当时确有并发进程）两次调用的
+        `latency_ms` 就差 ≥1 ms，`scan()` 原来直接比整份应答 → 判「stub 非确定性」，
+        一次正常验收被当成协议事故。本用例把 `time.monotonic` 换成可控序列**强制**造出
+        500 ms vs 5000 ms 的差，钉住「墙钟差不影响判定」。
+        """
+        ticks = iter([0.0, 0.5, 0.0, 5.0])
+        orig = dl.time.monotonic
+        dl.time.monotonic = lambda: next(ticks, 0.0)
+        try:
+            issues, stats = dl.scan(str(ROOT))
+        finally:
+            dl.time.monotonic = orig
+        self.assertEqual([i for i in issues if "非确定性" in i], [],
+                         "墙钟差异不得判成 stub 非确定性（判据要钉决策，不是钉耗时）")
+        self.assertTrue(stats["issueless_stub"])
 
     def test_request_shape_rules(self):
         self.assertEqual(dl.request_issue(REQ), "")

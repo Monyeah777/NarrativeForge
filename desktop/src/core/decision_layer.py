@@ -350,6 +350,22 @@ def fingerprint(req: Dict[str, Any]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def decision_view(out: Dict[str, Any]) -> Dict[str, Any]:
+    """应答的**决策内容视图**：去掉 `meta.latency_ms`（墙钟观测，不属于决策本身）。
+
+    2026-09-29 实测假红：门禁原来直接比 `a1 != a2`，而 `decide()` 会把 `latency_ms`（整数毫秒）
+    写进应答——机器一忙（当时确有并发进程）两次调用的差值就 ≥1 ms，`scan()` 当场报
+    「stub 非确定性（同输入两次结果不一致）」，把一次正常验收判成协议事故。
+    判据要钉的是「同输入 ⇒ 同决策」，墙钟不是决策；`meta` 的**其余**字段
+    （`adapter` / `calibrated` / `non_gate`）照旧参与比较——不许用「整个 meta 都不比」绕过去。
+    """
+    view = dict(out)
+    meta = dict(view.get("meta") or {})
+    meta.pop("latency_ms", None)
+    view["meta"] = meta
+    return view
+
+
 # ---------------------------------------------------------------- 面体检
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
@@ -407,7 +423,9 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         issues.append("内部样例请求不合规：%s" % request_issue(req))
     a1 = decide(req, adapter="stub", root=root)
     a2 = decide(req, adapter="stub", root=root)
-    if a1 != a2:
+    # 比「决策内容视图」而非整份应答：`meta.latency_ms` 是墙钟观测，差值 ≥1 ms 就判死人
+    # （2026-09-29 实测假红，见 decision_view 的说明）。
+    if decision_view(a1) != decision_view(a2):
         issues.append("stub 非确定性（同输入两次结果不一致）")
     if a1.get("status") != "ok":
         issues.append("stub 样例未产出 ok：%s" % a1.get("reason"))

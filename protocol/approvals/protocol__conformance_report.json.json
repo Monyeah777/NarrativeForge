@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "响应缓存竞态修复（非准入命令执行后立刻作废）+ 测试卫生",
+  "note": "决策层确定性判据去墙钟（decision_view）+ 换行协议边界守卫 + AUD-0024 孤儿字节码收口",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

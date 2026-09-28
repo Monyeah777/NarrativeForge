@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **门禁假红：决策层的「stub 确定性」把墙钟算进了判据（一次正常验收被当成协议事故）**（**作者目标**：「质量法官 = 内部」——判据不许把噪声判成人祸）：
+  ① **实测**：提交后重跑 `bash verify.sh` 得到 **FAIL=1**，收尾打印 `[FAIL] 决策层：stub 非确定性（同输入两次结果不一致）`——而同一棵树的上一轮同一条 `scan()` 是零 issue。
+  ② **根因**：`decision_layer.decide()` 会把 `meta.latency_ms = int((monotonic() - started) * 1000)` 写进应答，而 `scan()` 的确定性判据是**整份 dict 相等**（`a1 != a2`）。机器一忙（当时确有并发进程）两次调用就差 ≥1 ms ⇒ 判「非确定性」。**判据钉错了对象**：要钉的是「同输入 ⇒ 同决策」，墙钟不是决策。
+  ③ **修法**：新增 `decision_layer.decision_view()`——只摘 `meta.latency_ms`，`meta` 的其余字段（`adapter`/`calibrated`/`non_gate`）**照旧逐一比**（不许用「整个 meta 不比」的松口径绕过去）；`scan()` 改用该视图。
+  ④ **判据**：`test_decision_layer` 由 18 例 → **19 例**。a) 既有确定性用例改用 `decision_view` 比较（**收紧**：原来整块 `meta` 被丢掉，等于连 `calibrated=false` 都不比了）；b) 新增 `test_scan_is_immune_to_wall_clock_latency`——把 `time.monotonic` 换成可控序列**强制**造出 500 ms vs 5000 ms，钉住「墙钟差不影响判定」。
+  ⑤ **变异实证**（新判据不是假绿）：同一序列下旧口径 `a1 == a2` 为 **False**（即旧代码必红），新口径 `decision_view(a1) == decision_view(a2)` 为 **True**。
+
 - **执行层：协议边界——含换行的 argv 不再进逐行协议（两处守卫 + 判据三层重写；并如实记录一条宿主边界）**（**作者目标**：「将NF的执行层变成毫秒级响应效率……达到顶尖工业水准」）：
   ① **实测缺陷**：`nf daemon` 的明文框（NFREQ）是**逐行** argv，参数里的换行会被拆成两个参数、**静默改变参数个数**（`nf help $'line1\nline2'` 经快路时 CLI 只看到 `line1`），直接破了仓库头号不变式「守护的 (exit, stdout, stderr) 与真子进程直跑逐字节相同」；JSON 框与 python 直跑都完整。
   ② **修法**：两条 shell 客户端（`scripts/nf` 启动器与 `nf daemon shell-init bash` 生成的快路函数）在任何参数含换行时**退到 python 入口**——快路只加速、不改语义；协议本就写明「要精确传递请走 JSON 框」。
