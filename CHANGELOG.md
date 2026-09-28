@@ -2,6 +2,14 @@
 
 ## [2.12.0] - 未发布
 
+- **修复：云端 CI 连红根因（超大正文经 env 传输撞内核单串硬限）+ 两处未定义名 + 一处 cwd 依赖**（来源：外部深度分析报告 → 我方独立取证；**这是本仓第一次把「云端事实」写进记录**）：
+  ① **CI 史实（GitHub API 逐条核对）**：`ci-verify` **#155–#175 连续 21 次失败**，上一次成功为 **#154（2026-09-24T04:34Z）**；修复后 **#176（`31fb7c3`）= success**，连红终止；`lint` / `coverage` / `dependency-audit` / `e2e-desktop` 同提交全绿。
+  ② **根因**：`test_intake_bots_hardening` 的「超长正文被拒」用例把 ≈786 KB 正文经 env `ISSUE_BODY` 传给子进程；Linux 内核对**单条** argv/env 字符串有 32 页（131072 字节）硬限，超限 `execve` 直接 E2BIG（Errno 7）——子进程根本起不来，而 Windows 本机无此限制，故出现「本机跑全量也绿、云端连红」。修法：测试改走文件通道 `ISSUE_BODY_FILE`；`run_bot` 增**本地即生效**的护栏（env 单串 ≥128 KiB 当场判死并给出改法），该类回归不再依赖「跑在哪个 OS」。
+  ③ **同一根因的产品面**：`library-ingest.yml` 曾把 `github.event.issue.body` 直接塞进步骤 env——只要投稿量真的越限，步骤先 E2BIG，`MAX_BODY_CHARS`（256 KiB 字符）对超限投稿**永远不生效**。现正文改由机器人**经 API 取**（`resolve_body`：文件 > env > 议题 API），与自家 Gitee 通道 `gitee_ingest.py` 同构；工作流不再经 env 传正文。
+  ④ **ruff F821 抓出的两处未定义名**（本地 `verify.sh` 不跑 lint，故此前无人察觉，CI `lint` 因此连红）：`nf stats --json` 用了未导入的 `json` → **命令当场崩**（「内部错误：name json is not defined」）；`default_history_path()` 的兜底分支用了未导入的 `Path` → 仅在 `storage` 导入失败时 NameError。两处各补一条回归判据。
+  ⑤ **顺带**：`nf stats` 是**唯一**用 `.` 的仓库级命令（其余一律 `ROOT`），从子目录跑会给出全 0 并 FAIL——由 ④ 的新判据抓出，已统一为 `ROOT`（任意 cwd 结果一致）。
+  ⑥ 验证：ruff 0.16.8（与 CI 同钉版）All checks passed；`test_intake_bots_hardening` 14 例、`test_nf_cli` + `test_terminal` 127 例全绿；`bash verify.sh` **PASS=68 · WARN=0 · FAIL=0**（3m19s，check 数仍 39）；conformance root 与上一版一致（`01b668aa8c3ea6d3`）；**云端 #176 五条工作流全 success**。
+
 - **守卫：把「重复读 / O(n²) 读盘」钉成确定性判据（不靠墙钟）**（**作者目标**：「终端极致效率」——把本轮修掉的缺陷类做成**不会悄悄回归**的判据）：
   ① **为什么不用计时**：墙钟断言在 CI / 并发机上会抖；而「同一份件在一次扫描里被读几次」是**确定性**的——O(n²) 式回归（对每个条目、每条结果重跑一次全量读）会立刻把读次数顶上去。
   ② **`library.search` 的读取形状**：300 件馆藏下断言「单件 ≤ 2 次、总读次数随件数**线性**（≤ 2n）」（现实现每件 1 次、总 300）。这正是本轮修的 93,000 次读盘 / 24.7 s 那个缺陷。
