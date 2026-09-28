@@ -9,6 +9,8 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -22,6 +24,68 @@ from core import conformance_scan as csc
 #: 因此不存在「改了文件还读到旧值」的陈旧风险。
 _CENSUS_CACHE: Dict[str, Dict[str, int]] = {}
 _CENSUS_CACHE_MAX = 64
+
+#: 引用度普查的**磁盘**缓存：内容寻址（键 = 语料+键集的 sha256）+ **口径版本**标签。
+#: 必要性（实测）：一次普查 = 1499 键 × 3.5 MB 语料的逐键子串计数 = **3.02 s**，占冷进程
+#: `evaluate` 6.3 s 的近一半；而它是**内容的纯函数**——不起守护的默认路径每开一个新进程就要重付。
+#: 落点在 `NF_HOME`（**不在仓库内**，故不影响仓库纯净与门禁）：`<NF_HOME>/cache/census/<tag>-<key>.json`。
+#: 纪律：① 键即内容 ⇒ 内容一变键就变，不存在陈旧；② **口径一变必须 bump `_DISK_CACHE_TAG`**
+#: （标签进文件名，旧条目自然不再命中，不会拿旧算法的账当新账）；③ 一切 IO **尽力而为**，
+#: 失败一律静默回落重算；④ 环境变量 `NF_NO_DISK_CACHE=1` 可整体关闭；⑤ 只保留最近 N 份。
+_DISK_CACHE_TAG = "census-v1"
+_DISK_CACHE_KEEP = 16
+_DISK_CACHE_ENV = "NF_NO_DISK_CACHE"
+
+
+def _disk_cache_dir() -> Path:
+    from core import storage
+    return storage.default_home() / "cache" / "census"
+
+
+def _disk_cache_enabled() -> bool:
+    return not os.environ.get(_DISK_CACHE_ENV)
+
+
+def _disk_load(ckey: str, keys) -> Optional[Dict[str, int]]:
+    """读盘上的普查条目；**任何不可信**（缺件 / 解析失败 / 键集不符 / 关闭）一律返回 None。"""
+    if not _disk_cache_enabled():
+        return None
+    try:
+        p = _disk_cache_dir() / ("%s-%s.json" % (_DISK_CACHE_TAG, ckey))
+        data = json.loads(p.read_text(encoding="utf-8"))
+        if not isinstance(data, dict) or set(data) != set(keys):
+            return None                     # 半截文件 / 键集不符：宁可重算，不可错答
+        return {str(k): int(v) for k, v in data.items()}
+    except Exception:                       # noqa: BLE001 - 读不到就重算
+        return None
+
+
+def _disk_store(ckey: str, counts: Dict[str, int]) -> None:
+    """写盘（尽力而为）：失败不影响命令；写后裁剪到最近 `_DISK_CACHE_KEEP` 份。"""
+    if not _disk_cache_enabled():
+        return
+    try:
+        d = _disk_cache_dir()
+        d.mkdir(parents=True, exist_ok=True)
+        p = d / ("%s-%s.json" % (_DISK_CACHE_TAG, ckey))
+        tmp = p.with_name(p.name + ".tmp")
+        with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(counts, sort_keys=True))
+        os.replace(tmp, p)                  # 原子替换：读者看不到半截 JSON
+        _disk_prune(d)
+    except Exception:                       # noqa: BLE001 - 写不进就算了
+        return
+
+
+def _disk_prune(d: Path) -> None:
+    """只留最近 N 份（按 mtime）：缓存不得无界增长。"""
+    try:
+        entries = sorted(d.glob("%s-*.json" % _DISK_CACHE_TAG),
+                         key=lambda q: q.stat().st_mtime, reverse=True)
+        for old in entries[_DISK_CACHE_KEEP:]:
+            old.unlink()
+    except Exception:                       # noqa: BLE001 - 裁剪失败不影响结果
+        return
 
 
 def _keys_of(path: Path, text: Optional[str] = None) -> List[str]:
@@ -108,10 +172,14 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     ckey = h.hexdigest()
     counts = _CENSUS_CACHE.get(ckey)
     if counts is None:
+        counts = _disk_load(ckey, keys)     # 内容寻址的持久缓存：新进程免付那 3 s（见模块头注释）
+    if counts is None:
         # 逐键 `str.count` 是**精确**语义（非重叠、含互相包含）——已实测：bytes 版更慢；
         # 单遍 alternation 在「两键于同一位置重叠」（如 AB/BC 于 ABC）时会漏计，故不走。
         blob = "\n".join(corpus)
         counts = {k: blob.count(k) for k in keys}
+        _disk_store(ckey, counts)
+    if ckey not in _CENSUS_CACHE:
         if len(_CENSUS_CACHE) >= _CENSUS_CACHE_MAX:
             _CENSUS_CACHE.clear()
         _CENSUS_CACHE[ckey] = counts

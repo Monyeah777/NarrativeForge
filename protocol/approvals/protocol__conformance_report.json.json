@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "补 CHANGELOG 汇总条（七波执行层收口）+ 文档补 5ms 实测",
+  "note": "引用度普查落内容寻址持久缓存（NF_HOME，键含口径版本；冷启 nf score 7204→4001ms）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
