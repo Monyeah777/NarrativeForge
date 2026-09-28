@@ -108,6 +108,23 @@ class ResponseCacheTest(unittest.TestCase):
         self.assertEqual(0, st["entries"], "非准入命令不得进缓存")
         self.assertEqual(0, st["hits"])
 
+    def test_unknown_command_invalidates_previously_cached_responses(self):
+        """守护自己执行过「可能写」的命令后，先前缓存的响应必须**立刻**作废。
+
+        依据（竞态）：响应缓存的作废原本只靠监听线程**异步**察觉变更——那中间有一个几毫秒窗口。
+        脚本里 `nf conformance --write; nf score` 这种连跑就可能落在窗口里，**吃到写之前的旧响应**。
+        判据是确定性的、不靠计时：把假监听件的代际**按住不动**（模拟"监听还没察觉"），
+        中间跑一条**非准入**命令（= 可能写），再看先前那条缓存还能不能命中。
+        """
+        dm._WATCHER = _FakeWatcher(generation=1)
+        dm.execute(["--version"], Path(ROOT))          # 真算并落缓存
+        dm.execute(["--version"], Path(ROOT))          # 命中
+        self.assertEqual(1, dm.cache_stats()["hits"])
+        dm.execute(["help"], Path(ROOT))               # 非准入（无法证明只读）→ 必须立刻作废
+        dm.execute(["--version"], Path(ROOT))          # 因此必须重算
+        self.assertEqual(1, dm.cache_stats()["hits"],
+                         "非准入命令执行后不得再命中旧响应（否则落进几毫秒的监听窗口）")
+
     def test_colour_env_is_part_of_the_key(self):
         """配色环境会改变**输出文本**，故必须进键：否则无色环境会回放带 ANSI 的旧响应。"""
         dm._WATCHER = _FakeWatcher(generation=1)
@@ -157,6 +174,11 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
     def setUp(self):
         if not watch.available():
             self.skipTest("本平台没有目录监听实现（本波仅 Windows）")
+        # 测试卫生（本文件里每个用例各起一个**进程内**服务）：响应缓存与计数是**模块级**的，
+        # 不清就会跨用例泄漏——表现为「单跑过、整跑挂」的顺序依赖（实测踩过）。
+        dm.reset_response_cache()
+        for k in dm._CACHE_STATS:
+            dm._CACHE_STATS[k] = 0
         self.home = tempfile.mkdtemp(prefix="nf_watch_ip_")
         self._old_home = os.environ.get("NARRATIVE_FORGE_HOME")
         os.environ["NARRATIVE_FORGE_HOME"] = self.home

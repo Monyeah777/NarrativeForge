@@ -426,6 +426,12 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
             _RESP_CACHE.clear()
         _RESP_CACHE[key] = (gen, code, out, err)
         _CACHE_STATS["stores"] += 1
+    elif gen is not None and _RESP_CACHE:
+        # **非准入命令 = 无法证明只读**（可能写仓库）⇒ 立刻把整批缓存作废，**不等监听线程
+        # 异步察觉**。竞态（实测判据 test_watch.test_unknown_command_invalidates_*）：作废原本只靠
+        # 监听的几毫秒窗口，脚本里 `nf conformance --write; nf score` 连跑就可能吃到写之前的旧响应。
+        # 宁可多算（下次重算），不可错答。
+        reset_response_cache()
     return code, out, err
 
 
