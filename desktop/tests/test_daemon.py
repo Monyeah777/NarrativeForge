@@ -16,6 +16,7 @@ import socket
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from pathlib import Path
@@ -204,6 +205,110 @@ class DaemonSpeedTest(DaemonHarness):
         self.assertGreater(cold_ms, 0)
         self.assertLess(warm_ms * 3, cold_ms,
                         "守护往返 %.1f ms 应远小于冷启动 %.1f ms" % (warm_ms, cold_ms))
+
+
+class DaemonInProcessServerTest(unittest.TestCase):
+    """**进程内**起服务（线程）跑协议全路径——这也是覆盖率的关键：
+
+    守护通常在**子进程**里跑，那段代码在 CI 的 `coverage run … -s desktop/tests` 里是不可见的；
+    若只测子进程路径，`daemon.py` 的覆盖率会把 core 总覆盖率拖到 80% 线下（本仓 CI
+    `core-coverage-ge-80` 会判红——实测踩过）。故此处把服务循环放进本进程线程里跑。
+    """
+
+    def setUp(self):
+        self.home = tempfile.mkdtemp(prefix="nf_daemon_ip_")
+        self._old_home = os.environ.get("NARRATIVE_FORGE_HOME")
+        os.environ["NARRATIVE_FORGE_HOME"] = self.home
+        self.port = None
+
+        def ready(port):
+            self.port = port
+
+        self.thread = threading.Thread(target=dm.serve_forever,
+                                       args=(ROOT, 30.0, ready), daemon=True)
+        self.thread.start()
+        for _ in range(300):
+            if self.port:
+                break
+            time.sleep(0.01)
+        self.assertIsNotNone(self.port, "进程内服务未能就绪")
+
+    def tearDown(self):
+        dm.stop()
+        self.thread.join(timeout=5)
+        if self._old_home is None:
+            os.environ.pop("NARRATIVE_FORGE_HOME", None)
+        else:
+            os.environ["NARRATIVE_FORGE_HOME"] = self._old_home
+        shutil.rmtree(self.home, ignore_errors=True)
+
+    def _raw(self, payload: bytes):
+        doc = dm.read_state()
+        self.assertIsNotNone(doc, "服务已在跑，状态文件必须可读")
+        with socket.create_connection((dm.BIND_HOST, doc["port"]), timeout=10) as sock:
+            sock.settimeout(10)
+            sock.sendall(payload)
+            return dm.read_framed(sock)
+
+    def test_json_and_plain_round_trip(self):
+        doc = dm.read_state()
+        req = json.dumps({"proto": dm.PROTO, "token": doc["token"], "cwd": str(ROOT),
+                          "argv": ["--version"]}).encode("utf-8") + b"\n"
+        code, out, err = self._raw(req)
+        self.assertEqual(0, code)
+        self.assertIn(b"nf ", out)
+        self.assertEqual(b"", err)
+        code2, out2, err2 = self._raw(
+            ("NFREQ %d %s\n%s\n1\n--version\n" % (dm.PROTO, doc["token"], str(ROOT)))
+            .encode("utf-8"))
+        self.assertEqual((code, out, err), (code2, out2, err2))
+
+    def test_malformed_requests_are_rejected_without_killing_server(self):
+        doc = dm.read_state()
+        cases = {
+            "非 JSON": b"not json at all\n",
+            "NFREQ 头错": ("NFREQ 9 %s\n%s\n0\n" % (doc["token"], str(ROOT))).encode(),
+            "argv 条数不可解析": ("NFREQ %d %s\n%s\nabc\n" % (dm.PROTO, doc["token"],
+                                                              str(ROOT))).encode(),
+            "argv 条数越界": ("NFREQ %d %s\n%s\n99999\n" % (dm.PROTO, doc["token"],
+                                                           str(ROOT))).encode(),
+            "argv 非列表": (json.dumps({"proto": dm.PROTO, "token": doc["token"],
+                                        "argv": "stats"}).encode() + b"\n"),
+        }
+        for label, payload in cases.items():
+            code, _out, err = self._raw(payload)
+            self.assertEqual(2, code, "应拒收：%s" % label)
+            self.assertTrue(err, "拒收要带原因：%s" % label)
+        self.assertTrue(dm.ping(), "畸形请求之后服务仍须可用")
+
+    def test_shutdown_op_stops_the_loop(self):
+        doc = dm.read_state()
+        code, _out, _err = self._raw(
+            json.dumps({"proto": dm.PROTO, "token": doc["token"], "op": "shutdown"})
+            .encode() + b"\n")
+        self.assertEqual(0, code)
+        self.thread.join(timeout=5)
+        self.assertFalse(self.thread.is_alive(), "shutdown 帧应让服务循环退出")
+
+    def test_stop_reports_when_no_daemon_running(self):
+        dm.stop()
+        ok, msg = dm.stop()
+        self.assertFalse(ok)
+        self.assertIn("没有守护", msg)
+        self.assertFalse(dm.ping())
+
+    def test_main_entry_help_and_short_serve(self):
+        self.assertEqual(2, dm.main([]), "缺 --serve 时应打印帮助并返回 2")
+        self.assertEqual(0, dm.main(["--serve", "--root", str(ROOT), "--idle", "0.05"]),
+                         "短空闲的 --serve 应自然退出 0")
+
+    def test_code_fingerprint_and_sync_are_idempotent(self):
+        fp = dm._code_fingerprint(ROOT)
+        self.assertTrue(any(str(r[0]).endswith("daemon.py") for r in fp), fp[:3])
+        dm._sync_code(ROOT)
+        dm._sync_code(ROOT)          # 第二次指纹相同 → 直接返回
+        mod = dm._load_cli(ROOT)
+        self.assertTrue(hasattr(mod, "main"))
 
 
 class DaemonShellInitTest(unittest.TestCase):
