@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "响应缓存准入表扩面（按 argv 前缀；读子命令进表、写子命令不入表）",
+  "note": "补 CHANGELOG 汇总条（七波执行层收口）+ 文档补 5ms 实测",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
