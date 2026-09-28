@@ -247,7 +247,8 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 纪律（fail-closed，均有判据）：
 
 - **只把「收到变更通知」当「变了」**：监听不可用 / 句柄失效 / 线程异常 → 缓存整体停用（不命中、旧条目一并作废），行为与常规守护完全一致；缓冲溢出如实报 `overflowed` 并让代际跳变（宁可全废，不可错答）。
-- **准入表**：只有**纯读、且对同一棵树逐字节可复现**的命令可缓存（`score` / `conformance` / `layers` / `stats` / `--version`）；带 `--write` 一类写盘开关的一律绕过。准入判据本身是**可执行的**（同树连跑两次，退出码 / stdout / stderr 必须逐字节相同）。
+- **准入表按 argv 前缀**（不是顶层命令名）：只有**纯读、且对同一棵树逐字节可复现**的形态可缓存——`--version` / `score` / `conformance` / `layers` / `stats` / `doctor` / `interop` / `toolface` / `assertions` / `cognition`，以及 `patterns ls|show|for|verify` / `module ls|status|verify` / `decisions verify|show`。带 `--write` 一类写盘开关的一律绕过。
+  「按前缀」是必须的：`module` / `decisions` / `patterns` 这些顶层命令**同时有读写子命令**（`module deprecate`、`decisions reindex`、`patterns reindex`），只按顶层名放行会把写形态一起放进来。两条准入判据都可执行：① 同树连跑两次，退出码 / stdout / stderr 逐字节相同；② 逐条跑完 `git status` 前后不变（候选 12 条实测全部既纯净又可复现）。
 - **本波只实现 Windows 监听**：其他平台 `watch.available()` 为假，守护自动降级——不写没跑过的平台代码。
 
 ```sh

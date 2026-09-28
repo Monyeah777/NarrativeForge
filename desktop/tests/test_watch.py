@@ -53,12 +53,25 @@ class ResponseCacheTest(unittest.TestCase):
         dm.reset_response_cache()
 
     def test_cacheable_truth_table(self):
-        """准入表：纯读且在表内 → 可缓存；写盘开关 / 表外命令 → 一律不缓存。"""
+        """准入表：纯读形态 → 可缓存；**写子命令 / 写盘开关 / 表外命令** → 一律不缓存。
+
+        表项是 argv **前缀**，所以「同一顶层命令的读子命令进表、写子命令不进表」必须逐条钉住
+        （`module` / `decisions` / `patterns` 三个命令都同时有读写形态）。
+        """
         yes = (["--version"], ["score"], ["score", "--json"], ["conformance"],
-               ["layers"], ["stats", "--check"], ["stats", "--json"])
+               ["layers"], ["stats", "--check"], ["stats", "--json"], ["doctor"],
+               ["interop", "--check"], ["toolface", "--json"], ["assertions"],
+               ["cognition", "glossary"], ["patterns", "ls"], ["patterns", "verify"],
+               ["module", "ls"], ["module", "status", "M00"], ["module", "verify"],
+               ["decisions", "verify"], ["decisions", "show", "ADR-0004"])
         no = ([], ["conformance", "--write"], ["score", "--write-baseline"],
-              ["stats", "--write"], ["doctor"], ["serve"], ["layers", "--out", "x.json"],
-              ["layers", "--fix"], ["conformance", "--write", "--json"])
+              ["stats", "--write"], ["serve"], ["layers", "--out", "x.json"],
+              ["layers", "--fix"], ["conformance", "--write", "--json"],
+              # 写子命令：顶层名相同也必须挡住
+              ["module", "deprecate", "M10"], ["module", "restore", "M10"],
+              ["module", "signature", "--write"], ["module", "contract", "--write"],
+              ["decisions", "reindex"], ["patterns", "reindex"],
+              ["domain", "build", "--write"], ["daemon", "start"])
         for argv in yes:
             self.assertTrue(dm.cacheable(argv), argv)
         for argv in no:
@@ -100,8 +113,11 @@ class ResponseCacheTest(unittest.TestCase):
         的输出里混进时间戳 / 耗时 / 随机序，本判据当场红，逼着把它从 `CACHEABLE_COMMANDS` 删掉。
         """
         dm._WATCHER = None                            # 关缓存：这里测的是命令自身
-        for argv in (["--version"], ["layers", "--json"], ["score", "--json"],
-                     ["conformance", "--json"], ["stats", "--json"]):
+        for argv in (["--version"], ["layers", "--json"], ["stats", "--json"],
+                     ["doctor", "--json"], ["interop", "--check"], ["toolface", "--json"],
+                     ["assertions"], ["cognition", "glossary"], ["patterns", "ls"],
+                     ["module", "verify"], ["decisions", "verify"],
+                     ["score", "--json"], ["conformance", "--json"]):
             a = dm.execute(list(argv), Path(ROOT))
             b = dm.execute(list(argv), Path(ROOT))
             self.assertEqual(a, b,

@@ -268,24 +268,33 @@ _WATCHER: Optional[Any] = None
 #: 观测计数（`nf daemon status` 会显示；单测据此判「命中/未命中」）。
 _CACHE_STATS: Dict[str, int] = {"hits": 0, "misses": 0, "stores": 0, "skipped": 0}
 
-#: 响应缓存的**准入表**：仅纯读、且对同一棵树**逐字节可复现**的命令（准入判据见 test_watch：
-#: 同树连跑两次，stdout/stderr/exit 必须完全相同——带时间戳/耗时/随机序的命令一律不得入表）。
-CACHEABLE_COMMANDS = ("score", "conformance", "layers", "stats")
+#: 响应缓存的**准入表**：仅纯读、且对同一棵树**逐字节可复现**的命令。
+#: 表项是 **argv 前缀**（不是顶层命令名）：`module` / `decisions` / `patterns` 这些顶层命令
+#: 里既有读子命令也有**写子命令**（`module deprecate`、`decisions reindex`、`patterns reindex`），
+#: 只按顶层名放行会把写形态一起放进来——所以写子命令一律不入表。
+#: 两条准入判据都在 test_watch 里真跑：（a）同树连跑两次，exit/stdout/stderr 逐字节相同；
+#: （b）逐条 `git status` 前后不变（验证过：12 条候选全部既纯净又可复现）。
+CACHEABLE_COMMANDS = (
+    ("--version",),
+    ("score",), ("conformance",), ("layers",), ("stats",), ("doctor",),
+    ("interop",), ("toolface",), ("assertions",), ("cognition",),
+    ("patterns", "ls"), ("patterns", "show"), ("patterns", "for"), ("patterns", "verify"),
+    ("module", "ls"), ("module", "status"), ("module", "verify"),
+    ("decisions", "verify"), ("decisions", "show"),
+)
 #: 写盘类开关：出现任一前缀即**不缓存**（哪怕命令在准入表里）。宁可不缓存，不可把旧输出当新输出。
 _WRITE_FLAG_PREFIXES = ("--write", "--out", "--save", "--fix", "--apply", "--yes",
                         "--baseline", "--freeze", "--record", "--sign", "--delete", "--rm")
 
 
 def cacheable(argv: Sequence[str]) -> bool:
-    """这条命令是否允许走响应缓存（纯读 + 无写盘开关）。"""
+    """这条命令是否允许走响应缓存（**前缀命中准入表** + 无写盘开关）。"""
     argv = [str(a) for a in argv]
     if not argv:
         return False
-    if argv[0] == "--version":
-        return True
-    if argv[0] not in CACHEABLE_COMMANDS:
+    if not any(tuple(argv[:len(pre)]) == pre for pre in CACHEABLE_COMMANDS):
         return False
-    return not any(a.startswith(_WRITE_FLAG_PREFIXES) for a in argv[1:])
+    return not any(a.startswith(_WRITE_FLAG_PREFIXES) for a in argv)
 
 
 def _watch_generation() -> Optional[int]:
