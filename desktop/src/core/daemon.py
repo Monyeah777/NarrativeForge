@@ -67,6 +67,14 @@ nf() {
   case "${1:-}" in
     daemon|shell|serve|"") command "{py}" "{root}/scripts/nf.py" "$@"; return $? ;;
   esac
+  # 明文框是**逐行** argv：参数里含换行会被拆开、**静默改变参数个数**（实测：`help` 收到
+  # `line1\\nline2` 时只看到 `line1`）——这类命令一律不接快路，交 python 直跑
+  # （JSON 框才支持任意字符；见 `_parse_request` 的说明）。
+  local _nf_a="" _nf_nl=""
+  for _nf_a in "$@"; do
+    case "$_nf_a" in *$'\\n'*) _nf_nl=1 ;; esac
+  done
+  if [ -n "$_nf_nl" ]; then command "{py}" "{root}/scripts/nf.py" "$@"; return $?; fi
   local _state="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json"
   local _s="" _rest="" _port="" _token=""
   if [ -f "$_state" ]; then

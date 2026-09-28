@@ -18,6 +18,7 @@ from pathlib import Path
 
 ROOT = str(Path(__file__).resolve().parents[2])
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+BASH = shutil.which("bash")            # 两条 shell 客户端都是 POSIX sh/bash 形态
 
 from core import daemon as dm  # noqa: E402
 from core import watch  # noqa: E402
@@ -298,6 +299,77 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
                                 capture_output=True)
         self.assertEqual((direct.returncode, direct.stdout, direct.stderr), second,
                          "缓存回放的 (exit, stdout, stderr) 必须与真子进程直跑逐字节相同")
+
+    def test_newline_in_argv_never_enters_the_line_framed_protocol(self):
+        """**协议边界**：明文框（NFREQ）逐行送 argv——含换行的参数会被拆成两个、**静默改参数个数**。
+
+        契约（本判据钉的就是它）：含换行的 argv **一律不接快路**，客户端退回 python 入口
+        （协议本就写明「要精确传递请走 JSON 框」）。证据用守护侧计数——只有守护的 `execute`
+        才会让 `hits+misses` 涨；正向对照见上一条用例（`--version` 走快路时它**会**涨）。
+        参数取 `layers` 前缀（在响应缓存准入表里）：若守卫失效，守护不但会执行，还会缓存这条
+        被拆过的 argv——那正是「静默错答」的形状。
+
+        新行一律在 **bash 内部**合成（`"$(printf 'line1\\nline2')"` / `set --`），不经宿主命令行，
+        所以参数到客户端手里是完整的。
+
+        后半段另判「两条客户端与 python 直跑逐字节相同」，但**先探测本机 exec 边界的能力**：
+        从别的进程 exec 一个 bash 脚本时，argv 要先拼成宿主命令行再解析回来——本机（Git
+        Bash/MSYS）走 **Win32 命令行**，而 Python 的 `list2cmdline` **不给含换行的参数加引号**
+        （实测），裸换行被当空白 → **参数在 NF 的代码跑起来之前就已经分成两个了**（实测：
+        launcher 里 `$#` 直接是 3，与本守护无关）。这是宿主环境的性质，POSIX 上 execve 原样
+        传 argv。故该断言只在边界真能原样传参时判——否则跳过并说明，避免写出「只在 CI 上炸」
+        的判据（2026-09 的教训）。
+        """
+        if not BASH:
+            self.skipTest("本环境没有 bash（shell 客户端需 bash 执行快路）")
+        gen = subprocess.run([sys.executable, "scripts/nf.py", "daemon", "shell-init", "bash"],
+                             cwd=ROOT, capture_output=True, text=True,
+                             encoding="utf-8", errors="replace", timeout=120)
+        self.assertEqual(0, gen.returncode, gen.stderr)
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = self.home          # 让两条客户端都看得见本用例的守护
+
+        def served():
+            st = dm.query_stats()
+            return st["hits"] + st["misses"]
+
+        # ① 快路函数（`eval "$(nf daemon shell-init bash)"`）的守卫
+        before = served()
+        subprocess.run([BASH, "-c", 'eval "$1"; nf layers "$(printf "line1\\nline2")"',
+                        "nfinit", gen.stdout],
+                       cwd=ROOT, env=env, capture_output=True, timeout=180)
+        self.assertEqual(before, served(),
+                         "含换行的 argv 进了逐行协议（会被拆开并静默改个数）——必须退回 python 入口")
+
+        # ② 启动器 `scripts/nf` 的守卫：`set --` 在 bash 内部合成 argv，再 **source** 启动器
+        #    （source 不经宿主命令行，参数原样进 `$@`）。
+        before = served()
+        subprocess.run([BASH, "-c", 'set -- layers "$(printf "line1\\nline2")"; . scripts/nf'],
+                       cwd=ROOT, env=env, capture_output=True, timeout=180)
+        self.assertEqual(before, served(),
+                         "启动器把含换行的 argv 交给了逐行协议")
+
+        # ③ 边界能力探测：本机能不能把含换行的参数**无损**交给 bash？
+        probe = subprocess.run([BASH, "-c", 'printf %s "$1"', "p", "line1\nline2"],
+                               capture_output=True)
+        if probe.stdout != b"line1\nline2":
+            self.skipTest("本机 exec 边界（Git Bash 的 Win32 命令行解析）在参数抵达 NF 之前就把它拆开了"
+                          "——「客户端输出 == 直跑输出」这一半在本平台无从判；协议契约已由 ①② 判过")
+
+        argv = ["help", "line1\nline2"]
+        direct = subprocess.run([sys.executable, "scripts/nf.py"] + argv, cwd=ROOT,
+                                capture_output=True)
+        launch = subprocess.run([BASH, "scripts/nf", *argv], cwd=ROOT, env=env,
+                                capture_output=True)
+        self.assertEqual((direct.returncode, direct.stdout, direct.stderr),
+                         (launch.returncode, launch.stdout, launch.stderr),
+                         "启动器快路不得把含换行的参数拆开")
+        func_run = subprocess.run([BASH, "-c", 'eval "$1"; nf help "$(printf "line1\\nline2")"',
+                                   "nfinit", gen.stdout],
+                                  cwd=ROOT, env=env, capture_output=True)
+        self.assertEqual((direct.returncode, direct.stdout, direct.stderr),
+                         (func_run.returncode, func_run.stdout, func_run.stderr),
+                         "快路函数不得把含换行的参数拆开")
 
 
 class DirWatcherTest(unittest.TestCase):

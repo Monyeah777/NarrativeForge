@@ -33,6 +33,12 @@ daemon_try() {
   case "${1:-}" in
     daemon|shell|serve) return 127 ;;               # 长驻/自指命令不走守护（与守护拒绝面一致）
   esac
+  # 明文框是**逐行** argv：参数含换行会被拆开、**静默改变参数个数**（实测：`help` 收到
+  # `line1\nline2` 时只看到 `line1`）——这类命令不接快路，交 python 直跑（JSON 框才支持任意字符）。
+  local _nf_a=""
+  for _nf_a in "$@"; do
+    case "$_nf_a" in *$'\n'*) return 127 ;; esac
+  done
   NF_STATE="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json"
   [ -f "$NF_STATE" ] || return 127
   local s rest

@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/terminal.py:ee851f1db331dbf5d509d980676b03e593c39865fe52c2283a566b68dd7315cc
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
   - desktop/tests/test_terminal.py:7ce3581ac5469acebfbd5c46108a0b104cf35bab3943f023d958fceca9bc722f
-  - scripts/nf:fb9ee157b7e8a75f003314fa37d07d0800cfb646e3e2f6ad6d86a6a6bb41a52e
+  - scripts/nf:68d54c4abaa0a384f75e3e07be6ce54fbc2ab39a439f3136d758028a94b65396
   - scripts/nf.cmd:a971167b0b74c79dff3e3ac0bba0e6156340029fa9673f570c995680797ea4de
   - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
@@ -70,7 +70,10 @@ subjects:
 3. **旧审计 digest 重绑**：基线变更触及 15 份审计件的被审对象（29 条），按仓库既有实践
    （见 commit `ba1cb08`「审计摘要重绑」）重绑 digest，使审计面回到自洽；**未**逐件重写旧审计结论——
    本波改动面由本件（AUD-0024）承担记录责任。此项属执行者自决的机械修复，作者可复核。
-4. **未做（遗留）**：① 17 个孤儿字节码（GUI/APK 时代模块的 `.pyc`）待作者确认后清理；
+4. **未做（遗留）**：① **已收口（2026-09-29，作者确认后执行）**：17 件孤儿字节码（GUI/APK 时代模块的
+   `.pyc`）已删除——判据是「现役三棵代码树 `desktop/src/core`／`desktop/tests`／`scripts` **之外**的全部
+   `.pyc`」（含 GUI 时代 `ui/` 归档、`.rivet/scratch`、`.github/scripts/__pycache__`）；全为 `.gitignore`
+   产物，删后 `git status` 无变化（本项不产生入库面）；
    ② `scripts/e2e_desktop_headless.py` 与 `.github/workflows/e2e-desktop.yml` 的「desktop」命名属端壳时代遗留
    （功能是 headless core E2E，与 GUI 无关），改名牵连 purity_scan 放行键与单测，未擅动；
    ③ L2 真身仍挂在端壳时代目录名 `desktop/` 下，是否改名 `core/` 属独立一波，需作者立项。
