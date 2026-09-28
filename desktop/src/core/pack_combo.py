@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import hashlib
+import copy
 import itertools
 import json
 import os
@@ -53,6 +54,31 @@ def _cache_key(root: str) -> str:
 
 def cache_clear() -> None:
     _CACHE.clear()
+
+
+#: **内容键**派生缓存（键 = 诸输入的内容指纹）。与上面按 root 的 `_CACHE` 互补：
+#: 后者由守护**逐请求清空**（保证「写命令之后不读旧值」），前者按**内容**自证——
+#: 输入没变 ⇒ 派生结果必然相同；输入一变指纹就变。故它可以跨请求复用，不必清。
+#: 收益（实测）：广度证明 ~0.92 s、包画像 0.3–0.5 s，每次重命令都白交一遍。
+_CONTENT_CACHE: Dict[Any, Any] = {}
+
+
+def _inputs_fingerprint(root: str = ".") -> str:
+    """包画像 / 广度证明诸输入的**内容指纹**（协议声明 + 模块契约 + 核心模块 + 资产台账 + registry）。
+
+    走共享读（`csc.read_text_cached`）：同一次只读调用里这些文件本来就要被读，指纹近乎白拿。
+    """
+    h = hashlib.sha256()
+    r = Path(root)
+    for pat in ("community/*/protocol.yaml", "community/*/modules/*.md",
+                "04_模块库/*/*.md", "community/*/assets/provenance.json",
+                "desktop/src/core/registry.json"):
+        for p in sorted(r.glob(pat)):
+            h.update(p.relative_to(r).as_posix().encode("utf-8"))
+            h.update(b"\x00")
+            h.update(csc.read_text_cached(p).encode("utf-8"))
+            h.update(b"\x01")
+    return h.hexdigest()
 
 
 def _read_json(path: Path) -> Any:
@@ -219,11 +245,21 @@ def _asset_index(root: str = ".") -> Dict[Tuple[str, str], Dict[str, Any]]:
 
 
 def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
-    """每个包的组合画像（一次解析，供广度证明复用）。"""
+    """每个包的组合画像（一次解析，供广度证明复用）。
+
+    两层缓存：本次扫描按 root（`_CACHE`，守护逐请求清空）→ 跨调用按**内容指纹**
+    （`_CONTENT_CACHE`，输入没变就直接复用；输入一变指纹就变，故无陈旧风险）。
+    """
     key = _cache_key(root)
     cached = _CACHE.get(key) or {}
     if cached.get("prof"):
         return cached["prof"]
+    fp = _inputs_fingerprint(root)
+    hit = _CONTENT_CACHE.get(("prof", fp))
+    if hit is not None:
+        got = copy.deepcopy(hit)
+        _CACHE.setdefault(key, {})["prof"] = got      # 顺手回填本次扫描的缓存，供 indexes() 复用
+        return got
     contracts = _module_contracts(root)
     out: Dict[str, Dict[str, Any]] = {}
     for d in _pack_dirs(root):
@@ -251,6 +287,7 @@ def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
         }
     cached.update({"prof": out, "contracts": contracts})
     _CACHE[key] = cached
+    _CONTENT_CACHE[("prof", fp)] = copy.deepcopy(out)
     return out
 
 
@@ -428,7 +465,15 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
     参与面 = `community/` 下全部已登记协议包（域包 + 组合包 + 既有社区包）——
     组合包带 `references`（借阅源包模块），本轮起一并进入广度抽样，验证
     「组合包本身也能当组合成员」（摊平后不变量仍成立）。
+
+    结果按**输入内容指纹 + 抽样参数**缓存（`_CONTENT_CACHE`）：广度证明是诸输入的纯函数，
+    输入没变就不必重跑 6910 次组合（实测 ~0.92 s）；输入一变指纹就变，无陈旧风险。
     """
+    content_key = ("breadth", _inputs_fingerprint(root), triple_sample, quad_sample,
+                   quint_sample, sext_sample, seed)
+    hit = _CONTENT_CACHE.get(content_key)
+    if hit is not None:
+        return copy.deepcopy(hit)
     key = _cache_key(root)
     prof = profiles(root)
     contracts = _module_contracts(root)
@@ -486,6 +531,7 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
         and stats["quads"] == stats["quads_legal"]
         and stats["quints"] == stats["quints_legal"]
         and stats["sexts"] == stats["sexts_legal"])
+    _CONTENT_CACHE[content_key] = copy.deepcopy(stats)
     return stats
 
 

@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-28",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "成本结构实测（IO 25%/元数据 35%/计算 40%）+ 目录遍历缓存 + 增量缓存路线显式否决。",
+  "note": "派生结果按内容键缓存（pack_combo profiles/breadth；evaluate −511ms）。",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

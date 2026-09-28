@@ -6,6 +6,7 @@
 """
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -15,6 +16,50 @@ if str(Path(__file__).resolve().parent.parent / "src") not in sys.path:
 from core import pack_combo as pc  # noqa: E402
 
 ROOT = str(Path(__file__).resolve().parents[2])
+
+
+class ContentKeyedDerivedCacheTest(unittest.TestCase):
+    """派生缓存按**内容**（不是按 root）：输入没变就复用；输入一变就重算（不许陈旧）。
+
+    依据（实测）：广度证明要跑 6885 次组合（~0.92 s）、包画像要重解析 111 个协议声明 +
+    235 份模块文档（~0.3–0.5 s），而守护是**逐请求清空按 root 的缓存**的——所以过去每条
+    重命令都白交一遍。改按内容指纹缓存后，隔离 A/B（n=5）实测 `evaluate` 中位
+    **3683 ms → 3172 ms（−511 ms / −14%）**。
+    """
+
+    def test_breadth_reuses_within_same_content(self):
+        pc._CONTENT_CACHE.clear()
+        calls = []
+        orig = pc.combine
+
+        def counting(*a, **k):
+            calls.append(1)
+            return orig(*a, **k)
+
+        pc.combine = counting                      # type: ignore[assignment]
+        try:
+            pc.breadth(ROOT)
+            first = len(calls)
+            calls.clear()
+            pc.breadth(ROOT)
+            second = len(calls)
+        finally:
+            pc.combine = orig                      # type: ignore[assignment]
+        self.assertGreater(first, 1000, "首次广度证明应真跑组合（判据自身要有效）")
+        self.assertEqual(0, second, "同内容的第二次不该再跑组合（内容键缓存没生效？）")
+
+    def test_fingerprint_is_stable_and_sensitive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp, "community", "包甲")
+            (d / "modules").mkdir(parents=True)
+            (d / "protocol.yaml").write_text("id: 包甲\n", encoding="utf-8")
+            mod = d / "modules" / "M01_样例.md"
+            mod.write_text("内容一\n", encoding="utf-8")
+            f1 = pc._inputs_fingerprint(tmp)
+            self.assertEqual(f1, pc._inputs_fingerprint(tmp), "同内容指纹必须稳定")
+            mod.write_text("内容二\n", encoding="utf-8")
+            self.assertNotEqual(f1, pc._inputs_fingerprint(tmp),
+                                "输入一变指纹必须变（否则会读到陈旧派生结果）")
 
 
 class CombineTest(unittest.TestCase):
