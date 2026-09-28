@@ -580,10 +580,11 @@ def _check_graphml(root: str, rel: str) -> List[str]:
     if guard:
         return ["GraphML %s" % guard]
     try:
-        tree = ET.parse(path)  # nosec B314 -- DTD/ENTITY rejected in _xml_guard
+        # 从**已缓存的字节**解析（`_read_bytes_cached` 与 `_read_text_cached` 共用同一次物理读）
+        # ——`ET.parse(path)` 会自己再开一次文件，同一件在一次重算里被读两遍（实测 105 次）。
+        r = ET.fromstring(_read_bytes_cached(path))  # nosec B314 -- DTD/ENTITY 已在 _xml_guard 拒掉
     except ET.ParseError as exc:
         return ["GraphML XML 解析失败：%s" % exc]
-    r = tree.getroot()
     tag = r.tag.split("}")[-1]
     issues = []
     if tag != "graphml":

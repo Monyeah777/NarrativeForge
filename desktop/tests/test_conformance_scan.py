@@ -461,6 +461,57 @@ class DerivedResultCacheTest(unittest.TestCase):
             self.assertEqual(first, second, "%s() 命中缓存的结果必须与首算一致" % name)
 
 
+class ResidentRawEquivalenceTest(unittest.TestCase):
+    """共享读改成「**一次物理读服务两种口径**」之后，文本/字节的口径必须**逐字节不变**。
+
+    依据（2026-09-29）：`read_text_cached` 过去用 `Path.read_text`、`read_bytes_cached` 用
+    `Path.read_bytes` —— 同一份件既当文本又当字节读时**读两遍**（实测一次重算里 211 次重复读）。
+    现在底层只读一次原始字节、文本由 `io.TextIOWrapper(BytesIO(raw), encoding="utf-8",
+    newline=None)` 解出。判据就是「换实现不许换口径」：真语料逐件比对 + 换行/无尾换行/BOM 边界。
+    """
+
+    def test_text_matches_path_read_text_on_real_corpus(self):
+        csc_module = cs
+        csc_module.install_resident(ROOT)
+        self.addCleanup(csc_module.clear_resident)
+        checked = 0
+        for base in ("protocol", "docs", "04_模块库", "01_核心协议.md", "verify.sh"):
+            targets = ([base] if os.path.isfile(os.path.join(ROOT, base))
+                       else [os.path.join(dp, f)
+                             for dp, _dn, fs in os.walk(os.path.join(ROOT, base))
+                             for f in fs][:60])
+            for rel in targets:
+                path = os.path.join(ROOT, rel)
+                try:
+                    want = pathlib.Path(path).read_text(encoding="utf-8")
+                except (OSError, UnicodeDecodeError):
+                    continue
+                checked += 1
+                self.assertEqual(want, csc_module.read_text_cached(path),
+                                 "共享读的文本口径漂了：%s" % rel)
+                self.assertEqual(pathlib.Path(path).read_bytes(),
+                                 csc_module.read_bytes_cached(path),
+                                 "共享读的字节口径漂了：%s" % rel)
+        self.assertGreater(checked, 40, "真语料样本太少，判据没意义")
+
+    def test_newline_and_bom_boundaries(self):
+        """CRLF / 单 \r / 无尾换行 / BOM —— 通用换行语义最容易在这几处漂。"""
+        cases = (b"a\r\nb\r\nc", b"a\rb\rc", b"a\nb\nc", b"a\nb\nc\n",
+                 b"\xef\xbb\xbfhello\n", b"", b"tail-no-newline")
+        cs.install_resident(ROOT)
+        self.addCleanup(cs.clear_resident)
+        with tempfile.TemporaryDirectory() as tmp:
+            for i, raw in enumerate(cases):
+                path = os.path.join(tmp, "n%d.txt" % i)
+                with open(path, "wb") as fh:
+                    fh.write(raw)
+                self.assertEqual(pathlib.Path(path).read_text(encoding="utf-8"),
+                                 cs.read_text_cached(path), raw)
+                self.assertEqual(raw, cs.read_bytes_cached(path))
+                cs.clear_resident()             # 每例都从空层走一遍真读
+                cs.install_resident(ROOT)
+
+
 class CodeScopeFaceTest(unittest.TestCase):
     """代码面**按导入闭包**细化（`disk_cache.key(..., code_modules=…)`）：精度 / fail-closed / 完整性。
 

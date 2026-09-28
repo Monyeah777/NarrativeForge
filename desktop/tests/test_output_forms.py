@@ -36,13 +36,21 @@ class ReadMemoTest(unittest.TestCase):
             p = Path(tmp) / "a.txt"
             p.write_text("一", encoding="utf-8")
             calls = []
-            orig = Path.read_text
+            # 2026-09-29 起共享读是**一次物理读服务两种口径**：文本与字节都从
+            # `Path.read_bytes()` 出（文本经通用换行语义解出）。所以计数口径要**两条都数**，
+            # 否则「一次读」这条不变量会被读成 0 次（实际是换了一层实现，不是没读）。
+            orig_text, orig_bytes = Path.read_text, Path.read_bytes
 
             def counting(self, *a, **k):
                 calls.append(str(self))
-                return orig(self, *a, **k)
+                return orig_text(self, *a, **k)
+
+            def counting_bytes(self, *a, **k):
+                calls.append(str(self))
+                return orig_bytes(self, *a, **k)
 
             Path.read_text = counting                      # type: ignore[assignment]
+            Path.read_bytes = counting_bytes               # type: ignore[assignment]
             try:
                 with of._memo_reads():
                     self.assertEqual("一", of._read_text_cached(p))
@@ -57,7 +65,8 @@ class ReadMemoTest(unittest.TestCase):
                     self.assertEqual("二", of._read_text_cached(p),
                                      "新的一次调用必须看到新内容（作用域出口即清）")
             finally:
-                Path.read_text = orig                      # type: ignore[assignment]
+                Path.read_text = orig_text                 # type: ignore[assignment]
+                Path.read_bytes = orig_bytes               # type: ignore[assignment]
 
 
 class RegistryTest(unittest.TestCase):

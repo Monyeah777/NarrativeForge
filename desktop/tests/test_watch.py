@@ -480,7 +480,7 @@ class ResidentLayerTest(unittest.TestCase):
         self.assertGreater(csc.resident_stats()["text"], 0)
         csc.clear_resident()
         self.assertFalse(csc.resident_active())
-        self.assertEqual({"dirs": 0, "text": 0, "bytes": 0, "digest": 0},
+        self.assertEqual({"dirs": 0, "text": 0, "bytes": 0, "digest": 0, "raw": 0},
                          csc.resident_stats())
 
 

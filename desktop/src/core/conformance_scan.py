@@ -113,7 +113,8 @@ def install_resident(root) -> None:
     """安装常驻层（**只在守护带监听且监听健康时调用**）。"""
     global _RESIDENT
     root_abs = os.path.normcase(os.path.abspath(str(root)))
-    _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}, "digest": {}}
+    _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}, "digest": {},
+                 "raw": {}}
 
 
 def resident_active() -> bool:
@@ -123,9 +124,10 @@ def resident_active() -> bool:
 def resident_stats() -> Dict[str, int]:
     """常驻层规模（观测 + 判据用）：目录条数 / 正文条数 / 二进制条数。"""
     if _RESIDENT is None:
-        return {"dirs": 0, "text": 0, "bytes": 0, "digest": 0}
+        return {"dirs": 0, "text": 0, "bytes": 0, "digest": 0, "raw": 0}
     return {"dirs": len(_RESIDENT["dirs"]), "text": len(_RESIDENT["text"]),
-            "bytes": len(_RESIDENT["bytes"]), "digest": len(_RESIDENT["digest"])}
+            "bytes": len(_RESIDENT["bytes"]), "digest": len(_RESIDENT["digest"]),
+            "raw": len(_RESIDENT["raw"])}
 
 
 def clear_resident() -> None:
@@ -201,6 +203,7 @@ def drop_resident(paths) -> None:
         res["text"].pop(key, None)
         res["bytes"].pop(key, None)
         res["digest"].pop(key, None)
+        res["raw"].pop(key, None)
         res["dirs"].pop(os.path.dirname(key), None)
         res["dirs"].pop(key, None)          # 路径本身也可能是目录（整棵子树增删）
 
@@ -462,13 +465,38 @@ def read_text_cached(path) -> str:
             if _READ_MEMO is not None:
                 _READ_MEMO[key] = hit
             return hit
-    text = Path(path).read_text(encoding="utf-8")
+    # **一次物理读服务两种口径**：底层读原始字节（常驻层也存它），文本由同一份字节按
+    # 「通用换行」语义解出——与 `Path.read_text(encoding="utf-8")` 逐字节一致（判据：
+    # test_conformance_scan.ResidentRawEquivalenceTest 对真语料逐件比对），但「同一件既当文本
+    # 又当字节读」时不再读第二遍（实测这类重复读 211 次/一次重算）。
+    raw = _raw_bytes(path, key)
+    text = _decode_text(raw)
     if _READ_MEMO is not None:
         _READ_MEMO[key] = text
     if _RESIDENT is not None and _resident_under(key) \
             and len(_RESIDENT["text"]) < _RESIDENT_TEXT_MAX:
         _RESIDENT["text"][key] = text
     return text
+
+
+def _raw_bytes(path, key: str) -> bytes:
+    """取**原始字节**（常驻层优先）：一次物理读之后，文本与字节两种口径都从这里出。"""
+    if _RESIDENT is not None:
+        hit = _RESIDENT["raw"].get(key)
+        if hit is not None:
+            return hit
+    raw = Path(path).read_bytes()
+    if _RESIDENT is not None and _resident_under(key) \
+            and len(_RESIDENT["raw"]) < _RESIDENT_TEXT_MAX:
+        _RESIDENT["raw"][key] = raw
+    return raw
+
+
+def _decode_text(raw: bytes) -> str:
+    """原始字节 → 文本：与 `Path.read_text(encoding="utf-8")` 同语义（含**通用换行**翻译）。"""
+    import io as _io
+    with _io.TextIOWrapper(_io.BytesIO(raw), encoding="utf-8", newline=None) as wrapper:
+        return wrapper.read()
 
 
 def read_bytes_cached(path) -> bytes:
@@ -484,7 +512,7 @@ def read_bytes_cached(path) -> bytes:
             if _READ_MEMO is not None:
                 _READ_MEMO["b:" + key] = hit
             return hit
-    raw = Path(path).read_bytes()
+    raw = _raw_bytes(path, key)
     if _READ_MEMO is not None:
         _READ_MEMO["b:" + key] = raw            # type: ignore[assignment]
     if _RESIDENT is not None and _resident_under(key) \
