@@ -981,6 +981,8 @@ def _make_parser() -> argparse.ArgumentParser:
                                       "状态落在 <NF_HOME>/daemon.json。已在运行则幂等返回。")
     dst.add_argument("--idle", type=float, default=3600.0,
                      help="空闲多少秒后自动退出（0=不退出）")
+    dst.add_argument("--watch", action="store_true",
+                     help="启用目录监听 + 只读命令响应缓存（树没变即整条复用；平台不支持时自动降级）")
     dsub.add_parser("stop", help="请守护自行退出（协议级 shutdown，不发信号）",
                     description="请守护自行退出：走协议级 shutdown 帧（不发信号、不删文件），"
                                 "并把状态文件标记为停用——之后启动器自动回到 python 直跑。")
@@ -4958,9 +4960,19 @@ def _cmd_daemon(args) -> int:
 
     sub = args.daemon_cmd
     if sub == "start":
-        ok, msg = dm.start(Path(ROOT), idle_timeout=args.idle)
+        ok, msg = dm.start(Path(ROOT), idle_timeout=args.idle,
+                           watch=bool(getattr(args, "watch", False)))
         doc = dm.read_state() or {}
         print(("  ✓ " if ok else "  ✗ ") + msg)
+        if ok:
+            # 缓存/监听是**守护进程内**的状态，必须在守护侧取（客户端进程里看不到）。
+            st = dm.query_stats(doc)
+            if st is None:
+                print("  响应缓存：无法查询（守护未响应 stats）")
+            elif st.get("enabled"):
+                print("  响应缓存：已启用（树没变即整条复用；代际 %s）" % st.get("generation"))
+            else:
+                print("  响应缓存：未启用（目录监听不可用——平台未实现或打开失败，已自动降级）")
         if ok:
             print("  端口 %s · 状态文件 %s" % (doc.get("port"), dm.state_path()))
         return 0 if ok else 1
@@ -4978,6 +4990,7 @@ def _cmd_daemon(args) -> int:
                                "port": doc.get("port"), "pid": doc.get("pid"),
                                "proto": doc.get("proto"), "root": doc.get("root"),
                                "rtt_ms": round(rtt, 2) if alive else None,
+                               "cache": dm.query_stats(doc) if alive else None,
                                "state_file": str(dm.state_path())},
                               ensure_ascii=False, indent=2, sort_keys=True))
             return 0 if alive else 1
@@ -4990,6 +5003,14 @@ def _cmd_daemon(args) -> int:
         print("  状态文件：%s" % dm.state_path())
         if alive:
             print("  往返时延：%.1f ms（同一进程内热跑；含协议解析与源码指纹比对）" % rtt)
+            st = dm.query_stats(doc)
+            if st is None:
+                print("  响应缓存：无法查询（守护未响应 stats）")
+            elif st["enabled"]:
+                print("  响应缓存：已启用 · 代际 %s · 条目 %d · 命中 %d / 未命中 %d（树一变即整批作废）"
+                      % (st["generation"], st["entries"], st["hits"], st["misses"]))
+            else:
+                print("  响应缓存：未启用（未开 --watch，或目录监听不可用——行为与常规守护一致）")
         else:
             print("  → 拉起：nf daemon start（或用 scripts/nf 启动器，它会自动走守护）")
         return 0 if alive else 1

@@ -38,7 +38,7 @@ import socket
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 PROTO = 1
 #: 监听地址：**只允许回环**（与 scripts/serve_decision_model.py 同一条纪律；本模块不提供
@@ -257,6 +257,56 @@ _CLI_CACHE: Dict[str, Any] = {}
 #: `start()` 拉起的子进程句柄（回收它，避免解释器退出时的 ResourceWarning）。
 _CHILD: Optional[Any] = None
 
+#: 响应缓存（**只在守护进程内、只在树没变时**复用整条命令的 stdout/stderr/退出码）。
+#: 为什么敢缓存整条响应：这些命令是「树状态的纯函数」（见 `CACHEABLE_COMMANDS` 的准入判据），
+#: 而「树没变」由 `watch.DirWatcher` 的**通知制**代际提供——没有通知就不重算。
+#: 键含 cwd（输出里有仓库相对路径）。上限防无界增长。
+_RESP_CACHE: Dict[Any, Tuple[int, int, bytes, bytes]] = {}
+_RESP_CACHE_MAX = 256
+#: 当前监听件（`serve_forever(watch=True)` 装；单测可注入假件）。
+_WATCHER: Optional[Any] = None
+#: 观测计数（`nf daemon status` 会显示；单测据此判「命中/未命中」）。
+_CACHE_STATS: Dict[str, int] = {"hits": 0, "misses": 0, "stores": 0, "skipped": 0}
+
+#: 响应缓存的**准入表**：仅纯读、且对同一棵树**逐字节可复现**的命令（准入判据见 test_watch：
+#: 同树连跑两次，stdout/stderr/exit 必须完全相同——带时间戳/耗时/随机序的命令一律不得入表）。
+CACHEABLE_COMMANDS = ("score", "conformance", "layers", "stats")
+#: 写盘类开关：出现任一前缀即**不缓存**（哪怕命令在准入表里）。宁可不缓存，不可把旧输出当新输出。
+_WRITE_FLAG_PREFIXES = ("--write", "--out", "--save", "--fix", "--apply", "--yes",
+                        "--baseline", "--freeze", "--record", "--sign", "--delete", "--rm")
+
+
+def cacheable(argv: Sequence[str]) -> bool:
+    """这条命令是否允许走响应缓存（纯读 + 无写盘开关）。"""
+    argv = [str(a) for a in argv]
+    if not argv:
+        return False
+    if argv[0] == "--version":
+        return True
+    if argv[0] not in CACHEABLE_COMMANDS:
+        return False
+    return not any(a.startswith(_WRITE_FLAG_PREFIXES) for a in argv[1:])
+
+
+def _watch_generation() -> Optional[int]:
+    """当前「树代际」；**None ＝ 不可用**（没有监听件 / 不健康）→ 一律不缓存、不命中。"""
+    w = _WATCHER
+    if w is None or not getattr(w, "healthy", False):
+        return None
+    return int(w.generation)
+
+
+def cache_stats() -> Dict[str, Any]:
+    """响应缓存观测面（供 `nf daemon status` 与单测）。"""
+    gen = _watch_generation()
+    return {"enabled": gen is not None, "generation": gen,
+            "entries": len(_RESP_CACHE), **dict(_CACHE_STATS)}
+
+
+def reset_response_cache() -> None:
+    """清空响应缓存（监听件报溢出/不可用时调用——宁可全废，不可错答）。"""
+    _RESP_CACHE.clear()
+
 
 def _code_fingerprint(root: Path) -> Tuple:
     """`core/*.py` + `scripts/*.py` 的 (相对路径, mtime_ns, size) 指纹（用 scandir，不做 walk）。
@@ -306,6 +356,22 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
         msg = ("守护进程内拒跑长驻/嵌套命令 `nf %s`"
                "（修复指引：在普通终端里直接跑；守护只承载一次性命令）\n" % argv[0])
         return 2, b"", msg.encode("utf-8")
+    # 响应缓存：**只在「树没变」有可证信号时**才会命中（见 `_watch_generation`）。
+    key = (tuple(str(a) for a in argv), cwd or os.getcwd())
+    gen = _watch_generation()
+    if gen is None:
+        if cacheable(argv):
+            _CACHE_STATS["skipped"] += 1
+        if _RESP_CACHE:                    # 监听不可用 ⇒ 旧响应一律作废（宁可全废不可错答）
+            reset_response_cache()
+    elif cacheable(argv):
+        hit = _RESP_CACHE.get(key)
+        if hit is not None and hit[0] == gen:
+            _CACHE_STATS["hits"] += 1
+            return hit[1], hit[2], hit[3]
+        _CACHE_STATS["misses"] += 1
+    else:
+        _CACHE_STATS["skipped"] += 1
     _sync_code(root)          # 源码变了就先重载（否则会用旧逻辑回话）
     reset_process_caches()
     nf = _load_cli(root)
@@ -331,7 +397,13 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
         sys.argv, sys.stdin = old_argv, old_stdin
         os.chdir(old_cwd)
         reset_process_caches()            # 请求结束再清一次：写命令改了仓库，缓存不留残影
-    return code, out_buf.getvalue(), err_buf.getvalue()
+    code, out, err = int(code), out_buf.getvalue(), err_buf.getvalue()
+    if gen is not None and cacheable(argv) and code == 0:
+        if len(_RESP_CACHE) >= _RESP_CACHE_MAX:
+            _RESP_CACHE.clear()
+        _RESP_CACHE[key] = (gen, code, out, err)
+        _CACHE_STATS["stores"] += 1
+    return code, out, err
 
 
 def _handle_conn(conn: socket.socket, token: str, root: Path) -> bool:
@@ -350,6 +422,11 @@ def _handle_conn(conn: socket.socket, token: str, root: Path) -> bool:
     if req.get("op") == "shutdown":
         send_framed(conn, 0, b"", b"")
         return True
+    if req.get("op") == "stats":
+        # 观测面必须**在守护进程内**取：缓存与监听件都是守护的进程状态，客户端看不到。
+        payload = json.dumps(cache_stats(), ensure_ascii=False).encode("utf-8")
+        send_framed(conn, 0, payload, b"")
+        return False
     argv = req.get("argv")
     if not isinstance(argv, list) or not all(isinstance(a, str) for a in argv):
         send_framed(conn, 2, b"", "argv 必须是字符串列表\n".encode("utf-8"))
@@ -360,16 +437,31 @@ def _handle_conn(conn: socket.socket, token: str, root: Path) -> bool:
 
 
 def serve_forever(root: Path, idle_timeout: float = 0.0, ready: Optional[Any] = None,
-                  force: bool = False) -> int:
+                  force: bool = False, watch: bool = False) -> int:
     """守护主循环（单线程串行）：直到收到 shutdown / 空闲超时 / 被中断。
 
     **一个 NF_HOME 只允许一个守护**（缺省 fail-closed）：状态文件只登记一个端口/令牌，若第二个
     守护直接起，它会覆盖状态、让先起的那个「失联」（CI 实测踩过：同一 NF_HOME 下先后起两个
     服务，后者的 `clear_state()` 把前者的广告位抹掉）。确需另起用 `force=True`。
+
+    `watch=True` 时装上目录监听 → 开「只读命令的响应缓存」（树没变就整条复用）。监听不可用
+    或中途失效时**自动降级**：缓存不命中、不复用，行为与今天一致。
     """
     if not force and ping(timeout=1.0):
         print("已有守护在运行（修复指引：先 `nf daemon stop`，或显式 force 另起）", file=sys.stderr)
         return 2
+    global _WATCHER
+    watcher = None
+    if watch:
+        from core import watch as _watch
+        watcher = _watch.DirWatcher(root)
+        if watcher.start():
+            _WATCHER = watcher
+        else:
+            _WATCHER = None
+            watcher = None
+            print("目录监听不可用（平台未实现或打开失败）→ 不启用响应缓存，"
+                  "行为与常规守护一致", file=sys.stderr)
     token = secrets.token_hex(32)
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -402,9 +494,33 @@ def serve_forever(root: Path, idle_timeout: float = 0.0, ready: Optional[Any] = 
         # 先清状态再关端口：客户端「连不上」与「看不到登记」才是同一时刻的真相，
         # 否则中间会有一个「端口已死但状态还在」的窗口（CI 实测：就是这样让 stop() 报
         # 「守护未响应」而不是「没有守护」）。
+        if watcher is not None:
+            watcher.stop()
+        _WATCHER = None
+        reset_response_cache()
         clear_state()
         srv.close()
     return 0
+
+
+def query_stats(doc: Optional[Dict[str, Any]] = None,
+                timeout: float = 2.0) -> Optional[Dict[str, Any]]:
+    """问守护要它的响应缓存/监听状态（**必须在守护进程内取**，见 `_handle_conn` 的 stats op）。"""
+    doc = doc or read_state()
+    if not doc:
+        return None
+    try:
+        req = json.dumps({"proto": PROTO, "token": doc["token"], "op": "stats"}).encode("utf-8")
+        with socket.create_connection((BIND_HOST, int(doc["port"])), timeout=timeout) as sock:
+            sock.settimeout(timeout)
+            sock.sendall(req + b"\n")
+            code, out, _err = read_framed(sock)
+        if code != 0:
+            return None
+        got = json.loads(out.decode("utf-8"))
+        return got if isinstance(got, dict) else None
+    except Exception:                                    # noqa: BLE001 - 查不到就如实说查不到
+        return None
 
 
 def ping(doc: Optional[Dict[str, Any]] = None, timeout: float = 2.0) -> bool:
@@ -419,8 +535,8 @@ def ping(doc: Optional[Dict[str, Any]] = None, timeout: float = 2.0) -> bool:
         return False
 
 
-def start(root: Path, idle_timeout: float = 3600.0, wait: float = 15.0
-          ) -> Tuple[bool, str]:
+def start(root: Path, idle_timeout: float = 3600.0, wait: float = 15.0,
+          watch: bool = False) -> Tuple[bool, str]:
     """拉起守护（后台子进程）→ (是否成功, 说明)。已在跑则直接返回 True。"""
     if ping():
         return True, "守护已在运行"
@@ -431,6 +547,8 @@ def start(root: Path, idle_timeout: float = 3600.0, wait: float = 15.0
         + env.get("PYTHONPATH", "")
     args = [sys.executable, "-m", "core.daemon", "--serve",
             "--root", str(root), "--idle", str(int(idle_timeout))]
+    if watch:
+        args.append("--watch")
     kwargs: Dict[str, Any] = {"cwd": str(root), "env": env,
                               "stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL}
     if os.name == "nt":                                  # Windows：脱离控制台、不闪窗
@@ -499,11 +617,14 @@ def main(argv: Optional[List[str]] = None) -> int:
                     help="空闲多少秒后自动退出（0=不退出）")
     ap.add_argument("--force", action="store_true",
                     help="已有守护在运行时仍另起一个（会顶掉先起者的状态登记，默认拒绝）")
+    ap.add_argument("--watch", action="store_true",
+                    help="启用目录监听 + 只读命令响应缓存（树没变即整条复用；不可用自动降级）")
     args = ap.parse_args(argv)
     if not args.serve:
         ap.print_help()
         return 2
-    return serve_forever(Path(args.root).resolve(), idle_timeout=args.idle, force=args.force)
+    return serve_forever(Path(args.root).resolve(), idle_timeout=args.idle,
+                         force=args.force, watch=args.watch)
 
 
 if __name__ == "__main__":                                # pragma: no cover - 进程入口

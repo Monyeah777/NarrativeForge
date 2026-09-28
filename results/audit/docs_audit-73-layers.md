@@ -11,7 +11,7 @@ subjects:
   - desktop/tests/test_layer_model.py:6ed47766f9ba52b0defe76f731ceeafcce5a2d489e639f2adafb81cc59479a5d
   - desktop/src/core/purity_scan.py:77c5f45c236eadbf8ef0ea5d2bbe35515064f4b15b6387d2600eeb3b9cd0448c
   - desktop/tests/test_purity_scan.py:21e07090b6f48b426485fe1e2760d218f539a951d05c7d72eaa39a35a9dae2e9
-  - scripts/nf.py:4832c83b943a422fa6916b2397131a5d0e668e45fed98548b7fee88c00f52b93
+  - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
   - verify.sh:39d1f048d380b934b982f1d2f10ac9222deaf08ce94fefb91894be7adace13f8
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
