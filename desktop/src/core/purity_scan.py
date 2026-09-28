@@ -122,6 +122,29 @@ def _try_guards_import(node: ast.Try) -> bool:
     return False
 
 
+#: AST 事实缓存：键 = **文件文本本身**（内容不变 ⇒ 事实必然相同；内容一改键就变）。
+#: 与围栏 YAML 缓存（conformance_scan._FENCE_CACHE）、引用度普查缓存同一条纪律：
+#: 键即内容，所以**不存在陈旧风险**，可以放心在常驻进程里长期复用。
+_FACTS_CACHE: dict = {}
+_FACTS_CACHE_MAX = 4096
+
+
+def _facts_for(text: str):
+    """文本 → R4–R6 事实（预筛不中即 None）；按内容缓存，跨调用复用。"""
+    if text in _FACTS_CACHE:
+        return _FACTS_CACHE[text]
+    got = None
+    if _NEEDS_AST.search(text):
+        try:
+            got = _ast_facts(ast.parse(text))
+        except SyntaxError:
+            got = None
+    if len(_FACTS_CACHE) >= _FACTS_CACHE_MAX:
+        _FACTS_CACHE.clear()
+    _FACTS_CACHE[text] = got
+    return got
+
+
 def _ast_facts(tree: ast.AST) -> tuple:
     """**一次** `ast.walk` 取齐 R4–R6 全部事实（判据与分次遍历逐条等价）。
 
@@ -203,22 +226,26 @@ def scan(root: str = ".") -> tuple:
                               % (name, title, ",".join(map(str, lines))))
     # R4：错误信息审计（desktop/src/core/*.py）
     # R4/R5/R6 共用一份「读 + parse + walk」：同一批 core/*.py 过去被 R4 与 R5 各自 parse
-    # 一遍、同一棵树被 walk 四遍（见 `_ast_facts`）。事实缓存只活在本函数内——不跨调用
-    # 常驻，故「同一进程里先改文件再扫描」不会读到陈旧结果。
+    # 一遍、同一棵树被 walk 四遍（见 `_ast_facts`）。
+    # 缓存分两层，判据都是「键即内容」：
+    #   ① 本次扫描内按**路径**缓存（省重复读盘）；
+    #   ② 跨调用按**文件文本**缓存（`_facts_for`）——文本没变 ⇒ 事实必然相同，文本一变键就变，
+    #      因此**不存在陈旧风险**，可以在常驻进程（nf daemon）里长期复用，
+    #      把「每次跑 score/verify 都重解析 247 份 .py」的成本摊掉。
     facts_cache: dict = {}
 
     def _facts(fpath: str):
-        if fpath not in facts_cache:
-            got = None
-            try:
-                with open(fpath, encoding="utf-8") as fh:
-                    text = fh.read()
-                if _NEEDS_AST.search(text):
-                    got = _ast_facts(ast.parse(text))
-            except (OSError, SyntaxError):
-                got = None
-            facts_cache[fpath] = got
-        return facts_cache[fpath]
+        if fpath in facts_cache:
+            return facts_cache[fpath]
+        try:
+            with open(fpath, encoding="utf-8") as fh:
+                text = fh.read()
+        except OSError:
+            facts_cache[fpath] = None
+            return None
+        got = _facts_for(text)
+        facts_cache[fpath] = got
+        return got
 
     core_dir = os.path.join(root, "desktop", "src", "core")
     if os.path.isdir(core_dir):

@@ -4,6 +4,7 @@
 import os
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -249,6 +250,46 @@ class SinkRegistryTest(unittest.TestCase):
             issues, stats = ps.scan(tmp)
             self.assertEqual(issues, [])
             self.assertIn("skipped", stats.get("layers", {}))
+
+    def test_ast_facts_cache_is_content_keyed(self):
+        """AST 事实缓存必须**按内容**（不是按路径）：同文命中、改文重算。
+
+        这是「常驻进程不得陈旧」的一半：键即内容 ⇒ 文本没变必然同结果、文本变了键就变。
+        """
+        src = "import os\n\n\ndef f():\n    raise ValueError('缺修复指引：x')\n"
+        first = ps._facts_for(src)
+        self.assertIsNotNone(first, "含 raise/import 的文本必须产出事实")
+        self.assertIs(ps._facts_for(src), first, "同文必须命中缓存（复用同一份事实）")
+        changed = src + "\nprint('新内容')\n"
+        self.assertIsNot(ps._facts_for(changed), first, "文本变了必须重新解析（不许陈旧）")
+
+    def test_transient_file_edit_is_seen_by_next_scan(self):
+        """临时目录里改文件 → 下一次扫描必须看到新结果（按内容缓存的必然推论）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            p = _write(tmp, "desktop/src/core/m_probe.py",
+                       "raise ValueError('旧文案')\n")
+            first, _ = ps.scan(tmp)
+            with open(p, "w", encoding="utf-8") as fh:
+                fh.write("raise ValueError('新文案')\n")
+            second, _ = ps.scan(tmp)
+        self.assertNotEqual(first, second, "改文之后结果必须随内容变")
+
+    def test_second_scan_reuses_content_caches(self):
+        """常驻复用判据（相对、机器无关）：同进程第二次全仓扫描必须显著快于第一次。
+
+        第一次要真解析 247 份 .py；第二次走内容键缓存（`_FACTS_CACHE`）只做读盘。若缓存
+        不再跨调用复用（例如被误改成「每次清空」），这条会立刻红。
+        """
+        ps._FACTS_CACHE.clear()
+        t0 = time.perf_counter()
+        ps.scan(ROOT)
+        first = time.perf_counter() - t0
+        t0 = time.perf_counter()
+        ps.scan(ROOT)
+        second = time.perf_counter() - t0
+        self.assertLess(second * 2, first,
+                        "第二次 %.2f s 应远快于第一次 %.2f s（内容键缓存未复用？）"
+                        % (second, first))
 
 
 if __name__ == "__main__":

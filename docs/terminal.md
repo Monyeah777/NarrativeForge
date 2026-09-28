@@ -207,6 +207,14 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 | `scripts/nf` 启动器（经守护） | 175 ms | 326 ms | 470 ms |
 | **bash 函数（零子进程，经守护）** | **5.7 ms** | 140 ms | 400 ms |
 
+常驻对**重命令**同样有效（内容键缓存跨请求保留；实测本机，min of N）：
+
+| 命令 | 冷启动直跑 | 守护稳态 |
+|---|---|---|
+| `nf score` | 8.24 s | **4.48 s**（跑过 conformance 后 4.86 s） |
+| `nf doctor` | 693 ms | **213 ms** |
+| `nf conformance` | 3.04 s | **2.13 s** |
+
 ```sh
 nf daemon start                      # 拉起守护（后台；只绑 127.0.0.1 + 一次性令牌）
 eval "$(nf daemon shell-init bash)"  # 装进当前 shell：零子进程客户端（真毫秒级）

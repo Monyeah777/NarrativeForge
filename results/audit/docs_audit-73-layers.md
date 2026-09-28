@@ -9,8 +9,8 @@ subjects:
   - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
   - desktop/src/core/layer_model.py:4e68d7e9b2dbf4336dd9edad87bd81fbb5613f8facdf7af4dc7fc825ad3db6c5
   - desktop/tests/test_layer_model.py:6ed47766f9ba52b0defe76f731ceeafcce5a2d489e639f2adafb81cc59479a5d
-  - desktop/src/core/purity_scan.py:6ccbf7d154c96b359b87d5643e8bf4200bfa050b0cb1cd75ff860f738a78e028
-  - desktop/tests/test_purity_scan.py:487bc7719509a312779afaf1474002b0fc0e0acf85f36b7628bf2975b008191b
+  - desktop/src/core/purity_scan.py:df98fed4f00ce11f59761d1de9d654aadab20007aa4016ffdec97da5316f158f
+  - desktop/tests/test_purity_scan.py:fff6f5aa7a5323f6a348711d5fb44ca1796ac65a299e01b1ae4eac559caad17a
   - scripts/nf.py:4832c83b943a422fa6916b2397131a5d0e668e45fed98548b7fee88c00f52b93
   - verify.sh:39d1f048d380b934b982f1d2f10ac9222deaf08ce94fefb91894be7adace13f8
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
