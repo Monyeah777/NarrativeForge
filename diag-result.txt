@@ -1,0 +1,66 @@
+== plain suite ==
+28
+18:FAIL: test_stop_reports_when_no_daemon_running (test_daemon.DaemonInProcessServerTest.test_stop_reports_when_no_daemon_running)
+ERROR t: boom
+WARNING t: warn
+  [WARN] 会话文件不是合法 JSON（/tmp/tmphm__i25_.json）：Expecting value: line 1 column 1 (char 0)（修复指引：删除该文件或改成合法 JSON）
+======================================================================
+FAIL: test_stop_reports_when_no_daemon_running (test_daemon.DaemonInProcessServerTest.test_stop_reports_when_no_daemon_running)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/NarrativeForge/NarrativeForge/desktop/tests/test_daemon.py", line 309, in test_stop_reports_when_no_daemon_running
+    self.assertIn("没有守护", msg)
+AssertionError: '没有守护' not found in '守护未响应（已标记停用）：[Errno 111] Connection refused'
+
+----------------------------------------------------------------------
+Ran 1280 tests in 79.448s
+
+FAILED (failures=1, skipped=2)
+
+== coverage job 复现（与 .github/workflows/coverage.yml 同命令）==
+coverage_run_exit=1
+coverage_report_exit=0
+desktop/src/core/terminal.py                   1059    139    87%
+desktop/src/core/text_hygiene.py                174     11    94%
+desktop/src/core/tool_face.py                    47      7    85%
+desktop/src/core/trace_drill.py                  26      2    92%
+desktop/src/core/transparency_log.py             76      8    89%
+desktop/src/core/validator.py                    48      3    94%
+desktop/src/core/variants.py                     46      0   100%
+desktop/src/core/workloop.py                    162     24    85%
+desktop/src/core/world_model.py                 483     93    81%
+desktop/src/core/world_slots.py                  58     13    78%
+-----------------------------------------------------------------
+TOTAL                                         17067   2966    83%
+--- coverage 下失败的用例 ---
+19:FAIL: test_stop_reports_when_no_daemon_running (test_daemon.DaemonInProcessServerTest.test_stop_reports_when_no_daemon_running)
+--- coverage 日志尾部 ---
+
+options:
+  -h, --help   show this help message and exit
+  --serve      前台跑守护循环（供 start 拉起）
+  --root ROOT
+  --idle IDLE  空闲多少秒后自动退出（0=不退出）
+..................................ss...........................................................................................................................................................................................................................................................................................................................................................................................................................................  [FAIL] 编造/越界编号：M99（全库允许集外，且非残留/不命中说明）
+.........................  ✗ 未知子命令：no-such（nf --help 看全量）
+..................................................................................................INFO t: hi
+ERROR t: boom
+WARNING t: warn
+.................................................................................................................................................................................................................................................................................................  [WARN] 会话文件不是合法 JSON（/tmp/tmp9i6qxnk4.json）：Expecting value: line 1 column 1 (char 0)（修复指引：删除该文件或改成合法 JSON）
+.....................................................................................................................................................................
+======================================================================
+FAIL: test_stop_reports_when_no_daemon_running (test_daemon.DaemonInProcessServerTest.test_stop_reports_when_no_daemon_running)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/NarrativeForge/NarrativeForge/desktop/tests/test_daemon.py", line 309, in test_stop_reports_when_no_daemon_running
+    self.assertIn("没有守护", msg)
+AssertionError: '没有守护' not found in '守护未响应（已标记停用）：[Errno 111] Connection refused'
+
+----------------------------------------------------------------------
+Ran 1280 tests in 141.969s
+
+FAILED (failures=1, skipped=2)
+--- daemon.py 缺行 ---
+desktop/src/core/daemon.py     296     37    88%   115, 142-143, 147-148, 153-163, 177, 180, 209, 239, 276-277, 306-308, 326-327, 346-349, 384-385, 414, 425, 435, 445-446, 469-470
+----------------------------------------------------------
+TOTAL                          296     37    88%
