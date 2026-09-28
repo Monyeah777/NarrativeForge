@@ -266,6 +266,41 @@ class DirWatcherTest(unittest.TestCase):
             finally:
                 w.stop()
 
+    @unittest.skipUnless(watch.available(), "本平台没有目录监听实现（本波仅 Windows）")
+    def test_git_only_change_does_not_bump_the_generation(self):
+        """`.git/` 下的变更**不得**推进代际：否则日常 git 工作流会把响应缓存整批作废
+        （每跑一次 `git status/add/commit`，下一个 `nf score` 就要退回 ~2.2 s 重算）。
+
+        安全前提由下面的 `NfReadFaceTest` 守着：NF 的读面根本不碰 `.git`。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / ".git").mkdir()               # 先建好：目录创建本身也是一条通知
+            w = watch.DirWatcher(tmp)
+            self.assertTrue(w.start())
+            try:
+                before = w.generation
+                (Path(tmp) / ".git" / "HEAD").write_text("ref: refs/heads/main\n",
+                                                         encoding="utf-8")   # 改已存在件
+                deadline = time.time() + 5
+                while time.time() < deadline and w.ignored_batches == 0:
+                    time.sleep(0.02)
+                self.assertGreaterEqual(w.ignored_batches, 1, "`.git` 变更未被识别为可忽略批次")
+                self.assertEqual(before, w.generation, "`.git`-only 变更不得推进代际")
+                # 创建/删除会额外触发「目录本身」的通知（Windows 实测），同样必须被忽略
+                probe = Path(tmp) / ".git" / "index.lock"
+                probe.write_text("x", encoding="utf-8")
+                probe.unlink()
+                deadline = time.time() + 5
+                while time.time() < deadline and w.ignored_batches < 2:
+                    time.sleep(0.02)
+                self.assertGreaterEqual(w.ignored_batches, 2, "`.git` 下增删未被视为可忽略")
+                self.assertEqual(before, w.generation,
+                                 "`.git` 下增删（含目录自身通知）不得推进代际")
+                (Path(tmp) / "正常件.md").write_text("一", encoding="utf-8")
+                self.assertTrue(_wait_generation(w, before), "非 .git 变更必须推进代际")
+            finally:
+                w.stop()
+
     def test_overflow_is_reported_and_bumps_generation(self):
         """缓冲溢出必须**如实上报**（调用方据此作废全部缓存），且代际继续单调。"""
         w = watch.DirWatcher(ROOT)
@@ -280,6 +315,50 @@ class DirWatcherTest(unittest.TestCase):
         self.assertFalse(w.start())
         self.assertFalse(w.healthy)
         w.stop()                                      # 幂等、不抛
+
+
+class NfReadFaceTest(unittest.TestCase):
+    """**安全前提**：NF 的读面不碰 `.git`——这是「守护可以忽略 `.git` 变更」的全部依据。
+
+    判据可执行：追踪一次 `regression_score.evaluate` 的全部打开与尝试打开，断言仓内**没有任何**
+    `.git/` 路径。哪天有人让某个扫描器去读 `.git`，这条**先红**——而不是让守护悄悄回放旧响应。
+    （代码面另有事实支撑：`.git` 只出现在 `asset_ledger`/`text_hygiene` 的**排除**集合与
+    写 hooks 的安装脚本里。）
+    """
+
+    def test_evaluate_never_reads_git_paths(self):
+        import builtins
+        import io
+
+        from core import regression_score as rs
+
+        rs.evaluate(ROOT)                             # 预热（热态的读面不会更小）
+        opened, tried = set(), set()
+        real_io, real_b = io.open, builtins.open
+
+        def spy(file, *a, **k):
+            try:
+                key = os.path.normcase(os.path.abspath(str(file)))
+            except Exception:                         # noqa: BLE001 - 计数失败不影响被测逻辑
+                key = None
+            if key:
+                tried.add(key)
+            handle = real_io(file, *a, **k)
+            if key:
+                opened.add(key)
+            return handle
+
+        io.open = builtins.open = spy
+        try:
+            rs.evaluate(ROOT)
+        finally:
+            io.open, builtins.open = real_io, real_b
+        root = os.path.normcase(os.path.abspath(ROOT))
+        mark = os.sep + ".git" + os.sep
+        hit = sorted(p for p in (opened | tried)
+                     if p.startswith(root) and mark in p)
+        self.assertEqual([], [os.path.relpath(p, root) for p in hit],
+                         "NF 读面碰了 .git —— 守护忽略 .git 变更的前提不再成立")
 
 
 if __name__ == "__main__":

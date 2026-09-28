@@ -25,6 +25,18 @@ from typing import Optional
 
 #: 一次通知批次的缓冲（64 KiB）：溢出时 Windows 用「零长度回报」告知，我们据此转脏。
 _BUFFER_BYTES = 64 * 1024
+#: **被忽略的目录**（仓库相对、小写、`/` 分隔）：`.git` 下的变更不影响任何判据——
+#: 证据（2026-09 实测 + 判据）：追踪一次 `regression_score.evaluate` 的全部打开与尝试打开，
+#: 仓内 **2560 件、`.git` 下 0 件**；代码面里 `.git` 只出现在「排除它」的遍历过滤与写 hooks 的
+#: 安装脚本里（`asset_ledger` / `text_hygiene` 的 EXCLUDE 集合）。被缓存的只读命令也都不跑 git。
+#: 忽略它的收益是**日常 git 工作流**（status/add/commit 都会写 `.git/`）不再把响应缓存整批作废——
+#: 否则每跑一次 git 命令，下一个 `nf score` 就要退回 ~2.2 s 重算。
+#: **安全边界**：只忽略「这一批通知里全部路径都在忽略面内」的情形；混批、解析不出路径、缓冲溢出
+#: 一律照旧转脏（宁可多算，不可错答）。
+#: **实测细节**：`ReadDirectoryChangesW` 在**创建/删除**文件时会额外为**目录本身**发一条通知
+#: （路径无尾斜杠，如 `.git`）——只判前缀 `.git/` 会被这条否决（本波实测踩过：真仓库根上
+#: `.git` 探针照样推进代际，而临时目录里"写已存在文件"不推进，差别就在这条目录通知）。
+_IGNORED_DIRS = (".git",)
 
 
 def available() -> bool:
@@ -49,6 +61,7 @@ class DirWatcher:
         self._stop = threading.Event()
         self._thread: Optional[threading.Thread] = None
         self._handle = None
+        self._ignored_batches = 0
 
     # ---------------------------------------------------------------- 对外读
 
@@ -66,6 +79,12 @@ class DirWatcher:
     def overflowed(self) -> bool:
         with self._lock:
             return self._overflowed
+
+    @property
+    def ignored_batches(self) -> int:
+        """只含忽略面变更、因而**没有**推进代际的通知批次数（观测用）。"""
+        with self._lock:
+            return self._ignored_batches
 
     # ---------------------------------------------------------------- 生命周期
 
@@ -152,10 +171,41 @@ class DirWatcher:
                 break
             if returned.value == 0:                        # 零长度 = 缓冲溢出（通知被丢弃）
                 self._bump(overflow=True)
+            elif self._only_ignored(ctypes.string_at(buf, returned.value)):
+                with self._lock:
+                    self._ignored_batches += 1
             else:
                 self._bump()
         kernel32.CloseHandle(handle)
         self._handle = None
+
+    @staticmethod
+    def _notify_paths(raw: bytes):
+        """解析 `FILE_NOTIFY_INFORMATION` 链 → 仓库相对路径（`/` 分隔、小写）。解析不出即空。"""
+        out = []
+        off = 0
+        total = len(raw)
+        while off + 12 <= total:
+            nxt = int.from_bytes(raw[off:off + 4], "little")
+            length = int.from_bytes(raw[off + 8:off + 12], "little")
+            name = raw[off + 12:off + 12 + length]
+            if length and len(name) == length:
+                try:
+                    out.append(name.decode("utf-16-le").replace("\\", "/").lower())
+                except UnicodeDecodeError:
+                    return []                             # 解不出就当「不知道」→ 转脏
+            if nxt == 0 or off + nxt >= total:
+                break
+            off += nxt
+        return out
+
+    def _only_ignored(self, raw: bytes) -> bool:
+        """这一批是否**全部**落在忽略面内（解析不出任何路径 → 假，即照旧转脏）。"""
+        paths = self._notify_paths(raw)
+        if not paths:
+            return False
+        return all(any(p == d or p.startswith(d + "/") for d in _IGNORED_DIRS)
+                   for p in paths)
 
     def _cancel(self) -> None:
         """取消阻塞中的 ReadDirectoryChangesW（否则线程要等下一次变更才醒）。"""
