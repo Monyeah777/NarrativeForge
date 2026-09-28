@@ -268,8 +268,28 @@ def _read_json(path: str) -> Tuple[Optional[Dict[str, Any]], str]:
 
 
 # ---------------------------------------------------------------- 扫描主入口
+#: `scan()` 的全部输入：逐一对照 `discover()` 的两处枚举（04 模块库 + community 的 modules /
+#: pipelines / protocol.yaml）、schema 定义面、以及各校验器读到的管线库与资产侧件。
+LINT_INPUTS = ("03_管线库/**/*.md", "04_模块库/**/*.md",
+               "community/*/protocol.yaml", "community/*/modules/*.md",
+               "community/*/pipelines/*.md", "community/*/assets/*.md",
+               "protocol/schema/*.json", "05_资产库/**/*",
+               "desktop/src/core/registry.json")
+
+
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
-    """全量扫描协议件；返回 (issues, stats)。issues 空 = check28 通过。"""
+    """全量扫描协议件；返回 (issues, stats)。issues 空 = check28 通过。
+
+    派生结果按**输入内容指纹**缓存（输入面见 `LINT_INPUTS`，已穷举）——与
+    `conformance_scan.scan` 同一条纪律：键即内容 ⇒ 输入一变必换键，不存在陈旧；「读到的件必须
+    落在输入面内」由 `test_conformance_scan.DerivedResultCacheTest` 的同一张表守着（将来给本函数
+    加新读取，那条判据会先红、逼着把新输入补进来）。
+    """
+    return _csc.memo_pair("schema-lint", LINT_INPUTS, _scan_impl, root)
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
+    """真算（未命中缓存时走这里）。"""
     issues: List[str] = []
     if yaml is None:
         issues.append("PyYAML 不在（schema_lint 依赖仓库既有 yaml 依赖）")

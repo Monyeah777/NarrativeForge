@@ -58,6 +58,9 @@ _BODY_CACHE_MAX = 4096
 #: 文件系统（实测一次 evaluate 里它被调 5 次、合计 167 ms；各扫描器各自重走同一批目录）。
 _READ_MEMO: Optional[Dict[str, Any]] = None
 _DIR_MEMO: Optional[Dict[str, Any]] = None
+#: 与读缓存同生命周期的**逐件内容摘要**缓存（键＝文件）：一次只读调用里同一件只为指纹算一次
+#: 摘要——一次 `evaluate` 里多个输入面高度重叠，这一层把「每个面重算一遍哈希」摊成一次。
+_DIGEST_MEMO: Optional[Dict[str, bytes]] = None
 #: 与读缓存**同生命周期**的「按模式枚举」缓存：一次只读调用内，同一 (root, pattern) 只走一遍
 #: 文件系统（实测：输入面在 2 个指纹 + 各扫描器之间重复枚举，44% 的遍历是白走）。
 _PAT_MEMO: Optional[Dict[Tuple[str, str], Tuple[str, ...]]] = None
@@ -110,7 +113,7 @@ def install_resident(root) -> None:
     """安装常驻层（**只在守护带监听且监听健康时调用**）。"""
     global _RESIDENT
     root_abs = os.path.normcase(os.path.abspath(str(root)))
-    _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}}
+    _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}, "digest": {}}
 
 
 def resident_active() -> bool:
@@ -120,9 +123,9 @@ def resident_active() -> bool:
 def resident_stats() -> Dict[str, int]:
     """常驻层规模（观测 + 判据用）：目录条数 / 正文条数 / 二进制条数。"""
     if _RESIDENT is None:
-        return {"dirs": 0, "text": 0, "bytes": 0}
+        return {"dirs": 0, "text": 0, "bytes": 0, "digest": 0}
     return {"dirs": len(_RESIDENT["dirs"]), "text": len(_RESIDENT["text"]),
-            "bytes": len(_RESIDENT["bytes"])}
+            "bytes": len(_RESIDENT["bytes"]), "digest": len(_RESIDENT["digest"])}
 
 
 def clear_resident() -> None:
@@ -157,6 +160,7 @@ def drop_resident(paths) -> None:
         key = os.path.normcase(os.path.join(root, str(rel).replace("/", os.sep)))
         res["text"].pop(key, None)
         res["bytes"].pop(key, None)
+        res["digest"].pop(key, None)
         res["dirs"].pop(os.path.dirname(key), None)
         res["dirs"].pop(key, None)          # 路径本身也可能是目录（整棵子树增删）
 
@@ -173,15 +177,15 @@ def read_memo():
     安全性前提＝「作用域内只读」（本仓既有纪律：写路径在聚合**之后**才发生）。四个调用点
     （regression_score / quality_depth_scan / conformance_report / output_forms）都是纯读聚合入口。
     """
-    global _READ_MEMO, _DIR_MEMO, _PAT_MEMO, _TREE_MEMO
+    global _READ_MEMO, _DIR_MEMO, _PAT_MEMO, _TREE_MEMO, _DIGEST_MEMO
     outermost = _READ_MEMO is None
     if outermost:
-        _READ_MEMO, _DIR_MEMO, _PAT_MEMO, _TREE_MEMO = {}, {}, {}, {}
+        _READ_MEMO, _DIR_MEMO, _PAT_MEMO, _TREE_MEMO, _DIGEST_MEMO = {}, {}, {}, {}, {}
     try:
         yield
     finally:
         if outermost:
-            _READ_MEMO = _DIR_MEMO = _PAT_MEMO = _TREE_MEMO = None
+            _READ_MEMO = _DIR_MEMO = _PAT_MEMO = _TREE_MEMO = _DIGEST_MEMO = None
 
 
 def _fast_glob_supported(pattern: str) -> bool:
@@ -458,23 +462,52 @@ def content_fingerprint(root: str, patterns) -> str:
     枚举走 `iter_files`（`os.scandir` 单遍 + 作用域内记忆）：实测本仓一次 `evaluate` 里
     指纹占 **926 ms / 31%**，而其中「枚举」一项就 463 ms（`community/*/outputs/**/*` 单条
     236 ms 是 pathlib `**` 的逐层重入）——换成单遍后同一条降到 ~90 ms。
+
+    2026-09-29 再进一步：**逐件摘要**（`_payload_digest`）也进两级缓存——作用域内一份、常驻层一份
+    （按监听变更**逐件**失效）。于是「面再宽」也只剩「枚举 + 合并」：实测 8 个面（含 3439 件的宽面）
+    的见证成本从 **228 ms 降到 ~30 ms**，而**指纹口径逐位不变**（同一件同一 payload ⇒ 同一摘要）。
     """
     h = hashlib.sha256()
     for pat in patterns:
         for rel in iter_files(root, str(pat)):
             h.update(rel.encode("utf-8"))
             h.update(b"\x00")
-            path = os.path.join(str(root), *rel.split("/"))
-            try:
-                payload = read_text_cached(path).encode("utf-8")
-            except UnicodeDecodeError:
-                # 非 UTF-8（图片等二进制）按**字节**取指纹：输入面一旦变宽就会遇到它们，
-                # 这里**不许崩**（崩了等于把「多放一个二进制附件」变成「命令直接失败」）。
-                # 文本件仍走上面那条（哈希值与既有口径逐位相同，故不失效任何现有缓存）。
-                payload = read_bytes_cached(path)
-            h.update(payload)
+            h.update(_payload_digest(root, rel))
             h.update(b"\x01")
     return h.hexdigest()
+
+
+def _payload_digest(root: str, rel: str) -> bytes:
+    """单件的**内容摘要**（`sha256` 的 raw digest）；键＝文件，随监听变更逐件失效。
+
+    payload 口径与 `content_fingerprint` 历史口径**完全一致**：能按 UTF-8 读出的文本按
+    `encode("utf-8")`（与重编码后的字节等价），读不出（图片等）按**原始字节**——所以摘要换来的
+    加速不改变任何已有指纹值。
+    """
+    path = os.path.join(str(root), *rel.split("/"))
+    key = _resident_key(path)
+    if _DIGEST_MEMO is not None:
+        hit = _DIGEST_MEMO.get(key)
+        if hit is not None:
+            return hit
+    if _RESIDENT is not None:
+        hit = _RESIDENT["digest"].get(key)
+        if hit is not None:
+            if _DIGEST_MEMO is not None:
+                _DIGEST_MEMO[key] = hit
+            return hit
+    try:
+        payload = read_text_cached(path).encode("utf-8")
+    except UnicodeDecodeError:
+        # 非 UTF-8（图片等二进制）按**字节**取指纹：输入面一旦变宽就会遇到它们，
+        # 这里**不许崩**（崩了等于把「多放一个二进制附件」变成「命令直接失败」）。
+        payload = read_bytes_cached(path)
+    digest = hashlib.sha256(payload).digest()
+    if _DIGEST_MEMO is not None:
+        _DIGEST_MEMO[key] = digest
+    if _RESIDENT is not None and _resident_under(key):
+        _RESIDENT["digest"][key] = digest
+    return digest
 
 
 #: `scan()` 派生结果的跨调用缓存（键 = 输入内容指纹）。输入面见 `SCAN_INPUTS`——**穷举**，
@@ -657,6 +690,43 @@ def result_pair_ok(value) -> bool:
     """持久缓存读回值的形状校验：`{"issues": [...], "stats": {...}}`（否则当未命中）。"""
     return (isinstance(value, dict) and set(value) == {"issues", "stats"}
             and isinstance(value["issues"], list) and isinstance(value["stats"], dict))
+
+
+#: 通用「内容键派生结果」缓存的**进程内**层：tag → {输入面指纹: {"issues":…, "stats":…}}。
+#: 与各派生自己的专用缓存同一条纪律（键即内容），只是把「指纹 → 缓存 → 落盘 → 校验 → 深拷贝」
+#: 这套骨架收成一处，新派生接入只需三行（见 `memo_pair` 的调用示例）。
+_DERIVED_MEMO: Dict[str, Dict[str, Any]] = {}
+
+
+def memo_pair(tag: str, patterns, impl, root: str = ".",
+              require_resident: bool = False, keep: int = 8):
+    """`(issues, stats)` 形状的派生结果缓存（**进程内 + 持久**两层；键即内容）。
+
+    纪律与 `scan()` 完全一致：输入面（`patterns`，须穷举）变 ⇒ 指纹变 ⇒ 必重算；持久层键里
+    另含代码面 + 运行时（`disk_cache.key`）；读回必过 `result_pair_ok`；一切 IO 尽力而为。
+
+    `require_resident=True` 给**宽输入面**用：只在常驻语料层在位时才走缓存——那时指纹的读盘
+    成本几乎为零（正文已在内存，只剩枚举 + 哈希，实测 3.5 MB 语料 ~33 ms），而冷进程里宽面指纹
+    要把整棵语料重读一遍（实测 ~1.0 s），比直接算更贵，所以**宁可不缓存**。
+    """
+    if require_resident and not resident_active():
+        return impl(root)
+    fp = content_fingerprint(root, patterns)
+    mem = _DERIVED_MEMO.setdefault(tag, {})
+    hit = mem.get(fp)
+    if hit is None:
+        from core import disk_cache
+        dkey = disk_cache.key(tag, fp, root=root)
+        packed = disk_cache.load(tag, dkey, validate=result_pair_ok)
+        if packed is None:
+            got = impl(root)
+            packed = {"issues": list(got[0]), "stats": got[1]}
+            disk_cache.store(tag, dkey, packed)
+        if len(mem) >= keep:
+            mem.clear()
+        mem[fp] = packed
+        hit = packed
+    return copy.deepcopy(list(hit["issues"])), copy.deepcopy(dict(hit["stats"]))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:

@@ -67,7 +67,22 @@ def refresh(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     return [], {"entries": len(rows)}
 
 
+#: `verify()` 的全部输入：两条资产面（`build()` 枚举的）+ 台账件本身。
+VERIFY_INPUTS = ("community/*/assets/*.md", "05_资产库/用户自定义/*.md", _LEDGER)
+
+
 def verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """台账 ↔ 盘上实况一致（原体见 `_verify_impl`）；派生结果按**输入内容指纹**缓存。
+
+    输入面窄（两条资产面 + 台账件），但冷进程里读它们也要 ~100 ms，与算一遍同量级，故
+    `require_resident=True`：只在常驻语料层在位时才走缓存（那时见证成本几乎为零）。
+    """
+    return csc.memo_pair("asset-ledger-verify", VERIFY_INPUTS, _verify_impl, root,
+                         require_resident=True)
+
+
+def _verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """真算（未命中缓存时走这里）。"""
     r = Path(root)
     issues: List[str] = []
     path = r / _LEDGER

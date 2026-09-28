@@ -7,9 +7,9 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
-  - desktop/src/core/layer_model.py:656317a627ddffdbd1f7b0b4de2473a81ef77bba8c237f2955a37461b6e29095
+  - desktop/src/core/layer_model.py:7daaab3c1abb1922563c2eee052aafcfa75eb534393fe33e83638db512cdc122
   - desktop/tests/test_layer_model.py:6ed47766f9ba52b0defe76f731ceeafcce5a2d489e639f2adafb81cc59479a5d
-  - desktop/src/core/purity_scan.py:ecfbcb0c5ea44a7141aa6ebda02a2e7683e11863c449a3489d530c6b07bc8a98
+  - desktop/src/core/purity_scan.py:83892ee695ddd738bd5b97323bd76020c5d5d3da44bf917a570c7b2c2471657d
   - desktop/tests/test_purity_scan.py:d8b7628940bb4b40168030abf429a51318caca0bd338d0a9f1777b0edb2cca36
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
   - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f

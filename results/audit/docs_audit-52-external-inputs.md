@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - .github/PULL_REQUEST_TEMPLATE.md:27e7688cf590aded0bbd4574235d0a8e47d5aa1680284ad99450daeda2a8e66d
   - CONTRIBUTING.md:2a3e7848221cc8a642e6dac9aa4f08da3437a63b2c0fca5a5bfe3473a784efe2
-  - desktop/src/core/asset_density.py:a04a1fee808ae240cf71c98a22336879863f9c5f3accda0f07b45c0a3b1bea9b
+  - desktop/src/core/asset_density.py:dcb0c2468a28ae25a3c9817fad6b603c7365166783c8900da304d0fc2241d82d
   - desktop/src/core/asset_line_baseline.py:c62eda98405249b1a31fbd17bf08256b29426eeb171dd3a2bfeb2ecbcd8120e1
 ---
 

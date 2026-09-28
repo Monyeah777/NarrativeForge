@@ -269,7 +269,33 @@ def _is_local(mod: str, root: str) -> bool:
     return False
 
 
+def patterns(root: str = ".") -> tuple:
+    """`scan()` 的输入面：自身读的面（代码 / 协议文档 / 判据脚本）+ **R7 阶梯面**。
+
+    为什么带上阶梯面：本函数把 `layer_model.scan()` 的结果并进 issues ⇒ 阶梯的输入也是本函数的
+    输入，漏了它就会出现「改资产却不重算纯度」的陈旧。
+    """
+    own = ("01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
+           "07_官方核心出厂与社区预设导航.md", "protocol/*.json", "verify.sh",
+           "desktop/src/**/*.py", "scripts/**/*", ".github/scripts/*.py")
+    try:
+        from core import layer_model as _lm
+        return tuple(dict.fromkeys(own + tuple(_lm.patterns(root))))
+    except Exception:                                    # noqa: BLE001 - 面取不全就别缓存
+        return own
+
+
 def scan(root: str = ".") -> tuple:
+    """纯度体检（R1–R7）。派生结果按**输入内容指纹**缓存（输入面见 `patterns()`，很宽）。
+
+    宽面只在常驻语料层在位时走缓存（`require_resident=True`）——理由见 `layer_model.scan`。
+    """
+    return csc.memo_pair("purity-scan", patterns(root), _scan_impl, root,
+                         require_resident=True)
+
+
+def _scan_impl(root: str = ".") -> tuple:
+    """真算（未命中缓存时走这里）。"""
     issues = []
     stats = {"docs": 0, "raises": 0, "imports": 0, "import_residue": []}
     # R1/R2/R3：协议层文档

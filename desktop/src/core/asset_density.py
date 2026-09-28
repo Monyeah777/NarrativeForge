@@ -44,7 +44,18 @@ def _keys_of(path: Path, text: Optional[str] = None) -> List[str]:
     return sorted(keys)
 
 
+#: `scan()` / `thickness_scan()` 的全部输入：就是它们枚举的那两条**资产面**
+#: （community 各包的 assets/*.md + 官方用户自定义资产）。两条面都很窄，
+#: 所以「改文档/代码」不会作废它们的缓存，只有动资产才重算。
+ASSET_INPUTS = ("community/*/assets/*.md", "05_资产库/用户自定义/*.md")
+
+
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """资产台账面体检（原体见 `_scan_impl`）。派生结果按**输入内容指纹**缓存（键即内容）。"""
+    return csc.memo_pair("asset-density", ASSET_INPUTS, _scan_impl, root)
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     issues: List[str] = []
     rows = []
     patterns = ["community/*/assets/*.md", "05_资产库/用户自定义/*.md"]
@@ -138,7 +149,13 @@ def thickness_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """资产语义厚度（计数升半语义）：每档 字符/键/小节/表格行 与 low 判定。
 
     low = 空/过短(<200字) 或 无键且无小节（低信息档候选）；只报告不删（issues 空）。
+    派生结果按**输入内容指纹**缓存（输入面与 `scan()` 同：两条资产面）——纯函数，键即内容。
     """
+    return csc.memo_pair("asset-thickness", ASSET_INPUTS, _thickness_impl, root)
+
+
+def _thickness_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """真算（未命中缓存时走这里）。"""
     import re as _re
 
     rows = []

@@ -450,8 +450,54 @@ def write_region(root: str = ".") -> str:
     return DOC_REL
 
 
+def patterns(root: str = ".") -> Tuple[str, ...]:
+    """`scan()` 的输入面：**由阶梯声明动态给出**（各阶真源面 + 资产子级 + 纵切件 + 派生物），
+    外加声明件本身与判据脚本。
+
+    动态取是安全的：声明件（`protocol/LAYERS.json`）本身就在面内 ⇒ 声明一变指纹必变；声明新列的
+    根即使一台空，结果也会变（「真源面须存在且非空」）——而「声明变了」这一点同样已经在指纹里。
+    """
+    #: 声明件本身 + 判据脚本 + **渲染投影**（`docs/layers.md` 的生成区要与实时渲染一致，
+    #: 所以它是本函数的输入；2026-09-29 由「读盘面 ⊆ 输入面」判据当场抓出来）。
+    pats = ["protocol/LAYERS.json", "docs/layers.md", "verify.sh"]
+    try:
+        doc = load(root)
+    except ValueError:
+        return tuple(pats)
+    for tier in doc.get("tiers") or []:
+        pats += [str(g) for g in ((tier.get("source") or {}).get("globs") or [])]
+    for level in doc.get("asset_levels") or []:
+        pats += [str(g) for g in (level.get("globs") or [])]
+    for comp in ((doc.get("crosscut") or {}).get("components") or []):
+        if comp.get("artifact"):
+            pats.append(str(comp["artifact"]))
+    pats += [str(p) for p in (doc.get("derived") or [])]
+    out = []
+    for pat in pats:
+        pat = pat.strip()
+        if not pat:
+            continue
+        # 声明里的「目录」写成不带通配的路径（如 `results/audit`）：按**它下面的件**入面，
+        # 否则 `iter_files` 会把它当成一个叫 audit 的**文件**、什么都匹配不到（面会缺口）。
+        if not any(ch in pat for ch in "*?[" ) and os.path.isdir(os.path.join(str(root), pat)):
+            pat = pat.rstrip("/") + "/**/*"
+        out.append(pat)
+    return tuple(dict.fromkeys(out))
+
+
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
-    """阶梯体检 → (issues, stats)；issues 空 = 阶梯自洽（并入 check27 纯度面）。"""
+    """阶梯体检 → (issues, stats)；issues 空 = 阶梯自洽（并入 check27 纯度面）。
+
+    派生结果按**输入内容指纹**缓存（输入面见 `patterns()`：声明列了整棵语料，面很宽）。
+    宽面**只在常驻语料层在位时**才走缓存（`require_resident=True`）：那时指纹只剩「枚举 + 哈希」
+    （实测 3.5 MB 语料 ~33 ms）；冷进程里宽面指纹要把语料重读一遍，比直接算更贵，故宁可不算。
+    """
+    return csc.memo_pair("layer-model", patterns(root), _scan_impl, root,
+                         require_resident=True)
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """真算（未命中缓存时走这里）。"""
     try:
         doc = load(root)
     except ValueError as exc:

@@ -9,12 +9,18 @@ import pathlib
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 
+from core import asset_density as ad  # noqa: E402
+from core import asset_ledger_projection as alp  # noqa: E402
 from core import conformance_scan as cs  # noqa: E402
+from core import layer_model as lm  # noqa: E402
 from core import output_forms as of  # noqa: E402
+from core import purity_scan as ps  # noqa: E402
+from core import schema_lint as sl  # noqa: E402
 
 _ROOT_KEY = os.path.normcase(os.path.abspath(ROOT))
 
@@ -301,23 +307,85 @@ class DerivedResultCacheTest(unittest.TestCase):
     域包）不算——而这类路径一旦真出现，输入面的 glob 会立刻把它收进指纹，故不存在缺口。
     """
 
-    #: (名字, 输入面, 清缓存后必走真实计算的入口)
-    CASES = (("scan", cs.SCAN_INPUTS, lambda: cs._SCAN_CACHE.clear()),
-             ("index_verify", of.INDEX_INPUTS, lambda: of._INDEX_CACHE.clear()))
+    #: 站点表：名字 → {输入面 / 清进程内缓存 / 真算入口（供替换计数）/ 入口}
+    #: 表驱动是为了「新站点接进来只加一行」，而不是每加一个就抄一遍 if/else。
+    @staticmethod
+    def _sites():
+        return {
+            "conformance_scan.scan": {
+                "patterns": cs.SCAN_INPUTS,
+                "clear": lambda: cs._SCAN_CACHE.clear(),
+                "owner": cs, "impl": "_scan_impl",
+                "run": lambda: cs.scan(ROOT)},
+            "output_forms.index_verify": {
+                "patterns": of.INDEX_INPUTS,
+                "clear": lambda: of._INDEX_CACHE.clear(),
+                "owner": of, "impl": "_index_verify_impl",
+                "run": lambda: of.index_verify(ROOT)},
+            "schema_lint.scan": {
+                "patterns": sl.LINT_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("schema-lint", None),
+                "owner": sl, "impl": "_scan_impl",
+                "run": lambda: sl.scan(ROOT)},
+            "asset_density.scan": {
+                "patterns": ad.ASSET_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("asset-density", None),
+                "owner": ad, "impl": "_scan_impl",
+                "run": lambda: ad.scan(ROOT)},
+            "asset_density.thickness_scan": {
+                "patterns": ad.ASSET_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("asset-thickness", None),
+                "owner": ad, "impl": "_thickness_impl",
+                "run": lambda: ad.thickness_scan(ROOT)},
+            "layer_model.scan": {
+                "patterns": lm.patterns(ROOT),
+                "clear": lambda: cs._DERIVED_MEMO.pop("layer-model", None),
+                "owner": lm, "impl": "_scan_impl",
+                "run": lambda: lm.scan(ROOT), "resident": True},
+            "purity_scan.scan": {
+                "patterns": ps.patterns(ROOT),
+                "clear": lambda: cs._DERIVED_MEMO.pop("purity-scan", None),
+                "owner": ps, "impl": "_scan_impl",
+                "run": lambda: ps.scan(ROOT), "resident": True},
+            "asset_ledger_projection.verify": {
+                "patterns": alp.VERIFY_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("asset-ledger-verify", None),
+                "owner": alp, "impl": "_verify_impl",
+                "run": lambda: alp.verify(ROOT), "resident": True},
+        }
 
-    def _run(self, name):
-        if name == "scan":
-            cs._SCAN_CACHE.clear()
-            return cs.scan(ROOT)
-        of._INDEX_CACHE.clear()
-        return of.index_verify(ROOT)
+    def _run(self, site):
+        site["clear"]()
+        return site["run"]()
+
+    @contextlib.contextmanager
+    def _cold(self):
+        """采集读盘面时**关掉持久缓存**：否则盘上已有同内容条目 ⇒ 根本不读盘 ⇒ 判据空转。
+
+        这条是判据强度的关键（2026-09-29 修订）：本机反复跑过之后，`<NF_HOME>/cache` 里什么都有，
+        不关它的话「读盘面 ⊆ 输入面」会**全绿却什么都没验**。
+        """
+        with mock.patch.dict(os.environ, {"NF_NO_DISK_CACHE": "1"}):
+            yield
+
+    @contextlib.contextmanager
+    def _resident(self, site):
+        """宽面的站点**只在常驻语料层在位时**才走缓存——判据也得按同一条件跑，否则它永远不命中。"""
+        if site.get("resident"):
+            cs.install_resident(ROOT)
+        try:
+            yield
+        finally:
+            if site.get("resident"):
+                cs.clear_resident()
 
     def test_reads_stay_inside_declared_input_face(self):
-        for name, patterns, _clear in self.CASES:
-            self._run(name)                       # 先跑一遍：把惰性 import 等一次性读盘做掉
-            covered = _covered(patterns)          # glob 展开本身不开文件，可在采集前算好
-            with _trace_opens() as (reads, tried):
-                self._run(name)                   # 缓存已清 → 必走真实计算，读盘面被完整记录
+        for name, site in self._sites().items():
+            with self._resident(site), self._cold():
+                self._run(site)                   # 先跑一遍：把惰性 import 等一次性读盘做掉
+                covered = _covered(site["patterns"])   # glob 展开本身不开文件，可在采集前算好
+                with _trace_opens() as (reads, tried):
+                    self._run(site)               # 缓存已清 → 必走真实计算，读盘面被完整记录
             leak = sorted(p for p in reads if p.startswith(_ROOT_KEY) and p not in covered)
             self.assertEqual(
                 [os.path.relpath(p, _ROOT_KEY) for p in leak], [],
@@ -336,36 +404,26 @@ class DerivedResultCacheTest(unittest.TestCase):
         所以「两次调用总共只算 1 次」不再是真不变量；真不变量是**第二次相对于第一次零新增**
         （缓存被拆掉时第二次就会新增，本判据照样当场红）。
         """
-        for name, _patterns, _clear in self.CASES:
-            real_impl = cs._scan_impl if name == "scan" else of._index_verify_impl
+        for name, site in self._sites().items():
+            owner, attr = site["owner"], site["impl"]
+            real_impl = getattr(owner, attr)
             calls = {"n": 0}
 
             def counting(root=".", _real=real_impl):
                 calls["n"] += 1
                 return _real(root)
 
-            if name == "scan":
-                cs._SCAN_CACHE.clear()
-                cs._scan_impl = counting
+            with self._resident(site):
+                site["clear"]()
+                setattr(owner, attr, counting)
                 try:
-                    first = cs.scan(ROOT)
+                    first = site["run"]()
                     after_first = calls["n"]
-                    second = cs.scan(ROOT)
+                    second = site["run"]()
                     after_second = calls["n"]
                 finally:
-                    cs._scan_impl = real_impl
-                    cs._SCAN_CACHE.clear()
-            else:
-                of._INDEX_CACHE.clear()
-                of._index_verify_impl = counting
-                try:
-                    first = of.index_verify(ROOT)
-                    after_first = calls["n"]
-                    second = of.index_verify(ROOT)
-                    after_second = calls["n"]
-                finally:
-                    of._index_verify_impl = real_impl
-                    of._INDEX_CACHE.clear()
+                    setattr(owner, attr, real_impl)
+                    site["clear"]()
             self.assertEqual(after_first, after_second,
                              "%s() 同内容第二次调用白算了一遍（缓存没生效）" % name)
             self.assertEqual(first, second, "%s() 命中缓存的结果必须与首算一致" % name)
