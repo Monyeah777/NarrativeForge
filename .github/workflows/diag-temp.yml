@@ -5,7 +5,7 @@ on:
   push:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   diag:
@@ -20,7 +20,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
           pip install -r .github/requirements-ci.txt
-      - name: 跑全量单测并把失败名打成注解
+      - name: 复现 coverage job（并把结果回写到本分支）
         if: always()
         run: |
           set +e
@@ -33,3 +33,30 @@ jobs:
           tail -n 40 /tmp/suite.log | while IFS= read -r line; do
             echo "::error::TAIL ${line}"
           done
+          {
+            echo "== plain suite =="
+            grep -cE "^" /tmp/suite.log
+            grep -nE "^(FAIL|ERROR): " /tmp/suite.log | head -10
+            tail -n 15 /tmp/suite.log
+            echo
+            echo "== coverage job 复现（与 .github/workflows/coverage.yml 同命令）=="
+            coverage run --source=desktop/src/core -m unittest discover -s desktop/tests > /tmp/cov_suite.log 2>&1
+            echo "coverage_run_exit=$?"
+            coverage report --fail-under=80 --include="desktop/src/core/*" > /tmp/cov_report.txt 2>&1
+            echo "coverage_report_exit=$?"
+            tail -n 12 /tmp/cov_report.txt
+            echo "--- coverage 下失败的用例 ---"
+            grep -nE "^(FAIL|ERROR): " /tmp/cov_suite.log | head -10
+            echo "--- coverage 日志尾部 ---"
+            tail -n 25 /tmp/cov_suite.log
+            echo "--- daemon.py 缺行 ---"
+            coverage report -m --include="desktop/src/core/daemon.py" 2>&1 | tail -3
+          } > diag-result.txt 2>&1
+      - name: 结果回写本分支（供本地 git 读取，不依赖日志/API）
+        if: always()
+        run: |
+          git config user.email "diag@nf.local"
+          git config user.name "nf-diag"
+          git add -f diag-result.txt
+          git commit -m "chore(diag): 结果回写" || true
+          git push origin HEAD:codex/ci-diag || true
