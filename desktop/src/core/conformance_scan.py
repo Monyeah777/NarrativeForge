@@ -327,8 +327,15 @@ def content_fingerprint(root: str, patterns) -> str:
         for rel in iter_files(root, str(pat)):
             h.update(rel.encode("utf-8"))
             h.update(b"\x00")
-            h.update(read_text_cached(os.path.join(str(root), *rel.split("/")))
-                     .encode("utf-8"))
+            path = os.path.join(str(root), *rel.split("/"))
+            try:
+                payload = read_text_cached(path).encode("utf-8")
+            except UnicodeDecodeError:
+                # 非 UTF-8（图片等二进制）按**字节**取指纹：输入面一旦变宽就会遇到它们，
+                # 这里**不许崩**（崩了等于把「多放一个二进制附件」变成「命令直接失败」）。
+                # 文本件仍走上面那条（哈希值与既有口径逐位相同，故不失效任何现有缓存）。
+                payload = read_bytes_cached(path)
+            h.update(payload)
             h.update(b"\x01")
     return h.hexdigest()
 

@@ -1743,8 +1743,6 @@ if (attrs.get('gen_ai.operation.name') != 'execute_tool'
         or attrs.get('gen_ai.tool.name') != 'nf.assemble'):
     problems.append('遥测 semconv 映射异常')
 
-for p in problems:
-    print('[FAIL] %s' % p)
 # 8 正文正规性（围栏配平 + mojibake 特征）：WARN 挂账，不判死（存量先可数，再逐波收）
 warns = []
 try:
@@ -1886,6 +1884,10 @@ print('新面统计：MCP %s · 评分 %.2f · 机械待办 %d · 许可 WARN %d
 print('新增面：编码卫生 %s · 互操作 %s · 文档命令面 %s' % (_th_line, _ie_line, _pl_line))
 print('决策层面：%s' % _dl_line)
 print('构建回路：%s' % _wl_line)
+# 失败必须**可诊断**：打印点放在全部 16 项检查之后——此前它在第 7 项之后就打印，
+# 第 8–16 项追加的问题**永远不会出现在日志里**（实测踩过：check33 红了一次却查不到原因）。
+for _p in problems:
+    print('[FAIL] %s' % _p)
 sys.exit(1 if problems else 0)
 PYEOF
     then

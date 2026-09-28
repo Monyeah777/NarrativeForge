@@ -263,6 +263,32 @@ class FastGlobTest(unittest.TestCase):
                                     "新增文件必须改指纹（枚举面变了）")
 
 
+class FingerprintRobustnessTest(unittest.TestCase):
+    """内容指纹对**非 UTF-8 附件**必须按字节取，不许整体崩掉。
+
+    依据（实测）：把输入面放宽到「整个仓库」时立刻踩到——`community/**/*`、`docs/**/*` 里只要
+    有一张图片/一个二进制附件，`read_text` 就抛 `UnicodeDecodeError`，**整条命令直接失败**。
+    这等于「多放一个附件」＝「命令崩」；指纹本就只需要"变了没有"，按字节哈希是更稳也更省的取法
+    （文本件仍走文本路径，故哈希值与既有口径逐位相同、不失效任何现有缓存）。
+    """
+
+    def test_binary_payload_is_hashed_by_bytes_and_stays_sensitive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = pathlib.Path(tmp) / "community" / "包" / "assets"
+            d.mkdir(parents=True)
+            (d / "A.md").write_text("A01 键\n", encoding="utf-8")
+            (d / "cover.png").write_bytes(b"\x89PNG\r\n\x1a\n\xa7\xff")   # 非法 UTF-8 起始字节
+            face = ("community/*/assets/*",)
+            with cs.read_memo():
+                first = cs.content_fingerprint(tmp, face)
+                again = cs.content_fingerprint(tmp, face)
+            self.assertEqual(first, again, "同内容必须同指纹（含二进制件）")
+            (d / "cover.png").write_bytes(b"\x89PNG\r\n\x1a\n\xa7\xfe")   # 只改一个字节
+            with cs.read_memo():
+                changed = cs.content_fingerprint(tmp, face)
+            self.assertNotEqual(first, changed, "二进制件改了也必须换指纹")
+
+
 class DerivedResultCacheTest(unittest.TestCase):
     """跨调用「内容键派生结果缓存」的两条判据：**输入面穷举** + **键即内容**。
 

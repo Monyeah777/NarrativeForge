@@ -12,7 +12,7 @@ subjects:
   - desktop/src/core/purity_scan.py:77c5f45c236eadbf8ef0ea5d2bbe35515064f4b15b6387d2600eeb3b9cd0448c
   - desktop/tests/test_purity_scan.py:21e07090b6f48b426485fe1e2760d218f539a951d05c7d72eaa39a35a9dae2e9
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
-  - verify.sh:39d1f048d380b934b982f1d2f10ac9222deaf08ce94fefb91894be7adace13f8
+  - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102
