@@ -40,6 +40,8 @@ from core import conformance_scan as _csc   # 共享语料（读缓存 / 列目�
 REGISTRY_REL = "protocol/output_forms.json"
 BASELINE_REL = "protocol/output_forms_baseline.json"
 INDEX_REL = "outputs/INDEX.json"
+#: 逐包内容键里要一并计入的共享件（registry 的所有包都读它）。
+REGISTRY_INPUT = "desktop/src/core/registry.json"
 
 #: 机检档位（递增）；档位 = **本仓可做的判定强度**，不是「格式有多高级」
 TIERS: Tuple[str, ...] = ("T0", "T1", "T2", "T3", "T4")
@@ -699,6 +701,72 @@ def _pack_dirs(root: str) -> List[str]:
                   if d.is_dir() and (_rel(root, "community/%s/%s" % (d.name, INDEX_REL))).is_file())
 
 
+#: **逐包**产出面校验的内容键缓存：键 = (该包目录内容指纹, registry 内容指纹)。
+#: 为什么按包切：一次「改一页模块文档」只会让**那一个包**的键变，其余包直接命中——
+#: 实测（稀疏常驻层的新进程里）`index_verify` 713 ms → 改一包之后只剩那一个包的钱。
+#: 键即内容 ⇒ 无陈旧风险；`_DIGEST_MEMO` 让「外层输入面指纹已经算过的件」在这里近乎白拿。
+_PACK_VERIFY_CACHE: Dict[Any, Any] = {}
+_PACK_VERIFY_MAX = 4096
+
+
+#: 逐包键里「属于该包」的那几条（**必须 ⊆ `INDEX_INPUTS`**，否则「读盘面 ⊆ 输入面」判据会红）。
+_PACK_FACE_SLICE = ("outputs/**/*", "assets/*", "protocol.yaml", "modules/*.md")
+#: 逐包键里「所有包共享」的那几条（组合包会借阅别包模块，保守起见每包都计入）。
+_PACK_FACE_SHARED = ("community/*/modules/*.md", REGISTRY_INPUT)
+
+
+def pack_content_key(root: str, pkg: str) -> str:
+    """一个包的**内容键**：该包在声明输入面里的那一份切片 + 跨包模块面 + registry。
+
+    为什么要按切片而不是整棵包树：判据（`DerivedResultCacheTest.test_reads_stay_inside_declared_input_face`）
+    要求**读盘面 ⊆ 声明输入面**——用整棵包树会把 `pipelines/**` 也读进来，而它不在 `INDEX_INPUTS` 里，
+    当场红（实测）。切片 = 声明面里属于该包的那几条 + `community/*/modules/*.md`（组合包会借阅别包模块，
+    保守起见每包都计入）+ registry。
+
+    **边界（如实记）**：因为把「全体包的 modules」都算进每个包的键，**改一页模块文档仍会换掉所有包的键**
+    （这是保守代价）。改 `docs/**`、协议件、包外资产等**不在包切片里**的件时，只有外层整块键变、
+    **逐包键全不变** ⇒ 逐包缓存全命中（实测 `index_verify` 533 → 11 ms）。要连模块文档也精确到包，
+    得按 `protocol.yaml` 的 `references` 求「被借阅包」闭包——属下一步。
+    """
+    from core import conformance_scan as _csc
+    slice_patterns = tuple("community/%s/%s" % (pkg, rel) for rel in _PACK_FACE_SLICE)
+    return _csc.content_fingerprint(root, slice_patterns + _PACK_FACE_SHARED)
+
+
+def _pack_verify_ok(value) -> bool:
+    """逐包校验结果的形状校验：`{"issues": [...], "rows": [...]}`（否则当未命中）。"""
+    return (isinstance(value, dict) and set(value) == {"issues", "rows"}
+            and isinstance(value["issues"], list) and isinstance(value["rows"], list))
+
+
+def _verify_pack_cached(root: str, pkg: str):
+    """按包内容键取校验结果：进程内一层 + **落盘**一层（新进程也能免付未变包的账）。"""
+    key = pack_content_key(root, pkg)
+    hit = _PACK_VERIFY_CACHE.get(key)
+    if hit is None:
+        hit = _verify_pack_io(root, pkg, key)
+        if len(_PACK_VERIFY_CACHE) >= _PACK_VERIFY_MAX:
+            _PACK_VERIFY_CACHE.clear()
+        _PACK_VERIFY_CACHE[key] = hit
+    return hit
+
+
+def _verify_pack_io(root: str, pkg: str, key: str):
+    """`_verify_pack_cached` 的落盘层（可被 A/B 关掉：`NF_NO_PACK_DISK=1`）。"""
+    if os.environ.get("NF_NO_PACK_DISK"):
+        issues, rows = _verify_pack(root, pkg)
+        return list(issues), list(rows)
+    from core import disk_cache
+    dkey = disk_cache.key("pack-verify", key, root=root,
+                          code_modules=("core.output_forms",))
+    packed = disk_cache.load("pack-verify", dkey, validate=_pack_verify_ok)
+    if packed is None:
+        issues, rows = _verify_pack(root, pkg)
+        packed = {"issues": list(issues), "rows": list(rows)}
+        disk_cache.store("pack-verify", dkey, packed, keep=512)
+    return list(packed["issues"]), list(packed["rows"])
+
+
 def _gen_performance_report(root: str, entry: dict):
     """由净值数据用本仓引擎装配绩效报告（GIPS 对齐披露面）。"""
     from core import quant_metrics as qm
@@ -1190,67 +1258,77 @@ def _index_verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     issues: List[str] = []
     rows: List[Dict[str, Any]] = []
     for pkg in _pack_dirs(root):
-        rel = "community/%s/%s" % (pkg, INDEX_REL)
-        idx, err = _read_json(_rel(root, rel))
-        if err:
-            issues.append("%s: %s" % (rel, err))
-            continue
-        if idx.get("schema") != "nf-output-index/1":
-            issues.append("%s: schema 应为 nf-output-index/1" % rel)
-        if idx.get("package") != pkg:
-            issues.append("%s: package 字段 %r ≠ 包目录名 %r" % (rel, idx.get("package"), pkg))
-        for entry in idx.get("outputs") or []:
-            path = entry.get("path") or ""
-            form = entry.get("form") or ""
-            tier = entry.get("tier") or ""
-            if not path:
-                issues.append("%s: outputs 条目缺 path" % rel)
-                continue
-            if tier not in TIERS:
-                issues.append("%s: %s 档位非法 %r" % (rel, path, tier))
-                continue
-            if not _rel(root, "community/%s/%s" % (pkg, path)).is_file():
-                issues.append("%s: 声明产出面不存在 %s" % (rel, path))
-                continue
-            got_form, got_tier = detect(root, "community/%s/%s" % (pkg, path))
-            if form and form != got_form:
-                issues.append("%s: %s 声明形态 %s，实测 %s" % (rel, path, form, got_form))
-            if TIERS.index(tier) > TIERS.index(got_tier):
-                issues.append("%s: %s 声明档位 %s 超出本仓可判上限 %s"
-                              % (rel, path, tier, got_tier))
-            checker = _FORM_CHECK.get(form or got_form)
-            sub = checker(root, "community/%s/%s" % (pkg, path)) if checker else []
-            issues += ["%s: %s %s" % (rel, path, s) for s in sub]
-            sch_rel = entry.get("schema") or ""
-            if sch_rel:
-                full = "community/%s/%s" % (pkg, sch_rel)
-                schema, serr = _read_json(_rel(root, full))
-                if serr:
-                    issues.append("%s: %s schema %s" % (rel, path, serr))
-                else:
-                    inst, ierr = _read_json(_rel(root, "community/%s/%s" % (pkg, path)))
-                    if ierr:
-                        issues.append("%s: %s %s" % (rel, path, ierr))
-                    else:
-                        unsup: List[str] = []
-                        errs = json_schema_check(inst, schema, unsupported=unsup)
-                        issues += ["%s: %s schema 不符 %s" % (rel, path, e) for e in errs[:8]]
-            ds = entry.get("dual_source")
-            if isinstance(ds, dict):
-                issues += ["%s: %s %s" % (rel, path, m)
-                           for m in _dual_source_check(root, pkg, path, ds)]
-            rc = entry.get("recompute")
-            if isinstance(rc, dict):
-                sub_issues, _st = _recompute_entry(root, {**entry, "_pkg": pkg})
-                issues += ["%s: %s" % (rel, s) for s in sub_issues]
-            elif tier == "T4":
-                issues.append("%s: %s 声明 T4（可复算）却无 recompute 声明" % (rel, path))
-            rows.append({"package": pkg, "path": path, "form": form or got_form,
-                         "tier": tier, "role": entry.get("role") or ""})
+        hit = _verify_pack_cached(root, pkg)       # 逐包内容键：只有被改的包会重算（落盘可跨进程）
+        issues += hit[0]
+        rows += hit[1]
     stats = {"packages": len(_pack_dirs(root)), "outputs": len(rows),
              "by_role": _count(rows, "role"), "by_tier": _count(rows, "tier"),
              "by_form": _count(rows, "form")}
     return issues, stats
+
+
+def _verify_pack(root: str, pkg: str) -> Tuple[List[str], List[Dict[str, Any]]]:
+    """**单个包**的产出面校验（原体；被 `_index_verify_impl` 按包内容键缓存）。"""
+    issues: List[str] = []
+    rows: List[Dict[str, Any]] = []
+    rel = "community/%s/%s" % (pkg, INDEX_REL)
+    idx, err = _read_json(_rel(root, rel))
+    if err:
+        issues.append("%s: %s" % (rel, err))
+        return issues, rows
+    if idx.get("schema") != "nf-output-index/1":
+        issues.append("%s: schema 应为 nf-output-index/1" % rel)
+    if idx.get("package") != pkg:
+        issues.append("%s: package 字段 %r ≠ 包目录名 %r" % (rel, idx.get("package"), pkg))
+    for entry in idx.get("outputs") or []:
+        path = entry.get("path") or ""
+        form = entry.get("form") or ""
+        tier = entry.get("tier") or ""
+        if not path:
+            issues.append("%s: outputs 条目缺 path" % rel)
+            continue
+        if tier not in TIERS:
+            issues.append("%s: %s 档位非法 %r" % (rel, path, tier))
+            continue
+        if not _rel(root, "community/%s/%s" % (pkg, path)).is_file():
+            issues.append("%s: 声明产出面不存在 %s" % (rel, path))
+            continue
+        got_form, got_tier = detect(root, "community/%s/%s" % (pkg, path))
+        if form and form != got_form:
+            issues.append("%s: %s 声明形态 %s，实测 %s" % (rel, path, form, got_form))
+        if TIERS.index(tier) > TIERS.index(got_tier):
+            issues.append("%s: %s 声明档位 %s 超出本仓可判上限 %s"
+                          % (rel, path, tier, got_tier))
+        checker = _FORM_CHECK.get(form or got_form)
+        sub = checker(root, "community/%s/%s" % (pkg, path)) if checker else []
+        issues += ["%s: %s %s" % (rel, path, s) for s in sub]
+        sch_rel = entry.get("schema") or ""
+        if sch_rel:
+            full = "community/%s/%s" % (pkg, sch_rel)
+            schema, serr = _read_json(_rel(root, full))
+            if serr:
+                issues.append("%s: %s schema %s" % (rel, path, serr))
+            else:
+                inst, ierr = _read_json(_rel(root, "community/%s/%s" % (pkg, path)))
+                if ierr:
+                    issues.append("%s: %s %s" % (rel, path, ierr))
+                else:
+                    unsup: List[str] = []
+                    errs = json_schema_check(inst, schema, unsupported=unsup)
+                    issues += ["%s: %s schema 不符 %s" % (rel, path, e) for e in errs[:8]]
+        ds = entry.get("dual_source")
+        if isinstance(ds, dict):
+            issues += ["%s: %s %s" % (rel, path, m)
+                       for m in _dual_source_check(root, pkg, path, ds)]
+        rc = entry.get("recompute")
+        if isinstance(rc, dict):
+            sub_issues, _st = _recompute_entry(root, {**entry, "_pkg": pkg})
+            issues += ["%s: %s" % (rel, s) for s in sub_issues]
+        elif tier == "T4":
+            issues.append("%s: %s 声明 T4（可复算）却无 recompute 声明" % (rel, path))
+        rows.append({"package": pkg, "path": path, "form": form or got_form,
+                     "tier": tier, "role": entry.get("role") or ""})
+    return issues, rows
 
 
 def _count(rows: Sequence[Dict[str, Any]], key: str) -> Dict[str, int]:

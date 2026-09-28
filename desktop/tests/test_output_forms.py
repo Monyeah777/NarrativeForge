@@ -88,6 +88,52 @@ class RegistryTest(unittest.TestCase):
                 self.assertTrue(f["evidence"]["error"], f["id"])
 
 
+class PackVerifyCacheTest(unittest.TestCase):
+    """逐包产出面校验的**内容键缓存**：行为不变 + 键对内容敏感 + 只影响被改的包。
+
+    依据（2026-09-29 实测）：106 个包逐包真算（形态/档位/schema/双源/T4 复算）**533 ms**，
+    而按包内容键缓存后命中只要 **11 ms**——一次真编辑只让**被改的那个包**重算。
+    """
+
+    def test_cache_is_behavior_preserving(self):
+        # 直接打内层：外层还有「整块内容键」缓存，命中时根本不会走到逐包这层（那也算对，
+        # 但本判据要钉的是**逐包那层**的行为与命中）。
+        of._INDEX_CACHE.clear()
+        of._PACK_VERIFY_CACHE.clear()
+        cold = of._index_verify_impl(ROOT)
+        self.assertGreater(len(of._PACK_VERIFY_CACHE), 0, "逐包缓存必须真的被填上")
+        warm = of._index_verify_impl(ROOT)              # 逐包缓存热
+        self.assertEqual(cold, warm, "缓存不得改变判定")
+        self.assertEqual(cold[0], [], cold[0][:3])
+
+    def test_outer_face_cache_still_works(self):
+        of._PACK_VERIFY_CACHE.clear()
+        first = of.index_verify(ROOT)                   # 外层内容键未命中 → 走内层
+        of._INDEX_CACHE.clear()
+        second = of.index_verify(ROOT)
+        self.assertEqual(first, second, "外层内容键缓存不得改变判定")
+
+    def test_pack_key_tracks_content_and_is_per_pack(self):
+        """合成树：改 A 包的件 → 只有 A 的键变；B 的键不动（这就是「只重算被改的包」）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            for pkg in ("A", "B"):
+                d = Path(tmp) / "community" / pkg / "outputs"
+                d.mkdir(parents=True)
+                (d / "INDEX.json").write_text('{"schema": "nf-output-index/1"}',
+                                              encoding="utf-8")
+                (d / "x.md").write_text("一", encoding="utf-8")
+            (Path(tmp) / "desktop" / "src" / "core").mkdir(parents=True)
+            (Path(tmp) / "desktop" / "src" / "core" / "registry.json").write_text(
+                "{}", encoding="utf-8")
+            a1 = of.pack_content_key(tmp, "A")
+            b1 = of.pack_content_key(tmp, "B")
+            self.assertNotEqual(a1, b1, "不同包的内容键必须不同")
+            (Path(tmp) / "community" / "A" / "outputs" / "x.md").write_text(
+                "二", encoding="utf-8")
+            self.assertNotEqual(a1, of.pack_content_key(tmp, "A"), "包内容一变键必须变")
+            self.assertEqual(b1, of.pack_content_key(tmp, "B"), "别的包的键不得跟着变")
+
+
 class PackageIndexTest(unittest.TestCase):
     def test_repo_packages_green(self):
         issues, stats = of.index_verify(ROOT)

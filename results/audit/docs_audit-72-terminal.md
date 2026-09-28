@@ -14,7 +14,7 @@ subjects:
   - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
   - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
-  - docs/terminal.md:a3abc32f4afffb5be7744ada9e7008a04b26a2a87ae2db90d38f53dd7c17cce9
+  - docs/terminal.md:067d4fff6052a782bbdbe4b05cd1a7ca4ff31157822fc98cb36a184174b9d8c7
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
 ---
