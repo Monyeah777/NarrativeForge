@@ -24,6 +24,12 @@ from core import disk_cache
 _CENSUS_CACHE: Dict[str, Dict[str, int]] = {}
 _CENSUS_CACHE_MAX = 64
 
+#: **逐件**计数的内容键缓存（键 = (该件正文 sha256, 键集 sha256)）：`count_keys_additive` 用它把
+#: 「改一件就要重扫 3.5 MB」变成「只重算被改的那一件」。存**稀疏**字典（单件里绝大多数键不出现），
+#: 于是 2500 件 × ~30 个非零键 ≈ 75k 条，量级完全可控。
+_FILE_COUNT_CACHE: Dict[Any, Dict[str, int]] = {}
+_FILE_COUNT_CACHE_MAX = 4096
+
 
 
 def _keys_of(path: Path, text: Optional[str] = None) -> List[str]:
@@ -148,6 +154,40 @@ def count_keys(blob: str, keys) -> Dict[str, int]:
     return counts
 
 
+def count_keys_additive(texts, keys) -> Dict[str, int]:
+    """**逐件计数再相加**（等价于把语料用 `"\\n"` 连起来数一次），但**逐件**结果可缓存。
+
+    为什么两者等价（可证）：连接语料用的是 `"\\n"` 分隔，而**任何键都不可能含换行**（资产 id 是
+    字母数字 + 分隔符）。于是「跨件匹配」只可能出现在包含该分隔符的位置——而那样的匹配不存在
+    ⇒ 逐件计数之和与「拼成一整条再数」**逐键相同**。这条等价性由
+    `test_asset_density.KeyCountEquivalenceTest` 在**真语料**上断言（并在合成语料上加负例）。
+
+    为什么不直接数整条：逐件结果可以按**文件内容**缓存（键即内容）——一次真编辑只会让**被改的那一件**
+    重算（守护里尤其明显：常驻层已经按路径给出新正文，这里按正文命中），而整条 blob 的指纹一变
+    就要把 3.5 MB 重扫一遍。
+
+    fail-closed：键里只要出现换行（当前不可能），就退回整条拼接计数——正确性优先于省算。
+    """
+    keys = [str(k) for k in keys]
+    if any("\n" in k for k in keys):
+        return count_keys("\n".join(texts), keys)
+    keys_key = hashlib.sha256("\x01".join(sorted(keys)).encode("utf-8")).hexdigest()
+    totals = {k: 0 for k in keys}
+    for text in texts:
+        ck = (hashlib.sha256(text.encode("utf-8")).hexdigest(), keys_key)
+        per = _FILE_COUNT_CACHE.get(ck)
+        if per is None:
+            per = count_keys(text, keys)
+            sparse = {k: n for k, n in per.items() if n}      # 稀疏：单件里绝大多数键一次都不出现
+            if len(_FILE_COUNT_CACHE) >= _FILE_COUNT_CACHE_MAX:
+                _FILE_COUNT_CACHE.clear()
+            _FILE_COUNT_CACHE[ck] = sparse
+            per = sparse
+        for k, n in per.items():
+            totals[k] += n
+    return totals
+
+
 def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """资产引用度体检：每个资产键在 04/community/docs 全语料中被引用次数。
 
@@ -190,10 +230,11 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                                  and set(d) == set(keys))
     if counts is None:
         # 语义 = 逐键 `str.count`（非重叠、含互相包含）——已实测：bytes 版更慢；单遍 alternation 在
-        # 「两键于同一位置重叠」（如 AB/BC 于 ABC）时会漏计。现在走 `count_keys`（Aho–Corasick +
-        # 非重叠贪心），一次扫描得到**同一批数字**：实测 3.11 s → ~0.2 s。
-        blob = "\n".join(corpus)
-        counts = count_keys(blob, keys)
+        # 「两键于同一位置重叠」（如 AB/BC 于 ABC）时会漏计。现在走 `count_keys_additive`
+        # （逐件 Aho–Corasick + 非重叠贪心，再相加；与「拼成一整条再数」逐键等价，见其 docstring），
+        # 于是**逐件**结果能按文件内容缓存：真编辑只让被改的那一件重算。实测整条 3.11 s → ~0.2 s，
+        # 且改一件之后再算只需那一件的钱。
+        counts = count_keys_additive(corpus, keys)
         disk_cache.store("census", dkey, counts)
     if ckey not in _CENSUS_CACHE:
         if len(_CENSUS_CACHE) >= _CENSUS_CACHE_MAX:

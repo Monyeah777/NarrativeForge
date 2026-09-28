@@ -47,6 +47,7 @@ class KeyCountEquivalenceTest(unittest.TestCase):
                              ad.count_keys(blob, keys), (blob, keys))
 
     def test_matches_on_a_real_corpus_subset(self):
+        """逐件相加（`count_keys_additive`）也必须与整条计数一致——这是它敢缓存的前提。"""
         """真语料子集（键取前 200 个、语料取前 300 件）：口径一致才算保住。"""
         keys = {}
         for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
@@ -71,6 +72,46 @@ class KeyCountEquivalenceTest(unittest.TestCase):
         self.assertGreater(len(picked), 50, "真语料子集至少要有几十个键才有意义")
         self.assertEqual({k: blob.count(k) for k in picked},
                          ad.count_keys(blob, picked))
+
+
+    def test_additive_per_file_matches_whole_blob(self):
+        """`count_keys_additive`（逐件计数再相加）必须与「用 `"\\n"` 拼成一整条再数」**逐键相同**。
+
+        这是它敢按**文件内容**缓存的前提：等价成立 ⇒ 一次真编辑只让被改的那一件重算。
+        依据：键（资产 id）不可能含换行 ⇒ 跨件匹配不存在（真语料子集上断言，含随机切分）。
+        """
+        keys = ["a", "ab", "ba", "abc", "c", "zz", "aa"]
+        texts = ["ab", "c", "abc", "aa", "b", "", "a\nb"]
+        self.assertEqual(ad.count_keys("\n".join(texts), keys),
+                         ad.count_keys_additive(texts, keys))
+        picked = {}
+        for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
+            for rel in csc.iter_files(ROOT, pat):
+                if rel.rsplit("/", 1)[-1] == "README.md":
+                    continue
+                for k in ad._keys_of(Path(rel)):
+                    picked.setdefault(k, rel)
+        subset = sorted(picked)[:150]
+        corpus = []
+        for base in ("community", "04_模块库"):
+            for rel in csc.iter_files(ROOT, base + "/**/*.md"):
+                try:
+                    corpus.append(csc.read_text_cached(Path(ROOT) / rel))
+                except OSError:
+                    continue
+                if len(corpus) >= 250:
+                    break
+            if len(corpus) >= 250:
+                break
+        self.assertEqual(ad.count_keys("\n".join(corpus), subset),
+                         ad.count_keys_additive(corpus, subset), "真语料子集上不等价")
+
+    def test_newline_key_falls_back_to_whole_blob(self):
+        """fail-closed：键里出现换行（当前不可能）⇒ 逐件相加不再等价 ⇒ 退回整条计数。"""
+        texts = ["ab", "cd"]
+        self.assertEqual(ad.count_keys("\n".join(texts), ["b\nc"]),
+                         ad.count_keys_additive(texts, ["b\nc"]),
+                         "含换行的键必须退回整条拼接口径")
 
 
 class CensusDiskCacheTest(unittest.TestCase):
