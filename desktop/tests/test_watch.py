@@ -260,6 +260,23 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
         self.assertGreaterEqual(served(), before + 1,
                                 "函数没走守护快路——回退也能出正确输出，所以必须用守护侧计数当证据")
 
+    def test_cached_response_is_byte_identical_to_a_direct_run(self):
+        """**响应缓存不改语义**：命中缓存那一次的输出，必须与真子进程直跑逐字节相同。
+
+        依据：仓库的头号不变式是「守护的 (exit, stdout, stderr) 与真子进程直跑逐字节相同」，
+        由 `test_daemon.DaemonProtocolTest` 守着——但那条跑的是**未命中**路径（守护默认没开
+        `--watch`）。开了响应缓存之后，**命中那一次是整条回放、根本没有执行**，所以这一半必须单独钉：
+        用一条**重**命令（`conformance --json`，约 2.5 KB 载荷）同时覆盖"大载荷走同一套帧"。
+        """
+        argv = ["conformance", "--json"]
+        first = self._call(argv)              # 未命中：真算，并落缓存
+        second = self._call(argv)             # 命中：整条回放
+        self.assertEqual(first, second, "命中缓存的那一次与首算不一致")
+        direct = subprocess.run([sys.executable, "scripts/nf.py"] + argv, cwd=ROOT,
+                                capture_output=True)
+        self.assertEqual((direct.returncode, direct.stdout, direct.stderr), second,
+                         "缓存回放的 (exit, stdout, stderr) 必须与真子进程直跑逐字节相同")
+
 
 class DirWatcherTest(unittest.TestCase):
     """真实监听件（有实现的平台才跑）+ 无实现平台的降级面。"""
