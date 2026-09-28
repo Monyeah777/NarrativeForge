@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """42 M3 —— 纯度体检 check27 单测（四规则 + 变异注入捕获力 = check 的 check）。"""
+import ast
 import os
 import sys
 import tempfile
@@ -12,6 +13,8 @@ if str(Path(__file__).resolve().parent.parent / "src") not in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core import purity_scan as ps  # noqa: E402
+from core import conformance_scan as csc  # noqa: E402
+from core import disk_cache as dc  # noqa: E402
 
 ROOT = str(Path(__file__).resolve().parents[2])
 
@@ -278,10 +281,13 @@ class SinkRegistryTest(unittest.TestCase):
         """常驻复用判据（**确定性**，不靠计时）：两次扫描之间不得再解析任何 `.py`。
 
         计时版口径太糙（读盘成本是地板，实测只差 1.9×）；直接数 `ast.parse` 调用才是这件事
-        本身：第一次应真解析上百份（判据自身有效），第二次必须**零解析**（AST 事实全部命中
-        内容键缓存）。若缓存被误改成「每次清空」，第二次就会重新解析 → 立刻红。
+        本身：第二次必须**零解析**（AST 事实全部命中内容键缓存）；若缓存被误改成「每次清空」，
+        第二次就会重新解析 → 立刻红。
+
+        口径（2026-09 修订）：事实现在有两层缓存（进程内 + **持久**），所以「第一次一定真解析
+        上百份」不再是真不变量——**先在两层都关掉的最冷状态下证明计数器有效**（必须 >100），
+        再测真不变量（第二次零新增）。
         """
-        ps._FACTS_CACHE.clear()
         orig_parse = ps.ast.parse
         calls: list = []
 
@@ -289,21 +295,186 @@ class SinkRegistryTest(unittest.TestCase):
             calls.append(1)
             return orig_parse(src, *a, **k)
 
-        ps.ast.parse = counting_parse          # type: ignore[assignment]
-        try:
-            ps.scan(ROOT)
-            first = len(calls)
+        def scan_with_counter():
             calls.clear()
             ps.scan(ROOT)
-            second = len(calls)
+            return len(calls)
+
+        # ① 最冷状态（进程内 + 持久都不可用）→ 计数器必须真的数到大数，否则判据本身没测到东西
+        old_off = os.environ.get(dc.ENV_OFF)
+        os.environ[dc.ENV_OFF] = "1"
+        ps.ast.parse = counting_parse          # type: ignore[assignment]
+        try:
+            ps._FACTS_CACHE.clear()
+            cold = scan_with_counter()
+        finally:
+            if old_off is None:
+                os.environ.pop(dc.ENV_OFF, None)
+            else:
+                os.environ[dc.ENV_OFF] = old_off
+        self.assertGreater(cold, 100, "最冷状态下应真解析上百份 .py（判据自身要有效）")
+
+        # ② 真不变量：同内容第二次**零新增**（无论这次是进程内命中还是持久命中）
+        ps._FACTS_CACHE.clear()
+        ps.ast.parse = counting_parse          # type: ignore[assignment]
+        try:
+            first = scan_with_counter()
+            second = scan_with_counter()
         finally:
             ps.ast.parse = orig_parse          # type: ignore[assignment]
-        self.assertGreater(first, 100, "第一次扫描应真解析上百份 .py（判据自身要有效）")
         # 残余的个位数解析来自 layer_model 的 L6（同 A7 文本预筛后解析命中文件）——它与本
         # 判据的缓存不是一个模块，且只涉极少数文件；真正要求的是「少一个数量级」。
         self.assertLessEqual(second, 3, "第二次只允许 L6 预筛命中的极少数解析：%d" % second)
-        self.assertLess(second * 20, first,
-                        "第二次 %d 次解析应比第一次 %d 次少一个数量级" % (second, first))
+        self.assertLessEqual(second, max(1, first), "第二次不得比第一次多解析：%d vs %d"
+                             % (second, first))
+
+
+class AstFactsPersistenceTest(unittest.TestCase):
+    """R4–R6 事实的**可序列化重构 + 持久化**：等价、可往返、跨进程可复用。
+
+    为什么动这段：一次冷进程 `evaluate` 里 AST 面要解析 134–235 份 core/scripts 源码
+    （**0.98 s**）。原实现把 `ast.Call` **节点**带出遍历、到 R6 再 `ast.unparse`——节点不可
+    序列化，所以事实只能活在进程内。改成"遍历时就摘成 `(行号, 被调名, 是否 shell=True)` 三元组"
+    后，整份事实成了纯数据，可按**文件文本**内容寻址落盘。
+
+    动的是**安全判据**（危险 sink），所以三道判据一起上：**等价性**（与旧的 AST 走查逐条同结果）、
+    **往返性**（打包/解包后逐位相等）、**持久性**（新进程真从盘上取回）。
+    """
+
+    def _code_texts(self):
+        out = []
+        for pat in ("desktop/src/**/*.py", "scripts/**/*", ".github/**/*.py"):
+            for rel in csc.iter_files(ROOT, pat):
+                p = Path(ROOT) / rel
+                if p.suffix == ".py":
+                    out.append((rel, p.read_text(encoding="utf-8")))
+        return out
+
+    @staticmethod
+    def _flags_from_sinks(sinks):
+        """新形态（三元组）→ 与旧实现同形的「(行号, flags)」序列。"""
+        out = []
+        for lineno, call, shell_true in sinks:
+            flags = []
+            if call in ps.DANGEROUS_CALLS:
+                flags.append(call)
+            if shell_true:
+                flags.append("subprocess(shell=True)")
+            out.append((lineno, tuple(flags)))
+        return out
+
+    @staticmethod
+    def _flags_by_old_walk(src):
+        """**参考实现**（改动前的做法）：`ast.walk` 拿节点、逐节点 unparse + 查 shell 关键字。"""
+        out = []
+        for node in ast.walk(ast.parse(src)):
+            if not isinstance(node, ast.Call):
+                continue
+            flags = []
+            call = ast.unparse(node.func)
+            if call in ps.DANGEROUS_CALLS:
+                flags.append(call)
+            for kw in node.keywords:
+                if kw.arg == "shell" and isinstance(kw.value, ast.Constant) \
+                        and kw.value.value is True:
+                    flags.append("subprocess(shell=True)")
+            out.append((node.lineno, tuple(flags)))
+        return out
+
+    #: **合成样本**：真仓库里 `shell=True` 只出现在注释里（不是可执行代码），
+    #: 只靠真仓库对照**分辨不出** shell 分支被改坏——所以每条危险类目都要有活体样本，
+    #: 外加一条「开了 shell 的关键字」与一条「没开 shell 的对照」。
+    SAMPLES = (
+        "import subprocess\nsubprocess.run('ls', shell=True)\n",
+        "import subprocess\nsubprocess.run(['ls'])\n",          # 对照：没开 shell
+        "import os\nos.system('x')\n",
+        "import pickle\npickle.loads(b'')\n",
+        "import shutil\nshutil.rmtree('x')\n",
+        "eval('1')\nexec('1')\n",
+        "__import__('os')\n",
+        "raise ValueError('缺修复指引：x')\n",
+    )
+
+    def test_sinks_are_equivalent_to_the_old_ast_walk(self):
+        """**全仓逐文件对照**：新形态产出的 flags 序列必须与旧走查**逐条相同**。"""
+        checked = 0
+        for rel, src in self._code_texts():
+            facts = ps._facts_for(src)
+            if facts is None:
+                self.assertIsNone(ps._NEEDS_AST.search(src),
+                                  "预筛不中却含 AST 关注点：%s" % rel)
+                continue
+            checked += 1
+            self.assertEqual(self._flags_by_old_walk(src),
+                             self._flags_from_sinks(facts[3]),
+                             "危险 sink 面与旧实现不等价：%s" % rel)
+        self.assertGreater(checked, 50, "等价性判据必须真覆盖到足够多的源码件")
+
+    def test_sink_categories_are_exercised_by_synthetic_samples(self):
+        """合成样本逐条对照（含 shell=True 与其对照）+ **自证判据有分辨力**。"""
+        saw_shell = False
+        for src in self.SAMPLES:
+            ps._FACTS_CACHE.pop(src, None)
+            facts = ps._facts_for(src)
+            self.assertIsNotNone(facts, "样本应产出事实：%r" % src[:40])
+            want = self._flags_by_old_walk(src)
+            self.assertEqual(want, self._flags_from_sinks(facts[3]), "样本不等价：%r" % src[:40])
+            # 注意：`f` 是**标志元组**，这里要比的是「元组里有没有那个标志」——
+            # 写成 `"shell=True" in f` 是元素相等判定，永远为假（本判据自己也踩过）。
+            saw_shell = saw_shell or any(flag == "subprocess(shell=True)"
+                                         for _ln, flags in want for flag in flags)
+        self.assertTrue(saw_shell, "样本里必须真出现 shell=True——否则这条判据测不到那个分支")
+
+    def test_facts_pack_round_trip_is_exact(self):
+        """打包/解包必须**逐位还原**（元组回元组、集合回集合），否则取回的结果会悄悄变形状。"""
+        checked = 0
+        for rel, src in self._code_texts():
+            facts = ps._facts_for(src)
+            self.assertEqual(facts, ps._unpack_facts(ps._pack_facts(facts)),
+                             "往返不等：%s" % rel)
+            checked += 1
+        self.assertGreater(checked, 50)
+        self.assertIsNone(ps._unpack_facts(ps._pack_facts(None)),
+                          "None 是合法结果（预筛不中 / 语法错），往返也要保持")
+
+    def test_facts_survive_a_fresh_process_via_disk(self):
+        """端到端：清掉进程内缓存（模拟新进程）→ 必须**真从盘上取回**，且与现算逐位相同。"""
+        import shutil
+        if not dc.enabled():
+            self.skipTest("磁盘缓存被 %s 关闭" % dc.ENV_OFF)
+        _rel, src = self._code_texts()[0]
+        home = tempfile.mkdtemp(prefix="nf_astfacts_")
+        old_home = os.environ.get("NARRATIVE_FORGE_HOME")
+        os.environ["NARRATIVE_FORGE_HOME"] = home
+        try:
+            ps._FACTS_CACHE.clear()          # 先清进程内：第一次必须**真算并落盘**
+            fresh = ps._facts_for(src)
+            ps._FACTS_CACHE.clear()
+            seen = []
+            real = dc.load
+
+            def spy(tag, ckey, validate=None):
+                got = real(tag, ckey, validate=validate)
+                if tag == "ast-facts":
+                    seen.append(got is not None)
+                return got
+
+            dc.load = spy
+            ps.disk_cache.load = spy
+            try:
+                again = ps._facts_for(src)
+            finally:
+                dc.load = real
+                ps.disk_cache.load = real
+            self.assertEqual(fresh, again, "盘上取回的事实必须与现算相等")
+            self.assertTrue(seen and all(seen), "第二次必须真走盘（否则新进程仍要重解析）")
+        finally:
+            ps._FACTS_CACHE.clear()
+            if old_home is None:
+                os.environ.pop("NARRATIVE_FORGE_HOME", None)
+            else:
+                os.environ["NARRATIVE_FORGE_HOME"] = old_home
+            shutil.rmtree(home, ignore_errors=True)
 
 
 if __name__ == "__main__":

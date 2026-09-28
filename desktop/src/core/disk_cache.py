@@ -30,11 +30,17 @@ from typing import Any, Callable, Optional
 
 ENV_OFF = "NF_NO_DISK_CACHE"
 KEEP = 16
+#: 大集合标签（每份文件一条的那种，如 AST 事实）裁剪频次：每 N 次写入裁一次。
+#: 为什么不一写一裁：一写一裁＝每次都要把目录整个 scandir+stat 一遍，**每份文件一条**的标签
+#: 会变成 O(n²)（250 条 × 250 次 = 6 万次 stat，实测吃掉几百毫秒，把收益全抵消）。
+PRUNE_EVERY_BIG = 128
 #: 参与「代码面」的路径（改了算法即换键；不含 tests——测试不影响结果）。
 CODE_FACE = ("desktop/src/**/*.py", "scripts/**/*")
 
 _CODE_FP: dict = {}                      # root → 代码面指纹（**按根记忆**：换根不得串味）
 _RUNTIME: Optional[str] = None
+_KEEP: dict = {}                         # tag → 上限（给大集合标签用）
+_PRUNE_COUNT: dict = {}
 
 
 def enabled() -> bool:
@@ -121,8 +127,12 @@ def load(tag: str, ckey: str,
     return got
 
 
-def store(tag: str, ckey: str, value: Any) -> None:
-    """写盘（尽力而为）：原子替换 + 裁剪；失败静默。"""
+def store(tag: str, ckey: str, value: Any, keep: Optional[int] = None) -> None:
+    """写盘（尽力而为）：原子替换 + 有界裁剪；失败静默。
+
+    `keep` 给「每份文件一条」的大集合标签用（如 AST 事实 250 条）；小集合标签沿用 `KEEP`。
+    小集合（≤64）每次写都裁（目录本身就小，成本可忽略）；大集合每 `PRUNE_EVERY_BIG` 次裁一次。
+    """
     if not enabled():
         return
     try:
@@ -133,7 +143,13 @@ def store(tag: str, ckey: str, value: Any) -> None:
         with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(value, ensure_ascii=False, sort_keys=True))
         os.replace(tmp, p)                             # 原子替换：读者看不到半截 JSON
-        prune(tag)
+        limit = int(keep if keep is not None else _KEEP.get(tag, KEEP))
+        n = _PRUNE_COUNT.get(tag, 0) + 1
+        if limit <= 64 or n >= PRUNE_EVERY_BIG:
+            _PRUNE_COUNT[tag] = 0
+            prune(tag, limit)
+        else:
+            _PRUNE_COUNT[tag] = n
     except Exception:                                  # noqa: BLE001 - 写不进就算了
         return
 

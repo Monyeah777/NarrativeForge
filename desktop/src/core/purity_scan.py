@@ -36,10 +36,12 @@ check27 自身用变异注入验证捕获力（mutation testing：test_purity_sc
 from __future__ import annotations
 
 import ast
+import hashlib
 import os
 import re
 import sys
 from core import conformance_scan as csc
+from core import disk_cache
 
 #: 协议真相源 + 导航文档（R1/R2/R3 作用域）
 PROTO_DOCS = ("01_核心协议.md", "02_联动注册表.md",
@@ -131,19 +133,63 @@ _FACTS_CACHE_MAX = 4096
 
 
 def _facts_for(text: str):
-    """文本 → R4–R6 事实（预筛不中即 None）；按内容缓存，跨调用复用。"""
+    """文本 → R4–R6 事实（预筛不中即 None）；**两层**按内容缓存（进程内 + 持久）。
+
+    持久层（`core.disk_cache`，键里还含代码面 + 运行时）：一次冷进程 `evaluate` 里 AST 解析
+    134–235 份 core/scripts 源码约 **0.98 s**，新进程从此免付。键＝文本的 sha256 ⇒ 键即内容，
+    无陈旧面；读回按 `_packed_ok` 校验形状并把元组/集合**还原成原类型**（保证与现算逐位相等，
+    有往返判据守着）。
+    """
     if text in _FACTS_CACHE:
         return _FACTS_CACHE[text]
-    got = None
-    if _NEEDS_AST.search(text):
-        try:
-            got = _ast_facts(ast.parse(text))
-        except SyntaxError:
-            got = None
+    dkey = disk_cache.key("ast-facts", hashlib.sha256(text.encode("utf-8")).hexdigest())
+    packed = disk_cache.load("ast-facts", dkey, validate=_packed_ok)
+    got = _unpack_facts(packed) if packed is not None else _FACTS_READ_MISS
+    if got is _FACTS_READ_MISS:
+        got = None
+        if _NEEDS_AST.search(text):
+            try:
+                got = _ast_facts(ast.parse(text))
+            except SyntaxError:
+                got = None
+        # 每份源码一条 ⇒ 上限按「进程内事实缓存」同一量级给（默认 16 会让它反复抖动）
+        disk_cache.store("ast-facts", dkey, _pack_facts(got), keep=_FACTS_CACHE_MAX)
     if len(_FACTS_CACHE) >= _FACTS_CACHE_MAX:
         _FACTS_CACHE.clear()
     _FACTS_CACHE[text] = got
     return got
+
+
+#: 持久层未命中的哨兵（`None` 本身是**合法结果**：预筛不中 / 语法错，两者都要能落盘）
+_FACTS_READ_MISS = object()
+
+
+def _pack_facts(facts):
+    """事实 → 可 JSON 的载荷（元组/集合统一成列表，并记下「命中与否」）。"""
+    if facts is None:
+        return {"hit": False, "facts": None}
+    raises, guarded, modules, sinks = facts
+    return {"hit": True, "facts": [[list(x) for x in raises], sorted(guarded),
+                                   [list(x) for x in modules], [list(x) for x in sinks]]}
+
+
+def _packed_ok(value) -> bool:
+    """载荷形状校验：不符即当未命中（半截/串味的文件一律重算）。"""
+    return (isinstance(value, dict) and set(value) == {"hit", "facts"}
+            and isinstance(value["hit"], bool)
+            and (value["facts"] is None
+                 or (isinstance(value["facts"], list) and len(value["facts"]) == 4)))
+
+
+def _unpack_facts(value):
+    """载荷 → 事实：**逐类型还原**（元组回元组、集合回集合），保证与现算结果相等。"""
+    if not value["hit"]:
+        return None
+    raises, guarded, modules, sinks = value["facts"]
+    return ([(int(a), str(b)) for a, b in raises],
+            {int(x) for x in guarded},
+            [(str(a), int(b)) for a, b in modules],
+            [(int(a), str(b), bool(c)) for a, b, c in sinks])
 
 
 def _ast_facts(tree: ast.AST) -> tuple:
@@ -159,7 +205,7 @@ def _ast_facts(tree: ast.AST) -> tuple:
     raises: list = []
     guarded: set = set()
     modules: list = []
-    calls: list = []
+    sinks: list = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Raise) and isinstance(node.exc, ast.Call) and node.exc.args:
             arg = node.exc.args[0]
@@ -180,8 +226,13 @@ def _ast_facts(tree: ast.AST) -> tuple:
                     if isinstance(n2, (ast.Import, ast.ImportFrom)):
                         guarded.add(n2.lineno)
         elif isinstance(node, ast.Call):
-            calls.append(node)
-    return raises, guarded, modules, calls
+            # 危险 sink 候选在这里就**摘成可序列化的三元组**（行号 / 被调名 / 是否 shell=True）：
+            # 判据与原来"拿着 AST 节点到 R6 再 unparse"逐条等价（有等价性判据守着），
+            # 但结果成了纯数据 ⇒ 整份事实可以按内容落盘，新进程不必再解析这 235 份源码。
+            sinks.append((node.lineno, ast.unparse(node.func),
+                          any(kw.arg == "shell" and isinstance(kw.value, ast.Constant)
+                              and kw.value.value is True for kw in node.keywords)))
+    return raises, guarded, modules, sinks
 
 
 def _is_local(mod: str, root: str) -> bool:
@@ -267,7 +318,7 @@ def scan(root: str = ".") -> tuple:
             facts = _facts(f)
             if facts is None:
                 continue
-            _raises, guarded, modules, calls = facts
+            _raises, guarded, modules, sinks = facts
             residue = IMPORT_RESIDUE.get(rel)
             for mod, lineno in modules:
                 if mod in sys.stdlib_module_names or _is_local(mod, root):
@@ -287,15 +338,12 @@ def scan(root: str = ".") -> tuple:
                 (stats["import_residue"] if residue else issues).append(
                     "%s（%s）" % (msg, residue) if residue else msg)
             # R6：危险 sink 面（同一次 AST 遍历复用同一份事实）
-            for node in calls:
-                call = ast.unparse(node.func)
+            for lineno, call, shell_true in sinks:
                 flags = []
                 if call in DANGEROUS_CALLS:
                     flags.append(call)
-                for kw in node.keywords:
-                    if kw.arg == "shell" and isinstance(kw.value, ast.Constant) \
-                            and kw.value.value is True:
-                        flags.append("subprocess(shell=True)")
+                if shell_true:
+                    flags.append("subprocess(shell=True)")
                 for name in flags:
                     stats["sinks"] = stats.get("sinks", 0) + 1
                     key = "%s:%s" % (os.path.basename(f), "subprocess" if "shell" in name else call)
@@ -303,7 +351,7 @@ def scan(root: str = ".") -> tuple:
                         continue
                     issues.append("%s:%d 危险 sink %s（%s）——确需使用须在 purity_scan.SINK_ALLOW "
                                   "登记理由（修复指引：改用安全等价物，或登记后写明为何不可注入）"
-                                  % (rel, node.lineno, name,
+                                  % (rel, lineno, name,
                                      DANGEROUS_CALLS.get(call, "shell=True 命令注入面")))
     # R6 自洽面（登记表自身的判据）：每个 sink 类目须带 CWE 对齐（跨工具对账用缺陷类型编码），
     # 且 SINK_ALLOW 的每个放行键必须指向一个已登记 sink——放行不能凭空出现。
