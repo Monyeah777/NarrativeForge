@@ -47,7 +47,7 @@ _BODY_CACHE_MAX = 4096
 #: 个不同文件——**70% 是冗余读**（同一份包资产被 concept_graph / asset_density / output_forms
 #: 等各读一遍）。作用域严格等于「一次扫描调用」，且这些聚合入口都是纯读（写路径 `--write`
 #: 在聚合**之后**才发生），所以冷却语义与「新起进程」一致：不跨调用、不跨请求复用。
-_READ_MEMO: Optional[Dict[str, str]] = None
+_READ_MEMO: Optional[Dict[str, Any]] = None
 
 
 @contextlib.contextmanager
@@ -62,16 +62,32 @@ def read_memo():
 
 
 def read_text_cached(path) -> str:
-    """读文本：在 `read_memo()` 作用域内，同一路径只读一次（含解码）；域外就是普通读。"""
+    """读文本：在 `read_memo()` 作用域内，同一**文件**只读一次（含解码）；域外就是普通读。
+
+    键做**路径归一化**（`normcase(abspath)`）：各扫描器传进来的写法不同（`"."/相对路径`
+    vs 绝对路径），不归一会指向不同键、共享失效——实测就是这样（同一份资产仍被读 4 次）。
+    """
     if _READ_MEMO is not None:
-        key = str(path)
+        key = os.path.normcase(os.path.abspath(str(path)))
         hit = _READ_MEMO.get(key)
         if hit is not None:
             return hit
     text = Path(path).read_text(encoding="utf-8")
     if _READ_MEMO is not None:
-        _READ_MEMO[str(path)] = text
+        _READ_MEMO[os.path.normcase(os.path.abspath(str(path)))] = text
     return text
+
+
+def read_bytes_cached(path) -> bytes:
+    """读字节：同上（`_recompute_entry` 的逐字节比对用）。"""
+    if _READ_MEMO is not None:
+        key = "b:" + os.path.normcase(os.path.abspath(str(path)))
+        if key in _READ_MEMO:
+            return _READ_MEMO[key]              # type: ignore[return-value]
+    raw = Path(path).read_bytes()
+    if _READ_MEMO is not None:
+        _READ_MEMO["b:" + os.path.normcase(os.path.abspath(str(path)))] = raw  # type: ignore[assignment]
+    return raw
 
 
 def load_yaml(text: str) -> Any:

@@ -78,45 +78,24 @@ def _rel(root: str, rel: str) -> Path:
     return Path(root) / rel.replace("/", os.sep)
 
 
-#: 一次**只读**校验内共享「同文件读一次」：逐件校验会把同一份产物读 5–8 遍
-#: （detect / 查重 / schema / 双源 / 复算），是热跑里最大的一块 IO（实测 3027 次读盘）。
-#: 作用域严格等于**一次** `index_verify` 调用（`_memo_reads` 出口即清），因此不可能看到陈旧
-#: 内容；写路径（`render_outputs(write=True)`）从不进入该作用域。
-_READ_MEMO: Optional[Dict[str, Any]] = None
-
-
-@contextlib.contextmanager
+#: 一次**只读**校验内共享「同文件读一次」。**真源是 conformance_scan 的共享语料缓存**——
+#: 这样 `index_verify` 的读盘能与外层聚合（evaluate / qds.scan / conformance_report.run）
+#: 的其它扫描器**共用同一份**（同一份包资产过去被四个模块各读一遍）。
+#: 作用域仍严格等于一次 `index_verify` 调用（出口即清），所以不会读到陈旧内容；
+#: 写路径（`render_outputs(write=True)`）从不进入该作用域。
 def _memo_reads():
-    global _READ_MEMO
-    outer, _READ_MEMO = _READ_MEMO, {}
-    try:
-        yield
-    finally:
-        _READ_MEMO = outer
+    from core import conformance_scan as _csc
+    return _csc.read_memo()
 
 
 def _read_text_cached(path: Path) -> str:
-    """读文本：memo 生效时同一文件只读一次；其余时候就是普通读。"""
-    if _READ_MEMO is not None:
-        key = str(path)
-        if key in _READ_MEMO:
-            return _READ_MEMO[key]
-    text = path.read_text(encoding="utf-8")
-    if _READ_MEMO is not None:
-        _READ_MEMO[str(path)] = text
-    return text
+    from core import conformance_scan as _csc
+    return _csc.read_text_cached(path)
 
 
 def _read_bytes_cached(path: Path) -> bytes:
-    """读字节：同上（复算比对用）。"""
-    if _READ_MEMO is not None:
-        key = "b:" + str(path)
-        if key in _READ_MEMO:
-            return _READ_MEMO[key]
-    raw = path.read_bytes()
-    if _READ_MEMO is not None:
-        _READ_MEMO["b:" + str(path)] = raw
-    return raw
+    from core import conformance_scan as _csc
+    return _csc.read_bytes_cached(path)
 
 
 def _read_json(path: Path) -> Tuple[Any, str]:

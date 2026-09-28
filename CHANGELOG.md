@@ -2,6 +2,11 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：共享语料「真正生效」（键归一化 —— 打开 5550→4217 · 冗余 58%→44%）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
+  ① **取证抓到「共享没生效」**：接完共享语料后复测，同一份资产**仍被读 4 次**——根因不是接线漏了，而是**缓存键用了 `str(path)`**：各扫描器传进来的写法不同（`"."`+相对路径 vs 绝对路径），键彼此不等 → 全部 miss ✗。改为 `normcase(abspath(path))` **键归一化**后：打开次数 **5550 → 4217**、冗余率 **58% → 44%**。**教训：缓存键必须按「同一个东西」归一**，否则「接了线但没生效」是最难发现的假绿。
+  ② **补上漏接线的读者**：`asset_ledger_projection` 此前**每份资产读两遍**（`build` 读正文 + `_file_keys` 再读一遍）且未接入共享语料——改为「正文只读一次 + 把文本传给 `_file_keys`」并接入共享（assets 读 **1543 → 1186**）；`output_forms` 的**本地 memo 并入共享真源**（同一次聚合里输出面读的产物/资产不再与其它扫描器各读一遍）；共享助手补齐 `read_bytes_cached`（复算的逐字节比对用）。
+  ③ **实测（同进程 A/B，min of 3）**：一次 `regression_score.evaluate` 打开 **7833 → 4217（−46%）**、冗余 **70% → 44%**；`evaluate` **3449 ms** vs 对照 **3923 ms**（**−474 ms**）。既有「纵深扫描单件读上限 ≤ 8」判据继续盯住（实测 4）。
+
 - **执行层：一次只读调用内共享语料（`evaluate` −548 ms / −14% · 纵清单件最大读 9→5）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
   ① **先量上限**：一次 `regression_score.evaluate` 打开 **7833** 次文件、其中只有 **2354** 个不同文件——**70% 是冗余读**（同一份包资产被 `concept_graph` / `asset_density` / `output_forms` 等各读一遍；最热的件被读 9–10 次）。
   ② **修法＝共享语料作用域**：`conformance_scan` 增 `read_memo()` / `read_text_cached()`，作用域由三个**只读聚合入口**显式框定（`regression_score.evaluate` / `quality_depth_scan.scan` / `conformance_report.run`），**出口即清**——不跨调用、不跨请求复用（故与「新起进程」看到同一份仓库事实）；写路径在聚合之后，不在作用域内。接入 9 个扫描器的读点（`asset_density` / `concept_graph` / `pack_combo` / `tool_face` / `world_model` / `payload_registry` / `payload_consumer` / `conformance_scan` / `schema_lint`），`protocol.yaml` 顺带接入**内容键解析**（同文不重复解析）。

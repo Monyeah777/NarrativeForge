@@ -13,16 +13,22 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import conformance_scan as csc   # 共享语料：一次只读调用内同文只读一遍
+
 _ROOT = Path(__file__).resolve().parents[3]
 _LEDGER = "protocol/community_asset_ledger.json"
 
 
-def _file_keys(path: Path) -> List[str]:
+def _file_keys(path: Path, text: str = None) -> List[str]:
+    """键发现（`text` 可由调用方传入——避免同一份件被读两遍）。"""
     keys = set(re.findall(r"[A-Z][A-Z0-9_]*", path.stem))
-    try:
-        head = path.read_text(encoding="utf-8")[:8000]
-    except OSError:
-        return sorted(keys)
+    if text is not None:
+        head = text[:8000]
+    else:
+        try:
+            head = csc.read_text_cached(path)[:8000]
+        except OSError:
+            return sorted(keys)
     keys.update(re.findall(r"`([A-Z][A-Z0-9_]{2,})`", head))
     keys.update(re.findall(r"\"([A-Z][A-Z0-9_]{2,})\"\s*:", head))
     keys.update(re.findall(r"^##\s*([A-Z][A-Z0-9_]{2,})", head, re.M))
@@ -38,9 +44,9 @@ def build(root: str = ".") -> List[Dict[str, Any]]:
                 continue
             rel = p.relative_to(r).as_posix()
             pkg = rel.split("/")[1] if rel.startswith("community") else "官方"
-            text = p.read_text(encoding="utf-8")
+            text = csc.read_text_cached(p)
             lines = text.splitlines()
-            for k in _file_keys(p):
+            for k in _file_keys(p, text):
                 line = 1
                 for idx, ln in enumerate(lines, 1):
                     if re.search(r"\b" + re.escape(k) + r"\b", ln):
