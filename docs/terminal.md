@@ -195,6 +195,35 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 
 ## 非交互模式（CI / 脚本 / 回归）
 
+## 执行层常驻（`nf daemon`）——毫秒级响应
+
+`nf <命令>` 每次都要起一个解释器：本机实测**裸解释器 146 ms**、`nf --version` **401 ms** ——
+即**每条命令 ~400 ms 的固定成本与命令内容无关**。`nf daemon` 把执行搬进常驻进程，客户端只做
+一次套接字往返（热进程内 `--version` **1.7 ms**）。
+
+| 路径 | `--version` | `stats --check` | `doctor` |
+|---|---|---|---|
+| python 直跑（原路径） | 273 ms | 351 ms | 703 ms |
+| `scripts/nf` 启动器（经守护） | 175 ms | 326 ms | 470 ms |
+| **bash 函数（零子进程，经守护）** | **5.7 ms** | 140 ms | 400 ms |
+
+```sh
+nf daemon start                      # 拉起守护（后台；只绑 127.0.0.1 + 一次性令牌）
+eval "$(nf daemon shell-init bash)"  # 装进当前 shell：零子进程客户端（真毫秒级）
+nf daemon bench                      # 复跑上表（--json 机读）
+nf daemon stop                       # 停用：立刻回到 python 直跑，不改变任何可用性
+```
+
+纪律（与全仓一致，均有判据）：
+
+- **只加速不改语义**：守护的 `(exit, stdout, stderr)` 与**真子进程直跑逐字节相同**（`test_daemon` 逐命令比对）。
+- **热进程不得陈旧**：每次请求前清空**按路径键**的缓存（`pack_combo` 画像 / `registry_loader` 注册表），
+  保留**内容键**缓存（围栏 YAML、引用度普查——键即内容，天然不陈旧）；另按 `core/scripts` **源码指纹**
+  判断是否整块重载，绝不拿旧代码回话。
+- **安全边界**：只绑 `127.0.0.1`（**没有**放行外网的开关）+ 一次性令牌（回环不是信任边界）+ 请求
+  1 MiB 上限；长驻/自指命令（`serve` / `shell` / `daemon`）在守护内**拒跑**，且拒绝后守护仍存活。
+- **可回退**：任何一步不成立（无状态文件 / 无 bash / 连不上 / 协议头不对）启动器都**静默回退** python 直跑。
+
 ```sh
 python scripts/nf.py shell --exec "nf doctor" --no-banner
 python scripts/nf.py shell --exec "/zone 5" --json --no-banner

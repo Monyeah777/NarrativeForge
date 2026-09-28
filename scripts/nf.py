@@ -968,6 +968,46 @@ def _make_parser() -> argparse.ArgumentParser:
                     help="跑阶梯体检（归属互斥/接口子集/依赖向下/入口非真源/生成区一致）")
     ly.add_argument("--write", action="store_true",
                     help="把渲染结果写回 docs/layers.md 生成区（改真源后必跑）")
+    dnm = sub.add_parser(
+        "daemon",
+        help="执行层常驻守护（毫秒级响应）：start / stop / status / exec / bench",
+        description="NF 执行层常驻守护：把「每条命令一次解释器启动」（实测 ~400 ms 固定成本）"
+                    "换成「一次启动、长期热跑」，客户端只做一次套接字往返。只绑 127.0.0.1 + "
+                    "一次性令牌；单线程串行；每次请求比对 core/scripts 源码指纹并清空按路径键的"
+                    "进程缓存——「热进程」与「新起进程」结果一致（等价性由 test_daemon 逐命令比对）。")
+    dsub = dnm.add_subparsers(dest="daemon_cmd", required=True)
+    dst = dsub.add_parser("start", help="拉起守护（后台、脱离控制台）",
+                          description="拉起执行层常驻守护：后台子进程、只绑 127.0.0.1 + 一次性令牌，"
+                                      "状态落在 <NF_HOME>/daemon.json。已在运行则幂等返回。")
+    dst.add_argument("--idle", type=float, default=3600.0,
+                     help="空闲多少秒后自动退出（0=不退出）")
+    dsub.add_parser("stop", help="请守护自行退出（协议级 shutdown，不发信号）",
+                    description="请守护自行退出：走协议级 shutdown 帧（不发信号、不删文件），"
+                                "并把状态文件标记为停用——之后启动器自动回到 python 直跑。")
+    dss = dsub.add_parser("status", help="守护状态（在线？端口 / pid / 往返时延）",
+                          description="看守护是否在线、端口/pid/协议版本/仓库根与状态文件落点，"
+                                      "并实测一次往返时延（--json 给机器面）。")
+    dss.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    dex = dsub.add_parser("exec", help="把一条 nf 命令交给守护执行（输出/退出码与直跑一致）",
+                          description="把一条 nf 命令交给守护执行：stdout/stderr/退出码与真子进程"
+                                      "直跑逐字节一致（长驻/自指命令在守护内被拒跑）。")
+    dex.add_argument("--no-start", action="store_true",
+                     help="守护不在时直接失败（默认自动拉起）")
+    dex.add_argument("argv", nargs=argparse.REMAINDER,
+                     help="要执行的 nf 命令（如：nf daemon exec stats --check）")
+    dbn = dsub.add_parser("bench", help="测量：直跑（含解释器启动）vs 守护往返",
+                          description="复跑效率对照表：对同一批探测命令分别测「直跑（含解释器启动）」"
+                                      "与「守护往返」，各取 --runs 次最小值（--json 给机器面）。")
+    dbn.add_argument("--runs", type=int, default=3, help="每场景取样次数（取最小值）")
+    dbn.add_argument("--json", action="store_true", help="输出结构化 JSON")
+    dsi = dsub.add_parser("shell-init", help="输出 shell 快路（零子进程客户端），供 eval 安装",
+                          description="输出 shell 快路脚本：在交互 shell 里定义 nf() 函数，用 bash 内建"
+                                      "（/dev/tcp + read -N）直连守护——零子进程，真毫秒级；用法 "
+                                      "eval \"$(nf daemon shell-init bash)\"。")
+    dsi.add_argument("shell", nargs="?", default="bash", choices=("bash",),
+                     help="目标 shell（缺省 bash；需要 /dev/tcp 内建）")
+    dsi.add_argument("--shell", dest="shell_opt", default=None, choices=("bash",),
+                     help="目标 shell（目前只支持 bash：需要 /dev/tcp 内建）")
     return p
 
 
@@ -1882,7 +1922,17 @@ def _cmd_module(args) -> int:
         print("  复核：python scripts/nf.py module verify（引用门禁，verify check24 同语义）")
         return 0
     except (OSError, ValueError) as exc:
-        print("  ✗ %s" % exc, file=sys.stderr)
+        # 极端渗透 D8：`nf module status NO-SUCH` 此前把裸 `[Errno 2] No such file or directory`
+        # 抛给用户（零指引）。按 NF「错误消息即微型文档」纪律给出可操作指引。
+        if isinstance(exc, FileNotFoundError):
+            print("  ✗ 模块文件不存在：%s" % fpath, file=sys.stderr)
+            print("  修复指引：file 须是**在场**模块 md 路径（如 "
+                  "04_模块库/通用类/M00_数据结构.md，或 community/<包>/modules/<文件>.md）；"
+                  "`python scripts/nf.py module ls` 可枚举现有模块", file=sys.stderr)
+        else:
+            print("  ✗ %s" % exc, file=sys.stderr)
+            print("  修复指引：确认该文件含合法状态位（写法见 01 §1.5；"
+                  "`nf module ls` 可枚举）", file=sys.stderr)
         return 1
 
 
@@ -3568,7 +3618,8 @@ def _cmd_library(args):
                 hit = e
                 break
         if hit is None:
-            print("  ✗ 条目未找到：%s（nf library ls 可枚举；大小写用 ALIAS 转译）"
+            print("  ✗ 条目未找到：%s\n  修复指引：`nf library ls` 可枚举现有编号；"
+                  "编号大小写拿不准时先全小写化再查 library/ALIAS.md 转译"
                   % args.entry, file=sys.stderr)
             return 1
         if args.json:
@@ -4894,6 +4945,120 @@ def _cmd_worldmodel(args):
     return 1 if issues else 0
 
 
+def _cmd_daemon(args) -> int:
+    """nf daemon：执行层常驻守护（毫秒级响应）。
+
+    动机（实测）：裸解释器启动 146 ms、`nf --version` 401 ms——每条命令有 ~400 ms 固定成本；
+    热进程内同一命令只要 1–5 ms。故把命令执行搬进常驻进程，客户端只做一次往返。
+    """
+    import json as _json
+    import time as _time
+    from pathlib import Path
+    from core import daemon as dm
+
+    sub = args.daemon_cmd
+    if sub == "start":
+        ok, msg = dm.start(Path(ROOT), idle_timeout=args.idle)
+        doc = dm.read_state() or {}
+        print(("  ✓ " if ok else "  ✗ ") + msg)
+        if ok:
+            print("  端口 %s · 状态文件 %s" % (doc.get("port"), dm.state_path()))
+        return 0 if ok else 1
+    if sub == "stop":
+        ok, msg = dm.stop()
+        print(("  ✓ " if ok else "  · ") + msg)
+        return 0 if ok else 1
+    if sub == "status":
+        t0 = _time.perf_counter()
+        alive = dm.ping()
+        rtt = (_time.perf_counter() - t0) * 1000
+        doc = dm.read_state() or {}
+        if args.json:
+            print(_json.dumps({"kind": "nf-daemon", "running": bool(alive),
+                               "port": doc.get("port"), "pid": doc.get("pid"),
+                               "proto": doc.get("proto"), "root": doc.get("root"),
+                               "rtt_ms": round(rtt, 2) if alive else None,
+                               "state_file": str(dm.state_path())},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+            return 0 if alive else 1
+        print("== nf daemon（执行层常驻守护）==")
+        print("  状态：%s" % ("在线" if alive else "未运行"))
+        if doc:
+            print("  端口 %s · pid %s · proto %s" % (doc.get("port"), doc.get("pid"),
+                                                     doc.get("proto")))
+            print("  仓库根：%s" % doc.get("root"))
+        print("  状态文件：%s" % dm.state_path())
+        if alive:
+            print("  往返时延：%.1f ms（同一进程内热跑；含协议解析与源码指纹比对）" % rtt)
+        else:
+            print("  → 拉起：nf daemon start（或用 scripts/nf 启动器，它会自动走守护）")
+        return 0 if alive else 1
+    if sub == "exec":
+        argv = [str(a) for a in (args.argv or [])]
+        if argv and argv[0] == "--":
+            argv = argv[1:]
+        if not argv:
+            print("  ✗ 缺命令（用法：nf daemon exec stats --check）", file=sys.stderr)
+            return 2
+        doc = dm.read_state()
+        if not (doc and dm.ping(doc)):
+            if getattr(args, "no_start", False):
+                print("  ✗ 守护不在运行（--no-start）", file=sys.stderr)
+                return 1
+            ok, msg = dm.start(Path(ROOT))
+            if not ok:
+                print("  ✗ " + msg, file=sys.stderr)
+                return 1
+            doc = dm.read_state()
+        code, out, err = dm.run_request(doc, argv)
+        sys.stdout.write(out.decode("utf-8", "replace"))
+        sys.stderr.write(err.decode("utf-8", "replace"))
+        return code
+    if sub == "shell-init":
+        # 零子进程客户端：当前 shell 内一次函数调用 + 一次套接字往返（真毫秒级）。
+        print(dm.SHELL_INIT_BASH.replace("{py}", sys.executable).replace("{root}", ROOT),
+              end="")
+        return 0
+    if sub == "bench":
+        import subprocess as _sp
+        probes = (["--version"], ["stats", "--check"], ["layers", "--verify"], ["doctor"])
+        doc = dm.read_state()
+        if not (doc and dm.ping(doc)):
+            ok, msg = dm.start(Path(ROOT))
+            if not ok:
+                print("  ✗ " + msg, file=sys.stderr)
+                return 1
+            doc = dm.read_state()
+        rows = []
+        for argv in probes:
+            cold = []
+            for _ in range(max(1, args.runs)):
+                t0 = _time.perf_counter()
+                _sp.run([sys.executable, os.path.join(ROOT, "scripts", "nf.py")] + argv,
+                        cwd=ROOT, stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+                cold.append((_time.perf_counter() - t0) * 1000)
+            warm = []
+            for _ in range(max(1, args.runs)):
+                t0 = _time.perf_counter()
+                dm.run_request(doc, argv)
+                warm.append((_time.perf_counter() - t0) * 1000)
+            rows.append({"argv": argv, "cold_ms": round(min(cold), 1),
+                         "daemon_ms": round(min(warm), 1),
+                         "speedup": round(min(cold) / max(min(warm), 0.001), 1)})
+        if args.json:
+            print(_json.dumps({"kind": "nf-daemon-bench", "runs": max(1, args.runs),
+                               "probes": rows}, ensure_ascii=False, indent=2, sort_keys=True))
+            return 0
+        print("== nf daemon bench（直跑 vs 守护，取 %d 次最小）==" % max(1, args.runs))
+        print("  %-22s %10s %10s %8s" % ("命令", "直跑 ms", "守护 ms", "加速"))
+        for r in rows:
+            print("  %-22s %10.1f %10.1f %7.1fx"
+                  % (" ".join(r["argv"]), r["cold_ms"], r["daemon_ms"], r["speedup"]))
+        return 0
+    print("  ✗ 未知 daemon 子命令：%s" % sub, file=sys.stderr)
+    return 2
+
+
 def _cmd_stats(args) -> int:
     """自述数字实算（出口自动化 · check38 子扫描 1）。"""
     import json as _json          # 本文件按需局部导入（见其余 _cmd_* 的同一习惯）
@@ -4937,6 +5102,8 @@ def main(argv=None) -> int:
         return _cmd_shell(args)
     if args.cmd == "layers":
         return _cmd_layers(args)
+    if args.cmd == "daemon":
+        return _cmd_daemon(args)
     if args.cmd == "help":
         return _cmd_help(args)
     if args.cmd == "stats":
@@ -5070,9 +5237,32 @@ def main(argv=None) -> int:
     from core.pipeline_loader import load_pipeline_file
     from core.storage import Store
 
-    pipeline = load_pipeline_file(args.pipeline)
+    # --pipeline 收「管线 md 路径」**或**「在场管线编号」（极端渗透 D8 实证：此前只当路径，
+    # 传最自然的编号 `--pipeline P01` 会报「管线解析失败：P01」——P01 明明是合法管线，
+    # 属**错误归因**且无修复指引；`nf pipeline dryrun` 的同类参数则明写「管线 md 路径」）。
+    import glob as _glob
+    _pl_arg = str(args.pipeline)
+    _pl_path = _pl_arg if os.path.isfile(_pl_arg) else ""
+    _dirs = [os.path.join(ROOT, "03_管线库")] + sorted(
+        _glob.glob(os.path.join(ROOT, "community", "*", "pipelines")))
+    _avail = [os.path.basename(p)[:-3] for d in _dirs
+              for p in sorted(_glob.glob(os.path.join(d, "*.md")))]
+    if not _pl_path:
+        for _d in _dirs:
+            for _p in sorted(_glob.glob(os.path.join(_d, "*.md"))):
+                _base = os.path.basename(_p)[:-3]
+                if _base.split("_", 1)[0] == _pl_arg or _base == _pl_arg:
+                    _pl_path = _p
+                    break
+            if _pl_path:
+                break
+    pipeline = load_pipeline_file(_pl_path or _pl_arg)
     if pipeline is None:
-        print(f"✗ 管线解析失败：{args.pipeline}", file=sys.stderr)
+        print("✗ 管线解析失败：%s" % _pl_arg, file=sys.stderr)
+        print("  修复指引：--pipeline 收**管线 md 路径**（如 03_管线库/P01_标准管线.md）"
+              "或在场的管线编号；当前可用：%s"
+              % ("（文件在场但解析失败：检查 frontmatter 与结构）" if _pl_path and not _avail
+                 else "、".join(_avail) or "（未发现任何管线）"), file=sys.stderr)
         return 1
 
     store = Store(home=args.store) if args.store else Store()

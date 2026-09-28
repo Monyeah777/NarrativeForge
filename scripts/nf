@@ -7,11 +7,69 @@
 #   ./scripts/nf market --list   # 任意子命令透传
 #
 # 说明：本文件只是启动器，零逻辑——命令真源始终是 scripts/nf.py。
+#
+# 执行层常驻守护快路（2026-09-28）：`nf daemon start` 之后，本启动器优先把命令经
+# 127.0.0.1 的一次套接字往返交给常驻进程执行（热进程内 --version 1.7 ms）。
+# 客户端**只用 bash 内建**（/dev/tcp + printf + read -N）：MSYS/Windows 上每 spawn 一个
+# 外部进程（sed/head）约 100 ms，用外部命令会把收益吃光——实测踩过。
+# 任何一步不成立（没守护状态文件、没有 bash、连不上、头不是数字）都**静默回退**到
+# python 直跑，所以本快路只加速、不改可用性；`nf daemon stop` 即回到原路径。
 set -e
 NF_ROOT=$(cd "$(dirname "$0")" && pwd)
 NF_PY=python3
 command -v python3 >/dev/null 2>&1 || NF_PY=python
+
+# 守护快路（纯内建）：成功即 exit 用命令自身退出码；任何不确定 → return 127 走 python。
+daemon_try() {
+  [ -n "${BASH_VERSION:-}" ] || return 127          # 需要 bash 的 /dev/tcp
+  case "${1:-}" in
+    daemon|shell|serve) return 127 ;;               # 长驻/自指命令不走守护（与守护拒绝面一致）
+  esac
+  NF_STATE="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json"
+  [ -f "$NF_STATE" ] || return 127
+  local s rest
+  IFS= read -r s < "$NF_STATE" || return 127
+  case "$s" in
+    *'"port": '* ) ;; *) return 127 ;;
+  esac
+  rest=${s#*'"port": '}
+  NF_PORT=${rest%%[!0-9]*}
+  rest=${s#*'"token": "'}
+  NF_TOKEN=${rest%%\"*}
+  [ -n "$NF_PORT" ] && [ -n "$NF_TOKEN" ] || return 127
+  { exec 9<>"/dev/tcp/127.0.0.1/$NF_PORT"; } 2>/dev/null || return 127
+  printf 'NFREQ 1 %s\n%s\n%s\n' "$NF_TOKEN" "$PWD" "$#" >&9
+  local NF_A=""
+  for NF_A in "$@"; do printf '%s\n' "$NF_A" >&9; done
+  local NF_CODE="" NF_OLEN="" NF_ELEN=""
+  IFS= read -r NF_CODE <&9 || { exec 9<&-; return 127; }
+  IFS= read -r NF_OLEN <&9 || { exec 9<&-; return 127; }
+  IFS= read -r NF_ELEN <&9 || { exec 9<&-; return 127; }
+  case "$NF_CODE$NF_OLEN$NF_ELEN" in
+    *[!0-9]*) exec 9<&-; return 127 ;;             # 头不是数字 = 不是本协议，回退
+  esac
+  # LC_ALL=C 下 `read -N` 按**字节**读（否则按字符，UTF-8 会短读）
+  if [ "$NF_OLEN" -gt 0 ]; then
+    local NF_OUT=""
+    LC_ALL=C IFS= read -r -N "$NF_OLEN" NF_OUT <&9 || true
+    printf '%s' "$NF_OUT"
+  fi
+  if [ "$NF_ELEN" -gt 0 ]; then
+    local NF_ERR=""
+    LC_ALL=C IFS= read -r -N "$NF_ELEN" NF_ERR <&9 || true
+    printf '%s' "$NF_ERR" >&2
+  fi
+  exec 9<&-
+  exit "$NF_CODE"
+}
+
 if [ "$#" -eq 0 ]; then
   exec "$NF_PY" "$NF_ROOT/nf.py" shell
+fi
+if [ -n "${BASH_VERSION:-}" ]; then
+  daemon_try "$@"
+elif command -v bash >/dev/null 2>&1 \
+     && [ -f "${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json" ]; then
+  exec bash "$0" "$@"                                # 非 bash 外壳但守护在：换 bash 走快路
 fi
 exec "$NF_PY" "$NF_ROOT/nf.py" "$@"

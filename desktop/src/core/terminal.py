@@ -133,7 +133,7 @@ FAMILIES = (
                   "events", "state-front", "worldmodel", "toolface")},
     {"id": "meta", "name": "命令面与终端",
      "summary": "帮助、补全脚本、终端自身（本命令即在此族）",
-     "commands": ("help", "completion", "shell", "terminal")},
+     "commands": ("help", "completion", "shell", "terminal", "daemon")},
 )
 
 #: 斜杠命令词表（`/` 后首个词）：既是 `/x` 形态的判据，也是 MSYS 还原的判据
