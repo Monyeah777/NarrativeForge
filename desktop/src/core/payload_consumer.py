@@ -20,7 +20,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     subs: Dict[str, List[str]] = {}
     from core import conformance_scan as csc
     for doc in csc._module_docs(str(r)):
-        txt = Path(doc).read_text(encoding="utf-8")
+        txt = csc.read_text_cached(doc)
         parsed = csc._fence_yaml(txt, "machine_contract")
         mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
         mid = str((mc or {}).get("id") or "")

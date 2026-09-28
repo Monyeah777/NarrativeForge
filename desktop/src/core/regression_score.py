@@ -59,6 +59,18 @@ def _count(root: str, module: str, fn: str) -> Optional[int]:
 
 
 def evaluate(root: str = ".") -> Dict[str, Any]:
+    """算当前分值（外层）：整个评分**一次只读调用**内共享语料读（见 csc.read_memo）。
+
+    实测：四路扫描器会把同一批文件各读一遍——一次 evaluate 打开 7833 次、其中只有 2354 个
+    不同文件（**70% 冗余**）。作用域严格等于这一次调用（出口即清），因此不跨调用、不跨请求
+    复用，读到陈旧内容的可能性为零；写路径不在此作用域内。
+    """
+    from core import conformance_scan as csc
+    with csc.read_memo():
+        return _evaluate_impl(root)
+
+
+def _evaluate_impl(root: str = ".") -> Dict[str, Any]:
     """算当前分值：{schema, score, signals[], issues[]}（可复现，纯读）。"""
     issues: List[str] = []
     values: Dict[str, float] = {}

@@ -13,10 +13,12 @@
 from __future__ import annotations
 
 import copy
+import contextlib
 import glob
 import json
 import os
 import re
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 try:
@@ -39,6 +41,37 @@ _FENCE_CACHE_MAX = 4096
 #: concept_graph 过去直接调 load_yaml，等于每轮都重解析——与 `_fence_yaml` 的缓存互补）。
 _BODY_CACHE: Dict[str, Any] = {}
 _BODY_CACHE_MAX = 4096
+
+#: 「一次**只读**扫描内共享语料」的读缓存：作用域由 `read_memo()` 显式框定，出口即清。
+#: 必要性（实测）：一次 `regression_score.evaluate` 打开 **7833** 次文件、其中只有 **2354**
+#: 个不同文件——**70% 是冗余读**（同一份包资产被 concept_graph / asset_density / output_forms
+#: 等各读一遍）。作用域严格等于「一次扫描调用」，且这些聚合入口都是纯读（写路径 `--write`
+#: 在聚合**之后**才发生），所以冷却语义与「新起进程」一致：不跨调用、不跨请求复用。
+_READ_MEMO: Optional[Dict[str, str]] = None
+
+
+@contextlib.contextmanager
+def read_memo():
+    """框定「共享语料」的作用域（可嵌套；出口恢复外层）。"""
+    global _READ_MEMO
+    outer, _READ_MEMO = _READ_MEMO, {}
+    try:
+        yield
+    finally:
+        _READ_MEMO = outer
+
+
+def read_text_cached(path) -> str:
+    """读文本：在 `read_memo()` 作用域内，同一路径只读一次（含解码）；域外就是普通读。"""
+    if _READ_MEMO is not None:
+        key = str(path)
+        hit = _READ_MEMO.get(key)
+        if hit is not None:
+            return hit
+    text = Path(path).read_text(encoding="utf-8")
+    if _READ_MEMO is not None:
+        _READ_MEMO[str(path)] = text
+    return text
 
 
 def load_yaml(text: str) -> Any:
@@ -187,8 +220,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for doc in _module_docs(root):
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
-            with open(doc, encoding="utf-8") as fh:
-                text = fh.read()
+            text = read_text_cached(doc)      # 共享语料：同一份模块文档一次只读一遍
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
@@ -224,8 +256,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for proto in sorted(glob.glob(os.path.join(root, "community", "*", "protocol.yaml"))):
         rel = os.path.relpath(proto, root).replace(os.sep, "/")
         try:
-            with open(proto, encoding="utf-8") as fh:
-                data = load_yaml(fh.read())
+            # 共享语料 + 内容键解析（同一份 protocol.yaml 一轮只读一次、只解析一次）
+            data = load_yaml_cached(read_text_cached(proto))
         except Exception as exc:
             issues.append(f"{rel}: protocol.yaml 解析失败 {exc}")
             continue

@@ -6,7 +6,7 @@ scope: 作者目标「任意几个域包可自由组合、包内组件可自由�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/pack_combo.py:a08e655cd1c80ab383955c817b35f1092307d48c5a724d6af2dbd5a72cad34c4
+  - desktop/src/core/pack_combo.py:6bc93900ffdd1ea149e35271b5d32292290ab7becc75f9bfe902985a95621df4
   - scripts/nf.py:4832c83b943a422fa6916b2397131a5d0e668e45fed98548b7fee88c00f52b93
   - docs/combos.md:4d25fe6d366687213df7090badd52b815bdf07f774df856e598d7cf8a1d130de
 ---

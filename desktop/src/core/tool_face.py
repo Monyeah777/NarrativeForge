@@ -42,7 +42,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     candidates = 0
     faces = []
     for doc in csc._module_docs(str(r)):
-        text = Path(doc).read_text(encoding="utf-8")
+        text = csc.read_text_cached(doc)
         parsed = csc._fence_yaml(text, "machine_contract")
         mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
         if not isinstance(mc, dict) or "tool_face" not in mc:

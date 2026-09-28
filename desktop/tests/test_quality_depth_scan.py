@@ -54,11 +54,12 @@ class QualityDepthScanTest(unittest.TestCase):
         self.assertIn("world_model", stats)
         self.assertIn("world_slots", stats)
         # 读取形状（判据，不是计时）：一次纵深扫描里**单份件不得被反复读**。
-        # 实测（v16 后）：平均 3.5 次/件、单件最大 9 次；界限取 14（~1.5× 余量）——
-        # 内容自然增长够用，而「又加了一个对每条目重跑全量读取的扫描器」会把它顶到几十上百。
+        # 走「共享语料」后实测：单件最大 5 次、平均 1.94 次/件（此前 9 次 / 3.48 次）。
+        # 界限取 8（~1.6× 余量）：内容自然增长够用，而「又加了一个对每条目重跑全量读取的
+        # 扫描器」或「共享语料被拆掉」会立刻把它顶上去。
         worst = max(reads.values())
         self.assertLessEqual(
-            worst, 14, "单份件在一次纵深扫描里被读了 %d 次（疑似重复读回归）" % worst)
+            worst, 8, "单份件在一次纵深扫描里被读了 %d 次（疑似重复读回归）" % worst)
 
 
 if __name__ == "__main__":

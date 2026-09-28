@@ -297,8 +297,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for doc in module_docs:
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
-            with open(doc, encoding="utf-8") as fh:
-                text = fh.read()
+            text = _csc.read_text_cached(doc)     # 共享语料（memo 生效时同文只读一遍）
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
@@ -331,8 +330,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for doc in pipeline_docs:
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
-            with open(doc, encoding="utf-8") as fh:
-                text = fh.read()
+            text = _csc.read_text_cached(doc)     # 共享语料（memo 生效时同文只读一遍）
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
@@ -349,8 +347,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     for proto in protocol_files:
         rel = os.path.relpath(proto, root).replace(os.sep, "/")
         try:
-            with open(proto, encoding="utf-8") as fh:
-                data = _csc.load_yaml(fh.read())   # 统一加载器（libyaml 优先）
+            # 共享语料 + 内容键解析：同一份 protocol.yaml 在一轮里只读一次、只解析一次
+            data = _csc.load_yaml_cached(_csc.read_text_cached(proto))
         except Exception as exc:
             issues.append(f"{rel}: protocol.yaml 解析失败 {exc}")
             continue

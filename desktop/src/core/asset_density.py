@@ -12,6 +12,7 @@ import hashlib
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+from core import conformance_scan as csc
 
 
 #: 引用度普查的内容键缓存：键 = **语料与键集的 sha256**（见 `usage_scan`）。
@@ -28,7 +29,7 @@ def _keys_of(path: Path, text: Optional[str] = None) -> List[str]:
     keys = set(re.findall(r"[A-Z][A-Z0-9_]*", path.stem))
     if text is None:
         try:
-            text = path.read_text(encoding="utf-8")
+            text = csc.read_text_cached(path)
         except OSError:
             return sorted(keys)
     head = text[:6000]
@@ -51,7 +52,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
             if p.name == "README.md":
                 continue
             try:
-                text = p.read_text(encoding="utf-8")
+                text = csc.read_text_cached(p)
             except OSError as exc:
                 issues.append("%s 不可读：%s" % (p, exc))
                 continue
@@ -92,7 +93,7 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     for base in ("04_模块库", "community", "docs"):
         for p in (r / base).rglob("*.md"):
             try:
-                corpus.append(p.read_text(encoding="utf-8"))
+                corpus.append(csc.read_text_cached(p))
             except OSError:
                 continue
     # 内容键：语料（逐件 + 分隔符，防止跨件拼接歧义）与键集一起哈希。
@@ -135,7 +136,7 @@ def thickness_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
             if p.name == "README.md":
                 continue
             try:
-                text = p.read_text(encoding="utf-8")
+                text = csc.read_text_cached(p)
             except OSError:
                 continue
             if not text.strip():

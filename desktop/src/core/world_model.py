@@ -632,7 +632,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     for doc in csc._module_docs(str(r)):
         rel = os.path.relpath(doc, str(r)).replace(os.sep, "/")
         try:
-            text = Path(doc).read_text(encoding="utf-8")
+            text = csc.read_text_cached(doc)
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue

@@ -318,6 +318,17 @@ CONTRACTS: List[Tuple[str, Callable[[str], Tuple[bool, str]], str]] = [
 
 
 def run(root: str = ".") -> Dict[str, Any]:
+    """跑全部契约 → 封缄报告（外层）：一次只读调用内共享语料读。
+
+    27 项契约里多路扫描器会读同一批协议件 / 模块文档；作用域严格等于这一次 `run()`
+    （出口即清，不跨调用复用），因此判定与「新起进程」一致。
+    """
+    from core import conformance_scan as _csc
+    with _csc.read_memo():
+        return _run_impl(root)
+
+
+def _run_impl(root: str = ".") -> Dict[str, Any]:
     """跑全部契约 → 封缄报告（含 Merkle 根与 verdict）。"""
     rows = []
     for cid, fn, desc in CONTRACTS:

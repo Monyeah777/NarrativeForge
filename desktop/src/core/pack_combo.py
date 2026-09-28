@@ -57,7 +57,7 @@ def cache_clear() -> None:
 
 def _read_json(path: Path) -> Any:
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(csc.read_text_cached(path))
     except (OSError, ValueError):
         return None
 
@@ -79,7 +79,7 @@ def _pack_dirs(root: str = ".") -> List[Path]:
 
 def _parse_protocol(path: Path) -> Dict[str, Any]:
     """极小读取：只取组合需要的键（id / pipeline / module_id_range / mount_layers）。"""
-    text = path.read_text(encoding="utf-8")
+    text = csc.read_text_cached(path)
     out: Dict[str, Any] = {"dir": path.parent.name}
     m = re.search(r"(?m)^\s*id:\s*(\S+)\s*$", text)
     out["id"] = m.group(1) if m else path.parent.name
@@ -117,7 +117,7 @@ def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     out: Dict[str, Dict[str, Any]] = {}
     for p in sorted(Path(root).glob("community/*/modules/*.md")):
         try:
-            text = p.read_text(encoding="utf-8")
+            text = csc.read_text_cached(p)
         except OSError:
             continue
         parsed = csc._fence_yaml(text, "machine_contract")
@@ -153,7 +153,7 @@ def _core_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     out: Dict[str, Dict[str, Any]] = {}
     for p in sorted(Path(root).glob("04_模块库/*/*.md")):
         try:
-            text = p.read_text(encoding="utf-8")
+            text = csc.read_text_cached(p)
         except OSError:
             continue
         mc = (csc._fence_yaml(text, "machine_contract") or {}).get("machine_contract") or {}
@@ -963,7 +963,7 @@ def combo_register(root: str, name: str, category: str, pipeline: str,
     from core import domain_pack as dpk
 
     doc_path = Path(root) / dpk.DOC02_REL
-    text = doc_path.read_text(encoding="utf-8")
+    text = csc.read_text_cached(doc_path)
     did02 = False
     if "%s（community/%s/）" % (name, name) not in text:
         m = re.search(r"(?m)^## 9\.", text)

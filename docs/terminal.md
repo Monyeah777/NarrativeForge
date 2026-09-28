@@ -211,7 +211,7 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 
 | 命令 | 冷启动直跑 | 守护稳态 |
 |---|---|---|
-| `nf score` | 8.44 s | **4.09 s** |
+| `nf score` | 7.5–8.4 s | **~3.9 s** |
 | `nf doctor` | 697 ms | **212–385 ms**（同机抖动范围内） |
 | `nf conformance` | 3.07 s | **2.19 s** |
 

@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-28",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "逐件校验共享读（index_verify 1.54s→0.72s）+ 作用域出口即清判据。",
+  "note": "一次只读调用内共享语料（evaluate −548ms；9 个扫描器接线）+ 纵清单件读上限收紧到 8。",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

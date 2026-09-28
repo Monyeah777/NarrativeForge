@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：一次只读调用内共享语料（`evaluate` −548 ms / −14% · 纵清单件最大读 9→5）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
+  ① **先量上限**：一次 `regression_score.evaluate` 打开 **7833** 次文件、其中只有 **2354** 个不同文件——**70% 是冗余读**（同一份包资产被 `concept_graph` / `asset_density` / `output_forms` 等各读一遍；最热的件被读 9–10 次）。
+  ② **修法＝共享语料作用域**：`conformance_scan` 增 `read_memo()` / `read_text_cached()`，作用域由三个**只读聚合入口**显式框定（`regression_score.evaluate` / `quality_depth_scan.scan` / `conformance_report.run`），**出口即清**——不跨调用、不跨请求复用（故与「新起进程」看到同一份仓库事实）；写路径在聚合之后，不在作用域内。接入 9 个扫描器的读点（`asset_density` / `concept_graph` / `pack_combo` / `tool_face` / `world_model` / `payload_registry` / `payload_consumer` / `conformance_scan` / `schema_lint`），`protocol.yaml` 顺带接入**内容键解析**（同文不重复解析）。
+  ③ **实测**（**同进程 A/B，min of 3**——这台机器噪声 ±10%，单跑会骗人）：`evaluate` **3828 ms → 3280 ms（−548 ms / −14%）**；`qds.scan` 单件最大读 **9 → 5**、均值 **3.48 → 1.94**；端到端 `nf score` 冷 7.5–8.4 s → 守护稳态 **~3.9 s**。
+  ④ **判据**（落 check12）：纵深扫描的单件读上限由 14 **收紧到 8**（实测 5，留 1.6× 余量）——共享语料被拆掉、或又添一个「对每条目重跑全量读」的扫描器，都会立刻红。
+  ⑤ **过程证据（机械改写必须逐处复核）**：批量替换脚本按**子串**匹配，把 `doc_path.read_text(...)` 误改成 `doc_csc.read_text_cached(path)`——**ruff 的 F821 当场抓住**；修正后把全部 27 处接线逐行复核了一遍（并把这一步写进提交信息，作为纪律留痕）。
+
 - **执行层：逐件校验的共享读（`index_verify` 1.54 s → 0.72 s · 热跑 `score` 再降 0.3 s）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
   ① **量化**：热跑剖析显示 `output_forms.index_verify` **一次调用里同一份产物被读 5–8 遍**（detect / 查重 / schema / 双源 / 复算）——**3027 次读盘**、`read_text` 累计 0.55 s，占该函数 1.54 s 的大头（T4 复算反而便宜）。
   ② **修法＝作用域共享读**：新增 `_memo_reads()` 上下文 + `_read_text_cached` / `_read_bytes_cached`，作用域**严格等于一次 `index_verify` 调用**（出口即清）——因此不可能读到陈旧内容；写路径（`render_outputs(write=True)`）从不进入该作用域。热读点全部接入：`_read_json`、`detect`、`_check_json`、`_dual_source_check`、`_recompute_entry`，以及 8 处校验器内联读（批量机械替换 + 逐处核对；读助手自身那行刻意排除）。

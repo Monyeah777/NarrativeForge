@@ -29,6 +29,7 @@ import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Sequence, Set, Tuple
+from core import conformance_scan as csc
 
 BLOCK_MARKER = "concept_graph"
 LAYERS = ("P00", "P10", "P20", "P30", "P40", "P50", "P60", "P70", "P80")
@@ -61,7 +62,7 @@ def load_graph(asset_path: str | Path = DEFAULT_ASSET) -> Dict[str, Any]:
     if not path.is_file():
         raise ClosureError("概念图资产不存在：%s（修复指引：给出域包内 assets/CONCEPT_GRAPH.md 路径）"
                            % path)
-    body = fenced_block(path.read_text(encoding="utf-8"))
+    body = fenced_block(csc.read_text_cached(path))
     if not body:
         raise ClosureError("资产缺 `%s:` 机器可读块：%s（修复指引：补 ```yaml 围栏块，"
                            "块内首键为 %s）" % (BLOCK_MARKER, path, BLOCK_MARKER))
@@ -82,7 +83,7 @@ def graph_assets(root: str = ".") -> List[str]:
     for pattern in SHELF_GLOBS:
         for f in sorted(glob.glob(os.path.join(root, pattern))):
             try:
-                text = Path(f).read_text(encoding="utf-8")
+                text = csc.read_text_cached(f)
             except OSError:
                 continue
             if fenced_block(text):

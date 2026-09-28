@@ -19,6 +19,17 @@ from typing import Any, Dict, List, Tuple
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """纵深汇总（外层）：一次只读调用内共享语料读（见 `conformance_scan.read_memo`）。
+
+    十几个子扫描器反复读同一批包资产 / 模块文档（实测同一份件被读 9–10 遍）；作用域严格等于
+    这一次调用，出口即清——不跨调用复用，故与「新起进程」看到同一份仓库事实。
+    """
+    from core import conformance_scan as _csc
+    with _csc.read_memo():
+        return _scan_impl(root)
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     from core import asset_density as ad
     from core import asset_ledger_projection as alp
     from core import concept_graph as cg
