@@ -18,12 +18,36 @@ from __future__ import annotations
 from typing import Any, Dict, List, Tuple
 
 
+#: `scan()` 的输入面：**所有子扫描器的面取并集**（语料 + 协议/文档 + 代码 + 判据脚本）。
+#: 面很宽，所以缓存只在常驻语料层在位时启用（见 `conformance_scan.memo_pair` 的说明）。
+QD_INPUTS = ("03_管线库/**/*", "04_模块库/**/*", "05_资产库/**/*", "community/**/*",
+             "library/**/*", "patterns/**/*", "decisions/**/*",
+             "protocol/**/*", "docs/**/*", "01_核心协议.md", "02_联动注册表.md",
+             "06_Agent执行协议.md", "07_官方核心出厂与社区预设导航.md",
+             "verify.sh", "README.md", "README.en.md", "ROUTES.md", "llms.txt",
+             "STRATEGY.md", "AGENTS.md",
+             "desktop/**/*.py", "scripts/**/*", ".github/scripts/*.py")
+
+
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """纵深汇总（外层）：一次只读调用内共享语料读（见 `conformance_scan.read_memo`）。
 
     十几个子扫描器反复读同一批包资产 / 模块文档（实测同一份件被读 9–10 遍）；作用域严格等于
     这一次调用，出口即清——不跨调用复用，故与「新起进程」看到同一份仓库事实。
+
+    2026-09-29 再叠一层**内容键缓存**（输入面见 `QD_INPUTS`，是各子扫描器面的并集；宽面 ⇒
+    `require_resident=True`）：改完文件的第一条重命令里，本函数曾是最大的一笔（profile 521 ms）。
+    「读盘面 ⊆ 输入面」由 `test_conformance_scan.DerivedResultCacheTest` 的同一张表守着。
     """
+    from core import conformance_scan as _csc
+    if _csc.resident_active():
+        return _csc.memo_pair("quality-depth", QD_INPUTS, _inner, root,
+                              require_resident=True)
+    return _inner(root)
+
+
+def _inner(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """真算（含共享语料作用域）。"""
     from core import conformance_scan as _csc
     with _csc.read_memo():
         return _scan_impl(root)

@@ -20,6 +20,7 @@ from core import conformance_scan as cs  # noqa: E402
 from core import layer_model as lm  # noqa: E402
 from core import output_forms as of  # noqa: E402
 from core import purity_scan as ps  # noqa: E402
+from core import quality_depth_scan as qd  # noqa: E402
 from core import schema_lint as sl  # noqa: E402
 
 _ROOT_KEY = os.path.normcase(os.path.abspath(ROOT))
@@ -352,6 +353,11 @@ class DerivedResultCacheTest(unittest.TestCase):
                 "clear": lambda: cs._DERIVED_MEMO.pop("asset-ledger-verify", None),
                 "owner": alp, "impl": "_verify_impl",
                 "run": lambda: alp.verify(ROOT), "resident": True},
+            "quality_depth_scan.scan": {
+                "patterns": qd.QD_INPUTS,
+                "clear": lambda: cs._DERIVED_MEMO.pop("quality-depth", None),
+                "owner": qd, "impl": "_inner",
+                "run": lambda: qd.scan(ROOT), "resident": True},
         }
 
     def _run(self, site):

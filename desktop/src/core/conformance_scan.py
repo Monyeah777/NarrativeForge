@@ -135,7 +135,28 @@ def clear_resident() -> None:
 
 
 def _resident_key(path) -> str:
-    return os.path.normcase(os.path.abspath(str(path)))
+    """路径 → 归一化键（`normcase(abspath)`）——**带记忆**。
+
+    依据（实测，2026-09-29 profile）：一次 `evaluate` 里本函数被调 **17628 次**、单独花掉 **71 ms**，
+    而它只是 `abspath + normcase`（各约 2 µs）。热路径（`read_text_cached` / `_payload_digest` /
+    常驻层的每次查表）都按**同一批路径**反复调它，所以按 `(cwd, 传入写法)` 记忆是安全的：
+    `abspath` 只依赖 cwd，而 cwd 在**一次只读调用内**不变（守护逐请求 chdir，不在一段中途改）。
+    """
+    raw = str(path)
+    memo_key = (os.getcwd(), raw)
+    hit = _KEY_CACHE.get(memo_key)
+    if hit is not None:
+        return hit
+    key = os.path.normcase(os.path.abspath(raw))
+    if len(_KEY_CACHE) >= _KEY_CACHE_MAX:
+        _KEY_CACHE.clear()
+    _KEY_CACHE[memo_key] = key
+    return key
+
+
+#: `_resident_key` 的记忆表（见其说明）：到上限整批清，避免无界增长。
+_KEY_CACHE: Dict[Tuple[str, str], str] = {}
+_KEY_CACHE_MAX = 65536
 
 
 def _resident_under(key: str) -> bool:
