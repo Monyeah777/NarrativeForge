@@ -43,24 +43,24 @@ def _keys_of(path: Path, text: Optional[str] = None) -> List[str]:
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
-    r = Path(root)
     issues: List[str] = []
     rows = []
     patterns = ["community/*/assets/*.md", "05_资产库/用户自定义/*.md"]
     for pat in patterns:
-        for p in sorted(r.glob(pat)):
-            if p.name == "README.md":
+        # 走共享枚举器（`os.scandir` 单遍 + 作用域内子树清单复用）：同一棵 community
+        # 过去被 scan / thickness / usage 各自用 Path.glob/rglob 走了一遍。
+        for rel in csc.iter_files(root, pat):
+            if rel.rsplit("/", 1)[-1] == "README.md":
                 continue
             try:
-                text = csc.read_text_cached(p)
+                text = csc.read_text_cached(Path(root) / rel)
             except OSError as exc:
-                issues.append("%s 不可读：%s" % (p, exc))
+                issues.append("%s 不可读：%s" % (rel, exc))
                 continue
             if not text.strip():
-                issues.append("%s 为空档（0 字符）" % p)
+                issues.append("%s 为空档（0 字符）" % rel)
                 continue
-            keys = _keys_of(p, text)
-            rel = p.relative_to(r).as_posix()
+            keys = _keys_of(Path(rel), text)
             pkg = rel.split("/")[1] if rel.startswith("community") else "官方"
             rows.append({"package": pkg, "file": rel,
                          "keys": len(keys), "key_list": keys,
@@ -81,19 +81,20 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     FAIL 面留空（纯统计）：zero_usage 为「注册了但全语料无引用」的键清单，
     供作者裁决（低信息键候选），不自动删。
     """
-    r = Path(root)
     keys: Dict[str, str] = {}
     for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
-        for p in r.glob(pat):
-            if p.name == "README.md":
+        for rel in csc.iter_files(root, pat):
+            if rel.rsplit("/", 1)[-1] == "README.md":
                 continue
-            for k in _keys_of(p):
-                keys.setdefault(k, p.relative_to(r).as_posix())
+            for k in _keys_of(Path(rel)):
+                keys.setdefault(k, rel)
     corpus: List[str] = []
+    # `(r/base).rglob("*.md")` ≡ `Path.glob(base + "/**/*.md")`：改走共享枚举器后，
+    # 已在作用域里建过的子树清单直接复用（community 这棵树不再被第三次走）。
     for base in ("04_模块库", "community", "docs"):
-        for p in (r / base).rglob("*.md"):
+        for rel in csc.iter_files(root, base + "/**/*.md"):
             try:
-                corpus.append(csc.read_text_cached(p))
+                corpus.append(csc.read_text_cached(Path(root) / rel))
             except OSError:
                 continue
     # 内容键：语料（逐件 + 分隔符，防止跨件拼接歧义）与键集一起哈希。
@@ -127,26 +128,24 @@ def thickness_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
 
     low = 空/过短(<200字) 或 无键且无小节（低信息档候选）；只报告不删（issues 空）。
     """
-    r = Path(root)
     import re as _re
 
     rows = []
     for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
-        for p in sorted(r.glob(pat)):
-            if p.name == "README.md":
+        for rel in csc.iter_files(root, pat):
+            if rel.rsplit("/", 1)[-1] == "README.md":
                 continue
             try:
-                text = csc.read_text_cached(p)
+                text = csc.read_text_cached(Path(root) / rel)
             except OSError:
                 continue
             if not text.strip():
                 continue
-            keys = _keys_of(p, text)
+            keys = _keys_of(Path(rel), text)
             lines = text.splitlines()
             sections = sum(1 for ln in lines if _re.match(r"^#{1,3}\s", ln))
             tables = sum(1 for ln in lines if ln.lstrip().startswith("|"))
             low = len(text) < 200 or (not keys and sections == 0)
-            rel = p.relative_to(r).as_posix()
             pkg = rel.split("/")[1] if rel.startswith("community") else "官方"
             rows.append({"package": pkg, "file": rel, "chars": len(text),
                          "keys": len(keys), "sections": sections,
