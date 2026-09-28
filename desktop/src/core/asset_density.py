@@ -95,63 +95,102 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     return issues, stats
 
 
+class _Matcher:
+    """键集固定时的 **Aho–Corasick** 自动机：**建一次，多份文本复用**。
+
+    2026-09-29 实测（一个真事故）：上一版把自动机**逐件各建一次**（921 件）——建机成本
+    ≈2 ms × 921 ≈ **2.0 s**，比「拼成一整条一次扫完」（0.3 s）**慢 6 倍**。自动机只由**键集**
+    决定，所以按键集缓存复用：逐件扫描就只剩 O(该件长度)，而逐件结果又能按内容缓存。
+    """
+
+    __slots__ = ("_goto", "_out", "_fail", "keys")
+
+    def __init__(self, keys):
+        from collections import deque
+        self.keys = [str(k) for k in keys]
+        goto: List[Dict[str, int]] = [{}]
+        out: List[List[str]] = [[]]
+        fail: List[int] = [0]
+        for k in self.keys:
+            node = 0
+            for ch in k:
+                nxt = goto[node].get(ch)
+                if nxt is None:
+                    nxt = len(goto)
+                    goto.append({})
+                    out.append([])
+                    fail.append(0)
+                    goto[node][ch] = nxt
+                node = nxt
+            out[node].append(k)
+        queue = deque(goto[0].values())
+        while queue:
+            node = queue.popleft()
+            for ch, nxt in goto[node].items():
+                f = fail[node]
+                while f and ch not in goto[f]:
+                    f = fail[f]
+                fail[nxt] = goto[f].get(ch, 0)
+                out[nxt] = out[nxt] + out[fail[nxt]]   # 输出沿失败链传播（互相包含的键都算）
+                queue.append(nxt)
+        self._goto, self._out, self._fail = goto, out, fail
+
+    def counts(self, blob: str) -> Dict[str, int]:
+        """一遍扫过 `blob`：按键盘下每次出现的位置，再**按键做非重叠贪心计数**
+        （`pos > 上次命中结束位置` 才计数）——`str.count` 的左优先非重叠语义就是这样。"""
+        _goto, _out, _fail = self._goto, self._out, self._fail
+        positions: Dict[str, List[int]] = {}
+        node = 0
+        for i, ch in enumerate(blob):
+            while node and ch not in _goto[node]:
+                node = _fail[node]
+            node = _goto[node].get(ch, 0)
+            for k in _out[node]:
+                positions.setdefault(k, []).append(i - len(k) + 1)
+        counts: Dict[str, int] = {}
+        for k in self.keys:
+            n, last_end = 0, -1
+            for pos in positions.get(k, ()):            # 位置天然升序
+                if pos > last_end:
+                    n += 1
+                    last_end = pos + len(k) - 1
+            counts[k] = n
+        return counts
+
+
+#: 键集 → 自动机（上限几份：一次普查只用一份键集）。键集变了自然换机，无需手工失效。
+_MATCHERS: Dict[str, "_Matcher"] = {}
+_MATCHERS_MAX = 4
+
+
+def _matcher(keys) -> Optional["_Matcher"]:
+    """按**键集内容**取自动机；空键 / 单键不值得建机（参考实现更快也更好懂）→ None。"""
+    str_keys = [str(k) for k in keys]
+    if "" in str_keys or len(str_keys) < 2:
+        return None
+    key = hashlib.sha256("\x01".join(sorted(str_keys)).encode("utf-8")).hexdigest()
+    got = _MATCHERS.get(key)
+    if got is None:
+        if len(_MATCHERS) >= _MATCHERS_MAX:
+            _MATCHERS.clear()
+        got = _Matcher(str_keys)
+        _MATCHERS[key] = got
+    return got
+
+
 def count_keys(blob: str, keys) -> Dict[str, int]:
     """数每个键在 `blob` 里的出现次数——**与 `str.count` 逐字节同语义**（非重叠、互相包含都算）。
 
     为什么不用一行 `{k: blob.count(k) for k in keys}`：那是「1499 个键 × 3.5 MB 语料」= **5.2 GB**
-    的字符扫描，实测 **3.11 s**（profile 里单笔最大，且每个新内容状态都要重付一遍）。
-
-    这里走 **Aho–Corasick**：先建一次自动机（键集决定），再**一遍**扫过语料，把每次出现的位置
-    按键盘下来；最后**按键做非重叠贪心计数**（`pos > 上次命中结束位置` 才计数）——`str.count` 的
-    左右优先非重叠语义就是这样。互相包含的键（AB / ABC）各自独立计数，不会被 alternation 吃掉。
-    等价性由 `test_asset_density.KeyCountEquivalenceTest` 守着（随机串 + 重叠/嵌套/空键 + 真语料）。
+    的字符扫描，实测 **3.11 s**（profile 里单笔最大，且每个新内容状态都要重付一遍）。走自动机后
+    同一批数字只要 ~0.3 s。等价性由 `test_asset_density.KeyCountEquivalenceTest` 守着
+    （随机串 400 例 + 重叠/嵌套/空键边界 + 真语料逐键比对）。
     """
-    from collections import deque
-    keys = [str(k) for k in keys]
-    if "" in keys or len(keys) < 2:                    # 空键（`str.count("")`=len+1）与单键：走参考实现
-        return {k: blob.count(k) for k in keys}
-    goto: List[Dict[str, int]] = [{}]
-    out: List[List[str]] = [[]]
-    fail: List[int] = [0]
-    for k in keys:
-        node = 0
-        for ch in k:
-            nxt = goto[node].get(ch)
-            if nxt is None:
-                nxt = len(goto)
-                goto.append({})
-                out.append([])
-                fail.append(0)
-                goto[node][ch] = nxt
-            node = nxt
-        out[node].append(k)
-    queue = deque(goto[0].values())
-    while queue:
-        node = queue.popleft()
-        for ch, nxt in goto[node].items():
-            f = fail[node]
-            while f and ch not in goto[f]:
-                f = fail[f]
-            fail[nxt] = goto[f].get(ch, 0)
-            out[nxt] = out[nxt] + out[fail[nxt]]       # 输出沿失败链传播（互相包含的键都算）
-            queue.append(nxt)
-    positions: Dict[str, List[int]] = {}
-    node = 0
-    for i, ch in enumerate(blob):
-        while node and ch not in goto[node]:
-            node = fail[node]
-        node = goto[node].get(ch, 0)
-        for k in out[node]:
-            positions.setdefault(k, []).append(i - len(k) + 1)
-    counts: Dict[str, int] = {}
-    for k in keys:
-        n, last_end = 0, -1
-        for pos in positions.get(k, ()):                # 位置天然升序
-            if pos > last_end:
-                n += 1
-                last_end = pos + len(k) - 1
-        counts[k] = n
-    return counts
+    str_keys = [str(k) for k in keys]
+    matcher = _matcher(str_keys)
+    if matcher is None:
+        return {k: blob.count(k) for k in str_keys}
+    return matcher.counts(blob)
 
 
 def count_keys_additive(texts, keys) -> Dict[str, int]:
@@ -172,12 +211,14 @@ def count_keys_additive(texts, keys) -> Dict[str, int]:
     if any("\n" in k for k in keys):
         return count_keys("\n".join(texts), keys)
     keys_key = hashlib.sha256("\x01".join(sorted(keys)).encode("utf-8")).hexdigest()
+    matcher = _matcher(keys)                        # 自动机按**键集**复用（别逐件重建，实测慢 6 倍）
     totals = {k: 0 for k in keys}
     for text in texts:
         ck = (hashlib.sha256(text.encode("utf-8")).hexdigest(), keys_key)
         per = _FILE_COUNT_CACHE.get(ck)
         if per is None:
-            per = count_keys(text, keys)
+            per = matcher.counts(text) if matcher is not None \
+                else {k: text.count(k) for k in keys}
             sparse = {k: n for k, n in per.items() if n}      # 稀疏：单件里绝大多数键一次都不出现
             if len(_FILE_COUNT_CACHE) >= _FILE_COUNT_CACHE_MAX:
                 _FILE_COUNT_CACHE.clear()
