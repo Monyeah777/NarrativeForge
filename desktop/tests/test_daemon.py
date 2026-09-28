@@ -193,18 +193,30 @@ class DaemonFreshnessTest(DaemonHarness):
 
 class DaemonSpeedTest(DaemonHarness):
     def test_daemon_is_much_faster_than_cold_start(self):
-        """相对判据（机器无关）：同一命令，守护往返 < 冷启动/3。"""
+        """相对判据（机器无关）：守护**稳态**往返 < 冷启动/3。
+
+        必须**先预热再测**：守护的**首次**请求还要把 CLI 模块载进来（导入 + 源码指纹，几十毫秒），
+        把它算进"稳态"会在解释器启动很快的机器（Linux CI 冷启动仅数十毫秒）上让 3× 判据不成立
+        ——那是测量口径错，不是性能不达标。故：预热一次 → 取 3 次最小值作稳态；冷启动取 2 次最小值。
+        """
         argv = ["--version"]
-        t0 = time.perf_counter()
-        subprocess.run([sys.executable, str(ROOT / "scripts" / "nf.py")] + argv,
-                       cwd=str(ROOT), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        cold_ms = (time.perf_counter() - t0) * 1000
-        t0 = time.perf_counter()
-        dm.run_request(self._state(), argv, cwd=str(ROOT))
-        warm_ms = (time.perf_counter() - t0) * 1000
+        doc = self._state()
+        dm.run_request(doc, argv, cwd=str(ROOT))            # 预热（首次请求含模块装载）
+        cold = []
+        for _ in range(2):
+            t0 = time.perf_counter()
+            subprocess.run([sys.executable, str(ROOT / "scripts" / "nf.py")] + argv,
+                           cwd=str(ROOT), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            cold.append((time.perf_counter() - t0) * 1000)
+        warm = []
+        for _ in range(3):
+            t0 = time.perf_counter()
+            dm.run_request(doc, argv, cwd=str(ROOT))
+            warm.append((time.perf_counter() - t0) * 1000)
+        cold_ms, warm_ms = min(cold), min(warm)
         self.assertGreater(cold_ms, 0)
         self.assertLess(warm_ms * 3, cold_ms,
-                        "守护往返 %.1f ms 应远小于冷启动 %.1f ms" % (warm_ms, cold_ms))
+                        "守护稳态往返 %.1f ms 应远小于冷启动 %.1f ms" % (warm_ms, cold_ms))
 
 
 class DaemonInProcessServerTest(unittest.TestCase):
