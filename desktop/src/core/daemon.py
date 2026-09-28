@@ -277,6 +277,8 @@ _RESP_CACHE: Dict[Any, Tuple[int, int, bytes, bytes]] = {}
 _RESP_CACHE_MAX = 256
 #: 当前监听件（`serve_forever(watch=True)` 装；单测可注入假件）。
 _WATCHER: Optional[Any] = None
+#: 关闭「常驻语料层」的开关（诊断/对照用）：设了就整批作废且不再收录，退回每次重读。
+RESIDENT_ENV_OFF = "NF_NO_RESIDENT"
 #: 观测计数（`nf daemon status` 会显示；单测据此判「命中/未命中」）。
 _CACHE_STATS: Dict[str, int] = {"hits": 0, "misses": 0, "stores": 0, "skipped": 0}
 
@@ -317,11 +319,48 @@ def _watch_generation() -> Optional[int]:
     return int(w.generation)
 
 
+def _sync_resident(root: Path) -> None:
+    """按监听给出的**确知变更**维护常驻语料层（`conformance_scan._RESIDENT`）。
+
+    fail-closed 三条：① 没有监听 / 监听不健康 → 常驻层整批作废且不安装；② 监听说不清变了什么
+    （缓冲溢出、路径解不出、只跳代际）→ 整批作废重建；③ 只有「确知哪些路径变了」才做精确失效。
+
+    依据（2026-09-29 实测）：不加这一层，改一个文件之后守护的第一条重命令要 **1.6–2.0 s**
+    （整棵语料重新枚举 + 重读，而真正变了的只有一件）；加上之后只失效被改的那几件。
+    """
+    from core import conformance_scan as csc
+    if os.environ.get(RESIDENT_ENV_OFF):
+        if csc.resident_active():        # 显式关闭：整批作废且不再收录（诊断/对照用）
+            csc.clear_resident()
+        return
+    w = _WATCHER
+    if w is None or not getattr(w, "healthy", False):
+        if csc.resident_active():
+            csc.clear_resident()
+        return
+    if not csc.resident_active():
+        csc.install_resident(root)
+    take = getattr(w, "take_changes", None)
+    if take is None:                     # 不提供「确知变更面」的监听件 → 当说不清（整批作废）
+        csc.clear_resident()
+        csc.install_resident(root)
+        return
+    paths, unknown = take()
+    if unknown:
+        csc.clear_resident()
+        csc.install_resident(root)
+    elif paths:
+        csc.drop_resident(paths)
+
+
 def cache_stats() -> Dict[str, Any]:
     """响应缓存观测面（供 `nf daemon status` 与单测）。"""
     gen = _watch_generation()
+    from core import conformance_scan as _csc
     return {"enabled": gen is not None, "generation": gen,
-            "entries": len(_RESP_CACHE), **dict(_CACHE_STATS)}
+            "entries": len(_RESP_CACHE), **dict(_CACHE_STATS),
+            # 常驻语料层的规模也一并报出来：它是「不重读」的账本，出问题时第一个要看的就是它。
+            "resident": _csc.resident_stats()}
 
 
 def reset_response_cache() -> None:
@@ -384,6 +423,7 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
         msg = ("守护进程内拒跑长驻/嵌套命令 `nf %s`"
                "（修复指引：在普通终端里直接跑；守护只承载一次性命令）\n" % argv[0])
         return 2, b"", msg.encode("utf-8")
+    _sync_resident(root)          # 常驻层按监听变更集失效（说不清就整批作废）——必须在任何读之前
     # 响应缓存：**只在「树没变」有可证信号时**才会命中（见 `_watch_generation`）。
     # 键必须含**会改变输出文本**的环境面：`terminal` 按 NO_COLOR / CLICOLOR_FORCE 决定是否着色，
     # 不含它就会出现「在无色环境里回放了带 ANSI 的旧响应」。
@@ -534,6 +574,8 @@ def serve_forever(root: Path, idle_timeout: float = 0.0, ready: Optional[Any] = 
         if watcher is not None:
             watcher.stop()
         _WATCHER = None
+        from core import conformance_scan as _csc
+        _csc.clear_resident()      # 常驻语料层随守护一起消失（进程内起服务的测试不留残影）
         reset_response_cache()
         clear_state()
         srv.close()

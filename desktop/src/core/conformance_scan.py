@@ -67,6 +67,99 @@ _PAT_MEMO: Optional[Dict[Tuple[str, str], Tuple[str, ...]]] = None
 #: 键即目录 ⇒ 目录没变清单就一样；作用域出口即清（与冷读语义一致）。
 _TREE_MEMO: Optional[Dict[str, Tuple[str, ...]]] = None
 
+#: **常驻层**（`_RESIDENT`）：跨调用、跨请求活着的一份「语料正文 + 目录条目」。
+#:
+#: 为什么需要它（2026-09-29 实测）：改一个文件之后，守护的第一条重命令要 **1.6–2.0 s**——
+#: 因为上面那些作用域缓存**出口即清**，下一个请求要把整棵语料重新枚举（1484 个目录 / ~2000 次
+#: `scandir`）并重读（~2500 次 open）。而其中**只有被改的那一件**真的变了。
+#:
+#: 为什么它不破坏「热进程 == 新起进程」这条头号不变式：它**只在守护带监听且监听健康时安装**，
+#: 且**只按监听给出的确知路径失效**；监听说不清（溢出 / 路径解不出 / 只跳代际没给路径）时，调用方
+#: 必须 `clear_resident()` 整批作废。也就是说它比响应缓存**不多信任任何东西**——响应缓存本来就
+#: 靠同一条「代际没变 ⇒ 树没变」的判据（同一条 `watch.selfcheck` 机制自检 + 卷类型闸门守着）。
+#: 只缓存**监听根之下**的件；根外的读一律走原路（根外没有变更通知，无从失效）。
+_RESIDENT: Optional[Dict[str, Any]] = None
+#: 常驻层的容量上界（目录条数与正文条数）：超出即停止收录（不影响正确性，只是退回按需读）。
+_RESIDENT_DIR_MAX = 8192
+_RESIDENT_TEXT_MAX = 16384
+
+
+class _Entry:
+    """常驻目录索引里的一条：只提供 `os.DirEntry` 被用到的那五个成员。"""
+
+    __slots__ = ("name", "path", "_is_dir", "_is_file", "_is_link")
+
+    def __init__(self, name: str, path: str, is_dir: bool, is_file: bool, is_link: bool):
+        self.name = name
+        self.path = path
+        self._is_dir = is_dir
+        self._is_file = is_file
+        self._is_link = is_link
+
+    def is_dir(self) -> bool:
+        return self._is_dir
+
+    def is_file(self) -> bool:
+        return self._is_file
+
+    def is_symlink(self) -> bool:
+        return self._is_link
+
+
+def install_resident(root) -> None:
+    """安装常驻层（**只在守护带监听且监听健康时调用**）。"""
+    global _RESIDENT
+    root_abs = os.path.normcase(os.path.abspath(str(root)))
+    _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}}
+
+
+def resident_active() -> bool:
+    return _RESIDENT is not None
+
+
+def resident_stats() -> Dict[str, int]:
+    """常驻层规模（观测 + 判据用）：目录条数 / 正文条数 / 二进制条数。"""
+    if _RESIDENT is None:
+        return {"dirs": 0, "text": 0, "bytes": 0}
+    return {"dirs": len(_RESIDENT["dirs"]), "text": len(_RESIDENT["text"]),
+            "bytes": len(_RESIDENT["bytes"])}
+
+
+def clear_resident() -> None:
+    """整批作废（监听说不清 / 不再健康时调用）。"""
+    global _RESIDENT
+    _RESIDENT = None
+
+
+def _resident_key(path) -> str:
+    return os.path.normcase(os.path.abspath(str(path)))
+
+
+def _resident_under(key: str) -> bool:
+    """这个（已 normcase 的绝对）路径是否落在常驻层的监听根之下。"""
+    res = _RESIDENT
+    if res is None:
+        return False
+    root = res["root"]
+    return key == root or key.startswith(root + os.sep)
+
+
+def drop_resident(paths) -> None:
+    """按**确知变更**的路径精确失效：正文按件删；目录条目按**父目录**删（增删都会改父目录清单）。
+
+    `paths` 是监听给出的仓库相对路径（`/` 分隔、小写）；解析不过来的路径直接忽略。
+    """
+    res = _RESIDENT
+    if res is None:
+        return
+    root = res["root"]
+    for rel in paths or ():
+        key = os.path.normcase(os.path.join(root, str(rel).replace("/", os.sep)))
+        res["text"].pop(key, None)
+        res["bytes"].pop(key, None)
+        res["dirs"].pop(os.path.dirname(key), None)
+        res["dirs"].pop(key, None)          # 路径本身也可能是目录（整棵子树增删）
+
 
 @contextlib.contextmanager
 def read_memo():
@@ -130,12 +223,32 @@ def _compiled_parts(pattern: str):
 
 
 def _scandir_list(path: str):
-    """列目录（绝不抛）：目录不可读/已消失时返回空——枚举面按「不存在」处理。"""
+    """列目录（绝不抛）：目录不可读/已消失时返回空——枚举面按「不存在」处理。
+
+    常驻层命中即**零 IO**（守护带监听时安装，见 `_RESIDENT` 的说明）；否则照旧 `os.scandir`。
+    """
+    key = _resident_key(path)
+    if _RESIDENT is not None:
+        hit = _RESIDENT["dirs"].get(key)
+        if hit is not None:
+            return hit
     try:
         with os.scandir(path) as it:
-            return list(it)
+            entries = list(it)
     except OSError:
         return []
+    if _RESIDENT is not None and _resident_under(key) \
+            and len(_RESIDENT["dirs"]) < _RESIDENT_DIR_MAX:
+        packed = []
+        for entry in entries:
+            try:
+                packed.append(_Entry(entry.name, entry.path, entry.is_dir(),
+                                     entry.is_file(), entry.is_symlink()))
+            except OSError:                     # 枚举与取值之间消失的条目 → 当作不存在
+                continue
+        _RESIDENT["dirs"][key] = packed
+        return packed
+    return entries
 
 
 def _enumerate_rel(root_abs: str, pattern: str) -> List[str]:
@@ -294,26 +407,45 @@ def read_text_cached(path) -> str:
     键做**路径归一化**（`normcase(abspath)`）：各扫描器传进来的写法不同（`"."/相对路径`
     vs 绝对路径），不归一会指向不同键、共享失效——实测就是这样（同一份资产仍被读 4 次）。
     """
+    key = _resident_key(path)
     if _READ_MEMO is not None:
-        key = os.path.normcase(os.path.abspath(str(path)))
         hit = _READ_MEMO.get(key)
         if hit is not None:
             return hit
+    if _RESIDENT is not None:                   # 常驻层：跨请求复用（按监听路径失效）
+        hit = _RESIDENT["text"].get(key)
+        if hit is not None:
+            if _READ_MEMO is not None:
+                _READ_MEMO[key] = hit
+            return hit
     text = Path(path).read_text(encoding="utf-8")
     if _READ_MEMO is not None:
-        _READ_MEMO[os.path.normcase(os.path.abspath(str(path)))] = text
+        _READ_MEMO[key] = text
+    if _RESIDENT is not None and _resident_under(key) \
+            and len(_RESIDENT["text"]) < _RESIDENT_TEXT_MAX:
+        _RESIDENT["text"][key] = text
     return text
 
 
 def read_bytes_cached(path) -> bytes:
     """读字节：同上（`_recompute_entry` 的逐字节比对用）。"""
+    key = _resident_key(path)
     if _READ_MEMO is not None:
-        key = "b:" + os.path.normcase(os.path.abspath(str(path)))
-        if key in _READ_MEMO:
-            return _READ_MEMO[key]              # type: ignore[return-value]
+        hit = _READ_MEMO.get("b:" + key)
+        if hit is not None:
+            return hit                          # type: ignore[return-value]
+    if _RESIDENT is not None:                   # 同上（二进制面：图片等非 UTF-8 件）
+        hit = _RESIDENT["bytes"].get(key)
+        if hit is not None:
+            if _READ_MEMO is not None:
+                _READ_MEMO["b:" + key] = hit
+            return hit
     raw = Path(path).read_bytes()
     if _READ_MEMO is not None:
-        _READ_MEMO["b:" + os.path.normcase(os.path.abspath(str(path)))] = raw  # type: ignore[assignment]
+        _READ_MEMO["b:" + key] = raw            # type: ignore[assignment]
+    if _RESIDENT is not None and _resident_under(key) \
+            and len(_RESIDENT["bytes"]) < _RESIDENT_TEXT_MAX:
+        _RESIDENT["bytes"][key] = raw
     return raw
 
 

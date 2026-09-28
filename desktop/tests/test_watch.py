@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 BASH = shutil.which("bash")            # 两条 shell 客户端都是 POSIX sh/bash 形态
 
 from core import daemon as dm  # noqa: E402
+from core import conformance_scan as csc  # noqa: E402
 from core import watch  # noqa: E402
 
 
@@ -300,6 +301,31 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
         self.assertEqual((direct.returncode, direct.stdout, direct.stderr), second,
                          "缓存回放的 (exit, stdout, stderr) 必须与真子进程直跑逐字节相同")
 
+    def test_resident_layer_is_wired_and_unknown_change_clears_it(self):
+        """守护**接线**判据：带 `--watch` 的守护必须装上常驻语料层；说不清的变更必须整批作废。
+
+        为什么这条必须有：常驻层的收益是「不重读」，而它的风险是「读旧值」——两者的分界全在
+        `execute()` 开头那一句 `_sync_resident`。判据用**内容计数**（不看墙钟）：读一件真语料 →
+        常驻里应当有它；`_bump()`（说不清）之后下一条请求必须把常驻层整批换掉（计数归零重建）。
+
+        观测走**守护自己**（`query_stats`）而不是本模块早先 import 的那份 `conformance_scan`：
+        `_sync_code` 在代码面变化时会把 `core.*` 从 `sys.modules` 里摘掉重载（保证守护不跑旧代码），
+        于是「早先 import 的那个对象」与「守护/CLI 正在用的那个对象」可能不是同一个——拿前者当
+        观测面会得到**看着像 bug 的读数**（本波实测踩过）。
+        """
+        self._call(["--version"])
+        self.assertTrue(sys.modules["core.conformance_scan"].resident_active(),
+                        "带监听的守护必须安装常驻语料层")
+        sys.modules["core.conformance_scan"].read_text_cached(
+            os.path.join(ROOT, "protocol", "LAYERS.json"))
+        self.assertGreater(dm.query_stats()["resident"]["text"], 0, "读过的件应被常驻")
+
+        dm._WATCHER._bump()                      # 只跳代际、没给路径 = 说不清
+        self._call(["--version"])
+        self.assertTrue(sys.modules["core.conformance_scan"].resident_active())
+        self.assertEqual(0, dm.query_stats()["resident"]["text"],
+                         "说不清的变更必须整批作废（宁可全废重算，不可留着陈旧件错答）")
+
     def test_newline_in_argv_never_enters_the_line_framed_protocol(self):
         """**协议边界**：明文框（NFREQ）逐行送 argv——含换行的参数会被拆成两个、**静默改参数个数**。
 
@@ -372,8 +398,119 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
                          "快路函数不得把含换行的参数拆开")
 
 
+class ResidentLayerTest(unittest.TestCase):
+    """常驻语料层：**只按确知变更失效**、说不清就整批作废、只收录监听根之下的件。
+
+    它是「数据结构跃迁」的主角（2026-09-29）：把「每次请求重读整棵语料 + 重列 1484 个目录」
+    换成「常驻 + 按变更事件精确失效」。**实测**（同机、各 3 轮中位）：改一个文件之后守护里的
+    第一条 `nf score` **1591 → 872 ms**（无关变更）、**1625 → 951 ms**（相关变更）。
+
+    判据全部是确定性内容/计数（不看墙钟）：失效是**调用方的责任**，所以这里同时钉住契约的两面——
+    没给失效信号时常驻值照旧（陈旧由调用方负责），给了就必须立刻看到新内容。
+    """
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp(prefix="nf_resident_")
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
+        self.addCleanup(csc.clear_resident)          # 不把常驻层漏给别的用例
+        self.outside = tempfile.mkdtemp(prefix="nf_outside_")
+        self.addCleanup(shutil.rmtree, self.outside, ignore_errors=True)
+        self._write("sub/a.md", "A")
+        self._write("b.md", "B", base=self.outside)
+
+    def _write(self, rel, text, base=None):
+        path = os.path.join(base or self.root, *rel.split("/"))
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(text)
+        return path
+
+    def test_only_files_under_the_watched_root_are_kept(self):
+        """根外的件**不许**收录：根外没有变更通知，无从失效（收了就等于埋一颗陈旧地雷）。"""
+        csc.install_resident(self.root)
+        self.assertTrue(csc.resident_active())
+        own = os.path.join(self.root, "sub", "a.md")
+        self.assertEqual("A", csc.read_text_cached(own))
+        self.assertEqual("B", csc.read_text_cached(os.path.join(self.outside, "b.md")))
+        self.assertEqual(1, csc.resident_stats()["text"], "只该收录监听根之下的那一件")
+
+    def test_listing_is_served_then_invalidated_by_declared_path(self):
+        csc.install_resident(self.root)
+        sub = os.path.join(self.root, "sub")
+        self.assertIn("a.md", [e.name for e in csc._scandir_list(sub)])
+        self.assertGreaterEqual(csc.resident_stats()["dirs"], 1, "列目录结果必须被常驻下来")
+        self._write("sub/c.md", "C")
+        self.assertNotIn("c.md", [e.name for e in csc._scandir_list(sub)],
+                         "没有失效信号时常驻值照旧——**失效是调用方的责任**（契约的另一面）")
+        csc.drop_resident(["sub/c.md"])
+        self.assertIn("c.md", [e.name for e in csc._scandir_list(sub)], "给了确知路径就必须失效")
+        self.assertEqual("C", csc.read_text_cached(os.path.join(sub, "c.md")))
+
+    def test_text_change_is_invalidated_by_declared_path(self):
+        csc.install_resident(self.root)
+        path = os.path.join(self.root, "sub", "a.md")
+        self.assertEqual("A", csc.read_text_cached(path))
+        self._write("sub/a.md", "A2")
+        csc.drop_resident(["sub/a.md"])
+        self.assertEqual("A2", csc.read_text_cached(path))
+
+    def test_clear_resident_drops_everything(self):
+        csc.install_resident(self.root)
+        csc.read_text_cached(os.path.join(self.root, "sub", "a.md"))
+        self.assertGreater(csc.resident_stats()["text"], 0)
+        csc.clear_resident()
+        self.assertFalse(csc.resident_active())
+        self.assertEqual({"dirs": 0, "text": 0, "bytes": 0}, csc.resident_stats())
+
+
 class DirWatcherTest(unittest.TestCase):
     """真实监听件（有实现的平台才跑）+ 无实现平台的降级面。"""
+
+    @unittest.skipUnless(watch.available(), "本平台没有目录监听实现（本波仅 Windows）")
+    def test_take_changes_reports_known_paths_and_flags_unknown(self):
+        """变更面：**确知**的路径要报出来；说不清（只跳代际 / 溢出）必须标 `unknown`。
+
+        用途（见 `daemon._sync_resident`）：守护据此**按路径**精确失效常驻语料层；说不清就整批
+        作废。判据只盯这两件事——「报得出」与「不敢装懂」。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            w = watch.DirWatcher(tmp)
+            self.assertTrue(w.start())
+            try:
+                before = w.generation
+                (Path(tmp) / "a.txt").write_text("一", encoding="utf-8")
+                self.assertTrue(_wait_generation(w, before))
+                deadline = time.time() + 3
+                paths, unknown = set(), False
+                while time.time() < deadline:
+                    paths, unknown = w.take_changes()
+                    if paths or unknown:
+                        break
+                    time.sleep(0.02)
+                self.assertIn("a.txt", paths, "确知变更必须报出路径")
+                self.assertFalse(unknown, "报得出路径就不该标说不清")
+                self.assertEqual((set(), False), w.take_changes(), "取走后必须清空")
+
+                sub = Path(tmp) / "sub"
+                sub.mkdir()
+                (sub / "b.md").write_text("二", encoding="utf-8")
+                deadline = time.time() + 3
+                paths = set()
+                while time.time() < deadline:
+                    paths, _unknown = w.take_changes()
+                    if any("b.md" in p for p in paths):
+                        break
+                    time.sleep(0.02)
+                self.assertTrue(any("b.md" in p for p in paths), "子树里的变更也要报出路径")
+
+                w._bump()                                  # 只跳代际、没给路径 = 说不清
+                self.assertEqual((set(), True), w.take_changes(),
+                                 "说不清的变更必须标 unknown（调用方据此整批作废）")
+                w._bump(overflow=True)
+                _paths, unknown2 = w.take_changes()
+                self.assertTrue(unknown2, "缓冲溢出属于说不清")
+            finally:
+                w.stop()
 
     @unittest.skipUnless(watch.available(), "本平台没有目录监听实现（本波仅 Windows）")
     def test_detects_create_modify_and_delete(self):

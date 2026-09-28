@@ -22,7 +22,7 @@ import os
 import threading
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 
 #: 一次通知批次的缓冲（64 KiB）：溢出时 Windows 用「零长度回报」告知，我们据此转脏。
 _BUFFER_BYTES = 64 * 1024
@@ -38,6 +38,9 @@ _BUFFER_BYTES = 64 * 1024
 #: （路径无尾斜杠，如 `.git`）——只判前缀 `.git/` 会被这条否决（本波实测踩过：真仓库根上
 #: `.git` 探针照样推进代际，而临时目录里"写已存在文件"不推进，差别就在这条目录通知）。
 _IGNORED_DIRS = (".git",)
+#: 「确知变更」的路径集合上界：再多就记不清了 → 标记 unknown，让调用方**整批作废**常驻数据。
+#: 这同时是内存上界（一次性 `git checkout` 可能产生上万条通知）。
+_MAX_TRACKED_CHANGES = 4096
 
 
 def available() -> bool:
@@ -140,6 +143,11 @@ class DirWatcher:
         self._thread: Optional[threading.Thread] = None
         self._handle = None
         self._ignored_batches = 0
+        #: 自上次 `take_changes()` 以来**确知**变更过的仓库相对路径（小写、`/` 分隔）。
+        #: 用途：守护的常驻语料/目录索引按**这些路径**精确失效——只有「确知变了哪些件」才敢
+        #: 留常驻数据；不知道（溢出、解不出、模拟跳代际）一律**整批作废**，由 `_unknown` 标记。
+        self._changes: set = set()
+        self._changes_unknown = False
 
     # ---------------------------------------------------------------- 对外读
 
@@ -163,6 +171,18 @@ class DirWatcher:
         """只含忽略面变更、因而**没有**推进代际的通知批次数（观测用）。"""
         with self._lock:
             return self._ignored_batches
+
+    def take_changes(self) -> Tuple[set, bool]:
+        """取走「自上次调用以来变更过的路径」→ `(paths, unknown)` 并清空。
+
+        `unknown=True` 表示这一批里**有我们说不清的变更**（缓冲溢出、路径解不出、或有人只
+        `_bump()` 而没有给路径）——调用方必须**整批作废**常驻数据，不许按 paths 精确失效
+        （宁可全废重算，不可留着陈旧件错答）。
+        """
+        with self._lock:
+            paths, unknown = self._changes, self._changes_unknown
+            self._changes, self._changes_unknown = set(), False
+            return set(paths), bool(unknown)
 
     # ---------------------------------------------------------------- 生命周期
 
@@ -198,11 +218,23 @@ class DirWatcher:
 
     # ---------------------------------------------------------------- 内部
 
-    def _bump(self, overflow: bool = False) -> None:
+    def _bump(self, overflow: bool = False, paths=None) -> None:
+        """推进代际。`paths` 给出**确知**变更过的仓库相对路径；`None` = 不知道变了什么。
+
+        只有「确知」才允许调用方按路径精确失效常驻数据；`None`（模拟跳代际、路径解不出）与
+        超上界都标记 `unknown`，让调用方整批作废——**宁可全废重算，不可留着陈旧件错答**。
+        """
         with self._lock:
             self._generation += 1
             if overflow:
                 self._overflowed = True
+            if paths is None:
+                self._changes_unknown = True
+            else:
+                self._changes.update(paths)
+                if len(self._changes) > _MAX_TRACKED_CHANGES:
+                    self._changes.clear()
+                    self._changes_unknown = True
 
     def _run(self) -> None:                                # pragma: no cover - 平台实现
         try:
@@ -252,11 +284,13 @@ class DirWatcher:
                 break
             if returned.value == 0:                        # 零长度 = 缓冲溢出（通知被丢弃）
                 self._bump(overflow=True)
-            elif self._only_ignored(ctypes.string_at(buf, returned.value)):
-                with self._lock:
-                    self._ignored_batches += 1
             else:
-                self._bump()
+                paths = self._notify_paths(ctypes.string_at(buf, returned.value))
+                if self._only_ignored(paths):
+                    with self._lock:
+                        self._ignored_batches += 1
+                else:
+                    self._bump(paths=paths or None)
         kernel32.CloseHandle(handle)
         self._handle = None
 
@@ -280,9 +314,9 @@ class DirWatcher:
             off += nxt
         return out
 
-    def _only_ignored(self, raw: bytes) -> bool:
-        """这一批是否**全部**落在忽略面内（解析不出任何路径 → 假，即照旧转脏）。"""
-        paths = self._notify_paths(raw)
+    @staticmethod
+    def _only_ignored(paths) -> bool:
+        """这些路径是否**全部**落在忽略面内（空列表 → 假，即照旧转脏）。"""
         if not paths:
             return False
         return all(any(p == d or p.startswith(d + "/") for d in _IGNORED_DIRS)
