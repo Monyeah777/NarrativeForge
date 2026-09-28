@@ -87,6 +87,87 @@ class ConformanceScanTest(unittest.TestCase):
         self.assertIn("通用:M10", evidence)
 
 
+class NestedMemoSharingTest(unittest.TestCase):
+    """嵌套 `read_memo()` 是**细化**不是隔离；冷却边界＝最外层那次只读调用。
+
+    依据（实测）：嵌套作用域过去各起一份空缓存，`evaluate`（外层）刚读过的语料在
+    `quality_depth_scan`（内层）里又读一遍——一次 evaluate 因此白开上千次文件。
+    改共享后：`os.scandir` 5403 → 3889（−28%），同进程交错 A/B 的 evaluate
+    2749 → **1883 ms（−31.5%）**。两条性质都要钉住：① 嵌套内必须复用语料；
+    ② **最外层出口仍要清空**——否则就变成跨调用陈旧。
+    """
+
+    @contextlib.contextmanager
+    def _count_opens(self, path):
+        opened = []
+        real = io.open
+
+        def spy(file, *a, **k):
+            opened.append(os.path.basename(str(file)))
+            return real(file, *a, **k)
+
+        io.open = spy
+        try:
+            yield opened
+        finally:
+            io.open = real
+
+    def test_nested_scope_reuses_outer_reads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = pathlib.Path(tmp) / "a.txt"
+            p.write_text("一", encoding="utf-8")
+            with cs.read_memo():
+                self.assertEqual("一", cs.read_text_cached(p))
+                with self._count_opens(p) as opened:
+                    with cs.read_memo():                 # 嵌套：应命中外层缓存
+                        self.assertEqual("一", cs.read_text_cached(p))
+                self.assertEqual([], opened,
+                                 "嵌套作用域必须复用外层已读内容（不许重读）")
+
+    def test_outermost_exit_clears_and_next_scope_sees_new_content(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = pathlib.Path(tmp) / "a.txt"
+            p.write_text("一", encoding="utf-8")
+            with cs.read_memo():
+                self.assertEqual("一", cs.read_text_cached(p))
+                with cs.read_memo():
+                    self.assertEqual("一", cs.read_text_cached(p))
+            p.write_text("二", encoding="utf-8")          # 最外层已退出 → 必须重读
+            with cs.read_memo():
+                self.assertEqual("二", cs.read_text_cached(p))
+                with cs.read_memo():
+                    self.assertEqual("二", cs.read_text_cached(p))
+            self.assertIsNone(cs._READ_MEMO, "最外层出口必须把共享缓存整体清掉")
+            self.assertIsNone(cs._TREE_MEMO)
+
+    def test_nested_scope_shares_pattern_and_tree_memo(self):
+        """枚举面（子树清单 / 模式结果）同样跨嵌套共享，且最外层出口即清。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            p = pathlib.Path(tmp)
+            (p / "sub").mkdir()
+            (p / "sub" / "a.md").write_text("x", encoding="utf-8")
+            with cs.read_memo():
+                self.assertEqual(["sub/a.md"], cs.iter_files(tmp, "**/*.md"))
+                scans = []
+                real = os.scandir
+
+                def counting(path="."):
+                    scans.append(path)
+                    return real(path)
+
+                os.scandir = counting
+                try:
+                    with cs.read_memo():                 # 嵌套：不得重走文件系统
+                        self.assertEqual(["sub/a.md"], cs.iter_files(tmp, "**/*.md"))
+                finally:
+                    os.scandir = real
+                self.assertEqual([], scans, "嵌套内重复枚举不得重走文件系统")
+            (p / "sub" / "b.md").write_text("x", encoding="utf-8")
+            with cs.read_memo():
+                self.assertEqual(["sub/a.md", "sub/b.md"], cs.iter_files(tmp, "**/*.md"),
+                                 "新作用域必须看到新文件")
+
+
 class FastGlobTest(unittest.TestCase):
     """`iter_files` 的快速枚举：**与 `Path.glob` 逐模式等价** + 作用域内记忆 + 出口不陈旧。
 

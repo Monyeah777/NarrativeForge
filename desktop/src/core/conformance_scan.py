@@ -55,21 +55,34 @@ _DIR_MEMO: Optional[Dict[str, Any]] = None
 #: 与读缓存**同生命周期**的「按模式枚举」缓存：一次只读调用内，同一 (root, pattern) 只走一遍
 #: 文件系统（实测：输入面在 2 个指纹 + 各扫描器之间重复枚举，44% 的遍历是白走）。
 _PAT_MEMO: Optional[Dict[Tuple[str, str], Tuple[str, ...]]] = None
+#: 与读缓存**同生命周期**的「子树文件清单」缓存：一次只读调用内，每棵子树只走一遍文件系统。
+#: 依据（实测）：一次 `evaluate` 建了 **5403** 个 `os.scandir`（仅建扫描器就 **687 ms / 25%**），
+#: 其中 `community` 一棵树被 layer_model 的 `_walk_files`、两个指纹、若干扫描器各自走了一遍。
+#: 键即目录 ⇒ 目录没变清单就一样；作用域出口即清（与冷读语义一致）。
+_TREE_MEMO: Optional[Dict[str, Tuple[str, ...]]] = None
 
 
 @contextlib.contextmanager
 def read_memo():
-    """框定「共享语料」的作用域（可嵌套；出口恢复外层）。"""
-    global _READ_MEMO, _DIR_MEMO, _PAT_MEMO
-    outer, _READ_MEMO = _READ_MEMO, {}
-    outer_dir, _DIR_MEMO = _DIR_MEMO, {}
-    outer_pat, _PAT_MEMO = _PAT_MEMO, {}
+    """框定「共享语料」的作用域（可嵌套；**嵌套＝细化，共享同一份缓存**）。
+
+    冷却契约的边界是**最外层**那次只读调用（如 `regression_score.evaluate`）：出口统一清空，
+    下个调用照常重新读盘。嵌套的 `read_memo()`（如 `quality_depth_scan.scan`）过去会另起一份
+    空缓存，于是外层刚读过的语料在里面**又读一遍**——实测这样一次 evaluate 白开了上千次文件；
+    现在嵌套只是同一只读调用内的细化，缓存共存但不越出最外层边界。
+
+    安全性前提＝「作用域内只读」（本仓既有纪律：写路径在聚合**之后**才发生）。四个调用点
+    （regression_score / quality_depth_scan / conformance_report / output_forms）都是纯读聚合入口。
+    """
+    global _READ_MEMO, _DIR_MEMO, _PAT_MEMO, _TREE_MEMO
+    outermost = _READ_MEMO is None
+    if outermost:
+        _READ_MEMO, _DIR_MEMO, _PAT_MEMO, _TREE_MEMO = {}, {}, {}, {}
     try:
         yield
     finally:
-        _READ_MEMO = outer
-        _DIR_MEMO = outer_dir
-        _PAT_MEMO = outer_pat
+        if outermost:
+            _READ_MEMO = _DIR_MEMO = _PAT_MEMO = _TREE_MEMO = None
 
 
 def _fast_glob_supported(pattern: str) -> bool:
@@ -162,7 +175,13 @@ def iter_files(root, pattern: str) -> List[str]:
         hit = _PAT_MEMO.get(key)
         if hit is not None:
             return list(hit)
-    if _fast_glob_supported(pattern):
+    prefix = _fixed_prefix(str(pattern))
+    tree = _tree_hit(root_abs, prefix)          # 子树清单已在作用域里 ⇒ 内存里筛，零 IO
+    if tree is not None:
+        parts = [p for p in str(pattern).split("/") if p != ""]
+        got = tuple(rel for rel in tree
+                    if _match_parts(rel.split("/"), parts))
+    elif _fast_glob_supported(pattern):
         got = tuple(_enumerate_rel(root_abs, str(pattern)))
     else:
         base = Path(root)
@@ -171,6 +190,80 @@ def iter_files(root, pattern: str) -> List[str]:
     if _PAT_MEMO is not None:
         _PAT_MEMO[key] = got
     return list(got)
+
+
+def _fixed_prefix(pattern: str) -> str:
+    """模式里**通配符之前**的固定目录前缀（`a/b/*.md` → `a/b`；全固定件 → 其所在目录）。
+
+    只用于「子树清单是否已在作用域里」的定位，不参与匹配语义。
+    """
+    parts = [p for p in str(pattern).split("/") if p != ""]
+    keep: List[str] = []
+    for part in parts[:-1]:
+        if any(ch in part for ch in "*?["):
+            break
+        keep.append(part)
+    return "/".join(keep)
+
+
+def _match_parts(segments, parts) -> bool:
+    """把**整条相对路径**的分段与模式分段做匹配（`**` 消费零或多段）——与走查版语义同源。
+
+    与 `_enumerate_rel` 共用 `_segment_regex`，两版的等价性由 `FastGlobTest` 同时覆盖
+    （走查版与「子树清单」版各测一遍，防止两条路径漂移）。
+    """
+    if not parts:
+        return not segments
+    head = parts[0]
+    if head == "**":
+        if _match_parts(segments, parts[1:]):
+            return True
+        return bool(segments) and _match_parts(segments[1:], parts)
+    if not segments:
+        return False
+    if not _segment_regex(head).match(segments[0]):
+        return False
+    return _match_parts(segments[1:], parts[1:])
+
+
+def tree_files(root, rel_dir: str = "") -> List[str]:
+    """`rel_dir` 子树内**全部文件**（仓库相对 posix 路径，已排序）。作用域内按目录记忆。
+
+    给「要按多个模式反复匹配同一棵树」的调用方用（`layer_model` 的真源面展开就是这种形状）。
+    作用域与读缓存同生命周期：出口即清，不跨调用复用。
+    """
+    root_abs = os.path.abspath(str(root))
+    key = os.path.normcase(os.path.join(root_abs, str(rel_dir or "")))
+    if _TREE_MEMO is not None:
+        hit = _TREE_MEMO.get(key)
+        if hit is not None:
+            return list(hit)
+    out: List[str] = []
+
+    def walk(dir_abs: str, rel: str) -> None:
+        for entry in _scandir_list(dir_abs):
+            try:
+                if entry.is_dir():
+                    if not entry.is_symlink():
+                        walk(entry.path, rel + entry.name + "/")
+                elif entry.is_file():
+                    out.append(rel + entry.name)
+            except OSError:
+                continue
+
+    start_rel = "" if not rel_dir else str(rel_dir).strip("/") + "/"
+    walk(key, start_rel)
+    got = tuple(sorted(out))
+    if _TREE_MEMO is not None:
+        _TREE_MEMO[key] = got
+    return list(got)
+
+
+def _tree_hit(root_abs: str, rel_dir: str):
+    """作用域里**已有**的子树清单（没有就返回 None——不主动去建，免得比定向走查更贵）。"""
+    if _TREE_MEMO is None:
+        return None
+    return _TREE_MEMO.get(os.path.normcase(os.path.join(root_abs, str(rel_dir or ""))))
 
 
 def read_text_cached(path) -> str:

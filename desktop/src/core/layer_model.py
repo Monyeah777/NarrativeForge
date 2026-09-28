@@ -128,17 +128,15 @@ def _glob_root(pattern: str) -> str:
 
 
 def _walk_files(base: Path, rel_root: str) -> List[str]:
-    """一次 `os.walk` 收集 rel_root 子树下全部文件的**仓库相对 posix 路径**。"""
-    start = base / rel_root if rel_root not in (".", "") else base
-    if not start.is_dir():
-        return []
-    prefix = "" if rel_root in (".", "") else rel_root + "/"
-    out: List[str] = []
-    for dirpath, _dirnames, filenames in os.walk(start):
-        rel_dir = os.path.relpath(dirpath, start).replace(os.sep, "/")
-        head = prefix + ("" if rel_dir == "." else rel_dir + "/")
-        out.extend(head + name for name in filenames)
-    return out
+    """收集 rel_root 子树下全部文件的**仓库相对 posix 路径**（走共享子树索引）。
+
+    依据（实测）：本函数原本自己 `os.walk`，而一次 `evaluate` 里 `community` 这棵树被
+    layer_model、两个指纹、若干扫描器**各走了一遍**——一次 evaluate 共建了 5403 个
+    `os.scandir`，光建扫描器就 687 ms。改走 `conformance_scan.tree_files`（作用域内按目录
+    记忆、出口即清）后同一棵树只走一遍，其他调用方直接复用清单。
+    """
+    from core import conformance_scan as _csc
+    return _csc.tree_files(str(base), "" if rel_root in (".", "") else rel_root)
 
 
 def _expand_one(base: Path, pattern: str, ref_root: str, cache: dict) -> set:
