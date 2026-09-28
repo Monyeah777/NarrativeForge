@@ -173,7 +173,7 @@
         "id": "https://narrativeforge.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "3761dec0fd1c67b8",
+        "invocationId": "a2efb2014592726c",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -200,7 +200,7 @@
     },
     {
       "digest": {
-        "sha256": "abfd3fbdaf88043a97fd068809dc92cfa3259cc4fbfdb7bb882d57ccec0200b2"
+        "sha256": "9c842ddf1bf4df1dad73cc9b2475102ba374fef50d86e9c1f8010020e4bfa66a"
       },
       "name": "06_Agent执行协议.md"
     },
@@ -212,13 +212,13 @@
     },
     {
       "digest": {
-        "sha256": "226450a3a0c88846032aed01ac216c20cb400f654bff68c79f47c92a14b16ffe"
+        "sha256": "9f639f0afffab449fe3891a4b2c264261d2b867b29b466288ef3cc83d0b67213"
       },
       "name": "llms.txt"
     },
     {
       "digest": {
-        "sha256": "bb92ed10beeeb80ec2b5a95ddace2ad8cac6f7cd8b28095b1ad778b1dfdc3ebc"
+        "sha256": "a762f933926ff31dbea29566230391fc4a7af7301a0a0df3ec9ef479fe6d0744"
       },
       "name": "library/INDEX.md"
     },

@@ -159,6 +159,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     reg_ids = {p.get("id") for p in (reg or {}).get("protocols") or []}
 
     modules_mc = 0
+    #: 模块 id 全局唯一（01 §1.6.11：module id 是全局寻址面）——登记面由 check14 ⑤b 管
+    #: `module_id_range` 声明；但**同一包内两个模块文件声明同一 mc.id** 此前无判据，
+    #: 运行时索引为 first-wins 静默择一（mcp_runtime._resolve_module / pipelinerun._module_files），
+    #: 会让「看起来唯一」的编号实际指向不确定的模块。此处补文件级唯一判据（极端渗透 D3）。
+    seen_mc_id: dict = {}
     for doc in _module_docs(root):
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
@@ -171,6 +176,15 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         if "machine_contract" not in parsed:
             continue
         mc = parsed["machine_contract"]
+        mid = str((mc or {}).get("id") or "")
+        if mid:
+            if mid in seen_mc_id:
+                issues.append("%s: 模块 id 与 %s 重复（mc.id=%s）——编号是全局寻址面，"
+                              "运行时索引会静默择一，须改号"
+                              "（修复指引：按 01 §1.6.11 换类内段号或 M91-M99 段号）"
+                              % (rel, seen_mc_id[mid], mid))
+            else:
+                seen_mc_id[mid] = rel
         modules_mc += 1
         declared = mc.get("conformance")
         if declared not in ("L1", "L2", "L3"):

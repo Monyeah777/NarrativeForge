@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - verify.sh:39d1f048d380b934b982f1d2f10ac9222deaf08ce94fefb91894be7adace13f8
-  - scripts/nf.py:879958484191a264fa7b30400c1bcc100011dc1fd08f16ef34f411ffe0f219ec
+  - scripts/nf.py:4832c83b943a422fa6916b2397131a5d0e668e45fed98548b7fee88c00f52b93
   - desktop/src/core/repo_stats.py:6a8c111d36556d62878ffcc7c4ad83e85b90dea636d0c0e64ede51fcc5f19560
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
   - scripts/interop_thirdparty_kit.py:8cce6520081b7bce7e4d97d88f5d26180b2d1a0247110f727bb006e261f37dc3

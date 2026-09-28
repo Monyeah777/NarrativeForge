@@ -21,6 +21,14 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     from core import schema_lint as sl
 
     issues: List[str] = []
+    # 缺根/缺协议件时**如实报 issue**，不抛裸 FileNotFoundError（极端渗透 D4：
+    # 其余扫描器在空根下都返回 issue 列表，只有本入口会崩——同一纪律须一致）。
+    missing = [rel for rel in ("protocol/event_payload.schema.json",
+                               "protocol/event_registry.json")
+               if not (r / rel).is_file()]
+    if missing:
+        return (["缺 %s（修复指引：在 NF 仓库根运行本扫描，或先补齐该协议件）"
+                 % "、".join(missing)], {})
     schema = json.loads((r / "protocol/event_payload.schema.json").read_text(encoding="utf-8"))
     registry = json.loads((r / "protocol/event_registry.json").read_text(encoding="utf-8"))
     issues += sl.subset_validate(registry, schema, "event_registry")

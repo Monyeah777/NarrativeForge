@@ -72,7 +72,7 @@
     {
       "@id": "nf:file/06_Agent执行协议.md",
       "@type": "prov:Entity",
-      "nf:sha256": "abfd3fbdaf88043a97fd068809dc92cfa3259cc4fbfdb7bb882d57ccec0200b2"
+      "nf:sha256": "9c842ddf1bf4df1dad73cc9b2475102ba374fef50d86e9c1f8010020e4bfa66a"
     },
     {
       "@id": "nf:file/07_官方核心出厂与社区预设导航.md",
@@ -122,12 +122,12 @@
     {
       "@id": "nf:file/library/INDEX.md",
       "@type": "prov:Entity",
-      "nf:sha256": "bb92ed10beeeb80ec2b5a95ddace2ad8cac6f7cd8b28095b1ad778b1dfdc3ebc"
+      "nf:sha256": "a762f933926ff31dbea29566230391fc4a7af7301a0a0df3ec9ef479fe6d0744"
     },
     {
       "@id": "nf:file/llms.txt",
       "@type": "prov:Entity",
-      "nf:sha256": "226450a3a0c88846032aed01ac216c20cb400f654bff68c79f47c92a14b16ffe"
+      "nf:sha256": "9f639f0afffab449fe3891a4b2c264261d2b867b29b466288ef3cc83d0b67213"
     },
     {
       "@id": "nf:file/protocol/CONFORMANCE.md",

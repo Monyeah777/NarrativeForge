@@ -280,14 +280,25 @@ def apply_outputs(root: str = ".", write: bool = False) -> List[Dict[str, Any]]:
 
 
 def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
-    """→ (issues, warns, stats)：L0 残留 = WARN；机读块与标题/文件名不符 = FAIL。"""
+    """→ (issues, warns, stats)：L0 残留 = WARN；机读块与标题/文件名不符 = FAIL。
+
+    **可证范围 = 官方核心（`04_模块库/`）**。理由（极端渗透 D6 实证）：本判据假设
+    「`mc.id` 与文件名/标题 token 同命名空间」——这**只对官方核心成立**；社区与域包工厂
+    走的是两条编号通道（01 §1.6.11）：文件名留在包内代码位（如 `D14a`），运行时 id 是
+    `<独占类别>:Mxx`（如 `AI人力资源与招聘:M01`），两者**本就不同**。此前对全仓调用会
+    对真仓报 200 条误报（全部来自 community），而登记面的唯一性由 check14 ⑤b/⑤c 承担。
+    """
     from core import conformance_scan as csc
 
     issues: List[str] = []
     warns: List[str] = []
     l0 = []
+    checked = 0
     for doc in csc._module_docs(root):
         rel = Path(doc).relative_to(root).as_posix()
+        if not rel.startswith("04_模块库/"):
+            continue                      # 见 docstring：社区包的 id 命名空间不同，不在本判据面
+        checked += 1
         text = Path(doc).read_text(encoding="utf-8")
         parsed = csc._fence_yaml(text, "machine_contract")
         mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
@@ -301,6 +312,6 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
                           % (rel, mc.get("id"), spec["id"]))
     if l0:
         warns.append("仍为 L0（无机读块）：%d 件（修复指引：nf module contract --write）" % len(l0))
-    stats = {"l0": len(l0), "checked": len(l0) and 0 or 0}
+    stats = {"l0": len(l0), "checked": checked}
     stats["l0_list"] = l0
     return issues, warns, stats
