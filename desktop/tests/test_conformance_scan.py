@@ -461,6 +461,52 @@ class DerivedResultCacheTest(unittest.TestCase):
             self.assertEqual(first, second, "%s() 命中缓存的结果必须与首算一致" % name)
 
 
+class InputFaceHygieneTest(unittest.TestCase):
+    """**输入面卫生**：声明面里的每一件都要是「小件」，且不得卷进无关大文件。
+
+    依据（2026-09-29 实测事故）：`domain_pack.SCAN_INPUTS` 原写 `.rivet/**/*`（整棵私档），于是
+    「见证」要把 **676 MB**（含一个 **628 MB** 的模型文件）读一遍算摘要 ✗，而该扫描器其实只读
+    那 100 份 specs。收窄之后判据仍绿。这条把它钉住：**宽面不许把大件卷进来**——输入面的宽度是
+    算力，不是免费的。
+    """
+
+    #: 单件上限：远大于仓库里任何**真被当语料读**的件（最大的模块文档 ~61 KB），但足以挡住
+    #: 模型/权重/压缩包这类「根本不是语料」的大件。
+    MAX_BYTES = 8 * 1024 * 1024
+
+    def test_no_declared_face_pulls_in_a_huge_file(self):
+        from core import asset_ledger_projection as _alp
+        from core import concept_graph as _cg
+        from core import domain_pack as _dpk
+        from core import layer_model as _lm
+        from core import pack_combo as _pcb
+        from core import purity_scan as _ps
+        from core import quality_depth_scan as _qd
+        from core import schema_lint as _sl
+        faces = {
+            "conformance_scan": cs.SCAN_INPUTS, "output_forms": of.INDEX_INPUTS,
+            "schema_lint": _sl.LINT_INPUTS, "asset_density": ad.ASSET_INPUTS,
+            "asset_ledger_projection": _alp.VERIFY_INPUTS, "concept_graph": _cg.CG_INPUTS,
+            "domain_pack": _dpk.SCAN_INPUTS, "pack_combo": _pcb.SCAN_INPUTS,
+            "quality_depth_scan": _qd.QD_INPUTS,
+            "layer_model": _lm.patterns(ROOT), "purity_scan": _ps.patterns(ROOT),
+        }
+        offenders = []
+        for name, patterns in faces.items():
+            for pat in patterns:
+                for rel in cs.iter_files(ROOT, str(pat)):
+                    path = os.path.join(ROOT, *rel.split("/"))
+                    try:
+                        size = os.path.getsize(path)
+                    except OSError:
+                        continue
+                    if size > self.MAX_BYTES:
+                        offenders.append((name, rel, size))
+        self.assertEqual([], ["%s: %s（%.1f MB）" % (n, r, s / 1048576)
+                              for n, r, s in offenders][:5],
+                         "输入面卷进了大件：见证会把它们整份读一遍（把面收窄到真读的件）")
+
+
 class ResidentRawEquivalenceTest(unittest.TestCase):
     """共享读改成「**一次物理读服务两种口径**」之后，文本/字节的口径必须**逐字节不变**。
 

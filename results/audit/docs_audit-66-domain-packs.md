@@ -6,7 +6,7 @@ scope: 作者指令「八小时内按 AI 品类清单逐项建域包；参照 AI
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/domain_pack.py:adb16ee6b930dcf0ccf6a3970df29843923f29ef61dd401265a54fc29f61be2e
+  - desktop/src/core/domain_pack.py:50c8fae22e6fc75800bf9944a3147bd4efba04c1ca38821e73133d739d1884bc
   - desktop/src/core/domain_metrics.py:0ad13aa11f650f7f47abcfd4f643f16c760cde0121c194b86d08096f37234fb6
   - desktop/src/core/output_forms.py:7a4dec9b1de033b928e833dbaf0cdca1ac2569f52d413fc4057274af2db07191
   - desktop/src/core/quality_depth_scan.py:6d3309e196276027f68c4e8dc2a997f1b95beeb7d62d42c47356d079985f6258

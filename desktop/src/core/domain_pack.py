@@ -2041,9 +2041,16 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     return issues, stats
 
 
-#: `scan()` 的全部输入：各包实况（community 全树）+ 名录/登记/绑定三类声明 + 标准目录
-#: （`.rivet` 下的私档目录）+ registry。
-SCAN_INPUTS = ("community/**/*", ".rivet/**/*", "protocol/*.json",
+#: `scan()` 的全部输入：各包实况（community 全树）+ 名录/登记/绑定三类声明 + **域规格**
+#: （`.rivet/private_archive/ai_packs/specs/*.json`，逐包一份）+ registry。
+#:
+#: **2026-09-29 实测教训**：这里原先写的是 `.rivet/**/*`（整棵私档）——于是「见证」要把
+#: **676 MB**（含一个 628 MB 的模型文件）读一遍算摘要，一次唯一新状态里光这一项就 ~1.0 s ✗，
+#: 而本扫描器其实只读那 100 份 specs（实测读盘面 = community 300 + specs 100 + protocol 3 + registry 1）。
+#: 收窄到 specs 之后，「读盘面 ⊆ 输入面」判据仍然绿。**输入面只该声明「真的读到的」**，
+#: 宽到把无关大件卷进来，等于是给每条请求加一笔纯亏的见证成本。
+SCAN_INPUTS = ("community/**/*", ".rivet/private_archive/ai_packs/specs/*.json",
+               "protocol/*.json",
                "desktop/src/core/registry.json")
 
 
