@@ -1,0 +1,35 @@
+name: diag-temp
+# 临时诊断（只在 codex/ci-diag 分支存在）：把 Linux 上 unittest 的失败用例名以注解形式暴露，
+# 便于在无法读取 job 日志（需鉴权）的情况下定位。落定后随分支一并删除。
+on:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.11'
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
+          pip install -r .github/requirements-ci.txt
+      - name: 跑全量单测并把失败名打成注解
+        if: always()
+        run: |
+          set +e
+          (cd desktop && python -m unittest discover -s tests -q) > /tmp/suite.log 2>&1
+          echo "suite_exit=$?"
+          echo "::error::SUITE_EXIT=$(grep -c '' /tmp/suite.log)"
+          grep -nE "^(FAIL|ERROR): " /tmp/suite.log | head -12 | while IFS= read -r line; do
+            echo "::error::${line}"
+          done
+          tail -n 40 /tmp/suite.log | while IFS= read -r line; do
+            echo "::error::TAIL ${line}"
+          done
