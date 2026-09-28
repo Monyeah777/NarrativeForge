@@ -173,7 +173,7 @@ def parse_pipeline_md(text: str) -> Optional[Pipeline]:
     if _csc.yaml is None:
         data = _parse_yaml_block(m.group(1))
     else:
-        data = _csc.load_yaml(m.group(1)) or {}
+        data = _csc.load_yaml_cached(m.group(1)) or {}
     if not isinstance(data, dict):
         return None
     pnode = data.get("Pipeline", data)

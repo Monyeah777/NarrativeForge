@@ -67,7 +67,7 @@ def load_graph(asset_path: str | Path = DEFAULT_ASSET) -> Dict[str, Any]:
                            "块内首键为 %s）" % (BLOCK_MARKER, path, BLOCK_MARKER))
     from core import conformance_scan as _csc   # 统一加载器（libyaml 优先，见 _csc.SAFE_LOADER）
     try:
-        data = _csc.load_yaml(body)
+        data = _csc.load_yaml_cached(body)      # 内容键缓存：同一份概念图正文不重复解析
     except RuntimeError as exc:                   # pragma: no cover - 仓库既有依赖
         raise ClosureError("缺 PyYAML（修复指引：pip install pyyaml）") from exc
     graph = (data or {}).get(BLOCK_MARKER)

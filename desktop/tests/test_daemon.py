@@ -218,6 +218,35 @@ class DaemonSpeedTest(DaemonHarness):
         self.assertLess(warm_ms * 3, cold_ms,
                         "守护稳态往返 %.1f ms 应远小于冷启动 %.1f ms" % (warm_ms, cold_ms))
 
+    def test_shim_fast_path_beats_python_direct(self):
+        """**启动器快路**判据：`scripts/nf` 经守护必须快过「python 直跑」，且在 POSIX 上要快 3×。
+
+        动机：我在报告里主张「Linux 上是毫秒级」，但门禁此前只覆盖了守护协议与缓存——
+        **没有一个判据盯着启动器本身**。这条把它钉住：本机（Windows/MSYS）实测 178 ms vs 357 ms
+        （spawn 是地板，故只要求显著更小）；Linux（CI）上 bash spawn 只要几毫秒，故要求 3×。
+        """
+        bash = shutil.which("bash")
+        if not bash:
+            self.skipTest("本机无 bash（启动器快路需要 bash 的 /dev/tcp）")
+        argv = ["--version"]
+        shim, direct = [], []
+        for _ in range(3):
+            t0 = time.perf_counter()
+            subprocess.run([bash, str(ROOT / "scripts" / "nf")] + argv, cwd=str(ROOT),
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            shim.append((time.perf_counter() - t0) * 1000)
+            t0 = time.perf_counter()
+            subprocess.run([sys.executable, str(ROOT / "scripts" / "nf.py")] + argv,
+                           cwd=str(ROOT), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            direct.append((time.perf_counter() - t0) * 1000)
+        shim_ms, direct_ms = min(shim), min(direct)
+        self.assertLess(shim_ms, direct_ms,
+                        "启动器 %.1f ms 应快过 python 直跑 %.1f ms" % (shim_ms, direct_ms))
+        if os.name == "posix":
+            self.assertLess(shim_ms * 3, direct_ms,
+                            "POSIX 上启动器快路 %.1f ms 应远小于 python 直跑 %.1f ms（毫秒级主张）"
+                            % (shim_ms, direct_ms))
+
 
 class DaemonInProcessServerTest(unittest.TestCase):
     """**进程内**起服务（线程）跑协议全路径——这也是覆盖率的关键：

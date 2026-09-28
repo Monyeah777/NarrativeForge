@@ -35,6 +35,10 @@ SAFE_LOADER = getattr(yaml, "CSafeLoader", None) or getattr(yaml, "SafeLoader", 
 #: 围栏 YAML 解析缓存：键 = (marker, **文本本身**)，值 = 解析结果或 None（见 `_fence_yaml`）。
 _FENCE_CACHE: Dict[Tuple[str, str], Any] = {}
 _FENCE_CACHE_MAX = 4096
+#: 围栏**正文**缓存：键 = 正文本身。给「自己抽正文」的调用方用（pipeline_loader /
+#: concept_graph 过去直接调 load_yaml，等于每轮都重解析——与 `_fence_yaml` 的缓存互补）。
+_BODY_CACHE: Dict[str, Any] = {}
+_BODY_CACHE_MAX = 4096
 
 
 def load_yaml(text: str) -> Any:
@@ -56,6 +60,22 @@ def load_yaml(text: str) -> Any:
         loader.dispose()
 
 
+def load_yaml_cached(body: str) -> Any:
+    """按**正文文本**缓存的安全 YAML 载入（键即内容 ⇒ 文本一变键就变，无陈旧风险）。
+
+    与 `_fence_yaml` 的缓存同一条纪律，只是键更贴近「自己抽正文」的调用方：管道加载器与
+    概念图加载器各自用正则抽出正文后直接解析，过去因此**每轮全量重解析**（实测热跑 score
+    里仍有 325 次 YAML 解析）。解析失败按原样抛出、不缓存（确定性）。
+    """
+    if body in _BODY_CACHE:
+        return _BODY_CACHE[body]
+    got = load_yaml(body)
+    if len(_BODY_CACHE) >= _BODY_CACHE_MAX:
+        _BODY_CACHE.clear()
+    _BODY_CACHE[body] = got
+    return got
+
+
 def _read_json(path: str) -> Tuple[Any, str]:
     try:
         with open(path, encoding="utf-8") as fh:
@@ -71,7 +91,7 @@ def _parse_fence_yaml(text: str, marker: str) -> Any:
         if marker not in body:
             continue
         try:
-            parsed = load_yaml(body) if yaml is not None else None
+            parsed = load_yaml_cached(body) if yaml is not None else None
         except Exception:
             return None
         if isinstance(parsed, dict):

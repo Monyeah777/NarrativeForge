@@ -275,21 +275,35 @@ class SinkRegistryTest(unittest.TestCase):
         self.assertNotEqual(first, second, "改文之后结果必须随内容变")
 
     def test_second_scan_reuses_content_caches(self):
-        """常驻复用判据（相对、机器无关）：同进程第二次全仓扫描必须显著快于第一次。
+        """常驻复用判据（**确定性**，不靠计时）：两次扫描之间不得再解析任何 `.py`。
 
-        第一次要真解析 247 份 .py；第二次走内容键缓存（`_FACTS_CACHE`）只做读盘。若缓存
-        不再跨调用复用（例如被误改成「每次清空」），这条会立刻红。
+        计时版口径太糙（读盘成本是地板，实测只差 1.9×）；直接数 `ast.parse` 调用才是这件事
+        本身：第一次应真解析上百份（判据自身有效），第二次必须**零解析**（AST 事实全部命中
+        内容键缓存）。若缓存被误改成「每次清空」，第二次就会重新解析 → 立刻红。
         """
         ps._FACTS_CACHE.clear()
-        t0 = time.perf_counter()
-        ps.scan(ROOT)
-        first = time.perf_counter() - t0
-        t0 = time.perf_counter()
-        ps.scan(ROOT)
-        second = time.perf_counter() - t0
-        self.assertLess(second * 2, first,
-                        "第二次 %.2f s 应远快于第一次 %.2f s（内容键缓存未复用？）"
-                        % (second, first))
+        orig_parse = ps.ast.parse
+        calls: list = []
+
+        def counting_parse(src, *a, **k):
+            calls.append(1)
+            return orig_parse(src, *a, **k)
+
+        ps.ast.parse = counting_parse          # type: ignore[assignment]
+        try:
+            ps.scan(ROOT)
+            first = len(calls)
+            calls.clear()
+            ps.scan(ROOT)
+            second = len(calls)
+        finally:
+            ps.ast.parse = orig_parse          # type: ignore[assignment]
+        self.assertGreater(first, 100, "第一次扫描应真解析上百份 .py（判据自身要有效）")
+        # 残余的个位数解析来自 layer_model 的 L6（同 A7 文本预筛后解析命中文件）——它与本
+        # 判据的缓存不是一个模块，且只涉极少数文件；真正要求的是「少一个数量级」。
+        self.assertLessEqual(second, 3, "第二次只允许 L6 预筛命中的极少数解析：%d" % second)
+        self.assertLess(second * 20, first,
+                        "第二次 %d 次解析应比第一次 %d 次少一个数量级" % (second, first))
 
 
 if __name__ == "__main__":

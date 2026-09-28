@@ -6,7 +6,7 @@ scope: ① 执行作者裁决队列六项（闭包跨域形态 / 证据强度入
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/concept_graph.py:2d9819950e78bd25f2d16580f0941fe8bac05feb005dafb4b882871418c3fa01
+  - desktop/src/core/concept_graph.py:68dae4264556c2ec0acf511598bdaaabacd0d2d9419782cd401908f4288bd660
   - verify.sh:39d1f048d380b934b982f1d2f10ac9222deaf08ce94fefb91894be7adace13f8
   - README.en.md:9af6907075d68231fd3f5fe69c51b3b4bafc476d9508951c64555a6f57021472
   - scripts/check_external_links.py:4167e9e27e453a9f495870c9a69820d9c8886023cfd2d10d4457ae3686f15515
