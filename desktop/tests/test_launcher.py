@@ -18,6 +18,8 @@ import unittest
 from pathlib import Path
 
 ROOT = str(Path(__file__).resolve().parents[2])
+if str(Path(ROOT) / "desktop" / "src") not in sys.path:
+    sys.path.insert(0, str(Path(ROOT) / "desktop" / "src"))
 BASH = shutil.which("bash")
 
 
@@ -55,6 +57,79 @@ class LauncherFallbackTest(unittest.TestCase):
         p = self._run("toolface", "--json")
         self.assertEqual(0, p.returncode, "真实命令经回退也必须跑通\n%s" % p.stderr)
         self.assertIn("{", p.stdout)
+
+
+@unittest.skipUnless(BASH, "需 bash 跑 POSIX 启动器形态")
+class DocumentedCommandsTest(unittest.TestCase):
+    """**文档里写出来的终端命令必须真能跑**——门禁只有「文档提及 ↔ CLI 注册表」的静态对照
+    （`prose_lint.command_face`），从没执行过它们。
+
+    依据：连续三处缺陷都发生在**文档承诺的入口/形态**上（POSIX 启动器回退 / shell-init 函数回退 /
+    `nf.cmd` 编码），它们的共同盲点是——判据只验证「能解析 / 语法合法 / 在册」，不验证「能跑」。
+    本判据把 `docs/terminal.md` 的 ```sh 代码块命令逐条执行（只读形态；隔离 `NF_HOME`；
+    结束时确保不留下守护），并**自证有效**（真跑到的条数不得少于阈值，否则这条判据是空的）。
+    """
+
+    #: 会落盘 / 需要外部文件的形态：不在这里执行（它们是写路径，另有各命令自己的判据）
+    WRITE_TOKENS = ("--write", "--out", "--save", "--file", ">", "|", "--fix", "--yes")
+    MIN_RUNS = 5
+
+    def _documented(self):
+        import re
+        text = (Path(ROOT) / "docs" / "terminal.md").read_text(encoding="utf-8")
+        cmds = []
+        for block in re.findall(r"```sh\n(.*?)```", text, re.S):
+            for line in block.splitlines():
+                line = line.split("  #")[0].strip()
+                if line and not line.startswith("#") and line.startswith(
+                        ("nf ", "python scripts/nf.py ", "python3 scripts/nf.py ")):
+                    cmds.append(line)
+        return list(dict.fromkeys(cmds))              # 去重保序
+
+    def test_documented_commands_actually_run(self):
+        import shlex
+        cmds = self._documented()
+        self.assertGreaterEqual(len(cmds), self.MIN_RUNS,
+                                "文档里可执行命令太少，判据形同虚设：%s" % cmds)
+        home = tempfile.mkdtemp(prefix="nf_doccmd_")
+        env = dict(os.environ, NARRATIVE_FORGE_HOME=home)
+        ran, failures, skipped = 0, [], []
+        try:
+            for cmd in cmds:
+                if any(tok in cmd for tok in self.WRITE_TOKENS):
+                    skipped.append(cmd)
+                    continue
+                parts = shlex.split(cmd)
+                argv = ([BASH, "scripts/nf"] + parts[1:]) if parts[0] == "nf" \
+                    else ([sys.executable, "scripts/nf.py"] + parts[2:])
+                try:
+                    p = subprocess.run(argv, cwd=ROOT, env=env, capture_output=True,
+                                       text=True, encoding="utf-8", errors="replace",
+                                       timeout=300, stdin=subprocess.DEVNULL)
+                    rc = p.returncode
+                except subprocess.TimeoutExpired:
+                    rc = "TIMEOUT"
+                ran += 1
+                if rc != 0:
+                    failures.append("%s → rc=%s" % (cmd, rc))
+        finally:
+            # 收干净：文档里的示例会起守护，别把临时 NF_HOME 的守护留下
+            old = os.environ.get("NARRATIVE_FORGE_HOME")
+            try:
+                from core import daemon as dm
+                os.environ["NARRATIVE_FORGE_HOME"] = home
+                dm.stop()
+            except Exception:                      # noqa: BLE001 - 收尾失败不影响判定
+                pass
+            finally:
+                if old is None:
+                    os.environ.pop("NARRATIVE_FORGE_HOME", None)
+                else:
+                    os.environ["NARRATIVE_FORGE_HOME"] = old
+            shutil.rmtree(home, ignore_errors=True)
+        self.assertGreaterEqual(ran, self.MIN_RUNS,
+                                "真跑到的条数不足（跳过 %d 条）：判据自身要有效" % len(skipped))
+        self.assertEqual([], failures, "文档承诺的命令跑不通：%s" % failures)
 
 
 class WindowsCmdLauncherTest(unittest.TestCase):
