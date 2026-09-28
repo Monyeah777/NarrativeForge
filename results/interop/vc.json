@@ -15,7 +15,7 @@
     "VerifiableCredential",
     "NfConformanceCredential"
   ],
-  "validFrom": "2026-09-27",
+  "validFrom": "2026-09-28",
   "x-nf-note": "派生自 protocol/conformance_report.json + protocol/RECEIPTS.json + protocol/approvals/*（纯派生，不新增真源）",
   "x-nf-proof-status": "unsigned（本仓签名走 ssh 外挂锚 nf attest；未接 JWS/Data Integrity 签名套件——形状可读，不可验证，勿当凭证使用）"
 }

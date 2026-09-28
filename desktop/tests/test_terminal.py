@@ -666,6 +666,23 @@ class CompletionHistoryTest(unittest.TestCase):
             else:
                 os.environ["NARRATIVE_FORGE_HOME"] = old
 
+    def test_default_history_path_survives_storage_unavailable(self):
+        """storage 不可用时的兜底分支也必须算得出路径。
+
+        回归依据（2026-09-27）：该分支用了**未导入**的 `Path`——只在 `core.storage` 导入失败
+        时才走到，本机从未触发，ruff 的 F821 把它抓了出来（同类：`nf stats --json` 的 `json`）。
+        """
+        saved = sys.modules.get("core.storage")
+        sys.modules["core.storage"] = None       # None → `from core import storage` 抛 ImportError
+        try:
+            path = term.default_history_path()
+        finally:
+            if saved is None:
+                sys.modules.pop("core.storage", None)
+            else:
+                sys.modules["core.storage"] = saved
+        self.assertTrue(path.endswith("shell_history"), path)
+
 
 class ResilienceTest(unittest.TestCase):
     """健壮性：Ctrl-C 不杀会话、行尾反斜杠续行（对标顶尖 CLI 终端）。"""

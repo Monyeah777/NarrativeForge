@@ -30,6 +30,7 @@ import time
 from collections import namedtuple
 from contextlib import redirect_stderr, redirect_stdout
 from functools import lru_cache
+from pathlib import Path
 
 SHELL_VERSION = "1.0.0"
 

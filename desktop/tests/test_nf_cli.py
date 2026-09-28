@@ -63,6 +63,20 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn('"kind": "market-list"', out)
         self.assertIn('"grade"', out)
 
+    def test_stats_json_is_pure_json(self):
+        """`nf stats --json` 必须真的输出 JSON。
+
+        回归依据（2026-09-27）：该分支直接用了模块级未导入的 `json`，命令**当场崩**成
+        「内部错误：name 'json' is not defined」；而 `nf stats --check` 走的是另一条分支，
+        门禁只覆盖了后者——ruff 的 F821（未定义名）把它抓了出来。机器面是终端的公开契约，
+        必须有直接判据。
+        """
+        code, out = self._run(["stats", "--json"])
+        self.assertEqual(code, 0, out)
+        data = json.loads(out)
+        self.assertEqual(39, data["baseline_checks"])
+        self.assertEqual(68, data["baseline_pass"])
+
     def test_related_techdoc(self):
         code, out = self._run(["related", "技术文档域包"])
         self.assertEqual(code, 0)

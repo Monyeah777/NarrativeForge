@@ -4896,14 +4896,15 @@ def _cmd_worldmodel(args):
 
 def _cmd_stats(args) -> int:
     """自述数字实算（出口自动化 · check38 子扫描 1）。"""
+    import json as _json          # 本文件按需局部导入（见其余 _cmd_* 的同一习惯）
     from core import repo_stats as rs
 
     if args.write:
-        issues, stats = rs.write(".")
+        issues, stats = rs.write(ROOT)
     else:
-        issues, stats = rs.check(".")
+        issues, stats = rs.check(ROOT)
     if args.json:
-        print(json.dumps(stats, ensure_ascii=False, indent=2, sort_keys=True))
+        print(_json.dumps(stats, ensure_ascii=False, indent=2, sort_keys=True))
     else:
         print("== nf stats（自述数字实算 · 真源 protocol/repo_stats.json）==")
         print("  官方核心：模块 %d · 管线 %s"

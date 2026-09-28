@@ -1,7 +1,7 @@
 {
-  "approved_at": "2026-09-27",
+  "approved_at": "2026-09-28",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "把重复读/O(n²) 读盘钉成确定性判据（library.search 读取形状 + 纵深扫描单件上限 + 变异样本）。",
+  "note": "修复云端 CI 连红根因（超大正文经 env 传输撞内核 131072 字节单串硬限）+ nf stats --json 未定义名 + default_history_path 兜底未定义 Path。",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

@@ -21,7 +21,10 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          # 正文**刻意不走 env**：Linux 对单条 env 字符串有 32 页（131072 字节）硬限，超限时
+          # 本步骤会直接 E2BIG（Errno 7）而起不来——那样 `MAX_BODY_CHARS` 的「超长拒收」
+          # 永远不生效（2026-09-24 起 CI 连红的成因）。机器人改为经 API 取正文
+          # （.github/scripts/library_ingest.py::resolve_body，与 Gitee 通道同构）。
           ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}

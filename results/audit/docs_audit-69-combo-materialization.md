@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/pack_combo.py:a08e655cd1c80ab383955c817b35f1092307d48c5a724d6af2dbd5a72cad34c4
-  - scripts/nf.py:89b91020ddf54ffa0c8281f682507a1b9690ca4ea791f0fd01e76967157abb44
+  - scripts/nf.py:879958484191a264fa7b30400c1bcc100011dc1fd08f16ef34f411ffe0f219ec
   - docs/combos.md:4d25fe6d366687213df7090badd52b815bdf07f774df856e598d7cf8a1d130de
 ---
 

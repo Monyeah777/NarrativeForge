@@ -48,6 +48,16 @@ B36 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 MAX_SEG = 16
 SEG_RE = re.compile(r'^[A-Za-z0-9]{1,%d}$' % MAX_SEG)
 
+#: Linux 内核对**单条** argv/env 字符串的硬限（32 页 = 131072 字节；`getconf ARG_MAX`
+#: 是总量上限，不是单串上限）。超过它 execve 直接 E2BIG（Errno 7）——子进程根本起不来，
+#: 于是「正文超长 → 礼貌拒收」的分支**永远没机会执行**。
+#: 事故留痕（2026-09-24 起 CI 连红）：GitHub 前端曾把 `github.event.issue.body` 直接塞进
+#: 步骤 env，而 MAX_BODY_CHARS = 256 KiB 字符（CJK 约 786 KB）→ 只要投稿量真的越限，步骤
+#: 先 E2BIG，上限形同虚设。本机 Windows 无此限制，故本地一直「绿」。
+#: 现生产路径改为**经 API 取正文**（与自家 Gitee 通道 `gitee_ingest.py` 同构）；
+#: env / 文件通道只服务离线与测试。
+MAX_EXEC_STRLEN = 131072
+
 
 def load_gate(channel='github'):
     """读投稿闸门声明 → (mode, allowlist)。**fail-closed**：声明缺失 / 不可解析 / mode 非法，
@@ -186,6 +196,25 @@ def close_issue():
     api(f'/issues/{N}', {'state': 'closed'}, method='PATCH')
 
 
+def resolve_body():
+    """正文真源：`ISSUE_BODY_FILE`（本地/CI 传大载荷）> `ISSUE_BODY`（离线小载荷）> **议题 API**。
+
+    三条通道的优先级即「显式 > 隐式 > 生产真源」：文件与 env 供离线复现与测试使用，生产
+    由 API 取（GitHub 的议题正文接口），因此**不受单条 env 字符串 131072 字节的限制**——
+    超长投稿终于能被本机器人的上限判据正常拒收（这正是 MAX_BODY_CHARS 的设立目的）。
+    """
+    path = os.environ.get('ISSUE_BODY_FILE', '')
+    if path:
+        with open(path, encoding='utf-8') as f:
+            return f.read()
+    if BODY:
+        return BODY
+    if REPO and TOKEN and N:
+        data = api(f'/issues/{N}') or {}
+        return str(data.get('body') or '')
+    return ''
+
+
 def _redact(text):
     """令牌脱敏：任何要进日志 / 异常 / 回评的字符串都先过这里（CWE-532）。"""
     out = str(text)
@@ -246,6 +275,7 @@ def rebuild_alias():
 
 
 def main():
+    global BODY
     # ---- 1. 前置校验 ----
     if not TITLE.startswith('【NF投稿】'):
         print('非投稿标题，跳过')
@@ -261,6 +291,9 @@ def main():
                 f'{INTAKE_REL}）。外部投稿请走 Gitee 通道或联系作者。')
         print(f'非白名单投稿人（{AUTHOR}），已礼貌拒绝')
         sys.exit(0)
+    # 正文按下述优先级取：文件 > env > **议题 API**（生产真源，不受单条 env 字符串
+    # 131072 字节硬限约束——见 resolve_body 的事故留痕）。
+    BODY = resolve_body()
     if not BODY.strip():
         comment('⚠️ Issue 正文为空——请按模板粘贴产物全文后再提交。')
         sys.exit(0)
