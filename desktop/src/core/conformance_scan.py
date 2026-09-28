@@ -37,6 +37,11 @@ _T = chr(96) * 3
 #: 值差异 0、异常行为差异 0（见 `test_conformance_scan` 的等价断言；缺 libyaml 时自动跳过）。
 SAFE_LOADER = getattr(yaml, "CSafeLoader", None) or getattr(yaml, "SafeLoader", None)
 #: 围栏 YAML 解析缓存：键 = (marker, **文本本身**)，值 = 解析结果或 None（见 `_fence_yaml`）。
+#: **负结果（2026-09 受控 A/B，勿重复尝试）**：本缓存与下面的 `_BODY_CACHE` **不做磁盘持久化**。
+#: 实测：575 块全量「纯解析」**139 ms** vs「从盘读回」**108 ms**——只差 **31 ms**（每块解析仅
+#: ~0.24 ms，而落盘读回要开一个文件 + 解 JSON ~0.19 ms，文件系统一冷还会更贵）。为 31 ms 增加
+#: 近千个缓存文件不划算；这两笔账留在进程内层即可（冷路径的大头已由 AST 事实/派生结果那几路
+#: 落盘承担）。注意：cProfile 会把 PyYAML 这类「调用密集」代码放大成 ~0.65 s，别拿画像数字当收益。
 _FENCE_CACHE: Dict[Tuple[str, str], Any] = {}
 _FENCE_CACHE_MAX = 4096
 #: 围栏**正文**缓存：键 = 正文本身。给「自己抽正文」的调用方用（pipeline_loader /

@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "AST 事实落盘 + 判据口径修订（第二次零新增）",
+  "note": "记录 YAML 持久化负结果（139 vs 108ms，退役）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
