@@ -20,6 +20,8 @@ import hashlib
 import json
 import os
 import re
+
+from core import conformance_scan as csc
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -53,7 +55,7 @@ def load_spec(root: str, code: str) -> Dict[str, Any]:
     p = Path(root) / SPEC_DIR / ("%s.json" % code)
     if not p.is_file():
         raise ValueError("域规格不存在：%s" % p)
-    spec = json.loads(p.read_text(encoding="utf-8"))
+    spec = json.loads(csc.read_text_cached(p))
     issues = spec_issues(spec)
     if issues:
         raise ValueError("域规格不合规：%s" % "；".join(issues))
@@ -462,7 +464,7 @@ def _write_text_retry(path: Path, text: str, tries: int = 5) -> None:
 def _read_json_raw(path: Path) -> Any:
     """读 JSON；缺件/坏件返回 None（工厂在局部树上也要能工作——由调用方决定语义）。"""
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(csc.read_text_cached(path))
     except (OSError, ValueError):
         return None
 
@@ -473,7 +475,7 @@ def used_pipeline_ids(root: str = ".") -> List[str]:
     reg = _read_json(Path(root) / REGISTRY_REL) or {}
     out = [str(p.get("pipeline")) for p in (reg.get("protocols") or [])]
     for f in sorted((Path(root) / "03_管线库").glob("*.md")):
-        m = re.search(r"(?m)^\s*id:\s*(P\d{2})\s*$", f.read_text(encoding="utf-8"))
+        m = re.search(r"(?m)^\s*id:\s*(P\d{2})\s*$", csc.read_text_cached(f))
         if m:
             out.append(m.group(1))
     return out
@@ -501,7 +503,7 @@ def allocate(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
     code = spec["code"]
     proto = Path(root) / "community" / spec["pack_name"] / "protocol.yaml"
     if proto.is_file():
-        text = proto.read_text(encoding="utf-8")
+        text = csc.read_text_cached(proto)
         pipe = re.search(r"(?m)^\s*pipeline:\s*(P\d{2,3})\s*$", text)
         ids = re.findall(r'(?m)^\s*-\s*"([^"]+:M\d{2})"\s*$', text)
         if pipe and len(ids) == 2:
@@ -1617,7 +1619,7 @@ def plan(root: str, spec: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, str
 def _append_section02(root: str, spec: Dict[str, Any], alloc: Dict[str, Any]) -> bool:
     """在 02 §8 末尾追加登记段（幂等）。返回是否改动。"""
     doc_path = Path(root) / DOC02_REL
-    text = doc_path.read_text(encoding="utf-8")
+    text = csc.read_text_cached(doc_path)
     if "### 8." in text and spec["pack_name"] + "（community/" in text:
         return False
     m = re.search(r"^## 9\.", text, re.M)
@@ -1660,7 +1662,7 @@ def _append_section02(root: str, spec: Dict[str, Any], alloc: Dict[str, Any]) ->
 def _append_domain_list(root: str, spec: Dict[str, Any]) -> bool:
     """把包目录加进 verify.sh check14 的 DOMAIN 列表（幂等）。"""
     p = Path(root) / VERIFY_REL
-    text = p.read_text(encoding="utf-8")
+    text = csc.read_text_cached(p)
     entry = "'community/%s'" % spec["pack_name"]
     m = re.search(r"(?m)^(DOMAIN = \[)([^\]]*)(\])", text)
     if not m:
@@ -1772,7 +1774,7 @@ def verify(root: str, spec: Dict[str, Any]) -> Tuple[List[str], Dict[str, Any]]:
              and (Path(root) / r).read_bytes() != c.encode("utf-8")]
     issues += ["缺件：%s" % r for r in sorted(missing)]
     issues += ["与生成器漂移：%s" % r for r in sorted(drift)]
-    doc02 = (Path(root) / DOC02_REL).read_text(encoding="utf-8")
+    doc02 = csc.read_text_cached(Path(root) / DOC02_REL)
     if spec["pack_name"] + "（community/" not in doc02:
         issues.append("02 §8 未登记本包")
     else:
@@ -1780,7 +1782,7 @@ def verify(root: str, spec: Dict[str, Any]) -> Tuple[List[str], Dict[str, Any]]:
                          % re.escape(spec["pack_name"]), doc02)
         if not segm or "模块（2）" not in segm.group(0):
             issues.append("02 §8 段缺 `模块（2）` 在册行")
-    vs = (Path(root) / VERIFY_REL).read_text(encoding="utf-8")
+    vs = csc.read_text_cached(Path(root) / VERIFY_REL)
     if "'community/%s'" % spec["pack_name"] not in vs:
         issues.append("verify.sh DOMAIN 列表未登记本包")
     reg = _read_json(Path(root) / REGISTRY_REL) or {}
@@ -1975,7 +1977,7 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         proto = Path(root) / "community" / pkg / "protocol.yaml"
         if not proto.is_file():
             issues.append("%s：包目录或 protocol.yaml 缺失" % pkg); continue
-        text = proto.read_text(encoding="utf-8")
+        text = csc.read_text_cached(proto)
         for tok in (str(p.get("pipeline")), str(p.get("category"))):
             if tok not in text:
                 issues.append("%s：protocol.yaml 缺名录声明 %s" % (pkg, tok))

@@ -10,6 +10,8 @@
 from __future__ import annotations
 
 import re
+
+from core import conformance_scan as csc
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -28,14 +30,14 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     r = Path(root)
     issues: List[str] = []
     nf_subs = set(re.findall(r'add_parser\(\s*"([^"]+)"',
-                             (r / "scripts/nf.py").read_text(encoding="utf-8")))
+                             csc.read_text_cached(r / "scripts/nf.py")))
     steps = 0
     for rel in AUDIT_DOCS:
         path = r / rel
         if not path.exists():
             issues.append("%s 缺失（审计清单内档须在场）" % rel)
             continue
-        text = path.read_text(encoding="utf-8")
+        text = csc.read_text_cached(path)
         for m in _CMD.finditer(text):
             code = m.group(1).strip()
             if code.startswith("nf "):

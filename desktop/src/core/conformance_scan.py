@@ -127,8 +127,7 @@ def load_yaml_cached(body: str) -> Any:
 
 def _read_json(path: str) -> Tuple[Any, str]:
     try:
-        with open(path, encoding="utf-8") as fh:
-            return json.load(fh), ""
+        return json.loads(read_text_cached(path)), ""
     except Exception as exc:
         return None, str(exc)
 

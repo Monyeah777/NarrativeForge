@@ -262,8 +262,7 @@ def _fence_yaml(text: str, marker: str) -> Optional[Dict[str, Any]]:
 
 def _read_json(path: str) -> Tuple[Optional[Dict[str, Any]], str]:
     try:
-        with open(path, encoding="utf-8") as fh:
-            return json.load(fh), ""
+        return json.loads(_csc.read_text_cached(path)), ""
     except Exception as exc:
         return None, str(exc)
 

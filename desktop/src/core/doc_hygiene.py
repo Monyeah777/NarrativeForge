@@ -15,6 +15,8 @@ import glob
 import os
 import re
 
+from core import conformance_scan as csc
+
 INSTRUCTION_MARK = "⛔ 操作指令"
 LAST_UPDATED_PREFIX = "> 最后更新："
 
@@ -176,16 +178,14 @@ def check_markers(root: str = ".") -> list:
         if not os.path.exists(path):
             issues.append("%s 缺失（须入 REQUIRED_DOCS 清单）" % rel)
             continue
-        with open(path, encoding="utf-8") as fh:
-            head = _head_lines(fh.read())
+        head = _head_lines(csc.read_text_cached(path))
         if not any(ln.startswith(LAST_UPDATED_PREFIX) for ln in head):
             issues.append("%s 缺「最后更新」位（头部 %d 行内）" % (rel, len(head)))
     for rel in INSTRUCTION_DOCS:
         path = os.path.join(root, rel)
         if not os.path.exists(path):
             continue
-        with open(path, encoding="utf-8") as fh:
-            head = _head_lines(fh.read())
+        head = _head_lines(csc.read_text_cached(path))
         if not any(INSTRUCTION_MARK in ln for ln in head):
             issues.append("%s 缺「⛔ 操作指令」标识头（指令类文档须全覆盖）" % rel)
     return issues
@@ -213,8 +213,7 @@ def kind_rules(root: str = ".") -> list:
         path = os.path.join(root, rel)
         if not os.path.exists(path):
             continue
-        with open(path, encoding="utf-8") as fh:
-            text = fh.read()
+        text = csc.read_text_cached(path)
         if not any(re.search(p, text, re.M) for p in rule["must_any"]):
             warns.append("%s 属 %s 型但缺「%s」（写法未定型）" % (rel, kind, rule["label"]))
     return warns
@@ -240,8 +239,7 @@ def stale(root: str = ".", month_limit: int = 3,
         path = os.path.join(root, rel)
         if not os.path.exists(path):
             continue
-        with open(path, encoding="utf-8") as fh:
-            content = fh.read()
+        content = csc.read_text_cached(path)
         for ln in content.splitlines():
             if ln.startswith(LAST_UPDATED_PREFIX):
                 date_str = ln[len(LAST_UPDATED_PREFIX):].strip()
@@ -289,8 +287,7 @@ def text_sanity(root: str = ".", globs=None) -> list:
     for rel in files:
         rel = os.path.relpath(rel)
         try:
-            with open(rel, encoding="utf-8") as fh:
-                text = fh.read()
+            text = csc.read_text_cached(rel)
         except (OSError, UnicodeDecodeError) as exc:
             out.append("WARN: 正文不可读 %s（%s）" % (rel, exc))
             continue
