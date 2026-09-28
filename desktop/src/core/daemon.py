@@ -59,9 +59,13 @@ STATE_NAME = "daemon.json"
 SHELL_INIT_BASH = """# NF 执行层快路（生成自 `nf daemon shell-init bash`）
 # 用法：  eval "$(nf daemon shell-init bash)"        # 或写进 ~/.bashrc
 # 卸载：  unset -f nf
+# 注意（2026-09 实测缺陷）：解释器与脚本路径**必须加引号**——本机解释器路径是
+# `C:\\Program Files\\Python311\\python.exe`，不加引号时回退那行会被 bash 拆成命令 `C:\\Program`，
+# 于是守护不在（含默认 1 小时空闲自退之后）时 `nf <任何命令>` → **rc=127 + `C:Program: command not found`**。
+# 语法检查抓不到这种错（它语法合法），所以判据必须是**行为级**的（见 test_launcher/test_daemon）。
 nf() {
   case "${1:-}" in
-    daemon|shell|serve|"") command {py} "{root}/scripts/nf.py" "$@"; return $? ;;
+    daemon|shell|serve|"") command "{py}" "{root}/scripts/nf.py" "$@"; return $? ;;
   esac
   local _state="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json"
   local _s="" _rest="" _port="" _token=""
@@ -92,7 +96,7 @@ nf() {
     fi
     exec 9<&- 2>/dev/null || true
   fi
-  command {py} "{root}/scripts/nf.py" "$@"
+  command "{py}" "{root}/scripts/nf.py" "$@"
 }
 """
 

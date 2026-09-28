@@ -392,7 +392,8 @@ class DaemonInProcessServerTest(unittest.TestCase):
 
 
 class DaemonShellInitTest(unittest.TestCase):
-    def test_shell_init_emits_syntactically_valid_bash(self):
+    def _generated(self):
+        """生成 `nf daemon shell-init bash` 的脚本文本（供语法与**行为**两级判据共用）。"""
         import importlib.util
         spec = importlib.util.spec_from_file_location("nfcli_d", ROOT / "scripts" / "nf.py")
         nf = importlib.util.module_from_spec(spec)
@@ -402,7 +403,10 @@ class DaemonShellInitTest(unittest.TestCase):
         with contextlib.redirect_stdout(out):
             code = nf.main(["daemon", "shell-init", "bash"])
         self.assertEqual(0, code)
-        script = out.getvalue()
+        return out.getvalue()
+
+    def test_shell_init_emits_syntactically_valid_bash(self):
+        script = self._generated()
         self.assertIn("nf() {", script)
         self.assertIn(str(ROOT), script)
         bash = shutil.which("bash")
@@ -412,6 +416,33 @@ class DaemonShellInitTest(unittest.TestCase):
         tmp.write_text(script, encoding="utf-8", newline="\n")
         r = subprocess.run([bash, "-n", str(tmp)], capture_output=True, text=True)
         self.assertEqual(0, r.returncode, r.stderr)
+
+    def test_shell_init_function_actually_runs_without_daemon(self):
+        """**行为级**判据（语法检查抓不到）：守护不在时，`eval` 出来的 `nf` 必须能回退直跑。
+
+        依据（2026-09 实测缺陷）：模板把解释器路径**未加引号**嵌入——本机是
+        `C:\\Program Files\\Python311\\python.exe`，bash 会把它拆成命令 `C:\\Program`，于是
+        **守护不在（含默认 1 小时空闲自退之后）**时 `nf <任何命令>` →
+        **rc=127 + `C:Program: command not found`**。`bash -n` 对此完全无感（它语法合法），
+        所以本判据必须真的 `eval` 一次并在**没有守护**的环境里跑一条命令。
+        """
+        bash = shutil.which("bash")
+        if not bash:
+            self.skipTest("本机无 bash（无法 eval 快路函数）")
+        script = self._generated()
+        home = tempfile.mkdtemp(prefix="nf_shell_init_nodaemon_")
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = home          # 隔离后看不到任何守护状态文件
+        try:
+            r = subprocess.run([bash, "-c", 'eval "$1"; nf --version', "nfinit", script],
+                               cwd=str(ROOT), env=env, capture_output=True, text=True,
+                               encoding="utf-8", errors="replace", timeout=180)
+        finally:
+            shutil.rmtree(home, ignore_errors=True)
+        self.assertEqual(0, r.returncode,
+                         "守护不在时函数必须回退 python 直跑（未加引号的解释器路径会 127）\n%s"
+                         % (r.stderr or r.stdout))
+        self.assertIn("nf ", r.stdout)
 
 
 if __name__ == "__main__":

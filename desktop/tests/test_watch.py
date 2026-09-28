@@ -7,6 +7,8 @@
 - `watch.DirWatcher` 本身只在有实现的本平台跑（本波仅 Windows），其余平台跳过并检查降级面。
 """
 import os
+import shutil
+import subprocess
 import sys
 import tempfile
 import threading
@@ -225,6 +227,38 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
         for argv in (["conformance", "--write"], ["stats", "--write"],
                      ["score", "--write-baseline"], ["layers", "--out", "x"]):
             self.assertFalse(dm.cacheable(argv), argv)
+
+    def test_zero_subprocess_client_really_talks_to_the_daemon(self):
+        """**快路**必须有判据：函数坏掉只表现为"变慢"（输出一模一样），所以不能只看输出。
+
+        证据用**守护侧**的响应缓存命中计数——只有守护的 `execute` 才会让它涨，回退到 python 直跑
+        不会。这条同时钉住"生成函数里的解释器路径/引号没问题"（未加引号时函数直接 127）。
+        """
+        bash = shutil.which("bash")
+        if not bash:
+            self.skipTest("本机无 bash（无法 eval 快路函数）")
+        gen = subprocess.run([sys.executable, "scripts/nf.py", "daemon", "shell-init", "bash"],
+                             cwd=ROOT, capture_output=True, text=True,
+                             encoding="utf-8", errors="replace", timeout=120)
+        self.assertEqual(0, gen.returncode, gen.stderr)
+        def served():
+            """守护侧「真的执行过这条命令」的计数：命中与未命中**都只由守护的 execute 推动**。
+
+            只数 `hits` 会在「同类里别的用例刚推进代际、这条正好是 miss」时误报，所以两者相加。
+            """
+            st = dm.query_stats()
+            return st["hits"] + st["misses"]
+
+        before = served()
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = self.home          # 让函数看见本用例起的守护
+        r = subprocess.run([bash, "-c", 'eval "$1"; nf --version', "nfinit", gen.stdout],
+                           cwd=ROOT, env=env, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", timeout=180)
+        self.assertEqual(0, r.returncode, r.stderr or r.stdout)
+        self.assertIn("nf ", r.stdout)
+        self.assertGreaterEqual(served(), before + 1,
+                                "函数没走守护快路——回退也能出正确输出，所以必须用守护侧计数当证据")
 
 
 class DirWatcherTest(unittest.TestCase):
