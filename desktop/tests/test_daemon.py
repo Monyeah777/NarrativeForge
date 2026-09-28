@@ -311,8 +311,26 @@ class DaemonInProcessServerTest(unittest.TestCase):
 
     def test_main_entry_help_and_short_serve(self):
         self.assertEqual(2, dm.main([]), "缺 --serve 时应打印帮助并返回 2")
-        self.assertEqual(0, dm.main(["--serve", "--root", str(ROOT), "--idle", "0.05"]),
-                         "短空闲的 --serve 应自然退出 0")
+        # 短服务用**自己的 NF_HOME**：同一 NF_HOME 下另起守护会覆盖状态文件，
+        # 把本类 setUp 起的服务变成「失联」——CI（Linux）就是这样把它暴露出来的。
+        tmp = tempfile.mkdtemp(prefix="nf_daemon_short_")
+        old = os.environ.get("NARRATIVE_FORGE_HOME")
+        os.environ["NARRATIVE_FORGE_HOME"] = tmp
+        try:
+            self.assertEqual(0, dm.main(["--serve", "--root", str(ROOT), "--idle", "0.05"]),
+                             "短空闲的 --serve 应自然退出 0")
+        finally:
+            if old is None:
+                os.environ.pop("NARRATIVE_FORGE_HOME", None)
+            else:
+                os.environ["NARRATIVE_FORGE_HOME"] = old
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_second_serve_in_same_home_is_refused(self):
+        """一个 NF_HOME 只许一个守护（缺省 fail-closed）——否则后起者会顶掉先起者的状态登记。"""
+        self.assertEqual(2, dm.serve_forever(ROOT, idle_timeout=0.05),
+                         "已有守护在运行时另起服务应被拒（除非显式 force）")
+        self.assertTrue(dm.ping(), "拒绝之后原服务必须仍然可用")
 
     def test_code_fingerprint_and_sync_are_idempotent(self):
         fp = dm._code_fingerprint(ROOT)

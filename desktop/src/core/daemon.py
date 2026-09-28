@@ -359,8 +359,17 @@ def _handle_conn(conn: socket.socket, token: str, root: Path) -> bool:
     return False
 
 
-def serve_forever(root: Path, idle_timeout: float = 0.0, ready: Optional[Any] = None) -> int:
-    """守护主循环（单线程串行）：直到收到 shutdown / 空闲超时 / 被中断。"""
+def serve_forever(root: Path, idle_timeout: float = 0.0, ready: Optional[Any] = None,
+                  force: bool = False) -> int:
+    """守护主循环（单线程串行）：直到收到 shutdown / 空闲超时 / 被中断。
+
+    **一个 NF_HOME 只允许一个守护**（缺省 fail-closed）：状态文件只登记一个端口/令牌，若第二个
+    守护直接起，它会覆盖状态、让先起的那个「失联」（CI 实测踩过：同一 NF_HOME 下先后起两个
+    服务，后者的 `clear_state()` 把前者的广告位抹掉）。确需另起用 `force=True`。
+    """
+    if not force and ping(timeout=1.0):
+        print("已有守护在运行（修复指引：先 `nf daemon stop`，或显式 force 另起）", file=sys.stderr)
+        return 2
     token = secrets.token_hex(32)
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -479,11 +488,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--root", default=str(Path(__file__).resolve().parents[3]))
     ap.add_argument("--idle", type=float, default=3600.0,
                     help="空闲多少秒后自动退出（0=不退出）")
+    ap.add_argument("--force", action="store_true",
+                    help="已有守护在运行时仍另起一个（会顶掉先起者的状态登记，默认拒绝）")
     args = ap.parse_args(argv)
     if not args.serve:
         ap.print_help()
         return 2
-    return serve_forever(Path(args.root).resolve(), idle_timeout=args.idle)
+    return serve_forever(Path(args.root).resolve(), idle_timeout=args.idle, force=args.force)
 
 
 if __name__ == "__main__":                                # pragma: no cover - 进程入口
