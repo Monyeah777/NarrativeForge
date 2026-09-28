@@ -7,6 +7,7 @@ import io
 import os
 import pathlib
 import sys
+import tempfile
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -84,6 +85,101 @@ class ConformanceScanTest(unittest.TestCase):
         evidence = set(cs._evidence_ids(ROOT))
         self.assertIn("M00", evidence)
         self.assertIn("通用:M10", evidence)
+
+
+class FastGlobTest(unittest.TestCase):
+    """`iter_files` 的快速枚举：**与 `Path.glob` 逐模式等价** + 作用域内记忆 + 出口不陈旧。
+
+    依据（实测）：指纹占一次 `evaluate` 的 **926 ms / 31%**，其中「枚举」一项 463 ms——
+    `community/*/outputs/**/*`（1156 件）单条就要 236 ms，因为 pathlib 的 `**` 逐层重入；
+    换 `os.scandir` 单遍后同一条 ~90 ms，指纹 821 → 497 ms。
+    **等价性是本判据的主题**：快而语义不同＝把门禁换成假绿。
+    """
+
+    def _reference(self, root, pattern):
+        base = pathlib.Path(root)
+        return sorted(p.relative_to(base).as_posix()
+                      for p in base.glob(str(pattern)) if p.is_file())
+
+    def test_equivalent_to_pathlib_glob_for_declared_input_faces(self):
+        """仓库真实输入面（8 条模式）必须**逐条一致**——不能只测一条就当等价。"""
+        pats = list(dict.fromkeys(list(of.INDEX_INPUTS) + list(cs.SCAN_INPUTS)))
+        self.assertTrue(pats)
+        for pat in pats:
+            with cs.read_memo():
+                got = cs.iter_files(ROOT, pat)
+            self.assertEqual(self._reference(ROOT, pat), got,
+                             "快速枚举与 Path.glob 不等价：%s" % pat)
+
+    def test_dotfiles_depth_and_question_mark_semantics(self):
+        """点文件必须收（pathlib 不隐藏）、`?` 单字符、`**` 可消费零层、字符类回退参考实现。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            p = pathlib.Path(tmp)
+            (p / ".hidden.md").write_text("x", encoding="utf-8")
+            (p / "a.md").write_text("x", encoding="utf-8")
+            (p / "a1.md").write_text("x", encoding="utf-8")
+            (p / "sub").mkdir()
+            (p / "sub" / ".deep.md").write_text("x", encoding="utf-8")
+            (p / "sub" / "b.md").write_text("x", encoding="utf-8")
+            for pat in ("*.md", "a?.md", "**/*.md", "sub/*.md", "**/*", "**/*.json",
+                        "sub/[ab].md", "sub/**"):
+                with cs.read_memo():
+                    got = cs.iter_files(tmp, pat)
+                self.assertEqual(self._reference(tmp, pat), got, pat)
+
+    def test_scope_memo_walks_once_and_refreshes_next_scope(self):
+        """同作用域内重复枚举只走一遍文件系统；**出口即清**，下一个作用域必须看到新文件。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            p = pathlib.Path(tmp)
+            (p / "sub").mkdir()
+            (p / "sub" / "a.md").write_text("x", encoding="utf-8")
+            scans = []
+            real = os.scandir
+
+            def counting(path="."):
+                scans.append(path)
+                return real(path)
+
+            os.scandir = counting
+            try:
+                with cs.read_memo():
+                    first = cs.iter_files(tmp, "**/*.md")
+                    mark = len(scans)
+                    second = cs.iter_files(tmp, "**/*.md")
+                self.assertEqual(first, second)
+                self.assertEqual(mark, len(scans), "同一作用域内重复枚举不得重走文件系统")
+                (p / "sub" / "b.md").write_text("x", encoding="utf-8")
+                with cs.read_memo():
+                    third = cs.iter_files(tmp, "**/*.md")
+            finally:
+                os.scandir = real
+            self.assertEqual(len(first), 1)
+            self.assertEqual(len(third), 2, "新作用域必须看到新文件（不许跨调用陈旧）")
+
+    def test_fingerprint_reacts_to_content_and_to_new_files(self):
+        """指纹＝（枚举面 + 每个文件的内容）：改内容要变，**新增文件也要变**。
+
+        后半条守的是本波新增的枚举路径：枚举若漏了新文件，内容键就漏输入 → 假绿。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            mod = pathlib.Path(tmp) / "community" / "包" / "modules"
+            mod.mkdir(parents=True)
+            f = mod / "m.md"
+            f.write_text("一", encoding="utf-8")
+            with cs.read_memo():
+                fp1 = cs.content_fingerprint(tmp, of.INDEX_INPUTS)
+            with cs.read_memo():
+                self.assertEqual(fp1, cs.content_fingerprint(tmp, of.INDEX_INPUTS),
+                                 "同内容必须同指纹")
+            f.write_text("二", encoding="utf-8")
+            with cs.read_memo():
+                self.assertNotEqual(fp1, cs.content_fingerprint(tmp, of.INDEX_INPUTS),
+                                    "内容一变指纹必须变")
+                before = cs.content_fingerprint(tmp, of.INDEX_INPUTS)
+            (mod / "n.md").write_text("二", encoding="utf-8")
+            with cs.read_memo():
+                self.assertNotEqual(before, cs.content_fingerprint(tmp, of.INDEX_INPUTS),
+                                    "新增文件必须改指纹（枚举面变了）")
 
 
 class DerivedResultCacheTest(unittest.TestCase):

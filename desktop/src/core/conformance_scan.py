@@ -52,19 +52,125 @@ _BODY_CACHE_MAX = 4096
 #: 文件系统（实测一次 evaluate 里它被调 5 次、合计 167 ms；各扫描器各自重走同一批目录）。
 _READ_MEMO: Optional[Dict[str, Any]] = None
 _DIR_MEMO: Optional[Dict[str, Any]] = None
+#: 与读缓存**同生命周期**的「按模式枚举」缓存：一次只读调用内，同一 (root, pattern) 只走一遍
+#: 文件系统（实测：输入面在 2 个指纹 + 各扫描器之间重复枚举，44% 的遍历是白走）。
+_PAT_MEMO: Optional[Dict[Tuple[str, str], Tuple[str, ...]]] = None
 
 
 @contextlib.contextmanager
 def read_memo():
     """框定「共享语料」的作用域（可嵌套；出口恢复外层）。"""
-    global _READ_MEMO, _DIR_MEMO
+    global _READ_MEMO, _DIR_MEMO, _PAT_MEMO
     outer, _READ_MEMO = _READ_MEMO, {}
     outer_dir, _DIR_MEMO = _DIR_MEMO, {}
+    outer_pat, _PAT_MEMO = _PAT_MEMO, {}
     try:
         yield
     finally:
         _READ_MEMO = outer
         _DIR_MEMO = outer_dir
+        _PAT_MEMO = outer_pat
+
+
+def _fast_glob_supported(pattern: str) -> bool:
+    """本模块自走的枚举支持的**模式子集**：段级 `**` + 段内 `*` / `?`。
+
+    超出子集一律**回退** `Path.glob`——宁可慢，也不许悄悄改语义（回退面：字符类 `[…]`、
+    以 `**` 结尾的模式）。子集与 `Path.glob` 的**逐模式等价**由单测钉住（含点文件）。
+    """
+    pat = str(pattern)
+    if "[" in pat or "]" in pat:
+        return False
+    return pat.split("/")[-1] != "**"
+
+
+def _segment_regex(part: str) -> "re.Pattern[str]":
+    """把单个路径段编译成正则：`*` → 任意（不含 `/`），`?` → 单字符（不含 `/`）。"""
+    out = []
+    for ch in part:
+        if ch == "*":
+            out.append("[^/]*")
+        elif ch == "?":
+            out.append("[^/]")
+        else:
+            out.append(re.escape(ch))
+    return re.compile("^" + "".join(out) + "$")
+
+
+def _scandir_list(path: str):
+    """列目录（绝不抛）：目录不可读/已消失时返回空——枚举面按「不存在」处理。"""
+    try:
+        with os.scandir(path) as it:
+            return list(it)
+    except OSError:
+        return []
+
+
+def _enumerate_rel(root_abs: str, pattern: str) -> List[str]:
+    """`os.scandir` **单遍**枚举（相对 root 的 posix 路径）。语义对齐 `Path.glob`：
+
+    - `**` 消费**零或多层目录**，且不进入符号链接目录（与 pathlib 的 `_RecursiveWildcardSelector` 同）；
+    - `*` / `?` 不跨 `/`；**含点文件**（pathlib 的 glob 不隐藏点文件，这里也不）；
+    - 末段只收**文件**（pathlib 的 glob 末段用 `is_file()`，跟随符号链接——这里同样跟随）。
+
+    为什么不用 `Path.glob`：它的 `**` 逐层重入，实测本仓 `community/*/outputs/**/*`（1156 件）
+    要 236 ms，而 `os.scandir` 单遍约 90 ms——指纹每次只读调用都要按输入面枚举一遍。
+    """
+    parts = [p for p in pattern.split("/") if p != ""]
+    out: List[str] = []
+
+    def match(dir_abs: str, rel: str, i: int) -> None:
+        if i >= len(parts):
+            return
+        part = parts[i]
+        if part == "**":
+            match(dir_abs, rel, i + 1)                       # 零层：当前目录直接续匹配
+            for entry in _scandir_list(dir_abs):
+                try:
+                    if entry.is_dir() and not entry.is_symlink():
+                        match(entry.path, rel + entry.name + "/", i)
+                except OSError:
+                    continue
+            return
+        rx = _segment_regex(part)
+        last = (i == len(parts) - 1)
+        for entry in _scandir_list(dir_abs):
+            if not rx.match(entry.name):
+                continue
+            try:
+                if last:
+                    if entry.is_file():
+                        out.append(rel + entry.name)
+                elif entry.is_dir():
+                    match(entry.path, rel + entry.name + "/", i + 1)
+            except OSError:
+                continue
+
+    match(root_abs, "", 0)
+    return sorted(out)
+
+
+def iter_files(root, pattern: str) -> List[str]:
+    """按模式枚举**文件**（相对 root 的 posix 路径，已排序）。作用域内按 (root, 模式) 记忆。
+
+    作用域与读缓存同生命周期（`read_memo` 出口即清），因此**不跨调用复用**——与「新起进程
+    看同一份仓库事实」的冷却语义一致，不存在陈旧目录清单。
+    """
+    root_abs = os.path.abspath(str(root))
+    key = (os.path.normcase(root_abs), str(pattern))
+    if _PAT_MEMO is not None:
+        hit = _PAT_MEMO.get(key)
+        if hit is not None:
+            return list(hit)
+    if _fast_glob_supported(pattern):
+        got = tuple(_enumerate_rel(root_abs, str(pattern)))
+    else:
+        base = Path(root)
+        got = tuple(sorted(p.relative_to(base).as_posix()
+                           for p in base.glob(str(pattern)) if p.is_file()))
+    if _PAT_MEMO is not None:
+        _PAT_MEMO[key] = got
+    return list(got)
 
 
 def read_text_cached(path) -> str:
@@ -101,16 +207,18 @@ def content_fingerprint(root: str, patterns) -> str:
 
     用于「派生结果的跨调用缓存」：先在本模块里**穷举输入面**（写成 patterns），再拿指纹当键。
     走共享读（`read_text_cached`），这些文件本来就要被读，指纹近乎白拿。
+
+    枚举走 `iter_files`（`os.scandir` 单遍 + 作用域内记忆）：实测本仓一次 `evaluate` 里
+    指纹占 **926 ms / 31%**，而其中「枚举」一项就 463 ms（`community/*/outputs/**/*` 单条
+    236 ms 是 pathlib `**` 的逐层重入）——换成单遍后同一条降到 ~90 ms。
     """
     h = hashlib.sha256()
-    r = Path(root)
     for pat in patterns:
-        for p in sorted(r.glob(str(pat))):
-            if not p.is_file():
-                continue                      # `**/*` 会把目录也匹配进来，只对文件取指纹
-            h.update(p.relative_to(r).as_posix().encode("utf-8"))
+        for rel in iter_files(root, str(pat)):
+            h.update(rel.encode("utf-8"))
             h.update(b"\x00")
-            h.update(read_text_cached(p).encode("utf-8"))
+            h.update(read_text_cached(os.path.join(str(root), *rel.split("/")))
+                     .encode("utf-8"))
             h.update(b"\x01")
     return h.hexdigest()
 
