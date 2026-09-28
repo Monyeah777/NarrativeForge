@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""内容寻址持久缓存（`core.disk_cache`）单测：键的构成 + 不可信即重算 + 有界 + 可关闭。"""
+import json
+import os
+import shutil
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = str(Path(__file__).resolve().parents[2])
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
+from core import disk_cache as dc  # noqa: E402
+
+
+class DiskCacheTest(unittest.TestCase):
+    def setUp(self):
+        self.home = tempfile.mkdtemp(prefix="nf_diskcache_")
+        self._old_home = os.environ.get("NARRATIVE_FORGE_HOME")
+        self._old_off = os.environ.pop(dc.ENV_OFF, None)
+        os.environ["NARRATIVE_FORGE_HOME"] = self.home
+
+    def tearDown(self):
+        if self._old_home is None:
+            os.environ.pop("NARRATIVE_FORGE_HOME", None)
+        else:
+            os.environ["NARRATIVE_FORGE_HOME"] = self._old_home
+        if self._old_off is not None:
+            os.environ[dc.ENV_OFF] = self._old_off
+        shutil.rmtree(self.home, ignore_errors=True)
+
+    def test_round_trip_and_untrusted_entries_are_rejected(self):
+        ckey = dc.key("t", "part")
+        dc.store("t", ckey, {"A01": 3, "B02": 0})
+        self.assertEqual({"A01": 3, "B02": 0}, dc.load("t", ckey))
+        self.assertIsNone(dc.load("t", dc.key("t", "other")), "别的键不得命中")
+        self.assertIsNone(dc.load("t", ckey, validate=lambda v: False), "校验器否决即当未命中")
+        with open(dc.dir_for("t") / ("%s.json" % ckey), "w", encoding="utf-8") as fh:
+            fh.write('{"A01": ')                       # 半截 JSON
+        self.assertIsNone(dc.load("t", ckey), "坏文件必须拒绝")
+
+    def test_env_switch_disables_read_and_write(self):
+        os.environ[dc.ENV_OFF] = "1"
+        try:
+            ckey = dc.key("t", "part")
+            dc.store("t", ckey, {"X": 1})
+            self.assertEqual([], list(dc.dir_for("t").glob("*.json"))
+                             if dc.dir_for("t").is_dir() else [], "关闭时不得落盘")
+            self.assertIsNone(dc.load("t", ckey))
+            self.assertFalse(dc.enabled())
+        finally:
+            os.environ.pop(dc.ENV_OFF, None)
+
+    def test_prune_keeps_only_recent(self):
+        for i in range(dc.KEEP + 4):
+            dc.store("t", dc.key("t", "p%d" % i), {"X": i})
+        left = list(dc.dir_for("t").glob("*.json"))
+        self.assertLessEqual(len(left), dc.KEEP, "缓存不得无界增长")
+
+    def test_key_covers_tag_parts_code_and_runtime(self):
+        base = dc.key("t", "a")
+        self.assertNotEqual(base, dc.key("t", "b"), "任一段键不同就必须换键")
+        self.assertNotEqual(base, dc.key("other", "a"), "标签不同必须换键")
+        real = dc.code_fingerprint
+        try:
+            dc.code_fingerprint = lambda root=".": "code-A"
+            one = dc.key("t", "a")
+            dc.code_fingerprint = lambda root=".": "code-B"
+            two = dc.key("t", "a")
+        finally:
+            dc.code_fingerprint = real
+        self.assertNotEqual(one, two, "**代码面变了必须换键**（否则改了算法还吃旧账）")
+
+    def test_code_fingerprint_memoizes_per_root_and_resets(self):
+        """按根记忆（不重复哈希 41 ms）；`reset_code_fingerprint()` 之后必须看到新代码。
+
+        记忆是必需的：`key()` 每次查缓存都会要这段指纹，不记忆就是每查一次哈希 157 份源码。
+        代价是「进程内代码改了不会被自动看见」——所以**守护判定代码换版时必须显式 reset**
+        （`daemon._sync_code` 已接上这条钩子）。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "desktop" / "src" / "core"
+            d.mkdir(parents=True)
+            f = d / "m.py"
+            f.write_text("A = 1\n", encoding="utf-8")
+            first = dc.code_fingerprint(tmp)
+            self.assertEqual(first, dc.code_fingerprint(tmp), "同内容必须同指纹")
+            f.write_text("A = 2\n", encoding="utf-8")
+            self.assertEqual(first, dc.code_fingerprint(tmp), "进程内按根记忆（避免每次重哈希）")
+            dc.reset_code_fingerprint(tmp)
+            self.assertNotEqual(first, dc.code_fingerprint(tmp), "reset 之后必须换指纹")
+        with tempfile.TemporaryDirectory() as other:
+            d = Path(other) / "desktop" / "src" / "core"
+            d.mkdir(parents=True)
+            (d / "m.py").write_text("A = 3\n", encoding="utf-8")
+            self.assertNotEqual(first, dc.code_fingerprint(other), "换根不得串味")
+
+    def test_runtime_tag_names_interpreter_and_soft_dep(self):
+        tag = dc.runtime_tag()
+        self.assertIn("%d.%d" % (sys.version_info[0], sys.version_info[1]), tag)
+        self.assertIn("yaml=", tag, "软依赖在场与否必须进键")
+        self.assertEqual(tag, dc.runtime_tag(), "同一进程内稳定")
+
+    def test_stored_payload_is_plain_json(self):
+        """落盘必须是**可读的纯 JSON**（不是 pickle 之类）——取回即用，无代码执行面。"""
+        ckey = dc.key("t", "p")
+        dc.store("t", ckey, (["a"], {"n": 1}))          # 元组会被 json 规约成数组
+        with open(dc.dir_for("t") / ("%s.json" % ckey), encoding="utf-8") as fh:
+            raw = json.load(fh)
+        self.assertEqual([["a"], {"n": 1}], raw)
+
+
+if __name__ == "__main__":
+    unittest.main()

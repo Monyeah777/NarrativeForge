@@ -1168,12 +1168,19 @@ def index_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """
     fp = _csc.content_fingerprint(root, INDEX_INPUTS)
     hit = _INDEX_CACHE.get(fp)
-    if hit is not None:
-        return copy.deepcopy(hit[0]), copy.deepcopy(hit[1])
-    with _memo_reads():
-        got = _index_verify_impl(root)
-    _INDEX_CACHE[fp] = copy.deepcopy(got)
-    return got
+    if hit is None:
+        from core import disk_cache
+        dkey = disk_cache.key("index-verify", fp, root=root)
+        cached = disk_cache.load("index-verify", dkey, validate=_csc.result_pair_ok)
+        if cached is None:
+            with _memo_reads():
+                got = _index_verify_impl(root)
+            disk_cache.store("index-verify", dkey,
+                             {"issues": list(got[0]), "stats": got[1]})
+        else:
+            got = (list(cached["issues"]), dict(cached["stats"]))
+        hit = _INDEX_CACHE[fp] = copy.deepcopy(got)
+    return copy.deepcopy(hit[0]), copy.deepcopy(hit[1])
 
 
 def _index_verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

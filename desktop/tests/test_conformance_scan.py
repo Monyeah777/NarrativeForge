@@ -329,7 +329,13 @@ class DerivedResultCacheTest(unittest.TestCase):
                 "%s() 探测了输入面之外**存在**的文件 → 输入面不完整" % name)
 
     def test_second_call_with_same_key_hits_cache(self):
-        """键即内容：同内容第二次调用必须命中缓存（不重算），且两次结果一致。"""
+        """键即内容：同内容**第二次调用不得新增重算**，且两次结果一致。
+
+        判据口径（2026-09 修订）：本函数现在有两层缓存——进程内内容键 + **持久**内容键
+        （`core.disk_cache`）。于是**第一次调用也可能免算**（盘上已有同内容条目），
+        所以「两次调用总共只算 1 次」不再是真不变量；真不变量是**第二次相对于第一次零新增**
+        （缓存被拆掉时第二次就会新增，本判据照样当场红）。
+        """
         for name, _patterns, _clear in self.CASES:
             real_impl = cs._scan_impl if name == "scan" else of._index_verify_impl
             calls = {"n": 0}
@@ -342,7 +348,10 @@ class DerivedResultCacheTest(unittest.TestCase):
                 cs._SCAN_CACHE.clear()
                 cs._scan_impl = counting
                 try:
-                    first, second = cs.scan(ROOT), cs.scan(ROOT)
+                    first = cs.scan(ROOT)
+                    after_first = calls["n"]
+                    second = cs.scan(ROOT)
+                    after_second = calls["n"]
                 finally:
                     cs._scan_impl = real_impl
                     cs._SCAN_CACHE.clear()
@@ -350,11 +359,15 @@ class DerivedResultCacheTest(unittest.TestCase):
                 of._INDEX_CACHE.clear()
                 of._index_verify_impl = counting
                 try:
-                    first, second = of.index_verify(ROOT), of.index_verify(ROOT)
+                    first = of.index_verify(ROOT)
+                    after_first = calls["n"]
+                    second = of.index_verify(ROOT)
+                    after_second = calls["n"]
                 finally:
                     of._index_verify_impl = real_impl
                     of._INDEX_CACHE.clear()
-            self.assertEqual(1, calls["n"], "%s() 同内容第二次调用白算了一遍" % name)
+            self.assertEqual(after_first, after_second,
+                             "%s() 同内容第二次调用白算了一遍（缓存没生效）" % name)
             self.assertEqual(first, second, "%s() 命中缓存的结果必须与首算一致" % name)
 
 

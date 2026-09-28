@@ -494,16 +494,32 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     依据（实测）：本函数一次调用约 0.4 s，而它只依赖那 6 类输入——守护逐请求清空按 root 的
     缓存时，这些派生账会被白交一遍。键即内容 ⇒ 输入一变指纹就变，故不需要随请求清空。
 
+    再叠一层**持久**缓存（`core.disk_cache`：键里还含**代码面 + 运行时**）：新进程也能免付
+    这笔派生账。读回时按 `result_pair_ok` 校验形状，不可信即重算。
+
     「读到的文件必须全部落在输入面内」有判据守着（test_conformance_scan.DerivedResultCacheTest）：
     将来给本函数加新读取，判据会先红、逼着把新输入补进来——不会悄悄读到陈旧结果。
     """
     fp = content_fingerprint(root, SCAN_INPUTS)
     hit = _SCAN_CACHE.get(fp)
-    if hit is not None:
-        return copy.deepcopy(hit[0]), copy.deepcopy(hit[1])
-    got = _scan_impl(root)
-    _SCAN_CACHE[fp] = copy.deepcopy(got)
-    return got
+    if hit is None:
+        from core import disk_cache
+        dkey = disk_cache.key("scan", fp, root=root)
+        cached = disk_cache.load("scan", dkey, validate=result_pair_ok)
+        if cached is None:
+            got = _scan_impl(root)
+            disk_cache.store("scan", dkey,
+                             {"issues": list(got[0]), "stats": got[1]})
+        else:
+            got = (list(cached["issues"]), dict(cached["stats"]))
+        hit = _SCAN_CACHE[fp] = copy.deepcopy(got)
+    return copy.deepcopy(hit[0]), copy.deepcopy(hit[1])
+
+
+def result_pair_ok(value) -> bool:
+    """持久缓存读回值的形状校验：`{"issues": [...], "stats": {...}}`（否则当未命中）。"""
+    return (isinstance(value, dict) and set(value) == {"issues", "stats"}
+            and isinstance(value["issues"], list) and isinstance(value["stats"], dict))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:

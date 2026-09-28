@@ -343,6 +343,13 @@ def _sync_code(root: Path) -> None:
     fp = _code_fingerprint(root)
     if _CLI_CACHE.get("fp") == fp:
         return
+    # 代码换版必须**同时**清掉「代码面指纹」的记忆：否则持久缓存的键还停在旧代码上，
+    # 会拿旧算法算出来的账当新账（见 core.disk_cache.code_fingerprint 的说明）。
+    try:
+        from core import disk_cache
+        disk_cache.reset_code_fingerprint(str(root))
+    except Exception:                                    # noqa: BLE001 - 清不掉不影响重载
+        pass
     for name in [m for m in list(sys.modules) if m == "core" or m.startswith("core.")]:
         if name != "core.daemon":           # 守护自身模块留着（改它需重启，见模块 docstring）
             sys.modules.pop(name, None)
@@ -366,7 +373,10 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
                "（修复指引：在普通终端里直接跑；守护只承载一次性命令）\n" % argv[0])
         return 2, b"", msg.encode("utf-8")
     # 响应缓存：**只在「树没变」有可证信号时**才会命中（见 `_watch_generation`）。
-    key = (tuple(str(a) for a in argv), cwd or os.getcwd())
+    # 键必须含**会改变输出文本**的环境面：`terminal` 按 NO_COLOR / CLICOLOR_FORCE 决定是否着色，
+    # 不含它就会出现「在无色环境里回放了带 ANSI 的旧响应」。
+    key = (tuple(str(a) for a in argv), cwd or os.getcwd(),
+           os.environ.get("NO_COLOR", ""), os.environ.get("CLICOLOR_FORCE", ""))
     gen = _watch_generation()
     if gen is None:
         if cacheable(argv):

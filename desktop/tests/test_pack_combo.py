@@ -28,25 +28,50 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
     """
 
     def test_breadth_reuses_within_same_content(self):
-        pc._CONTENT_CACHE.clear()
-        calls = []
-        orig = pc.combine
+        """键即内容：同内容**第二次不得新增** combine 调用；且判据自身先证明有效。
 
-        def counting(*a, **k):
-            calls.append(1)
-            return orig(*a, **k)
+        口径（2026-09 修订）：本函数现在有两层缓存（进程内内容键 + **持久**内容键），
+        所以「第一次一定真跑」不再是真不变量——**先在两层都关掉的最冷状态下证明计数器有效**
+        （必须真跑 >1000 次），**再**测真不变量（第二次零新增）。
+        """
+        import os
 
-        pc.combine = counting                      # type: ignore[assignment]
+        from core import disk_cache as dc
+
+        def run_with_counter():
+            calls = []
+            orig = pc.combine
+
+            def counting(*a, **k):
+                calls.append(1)
+                return orig(*a, **k)
+
+            pc.combine = counting                  # type: ignore[assignment]
+            try:
+                got = pc.breadth(ROOT)
+            finally:
+                pc.combine = orig                  # type: ignore[assignment]
+            return got, len(calls)
+
+        # ① 最冷状态（进程内 + 持久都不可用）→ 计数器必须真的数到大数，否则判据本身没测到东西
+        old_off = os.environ.get(dc.ENV_OFF)
+        os.environ[dc.ENV_OFF] = "1"
         try:
-            pc.breadth(ROOT)
-            first = len(calls)
-            calls.clear()
-            pc.breadth(ROOT)
-            second = len(calls)
+            pc._CONTENT_CACHE.clear()
+            _, cold = run_with_counter()
         finally:
-            pc.combine = orig                      # type: ignore[assignment]
-        self.assertGreater(first, 1000, "首次广度证明应真跑组合（判据自身要有效）")
-        self.assertEqual(0, second, "同内容的第二次不该再跑组合（内容键缓存没生效？）")
+            if old_off is None:
+                os.environ.pop(dc.ENV_OFF, None)
+            else:
+                os.environ[dc.ENV_OFF] = old_off
+        self.assertGreater(cold, 1000, "最冷状态下广度证明应真跑组合（判据自身要有效）")
+
+        # ② 真不变量：同内容第二次**零新增**（无论这次是进程内命中还是持久命中）
+        pc._CONTENT_CACHE.clear()
+        first, n_first = run_with_counter()
+        second, n_second = run_with_counter()
+        self.assertEqual(0, n_second, "同内容的第二次不得再跑组合（缓存没生效？）")
+        self.assertEqual(first, second, "命中缓存的结果必须与首算一致")
 
     def test_fingerprint_is_stable_and_sensitive(self):
         with tempfile.TemporaryDirectory() as tmp:

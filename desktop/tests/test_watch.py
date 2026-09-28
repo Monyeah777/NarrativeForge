@@ -106,6 +106,26 @@ class ResponseCacheTest(unittest.TestCase):
         self.assertEqual(0, st["entries"], "非准入命令不得进缓存")
         self.assertEqual(0, st["hits"])
 
+    def test_colour_env_is_part_of_the_key(self):
+        """配色环境会改变**输出文本**，故必须进键：否则无色环境会回放带 ANSI 的旧响应。"""
+        dm._WATCHER = _FakeWatcher(generation=1)
+        old = {k: os.environ.get(k) for k in ("NO_COLOR", "CLICOLOR_FORCE")}
+        try:
+            os.environ.pop("NO_COLOR", None)
+            os.environ.pop("CLICOLOR_FORCE", None)
+            dm.execute(["--version"], Path(ROOT))
+            os.environ["NO_COLOR"] = "1"
+            dm.execute(["--version"], Path(ROOT))
+        finally:
+            for k, v in old.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+        st = dm.cache_stats()
+        self.assertEqual(0, st["hits"], "环境不同不得命中同一条缓存")
+        self.assertEqual(2, st["entries"], "两种环境各占一条")
+
     def test_allowlisted_commands_are_byte_reproducible(self):
         """**准入判据本身**：同树连跑两次，退出码 / stdout / stderr 必须逐字节相同。
 

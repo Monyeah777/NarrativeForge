@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/domain_pack.py:d93603055a4aa6df18718a0776fa881ce9766b54bf930fc155c4dbbb7530ab45
-  - desktop/src/core/asset_density.py:95576eb3a298a21c0bb17b5f0e37c8831ac6310df2593a8a6e01ea1ffcdadcf0
+  - desktop/src/core/asset_density.py:a04a1fee808ae240cf71c98a22336879863f9c5f3accda0f07b45c0a3b1bea9b
   - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
 ---

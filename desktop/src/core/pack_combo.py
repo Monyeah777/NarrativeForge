@@ -256,6 +256,15 @@ def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
         return cached["prof"]
     fp = _inputs_fingerprint(root)
     hit = _CONTENT_CACHE.get(("prof", fp))
+    dkey = None
+    if hit is None:                        # 进程内没命中 → 再看**持久**层（新进程也免付这笔账）
+        from core import disk_cache
+        dkey = disk_cache.key("pack-prof", fp, root=root)
+        got_disk = disk_cache.load("pack-prof", dkey,
+                                   validate=lambda v: isinstance(v, dict) and bool(v))
+        if got_disk is not None:
+            hit = got_disk
+            _CONTENT_CACHE[("prof", fp)] = copy.deepcopy(got_disk)
     if hit is not None:
         got = copy.deepcopy(hit)
         _CACHE.setdefault(key, {})["prof"] = got      # 顺手回填本次扫描的缓存，供 indexes() 复用
@@ -288,6 +297,8 @@ def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
     cached.update({"prof": out, "contracts": contracts})
     _CACHE[key] = cached
     _CONTENT_CACHE[("prof", fp)] = copy.deepcopy(out)
+    if dkey is not None:
+        disk_cache.store("pack-prof", dkey, out)
     return out
 
 
@@ -472,6 +483,16 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
     content_key = ("breadth", _inputs_fingerprint(root), triple_sample, quad_sample,
                    quint_sample, sext_sample, seed)
     hit = _CONTENT_CACHE.get(content_key)
+    dkey = None
+    if hit is None:                        # 进程内没命中 → 再看持久层（广度证明 ~0.9 s 一笔）
+        from core import disk_cache
+        dkey = disk_cache.key("pack-breadth", str(_inputs_fingerprint(root)),
+                              str(triple_sample), str(quad_sample), str(quint_sample),
+                              str(sext_sample), str(seed), root=root)
+        hit = disk_cache.load("pack-breadth", dkey,
+                             validate=lambda v: isinstance(v, dict) and bool(v))
+        if hit is not None:
+            _CONTENT_CACHE[content_key] = copy.deepcopy(hit)
     if hit is not None:
         return copy.deepcopy(hit)
     key = _cache_key(root)
@@ -532,6 +553,8 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
         and stats["quints"] == stats["quints_legal"]
         and stats["sexts"] == stats["sexts_legal"])
     _CONTENT_CACHE[content_key] = copy.deepcopy(stats)
+    if dkey is not None:
+        disk_cache.store("pack-breadth", dkey, stats)
     return stats
 
 
