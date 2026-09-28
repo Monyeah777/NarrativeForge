@@ -33,6 +33,9 @@ _URL_RE = re.compile(r"https?://[^\s\)\]\>\"'，。；、）】`（]+")
 _TRAILING = ".,;:!?）)】」』`\"'"
 #: 模板占位符：含 `{…}` 的「URL」是文档里的骨架示例，不是可探测链接（跳过而非报失败）
 _PLACEHOLDER = re.compile(r"[{}]")
+#: 本机/环回主机：**不是外链**——从 CI 探测永远不可达也无意义（例如文档里的本地服务示例
+#: `http://127.0.0.1:8791/v1/…`）。按骨架跳过，而不是每周报一次假死链。
+_LOCAL_HOSTS = ("127.0.0.1", "localhost", "0.0.0.0", "::1", "[::1]")
 
 #: 瞬态失败口径（机制借鉴 RFC 9110 §15.5 的 5xx 语义 + 429 限速语义）：
 #: 这些结果只说明「这一刻没问到」，不代表链接死了——须退避重试后再定性。
@@ -135,6 +138,8 @@ def extract_links(text: str, skip: Sequence[str] = ()) -> List[str]:
             continue
         if _PLACEHOLDER.search(url):                # 形如 …/{路径} 的骨架示例：跳过
             continue
+        if host_of(url) in _LOCAL_HOSTS:            # 环回/本机：不是外链，探测无意义
+            continue
         if any(url.startswith(s) for s in skip if s):
             continue
         if url not in out:
@@ -170,7 +175,13 @@ def default_fetcher(timeout: float = 10.0) -> Callable[[str], Tuple[bool, str]]:
     """基于 urllib 的探测（HEAD；异常如实归类，不静默）。返回 (ok, detail)。"""
     def fetch(url: str) -> Tuple[bool, str]:
         # 非 ASCII 路径须先百分号编码（浏览器同义行为）——否则 urllib 抛 UnicodeEncodeError
+        # `urllib.request`/`urllib.error` 必须**显式** import：只 import `urllib.parse` 不会把
+        # 这两个子模块挂到 `urllib` 包上，`urllib.request.Request` 会 AttributeError（
+        # external-links 工作流起初两次全红就死在这一句；本机无 PyYAML/requests 之类先导 import
+        # 时也同样炸——所以判据钉在单测里，见 test_bilingual_entry.ExternalLinkToolTest）。
+        import urllib.error
         import urllib.parse
+        import urllib.request
         target = urllib.parse.quote(url, safe=":/?#[]@!$&'()*+,;=%~")
         req = urllib.request.Request(
             target, method="HEAD",

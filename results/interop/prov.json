@@ -127,7 +127,7 @@
     {
       "@id": "nf:file/llms.txt",
       "@type": "prov:Entity",
-      "nf:sha256": "9f639f0afffab449fe3891a4b2c264261d2b867b29b466288ef3cc83d0b67213"
+      "nf:sha256": "5c2cc5477408a6b1d48b9e1a906e84ff0d7604c30b23afb6f047c711bd08003a"
     },
     {
       "@id": "nf:file/protocol/CONFORMANCE.md",

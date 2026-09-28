@@ -11,6 +11,8 @@ import io
 import re
 import sys
 import unittest
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -84,6 +86,12 @@ class ExternalLinkToolTest(unittest.TestCase):
         text = "取件：https://x.example/tree/main/{路径}` 与真实 https://x.example/real"
         self.assertEqual(self.tool.extract_links(text), ["https://x.example/real"])
 
+    def test_skips_loopback_hosts(self):
+        """环回/本机地址不是外链：从 CI 探测永远不可达（本地服务示例不得算死链）。"""
+        text = ("本地：http://127.0.0.1:8791/v1/systemone 与 http://localhost:8080/x "
+                "真实 https://x.example/real")
+        self.assertEqual(self.tool.extract_links(text), ["https://x.example/real"])
+
     def test_strips_trailing_backtick_and_quote(self):
         """markdown 行内代码/引号里的 URL 会带尾随反引号或引号，须剥掉。"""
         text = "见 `https://a.example/x` 与 \"https://b.example/y\""
@@ -98,6 +106,60 @@ class ExternalLinkToolTest(unittest.TestCase):
         self.assertEqual(report["total"], 3)
         self.assertEqual(report["checked"], 2)      # 同链接只探一次
         self.assertEqual(report["failed"], 1)
+
+    def test_default_fetcher_is_wired_to_urllib_request(self):
+        """接线面：`default_fetcher` 造出的 fetcher 必须**真能执行**（离线，注入假 urlopen）。
+
+        依据（真实缺陷）：本类其余用例都注入假 fetcher，于是 `default_fetcher` 内部的
+        `urllib.request` / `urllib.error` 引用**从未被执行过**——一个只 `import urllib.parse`
+        的漏 import 就这样躲过全部单测，直到 external-links 工作流两次全红才暴露（该文件确实
+        只 import 了 `urllib.parse`）。此用例把那条路径钉死：它一旦再缺 import 就 AttributeError。
+        """
+        class _Resp:
+            status = 200
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *exc):
+                return False
+
+        asked = []
+
+        def fake_urlopen(req, timeout=None):
+            asked.append((req.get_method(), req.full_url))
+            return _Resp()
+
+        real = urllib.request.urlopen
+        urllib.request.urlopen = fake_urlopen
+        try:
+            fetch = self.tool.default_fetcher(timeout=0.5)
+            self.assertEqual(fetch("https://ok.example/a b"), (True, "HTTP 200"))
+        finally:
+            urllib.request.urlopen = real
+        self.assertEqual(asked, [("HEAD", "https://ok.example/a%20b")],
+                         "空格/非 ASCII 路径须先百分号编码再探测（浏览器同义行为）")
+
+    def test_default_fetcher_reports_http_error(self):
+        """HTTP 错误须如实定性为失败（`urllib.error` 必须真的可被引用）。"""
+        real = urllib.request.urlopen
+
+        def raise_404(req, timeout=None):
+            raise urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, None)
+
+        urllib.request.urlopen = raise_404
+        try:
+            ok, detail = self.tool.default_fetcher(timeout=0.5)("https://dead.example/x")
+        finally:
+            urllib.request.urlopen = real
+        self.assertFalse(ok)
+        self.assertEqual(detail, "HTTP 404")
+
+    def test_default_fetcher_rejects_non_http_scheme_offline(self):
+        """非 http(s) 一律拒探——纯离线即可跑，且必须真的能构造 Request（漏 import 会当场炸）。"""
+        ok, detail = self.tool.default_fetcher(timeout=0.5)("ftp://x.example/y")
+        self.assertFalse(ok)
+        self.assertIn("scheme", detail)
 
     def test_transient_classification_and_retry_after(self):
         """瞬态口径：超时/5xx/429/408/425 可重试；4xx（非上述）一律定性。"""

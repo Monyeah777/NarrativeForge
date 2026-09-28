@@ -4,7 +4,7 @@
     "algorithm": "RFC6962-style sha256 domain-separated",
     "count": 51,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "a2efb2014592726cb87973ae99934c3dad22810c27d081672346b0f737a1bfbf",
+    "root": "47287bb85283cb05c3439523142888f11f0cb86fd549c4440f59c7bb7de1a247",
     "scope": "protocol"
   },
   "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
@@ -41,7 +41,7 @@
     },
     {
       "digest": {
-        "sha256": "9f639f0afffab449fe3891a4b2c264261d2b867b29b466288ef3cc83d0b67213"
+        "sha256": "5c2cc5477408a6b1d48b9e1a906e84ff0d7604c30b23afb6f047c711bd08003a"
       },
       "name": "llms.txt"
     },

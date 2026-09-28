@@ -3,8 +3,8 @@
 > NarrativeForge（NF）是**内容契约层**：把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议本体域中立、模型无关；叙事只是官方第一个域包。本文件是给 agent 的机器入口清单（形态对齐 llms.txt v2）。
 
 - 仓库：https://github.com/Monyeah777/NarrativeForge （国内镜像 https://gitee.com/monyeah777/narrative-forge ；换镜像只换前缀，后缀不动）
-- 取件基底（raw，喂 AI 用）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`
-- 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/`
+- 取件基底（raw，喂 AI 用）：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/{路径}`（基底是**前缀**，实际取件拼上仓库内相对路径）
+- 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/{路径}`
 - 本仓库全部内容本身就是 markdown 源文件——不存在 HTML 版，因此 llms.txt v2 的 `page.md` 孪生约定天然满足；本文件即仓库描述文件（等价 `rel="describedby"` 指向物）。
 <!-- nf:stats:begin -->
 - 质量凭证（可静态实算）：verify v2.29 · check1-39 · PASS=68（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
