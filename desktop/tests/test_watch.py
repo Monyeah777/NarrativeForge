@@ -360,6 +360,44 @@ class DirWatcherTest(unittest.TestCase):
         self.assertTrue(w.overflowed)
         self.assertEqual(before + 1, w.generation)
 
+    @unittest.skipUnless(watch.available(), "本平台没有目录监听实现（本波仅 Windows）")
+    def test_volume_gate_accepts_local_and_rejects_remote_like_paths(self):
+        """**卷类型闸门**：网络盘（SMB/UNC）的通知语义不可靠、会静默漏事件 → 一律不启用。
+
+        （`GetDriveTypeW` 要的是**卷根**：给完整路径它会回 DRIVE_NO_ROOT_DIR —— 本波实测踩过，
+         所以这里连同"完整路径也能判对"一起钉住。）
+        """
+        self.assertTrue(watch._volume_supports_notifications(ROOT), "本地固定盘必须放行")
+        self.assertFalse(watch._volume_supports_notifications(r"\\srv\share\repo"),
+                         "UNC / 网络盘必须拒绝")
+        self.assertFalse(watch._volume_supports_notifications("Z:\\不存在的盘\\repo"),
+                         "不存在的卷必须拒绝（判不出来就当不支持）")
+
+    @unittest.skipUnless(watch.available(), "本平台没有目录监听实现（本波仅 Windows）")
+    def test_mechanism_selfcheck_passes_and_gates_start(self):
+        """**机制自检**：打开句柄成功 ≠ 通知会到；自检不过必须判不可用（fail-closed）。
+
+        自检自身在本机必须过（真跑 create/modify/delete 三类）；把卷闸门或自检按成"不支持"时，
+        `start()` 必须返回 False——**绝不**出现"自称健康但代际永不推进"的假绿。
+        """
+        self.assertTrue(watch.selfcheck(), "本机机制自检必须通过（三类通知都到）")
+        with tempfile.TemporaryDirectory() as tmp:
+            real_vol, real_self = watch._volume_supports_notifications, watch.selfcheck
+            try:
+                watch._volume_supports_notifications = lambda _p: False
+                self.assertFalse(watch.DirWatcher(tmp).start(), "卷闸门否决时不得启动")
+                watch._volume_supports_notifications = real_vol
+                watch.selfcheck = lambda: False
+                self.assertFalse(watch.DirWatcher(tmp).start(), "自检不过时不得启动")
+            finally:
+                watch._volume_supports_notifications = real_vol
+                watch.selfcheck = real_self
+            w = watch.DirWatcher(tmp)
+            try:
+                self.assertTrue(w.start(), "闸门恢复后必须能正常启动")
+            finally:
+                w.stop()          # 必须停掉：它持有该目录句柄，否则临时目录在 Windows 上删不掉
+
     @unittest.skipIf(watch.available(), "仅在「无实现平台」检查降级面")
     def test_unavailable_platform_degrades_without_raising(self):
         w = watch.DirWatcher(ROOT)

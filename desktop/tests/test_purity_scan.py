@@ -159,11 +159,16 @@ class PurityScanTest(unittest.TestCase):
         os.rmdir）——该面此前零判据，正是 F-10 能长期存在的原因。基线由 1（受控 __import__）
         升到 5：__import__ ×1 + shutil.rmtree ×4（storage.py 三处同键 + e2e 自检一处），
         全部在 SINK_ALLOW 在册；本断言即「类目扩了、放行仍可审计」的守门。
+
+        2026-09 再扩**方法名类 sink**（`METHOD_SINKS`：`x.unlink()` 与 `os.remove` 同险，
+        但被调者名字随接收者变、按整串匹配会整类漏掉）——当时本仓 core 里有 **6 处 `.unlink()`**
+        全部一路绿灯穿过 R6，基线随之 5 → **12**（新增 6 处已登记站点：disk_cache / domain_pack /
+        pack_combo / storage / watch ×2）。
         """
         issues, stats = ps.scan(ROOT)
         self.assertEqual([i for i in issues if "危险 sink" in i], [],
                          "真仓库出现未登记 sink 即 FAIL")
-        self.assertLessEqual(stats.get("sinks", 0), 5)
+        self.assertLessEqual(stats.get("sinks", 0), 12)
 
 
 class SinkRegistryTest(unittest.TestCase):
@@ -206,6 +211,37 @@ class SinkRegistryTest(unittest.TestCase):
                 if i.replace("\\", "/").startswith("scripts/poc_rmtree.py")
                 and "shutil.rmtree" in i]
         self.assertTrue(hits, "未登记的 shutil.rmtree 应被 R6 捕获：%s" % issues)
+
+    def test_mutation_unlink_sink_captured(self):
+        """**方法名类** sink：`x.unlink()` 与 `os.remove` 同险，但被调者名字随接收者变
+        （`old.unlink` / `Path('x').unlink` …）——按整串匹配会**整类漏掉**。
+
+        2026-09 实测：本仓 core 里当时有 6 处 `.unlink()` 一路绿灯穿过 R6；本条判据把这一类钉住，
+        放行键也用方法名（`<文件基名>:unlink`），不随变量名漂移。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "desktop/src/core/m_del.py",
+                   "from pathlib import Path\n\n\ndef drop(name):\n"
+                   "    return Path(name).unlink()\n")
+            issues, _ = ps.scan(tmp)
+        hits = [i for i in issues
+                if i.replace("\\", "/").startswith("desktop/src/core/m_del.py")
+                and "危险 sink unlink" in i]
+        self.assertTrue(hits, "未登记的 .unlink() 应被 R6 捕获：%s" % issues)
+        # 放行须以**方法名**为键（不随接收者变量名漂移）：登记 m_del.py:unlink 后即静默
+        saved = dict(ps.SINK_ALLOW)
+        try:
+            ps.SINK_ALLOW["m_del.py:unlink"] = "测试用登记：本条同时证明放行键是**方法名**"
+            with tempfile.TemporaryDirectory() as tmp2:
+                _write(tmp2, "desktop/src/core/m_del.py",
+                       "from pathlib import Path\n\n\ndef drop(name):\n"
+                       "    return Path(name).unlink()\n")
+                issues2, _ = ps.scan(tmp2)
+        finally:
+            ps.SINK_ALLOW.clear()
+            ps.SINK_ALLOW.update(saved)
+        self.assertEqual([i for i in issues2 if "危险 sink" in i], [],
+                         "以方法名为键的登记必须能放行")
 
     def test_registered_rmtree_sites_are_audited(self):
         """两个已登记放行点须仍在册（放行不能凭空消失）。"""

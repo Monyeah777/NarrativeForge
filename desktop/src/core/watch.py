@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import os
 import threading
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -44,6 +45,82 @@ def available() -> bool:
     return os.name == "nt"
 
 
+def _volume_supports_notifications(path) -> bool:
+    """只在**本地固定盘**上启用：网络盘（SMB/UNC）的通知语义不可靠，静默漏事件＝假绿。
+
+    宁可判「不可用」（响应缓存整体停用、退回常规守护），也不冒「代际永不推进但自称健康」的风险。
+    非 Windows 平台没有实现，走不到这里。
+    """
+    if os.name != "nt":
+        return False
+    try:
+        import ctypes
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        get_type = kernel32.GetDriveTypeW
+        get_type.restype = ctypes.c_uint
+        get_type.argtypes = [ctypes.c_wchar_p]
+        DRIVE_FIXED = 3
+        # 注意：GetDriveTypeW 要的是**卷根**（`C:\`）；给完整路径会返回 DRIVE_NO_ROOT_DIR（实测踩过）
+        drive = os.path.splitdrive(str(Path(path).resolve()))[0] or str(path)
+        root = drive + os.sep if drive and not drive.endswith(os.sep) else drive
+        return get_type(root) == DRIVE_FIXED
+    except Exception:                                  # noqa: BLE001 - 判不出来就当不支持
+        return False
+
+
+def selfcheck(root=None) -> bool:
+    """**机制自检**：在一个临时目录上真起一次监听，验「创建 / 改 / 删除」三类通知都到。
+
+    为什么必须自检：`ReadDirectoryChangesW` **打开句柄成功不等于通知会到**——网络盘、某些过滤
+    驱动或策略环境会静默不发事件。那种情况下代际永不推进，响应缓存会**永久回放旧结果**（本项目
+    最怕的假绿）。自检不过就判「监听不可用」，缓存整体停用、行为退回常规守护。
+
+    自检在**临时目录**里做（绝不往仓库里写探针文件）：验证的是"这台机器上这套机制真能收到事件"。
+    体积之外还有一条**卷类型**检查（`_volume_supports_notifications`）挡住网络盘。
+    """
+    import tempfile
+    if not available():
+        return False
+    tmp = tempfile.mkdtemp(prefix="nf_watch_selfcheck_")
+    w = None
+    try:
+        w = DirWatcher(tmp, selftest=False)
+        if not w.start():
+            return False
+        p = Path(tmp) / "probe.txt"
+        for step in ("create", "modify", "delete"):
+            before = w.generation
+            if step == "create":
+                p.write_text("一", encoding="utf-8")
+            elif step == "modify":
+                p.write_text("二", encoding="utf-8")
+            else:
+                p.unlink()
+            deadline = time.time() + 3.0
+            while time.time() < deadline:
+                if w.generation > before:
+                    break
+                time.sleep(0.01)
+            else:
+                return False                           # 某一类通知没到 → 机制不可信
+        return True
+    except Exception:                                  # noqa: BLE001 - 自检炸了也当不可用
+        return False
+    finally:
+        if w is not None:
+            w.stop()
+        # 清临时目录**不用 `shutil.rmtree`**：它是本仓登记在案的「递归删除面」危险 sink（CWE-73），
+        # 而这里本来就不需要递归——自检只会创建 probe.txt，删掉它再 `rmdir`（非递归）反而更安全：
+        # 真出现意外子树时 `rmdir` 会拒绝，而不是把意外内容一并抹掉。
+        try:
+            for leftover in Path(tmp).glob("*"):
+                if leftover.is_file():
+                    leftover.unlink()
+            os.rmdir(tmp)
+        except OSError:
+            pass                                       # 删不干净也不影响判定（系统临时目录会回收）
+
+
 class DirWatcher:
     """递归监听 `root` 下的任何变更；对外只暴露「代际」与「健康」。
 
@@ -52,8 +129,9 @@ class DirWatcher:
     - `overflowed`：是否发生过缓冲溢出（溢出后本对象自动把代际跳变并标记，供调用方清缓存）。
     """
 
-    def __init__(self, root) -> None:
+    def __init__(self, root, selftest: bool = True) -> None:
         self.root = str(Path(root).resolve())
+        self._selftest = bool(selftest)
         self._lock = threading.Lock()
         self._generation = 0
         self._healthy = False
@@ -94,6 +172,9 @@ class DirWatcher:
             return False
         if self._thread is not None:
             return self.healthy
+        # 两道 fail-closed 闸门：卷类型（网络盘不可靠）+ **机制自检**（打开句柄成功 ≠ 通知会到）
+        if self._selftest and not (_volume_supports_notifications(self.root) and selfcheck()):
+            return False
         self._stop.clear()
         self._thread = threading.Thread(target=self._run, name="nf-watch", daemon=True)
         self._thread.start()

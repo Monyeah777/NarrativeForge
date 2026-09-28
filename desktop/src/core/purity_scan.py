@@ -17,7 +17,8 @@ R5 import 面越界：desktop/src/core + scripts 的第三方 import 面必须**
 R6 危险 sink 面：desktop/src/core + scripts 不得出现**动态执行 / shell 命令 / 不安全
     反序列化 / **不可逆的递归删除**（eval / exec / __import__ / os.system / os.popen /
     subprocess(shell=True) / pickle.load(s) / marshal.loads / yaml.load /
-    shutil.rmtree / os.remove / os.rmdir）——确需使用须在 SINK_ALLOW 登记并写明理由
+    shutil.rmtree / os.remove / os.rmdir，以及**方法名类**的 `x.unlink()`——确需使用须在
+    SINK_ALLOW 登记并写明理由
     （放行可审计；list 参数调用 subprocess 不受限）。
     （内部差距：安全兜底此前**零判据**——NF 只靠人读与本仓之外的 linter；实测 sink 面
     仅 1 处受控 `__import__`，故本条落地即零返工。）
@@ -87,6 +88,14 @@ DANGEROUS_CALLS = {
     "os.remove": "CWE-73 删除外部可控路径（须证明来源不可被外部左右）",
     "os.rmdir": "CWE-73 删除外部可控目录",
 }
+#: **方法名类 sink**：`x.unlink()` 与 `os.remove` 同险（都是"删一个文件"），但它们被调者的名字
+#: 随接收者变（`old.unlink` / `p.unlink` / `f.unlink` …）——按整串匹配会**整类漏掉**。
+#: 故这一类按**方法名**匹配，放行键也用方法名（`<文件基名>:unlink`），不随变量名漂移。
+#: 落地依据（2026-09 实测）：本仓 core 里当时有 **6 处 `.unlink()`**，全部一路绿灯穿过 R6——
+#: 与 F-10「递归删除面此前不在类目内」是同一类缺口。
+METHOD_SINKS = {
+    "unlink": "CWE-73 删除外部可控文件（`Path.unlink` 等价 `os.remove`，同样须证明来源不可被外部左右）",
+}
 #: R6 已登记放行（键 = "<文件基名>:<调用名>"；放行须可审计）
 SINK_ALLOW = {
     "regression_score.py:__import__":
@@ -95,6 +104,21 @@ SINK_ALLOW = {
         "自检专用临时 home 的清理；落点已由 _resolve_test_home 拒绝主目录/仓库根/盘根（见 F-10）",
     "storage.py:shutil.rmtree":
         "模块仓内「同 full_id 旧目录」清理；路径由 Store._safe_name 拼装且限于 modules_root 之下",
+    "watch.py:os.rmdir":
+        "监听机制自检的临时目录清理：该目录由本模块 tempfile.mkdtemp 现建（路径不来自外部输入），"
+        "且**非递归**——真出现意外子树时 rmdir 会拒绝，而不是把它一并抹掉",
+    "disk_cache.py:unlink":
+        "缓存裁剪：落点在 <NF_HOME>/cache/<tag>/ 之下，文件名是本模块自己算的 sha256（非外部输入），"
+        "且只删超出保留份数的旧条目（按 mtime 排序）",
+    "domain_pack.py:unlink":
+        "域包工厂的陈旧件清理：只在目标包自己的 modules/ 与 pipelines/ 内、且文件名令牌匹配该包代码，"
+        "删的是本轮未列入 planned 的旧产物（可复算，删旧即安全）",
+    "pack_combo.py:unlink":
+        "组合包改号残留清理：只在目标包自己的 pipelines/ 内、且文件名形如 P\\d{2,3} 且不等于本轮管线号",
+    "storage.py:unlink":
+        "Preset 删除（remove_preset）：路径由 Store._safe_name 拼装且限于 presets_root 之下",
+    "watch.py:unlink":
+        "监听机制自检自建临时目录内的探针件（probe.txt）清理；路径不来自外部输入",
 }
 _HEAD = re.compile(r"^#{1,6}\s+(.*?)\s*$")
 _ACTION = re.compile(
@@ -339,29 +363,34 @@ def scan(root: str = ".") -> tuple:
                     "%s（%s）" % (msg, residue) if residue else msg)
             # R6：危险 sink 面（同一次 AST 遍历复用同一份事实）
             for lineno, call, shell_true in sinks:
-                flags = []
+                flags = []                      # (展示名, 放行键名)——方法类 sink 的键名用方法名
                 if call in DANGEROUS_CALLS:
-                    flags.append(call)
+                    flags.append((call, call))
+                method = call.rsplit(".", 1)[-1]
+                if method in METHOD_SINKS:
+                    flags.append((method, method))
                 if shell_true:
-                    flags.append("subprocess(shell=True)")
-                for name in flags:
+                    flags.append(("subprocess(shell=True)", "subprocess"))
+                for name, key_name in flags:
                     stats["sinks"] = stats.get("sinks", 0) + 1
-                    key = "%s:%s" % (os.path.basename(f), "subprocess" if "shell" in name else call)
+                    key = "%s:%s" % (os.path.basename(f), key_name)
                     if key in SINK_ALLOW:
                         continue
                     issues.append("%s:%d 危险 sink %s（%s）——确需使用须在 purity_scan.SINK_ALLOW "
                                   "登记理由（修复指引：改用安全等价物，或登记后写明为何不可注入）"
                                   % (rel, lineno, name,
-                                     DANGEROUS_CALLS.get(call, "shell=True 命令注入面")))
+                                     DANGEROUS_CALLS.get(call)
+                                     or METHOD_SINKS.get(method)
+                                     or "shell=True 命令注入面"))
     # R6 自洽面（登记表自身的判据）：每个 sink 类目须带 CWE 对齐（跨工具对账用缺陷类型编码），
     # 且 SINK_ALLOW 的每个放行键必须指向一个已登记 sink——放行不能凭空出现。
-    for call, desc in sorted(DANGEROUS_CALLS.items()):
+    for call, desc in sorted({**DANGEROUS_CALLS, **METHOD_SINKS}.items()):
         if not re.match(r"^CWE-\d+ ", desc):
             issues.append("危险 sink 类目缺 CWE 对齐：%s（修复指引：在 purity_scan.DANGEROUS_CALLS "
                           "的说明前加 `CWE-<nnn> `，便于外部扫描器按缺陷类型对账）" % call)
     for key in sorted(SINK_ALLOW):
         sink = key.rsplit(":", 1)[-1]
-        if sink not in DANGEROUS_CALLS and sink != "subprocess":
+        if sink not in DANGEROUS_CALLS and sink not in METHOD_SINKS and sink != "subprocess":
             issues.append("SINK_ALLOW 放行键指向未登记 sink：%s（修复指引：删除放行，"
                           "或先在 DANGEROUS_CALLS 登记该 sink 类目）" % key)
     # R7：抽象阶梯归属与越界（真源 protocol/LAYERS.json；语义判据在 core/layer_model.py）
