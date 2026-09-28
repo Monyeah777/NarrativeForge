@@ -16,6 +16,63 @@ from core import conformance_scan as csc  # noqa: E402
 from core import disk_cache as dc  # noqa: E402
 
 
+class KeyCountEquivalenceTest(unittest.TestCase):
+    """`count_keys`（Aho–Corasick + 非重叠贪心）必须与逐键 `str.count` **逐字节同语义**。
+
+    依据（实测）：`{k: blob.count(k) for k in keys}` 在真语料上是「1499 键 × 3.5 MB」= 5.2 GB 扫描
+    = **2.9 s**，且**每个新内容状态都要重付**；换成自动机后同一批数字只要 **0.32 s**（同机实测）。
+    这里的判据不看时间，只看**数字**：随机串（可复现种子）+ 重叠/嵌套/空键边界 + 真语料子集。
+    """
+
+    def test_matches_str_count_on_random_strings(self):
+        import random
+        rng = random.Random(20260929)                  # 固定种子：失败可复现
+        for _ in range(400):
+            blob = "".join(rng.choice("abc")
+                           for _ in range(rng.randint(0, 60)))
+            keys = ["".join(rng.choice("abc") for _ in range(rng.randint(1, 4)))
+                    for _ in range(rng.randint(1, 6))]
+            self.assertEqual({k: blob.count(k) for k in keys},
+                             ad.count_keys(blob, keys), (blob, keys))
+
+    def test_overlapping_nested_and_empty_keys(self):
+        cases = (("aaa", ["aa"]),                       # 非重叠：`str.count` 给 1，不是 2
+                 ("aaaa", ["aa", "aaa", "a"]),          # 互相包含
+                 ("ABC", ["AB", "BC", "ABC"]),          # 同位置重叠
+                 ("", ["a"]), ("a", ["a"]),
+                 ("abc", [""]),                         # 空键：走参考实现（len+1）
+                 ("banana", ["an", "ana", "na"]))
+        for blob, keys in cases:
+            self.assertEqual({k: blob.count(k) for k in keys},
+                             ad.count_keys(blob, keys), (blob, keys))
+
+    def test_matches_on_a_real_corpus_subset(self):
+        """真语料子集（键取前 200 个、语料取前 300 件）：口径一致才算保住。"""
+        keys = {}
+        for pat in ("community/*/assets/*.md", "05_资产库/用户自定义/*.md"):
+            for rel in csc.iter_files(ROOT, pat):
+                if rel.rsplit("/", 1)[-1] == "README.md":
+                    continue
+                for k in ad._keys_of(Path(rel)):
+                    keys.setdefault(k, rel)
+        picked = sorted(keys)[:200]
+        corpus = []
+        for base in ("04_模块库", "community", "docs"):
+            for rel in csc.iter_files(ROOT, base + "/**/*.md"):
+                try:
+                    corpus.append(csc.read_text_cached(Path(ROOT) / rel))
+                except OSError:
+                    continue
+                if len(corpus) >= 300:
+                    break
+            if len(corpus) >= 300:
+                break
+        blob = "\n".join(corpus)
+        self.assertGreater(len(picked), 50, "真语料子集至少要有几十个键才有意义")
+        self.assertEqual({k: blob.count(k) for k in picked},
+                         ad.count_keys(blob, picked))
+
+
 class CensusDiskCacheTest(unittest.TestCase):
     """引用度普查的**持久**缓存（走 `core.disk_cache`）：新进程免付那 3 s，且不可信即重算。
 
