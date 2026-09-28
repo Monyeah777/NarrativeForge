@@ -399,8 +399,11 @@ def serve_forever(root: Path, idle_timeout: float = 0.0, ready: Optional[Any] = 
             if shutdown:
                 break
     finally:
-        srv.close()
+        # 先清状态再关端口：客户端「连不上」与「看不到登记」才是同一时刻的真相，
+        # 否则中间会有一个「端口已死但状态还在」的窗口（CI 实测：就是这样让 stop() 报
+        # 「守护未响应」而不是「没有守护」）。
         clear_state()
+        srv.close()
     return 0
 
 
@@ -467,6 +470,12 @@ def stop(timeout: float = 8.0) -> Tuple[bool, str]:
             sock.sendall(json.dumps({"proto": PROTO, "token": doc["token"],
                                      "op": "shutdown"}).encode("utf-8") + b"\n")
             read_framed(sock)
+    except (ConnectionRefusedError, ConnectionResetError):
+        # 登记在、端口却拒连 = 守护早已不在（登记过期）。这不是「停不下来」，而是「没有守护」：
+        # 如实报这一条并清除过期登记，才能让下一次 stop 得到确定的答案。
+        clear_state()
+        return False, "没有守护在运行（状态登记已过期：%s:%s 拒连，已清除）" \
+            % (BIND_HOST, doc["port"])
     except Exception as exc:                             # noqa: BLE001
         clear_state()
         return False, "守护未响应（已标记停用）：%s" % exc

@@ -303,11 +303,32 @@ class DaemonInProcessServerTest(unittest.TestCase):
         self.assertFalse(self.thread.is_alive(), "shutdown 帧应让服务循环退出")
 
     def test_stop_reports_when_no_daemon_running(self):
-        dm.stop()
+        """停掉本类的进程内服务 → 再停一次必须得到「没有守护」（而不是「守护未响应」）。
+
+        竞态说明（CI 实测抓出）：`stop()` 一发现 ping 失败就返回，而服务端 `finally` 里的
+        `clear_state()` 可能还没落盘——此刻登记在、端口已死，第二次 stop 会报「守护未响应」。
+        修法有两层：① 服务端**先清状态再关端口**；② 客户端把「拒连」判成「登记过期 = 没有守护」
+        并清掉过期登记。本判据同时钉住这两层（先等服务端清理落盘，再断言语义）。
+        """
+        ok, msg = dm.stop()
+        self.assertTrue(ok, msg)
+        deadline = time.time() + 5.0
+        while dm.read_state() is not None and time.time() < deadline:
+            time.sleep(0.05)                     # 等服务端 clear_state() 落盘
         ok, msg = dm.stop()
         self.assertFalse(ok)
         self.assertIn("没有守护", msg)
         self.assertFalse(dm.ping())
+
+    def test_stale_state_pointing_at_dead_port_reports_no_daemon(self):
+        """陈旧登记（端口拒连）必须被如实判成「没有守护」，并清除该登记。"""
+        dm.stop()                                 # 先停掉本类服务
+        dm.write_state({"proto": dm.PROTO, "pid": 1, "port": 9,   # 9 = discard，必然拒连
+                        "token": "0" * 64, "root": str(ROOT), "started": 0})
+        ok, msg = dm.stop()
+        self.assertFalse(ok)
+        self.assertIn("没有守护", msg)
+        self.assertIsNone(dm.read_state(), "过期登记应被清除")
 
     def test_main_entry_help_and_short_serve(self):
         self.assertEqual(2, dm.main([]), "缺 --serve 时应打印帮助并返回 2")
