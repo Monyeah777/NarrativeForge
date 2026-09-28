@@ -211,8 +211,8 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 
 | 命令 | 冷启动直跑 | 守护稳态 |
 |---|---|---|
-| `nf score` | 8.79 s | **4.40 s**（跑过 conformance 后仍是稳态） |
-| `nf doctor` | 683 ms | **212 ms** |
+| `nf score` | 8.44 s | **4.09 s** |
+| `nf doctor` | 697 ms | **212–385 ms**（同机抖动范围内） |
 | `nf conformance` | 3.07 s | **2.19 s** |
 
 判据面（都落在 check12，机器无关）：AST 事实**内容键**语义（同文命中 / 改文重算）、改文后下一次扫描必须看到新结果、常驻复用（**数 `ast.parse`**：第二次只允许 L6 预筛的极少数且少一个数量级）、**启动器快路快过 python 直跑（POSIX 上 3×）**。

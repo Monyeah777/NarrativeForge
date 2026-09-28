@@ -24,6 +24,7 @@
 from __future__ import annotations
 
 import csv
+import contextlib
 import io
 import json
 import os
@@ -77,9 +78,50 @@ def _rel(root: str, rel: str) -> Path:
     return Path(root) / rel.replace("/", os.sep)
 
 
+#: 一次**只读**校验内共享「同文件读一次」：逐件校验会把同一份产物读 5–8 遍
+#: （detect / 查重 / schema / 双源 / 复算），是热跑里最大的一块 IO（实测 3027 次读盘）。
+#: 作用域严格等于**一次** `index_verify` 调用（`_memo_reads` 出口即清），因此不可能看到陈旧
+#: 内容；写路径（`render_outputs(write=True)`）从不进入该作用域。
+_READ_MEMO: Optional[Dict[str, Any]] = None
+
+
+@contextlib.contextmanager
+def _memo_reads():
+    global _READ_MEMO
+    outer, _READ_MEMO = _READ_MEMO, {}
+    try:
+        yield
+    finally:
+        _READ_MEMO = outer
+
+
+def _read_text_cached(path: Path) -> str:
+    """读文本：memo 生效时同一文件只读一次；其余时候就是普通读。"""
+    if _READ_MEMO is not None:
+        key = str(path)
+        if key in _READ_MEMO:
+            return _READ_MEMO[key]
+    text = path.read_text(encoding="utf-8")
+    if _READ_MEMO is not None:
+        _READ_MEMO[str(path)] = text
+    return text
+
+
+def _read_bytes_cached(path: Path) -> bytes:
+    """读字节：同上（复算比对用）。"""
+    if _READ_MEMO is not None:
+        key = "b:" + str(path)
+        if key in _READ_MEMO:
+            return _READ_MEMO[key]
+    raw = path.read_bytes()
+    if _READ_MEMO is not None:
+        _READ_MEMO["b:" + str(path)] = raw
+    return raw
+
+
 def _read_json(path: Path) -> Tuple[Any, str]:
     try:
-        return json.loads(path.read_text(encoding="utf-8")), ""
+        return json.loads(_read_text_cached(path)), ""
     except OSError as exc:
         return None, "不可读：%s" % exc
     except ValueError as exc:
@@ -374,7 +416,7 @@ def _format_errors(value: str, fmt: str, path: str) -> List[str]:
 
 def _check_json(root: str, rel: str) -> List[str]:
     path = _rel(root, rel)
-    raw = path.read_text(encoding="utf-8")
+    raw = _read_text_cached(path)
     dups: List[str] = []
 
     def hook(pairs):
@@ -394,7 +436,7 @@ def _check_json(root: str, rel: str) -> List[str]:
 
 def _check_jsonl(root: str, rel: str) -> List[str]:
     issues: List[str] = []
-    for i, line in enumerate(_rel(root, rel).read_text(encoding="utf-8").splitlines(), 1):
+    for i, line in enumerate(_read_text_cached(_rel(root, rel)).splitlines(), 1):
         if not line.strip():
             continue
         try:
@@ -405,7 +447,7 @@ def _check_jsonl(root: str, rel: str) -> List[str]:
 
 
 def _check_csv(root: str, rel: str) -> List[str]:
-    text = _rel(root, rel).read_text(encoding="utf-8")
+    text = _read_text_cached(_rel(root, rel))
     if "\x00" in text:
         return ["含 NUL 字节（非文本 CSV）"]
     rows = list(csv.reader(io.StringIO(text)))
@@ -423,7 +465,7 @@ def _check_csv(root: str, rel: str) -> List[str]:
 
 
 def _check_xml(root: str, rel: str) -> List[str]:
-    text = _rel(root, rel).read_text(encoding="utf-8")
+    text = _read_text_cached(_rel(root, rel))
     guard = _xml_guard(text)
     if guard:
         return [guard]
@@ -449,7 +491,7 @@ def _xml_guard(text: str) -> str:
 
 
 def _check_markdown(root: str, rel: str) -> List[str]:
-    text = _rel(root, rel).read_text(encoding="utf-8")
+    text = _read_text_cached(_rel(root, rel))
     issues = []
     if not text.strip():
         issues.append("空档")
@@ -464,7 +506,7 @@ def _check_toml(root: str, rel: str) -> List[str]:
     except ImportError:  # pragma: no cover - 3.10 及以下
         return []
     try:
-        tomllib.loads(_rel(root, rel).read_text(encoding="utf-8"))
+        tomllib.loads(_read_text_cached(_rel(root, rel)))
     except Exception as exc:
         return ["TOML 不可解析：%s" % exc]
     return []
@@ -472,7 +514,7 @@ def _check_toml(root: str, rel: str) -> List[str]:
 
 def _check_yaml(root: str, rel: str) -> List[str]:
     """YAML 只做**收窄子集**良构判定（本项目自用面：映射/列表/标量），不引第三方。"""
-    text = _rel(root, rel).read_text(encoding="utf-8")
+    text = _read_text_cached(_rel(root, rel))
     issues: List[str] = []
     for i, line in enumerate(text.splitlines(), 1):
         if "\t" in line[: len(line) - len(line.lstrip())]:
@@ -516,7 +558,7 @@ _MERMAID_KINDS = ("graph", "flowchart", "sequencediagram", "classdiagram",
 
 
 def _check_mermaid(root: str, rel: str) -> List[str]:
-    lines = [x.rstrip() for x in _rel(root, rel).read_text(encoding="utf-8").splitlines()]
+    lines = [x.rstrip() for x in _read_text_cached(_rel(root, rel)).splitlines()]
     body = [x for x in lines if x.strip() and not x.strip().startswith("%%")]
     if not body:
         return ["空图"]
@@ -528,7 +570,7 @@ def _check_mermaid(root: str, rel: str) -> List[str]:
 
 
 def _check_dot(root: str, rel: str) -> List[str]:
-    text = _rel(root, rel).read_text(encoding="utf-8")
+    text = _read_text_cached(_rel(root, rel))
     issues = []
     if not re.search(r"^\s*(strict\s+)?(di)?graph\b", text, re.M):
         issues.append("缺 digraph/graph 头")
@@ -539,7 +581,7 @@ def _check_dot(root: str, rel: str) -> List[str]:
 
 def _check_graphml(root: str, rel: str) -> List[str]:
     path = _rel(root, rel)
-    guard = _xml_guard(path.read_text(encoding="utf-8"))
+    guard = _xml_guard(_read_text_cached(path))
     if guard:
         return ["GraphML %s" % guard]
     try:
@@ -1040,7 +1082,7 @@ def _recompute_entry(root: str, entry: dict) -> Tuple[List[str], Dict[str, Any]]
     fresh, errs = gen(root, entry)
     if fresh is None:
         return ["%s: %s" % (out_rel, e) for e in errs], {}
-    on_disk = _rel(root, _pkg_rel(entry, out_rel)).read_bytes()
+    on_disk = _read_bytes_cached(_rel(root, _pkg_rel(entry, out_rel)))
     if isinstance(fresh, str):
         diffs = [] if on_disk == _dump(fresh).encode("utf-8") else ["文本面与复算不一致（逐字节）"]
     else:
@@ -1118,6 +1160,17 @@ def _deep_diff(a: Any, b: Any, path: str = "$", out: Optional[List[str]] = None)
 
 
 def index_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    """包内产出清单机检（外层）：一次调用内共享「同文件读一次」（见 `_memo_reads`）。
+
+    逐件校验会把同一份产物读 5–8 遍（detect / 查重 / schema / 双源 / 复算）——实测热跑里
+    3027 次读盘、占该函数 1.54 s 的一大半。memo 的作用域严格等于**这一次调用**（出口即清），
+    所以不会出现「读到陈旧内容」；下一次调用照常重新读盘。
+    """
+    with _memo_reads():
+        return _index_verify_impl(root)
+
+
+def _index_verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """包级产出清单机检：声明存在 / 形态与档位属实 / schema 校验 / 双源一致 / T4 复算。"""
     issues: List[str] = []
     rows: List[Dict[str, Any]] = []
@@ -1199,7 +1252,7 @@ def _dual_source_check(root: str, pkg: str, path: str, ds: dict) -> List[str]:
     md_path = _rel(root, "community/%s/%s" % (pkg, md_rel))
     if not md_path.is_file():
         return ["双源对照件不存在：%s" % md_rel]
-    md_keys = set(key_re.findall(md_path.read_text(encoding="utf-8")))
+    md_keys = set(key_re.findall(_read_text_cached(md_path)))
     for drop in (ds.get("exclude") or []):
         md_keys.discard(str(drop))
     data, err = _read_json(_rel(root, "community/%s/%s" % (pkg, path)))

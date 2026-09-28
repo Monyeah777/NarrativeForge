@@ -23,6 +23,43 @@ from core import quant_metrics as qm  # noqa: E402
 ROOT = str(Path(__file__).resolve().parents[2])
 
 
+class ReadMemoTest(unittest.TestCase):
+    """一次 `index_verify` 内的共享读：同文件只读一遍，且**不得跨调用**（不许陈旧）。
+
+    依据（实测）：逐件校验会把同一份产物读 5–8 遍（detect / 查重 / schema / 双源 / 复算），
+    一次 `index_verify` 曾达 3027 次读盘、占该函数 1.54 s 的大半；加共享读后降到 ~0.72 s。
+    两条性质都要钉住：① 作用域内去重；② 作用域出口即清（下一次调用必须看到新内容）。
+    """
+
+    def test_same_file_read_once_inside_memo_and_fresh_after(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "a.txt"
+            p.write_text("一", encoding="utf-8")
+            calls = []
+            orig = Path.read_text
+
+            def counting(self, *a, **k):
+                calls.append(str(self))
+                return orig(self, *a, **k)
+
+            Path.read_text = counting                      # type: ignore[assignment]
+            try:
+                with of._memo_reads():
+                    self.assertEqual("一", of._read_text_cached(p))
+                    self.assertEqual("一", of._read_text_cached(p))
+                    self.assertEqual("一", of._read_text_cached(p))
+                self.assertEqual(1, len(calls), "同一次调用内同文件只该读一遍")
+                calls.clear()
+                of._read_text_cached(p)                    # 不在 memo 里：照常真读
+                self.assertEqual(1, len(calls))
+                p.write_text("二", encoding="utf-8")
+                with of._memo_reads():
+                    self.assertEqual("二", of._read_text_cached(p),
+                                     "新的一次调用必须看到新内容（作用域出口即清）")
+            finally:
+                Path.read_text = orig                      # type: ignore[assignment]
+
+
 class RegistryTest(unittest.TestCase):
     def test_registry_self_consistent(self):
         issues, stats = of.registry_verify(ROOT)
