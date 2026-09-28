@@ -123,6 +123,120 @@ class AutostartTest(unittest.TestCase):
                              "`nf %s` 不该触发自动拉起" % " ".join(argv))
 
 
+@unittest.skipUnless(BASH, "启动器是 POSIX sh 脚本，需 bash 执行快路")
+class InterpreterLaunchBudgetTest(unittest.TestCase):
+    """启动器的**解释器启动次数**（确定性判据——本机计时噪声 ±10%，计时判据撑不住）。
+
+    依据（2026-09-29 实测，min of 5）：`bash scripts/nf --version` 比 `python scripts/nf.py
+    --version` 多花 **164 ms**，三笔固定成本都按**每条命令**计——外部 `dirname` + 子 shell ≈58 ms、
+    一次命令替换（Store 桩路径判据）≈30 ms、「真起一次解释器」的终判 ≈60 ms（真撞上 Store 桩要
+    ~300 ms）。修法：参数展开替 `dirname`、按平台择一（Windows 先要 `python`）、终判按「解释器名 +
+    平台」**缓存**，并把解释器选择整个挪到快路**之后**。
+
+    判据用 PATH 上的 shim（先记一笔再转发真解释器）**数启动次数**：快路命中必须 **0 次**；回退
+    **稳态恰好 1 次**（修前每条 2 次）；回退首条（缓存冷）2 次＝一次确诊 + 一次真跑，属设计。
+    """
+
+    def setUp(self):
+        self.home = tempfile.mkdtemp(prefix="nf_interp_")
+        self.addCleanup(shutil.rmtree, self.home, ignore_errors=True)
+        self.addCleanup(self._stop)
+
+    def _stop(self):
+        subprocess.run([sys.executable, "scripts/nf.py", "daemon", "stop"], cwd=ROOT,
+                       env={**os.environ, "NARRATIVE_FORGE_HOME": self.home},
+                       capture_output=True, timeout=120)
+
+    def _real_py(self):
+        """真解释器（MSYS 形态路径）——由 bash 自己解析，避免 Windows 路径形态的坑。"""
+        r = subprocess.run([BASH, "-c", "command -v python || command -v python3"],
+                           capture_output=True, text=True, encoding="utf-8")
+        return r.stdout.strip()
+
+    def _shim_env(self, stub_python3=False):
+        """PATH 最前挂一个只放 shim 的目录：`python`/`python3` 先记一笔再 `exec` 真解释器。
+
+        `stub_python3=True` 时 `python3` 换成**永远 rc=49、零输出**的桩——这是 Microsoft Store
+        应用别名桩实测的形状（起一次 ~300 ms 且跑不了仓库脚本），用来钉住「选错解释器」那类缺陷。
+        """
+        bin_dir = os.path.join(self.home, "shim")
+        os.makedirs(bin_dir, exist_ok=True)
+        log = os.path.join(self.home, "starts.log")
+        head = ('#!/bin/sh\n'
+                'printf "%s\\n" "$0" >> "' + log.replace("\\", "/") + '"\n')
+        body = head + 'exec "' + self._real_py() + '" "$@"\n'
+        stub = head + "exit 49\n"
+        for name in ("python", "python3"):
+            path = os.path.join(bin_dir, name)
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(stub if (stub_python3 and name == "python3") else body)
+            os.chmod(path, 0o755)
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = self.home
+        env["PATH"] = bin_dir + os.pathsep + env.get("PATH", "")
+        env.pop("NF_AUTOSTART", None)
+        return env, log
+
+    @staticmethod
+    def _starts(log):
+        if not os.path.exists(log):
+            return 0
+        with open(log, encoding="utf-8") as fh:
+            return sum(1 for line in fh if line.strip())
+
+    def _run(self, *argv, env, timeout=300):
+        return subprocess.run([BASH, "scripts/nf", *argv], cwd=ROOT, env=env,
+                              capture_output=True, text=True, encoding="utf-8",
+                              errors="replace", timeout=timeout)
+
+    def test_fast_path_starts_no_interpreter(self):
+        """守护在跑时启动器**一次解释器都不许起**——起一次就是 50–300 ms 的固定成本。"""
+        start = subprocess.run([sys.executable, "scripts/nf.py", "daemon", "start", "--watch"],
+                               cwd=ROOT,
+                               env={**os.environ, "NARRATIVE_FORGE_HOME": self.home},
+                               capture_output=True, text=True, encoding="utf-8",
+                               errors="replace", timeout=300)
+        self.assertEqual(0, start.returncode, start.stderr or start.stdout)
+        env, log = self._shim_env()
+        p = self._run("stats", "--check", env=env)
+        self.assertEqual(0, p.returncode, p.stderr or p.stdout)
+        self.assertEqual(0, self._starts(log),
+                         "快路命中却起了解释器：选解释器（含终判）的代码跑到快路前面去了")
+
+    def test_fallback_starts_one_interpreter_in_steady_state(self):
+        """回退稳态**恰好一次**解释器启动（修前每条两次：探针 + 真跑）。"""
+        env, log = self._shim_env()                 # 没有守护状态文件 → 必走回退
+        first = self._run("--version", env=env)
+        self.assertEqual(0, first.returncode,
+                         "回退必须可用（rc=127 + 零输出 = 回退被 set -e 杀了）\n%s"
+                         % (first.stderr or first.stdout))
+        self.assertIn("nf ", first.stdout)
+        self.assertEqual(2, self._starts(log),
+                         "缓存冷的那一条＝一次确诊 + 一次真跑（设计如此，不是回归）")
+        for i in (2, 3):
+            if os.path.exists(log):
+                os.remove(log)                      # 每轮清零：数的是**这一条命令**起了几次
+            p = self._run("--version", env=env)
+            self.assertEqual(0, p.returncode, p.stderr or p.stdout)
+            self.assertEqual(first.stdout, p.stdout, "只加速不改语义")
+            self.assertEqual(1, self._starts(log),
+                             "第 %d 次回退仍应恰好一次解释器启动（终判必须走缓存）" % i)
+
+    def test_store_stub_like_python3_is_avoided(self):
+        """`python3` 是「存在但跑不了」的桩时，启动器必须**仍可用**（Windows Store 桩的真实形状）。
+
+        这是启动器最贵的那条缺陷（2026-09 实测：`nf <任何命令>` 变 rc=49 / 零输出）。修法有两道：
+        路径判据（Windows 上先要 `python`）与**真起一次**的终判。这里把两道都逼到墙角——`python3`
+        桩永远 rc=49 且零输出，只剩「换 `python`」这一条活路。
+        """
+        env, _log = self._shim_env(stub_python3=True)
+        p = self._run("--version", env=env)
+        self.assertEqual(0, p.returncode,
+                         "选了跑不了的 python3 就必须换一个（不得 rc=49 + 零输出）\n%s"
+                         % (p.stderr or p.stdout))
+        self.assertIn("nf ", p.stdout)
+
+
 @unittest.skipUnless(BASH, "需 bash 跑 POSIX 启动器形态")
 class DocumentedCommandsTest(unittest.TestCase):
     """**文档里写出来的终端命令必须真能跑**——门禁只有「文档提及 ↔ CLI 注册表」的静态对照

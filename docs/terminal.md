@@ -202,15 +202,26 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 
 ## 执行层常驻（`nf daemon`）——毫秒级响应
 
-`nf <命令>` 每次都要起一个解释器：本机实测**裸解释器 146 ms**、`nf --version` **401 ms** ——
-即**每条命令 ~400 ms 的固定成本与命令内容无关**。`nf daemon` 把执行搬进常驻进程，客户端只做
-一次套接字往返（热进程内 `--version` **1.7 ms**）。
+`nf <命令>` 每次都要起一个解释器。本机实测（2026-09-29，min of N）**裸解释器 47 ms**、
+`nf --version` **215 ms** —— 固定成本 ≈ 解释器启动 + 导入（~10 ms）+ **argparse 命令面构建
+（实测 117 ms，65 条子命令）**。`nf daemon` 把执行搬进常驻进程，客户端只做一次套接字往返
+（热进程内 `--version` **1.5 ms**；用 bash 内建 `$EPOCHREALTIME` 计量，零 fork、无 `date` 偏差）。
 
 | 路径 | `--version` | `stats --check` | `doctor` |
 |---|---|---|---|
-| python 直跑（原路径） | 273 ms | 351 ms | 703 ms |
-| `scripts/nf` 启动器（经守护） | 175 ms | 326 ms | 470 ms |
-| **bash 函数（零子进程，经守护）** | **5.7 ms** | 140 ms | 400 ms |
+| python 直跑（原路径，每条一次解释器） | 215 ms | 288 ms | 634 ms |
+| `scripts/nf` 启动器（**无守护**：回退 python 直跑） | 296 ms | 365 ms | 713 ms |
+| `scripts/nf` 启动器（经守护） | 48 ms | 48 ms | 48 ms |
+| **bash 函数（零子进程，经守护）** | **1.5 ms** | **1.6 ms** | **1.6 ms** |
+
+启动器本身现在只剩 **bash 启动地板（本机 ~39 ms）+ 一次套接字往返**。修前它比「同一条命令
+python 直跑」还慢 **164 ms**——三笔固定成本都是按**每条命令**计的：外部 `dirname` + 子 shell
+≈58 ms、一次命令替换（Store 桩路径判据）≈30 ms、「真起一次解释器」的终判 ≈60 ms（真撞上
+Microsoft Store 别名桩要 ~300 ms）。三笔分别改成参数展开、按平台择一（Windows 先要 `python`）、
+终判按「解释器名 + 平台」**缓存**后：启动器经守护 **175 ms → 48 ms**、无守护 **428 ms → 296 ms**。
+判据是**解释器启动次数**（PATH 上挂 shim：先记一笔再转发真解释器，与机器快慢无关）——
+快路命中 **0 次**、回退**稳态恰好 1 次**（修前每条 2 次）、`python3` 是桩时必须换成能跑的那个
+（`test_launcher.InterpreterLaunchBudgetTest`）。
 
 常驻对**重命令**同样有效（内容键缓存跨请求保留；实测本机，min of N）：
 

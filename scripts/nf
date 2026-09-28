@@ -15,17 +15,61 @@
 # 任何一步不成立（没守护状态文件、没有 bash、连不上、头不是数字）都**静默回退**到
 # python 直跑，所以本快路只加速、不改可用性；`nf daemon stop` 即回到原路径。
 set -e
-NF_ROOT=$(cd "$(dirname "$0")" && pwd)
-NF_PY=python3
-command -v python3 >/dev/null 2>&1 || NF_PY=python
-
-# 解释器可用性（**实测缺陷的修复**）：Windows 上 `python3` 常解析到 Microsoft Store 的
-# 应用别名桩（`…/WindowsApps/python3`），它**跑不了仓库脚本**（实测 rc=49）；而这里是
-# python 直跑的**唯一入口**，选错就是「零输出 + 非零退出」。故：先按路径排掉 Store 桩，
-# 再**真起一次**做终判（只在回退路径付这一次 ~50 ms；快路不受影响）。
-case "$(command -v "$NF_PY" 2>/dev/null || true)" in
-  *WindowsApps*|*windowsapps*) NF_PY=python ;;
+# 仓库根：**不用外部 `dirname`**。实测（2026-09-29，min of 5）：启动器比「同一条命令 python 直跑」
+# 多花 164 ms，其中外部 `dirname` + 子 shell ≈ 58 ms、一次命令替换（`$(command -v …)`）≈ 30 ms、
+# 「真起一次解释器」的探针 ≈ 60 ms——**它们都是按「每条命令」计的固定成本**。这里改用参数展开 +
+# 内建 `cd`（零 fork），并把它压到 fast path 之前只做一次。
+_nf_pwd=${PWD:-.}
+case "$0" in
+  */*) _nf_dir=${0%/*} ;;
+  *)   _nf_dir=. ;;
 esac
+cd "$_nf_dir"
+NF_ROOT=$PWD
+cd "$_nf_pwd"
+unset _nf_dir _nf_pwd
+
+# 解释器选择 + 终判（**纯内建**，只在真要起解释器时才调用）。
+# ① 为什么 Windows 先要 `python`：`python3` 常是 Microsoft Store 的**应用别名桩**
+#    （`…/WindowsApps/python3`），起一次实测 ~300 ms 且跑不了仓库脚本（rc=49）——先按路径排掉它。
+# ② 为什么终判要**缓存**：真起一次能确诊「存在但跑不了」的解释器，但那就是一次完整解释器启动
+#    （本机 60–107 ms）。旧写法把它放在**每条命令**上，于是 `bash scripts/nf --version` 比
+#    `python scripts/nf.py --version` 还慢。现按「解释器名 + 平台」缓存结论，命中时只读一个小文件
+#    （`read` 内建，零 fork）；解释器换了（键变）或起不来（终判失败）都会重新确诊。
+nf_pick_py() {
+  case "${OSTYPE:-}" in
+    msys*|cygwin*|win32*)
+      local _n="" _c="" _hit=""
+      for _n in python python3; do
+        _c=$(command -v "$_n" 2>/dev/null) || continue
+        case "$_c" in *[Ww]indows[Aa]pps*) continue ;; esac
+        NF_PY=$_n; _hit=1; break
+      done
+      [ -n "$_hit" ] || NF_PY=python
+      ;;
+    *)
+      NF_PY=python3
+      command -v python3 >/dev/null 2>&1 || NF_PY=python
+      ;;
+  esac
+  nf_confirm_py
+}
+
+nf_confirm_py() {
+  local _ok="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/interpreter.ok"
+  local _key="$NF_PY|${OSTYPE:-}"
+  local _known=""
+  if [ -f "$_ok" ]; then IFS= read -r _known < "$_ok" 2>/dev/null || _known=""; fi
+  if [ "$_known" = "$_key" ]; then return 0; fi
+  if ! "$NF_PY" -c "" >/dev/null 2>&1; then
+    NF_PY=python
+    _key="python|${OSTYPE:-}"
+  fi
+  _known=${_ok%/*}
+  [ "$_known" = "$_ok" ] || mkdir -p "$_known" 2>/dev/null || true
+  printf '%s\n' "$_key" > "$_ok" 2>/dev/null || true   # 落盘只为省下一次探测；失败即静默重探
+  return 0
+}
 
 # 守护快路（纯内建）：成功即 exit 用命令自身退出码；任何不确定 → return 127 走 python。
 daemon_try() {
@@ -78,6 +122,7 @@ daemon_try() {
 }
 
 if [ "$#" -eq 0 ]; then
+  nf_pick_py
   exec "$NF_PY" "$NF_ROOT/nf.py" shell
 fi
 if [ -n "${BASH_VERSION:-}" ]; then
@@ -98,6 +143,7 @@ if [ -n "${BASH_VERSION:-}" ]; then
         *)
           # 上面 `daemon_try` 已经 decline（= 服不了这条命令），所以这里直接拉一次即可；
           # `daemon start` 自身幂等（已在跑就很快返回「已在运行」），失败也静默走回退。
+          nf_pick_py
           "$NF_PY" "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 || true
           daemon_try "$@" || true
           ;;
@@ -108,8 +154,6 @@ elif command -v bash >/dev/null 2>&1 \
      && [ -f "${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json" ]; then
   exec bash "$0" "$@"                                # 非 bash 外壳但守护在：换 bash 走快路
 fi
-# 终判：选中的解释器若连启动都不行，退回另一个名字（宁可多一次 ~50 ms 探测，也不要静默失败）
-if ! "$NF_PY" -c "" >/dev/null 2>&1; then
-  NF_PY=python
-fi
+# 解释器选择 + 终判（带缓存；见上方 nf_pick_py 的说明）——只在**真要起解释器**时才付这笔钱
+nf_pick_py
 exec "$NF_PY" "$NF_ROOT/nf.py" "$@"
