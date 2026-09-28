@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """基线相对回归评分单测（绝对门之上的 no-silent-worsening 面）。"""
+import builtins
+import collections
+import io
+import os
 import sys
 import tempfile
 import unittest
@@ -17,6 +21,39 @@ def _sig(name, value, weight=0.5):
 
 
 class TestRegressionScore(unittest.TestCase):
+    def test_evaluate_reads_stay_within_budget(self):
+        """一次 `evaluate` 的**打开次数**上限——共享语料（corpus sharing）的确定性守护。
+
+        确定性口径（不是计时，故与机器快慢无关）：接共享语料前一次 evaluate 打开 **7833** 次、
+        单件最多被读 9 次；接完（含键归一化）后 **4178** 次、单件最多 3 次。界限取 6000
+        （~1.4× 余量）：仓库内容增长只让读次数随文件数线性走，而「共享语料被拆掉 / 键又没归一」
+        会立刻回到 7000+ → 当场红。
+        """
+        rs.evaluate(ROOT)                       # 预热（内容键缓存就位）
+        counts: collections.Counter = collections.Counter()
+        orig = io.open
+
+        def spy(file, *a, **k):
+            try:
+                path = os.path.normcase(os.path.abspath(str(file)))
+                if ".git" not in path and ".rivet" not in path:
+                    counts[path] += 1
+            except Exception:                    # noqa: BLE001 - 计数失败不影响被测逻辑
+                pass
+            return orig(file, *a, **k)
+
+        io.open = spy
+        builtins.open = spy
+        try:
+            rs.evaluate(ROOT)
+        finally:
+            io.open = orig
+            builtins.open = orig
+        total = sum(counts.values())
+        worst = max(counts.values())
+        self.assertLessEqual(total, 6000, "一次 evaluate 打开 %d 次（共享语料被拆掉？）" % total)
+        self.assertLessEqual(worst, 6, "单份件在一次 evaluate 里被读 %d 次" % worst)
+
     def test_evaluate_bounded_and_reproducible(self):
         """真实仓库：分值有界且两遍一致（可复现 = 可作基线）。"""
         a = rs.evaluate(ROOT)
