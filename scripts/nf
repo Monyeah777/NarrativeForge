@@ -19,6 +19,14 @@ NF_ROOT=$(cd "$(dirname "$0")" && pwd)
 NF_PY=python3
 command -v python3 >/dev/null 2>&1 || NF_PY=python
 
+# 解释器可用性（**实测缺陷的修复**）：Windows 上 `python3` 常解析到 Microsoft Store 的
+# 应用别名桩（`…/WindowsApps/python3`），它**跑不了仓库脚本**（实测 rc=49）；而这里是
+# python 直跑的**唯一入口**，选错就是「零输出 + 非零退出」。故：先按路径排掉 Store 桩，
+# 再**真起一次**做终判（只在回退路径付这一次 ~50 ms；快路不受影响）。
+case "$(command -v "$NF_PY" 2>/dev/null || true)" in
+  *WindowsApps*|*windowsapps*) NF_PY=python ;;
+esac
+
 # 守护快路（纯内建）：成功即 exit 用命令自身退出码；任何不确定 → return 127 走 python。
 daemon_try() {
   [ -n "${BASH_VERSION:-}" ] || return 127          # 需要 bash 的 /dev/tcp
@@ -67,9 +75,17 @@ if [ "$#" -eq 0 ]; then
   exec "$NF_PY" "$NF_ROOT/nf.py" shell
 fi
 if [ -n "${BASH_VERSION:-}" ]; then
-  daemon_try "$@"
+  # 快路**只加速、不改可用性**：`daemon_try` 用 `return 127` 表示「不接手」，而它在 `if` 的
+  # **分支体**里（不是条件位），`set -e` 下非零返回会**直接终止脚本**——`exec` 那行永远到不了。
+  # 实测后果：守护没在跑时 `nf <任何命令>` 一律 **rc=127 且零输出**（连 `nf shell` / `nf serve`
+  # 这种本来就必须回退的也一样）。故这里显式吞掉「不接手」：
+  daemon_try "$@" || true
 elif command -v bash >/dev/null 2>&1 \
      && [ -f "${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json" ]; then
   exec bash "$0" "$@"                                # 非 bash 外壳但守护在：换 bash 走快路
+fi
+# 终判：选中的解释器若连启动都不行，退回另一个名字（宁可多一次 ~50 ms 探测，也不要静默失败）
+if ! "$NF_PY" -c "" >/dev/null 2>&1; then
+  NF_PY=python
 fi
 exec "$NF_PY" "$NF_ROOT/nf.py" "$@"

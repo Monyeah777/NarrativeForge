@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/terminal.py:ee851f1db331dbf5d509d980676b03e593c39865fe52c2283a566b68dd7315cc
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
   - desktop/tests/test_terminal.py:7ce3581ac5469acebfbd5c46108a0b104cf35bab3943f023d958fceca9bc722f
-  - scripts/nf:85648ac5381ca476c941d7c13f4720b99d4b0721d8f457074171b614a2cff33f
+  - scripts/nf:829e83d56fbfd697ff8dd54e8d4c77824f1914731e510aa46669767bd71918d8
   - scripts/nf.cmd:a2563ccd0cdde64f1c394d3b426e22b3abd7d6438c5b3308f29d2086d9cac15c
   - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
