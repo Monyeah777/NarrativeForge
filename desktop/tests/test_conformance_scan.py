@@ -36,6 +36,40 @@ class ConformanceScanTest(unittest.TestCase):
         self.assertIn("通用:M10", evidence)
 
 
+class ModuleDocsMemoTest(unittest.TestCase):
+    """`_module_docs` 的「列目录」缓存：**一次只读调用内只走一遍文件系统**，且不跨调用复用。
+
+    依据：一次 `regression_score.evaluate` 里它被调 **5** 次（各扫描器各自重走 `04_模块库` +
+    `community/*/modules`）。作用域与读缓存同生命周期（`read_memo`），出口即清——所以每次调用
+    都重新列目录，不存在陈旧。实测时间收益约 60 ms（目录枚举已被 OS 缓存，故**很小**），
+    但**遍历次数是确定性的 5 → 1**，本判据盯的就是这个确定性部分。
+    """
+
+    def test_listed_once_per_scope_and_fresh_next_scope(self):
+        # 口径：数**文件系统遍历**（`os.walk`），不是数调用——调用两次是正常的，遍历只该一次。
+        walks = []
+        orig_walk = os.walk
+
+        def counting_walk(*a, **k):
+            walks.append(a)
+            return orig_walk(*a, **k)
+
+        os.walk = counting_walk
+        try:
+            with cs.read_memo():
+                first = cs._module_docs(ROOT)
+                second = cs._module_docs(ROOT)
+            self.assertEqual(first, second, "同一作用域内两次结果必须一致")
+            self.assertEqual(1, len(walks), "同一作用域内只该遍历一次目录树")
+            walks.clear()
+            with cs.read_memo():
+                third = cs._module_docs(ROOT)
+            self.assertEqual(1, len(walks), "新作用域必须重新遍历（不许跨调用陈旧）")
+            self.assertEqual(first, third, "重新列目录的结果必须与上次相同")
+        finally:
+            os.walk = orig_walk
+
+
 class YamlLoaderEquivalenceTest(unittest.TestCase):
     """统一加载器（libyaml 优先）必须与纯 Python 的 SafeLoader **逐块等价**。
 

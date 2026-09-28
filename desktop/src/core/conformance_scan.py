@@ -47,18 +47,23 @@ _BODY_CACHE_MAX = 4096
 #: 个不同文件——**70% 是冗余读**（同一份包资产被 concept_graph / asset_density / output_forms
 #: 等各读一遍）。作用域严格等于「一次扫描调用」，且这些聚合入口都是纯读（写路径 `--write`
 #: 在聚合**之后**才发生），所以冷却语义与「新起进程」一致：不跨调用、不跨请求复用。
+#: 与读缓存**同生命周期**的「列目录」缓存：一次只读调用内，`_module_docs` 这类清单只走一遍
+#: 文件系统（实测一次 evaluate 里它被调 5 次、合计 167 ms；各扫描器各自重走同一批目录）。
 _READ_MEMO: Optional[Dict[str, Any]] = None
+_DIR_MEMO: Optional[Dict[str, Any]] = None
 
 
 @contextlib.contextmanager
 def read_memo():
     """框定「共享语料」的作用域（可嵌套；出口恢复外层）。"""
-    global _READ_MEMO
+    global _READ_MEMO, _DIR_MEMO
     outer, _READ_MEMO = _READ_MEMO, {}
+    outer_dir, _DIR_MEMO = _DIR_MEMO, {}
     try:
         yield
     finally:
         _READ_MEMO = outer
+        _DIR_MEMO = outer_dir
 
 
 def read_text_cached(path) -> str:
@@ -180,6 +185,14 @@ def _fence_yaml_opt(text: str, marker: str) -> Optional[Dict[str, Any]]:
 
 
 def _module_docs(root: str) -> List[str]:
+    """模块文档清单（**一次只读调用内只走一遍文件系统**——见 `read_memo`）。
+
+    实测：一次 `evaluate` 里本函数被调 **5** 次（各扫描器各自重走 `04_模块库` + `community/*/modules`），
+    合计 167 ms。作用域与读缓存同生命周期，出口即清——下一次调用照常重新列目录，故不会陈旧。
+    """
+    key = os.path.normcase(os.path.abspath(str(root)))
+    if _DIR_MEMO is not None and key in _DIR_MEMO:
+        return list(_DIR_MEMO[key])
     out: List[str] = []
     for sub in ["04_模块库"]:
         base = os.path.join(root, sub)
@@ -192,7 +205,10 @@ def _module_docs(root: str) -> List[str]:
             mdir = os.path.join(pkg_dir, pkg, "modules")
             if os.path.isdir(mdir):
                 out += [os.path.join(mdir, f) for f in sorted(os.listdir(mdir)) if f.endswith(".md")]
-    return sorted(out)
+    out = sorted(out)
+    if _DIR_MEMO is not None:
+        _DIR_MEMO[key] = out
+    return list(out)
 
 
 def _evidence_ids(root: str, reg: Any = None) -> List[str]:
