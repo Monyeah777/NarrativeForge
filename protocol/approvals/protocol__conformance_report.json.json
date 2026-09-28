@@ -1,7 +1,7 @@
 {
-  "approved_at": "2026-09-28",
+  "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "派生结果按内容键缓存（pack_combo profiles/breadth；evaluate −511ms）。",
+  "note": "派生结果内容键缓存补输入面判据（scan/index_verify 读盘面 ⊆ 声明输入面）+ 审计摘要重绑",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

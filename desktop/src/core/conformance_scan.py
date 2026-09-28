@@ -15,6 +15,7 @@ from __future__ import annotations
 import copy
 import contextlib
 import glob
+import hashlib
 import json
 import os
 import re
@@ -93,6 +94,38 @@ def read_bytes_cached(path) -> bytes:
     if _READ_MEMO is not None:
         _READ_MEMO["b:" + os.path.normcase(os.path.abspath(str(path)))] = raw  # type: ignore[assignment]
     return raw
+
+
+def content_fingerprint(root: str, patterns) -> str:
+    """按**内容**给一组文件取指纹（键即内容 ⇒ 内容一变指纹就变，无陈旧风险）。
+
+    用于「派生结果的跨调用缓存」：先在本模块里**穷举输入面**（写成 patterns），再拿指纹当键。
+    走共享读（`read_text_cached`），这些文件本来就要被读，指纹近乎白拿。
+    """
+    h = hashlib.sha256()
+    r = Path(root)
+    for pat in patterns:
+        for p in sorted(r.glob(str(pat))):
+            if not p.is_file():
+                continue                      # `**/*` 会把目录也匹配进来，只对文件取指纹
+            h.update(p.relative_to(r).as_posix().encode("utf-8"))
+            h.update(b"\x00")
+            h.update(read_text_cached(p).encode("utf-8"))
+            h.update(b"\x01")
+    return h.hexdigest()
+
+
+#: `scan()` 派生结果的跨调用缓存（键 = 输入内容指纹）。输入面见 `SCAN_INPUTS`——**穷举**，
+#: 所以「输入一变必然换键」，不需要随请求清空。
+_SCAN_CACHE: Dict[str, Tuple[List[str], Dict[str, int]]] = {}
+#: `scan()` 的全部输入（逐一对照实现枚举：证据 id 的 registry + 模块文档 + 协议包声明 +
+#: 导出契约 manifest + 门禁脚本里的证据名）。
+SCAN_INPUTS = ("desktop/src/core/registry.json",
+               "04_模块库/*/*.md",
+               "community/*/modules/*.md",
+               "community/*/protocol.yaml",
+               "protocol/export_conformance.json",
+               "verify.sh")
 
 
 def load_yaml(text: str) -> Any:
@@ -231,6 +264,24 @@ def _evidence_ids(root: str, reg: Any = None) -> List[str]:
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
+    """检查（外层）：派生结果按**输入内容指纹**跨调用缓存（输入面见 `SCAN_INPUTS`，已穷举）。
+
+    依据（实测）：本函数一次调用约 0.4 s，而它只依赖那 6 类输入——守护逐请求清空按 root 的
+    缓存时，这些派生账会被白交一遍。键即内容 ⇒ 输入一变指纹就变，故不需要随请求清空。
+
+    「读到的文件必须全部落在输入面内」有判据守着（test_conformance_scan.DerivedResultCacheTest）：
+    将来给本函数加新读取，判据会先红、逼着把新输入补进来——不会悄悄读到陈旧结果。
+    """
+    fp = content_fingerprint(root, SCAN_INPUTS)
+    hit = _SCAN_CACHE.get(fp)
+    if hit is not None:
+        return copy.deepcopy(hit[0]), copy.deepcopy(hit[1])
+    got = _scan_impl(root)
+    _SCAN_CACHE[fp] = copy.deepcopy(got)
+    return got
+
+
+def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     issues: List[str] = []
     if yaml is None:
         issues.append("PyYAML 不在（conformance_scan 依赖仓库既有 yaml 依赖）")

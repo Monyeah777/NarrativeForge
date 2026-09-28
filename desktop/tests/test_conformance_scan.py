@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """43 A2 —— Conformance 分级扫描单测（声明 ≤ 可证、防虚标）。"""
+import builtins
+import contextlib
+import io
 import os
 import pathlib
 import sys
@@ -10,6 +13,53 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 
 from core import conformance_scan as cs  # noqa: E402
+from core import output_forms as of  # noqa: E402
+
+_ROOT_KEY = os.path.normcase(os.path.abspath(ROOT))
+
+
+def _key(path):
+    """读盘口径的路径键（绝对 + normcase）——与内容键缓存内部的口径保持一致。"""
+    try:
+        return os.path.normcase(os.path.abspath(str(path)))
+    except (TypeError, ValueError):
+        return ""
+
+
+@contextlib.contextmanager
+def _trace_opens():
+    """记录作用域内**尝试打开**与**成功打开**的文件（两种都要，判据不同）。
+
+    失败路径（`FileNotFoundError` 等）不会进 `reads`——探测不存在的文件不是输入依赖；
+    `tried` 保留它们，用来区分「合法探测」与「输入面漏声明」。
+    """
+    real_io, real_builtins = io.open, builtins.open
+    reads, tried = [], []
+
+    def spy(file, *a, **k):
+        tried.append(_key(file))
+        handle = real_io(file, *a, **k)
+        reads.append(_key(file))
+        return handle
+
+    io.open = spy
+    builtins.open = spy
+    try:
+        yield reads, tried
+    finally:
+        io.open = real_io
+        builtins.open = real_builtins
+
+
+def _covered(patterns):
+    """输入面 glob 展开出的文件键集（**只取文件**：`**/*` 会把目录也匹配进来）。"""
+    root = pathlib.Path(ROOT)
+    out = set()
+    for pat in patterns:
+        for p in root.glob(pat):
+            if p.is_file():
+                out.add(_key(p))
+    return out
 
 
 class ConformanceScanTest(unittest.TestCase):
@@ -34,6 +84,75 @@ class ConformanceScanTest(unittest.TestCase):
         evidence = set(cs._evidence_ids(ROOT))
         self.assertIn("M00", evidence)
         self.assertIn("通用:M10", evidence)
+
+
+class DerivedResultCacheTest(unittest.TestCase):
+    """跨调用「内容键派生结果缓存」的两条判据：**输入面穷举** + **键即内容**。
+
+    这类缓存（`scan()` 与 `output_forms.index_verify()` 各有一份）唯一的真风险是「假绿」：
+    只要有一次读落在声明的输入面之外，输入变了指纹却不变 → 陈旧结果被当成新结果交给门禁。
+    所以本判据盯的不是速度，而是**读盘面 ⊆ 输入面**；将来给这两个函数加新读取，这里会先红，
+    逼着把新输入补进 `SCAN_INPUTS` / `INDEX_INPUTS`，而不是让缓存静默陈旧。
+
+    计数口径：按**成功打开**的文件算输入依赖。探测不存在的路径（例如缺 `provenance.json` 的
+    域包）不算——而这类路径一旦真出现，输入面的 glob 会立刻把它收进指纹，故不存在缺口。
+    """
+
+    #: (名字, 输入面, 清缓存后必走真实计算的入口)
+    CASES = (("scan", cs.SCAN_INPUTS, lambda: cs._SCAN_CACHE.clear()),
+             ("index_verify", of.INDEX_INPUTS, lambda: of._INDEX_CACHE.clear()))
+
+    def _run(self, name):
+        if name == "scan":
+            cs._SCAN_CACHE.clear()
+            return cs.scan(ROOT)
+        of._INDEX_CACHE.clear()
+        return of.index_verify(ROOT)
+
+    def test_reads_stay_inside_declared_input_face(self):
+        for name, patterns, _clear in self.CASES:
+            self._run(name)                       # 先跑一遍：把惰性 import 等一次性读盘做掉
+            covered = _covered(patterns)          # glob 展开本身不开文件，可在采集前算好
+            with _trace_opens() as (reads, tried):
+                self._run(name)                   # 缓存已清 → 必走真实计算，读盘面被完整记录
+            leak = sorted(p for p in reads if p.startswith(_ROOT_KEY) and p not in covered)
+            self.assertEqual(
+                [os.path.relpath(p, _ROOT_KEY) for p in leak], [],
+                "%s() 读了声明输入面之外的文件 → 内容键缓存会陈旧（补进输入面）" % name)
+            ghost = sorted(p for p in tried
+                           if p.startswith(_ROOT_KEY) and p not in covered and os.path.exists(p))
+            self.assertEqual(
+                [os.path.relpath(p, _ROOT_KEY) for p in ghost], [],
+                "%s() 探测了输入面之外**存在**的文件 → 输入面不完整" % name)
+
+    def test_second_call_with_same_key_hits_cache(self):
+        """键即内容：同内容第二次调用必须命中缓存（不重算），且两次结果一致。"""
+        for name, _patterns, _clear in self.CASES:
+            real_impl = cs._scan_impl if name == "scan" else of._index_verify_impl
+            calls = {"n": 0}
+
+            def counting(root=".", _real=real_impl):
+                calls["n"] += 1
+                return _real(root)
+
+            if name == "scan":
+                cs._SCAN_CACHE.clear()
+                cs._scan_impl = counting
+                try:
+                    first, second = cs.scan(ROOT), cs.scan(ROOT)
+                finally:
+                    cs._scan_impl = real_impl
+                    cs._SCAN_CACHE.clear()
+            else:
+                of._INDEX_CACHE.clear()
+                of._index_verify_impl = counting
+                try:
+                    first, second = of.index_verify(ROOT), of.index_verify(ROOT)
+                finally:
+                    of._index_verify_impl = real_impl
+                    of._INDEX_CACHE.clear()
+            self.assertEqual(1, calls["n"], "%s() 同内容第二次调用白算了一遍" % name)
+            self.assertEqual(first, second, "%s() 命中缓存的结果必须与首算一致" % name)
 
 
 class ModuleDocsMemoTest(unittest.TestCase):

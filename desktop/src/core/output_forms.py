@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import csv
 import contextlib
+import copy
 import io
 import json
 import os
@@ -33,6 +34,8 @@ import re
 import xml.etree.ElementTree as ET  # noqa: S405  # nosec B405 -- self-authored artifacts only
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
+
+from core import conformance_scan as _csc   # 共享语料（读缓存 / 列目录缓存 / 内容指纹）
 
 REGISTRY_REL = "protocol/output_forms.json"
 BASELINE_REL = "protocol/output_forms_baseline.json"
@@ -86,6 +89,19 @@ def _rel(root: str, rel: str) -> Path:
 def _memo_reads():
     from core import conformance_scan as _csc
     return _csc.read_memo()
+
+
+#: `index_verify` 的**输入面**（穷举；内容键结果缓存的键就取自它）。
+#: 有「读到的文件必须全部落在输入面内」的判据守着（test_conformance_scan.DerivedResultCacheTest），
+#: 所以将来给本函数加新读取，判据会先红、逼着把新输入补进来——不会悄悄读到陈旧结果。
+INDEX_INPUTS = ("community/*/outputs/**/*",
+                "community/*/assets/*",
+                "community/*/protocol.yaml",
+                "community/*/modules/*.md",
+                "04_模块库/*/*.md",
+                "desktop/src/core/registry.json")
+#: 结果缓存（键 = 输入内容指纹；输入一变指纹就变，故不需要随请求清空）。
+_INDEX_CACHE: Dict[str, Any] = {}
 
 
 def _read_text_cached(path: Path) -> str:
@@ -1144,9 +1160,20 @@ def index_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     逐件校验会把同一份产物读 5–8 遍（detect / 查重 / schema / 双源 / 复算）——实测热跑里
     3027 次读盘、占该函数 1.54 s 的一大半。memo 的作用域严格等于**这一次调用**（出口即清），
     所以不会出现「读到陈旧内容」；下一次调用照常重新读盘。
+
+    再叠一层**内容键结果缓存**：本函数是那批输入的纯函数，按输入内容指纹缓存后，同内容重复调用
+    （`nf score` 与 `nf conformance` 都会走到它）省掉整轮校验（实测 ~0.72 s）。输入面见
+    `INDEX_INPUTS`，并有「读到的文件必须全部落在输入面内」的判据守着
+    （见 test_conformance_scan.DerivedResultCacheTest）。
     """
+    fp = _csc.content_fingerprint(root, INDEX_INPUTS)
+    hit = _INDEX_CACHE.get(fp)
+    if hit is not None:
+        return copy.deepcopy(hit[0]), copy.deepcopy(hit[1])
     with _memo_reads():
-        return _index_verify_impl(root)
+        got = _index_verify_impl(root)
+    _INDEX_CACHE[fp] = copy.deepcopy(got)
+    return got
 
 
 def _index_verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

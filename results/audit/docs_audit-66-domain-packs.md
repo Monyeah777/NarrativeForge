@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/domain_pack.py:0bc56d321571da0ea7cfc5dca8fdf5692c97ffaacae94735ec876a62e0122dc9
   - desktop/src/core/domain_metrics.py:a870ce5e38e1efb1c4be35407876718c6c3f19cda0bbc40e934433f1f510c397
-  - desktop/src/core/output_forms.py:aae9dceee265384d078ff2980fd0e15f26edcc5320c0c1244dd75663c4aa36b0
+  - desktop/src/core/output_forms.py:f437f1ef5b10b174aa8ddf766a8d188bf5bf36599c88e73c62aa9e45e0a68c5e
   - desktop/src/core/quality_depth_scan.py:fd93a61dd8067c3db7e7b7b658b4d06b478d4e0935f545946b59d9c8bfd95541
   - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
   - scripts/nf.py:4832c83b943a422fa6916b2397131a5d0e668e45fed98548b7fee88c00f52b93
