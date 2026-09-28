@@ -257,6 +257,7 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 - **准入表按 argv 前缀**（不是顶层命令名）：只有**纯读、且对同一棵树逐字节可复现**的形态可缓存——`--version` / `score` / `conformance` / `layers` / `stats` / `doctor` / `interop` / `toolface` / `assertions` / `cognition`，以及 `patterns ls|show|for|verify` / `module ls|status|verify` / `decisions verify|show`。带 `--write` 一类写盘开关的一律绕过。
   「按前缀」是必须的：`module` / `decisions` / `patterns` 这些顶层命令**同时有读写子命令**（`module deprecate`、`decisions reindex`、`patterns reindex`），只按顶层名放行会把写形态一起放进来。两条准入判据都可执行：① 同树连跑两次，退出码 / stdout / stderr 逐字节相同；② 逐条跑完 `git status` 前后不变（候选 12 条实测全部既纯净又可复现）。
 - **本波只实现 Windows 监听**：其他平台 `watch.available()` 为假，守护自动降级——不写没跑过的平台代码。
+- **可选自动拉起（`NF_AUTOSTART=1`，默认关）**：设了它，启动器在守护不在时会先拉起一个带 `--watch` 的守护、再服务这条命令（`daemon` / `shell` / `serve` 本就不走守护，不触发）。**为什么默认关**：实测首条命令要付 **~0.65 s 起守护**（含机制自检）+ 本身计算，**比直跑慢**；**从第二条起才 10 ms**——这是「赌重复调用」的开关，不该替所有人默认打开（`nf daemon exec` 是同类语义：那条默认拉起，且可 `--no-start` 拒绝）。
 
 ```sh
 nf daemon start                      # 拉起守护（后台；只绑 127.0.0.1 + 一次性令牌）

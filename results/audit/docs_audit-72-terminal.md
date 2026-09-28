@@ -9,12 +9,12 @@ subjects:
   - desktop/src/core/terminal.py:ee851f1db331dbf5d509d980676b03e593c39865fe52c2283a566b68dd7315cc
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
   - desktop/tests/test_terminal.py:7ce3581ac5469acebfbd5c46108a0b104cf35bab3943f023d958fceca9bc722f
-  - scripts/nf:829e83d56fbfd697ff8dd54e8d4c77824f1914731e510aa46669767bd71918d8
+  - scripts/nf:fb9ee157b7e8a75f003314fa37d07d0800cfb646e3e2f6ad6d86a6a6bb41a52e
   - scripts/nf.cmd:a971167b0b74c79dff3e3ac0bba0e6156340029fa9673f570c995680797ea4de
   - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
   - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
-  - docs/terminal.md:3237977615420d498babef34d3cbc2f86a960195778ca2990c2bd4c2c63a3f6c
+  - docs/terminal.md:7ccdd143d0924ca35cf4ecffc402b4f8ac9241b57dec178ae4d191a4f19916a1
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
 ---

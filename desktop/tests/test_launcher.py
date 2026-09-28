@@ -59,6 +59,70 @@ class LauncherFallbackTest(unittest.TestCase):
         self.assertIn("{", p.stdout)
 
 
+@unittest.skipUnless(BASH, "启动器是 POSIX sh 脚本，需 bash 执行快路")
+class AutostartTest(unittest.TestCase):
+    """`NF_AUTOSTART` 开关（**默认关**）：守护不在时先拉起带 `--watch` 的守护，再服务这条命令。
+
+    依据：毫秒级链路的最后一段是「守护得在跑」——而守护默认 1 小时空闲自退，忘了重启就跌回秒级。
+    实测账（本机）：首条命令要付 **~0.65 s 起守护**（含机制自检）+ 本身计算（**比直跑慢**），
+    **从第二条起才 10 ms**——所以这是个"赌重复调用"的开关，**默认关**，是否默认化由作者裁决。
+    与 `nf daemon exec` 的语义一致（那条默认就会拉起，且可 `--no-start` 拒绝）。
+    """
+
+    def _home(self):
+        home = tempfile.mkdtemp(prefix="nf_autostart_")
+        self.addCleanup(shutil.rmtree, home, ignore_errors=True)
+        return home
+
+    def _run(self, home, *argv, autostart=None):
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = home
+        env.pop("NF_AUTOSTART", None)
+        if autostart is not None:
+            env["NF_AUTOSTART"] = autostart
+        return subprocess.run([BASH, "scripts/nf", *argv], cwd=ROOT, env=env,
+                              capture_output=True, text=True, encoding="utf-8",
+                              errors="replace", timeout=300)
+
+    def _stop(self, home):
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = home
+        subprocess.run([sys.executable, "scripts/nf.py", "daemon", "stop"], cwd=ROOT,
+                       env=env, capture_output=True, timeout=120)
+
+    def test_disabled_by_default_and_for_falsey_values(self):
+        for value in (None, "0", "false", "no", "off"):
+            home = self._home()
+            self.addCleanup(self._stop, home)
+            p = self._run(home, "--version", autostart=value)
+            self.assertEqual(0, p.returncode, p.stderr or p.stdout)
+            self.assertIn("nf ", p.stdout)
+            self.assertFalse(os.path.exists(os.path.join(home, "daemon.json")),
+                             "NF_AUTOSTART=%r 不得拉起守护" % value)
+
+    def test_enabled_starts_the_daemon_then_serves(self):
+        home = self._home()
+        self.addCleanup(self._stop, home)
+        p = self._run(home, "--version", autostart="1")
+        self.assertEqual(0, p.returncode, p.stderr or p.stdout)
+        self.assertIn("nf ", p.stdout)
+        self.assertTrue(os.path.exists(os.path.join(home, "daemon.json")),
+                        "设了开关就必须真把守护拉起来（否则毫秒级拿不到）")
+        q = self._run(home, "--version", autostart="1")
+        self.assertEqual(0, q.returncode)
+        self.assertEqual(p.stdout, q.stdout, "拉起前后输出必须一致（只加速不改语义）")
+
+    def test_long_running_and_self_referential_commands_do_not_autostart(self):
+        """`daemon` / `shell` / `serve` 本来就不走守护——不该为它们把守护拉起来。"""
+        for argv in (["daemon", "status"],):
+            home = self._home()
+            self.addCleanup(self._stop, home)
+            p = self._run(home, *argv, autostart="1")
+            self.assertIn(p.returncode, (0, 1), p.stderr or p.stdout)
+            self.assertFalse(os.path.exists(os.path.join(home, "daemon.json")),
+                             "`nf %s` 不该触发自动拉起" % " ".join(argv))
+
+
 @unittest.skipUnless(BASH, "需 bash 跑 POSIX 启动器形态")
 class DocumentedCommandsTest(unittest.TestCase):
     """**文档里写出来的终端命令必须真能跑**——门禁只有「文档提及 ↔ CLI 注册表」的静态对照

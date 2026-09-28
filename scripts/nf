@@ -80,6 +80,24 @@ if [ -n "${BASH_VERSION:-}" ]; then
   # 实测后果：守护没在跑时 `nf <任何命令>` 一律 **rc=127 且零输出**（连 `nf shell` / `nf serve`
   # 这种本来就必须回退的也一样）。故这里显式吞掉「不接手」：
   daemon_try "$@" || true
+  # 可选自动拉起（**默认关**）：`NF_AUTOSTART=1` 时，若快路不接手（多半是守护不在），就先
+  # 起一个带 --watch 的守护、再试一次快路。为什么默认关：首条命令要付 ~0.65 s 起守护 + 本身
+  # 计算（比直跑慢），**从第二条起才 10 ms**——这是个"赌重复调用"的开关，不该替所有人默认打开。
+  # 与 `nf daemon exec` 的语义一致（那条默认就会拉起，且可 --no-start 拒绝）。
+  case "${NF_AUTOSTART:-}" in
+    ""|0|false|no|off) : ;;
+    *)
+      case "${1:-}" in
+        daemon|shell|serve) : ;;                       # 长驻/自指命令本就不走守护，别去起它
+        *)
+          # 上面 `daemon_try` 已经 decline（= 服不了这条命令），所以这里直接拉一次即可；
+          # `daemon start` 自身幂等（已在跑就很快返回「已在运行」），失败也静默走回退。
+          "$NF_PY" "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 || true
+          daemon_try "$@" || true
+          ;;
+      esac
+      ;;
+  esac
 elif command -v bash >/dev/null 2>&1 \
      && [ -f "${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json" ]; then
   exec bash "$0" "$@"                                # 非 bash 外壳但守护在：换 bash 走快路
