@@ -101,6 +101,47 @@ class SchemaSubsetValidatorTest(unittest.TestCase):
         self.assertEqual(sl.subset_validate(mut, schema), [])
 
 
+class DirectEnumerationTest(unittest.TestCase):
+    """`discover()` 换枚举器（`os.walk`/`os.listdir`/`glob` → `csc.iter_files`）后**面必须逐件一致**。
+
+    依据（实测 2026-09-29）：旧写法 **54 ms**（三种写法各自真走一遍文件系统），新写法 **0.8 ms**
+    （目录清单已在常驻层 `dirs` 桶里）——**65×**。提速只有在「面不变」时才允许，所以这里把旧口径
+    **原样重算一遍**逐件比对（真仓库：模块 248 / 管线 114 / 协议声明 111 件）。
+    """
+
+    def test_faces_match_legacy_enumeration(self):
+        import glob
+
+        def walk_md(sub):
+            out = []
+            for dirpath, dirnames, filenames in os.walk(os.path.join(ROOT, sub)):
+                dirnames[:] = [d for d in dirnames if d != "__pycache__"]
+                for f in sorted(filenames):
+                    if f.endswith(".md"):
+                        out.append(os.path.join(dirpath, f))
+            return out
+
+        pkg = os.path.join(ROOT, "community")
+        legacy_mod, legacy_pipe = walk_md("04_模块库"), walk_md("03_管线库")
+        for name in sorted(os.listdir(pkg)):
+            mdir = os.path.join(pkg, name, "modules")
+            if os.path.isdir(mdir):
+                legacy_mod += sorted(os.path.join(mdir, f) for f in os.listdir(mdir)
+                                     if f.endswith(".md"))
+            pdir = os.path.join(pkg, name, "pipelines")
+            if os.path.isdir(pdir):
+                legacy_pipe += sorted(os.path.join(pdir, f) for f in os.listdir(pdir)
+                                      if f.endswith(".md"))
+        legacy_proto = sorted(glob.glob(os.path.join(pkg, "*", "protocol.yaml")))
+
+        got = sl.discover(ROOT)
+        for key, legacy in (("module_docs", legacy_mod), ("pipeline_docs", legacy_pipe),
+                            ("protocol_files", legacy_proto)):
+            self.assertTrue(legacy, "%s 面为空，判据没测到东西" % key)
+            self.assertEqual(sorted(legacy), sorted(got[key]),
+                             "%s 面与旧枚举不一致（换实现改动了面）" % key)
+
+
 class SchemaScanTest(unittest.TestCase):
     def test_schema_files_meta(self):
         issues, schemas = sl.check_schema_files(ROOT)

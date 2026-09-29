@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "补记共享面收口的端到端数字（CHANGELOG）",
+  "note": "schema_lint 枚举器换共享枚举（面逐件一致的判据在场）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

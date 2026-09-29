@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：`schema_lint.discover` 换枚举器（54 → 1.9 ms，`schema_lint.scan` 104 → 51 ms）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
+  ① **量到的东西（仪器化）**：`discover()` 用 `os.walk` + `os.listdir` + `glob.glob` **三种写法各自真走一遍文件系统**——实测 **54 ms**，占 `schema_lint.scan`（104 ms）的 52%；而同一张面走共享枚举器只要 **0.8 ms**（目录清单已在常驻层 `dirs` 桶里，**65×**）。
+  ② **改法**：新增 `_face_paths()` 走 `csc.iter_files` 单遍枚举，路径形态与旧实现**同契约**（仍带 root 前缀，调用方 `os.path.relpath(p, root)` 不受影响）；三张面（模块文档 / 管线文档 / 协议声明）各一条模式，`_walk_md` 退役。
+  ③ **判据**（`test_schema_lint.DirectEnumerationTest`）：把**旧口径原样重算一遍**（`os.walk` + `os.listdir` + `glob`）逐件比对三张面——真仓库 模块 **248** / 管线 **114** / 协议声明 **111** 件，一条不差。提速只有在「面逐件不变」时才允许。
+  ④ **实测**：`discover` **54 → 1.9 ms**；`schema_lint.scan` **104 → 51 ms**（稠密常驻层，稳态两轮）；**端到端（一次性唯一正文）** 唯一新状态 · 守护第一条 **0.67–0.72 s → 0.60–0.63 s**，同状态重放 **~50 ms**，树没变 **50 ms**，冷进程 **~1.72 s**。
+
 - **执行层：两处「共享面重复算」收口——`pack_combo.scan` 145 → 32 ms、`index_verify` 185 → 75 ms（`nf score` 唯一新状态 802 → 567 ms）**（**作者目标**：「……测量缓存，数据结构跃迁……达到顶尖工业水准」）：
   ① **先量后改（仪器化，不是猜测）**：把计时器包在**函数对象**上（在外面逐个量会把 `memo_pair` 喂热，量到的是命中而不是真算）。唯一新状态下 `pack_combo.scan` 的 145 ms 里 **`_inputs_fingerprint` 独占 114 ms（79%）**，而它被 `breadth` **一次调用叫了两遍**（进程内内容键一遍、落盘键一遍）；`index_verify` 的 185 ms 里，逐包内容键把 **235 份 `community/*/modules/*.md` 为 111 个包各枚举了一遍**。
   ② **修法一（指纹换机器）**：`pack_combo._inputs_fingerprint` 由 `Path.glob` + 逐件 `read_text_cached(...).encode()` 换成 `csc.content_fingerprint`（`iter_files` 单遍枚举 + 常驻层逐件摘要）——**57 ms → 2.3 ms（25×）**；同时把 `breadth` 里的两次调用合成一次。判据 `test_pack_combo.InputFaceTest` 两条：① 五个模式上 `iter_files` 与 `pathlib.glob` **逐件一致**（真仓库，面不许被换实现悄悄改动）；② 面里的**每一件**都真的进指纹（合成树逐件变 ⇒ 指纹变，还原 ⇒ 回原值）。
