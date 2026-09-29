@@ -12,7 +12,7 @@ subjects:
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - desktop/src/core/decision_layer.py:f9b87bb638e1ffef0a71a0a3b87c97646337a86788e53d6fea8fca22b8bf9e36
   - desktop/src/core/receipts.py:d0149187ad077db555fac3a2877f3ddc846cb5544125cff7fcfc48ae9ce7f9ee
-  - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
+  - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
   - scripts/pull_decision_model.py:5e61f8d48a590943e915ab501f35172a13eb5fd41368a378abe386eebecdc227

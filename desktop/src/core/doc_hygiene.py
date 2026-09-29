@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import datetime as _dt
 import glob
+import hashlib
 import os
 import re
 
@@ -170,24 +171,54 @@ def _head_lines(text: str, n: int = 8) -> list:
     return text.splitlines()[:n]
 
 
+#: 标识体检的**内容键缓存**：结论只是那批文档**正文**的纯函数（缺件也在面里——面里少了会换键）。
+#: 依据（实测 2026-09-29）：`check_markers` 一次 **8–9 ms**，而它每件都要 `os.path.exists`（stat）
+#: 再 `read_text_cached`（读）——两次系统调用级的动作，其中 stat 那一半在常驻层完全没必要。
+_MARKER_CACHE: dict = {}
+_MARKER_CACHE_MAX = 16
+
+
 def check_markers(root: str = ".") -> list:
-    """指令标识 + last-updated 位覆盖校验（目标清单内 100%）。"""
+    """指令标识 + last-updated 位覆盖校验（目标清单内 100%）。
+
+    口径（2026-09-29 改，实测）：① **只读一次**——把「先 `os.path.exists` 判在、再读」合成
+    「直接读、`OSError` 即缺失」（少了 79 次 stat，且读走常驻层）；② 整个函数的结论按**该批文档的
+    **读到的正文**取键缓存——键只用「本函数自己读到的东西」，因此**不新增任何陈旧通道**（它读到什么、
+    就按什么取键；读层本身的语义与改动前完全一致）。判据：既有变异注入用例（改一件必须被抓到）。
+    """
+    texts = {}
+    for rel in REQUIRED_DOCS + INSTRUCTION_DOCS:
+        try:
+            texts[rel] = csc.read_text_cached(os.path.join(root, rel))
+        except OSError:
+            texts[rel] = None
+    h = hashlib.sha256()
+    for rel in sorted(texts):
+        h.update(rel.encode("utf-8"))
+        h.update(b"\x00")
+        h.update(b"\xff" if texts[rel] is None else texts[rel].encode("utf-8"))
+        h.update(b"\x01")
+    fp = h.hexdigest()
+    hit = _MARKER_CACHE.get(fp)
+    if hit is not None:
+        return list(hit)
     issues = []
     for rel in REQUIRED_DOCS:
-        path = os.path.join(root, rel)
-        if not os.path.exists(path):
+        if texts[rel] is None:
             issues.append("%s 缺失（须入 REQUIRED_DOCS 清单）" % rel)
             continue
-        head = _head_lines(csc.read_text_cached(path))
+        head = _head_lines(texts[rel])
         if not any(ln.startswith(LAST_UPDATED_PREFIX) for ln in head):
             issues.append("%s 缺「最后更新」位（头部 %d 行内）" % (rel, len(head)))
     for rel in INSTRUCTION_DOCS:
-        path = os.path.join(root, rel)
-        if not os.path.exists(path):
+        if texts[rel] is None:
             continue
-        head = _head_lines(csc.read_text_cached(path))
+        head = _head_lines(texts[rel])
         if not any(INSTRUCTION_MARK in ln for ln in head):
             issues.append("%s 缺「⛔ 操作指令」标识头（指令类文档须全覆盖）" % rel)
+    if len(_MARKER_CACHE) >= _MARKER_CACHE_MAX:
+        _MARKER_CACHE.clear()
+    _MARKER_CACHE[fp] = list(issues)
     return issues
 
 

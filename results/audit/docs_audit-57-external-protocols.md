@@ -13,7 +13,7 @@ subjects:
   - desktop/src/core/mcp_runtime.py:104e72d90c207132a1479297ba5853a50e525e65f17ff12c08524c9520708751
   - desktop/src/core/prose_lint.py:680715a34a1c43687a87113edc323c1491ab7577f99352bda4b30633b064b15c
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
-  - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
+  - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
   - desktop/src/core/purity_scan.py:ea196d76e8708c36287e868c42d35b51d1f83cd455237454d3365cd354e47a66
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb

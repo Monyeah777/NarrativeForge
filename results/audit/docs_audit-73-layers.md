@@ -20,7 +20,7 @@ subjects:
   - protocol/normative.json:3ea1e37d1879cee532b930e83ba3029fbc171efe99606fd42bc775f0968b84a5
   - protocol/glossary.json:4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60
   - desktop/src/core/receipts.py:d0149187ad077db555fac3a2877f3ddc846cb5544125cff7fcfc48ae9ce7f9ee
-  - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
+  - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1
   - decisions/ADR-0004-抽象阶梯两轴与纵切.md:9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674
 ---
 
