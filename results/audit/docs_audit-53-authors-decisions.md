@@ -6,7 +6,7 @@ scope: 收口四项作者裁决的挂账（均取自本会话外挂账队列）�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/concept_graph.py:1a191c14a3e4c500c7ee7eb2bd0781d0230758de9df46c66d86015c5b0a67069
+  - desktop/src/core/concept_graph.py:d2cee8f3056ca59a48e96e07c06a529bb8b7da20477053dedf9ef0cea945b130
   - desktop/src/core/intake.py:6a0d584c81dcdeb1439bf4e3f16b201e08e618c8d6296e80a63c6f5266447e56
   - desktop/src/core/asset_ledger.py:f9aef22b7ce299d7733eeec8fc539f4249936d53c13172f75a5194b58615937a
   - scripts/ai_domain_closure.py:e7c582b05a707dab6cf5cb9217d88cf841b4cbf24ea0a55c9486bc32757446f8
