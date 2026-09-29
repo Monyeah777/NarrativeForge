@@ -161,5 +161,40 @@ class DiskCacheTest(unittest.TestCase):
         self.assertEqual([["a"], {"n": 1}], raw)
 
 
+class ImportGraphCacheTest(unittest.TestCase):
+    """导入图**落盘**的两条契约：① 落盘往返与现算**逐位一致**；② `(mtime_ns, size)` 一变就换键。
+
+    依据（实测 2026-09-29）：一次冷跑里 16 个站点各解析一遍同一批 `core/*.py` 的导入闭包，
+    6 站点样本 BFS 就要 133 ms（`quality_depth` 一个 101 ms）——同一份正文的依赖解析是纯函数，
+    所以像 `ast-facts` 一样落盘。键含 `(mtime_ns, size)`＋版本位，故「改了源码必须换图」。
+    """
+
+    def test_persisted_graph_matches_fresh_parse(self):
+        from core import import_graph as ig
+        with tempfile.TemporaryDirectory() as tmp:
+            core = Path(tmp, "desktop", "src", "core")
+            core.mkdir(parents=True)
+            (core / "a.py").write_text("from core import b\nimport os\n", encoding="utf-8")
+            (core / "b.py").write_text("x = 1\n", encoding="utf-8")
+            listing = ig.listing(tmp)
+            self.assertIn("a.py", listing, "列目录失败？判据自身要有效")
+            fresh = ig.parse((core / "a.py").read_text(encoding="utf-8"))
+            first = ig.load_or_parse(tmp, "a", listing["a.py"])
+            self.assertEqual(fresh, (first[1], first[2]), "首算必须与现算一致")
+            self.assertEqual(("b",), tuple(sorted(first[1])), "只该收 core.* 的静态依赖")
+            # ① 落盘往返：第二次必须走持久层且值相同（键相同）
+            self.assertEqual(first, ig.load_or_parse(tmp, "a", listing["a.py"]))
+            self.assertEqual(ig.dc_digest(tmp, "a", listing["a.py"]),
+                             ig.dc_digest(tmp, "a", listing["a.py"]))
+            # ② 改正文（size 变）⇒ 键必变，且图跟着换（不许拿旧图当新图）
+            (core / "a.py").write_text("from core import c\nimport os\n", encoding="utf-8")
+            (core / "c.py").write_text("y = 1\n", encoding="utf-8")
+            listing2 = ig.listing(tmp)
+            self.assertNotEqual(ig.dc_digest(tmp, "a", listing["a.py"]),
+                                ig.dc_digest(tmp, "a", listing2["a.py"]), "正文变必须换键")
+            second = ig.load_or_parse(tmp, "a", listing2["a.py"])
+            self.assertEqual(("c",), tuple(sorted(second[1])), "改了依赖就必须重新解析")
+
+
 if __name__ == "__main__":
     unittest.main()

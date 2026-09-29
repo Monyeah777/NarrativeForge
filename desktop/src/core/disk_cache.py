@@ -140,53 +140,29 @@ _IMPORT_MEMO: Dict[Any, Optional[Tuple[str, frozenset, bool]]] = {}
 _CORE_DIR = ("desktop", "src", "core")
 
 
-def _module_info(root: str, name: str):
+def _module_info(root: str, name: str, listing: Optional[dict] = None):
     """解析 `desktop/src/core/<name>.py` → (相对路径或 None, 静态依赖, 是否含动态导入构造)。
 
     - 文件不存在 ⇒ `(None, {}, False)`：这不是模块文件（`from core import <名字>` 里的名字可能来自
       `core/__init__.py`），调用方据此把它折算成对 `__init__.py` 的依赖，而不是判「说不清」。
     - 文件在但解析不出 ⇒ `None`：真的说不清，调用方**退回整块代码面**。
     - 记忆键含 `(mtime_ns, size)`：进程活着的时候代码被改了，图必须跟着变（本轮判据当场抓过：
-      只按 (根, 模块) 记忆会让合成树里的第二版内容读成第一版）。
+      只按 (根, 模块) 记忆会让合成树里的第二版内容读成第一版）。解析本体见 `core.import_graph`
+      （**落盘**：一次冷跑 16 个站点各解析一遍同一批源码 ≈ 100 ms，键含 mtime+size 故不陈旧）。
     """
     path = Path(root).joinpath(*_CORE_DIR, str(name) + ".py")
-    try:
-        st = path.stat()
-        stamp = (st.st_mtime_ns, st.st_size)
-    except OSError:
-        return (None, frozenset(), False)
+    stamp = (listing or {}).get(str(name) + ".py")
+    if stamp is None:                    # 列表里没有（或没给列表）⇒ 逐件 stat 兜底（fail-closed）
+        try:
+            st = path.stat()
+            stamp = (st.st_mtime_ns, st.st_size)
+        except OSError:
+            return (None, frozenset(), False)
     rkey = (os.path.normcase(os.path.abspath(str(root))), str(name), stamp)
     if rkey in _IMPORT_MEMO:
         return _IMPORT_MEMO[rkey]
-    info = None
-    try:
-        import ast
-        tree = ast.parse(path.read_text(encoding="utf-8"))
-        deps: set = set()
-        dyn = False
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Import):
-                for alias in node.names:
-                    if alias.name == "core" or alias.name.startswith("core."):
-                        if "." in alias.name:
-                            deps.add(alias.name.split(".")[1])
-            elif isinstance(node, ast.ImportFrom):
-                mod = node.module or ""
-                if mod == "core":
-                    deps.update(a.name for a in node.names)
-                elif mod.startswith("core."):
-                    deps.add(mod.split(".")[1])
-            elif isinstance(node, ast.Call):
-                fn = node.func
-                if isinstance(fn, ast.Name) and fn.id == "__import__":
-                    dyn = True
-                elif isinstance(fn, ast.Attribute) \
-                        and getattr(getattr(fn, "value", None), "id", "") == "importlib":
-                    dyn = True
-        info = ("/".join(_CORE_DIR + (str(name) + ".py",)),
-                frozenset(d for d in deps if d), dyn)
-    except Exception:                                  # noqa: BLE001 - 解析不出即「说不清」
-        info = None
+    from core import import_graph as _ig
+    info = _ig.load_or_parse(root, name, stamp)
     _IMPORT_MEMO[rkey] = info
     return info
 
@@ -200,11 +176,13 @@ def code_scope_files(root: str, modules) -> Optional[Tuple[str, ...]]:
     seen: set = set()
     stack = [str(m).split(".")[-1] for m in modules]
     files: set = set()
+    from core import import_graph as _ig
+    listing = _ig.listing(root)            # 一次目录读，闭包里每个模块的 (mtime, size) 都从它取
     while stack:
         name = stack.pop()
         if name in seen:
             continue
-        info = _module_info(root, name)
+        info = _module_info(root, name, listing)
         if info is None or info[2]:
             return None
         seen.add(name)
@@ -220,7 +198,13 @@ _SCOPE_FP: Dict[Any, Optional[str]] = {}
 
 
 def code_scope_fingerprint(root: str, modules) -> Optional[str]:
-    """闭包的**内容指纹**（按 (根, 模块元组) 记忆）；闭包算不出 → None。"""
+    """闭包的**内容指纹**（按 (根, 模块元组) 记忆）；闭包算不出 → None。
+
+    逐件直取摘要（2026-09-29 实测）：闭包是**已知的相对路径表**，而 `face_fingerprint(root, files)`
+    会把每个路径**当成一个模式**去走目录——本仓 4 件的闭包实测要 **42.5 ms**（每个模式一次目录枚举），
+    16 个站点合计 ~90 ms。这里按与面指纹**同一帧**（`rel \\x00 digest \\x01`，顺序＝已排序）直接算，
+    实测 0.1–2 ms/站点，**值逐位不变**（判据：`test_disk_cache.CodeScopeFrameTest`）。
+    """
     rkey = (os.path.normcase(os.path.abspath(str(root))), tuple(sorted(map(str, modules))))
     if rkey in _SCOPE_FP:
         return _SCOPE_FP[rkey]
@@ -228,7 +212,17 @@ def code_scope_fingerprint(root: str, modules) -> Optional[str]:
     out = None
     if files is not None:
         from core import conformance_scan as csc
-        out = csc.face_fingerprint(str(root), files)
+        from core import import_graph as _ig
+        have = _ig.listing(str(root))      # 缺件的闭包条目**不计入**（与「按模式枚举」旧口径一致）
+        h = hashlib.sha256()
+        for rel in files:
+            if rel.rsplit("/", 1)[-1] not in have:
+                continue
+            h.update(rel.encode("utf-8"))
+            h.update(b"\x00")
+            h.update(csc._payload_digest(str(root), rel))
+            h.update(b"\x01")
+        out = h.hexdigest()
     _SCOPE_FP[rkey] = out
     return out
 
