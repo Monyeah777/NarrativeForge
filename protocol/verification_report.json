@@ -344,11 +344,11 @@
       "sample": [],
       "source": "code_metrics.scan",
       "stats": {
-        "baseline": 154,
-        "files": 154,
+        "baseline": 155,
+        "files": 155,
         "max_fn_cc": 150,
         "max_fn_lines": 951,
-        "max_lines": 5417
+        "max_lines": 5416
       },
       "status": "pass",
       "warns": 0
@@ -390,7 +390,7 @@
       "source": "coupling_metrics.scan",
       "stats": {
         "cycles": 4,
-        "modules": 131,
+        "modules": 132,
         "registered_cycles": 4,
         "registered_sdp": 7,
         "sdp": 7
@@ -444,7 +444,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "2a70a024fe2124f09041162b36a9aadbc69696736bdf9536808e14eb63d8fe7f",
+  "root_digest": "8aa0b2b603cf7a99333740fb5fd05a9c9847bb747d343df190a6ee4c16e9516c",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,
