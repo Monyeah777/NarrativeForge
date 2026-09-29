@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 #: core 包在仓库里的目录（与 `disk_cache._CORE_DIR` 同源；此处独立声明以免循环导入）。
 _CORE_DIR = ("desktop", "src", "core")

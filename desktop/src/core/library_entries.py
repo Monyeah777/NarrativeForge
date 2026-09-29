@@ -11,7 +11,7 @@ import hashlib
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Tuple
 
 
 ENTRY_GLOB = "library/NF-*.md"
