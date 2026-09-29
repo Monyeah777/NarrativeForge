@@ -487,6 +487,11 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
         sys.argv, sys.stdin = old_argv, old_stdin
         os.chdir(old_cwd)
         reset_process_caches()            # 请求结束再清一次：写命令改了仓库，缓存不留残影
+        try:
+            from core import conformance_scan as _csc
+            _csc.clear_changes()          # 确知变更面**只在当次请求内有效**（否则它单调增长、
+        except Exception:                 #  # 几条命令之后会让键层复用退化成全量重算——实测踩过）
+            pass
     code, out, err = int(code), out_buf.getvalue(), err_buf.getvalue()
     if gen is not None and cacheable(argv) and code == 0:
         if len(_RESP_CACHE) >= _RESP_CACHE_MAX:

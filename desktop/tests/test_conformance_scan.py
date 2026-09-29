@@ -181,6 +181,38 @@ class NestedMemoSharingTest(unittest.TestCase):
                                  "新作用域必须看到新文件")
 
 
+class FaceFingerprintTest(unittest.TestCase):
+    """`face_fingerprint`：值必须与 `content_fingerprint` **逐位相同**，且只在「确知没变」时复用。
+
+    依据（实测 2026-09-29）：`memo_pair` 的每个站点都要按面取指纹（各站点合计 ~60–80 ms/新状态），
+    而一次改动只碰得到其中少数几个面。把「确知变更面」用到键层后，其余面整个免算（逐包键那一处已实测
+    109 → 3 次）。
+    """
+
+    def test_value_matches_plain_fingerprint(self):
+        pats = ("04_模块库/*/*.md", "docs/*.md", "community/*/modules/*.md")
+        self.assertEqual(cs.content_fingerprint(ROOT, pats), cs.face_fingerprint(ROOT, pats),
+                         "复用不许改变指纹值（逐位相同）")
+
+    def test_reuse_only_when_change_face_is_known_and_clean(self):
+        from unittest import mock
+        pats = ("04_模块库/*/*.md",)
+        cs._FACE_FP.clear()
+        with mock.patch.object(cs, "content_fingerprint", wraps=cs.content_fingerprint) as spy:
+            cs.face_fingerprint(ROOT, pats)                       # 第一次：没有上次的值，必算
+            self.assertEqual(1, spy.call_count)
+            with mock.patch.object(cs, "changed_paths", lambda: (False, set())):
+                cs.face_fingerprint(ROOT, pats)                   # 说不清 → 必算（fail-closed）
+                self.assertEqual(2, spy.call_count)
+            with mock.patch.object(cs, "changed_paths", lambda: (True, {"docs/x.md"})):
+                cs.face_fingerprint(ROOT, pats)                   # 确知没沾到 → 复用
+                self.assertEqual(2, spy.call_count)
+            with mock.patch.object(cs, "changed_paths",
+                                   lambda: (True, {"04_模块库/通用类/m00_数据结构.md"})):
+                cs.face_fingerprint(ROOT, pats)                   # 确知沾到（且路径是小写）→ 必算
+                self.assertEqual(3, spy.call_count)
+
+
 class LogicalReadFaceAuditTest(unittest.TestCase):
     """**逻辑读**审计：每个派生站点的「真读面」必须落在它申报的输入面内——一次量到所有站点。
 

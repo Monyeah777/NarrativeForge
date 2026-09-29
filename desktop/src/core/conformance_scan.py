@@ -142,6 +142,56 @@ def changed_paths() -> Tuple[bool, set]:
     return True, set(_RESIDENT["changed"])
 
 
+def clear_changes() -> None:
+    """**请求结束**时清空确知变更面（`daemon.execute` 的收尾调用）。
+
+    为什么必须清（实测 2026-09-29 踩到）：`note_changes` 是**累加**的，而早先没有清空点 ⇒ 变更集会
+    单调增长，几条命令之后**每个面都「沾到变更」**，键层复用直接退化成全量重算（探针里四种改动位置
+    都报「重算 5 个面」就是这个 bug）。语义与读层一致：确知变更只在**当次请求**内有效。
+    """
+    if _RESIDENT is None:
+        return
+    _RESIDENT["changed"] = set()
+    _RESIDENT["changed_known"] = False
+
+
+def matches_any(rel: str, patterns) -> bool:
+    """仓库相对路径是否落在任一模式内（语义与 `iter_files` 同源：`**` 跨目录、`*` 不跨）。
+
+    两侧都按 `lower()` 归一：① 监听给的是**小写**相对路径，而模式里有 `INDEX.json` 这种大写；
+    ② 归一后若「本该不匹配却被判成匹配」，后果只是**多算一次**（安全方向）——反过来才会陈旧。
+    """
+    segs = [s.lower() for s in str(rel).replace("\\", "/").split("/")]
+    for pat in patterns:
+        if _match_parts(segs, _compiled_parts(str(pat).replace("\\", "/").lower())):
+            return True
+    return False
+
+
+#: **面指纹**缓存（键 = (绝对 root, 模式元组)）。用途：把「确知变更面」这条信息用到**键的取法**上——
+#: 只要确知这一批变更里没有一件落在该面内，指纹就整个复用（不枚举、不摘要）。说不清一律重算。
+#: 收益形态（实测 2026-09-29）：改产物件（`community/*/outputs/**`）时，只有真含它的面才重算，
+#: 其余宽面（conformance 的模块/协议面、pack_combo 的声明面、schema_lint 的面……）全部免算。
+_FACE_FP: Dict[Any, str] = {}
+_FACE_FP_MAX = 1024
+
+
+def face_fingerprint(root: str, patterns) -> str:
+    """`content_fingerprint` 的**带确知变更面复用**版本（值逐位相同，只在确知没变时省掉重算）。"""
+    pats = tuple(str(p) for p in patterns)
+    key = (os.path.normcase(os.path.abspath(str(root))), pats)
+    hit = _FACE_FP.get(key)
+    if hit is not None:
+        known, changed = changed_paths()
+        if known and not any(matches_any(rel, pats) for rel in changed):
+            return hit
+    fp = content_fingerprint(root, patterns)
+    if len(_FACE_FP) >= _FACE_FP_MAX:
+        _FACE_FP.clear()
+    _FACE_FP[key] = fp
+    return fp
+
+
 def resident_active() -> bool:
     return _RESIDENT is not None
 
@@ -836,7 +886,9 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
     if require_resident and not resident_active():
         return impl(root)
     if fp is None:
-        fp = content_fingerprint(root, patterns)
+        # 走**面指纹**（带「确知没变就复用」）：各站点的面宽窄不一，这一改把「确知变更面」这条
+        # 信息铺到**所有** `memo_pair` 站点，而不只是逐包键那一处。
+        fp = face_fingerprint(root, patterns)
     mem = _DERIVED_MEMO.setdefault(tag, {})
     hit = mem.get(fp)
     if hit is None:
