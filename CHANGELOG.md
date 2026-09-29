@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：两处「共享面重复算」收口——`pack_combo.scan` 145 → 32 ms、`index_verify` 185 → 75 ms（`nf score` 唯一新状态 802 → 567 ms）**（**作者目标**：「……测量缓存，数据结构跃迁……达到顶尖工业水准」）：
+  ① **先量后改（仪器化，不是猜测）**：把计时器包在**函数对象**上（在外面逐个量会把 `memo_pair` 喂热，量到的是命中而不是真算）。唯一新状态下 `pack_combo.scan` 的 145 ms 里 **`_inputs_fingerprint` 独占 114 ms（79%）**，而它被 `breadth` **一次调用叫了两遍**（进程内内容键一遍、落盘键一遍）；`index_verify` 的 185 ms 里，逐包内容键把 **235 份 `community/*/modules/*.md` 为 111 个包各枚举了一遍**。
+  ② **修法一（指纹换机器）**：`pack_combo._inputs_fingerprint` 由 `Path.glob` + 逐件 `read_text_cached(...).encode()` 换成 `csc.content_fingerprint`（`iter_files` 单遍枚举 + 常驻层逐件摘要）——**57 ms → 2.3 ms（25×）**；同时把 `breadth` 里的两次调用合成一次。判据 `test_pack_combo.InputFaceTest` 两条：① 五个模式上 `iter_files` 与 `pathlib.glob` **逐件一致**（真仓库，面不许被换实现悄悄改动）；② 面里的**每一件**都真的进指纹（合成树逐件变 ⇒ 指纹变，还原 ⇒ 回原值）。
+  ③ **修法二（共享面只算一遍）**：逐包键由「切片 ∪ 共享面」的一次性指纹改成 `(shared_face_key, 该包切片)` 两半组合，共享面在 `_index_verify_impl` 里每个内容状态只算一次。判据 `test_output_forms.PackVerifyCacheTest.test_shared_face_moves_every_pack_key`：跨包模块面一变 ⇒ **所有**包的键都得变（覆盖面不许缩小），而改单包产物仍只动它自己的键（既有用例继续守着）。
+  ④ **实测（稠密常驻层，每项两轮取稳态）**：`pack_combo.scan` **145 → 32 ms**；`index_verify` **185 → 75 ms**；`quality_depth.scan` **463 → 272 ms**；`score.evaluate` 唯一新状态 **802 → 567 ms**。指纹值换了一代 ⇒ 落盘缓存重键一次（一次性重算，无陈旧面）。
+
 - **执行层：广度证明改「逐组合判决缓存」（`pack_combo.scan` 723 → 184 ms）＋一条把「键取窄」判死的适应度函数**（**作者目标**：「……测量缓存，数据结构跃迁……达到顶尖工业水准」）：
   ① **起点**：广度证明要跑 **6885** 次组合（`C(111,2)=6105` + 定种子抽样），稠密常驻层下实测 **723 ms**，是「唯一新状态」里最大单项；而它的判定只是「包声明 + 模块契约 + 核心发布集」的纯函数。
   ② **修法**：`combine()` 的判决（`legal` + 悬挂 / 未桥证据）按 **(参与包名 tuple, 本轮全局见证)** 做进程内缓存；见证 = 逐包声明 + **全部**模块契约 + 核心发布集的规范 JSON 哈希（每次广度证明算一遍，实测 **< 1 ms**）。

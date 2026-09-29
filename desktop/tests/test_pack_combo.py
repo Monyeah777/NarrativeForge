@@ -104,6 +104,52 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
                                 "输入一变指纹必须变（否则会读到陈旧派生结果）")
 
 
+class InputFaceTest(unittest.TestCase):
+    """输入面的**枚举口径**与**逐件敏感性**：换实现不许悄悄改面或漏件。
+
+    背景（实测 2026-09-29）：`_inputs_fingerprint` 从 `Path.glob` + 逐件 `read_text_cached(...)`
+    换成 `csc.content_fingerprint`（`iter_files` 单遍枚举 + 常驻层逐件摘要）——**57 ms → 2.3 ms**，
+    而广度证明一次要调它两遍。提速只有在「面逐件不变」时才允许，所以这两条判据把口径钉住。
+    """
+
+    def test_pattern_enumeration_matches_pathlib(self):
+        from pathlib import Path
+
+        from core import conformance_scan as csc
+        for pat in pc.INPUT_PATTERNS:
+            want = sorted(p.relative_to(ROOT).as_posix()
+                          for p in Path(ROOT).glob(pat) if p.is_file())
+            got = sorted(csc.iter_files(ROOT, pat))
+            self.assertTrue(want, "面 %s 枚举为空，判据没测到东西" % pat)
+            self.assertEqual(want, got, "输入面枚举在 %s 上不一致（换实现改动了面）" % pat)
+
+    def test_every_face_file_moves_the_fingerprint(self):
+        """面里的**每一件**都真的进指纹（逐件变 ⇒ 指纹变；还原 ⇒ 回到原值）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_pack(tmp, "包甲", "包甲:M01")
+            _write_pack(tmp, "包乙", "包乙:M01")
+            core = Path(tmp, "desktop", "src", "core")
+            core.mkdir(parents=True, exist_ok=True)
+            (core / "registry.json").write_text("{}\n", encoding="utf-8")
+            assets = Path(tmp, "community", "包甲", "assets")
+            assets.mkdir(parents=True, exist_ok=True)
+            (assets / "provenance.json").write_text('{"assets": []}\n', encoding="utf-8")
+
+            base = pc._inputs_fingerprint(tmp)
+            self.assertEqual(base, pc._inputs_fingerprint(tmp), "同内容必须同指纹")
+            for target in (Path(tmp, "community", "包甲", "protocol.yaml"),
+                           Path(tmp, "community", "包乙", "modules", "M01_x.md"),
+                           core / "registry.json",
+                           assets / "provenance.json"):
+                before = target.read_text(encoding="utf-8")
+                target.write_text(before + "\n# 变更\n", encoding="utf-8")
+                self.assertNotEqual(base, pc._inputs_fingerprint(tmp),
+                                    "%s 变了指纹却没变（漏件）" % target.name)
+                target.write_text(before, encoding="utf-8")
+                self.assertEqual(base, pc._inputs_fingerprint(tmp),
+                                 "%s 还原后指纹应回到原值" % target.name)
+
+
 class ComboCacheTest(unittest.TestCase):
     """逐组合判决缓存：等价（不改判定）／同状态零重算／**见证覆盖跨包闭包**（变异注入）。
 

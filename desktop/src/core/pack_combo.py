@@ -63,22 +63,23 @@ def cache_clear() -> None:
 _CONTENT_CACHE: Dict[Any, Any] = {}
 
 
-def _inputs_fingerprint(root: str = ".") -> str:
-    """包画像 / 广度证明诸输入的**内容指纹**（协议声明 + 模块契约 + 核心模块 + 资产台账 + registry）。
+#: 包画像 / 广度证明的**输入面**（协议声明 + 模块契约 + 核心模块 + 资产台账 + registry）。
+INPUT_PATTERNS = ("community/*/protocol.yaml", "community/*/modules/*.md",
+                  "04_模块库/*/*.md", "community/*/assets/provenance.json",
+                  "desktop/src/core/registry.json")
 
-    走共享读（`csc.read_text_cached`）：同一次只读调用里这些文件本来就要被读，指纹近乎白拿。
+
+def _inputs_fingerprint(root: str = ".") -> str:
+    """包画像 / 广度证明诸输入的**内容指纹**（键即内容；面见 `INPUT_PATTERNS`）。
+
+    口径（2026-09-29 改，实测）：过去这里是 `Path.glob` + 逐件 `read_text_cached(...).encode()`
+    ——**每次 57 ms**，而广度证明一次要调它**两遍**（进程内内容键一遍、落盘键一遍）⇒ **114 ms**，
+    占 `pack_combo.scan` 的 **79%**（仪器化实测）。改走 `csc.content_fingerprint`（`iter_files`
+    单遍枚举 + 常驻层**逐件摘要**）后 **2.3 ms（25×）**；口径仍是「相对路径 + 该件内容摘要」，
+    且**枚举面逐件一致**由 `test_pack_combo.InputFaceTest` 在真仓库上逐模式守着。
+    值本身换了一代 ⇒ 落盘缓存重键一次（一次性重算，无陈旧风险）。
     """
-    h = hashlib.sha256()
-    r = Path(root)
-    for pat in ("community/*/protocol.yaml", "community/*/modules/*.md",
-                "04_模块库/*/*.md", "community/*/assets/provenance.json",
-                "desktop/src/core/registry.json"):
-        for p in sorted(r.glob(pat)):
-            h.update(p.relative_to(r).as_posix().encode("utf-8"))
-            h.update(b"\x00")
-            h.update(csc.read_text_cached(p).encode("utf-8"))
-            h.update(b"\x01")
-    return h.hexdigest()
+    return csc.content_fingerprint(root, INPUT_PATTERNS)
 
 
 def _read_json(path: Path) -> Any:
@@ -543,13 +544,14 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
     结果按**输入内容指纹 + 抽样参数**缓存（`_CONTENT_CACHE`）：广度证明是诸输入的纯函数，
     输入没变就不必重跑 6910 次组合（实测 ~0.92 s）；输入一变指纹就变，无陈旧风险。
     """
-    content_key = ("breadth", _inputs_fingerprint(root), triple_sample, quad_sample,
+    fp = _inputs_fingerprint(root)          # 只算一遍：进程内键与落盘键共用（过去算两遍，白花 57 ms）
+    content_key = ("breadth", fp, triple_sample, quad_sample,
                    quint_sample, sext_sample, seed)
     hit = _CONTENT_CACHE.get(content_key)
     dkey = None
     if hit is None:                        # 进程内没命中 → 再看持久层（广度证明 ~0.9 s 一笔）
         from core import disk_cache
-        dkey = disk_cache.key("pack-breadth", str(_inputs_fingerprint(root)),
+        dkey = disk_cache.key("pack-breadth", str(fp),
                               str(triple_sample), str(quad_sample), str(quint_sample),
                               str(sext_sample), str(seed), root=root,
                               code_modules=("core.pack_combo",))

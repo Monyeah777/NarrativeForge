@@ -26,6 +26,7 @@ from __future__ import annotations
 import csv
 import contextlib
 import copy
+import hashlib
 import io
 import json
 import os
@@ -715,8 +716,19 @@ _PACK_FACE_SLICE = ("outputs/**/*", "assets/*", "protocol.yaml", "modules/*.md")
 _PACK_FACE_SHARED = ("community/*/modules/*.md", REGISTRY_INPUT)
 
 
-def pack_content_key(root: str, pkg: str) -> str:
-    """一个包的**内容键**：该包在声明输入面里的那一份切片 + 跨包模块面 + registry。
+def shared_face_key(root: str = ".") -> str:
+    """逐包键里**所有包共享**的那一半（跨包模块面 + registry）——**每个内容状态只算一遍**。
+
+    为什么单拎出来（2026-09-29 仪器化实测）：`index_verify` 要为 111 个包各取一次内容键，
+    而每个键都把 235 份 `community/*/modules/*.md` 重新枚举 + 摘要一遍 ⇒ **111 遍同一条共享面**，
+    实测占 `index_verify` 185 ms 里的大头。切出来之后共享面一次算好、逐包只算自己那一份切片。
+    正确性：键仍覆盖**同一批件**（共享面 ∪ 该包切片），任一侧内容一变键必变。
+    """
+    return _csc.content_fingerprint(root, _PACK_FACE_SHARED)
+
+
+def pack_content_key(root: str, pkg: str, shared: str = "") -> str:
+    """一个包的**内容键** = `(共享面指纹, 该包切片指纹)` 两者的组合（见 `shared_face_key`）。
 
     为什么要按切片而不是整棵包树：判据（`DerivedResultCacheTest.test_reads_stay_inside_declared_input_face`）
     要求**读盘面 ⊆ 声明输入面**——用整棵包树会把 `pipelines/**` 也读进来，而它不在 `INDEX_INPUTS` 里，
@@ -728,9 +740,11 @@ def pack_content_key(root: str, pkg: str) -> str:
     **逐包键全不变** ⇒ 逐包缓存全命中（实测 `index_verify` 533 → 11 ms）。要连模块文档也精确到包，
     得按 `protocol.yaml` 的 `references` 求「被借阅包」闭包——属下一步。
     """
-    from core import conformance_scan as _csc
+    if not shared:                        # 单调用方（如单测）自己用时不强求外部先算
+        shared = shared_face_key(root)
     slice_patterns = tuple("community/%s/%s" % (pkg, rel) for rel in _PACK_FACE_SLICE)
-    return _csc.content_fingerprint(root, slice_patterns + _PACK_FACE_SHARED)
+    per_pack = _csc.content_fingerprint(root, slice_patterns)
+    return hashlib.sha256(("%s\x00%s" % (shared, per_pack)).encode("utf-8")).hexdigest()
 
 
 def _pack_verify_ok(value) -> bool:
@@ -739,9 +753,9 @@ def _pack_verify_ok(value) -> bool:
             and isinstance(value["issues"], list) and isinstance(value["rows"], list))
 
 
-def _verify_pack_cached(root: str, pkg: str):
+def _verify_pack_cached(root: str, pkg: str, shared: str = ""):
     """按包内容键取校验结果：进程内一层 + **落盘**一层（新进程也能免付未变包的账）。"""
-    key = pack_content_key(root, pkg)
+    key = pack_content_key(root, pkg, shared)
     hit = _PACK_VERIFY_CACHE.get(key)
     if hit is None:
         hit = _verify_pack_io(root, pkg, key)
@@ -1257,8 +1271,9 @@ def _index_verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """包级产出清单机检：声明存在 / 形态与档位属实 / schema 校验 / 双源一致 / T4 复算。"""
     issues: List[str] = []
     rows: List[Dict[str, Any]] = []
+    shared = shared_face_key(root)                 # 共享面每个内容状态只算一遍（过去 111 遍）
     for pkg in _pack_dirs(root):
-        hit = _verify_pack_cached(root, pkg)       # 逐包内容键：只有被改的包会重算（落盘可跨进程）
+        hit = _verify_pack_cached(root, pkg, shared)   # 逐包内容键：只有被改的包会重算（落盘可跨进程）
         issues += hit[0]
         rows += hit[1]
     stats = {"packages": len(_pack_dirs(root)), "outputs": len(rows),

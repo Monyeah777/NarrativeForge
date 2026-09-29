@@ -133,6 +133,42 @@ class PackVerifyCacheTest(unittest.TestCase):
             self.assertNotEqual(a1, of.pack_content_key(tmp, "A"), "包内容一变键必须变")
             self.assertEqual(b1, of.pack_content_key(tmp, "B"), "别的包的键不得跟着变")
 
+    def test_shared_face_moves_every_pack_key(self):
+        """共享面切出来之后，**覆盖面不许缩小**：跨包模块面 / registry 一变 ⇒ 所有包的键都得变。
+
+        口径变更（2026-09-29 实测）：逐包键过去是「切片 ∪ 共享面」一次性指纹，**每个包都把 235 份
+        `community/*/modules/*.md` 重新枚举一遍**（111 遍），占 `index_verify` 185 ms 里的大头；
+        改成「共享面算一遍 + 逐包切片」两半组合后 `index_verify` **185 → 75 ms**。这条判据钉住
+        「切出来的两半合起来仍等于原来的面」。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            for pkg in ("A", "B"):
+                (Path(tmp) / "community" / pkg / "outputs").mkdir(parents=True)
+                mods = Path(tmp) / "community" / pkg / "modules"
+                mods.mkdir(parents=True)
+                (mods / "M01_x.md").write_text("一", encoding="utf-8")
+            (Path(tmp) / "desktop" / "src" / "core").mkdir(parents=True)
+            (Path(tmp) / "desktop" / "src" / "core" / "registry.json").write_text(
+                "{}", encoding="utf-8")
+
+            shared1 = of.shared_face_key(tmp)
+            self.assertEqual(shared1, of.shared_face_key(tmp), "同内容必须同指纹")
+            a1 = of.pack_content_key(tmp, "A", shared1)
+            b1 = of.pack_content_key(tmp, "B", shared1)
+
+            (Path(tmp) / "community" / "A" / "modules" / "M01_x.md").write_text(
+                "二", encoding="utf-8")
+            shared2 = of.shared_face_key(tmp)
+            self.assertNotEqual(shared1, shared2, "跨包模块面一变，共享面指纹必须变")
+            self.assertNotEqual(a1, of.pack_content_key(tmp, "A", shared2), "A 的键必须变")
+            self.assertNotEqual(b1, of.pack_content_key(tmp, "B", shared2),
+                                "共享面一变，**别的包**的键也必须变（覆盖面不许缩小）")
+            (Path(tmp) / "community" / "A" / "modules" / "M01_x.md").write_text(
+                "一", encoding="utf-8")
+            self.assertEqual(shared1, of.shared_face_key(tmp), "还原后共享面指纹应回到原值")
+            self.assertEqual(a1, of.pack_content_key(tmp, "A", of.shared_face_key(tmp)),
+                             "还原后逐包键也应回到原值")
+
 
 class PackageIndexTest(unittest.TestCase):
     def test_repo_packages_green(self):
