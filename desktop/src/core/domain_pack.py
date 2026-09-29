@@ -25,6 +25,9 @@ from core import conformance_scan as csc
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 SPEC_DIR = ".rivet/private_archive/ai_packs/specs"
 MANIFEST_REL = "protocol/domain_packs.json"
 DOMAIN_LIST_ANCHOR = "DOMAIN = ["

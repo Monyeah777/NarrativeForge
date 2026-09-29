@@ -107,3 +107,96 @@ def dc_digest(root: str, name: str, stamp) -> str:
     blob = "%s|%s|%s|%s|%s" % (os.path.normcase(os.path.abspath(str(root))), name,
                                stamp[0], stamp[1], _VERSION)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+_IMPORT_MEMO: Dict[Any, Optional[Tuple[str, frozenset, bool]]] = {}
+
+def _module_info(root: str, name: str, listing: Optional[dict] = None):
+    """解析 `desktop/src/core/<name>.py` → (相对路径或 None, 静态依赖, 是否含动态导入构造)。
+
+    - 文件不存在 ⇒ `(None, {}, False)`：这不是模块文件（`from core import <名字>` 里的名字可能来自
+      `core/__init__.py`），调用方据此把它折算成对 `__init__.py` 的依赖，而不是判「说不清」。
+    - 文件在但解析不出 ⇒ `None`：真的说不清，调用方**退回整块代码面**。
+    - 记忆键含 `(mtime_ns, size)`：进程活着的时候代码被改了，图必须跟着变（本轮判据当场抓过：
+      只按 (根, 模块) 记忆会让合成树里的第二版内容读成第一版）。解析本体见 `core.import_graph`
+      （**落盘**：一次冷跑 16 个站点各解析一遍同一批源码 ≈ 100 ms，键含 mtime+size 故不陈旧）。
+    """
+    path = Path(root).joinpath(*_CORE_DIR, str(name) + ".py")
+    stamp = (listing or {}).get(str(name) + ".py")
+    if stamp is None:                    # 列表里没有（或没给列表）⇒ 逐件 stat 兜底（fail-closed）
+        try:
+            st = path.stat()
+            stamp = (st.st_mtime_ns, st.st_size)
+        except OSError:
+            return (None, frozenset(), False)
+    rkey = (os.path.normcase(os.path.abspath(str(root))), str(name), stamp)
+    if rkey in _IMPORT_MEMO:
+        return _IMPORT_MEMO[rkey]
+    info = load_or_parse(root, name, stamp)
+    _IMPORT_MEMO[rkey] = info
+    return info
+
+
+
+
+def code_scope_files(root: str, modules) -> Optional[Tuple[str, ...]]:
+    """`modules` 的**静态导入闭包**（仓库内文件，posix 相对路径）；任何不确定 → `None`。
+
+    fail-closed 三条：① 闭包里任一模块解析不出（缺件/语法错）→ None；② 闭包里出现**动态导入构造**
+    （`__import__` / `importlib`）→ None（静态闭包不再可信，退回整块代码面）；③ 闭包为空 → None。
+    """
+    seen: set = set()
+    stack = [str(m).split(".")[-1] for m in modules]
+    files: set = set()
+    stamps = listing(root)                 # 一次目录读，闭包里每个模块的 (mtime, size) 都从它取
+    while stack:
+        name = stack.pop()
+        if name in seen:
+            continue
+        info = _module_info(root, name, stamps)
+        if info is None or info[2]:
+            return None
+        seen.add(name)
+        if info[0] is None:                        # 不是模块文件 → 折算成 core/__init__.py 的依赖
+            files.add("/".join(_CORE_DIR + ("__init__.py",)))
+            continue
+        files.add(info[0])
+        stack.extend(info[1])
+    return tuple(sorted(files)) if files else None
+
+
+
+
+_SCOPE_FP: Dict[Any, Optional[str]] = {}
+
+def code_scope_fingerprint(root: str, modules) -> Optional[str]:
+    """闭包的**内容指纹**（按 (根, 模块元组) 记忆）；闭包算不出 → None。
+
+    逐件直取摘要（2026-09-29 实测）：闭包是**已知的相对路径表**，而 `face_fingerprint(root, files)`
+    会把每个路径**当成一个模式**去走目录——本仓 4 件的闭包实测要 **42.5 ms**（每个模式一次目录枚举），
+    16 个站点合计 ~90 ms。这里按与面指纹**同一帧**（`rel \\x00 digest \\x01`，顺序＝已排序）直接算，
+    实测 0.1–2 ms/站点，**值逐位不变**（判据：`test_disk_cache.CodeScopeFrameTest`）。
+    """
+    rkey = (os.path.normcase(os.path.abspath(str(root))), tuple(sorted(map(str, modules))))
+    if rkey in _SCOPE_FP:
+        return _SCOPE_FP[rkey]
+    files = code_scope_files(root, modules)
+    out = None
+    if files is not None:
+        from core import content_face as _cf      # 同帧同口径（叶子件），缺件不计入
+        have = _cf.list_core_files(str(root))
+        digests = {rel: _cf.payload_digest(str(root), rel) for rel in files
+                   if rel.rsplit("/", 1)[-1] in have}
+        out = _cf.hash_face(sorted(digests), digests)
+    _SCOPE_FP[rkey] = out
+    return out
+
+
+
+
+def reset_code_scope(root: Optional[str] = None) -> None:
+    """清掉导入图与闭包指纹的记忆（守护判定代码已换版后调用）。"""
+    rkey = None if root is None else os.path.normcase(os.path.abspath(str(root)))
+    for memo in (_IMPORT_MEMO, _SCOPE_FP):
+        for k in [k for k in memo if rkey is None or k[0] == rkey]:
+            memo.pop(k, None)

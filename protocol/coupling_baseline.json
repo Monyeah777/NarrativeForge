@@ -1,18 +1,5 @@
 {
-  "cycles": [
-    [
-      "conformance_scan",
-      "disk_cache"
-    ],
-    [
-      "disk_cache",
-      "import_graph"
-    ],
-    [
-      "library",
-      "receipts"
-    ]
-  ],
+  "cycles": [],
   "metrics": {
     "agent_rules_adapter": {
       "ca": 1,
@@ -36,8 +23,8 @@
     },
     "asset_density": {
       "ca": 2,
-      "ce": 2,
-      "i": 0.5
+      "ce": 3,
+      "i": 0.6
     },
     "asset_ledger": {
       "ca": 0,
@@ -46,8 +33,8 @@
     },
     "asset_ledger_projection": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ce": 2,
+      "i": 0.6667
     },
     "asset_line_baseline": {
       "ca": 0,
@@ -106,8 +93,8 @@
     },
     "concept_graph": {
       "ca": 2,
-      "ce": 1,
-      "i": 0.3333
+      "ce": 2,
+      "i": 0.5
     },
     "conformance_decl": {
       "ca": 1,
@@ -120,9 +107,14 @@
       "i": 1.0
     },
     "conformance_scan": {
-      "ca": 35,
-      "ce": 2,
-      "i": 0.0541
+      "ca": 34,
+      "ce": 4,
+      "i": 0.1053
+    },
+    "content_face": {
+      "ca": 3,
+      "ce": 0,
+      "i": 0.0
     },
     "coupling_metrics": {
       "ca": 0,
@@ -131,8 +123,8 @@
     },
     "daemon": {
       "ca": 1,
-      "ce": 7,
-      "i": 0.875
+      "ce": 8,
+      "i": 0.8889
     },
     "decision_layer": {
       "ca": 2,
@@ -146,8 +138,8 @@
     },
     "disk_cache": {
       "ca": 7,
-      "ce": 4,
-      "i": 0.3636
+      "ce": 3,
+      "i": 0.3
     },
     "doc_hygiene": {
       "ca": 3,
@@ -161,8 +153,8 @@
     },
     "domain_pack": {
       "ca": 2,
-      "ce": 4,
-      "i": 0.6667
+      "ce": 5,
+      "i": 0.7143
     },
     "drill_fidelity": {
       "ca": 0,
@@ -225,9 +217,9 @@
       "i": 0.5
     },
     "import_graph": {
-      "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ca": 12,
+      "ce": 2,
+      "i": 0.1429
     },
     "instruction_evidence": {
       "ca": 0,
@@ -286,8 +278,8 @@
     },
     "layer_model": {
       "ca": 1,
-      "ce": 2,
-      "i": 0.6667
+      "ce": 3,
+      "i": 0.75
     },
     "lazy_yaml": {
       "ca": 2,
@@ -295,9 +287,14 @@
       "i": 0.0
     },
     "library": {
-      "ca": 10,
-      "ce": 3,
-      "i": 0.2308
+      "ca": 9,
+      "ce": 4,
+      "i": 0.3077
+    },
+    "library_entries": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
     },
     "license_gate": {
       "ca": 1,
@@ -361,13 +358,13 @@
     },
     "output_forms": {
       "ca": 1,
-      "ce": 7,
-      "i": 0.875
+      "ce": 8,
+      "i": 0.8889
     },
     "pack_combo": {
       "ca": 3,
-      "ce": 4,
-      "i": 0.5714
+      "ce": 5,
+      "i": 0.625
     },
     "parser": {
       "ca": 2,
@@ -476,8 +473,8 @@
     },
     "purity_scan": {
       "ca": 2,
-      "ce": 3,
-      "i": 0.6
+      "ce": 4,
+      "i": 0.6667
     },
     "quality_baseline": {
       "ca": 4,
@@ -486,7 +483,7 @@
     },
     "quality_depth_scan": {
       "ca": 0,
-      "ce": 13,
+      "ce": 14,
       "i": 1.0
     },
     "quality_gate": {
@@ -566,8 +563,8 @@
     },
     "schema_lint": {
       "ca": 3,
-      "ce": 1,
-      "i": 0.25
+      "ce": 2,
+      "i": 0.4
     },
     "semantic_conflict": {
       "ca": 0,
@@ -693,12 +690,12 @@
       "disk_cache"
     ],
     [
-      "disk_cache",
+      "conformance_scan",
       "import_graph"
     ],
     [
-      "library",
-      "receipts"
+      "import_graph",
+      "disk_cache"
     ],
     [
       "pack_combo",

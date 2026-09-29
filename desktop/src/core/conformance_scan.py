@@ -24,6 +24,9 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from core import lazy_yaml as _lyaml          # PyYAML **惰性**入口（`import yaml` ≈ 40 ms，见其 docstring）
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 
 def __getattr__(name):                        # PEP 562：旧名字照旧可用，只是**惰性**（见 core.lazy_yaml）
     if name in ("yaml", "SAFE_LOADER"):
@@ -151,11 +154,9 @@ _FACE_FP_STATS: Dict[str, int] = {"recomputes": 0, "incremental": 0}
 
 
 def _hash_face(rels, digests) -> str:
-    """面指纹 = 逐件「相对路径 + \\x00 + 摘要 + \\x01」流式哈希（与 `content_fingerprint` 同帧）。"""
-    h = hashlib.sha256()
-    for rel in rels:
-        h.update(rel.encode("utf-8") + b"\x00" + digests[rel] + b"\x01")
-    return h.hexdigest()
+    """面指纹 = 逐件「相对路径 + \\x00 + 摘要 + \\x01」流式哈希（委托叶子件 `content_face`，避免两份帧）。"""
+    from core import content_face as _cf
+    return _cf.hash_face(rels, digests)
 
 
 def face_fingerprint(root: str, patterns) -> str:
@@ -869,7 +870,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     if hit is None:
         from core import disk_cache
         dkey = disk_cache.key("scan", fp, root=root,
-                              code_modules=("core.conformance_scan",))
+                              code_scope=_ig.code_scope_fingerprint(root, ("core.conformance_scan",)))
         cached = disk_cache.load("scan", dkey, validate=result_pair_ok)
         if cached is None:
             got = _scan_impl(root)
@@ -919,7 +920,9 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
     hit = mem.get(fp)
     if hit is None:
         from core import disk_cache
-        dkey = disk_cache.key(tag, fp, root=root, code_modules=code_modules)
+        from core import import_graph as _ig
+        _scope = _ig.code_scope_fingerprint(root, code_modules) if code_modules else None
+        dkey = disk_cache.key(tag, fp, root=root, code_scope=_scope)
         packed = disk_cache.load(tag, dkey, validate=result_pair_ok)
         if packed is None:
             got = impl(root)

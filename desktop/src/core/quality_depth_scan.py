@@ -17,6 +17,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Tuple
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 
 #: `scan()` 的输入面：**所有子扫描器的面取并集**（语料 + 协议/文档 + 代码 + 判据脚本）。
 #: 面很宽，所以缓存只在常驻语料层在位时启用（见 `conformance_scan.memo_pair` 的说明）。

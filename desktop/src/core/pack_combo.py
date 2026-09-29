@@ -30,6 +30,9 @@ from typing import Any, Dict, List, Sequence, Set, Tuple
 
 from core import conformance_scan as csc
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 CERT_REL = "protocol/combo_certificates.json"
 CORE13 = ["M00", "通用:M10", "M08", "M23", "M24", "M50", "M80",
           "事件:M22", "M06", "M12", "M13", "M20", "M90"]
@@ -314,7 +317,7 @@ def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
     if hit is None:                        # 进程内没命中 → 再看**持久**层（新进程也免付这笔账）
         from core import disk_cache
         dkey = disk_cache.key("pack-prof", fp, root=root,
-                              code_modules=("core.pack_combo",))
+                              code_scope=_ig.code_scope_fingerprint(root, ("core.pack_combo",)))
         got_disk = disk_cache.load("pack-prof", dkey,
                                    validate=lambda v: isinstance(v, dict) and bool(v))
         if got_disk is not None:
@@ -607,7 +610,7 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
         dkey = disk_cache.key("pack-breadth", str(fp),
                               str(triple_sample), str(quad_sample), str(quint_sample),
                               str(sext_sample), str(seed), root=root,
-                              code_modules=("core.pack_combo",))
+                              code_scope=_ig.code_scope_fingerprint(root, ("core.pack_combo",)))
         hit = disk_cache.load("pack-breadth", dkey,
                              validate=lambda v: isinstance(v, dict) and bool(v))
         if hit is not None:

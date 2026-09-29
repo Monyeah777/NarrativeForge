@@ -38,6 +38,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 from core import conformance_scan as _csc   # 共享语料（读缓存 / 列目录缓存 / 内容指纹）
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 REGISTRY_REL = "protocol/output_forms.json"
 BASELINE_REL = "protocol/output_forms_baseline.json"
 INDEX_REL = "outputs/INDEX.json"
@@ -688,7 +691,7 @@ def _verify_pack_io(root: str, pkg: str, key: str):
         return list(issues), list(rows)
     from core import disk_cache
     dkey = disk_cache.key("pack-verify", key, root=root,
-                          code_modules=("core.output_forms",))
+                          code_scope=_ig.code_scope_fingerprint(root, ("core.output_forms",)))
     packed = disk_cache.load("pack-verify", dkey, validate=_pack_verify_ok)
     if packed is None:
         issues, rows = _verify_pack(root, pkg)
@@ -1170,7 +1173,7 @@ def index_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     if hit is None:
         from core import disk_cache
         dkey = disk_cache.key("index-verify", fp, root=root,
-                              code_modules=("core.output_forms",))
+                              code_scope=_ig.code_scope_fingerprint(root, ("core.output_forms",)))
         cached = disk_cache.load("index-verify", dkey, validate=_csc.result_pair_ok)
         if cached is None:
             with _memo_reads():

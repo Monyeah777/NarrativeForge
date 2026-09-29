@@ -16,6 +16,7 @@ from unittest import mock
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 
+from core import import_graph  # noqa: E402 - 闭包解析已迁到该件（2026-09-29 拆环）
 from core import asset_density as ad  # noqa: E402
 from core import asset_ledger_projection as alp  # noqa: E402
 from core import conformance_scan as cs  # noqa: E402
@@ -901,13 +902,13 @@ class CodeScopeFaceTest(unittest.TestCase):
              ("core.pack_combo", "scan"))
 
     def test_scope_is_precise_and_fails_closed(self):
-        scope = disk_cache.code_scope_files(ROOT, ("core.schema_lint",))
+        scope = import_graph.code_scope_files(ROOT, ("core.schema_lint",))
         self.assertIsNotNone(scope, "schema_lint 的闭包应当算得出")
         self.assertIn("desktop/src/core/schema_lint.py", scope)
         self.assertNotIn("desktop/src/core/terminal.py", scope,
                          "无关模块不得进闭包（否则等于退回整块代码面）")
         self.assertLess(len(scope), 20, "闭包应当远小于整块代码面（119 件）")
-        self.assertIsNone(disk_cache.code_scope_files(ROOT, ("core.regression_score",)),
+        self.assertIsNone(import_graph.code_scope_files(ROOT, ("core.regression_score",)),
                           "含动态导入构造（`__import__`）的模块必须判「说不清」→ 退回整块代码面")
         with tempfile.TemporaryDirectory() as tmp:
             core = pathlib.Path(tmp) / "desktop" / "src" / "core"
@@ -915,18 +916,18 @@ class CodeScopeFaceTest(unittest.TestCase):
             (core / "a.py").write_text("from core import b  # noqa\n", encoding="utf-8")
             (core / "b.py").write_text("x = 1\n", encoding="utf-8")
             self.assertEqual(("desktop/src/core/a.py", "desktop/src/core/b.py"),
-                             disk_cache.code_scope_files(tmp, ("core.a",)),
+                             import_graph.code_scope_files(tmp, ("core.a",)),
                              "合成树：闭包应含 a 与被 a 依赖的 b")
             (core / "b.py").write_text("x = __import__('os')\n", encoding="utf-8")
-            self.assertIsNone(disk_cache.code_scope_files(tmp, ("core.a",)),
+            self.assertIsNone(import_graph.code_scope_files(tmp, ("core.a",)),
                               "合成树：闭包里出现动态导入 ⇒ 判说不清（fail-closed）")
             (core / "a.py").write_text("def (:\n", encoding="utf-8")   # 真·语法错
-            self.assertIsNone(disk_cache.code_scope_files(tmp, ("core.a",)),
+            self.assertIsNone(import_graph.code_scope_files(tmp, ("core.a",)),
                               "合成树：解析不出 ⇒ 判说不清")
 
     def test_every_site_has_a_computable_scope(self):
         for module, _fn in self.SITES:
-            scope = disk_cache.code_scope_files(ROOT, (module,))
+            scope = import_graph.code_scope_files(ROOT, (module,))
             self.assertIsNotNone(scope, "%s 的代码闭包算不出（会退回整块代码面）" % module)
             self.assertIn("desktop/src/core/%s.py" % module.split(".")[-1], scope)
 
@@ -959,7 +960,7 @@ class CodeScopeFaceTest(unittest.TestCase):
             with open(probe, "w", encoding="utf-8", newline="\n") as fh:
                 fh.write(src)
             for module, fn in self.RUNTIME_SITES:
-                scope = disk_cache.code_scope_files(ROOT, (module,))
+                scope = import_graph.code_scope_files(ROOT, (module,))
                 allowed = {os.path.basename(p)[:-3] for p in scope}
                 out = subprocess.run([sys.executable, probe, ROOT, module, fn], cwd=ROOT,
                                      capture_output=True, text=True, encoding="utf-8",

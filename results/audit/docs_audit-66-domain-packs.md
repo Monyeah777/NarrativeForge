@@ -6,10 +6,10 @@ scope: 作者指令「八小时内按 AI 品类清单逐项建域包；参照 AI
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/domain_pack.py:041c7d441207f7222f8b2632d28b7489c67c6bbdeb5774b8f4ae51c6f45dc7f9
+  - desktop/src/core/domain_pack.py:b740817bc2e2dab2566dc5e2cdaa9b0ef864f83d004f07a16e08122af663b5af
   - desktop/src/core/domain_metrics.py:0ad13aa11f650f7f47abcfd4f643f16c760cde0121c194b86d08096f37234fb6
-  - desktop/src/core/output_forms.py:6e3a19d73a13d3b93010573b7fe01f6fa85b4bce764856daf3f18b41c7abebfb
-  - desktop/src/core/quality_depth_scan.py:8fe8402638ea4419c52a28bf5ddf73c138dc3bd98313537db86e92950915df4a
+  - desktop/src/core/output_forms.py:8c7101db859572967d0f77ad00f40236b086837f07da5a07c43e668013c200f1
+  - desktop/src/core/quality_depth_scan.py:75ee6b4fd8a63b03ec4687f37deaa80dd7076d89d76d5911f2333e8c7c1491da
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
   - scripts/nf.py:34f6b5da2fcc0eaa8cb46ef0bd63473eb07d537530aa390e0d17b100e723b580
   - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79

@@ -399,7 +399,8 @@ def _sync_code(root: Path) -> None:
         disk_cache.reset_code_fingerprint(str(root))
         # 导入图/闭包指纹也要跟着清：代码一变，各派生「自己的代码闭包」可能换了成员
         # （新增 import、换依赖），不清就会拿旧闭包当键。
-        disk_cache.reset_code_scope(str(root))
+        from core import import_graph as _igr
+        _igr.reset_code_scope(str(root))
     except Exception:                                    # noqa: BLE001 - 清不掉不影响重载
         pass
     # 常驻语料层跨代码换版**保住**：它装的是仓库事实（正文/目录/逐件摘要），与代码无关；

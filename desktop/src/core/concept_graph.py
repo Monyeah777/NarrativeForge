@@ -31,6 +31,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Sequence, Set, Tuple
 from core import conformance_scan as csc
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 BLOCK_MARKER = "concept_graph"
 LAYERS = ("P00", "P10", "P20", "P30", "P40", "P50", "P60", "P70", "P80")
 #: 默认资产路径（AI 系统域包自带概念图；工具侧缺省值）

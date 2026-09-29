@@ -7,9 +7,9 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
-  - desktop/src/core/layer_model.py:62d8b39209da0518a9130af6eb7023def4b7097adff83a6bf6efa11260010ed3
+  - desktop/src/core/layer_model.py:5a1e0a93c4d09e2e65adcf9c02c234684b2bfb1548605ed6b10d4caa40b2e94e
   - desktop/tests/test_layer_model.py:0bacafa7ec8c92486916b3cc50d3fa7f83e2d3fe74874b108c0437fb93713669
-  - desktop/src/core/purity_scan.py:4be905b65df383be808364e53a5e871e67cd6f73270748c8b3fe452cabc304b0
+  - desktop/src/core/purity_scan.py:30d054c039dedb3d594fd8c7683c5ea9dfd590fce637e99dd076642c9476539e
   - desktop/tests/test_purity_scan.py:5ebdb961f36009f2babfd44d159100ea41110e653c1fb43408a8dda07d664d8e
   - scripts/nf.py:34f6b5da2fcc0eaa8cb46ef0bd63473eb07d537530aa390e0d17b100e723b580
   - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
@@ -19,7 +19,7 @@ subjects:
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - protocol/normative.json:3ea1e37d1879cee532b930e83ba3029fbc171efe99606fd42bc775f0968b84a5
   - protocol/glossary.json:4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60
-  - desktop/src/core/receipts.py:d0149187ad077db555fac3a2877f3ddc846cb5544125cff7fcfc48ae9ce7f9ee
+  - desktop/src/core/receipts.py:7bf7144d595410af35468ddfc1a29a8642bc89f4436982735182ddaad8e03055
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
   - decisions/ADR-0004-抽象阶梯两轴与纵切.md:9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674
 ---

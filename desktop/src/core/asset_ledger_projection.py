@@ -15,6 +15,9 @@ from typing import Any, Dict, List, Tuple
 
 from core import conformance_scan as csc   # 共享语料：一次只读调用内同文只读一遍
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 _ROOT = Path(__file__).resolve().parents[3]
 _LEDGER = "protocol/community_asset_ledger.json"
 

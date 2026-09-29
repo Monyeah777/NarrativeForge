@@ -87,7 +87,7 @@ def fold_proof(leaf_hex: str, proof: List[Dict[str, str]]) -> str:
 
 def build(root: str = ".") -> Dict[str, Any]:
     """从馆藏实时算：{schema, root, count, entries:[{id, path, digest, leaf, proof}]}。"""
-    from core import library as nflib
+    from core import library_entries as nflib    # 叶子件：不再 import library（断 receipts ↔ library）
 
     rows = nflib.entries(root)
     payloads, leaves = [], []

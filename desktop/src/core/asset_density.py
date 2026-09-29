@@ -15,6 +15,9 @@ from typing import Any, Dict, List, Optional, Tuple
 from core import conformance_scan as csc
 from core import disk_cache
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 
 #: 引用度普查的内容键缓存：键 = **语料与键集的 sha256**（见 `usage_scan`）。
 #: 必要性（实测）：一次普查 = 1499 个键 × 3.5 MB 语料的逐键子串计数 ≈ **2.7 s**；而
@@ -284,7 +287,7 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     # 落盘键另叠**代码面 + 运行时**（见 core.disk_cache）：改了普查算法必然换键，
     # 不靠"记得手工 bump 版本标签"。
     dkey = disk_cache.key("census", ckey, root=root,
-                               code_modules=("core.asset_density",))
+                               code_scope=_ig.code_scope_fingerprint(root, ("core.asset_density",)))
     counts = _CENSUS_CACHE.get(ckey)
     if counts is None:
         counts = disk_cache.load("census", dkey,

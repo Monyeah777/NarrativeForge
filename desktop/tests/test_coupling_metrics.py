@@ -114,7 +114,11 @@ class RealRepoTest(unittest.TestCase):
         issues, _w, stats = cm.scan(str(ROOT))
         self.assertEqual([], issues, "真仓不得有未登记的新增环/SDP 违例：%s" % issues[:3])
         self.assertGreater(stats["modules"], 50)
-        self.assertGreaterEqual(stats["registered_cycles"], 1)
+        # 2026-09-29 拆环完成后：真仓**零环**（此前 3 条登记债已全部消除）。
+        self.assertEqual(0, stats["cycles"], "真仓模块级环必须为 0（零环是硬判据）")
+        self.assertEqual(0, stats["registered_cycles"])
+        # 判据自身不许空转：合成一个有环的图，分析器必须抓得到。
+        self.assertTrue(cm.cycles({"a": {"b"}, "b": {"a"}}), "合成环必须被抓（否则本判据空转）")
 
 
 if __name__ == "__main__":

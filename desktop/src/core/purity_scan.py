@@ -45,6 +45,9 @@ import sys
 from core import conformance_scan as csc
 from core import disk_cache
 
+# 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
+from core import import_graph as _ig
+
 #: 协议真相源 + 导航文档（R1/R2/R3 作用域）
 PROTO_DOCS = ("01_核心协议.md", "02_联动注册表.md",
               "06_Agent执行协议.md", "07_官方核心出厂与社区预设导航.md")
@@ -201,7 +204,7 @@ def _facts_for(text: str):
     if text in _FACTS_CACHE:
         return _FACTS_CACHE[text]
     dkey = disk_cache.key("ast-facts", hashlib.sha256(text.encode("utf-8")).hexdigest(),
-                              code_modules=("core.purity_scan",))
+                              code_scope=_ig.code_scope_fingerprint(".", ("core.purity_scan",)))
     packed = disk_cache.load("ast-facts", dkey, validate=_packed_ok)
     got = _unpack_facts(packed) if packed is not None else _FACTS_READ_MISS
     if got is _FACTS_READ_MISS:
