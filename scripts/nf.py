@@ -21,6 +21,13 @@ import argparse
 import os
 import sys
 
+# argparse 的每个**内建** help 串都要过一次 `gettext.translation`（本机实测：建一次命令面 **432 次
+# → 0.11 s**，每次都去 stat locale 目录），而本 CLI 不做本地化（help 全是中文字面量）。把翻译钩子
+# 短路成恒等函数：实测 `_build_parser()` **102.8 → 8.4 ms**，~1900 次 stat 降到近乎零。必须在建面
+# 之前打这个补丁（argparse 在 import 期就把 `gettext.gettext` 绑成了模块级 `_`）。
+argparse._ = lambda message: message                                     # type: ignore[assignment]
+argparse.ngettext = lambda singular, plural, n: singular if n == 1 else plural
+
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 # stderr 同样钉 UTF-8：argparse 的用法错误与中文错误信息走 stderr，若随 locale（Windows 上

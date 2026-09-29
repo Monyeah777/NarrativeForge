@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/terminal.py:c0946df686ffb46821f750bdeeef5d11bd8f7fc4adc3e8c97aa97fac5f6c119b
-  - scripts/nf.py:8c197dbbfdc4ef2fdd97454909cb9cb18de92881eb44ed73735616bf5fb1ff2a
+  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
   - desktop/tests/test_terminal.py:7ce3581ac5469acebfbd5c46108a0b104cf35bab3943f023d958fceca9bc722f
   - scripts/nf:8d6c92cf2fa479e300179a4a8b3f960ad0c7877825f187a526b7f8172cce75b4
   - scripts/nf.cmd:a971167b0b74c79dff3e3ac0bba0e6156340029fa9673f570c995680797ea4de

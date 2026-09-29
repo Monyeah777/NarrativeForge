@@ -508,6 +508,31 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn("nf 1.0.0", proc.stdout)
 
 
+class ParserBuildBudgetTest(unittest.TestCase):
+    """建命令面的**固定成本**：不许走 gettext 探测（argparse 的内建 help 串会逐个翻译）。
+
+    依据（2026-09-29 实测）：`argparse._` 是 `gettext.gettext`，每个内建 help 串（`-h` 的
+    「show this help message and exit」之类）都要 `translation()` 一次、每次都去 stat locale
+    目录——建一次 65 命令的面要 **432 次 → 0.11 s**，而本 CLI 不做本地化（help 全是中文字面量）。
+    判据是**次数**（与机器快慢无关）：建面期间 `gettext.translation` 必须 0 次。
+    """
+
+    def test_parser_build_does_not_probe_gettext(self):
+        import gettext
+        seen = []
+        real = gettext.translation
+        gettext.translation = lambda *a, **k: (seen.append(a), gettext.NullTranslations())[1]
+        saved = nf._PARSER_CACHE
+        try:
+            nf._PARSER_CACHE = None
+            nf._build_parser()                 # 建面：翻译钩子必须已是恒等函数
+        finally:
+            gettext.translation = real
+            nf._PARSER_CACHE = saved
+        self.assertEqual([], seen,
+                         "建命令面时仍在探测 gettext（每次 translation 都要 stat locale 目录）")
+
+
 class VersionShortCircuitTest(unittest.TestCase):
     """`nf --version` 必须走**短路**：不许为打印一行版本号建整个 argparse 命令面。
 

@@ -756,7 +756,7 @@
       "max_fn_lines": 44
     },
     "scripts/nf.py": {
-      "lines": 5423,
+      "lines": 5430,
       "max_fn_cc": 98,
       "max_fn_lines": 951
     },

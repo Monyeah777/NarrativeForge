@@ -11,7 +11,7 @@ subjects:
   - desktop/src/core/output_forms.py:8c7101db859572967d0f77ad00f40236b086837f07da5a07c43e668013c200f1
   - desktop/src/core/quality_depth_scan.py:75ee6b4fd8a63b03ec4687f37deaa80dd7076d89d76d5911f2333e8c7c1491da
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
-  - scripts/nf.py:8c197dbbfdc4ef2fdd97454909cb9cb18de92881eb44ed73735616bf5fb1ff2a
+  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
   - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
