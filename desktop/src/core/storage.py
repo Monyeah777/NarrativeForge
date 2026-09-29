@@ -1,6 +1,5 @@
-"""存储层：~/.NarrativeForge 目录管理（config/modules/assets/presets/cache）。
+"""存储层：~/.NarrativeForge 目录管理（config/modules/assets/presets/cache）。目录结构（指令集 3.2）：
 
-目录结构（指令集 3.2）：
 ~/.NarrativeForge/
 ├── config.json          # 工具配置（管线选择、激活资产包）
 ├── modules/<分类>/<id_名称>/module.json + source.md
@@ -15,7 +14,6 @@ from __future__ import annotations
 import json
 import os
 import re
-import shutil
 from pathlib import Path
 from typing import List, Optional
 
@@ -36,10 +34,9 @@ class Store:
     """对 NF_HOME 下所有本地数据的管理器。"""
 
     def __init__(self, home: Optional[Path | str] = None):
-        # 落点闸门（渗透 F-11）：NF_HOME 既可由 `--store` 传，也可由环境变量
-        # NARRATIVE_FORGE_HOME 覆盖，而本类会在其下建目录、并在 remove_module 里做
-        # 递归删除——故指向盘根 / 主目录 / 仓库根 / 临时目录本体时一律拒绝：
-        # 那几种落点不会有人真想要，却会把 `~/modules`、`<repo>/assets` 之类建到不该在的地方。
+        # 落点闸门（渗透 F-11）：NF_HOME 可由 `--store` 或 `NARRATIVE_FORGE_HOME` 指到任何地方，
+        # 而本类会在其下建目录、还会在 remove_module 里递归删除 ⇒ 盘根/主目录/仓库根/临时目录本体
+        # 一律拒绝（那几种落点不会有人真想要，却会把 `~/modules` 之类建到不该在的地方）。
         repo_root = str(Path(__file__).resolve().parents[3])
         self.home = Path(nf_paths.guard_recursive_delete_target(
             str(home) if home else str(default_home()),
@@ -142,6 +139,7 @@ class Store:
             except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                 continue
             if fid_key(om.full_id) == key:
+                import shutil          # 惰性：`import shutil` 子树 ~9 ms，而写/删路径很少走（实测）
                 shutil.rmtree(old, ignore_errors=True)
         d.mkdir(parents=True, exist_ok=True)
         (d / "module.json").write_text(
@@ -161,6 +159,7 @@ class Store:
             except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B112 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
                 continue
             if fid_key(mm.full_id) == key:
+                import shutil
                 shutil.rmtree(d, ignore_errors=True)
                 removed = True
         return removed
@@ -209,6 +208,7 @@ class Store:
         if not a:
             return False
         d = self.assets_root / self._safe_name(a.name)
+        import shutil
         shutil.rmtree(d, ignore_errors=True)
         return True
 
