@@ -104,6 +104,109 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
                                 "输入一变指纹必须变（否则会读到陈旧派生结果）")
 
 
+class ContractCacheTest(unittest.TestCase):
+    """契约解析的内容键缓存：**面内改动必重算、面外改动必命中**（键即内容，无陈旧面）。
+
+    依据（实测 2026-09-29）：守护逐请求清空按根缓存，`_module_contracts` 此前每次新状态都要重解析
+    235 份社区模块的 `machine_contract` 围栏（~34 ms）；而它只是**那几份正文**的纯函数。
+    """
+
+    def _tree(self, tmp):
+        _write_pack(tmp, "包甲", "包甲:M01", publish=["ev_a"])
+        core = Path(tmp, "04_模块库", "通用类")
+        core.mkdir(parents=True, exist_ok=True)
+        (core / "M00_x.md").write_text(
+            "```yaml\nmachine_contract:\n  id: M00\n  layer: P00\n"
+            "  events:\n    publish: [ev_core]\n```\n", encoding="utf-8")
+        return core
+
+    def test_community_contracts_cache_is_content_keyed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            core = self._tree(tmp)
+            pc.cache_clear()
+            pc._CONTRACTS_CACHE.clear()
+            first = pc._module_contracts(tmp)
+            self.assertIn("包甲:M01", first)
+            pc.cache_clear()                       # 模拟守护逐请求清空按根缓存
+            self.assertIs(first, pc._module_contracts(tmp),
+                          "面没变时必须命中内容键缓存（这正是省掉 34 ms 的那一下）")
+            mod = Path(tmp, "community", "包甲", "modules", "M01_x.md")
+            mod.write_text(mod.read_text(encoding="utf-8") + "\n# 变更\n", encoding="utf-8")
+            pc.cache_clear()
+            self.assertIsNot(first, pc._module_contracts(tmp),
+                             "面内改动必须重算（否则会读到陈旧契约）")
+
+    def test_core_contracts_cache_is_content_keyed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            core = self._tree(tmp)
+            pc.cache_clear()
+            pc._CONTRACTS_CACHE.clear()
+            first = pc._core_contracts(tmp)
+            self.assertIn("M00", first)
+            (Path(tmp, "community", "包甲", "modules", "M02_z.md")).write_text(
+                "```yaml\nmachine_contract:\n  id: 包甲:M02\n  layer: P40\n```\n",
+                encoding="utf-8")
+            pc.cache_clear()
+            self.assertIs(first, pc._core_contracts(tmp), "社区模块改了不该换核心契约的键")
+            (core / "M00_x.md").write_text("```yaml\nmachine_contract:\n  id: M00\n"
+                                           "  layer: P00\n  events:\n    publish: [ev_new]\n```\n",
+                                           encoding="utf-8")
+            pc.cache_clear()
+            self.assertIsNot(first, pc._core_contracts(tmp), "核心模块改了必须重算")
+
+
+class ProfileInputFaceTest(unittest.TestCase):
+    """`profiles()` 的内容键面**必须等于它真读的件**——收窄输入面是可判的，不是口头承诺。
+
+    依据（实测 2026-09-29）：`profiles()` 不读 `04_模块库`，而旧的共用面把它算进来 ⇒ 改一页 04
+    模块库正文会白白重算 111 个包画像（守护逐请求清空按根缓存，这一笔 ~50 ms）。
+    """
+
+    def test_reads_stay_inside_declared_face(self):
+        import fnmatch
+        import os
+        from core import conformance_scan as csc
+        seen = set()
+        orig = csc.read_text_cached
+
+        def traced(path, *a, **k):
+            try:
+                rel = os.path.relpath(str(path), ROOT).replace(os.sep, "/")
+                seen.add(rel)
+            except ValueError:                       # 别的盘符 → 记原样，判据照样会抓
+                seen.add(str(path))
+            return orig(path, *a, **k)
+
+        pc._CACHE.clear()
+        pc._CONTENT_CACHE.clear()
+        csc.read_text_cached = traced             # type: ignore[assignment]
+        try:
+            prof = pc.profiles(ROOT)
+        finally:
+            csc.read_text_cached = orig           # type: ignore[assignment]
+        self.assertGreater(len(prof), 100, "画像太少，判据没测到东西")
+        bad = sorted(r for r in seen
+                     if not any(fnmatch.fnmatch(r, pat) for pat in pc.PROFILE_PATTERNS))
+        self.assertEqual([], bad, "画像读到了申报面之外的件（面会漏，缓存会陈旧）：%s" % bad[:5])
+
+    def test_outside_face_change_does_not_rekey_and_inside_does(self):
+        """合成树：改 `04_模块库` 不换键；改社区模块契约必换键。"""
+        from core import conformance_scan as csc
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_pack(tmp, "包甲", "包甲:M01")
+            core = Path(tmp, "04_模块库", "通用类")
+            core.mkdir(parents=True, exist_ok=True)
+            (core / "M00_x.md").write_text("一\n", encoding="utf-8")
+            fp0 = csc.content_fingerprint(tmp, pc.PROFILE_PATTERNS)
+            (core / "M00_x.md").write_text("二\n", encoding="utf-8")
+            self.assertEqual(fp0, csc.content_fingerprint(tmp, pc.PROFILE_PATTERNS),
+                             "面外的件改了不该换键（否则又白算一遍画像）")
+            mod = Path(tmp, "community", "包甲", "modules", "M01_x.md")
+            mod.write_text(mod.read_text(encoding="utf-8") + "\n# 变更\n", encoding="utf-8")
+            self.assertNotEqual(fp0, csc.content_fingerprint(tmp, pc.PROFILE_PATTERNS),
+                                "面内的件改了必须换键（否则会读到陈旧画像）")
+
+
 class ContractEnumerationTest(unittest.TestCase):
     """模块契约面换共享枚举器（`Path.glob` → `csc.iter_files`）后**面必须逐件一致**。
 

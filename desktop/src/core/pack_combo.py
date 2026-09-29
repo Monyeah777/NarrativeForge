@@ -67,6 +67,24 @@ _CONTENT_CACHE: Dict[Any, Any] = {}
 INPUT_PATTERNS = ("community/*/protocol.yaml", "community/*/modules/*.md",
                   "04_模块库/*/*.md", "community/*/assets/provenance.json",
                   "desktop/src/core/registry.json")
+#: **包画像单独的输入面**：只含 `profiles()` 真正读的那些件（包声明 + 社区模块契约 + 资产台账）。
+#: 为什么要与 `INPUT_PATTERNS` 分开（2026-09-29 仪器化实测）：`profiles()` **不读** `04_模块库`
+#: ——那是 `_core_contracts` 的面，只有广度证明的闭包需要它——而 `INPUT_PATTERNS` 把它一并算了进来，
+#: 于是「改一页 04 模块库正文」会白白重算 **111 个包画像**（守护**逐请求清空按根缓存**，这一笔
+#: 让新状态多付 ~50 ms）。收窄是**可判的**：`test_pack_combo.ProfileInputFaceTest` 用读追踪在真
+#: 仓库上断言「读到的件 ⊆ 本面」，并在合成树上断言「面外改动不换键、面内改动必换键」。
+PROFILE_PATTERNS = ("community/*/protocol.yaml", "community/*/modules/*.md",
+                    "community/*/assets/provenance.json")
+#: 模块契约面 / 核心契约面各自的输入面（`_module_contracts` / `_core_contracts` 的内容键）。
+MODULE_CONTRACT_PATTERNS = ("community/*/modules/*.md",)
+CORE_CONTRACT_PATTERNS = ("04_模块库/*/*.md",)
+#: 契约解析结果的**内容键缓存**（进程内）。
+#: 依据（2026-09-29 实测）：守护**逐请求清空按根缓存**，而这两个函数此前只有按根缓存 ⇒ 每次新内容
+#: 状态都要把 235 份社区模块 + 13 份核心模块的 `machine_contract` 围栏重新解析一遍（`_module_contracts`
+#: 实测 ~34 ms）。「解析结果只是**这几份正文**的纯函数」——改 `04_模块库` 之外的件时社区契约必然不变，
+#: 反之亦然；键即内容 ⇒ 无陈旧面。判据：`test_pack_combo.ContractCacheTest`。
+_CONTRACTS_CACHE: Dict[str, Any] = {}
+_CONTRACTS_CACHE_MAX = 64
 
 
 def _inputs_fingerprint(root: str = ".") -> str:
@@ -160,6 +178,12 @@ def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     cached = _CACHE.get(key) or {}
     if cached.get("contracts"):
         return cached["contracts"]
+    fp = csc.content_fingerprint(root, MODULE_CONTRACT_PATTERNS)
+    hit = _CONTRACTS_CACHE.get("mod:" + fp)
+    if hit is not None:
+        cached.update({"contracts": hit})
+        _CACHE[key] = cached
+        return hit
     out: Dict[str, Dict[str, Any]] = {}
     for p in _face_paths(root, "community/*/modules/*.md"):
         try:
@@ -184,6 +208,9 @@ def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
         out[rec["id"]] = rec
         out.setdefault(rec["stem"], rec)
         out.setdefault(rec["id"].split(":")[-1], rec)
+    if len(_CONTRACTS_CACHE) >= _CONTRACTS_CACHE_MAX:
+        _CONTRACTS_CACHE.clear()
+    _CONTRACTS_CACHE["mod:" + fp] = out
     cached.update({"contracts": out})
     _CACHE[key] = cached
     return out
@@ -196,6 +223,10 @@ def _core_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     故事件闭包必须把核心的 publish 计入；否则 chaos_event / minute_tick 这类核心事件
     会被误报为「未桥」。
     """
+    fp = csc.content_fingerprint(root, CORE_CONTRACT_PATTERNS)
+    hit = _CONTRACTS_CACHE.get("core:" + fp)
+    if hit is not None:
+        return hit
     out: Dict[str, Dict[str, Any]] = {}
     for p in _face_paths(root, "04_模块库/*/*.md"):
         try:
@@ -212,6 +243,9 @@ def _core_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
                "path": p.as_posix()}
         out[rec["id"]] = rec
         out.setdefault(rec["stem"], rec)
+    if len(_CONTRACTS_CACHE) >= _CONTRACTS_CACHE_MAX:
+        _CONTRACTS_CACHE.clear()
+    _CONTRACTS_CACHE["core:" + fp] = out
     return out
 
 
@@ -274,7 +308,7 @@ def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
     cached = _CACHE.get(key) or {}
     if cached.get("prof"):
         return cached["prof"]
-    fp = _inputs_fingerprint(root)
+    fp = csc.content_fingerprint(root, PROFILE_PATTERNS)      # 只按**真读面**取键（见其常量说明）
     hit = _CONTENT_CACHE.get(("prof", fp))
     dkey = None
     if hit is None:                        # 进程内没命中 → 再看**持久**层（新进程也免付这笔账）

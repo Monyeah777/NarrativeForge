@@ -6,13 +6,13 @@ scope: 作者目标「将所有域包达到任意几个域包可自由任意组�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/pack_combo.py:f435ec3a880f2f4427ca21955efee2568ddf3e309b19985954f0e4785b414577
+  - desktop/src/core/pack_combo.py:92f14f1aa3aa598fe3163d22b8b36ad8b5df56e6e13e28fe27299ce325d5d1b8
   - desktop/src/core/quality_depth_scan.py:6d3309e196276027f68c4e8dc2a997f1b95beeb7d62d42c47356d079985f6258
   - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
   - scripts/nf.py:691f6bf6a90782f890cb732725a259e8554949de5bdb902cc626479f12959afb
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - docs/combos.md:4d25fe6d366687213df7090badd52b815bdf07f774df856e598d7cf8a1d130de
-  - desktop/tests/test_pack_combo.py:d2e82f7342dd72f783d2f572d012f5e52237fe40a2c557be4554d1939eb97d5b
+  - desktop/tests/test_pack_combo.py:09d788b8a8372ed7cb4ffcade2e703ba3b1e40b1ff3b744bd466342eb405e399
   - community/校园西幻轻混组合包/protocol.yaml:093cc817ae089981b7cfe4aaf57ec7f5d2374455bb63fc8b7af06dc2d29a02a3
 ---
 

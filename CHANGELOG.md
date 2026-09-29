@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：契约解析与包画像改「内容键」——守护口径下每次重命令省 ~42 ms（隔离 A/B）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
+  ① **量到的东西（隔离 A/B，守护口径＝逐请求清空按根缓存）**：`_module_contracts` 冷算 **34.2 ms** → 内容键命中 **1.1 ms**；`_core_contracts` **2.9 → 0.1 ms**；`profiles` **11.2 → 5.3 ms**（其中 5.3 ms 主要是它自己的面指纹 + 命中后的深拷贝）。三处合计 **~42 ms/次请求**。
+  ② **为什么以前每次都要重算**：守护**逐请求**清空**按根键**的进程缓存（`pack_combo.cache_clear()`），而这两个契约函数与 `profiles()` 此前**只有按根缓存** ⇒ 每个新内容状态都要把 235 份社区模块 + 13 份核心模块的 `machine_contract` 围栏重新解析、把 111 个包画像重新装配一遍。
+  ③ **改法（两处，都是「键即内容」）**：`_module_contracts` / `_core_contracts` 各按**自己的真读面**取内容指纹当键（`community/*/modules/*.md` / `04_模块库/*/*.md`）并进 `_CONTRACTS_CACHE`；`profiles()` 的键从共用宽面 `INPUT_PATTERNS` 收窄为**它真读的** `PROFILE_PATTERNS`（它不读 `04_模块库`——那是核心契约的面）。
+  ④ **判据**：`test_pack_combo.ContractCacheTest`（面内改动必重算、面外改动必命中，两个契约各一条）；`test_pack_combo.ProfileInputFaceTest`（**读追踪**：真跑一遍 `profiles()`，断言读到的件**全部落在** `PROFILE_PATTERNS` 内——收窄输入面是可判的，不是口头承诺；合成树上再断言面外改动不换键、面内改动必换键）。
+  ⑤ **实测（如实两分）**：**隔离 A/B ~42 ms/请求**（上表）；**端到端（4 样本中位）0.385 → 0.374 s**——这个差**落在 ±40 ms 机内抖动带里，不作为端到端收益宣称**。同状态重放 **~52 ms**、树没变 **48–50 ms**、冷进程 **~1.68 s**。
+
 - **执行层：模块文档清单换共享枚举器（`conformance_scan.scan` 33 → 13 ms；端到端 0.427 → 0.385 s）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
   ① **扫法（第二类钱）**：把 `os.stat` / `os.scandir` / `os.listdir` / `os.walk` / `json.loads` / `open` / `Path.read_text` / `Path.read_bytes` 的调用点按「函数 @ 调用点 file:line」整体记账（真墙钟 + 次数），在守护口径下跑唯一新状态。
   ② **抓到的**：`conformance_scan._module_docs`（模块文档清单）用的是 `os.walk("04_模块库")` + 逐包 `os.listdir` + `os.path.isdir`——**107 次 `listdir` + 113 次 `isdir` ≈ 21 ms**，占该状态 os/stat 面的四分之一。**同一张面**在 `pack_combo`（上一波已修）与 `schema_lint`（两波前已修）早就走共享枚举器，只剩这一处还是老写法。
