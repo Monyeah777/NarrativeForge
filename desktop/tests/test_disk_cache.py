@@ -54,10 +54,28 @@ class DiskCacheTest(unittest.TestCase):
             os.environ.pop(dc.ENV_OFF, None)
 
     def test_prune_keeps_only_recent(self):
-        for i in range(dc.KEEP + 4):
+        """有界：裁剪按批 ⇒ 上限 = `KEEP + PRUNE_EVERY_SMALL`（多留一批，换 8× 少的 prune）。"""
+        for i in range(dc.KEEP * 3):
             dc.store("t", dc.key("t", "p%d" % i), {"X": i})
         left = list(dc.dir_for("t").glob("*.json"))
-        self.assertLessEqual(len(left), dc.KEEP, "缓存不得无界增长")
+        self.assertLessEqual(len(left), dc.KEEP + dc.PRUNE_EVERY_SMALL, "缓存不得无界增长")
+
+    def test_small_tag_prune_is_batched(self):
+        """判据：**小集合标签也按批裁**——`prune` 次数必须远少于写次数。
+
+        依据（实测 2026-09-29）：一次新内容状态里 11 次 `store` 花 33–42 ms，其中 20–23 ms 是
+        11 次 `prune`（每次 `glob("*.json")` + 逐件 `stat`）——「小目录裁起来可忽略」的假设不成立。
+        """
+        calls = []
+        orig = dc.prune
+        dc.prune = lambda tag, keep=dc.KEEP: calls.append(tag)   # type: ignore[assignment]
+        try:
+            for i in range(dc.PRUNE_EVERY_SMALL * 3):
+                dc.store("t_batch", dc.key("t_batch", "q%d" % i), {"X": i})
+        finally:
+            dc.prune = orig                                      # type: ignore[assignment]
+        self.assertEqual(3, len(calls), "每 %d 次写才裁一次" % dc.PRUNE_EVERY_SMALL)
+        self.assertEqual(0, dc._PRUNE_COUNT.get("t_batch", 0), "裁完计数应归零")
 
     def test_key_covers_tag_parts_code_and_runtime(self):
         base = dc.key("t", "a")

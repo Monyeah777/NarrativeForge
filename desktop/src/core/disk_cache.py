@@ -34,6 +34,12 @@ KEEP = 16
 #: 为什么不一写一裁：一写一裁＝每次都要把目录整个 scandir+stat 一遍，**每份文件一条**的标签
 #: 会变成 O(n²)（250 条 × 250 次 = 6 万次 stat，实测吃掉几百毫秒，把收益全抵消）。
 PRUNE_EVERY_BIG = 128
+#: **小集合标签**同样按批裁（2026-09-29 实测更正）：过去「小集合每次写都裁」的假设是
+#: 「目录本身就小，成本可忽略」——**实测不成立**：一次新内容状态里 11 次 `store` 花 **33–42 ms**，
+#: 其中 **20–23 ms 是 11 次 `prune`**（每次 `glob("*.json")` + 逐件 `stat`）。按批后 `prune`
+#: 调用降到 **1/8**；代价是每个标签最多多留 `PRUNE_EVERY_SMALL` 份（上限从 `keep` 变成
+#: `keep + PRUNE_EVERY_SMALL`，磁盘占用仍是有界的，判据见 `test_disk_cache`）。
+PRUNE_EVERY_SMALL = 8
 #: 参与「代码面」的路径（改了算法即换键；不含 tests——测试不影响结果）。
 CODE_FACE = ("desktop/src/**/*.py", "scripts/**/*")
 
@@ -249,7 +255,8 @@ def store(tag: str, ckey: str, value: Any, keep: Optional[int] = None) -> None:
     """写盘（尽力而为）：原子替换 + 有界裁剪；失败静默。
 
     `keep` 给「每份文件一条」的大集合标签用（如 AST 事实 250 条）；小集合标签沿用 `KEEP`。
-    小集合（≤64）每次写都裁（目录本身就小，成本可忽略）；大集合每 `PRUNE_EVERY_BIG` 次裁一次。
+    裁剪一律**按批**：大集合每 `PRUNE_EVERY_BIG` 次、小集合每 `PRUNE_EVERY_SMALL` 次写入裁一次
+    （每次都裁的代价实测占 `store` 的一半，见 `PRUNE_EVERY_SMALL` 的说明）。
     """
     if not enabled():
         return
@@ -263,7 +270,8 @@ def store(tag: str, ckey: str, value: Any, keep: Optional[int] = None) -> None:
         os.replace(tmp, p)                             # 原子替换：读者看不到半截 JSON
         limit = int(keep if keep is not None else _KEEP.get(tag, KEEP))
         n = _PRUNE_COUNT.get(tag, 0) + 1
-        if limit <= 64 or n >= PRUNE_EVERY_BIG:
+        every = PRUNE_EVERY_BIG if limit > 64 else PRUNE_EVERY_SMALL
+        if n >= every:
             _PRUNE_COUNT[tag] = 0
             prune(tag, limit)
         else:
