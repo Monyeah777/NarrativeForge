@@ -88,7 +88,7 @@ def code_fingerprint(root: str = ".") -> str:
     hit = _CODE_FP.get(rkey)
     if hit is None:
         from core import conformance_scan as csc
-        hit = csc.content_fingerprint(str(root), CODE_FACE)
+        hit = csc.face_fingerprint(str(root), CODE_FACE)
         _CODE_FP[rkey] = hit
     return hit
 
@@ -195,7 +195,7 @@ def code_scope_fingerprint(root: str, modules) -> Optional[str]:
     out = None
     if files is not None:
         from core import conformance_scan as csc
-        out = csc.content_fingerprint(str(root), files)
+        out = csc.face_fingerprint(str(root), files)
     _SCOPE_FP[rkey] = out
     return out
 

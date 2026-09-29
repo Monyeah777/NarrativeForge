@@ -526,7 +526,7 @@ def face_fingerprint(root: str = ".") -> str:
     这一项就白花 ~10 ms。有了这个入口，purity 可以「自有面指纹 + 本面指纹」组合出键，并把这个
     指纹**传给** `scan(_fp=...)`，同一张面只枚举一次（**键覆盖面一字未动**）。
     """
-    return csc.content_fingerprint(root, patterns(root))
+    return csc.face_fingerprint(root, patterns(root))
 
 
 def scan(root: str = ".", _fp: str = None) -> Tuple[List[str], Dict[str, Any]]:

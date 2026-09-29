@@ -345,7 +345,7 @@ def scan(root: str = ".") -> tuple:
     except Exception:                                    # noqa: BLE001 - 取不出就退回整面
         return csc.memo_pair("purity-scan", patterns(root), _scan_impl, root,
                              require_resident=True, code_modules=("core.purity_scan",))
-    own_fp = csc.content_fingerprint(root, OWN_PATTERNS)
+    own_fp = csc.face_fingerprint(root, OWN_PATTERNS)
     fp = hashlib.sha256(("%s\x00%s" % (own_fp, layer_fp)).encode("utf-8")).hexdigest()
     return csc.memo_pair("purity-scan", patterns(root), lambda r: _scan_impl(r, layer_fp), root,
                          require_resident=True, code_modules=("core.purity_scan",), fp=fp)

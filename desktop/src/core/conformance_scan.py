@@ -836,7 +836,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     「读到的文件必须全部落在输入面内」有判据守着（test_conformance_scan.DerivedResultCacheTest）：
     将来给本函数加新读取，判据会先红、逼着把新输入补进来——不会悄悄读到陈旧结果。
     """
-    fp = content_fingerprint(root, SCAN_INPUTS)
+    fp = face_fingerprint(root, SCAN_INPUTS)
     hit = _SCAN_CACHE.get(fp)
     if hit is None:
         from core import disk_cache

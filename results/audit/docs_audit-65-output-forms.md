@@ -6,7 +6,7 @@ scope: 作者指令「两个域包产出几乎都是文本…产出没有功能�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/output_forms.py:d56a09388162d67d9d6c004acbbeae312b2846be3fcb2a9e0482027ea67c9fb2
+  - desktop/src/core/output_forms.py:25723e4f72c51b5126202c9456ad2b9bb3073edf045a56843df00aa2f72ca406
   - desktop/src/core/quant_metrics.py:fef3a30d38387f4aefcedbe2ecbb68867a488e705fb4b2576a9dddaa0a85e6a0
   - desktop/src/core/quality_depth_scan.py:cce1efda62d53b086422a4f73b6af6a64ef4bee3c288ca033ac013c1904ad8d1
   - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1

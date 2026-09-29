@@ -97,7 +97,7 @@ def _inputs_fingerprint(root: str = ".") -> str:
     且**枚举面逐件一致**由 `test_pack_combo.InputFaceTest` 在真仓库上逐模式守着。
     值本身换了一代 ⇒ 落盘缓存重键一次（一次性重算，无陈旧风险）。
     """
-    return csc.content_fingerprint(root, INPUT_PATTERNS)
+    return csc.face_fingerprint(root, INPUT_PATTERNS)
 
 
 def _read_json(path: Path) -> Any:
@@ -178,7 +178,7 @@ def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     cached = _CACHE.get(key) or {}
     if cached.get("contracts"):
         return cached["contracts"]
-    fp = csc.content_fingerprint(root, MODULE_CONTRACT_PATTERNS)
+    fp = csc.face_fingerprint(root, MODULE_CONTRACT_PATTERNS)
     hit = _CONTRACTS_CACHE.get("mod:" + fp)
     if hit is not None:
         cached.update({"contracts": hit})
@@ -223,7 +223,7 @@ def _core_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     故事件闭包必须把核心的 publish 计入；否则 chaos_event / minute_tick 这类核心事件
     会被误报为「未桥」。
     """
-    fp = csc.content_fingerprint(root, CORE_CONTRACT_PATTERNS)
+    fp = csc.face_fingerprint(root, CORE_CONTRACT_PATTERNS)
     hit = _CONTRACTS_CACHE.get("core:" + fp)
     if hit is not None:
         return hit
@@ -308,7 +308,7 @@ def profiles(root: str = ".") -> Dict[str, Dict[str, Any]]:
     cached = _CACHE.get(key) or {}
     if cached.get("prof"):
         return cached["prof"]
-    fp = csc.content_fingerprint(root, PROFILE_PATTERNS)      # 只按**真读面**取键（见其常量说明）
+    fp = csc.face_fingerprint(root, PROFILE_PATTERNS)          # 只按**真读面**取键（见其常量说明）
     hit = _CONTENT_CACHE.get(("prof", fp))
     dkey = None
     if hit is None:                        # 进程内没命中 → 再看**持久**层（新进程也免付这笔账）

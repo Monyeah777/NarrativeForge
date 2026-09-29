@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：面指纹复用铺到**内层面**（purity / layer / pack_combo / output_forms / usage / conformance / disk_cache 代码面）**（**作者目标**：「……测量缓存，数据结构跃迁……达到顶尖工业水准」）：
+  ① **接着上一轮**：`memo_pair` 站点层已用上「确知没变就复用」，但**内层面**（各扫描器自己按面取键的地方）还是裸的 `content_fingerprint`——共 9 处：`pack_combo` 的四张面（声明 / 契约 / 核心契约 / 画像）、`purity` 的自有面、`layer_model` 的阶梯面、`output_forms` 的共享面与外层 `INDEX_INPUTS`、`asset_density` 的语料面、`conformance_scan.scan` 自己的面、`disk_cache` 的**代码面**（两处）。
+  ② **改法**：这 9 处一律改走 `face_fingerprint`（值逐位相同，只在确知没变时复用）。**没有新增信任面**——复用条件与站点层共用同一个 `changed_paths()` 开关（说不清一律全算）。
+  ③ **判据**：`FaceFingerprintTest`（值逐位相同 + 三态）继续守着底层；受影响的 **135** 个用例（`test_disk_cache` / `test_pack_combo` / `test_layer_model` / `test_purity_scan` / `test_asset_density` / `test_output_forms`）全绿。
+  ④ **实测（「假装变更、内容不动」探针，只测面指纹这一项）**：重算面数从**恒 4–5 个**降到**按改动位置分化**——改 `04_模块库` **4 个**（46 ms）｜ 改某包产物件 **2 个**（41 ms）｜ 改某包声明件 **4 个**（46 ms）｜ 改一篇文档 **1 个**（27 ms）。端到端 **312–333 ms**（中位 ~320 ms，冷进程 2.16–2.22 s，机器仍偏慢），**不作收益宣称**。
+
 - **执行层：面指纹复用（铺到 `memo_pair` 全站点）＋修上一轮遗留的「变更集只增不减」**（**作者目标**：「……测量缓存，数据结构跃迁……达到顶尖工业水准」）：
   ① **把上一轮的机制铺开**：新增 `conformance_scan.face_fingerprint(root, patterns)`——值**逐位相同**于 `content_fingerprint`，只在「确知这批变更没沾到该面」时复用；`memo_pair` **全部站点**改走它 ⇒ 一次改动只碰得到少数几个面，其余面从此免掉枚举 + 摘要。
   ② **同一个探针抓出上一轮的真 bug**：确知变更面用 `note_changes` **累加**却**没有清空点** ⇒ 变更集单调增长，几条命令之后**每个面都「沾到变更」**、键层复用直接退化成全量重算（探针里四种改动位置全报「重算 5 个面」就是这个）。修法：新增 `clear_changes()`，由 `daemon.execute` 在**请求收尾**调用——语义与读层一致：确知变更**只在当次请求内有效**。修后四种改动位置分别重算 **4–5 个面**（不再恒为 5）。

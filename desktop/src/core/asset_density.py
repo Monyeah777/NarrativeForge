@@ -278,7 +278,7 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     # 同一 payload 语义），但不再把 3.5 MB 正文逐件 `encode()` + 重哈希——而且键能**先算**，
     # 于是命中时**根本不必把 2815 份语料读成列表**（旧实现是「先全读、再查表」）。
     h = hashlib.sha256()
-    h.update(csc.content_fingerprint(root, CORPUS_PATTERNS).encode("utf-8"))
+    h.update(csc.face_fingerprint(root, CORPUS_PATTERNS).encode("utf-8"))
     h.update(b"\x00")
     for k in sorted(keys):
         h.update(k.encode("utf-8"))

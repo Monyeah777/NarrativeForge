@@ -748,7 +748,7 @@ def shared_face_key(root: str = ".") -> str:
     会让 106 个包在白改正文时全重算（实测 **+800 ms/条命令**）。判据：`PackKeyReadCoverageTest`
     （读覆盖）与 `PackVerifyCacheTest`（面内/面外换键）。
     """
-    raw = _csc.content_fingerprint(root, _PACK_FACE_SHARED)
+    raw = _csc.face_fingerprint(root, _PACK_FACE_SHARED)
     from core import pack_combo as pc            # 惰性导入：避免模块级环
     core = pc.core_contracts_fingerprint(root)
     return hashlib.sha256(("%s\x00%s" % (raw, core)).encode("utf-8")).hexdigest()
@@ -1342,7 +1342,7 @@ def index_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     `INDEX_INPUTS`，并有「读到的文件必须全部落在输入面内」的判据守着
     （见 test_conformance_scan.DerivedResultCacheTest）。
     """
-    fp = _csc.content_fingerprint(root, INDEX_INPUTS)
+    fp = _csc.face_fingerprint(root, INDEX_INPUTS)
     hit = _INDEX_CACHE.get(fp)
     if hit is None:
         from core import disk_cache
