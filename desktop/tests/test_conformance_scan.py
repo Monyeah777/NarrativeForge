@@ -1158,6 +1158,34 @@ class FaceHygieneTest(unittest.TestCase):
         self.assertEqual({}, dirty,
                          "输入面收了 Python 自产字节码（键会随导入漂移、缓存整体失效）：%s" % dirty)
 
+    def test_declared_faces_exclude_test_files(self):
+        """输入面也不许收**测试件**（`desktop/tests/**`）——裁决不读它们，收进来只是每次都白读。
+
+        依据（实测 2026-09-29）：全量重算（落盘缓存关）里规则级读共 **2580 件，`desktop/tests/**` 0 件**；
+        而 `quality_depth_scan.QD_INPUTS` 旧口径写 `desktop/**/*.py`，把 **129 件测试**收进了键面 ⇒
+        稳态每次冷跑白读 129 次（实测物理读 **2850 → 2721**）。`disk_cache.CODE_FACE` 早就写着
+        「不含 tests——测试不影响结果」，这条判据把同一条原则钉到**所有**声明面上。
+        """
+        from core import disk_cache as dc
+        # 只盯**内容面**（要逐件读进来取摘要的那些）；`layer_model.patterns()` / `purity_scan.patterns()`
+        # 是**成员面**（只枚举路径、不读内容，见 `core.face_key`），里面出现 tests 无害。
+        faces = {"disk_cache.CODE_FACE": dc.CODE_FACE,
+                 "quality_depth_scan.QD_INPUTS": qd.QD_INPUTS,
+                 "purity_scan.OWN_PATTERNS": ps.OWN_PATTERNS,
+                 "layer_model._READ_FACE": lm._READ_FACE}
+        for site, spec in DerivedResultCacheTest._sites().items():
+            if site in ("purity_scan.scan", "layer_model.scan"):
+                continue
+            faces["site:" + site] = spec["patterns"]
+        dirty = {}
+        for name, pats in sorted(faces.items()):
+            junk = sorted({rel for pat in pats for rel in cs.iter_files(ROOT, pat)
+                           if rel.startswith("desktop/tests/")})
+            if junk:
+                dirty[name] = junk[:3]
+        self.assertEqual({}, dirty,
+                         "输入面收了测试件（裁决不读它们 ⇒ 每次冷跑白读）：%s" % dirty)
+
 
 if __name__ == "__main__":
     unittest.main()

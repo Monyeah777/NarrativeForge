@@ -54,10 +54,11 @@ def dist_version(name: str = "PyYAML") -> str:
         if not base or not os.path.isdir(base):
             continue
         try:
-            for ent in os.scandir(base):
-                low = ent.name.lower()
-                if ent.is_dir() and low.startswith(prefix) and low.endswith(".dist-info"):
-                    return ent.name[len(prefix):-len(".dist-info")].split("-")[0]
+            with os.scandir(base) as it:          # 必须收口：`os.scandir` 不关会漏句柄（ResourceWarning）
+                for ent in it:
+                    low = ent.name.lower()
+                    if ent.is_dir() and low.startswith(prefix) and low.endswith(".dist-info"):
+                        return ent.name[len(prefix):-len(".dist-info")].split("-")[0]
         except OSError:
             continue
     return ""
