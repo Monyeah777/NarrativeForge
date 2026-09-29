@@ -30,6 +30,8 @@ if hasattr(sys.stderr, "reconfigure"):
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
+from core import interp_diet  # noqa: E402 - 紧接路径设定；`-S` 下补回 site-packages（见其 docstring）
+interp_diet.restore()
 
 NF_CLI_VERSION = "1.0.0"
 NF_CLI_EPILOG = (
@@ -5415,4 +5417,7 @@ def cli(argv=None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(cli())
+    # 必须**把 argv 显式递进去**：`main()` 的 `--version` 短路判据是「argv 就是 ['--version']」，
+    # 而 `cli()` 原样转 `main(None)` 时该判据永远为假 ⇒ 为打印一行版本号白建整个 argparse 命令面
+    # （实测 **99 ms**，65 条子命令）。传 argv 与 `parse_args(None)` 取的是同一份 sys.argv[1:]。
+    sys.exit(cli(sys.argv[1:]))

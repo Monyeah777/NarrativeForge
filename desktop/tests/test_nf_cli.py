@@ -508,5 +508,48 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertIn("nf 1.0.0", proc.stdout)
 
 
+class VersionShortCircuitTest(unittest.TestCase):
+    """`nf --version` 必须走**短路**：不许为打印一行版本号建整个 argparse 命令面。
+
+    依据（2026-09-29 实测）：命令面构建 **99 ms**（65 条顶层命令 / 141 个子解析器），而
+    `main()` 里早有 `argv == ["--version"]` 短路判据——但 `cli()` 原样转 `main(None)`，
+    判据永远为假 ⇒ 每条 `nf --version`（最常被调用的探针命令，也是守护/启动器的探针形态）
+    都白付这 99 ms。判据是**构建次数**（不是计时），与机器快慢无关。
+    """
+
+    def test_cli_version_does_not_build_the_command_face(self):
+        calls = []
+        real = nf._build_parser
+
+        def counting(*a, **k):
+            calls.append(1)
+            return real(*a, **k)
+
+        nf._build_parser = counting
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = nf.cli(["--version"])
+        finally:
+            nf._build_parser = real
+        self.assertEqual(0, code)
+        self.assertEqual([], calls,
+                         "`nf --version` 建了命令面 ⇒ 短路判据失效（argv 没递进 main）")
+
+    def test_cli_version_profile_has_no_command_face_build(self):
+        """端到端那一条：profile 统计里不许出现命令面构建（抓「**入口**传 None」这个原缺陷）。
+
+        `cli(["--version"])` 的进程内判据只证明短路本身可用；把入口改回 `cli()`，同一次
+        profile 立刻出现 `_make_parser` / `add_subparsers`（实测 2 条）——故本判据必须端到端。
+        """
+        proc = subprocess.run(
+            [sys.executable, "-m", "cProfile", "-s", "tottime",
+             str(ROOT / "scripts" / "nf.py"), "--version"],
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=180)
+        self.assertEqual(0, proc.returncode, proc.stderr[-400:])
+        self.assertIn("nf 1.0.0", proc.stdout)
+        self.assertNotIn("_make_parser", proc.stdout, "命令面被建了（入口没把 argv 递进去？）")
+        self.assertNotIn("add_subparsers", proc.stdout, "命令面被建了（入口没把 argv 递进去？）")
+
+
 if __name__ == "__main__":
     unittest.main()

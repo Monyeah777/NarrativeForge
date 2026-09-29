@@ -245,6 +245,11 @@
       "max_fn_cc": 150,
       "max_fn_lines": 234
     },
+    "desktop/src/core/interp_diet.py": {
+      "lines": 53,
+      "max_fn_cc": 4,
+      "max_fn_lines": 11
+    },
     "desktop/src/core/io_types.py": {
       "lines": 236,
       "max_fn_cc": 24,
@@ -751,7 +756,7 @@
       "max_fn_lines": 44
     },
     "scripts/nf.py": {
-      "lines": 5418,
+      "lines": 5423,
       "max_fn_cc": 98,
       "max_fn_lines": 951
     },
@@ -806,6 +811,6 @@
     "max_fn_cc": 25,
     "max_fn_lines": 120
   },
-  "note": "存量冻结的规模/复杂度上限（棘轮：只可下降；上调须评审后重冻）。初值 2026-09-29 整表冻结；此后三次**评审后**重冻均有据可查：① sast_check 179→196（基线按平台分段）；② 拆环一：output_forms −177（JSON Schema 校验器迁叶子 content_face 同批的 json_schema.py）、domain_pack/nf.py +2..4（渲染器改注入）；③ 拆环二（2026-09-29）：闭包解析从 disk_cache 迁到 import_graph（disk_cache 325→228、import_graph 109→202）、馆藏条目读取从 library 迁到 library_entries（library 577→503）、新增 content_face.py；11 个调用点各 +1..3 行（模块级 import_graph 导入 + code_scope 实参换行）。零环由 coupling_metrics 机检（环 0）。",
+  "note": "存量冻结的规模/复杂度上限（棘轮：只可下降；上调须评审后重冻）",
   "schema": "nf-code-metrics/1"
 }

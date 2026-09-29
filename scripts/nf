@@ -55,15 +55,47 @@ nf_pick_py() {
   nf_confirm_py
 }
 
+# 「解释器节食」：`-S` 起解释器能省掉本机 site 定制（实测 ≈60 ms/次：pywin32_bootstrap 33 ms +
+# _distutils_hack 22 ms + usercustomize），代价是 site-packages 也被一起关掉。而缺 PyYAML 的后果
+# **不是「慢一点」而是「静默算错」**：`lazy_yaml` 会按设计退回内置子集解析器——实测 `nf doctor`
+# 的 tool_face 1/1/1→0/0/0、world_model 1/4/3/4→0/0/0/0。故 `scripts/nf.py` 在 `-S` 下把
+# site-packages **显式加回**，而这里做一次**行为探针**（两模式下的「可导入第三方」必须逐字相同），
+# 结论按「解释器 + 平台」缓存：探针有任何异常/不一致 ⇒ 不加 `-S`（**只加速、不改可用性**）。
+# `NF_NO_DIET=1` 可整体关掉（诊断/对照用）。
+nf_diet_flag() {
+  case "${NF_NO_DIET:-}" in 1|true|yes|on) return 0 ;; esac
+  local _c="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/diet.flag" _k _known=""
+  _k="$NF_PY|${OSTYPE:-}"
+  if [ -f "$_c" ]; then IFS= read -r _known < "$_c" 2>/dev/null || _known=""; fi
+  case "$_known" in
+    "$_k|-S") printf '%s' "-S"; return 0 ;;
+    "$_k|")   return 0 ;;
+  esac
+  local _p='import os, sys; sys.path.insert(0, os.path.join(sys.argv[1], "..", "desktop", "src")); from core import interp_diet as d; d.restore(); print("OK:" + d.available())'
+  local _a="" _b="" _flag=""
+  _a=$("$NF_PY" -S -c "$_p" "$NF_ROOT" 2>/dev/null) || _a=""
+  _b=$("$NF_PY" -c "$_p" "$NF_ROOT" 2>/dev/null) || _b=""
+  if [ -n "$_a" ] && [ "$_a" = "$_b" ]; then _flag="-S"; fi
+  _known=${_c%/*}
+  [ "$_known" = "$_c" ] || mkdir -p "$_known" 2>/dev/null || true
+  printf '%s\n' "$_k|$_flag" > "$_c" 2>/dev/null || true
+  printf '%s' "$_flag"
+}
+
 nf_confirm_py() {
   local _ok="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/interpreter.ok"
   local _key="$NF_PY|${OSTYPE:-}"
   local _known=""
   if [ -f "$_ok" ]; then IFS= read -r _known < "$_ok" 2>/dev/null || _known=""; fi
   if [ "$_known" = "$_key" ]; then return 0; fi
-  if ! "$NF_PY" -c "" >/dev/null 2>&1; then
+  # 冷启动：先算「节食」判据——它的**普通那一跑**就是一次真解释器启动，兼作「这个解释器跑得起来
+  # 吗」的终判（省掉一条命令的固定成本）。判据为空有两种可能：真的不该节食，或解释器起不来。
+  local _d=""
+  _d=$(nf_diet_flag 2>/dev/null) || _d=""
+  if [ -z "$_d" ] && ! "$NF_PY" -c "" >/dev/null 2>&1; then
     NF_PY=python
     _key="python|${OSTYPE:-}"
+    nf_diet_flag >/dev/null 2>&1 || true         # 换了 NF_PY ⇒ 判据按键重算（新解释器可能能节食）
   fi
   _known=${_ok%/*}
   [ "$_known" = "$_ok" ] || mkdir -p "$_known" 2>/dev/null || true
@@ -125,7 +157,8 @@ daemon_try() {
 
 if [ "$#" -eq 0 ]; then
   nf_pick_py
-  exec "$NF_PY" "$NF_ROOT/nf.py" shell
+  NF_DIET=$(nf_diet_flag)
+  exec "$NF_PY" ${NF_DIET} "$NF_ROOT/nf.py" shell
 fi
 if [ -n "${BASH_VERSION:-}" ]; then
   # 快路**只加速、不改可用性**：`daemon_try` 用 `return 127` 表示「不接手」，而它在 `if` 的
@@ -146,7 +179,7 @@ if [ -n "${BASH_VERSION:-}" ]; then
           # 上面 `daemon_try` 已经 decline（= 服不了这条命令），所以这里直接拉一次即可；
           # `daemon start` 自身幂等（已在跑就很快返回「已在运行」），失败也静默走回退。
           nf_pick_py
-          "$NF_PY" "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 || true
+          "$NF_PY" $(nf_diet_flag) "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 || true
           daemon_try "$@" || true
           ;;
       esac
@@ -158,4 +191,4 @@ elif command -v bash >/dev/null 2>&1 \
 fi
 # 解释器选择 + 终判（带缓存；见上方 nf_pick_py 的说明）——只在**真要起解释器**时才付这笔钱
 nf_pick_py
-exec "$NF_PY" "$NF_ROOT/nf.py" "$@"
+exec "$NF_PY" $(nf_diet_flag) "$NF_ROOT/nf.py" "$@"

@@ -204,15 +204,23 @@ class InterpreterLaunchBudgetTest(unittest.TestCase):
                          "快路命中却起了解释器：选解释器（含终判）的代码跑到快路前面去了")
 
     def test_fallback_starts_one_interpreter_in_steady_state(self):
-        """回退稳态**恰好一次**解释器启动（修前每条两次：探针 + 真跑）。"""
+        """回退稳态**恰好一次**解释器启动（修前每条两次：探针 + 真跑）。
+
+        冷启动 3 次＝诊断兼节食探针(1) + 节食探针(1) + 真跑(1)：`scripts/nf` 的 `nf_confirm_py`
+        故意拿**节食探针的普通那一跑**兼作解释器终判，省掉一条命令的固定成本；这里把**增量**
+        （第 2 条命令只真跑一次）也钉住——那才是「每条命令一次启动」的稳态不变量。
+        """
         env, log = self._shim_env()                 # 没有守护状态文件 → 必走回退
         first = self._run("--version", env=env)
         self.assertEqual(0, first.returncode,
                          "回退必须可用（rc=127 + 零输出 = 回退被 set -e 杀了）\n%s"
                          % (first.stderr or first.stdout))
         self.assertIn("nf ", first.stdout)
-        self.assertEqual(2, self._starts(log),
-                         "缓存冷的那一条＝一次确诊 + 一次真跑（设计如此，不是回归）")
+        self.assertEqual(3, self._starts(log),
+                         "缓存冷的那一条＝确诊兼探针(1) + 节食探针(1) + 真跑(1)（设计如此，不是回归）")
+        second = self._run("--version", env=env)
+        self.assertEqual(0, second.returncode, second.stderr or second.stdout)
+        self.assertEqual(4, self._starts(log), "稳态增量必须恰好 1 次（第 2 条命令只许真跑一次）")
         for i in (2, 3):
             if os.path.exists(log):
                 os.remove(log)                      # 每轮清零：数的是**这一条命令**起了几次
@@ -346,6 +354,96 @@ class WindowsCmdLauncherTest(unittest.TestCase):
                          "nf.cmd 必须能跑（非 ASCII 注释会让它在 python 之前就挂）\n%s"
                          % (p.stdout + p.stderr))
         self.assertIn("nf ", p.stdout)
+
+
+@unittest.skipUnless(BASH, "启动器是 POSIX sh 脚本，需 bash 执行快路")
+class InterpreterDietTest(unittest.TestCase):
+    """`-S` 解释器节食：省 site 定制（实测 **≈21 ms/次**，本机空闲：裸解释器 83→62 ms），
+    但**必须**把 site-packages 显式加回——否则是「静默算错」而不是「慢一点」。
+
+    依据（2026-09-29 实测）：裸 `-S` 下 `lazy_yaml` 按设计退回内置子集解析器 ⇒ `nf doctor` 的
+    tool_face 1/1/1→0/0/0、world_model 1/4/3/4→0/0/0/0；`pipeline dryrun --json` 6671→3597 字节。
+    故判据是「两模式逐字节相同」（本类）+ 启动器一次性探针（`scripts/nf` 的 `nf_diet_flag`，
+    拿两模式的可导入第三方逐字比对，结论缓存）+ `NF_NO_DIET=1` 可整关。
+    """
+
+    def _run(self, *argv, env=None, timeout=300):
+        return subprocess.run([BASH, "scripts/nf", *argv], cwd=ROOT,
+                              env=env or dict(os.environ), capture_output=True, text=True,
+                              encoding="utf-8", errors="replace", timeout=timeout)
+
+    def _home(self):
+        home = tempfile.mkdtemp(prefix="nf_diet_")
+        self.addCleanup(shutil.rmtree, home, ignore_errors=True)
+        return home
+
+    def _shim(self, home):
+        """PATH 最前放一个 shim：每次解释器启动把**完整 argv** 记一行，再转发真解释器。"""
+        bin_dir = os.path.join(home, "shim")
+        os.makedirs(bin_dir, exist_ok=True)
+        log = os.path.join(home, "starts.log")
+        real = subprocess.run([BASH, "-c", "command -v python || command -v python3"],
+                              capture_output=True, text=True, encoding="utf-8").stdout.strip()
+        body = ('#!/bin/sh\n'
+                'printf "%s %s\\n" "$0" "$*" >> "' + log.replace("\\", "/") + '"\n'
+                'exec "' + real + '" "$@"\n')
+        for name in ("python", "python3"):
+            path = os.path.join(bin_dir, name)
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(body)
+            os.chmod(path, 0o755)
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = home
+        env["PATH"] = bin_dir + os.pathsep + env.get("PATH", "")
+        env.pop("NF_AUTOSTART", None)
+        env.pop("NF_NO_DIET", None)
+        return env, log
+
+    @staticmethod
+    def _lines(log):
+        if not os.path.exists(log):
+            return []
+        with open(log, encoding="utf-8") as fh:
+            return [ln.strip() for ln in fh if ln.strip()]
+
+    def test_dash_s_is_byte_identical_for_read_commands(self):
+        """节食不许改一个字节：两模式在**真读盘**的命令上 stdout/stderr/退出码全等。"""
+        for argv in (["doctor"], ["toolface", "--json"]):
+            plain = subprocess.run([sys.executable, "scripts/nf.py", *argv], cwd=ROOT,
+                                   capture_output=True, text=True, encoding="utf-8",
+                                   errors="replace", timeout=300)
+            diet = subprocess.run([sys.executable, "-S", "scripts/nf.py", *argv], cwd=ROOT,
+                                  capture_output=True, text=True, encoding="utf-8",
+                                  errors="replace", timeout=300)
+            self.assertEqual(plain.returncode, diet.returncode, argv)
+            self.assertEqual(plain.stdout, diet.stdout, "两模式 stdout 不一致：%s" % argv)
+            self.assertEqual(plain.stderr, diet.stderr, "两模式 stderr 不一致：%s" % argv)
+
+    def test_launcher_diet_steady_state_and_cached_verdict(self):
+        """稳态那条命令必须带 `-S`（节食真生效），且结论落进判据缓存。"""
+        home = self._home()
+        env, log = self._shim(home)
+        cold = self._run("--version", env=env)
+        self.assertEqual(0, cold.returncode, cold.stderr or cold.stdout)
+        warm = self._run("--version", env=env)
+        self.assertEqual(0, warm.returncode, warm.stderr or warm.stdout)
+        self.assertEqual(cold.stdout, warm.stdout, "节食只许加速，不许改输出")
+        lines = self._lines(log)
+        self.assertTrue(lines, "启动器一次解释器都没起？")
+        self.assertIn(" -S ", lines[-1] + " ", "稳态那条必须带 -S：%s" % lines[-1])
+        verdict = Path(home, "diet.flag").read_text(encoding="utf-8").strip()
+        self.assertTrue(verdict.endswith("|-S"), "判据缓存没记下结论：%r" % verdict)
+
+    def test_off_switch_disables_dash_s(self):
+        """`NF_NO_DIET=1` 必须真的关掉（诊断/对照用），且不影响可用性。"""
+        home = self._home()
+        env, log = self._shim(home)
+        env["NF_NO_DIET"] = "1"
+        p = self._run("--version", env=env)
+        self.assertEqual(0, p.returncode, p.stderr or p.stdout)
+        lines = self._lines(log)
+        self.assertTrue(lines)
+        self.assertNotIn(" -S ", lines[-1] + " ", "NF_NO_DIET=1 时不许带 -S：%s" % lines[-1])
 
 
 if __name__ == "__main__":
