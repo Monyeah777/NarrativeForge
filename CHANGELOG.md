@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：L6「引擎不反向 import 入口面」改「逐件事实缓存」（`_rule_issues` 53 → 15 ms，`purity_scan.scan` 121 → 79 ms）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
+  ① **量到的东西（仪器化）**：`layer_model._scan_impl` 每次重算里 `_rule_issues` 独占 **53–62 ms**，其中 L6 要把 **255 份 `desktop/src/core/*.py`（约 2 MB）** 读进来、逐件跑入口 import 预筛、对命中的件再做 AST walk；而「这一件是否 import `nf` / `scripts`」只是**该件正文**的纯函数——改 `04_模块库`、协议件、文档这类与引擎无关的件时结果必然不变。另外 L8/L10 有三处走的是 `Path.read_text`（真读盘），而不是共享语料。
+  ② **改法**：抽出 `_entry_imports(text)`（键 = 正文 sha256，值 = `(行号, 顶层模块名)` 清单；值里**不含路径**，故可跨目录复用），L6 只剩「取事实 + 拼消息」；L8/L10 的 `verify.sh` / `assertions.json` / `docs/layers.md` 改走 `csc.read_text_cached`（与 purity 同一份常驻语料）。
+  ③ **判据**（`test_layer_model.EntryImportFactTest` 3 条）：① 把**未缓存的参考实现**（原先那段「预筛 + `ast.parse` + `ast.walk`」原样搬进测试）在真仓库**全部** core/*.py 上逐件比对；② 合成树上断言**顺序与重复项都不丢**（`import nf` / `import nf.cli` / `from scripts import x` 按行号原序产出，相对 import 不算）；③ 键是**正文**不是路径（同内容复用、改一个字节重算）。既有 `test_mutation_l6_core_imports_entry_face` 继续守着「违规必被捕」。
+  ④ **实测**：`_rule_issues` **53 → 15 ms**；`layer_model._scan_impl` **53–62 → 15 ms**；`purity_scan.scan`（内含 `layer_model.scan`）**121 → 79 ms**；`score.evaluate` 唯一新状态 **567 → 496 ms**；**端到端（一次性唯一正文）** 唯一新状态 · 守护第一条 **0.60–0.63 s → 0.57–0.58 s**，同状态重放 **~50 ms**，树没变 **52 ms**，冷进程 **~1.75 s**。**边界（不粉饰）**：事实缓存是**进程内**的——守护重启后的第一条要把 255 件填一次（一次性 ~30 ms），之后每个新状态才为零。
+
 - **执行层：`schema_lint.discover` 换枚举器（54 → 1.9 ms，`schema_lint.scan` 104 → 51 ms）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
   ① **量到的东西（仪器化）**：`discover()` 用 `os.walk` + `os.listdir` + `glob.glob` **三种写法各自真走一遍文件系统**——实测 **54 ms**，占 `schema_lint.scan`（104 ms）的 52%；而同一张面走共享枚举器只要 **0.8 ms**（目录清单已在常驻层 `dirs` 桶里，**65×**）。
   ② **改法**：新增 `_face_paths()` 走 `csc.iter_files` 单遍枚举，路径形态与旧实现**同契约**（仍带 root 前缀，调用方 `os.path.relpath(p, root)` 不受影响）；三张面（模块文档 / 管线文档 / 协议声明）各一条模式，`_walk_md` 退役。

@@ -80,6 +80,62 @@ def _fixture(tmp, tiers=None, surfaces=None, derived=None, checks=None):
     return doc
 
 
+def _reference_entry_imports(text):
+    """**未缓存的参考实现**：原先 `_rule_issues` 里那段「预筛 + `ast.parse` + `ast.walk`」原样搬来。"""
+    import ast
+    out = []
+    if not lm._ENTRY_IMPORT_RE.search(text):
+        return out
+    try:
+        tree = ast.parse(text)
+    except (OSError, SyntaxError):
+        return out
+    for node in ast.walk(tree):
+        names = []
+        if isinstance(node, ast.Import):
+            names = [a.name.split(".")[0] for a in node.names]
+        elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+            names = [node.module.split(".")[0]]
+        for name in names:
+            if name in lm.ENTRY_MODULE_NAMES:
+                out.append((node.lineno, name))
+    return out
+
+
+class EntryImportFactTest(unittest.TestCase):
+    """L6 的**逐件事实缓存**（`_entry_imports`）：与未缓存参考实现等价，且顺序/重复项不丢。
+
+    依据（实测 2026-09-29）：L6 每次扫描都要读 255 份 core/*.py 并做预筛 + AST walk，而「这一件
+    是否 import nf/scripts」只是该件正文的纯函数——改与引擎无关的件时这一整笔应当为零。
+    """
+
+    def test_real_repo_core_files_match_reference(self):
+        files = sorted((ROOT / "desktop" / "src" / "core").glob("*.py"))
+        self.assertGreater(len(files), 100, "core 件太少，判据没测到东西")
+        for p in files:
+            text = p.read_text(encoding="utf-8")
+            self.assertEqual(_reference_entry_imports(text), lm._entry_imports(text),
+                             "%s 的事实与参考实现不一致" % p.name)
+
+    def test_order_and_duplicates_survive(self):
+        text = ("import os\n"
+                "import nf\n"
+                "import nf.cli\n"
+                "from scripts import x\n"
+                "from . import nf\n")          # 相对 import（level≠0）不算
+        got = lm._entry_imports(text)
+        self.assertEqual([(2, "nf"), (3, "nf"), (4, "scripts")], got)
+        self.assertEqual(got, lm._entry_imports(text), "同内容第二次必须逐位相同")
+
+    def test_cache_is_content_keyed(self):
+        """键是**正文**不是路径：同正文复用得同一结果，改一个字节就得重算。"""
+        lm._ENTRY_IMPORT_CACHE.clear()
+        self.assertEqual([(1, "nf")], lm._entry_imports("import nf\n"))
+        self.assertEqual([(1, "nf")], lm._entry_imports("import nf\n"))
+        self.assertEqual([], lm._entry_imports("import nfz\n"))
+        self.assertEqual([], lm._entry_imports("import os\n"))
+
+
 class LayerScanTest(unittest.TestCase):
     def test_fixture_is_clean(self):
         with tempfile.TemporaryDirectory() as tmp:

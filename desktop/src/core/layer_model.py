@@ -22,6 +22,7 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import json
 import os
 import re
@@ -43,6 +44,48 @@ _JUDGE_CHECK = re.compile(r"^check(\d+)$")
 _JUDGE_ASSERTION = "assertion:"
 #: L6 的**文本预筛**：只把含入口面 import 的文件交给 AST（避免全量解析，见 _rule_issues）
 _ENTRY_IMPORT_RE = re.compile(r"\b(?:import|from)\s+(?:nf|scripts)\b")
+
+#: L6 的**逐件**事实缓存（键 = 该件正文的 sha256；值 = [(行号, 顶层模块名), …]，可为空）。
+#: 依据（实测 2026-09-29）：L6 每次扫描都要把 255 份 `desktop/src/core/*.py`（约 2 MB）读进来、
+#: 再对命中预筛的件做 AST walk——而「这一件是否 import nf/scripts」只是**该件正文**的纯函数。
+#: 改 `04_模块库`、协议件、文档这类与引擎无关的件时结果必然不变，因此这一整笔可以整段省掉。
+#: 与 purity 的 `_facts_for` 同一套纪律（键即内容 ⇒ 无陈旧面）；值里**不含路径**，故可跨目录复用。
+_ENTRY_IMPORT_CACHE: Dict[str, List[Tuple[int, str]]] = {}
+_ENTRY_IMPORT_CACHE_MAX = 4096
+
+
+def _entry_imports(text: str) -> List[Tuple[int, str]]:
+    """`text` 对入口面（`nf` / `scripts`）的 import 清单 `(行号, 顶层模块名)`；键即内容。
+
+    等价性由 `test_layer_model.EntryImportFactTest` 守着：用**未缓存的参考实现**（原先那段
+    「预筛 + `ast.parse` + `ast.walk`」原样搬进测试）在真仓库全部 core/*.py 上逐件比对，
+    并在合成树上验证**顺序与重复项都不丢**（一件同时 import nf 与 scripts 必须出两条）。
+    """
+    key = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    hit = _ENTRY_IMPORT_CACHE.get(key)
+    if hit is not None:
+        return hit
+    out: List[Tuple[int, str]] = []
+    if _ENTRY_IMPORT_RE.search(text):          # 文本预筛：绝大多数件不含入口 import
+        try:
+            tree = ast.parse(text)
+        except (OSError, SyntaxError):
+            tree = None
+        if tree is not None:
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    names = [a.name.split(".")[0] for a in node.names]
+                elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                    names = [node.module.split(".")[0]]
+                else:
+                    names = []
+                for name in names:
+                    if name in ENTRY_MODULE_NAMES:
+                        out.append((node.lineno, name))
+    if len(_ENTRY_IMPORT_CACHE) >= _ENTRY_IMPORT_CACHE_MAX:
+        _ENTRY_IMPORT_CACHE.clear()
+    _ENTRY_IMPORT_CACHE[key] = out
+    return out
 
 
 def _pattern_to_regex(pattern: str):
@@ -282,25 +325,11 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
             src = csc.read_text_cached(Path(root) / rel)   # 与 purity 的 core/*.py 读同一份语料
         except OSError:
             continue
-        # 文本预筛（效率）：L6 只关心「入口面 import」——绝大多数 core 文件不含它，
-        # 先做一次子串/正则预筛，避免为 255 个文件逐个解析 AST（实测 42 万 AST 节点）。
-        if not _ENTRY_IMPORT_RE.search(src):
-            continue
-        try:
-            tree = ast.parse(src)
-        except (OSError, SyntaxError):
-            continue
-        for node in ast.walk(tree):
-            names = []
-            if isinstance(node, ast.Import):
-                names = [a.name.split(".")[0] for a in node.names]
-            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
-                names = [node.module.split(".")[0]]
-            for name in names:
-                if name in ENTRY_MODULE_NAMES:
-                    issues.append("L6 引擎阶反向 import 入口面件：%s:%d import %s"
-                                  "（修复指引：入口可替换，core 不得依赖它——改由 CLI 层注入）"
-                                  % (rel, node.lineno, name))
+        # 事实按**正文**缓存（`_entry_imports`）：文本预筛 + AST 只在「这一件没算过」时付。
+        for lineno, name in _entry_imports(src):
+            issues.append("L6 引擎阶反向 import 入口面件：%s:%d import %s"
+                          "（修复指引：入口可替换，core 不得依赖它——改由 CLI 层注入）"
+                          % (rel, lineno, name))
 
     # L7 退役阶不被依赖
     retired = {str(t.get("id")) for t in tiers if str(t.get("status")) == "retired"}
@@ -315,13 +344,13 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
             issues.append("L7 阶 %s 的 status 越词表：%s" % (tier.get("id"), tier.get("status")))
 
     # L8 judged_by 可解析
-    checks = set(_CHECK_DEF.findall(Path(root, VERIFY_REL).read_text(encoding="utf-8"))) \
+    checks = set(_CHECK_DEF.findall(csc.read_text_cached(Path(root, VERIFY_REL)))) \
         if _exists(root, VERIFY_REL) else set()
     a_path = Path(root, ASSERTIONS_REL)
     assertion_ids = set()
     if a_path.is_file():
         assertion_ids = {str(a.get("id")) for a in
-                         (json.loads(a_path.read_text(encoding="utf-8"))
+                         (json.loads(csc.read_text_cached(a_path))
                           .get("assertions") or [])}
     refs = []
     for tier in tiers:
@@ -355,7 +384,7 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
     if not _exists(root, DOC_REL):
         issues.append("L10 缺阶梯文档 %s（修复指引：补件并跑 nf layers --write）" % DOC_REL)
     else:
-        body = Path(root, DOC_REL).read_text(encoding="utf-8")
+        body = csc.read_text_cached(Path(root, DOC_REL))
         got = _region_of(body)
         want = render_markdown(doc)
         if got is None:
