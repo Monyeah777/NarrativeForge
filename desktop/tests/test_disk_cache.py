@@ -53,6 +53,37 @@ class DiskCacheTest(unittest.TestCase):
         finally:
             os.environ.pop(dc.ENV_OFF, None)
 
+    def test_deferred_store_writes_only_on_flush(self):
+        """**延迟写盘**：`store()` 在延迟模式下只入队（盘上什么都不写），`defer_flush()` 才落盘。
+
+        依据（实测 2026-09-29）：一次新内容状态的落盘合计 14–17 ms（守护口径差值实测 20–80 ms），
+        而它是**纯写**、只供别的进程（冷进程 / 守护重启）用 ⇒ 守护把它挪到「回包之后」再付，
+        客户端不必等。缓存不是事实：中途丢了只是下次重算。
+        """
+        ckey = dc.key("t_def", "part")
+        d = dc.dir_for("t_def")
+        self.assertFalse(dc.deferring(), "默认不是延迟模式（单测/冷进程行为一字不动）")
+        dc.defer_begin()
+        try:
+            dc.store("t_def", ckey, {"A": 1})
+            left = list(d.glob("*.json")) if d.is_dir() else []
+            self.assertEqual([], left, "延迟模式下不得写盘")
+            self.assertIsNone(dc.load("t_def", ckey), "延迟模式下读不到（还没落盘）")
+        finally:
+            self.assertEqual(1, dc.defer_flush(), "flush 应写出 1 条")
+        self.assertEqual({"A": 1}, dc.load("t_def", ckey), "flush 之后必须能读到")
+        self.assertFalse(dc.deferring(), "flush 后退出延迟模式")
+
+    def test_deferred_drop_writes_nothing(self):
+        """异常路径：`defer_drop()` 丢弃队列 ⇒ 盘上不留半截（缓存非事实，丢了只重算）。"""
+        ckey = dc.key("t_drop", "part")
+        d = dc.dir_for("t_drop")
+        dc.defer_begin()
+        dc.store("t_drop", ckey, {"B": 2})
+        dc.defer_drop()
+        self.assertEqual([], list(d.glob("*.json")) if d.is_dir() else [], "丢弃后不得写盘")
+        self.assertIsNone(dc.load("t_drop", ckey))
+
     def test_prune_keeps_only_recent(self):
         """有界：裁剪按批 ⇒ 上限 = `KEEP + PRUNE_EVERY_SMALL`（多留一批，换 8× 少的 prune）。"""
         for i in range(dc.KEEP * 3):

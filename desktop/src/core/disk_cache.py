@@ -47,6 +47,39 @@ _CODE_FP: dict = {}                      # root → 代码面指纹（**按根�
 _RUNTIME: Optional[str] = None
 _KEEP: dict = {}                         # tag → 上限（给大集合标签用）
 _PRUNE_COUNT: dict = {}
+#: **延迟写盘**模式（`defer_begin` 起、`defer_flush` 止）：`store()` 只入队不碰盘。
+#: 依据（实测 2026-09-29）：一次新内容状态里落盘合计 14–17 ms（守护口径的差值实测 20–80 ms），
+#: 而写盘**纯写**、结果只供**别的进程**（冷进程 / 守护重启）用 ⇒ 完全可以挪到「回包之后」再付：
+#: 客户端拿到响应就走，守护在这之后把队列落盘。fail-closed：中途崩了就丢这批缓存（缓存不是事实，
+#: 丢了只是下次重算），**不影响任何判定**。
+_DEFER: Optional[list] = None
+
+
+def defer_begin() -> None:
+    """进入延迟写盘模式（守护在**处理请求前**调用）。"""
+    global _DEFER
+    _DEFER = []
+
+
+def deferring() -> bool:
+    return _DEFER is not None
+
+
+def defer_drop() -> None:
+    """丢弃队列并退出延迟模式（异常路径用；缓存非事实，丢了只会重算）。"""
+    global _DEFER
+    _DEFER = None
+
+
+def defer_flush() -> int:
+    """把队列落盘并退出延迟模式（守护在**回包之后**调用）→ 写了几条。"""
+    global _DEFER
+    pending, _DEFER = _DEFER, None
+    n = 0
+    for tag, ckey, value, keep in pending or ():
+        store(tag, ckey, value, keep)
+        n += 1
+    return n
 
 
 def enabled() -> bool:
@@ -259,6 +292,9 @@ def store(tag: str, ckey: str, value: Any, keep: Optional[int] = None) -> None:
     （每次都裁的代价实测占 `store` 的一半，见 `PRUNE_EVERY_SMALL` 的说明）。
     """
     if not enabled():
+        return
+    if _DEFER is not None:                  # 延迟模式：只入队（守护回包之后再落盘，见 `defer_flush`）
+        _DEFER.append((tag, ckey, value, keep))
         return
     try:
         d = dir_for(tag)

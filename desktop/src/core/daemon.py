@@ -532,8 +532,20 @@ def _handle_conn(conn: socket.socket, token: str, root: Path) -> bool:
     if not isinstance(argv, list) or not all(isinstance(a, str) for a in argv):
         send_framed(conn, 2, b"", "argv 必须是字符串列表\n".encode("utf-8"))
         return False
-    code, out, err = execute(argv, root, cwd=req.get("cwd"))
+    from core import disk_cache as _dc
+    _dc.defer_begin()                # 请求期间：派生结果的写盘只入队
+    try:
+        code, out, err = execute(argv, root, cwd=req.get("cwd"))
+    except BaseException:
+        _dc.defer_drop()             # 异常路径：丢队列（缓存不是事实，丢了只是下次重算）
+        raise
     send_framed(conn, code, out, err)
+    # **回包之后再落盘**：写盘是纯写、只供别的进程（冷进程 / 守护重启）用，不该占客户端关键路径
+    # （实测：一次新内容状态的落盘在守护口径下值 20–80 ms）。落盘失败也只是丢缓存。
+    try:
+        _dc.defer_flush()
+    except Exception:                                    # noqa: BLE001 - 落盘尽力而为
+        pass
     return False
 
 
