@@ -10,6 +10,9 @@
 1. 每条 `uses:` 的引用必须是 40 位十六进制**提交** SHA——`@v4` 这类可变引用判 FAIL；
    本地动作（`./…`）豁免；`# vX.Y.Z` 注释记 WARN（可读性，不判死）。
 2. 每个工作流须有**显式** `permissions:` 段，且不得 `write-all`。
+3. `.github/requirements-*.txt` 的每条依赖须钉 `==` 具体版本（同一标准的「包度量」面；
+   出处之二：FAIR4RS v1.0（DOI 10.5281/zenodo.6374314）的 **R（Reusable）**——可复现要求
+   依赖可重建，故版本不得浮动）。
 
 纪律：纯标准库、只读、错误消息带修复指引。
 """
@@ -21,6 +24,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 WORKFLOWS_REL = ".github/workflows"
+REQS_GLOB = ".github/requirements-*.txt"
 USES_RE = re.compile(r"^\s*(?:-\s*)?uses:\s*(\S+)(.*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 
@@ -90,4 +94,16 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
                  if re.search(r"^permissions:\s*|^\s+permissions:\s*",
                               (Path(root) / rel).read_text(encoding="utf-8", errors="replace"),
                               re.M))}
+    reqs = sorted((Path(root) / ".github").glob("requirements-*.txt")) \
+        if (Path(root) / ".github").is_dir() else []
+    for p in reqs:
+        for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+            t = line.strip()
+            if not t or t.startswith(("#", "-")):
+                continue
+            if "==" not in t:
+                issues.append("%s:%d 依赖未钉版本：%s（修复指引：改 `包==版本`——FAIR4RS R 面"
+                              "要求依赖可重建，见 DOI 10.5281/zenodo.6374314 / Scorecard "
+                              "§Pinned-Dependencies）" % (p.name, i, t[:60]))
+    stats["requirements_files"] = len(reqs)
     return issues, warns, stats

@@ -25,6 +25,12 @@ def _wf(tmp: str, name: str, body: str) -> None:
     (d / name).write_text(body, encoding="utf-8")
 
 
+def _reqs(tmp: str, lines) -> None:
+    d = Path(tmp) / ".github"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "requirements-ci.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 class WorkflowPolicyTest(unittest.TestCase):
     def test_pinned_uses_with_permissions_passes(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -33,7 +39,8 @@ class WorkflowPolicyTest(unittest.TestCase):
             issues, warns, stats = wp.scan(tmp)
         self.assertEqual([], issues)
         self.assertEqual([], warns)
-        self.assertEqual({"workflows": 1, "pinned_uses": 1, "with_explicit_permissions": 1}, stats)
+        self.assertEqual({"workflows": 1, "pinned_uses": 1, "with_explicit_permissions": 1,
+                          "requirements_files": 0}, stats)
 
     def test_mutable_ref_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -67,8 +74,20 @@ class WorkflowPolicyTest(unittest.TestCase):
         self.assertEqual([], issues)
         self.assertGreaterEqual(stats["workflows"], 10, "工作流件数须有规模（判据自身要有效）")
         self.assertGreaterEqual(stats["pinned_uses"], 10)
+        self.assertGreaterEqual(stats["requirements_files"], 3, "固定依赖清单须在场")
         self.assertEqual(stats["workflows"], stats["with_explicit_permissions"],
                          "每个工作流都须显式声明 permissions")
+
+    def test_unpinned_requirement_is_rejected(self):
+        """FAIR4RS 的 R 面：依赖清单须钉 `==`（浮动的 `>=` 判 FAIL）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _wf(tmp, "ok.yml", "permissions: read-all\nsteps:\n  - uses: ./.local\n")
+            _reqs(tmp, ["# 注释行豁免", "pyyaml==6.0.1"])
+            pinned, _w, _s = wp.scan(tmp)
+            _reqs(tmp, ["pyyaml>=6"])
+            floating, _w2, _s2 = wp.scan(tmp)
+        self.assertEqual([], pinned, pinned)
+        self.assertTrue(any("未钉版本" in i and "修复指引" in i for i in floating), floating)
 
 
 if __name__ == "__main__":

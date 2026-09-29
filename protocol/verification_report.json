@@ -451,6 +451,7 @@
       "source": "workflow_policy.scan",
       "stats": {
         "pinned_uses": 28,
+        "requirements_files": 4,
         "with_explicit_permissions": 13,
         "workflows": 13
       },
@@ -458,7 +459,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "e13fbc3347f13478b2baabdb49cdf32f9190b1044193fb3255df9d6c080dbb50",
+  "root_digest": "fe5e9082c01f275174943dd19fd464f11710792eb2ba39ccca047186ff4a4d56",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,
