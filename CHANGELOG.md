@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：`usage_scan` 三处「重复编码 / 重复哈希 / 先读后查表」收口（36 → 27 ms，命中路径 ~12 ms）**（**作者目标**：「……测量缓存，数据结构跃迁……达到顶尖工业水准」）：
+  ① **量到的东西（逐函数计时）**：`usage_scan` 36 ms ≈ `count_keys_additive` 9.5 ms（其中**大头是给 2815 份语料逐件算 `sha256(text.encode())` 当逐件缓存键**）+ `_keys_of` 6.6 ms（360 份资产件各跑四个正则）+ 语料哈希环（把 3.5 MB 正文逐件 `encode()` 后重哈希）+ **先把 2815 份语料读成列表再查表**。
+  ② **三处收口**：① 语料内容键改走 `csc.content_fingerprint(CORPUS_PATTERNS)`（常驻层逐件摘要），**并且先算键、先查表**——命中时**根本不再把语料读成列表**；② `count_keys_additive` 新增可选 `digests`，调用方交出**常驻层已经算好的**逐件摘要（`_payload_digest` 是纯字典命中），省掉 2815 次编码 + 哈希；③ `_keys_of` 增逐件内容键缓存（键 = 文件名 stem + 正文 sha256）。
+  ③ **判据**：`test_asset_density.KeysOfCacheTest`（与**未缓存参考实现**在真仓库全部资产件上逐件比对 + 内容键敏感性）；`CorpusKeyCoverageTest`（**行为判据**：语料面里新增一件引用 ⇒ 统计必须跟着变，不许陈旧命中）；`SharedEnumerationEquivalenceTest.test_corpus_patterns_constant_covers_the_same_face`（新常量 `CORPUS_PATTERNS` 必须逐件等于原来那三条 rglob 面——**键面不许缩水**）。
+  ④ **实测**：`usage_scan` 未命中 **36 → 27 ms**、同内容命中 **~19 → ~12 ms**；其中 `count_keys_additive` **9.5 → 1.1 ms**、`sha256` 调用数 **1288 → 366**；`quality_depth.scan` **160 → ~150 ms**；`score.evaluate` 唯一新状态（3 轮）**305 → 296–309 ms**；**端到端（一次性唯一正文，4 样本中位）0.374 → 0.360 s**；同状态重放 **~51 ms**、树没变 **49–50 ms**、冷进程 **~1.69 s**。
+
 - **执行层：契约解析与包画像改「内容键」——守护口径下每次重命令省 ~42 ms（隔离 A/B）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
   ① **量到的东西（隔离 A/B，守护口径＝逐请求清空按根缓存）**：`_module_contracts` 冷算 **34.2 ms** → 内容键命中 **1.1 ms**；`_core_contracts` **2.9 → 0.1 ms**；`profiles` **11.2 → 5.3 ms**（其中 5.3 ms 主要是它自己的面指纹 + 命中后的深拷贝）。三处合计 **~42 ms/次请求**。
   ② **为什么以前每次都要重算**：守护**逐请求**清空**按根键**的进程缓存（`pack_combo.cache_clear()`），而这两个契约函数与 `profiles()` 此前**只有按根缓存** ⇒ 每个新内容状态都要把 235 份社区模块 + 13 份核心模块的 `machine_contract` 围栏重新解析、把 111 个包画像重新装配一遍。

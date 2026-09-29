@@ -199,6 +199,87 @@ class SharedEnumerationEquivalenceTest(unittest.TestCase):
             self.assertTrue(got, d)
             self.assertEqual(ref, got, "语料面与 rglob 不一致：%s" % d)
 
+    def test_corpus_patterns_constant_covers_the_same_face(self):
+        """`CORPUS_PATTERNS`（内容键用的语料面）必须**逐件**等于那三条 rglob 面——键面不许缩水。"""
+        base = Path(ROOT)
+        ref = sorted(p.relative_to(base).as_posix()
+                     for d in ("04_模块库", "community", "docs")
+                     for p in (base / d).rglob("*.md"))
+        with csc.read_memo():
+            got = sorted(r for pat in ad.CORPUS_PATTERNS for r in csc.iter_files(ROOT, pat))
+        self.assertTrue(got)
+        self.assertEqual(ref, got, "CORPUS_PATTERNS 与语料面不一致（内容键会漏件）")
+
+
+class KeysOfCacheTest(unittest.TestCase):
+    """`_keys_of` 的逐件内容键缓存：与**未缓存参考实现**逐件等价（真仓库资产件 + 合成件）。
+
+    依据（实测 2026-09-29）：`usage_scan` 要为 360 份资产件各跑四个正则取键（6.6 ms），而键集只是
+    「该件正文 + 文件名」的纯函数——改与资产无关的件时这一整笔应当为零。
+    """
+
+    @staticmethod
+    def _reference(path: Path, text: str):
+        import re
+        keys = set(re.findall(r"[A-Z][A-Z0-9_]*", path.stem))
+        head = text[:6000]
+        keys.update(re.findall(r"`([A-Z][A-Z0-9_-]{2,})`", head))
+        keys.update(re.findall(r"\"([A-Z][A-Z0-9_-]{2,})\"\s*:", head))
+        keys.update(re.findall(r"##\s*([A-Z][A-Z0-9_-]{2,})", head))
+        return sorted(keys)
+
+    def test_real_repo_assets_match_reference(self):
+        seen = 0
+        for pat in ad.ASSET_INPUTS:
+            for rel in csc.iter_files(ROOT, pat):
+                if rel.rsplit("/", 1)[-1] == "README.md":
+                    continue
+                p = Path(ROOT).joinpath(*rel.split("/"))
+                text = p.read_text(encoding="utf-8")
+                self.assertEqual(self._reference(p, text), ad._keys_of(p, text), rel)
+                seen += 1
+        self.assertGreater(seen, 50, "资产件太少，判据没测到东西")
+
+    def test_content_keyed_and_sensitive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "A01_样例.md"
+            p.write_text("正文 `A02-KEY` 与 \"A03\": 与 ## A04\n", encoding="utf-8")
+            ad._KEYS_OF_CACHE.clear()
+            first = ad._keys_of(p)
+            self.assertEqual(self._reference(p, p.read_text(encoding="utf-8")), first)
+            self.assertIs(first, ad._keys_of(p), "同内容第二次必须命中缓存（同一对象）")
+            p.write_text("正文 只有 A01\n", encoding="utf-8")
+            self.assertNotEqual(first, ad._keys_of(p), "正文一变必须重取（否则读到陈旧键集）")
+
+
+class CorpusKeyCoverageTest(unittest.TestCase):
+    """语料内容键换机器（逐件 `encode+sha256` → 常驻层摘要）后**覆盖面不许缩小**。
+
+    判据是**行为**：语料面里新增一件引用 ⇒ 统计必须跟着变（不许陈旧命中）。
+    """
+
+    def test_corpus_change_moves_stats(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            # 文件名即令牌：`A01.md` → 键 `A01`（`_keys_of` 的名称面是 `[A-Z][A-Z0-9_]*`，
+            # 所以 `A01_x.md` 会得到 `A01_`——这不是本判据要测的东西）
+            for rel, text in (("community/包甲/assets/A01.md", "A01 说明\n"),
+                              ("04_模块库/通用类/M00_y.md", "引用 A01 一次\n")):
+                path = os.path.join(tmp, *rel.split("/"))
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                    fh.write(text)
+            ad._CENSUS_CACHE.clear()
+            _, before = ad.usage_scan(tmp)
+            # 语料含资产件自己（community/**/*.md）+ 那份引用它的模块件 ⇒ 2 次引用
+            self.assertEqual(2, before["total_refs"], before)
+            again = os.path.join(tmp, "docs")
+            os.makedirs(again, exist_ok=True)
+            with open(os.path.join(again, "z.md"), "w", encoding="utf-8", newline="\n") as fh:
+                fh.write("再引用 A01 一次\n")
+            _, after = ad.usage_scan(tmp)
+            self.assertEqual(before["total_refs"] + 1, after["total_refs"],
+                             "语料新增一件引用后统计没变（陈旧命中）")
+
 
 class AssetDensityTest(unittest.TestCase):
     def test_repo_scan_clean(self):

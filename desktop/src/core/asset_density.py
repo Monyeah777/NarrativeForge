@@ -30,16 +30,30 @@ _CENSUS_CACHE_MAX = 64
 _FILE_COUNT_CACHE: Dict[Any, Dict[str, int]] = {}
 _FILE_COUNT_CACHE_MAX = 4096
 
+#: `_keys_of` 的**逐件内容键缓存**（键 = (文件名 stem, 正文 sha256)）。依据（实测 2026-09-29）：
+#: `usage_scan` 要为 360 份资产件各跑四个正则取键（实测 6.6 ms），而键集只是**该件正文 + 文件名**
+#: 的纯函数——改 `04_模块库`、文档、代码这类与资产无关的件时结果必然不变。
+_KEYS_OF_CACHE: Dict[Any, List[str]] = {}
+_KEYS_OF_CACHE_MAX = 4096
+
+#: `usage_scan` 的**语料面**（就是它数的那些件）。指纹走常驻层**逐件摘要**，不再把 3.5 MB 正文
+#: 逐件 `encode()` 后重哈希一遍（实测那条 2815 件的哈希环占 `usage_scan` 的三分之一）。
+CORPUS_PATTERNS = ("04_模块库/**/*.md", "community/**/*.md", "docs/**/*.md")
+
 
 
 def _keys_of(path: Path, text: Optional[str] = None) -> List[str]:
     """文件名令牌 ∪ 正文键声明（`text` 可由调用方传入——避免同一份件被读两遍）。"""
-    keys = set(re.findall(r"[A-Z][A-Z0-9_]*", path.stem))
     if text is None:
         try:
             text = csc.read_text_cached(path)
         except OSError:
-            return sorted(keys)
+            return sorted(set(re.findall(r"[A-Z][A-Z0-9_]*", path.stem)))
+    ck = (path.stem, hashlib.sha256(text.encode("utf-8")).hexdigest())
+    hit = _KEYS_OF_CACHE.get(ck)
+    if hit is not None:                       # 键集只是**该件正文 + 文件名**的纯函数（键即内容）
+        return hit
+    keys = set(re.findall(r"[A-Z][A-Z0-9_]*", path.stem))
     head = text[:6000]
     # 条目键面（2026-09-23 对齐）：除大写下划线键外，仓库里还大量使用**带连字符的条目键**
     # （如域包的 `C01-01` / `A08-07` —— 经 asset_get('<资产键>','<条目键>') 真实可寻址）。
@@ -47,7 +61,11 @@ def _keys_of(path: Path, text: Optional[str] = None) -> List[str]:
     keys.update(re.findall(r"`([A-Z][A-Z0-9_-]{2,})`", head))
     keys.update(re.findall(r"\"([A-Z][A-Z0-9_-]{2,})\"\s*:", head))
     keys.update(re.findall(r"##\s*([A-Z][A-Z0-9_-]{2,})", head))
-    return sorted(keys)
+    got = sorted(keys)
+    if len(_KEYS_OF_CACHE) >= _KEYS_OF_CACHE_MAX:
+        _KEYS_OF_CACHE.clear()
+    _KEYS_OF_CACHE[ck] = got
+    return got
 
 
 #: `scan()` / `thickness_scan()` 的全部输入：就是它们枚举的那两条**资产面**
@@ -193,7 +211,7 @@ def count_keys(blob: str, keys) -> Dict[str, int]:
     return matcher.counts(blob)
 
 
-def count_keys_additive(texts, keys) -> Dict[str, int]:
+def count_keys_additive(texts, keys, digests=None) -> Dict[str, int]:
     """**逐件计数再相加**（等价于把语料用 `"\\n"` 连起来数一次），但**逐件**结果可缓存。
 
     为什么两者等价（可证）：连接语料用的是 `"\\n"` 分隔，而**任何键都不可能含换行**（资产 id 是
@@ -206,6 +224,10 @@ def count_keys_additive(texts, keys) -> Dict[str, int]:
     就要把 3.5 MB 重扫一遍。
 
     fail-closed：键里只要出现换行（当前不可能），就退回整条拼接计数——正确性优先于省算。
+
+    `digests`（可选，与 `texts` 一一对应）让调用方交出**已经算过的内容摘要**（常驻层逐件摘要），
+    省掉这里再 `sha256(text.encode())` 一遍——一次新内容状态里那是 2815 次编码 + 哈希（实测 ~5 ms）。
+    摘要口径与这里现算的完全一致（同一 payload 语义，见 `conformance_scan._payload_digest`）。
     """
     keys = [str(k) for k in keys]
     if any("\n" in k for k in keys):
@@ -213,8 +235,10 @@ def count_keys_additive(texts, keys) -> Dict[str, int]:
     keys_key = hashlib.sha256("\x01".join(sorted(keys)).encode("utf-8")).hexdigest()
     matcher = _matcher(keys)                        # 自动机按**键集**复用（别逐件重建，实测慢 6 倍）
     totals = {k: 0 for k in keys}
-    for text in texts:
-        ck = (hashlib.sha256(text.encode("utf-8")).hexdigest(), keys_key)
+    for idx, text in enumerate(texts):
+        dg = digests[idx] if digests is not None else \
+            hashlib.sha256(text.encode("utf-8")).hexdigest()
+        ck = (dg, keys_key)
         per = _FILE_COUNT_CACHE.get(ck)
         if per is None:
             per = matcher.counts(text) if matcher is not None \
@@ -242,20 +266,12 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                 continue
             for k in _keys_of(Path(rel)):
                 keys.setdefault(k, rel)
-    corpus: List[str] = []
-    # `(r/base).rglob("*.md")` ≡ `Path.glob(base + "/**/*.md")`：改走共享枚举器后，
-    # 已在作用域里建过的子树清单直接复用（community 这棵树不再被第三次走）。
-    for base in ("04_模块库", "community", "docs"):
-        for rel in csc.iter_files(root, base + "/**/*.md"):
-            try:
-                corpus.append(csc.read_text_cached(Path(root) / rel))
-            except OSError:
-                continue
-    # 内容键：语料（逐件 + 分隔符，防止跨件拼接歧义）与键集一起哈希。
+    # 内容键：**语料面指纹**（常驻层逐件摘要，不读正文）＋ 键集。口径与旧实现一致（同一批件、
+    # 同一 payload 语义），但不再把 3.5 MB 正文逐件 `encode()` + 重哈希——而且键能**先算**，
+    # 于是命中时**根本不必把 2815 份语料读成列表**（旧实现是「先全读、再查表」）。
     h = hashlib.sha256()
-    for text in corpus:
-        h.update(text.encode("utf-8"))
-        h.update(b"\x00")
+    h.update(csc.content_fingerprint(root, CORPUS_PATTERNS).encode("utf-8"))
+    h.update(b"\x00")
     for k in sorted(keys):
         h.update(k.encode("utf-8"))
         h.update(b"\x01")
@@ -275,7 +291,16 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         # （逐件 Aho–Corasick + 非重叠贪心，再相加；与「拼成一整条再数」逐键等价，见其 docstring），
         # 于是**逐件**结果能按文件内容缓存：真编辑只让被改的那一件重算。实测整条 3.11 s → ~0.2 s，
         # 且改一件之后再算只需那一件的钱。
-        counts = count_keys_additive(corpus, keys)
+        corpus: List[str] = []
+        digests: List[str] = []
+        for rel in (r for pat in CORPUS_PATTERNS for r in csc.iter_files(root, pat)):
+            try:
+                corpus.append(csc.read_text_cached(Path(root) / rel))
+            except OSError:
+                continue
+            # 摘要已在常驻层（上面的语料面指纹刚把它们算齐）⇒ 这里只是取用，不再编码 + 重哈希
+            digests.append(csc._payload_digest(root, rel).hex())
+        counts = count_keys_additive(corpus, keys, digests=digests)
         disk_cache.store("census", dkey, counts)
     if ckey not in _CENSUS_CACHE:
         if len(_CENSUS_CACHE) >= _CENSUS_CACHE_MAX:
