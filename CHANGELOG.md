@@ -2,6 +2,14 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：purity 的键改「两张面指纹组合」（`purity.scan` 64 → 51 ms；端到端 0.344 → 0.332 s）**（**作者目标**：「……测量缓存，数据结构跃迁……达到顶尖工业水准」）：
+  ① **量到的东西**：`purity.scan` 的 64 ms 里 **33.9 ms 是两个宽面指纹**——它把 `patterns()`（自有面 + 阶梯面 = 54 条）交给 `memo_pair` 枚举一遍，而 `layer_model.scan()` 内部又把**同一张 45 条的阶梯面**枚举第二遍。
+  ② **改法**：`conformance_scan.memo_pair` 新增可选 `fp`（允许调用方交出**已经算好的**指纹）；`layer_model` 新增 `face_fingerprint(root)`（本阶面的独立入口）并让 `scan(_fp=...)` 接收它；`purity.scan` 改成 `sha256(自有面指纹 + 阶梯面指纹)` 取键，并把阶梯面指纹**传下去**——同一张面只枚举一次。
+  ③ **判据**：`test_purity_scan.PurityKeyCompositionTest`——`set(patterns()) == set(OWN_PATTERNS) | set(lm.patterns(root))`（**组合键的覆盖面必须等于原来那一张合面，少一条就是缓存缺口**）+ 两张面指纹各自稳定。
+  ④ **实测**：`purity.scan` **64 → 51–53 ms**；`content_fingerprint` **33.9 → 17.4 ms**（2 次：自有面 + 阶梯面）；`iter_files` **93 → 54 次**；`score.evaluate` 唯一新状态（3 轮）**300 → 277–301 ms**；**端到端（4 样本中位）0.344 → 0.332 s**；冷进程 **~1.67 s 不变**。
+  ⑤ **同轮踩到并当场修掉的一处**：第一版在**冷进程**里也先取两张面的指纹——而冷进程本来就因「宽面在冷进程里不缓存」而整笔跳过，结果把冷进程推慢到 **1.94 s（+250 ms）**。补上 `resident_active()` 前置判断后回到 1.67 s，这条也写进了代码注释。
+  ⑥ **同轮试过并否决的一招**：给冷进程的逐件摘要上**线程池**（IO 密集）——实测**更慢 3 倍**（冷进程 `nf score` **1429 → 4050 ms**，`read_text_cached` 调用 5731 → 11456 次）：GIL 争用 + 小文件读盘摊不开。改动已回退，结论留档。
+
 - **执行层：逐包内容键改「一次枚举 + 按包切片」（`iter_files` 619 → 199 次 / 35.5 → 27.8 ms；端到端 0.360 → 0.344 s）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
   ① **量到的东西**：一次 `nf score` 里 `iter_files` 被调 **619 次（35.5 ms）**，其中约 **424 次**是 `output_forms` 的逐包内容键在按包拼模式（106 包 × 4 条面）；`community/*/outputs/INDEX.json` 一条就被三个扫描器各枚举一遍。
   ② **改法**：`conformance_scan` 新增 `fingerprint_of(root, rels)`（按**给定路径清单**取指纹，口径与 `content_fingerprint` 逐位相同；后者改为它的薄包装）；`output_forms.pack_slice_index(root)` **一次枚举**四条包面并按包切片，逐包键改用它。

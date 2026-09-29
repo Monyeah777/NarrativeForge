@@ -779,7 +779,8 @@ _DERIVED_MEMO: Dict[str, Dict[str, Any]] = {}
 
 
 def memo_pair(tag: str, patterns, impl, root: str = ".",
-              require_resident: bool = False, keep: int = 8, code_modules=None):
+              require_resident: bool = False, keep: int = 8, code_modules=None,
+              fp: str = None):
     """`(issues, stats)` 形状的派生结果缓存（**进程内 + 持久**两层；键即内容）。
 
     纪律与 `scan()` 完全一致：输入面（`patterns`，须穷举）变 ⇒ 指纹变 ⇒ 必重算；持久层键里
@@ -791,10 +792,14 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
 
     `code_modules`（如 `("core.schema_lint",)`）把**代码面**缩到「这段派生自己的导入闭包」——改别的
     模块不再换键（闭包算不出/含动态导入时自动退回整块代码面，见 `disk_cache.key`）。
+
+    `fp` 可传**已经算好的指纹**（口径须与 `content_fingerprint(root, patterns)` 一致）：调用方若有
+    更省的取键方式（例如把两张面各自的指纹组合起来），就不必在这里把面再枚举一遍。
     """
     if require_resident and not resident_active():
         return impl(root)
-    fp = content_fingerprint(root, patterns)
+    if fp is None:
+        fp = content_fingerprint(root, patterns)
     mem = _DERIVED_MEMO.setdefault(tag, {})
     hit = mem.get(fp)
     if hit is None:

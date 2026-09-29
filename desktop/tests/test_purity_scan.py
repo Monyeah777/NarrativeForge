@@ -45,6 +45,29 @@ def _reference_doc_facts(text):
             tuple((t, tuple(v)) for t, v in seen.items() if len(v) > 1))
 
 
+class PurityKeyCompositionTest(unittest.TestCase):
+    """purity 的键由**两张面各自的指纹组合**——覆盖面必须等于原来那一张合面（不许缩）。
+
+    依据（实测 2026-09-29）：过去把 `patterns()`（自有面 + 阶梯面，54 条）交给 `memo_pair` 枚举一遍，
+    而 `layer_model.scan()` 内部又把**同一张 45 条的阶梯面**枚举第二遍 ⇒ 一次 `nf score` 白花 ~10 ms。
+    改成「自有面指纹 + 阶梯面指纹」组合键、并把阶梯面指纹传给 `layer_model.scan(_fp=...)` 之后，
+    `purity.scan` **64 → 51 ms**（`content_fingerprint` 33.9 → 17.4 ms × 2、`iter_files` 93 → 54 次）。
+    """
+
+    def test_composed_faces_cover_exactly_the_old_face(self):
+        from core import layer_model as lm
+        self.assertEqual(set(ps.patterns(ROOT)),
+                         set(ps.OWN_PATTERNS) | set(lm.patterns(ROOT)),
+                         "组合键的两张面合起来必须等于 patterns()——少一条就是缓存面缺口")
+
+    def test_each_face_fingerprint_is_stable(self):
+        from core import conformance_scan as csc
+        from core import layer_model as lm
+        self.assertEqual(csc.content_fingerprint(ROOT, ps.OWN_PATTERNS),
+                         csc.content_fingerprint(ROOT, ps.OWN_PATTERNS), "同内容必须同指纹")
+        self.assertEqual(lm.face_fingerprint(ROOT), lm.face_fingerprint(ROOT))
+
+
 class DocFactsTest(unittest.TestCase):
     """R1–R3 的逐件事实缓存（`_doc_facts`）：与未缓存参考实现逐字段等价（真仓库文档 + 合成样本）。
 

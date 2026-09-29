@@ -311,9 +311,7 @@ def patterns(root: str = ".") -> tuple:
     为什么带上阶梯面：本函数把 `layer_model.scan()` 的结果并进 issues ⇒ 阶梯的输入也是本函数的
     输入，漏了它就会出现「改资产却不重算纯度」的陈旧。
     """
-    own = ("01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
-           "07_官方核心出厂与社区预设导航.md", "protocol/*.json", "verify.sh",
-           "desktop/src/**/*.py", "scripts/**/*", ".github/scripts/*.py")
+    own = OWN_PATTERNS
     try:
         from core import layer_model as _lm
         return tuple(dict.fromkeys(own + tuple(_lm.patterns(root))))
@@ -321,18 +319,40 @@ def patterns(root: str = ".") -> tuple:
         return own
 
 
+#: **自有面**（本模块自己读的那些件）：代码 / 协议文档 / 判据脚本。
+OWN_PATTERNS = ("01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
+                "07_官方核心出厂与社区预设导航.md", "protocol/*.json", "verify.sh",
+                "desktop/src/**/*.py", "scripts/**/*", ".github/scripts/*.py")
+
+
 def scan(root: str = ".") -> tuple:
     """纯度体检（R1–R7）。派生结果按**输入内容指纹**缓存（输入面见 `patterns()`，很宽）。
 
     宽面只在常驻语料层在位时走缓存（`require_resident=True`）——理由见 `layer_model.scan`。
+
+    **键的取法（2026-09-29 改，实测）**：过去直接把 `patterns(root)`（自有面 + 阶梯面，54 条）
+    交给 `memo_pair` 枚举一遍，而 `layer_model.scan()` 内部又把**同一张阶梯面**（45 条）枚举第二遍
+    ⇒ 一次 `nf_score` 白花 ~10 ms。现在把两张面**各自的指纹组合**成键，并把阶梯面指纹**传给**
+    `layer_model.scan(_fp=...)`：覆盖面与旧口径完全相同（自有面 ∪ 阶梯面），只枚举一次。
     """
-    return csc.memo_pair("purity-scan", patterns(root), _scan_impl, root,
-                         require_resident=True,
-                         code_modules=("core.purity_scan",))
+    if not csc.resident_active():
+        # **冷进程**：`memo_pair` 反正不会走缓存（宽面在冷进程里宁可不算，见 `layer_model.scan`），
+        # 那就**连指纹都别取**——否则这一改会把冷进程推慢 ~250 ms（实测踩过）。
+        return _scan_impl(root)
+    try:
+        from core import layer_model as _lm
+        layer_fp = _lm.face_fingerprint(root)
+    except Exception:                                    # noqa: BLE001 - 取不出就退回整面
+        return csc.memo_pair("purity-scan", patterns(root), _scan_impl, root,
+                             require_resident=True, code_modules=("core.purity_scan",))
+    own_fp = csc.content_fingerprint(root, OWN_PATTERNS)
+    fp = hashlib.sha256(("%s\x00%s" % (own_fp, layer_fp)).encode("utf-8")).hexdigest()
+    return csc.memo_pair("purity-scan", patterns(root), lambda r: _scan_impl(r, layer_fp), root,
+                         require_resident=True, code_modules=("core.purity_scan",), fp=fp)
 
 
-def _scan_impl(root: str = ".") -> tuple:
-    """真算（未命中缓存时走这里）。"""
+def _scan_impl(root: str = ".", _layer_fp: str = None) -> tuple:
+    """真算（未命中缓存时走这里）；`_layer_fp` 由 `scan()` 传下来，避免走两次阶梯面。"""
     issues = []
     stats = {"docs": 0, "raises": 0, "imports": 0, "import_residue": []}
     # R1/R2/R3：协议层文档
@@ -449,7 +469,7 @@ def _scan_impl(root: str = ".") -> tuple:
     try:
         from core import layer_model as _lm
         if os.path.isfile(os.path.join(root, _lm.DECL_REL)):
-            _ladder_issues, _ladder_stats = _lm.scan(root)
+            _ladder_issues, _ladder_stats = _lm.scan(root, _fp=_layer_fp)
             stats["layers"] = _ladder_stats
             issues += _ladder_issues
         else:

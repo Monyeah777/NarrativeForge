@@ -518,7 +518,18 @@ def patterns(root: str = ".") -> Tuple[str, ...]:
     return tuple(dict.fromkeys(out))
 
 
-def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+def face_fingerprint(root: str = ".") -> str:
+    """本阶输入面（`patterns(root)`）的内容指纹——**独立入口**，供「合成键」的调用方复用。
+
+    依据（实测 2026-09-29）：`purity_scan` 的面 = 自有面 + 本面（45 条模式、3439 件），而它内部
+    又要调 `layer_model.scan()`——两层各自把**同一张 45 条的面**枚举一遍，一次 `nf_score` 里
+    这一项就白花 ~10 ms。有了这个入口，purity 可以「自有面指纹 + 本面指纹」组合出键，并把这个
+    指纹**传给** `scan(_fp=...)`，同一张面只枚举一次（**键覆盖面一字未动**）。
+    """
+    return csc.content_fingerprint(root, patterns(root))
+
+
+def scan(root: str = ".", _fp: str = None) -> Tuple[List[str], Dict[str, Any]]:
     """阶梯体检 → (issues, stats)；issues 空 = 阶梯自洽（并入 check27 纯度面）。
 
     派生结果按**输入内容指纹**缓存（输入面见 `patterns()`：声明列了整棵语料，面很宽）。
@@ -527,7 +538,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """
     return csc.memo_pair("layer-model", patterns(root), _scan_impl, root,
                          require_resident=True,
-                         code_modules=("core.layer_model",))
+                         code_modules=("core.layer_model",), fp=_fp)
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

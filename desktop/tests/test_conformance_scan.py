@@ -441,9 +441,12 @@ class DerivedResultCacheTest(unittest.TestCase):
             real_impl = getattr(owner, attr)
             calls = {"n": 0}
 
-            def counting(root=".", _real=real_impl):
+            # 透传额外实参：有的站点会把「已经算好的面指纹」顺手传给自己的 impl
+            # （如 `purity_scan` 把阶梯面指纹交给 `_scan_impl`，免得同一张面枚举两遍）。
+            # 本判据只数**调用次数**，签名变化不该让它误报。
+            def counting(root=".", *extra, _real=real_impl, **kwargs):
                 calls["n"] += 1
-                return _real(root)
+                return _real(root, *extra, **kwargs)
 
             with self._resident(site):
                 site["clear"]()
