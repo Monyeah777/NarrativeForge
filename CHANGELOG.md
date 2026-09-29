@@ -2,6 +2,13 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：热路径上三处「隐式逐条 stat / glob」换共享枚举器（stat 面 29–33 → 8.8–12.5 ms；端到端 0.466 → 0.427 s）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
+  ① **扫法**：不再逐个猜函数，而是把 `pathlib` 与 `glob` 的调用点**整体记账**（`Path.is_file` / `is_dir` / `iterdir` / `rglob` / `glob` / `exists` + `glob.glob`，按「方法 @ 调用点 file:line」汇总**真墙钟**与次数），在守护口径（`reset_process_caches()` + 确知变更）下跑一次唯一新状态——一眼看出 money 花在哪一行。
+  ② **抓到的三处**（都不是新代码，是老写法留在热路径上）：`conformance_scan` 的协议包枚举 `glob.glob(community/*/protocol.yaml)` **9–13 ms**；`pack_combo._module_contracts` 的 `Path.glob("community/*/modules/*.md")`——`Path.glob` 非末段逐条 `is_dir()` ⇒ **111 次** ≈ **10 ms**（同一张面走共享枚举器 0.4 ms）；`layer_model._rule_issues` 的 L9 逐 pattern `Path.glob`（6 条 derived），与同一次扫描里其它展开是**两套口径**。
+  ③ **改法**：三处一律走 `conformance_scan.iter_files`（目录清单已在常驻层 `dirs` 桶里），形态与旧口径**同契约**（`pack_combo` 还原成 `Path`、`conformance_scan` 还原成 os 路径、L9 直接走同一次扫描的 `_expand_many` 缓存）。
+  ④ **判据**：新增 `test_pack_combo.ContractEnumerationTest`（两张面逐件比对 `Path.glob` 口径）；L9 的等价性由**既有** `test_layer_model.test_expand_fast_path_matches_reference` 兜住（它本来就逐 pattern 覆盖 `derived`）；协议包面由 `test_conformance_scan` 的「读盘面 ⊆ 输入面」判据一起守着。
+  ⑤ **实测**：一次新状态的 **stat/glob 面合计 29–33 → 8.8–12.5 ms**；`conformance_scan.scan` **47 → 33 ms**；`score.evaluate` 唯一新状态（3 轮）**402 → 346 ms**；**端到端（一次性唯一正文，4 样本中位）0.466 → 0.427 s**；同状态重放 **~52 ms**、树没变 **49–55 ms**、冷进程 **~1.68 s**。
+
 - **执行层：包目录枚举换共享枚举器——`_pack_dirs` 每次 20 ms → 0.25 ms（`index_verify` 75 → 35–44 ms，端到端新状态 0.573 → 0.466 s）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
   ① **量到的东西（计时器包在函数对象上）**：一次唯一新内容状态里 `output_forms._pack_dirs()` 被调 **2 次**（`index_verify` + `meter`）、**每次 20 ms**——它是 `Path.iterdir()` + 逐条 `d.is_dir()` + `INDEX.json.is_file()`，106 个包 ⇒ 200+ 次 stat；`pack_combo._pack_dirs()` 是同一个写法（111 个目录，而守护**逐请求**清空按根缓存，`profiles()` 重算时要再付一遍）。顺带**纠正上一轮的一处估计**：`index_verify` 的那两处 `deepcopy` 实测 **0 ms**（返回的是聚合统计、不是 1500 行明细），所以「去掉一次深拷贝」是顺手，不是收益。
   ② **改法**：两处都改走共享枚举器（`community/*/outputs/INDEX.json` / `community/*/protocol.yaml`；目录清单已在常驻层 `dirs` 桶里），返回形态与旧实现**同契约**（`output_forms` 给包名、`pack_combo` 给 `Path`）。

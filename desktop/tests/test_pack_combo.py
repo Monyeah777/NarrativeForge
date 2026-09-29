@@ -104,6 +104,24 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
                                 "输入一变指纹必须变（否则会读到陈旧派生结果）")
 
 
+class ContractEnumerationTest(unittest.TestCase):
+    """模块契约面换共享枚举器（`Path.glob` → `csc.iter_files`）后**面必须逐件一致**。
+
+    依据（实测 2026-09-29）：`Path.glob("community/*/modules/*.md")` 在非末段逐条 `is_dir()`——
+    **111 次**，一次新内容状态里独占 ~10 ms（占该状态 stat 面的三分之一）；共享枚举器 **~0.4 ms**。
+    """
+
+    def test_faces_match_pathlib_glob(self):
+        from pathlib import Path
+        from core import conformance_scan as csc
+        for pattern in ("community/*/modules/*.md", "04_模块库/*/*.md"):
+            want = sorted(p.relative_to(ROOT).as_posix()
+                          for p in Path(ROOT).glob(pattern) if p.is_file())
+            got = sorted(csc.iter_files(ROOT, pattern))
+            self.assertTrue(want, "面 %s 为空，判据没测到东西" % pattern)
+            self.assertEqual(want, got, "面 %s 与旧枚举不一致（换实现改动了面）" % pattern)
+
+
 class PackDirEnumerationTest(unittest.TestCase):
     """`pack_combo._pack_dirs()` 换枚举器（`iterdir` + 逐条 stat → `csc.iter_files`）后面必须一致。
 

@@ -376,7 +376,11 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
 
     # L9 豁免诚实
     for pattern in doc.get("derived") or []:
-        if not _expand(root, [pattern]):
+        # 走**快路径**（子树索引 + 正则；与参考实现 `_expand` 的等价性由
+        # `test_layer_model.test_expand_fast_path_matches_reference` 逐 pattern 守着）。
+        # 实测（2026-09-29）：这里原先是逐 pattern 的 `Path.glob`（本仓 6 条 derived，
+        # 含两条目录通配），与同一次扫描里其它展开走的是两套口径。
+        if not _expand_many(root, [pattern], cache):
             issues.append("L9 derived 条目命中零文件：%s（修复指引：删掉该豁免或修正 glob）"
                           % pattern)
 

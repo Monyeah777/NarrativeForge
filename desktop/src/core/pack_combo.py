@@ -142,6 +142,18 @@ def _parse_protocol(path: Path) -> Dict[str, Any]:
     return out
 
 
+def _face_paths(root: str, pattern: str) -> List[Path]:
+    """按模式枚举并还原成 `Path`（与 `Path(root).glob(pattern)` 同形态；有序）。
+
+    效率（实测 2026-09-29）：`Path.glob` 在非末段用 `is_dir()` 逐条判——`community/*/modules/*.md`
+    要判 **111 次** `is_dir`，一次新内容状态里这一笔独占 **~10 ms**（占该状态 stat 面的三分之一）；
+    共享枚举器的目录清单已在常驻层里，同一张面 **~0.4 ms**。面**逐件一致**由
+    `test_pack_combo.ContractEnumerationTest` 用旧口径原样重算比对。
+    """
+    base = Path(root)
+    return [base.joinpath(*rel.split("/")) for rel in csc.iter_files(root, pattern)]
+
+
 def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     """community/*/modules/*.md → {module id（全限定与裸号均可查）: 契约摘要}。"""
     key = _cache_key(root)
@@ -149,7 +161,7 @@ def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     if cached.get("contracts"):
         return cached["contracts"]
     out: Dict[str, Dict[str, Any]] = {}
-    for p in sorted(Path(root).glob("community/*/modules/*.md")):
+    for p in _face_paths(root, "community/*/modules/*.md"):
         try:
             text = csc.read_text_cached(p)
         except OSError:
@@ -185,7 +197,7 @@ def _core_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     会被误报为「未桥」。
     """
     out: Dict[str, Dict[str, Any]] = {}
-    for p in sorted(Path(root).glob("04_模块库/*/*.md")):
+    for p in _face_paths(root, "04_模块库/*/*.md"):
         try:
             text = csc.read_text_cached(p)
         except OSError:
