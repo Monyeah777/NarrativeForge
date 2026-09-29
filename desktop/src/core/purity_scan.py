@@ -51,6 +51,41 @@ PROTO_DOCS = ("01_核心协议.md", "02_联动注册表.md",
 _END_SHELL = re.compile(r"(?i)(android|APK|src/ui|Kivy)")
 _PRIVATE = re.compile(r"[A-Za-z]:\\|/tmp/|/Users/|/home/|TODO|FIXME|XXX|TBD")
 
+#: R1–R3 的**逐件**事实缓存（键 = 该件正文的 sha256）：`(端壳残留, 私货/可变物, 重复标题)`。
+#: 依据（实测 2026-09-29）：R1–R3 每次扫描都要把 4 份协议文档 `splitlines()` **三遍**、逐行跑
+#: 三个正则（`01_核心协议.md` 是长文，这笔实测占 `purity_scan._scan_impl` 的一半以上）；而这
+#: 三个事实只是**该件正文**的纯函数——改任何别的件（模块库、协议件、文档）时这一整笔应当为零。
+#: 纪律同 `layer_model._entry_imports` / 本模块 `_facts_for`：键即内容，值里**不含路径**。
+_DOC_FACTS_CACHE: dict = {}
+_DOC_FACTS_MAX = 64
+
+
+def _doc_facts(text: str):
+    """一份协议文档的 R1–R3 事实：`(端壳命中, 私货命中, 重复标题)`（行号 + 已截断正文 / 标题）。
+
+    等价性由 `test_purity_scan.DocFactsTest` 守着：用**未缓存的参考实现**（原先那三段
+    「三遍 `splitlines()` + 逐行正则」原样搬进测试）在真仓库 4 份文档与合成样本上逐字段比对。
+    """
+    key = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    hit = _DOC_FACTS_CACHE.get(key)
+    if hit is not None:
+        return hit
+    shell, private, seen = [], [], {}
+    for i, ln in enumerate(text.splitlines(), 1):     # `splitlines` 只做一遍（过去三遍）
+        if _END_SHELL.search(ln):
+            shell.append((i, ln.strip()[:80]))
+        if _PRIVATE.search(ln):
+            private.append((i, ln.strip()[:80]))
+        m = _HEAD.match(ln)
+        if m:
+            seen.setdefault(m.group(1).strip(), []).append(i)
+    got = (tuple(shell), tuple(private),
+           tuple((t, tuple(v)) for t, v in seen.items() if len(v) > 1))
+    if len(_DOC_FACTS_CACHE) >= _DOC_FACTS_MAX:
+        _DOC_FACTS_CACHE.clear()
+    _DOC_FACTS_CACHE[key] = got
+    return got
+
 #: R5 硬依赖白名单（**登记**的第三方硬 import：允许直接 import）
 HARD_ALLOW = {
     "yaml": "PyYAML（仓库既有依赖；check16/28 同源解析，见 CONTRIBUTING §4.2 例外）",
@@ -307,26 +342,15 @@ def _scan_impl(root: str = ".") -> tuple:
             continue
         text = csc.read_text_cached(path)          # 共享语料读：一次只读调用内同件只读一遍
         stats["docs"] += 1
+        shell_hits, private_hits, dup_titles = _doc_facts(text)   # 键即内容：没改就不重扫
         if name in ("01_核心协议.md", "02_联动注册表.md"):
-            for i, ln in enumerate(text.splitlines(), 1):
-                if _END_SHELL.search(ln):
-                    issues.append("%s:%d 端壳/APK 残留：%s"
-                                  % (name, i, ln.strip()[:80]))
-        for i, ln in enumerate(text.splitlines(), 1):
-            if _PRIVATE.search(ln):
-                issues.append("%s:%d 私货/可变物：%s"
-                              % (name, i, ln.strip()[:80]))
-        seen = {}
-        for i, ln in enumerate(text.splitlines(), 1):
-            m = _HEAD.match(ln)
-            if not m:
-                continue
-            title = m.group(1).strip()
-            seen.setdefault(title, []).append(i)
-        for title, lines in seen.items():
-            if len(lines) > 1:
-                issues.append("%s 重复标题「%s」：行 %s"
-                              % (name, title, ",".join(map(str, lines))))
+            for i, ln in shell_hits:
+                issues.append("%s:%d 端壳/APK 残留：%s" % (name, i, ln))
+        for i, ln in private_hits:
+            issues.append("%s:%d 私货/可变物：%s" % (name, i, ln))
+        for title, lines in dup_titles:
+            issues.append("%s 重复标题「%s」：行 %s"
+                          % (name, title, ",".join(map(str, lines))))
     # R4：错误信息审计（desktop/src/core/*.py）
     # R4/R5/R6 共用一份「读 + parse + walk」：同一批 core/*.py 过去被 R4 与 R5 各自 parse
     # 一遍、同一棵树被 walk 四遍（见 `_ast_facts`）。

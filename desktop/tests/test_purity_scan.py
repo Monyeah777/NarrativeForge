@@ -27,6 +27,61 @@ def _write(root, rel, text):
     return path
 
 
+def _reference_doc_facts(text):
+    """**未缓存的参考实现**：原先 `_scan_impl` 里那三段「三遍 `splitlines()` + 逐行正则」原样搬来。"""
+    shell, private, seen = [], [], {}
+    for i, ln in enumerate(text.splitlines(), 1):
+        if ps._END_SHELL.search(ln):
+            shell.append((i, ln.strip()[:80]))
+    for i, ln in enumerate(text.splitlines(), 1):
+        if ps._PRIVATE.search(ln):
+            private.append((i, ln.strip()[:80]))
+    for i, ln in enumerate(text.splitlines(), 1):
+        m = ps._HEAD.match(ln)
+        if not m:
+            continue
+        seen.setdefault(m.group(1).strip(), []).append(i)
+    return (tuple(shell), tuple(private),
+            tuple((t, tuple(v)) for t, v in seen.items() if len(v) > 1))
+
+
+class DocFactsTest(unittest.TestCase):
+    """R1–R3 的逐件事实缓存（`_doc_facts`）：与未缓存参考实现逐字段等价（真仓库文档 + 合成样本）。
+
+    依据（实测 2026-09-29）：这三条规则过去每次扫描都把 4 份协议文档 `splitlines()` **三遍**、
+    逐行跑三个正则，占 `purity_scan._scan_impl` 的一半以上；而事实只是**该件正文**的纯函数。
+    """
+
+    def test_real_repo_docs_match_reference(self):
+        seen = 0
+        for name in ps.PROTO_DOCS:
+            p = Path(ROOT) / name
+            if not p.is_file():
+                continue
+            text = p.read_text(encoding="utf-8")
+            self.assertEqual(_reference_doc_facts(text), ps._doc_facts(text),
+                             "%s 的事实与参考实现不一致" % name)
+            seen += 1
+        self.assertGreaterEqual(seen, 4, "协议文档太少，判据没测到东西")
+
+    def test_synthetic_samples_match_reference(self):
+        samples = ["",
+                   "# 标题\n## 标题\n",
+                   "正文\r\napk 端壳\r\n## A\n## B\n## A\n",
+                   "路径 C:\\Users\\x 与 TODO 与 /tmp/x\n# 同题\n# 同题\n",
+                   "\n".join("第 %d 行" % i for i in range(60)) + "\nKivy\n"]
+        for text in samples:
+            self.assertEqual(_reference_doc_facts(text), ps._doc_facts(text), repr(text[:40]))
+
+    def test_cache_is_content_keyed(self):
+        text = "# 唯一标题\n## 甲\n## 甲\n"
+        first = ps._doc_facts(text)
+        ps._DOC_FACTS_CACHE.clear()
+        self.assertEqual(first, ps._doc_facts(text), "同内容第二次必须逐字段相同")
+        self.assertEqual((("甲", (2, 3)),), first[2], "重复标题的行号清单不许变形")
+        self.assertEqual((), ps._doc_facts("# 唯一标题\n## 甲\n## 乙\n")[2], "无重复即空")
+
+
 class PurityScanTest(unittest.TestCase):
     def test_mutation_r1_end_shell_captured(self):
         with tempfile.TemporaryDirectory() as tmp:
