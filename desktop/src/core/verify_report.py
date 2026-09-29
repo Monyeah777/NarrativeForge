@@ -59,6 +59,7 @@ SPECS: Tuple[Tuple[str, str, str, str, str], ...] = (
      "drill_fidelity", "scan", "scan"),
     ("judgement_coverage", "判据接线覆盖（暴露 scan() 的判据必须有消费者或例外登记）",
      "judgement_coverage", "scan", "scan"),
+    ("workflow_policy", "工作流供应链策略（actions 钉 40 位 SHA + 显式最小 permissions）", "workflow_policy", "scan", "scan"),
 )
 
 
@@ -122,8 +123,7 @@ def build(root: str = ".") -> Dict[str, Any]:
         items.append({"id": sid, "name": name, "source": "%s.%s" % (mod, entry),
                       "status": status, "issues": len(issues), "warns": len(warns),
                       "stats": stats, "sample": [str(x)[:200] for x in issues[:3]]})
-    summary = {k: sum(1 for i in items if i["status"] == k)
-               for k in ("pass", "fail", "warn", "error")}
+    summary = {k: sum(1 for i in items if i["status"] == k) for k in ("pass", "fail", "warn", "error")}
     body = {"schema": SCHEMA, "items": items, "summary": summary,
             "declared": _declared(root)}
     digest_src = json.dumps(body, ensure_ascii=False, sort_keys=True).encode("utf-8")

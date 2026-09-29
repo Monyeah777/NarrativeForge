@@ -345,7 +345,7 @@
       "source": "code_metrics.scan",
       "stats": {
         "baseline": 155,
-        "files": 155,
+        "files": 157,
         "max_fn_cc": 150,
         "max_fn_lines": 951,
         "max_lines": 5416
@@ -390,7 +390,7 @@
       "source": "coupling_metrics.scan",
       "stats": {
         "cycles": 4,
-        "modules": 132,
+        "modules": 133,
         "registered_cycles": 4,
         "registered_sdp": 7,
         "sdp": 7
@@ -435,21 +435,35 @@
       "sample": [],
       "source": "judgement_coverage.scan",
       "stats": {
-        "consumed": 55,
+        "consumed": 56,
         "exceptions": 2,
         "orphans": 2,
-        "scanners": 57
+        "scanners": 58
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "workflow_policy",
+      "issues": 0,
+      "name": "工作流供应链策略（actions 钉 40 位 SHA + 显式最小 permissions）",
+      "sample": [],
+      "source": "workflow_policy.scan",
+      "stats": {
+        "pinned_uses": 28,
+        "with_explicit_permissions": 13,
+        "workflows": 13
       },
       "status": "pass",
       "warns": 0
     }
   ],
-  "root_digest": "8aa0b2b603cf7a99333740fb5fd05a9c9847bb747d343df190a6ee4c16e9516c",
+  "root_digest": "e13fbc3347f13478b2baabdb49cdf32f9190b1044193fb3255df9d6c080dbb50",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,
     "fail": 0,
-    "pass": 24,
+    "pass": 25,
     "warn": 2
   }
 }
