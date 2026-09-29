@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：包目录枚举换共享枚举器——`_pack_dirs` 每次 20 ms → 0.25 ms（`index_verify` 75 → 35–44 ms，端到端新状态 0.573 → 0.466 s）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
+  ① **量到的东西（计时器包在函数对象上）**：一次唯一新内容状态里 `output_forms._pack_dirs()` 被调 **2 次**（`index_verify` + `meter`）、**每次 20 ms**——它是 `Path.iterdir()` + 逐条 `d.is_dir()` + `INDEX.json.is_file()`，106 个包 ⇒ 200+ 次 stat；`pack_combo._pack_dirs()` 是同一个写法（111 个目录，而守护**逐请求**清空按根缓存，`profiles()` 重算时要再付一遍）。顺带**纠正上一轮的一处估计**：`index_verify` 的那两处 `deepcopy` 实测 **0 ms**（返回的是聚合统计、不是 1500 行明细），所以「去掉一次深拷贝」是顺手，不是收益。
+  ② **改法**：两处都改走共享枚举器（`community/*/outputs/INDEX.json` / `community/*/protocol.yaml`；目录清单已在常驻层 `dirs` 桶里），返回形态与旧实现**同契约**（`output_forms` 给包名、`pack_combo` 给 `Path`）。
+  ③ **判据**：`test_output_forms.PackEnumerationTest` 与 `test_pack_combo.PackDirEnumerationTest` 各自把**旧口径原样重算一遍**（`iterdir` + 逐条 `stat`）逐件比对——真仓库 **106** 个产出包 / **111** 个协议包，一条不差。
+  ④ **实测**：`_pack_dirs` **20 → 0.25 ms/次**；`index_verify` **75 → 35–44 ms**；`quality_depth.scan` **252 → 188 ms**（3 轮中位）；`score.evaluate` 唯一新状态 **429 → 402 ms**（3 轮中位）；**端到端（一次性唯一正文，4 个样本中位）0.573 → 0.466 s**（两个样本区间 0.438–0.522，**跑出 ±40 ms 抖动带**）；同状态重放 **~52 ms**、树没变 **54 ms**、冷进程 **~1.71 s**。
+
 - **执行层：落盘缓存的裁剪改「按批」——一次新内容状态省下 20 ms 的目录扫描（`store` 33–42 → 14–17 ms）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
   ① **量到的东西（逐标签计时）**：一次唯一新内容状态里有 **10–11 次 `disk_cache.store`**，合计 **33–42 ms**，其中 **20–23 ms 是 11 次 `prune`**——而 `prune` 每次都要 `glob("*.json")` + 对每个条目 `stat`。原注释写的是「小集合（≤64）每次写都裁（目录本身就小，成本可忽略）」：**实测这条假设不成立**（大集合早就为了同一个 O(n²) 理由改成 128 次一批）。
   ② **改法**：小集合标签也按批裁（`PRUNE_EVERY_SMALL = 8`）。**上界语义没变宽到无界**：每个标签最多 `keep + PRUNE_EVERY_SMALL` 份，`prune` 调用降到 **1/8**。

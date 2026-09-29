@@ -6,7 +6,7 @@ scope: 作者指令「两个域包产出几乎都是文本…产出没有功能�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/output_forms.py:90aa00f5727bb47fb76ae94817de81a2a1f112224c2ff886be22c9360b28c56c
+  - desktop/src/core/output_forms.py:9a2166c1f1386cc09cf71a8dbda451f8d04028465510df9a7f2d86eaf826139b
   - desktop/src/core/quant_metrics.py:fef3a30d38387f4aefcedbe2ecbb68867a488e705fb4b2576a9dddaa0a85e6a0
   - desktop/src/core/quality_depth_scan.py:6d3309e196276027f68c4e8dc2a997f1b95beeb7d62d42c47356d079985f6258
   - desktop/src/core/doc_hygiene.py:3ee632ef4def5bed7a35a082b8bf00e91a54ddd50f7188dd522b6f9e443555ad
@@ -15,7 +15,7 @@ subjects:
   - community/量化金融域包/outputs/INDEX.json:cfe9272a362e138f9cb6d15615176cbb348716336d31b372bf411645f74a7bb6
   - community/AI系统域包/outputs/INDEX.json:95103926c6736571fb38e5c95f8234b76dddf26ee286270e3bdbdf3fd4c33a99
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
-  - desktop/tests/test_output_forms.py:63d43197d5f2e4a229a88a6dde23cd63dc0ece8940ed43a0a05da761d1b6f44f
+  - desktop/tests/test_output_forms.py:916a9d97f44d831902c61949dcd4ca8ed951b66506406941f07d2f4a54268782
   - desktop/tests/test_quant_metrics.py:bed9322e0961f98df2b7f588fd0d81f1b2ff92b45373e0ecfc3cc7da8739d4f3
 ---
 

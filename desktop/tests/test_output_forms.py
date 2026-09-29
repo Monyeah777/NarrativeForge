@@ -23,6 +23,22 @@ from core import quant_metrics as qm  # noqa: E402
 ROOT = str(Path(__file__).resolve().parents[2])
 
 
+class PackEnumerationTest(unittest.TestCase):
+    """`_pack_dirs()` 换枚举器（`iterdir` + 逐条 stat → `csc.iter_files`）后**面必须逐件一致**。
+
+    依据（实测 2026-09-29）：原实现每次 **20 ms**（106 个包 ⇒ 200+ 次 stat），而 `index_verify`
+    与 `meter` 每个内容状态各调一次 ⇒ 一次新状态白花 **40 ms**；换枚举器后 **~1 ms**。提速只有在
+    「面不变」时才允许，所以这里把旧口径原样重算一遍逐件比对。
+    """
+
+    def test_matches_legacy_enumeration(self):
+        base = Path(ROOT) / "community"
+        legacy = sorted(d.name for d in base.iterdir()
+                        if d.is_dir() and (d / of.INDEX_REL).is_file())
+        self.assertTrue(legacy, "包面为空，判据没测到东西")
+        self.assertEqual(legacy, of._pack_dirs(ROOT), "包面与旧枚举不一致（换实现改动了面）")
+
+
 class ReadMemoTest(unittest.TestCase):
     """一次 `index_verify` 内的共享读：同文件只读一遍，且**不得跨调用**（不许陈旧）。
 

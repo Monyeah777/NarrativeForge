@@ -104,6 +104,23 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
                                 "输入一变指纹必须变（否则会读到陈旧派生结果）")
 
 
+class PackDirEnumerationTest(unittest.TestCase):
+    """`pack_combo._pack_dirs()` 换枚举器（`iterdir` + 逐条 stat → `csc.iter_files`）后面必须一致。
+
+    依据（实测 2026-09-29）：旧写法每次 **20 ms**（111 个目录 ⇒ 200+ 次 stat），而守护**逐请求**
+    清空按根缓存，`profiles()` 重算时要再付一遍；换共享枚举器后 **~0.5 ms**。提速只有在「面逐件
+    不变」时才允许，所以这里把旧口径原样重算一遍比对。
+    """
+
+    def test_matches_legacy_enumeration(self):
+        from pathlib import Path
+        base = Path(ROOT) / "community"
+        legacy = sorted(p for p in base.iterdir()
+                        if p.is_dir() and (p / "protocol.yaml").is_file())
+        self.assertTrue(legacy, "包面为空，判据没测到东西")
+        self.assertEqual(legacy, pc._pack_dirs(ROOT), "包面与旧枚举不一致（换实现改动了面）")
+
+
 class InputFaceTest(unittest.TestCase):
     """输入面的**枚举口径**与**逐件敏感性**：换实现不许悄悄改面或漏件。
 
