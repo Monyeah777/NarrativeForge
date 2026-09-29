@@ -23,29 +23,28 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-try:
-    import yaml  # PyYAML（仓库既有依赖）
-except Exception:  # pragma: no cover
-    yaml = None  # type: ignore[assignment]
+from core import lazy_yaml as _lyaml          # PyYAML **惰性**入口（`import yaml` ≈ 40 ms，见其 docstring）
+
+
+def __getattr__(name):                        # PEP 562：旧名字照旧可用，只是**惰性**（见 core.lazy_yaml）
+    if name in ("yaml", "SAFE_LOADER"):
+        return _lyaml.module() if name == "yaml" else _lyaml.safe_loader()
+    raise AttributeError(name)
+
 
 FENCE = re.compile(r"(?ms)```yaml\s*(.*?)```")
 _T = chr(96) * 3
-#: 统一的安全 YAML 加载器：优先 **libyaml 的 C 实现**（`CSafeLoader`），缺则回退纯 Python
-#: （实测 7.8× 快；本仓 1395 个 YAML 块两种加载器**逐块等价**，见 `test_conformance_scan`）。
-SAFE_LOADER = getattr(yaml, "CSafeLoader", None) or getattr(yaml, "SafeLoader", None)
 #: 围栏 YAML 解析缓存：键 = (marker, **文本本身**)，值 = 解析结果或 None（见 `_fence_yaml`）。
-#: **负结果（勿重复尝试）**：本缓存与 `_BODY_CACHE` **不落盘**——575 块「纯解析」139 ms vs「从盘
-#: 读回」108 ms，不值得多近千个缓存文件（cProfile 会把这类代码放大成 ~0.65 s）。
+#: **负结果（勿重复尝试）**：与 `_BODY_CACHE` 一样**不落盘**——575 块「纯解析」139 ms vs 读回 108 ms。
 _FENCE_CACHE: Dict[Tuple[str, str], Any] = {}
 _FENCE_CACHE_MAX = 4096
-#: 围栏**正文**缓存（键 = 正文本身）：给「自己抽正文」的调用方用（pipeline_loader / concept_graph
-#: 过去直接调 load_yaml，等于每轮都重解析——与 `_fence_yaml` 互补）。
+#: 围栏**正文**缓存（键 = 正文本身）：给「自己抽正文」的调用方用（与 `_fence_yaml` 互补）。
 _BODY_CACHE: Dict[str, Any] = {}
 _BODY_CACHE_MAX = 4096
 
 #: 「一次**只读**扫描内共享语料」的**四层作用域缓存**（`read_memo()` 框定、出口即清；聚合入口都是
-#: 纯读 ⇒ 冷却语义与「新起进程」一致）：读文本 / 列目录 / 按模式枚举 / 子树清单。依据（实测）：
-#: 一次 `evaluate` 打开 7833 次文件而只有 2354 个不同文件（70% 冗余读），并建过 5403 次 `scandir`。
+#: 纯读 ⇒ 冷却语义与「新起进程」一致）：读文本 / 列目录 / 按模式枚举 / 子树清单。实测一次
+#: `evaluate` 打开 7833 次文件而只有 2354 个不同文件（70% 冗余读），并建过 5403 次 `scandir`。
 _READ_MEMO: Optional[Dict[str, Any]] = None
 _DIR_MEMO: Optional[Dict[str, Any]] = None
 #: 与读缓存同生命周期的**逐件内容摘要**缓存（键＝文件）：输入面高度重叠，一次调用里每件只算一次。
@@ -726,13 +725,14 @@ def load_yaml(text: str) -> Any:
     新调用点一律走这里，别再各写一份 `yaml.safe_load`——否则「同一个仓库里两套解析器」
     既慢又会有语义分叉。
 
-    注意：这里**直接实例化安全加载器**（`SAFE_LOADER(text)` + `get_single_data()`），与
+    注意：这里**直接实例化安全加载器**（`safe_loader()(text)` + `get_single_data()`），与
     `yaml.safe_load()` 逐字同语义，但不写 `yaml.load(...)`——后者是纯度扫描 R6 登记的
     危险 sink（CWE-502 非安全载入），不该为了少写两行把禁用面叫回来。
     """
-    if yaml is None:
+    loader_cls = _lyaml.safe_loader()
+    if loader_cls is None:
         raise RuntimeError("PyYAML 不在（修复指引：pip install pyyaml）")
-    loader = SAFE_LOADER(text)
+    loader = loader_cls(text)
     try:
         return loader.get_single_data()
     finally:
@@ -769,7 +769,7 @@ def _parse_fence_yaml(text: str, marker: str) -> Any:
         if marker not in body:
             continue
         try:
-            parsed = load_yaml_cached(body) if yaml is not None else None
+            parsed = load_yaml_cached(body) if _lyaml.module() is not None else None
         except Exception:
             return None
         if isinstance(parsed, dict):
@@ -935,7 +935,7 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     issues: List[str] = []
-    if yaml is None:
+    if _lyaml.module() is None:
         issues.append("PyYAML 不在（conformance_scan 依赖仓库既有 yaml 依赖）")
         return issues, {"modules_mc": 0, "packages": 0, "export_items": 0}
 

@@ -100,11 +100,15 @@ def runtime_tag() -> str:
     global _RUNTIME
     if _RUNTIME is None:
         import sys
-        try:
-            import yaml
-            yaml_bit = "yaml=%s" % getattr(yaml, "__version__", "?")
-        except Exception:                              # noqa: BLE001 - 缺 PyYAML 是合法状态
-            yaml_bit = "yaml=none"
+        from core import lazy_yaml as _ly
+        ver = _ly.dist_version("PyYAML")               # 不导入 yaml 就取版本（实测 34.5 → 0.7 ms）
+        if not ver:                                    # 装法异常（vendored 等）→ 退回真导入，语义不变
+            try:
+                import yaml
+                ver = getattr(yaml, "__version__", "?")
+            except Exception:                          # noqa: BLE001 - 缺 PyYAML 是合法状态
+                ver = ""
+        yaml_bit = ("yaml=%s" % ver) if ver else "yaml=none"
         _RUNTIME = "%d.%d.%d|%s|%s" % (sys.version_info[0], sys.version_info[1],
                                        sys.version_info[2], os.name, yaml_bit)
     return _RUNTIME

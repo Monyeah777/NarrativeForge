@@ -34,11 +34,6 @@ _PATH_PLACEHOLDER = "\x00NFDOC\x00"
 _DOC_LINT_CACHE: Dict[Any, Any] = {}
 _DOC_LINT_CACHE_MAX = 4096
 
-try:
-    import yaml  # PyYAML（仓库既有依赖，check16 同源）
-except Exception:  # pragma: no cover - 环境缺依赖时由调用方提示
-    yaml = None  # type: ignore[assignment]
-
 SCHEMA_DIR = os.path.join("protocol", "schema")
 
 #: 本校验器**实现的 JSON-Schema 方言**（自实现子集的语义归属）。
@@ -336,7 +331,7 @@ def _lint_obj_cached(obj: Any, schema: Any, schema_fp: str, prefix: str) -> List
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     """真算（未命中缓存时走这里）。"""
     issues: List[str] = []
-    if yaml is None:
+    if _csc.yaml is None:                     # PyYAML 惰性（见 `core.lazy_yaml`）：只在这里问一次
         issues.append("PyYAML 不在（schema_lint 依赖仓库既有 yaml 依赖）")
         stats = {"schema_files": 0, "module_docs": 0, "contract_covered": 0,
                  "pipelines": 0, "protocols": 0, "asset_entries": 0}
