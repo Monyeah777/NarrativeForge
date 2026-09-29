@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """43 A1 —— 协议层 IDL schema 校验器单测（自实现 JSON-schema 子集 + 全量件扫描）。"""
+import json
 import os
 import unittest
 
@@ -167,6 +168,60 @@ class DocLintCacheTest(unittest.TestCase):
         self.assertEqual(2, len(sl._DOC_LINT_CACHE), "正文一变必须换键（否则读到陈旧校验）")
         self.assertEqual(a, other, "只加注释不该改结论")
         self.assertIsNone(sl._lint_doc_cached("没有围栏\n", "machine_contract", schema, fp, "x"))
+
+    def test_registry_and_provenance_entries_match_reference(self):
+        """逐条面（registry.modules / provenance.assets[i]）也必须与未缓存参考实现逐条一致。"""
+        schemas = self._schemas()
+        reg = json.loads((Path(ROOT) / "desktop" / "src" / "core" / "registry.json")
+                         .read_text(encoding="utf-8"))
+        module_schema = schemas["module.schema.json"]
+        module_fp = sl._schema_fp(module_schema)
+        sl._DOC_LINT_CACHE.clear()
+        entries = reg.get("modules") or []
+        self.assertGreater(len(entries), 5, "registry 条目太少")
+        for entry in entries:
+            self.assertEqual(sl.subset_validate(entry, module_schema, "registry.modules"),
+                             sl._lint_obj_cached(entry, module_schema, module_fp, "registry.modules"))
+
+        prov = json.loads((Path(ROOT) / "05_资产库" / "provenance.json")
+                          .read_text(encoding="utf-8"))
+        asset_schema = schemas["asset.schema.json"]
+        asset_fp = sl._schema_fp(asset_schema)
+        for i, entry in enumerate(prov.get("assets") or []):
+            prefix = f"provenance.assets[{i}]"
+            self.assertEqual(sl.subset_validate(entry, asset_schema, prefix),
+                             sl._lint_obj_cached(entry, asset_schema, asset_fp, prefix), prefix)
+
+    def test_obj_cache_is_content_keyed_and_index_agnostic(self):
+        schema = {"type": "object", "properties": {"k": {"type": "integer"}},
+                  "additionalProperties": False}
+        fp = sl._schema_fp(schema)
+        entry = {"k": "not-int", "extra": 1}
+        sl._DOC_LINT_CACHE.clear()
+        first = sl._lint_obj_cached(entry, schema, fp, "provenance.assets[0]")
+        self.assertTrue(first)
+        self.assertEqual(1, len(sl._DOC_LINT_CACHE))
+        second = sl._lint_obj_cached(entry, schema, fp, "provenance.assets[7]")
+        self.assertEqual(1, len(sl._DOC_LINT_CACHE), "同内容不同下标必须命中")
+        self.assertEqual([m.replace("provenance.assets[0]", "provenance.assets[7]") for m in first],
+                         second, "下标替换必须逐条一致")
+        sl._lint_obj_cached({"k": 1}, schema, fp, "provenance.assets[0]")
+        self.assertEqual(2, len(sl._DOC_LINT_CACHE), "条目内容一变必须换键")
+        self.assertEqual([], sl._lint_obj_cached({"k": 1}, schema, fp, "x"), "合法条目零违例")
+
+    def test_protocol_declarations_match_reference(self):
+        """协议声明（整份 YAML）也必须走同一套内容键，且与未缓存参考实现逐条一致。"""
+        schema = self._schemas()["protocol.schema.json"]
+        fp = sl._schema_fp(schema)
+        sl._DOC_LINT_CACHE.clear()
+        seen = 0
+        for proto in sl.discover(ROOT)["protocol_files"]:
+            rel = os.path.relpath(proto, ROOT).replace(os.sep, "/")
+            data = sl._csc.load_yaml_cached(sl._csc.read_text_cached(proto))
+            self.assertEqual(sl.subset_validate(data, schema, rel),
+                             sl._lint_obj_cached(data, schema, fp, rel), rel)
+            seen += 1
+        self.assertGreater(seen, 50, "协议件太少，判据没测到东西")
 
 
 class DirectEnumerationTest(unittest.TestCase):

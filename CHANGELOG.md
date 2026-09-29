@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：`schema_lint` 的逐条面（registry 投影 / 资产台账 / 协议声明）也改内容键**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
+  ① **接着上一轮**：上一轮把「逐件围栏解析 + 子集校验」缓存后，`subset_validate` 还剩 **5049** 次调用——查下来是三条**逐条面**：registry 投影（`registry.modules`）、资产台账（`provenance.assets[i]`）、协议声明（整份 `protocol.yaml`）。
+  ② **改法**：新增 `_lint_obj_cached(obj, schema, schema_fp, prefix)`——键 =（对象规范 JSON 的 sha256、schema 指纹），沿用同一套**路径前缀占位**存取（于是同一份条目内容出现在不同下标上也能复用）；三条面全部改走它。
+  ③ **判据**：`test_schema_lint.DocLintCacheTest` 扩到 5 条——新增「registry + provenance 逐条与未缓存参考实现比对」「协议声明逐条比对」「同一对象换下标必须命中且下标替换逐条一致」「条目内容一变必须换键」。
+  ④ **实测**：`schema_lint.scan` **19 → 18–19 ms**（`subset_validate` 已不再出现在热点里、`_fence_yaml` 0 次）；`score.evaluate` 唯一新状态（3 轮）**232–245 → 224–228 ms**；**端到端（4 样本中位）0.324 → 0.317 s**；同状态重放 **~50 ms**、树没变 **~49–50 ms**、冷进程 **~1.70 s**。
+
 - **执行层：逐件「围栏解析 + 子集校验」改内容键（`schema_lint.scan` 51 → 18–23 ms；`nf score` 约 269 → 232–245 ms）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
   ① **量到的东西**：`schema_lint.scan` 稳态 51 ms 里，逐件子集校验与围栏解析是绝大部分——`subset_validate` **28291** 次调用（含递归）、`_fence_yaml` 363 次。
   ② **改法**：新增 `_lint_doc_cached(text, marker, schema, schema_fp, prefix, obj_key=…)`——键 =（marker、对象键、**正文 sha256**、schema 指纹），把「围栏解析 + 子集校验」一次算好缓存；消息里的**路径前缀用占位符存**、取用时再替换，于是同一份正文在不同路径上也能复用（模块件与管线件两条循环都改走它）。

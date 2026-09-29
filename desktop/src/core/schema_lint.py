@@ -313,6 +313,26 @@ def _lint_doc_cached(text: str, marker: str, schema: Any, schema_fp: str, prefix
     return [m.replace(_PATH_PLACEHOLDER, prefix) for m in hit]
 
 
+def _lint_obj_cached(obj: Any, schema: Any, schema_fp: str, prefix: str) -> List[str]:
+    """按**对象内容**缓存子集校验结果（`registry.modules` / `provenance.assets[i]` 这类逐条面）。
+
+    与 `_lint_doc_cached` 同一套纪律：键 =（对象规范 JSON 的 sha256、schema 指纹），消息里的路径
+    前缀用 `_PATH_PLACEHOLDER` 占位、取用时替换——于是**同一份条目内容出现在不同下标上也能复用**。
+    判据：`test_schema_lint.DocLintCacheTest` 用未缓存参考实现在真仓库 registry / provenance 上逐条比对。
+    """
+    if schema is None:
+        return []
+    key = (hashlib.sha256(json.dumps(obj, ensure_ascii=False, sort_keys=True,
+                                     default=str).encode("utf-8")).hexdigest(), schema_fp)
+    hit = _DOC_LINT_CACHE.get(key)
+    if hit is None:
+        hit = tuple(subset_validate(obj, schema, _PATH_PLACEHOLDER))
+        if len(_DOC_LINT_CACHE) >= _DOC_LINT_CACHE_MAX:
+            _DOC_LINT_CACHE.clear()
+        _DOC_LINT_CACHE[key] = hit
+    return [m.replace(_PATH_PLACEHOLDER, prefix) for m in hit]
+
+
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     """真算（未命中缓存时走这里）。"""
     issues: List[str] = []
@@ -362,9 +382,9 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     else:
         reg_modules = reg.get("modules") or []
     if module_schema is not None:
+        module_fp = _schema_fp(module_schema)
         for entry in reg_modules:
-            for msg in subset_validate(entry, module_schema, "registry.modules"):
-                issues.append(msg)
+            issues += _lint_obj_cached(entry, module_schema, module_fp, "registry.modules")
 
     # 管线声明（pipeline.schema.json）
     pipeline_fp = _schema_fp(pipeline_schema)
@@ -383,6 +403,7 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         issues += msgs
 
     # community 协议声明（protocol.schema.json）
+    protocol_fp = _schema_fp(protocol_schema)
     for proto in protocol_files:
         rel = os.path.relpath(proto, root).replace(os.sep, "/")
         try:
@@ -391,9 +412,7 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         except Exception as exc:
             issues.append(f"{rel}: protocol.yaml 解析失败 {exc}")
             continue
-        if protocol_schema is not None:
-            for msg in subset_validate(data, protocol_schema, rel):
-                issues.append(msg)
+        issues += _lint_obj_cached(data, protocol_schema, protocol_fp, rel)
 
     # 资产台账（asset.schema.json）
     prov_path = os.path.join(root, "05_资产库", "provenance.json")
@@ -404,9 +423,9 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     else:
         prov_entries = prov.get("assets") or []
     if asset_schema is not None:
+        asset_fp = _schema_fp(asset_schema)
         for i, entry in enumerate(prov_entries):
-            for msg in subset_validate(entry, asset_schema, f"provenance.assets[{i}]"):
-                issues.append(msg)
+            issues += _lint_obj_cached(entry, asset_schema, asset_fp, f"provenance.assets[{i}]")
 
     stats = {
         "schema_files": len(schemas),
