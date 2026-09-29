@@ -181,6 +181,95 @@ class NestedMemoSharingTest(unittest.TestCase):
                                  "新作用域必须看到新文件")
 
 
+class LogicalReadFaceAuditTest(unittest.TestCase):
+    """**逻辑读**审计：每个派生站点的「真读面」必须落在它申报的输入面内——一次量到所有站点。
+
+    与 `DerivedResultCacheTest` 的分工（这是关键差别）：那条盯的是**物理打开**（`io.open`），
+    而常驻层命中的读**不开文件** ⇒ 看不见；而且它只清**站点自己的** memo，子缓存热的「读」也被藏住。
+    本判据改用 `read_text_cached` 级追踪 + **清空所有内容缓存**（含逐件/逐条/逐包/逐证书那些），
+    于是「读了却没申报」无处可躲。它已经抓到两个真洞（实测 2026-09-29）：
+    `output_forms.scan` 读了 `protocol/output_forms.json` 与 `protocol/output_forms_baseline.json`
+    却没申报（重签基线会命中旧结果）；`instruction_step_audit` 读 `agent_组装指令包_v0.2.md`
+    而 `QD_INPUTS` 没含它。
+    """
+
+    def _clear_all_content_caches(self):
+        from core import asset_density as ad
+        from core import layer_model as lm
+        from core import output_forms as of
+        from core import pack_combo as pcb
+        from core import purity_scan as ps
+        from core import schema_lint as sl
+        cs._DERIVED_MEMO.clear()
+        pcb.cache_clear()
+        for attr in ("_CONTENT_CACHE", "_CONTRACTS_CACHE", "_COMBO_CACHE", "_CERT_CACHE", "_CACHE"):
+            getattr(pcb, attr, {}).clear()
+        of._INDEX_CACHE.clear()
+        of._PACK_VERIFY_CACHE.clear()
+        sl._DOC_LINT_CACHE.clear()
+        ps._DOC_FACTS_CACHE.clear()
+        lm._ENTRY_IMPORT_CACHE.clear()
+        for attr in ("_CENSUS_CACHE", "_FILE_COUNT_CACHE", "_KEYS_OF_CACHE"):
+            getattr(ad, attr).clear()
+
+    def test_sites_only_read_inside_their_declared_face(self):
+        import builtins
+        import importlib
+        alp = importlib.import_module("core.asset_ledger_projection")
+        cg = importlib.import_module("core.concept_graph")
+        dpk = importlib.import_module("core.domain_pack")
+        of = importlib.import_module("core.output_forms")
+        pcb = importlib.import_module("core.pack_combo")
+        qds = importlib.import_module("core.quality_depth_scan")
+        sl = importlib.import_module("core.schema_lint")
+        ad = importlib.import_module("core.asset_density")
+        # 站点：(名字, 模块, impl 名, 申报面)。purity / layer 的面是组合面（自有 ∪ 阶梯），
+        # 同族的判据在 test_purity_scan.PurityKeyCompositionTest 与 test_layer_model 里。
+        sites = (("schema_lint.scan", sl, "_scan_impl", sl.LINT_INPUTS),
+                 ("asset_density.scan", ad, "_scan_impl", ad.ASSET_INPUTS),
+                 ("asset_ledger.verify", alp, "_verify_impl", alp.VERIFY_INPUTS),
+                 ("concept_graph.scan", cg, "_scan_impl", cg.CG_INPUTS),
+                 ("quality_depth.scan", qds, "_inner", qds.QD_INPUTS),
+                 ("output_forms.scan", of, "_scan_impl", of.INDEX_INPUTS),
+                 ("domain_pack.scan", dpk, "_scan_impl", dpk.SCAN_INPUTS),
+                 ("pack_combo.scan", pcb, "_scan_impl", pcb.SCAN_INPUTS))
+        reads = set()
+        orig_read = cs.read_text_cached
+        orig_open = builtins.open
+
+        def read_traced(path, *a, **k):
+            try:
+                reads.add(os.path.relpath(str(path), ROOT).replace(os.sep, "/"))
+            except ValueError:
+                pass
+            return orig_read(path, *a, **k)
+
+        def open_traced(file, *a, **k):
+            if isinstance(file, (str, bytes, os.PathLike)):
+                try:
+                    reads.add(os.path.relpath(str(file), ROOT).replace(os.sep, "/"))
+                except ValueError:
+                    pass
+            return orig_open(file, *a, **k)
+
+        for name, mod, impl, pats in sites:
+            covered = set(r for p in pats for r in cs.iter_files(ROOT, p))
+            self.assertTrue(covered, "%s 的申报面为空" % name)
+            self._clear_all_content_caches()
+            reads.clear()
+            cs.read_text_cached, builtins.open = read_traced, open_traced
+            try:
+                with cs.read_memo():
+                    getattr(mod, impl)(ROOT)
+            finally:
+                cs.read_text_cached, builtins.open = orig_read, orig_open
+            leak = sorted(r for r in reads
+                          if r and not r.startswith("..")
+                          and os.path.isfile(os.path.join(ROOT, *r.split("/")))
+                          and r not in covered)
+            self.assertEqual([], leak, "%s 读了申报面之外的件：%s" % (name, leak[:4]))
+
+
 class FastGlobTest(unittest.TestCase):
     """`iter_files` 的快速枚举：**与 `Path.glob` 逐模式等价** + 作用域内记忆 + 出口不陈旧。
 

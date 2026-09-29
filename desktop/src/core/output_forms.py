@@ -102,7 +102,13 @@ INDEX_INPUTS = ("community/*/outputs/**/*",
                 "community/*/protocol.yaml",
                 "community/*/modules/*.md",
                 "04_模块库/*/*.md",
-                "desktop/src/core/registry.json")
+                "desktop/src/core/registry.json",
+                # 2026-09-29 补齐（**陈旧洞**）：本模块真读这两件（形态清单 registry + 机验率基线），
+                # 原先一条都没申报 ⇒ 重签基线/改形态清单时 `output-forms-scan` 会**命中旧结果**。
+                # 抓它的是「**逻辑读**」审计（`read_text_cached` 级追踪）：只盯 `io.open` 的旧判据看不见
+                # 常驻层命中的读，这两条洞因此躲过了很久——见 `test_conformance_scan.LogicalReadFaceAuditTest`。
+                "protocol/output_forms.json",
+                "protocol/output_forms_baseline.json")
 #: 结果缓存（键 = 输入内容指纹；输入一变指纹就变，故不需要随请求清空）。
 _INDEX_CACHE: Dict[str, Any] = {}
 
