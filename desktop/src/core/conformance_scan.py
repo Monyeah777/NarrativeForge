@@ -30,18 +30,13 @@ except Exception:  # pragma: no cover
 
 FENCE = re.compile(r"(?ms)```yaml\s*(.*?)```")
 _T = chr(96) * 3
-#: 统一的安全 YAML 加载器：优先 **libyaml 的 C 实现**（`CSafeLoader`），缺则回退纯 Python。
-#: 依据（本波实测）：本仓 473 次 YAML 解析里 PyYAML 扫描器是纯 Python，单份机器契约 ~2 ms——
-#: 换 C 实现后同一批正文 **7.8× 快**（200 份正文 0.164 s → 0.021 s）。
-#: 等价性**逐块实证**：本仓全部 1395 个 YAML 文本块（584 份文件）用两种加载器各解析一遍，
-#: 值差异 0、异常行为差异 0（见 `test_conformance_scan` 的等价断言；缺 libyaml 时自动跳过）。
+#: 统一的安全 YAML 加载器：优先 **libyaml 的 C 实现**（`CSafeLoader`），缺则回退纯 Python
+#: （实测 7.8× 快；本仓 1395 个 YAML 块两种加载器**逐块等价**，见 `test_conformance_scan`）。
 SAFE_LOADER = getattr(yaml, "CSafeLoader", None) or getattr(yaml, "SafeLoader", None)
 #: 围栏 YAML 解析缓存：键 = (marker, **文本本身**)，值 = 解析结果或 None（见 `_fence_yaml`）。
-#: **负结果（2026-09 受控 A/B，勿重复尝试）**：本缓存与下面的 `_BODY_CACHE` **不做磁盘持久化**。
-#: 实测：575 块全量「纯解析」**139 ms** vs「从盘读回」**108 ms**——只差 **31 ms**（每块解析仅
-#: ~0.24 ms，而落盘读回要开一个文件 + 解 JSON ~0.19 ms，文件系统一冷还会更贵）。为 31 ms 增加
-#: 近千个缓存文件不划算；这两笔账留在进程内层即可（冷路径的大头已由 AST 事实/派生结果那几路
-#: 落盘承担）。注意：cProfile 会把 PyYAML 这类「调用密集」代码放大成 ~0.65 s，别拿画像数字当收益。
+#: **负结果（2026-09 受控 A/B，勿重复尝试）**：本缓存与 `_BODY_CACHE` **不落盘**——575 块全量
+#: 「纯解析」139 ms vs「从盘读回」108 ms，只差 31 ms，不值得多近千个缓存文件。（cProfile 会把
+#: PyYAML 这类调用密集代码放大成 ~0.65 s，别拿画像数字当收益。）
 _FENCE_CACHE: Dict[Tuple[str, str], Any] = {}
 _FENCE_CACHE_MAX = 4096
 #: 围栏**正文**缓存：键 = 正文本身。给「自己抽正文」的调用方用（pipeline_loader /
@@ -49,37 +44,26 @@ _FENCE_CACHE_MAX = 4096
 _BODY_CACHE: Dict[str, Any] = {}
 _BODY_CACHE_MAX = 4096
 
-#: 「一次**只读**扫描内共享语料」的读缓存：作用域由 `read_memo()` 显式框定，出口即清。
-#: 必要性（实测）：一次 `regression_score.evaluate` 打开 **7833** 次文件、其中只有 **2354**
-#: 个不同文件——**70% 是冗余读**（同一份包资产被 concept_graph / asset_density / output_forms
-#: 等各读一遍）。作用域严格等于「一次扫描调用」，且这些聚合入口都是纯读（写路径 `--write`
-#: 在聚合**之后**才发生），所以冷却语义与「新起进程」一致：不跨调用、不跨请求复用。
-#: 与读缓存**同生命周期**的「列目录」缓存：一次只读调用内，`_module_docs` 这类清单只走一遍
-#: 文件系统（实测一次 evaluate 里它被调 5 次、合计 167 ms；各扫描器各自重走同一批目录）。
+#: 「一次**只读**扫描内共享语料」的读缓存：作用域由 `read_memo()` 框定，出口即清。
+#: 必要性（实测）：一次 `evaluate` 打开 7833 次文件、只有 2354 个不同文件（70% 冗余读）。
+#: 聚合入口都是纯读（写路径 `--write` 在聚合**之后**才发生）⇒ 冷却语义与「新起进程」一致。
+#: 与读缓存**同生命周期**的「列目录」缓存：`_module_docs` 这类清单一次只读调用内只走一遍文件系统。
 _READ_MEMO: Optional[Dict[str, Any]] = None
 _DIR_MEMO: Optional[Dict[str, Any]] = None
-#: 与读缓存同生命周期的**逐件内容摘要**缓存（键＝文件）：一次只读调用里同一件只为指纹算一次
-#: 摘要——一次 `evaluate` 里多个输入面高度重叠，这一层把「每个面重算一遍哈希」摊成一次。
+#: 与读缓存同生命周期的**逐件内容摘要**缓存（键＝文件）：输入面高度重叠，一次调用里每件只算一次。
 _DIGEST_MEMO: Optional[Dict[str, bytes]] = None
-#: 与读缓存**同生命周期**的「按模式枚举」缓存：一次只读调用内，同一 (root, pattern) 只走一遍
-#: 文件系统（实测：输入面在 2 个指纹 + 各扫描器之间重复枚举，44% 的遍历是白走）。
+#: 同生命周期的「按模式枚举」缓存：一次调用内同一 (root, pattern) 只走一遍文件系统（实测 44% 白走）。
 _PAT_MEMO: Optional[Dict[Tuple[str, str], Tuple[str, ...]]] = None
-#: 与读缓存**同生命周期**的「子树文件清单」缓存：一次只读调用内，每棵子树只走一遍文件系统。
-#: 依据（实测）：一次 `evaluate` 建了 **5403** 个 `os.scandir`（仅建扫描器就 **687 ms / 25%**），
-#: 其中 `community` 一棵树被 layer_model 的 `_walk_files`、两个指纹、若干扫描器各自走了一遍。
-#: 键即目录 ⇒ 目录没变清单就一样；作用域出口即清（与冷读语义一致）。
+#: 同生命周期的「子树文件清单」缓存：键即目录 ⇒ 目录没变清单就一样；出口即清（与冷读语义一致）。
+#: 依据（实测）：一次 `evaluate` 建了 5403 个 `os.scandir`（仅建扫描器 687 ms / 25%），其中
+#: `community` 一棵树被 layer_model 的 `_walk_files`、两个指纹、若干扫描器各自走了一遍。
 _TREE_MEMO: Optional[Dict[str, Tuple[str, ...]]] = None
 
-#: **常驻层**（`_RESIDENT`）：跨调用、跨请求活着的一份「语料正文 + 目录条目」。
-#:
-#: 为什么需要它（2026-09-29 实测）：改一个文件之后，守护的第一条重命令要 **1.6–2.0 s**——
-#: 因为上面那些作用域缓存**出口即清**，下一个请求要把整棵语料重新枚举（1484 个目录 / ~2000 次
-#: `scandir`）并重读（~2500 次 open）。而其中**只有被改的那一件**真的变了。
-#:
-#: 为什么它不破坏「热进程 == 新起进程」这条头号不变式：它**只在守护带监听且监听健康时安装**，
-#: 且**只按监听给出的确知路径失效**；监听说不清（溢出 / 路径解不出 / 只跳代际没给路径）时，调用方
-#: 必须 `clear_resident()` 整批作废。也就是说它比响应缓存**不多信任任何东西**——响应缓存本来就
-#: 靠同一条「代际没变 ⇒ 树没变」的判据（同一条 `watch.selfcheck` 机制自检 + 卷类型闸门守着）。
+#: **常驻层**（`_RESIDENT`）：跨调用、跨请求活着的一份「语料正文 + 目录条目」。依据（实测）：
+#: 改一件后守护第一条重命令要 1.6–2.0 s——上面那些作用域缓存出口即清，下一个请求要重枚举
+#: 1484 个目录（~2000 次 `scandir`）并重读 ~2500 次，而其中**只有被改的那一件**真的变了。
+#: 不破坏「热进程 == 新起进程」的根据：只在守护带监听且监听健康时安装，且只按监听给出的确知
+#: 路径失效；监听说不清即 `clear_resident()` 整批作废——它不比响应缓存多信任任何东西。
 #: 只缓存**监听根之下**的件；根外的读一律走原路（根外没有变更通知，无从失效）。
 _RESIDENT: Optional[Dict[str, Any]] = None
 #: 常驻层的容量上界（目录条数与正文条数）：超出即停止收录（不影响正确性，只是退回按需读）。
@@ -172,12 +156,21 @@ def matches_any(rel: str, patterns) -> bool:
 #: 只要确知这一批变更里没有一件落在该面内，指纹就整个复用（不枚举、不摘要）。说不清一律重算。
 #: 收益形态（实测 2026-09-29）：改产物件（`community/*/outputs/**`）时，只有真含它的面才重算，
 #: 其余宽面（conformance 的模块/协议面、pack_combo 的声明面、schema_lint 的面……）全部免算。
-_FACE_FP: Dict[Any, str] = {}
+#: 面指纹缓存：`key → {"rels", "index"（小写→真实路径）, "digests", "fp"}`；两级复用见 `face_digests`。
+_FACE_CACHE: Dict[Any, Any] = {}
 _FACE_FP_MAX = 1024
-#: 观测位：**真正重算了多少次面指纹**（复用的那几次不算）。判据 `FaceReuseBudgetTest` 用它把
+#: 观测位：**整面重算** / **增量更新** 各多少次（复用不算）。判据 `FaceReuseBudgetTest` 用它把
 #: 「确知没变就复用」变成**确定性**数字——不能靠数 `content_fingerprint`：本函数现在自己枚举 + 摘要
 #: （为了把逐件摘要一起交给 `usage_scan`），那条计数会恒为 0（实测踩过）。
-_FACE_FP_STATS: Dict[str, int] = {"recomputes": 0}
+_FACE_FP_STATS: Dict[str, int] = {"recomputes": 0, "incremental": 0}
+
+
+def _hash_face(rels, digests) -> str:
+    """面指纹 = 逐件「相对路径 + \\x00 + 摘要 + \\x01」流式哈希（与 `content_fingerprint` 同帧）。"""
+    h = hashlib.sha256()
+    for rel in rels:
+        h.update(rel.encode("utf-8") + b"\x00" + digests[rel] + b"\x01")
+    return h.hexdigest()
 
 
 def face_fingerprint(root: str, patterns) -> str:
@@ -195,26 +188,33 @@ def face_digests(root: str, patterns):
     """
     pats = tuple(str(p) for p in patterns)
     key = (os.path.normcase(os.path.abspath(str(root))), pats)
-    hit = _FACE_FP.get(key)
-    if hit is not None:
+    ent = _FACE_CACHE.get(key)
+    if ent is not None:
         known, changed = changed_paths()
-        if known and not any(matches_any(rel, pats) for rel in changed):
-            return hit, None          # 复用：值有了，但摘要没在手（调用方需要就自己算）
-    rels: List[str] = []
+        if known:
+            relevant = [c for c in changed if matches_any(c, pats)]
+            if not relevant:
+                return ent["fp"], ent["digests"]          # ① 确知没变：连哈希都不算
+            # ② 只改内容 ⇒ 增量（成员集合不变）。比对必须**大小写不敏感**：监听的相对路径是小写，
+            # `iter_files` 是真实大小写（`M00_数据结构.md`）⇒ 否则一律误判成新增件、增量形同虚设。
+            members = [ent["index"].get(str(c).lower()) for c in relevant]
+            if all(rel and os.path.isfile(os.path.join(str(root), *rel.split("/")))
+                   for rel in members):
+                for rel in members:
+                    ent["digests"][rel] = _payload_digest(root, rel)
+                ent["fp"] = _hash_face(ent["rels"], ent["digests"])
+                _FACE_FP_STATS["incremental"] += 1
+                return ent["fp"], ent["digests"]
+    rels: List[str] = []                                      # ③ 首次 / 成员集合变了：整面重建
     for pat in patterns:
         rels.extend(iter_files(root, str(pat)))
     digests = {rel: _payload_digest(root, rel) for rel in rels}
+    fp = _hash_face(rels, digests)
     _FACE_FP_STATS["recomputes"] += 1
-    h = hashlib.sha256()
-    for rel in rels:
-        h.update(rel.encode("utf-8"))
-        h.update(b"\x00")
-        h.update(digests[rel])
-        h.update(b"\x01")
-    fp = h.hexdigest()
-    if len(_FACE_FP) >= _FACE_FP_MAX:
-        _FACE_FP.clear()
-    _FACE_FP[key] = fp
+    if len(_FACE_CACHE) >= _FACE_FP_MAX:
+        _FACE_CACHE.clear()
+    _FACE_CACHE[key] = {"rels": rels, "digests": digests, "fp": fp,
+                        "index": {rel.lower(): rel for rel in rels}}
     return fp, digests
 
 

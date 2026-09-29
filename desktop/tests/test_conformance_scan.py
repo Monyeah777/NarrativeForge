@@ -246,10 +246,67 @@ class FaceFingerprintTest(unittest.TestCase):
         self.assertEqual(cs.content_fingerprint(ROOT, pats), cs.face_fingerprint(ROOT, pats),
                          "复用不许改变指纹值（逐位相同）")
 
+    def test_incremental_equals_full_recompute(self):
+        """**增量路径必须与整面重算逐位相同**（成员不变 ⇒ 只更新摘要 + 重哈希，不许改值）。
+
+        依据（实测 2026-09-29）：本函数缓存了每张面的「有序路径 + 逐件摘要」⇒ 确知只改了内容时，
+        只需更新那几件的摘要再重哈希（帧格式与整面一致），省掉宽面 3000+ 次摘要查询（~10 ms）；
+        只有**成员集合变了**（新增/删除）才整面重建。这条判据把「省算」钉在「值不许变」上。
+
+        前提（守护的真实路径）：读层已按**同一批**路径精确失效（`drop_resident`＝失效正文/摘要 +
+        记下确知变更）。只调 `note_changes` 会让 `_payload_digest` 从常驻层取到**旧摘要**——
+        那是探针自己绕过了读层失效，不是实现缺陷。
+
+        另一条前提（实测踩到，故在这里钉死）：监听的相对路径是**小写**，`iter_files` 是**真实
+        大小写**（`Face/F1.MD`）⇒ 判定「成员集合有没有变」必须**大小写不敏感**，否则改一件内容会被
+        误判成新增件、增量路径静默退化（安全但白算）。
+        """
+        import pathlib
+        with tempfile.TemporaryDirectory() as tmp:
+            d = pathlib.Path(tmp, "Face")
+            d.mkdir(parents=True)
+            for i in range(3):
+                (d / ("F%d.MD" % i)).write_text("v1-%d\n" % i, encoding="utf-8")
+            pats = ("face/*.md",)
+            cs.install_resident(tmp)
+            try:
+                cs._FACE_CACHE.clear()
+                cs.clear_changes()
+                fp1, _ = cs.face_digests(tmp, pats)
+                (d / "F1.MD").write_text("v2\n", encoding="utf-8")
+                cs.drop_resident(["face/f1.md"])          # 监听给的是小写相对路径
+                before = cs._FACE_FP_STATS["incremental"]
+                fp2, digs2 = cs.face_digests(tmp, pats)
+                self.assertEqual(before + 1, cs._FACE_FP_STATS["incremental"],
+                                 "只改内容时应走增量路径（大小写不同不算成员变化）")
+                self.assertNotEqual(fp1, fp2, "内容变了指纹必须变")
+                cs._FACE_CACHE.clear()
+                cs.clear_changes()
+                fp3, digs3 = cs.face_digests(tmp, pats)
+                self.assertEqual(fp2, fp3, "增量结果必须与整面重算逐位相同")
+                self.assertEqual(digs3, digs2, "增量更新后的逐件摘要必须与重算一致")
+                (d / "F9.MD").write_text("new\n", encoding="utf-8")
+                cs.drop_resident(["face/f9.md"])
+                rec = cs._FACE_FP_STATS["recomputes"]
+                fp4, _ = cs.face_digests(tmp, pats)
+                self.assertEqual(rec + 1, cs._FACE_FP_STATS["recomputes"],
+                                 "新增件 ⇒ 成员集合变了 ⇒ 必须整面重建")
+                self.assertNotEqual(fp3, fp4)
+                os.remove(d / "F0.MD")
+                cs.drop_resident(["face/f0.md"])
+                rec = cs._FACE_FP_STATS["recomputes"]
+                fp5, digs5 = cs.face_digests(tmp, pats)
+                self.assertEqual(rec + 1, cs._FACE_FP_STATS["recomputes"],
+                                 "删件 ⇒ 成员集合变了 ⇒ 必须整面重建")
+                self.assertNotIn("Face/F0.MD", digs5, "删掉的件不许留在摘要表里")
+            finally:
+                cs.clear_changes()
+                cs.clear_resident()
+
     def test_reuse_only_when_change_face_is_known_and_clean(self):
         from unittest import mock
         pats = ("04_模块库/*/*.md",)
-        cs._FACE_FP.clear()
+        cs._FACE_CACHE.clear()
         base = cs._FACE_FP_STATS["recomputes"]
         cs.face_fingerprint(ROOT, pats)                    # 第一次：没有上次的值，必算
         self.assertEqual(base + 1, cs._FACE_FP_STATS["recomputes"])
@@ -259,9 +316,19 @@ class FaceFingerprintTest(unittest.TestCase):
         with mock.patch.object(cs, "changed_paths", lambda: (True, {"docs/x.md"})):
             cs.face_fingerprint(ROOT, pats)                # 确知没沾到 → 复用
             self.assertEqual(base + 2, cs._FACE_FP_STATS["recomputes"])
+        inc = cs._FACE_FP_STATS["incremental"]
         with mock.patch.object(cs, "changed_paths",
                                lambda: (True, {"04_模块库/通用类/m00_数据结构.md"})):
-            cs.face_fingerprint(ROOT, pats)                # 确知沾到（且路径是小写）→ 必算
+            # 确知沾到、但**盘上还在**（监听给的是小写，真名是 `M00_数据结构.md`）⇒ 成员集合没变，
+            # 走**增量**：不整面重建（`recomputes` 不动），只更新那一件的摘要再重哈希。
+            # 这条过去断言「必算」，是因为比对按大小写逐字做 ⇒ 每次都误判成新增件（安全但白算）。
+            cs.face_fingerprint(ROOT, pats)
+            self.assertEqual(base + 2, cs._FACE_FP_STATS["recomputes"],
+                             "只改了一件内容 ⇒ 不许整面重建")
+            self.assertEqual(inc + 1, cs._FACE_FP_STATS["incremental"])
+        with mock.patch.object(cs, "changed_paths",
+                               lambda: (True, {"04_模块库/通用类/_nf_absent.md"})):
+            cs.face_fingerprint(ROOT, pats)                # 确知沾到且**不在册** → 必算（新件）
             self.assertEqual(base + 3, cs._FACE_FP_STATS["recomputes"])
 
 
