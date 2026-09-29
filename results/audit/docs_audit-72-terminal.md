@@ -11,7 +11,7 @@ subjects:
   - desktop/tests/test_terminal.py:7ce3581ac5469acebfbd5c46108a0b104cf35bab3943f023d958fceca9bc722f
   - scripts/nf:aeb5f583534f7898b66a1386027120df36babb8e505adbf2e6cd650727a75556
   - scripts/nf.cmd:a971167b0b74c79dff3e3ac0bba0e6156340029fa9673f570c995680797ea4de
-  - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
+  - verify.sh:375d47db17b594f5732ae5b24e769f3b6d21eb99ebb7bcf4dd54a2476f11f23e
   - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
   - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1
   - docs/terminal.md:641be72bb8bb1a148045eb90534c7ad7128c83683de9fa85d0b33856f482c00d

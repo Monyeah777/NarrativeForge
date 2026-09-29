@@ -48,6 +48,13 @@ cleanup_nfl(){
   return 0
 }
 trap cleanup_nfl EXIT INT TERM
+# ---- 子进程编码统一（三平台同口径）----
+# Windows 默认 ANSI 码页：把 CJK 写进**文件或管道**的 Python 子进程会
+# `UnicodeEncodeError: 'charmap' codec ...` 崩栈（实测 2026-09-29 三平台门禁 Windows 腿：
+# check8 行数溯源 / check16-A/B / check20 / 资产供应链台账 / intake 子进程全因此红，而 POSIX
+# 腿本就是 UTF-8 —— 同一条检查在三平台口径不同才是真问题）。故显式统一 UTF-8 模式 + stdio 编码。
+export PYTHONUTF8=1
+export PYTHONIOENCODING=utf-8
 # ---- Python 解释器探测（Windows 兼容）----
 # Windows 的 python3 可能是应用商店 stub：command -v 能找到但执行静默失败零输出。
 # 以「能真正执行 import sys」为可用判据：stub 被跳过，回退真实 python。
