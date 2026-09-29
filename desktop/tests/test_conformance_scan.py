@@ -1043,6 +1043,46 @@ class YamlLoaderEquivalenceTest(unittest.TestCase):
                 self.assertEqual(plain, fast, "解析结果不一致：%r" % body[:60])
 
 
+class DirListMemoTest(unittest.TestCase):
+    """**一只读调用内每目录只列一遍**（确定性判据：数 `os.scandir`，不靠计时）。
+
+    依据（实测 2026-09-29）：冷进程一次 `evaluate` 曾列 **2768** 次目录而只覆盖 907 个（3.0 倍重复），
+    而 2000 次 `scandir` 本机要 ~306 ms——多张宽面各枚举一遍时，这笔重复是纯浪费。
+    修法＝作用域内的目录清单备忘（`_DIR_MEMO`，键带 `entries` 前缀，免得与 `_module_docs` 撞键）。
+
+    判据形状：同一作用域内**换一个模式**再枚举同一棵子树（模式备忘命中不了 ⇒ 必须重走查），
+    第二遍必须**一次 `scandir` 都不发**；换到新作用域则必须重新列（不许跨调用复用 ⇒ 不陈旧）。
+    """
+
+    def test_each_dir_listed_once_per_scope(self):
+        from unittest import mock
+        calls: list = []
+        real = os.scandir
+
+        def spy(path="."):
+            calls.append(os.path.normcase(os.path.abspath(str(path))))
+            return real(path)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            for rel in ("sub/a.md", "sub/deep/b.md", "sub/deep/c.txt"):
+                p = os.path.join(tmp, *rel.split("/"))
+                os.makedirs(os.path.dirname(p), exist_ok=True)
+                with open(p, "w", encoding="utf-8") as fh:
+                    fh.write("x\n")
+            cs.clear_changes()
+            with mock.patch("os.scandir", spy):
+                with cs.read_memo():
+                    cs.iter_files(tmp, "sub/**/*.md")
+                    first = len(calls)
+                    cs.iter_files(tmp, "sub/**/*.txt")     # 换模式：模式备忘不命中，必须走查
+                    self.assertGreater(first, 0, "第一遍就没列目录？判据自身要有效")
+                    self.assertEqual(first, len(calls),
+                                     "同一只读作用域内第二次枚举又列了一遍目录（目录备忘失效）")
+                with cs.read_memo():
+                    cs.iter_files(tmp, "sub/**/*.md")      # 新作用域：必须重新列（不许陈旧）
+                self.assertGreater(len(calls), first, "跨作用域必须重列目录（否则会陈旧）")
+
+
 class FaceHygieneTest(unittest.TestCase):
     """**输入面不许收 Python 自产字节码**（2026-09-29 实测坑，判据把坑封死）。
 

@@ -34,9 +34,8 @@ _T = chr(96) * 3
 #: （实测 7.8× 快；本仓 1395 个 YAML 块两种加载器**逐块等价**，见 `test_conformance_scan`）。
 SAFE_LOADER = getattr(yaml, "CSafeLoader", None) or getattr(yaml, "SafeLoader", None)
 #: 围栏 YAML 解析缓存：键 = (marker, **文本本身**)，值 = 解析结果或 None（见 `_fence_yaml`）。
-#: **负结果（2026-09 受控 A/B，勿重复尝试）**：本缓存与 `_BODY_CACHE` **不落盘**——575 块全量
-#: 「纯解析」139 ms vs「从盘读回」108 ms，只差 31 ms，不值得多近千个缓存文件。（cProfile 会把
-#: PyYAML 这类调用密集代码放大成 ~0.65 s，别拿画像数字当收益。）
+#: **负结果（2026-09 受控 A/B，勿重复尝试）**：本缓存与 `_BODY_CACHE` **不落盘**——575 块全量「纯
+#: 解析」139 ms vs「从盘读回」108 ms，不值得多近千个缓存文件（cProfile 会把这类代码放大成 ~0.65 s）。
 _FENCE_CACHE: Dict[Tuple[str, str], Any] = {}
 _FENCE_CACHE_MAX = 4096
 #: 围栏**正文**缓存：键 = 正文本身。给「自己抽正文」的调用方用（pipeline_loader /
@@ -44,10 +43,9 @@ _FENCE_CACHE_MAX = 4096
 _BODY_CACHE: Dict[str, Any] = {}
 _BODY_CACHE_MAX = 4096
 
-#: 「一次**只读**扫描内共享语料」的读缓存：作用域由 `read_memo()` 框定，出口即清。
-#: 必要性（实测）：一次 `evaluate` 打开 7833 次文件、只有 2354 个不同文件（70% 冗余读）。
-#: 聚合入口都是纯读（写路径 `--write` 在聚合**之后**才发生）⇒ 冷却语义与「新起进程」一致。
-#: 与读缓存**同生命周期**的「列目录」缓存：`_module_docs` 这类清单一次只读调用内只走一遍文件系统。
+#: 「一次**只读**扫描内共享语料」的读缓存：作用域由 `read_memo()` 框定，出口即清；聚合入口都是纯读
+#: （写路径 `--write` 在聚合**之后**才发生）⇒ 冷却语义与「新起进程」一致。必要性（实测）：一次
+#: `evaluate` 打开 7833 次文件、只有 2354 个不同文件（70% 冗余读）。同生命周期的还有列目录缓存。
 _READ_MEMO: Optional[Dict[str, Any]] = None
 _DIR_MEMO: Optional[Dict[str, Any]] = None
 #: 与读缓存同生命周期的**逐件内容摘要**缓存（键＝文件）：输入面高度重叠，一次调用里每件只算一次。
@@ -59,12 +57,10 @@ _PAT_MEMO: Optional[Dict[Tuple[str, str], Tuple[str, ...]]] = None
 #: `community` 一棵树被 layer_model 的 `_walk_files`、两个指纹、若干扫描器各自走了一遍。
 _TREE_MEMO: Optional[Dict[str, Tuple[str, ...]]] = None
 
-#: **常驻层**（`_RESIDENT`）：跨调用、跨请求活着的一份「语料正文 + 目录条目」。依据（实测）：
-#: 改一件后守护第一条重命令要 1.6–2.0 s——上面那些作用域缓存出口即清，下一个请求要重枚举
-#: 1484 个目录（~2000 次 `scandir`）并重读 ~2500 次，而其中**只有被改的那一件**真的变了。
-#: 不破坏「热进程 == 新起进程」的根据：只在守护带监听且监听健康时安装，且只按监听给出的确知
-#: 路径失效；监听说不清即 `clear_resident()` 整批作废——它不比响应缓存多信任任何东西。
-#: 只缓存**监听根之下**的件；根外的读一律走原路（根外没有变更通知，无从失效）。
+#: **常驻层**（`_RESIDENT`）：跨调用、跨请求活着的一份「语料正文 + 目录条目」。依据（实测）：改一件
+#: 后守护第一条重命令要 1.6–2.0 s——作用域缓存出口即清，下一请求要重枚举千余目录并重读数千次。
+#: 不比响应缓存多信任任何东西：只在守护带监听且监听健康时安装，只按监听的**确知路径**失效，
+#: 说不清即整批作废（`clear_resident`）；只缓存监听根之下的件，根外一律走原路。
 _RESIDENT: Optional[Dict[str, Any]] = None
 #: 常驻层的容量上界（目录条数与正文条数）：超出即停止收录（不影响正确性，只是退回按需读）。
 _RESIDENT_DIR_MAX = 8192
@@ -152,11 +148,9 @@ def matches_any(rel: str, patterns) -> bool:
     return False
 
 
-#: **面指纹**缓存（键 = (绝对 root, 模式元组)）。用途：把「确知变更面」这条信息用到**键的取法**上——
-#: 只要确知这一批变更里没有一件落在该面内，指纹就整个复用（不枚举、不摘要）。说不清一律重算。
-#: 收益形态（实测 2026-09-29）：改产物件（`community/*/outputs/**`）时，只有真含它的面才重算，
-#: 其余宽面（conformance 的模块/协议面、pack_combo 的声明面、schema_lint 的面……）全部免算。
-#: 面指纹缓存：`key → {"rels", "index"（小写→真实路径）, "digests", "fp"}`；两级复用见 `face_digests`。
+#: **面指纹**缓存（键 = (绝对 root, 模式元组)）：把「确知变更面」用到**键的取法**上——确知这批变更
+#: 没一件落在该面内就整个复用（不枚举、不摘要），说不清一律重算。条目形如
+#: `{"rels", "index"（小写→真实路径）, "digests", "fp"}`；两级复用见 `face_digests`。
 _FACE_CACHE: Dict[Any, Any] = {}
 _FACE_FP_MAX = 1024
 #: 观测位：**整面重算** / **增量更新** 各多少次（复用不算）。判据 `FaceReuseBudgetTest` 用它把
@@ -385,11 +379,19 @@ def _compiled_parts(pattern: str):
 def _scandir_list(path: str):
     """列目录（绝不抛）：目录不可读/已消失时返回空——枚举面按「不存在」处理。
 
-    常驻层命中即**零 IO**（守护带监听时安装，见 `_RESIDENT` 的说明）；否则照旧 `os.scandir`。
+    常驻层命中即**零 IO**（守护带监听时安装，见 `_RESIDENT` 的说明）；**冷进程**也没必要重复走：
+    本次只读调用内每个目录只列一遍（`_DIR_MEMO`，键带 `entries` 前缀，免得与 `_module_docs` 撞键）
+    ——实测一次冷跑 2768 次 `scandir` 只覆盖 907 个目录（3.0 倍重复），而 2000 次 `scandir` 本机要
+    ~306 ms：宽面各枚举一遍时，这笔重复是纯浪费。
     """
     key = _resident_key(path)
     if _RESIDENT is not None:
         hit = _RESIDENT["dirs"].get(key)
+        if hit is not None:
+            return hit
+    memo = ("entries", key) if _DIR_MEMO is not None else None
+    if memo is not None:
+        hit = _DIR_MEMO.get(memo)
         if hit is not None:
             return hit
     try:
@@ -397,6 +399,8 @@ def _scandir_list(path: str):
             entries = list(it)
     except OSError:
         return []
+    if memo is not None:
+        _DIR_MEMO[memo] = entries
     if _RESIDENT is not None and _resident_under(key) \
             and len(_RESIDENT["dirs"]) < _RESIDENT_DIR_MAX:
         packed = []
@@ -578,10 +582,9 @@ def read_text_cached(path) -> str:
             if _READ_MEMO is not None:
                 _READ_MEMO[key] = hit
             return hit
-    # **一次物理读服务两种口径**：底层读原始字节（常驻层也存它），文本由同一份字节按
-    # 「通用换行」语义解出——与 `Path.read_text(encoding="utf-8")` 逐字节一致（判据：
-    # test_conformance_scan.ResidentRawEquivalenceTest 对真语料逐件比对），但「同一件既当文本
-    # 又当字节读」时不再读第二遍（实测这类重复读 211 次/一次重算）。
+    # **一次物理读服务两种口径**：底层读原始字节（常驻层也存它），文本由同一份字节按「通用换行」
+    # 语义解出——与 `Path.read_text("utf-8")` 逐字节一致（判据 `ResidentRawEquivalenceTest`），
+    # 而「同一件既当文本又当字节读」时不再读第二遍（实测这类重复读 211 次/一次重算）。
     raw = _raw_bytes(path, key)
     text = _decode_text(raw)
     if _READ_MEMO is not None:
@@ -943,10 +946,9 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     reg_ids = {p.get("id") for p in (reg or {}).get("protocols") or []}
 
     modules_mc = 0
-    #: 模块 id 全局唯一（01 §1.6.11：module id 是全局寻址面）——登记面由 check14 ⑤b 管
-    #: `module_id_range` 声明；但**同一包内两个模块文件声明同一 mc.id** 此前无判据，
-    #: 运行时索引为 first-wins 静默择一（mcp_runtime._resolve_module / pipelinerun._module_files），
-    #: 会让「看起来唯一」的编号实际指向不确定的模块。此处补文件级唯一判据（极端渗透 D3）。
+    #: 模块 id 全局唯一（01 §1.6.11）——登记面由 check14 ⑤b 管；但**两个模块文件声明同一 mc.id**
+    #: 此前无判据，运行时索引 first-wins 静默择一（`mcp_runtime` / `pipelinerun`）会让编号指向不确定
+    #: 的模块。此处补文件级唯一判据（极端渗透 D3）。
     seen_mc_id: dict = {}
     for doc in _module_docs(root):
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
