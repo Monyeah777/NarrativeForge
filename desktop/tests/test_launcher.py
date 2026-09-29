@@ -24,6 +24,22 @@ if str(Path(ROOT) / "desktop" / "src") not in sys.path:
 BASH = shutil.which("bash")
 
 
+def _stop_daemon(home, wait=10.0):
+    """停掉该 NF_HOME 的守护；**先等它把状态文件写出来**再停。
+
+    依据（实测 2026-09-29）：拉起是**非阻塞**的，测试收尾时 `daemon stop` 常常跑在「守护还没写
+    daemon.json」之前 ⇒ 它报「没有守护在运行」而那条守护随后才起来，于是**漏在后台空转**（一次
+    门禁实测漏下 4 个，`git worktree remove` 也被它们挡住）。
+    """
+    state = os.path.join(home, "daemon.json")
+    deadline = time.time() + wait
+    while time.time() < deadline and not os.path.exists(state):
+        time.sleep(0.2)
+    subprocess.run([sys.executable, "scripts/nf.py", "daemon", "stop"], cwd=ROOT,
+                   env={**os.environ, "NARRATIVE_FORGE_HOME": home},
+                   capture_output=True, timeout=120)
+
+
 @unittest.skipUnless(BASH, "本环境没有 bash（启动器是 POSIX sh 脚本，需 bash 执行快路）")
 class LauncherFallbackTest(unittest.TestCase):
     """隔离 NF_HOME（没有守护状态文件）跑启动器：必须落到 python 直跑，而不是静默 127。"""
@@ -111,10 +127,7 @@ class AutostartTest(unittest.TestCase):
         return env, log
 
     def _stop(self, home):
-        env = dict(os.environ)
-        env["NARRATIVE_FORGE_HOME"] = home
-        subprocess.run([sys.executable, "scripts/nf.py", "daemon", "stop"], cwd=ROOT,
-                       env=env, capture_output=True, timeout=120)
+        _stop_daemon(home)                     # 等状态文件出现再停（非阻塞拉起 ⇒ 收尾有竞态）
 
     def test_falsey_values_disable_autostart(self):
         """显式关：`0|false|no|off` 一律不许拉起守护（诊断/对照/测试要可复现）。"""
@@ -215,9 +228,7 @@ class InterpreterLaunchBudgetTest(unittest.TestCase):
         self.addCleanup(self._stop)
 
     def _stop(self):
-        subprocess.run([sys.executable, "scripts/nf.py", "daemon", "stop"], cwd=ROOT,
-                       env={**os.environ, "NARRATIVE_FORGE_HOME": self.home},
-                       capture_output=True, timeout=120)
+        _stop_daemon(self.home)                # 等状态文件出现再停（非阻塞拉起 ⇒ 收尾有竞态）
 
     def _real_py(self):
         """真解释器（MSYS 形态路径）——由 bash 自己解析，避免 Windows 路径形态的坑。"""
@@ -499,7 +510,7 @@ class InterpreterDietTest(unittest.TestCase):
         env = dict(os.environ)
         env["NARRATIVE_FORGE_HOME"] = home
         env["PATH"] = bin_dir + os.pathsep + env.get("PATH", "")
-        env.pop("NF_AUTOSTART", None)
+        env["NF_AUTOSTART"] = "0"      # 本类量的是**节食**（不是自动拉起）：关掉免得漏下后台守护
         env.pop("NF_NO_DIET", None)
         return env, log
 
