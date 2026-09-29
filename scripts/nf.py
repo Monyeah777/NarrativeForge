@@ -4253,7 +4253,7 @@ def _cmd_layers(args) -> int:
 
 def _cmd_shell(args) -> int:
     """nf shell（别名 nf terminal）：终端交互入口（端壳退役后的人机面）。"""
-    from core import terminal as term
+    from core import session_watch as _sw, terminal as term   # 会话缓存包装（见 core.session_watch）
 
     index = _shell_command_index()
 
@@ -4480,7 +4480,7 @@ def _cmd_shell(args) -> int:
         return 0 if cands else 2
     if args.script_file:
         try:
-            code, text, _records = term.run_file(args.script_file, runner,
+            code, text, _records = _sw.run_file(args.script_file, runner, ROOT,
                                                  assume_yes=args.yes,
                                                  as_json=args.json, index=index)
         except OSError as exc:
@@ -4490,7 +4490,7 @@ def _cmd_shell(args) -> int:
         print(text)
         return code
     if args.exec_script:
-        code, text, _records = term.run_script(args.exec_script, runner,
+        code, text, _records = _sw.run_script(args.exec_script, runner, ROOT,
                                                assume_yes=args.yes,
                                                as_json=args.json, index=index)
         print(text)
@@ -4499,7 +4499,7 @@ def _cmd_shell(args) -> int:
                              history_path):
         pass                                  # readline 接管 Tab 与历史（POSIX）
     print_banner = not args.no_banner
-    return term.run_session(runner, sys.stdin, sys.stdout,
+    return _sw.run_session(runner, sys.stdin, sys.stdout, ROOT,
                             assume_yes=args.yes,
                             show_banner=print_banner,
                             baseline=_shell_baseline(), index=index,
