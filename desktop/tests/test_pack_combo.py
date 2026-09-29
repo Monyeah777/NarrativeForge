@@ -155,6 +155,48 @@ class ContractCacheTest(unittest.TestCase):
             self.assertIsNot(first, pc._core_contracts(tmp), "核心模块改了必须重算")
 
 
+class CertificateCacheTest(unittest.TestCase):
+    """证书校验（schema + T4 复算）的内容键缓存：与**未缓存参考实现**逐证书等价 + 键随内容变。
+
+    依据（实测 2026-09-29）：`pack_combo.scan` 稳态 ~36 ms 里，证书 T4 复算 **9.4–10.2 ms**、
+    证书 schema 校验 **8.6–9.9 ms（1486 次嵌套调用）**——都是「证书正文 + 契约面」的纯函数。
+    """
+
+    @staticmethod
+    def _reference(root, cert):
+        from core import output_forms as of
+        name = cert.get("label") or "+".join(cert.get("packs") or []) or "<空>"
+        unsup: list = []
+        schema_errs = of.json_schema_check(cert, pc.CERT_SCHEMA, unsupported=unsup)
+        out = ["组合 %s: 证书不合 schema: %s" % (name, e) for e in schema_errs[:4]]
+        if unsup:
+            out.append("组合 %s: 证书校验器遇到不支持关键字 %s" % (name, sorted(set(unsup))[:2]))
+        sub, _st = pc.verify_certificate(root, cert)
+        out += ["组合 %s: %s" % (name, s) for s in sub]
+        return out
+
+    def test_matches_reference_on_real_certificates(self):
+        certs = pc.declared(ROOT).get("certificates") or []
+        self.assertGreater(len(certs), 5, "证书太少，判据没测到东西")
+        witness = pc._combo_witness(ROOT, pc.profiles(ROOT), pc._module_contracts(ROOT))
+        pc._CERT_CACHE.clear()
+        for cert in certs:
+            self.assertEqual(self._reference(ROOT, cert),
+                             pc._certificate_lines(ROOT, cert, witness), cert.get("label"))
+
+    def test_cache_is_content_and_witness_keyed(self):
+        cert = (pc.declared(ROOT).get("certificates") or [])[0]
+        witness = pc._combo_witness(ROOT, pc.profiles(ROOT), pc._module_contracts(ROOT))
+        pc._CERT_CACHE.clear()
+        first = pc._certificate_lines(ROOT, cert, witness)
+        self.assertEqual(1, len(pc._CERT_CACHE), "第一次必须落缓存")
+        self.assertEqual(first, pc._certificate_lines(ROOT, cert, witness))
+        self.assertEqual(1, len(pc._CERT_CACHE), "同内容同见证不得新增条目（那一下就是省下来的钱）")
+        other = pc._certificate_lines(ROOT, cert, witness + "-变了")
+        self.assertEqual(first, other, "键变不该改结果（除非契约真的变了）")
+        self.assertEqual(2, len(pc._CERT_CACHE), "见证一变必须换键（否则会读到陈旧复算）")
+
+
 class ProfileInputFaceTest(unittest.TestCase):
     """`profiles()` 的内容键面**必须等于它真读的件**——收窄输入面是可判的，不是口头承诺。
 

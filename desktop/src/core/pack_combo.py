@@ -587,7 +587,7 @@ def verify_certificate(root: str, cert: Dict[str, Any]) -> Tuple[List[str], Dict
 
 def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
             quint_sample: int = 120, sext_sample: int = 60,
-            seed: int = 20260923) -> Dict[str, Any]:
+            seed: int = 20260923, _witness: str = None) -> Dict[str, Any]:
     """广度证明：全部两两 + 定种子抽样三元 / 四元 / 五元 / 六元，跑同一套不变量。
 
     参与面 = `community/` 下全部已登记协议包（域包 + 组合包 + 既有社区包）——
@@ -617,7 +617,8 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
     key = _cache_key(root)
     prof = profiles(root)
     contracts = _module_contracts(root)
-    witness = _combo_witness(root, prof, contracts)    # 逐组合判决缓存的全局见证（本轮算一遍）
+    # 逐组合判决缓存的全局见证（本轮算一遍；`scan()` 已算过就直接复用）
+    witness = _witness or _combo_witness(root, prof, contracts)
     cached = _CACHE.get(key) or {}
     cached.update({"prof": prof, "contracts": contracts})
     _CACHE[key] = cached
@@ -1202,23 +1203,47 @@ SCAN_INPUTS = ("community/**/*", "04_模块库/*/*.md", "protocol/*.json",
                "desktop/src/core/registry.json")
 
 
+_CERT_CACHE: Dict[Any, Any] = {}
+_CERT_CACHE_MAX = 256
+
+
+def _certificate_lines(root: str, cert: Dict[str, Any], witness: str) -> List[str]:
+    """单张证书的 issue 行（schema 校验 + T4 复算），带**内容键缓存**。
+
+    依据（实测 2026-09-29）：一次 `nf score` 里 `pack_combo.scan` 稳态 ~36 ms，其中证书复算
+    **9.4–10.2 ms**、证书 schema 校验 **8.6–9.9 ms（1486 次嵌套调用）**——而这两者只是
+    「**该证书正文** + 本轮契约面」的纯函数：改与组合无关的件（04 模块库正文、文档、协议件）时
+    它们必然不变。键 = (证书正文 sha256, 本轮全局见证)；两者任一变即重算，无陈旧面。
+    """
+    from core import output_forms as of
+    key = (hashlib.sha256(_canon(cert)).hexdigest(), witness)
+    hit = _CERT_CACHE.get(key)
+    if hit is None:
+        unsup: List[str] = []
+        schema_errs = list(of.json_schema_check(cert, CERT_SCHEMA, unsupported=unsup))
+        sub, _st = verify_certificate(root, cert)
+        hit = (schema_errs, sorted(set(unsup)), list(sub))
+        if len(_CERT_CACHE) >= _CERT_CACHE_MAX:
+            _CERT_CACHE.clear()
+        _CERT_CACHE[key] = hit
+    schema_errs, unsup, sub = hit
+    name = cert.get("label") or "+".join(cert.get("packs") or []) or "<空>"
+    out = ["组合 %s: 证书不合 schema: %s" % (name, e) for e in schema_errs[:4]]
+    if unsup:
+        out.append("组合 %s: 证书校验器遇到不支持关键字 %s" % (name, unsup[:2]))
+    out += ["组合 %s: %s" % (name, s) for s in sub]
+    return out
+
+
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """真算（未命中缓存时走这里）。"""
-    from core import output_forms as of
-
     issues: List[str] = []
     doc = declared(root)
     certs = doc.get("certificates") or []
+    witness = _combo_witness(root, profiles(root), _module_contracts(root))
     for cert in certs:
-        unsup: List[str] = []
-        schema_errs = of.json_schema_check(cert, CERT_SCHEMA, unsupported=unsup)
-        name = cert.get("label") or "+".join(cert.get("packs") or []) or "<空>"
-        issues += ["组合 %s: 证书不合 schema: %s" % (name, e) for e in schema_errs[:4]]
-        if unsup:
-            issues.append("组合 %s: 证书校验器遇到不支持关键字 %s" % (name, sorted(set(unsup))[:2]))
-        sub, _st = verify_certificate(root, cert)
-        issues += ["组合 %s: %s" % (name, s) for s in sub]
-    br = breadth(root)
+        issues += _certificate_lines(root, cert, witness)
+    br = breadth(root, _witness=witness)
     if not br["all_legal"]:
         issues.append("广度证明不成立：两两 %d/%d · 三元 %d/%d · 四元 %d/%d · 五元 %d/%d · "
                       "六元 %d/%d（样本 %s）"
