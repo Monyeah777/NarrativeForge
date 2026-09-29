@@ -1208,6 +1208,17 @@ SCAN_INPUTS = ("community/*/protocol.yaml", "community/*/modules/*.md",
                "protocol/*.json", "desktop/src/core/registry.json")
 
 
+def core_contracts_fingerprint(root: str = ".") -> str:
+    """**核心契约的解析结果**（`_core_contracts`）的内容指纹——供「组合语义见证」类调用方复用。
+
+    为什么要有它（实测 2026-09-29）：`output_forms` 的逐包判决要经 `combine` 用到核心模块的
+    `publish`（`core_pub`）⇒ 核心模块文档是它的输入。但**键应当按「解析后的契约」取**，不是正文：
+    `04_模块库` 正文改动（改说明、加段落）不影响任何判决，按正文取键会让**每个包**都白重算一遍
+    （实测：106 个包全重算 + 全落盘 ≈ +800 ms/条命令）；只有 `machine_contract` 围栏变了才该重算。
+    """
+    return hashlib.sha256(_canon(_core_contracts(root))).hexdigest()
+
+
 _CERT_CACHE: Dict[Any, Any] = {}
 _CERT_CACHE_MAX = 256
 

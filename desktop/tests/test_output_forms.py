@@ -23,6 +23,81 @@ from core import quant_metrics as qm  # noqa: E402
 ROOT = str(Path(__file__).resolve().parents[2])
 
 
+class PackKeyReadCoverageTest(unittest.TestCase):
+    """逐包内容键必须**覆盖 `_verify_pack` 真读的件**——同族陈旧洞的可执行判据。
+
+    依据（实测 2026-09-29，读追踪全 106 包）：`_verify_pack(pkg)` 的 T4 复算会经
+    `pack_combo.combine/profiles` 读到 **核心模块文档**（`04_模块库/*/*.md` 13 件）与
+    **别的包的声明/资产台账**（`community/*/protocol.yaml`、`community/*/assets/provenance.json`），
+    而当时的共享面只有「社区模块 + registry」⇒ 这些件一变，逐包缓存就**命中旧判决**（陈旧/假绿）。
+
+    两类**不是漏申报**的例外：① `04_模块库/*/*.md` 按**解析后的核心契约**进键（`shared_face_key`
+    里拼了 `pack_combo.core_contracts_fingerprint`）——`combine` 只消费 `core_pub`，正文改动不该
+    重算 106 个包（实测按正文取键会 +800 ms/条命令）；该判据另有一段专测「改核心契约必须换键」。
+    ② `desktop/src/core/*.py` 属**代码面**——它在落盘键里（`disk_cache.key` 的 `code_modules`），
+    且代码换版时守护会摘掉 `core.*` 重载 ⇒ 进程内缓存自然作废；仓外的 `cache/` 件是缓存自身。
+    """
+
+    CODE_PREFIX = "desktop/src/core/"
+
+    def test_every_verify_pack_read_is_inside_the_key_face(self):
+        import builtins
+        from core import conformance_scan as csc
+        shared = set(r for pat in of._PACK_FACE_SHARED for r in csc.iter_files(ROOT, pat))
+        self.assertGreater(len(shared), 200, "共享面太小，判据没测到东西")
+        reads = set()
+        orig_read, orig_open = csc.read_text_cached, builtins.open
+
+        def rel_of(path):
+            try:
+                return os.path.relpath(str(path), ROOT).replace(os.sep, "/")
+            except ValueError:
+                return ""
+
+        def read_traced(path, *a, **k):
+            reads.add(rel_of(path))
+            return orig_read(path, *a, **k)
+
+        def open_traced(file, *a, **k):
+            if isinstance(file, (str, bytes, os.PathLike)):
+                reads.add(rel_of(file))
+            return orig_open(file, *a, **k)
+
+        csc.read_text_cached, builtins.open = read_traced, open_traced
+        try:
+            for pkg in of._pack_dirs(ROOT):
+                reads.clear()
+                slice_files = set(r for rel_pat in of._PACK_FACE_SLICE
+                                  for r in csc.iter_files(
+                                      ROOT, "community/%s/%s" % (pkg, rel_pat)))
+                of._verify_pack(ROOT, pkg)
+                leak = sorted(r for r in reads
+                              if r and not r.startswith("..")
+                              # 读**不存在**的件（探在不在）不算输入：失败读取不贡献结论，而「件后来出现」
+                              # 会让枚举面变 ⇒ 键自然跟着变（枚举在面里，见 `content_fingerprint`）。
+                              and os.path.isfile(os.path.join(ROOT, *r.split("/")))
+                              and r not in slice_files and r not in shared
+                              and not r.startswith(self.CODE_PREFIX)
+                              and not r.startswith(of._PACK_FACE_PARSED[0][:4]))
+                self.assertEqual([], leak,
+                                 "%s 的逐包键面缺了它真读的件：%s" % (pkg, leak[:3]))
+        finally:
+            csc.read_text_cached, builtins.open = orig_read, orig_open
+
+    def test_shared_key_includes_the_parsed_core_fingerprint(self):
+        """核心模块按**解析后契约**进键：`core_contracts_fingerprint` 一变，共享键必变。"""
+        from core import pack_combo as pc
+        base = of.shared_face_key(ROOT)
+        orig = pc.core_contracts_fingerprint
+        pc.core_contracts_fingerprint = lambda root=".": "0" * 64      # type: ignore[assignment]
+        try:
+            self.assertNotEqual(base, of.shared_face_key(ROOT),
+                                "共享键必须把「解析后的核心契约」算进去")
+        finally:
+            pc.core_contracts_fingerprint = orig                       # type: ignore[assignment]
+        self.assertEqual(base, of.shared_face_key(ROOT), "同内容必须同键")
+
+
 class PackSliceIndexTest(unittest.TestCase):
     """逐包键改「一次枚举 + 按包切片」后，**键值必须逐包不变**（面与顺序都不许动）。
 

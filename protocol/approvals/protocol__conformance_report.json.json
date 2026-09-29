@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "QD_INPUTS 补齐两条缺失子面（陈旧洞修复）+ 覆盖性判据",
+  "note": "逐包判决键面补齐 + 核心模块按解析契约进键",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"

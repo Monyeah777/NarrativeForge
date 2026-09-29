@@ -718,8 +718,16 @@ _PACK_VERIFY_MAX = 4096
 
 #: 逐包键里「属于该包」的那几条（**必须 ⊆ `INDEX_INPUTS`**，否则「读盘面 ⊆ 输入面」判据会红）。
 _PACK_FACE_SLICE = ("outputs/**/*", "assets/*", "protocol.yaml", "modules/*.md")
-#: 逐包键里「所有包共享」的那几条（组合包会借阅别包模块，保守起见每包都计入）。
-_PACK_FACE_SHARED = ("community/*/modules/*.md", REGISTRY_INPUT)
+#: 逐包键里「所有包共享」的那几条。**2026-09-29 用读追踪补齐**：`_verify_pack` 的 T4 复算会经
+#: `pack_combo.combine/profiles` 读到**别的包的声明 / 资产台账 / 模块契约**（实测越面读 225 件）——
+#: 这些不写进键，就会「子扫描器失效、外层键没变」⇒ 逐包缓存命中旧判决（**陈旧/假绿**）。
+#: 只有**产物切片**（`_PACK_FACE_SLICE`）是「谁改谁重算」；声明面一变，所有包的判决都可能变。
+#: **核心模块文档按「解析后的契约」进键**（见 `shared_face_key`）：正文改动不该重算 106 个包。
+#: 判据：`test_output_forms.PackKeyReadCoverageTest`。
+_PACK_FACE_SHARED = ("community/*/modules/*.md", "community/*/protocol.yaml",
+                     "community/*/assets/provenance.json", REGISTRY_INPUT)
+#: 逐包键里「按**解析后**契约进键」的那条（`04_模块库`）：正文改动不换键、`machine_contract` 变才换。
+_PACK_FACE_PARSED = ("04_模块库/*/*.md",)
 
 
 def shared_face_key(root: str = ".") -> str:
@@ -729,8 +737,15 @@ def shared_face_key(root: str = ".") -> str:
     而每个键都把 235 份 `community/*/modules/*.md` 重新枚举 + 摘要一遍 ⇒ **111 遍同一条共享面**，
     实测占 `index_verify` 185 ms 里的大头。切出来之后共享面一次算好、逐包只算自己那一份切片。
     正确性：键仍覆盖**同一批件**（共享面 ∪ 该包切片），任一侧内容一变键必变。
+    **核心模块（`04_模块库`）按解析后的契约进键**（`pack_combo.core_contracts_fingerprint`）：
+    `combine` 只消费核心模块的 `publish`（`core_pub`），所以正文改动不影响任何判决——按正文取键
+    会让 106 个包在白改正文时全重算（实测 **+800 ms/条命令**）。判据：`PackKeyReadCoverageTest`
+    （读覆盖）与 `PackVerifyCacheTest`（面内/面外换键）。
     """
-    return _csc.content_fingerprint(root, _PACK_FACE_SHARED)
+    raw = _csc.content_fingerprint(root, _PACK_FACE_SHARED)
+    from core import pack_combo as pc            # 惰性导入：避免模块级环
+    core = pc.core_contracts_fingerprint(root)
+    return hashlib.sha256(("%s\x00%s" % (raw, core)).encode("utf-8")).hexdigest()
 
 
 def pack_slice_index(root: str) -> Dict[str, List[str]]:
