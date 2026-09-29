@@ -29,6 +29,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 from core import conformance_scan as csc
+from core import face_key as _fk
 
 DECL_REL = "protocol/LAYERS.json"
 SCHEMA = "nf-layers/1"
@@ -374,10 +375,8 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
 
     # L9 豁免诚实
     for pattern in doc.get("derived") or []:
-        # 走**快路径**（子树索引 + 正则；与参考实现 `_expand` 的等价性由
-        # `test_layer_model.test_expand_fast_path_matches_reference` 逐 pattern 守着）。
-        # 实测（2026-09-29）：这里原先是逐 pattern 的 `Path.glob`（本仓 6 条 derived，
-        # 含两条目录通配），与同一次扫描里其它展开走的是两套口径。
+        # 走**快路径**（子树索引 + 正则）：等价性由 `test_expand_fast_path_matches_reference` 逐 pattern
+        # 守着；原先是逐 pattern 的 `Path.glob`（本仓 6 条 derived），与别处的展开两套口径（实测）。
         if not _expand_many(root, [pattern], cache):
             issues.append("L9 derived 条目命中零文件：%s（修复指引：删掉该豁免或修正 glob）"
                           % pattern)
@@ -488,11 +487,7 @@ def patterns(root: str = ".") -> Tuple[str, ...]:
     动态取是安全的：声明件（`protocol/LAYERS.json`）本身就在面内 ⇒ 声明一变指纹必变；声明新列的
     根即使一台空，结果也会变（「真源面须存在且非空」）——而「声明变了」这一点同样已经在指纹里。
     """
-    #: 声明件本身 + 判据脚本 + **渲染投影**（`docs/layers.md` 的生成区要与实时渲染一致，
-    #: 所以它是本函数的输入；2026-09-29 由「读盘面 ⊆ 输入面」判据当场抓出来）。
-    #: `desktop/src/core/*.py` 是 **L6 硬编码的读面**：不进面 ⇒ 换一个 core 件不换指纹、缓存回放旧结论。
-    pats = ["protocol/LAYERS.json", "docs/layers.md", "verify.sh",
-            "desktop/src/core/*.py"]
+    pats = list(_READ_FACE)          # 真读面先入面（含 L6 的 core/*.py 与断言集——后者此前漏申报）
     try:
         doc = load(root)
     except ValueError:
@@ -518,15 +513,18 @@ def patterns(root: str = ".") -> Tuple[str, ...]:
     return tuple(dict.fromkeys(out))
 
 
-def face_fingerprint(root: str = ".") -> str:
-    """本阶输入面（`patterns(root)`）的内容指纹——**独立入口**，供「合成键」的调用方复用。
+#: 规则**真读**的件（实测 130 件）；其余申报件只做**枚举级**判断（「存在且非空」）⇒ 键分两段取
+#: （内容 + 成员，见 `core.face_key`）：L6 的 core/*.py + 声明 + 断言集 + 判据脚本 + 渲染投影。
+_READ_FACE = ("desktop/src/core/*.py", "protocol/LAYERS.json", "protocol/assertions.json",
+              "verify.sh", "docs/layers.md")
 
-    依据（实测 2026-09-29）：`purity_scan` 的面 = 自有面 + 本面（45 条模式、3439 件），而它内部
-    又要调 `layer_model.scan()`——两层各自把**同一张 45 条的面**枚举一遍，一次 `nf_score` 里
-    这一项就白花 ~10 ms。有了这个入口，purity 可以「自有面指纹 + 本面指纹」组合出键，并把这个
-    指纹**传给** `scan(_fp=...)`，同一张面只枚举一次（**键覆盖面一字未动**）。
+
+def face_fingerprint(root: str = ".") -> str:
+    """`scan()` 的缓存键：**真读面内容 + 申报面成员集**（实测依据与两段语义见 `core.face_key`）。
+
+    `purity_scan` 拿它组合「自有面 + 本面」的键并把值传给 `scan(_fp=...)`：同一张面只枚举一次。
     """
-    return csc.face_fingerprint(root, patterns(root))
+    return _fk.fingerprint(root, _READ_FACE, patterns(root))
 
 
 def scan(root: str = ".", _fp: str = None) -> Tuple[List[str], Dict[str, Any]]:

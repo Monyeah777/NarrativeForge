@@ -355,5 +355,37 @@ class CliTest(unittest.TestCase):
             self.assertIn(flag, tree["tree"]["layers"]["flags"])
 
 
+class FaceKeySemanticsTest(unittest.TestCase):
+    """阶梯缓存键的**两段语义**（2026-09-29 实测改：内容面 + 成员集）——把「省算」钉在「不假绿」上。
+
+    依据：申报面是四阶真源面（2640 件），而规则只对它做**枚举级**判断（「存在且非空」）；真读面只有
+    130 件。旧口径把 2640 件逐件读进来取摘要（`layer scan` 取键实测 425 ms），拆成两段后 ~25 ms。
+    这三条断言就是这笔交易的全部契约：内容改动按**读没读**分档，成员改动一律换键。
+    """
+
+    def test_key_is_content_plus_membership(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _fixture(tmp)
+            base = lm.face_fingerprint(tmp)
+            # ① 改一件**声明面里、规则不读**的件的内容 ⇒ 键不许变（它的内容本来就不进结论）
+            _write(tmp, "a/keep.md", "y\n")
+            self.assertEqual(base, lm.face_fingerprint(tmp),
+                             "不读的件改内容也换了键 ⇒ 又把整面读回来了")
+            # ② 加/删声明面里的件 ⇒ **成员集**变 ⇒ 键必变（「存在且非空」判据不得陈旧）
+            _write(tmp, "a/new.md", "z\n")
+            added = lm.face_fingerprint(tmp)
+            self.assertNotEqual(base, added, "加件不换键 ⇒ 存在性判据会回放旧结论")
+            os.remove(os.path.join(tmp, "a", "new.md"))
+            self.assertEqual(base, lm.face_fingerprint(tmp), "删件后必须回到原键（成员集是对称的）")
+            # ③ 改一件**真读面**的件（判据脚本） ⇒ 内容段变 ⇒ 键必变
+            _write(tmp, "verify.sh", "#!/usr/bin/env bash\ncheck1(){\n  :\n}\ncheck2(){\n  :\n}\n")
+            self.assertNotEqual(base, lm.face_fingerprint(tmp),
+                                "真读件改了却不换键 ⇒ 缓存会回放旧结论（假绿）")
+            # ④ 真读面必须覆盖规则实际读的每一件（含此前漏申报的断言集）
+            self.assertIn("protocol/assertions.json", lm._READ_FACE)
+            for rel in ("protocol/LAYERS.json", "protocol/assertions.json", "verify.sh"):
+                self.assertIn(rel, lm.patterns(tmp), "真读件必须同时进申报面：%s" % rel)
+
+
 if __name__ == "__main__":
     unittest.main()

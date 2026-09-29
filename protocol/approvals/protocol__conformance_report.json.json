@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "冷路径波：派生缓存闸门删除 + 输入面排除 Python 自产字节码 + 键补齐（purity 登记表 / layer L6 读面）；审计摘要已重绑",
+  "note": "冷路径第三波：阶梯取键拆成「真读面内容 + 申报面成员集」（含补上此前漏申报的断言集），并修 face 补一致",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "4ef294d99d7d94f1b3f19c2660daf7145418b381f3be98d204f3a9fb4c58756a"
