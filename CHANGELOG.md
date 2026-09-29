@@ -2,6 +2,12 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：`pack_combo.scan` 的申报输入面收窄到真读面（指纹 2191 → ~1035 件；`pcb.scan` 31.8 → 24.6 ms）**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
+  ① **量到的东西**：`pack_combo.scan` 的外层内容键面写的是 `community/**/*` = **2191 件**，其中 **1156 件是 `community/*/outputs/**`（派生产物）**——而本扫描器**一件都不读**它们（T4 复算是拿包声明 + 模块契约 + 核心契约重算，不读产物）。
+  ② **改法**：`SCAN_INPUTS` 收窄为 `community/*/protocol.yaml` + `community/*/modules/*.md` + `community/*/assets/provenance.json` + `04_模块库/*/*.md` + `protocol/*.json` + `registry.json`（2191 → ~1035 件）。**收窄是可判的**：`test_conformance_scan.DerivedResultCacheTest` 的「读盘面 ⊆ 申报输入面」判据逐站点守着——少申报一件就当场红（本次改完仍绿）。
+  ③ **实测**：`pack_combo.scan` **31.8 → 24.6 ms**；`score.evaluate` 唯一新状态（3 轮）**224–228 → 216–228 ms**；**端到端（4 样本中位）0.317 → 0.302 s**；同状态重放 **~52 ms**、树没变 **~51 ms**、冷进程 **~1.70 s**。
+  ④ **同轮试过并否决的一招**：把 `fingerprint_of` 的常驻键「只归一化 root 一次」（省掉每件的 `join + abspath + normcase`）——实测**更慢**（`index_verify` 22.6 → 25.4 ms、`fingerprint_of` 14.9 → 17.6 ms）：多出来的 `normcase(join(...))` 与函数调用比原来那套更贵。改动已回退。
+
 - **执行层：`schema_lint` 的逐条面（registry 投影 / 资产台账 / 协议声明）也改内容键**（**作者目标**：「……测量缓存……达到顶尖工业水准」）：
   ① **接着上一轮**：上一轮把「逐件围栏解析 + 子集校验」缓存后，`subset_validate` 还剩 **5049** 次调用——查下来是三条**逐条面**：registry 投影（`registry.modules`）、资产台账（`provenance.assets[i]`）、协议声明（整份 `protocol.yaml`）。
   ② **改法**：新增 `_lint_obj_cached(obj, schema, schema_fp, prefix)`——键 =（对象规范 JSON 的 sha256、schema 指纹），沿用同一套**路径前缀占位**存取（于是同一份条目内容出现在不同下标上也能复用）；三条面全部改走它。

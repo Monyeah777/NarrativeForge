@@ -1198,9 +1198,14 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                          require_resident=True, code_modules=("core.pack_combo",))
 
 
-#: `scan()` 的全部输入（对齐 `_inputs_fingerprint` 覆盖的那几类）。
-SCAN_INPUTS = ("community/**/*", "04_模块库/*/*.md", "protocol/*.json",
-               "desktop/src/core/registry.json")
+#: `scan()` 的**真读面**（收窄，2026-09-29 实测）：原来是 `community/**/*`——2191 件，其中
+#: **1156 件是 `community/*/outputs/**`（派生产物）**，而本扫描器一件都不读它们（T4 复算是拿包声明 +
+#: 模块契约 + 核心契约重算，不读产物）。收窄后同一张面从 2191 件降到 ~1035 件，指纹成本随之下降。
+#: 「读盘面 ⊆ 申报输入面」由 `test_conformance_scan.DerivedResultCacheTest` 逐站点守着——少申报
+#: 一件就会当场红。
+SCAN_INPUTS = ("community/*/protocol.yaml", "community/*/modules/*.md",
+               "community/*/assets/provenance.json", "04_模块库/*/*.md",
+               "protocol/*.json", "desktop/src/core/registry.json")
 
 
 _CERT_CACHE: Dict[Any, Any] = {}
