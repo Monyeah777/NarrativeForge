@@ -190,6 +190,13 @@ class FaceReuseBudgetTest(unittest.TestCase):
     为什么值得立成判据：次数是**确定量**（CI 上墙钟会抖，次数不会），它能把「某个面又开始全量重算」
     这类回归当场抓住——例如把 `face_fingerprint` 换回 `content_fingerprint`、或新增扫描器却忘了申报面。
     改这些数字必须给依据。
+
+    **模块身份**（2026-09-29 实测踩到）：本判据必须观测**当前**的 `core.conformance_scan` 实例。
+    `test_watch.test_resident_layer_survives_a_code_reload` 会逼 `daemon._sync_code` 把 `core.*`
+    从 `sys.modules` 里摘掉重载（守护不跑旧代码的机制），于是进程里同时存在**新旧两份**模块对象：
+    而 `regression_score._count` 是 `__import__` 现取 ⇒ 它调的是**新**实例；本模块早先 import 的
+    `cs` 是**旧**实例。拿旧实例的 `_FACE_FP_STATS` 当观测面会读出「重算 0 次」（看着像 fail-closed
+    失效，其实是**看着像 bug 的读数**）。所以这里在用例内**重新 import** 一次，绑定当前实例。
     """
 
     KNOWN_CASES = (("改文档", ("docs/44_m2_ai通用数据规范.md",), 1),
@@ -200,6 +207,7 @@ class FaceReuseBudgetTest(unittest.TestCase):
     def test_fingerprint_recompute_budget(self):
         import importlib
         from core import daemon as dm
+        cs = importlib.import_module("core.conformance_scan")   # 绑**当前**实例（见类 docstring）
         rs = importlib.import_module("core.regression_score")
         qds = importlib.import_module("core.quality_depth_scan")
 
@@ -1185,6 +1193,46 @@ class FaceHygieneTest(unittest.TestCase):
                 dirty[name] = junk[:3]
         self.assertEqual({}, dirty,
                          "输入面收了测试件（裁决不读它们 ⇒ 每次冷跑白读）：%s" % dirty)
+
+
+class ReloadCoherenceTest(unittest.TestCase):
+    """**模块身份一致性**：进程内发生 `core.*` 重载（守护换版机制）之后，按**当前**实例取判据仍成立。
+
+    依据（2026-09-29 实测）：`daemon._sync_code` 会把 `core.*` 从 `sys.modules` 摘掉重载，于是进程里
+    同时存在新旧两份模块对象；`regression_score._count` 用 `__import__` 现取 ⇒ 调的是**新**实例。
+    任何「拿旧实例的模块级计数当观测面」的判据都会读出 0（`FaceReuseBudgetTest` 就这样被误伤过：
+    与 `test_daemon`/`test_watch`/`test_disk_cache` 同进程连跑时「说不清 ⇒ 0 次重算」）。
+    本判据在**子进程**里逼一次重载再量，避免自己成为新的泄漏源。
+    """
+
+    def test_budget_holds_after_in_process_reload(self):
+        import subprocess
+        code = (
+            "import importlib, sys, pathlib\n"
+            "root = %r\n"
+            "sys.path.insert(0, str(pathlib.Path(root, 'desktop', 'src')))\n"
+            "from core import daemon as dm\n"
+            "dm._code_fingerprint = lambda r: ('forced-code-change',)\n"
+            "import core.conformance_scan as csc   # 先 import，再逼重载（模拟老引用）\n"
+            "old = csc\n"
+            "dm._sync_code(pathlib.Path(root))\n"
+            "cs = importlib.import_module('core.conformance_scan')\n"
+            "rs = importlib.import_module('core.regression_score')\n"
+            "dm.reset_process_caches()\n"
+            "cs.install_resident(root)\n"
+            "rs.evaluate(root)\n"
+            "cs.clear_changes()\n"
+            "before = cs._FACE_FP_STATS['recomputes']\n"
+            "rs.evaluate(root)\n"
+            "print(cs._FACE_FP_STATS['recomputes'] - before, old is cs)\n"
+        ) % (ROOT,)
+        out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True,
+                             encoding="utf-8", errors="replace", cwd=ROOT, timeout=300)
+        self.assertEqual(0, out.returncode, out.stderr[-400:])
+        bare, same = out.stdout.strip().split()
+        self.assertNotEqual("True", same, "子进程里没逼出重载？判据自身要有效")
+        self.assertGreaterEqual(int(bare), 4,
+                                "重载之后按当前实例量，『说不清 ⇒ 全算』必须仍成立（否则观测面串了）")
 
 
 if __name__ == "__main__":
