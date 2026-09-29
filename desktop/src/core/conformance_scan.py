@@ -245,7 +245,14 @@ def _fast_glob_supported(pattern: str) -> bool:
 
 @functools.lru_cache(maxsize=512)
 def _segment_regex(part: str) -> "re.Pattern[str]":
-    """把单个路径段编译成正则：`*` → 任意（不含 `/`），`?` → 单字符（不含 `/`）。"""
+    """把单个路径段编译成正则：`*` → 任意（不含 `/`），`?` → 单字符（不含 `/`）。
+
+    **Windows 上必须大小写不敏感**：`Path.glob` 依托 `os.path.normcase`，在 Windows 上
+    `*.md` 能匹配 `UPPER.MD`（既有 glob 用例「后缀不分大小写 + 点文件在面内」已钉死该语义）。
+    快速枚举器若按大小写敏感匹配，会在 Windows 上**静默丢件**——实测（他证）：`glob-case`
+    合成树上 `Path.glob` 6 件 / 快速枚举 5 件（丢 `.../UPPER.MD`），进而使 `asset usage /
+    density / thickness`、`output meter` 与 `content_fingerprint`（**落盘缓存的键**）一起少算。
+    """
     out = []
     for ch in part:
         if ch == "*":
@@ -254,7 +261,8 @@ def _segment_regex(part: str) -> "re.Pattern[str]":
             out.append("[^/]")
         else:
             out.append(re.escape(ch))
-    return re.compile("^" + "".join(out) + "$")
+    return re.compile("^" + "".join(out) + "$",
+                      re.IGNORECASE if os.name == "nt" else 0)
 
 
 @functools.lru_cache(maxsize=512)

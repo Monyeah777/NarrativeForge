@@ -276,6 +276,58 @@ class FastGlobTest(unittest.TestCase):
                                     "新增文件必须改指纹（枚举面变了）")
 
 
+    def test_case_variant_suffix_matches_pathlib_on_windows(self):
+        """**Windows 后缀不分大小写**：`*.md` 必须匹配 `UPPER.MD`（点文件同面）。
+
+        依据（他证实测）：快速枚举器原先按大小写敏感匹配，Windows 上会**静默丢件**——
+        合成树实测 `Path.glob` 6 件 / `iter_files` 5 件（丢 `.../UPPER.MD`），
+        连带 `asset usage / density / thickness`、`output meter` 与 `content_fingerprint`
+        （**落盘缓存的键**）一起少算。本用例在修前必须失败（先证会红）。
+
+        语义锚点是**平台上的 `Path.glob`**：Windows 上两边都收 `UPPER.MD`，
+        POSIX 上两边都不收——所以本用例跨平台都成立。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            d = pathlib.Path(tmp) / "community" / "甲包" / "assets"
+            d.mkdir(parents=True)
+            (d / "ALPHA.md").write_text("a", encoding="utf-8")
+            (d / "UPPER.MD").write_text("u", encoding="utf-8")      # 大小写变体后缀
+            (d / ".hidden.md").write_text("h", encoding="utf-8")    # 点文件（pathlib 不隐藏）
+            for pat in ("community/*/assets/*.md", "**/*.md", "**/*",
+                        "community/*/assets/*"):
+                with cs.read_memo():
+                    got = cs.iter_files(tmp, pat)
+                self.assertEqual(self._reference(tmp, pat), got, pat)
+
+    def test_fingerprint_reacts_to_case_variant_new_file(self):
+        """指纹必须对**大小写变体**新增件敏感——它是**落盘缓存**的键。
+
+        依据（他证）：`disk_cache.CODE_FACE` / 各输入面都走同一个 `content_fingerprint`；
+        实测加大写后缀件后指纹**纹丝不动**（`629b9a97…` 不变），而 Windows 上 Python 照样
+        **能加载**该代码件 ⇒ 键不换而代码已变 ⇒ 落盘缓存可能返回旧结果。
+        故：Windows 上该断言必须成立；POSIX 上 `Path.glob` 本就大小写敏感，
+        此处只断言对照项（小写新件）必须改指纹。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            sub = pathlib.Path(tmp) / "sub"
+            sub.mkdir()
+            (sub / "a.md").write_text("一", encoding="utf-8")
+            face = ("sub/*.md",)
+            with cs.read_memo():
+                base = cs.content_fingerprint(tmp, face)
+            (sub / "b.MD").write_text("二", encoding="utf-8")        # 大小写变体后缀
+            with cs.read_memo():
+                after_variant = cs.content_fingerprint(tmp, face)
+            if os.name == "nt":
+                self.assertNotEqual(base, after_variant,
+                                    "Windows：加大写后缀件必须换指纹（否则落盘缓存会陈旧）")
+            (sub / "c.md").write_text("三", encoding="utf-8")        # 对照：小写新件
+            with cs.read_memo():
+                after_lower = cs.content_fingerprint(tmp, face)
+            self.assertNotEqual(after_variant, after_lower,
+                                "小写后缀新件必须换指纹（跨平台对照项）")
+
+
 class FingerprintRobustnessTest(unittest.TestCase):
     """内容指纹对**非 UTF-8 附件**必须按字节取，不许整体崩掉。
 

@@ -43,6 +43,37 @@ def _count_opens(fn):
         builtins.open = orig
 
 
+class CompositeFaceCoverageTest(unittest.TestCase):
+    """并集面 `QD_INPUTS` 必须**覆盖每个子扫描器的面**——漏一条就是「子扫描器会变、聚合却说没变」。
+
+    本判据是为一个**真实陈旧洞**写的（实测 2026-09-29）：`QD_INPUTS` 少了 `domain_pack.SCAN_INPUTS`
+    里的两条面——`.rivet/private_archive/ai_packs/specs/*.json`（100 件）与 `registry.json`（1 件）
+    ⇒ 改这 101 件里任何一件时，聚合缓存会命中旧值（子扫描器自己的内容键缓存失效了，但外层并集键没变）。
+    修法：把两条补齐（并集面是保守面，**宁可多列、不许漏列**），并在此把覆盖性变成可执行判据。
+    """
+
+    SUB_FACES = ("core.domain_pack:SCAN_INPUTS", "core.pack_combo:SCAN_INPUTS",
+                 "core.output_forms:INDEX_INPUTS", "core.asset_density:ASSET_INPUTS",
+                 "core.asset_density:CORPUS_PATTERNS",
+                 "core.asset_ledger_projection:VERIFY_INPUTS",
+                 "core.concept_graph:CG_INPUTS")
+
+    def test_union_covers_declared_sub_faces(self):
+        import importlib
+        from core import conformance_scan as csc
+        covered = set(r for pat in qds.QD_INPUTS for r in csc.iter_files(ROOT, pat))
+        self.assertTrue(covered, "并集面为空")
+        for spec in self.SUB_FACES:
+            mod_name, attr = spec.split(":")
+            pats = getattr(importlib.import_module(mod_name), attr)
+            for pat in pats:
+                files = csc.iter_files(ROOT, pat)
+                miss = [r for r in files if r not in covered]
+                self.assertEqual([], miss,
+                                 "%s 的 %s 有 %d 件未被 QD_INPUTS 覆盖（陈旧洞）：%s"
+                                 % (spec, pat, len(miss), miss[:3]))
+
+
 class QualityDepthScanTest(unittest.TestCase):
     def test_repo_clean(self):
         (issues, stats), reads = _count_opens(lambda: qds.scan(ROOT))

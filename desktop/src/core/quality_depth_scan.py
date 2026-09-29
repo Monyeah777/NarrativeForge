@@ -26,7 +26,12 @@ QD_INPUTS = ("03_管线库/**/*", "04_模块库/**/*", "05_资产库/**/*", "com
              "06_Agent执行协议.md", "07_官方核心出厂与社区预设导航.md",
              "verify.sh", "README.md", "README.en.md", "ROUTES.md", "llms.txt",
              "STRATEGY.md", "AGENTS.md",
-             "desktop/**/*.py", "scripts/**/*", ".github/scripts/*.py")
+             "desktop/**/*.py", "scripts/**/*", ".github/scripts/*.py",
+             # 2026-09-29 补齐（**陈旧洞**）：下面两条是 `domain_pack.SCAN_INPUTS` 里的面，而并集里一条都没有
+             # ⇒ 改它们时聚合缓存会**命中旧值**（实测：未被覆盖 101 件）。并集面是**保守面**——宁可多列，
+             # 不许漏列；覆盖性由 `test_quality_depth_scan.CompositeFaceCoverageTest` 逐条守着。
+             ".rivet/private_archive/ai_packs/specs/*.json",
+             "desktop/src/core/registry.json")
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

@@ -264,7 +264,15 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         for rel in csc.iter_files(root, pat):
             if rel.rsplit("/", 1)[-1] == "README.md":
                 continue
-            for k in _keys_of(Path(rel)):
+            # 路径必须锚在 `root` 上（`Path(rel)` 是按 **CWD** 解析的），且把正文传进去——
+            # `_keys_of` 在 `text is None` 时会自行读件，读失败则**静默降级**成「仅文件名令牌」：
+            # 实测同树上「键 8→4、引用 24→12」且不报 issue（同文件 scan / thickness_scan 两处本就传 text）。
+            shelf = Path(root) / rel
+            try:
+                text = csc.read_text_cached(shelf)
+            except OSError:
+                text = None
+            for k in _keys_of(shelf, text):
                 keys.setdefault(k, rel)
     # 内容键：**语料面指纹**（常驻层逐件摘要，不读正文）＋ 键集。口径与旧实现一致（同一批件、
     # 同一 payload 语义），但不再把 3.5 MB 正文逐件 `encode()` + 重哈希——而且键能**先算**，
