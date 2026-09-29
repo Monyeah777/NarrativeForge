@@ -1,0 +1,710 @@
+{
+  "cycles": [
+    [
+      "conformance_scan",
+      "disk_cache"
+    ],
+    [
+      "disk_cache",
+      "import_graph"
+    ],
+    [
+      "domain_pack",
+      "output_forms",
+      "pack_combo"
+    ],
+    [
+      "library",
+      "receipts"
+    ]
+  ],
+  "metrics": {
+    "agent_rules_adapter": {
+      "ca": 1,
+      "ce": 2,
+      "i": 0.6667
+    },
+    "approval": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "assemble_plan": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
+    "assertions": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "asset_density": {
+      "ca": 2,
+      "ce": 2,
+      "i": 0.5
+    },
+    "asset_ledger": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "asset_ledger_projection": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "asset_line_baseline": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "attest": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
+    "audit": {
+      "ca": 1,
+      "ce": 2,
+      "i": 0.6667
+    },
+    "autofix": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "bench": {
+      "ca": 0,
+      "ce": 2,
+      "i": 1.0
+    },
+    "ccv3_adapter": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "closure_scan": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "code_metrics": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "cognition": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "community_inventory": {
+      "ca": 1,
+      "ce": 5,
+      "i": 0.8333
+    },
+    "composer": {
+      "ca": 1,
+      "ce": 4,
+      "i": 0.8
+    },
+    "concept_graph": {
+      "ca": 2,
+      "ce": 1,
+      "i": 0.3333
+    },
+    "conformance_decl": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "conformance_report": {
+      "ca": 0,
+      "ce": 27,
+      "i": 1.0
+    },
+    "conformance_scan": {
+      "ca": 35,
+      "ce": 2,
+      "i": 0.0541
+    },
+    "coupling_metrics": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "daemon": {
+      "ca": 1,
+      "ce": 6,
+      "i": 0.8571
+    },
+    "decision_layer": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
+    "decisions": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "disk_cache": {
+      "ca": 7,
+      "ce": 4,
+      "i": 0.3636
+    },
+    "doc_hygiene": {
+      "ca": 3,
+      "ce": 1,
+      "i": 0.25
+    },
+    "domain_metrics": {
+      "ca": 2,
+      "ce": 1,
+      "i": 0.3333
+    },
+    "domain_pack": {
+      "ca": 2,
+      "ce": 5,
+      "i": 0.7143
+    },
+    "drill_fidelity": {
+      "ca": 0,
+      "ce": 2,
+      "i": 1.0
+    },
+    "driver": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "endpoint": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "execution_drill": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "export_schema": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "exporter": {
+      "ca": 1,
+      "ce": 7,
+      "i": 0.875
+    },
+    "face_key": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "gap_review": {
+      "ca": 0,
+      "ce": 3,
+      "i": 1.0
+    },
+    "generator": {
+      "ca": 1,
+      "ce": 3,
+      "i": 0.75
+    },
+    "handover": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "impact_check": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "import_adapter": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "import_graph": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "instruction_evidence": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "instruction_step_audit": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "intake": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "interop_export": {
+      "ca": 1,
+      "ce": 2,
+      "i": 0.6667
+    },
+    "io_types": {
+      "ca": 2,
+      "ce": 1,
+      "i": 0.3333
+    },
+    "ir": {
+      "ca": 11,
+      "ce": 0,
+      "i": 0.0
+    },
+    "judgement_coverage": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "key_naming": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "knowledge": {
+      "ca": 2,
+      "ce": 1,
+      "i": 0.3333
+    },
+    "knowledge_sig": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "layer_model": {
+      "ca": 1,
+      "ce": 2,
+      "i": 0.6667
+    },
+    "lazy_yaml": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
+    "library": {
+      "ca": 10,
+      "ce": 3,
+      "i": 0.2308
+    },
+    "license_gate": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "lsp": {
+      "ca": 0,
+      "ce": 2,
+      "i": 1.0
+    },
+    "machine_contract": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "market_analyzer": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "mcp_adapter": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "mcp_package": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "mcp_runtime": {
+      "ca": 5,
+      "ce": 4,
+      "i": 0.4444
+    },
+    "modeling": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "models": {
+      "ca": 12,
+      "ce": 0,
+      "i": 0.0
+    },
+    "module_lifecycle": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "module_signature": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "mvu_adapter": {
+      "ca": 1,
+      "ce": 2,
+      "i": 0.6667
+    },
+    "output_forms": {
+      "ca": 3,
+      "ce": 6,
+      "i": 0.6667
+    },
+    "pack_combo": {
+      "ca": 3,
+      "ce": 4,
+      "i": 0.5714
+    },
+    "parser": {
+      "ca": 2,
+      "ce": 1,
+      "i": 0.3333
+    },
+    "paths": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
+    "patterns": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "payload_consumer": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "payload_evidence": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "payload_harvest": {
+      "ca": 2,
+      "ce": 1,
+      "i": 0.3333
+    },
+    "payload_registry": {
+      "ca": 1,
+      "ce": 2,
+      "i": 0.6667
+    },
+    "payload_typing": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "perf_budget": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "pipeline": {
+      "ca": 0,
+      "ce": 7,
+      "i": 1.0
+    },
+    "pipeline_loader": {
+      "ca": 2,
+      "ce": 2,
+      "i": 0.5
+    },
+    "pipeline_scaffold": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "pipelinerun": {
+      "ca": 1,
+      "ce": 4,
+      "i": 0.8
+    },
+    "plog": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "posix_shell": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "postmortem": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "preset_manager": {
+      "ca": 0,
+      "ce": 2,
+      "i": 1.0
+    },
+    "prose_lint": {
+      "ca": 2,
+      "ce": 1,
+      "i": 0.3333
+    },
+    "protocol_golden": {
+      "ca": 0,
+      "ce": 4,
+      "i": 1.0
+    },
+    "protocol_projection": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "protocol_wizard": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "purity_scan": {
+      "ca": 2,
+      "ce": 3,
+      "i": 0.6
+    },
+    "quality_baseline": {
+      "ca": 4,
+      "ce": 0,
+      "i": 0.0
+    },
+    "quality_depth_scan": {
+      "ca": 0,
+      "ce": 13,
+      "i": 1.0
+    },
+    "quality_gate": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "quant_metrics": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "rating_gate": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "receipts": {
+      "ca": 3,
+      "ce": 1,
+      "i": 0.25
+    },
+    "registry_cross": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "registry_loader": {
+      "ca": 6,
+      "ce": 1,
+      "i": 0.1429
+    },
+    "registry_sync": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "regression_score": {
+      "ca": 0,
+      "ce": 3,
+      "i": 1.0
+    },
+    "repo_stats": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "retriever": {
+      "ca": 0,
+      "ce": 3,
+      "i": 1.0
+    },
+    "rfc": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "round_drill": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
+    "round_header": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "rules_render": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "schema_lint": {
+      "ca": 3,
+      "ce": 1,
+      "i": 0.25
+    },
+    "semantic_conflict": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "semantics": {
+      "ca": 3,
+      "ce": 1,
+      "i": 0.25
+    },
+    "session_watch": {
+      "ca": 0,
+      "ce": 4,
+      "i": 1.0
+    },
+    "skill_adapter": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "st_quality": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "st_validator": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "state_front": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "steelman": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "storage": {
+      "ca": 8,
+      "ce": 2,
+      "i": 0.2
+    },
+    "telemetry_semconv": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "terminal": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "text_hygiene": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
+    "tool_face": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "trace_drill": {
+      "ca": 0,
+      "ce": 2,
+      "i": 1.0
+    },
+    "transparency_log": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
+    "validator": {
+      "ca": 0,
+      "ce": 2,
+      "i": 1.0
+    },
+    "variants": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "verify_report": {
+      "ca": 0,
+      "ce": 2,
+      "i": 1.0
+    },
+    "watch": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
+    "workloop": {
+      "ca": 0,
+      "ce": 3,
+      "i": 1.0
+    },
+    "world_model": {
+      "ca": 1,
+      "ce": 1,
+      "i": 0.5
+    },
+    "world_slots": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    }
+  },
+  "note": "存量耦合债登记（棘轮：只许减少；新增环/SDP 违例判 FAIL，除非评审后重登）",
+  "schema": "nf-coupling/1",
+  "sdp": [
+    [
+      "conformance_scan",
+      "disk_cache"
+    ],
+    [
+      "disk_cache",
+      "import_graph"
+    ],
+    [
+      "library",
+      "receipts"
+    ],
+    [
+      "pack_combo",
+      "domain_pack"
+    ],
+    [
+      "pack_combo",
+      "output_forms"
+    ],
+    [
+      "prose_lint",
+      "mcp_runtime"
+    ],
+    [
+      "purity_scan",
+      "layer_model"
+    ]
+  ]
+}

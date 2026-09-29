@@ -1,0 +1,31 @@
+name: sast
+# 静态安全扫描门禁（ISO 25010 安全性 / 供应链面 · 2026-09-29）
+#
+# 为什么单独一条：`purity_scan` 只覆盖**动态执行/反序列化/递归删除**这一类危险 sink，
+# 而 SQL 拼接、弱随机、XXE、不含超时的请求等 AI 代码高频缺陷不在其中。本 job 跑
+# bandit + ruff `--select S`，并按 (工具,文件,规则) **计数棘轮**判：
+# 计数上升或出现新 (文件,规则) → 红；计数下降 → 提示重冻（债务只许减）。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sast-baseline:
+    name: bandit+ruff-s-baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.11'
+      - name: 安装 SAST 工具（版本固定）
+        run: |
+          pip install -r .github/requirements-sast.txt
+          pip install -r .github/requirements-lint.txt
+      - name: SAST 计数棘轮（新增/上升即红）
+        run: python scripts/sast_check.py

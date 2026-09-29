@@ -1,0 +1,45 @@
+{
+  "schema": "nf-asset-keys/1",
+  "note": "资产键词表（唯一机读真相）。键是**跨包寻址面**：域包/用户资产的文件头 nf-asset key 与 provenance 台账的 assets[].key 都按它校验——未登记的键判 FAIL（FAIR「可互操作/可复用」口径：键要有声明、有含义、不各自为政）。新增键 = 改本件 + 写明用途，不写死在代码里。",
+  "pattern": "^[A-Z][A-Z0-9_]{2,39}$",
+  "pattern_note": "大写字母开头、仅 [A-Z0-9_]、长度 3–40（实测存量 9 键：长度 10–17，全合规）",
+  "keys": {
+    "CONCEPT_GRAPH": {
+      "note": "概念图：节点/边/溯源键（域包资产的标准三件之一）",
+      "scope": "domain_pack"
+    },
+    "DATA_CONTRACT": {
+      "note": "数据契约：字段/口径/校验面（量化金融域包）",
+      "scope": "domain_pack"
+    },
+    "DOMAIN_SPEC": {
+      "note": "域口径表：细分定义 + 可机检判据 + 常见失效模式 + 权威锚",
+      "scope": "domain_pack"
+    },
+    "QUANT_GRAPH": {
+      "note": "量化图：因子/策略/风险关系（量化金融域包）",
+      "scope": "domain_pack"
+    },
+    "QUANT_METRICS": {
+      "note": "量化度量表：指标定义与可复算口径（量化金融域包）",
+      "scope": "domain_pack"
+    },
+    "STANDARDS_ANCHORS": {
+      "note": "权威锚表：标准锚 + 本机可达性实证",
+      "scope": "domain_pack"
+    },
+    "STRATEGY_SPECS": {
+      "note": "策略规格：策略模板与合规边界（量化金融域包）",
+      "scope": "domain_pack"
+    },
+    "TECH_RULES": {
+      "note": "技术文档规则（技术文档域包 · 用户自定义资产）",
+      "scope": "user_asset"
+    },
+    "TECH_TEMPLATES": {
+      "note": "技术文档模板（技术文档域包 · 用户自定义资产）",
+      "scope": "user_asset"
+    }
+  },
+  "updated": "2026-09-29"
+}

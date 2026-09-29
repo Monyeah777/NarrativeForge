@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/concept_graph.py:d2cee8f3056ca59a48e96e07c06a529bb8b7da20477053dedf9ef0cea945b130
   - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
-  - README.en.md:9af6907075d68231fd3f5fe69c51b3b4bafc476d9508951c64555a6f57021472
+  - README.en.md:7eb6bb6ab038945353b9572a9c0d89c406aa5405fb8c9d10af5895b2ec95c0c0
   - scripts/check_external_links.py:4410f000e4d0efb7b58b00522420d2db9c23f8194ab01b38b90290ae6de47966
   - community/量化金融域包/assets/DATA_CONTRACT.md:3815cd420ce535b571149a1ca0725b2d5c1757660e83d0edd8ed1d5c14ed2af1
   - community/量化金融域包/assets/STRATEGY_SPECS.md:9174638b5caf2d5d8586b80d07ed9aeca5d221e16f01ec19ce0e4c0f50859e65

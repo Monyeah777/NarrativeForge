@@ -1,0 +1,55 @@
+name: cross-platform
+# 三平台同口径门禁（顶层化目标 · 静态可核验「三平台CI全绿」）
+#
+# 为什么需要：此前 10 个工作流**全部只跑 ubuntu-latest**——而本仓大量缺陷恰恰是平台相关的
+# （Windows 实测过：GBK/locale 下 `pip install -r` 抛 UnicodeDecodeError、批量落盘偶发
+# EINVAL(22)、路径分隔符；macOS 的 bash 版本与 GNU 工具差异同理）。只测一平台 = 只在一种
+# 环境里证明「可复现」。
+#
+# 口径：三平台跑**同一套**全量门禁（bash verify.sh）+ 同一套机器可读报告新鲜度校验；
+# 依赖走固定清单（.github/requirements-ci.txt），平台专属系统库只在 Linux 装。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: gate-${{ matrix.os }}
+    strategy:
+      fail-fast: false          # 三平台各自出结论，不因一个红就掩盖另两个
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.11'
+      - name: 安装测试依赖（固定清单；Linux 另装 EGL 系统库）
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            sudo apt-get update
+            sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libdbus-1-3
+          fi
+          python -m pip install -r .github/requirements-ci.txt
+      - name: 全量门禁（三平台同口径：bash verify.sh）
+        shell: bash
+        run: bash verify.sh
+      - name: 门禁机器可读报告（写 + 新鲜度校验）
+        shell: bash
+        run: |
+          python scripts/verify_report.py --write
+          python scripts/verify_report.py --check
+      - name: 上传门禁报告（三平台各留一份）
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
+        with:
+          name: verification-report-${{ matrix.os }}
+          path: protocol/verification_report.json
+          if-no-files-found: warn

@@ -1,0 +1,73 @@
+{
+  "execution": {
+    "cases": 56,
+    "fidelity": 1.0,
+    "passed": 56,
+    "sets": [
+      {
+        "cases": 8,
+        "passed": 8,
+        "set": "p01_drill_cases.json"
+      },
+      {
+        "cases": 8,
+        "passed": 8,
+        "set": "p02_drill_cases.json"
+      },
+      {
+        "cases": 8,
+        "passed": 8,
+        "set": "p03_drill_cases.json"
+      },
+      {
+        "cases": 8,
+        "passed": 8,
+        "set": "p04_drill_cases.json"
+      },
+      {
+        "cases": 8,
+        "passed": 8,
+        "set": "p05_drill_cases.json"
+      },
+      {
+        "cases": 8,
+        "passed": 8,
+        "set": "p06_drill_cases.json"
+      },
+      {
+        "cases": 8,
+        "passed": 8,
+        "set": "p90_drill_cases.json"
+      }
+    ]
+  },
+  "overall": {
+    "cases": 58,
+    "fidelity": 1.0,
+    "passed": 58
+  },
+  "rounds": {
+    "fidelity": 1.0,
+    "matched": 2,
+    "samples": [
+      {
+        "declared": "non-conformant",
+        "first_issue": "第 1 回合缺引用（R-R1）",
+        "live": "non-conformant",
+        "matched": true,
+        "sample": "bad.json",
+        "turns": 2
+      },
+      {
+        "declared": "conformant",
+        "first_issue": "",
+        "live": "conformant",
+        "matched": true,
+        "sample": "good.json",
+        "turns": 2
+      }
+    ],
+    "total": 2
+  },
+  "schema": "nf-drill-fidelity/1"
+}

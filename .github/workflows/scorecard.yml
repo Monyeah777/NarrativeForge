@@ -1,0 +1,47 @@
+name: scorecard
+# OpenSSF Scorecard（供应链评分 · 外部标准对接 2026-09-29）
+#
+# 定位：外部权威评分作为**结果可见面**（不进门禁基线——它依赖 GitHub 平台状态与运行时刻，
+# 不满足「静态可复现」）；本仓自身的门禁仍是唯一判据来源。
+# 已就绪的信号：固定 action SHA（Pinned-Dependencies）、token 最小权限（Token-Permissions）、
+# 无危险工作流（Dangerous-Workflow）、SECURITY.md（Security-Policy）、依赖更新工具（Dependabot）。
+on:
+  branch_protection_rule:
+  schedule:
+    - cron: '30 1 * * 1'      # 每周一 01:30 UTC
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  analysis:
+    name: scorecard-analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      security-events: write     # 上传 SARIF
+      id-token: write           # publish_results 需要 OIDC
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+        with:
+          persist-credentials: false
+      - name: 跑 OpenSSF Scorecard
+        uses: ossf/scorecard-action@62b2cac7ed8198b15735ed49ab1e5cf35480ba46  # v2.4.0
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          publish_results: true
+      - name: 留工件（SARIF）
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
+        with:
+          name: scorecard-sarif
+          path: results.sarif
+          retention-days: 5
+      - name: 上传到代码扫描（Security 页可见）
+        uses: github/codeql-action/upload-sarif@1190a975f95ce23525efb6a3fc21ea29567c1b52  # v3
+        with:
+          sarif_file: results.sarif

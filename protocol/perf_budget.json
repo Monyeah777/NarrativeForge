@@ -1,0 +1,99 @@
+{
+  "entries": [
+    {
+      "budget_ms": 6000,
+      "cmd": "python scripts/nf.py score --json",
+      "id": "nf_score",
+      "max_age_days": 30,
+      "note": "决策评分（并发会话持续优化项）",
+      "runs": 3
+    },
+    {
+      "budget_ms": 15000,
+      "cmd": "python scripts/verify_report.py --json",
+      "id": "verify_report",
+      "max_age_days": 30,
+      "note": "门禁机器可读报告（23 条判据全量重算）",
+      "runs": 3
+    },
+    {
+      "budget_ms": 3000,
+      "cmd": "python scripts/coupling_metrics.py",
+      "id": "coupling",
+      "max_age_days": 30,
+      "note": "模块级耦合度量（AST 全量）",
+      "runs": 3
+    },
+    {
+      "budget_ms": 3000,
+      "cmd": "python scripts/code_metrics.py",
+      "id": "code_metrics",
+      "max_age_days": 30,
+      "note": "代码规模/复杂度度量（AST 全量）",
+      "runs": 3
+    },
+    {
+      "budget_ms": 1500,
+      "cmd": "python scripts/e2e_desktop_headless.py",
+      "id": "e2e",
+      "max_age_days": 30,
+      "note": "端到端冒烟（官方 13 件 + M91/M92 + P04）",
+      "runs": 3
+    }
+  ],
+  "evidence": {
+    "code_metrics": {
+      "budget_ms": 3000,
+      "cmd": "python scripts/code_metrics.py",
+      "exit_code": 1,
+      "max_ms": 853.4,
+      "measured_at": "2026-09-29",
+      "median_ms": 853.1,
+      "min_ms": 849.0,
+      "runs": 3
+    },
+    "coupling": {
+      "budget_ms": 3000,
+      "cmd": "python scripts/coupling_metrics.py",
+      "exit_code": 0,
+      "max_ms": 964.7,
+      "measured_at": "2026-09-29",
+      "median_ms": 896.5,
+      "min_ms": 858.9,
+      "runs": 3
+    },
+    "e2e": {
+      "budget_ms": 1500,
+      "cmd": "python scripts/e2e_desktop_headless.py",
+      "exit_code": 0,
+      "max_ms": 373.7,
+      "measured_at": "2026-09-29",
+      "median_ms": 372.7,
+      "min_ms": 359.5,
+      "runs": 3
+    },
+    "nf_score": {
+      "budget_ms": 6000,
+      "cmd": "python scripts/nf.py score --json",
+      "exit_code": 0,
+      "max_ms": 2074.7,
+      "measured_at": "2026-09-29",
+      "median_ms": 2073.3,
+      "min_ms": 2042.5,
+      "runs": 3
+    },
+    "verify_report": {
+      "budget_ms": 15000,
+      "cmd": "python scripts/verify_report.py --json",
+      "exit_code": 1,
+      "max_ms": 5128.5,
+      "measured_at": "2026-09-29",
+      "median_ms": 5081.4,
+      "min_ms": 5065.4,
+      "runs": 3
+    }
+  },
+  "note": "性能预算（ISO 25010 性能效率面）。声明 = entries（唯一真源：命令 + 预算毫秒 + 取数次数 + 新鲜度上限）；证据 = evidence（由 python scripts/perf_budget.py --record 实测写入：中位/最小/最大毫秒 + 退出码 + 时间）。判据只两条：① 记录新鲜；② 中位耗时 ≤ 预算。**本判据不重复判正确性**（正确性由 verify_report 的其余判据承担），否则性能面会因无关原因抖动。预算按本机实测中位 ×2.5~3 定，只拦**数量级回归**，不拦噪声。",
+  "reference_host": "Windows 10 / Python 3.11.9（作者机 · 冷进程）",
+  "schema": "nf-perf-budget/1"
+}

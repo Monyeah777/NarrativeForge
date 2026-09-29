@@ -14,7 +14,7 @@
       "stats": {
         "docs": 4,
         "import_residue": [],
-        "imports": 14,
+        "imports": 13,
         "layers": {
           "asset_levels": 5,
           "crosscut": 6,
@@ -336,14 +336,120 @@
       },
       "status": "pass",
       "warns": 0
+    },
+    {
+      "id": "code_metrics",
+      "issues": 0,
+      "name": "代码规模/复杂度上限（棘轮冻结）",
+      "sample": [],
+      "source": "code_metrics.scan",
+      "stats": {
+        "baseline": 154,
+        "files": 154,
+        "max_fn_cc": 150,
+        "max_fn_lines": 951,
+        "max_lines": 5417
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "key_naming",
+      "issues": 0,
+      "name": "资产键命名规范（形态 + 声明词表）",
+      "sample": [],
+      "source": "key_naming.scan",
+      "stats": {
+        "keys_seen": 9,
+        "max_key_len": 17,
+        "occurrences": 614,
+        "registered": 9
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "instruction_evidence",
+      "issues": 0,
+      "name": "规范入口指令实测记录（新鲜 + 退出码 0）",
+      "sample": [],
+      "source": "instruction_evidence.scan",
+      "stats": {
+        "declared": 7,
+        "recorded": 7,
+        "recorded_policy": 3
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "coupling",
+      "issues": 0,
+      "name": "模块级耦合（Martin 包度量 / SDP / 环 · 只许收敛）",
+      "sample": [],
+      "source": "coupling_metrics.scan",
+      "stats": {
+        "cycles": 4,
+        "modules": 131,
+        "registered_cycles": 4,
+        "registered_sdp": 7,
+        "sdp": 7
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "perf_budget",
+      "issues": 0,
+      "name": "性能预算（中位耗时 ≤ 预算 + 记录新鲜）",
+      "sample": [],
+      "source": "perf_budget.scan",
+      "stats": {
+        "declared": 5,
+        "over_budget": 0,
+        "recorded": 5
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "drill_fidelity",
+      "issues": 0,
+      "name": "演练保真度（执行演练 + 回合级回放 = 100%）",
+      "sample": [],
+      "source": "drill_fidelity.scan",
+      "stats": {
+        "cases": 58,
+        "exec_sets": 7,
+        "fidelity": 1.0,
+        "passed": 58,
+        "round_samples": 2
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "judgement_coverage",
+      "issues": 0,
+      "name": "判据接线覆盖（暴露 scan() 的判据必须有消费者或例外登记）",
+      "sample": [],
+      "source": "judgement_coverage.scan",
+      "stats": {
+        "consumed": 55,
+        "exceptions": 2,
+        "orphans": 2,
+        "scanners": 57
+      },
+      "status": "pass",
+      "warns": 0
     }
   ],
-  "root_digest": "5e912637eed9d1983de18055da695dd5899ff65ea49b7f606e2159c7e0f8f80d",
+  "root_digest": "2a70a024fe2124f09041162b36a9aadbc69696736bdf9536808e14eb63d8fe7f",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,
     "fail": 0,
-    "pass": 17,
+    "pass": 24,
     "warn": 2
   }
 }

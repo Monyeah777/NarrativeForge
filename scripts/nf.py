@@ -4500,7 +4500,7 @@ def _cmd_shell(args) -> int:
         pass                                  # readline 接管 Tab 与历史（POSIX）
     print_banner = not args.no_banner
     return _sw.run_session(runner, sys.stdin, sys.stdout, ROOT,
-                            assume_yes=args.yes,
+                           assume_yes=args.yes,
                             show_banner=print_banner,
                             baseline=_shell_baseline(), index=index,
                             history_path=history_path, color=color_on,
@@ -4773,6 +4773,7 @@ def _cmd_assemble(args):
 def _cmd_release(args):
     """nf release：发布前体检——verify + 基线自描述一致（--fast 跳过 verify）。"""
     import subprocess  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
+    from core import posix_shell as psh
     from core import quality_baseline as qb
 
     issues, stats = qb.scan(ROOT)
@@ -4785,7 +4786,7 @@ def _cmd_release(args):
     if args.fast:
         print("  --fast：跳过 verify.sh 全量（发布前请跑完整 nf release）")
         return 1 if issues else 0
-    rc = subprocess.run(["bash", "verify.sh"], cwd=ROOT).returncode  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
+    rc = subprocess.run([psh.posix_shell(), "verify.sh"], cwd=ROOT).returncode  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
     gate_fail = bool(issues) or rc != 0
     if not gate_fail:
         from core import asset_ledger_projection as alp
@@ -4801,7 +4802,7 @@ def _cmd_release(args):
                       file=sys.stderr)
             else:
                 print("  ✓ %s 一致" % name)
-        cov = subprocess.run(["bash", "scripts/per_module_coverage.sh", "30"],  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
+        cov = subprocess.run([psh.posix_shell(), "scripts/per_module_coverage.sh", "30"],  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
                              cwd=ROOT).returncode
         if cov != 0:
             gate_fail = True
@@ -4838,7 +4839,7 @@ def _cmd_release(args):
             print("  ✓ 端到端冒烟通过（官方 13 件 + M91/M92 + P04 → 装配 → 生成 → 断言）")
         # 机器可读报告新鲜度（静态可核验面）：已提交的 protocol/verification_report.json
         # 必须等于实时重算——否则门禁的「机器面结论」是过期的。
-        vrpt = subprocess.run([sys.executable, os.path.join("scripts", "verify_report.py"), "--check"],
+        vrpt = subprocess.run([sys.executable, os.path.join("scripts", "verify_report.py"), "--fresh"],
                               cwd=ROOT, capture_output=True, text=True, encoding="utf-8",
                               errors="replace")
         if vrpt.returncode != 0:

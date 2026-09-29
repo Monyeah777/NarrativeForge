@@ -1,0 +1,10 @@
+{
+  "schema": "nf-judgement-coverage/1",
+  "note": "判据接线覆盖的**例外登记**（唯一真源）。规矩：core 里暴露 scan() 的模块必须被 verify.sh / nf.py / verify_report 判据表 / quality_depth_scan / 其它 core 模块之一消费；未接线且未登记的判据判 FAIL。登记项须写明**为什么它可以不接线**——本表只许缩小，不许用来给新死判据开后门。",
+  "exceptions": {
+    "payload_evidence": "**待处置的死判据**：全仓零引用，疑为 payload_registry 取代后的残留。保留登记 = 让它可见；正确处置是删除或接进载荷面（下一波做，不在本次改动的范围内）。",
+    "payload_typing": "**待处置的死判据**：全仓零引用，自述 status=proposal-only（提案态未落 typed）。同上，须删除或接线。"
+  },
+  "updated": "2026-09-29",
+  "updated_note": "移除三条已失效例外（closure_scan / mcp_package / st_quality 现已分别被 protocol_golden 与 conformance_report 消费）——例外表只许缩小。"
+}

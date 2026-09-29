@@ -1,0 +1,6 @@
+# SAST job only (ISO 25010 安全性面 · 2026-09-29).
+#
+# 版本 = 本机实测所用版本（与 protocol/sast_baseline.json 的计数口径绑定：
+# 换版本请重跑 python scripts/sast_check.py --write 重冻，并在 CHANGELOG 记账）。
+# ASCII-only on purpose: pip parses requirements files with the locale encoding.
+bandit==1.9.4

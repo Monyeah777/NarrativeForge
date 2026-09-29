@@ -48,6 +48,17 @@ SPECS: Tuple[Tuple[str, str, str, str, str], ...] = (
      "verify_committed", "scan"),
     ("audit", "审计件被审对象 digest", "audit", "scan", "scan"),
     ("self_stats", "自述数字 == 实算（README/llms 生成区）", "repo_stats", "check_strict", "scan"),
+    ("code_metrics", "代码规模/复杂度上限（棘轮冻结）", "code_metrics", "scan", "scan"),
+    ("key_naming", "资产键命名规范（形态 + 声明词表）", "key_naming", "scan", "scan"),
+    ("instruction_evidence", "规范入口指令实测记录（新鲜 + 退出码 0）",
+     "instruction_evidence", "scan", "scan"),
+    ("coupling", "模块级耦合（Martin 包度量 / SDP / 环 · 只许收敛）",
+     "coupling_metrics", "scan", "scan"),
+    ("perf_budget", "性能预算（中位耗时 ≤ 预算 + 记录新鲜）", "perf_budget", "scan", "scan"),
+    ("drill_fidelity", "演练保真度（执行演练 + 回合级回放 = 100%）",
+     "drill_fidelity", "scan", "scan"),
+    ("judgement_coverage", "判据接线覆盖（暴露 scan() 的判据必须有消费者或例外登记）",
+     "judgement_coverage", "scan", "scan"),
 )
 
 
@@ -161,7 +172,7 @@ def summary_line(report: Dict[str, Any]) -> str:
     s = report.get("summary") or {}
     d = report.get("declared") or {}
     return ("判据 %d 条：PASS %s · FAIL %s · WARN %s · ERROR %s；"
-            "声明 check1-%s / PASS=%s · verify v%s"
+            "声明 check1-%s / PASS=%s · verify %s"
             % (len(report.get("items") or []), s.get("pass"), s.get("fail"),
                s.get("warn"), s.get("error"), d.get("expected_checks"),
                d.get("expected_pass"), d.get("verify_version")))

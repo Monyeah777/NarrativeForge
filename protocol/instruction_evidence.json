@@ -1,0 +1,109 @@
+{
+  "evidence": {
+    "code_metrics": {
+      "cmd": "python scripts/code_metrics.py",
+      "exit_code": 0,
+      "output_sha256": "f675df4378d5cfaa2f551c115742f838b8f0e171ae3eaf87b79b03e19e4a5bfa",
+      "output_tail": "== 代码规模/复杂度上限 ==\n  文件 147（基线 147）· 最大行数 5416 · 最长函数 951 行 · 最大圈复杂度 150",
+      "ran_at": "2026-09-29"
+    },
+    "conformance": {
+      "cmd": "python scripts/nf.py conformance",
+      "exit_code": 0,
+      "output_sha256": "4d617433afef0a8a92a62bcea158048f21a7740f3507fba32e02206f30773110",
+      "output_tail": "  ✓ mcp-package                    工具 10 · 提示 1 · 类目 content-creation · 目标平台 4\n  ✓ state-front                    单件 0 · 族规则 1 · 族成员 3\n  ✓ public-surface                 公开导出面零泄漏",
+      "ran_at": "2026-09-29"
+    },
+    "e2e": {
+      "cmd": "python scripts/e2e_desktop_headless.py",
+      "exit_code": 0,
+      "output_sha256": "ce0ce1c9a76d910cbbb5f07e00fbf19197dd878dad4d87aebb086a63d0897d4a",
+      "output_tail": "[产物] C:\\Users\\mon_7\\AppData\\Local\\Temp\\nf_e2e_home\\ci_e2e_out.md（11713 字节）\n\n★ E2E DESKTOP HEADLESS PASSED ✓（官方13件 + M91/M92 + P04 → 装配 → 生成 → 断言全绿）",
+      "ran_at": "2026-09-29"
+    },
+    "release": {
+      "cmd": "python scripts/nf.py release",
+      "exit_code": 1,
+      "output_sha256": "7b2398748e79808def02a3219536f44e8b476c55bc5e96352c7fa9ed2237c3b0",
+      "output_tail": "  verify 版本 v2.29 · check 数 39（基线自描述一致：OK）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.b84zwWpUsq\n  ✗ 发布体检未过（基线/verify）——禁止发布",
+      "ran_at": "2026-09-29"
+    },
+    "report": {
+      "cmd": "python scripts/verify_report.py --fresh",
+      "exit_code": 0,
+      "output_sha256": "d4bd5d7569b310a348810f9f62b7f83b28e60e4a84f3197667d3e22487e2d503",
+      "output_tail": "== 门禁机器可读报告 check ==\n  判据 26 条：PASS 24 · FAIL 0 · WARN 2 · ERROR 0；声明 check1-39 / PASS=68 · verify v2.29\n  ✓ 已落盘报告与实时重算一致",
+      "ran_at": "2026-09-29"
+    },
+    "stats_check": {
+      "cmd": "python scripts/nf.py stats --check",
+      "exit_code": 0,
+      "output_sha256": "ab5af01364e3bdc7323da6ea97369a0dfc7345e8d69ef51f0014c251ef8efd55",
+      "output_tail": "  标准目录：370 条（可达 332 / 不可达 38 · 机构 194 · 206 边） · 绑定 1200 条\n  质量凭证：verify check1-39 常驻（脚本 v2.29） · 馆藏 3 件\n  模式：check（只校验）",
+      "ran_at": "2026-09-29"
+    },
+    "verify": {
+      "cmd": "python scripts/verify_run.py",
+      "exit_code": 1,
+      "output_sha256": "020988b9157e3d02102c6d708574087cf89b749eaf715262e22fb4a65b24d08f",
+      "output_tail": ">>> 存在 FAIL = 协议事故：请回滚本次修改，修正后重新运行验收 <<<\n== 一键复现：C:\\comfyui\\Git\\bin\\bash.exe verify.sh（cwd=C:\\Users\\mon_7\\Downloads\\nf-v10）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.2oeeXZOU3n",
+      "ran_at": "2026-09-29"
+    }
+  },
+  "instructions": [
+    {
+      "cmd": "python scripts/verify_run.py",
+      "evidence_policy": "recorded",
+      "id": "verify",
+      "max_age_days": 30,
+      "note": "全量门禁：一键复现主入口（check1-39）。不动点例外：本指令要绿须判据表全绿，而判据表要求本指令绿——故只登记真跑记录，绿由 CI 跨平台 workflow 另判。",
+      "tier": "release"
+    },
+    {
+      "cmd": "python scripts/nf.py release",
+      "evidence_policy": "recorded",
+      "id": "release",
+      "max_age_days": 30,
+      "note": "发布前体检：verify + 覆盖率 + ruff + e2e + 报告新鲜度。不动点例外同上（它内含 verify）。",
+      "tier": "release"
+    },
+    {
+      "cmd": "python scripts/verify_report.py --fresh",
+      "evidence_policy": "recorded",
+      "id": "report",
+      "max_age_days": 7,
+      "note": "门禁机器可读报告新鲜度（已落盘 == 实时重算）。不动点例外：报告自身的 FAIL 数若纳入本指令成败，就与 instruction_evidence 判据循环；故此处只判新鲜度（严格口径 --check 留给 CI 与 verify.sh）。",
+      "tier": "fast"
+    },
+    {
+      "cmd": "python scripts/code_metrics.py",
+      "id": "code_metrics",
+      "max_age_days": 7,
+      "note": "代码规模/复杂度上限（棘轮冻结）",
+      "tier": "fast"
+    },
+    {
+      "cmd": "python scripts/e2e_desktop_headless.py",
+      "id": "e2e",
+      "max_age_days": 7,
+      "note": "端到端冒烟：官方 13 件 + M91/M92 + P04 → 装配 → 生成 → 断言",
+      "tier": "fast"
+    },
+    {
+      "cmd": "python scripts/nf.py stats --check",
+      "id": "stats_check",
+      "max_age_days": 7,
+      "note": "自述数字 == 实算（README/README.en/llms.txt 生成区）",
+      "tier": "fast"
+    },
+    {
+      "cmd": "python scripts/nf.py conformance",
+      "id": "conformance",
+      "max_age_days": 7,
+      "note": "一致性报告 verdict（已提交 == 实时重算）",
+      "tier": "fast"
+    }
+  ],
+  "note": "规范入口指令 + 实测记录（文档可执行性面）。声明 = 本件 instructions（唯一真源）；证据 = evidence（由 `python scripts/instruction_evidence.py --record` 真跑后写入：命令 / 退出码 / 时间 / 输出摘要）。判据：每条声明须有**新鲜且退出码 0** 的记录；evidence 里的键必须都是已声明指令（防凭空记录）。例外：`evidence_policy = recorded` 的指令（verify / release / report——它们与判据表互为不动点：要它们绿须判据表全绿，而判据表要求它们绿）只要求「真跑记录存在 + 新鲜」；它们的绿由 CI 跨平台 workflow 与发布流程把关。",
+  "schema": "nf-instruction-evidence/1"
+}
