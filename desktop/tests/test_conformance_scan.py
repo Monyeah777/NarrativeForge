@@ -266,8 +266,16 @@ class FaceFingerprintTest(unittest.TestCase):
         POSIX 上小写模式匹配不到 `Face/` ⇒ 面为空 ⇒ 本判据**空转**（三平台 CI 里表现为「增量 0 次」）。
         大小写不敏感只该落在**成员集合比对**这一处（监听小写 ↔ `iter_files` 真实大小写），
         不该靠文件系统替我们兜。空转由下面的「面必须非空」断言当场拦下。
+
+        「监听的写法」按**本平台是否真有监听**取：`core.watch` 只在 Windows 落地
+        （`available()` ≡ `os.name == "nt"`），其路径约定是**小写**；无监听的平台没有这个约定
+        （常驻层只会被测试直接装）。两侧都用 `watch.available()` 选写法，效果相同——都让传入写法
+        与 index 键（已 `lower()`）**大小写不同**，从而都逼出「成员比对必须折叠大小写」；
+        将来 POSIX 监听落地时这里自动切回小写继续把关。
         """
         import pathlib
+        from core import watch as _watch
+        _spell = (lambda rel: rel.lower()) if _watch.available() else (lambda rel: rel)
         with tempfile.TemporaryDirectory() as tmp:
             d = pathlib.Path(tmp, "Face")
             d.mkdir(parents=True)
@@ -282,7 +290,7 @@ class FaceFingerprintTest(unittest.TestCase):
                 self.assertEqual(3, len(cs.iter_files(tmp, "Face/*.md")),
                                  "夹具必须在本平台建出非空面——否则以下判据全部空转")
                 (d / "F1.md").write_text("v2\n", encoding="utf-8")
-                cs.drop_resident(["face/f1.md"])          # 监听给的是小写相对路径
+                cs.drop_resident([_spell("Face/F1.md")])   # 监听写法（有监听的平台＝小写）
                 before = cs._FACE_FP_STATS["incremental"]
                 fp2, digs2 = cs.face_digests(tmp, pats)
                 self.assertEqual(before + 1, cs._FACE_FP_STATS["incremental"],
@@ -294,14 +302,14 @@ class FaceFingerprintTest(unittest.TestCase):
                 self.assertEqual(fp2, fp3, "增量结果必须与整面重算逐位相同")
                 self.assertEqual(digs3, digs2, "增量更新后的逐件摘要必须与重算一致")
                 (d / "F9.md").write_text("new\n", encoding="utf-8")
-                cs.drop_resident(["face/f9.md"])
+                cs.drop_resident([_spell("Face/F9.md")])
                 rec = cs._FACE_FP_STATS["recomputes"]
                 fp4, _ = cs.face_digests(tmp, pats)
                 self.assertEqual(rec + 1, cs._FACE_FP_STATS["recomputes"],
                                  "新增件 ⇒ 成员集合变了 ⇒ 必须整面重建")
                 self.assertNotEqual(fp3, fp4)
                 os.remove(d / "F0.md")
-                cs.drop_resident(["face/f0.md"])
+                cs.drop_resident([_spell("Face/F0.md")])
                 rec = cs._FACE_FP_STATS["recomputes"]
                 fp5, digs5 = cs.face_digests(tmp, pats)
                 self.assertEqual(rec + 1, cs._FACE_FP_STATS["recomputes"],
@@ -1049,6 +1057,35 @@ class YamlLoaderEquivalenceTest(unittest.TestCase):
             self.assertEqual(plain_err, fast_err, "异常行为不一致：%r" % body[:60])
             if plain_err is None:
                 self.assertEqual(plain, fast, "解析结果不一致：%r" % body[:60])
+
+
+class DigestPayloadEquivalenceTest(unittest.TestCase):
+    """`_payload_digest` 的**值口径**：快路径（正文无 CR ⇒ 直接吃原始字节）必须与历史公式逐位相同。
+
+    历史公式 = `sha256(_decode_text(raw).encode("utf-8"))`，读不出 UTF-8 时 = `sha256(raw)`。
+    2026-09-29 起正文无 `\\r` 时跳过「解码再编码」（那是恒等变换：`\\r` 是通用换行翻译的唯一触发器）
+    ——一次冷跑省 ~100 ms（本仓 2799 件里 0 件含 CR），但**值一位都不许变**，故用五种边界件钉死。
+    """
+
+    def test_value_matches_historical_formula(self):
+        import hashlib
+        cases = {"plain.md": "纯文本\n第二行\n".encode("utf-8"),
+                 "crlf.md": "一\r\n二\r\n".encode("utf-8"),
+                 "cr_only.md": "一\r二\r".encode("utf-8"),
+                 "bom.md": "\ufeff正文\n".encode("utf-8"),
+                 "binary.bin": bytes(range(256))}
+        with tempfile.TemporaryDirectory() as tmp:
+            for name, raw in cases.items():
+                with open(os.path.join(tmp, name), "wb") as fh:
+                    fh.write(raw)
+            with cs.read_memo():
+                for name, raw in cases.items():
+                    got = cs._payload_digest(tmp, name)
+                    try:
+                        want = hashlib.sha256(cs._decode_text(raw).encode("utf-8")).digest()
+                    except UnicodeDecodeError:
+                        want = hashlib.sha256(raw).digest()
+                    self.assertEqual(want, got, "摘要值口径漂移：%s" % name)
 
 
 class DirListMemoTest(unittest.TestCase):
