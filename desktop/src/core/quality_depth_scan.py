@@ -26,7 +26,9 @@ QD_INPUTS = ("03_管线库/**/*", "04_模块库/**/*", "05_资产库/**/*", "com
              "06_Agent执行协议.md", "07_官方核心出厂与社区预设导航.md",
              "verify.sh", "README.md", "README.en.md", "ROUTES.md", "llms.txt",
              "STRATEGY.md", "AGENTS.md",
-             "desktop/**/*.py", "scripts/**/*", ".github/scripts/*.py",
+             # `scripts/**/*` 收 Python 自生成的 `__pycache__/*.pyc` ⇒ 指纹随导入漂移（见 disk_cache）
+             "desktop/**/*.py", "scripts/**/*.py", "scripts/*.sh", "scripts/nf",
+             "scripts/nf.cmd", ".github/scripts/*.py",
              # 2026-09-29 补齐（**陈旧洞**）：下面三条是子扫描器读的面，而并集里一条都没有
              # ⇒ 改它们时聚合缓存会**命中旧值**（实测：`domain_pack` 面未覆盖 101 件；`instruction_step_audit`
              # 读的 `agent_组装指令包_v0.2.md` 也漏在外面）。并集面是**保守面**——宁可多列，不许漏列；
@@ -43,16 +45,14 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     十几个子扫描器反复读同一批包资产 / 模块文档（实测同一份件被读 9–10 遍）；作用域严格等于
     这一次调用，出口即清——不跨调用复用，故与「新起进程」看到同一份仓库事实。
 
-    2026-09-29 再叠一层**内容键缓存**（输入面见 `QD_INPUTS`，是各子扫描器面的并集；宽面 ⇒
-    `require_resident=True`）：改完文件的第一条重命令里，本函数曾是最大的一笔（profile 521 ms）。
+    2026-09-29 再叠一层**内容键缓存**（输入面见 `QD_INPUTS`，是各子扫描器面的并集）。**冷进程也走
+    这层**：过去宽面写 `require_resident=True`（「冷进程取指纹比重算更贵」），实测不成立——冷进程
+    本来就要为别的站点读整棵语料（逐件摘要在同一只读作用域内共享），指纹近乎白拿。
     「读盘面 ⊆ 输入面」由 `test_conformance_scan.DerivedResultCacheTest` 的同一张表守着。
     """
     from core import conformance_scan as _csc
-    if _csc.resident_active():
-        return _csc.memo_pair("quality-depth", QD_INPUTS, _inner, root,
-                              require_resident=True,
-                              code_modules=("core.quality_depth_scan",))
-    return _inner(root)
+    return _csc.memo_pair("quality-depth", QD_INPUTS, _inner, root,
+                          code_modules=("core.quality_depth_scan",))
 
 
 def _inner(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

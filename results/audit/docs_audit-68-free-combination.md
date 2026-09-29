@@ -6,8 +6,8 @@ scope: 作者目标「将所有域包达到任意几个域包可自由任意组�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/pack_combo.py:6e7e7ec711f98a61d6772ac3565a8cd138178b4eb008cba555fd5cfc6ef490dc
-  - desktop/src/core/quality_depth_scan.py:cce1efda62d53b086422a4f73b6af6a64ef4bee3c288ca033ac013c1904ad8d1
+  - desktop/src/core/pack_combo.py:cd39a86b191afb71c29f11d2f26098845d8cfd7932137c3f34e6a1b15b8c3d9f
+  - desktop/src/core/quality_depth_scan.py:88bc04531cdd0b9e6fd06e0bf1cb218d02eadf81589ecb6a900a23682ce36fca
   - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1
   - scripts/nf.py:6a54fccdde76df115e88f9f21ec97d4cc894411548b5209a55e29add25c18e8a
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588

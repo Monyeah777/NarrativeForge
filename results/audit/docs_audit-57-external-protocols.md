@@ -15,7 +15,7 @@ subjects:
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
   - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
-  - desktop/src/core/purity_scan.py:ba6e45f0f7153d909ad2b707b290fedd13b7046d5042472ae93f5c1875daa3c3
+  - desktop/src/core/purity_scan.py:4be905b65df383be808364e53a5e871e67cd6f73270748c8b3fe452cabc304b0
   - scripts/nf.py:6a54fccdde76df115e88f9f21ec97d4cc894411548b5209a55e29add25c18e8a
   - scripts/check_external_links.py:4410f000e4d0efb7b58b00522420d2db9c23f8194ab01b38b90290ae6de47966
   - scripts/check_interop_schemas.py:6cae41b5247e8ea594b3825ff61bc3b9186caf21c170bc122d31861d30974c74

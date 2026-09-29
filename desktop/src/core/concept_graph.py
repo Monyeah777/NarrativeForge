@@ -370,13 +370,12 @@ CG_INPUTS = ("community/*/assets/*.md", "05_资产库/**/*")
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     """概念图体检（原体见 `_scan_impl`）；派生结果按**输入内容指纹**缓存（键即内容）。
 
-    宽面 ⇒ `require_resident=True`：只在常驻语料层在位时缓存（冷进程里见证实读更贵）。
+    **冷进程也走这层缓存**（2026-09-29 实测：宽面指纹在同一只读作用域内近乎白拿，而重算这条派生账
+    贵得多；见 `quality_depth_scan.scan` 的实测数字）。
     「读盘面 ⊆ 输入面」由 test_conformance_scan.DerivedResultCacheTest 的同一张表守着。
     """
-    if not csc.resident_active():
-        return _scan_impl(root)
     return csc.memo_pair("concept-graph", CG_INPUTS, _scan_impl, root,
-                         require_resident=True, code_modules=("core.concept_graph",))
+                         code_modules=("core.concept_graph",))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:

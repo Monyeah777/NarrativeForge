@@ -7,10 +7,10 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
-  - desktop/src/core/layer_model.py:fccb54cd94c6385387b8ab66dc2fe2941d08524514bc2667a737b911b3fdc31b
+  - desktop/src/core/layer_model.py:518f4825fd2fde79b838dc6a682246c9eb9105a0840051867843f0cbad2ad4ad
   - desktop/tests/test_layer_model.py:691098f7f474e8592ca265331aa3232a2028814a2db107b8e2c9291a8d885d75
-  - desktop/src/core/purity_scan.py:ba6e45f0f7153d909ad2b707b290fedd13b7046d5042472ae93f5c1875daa3c3
-  - desktop/tests/test_purity_scan.py:b6ba8ae970dbd072825259ca3de2cbc7abdebf838f579f3ad413f93c51ea9be6
+  - desktop/src/core/purity_scan.py:4be905b65df383be808364e53a5e871e67cd6f73270748c8b3fe452cabc304b0
+  - desktop/tests/test_purity_scan.py:5ebdb961f36009f2babfd44d159100ea41110e653c1fb43408a8dda07d664d8e
   - scripts/nf.py:6a54fccdde76df115e88f9f21ec97d4cc894411548b5209a55e29add25c18e8a
   - verify.sh:2541301e0850ba038c0754b14d340f2de6a5132f5f729f0db556c41fde4ab94f
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534

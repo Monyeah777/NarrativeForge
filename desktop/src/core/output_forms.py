@@ -1568,12 +1568,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """check32 子扫描入口：形态清单 + 包级产出清单 + 机验率基线三合一。
 
     派生结果按**输入内容指纹**缓存（输入面复用同模块已穷举的 `INDEX_INPUTS`——它正是本入口
-    三个子校验的读面）；宽面 ⇒ `require_resident=True`，只在常驻语料层在位时缓存。
+    三个子校验的读面）。**冷进程也走这层**（2026-09-29 实测：宽面指纹在同一只读作用域内近乎白拿，
+    而重算这条派生账贵得多；见 `quality_depth_scan.scan` 的实测数字）。
     """
-    if not _csc.resident_active():
-        return _scan_impl(root)
     return _csc.memo_pair("output-forms-scan", INDEX_INPUTS, _scan_impl, root,
-                          require_resident=True, code_modules=("core.output_forms",))
+                          code_modules=("core.output_forms",))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

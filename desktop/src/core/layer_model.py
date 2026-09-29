@@ -45,11 +45,9 @@ _JUDGE_ASSERTION = "assertion:"
 #: L6 的**文本预筛**：只把含入口面 import 的文件交给 AST（避免全量解析，见 _rule_issues）
 _ENTRY_IMPORT_RE = re.compile(r"\b(?:import|from)\s+(?:nf|scripts)\b")
 
-#: L6 的**逐件**事实缓存（键 = 该件正文的 sha256；值 = [(行号, 顶层模块名), …]，可为空）。
-#: 依据（实测 2026-09-29）：L6 每次扫描都要把 255 份 `desktop/src/core/*.py`（约 2 MB）读进来、
-#: 再对命中预筛的件做 AST walk——而「这一件是否 import nf/scripts」只是**该件正文**的纯函数。
-#: 改 `04_模块库`、协议件、文档这类与引擎无关的件时结果必然不变，因此这一整笔可以整段省掉。
-#: 与 purity 的 `_facts_for` 同一套纪律（键即内容 ⇒ 无陈旧面）；值里**不含路径**，故可跨目录复用。
+#: L6 的**逐件**事实缓存（键 = 该件正文的 sha256；值 = [(行号, 顶层模块名), …]）。
+#: 依据（实测 2026-09-29）：L6 每次要把 255 份 `desktop/src/core/*.py`（约 2 MB）读进来再做 AST
+#: walk，而「本件是否 import nf/scripts」只是**该件正文**的纯函数 ⇒ 与引擎无关的改动整笔可省。
 _ENTRY_IMPORT_CACHE: Dict[str, List[Tuple[int, str]]] = {}
 _ENTRY_IMPORT_CACHE_MAX = 4096
 
@@ -492,7 +490,9 @@ def patterns(root: str = ".") -> Tuple[str, ...]:
     """
     #: 声明件本身 + 判据脚本 + **渲染投影**（`docs/layers.md` 的生成区要与实时渲染一致，
     #: 所以它是本函数的输入；2026-09-29 由「读盘面 ⊆ 输入面」判据当场抓出来）。
-    pats = ["protocol/LAYERS.json", "docs/layers.md", "verify.sh"]
+    #: `desktop/src/core/*.py` 是 **L6 硬编码的读面**：不进面 ⇒ 换一个 core 件不换指纹、缓存回放旧结论。
+    pats = ["protocol/LAYERS.json", "docs/layers.md", "verify.sh",
+            "desktop/src/core/*.py"]
     try:
         doc = load(root)
     except ValueError:
@@ -533,11 +533,11 @@ def scan(root: str = ".", _fp: str = None) -> Tuple[List[str], Dict[str, Any]]:
     """阶梯体检 → (issues, stats)；issues 空 = 阶梯自洽（并入 check27 纯度面）。
 
     派生结果按**输入内容指纹**缓存（输入面见 `patterns()`：声明列了整棵语料，面很宽）。
-    宽面**只在常驻语料层在位时**才走缓存（`require_resident=True`）：那时指纹只剩「枚举 + 哈希」
-    （实测 3.5 MB 语料 ~33 ms）；冷进程里宽面指纹要把语料重读一遍，比直接算更贵，故宁可不算。
+    **冷进程也走这层**（2026-09-29 改）：过去写「只在常驻语料层在位时才缓存」，理由是「冷进程里取
+    指纹比直接算更贵」——实测不成立（冷进程本来就要为别的站点读整棵语料，摘要共享 ⇒ 指纹近乎白拿）；
+    实测数字见 `quality_depth_scan.scan`。
     """
     return csc.memo_pair("layer-model", patterns(root), _scan_impl, root,
-                         require_resident=True,
                          code_modules=("core.layer_model",), fp=_fp)
 
 

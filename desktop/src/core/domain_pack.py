@@ -2057,12 +2057,11 @@ SCAN_INPUTS = ("community/**/*", ".rivet/private_archive/ai_packs/specs/*.json",
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """check32 子扫描入口：域包名录机检（无名录即中性通过）。
 
-    派生结果按**输入内容指纹**缓存（输入面见 `SCAN_INPUTS`）；宽面 ⇒ `require_resident=True`。
+    派生结果按**输入内容指纹**缓存（输入面见 `SCAN_INPUTS`）；**冷进程也走这层**（2026-09-29
+    实测：宽面指纹在同一只读作用域内近乎白拿，而重算这条派生账贵得多；见 `quality_depth_scan.scan`）。
     """
-    if not csc.resident_active():
-        return _scan_impl(root)
     return csc.memo_pair("domain-pack-scan", SCAN_INPUTS, _scan_impl, root,
-                         require_resident=True, code_modules=("core.domain_pack",))
+                         code_modules=("core.domain_pack",))
 
 
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

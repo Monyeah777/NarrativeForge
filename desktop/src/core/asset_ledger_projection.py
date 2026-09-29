@@ -74,11 +74,10 @@ VERIFY_INPUTS = ("community/*/assets/*.md", "05_资产库/用户自定义/*.md",
 def verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """台账 ↔ 盘上实况一致（原体见 `_verify_impl`）；派生结果按**输入内容指纹**缓存。
 
-    输入面窄（两条资产面 + 台账件），但冷进程里读它们也要 ~100 ms，与算一遍同量级，故
-    `require_resident=True`：只在常驻语料层在位时才走缓存（那时见证成本几乎为零）。
+    输入面窄（两条资产面 + 台账件）。**冷进程也走缓存**（2026-09-29 实测：宽面指纹在同一只读
+    作用域内近乎白拿，而重算这条派生账贵得多；见 `quality_depth_scan.scan` 的实测数字）。
     """
     return csc.memo_pair("asset-ledger-verify", VERIFY_INPUTS, _verify_impl, root,
-                         require_resident=True,
                          code_modules=("core.asset_ledger_projection",))
 
 

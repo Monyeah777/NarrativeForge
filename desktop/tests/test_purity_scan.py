@@ -458,6 +458,7 @@ class SinkRegistryTest(unittest.TestCase):
         try:
             ps._FACTS_CACHE.clear()
             ps._FILE_FINDINGS.clear()      # 逐件 findings 层也算一层：最冷状态必须一起清
+            csc._DERIVED_MEMO.clear()      # 2026-09-29：派生结果层（外层，键即内容）也是「一层缓存」
             cold = scan_with_counter()
         finally:
             if old_off is None:

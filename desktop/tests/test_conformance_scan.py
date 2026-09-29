@@ -1043,5 +1043,36 @@ class YamlLoaderEquivalenceTest(unittest.TestCase):
                 self.assertEqual(plain, fast, "解析结果不一致：%r" % body[:60])
 
 
+class FaceHygieneTest(unittest.TestCase):
+    """**输入面不许收 Python 自产字节码**（2026-09-29 实测坑，判据把坑封死）。
+
+    依据：`scripts/**/*` 会把 `scripts/__pycache__/*.pyc` 一起收进面——那 21 份是 **Python 自己
+    生成的**，任何一次导入（甚至换 Python 小版本）都会新建/改写它 ⇒ 面指纹**随机漂移** ⇒ 宽面派生
+    缓存的键跟着换、冷进程每次重算（实测 `quality-depth` / `purity-scan` / `layer-model` 反复 miss，
+    一次 `evaluate` 白多算约 0.5 s；修复前后实测见提交信息）。
+
+    判据形状：把**所有声明过的输入面**枚举一遍，断言一件 `.pyc` / `__pycache__` 都不在里面——
+    它把「按真读面穷举」这条纪律钉在每次提交上，而不是靠注释提醒。
+    """
+
+    def test_declared_faces_exclude_bytecode(self):
+        from core import disk_cache as dc
+        faces = {"disk_cache.CODE_FACE": dc.CODE_FACE,
+                 "quality_depth_scan.QD_INPUTS": qd.QD_INPUTS,
+                 "purity_scan.OWN_PATTERNS": ps.OWN_PATTERNS,
+                 "purity_scan.patterns": ps.patterns(ROOT),
+                 "layer_model.patterns": lm.patterns(ROOT)}
+        for site, spec in DerivedResultCacheTest._sites().items():
+            faces["site:" + site] = spec["patterns"]
+        dirty = {}
+        for name, pats in sorted(faces.items()):
+            junk = sorted({rel for pat in pats for rel in cs.iter_files(ROOT, pat)
+                           if rel.lower().endswith(".pyc") or "__pycache__" in rel.lower()})
+            if junk:
+                dirty[name] = junk[:3]
+        self.assertEqual({}, dirty,
+                         "输入面收了 Python 自产字节码（键会随导入漂移、缓存整体失效）：%s" % dirty)
+
+
 if __name__ == "__main__":
     unittest.main()

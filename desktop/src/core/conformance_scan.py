@@ -892,25 +892,23 @@ _DERIVED_MEMO: Dict[str, Dict[str, Any]] = {}
 
 
 def memo_pair(tag: str, patterns, impl, root: str = ".",
-              require_resident: bool = False, keep: int = 8, code_modules=None,
-              fp: str = None):
+              keep: int = 8, code_modules=None, fp: str = None):
     """`(issues, stats)` 形状的派生结果缓存（**进程内 + 持久**两层；键即内容）。
 
     纪律与 `scan()` 完全一致：输入面（`patterns`，须穷举）变 ⇒ 指纹变 ⇒ 必重算；持久层键里
     另含代码面 + 运行时（`disk_cache.key`）；读回必过 `result_pair_ok`；一切 IO 尽力而为。
-
-    `require_resident=True` 给**宽输入面**用：只在常驻语料层在位时才走缓存——那时指纹的读盘
-    成本几乎为零（正文已在内存，只剩枚举 + 哈希，实测 3.5 MB 语料 ~33 ms），而冷进程里宽面指纹
-    要把整棵语料重读一遍（实测 ~1.0 s），比直接算更贵，所以**宁可不缓存**。
 
     `code_modules`（如 `("core.schema_lint",)`）把**代码面**缩到「这段派生自己的导入闭包」——改别的
     模块不再换键（闭包算不出/含动态导入时自动退回整块代码面，见 `disk_cache.key`）。
 
     `fp` 可传**已经算好的指纹**（口径须与 `content_fingerprint(root, patterns)` 一致）：调用方若有
     更省的取键方式（例如把两张面各自的指纹组合起来），就不必在这里把面再枚举一遍。
+
+    **没有「只在常驻层在位时才缓存」这档开关了**（2026-09-29 删，实测）：那条规矩建立在「冷进程里
+    宽面指纹比直接重算更贵」上——今天不成立，冷进程本来就要为别的站点读整棵语料（逐件摘要在同一
+    只读作用域内共享），指纹近乎白拿，而重算派生账贵得多。删掉后冷进程首跑 **4481 → 2188 ms**、
+    稳态 **1585 → 1183 ms**（结论逐位相同）。
     """
-    if require_resident and not resident_active():
-        return impl(root)
     if fp is None:
         # 走**面指纹**（带「确知没变就复用」）：各站点的面宽窄不一，这一改把「确知变更面」这条
         # 信息铺到**所有** `memo_pair` 站点，而不只是逐包键那一处。

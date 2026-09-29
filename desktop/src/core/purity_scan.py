@@ -97,11 +97,9 @@ SOFT_IMPORTS = {
     "PySide6": "CCV3 卡面占位图写入（缺依赖须给明确修复指引，不得裸 ImportError）",
     "laya": "决策层本地服务（scripts/serve_decision_model.py）的模型运行时；软导入 + 缺依赖给修复指引",
 }
-#: R5 存量残留（**WARN 挂账**：确有理由保留的存量违规，须带裁决/文档指针；不判死但不得隐身）
-#: 空表即"零残留"。注意本扫描按**文件系统**取件（与 verify 其它 check 同口径）——
-#: 未入库的本地副本同样会被扫到，故"仓库干净"不等于"工作目录干净"。
-#: 2026-09-20：唯一一项残留（`scripts/` 下端壳自检旧脚本，属 `.git/info/exclude` 的本地旧副本）
-#: 经作者裁决删除，登记随之清空。
+#: R5 存量残留（**WARN 挂账**：确有理由保留的存量违规须带裁决/文档指针；不判死但不得隐身）。
+#: 本扫描按**文件系统**取件 ⇒ 未入库的本地副本同样会被扫到。2026-09-20：唯一一项残留经作者裁决
+#: 删除，登记随之清空（空表即"零残留"）。
 IMPORT_RESIDUE: dict = {}
 #: 扫描作用域含 `.github/scripts`——那是**唯一处理远程不可信输入**（Issue 标题/正文）
 #: 且持有写权限令牌的代码。此前只在 core + scripts 取件，等于把最高风险的入口
@@ -296,13 +294,9 @@ def _ast_facts(tree: ast.AST) -> tuple:
     return raises, guarded, modules, sinks
 
 
-#: **逐件 findings 缓存**：R4（raise 指引）/ R5（import 登记）/ R6（危险 sink）的结论只是
-#: 「**该件正文** + 本模块的登记表 + 本仓**局部模块名集**」的纯函数。依据（实测 2026-09-29）：
-#: 这三条规则要遍历 **546** 份源码，而真正的检查项只有 ~81 条（raise 55 / import 14 / sink 12）——
-#: 也就是说 20 ms 里绝大部分是「把 546 份文件逐件重新过一遍」的循环开销。
-#: 键 = (相对路径, 正文 sha256, **环境指纹**)：环境指纹含局部模块名集（`_is_local` 的判据）与
-#: 六张登记表，任一变即重算 ⇒ 无陈旧面。判据：`test_purity_scan.FileFindingsCacheTest`（三态）+
-#: 既有 R4/R5/R6 变异注入用例（改一件必须当场被抓到）。
+#: **逐件 findings 缓存**：R4/R5/R6 的结论只是「**该件正文** + 登记表 + 局部模块名集」的纯函数。
+#: 依据（实测）：三条规则要遍历 546 份源码、真检查项只 ~81 条 ⇒ 20 ms 里绝大部分是循环开销。
+#: 键 = (相对路径, 正文 sha256, **环境指纹**)；判据：`FileFindingsCacheTest`（三态）+ 变异注入用例。
 _FILE_FINDINGS: dict = {}
 _FILE_FINDINGS_MAX = 4096
 
@@ -318,6 +312,11 @@ def _env_fingerprint(root: str) -> str:
                        "stdlib": sorted(sys.stdlib_module_names)},
                       ensure_ascii=False, sort_keys=True, default=str)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _cache_key(*fps: str) -> str:
+    """把若干指纹（各张面 + 环境）拼成派生缓存的键——**键必须覆盖全部输入**，否则回放旧结论。"""
+    return hashlib.sha256("\x00".join(fps).encode("utf-8")).hexdigest()
 
 
 def _file_findings(rel: str, text: str, env: str, root: str):
@@ -405,35 +404,36 @@ def patterns(root: str = ".") -> tuple:
 
 
 #: **自有面**（本模块自己读的那些件）：代码 / 协议文档 / 判据脚本。
+#: 注意最后几项：**不写 `scripts/**/*`**——它连 `scripts/__pycache__/*.pyc`（Python 自生成）一起收，
+#: 会让本面指纹随导入漂移（详见 `disk_cache.CODE_FACE` 的说明）；这里按真读面穷举。
 OWN_PATTERNS = ("01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
                 "07_官方核心出厂与社区预设导航.md", "protocol/*.json", "verify.sh",
-                "desktop/src/**/*.py", "scripts/**/*", ".github/scripts/*.py")
+                "desktop/src/**/*.py", "scripts/**/*.py", "scripts/*.sh",
+                "scripts/nf", "scripts/nf.cmd", ".github/scripts/*.py")
 
 
 def scan(root: str = ".") -> tuple:
     """纯度体检（R1–R7）。派生结果按**输入内容指纹**缓存（输入面见 `patterns()`，很宽）。
 
-    宽面只在常驻语料层在位时走缓存（`require_resident=True`）——理由见 `layer_model.scan`。
+    **冷进程也走这层缓存**（2026-09-29 实测：宽面指纹在同一只读作用域内近乎白拿，而重算这条派生账
+    贵得多；见 `quality_depth_scan.scan` 的实测数字）。
 
-    **键的取法（2026-09-29 改，实测）**：过去直接把 `patterns(root)`（自有面 + 阶梯面，54 条）
-    交给 `memo_pair` 枚举一遍，而 `layer_model.scan()` 内部又把**同一张阶梯面**（45 条）枚举第二遍
-    ⇒ 一次 `nf_score` 白花 ~10 ms。现在把两张面**各自的指纹组合**成键，并把阶梯面指纹**传给**
-    `layer_model.scan(_fp=...)`：覆盖面与旧口径完全相同（自有面 ∪ 阶梯面），只枚举一次。
+    **键的取法（2026-09-29 改，实测）**：把自有面 / 阶梯面 / **六张登记表**（`_env_fingerprint`）
+    各自的指纹组合成键，并把阶梯面指纹**传给** `layer_model.scan(_fp=...)`——只枚举一次，
+    且「登记表变了」也换键（漏了它就会回放旧结论，由变异注入用例当场抓到）。
     """
-    if not csc.resident_active():
-        # **冷进程**：`memo_pair` 反正不会走缓存（宽面在冷进程里宁可不算，见 `layer_model.scan`），
-        # 那就**连指纹都别取**——否则这一改会把冷进程推慢 ~250 ms（实测踩过）。
-        return _scan_impl(root)
     try:
         from core import layer_model as _lm
         layer_fp = _lm.face_fingerprint(root)
     except Exception:                                    # noqa: BLE001 - 取不出就退回整面
         return csc.memo_pair("purity-scan", patterns(root), _scan_impl, root,
-                             require_resident=True, code_modules=("core.purity_scan",))
+                             code_modules=("core.purity_scan",),
+                             fp=_cache_key(csc.face_fingerprint(root, patterns(root)),
+                                           _env_fingerprint(root)))
     own_fp = csc.face_fingerprint(root, OWN_PATTERNS)
-    fp = hashlib.sha256(("%s\x00%s" % (own_fp, layer_fp)).encode("utf-8")).hexdigest()
+    fp = _cache_key(own_fp, layer_fp, _env_fingerprint(root))
     return csc.memo_pair("purity-scan", patterns(root), lambda r: _scan_impl(r, layer_fp), root,
-                         require_resident=True, code_modules=("core.purity_scan",), fp=fp)
+                         code_modules=("core.purity_scan",), fp=fp)
 
 
 def _scan_impl(root: str = ".", _layer_fp: str = None) -> tuple:

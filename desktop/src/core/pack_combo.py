@@ -1190,12 +1190,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """check32 子扫描入口：在盘组合证书复算（T4）+ 广度证明。
 
     派生结果按**输入内容指纹**缓存（输入面见 `SCAN_INPUTS`：各包实况 + 模块契约 + 协议声明 +
-    registry）；宽面 ⇒ `require_resident=True`。
+    registry）。**冷进程也走这层**（2026-09-29 实测：宽面指纹在同一只读作用域内近乎白拿，而重算
+    这条派生账贵得多；见 `quality_depth_scan.scan` 的实测数字）。
     """
-    if not csc.resident_active():
-        return _scan_impl(root)
     return csc.memo_pair("pack-combo-scan", SCAN_INPUTS, _scan_impl, root,
-                         require_resident=True, code_modules=("core.pack_combo",))
+                         code_modules=("core.pack_combo",))
 
 
 #: `scan()` 的**真读面**（收窄，2026-09-29 实测）：原来是 `community/**/*`——2191 件，其中
