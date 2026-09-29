@@ -6,8 +6,8 @@
   "credentialSubject": {
     "contracts": 27,
     "id": "nf:conformance_report",
-    "receiptCount": 51,
-    "receiptRoot": "47287bb85283cb05c3439523142888f11f0cb86fd549c4440f59c7bb7de1a247",
+    "receiptCount": 52,
+    "receiptRoot": "cdfc82d6e117b717c68bca2e425602d052ca379ee17c22c119c0d1cec1bb1a1e",
     "verdict": "conformant"
   },
   "issuer": "执行者（作者授权本波裁决）",

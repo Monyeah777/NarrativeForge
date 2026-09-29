@@ -1,0 +1,21 @@
+<Project>
+  <!--
+    可复现构建（第一百一十一片）。
+
+    实测根因：.NET SDK 的 `Deterministic`（默认 true）保证「同输入 → 同字节」，
+    但**编译输入里含源码的绝对路径**（进 PDB 与编译哈希）。于是同一份源码在
+    两个不同目录下构建，产物字节必然不同——本仓库实测：两个干净临时目录各自
+    `publish -r win-x64`，`nf-dotnet.dll` / `Nf.Engine.dll` 都不同。
+
+    修法：`PathMap` 把「本工程根目录」映射到一个**固定的虚拟根** `/nf/`，
+    路径不再是编译输入的一部分。实测加上本件后，两个异地目录的构建逐字节相同。
+
+    注意：`$(MSBuildThisFileDirectory)` 在**赋值瞬间**展开成 Directory.Build.props
+    所在目录（= 引擎工作区根，无论从哪个副本构建都一样），所以映射的「来源」虽随
+    机器变化，「去向」恒为 `/nf/`——这正是可复现所需。
+  -->
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildThisFileDirectory)=/nf/</PathMap>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,11 @@
+{
+  "HARD_ALLOW": {
+    "yaml": "PyYAML（仓库既有依赖；check16/28 同源解析，见 CONTRIBUTING §4.2 例外）"
+  },
+  "SOFT_IMPORTS": {
+    "PySide6": "CCV3 卡面占位图写入（缺依赖须给明确修复指引，不得裸 ImportError）",
+    "jsonschema": "IDL 标准实现交叉验证（可选对照；缺依赖则跳过该面）",
+    "laya": "决策层本地服务（scripts/serve_decision_model.py）的模型运行时；软导入 + 缺依赖给修复指引"
+  },
+  "note": "机械导出（勿手改）：core/purity_scan.py 的 R5 依赖登记表 → C# 字面量。真源 = purity_scan.HARD_ALLOW / SOFT_IMPORTS。"
+}

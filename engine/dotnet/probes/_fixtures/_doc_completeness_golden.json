@@ -1,0 +1,52 @@
+{
+ "schema": "nf-doc-completeness-golden/1",
+ "generated": "2026-09-27",
+ "source": "verify.sh check20 内联 Python 原文（探针机械抽取后执行，逐字节 stdout）",
+ "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h5",
+ "digest_rule": "sha256(\"\\n\".join(stdout.splitlines()))[:32]  ← 与引擎 Result.LogDigest 同式",
+ "cases": {
+  "real": {
+   "python_exit": 0,
+   "digest32": "294d2e18c7ab8aba89e56f182986b13b",
+   "core": 13,
+   "community": 235,
+   "incomplete": 0,
+   "fails": 0,
+   "warn_lines": 0,
+   "log": [
+    "文档完整性扫描：官方 13 件 + 社区 235 件（社区机读完备强校验；未完备存量 WARN 统计 0 件）"
+   ]
+  },
+  "synthetic_mixed": {
+   "python_exit": 1,
+   "digest32": "76e4ffcfd4746a0b7d95606ee6cb58b1",
+   "core": 2,
+   "community": 2,
+   "incomplete": 1,
+   "fails": 11,
+   "warn_lines": 1,
+   "log": [
+    "文档完整性扫描：官方 2 件 + 社区 2 件（社区机读完备强校验；未完备存量 WARN 统计 1 件）",
+    " [WARN] 社区未完备存量（过渡期不阻断，随 retro-fit）：C02_未完备.md C02_未完备.md 标题格式异常（应 # 模块 Mxx · 名称）；C02_未完备.md 元数据缺 类别（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [官方] M99_坏.md 缺 machine_contract（01 §1.1 机读契约，官方模块必含）",
+    " [FAIL] [官方] M99_坏.md 标题格式异常（应 # 模块 Mxx · 名称）",
+    " [FAIL] [官方] M99_坏.md 元数据缺 类别（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [官方] M99_坏.md 元数据缺 来源（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [官方] M99_坏.md 元数据缺 挂载点（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [官方] M99_坏.md 元数据缺 依赖（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [官方] M99_坏.md 缺 职责/核心逻辑 章节",
+    " [FAIL] [社区] C01_完备但缺键.md 元数据缺 类别（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [社区] C01_完备但缺键.md 元数据缺 来源（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [社区] C01_完备但缺键.md 元数据缺 挂载点（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [FAIL] [社区] C01_完备但缺键.md 元数据缺 依赖（标题下应含 > 类别/来源/挂载点/依赖 行）",
+    " [STAT] 社区未完备 1 件（WARN 统计，随 13 方案过渡策略演进）"
+   ],
+   "files": {
+    "04_模块库/通用类/M00_好.md": "# 模块 M00 · 数据结构\n> 类别：通用\n> 来源：核心\n> 挂载点：P00\n> 依赖：无\n\n## 职责\n正文\n\n```yaml\nmachine_contract:\n  id: M00\n```\n",
+    "04_模块库/通用类/M99_坏.md": "# 坏标题\n正文没有元数据也没有章节\n",
+    "community/示例包/modules/C01_完备但缺键.md": "# 模块 C01 · 示例\n\n```yaml\nmachine_contract:\n  id: C01\n```\n\n## 职责\n正文\n",
+    "community/示例包/modules/C02_未完备.md": "not a module doc\n"
+   }
+  }
+ }
+}

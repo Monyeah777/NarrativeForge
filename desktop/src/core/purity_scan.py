@@ -38,6 +38,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import json
 import os
 import re
 import sys
@@ -295,6 +296,90 @@ def _ast_facts(tree: ast.AST) -> tuple:
     return raises, guarded, modules, sinks
 
 
+#: **逐件 findings 缓存**：R4（raise 指引）/ R5（import 登记）/ R6（危险 sink）的结论只是
+#: 「**该件正文** + 本模块的登记表 + 本仓**局部模块名集**」的纯函数。依据（实测 2026-09-29）：
+#: 这三条规则要遍历 **546** 份源码，而真正的检查项只有 ~81 条（raise 55 / import 14 / sink 12）——
+#: 也就是说 20 ms 里绝大部分是「把 546 份文件逐件重新过一遍」的循环开销。
+#: 键 = (相对路径, 正文 sha256, **环境指纹**)：环境指纹含局部模块名集（`_is_local` 的判据）与
+#: 六张登记表，任一变即重算 ⇒ 无陈旧面。判据：`test_purity_scan.FileFindingsCacheTest`（三态）+
+#: 既有 R4/R5/R6 变异注入用例（改一件必须当场被抓到）。
+_FILE_FINDINGS: dict = {}
+_FILE_FINDINGS_MAX = 4096
+
+
+def _env_fingerprint(root: str) -> str:
+    """R4–R6 的**环境指纹**：局部模块名集 + 六张登记表（任一变，逐件结论都必须重算）。"""
+    local = sorted({os.path.basename(p).rsplit(".", 1)[0]
+                    for pat in IMPORT_SCAN
+                    for p in csc.iter_files(root, pat)})
+    blob = json.dumps({"local": local, "hard": HARD_ALLOW, "soft": SOFT_IMPORTS,
+                       "residue": IMPORT_RESIDUE, "sink_allow": SINK_ALLOW,
+                       "dangerous": DANGEROUS_CALLS, "methods": METHOD_SINKS,
+                       "stdlib": sorted(sys.stdlib_module_names)},
+                      ensure_ascii=False, sort_keys=True, default=str)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _file_findings(rel: str, text: str, env: str, root: str):
+    """单份源码的 R4–R6 findings → `(issues, {"raises":n,"imports":n,"sinks":n,"residue":[…]})`。"""
+    key = (rel, hashlib.sha256(text.encode("utf-8")).hexdigest(), env)
+    hit = _FILE_FINDINGS.get(key)
+    if hit is not None:
+        return hit
+    out: list = []
+    delta = {"raises": 0, "imports": 0, "sinks": 0, "residue": []}
+    facts = _facts_for(text)
+    if facts is None:
+        hit = (out, delta)
+    else:
+        raises, guarded, modules, sinks = facts
+        fname = os.path.basename(rel)
+        for lineno, msg in raises:
+            delta["raises"] += 1
+            if msg and not _ACTION.search(msg):
+                out.append("%s:%d raise 消息缺修复指引：%s" % (fname, lineno, msg[:60]))
+        residue = IMPORT_RESIDUE.get(rel)
+        for mod, lineno in modules:
+            if mod in sys.stdlib_module_names or _is_local(mod, root):
+                continue
+            delta["imports"] += 1
+            if mod in HARD_ALLOW:
+                continue
+            target = delta["residue"] if residue else out
+            if mod in SOFT_IMPORTS:
+                if lineno not in guarded:
+                    msg = ("%s:%d 第三方 %s 未软导入（须 try/except ImportError 守卫；登记理由：%s）"
+                           % (rel, lineno, mod, SOFT_IMPORTS[mod]))
+                    target.append("%s（%s）" % (msg, residue) if residue else msg)
+                continue
+            msg = ("%s:%d 第三方 import 未登记：%s（修复指引：改为软导入并在 purity_scan.SOFT_IMPORTS "
+                   "登记理由，或加入 HARD_ALLOW；端壳残留则登记 IMPORT_RESIDUE）" % (rel, lineno, mod))
+            target.append("%s（%s）" % (msg, residue) if residue else msg)
+        for lineno, call, shell_true in sinks:
+            flags = []
+            if call in DANGEROUS_CALLS:
+                flags.append((call, call))
+            method = call.rsplit(".", 1)[-1]
+            if method in METHOD_SINKS:
+                flags.append((method, method))
+            if shell_true:
+                flags.append(("subprocess(shell=True)", "subprocess"))
+            for name, key_name in flags:
+                delta["sinks"] += 1
+                if "%s:%s" % (fname, key_name) in SINK_ALLOW:
+                    continue
+                out.append("%s:%d 危险 sink %s（%s）——确需使用须在 purity_scan.SINK_ALLOW "
+                           "登记理由（修复指引：改用安全等价物，或登记后写明为何不可注入）"
+                           % (rel, lineno, name,
+                              DANGEROUS_CALLS.get(call) or METHOD_SINKS.get(method)
+                              or "shell=True 命令注入面"))
+        hit = (out, delta)
+    if len(_FILE_FINDINGS) >= _FILE_FINDINGS_MAX:
+        _FILE_FINDINGS.clear()
+    _FILE_FINDINGS[key] = hit
+    return hit
+
+
 def _is_local(mod: str, root: str) -> bool:
     if mod == "core":
         return True
@@ -373,87 +458,41 @@ def _scan_impl(root: str = ".", _layer_fp: str = None) -> tuple:
                           % (name, title, ",".join(map(str, lines))))
     # R4：错误信息审计（desktop/src/core/*.py）
     # R4/R5/R6 共用一份「读 + parse + walk」：同一批 core/*.py 过去被 R4 与 R5 各自 parse
-    # 一遍、同一棵树被 walk 四遍（见 `_ast_facts`）。
-    # 缓存分两层，判据都是「键即内容」：
-    #   ① 本次扫描内按**路径**缓存（省重复读盘）；
-    #   ② 跨调用按**文件文本**缓存（`_facts_for`）——文本没变 ⇒ 事实必然相同，文本一变键就变，
-    #      因此**不存在陈旧风险**，可以在常驻进程（nf daemon）里长期复用，
-    #      把「每次跑 score/verify 都重解析 247 份 .py」的成本摊掉。
-    facts_cache: dict = {}
-
-    def _facts(fpath: str):
-        if fpath in facts_cache:
-            return facts_cache[fpath]
-        try:
-            text = csc.read_text_cached(fpath)     # 同上（L6 与这里的 core/*.py 是同一批件）
-        except OSError:
-            facts_cache[fpath] = None
-            return None
-        got = _facts_for(text)
-        facts_cache[fpath] = got
-        return got
-
+    # 一遍、同一棵树被 walk 四遍（见 `_ast_facts`）；现在更进一步——整段「事实 → 结论」
+    # 按 `_file_findings`（键 = 路径 + 正文 + 环境指纹）**逐件**缓存，未变的件连循环体都不再进。
     core_dir = os.path.join(root, "desktop", "src", "core")
+    env = _env_fingerprint(root)          # R4–R6 逐件缓存的环境指纹（每轮算一次）
     if os.path.isdir(core_dir):
         for fname in sorted(os.listdir(core_dir)):
             if not fname.endswith(".py"):
                 continue
-            facts = _facts(os.path.join(core_dir, fname))
-            if facts is None:
+            rel = "desktop/src/core/" + fname
+            try:
+                text = csc.read_text_cached(os.path.join(core_dir, fname))
+            except OSError:
                 continue
-            for lineno, msg in facts[0]:
-                stats["raises"] += 1
-                if msg and not _ACTION.search(msg):
-                    issues.append("%s:%d raise 消息缺修复指引：%s"
-                                  % (fname, lineno, msg[:60]))
+            got, delta = _file_findings(rel, text, env, root)
+            issues += got
+            stats["raises"] += delta["raises"]
+            stats["imports"] += delta["imports"]
+            stats["sinks"] = stats.get("sinks", 0) + delta["sinks"]
+            stats["import_residue"] += delta["residue"]
     # R5：import 面（core + scripts 的第三方依赖须登记；软导入才可免硬依赖）
     import glob as _glob
     for rel_pat in IMPORT_SCAN:
         for f in sorted(_glob.glob(os.path.join(root, rel_pat))):
             rel = os.path.relpath(f, root).replace("\\", "/")
-            facts = _facts(f)
-            if facts is None:
+            if rel.startswith("desktop/src/core/"):
+                continue                       # R4 那一段已经把这批件算过（同一个逐件缓存）
+            try:
+                text = csc.read_text_cached(f)
+            except OSError:
                 continue
-            _raises, guarded, modules, sinks = facts
-            residue = IMPORT_RESIDUE.get(rel)
-            for mod, lineno in modules:
-                if mod in sys.stdlib_module_names or _is_local(mod, root):
-                    continue
-                stats["imports"] += 1
-                if mod in HARD_ALLOW:
-                    continue
-                if mod in SOFT_IMPORTS:
-                    if lineno not in guarded:
-                        msg = ("%s:%d 第三方 %s 未软导入（须 try/except ImportError 守卫；"
-                               "登记理由：%s）" % (rel, lineno, mod, SOFT_IMPORTS[mod]))
-                        (stats["import_residue"] if residue else issues).append(
-                            "%s（%s）" % (msg, residue) if residue else msg)
-                    continue
-                msg = ("%s:%d 第三方 import 未登记：%s（修复指引：改为软导入并在 purity_scan.SOFT_IMPORTS "
-                       "登记理由，或加入 HARD_ALLOW；端壳残留则登记 IMPORT_RESIDUE）" % (rel, lineno, mod))
-                (stats["import_residue"] if residue else issues).append(
-                    "%s（%s）" % (msg, residue) if residue else msg)
-            # R6：危险 sink 面（同一次 AST 遍历复用同一份事实）
-            for lineno, call, shell_true in sinks:
-                flags = []                      # (展示名, 放行键名)——方法类 sink 的键名用方法名
-                if call in DANGEROUS_CALLS:
-                    flags.append((call, call))
-                method = call.rsplit(".", 1)[-1]
-                if method in METHOD_SINKS:
-                    flags.append((method, method))
-                if shell_true:
-                    flags.append(("subprocess(shell=True)", "subprocess"))
-                for name, key_name in flags:
-                    stats["sinks"] = stats.get("sinks", 0) + 1
-                    key = "%s:%s" % (os.path.basename(f), key_name)
-                    if key in SINK_ALLOW:
-                        continue
-                    issues.append("%s:%d 危险 sink %s（%s）——确需使用须在 purity_scan.SINK_ALLOW "
-                                  "登记理由（修复指引：改用安全等价物，或登记后写明为何不可注入）"
-                                  % (rel, lineno, name,
-                                     DANGEROUS_CALLS.get(call)
-                                     or METHOD_SINKS.get(method)
-                                     or "shell=True 命令注入面"))
+            got, delta = _file_findings(rel, text, env, root)
+            issues += got
+            stats["imports"] += delta["imports"]           # raises 只在 R4（core/*.py）那一段计
+            stats["sinks"] = stats.get("sinks", 0) + delta["sinks"]
+            stats["import_residue"] += delta["residue"]
     # R6 自洽面（登记表自身的判据）：每个 sink 类目须带 CWE 对齐（跨工具对账用缺陷类型编码），
     # 且 SINK_ALLOW 的每个放行键必须指向一个已登记 sink——放行不能凭空出现。
     for call, desc in sorted({**DANGEROUS_CALLS, **METHOD_SINKS}.items()):

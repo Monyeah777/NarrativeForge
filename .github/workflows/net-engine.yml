@@ -1,0 +1,68 @@
+name: net-engine
+# 第二条独立实现的门禁：**只跑 .NET 引擎的只读判据面**（不跑 Python 判据、不跑 bash 判据本体）。
+# 与 ci-verify.yml 并列：那边是基线门（verify.sh），这边是**第二个实现能不能复现同一结论**。
+# 铁律：只读——不写任何仓库文件、不改 verify 基线、不新增 check 序号（ADR-0002 / ADR-0005）。
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  engine-gate:
+    name: net-engine-readonly-gate
+    runs-on: ubuntu-latest
+    steps:
+      # ubuntu-latest 镜像自带 .NET 8 SDK 与 pwsh ⇒ 不引 setup-dotnet（少一个需钉 SHA 的依赖）
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4（与仓库既有 workflow 同钉法）
+      - name: 工具链就绪（.NET 8 / pwsh）
+        run: |
+          dotnet --list-sdks
+          dotnet --version
+          pwsh -NoProfile -Command '$PSVersionTable.PSVersion.ToString()'
+          dotnet --list-sdks | grep -q '^8\.' || { echo "::error::缺 .NET 8 SDK"; exit 1; }
+
+      # ⚠️ 两条**实测踩过**的坑，写成注释免得后人再踩：
+      #   ① **不要在仓库树内构建**：真源与引擎的 `text_hygiene` 都用 os.walk + 固定 EXCLUDE_DIRS
+      #      （不含 bin/obj），**只看文件系统、不看 .gitignore** ⇒ 树内 bin/obj 会让「编码卫生」
+      #      假红（实测：BOM 6 / CRLF 43 全部来自构建产物）。故构建放 `$RUNNER_TEMP/build`。
+      #   ② **不要用导出快照当语料**：引擎对"没有 .git 的树"按**金标快照**模式断摘要，而入库后的
+      #      仓库语料已不是金标快照（2951 ≠ 2765 件）⇒ 3 条摘要钉红（实测）。所以门跑**工作树**
+      #      （有 .git ⇒ 语义模式：断言"零 issue"，而不是比金标摘要）。
+      - name: 树外构建引擎与两个 CLI（BCL-only：无需 NuGet 源）
+        run: |
+          cp -r engine/dotnet "$RUNNER_TEMP/build"
+          dotnet build "$RUNNER_TEMP/build/src/Nf.Engine/Nf.Engine.csproj" -c Release --nologo
+          dotnet build "$RUNNER_TEMP/build/tools/nf-dotnet/nf-dotnet.csproj" -c Release --nologo
+          dotnet build "$RUNNER_TEMP/build/tools/nfparity/nfparity.csproj" -c Release --nologo
+
+      - name: 只读门（聚合 11 件产物 + 227 例负例自检 + 性能基线 · 对工作树）
+        run: |
+          pwsh -NoProfile -File engine/dotnet/run-gate.ps1 \
+            -Root "$PWD" \
+            -Cli "$RUNNER_TEMP/build/tools/nf-dotnet/bin/Release/net8.0/nf-dotnet" \
+            -Baseline "$RUNNER_TEMP/bench-baseline.json"
+
+      - name: 一致性报告（部分实现：只报已移植契约，未移植项显式列出，不伪装 conformant）
+        run: dotnet "$RUNNER_TEMP/build/tools/nf-dotnet/bin/Release/net8.0/nf-dotnet.dll" --root "$PWD" conformance
+
+      - name: 双实现对账（183 面逐字节；探针自建夹具、只读语料）
+        run: |
+          python3 engine/dotnet/probes/face_parity_probe.py \
+            --root "$PWD" \
+            --py-exe python3 \
+            --cli "$RUNNER_TEMP/build/tools/nf-dotnet/bin/Release/net8.0/nf-dotnet"
+
+      - name: 不倒退（已移植契约集合 / 自检例数 / 探针条数 / 对账面数只增不减）
+        run: |
+          python3 engine/dotnet/probes/no_regression_probe.py \
+            --engine engine/dotnet \
+            --snap "$PWD" \
+            --cli "$RUNNER_TEMP/build/tools/nf-dotnet/bin/Release/net8.0/nf-dotnet"
+
+      - name: 可复现构建（同 RID 异地重建逐字节全等 · 含负对照）
+        run: |
+          python3 engine/dotnet/probes/reproducible_build_probe.py \
+            --engine "$PWD/engine/dotnet" \
+            --dotnet dotnet

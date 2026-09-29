@@ -1,0 +1,164 @@
+[
+ {
+  "expected": {
+   "issues": [],
+   "stats": {
+    "breadth": {
+     "all_legal": true,
+     "failures": [],
+     "packs": 111,
+     "pairs": 6105,
+     "pairs_legal": 6105,
+     "quads": 200,
+     "quads_legal": 200,
+     "quints": 120,
+     "quints_legal": 120,
+     "sexts": 60,
+     "sexts_legal": 60,
+     "triples": 400,
+     "triples_legal": 400
+    },
+    "declared_certificates": 17
+   }
+  },
+  "files": {},
+  "name": "combo-scan",
+  "scanner": "combo_scan"
+ },
+ {
+  "expected": {
+   "issues": [],
+   "stats": {
+    "faces": 1000,
+    "functional": 100,
+    "packs": 100
+   }
+  },
+  "files": {},
+  "name": "domain-manifest",
+  "scanner": "domain_manifest"
+ },
+ {
+  "expected": {
+   "issues": [
+    "组合 合成组合: 证书不合 schema: $.modules: 元素数 < 1",
+    "组合 合成组合: 证书不合 schema: $.module_count: 0 >= 1 不成立",
+    "组合 合成组合: 证书不合 schema: $.layer_stacks: 元素数 < 1",
+    "组合 合成组合: 证书不合 schema: $.dependency_closure: 缺必填字段 core",
+    "组合 合成组合: 字段不一致：dependency_closure（复算 {'core': ['M00', 'M06', 'M08', 'M10', 'M12', 'M13', 'M20', 'M22', 'M23', 'M24', 'M50', 'M80', 'M90', '事件:M22', '通用:M10'], 'explicit': [], 'dangling': []} ≠ 在盘 {'explicit': [], 'full': []}）",
+    "组合 合成组合: 字段不一致：event_closure（复算 {'published': [], 'unbridged': []} ≠ 在盘 {'unbridged': [], 'unpublished': []}）",
+    "组合 合成组合: 字段不一致：legal（复算 False ≠ 在盘 True）",
+    "组合 合成组合: 字段不一致：digest（复算 '8ab1bbe3fcb7fba4d438cf7edfffa39b' ≠ 在盘 'deadbeef'）",
+    "组合 缺字段: 证书不合 schema: $: 缺必填字段 modules",
+    "组合 缺字段: 证书不合 schema: $: 缺必填字段 module_count",
+    "组合 缺字段: 证书不合 schema: $: 缺必填字段 layer_stacks",
+    "组合 缺字段: 证书不合 schema: $: 缺必填字段 dependency_closure",
+    "组合 缺字段: 字段不一致：modules（复算 [] ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：module_count（复算 0 ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：layer_stacks（复算 [] ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：dependency_closure（复算 {'core': ['M00', 'M06', 'M08', 'M10', 'M12', 'M13', 'M20', 'M22', 'M23', 'M24', 'M50', 'M80', 'M90', '事件:M22', '通用:M10'], 'explicit': [], 'dangling': []} ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：event_closure（复算 {'published': [], 'unbridged': []} ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：assets_borrowed（复算 [] ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：modules_borrowed（复算 [] ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：legal（复算 True ≠ 在盘 None）",
+    "组合 缺字段: 字段不一致：digest（复算 '29d759e16a474d669f4c8c565f04a517' ≠ 在盘 None）"
+   ],
+   "stats": {
+    "breadth": {
+     "all_legal": true,
+     "failures": [],
+     "packs": 0,
+     "pairs": 0,
+     "pairs_legal": 0,
+     "quads": 0,
+     "quads_legal": 0,
+     "quints": 0,
+     "quints_legal": 0,
+     "sexts": 0,
+     "sexts_legal": 0,
+     "triples": 0,
+     "triples_legal": 0
+    },
+    "declared_certificates": 2
+   }
+  },
+  "files": {
+   "protocol/combo_certificates.json": "{\n  \"schema\": \"nf-combo-certificates/1\",\n  \"certificates\": [\n    {\n      \"schema\": \"nf-combo/1\",\n      \"label\": \"合成组合\",\n      \"packs\": [\n        \"不存在的包XYZ\"\n      ],\n      \"extra_modules\": [],\n      \"modules\": [],\n      \"module_count\": 0,\n      \"layer_stacks\": [],\n      \"dependency_closure\": {\n        \"explicit\": [],\n        \"full\": []\n      },\n      \"event_closure\": {\n        \"unbridged\": [],\n        \"unpublished\": []\n      },\n      \"assets_borrowed\": [],\n      \"modules_borrowed\": [],\n      \"legal\": true,\n      \"digest\": \"deadbeef\"\n    },\n    {\n      \"schema\": \"nf-combo/1\",\n      \"label\": \"缺字段\",\n      \"packs\": []\n    }\n  ]\n}\n"
+  },
+  "name": "combo-bad-cert",
+  "scanner": "combo_scan"
+ },
+ {
+  "expected": {
+   "issues": [],
+   "stats": {
+    "faces": 2,
+    "functional": 1,
+    "packs": 1
+   }
+  },
+  "files": {
+   ".rivet/private_archive/ai_packs/specs/D99.json": "{}",
+   "community/合成域包/outputs/DOMAIN_SPEC.json": "{\"subdivisions\": [{\"id\": \"D99-01\", \"standard_ref\": \"ietf-json-schema\"}]}\n",
+   "community/合成域包/outputs/INDEX.json": "{\n  \"outputs\": [\n    {\n      \"path\": \"a.json\",\n      \"tier\": \"T2\"\n    },\n    {\n      \"path\": \"b.json\",\n      \"tier\": \"T4\"\n    }\n  ]\n}\n",
+   "community/合成域包/protocol.yaml": "pipeline: P09\ncategory: 合成\n",
+   "desktop/src/core/registry.json": "{\n  \"protocols\": [\n    {\n      \"id\": \"合成域包\",\n      \"pipeline\": \"P09\",\n      \"module_ids\": [\n        \"M01\",\n        \"M02\"\n      ]\n    }\n  ]\n}\n",
+   "protocol/domain_packs.json": "{\n  \"machine_verifiable_threshold\": 0.95,\n  \"packs\": [\n    {\n      \"code\": \"D99\",\n      \"package\": \"合成域包\",\n      \"pipeline\": \"P09\",\n      \"category\": \"合成\",\n      \"module_ids\": [\n        \"M01\",\n        \"M02\"\n      ],\n      \"output_faces\": 2,\n      \"functional_faces\": 1,\n      \"standards_binding_coverage\": 1.0,\n      \"concept_density\": 2.0,\n      \"standards_bound\": 3,\n      \"support_binding_coverage\": 1.0,\n      \"standards_dep_edges\": 1,\n      \"data_authenticity\": 1.0,\n      \"standards_reachable_ratio\": 1.0\n    }\n  ]\n}\n",
+   "protocol/standards_binding.json": "{\n  \"packs\": [\n    {\n      \"code\": \"D99\",\n      \"bindings\": [\n        {\n          \"subdivision\": \"D99-01\",\n          \"standard\": \"ietf-json-schema\",\n          \"support_standard\": \"vega-lite\",\n          \"standard_probe_date\": \"2026-09-20\",\n          \"support_standard_probe_date\": \"2026-09-20\"\n        }\n      ]\n    }\n  ]\n}\n",
+   "protocol/standards_catalog.json": "{\n  \"standards\": [\n    {\n      \"id\": \"ietf-json-schema\"\n    },\n    {\n      \"id\": \"vega-lite\"\n    },\n    {\n      \"id\": \"mermaid\"\n    }\n  ]\n}\n"
+  },
+  "name": "domain-ok",
+  "scanner": "domain_manifest"
+ },
+ {
+  "expected": {
+   "issues": [
+    "合成域包：管线不一致（名录 P10 / registry P09）",
+    "合成域包：模块 id 不一致（名录 ↔ registry）",
+    "合成域包：protocol.yaml 缺名录声明 合成",
+    "合成域包：可机验产出占比 0.0000 < 门槛 0.95（产出面必须 ≥95% 可机验）",
+    "合成域包：无 T4 可复算面（域包必须有一个可重算产出）",
+    "合成域包：名录产出面数 9 ≠ INDEX 实况 1",
+    "合成域包：标准绑定覆盖率 0.50 < 1.0（每条细分须绑一个目录内标准）",
+    "合成域包：概念密度 0.400 < 门槛 1.000（边/节点；含标准节点与绑定边）",
+    "合成域包：绑定标准数 1 < 3（单包至少要贴 3 条不同标准）",
+    "合成域包：辅锚覆盖率 0.20 < 1.0（每条细分须另绑一条产出承载标准）",
+    "合成域包：概念图无标准依赖边（绑定标准的 depends_on 未入图）",
+    "合成域包：数据真实性分 0.5000 < 门槛 0.95（在册 × 实测可达 × 证据齐备）",
+    "合成域包：绑定标准本机实测可达率 0.1000 < 门槛 0.90",
+    "合成域包：绑定表缺在册证明或实测记录：['D99-01']"
+   ],
+   "stats": {
+    "faces": 9,
+    "functional": 1,
+    "packs": 1
+   }
+  },
+  "files": {
+   ".rivet/private_archive/ai_packs/specs/D99.json": "{}",
+   "community/合成域包/outputs/DOMAIN_SPEC.json": "{\"subdivisions\": [{\"id\": \"D99-01\", \"standard_ref\": \"ietf-json-schema\"}]}\n",
+   "community/合成域包/outputs/INDEX.json": "{\n  \"outputs\": [\n    {\n      \"path\": \"a.json\",\n      \"tier\": \"T1\"\n    }\n  ]\n}\n",
+   "community/合成域包/protocol.yaml": "pipeline: P10\n",
+   "desktop/src/core/registry.json": "{\n  \"protocols\": [\n    {\n      \"id\": \"合成域包\",\n      \"pipeline\": \"P09\",\n      \"module_ids\": [\n        \"M01\",\n        \"M02\"\n      ]\n    }\n  ]\n}\n",
+   "protocol/domain_packs.json": "{\n  \"machine_verifiable_threshold\": 0.95,\n  \"packs\": [\n    {\n      \"code\": \"D99\",\n      \"package\": \"合成域包\",\n      \"pipeline\": \"P10\",\n      \"category\": \"合成\",\n      \"module_ids\": [\n        \"M03\"\n      ],\n      \"output_faces\": 9,\n      \"functional_faces\": 1,\n      \"standards_binding_coverage\": 0.5,\n      \"concept_density\": 0.4,\n      \"standards_bound\": 1,\n      \"support_binding_coverage\": 0.2,\n      \"standards_dep_edges\": 0,\n      \"data_authenticity\": 0.5,\n      \"standards_reachable_ratio\": 0.1\n    }\n  ]\n}\n",
+   "protocol/standards_binding.json": "{\n  \"packs\": [\n    {\n      \"code\": \"D99\",\n      \"bindings\": [\n        {\n          \"subdivision\": \"D99-01\",\n          \"standard\": \"不在册\",\n          \"support_standard\": \"vega-lite\",\n          \"standard_probe_date\": \"\",\n          \"support_standard_probe_date\": \"2026-09-20\"\n        }\n      ]\n    }\n  ]\n}\n",
+   "protocol/standards_catalog.json": "{\n  \"standards\": [\n    {\n      \"id\": \"ietf-json-schema\"\n    },\n    {\n      \"id\": \"vega-lite\"\n    },\n    {\n      \"id\": \"mermaid\"\n    }\n  ]\n}\n"
+  },
+  "name": "domain-bad",
+  "scanner": "domain_manifest"
+ },
+ {
+  "expected": {
+   "issues": [],
+   "stats": {
+    "note": "无域包名录（域包工程未启用）",
+    "packs": 0
+   }
+  },
+  "files": {
+   "README.md": ""
+  },
+  "name": "domain-no-manifest",
+  "scanner": "domain_manifest"
+ }
+]

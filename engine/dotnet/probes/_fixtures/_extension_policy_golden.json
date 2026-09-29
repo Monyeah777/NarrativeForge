@@ -1,0 +1,63 @@
+{
+ "schema": "nf-extension-policy-golden/1",
+ "generated": "2026-09-27",
+ "source": "verify.sh check30 内联 Python 原文（机械抽取后执行）",
+ "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h5",
+ "digest_rule": "sha256(\"\\n\".join(stdout.splitlines()))[:32]  ← 与引擎 Result.LogDigest 同式",
+ "cases": {
+  "real": {
+   "python_exit": 0,
+   "digest32": "2ecc354222ae4ae205d6a0378463edde",
+   "fails": 0,
+   "log": [
+    "扩展策略统计：判据词缺 0 / bump 文件 0（无）"
+   ]
+  },
+  "synthetic": {
+   "python_exit": 1,
+   "digest32": "4c8a7a6980a5c6054949cb0b79e00d70",
+   "fails": 1,
+   "log": [
+    "扩展策略统计：判据词缺 5 / bump 文件 0（无）",
+    "[FAIL] EXTENSION.md 缺判据词：字段级新增,迁移记录,bump,结构 bump,派生三问"
+   ],
+   "files_b64": {
+    "protocol/EXTENSION.md": "IyDmianlsZXnrZbnlaUKCuWPquWGmeS6hiBhZGRpdGl2ZSDkuI4gZWRpdG9yaWFs44CCCg=="
+   }
+  },
+  "boundary": {
+   "python_exit": 1,
+   "digest32": "f4016b61d3a736b76067c68b921c58ae",
+   "fails": 1,
+   "log": [
+    "扩展策略统计：判据词缺 0 / bump 文件 1（02_联动注册表.md）",
+    "[FAIL] 02_联动注册表.md: 版本字段结构性变更（bump）但无四步迁移记录（缺：bump 声明,校验回读,现状快照,迁移说明）——记录可内嵌该文件 diff，或写入 02 §9 / protocol/EXTENSION.md 的同次提交 diff"
+   ]
+  },
+  "judged_no_record": {
+   "python_exit": 1,
+   "digest32": "f4016b61d3a736b76067c68b921c58ae",
+   "fails": 1,
+   "log": [
+    "扩展策略统计：判据词缺 0 / bump 文件 1（02_联动注册表.md）",
+    "[FAIL] 02_联动注册表.md: 版本字段结构性变更（bump）但无四步迁移记录（缺：bump 声明,校验回读,现状快照,迁移说明）——记录可内嵌该文件 diff，或写入 02 §9 / protocol/EXTENSION.md 的同次提交 diff"
+   ],
+   "patch_b64": "ZGlmZiAtLWdpdCAiYS8wMl9cMzUwXDIwMVwyMjRcMzQ1XDIxMlwyNTBcMzQ2XDI2M1wyNTBcMzQ1XDIwNlwyMTRcMzUwXDI0MVwyNTAubWQiICJiLzAyX1wzNTBcMjAxXDIyNFwzNDVcMjEyXDI1MFwzNDZcMjYzXDI1MFwzNDVcMjA2XDIxNFwzNTBcMjQxXDI1MC5tZCIKaW5kZXggZDk5MTYwNy4uMzBhZDIxMyAxMDA2NDQKLS0tICJhLzAyX1wzNTBcMjAxXDIyNFwzNDVcMjEyXDI1MFwzNDZcMjYzXDI1MFwzNDVcMjA2XDIxNFwzNTBcMjQxXDI1MC5tZCIKKysrICJiLzAyX1wzNTBcMjAxXDIyNFwzNDVcMjEyXDI1MFwzNDZcMjYzXDI1MFwzNDVcMjA2XDIxNFwzNTBcMjQxXDI1MC5tZCIKQEAgLTIsNyArMiw3IEBACiA+IOacgOWQjuabtOaWsO+8mjIwMjYtMDktMjAKID4gKipSRkMqKjogTkYtMDAwMiDCtyAqKkNhdGVnb3J5Kio6IFN0YW5kYXJkcyBUcmFjayDCtyAqKkRhdGUqKjogMjAyNi0wOS0yMCDCtyAqKlN0YXR1cyoqOiBBY3RpdmUgwrcgKipTdXBlcnNlZGVzKio6IOKAlCDCtyAqKlN1cGVyc2VkZWQgYnkqKjog4oCUCiAKLT4gKipyZWdpc3RyeV9zY2hlbWFfdmVyc2lvbjogIjIiKiog4oCU4oCUIOazqOWGjOihqOe7k+aehOeJiOacrO+8iHYwLjUuMCBUMi4zIOmmluW8lSAiMSLvvJt2MC42LjAgVDEuMSDmnLror7vmipXlvbEgcmVnaXN0cnkuanNvbiDlvJXlhaUgbG9hZGVyIOa2iOi0ueWtl+aute+8jOe7k+aehOaAp+a8lOi/myBidW1wIOiHsyAiMiLvvIxWMiDpppbmrKHlrp7miJjvvIzov4Hnp7vorrDlvZXop4Egwqc5LjPvvInjgILor7vlj5bml6fniYjmnKzms6jlhozooajpgbXlvqogMDEg5Y2P6K6uIMKnNyDniYjmnKzkuI7lhbzlrrnop4TliJnvvJrlj6rlop7kuI3liKDjgIHnu5PmnoTmgKflj5jmm7QgYnVtcCDlubbms6jmmI7ov4Hnp7vjgIIKKz4gKipyZWdpc3RyeV9zY2hlbWFfdmVyc2lvbjogIjMiKiog4oCU4oCUIOazqOWGjOihqOe7k+aehOeJiOacrO+8iHYwLjUuMCBUMi4zIOmmluW8lSAiMSLvvJt2MC42LjAgVDEuMSDmnLror7vmipXlvbEgcmVnaXN0cnkuanNvbiDlvJXlhaUgbG9hZGVyIOa2iOi0ueWtl+aute+8jOe7k+aehOaAp+a8lOi/myBidW1wIOiHsyAiMiLvvIxWMiDpppbmrKHlrp7miJjvvIzov4Hnp7vorrDlvZXop4Egwqc5LjPvvInjgILor7vlj5bml6fniYjmnKzms6jlhozooajpgbXlvqogMDEg5Y2P6K6uIMKnNyDniYjmnKzkuI7lhbzlrrnop4TliJnvvJrlj6rlop7kuI3liKDjgIHnu5PmnoTmgKflj5jmm7QgYnVtcCDlubbms6jmmI7ov4Hnp7vjgIIKIAogIyMgMS4g5b2T5YmN5rS76LeD566h57q/CiAtIOWumOaWuea0u+i3g+euoee6v++8mlAwMe+8iOagh+WHhueuoee6vyDCtyDlrpjmlrnmoLjlv4Poo4XphY3vvIwwM1/nrqHnur/lupMvUDAxX+agh+WHhueuoee6vy5tZO+8iQo=",
+   "engine_exit": 1,
+   "engine_stdout": "扩展策略统计：判据词缺 0 / bump 文件 1（02_联动注册表.md）\n[FAIL] 02_联动注册表.md: 版本字段结构性变更（bump）但无四步迁移记录（缺：bump 声明,校验回读,现状快照,迁移说明）——记录可内嵌该文件 diff，或写入 02 §9 / protocol/EXTENSION.md 的同次提交 diff\n",
+   "engine_digest32": "f4016b61d3a736b76067c68b921c58ae"
+  },
+  "judged_with_record": {
+   "python_exit": 0,
+   "digest32": "fe0a515e4053c83dd60b0e566f166712",
+   "fails": 0,
+   "log": [
+    "扩展策略统计：判据词缺 0 / bump 文件 1（02_联动注册表.md）"
+   ],
+   "patch_b64": "ZGlmZiAtLWdpdCAiYS8wMl9cMzUwXDIwMVwyMjRcMzQ1XDIxMlwyNTBcMzQ2XDI2M1wyNTBcMzQ1XDIwNlwyMTRcMzUwXDI0MVwyNTAubWQiICJiLzAyX1wzNTBcMjAxXDIyNFwzNDVcMjEyXDI1MFwzNDZcMjYzXDI1MFwzNDVcMjA2XDIxNFwzNTBcMjQxXDI1MC5tZCIKaW5kZXggZDk5MTYwNy4uMzgxMDE2MyAxMDA2NDQKLS0tICJhLzAyX1wzNTBcMjAxXDIyNFwzNDVcMjEyXDI1MFwzNDZcMjYzXDI1MFwzNDVcMjA2XDIxNFwzNTBcMjQxXDI1MC5tZCIKKysrICJiLzAyX1wzNTBcMjAxXDIyNFwzNDVcMjEyXDI1MFwzNDZcMjYzXDI1MFwzNDVcMjA2XDIxNFwzNTBcMjQxXDI1MC5tZCIKQEAgLTIsNyArMiw3IEBACiA+IOacgOWQjuabtOaWsO+8mjIwMjYtMDktMjAKID4gKipSRkMqKjogTkYtMDAwMiDCtyAqKkNhdGVnb3J5Kio6IFN0YW5kYXJkcyBUcmFjayDCtyAqKkRhdGUqKjogMjAyNi0wOS0yMCDCtyAqKlN0YXR1cyoqOiBBY3RpdmUgwrcgKipTdXBlcnNlZGVzKio6IOKAlCDCtyAqKlN1cGVyc2VkZWQgYnkqKjog4oCUCiAKLT4gKipyZWdpc3RyeV9zY2hlbWFfdmVyc2lvbjogIjIiKiog4oCU4oCUIOazqOWGjOihqOe7k+aehOeJiOacrO+8iHYwLjUuMCBUMi4zIOmmluW8lSAiMSLvvJt2MC42LjAgVDEuMSDmnLror7vmipXlvbEgcmVnaXN0cnkuanNvbiDlvJXlhaUgbG9hZGVyIOa2iOi0ueWtl+aute+8jOe7k+aehOaAp+a8lOi/myBidW1wIOiHsyAiMiLvvIxWMiDpppbmrKHlrp7miJjvvIzov4Hnp7vorrDlvZXop4Egwqc5LjPvvInjgILor7vlj5bml6fniYjmnKzms6jlhozooajpgbXlvqogMDEg5Y2P6K6uIMKnNyDniYjmnKzkuI7lhbzlrrnop4TliJnvvJrlj6rlop7kuI3liKDjgIHnu5PmnoTmgKflj5jmm7QgYnVtcCDlubbms6jmmI7ov4Hnp7vjgIIKKz4gKipyZWdpc3RyeV9zY2hlbWFfdmVyc2lvbjogIjMiKiog4oCU4oCUIOazqOWGjOihqOe7k+aehOeJiOacrO+8iHYwLjUuMCBUMi4zIOmmluW8lSAiMSLvvJt2MC42LjAgVDEuMSDmnLror7vmipXlvbEgcmVnaXN0cnkuanNvbiDlvJXlhaUgbG9hZGVyIOa2iOi0ueWtl+aute+8jOe7k+aehOaAp+a8lOi/myBidW1wIOiHsyAiMiLvvIxWMiDpppbmrKHlrp7miJjvvIzov4Hnp7vorrDlvZXop4Egwqc5LjPvvInjgILor7vlj5bml6fniYjmnKzms6jlhozooajpgbXlvqogMDEg5Y2P6K6uIMKnNyDniYjmnKzkuI7lhbzlrrnop4TliJnvvJrlj6rlop7kuI3liKDjgIHnu5PmnoTmgKflj5jmm7QgYnVtcCDlubbms6jmmI7ov4Hnp7vjgIIKIAogIyMgMS4g5b2T5YmN5rS76LeD566h57q/CiAtIOWumOaWuea0u+i3g+euoee6v++8mlAwMe+8iOagh+WHhueuoee6vyDCtyDlrpjmlrnmoLjlv4Poo4XphY3vvIwwM1/nrqHnur/lupMvUDAxX+agh+WHhueuoee6vy5tZO+8iQpAQCAtMTE2MCwzICsxMTYwLDUgQEAgcGFja2FnZToKIDIuICoqYnVtcCDlo7DmmI4qKu+8mioqYWRkaXRpdmUg5qGjKirvvIhgcmVmZXJlbmNlc2Ag55SxIDIg5p2h6KGl6IezIDUg5p2h77yM5paw5aKe5qCh5ZutIE00MyDmg4XmlYzns7vnu58gLyDmg4XmhJ86TTIyIOS4ieWGsuWKqOmpseWKqCAvIE00MCDlhbPns7vmt7HluqbvvInihpIgYDEuMC4wYCDljYcgKipgMS4xLjBgKirvvIhNSU5PUu+8ieOAggogMy4gKirov4Hnp7vor7TmmI4qKu+8mioq5Y+q5aKe5LiN5YigKirigJTigJRgbW9kdWxlX2lkX3JhbmdlYO+8iE05MS9NOTLvvIkvIGBwaXBlbGluZTogUDA0YCAvIGBjYXRlZ29yaWVzOiBb6L275re3XWAgLyBgYXNzZXRzLmNvdW50OiAwYCAvIGBtb3VudF9sYXllcnNgIOWdh+acquWPmO+8m+aWsOWinuW8leeUqOS4uioq5Y+q6K+75YCf6ZiFKirvvIhgYXNzZXRfcmVhZG9ubHk6IHRydWVg77yJ77yM5rqQ5YyF5qih5Z2X5LiN5pS55Y+344CB5LiN5aSN5Yi277yMdjEuMC4wIOivu+iAheeahOijhemFjeivreS5ieS4jeWPmOOAgioq6Kem5Y+R5p2l5rqQKirvvJrmlrDnu4TlkIjlvJXmk47vvIhgY29yZS9wYWNrX2NvbWJvLnB5YO+8ieeahOS6i+S7tumXreWMheWunua1i+KAlOKAlOi9u+a3t+WMheaooeWdl+iuoumYhSBgY29uZmVzc2lvbl9ldmVudGAgLyBgbnBjX2FjdGlvbmAgLyBgcmVsYXRpb25zaGlwX2NoYW5nZWDvvIzlhbblj5HluIPmlrnvvIjmoKHlm60gTTQzL00yMi9NNDDvvInmnKrlnKjlo7DmmI7kuK3vvIzlsZ4qKuWjsOaYjuS4juS6i+WunuS4jeS4gOiHtCoq55qE55yf5a6e57y65Y+j77yIQVVELTAwMjAgwqflha3vvInjgIIKIDQuICoq5qCh6aqM5Zue6K+7KirvvJpjaGVjazE0IOKRpiDlj4zmupDkuIDoh7TvvIhgcmVnaXN0cnkgcHJvdG9jb2xzW10udmVyc2lvbmAgPSBgcHJvdG9jb2wueWFtbCBwYWNrYWdlLnZlcnNpb25gID0gYDEuMS4wYO+8jHJlZmVyZW5jZXMg6YCQ5p2h5LiA6Ie077yJKyBjaGVjazE1IOS6lOaWreiogO+8iOWcqOWGjOWPr+Wvu+WdgCAvIOS+nei1lumXreWMhSAvIOaMgui9veWxgiAvIHNjaGVtYSDlhbzlrrkgLyDlj4zmupDkuIDoh7TvvIkrIGNoZWNrMzAg5pys5p2h6K6w5b2VICsgY2hlY2szMiBgY29tYm9zYCDlrZDmiavmj4/vvIjor6Xnu4TlkIjkuI7lhaggMTA3IOWMhee7hOWQiOWdh+WIpOWQiOazle+8ie+8m+WbnuW9kuWIpOaNruingSBgZGVza3RvcC90ZXN0cy90ZXN0X3BhY2tfY29tYm8ucHlg44CCCisKKz4g546w54q25b+r54WnIC8gYnVtcCDlo7DmmI4gLyDov4Hnp7vor7TmmI4gLyDmoKHpqozlm57or7sK",
+   "engine_exit": 0,
+   "engine_stdout": "扩展策略统计：判据词缺 0 / bump 文件 1（02_联动注册表.md）\n",
+   "engine_digest32": "fe0a515e4053c83dd60b0e566f166712"
+  }
+ }
+}

@@ -68,6 +68,43 @@ class PurityKeyCompositionTest(unittest.TestCase):
         self.assertEqual(lm.face_fingerprint(ROOT), lm.face_fingerprint(ROOT))
 
 
+class FileFindingsCacheTest(unittest.TestCase):
+    """R4–R6 的**逐件 findings 缓存**：三态（正文变 / 登记表变 / 局部模块集变都要重算）。
+
+    依据（实测 2026-09-29）：R4–R6 要遍历 **546** 份源码，而真正的检查项只有 ~81 条
+    （raise 55 / import 14 / sink 12）⇒ 那 ~20 ms 里绝大头是「把 546 份文件逐件重新过一遍」的循环
+    开销。逐件缓存后，未变的件连循环体都不进。键 =（相对路径, 正文 sha256, **环境指纹**），
+    环境指纹含**局部模块名集**（`_is_local` 的判据）与六张登记表——任一变即重算。
+    """
+
+    def test_environment_fingerprint_is_sensitive(self):
+        base = ps._env_fingerprint(ROOT)
+        self.assertEqual(base, ps._env_fingerprint(ROOT), "同环境必须同指纹")
+        orig = ps.SOFT_IMPORTS
+        ps.SOFT_IMPORTS = dict(orig)
+        ps.SOFT_IMPORTS["判据用探针包"] = "环境敏感判据"
+        try:
+            self.assertNotEqual(base, ps._env_fingerprint(ROOT), "登记表一变必须换键")
+        finally:
+            ps.SOFT_IMPORTS = orig
+        self.assertEqual(base, ps._env_fingerprint(ROOT), "还原后必须回到原指纹")
+
+    def test_findings_are_content_keyed(self):
+        env = ps._env_fingerprint(ROOT)
+        text = "import thirdparty_unregistered\n"
+        ps._FILE_FINDINGS.clear()
+        got, delta = ps._file_findings("scripts/判据探针.py", text, env, ROOT)
+        self.assertEqual(1, delta["imports"], delta)
+        self.assertTrue(any("未登记" in m for m in got), got)
+        self.assertEqual(1, len(ps._FILE_FINDINGS))
+        again, _ = ps._file_findings("scripts/判据探针.py", text, env, ROOT)
+        self.assertEqual(got, again)
+        self.assertEqual(1, len(ps._FILE_FINDINGS), "同内容同环境必须命中")
+        other, _ = ps._file_findings("scripts/判据探针.py", text + "# 尾巴\n", env, ROOT)
+        self.assertEqual(got, other)
+        self.assertEqual(2, len(ps._FILE_FINDINGS), "正文一变必须换键")
+
+
 class DocFactsTest(unittest.TestCase):
     """R1–R3 的逐件事实缓存（`_doc_facts`）：与未缓存参考实现逐字段等价（真仓库文档 + 合成样本）。
 
@@ -420,6 +457,7 @@ class SinkRegistryTest(unittest.TestCase):
         ps.ast.parse = counting_parse          # type: ignore[assignment]
         try:
             ps._FACTS_CACHE.clear()
+            ps._FILE_FINDINGS.clear()      # 逐件 findings 层也算一层：最冷状态必须一起清
             cold = scan_with_counter()
         finally:
             if old_off is None:

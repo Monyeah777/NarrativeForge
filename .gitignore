@@ -22,3 +22,10 @@ _cov_tmp.json
 checkpoints/
 *.safetensors
 *.gguf
+
+# .NET 引擎线的构建产物（**必须忽略**，实测教训）
+# 入库干跑时把 `engine/dotnet/**` 整目录 `git add` 过一次：48 个产物被提交进仓库
+# （Nf.Engine.dll / .pdb / project.assets.json / 生成的 AssemblyInfo.cs 等）；
+# 且 `obj/` 里的文件是 CRLF/BOM 的，会撞编码卫生判据（text_hygiene 只看文件系统、不看 .gitignore）。
+engine/dotnet/**/bin/
+engine/dotnet/**/obj/

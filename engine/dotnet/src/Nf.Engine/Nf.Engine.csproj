@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <!--
+      InvariantGlobalization=false（2026-09-27 改，第八十一片）：**ICU 归一化必须可用**——
+      true 时 `String.Normalize` 是空操作，UAX #15（NFC）判据直接落不了地（编码卫生面实测照出）。
+      确定性由 CulturePin.cs 的**显式 invariant culture** 兜：引擎里 109 处 culture 调用全部显式传
+      InvariantCulture，改后 148 面逐字节复跑仍全同（见 README 第八十一片）。
+    -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootNamespace>Nf.Engine</RootNamespace>
+    <!--
+      分发面（第一百一十二片）：判据库可打包、可被第三方**只引包**消费。零 NuGet 依赖。
+
+      ⚠️ 包元数据的取舍有实测依据（逐个属性单独构建后比 sha256[:16]）：
+        中性（改了交付二进制不变，基线 cbfce1f08ce8a5f4）：
+          PackageId · Version=1.0.0（= SDK 隐式默认值）· PackageDescription · PackageTags · PackageLicenseExpression
+        会改二进制（故**不设**）：
+          Authors  → AssemblyCompanyAttribute   （实测 22d560d73f6c7dac）
+          Product  → AssemblyProductAttribute   （实测 4792f04db36b1dba）
+          Description → AssemblyDescriptionAttribute
+          GenerateAssemblyCompanyAttribute=false 同样改二进制（66a1c511d54e142a：属性被移除 ≠ 属性为空）
+      纪律：**包元数据只许影响包，不许让已验产物失效**。故 Authors 不设（NuGet 会把 authors 落成包 id）；
+      若作者要正式署名，那是**有意变更**——须重发 dist 并重跑判据，不能顺手加。
+    -->
+    <PackageId>NarrativeForge.Engine</PackageId>
+    <Version>1.0.0</Version>
+    <PackageDescription>NF 判据面引擎（只读复算：组合证书 T4 / 回执 / 透明链 / 建模三件 / 决策层 / 馆藏门 / 编码卫生 …；零 NuGet 依赖，BCL-only）</PackageDescription>
+    <PackageTags>narrativeforge;verification;read-only;engine</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,47 @@
+{
+ "schema": "nf-fde-sample-golden/1",
+ "generated": "2026-09-27",
+ "source": "真源 scripts/fde_sample_run.py::check（check38 子扫描 4 框法）",
+ "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h5",
+ "digest_rule": "sha256(\"\\n\".join(渲染行))[:32]  ← 与引擎侧同式",
+ "tamper_recipe": {
+  "fde_tampered_deliverable": "交付物末尾追加一行",
+  "fde_gate_failure": "删 community/AI系统域包/outputs/charts/CONCEPT_DAG.mmd（已声明但交付物不读）",
+  "fde_manifest_tampered": "manifest.facts.standards = 999"
+ },
+ "cases": {
+  "fde_real": {
+   "log": [
+    "FDE 样例 子扫描：零缺口"
+   ],
+   "digest32": "f77da64c1aa965af5ad642d5e297589d",
+   "fails": 0
+  },
+  "fde_tampered_deliverable": {
+   "log": [
+    "[FAIL] docs/fde-sample/evidence/deliverable.md 与当前仓库状态不一致（跑 `--run` 重跑）",
+    "FDE 样例 子扫描：FAIL 1"
+   ],
+   "digest32": "a7c9c94882394d13f9f96e5547035170",
+   "fails": 1
+  },
+  "fde_gate_failure": {
+   "log": [
+    "[FAIL] docs/fde-sample/evidence/gates.txt 与当前仓库状态不一致（跑 `--run` 重跑）",
+    "[FAIL] docs/fde-sample/evidence/result.jsonl 与当前仓库状态不一致（跑 `--run` 重跑）",
+    "[FAIL] docs/fde-sample/evidence/manifest.json 与当前仓库状态不一致（跑 `--run` 重跑）",
+    "FDE 样例 子扫描：FAIL 3"
+   ],
+   "digest32": "e87dc976694d10bc6d62335aeab24f9e",
+   "fails": 3
+  },
+  "fde_manifest_tampered": {
+   "log": [
+    "[FAIL] docs/fde-sample/evidence/manifest.json 与当前仓库状态不一致（跑 `--run` 重跑）",
+    "FDE 样例 子扫描：FAIL 1"
+   ],
+   "digest32": "9decf5a1dbcfcb6e2cbacb10a2fb48f8",
+   "fails": 1
+  }
+ }
+}

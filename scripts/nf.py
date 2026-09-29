@@ -4808,6 +4808,46 @@ def _cmd_release(args):
             print("  [FAIL] 逐模块覆盖率 < min30", file=sys.stderr)
         else:
             print("  ✓ 逐模块覆盖率 ≥ min30")
+        # 静态检查（软依赖）：lint 此前只在 GitHub CI 跑，本地 pre-push（本命令）不含它，
+        # 于是「未定义名」一类硬错会在本地积压、只在推送后才红（实测：core/disk_cache.py
+        # 曾带 4 处 F821 进树）。这里按仓库软依赖纪律接入：ruff 不在场就跳过并明示，
+        # 在场则以**仓库 ruff.toml 同口径**判死。
+        lint = subprocess.run([sys.executable, "-m", "ruff", "check",
+                               "desktop/src", "scripts"], cwd=ROOT,
+                              capture_output=True, text=True, encoding="utf-8",
+                              errors="replace")
+        lint_out = (lint.stdout or "") + (lint.stderr or "")
+        if lint.returncode == 127 or "No module named" in lint_out:
+            print("  [WARN] 缺 ruff（跳过静态检查；修复指引：pip install ruff）")
+        elif lint.returncode != 0:
+            gate_fail = True
+            print("  [FAIL] ruff 静态检查未过（修复指引：python -m ruff check desktop/src scripts）",
+                  file=sys.stderr)
+        else:
+            print("  ✓ ruff 静态检查零告警（仓库 ruff.toml 口径）")
+        # 端到端（动态可执行面）：发布前体检必须覆盖「真链路跑通」，不能只看静态门禁。
+        # 此前 e2e 只在 e2e-desktop.yml 独立跑，release-gate 不含它——发布前的绿灯
+        # 因此不保证端到端可用（顶层化目标：e2e 纳入 release-gate）。
+        e2e = subprocess.run([sys.executable, os.path.join("scripts", "e2e_desktop_headless.py")],
+                             cwd=ROOT)
+        if e2e.returncode != 0:
+            gate_fail = True
+            print("  [FAIL] 端到端冒烟未过（修复指引：python scripts/e2e_desktop_headless.py）",
+                  file=sys.stderr)
+        else:
+            print("  ✓ 端到端冒烟通过（官方 13 件 + M91/M92 + P04 → 装配 → 生成 → 断言）")
+        # 机器可读报告新鲜度（静态可核验面）：已提交的 protocol/verification_report.json
+        # 必须等于实时重算——否则门禁的「机器面结论」是过期的。
+        vrpt = subprocess.run([sys.executable, os.path.join("scripts", "verify_report.py"), "--check"],
+                              cwd=ROOT, capture_output=True, text=True, encoding="utf-8",
+                              errors="replace")
+        if vrpt.returncode != 0:
+            gate_fail = True
+            tail = [l for l in ((vrpt.stderr or "") + (vrpt.stdout or "")).splitlines() if l.strip()][-2:]
+            print("  [FAIL] 门禁机器可读报告过期或判据未过（修复指引：python scripts/verify_report.py "
+                  "--write）%s" % ("；" + " / ".join(tail) if tail else ""), file=sys.stderr)
+        else:
+            print("  ✓ 门禁机器可读报告新鲜（protocol/verification_report.json == 实时重算）")
     if gate_fail:
         print("  ✗ 发布体检未过（基线/verify）——禁止发布", file=sys.stderr)
         return 1

@@ -22,6 +22,8 @@ jobs:
           pip install -r .github/requirements-ci.txt  # 版本固定见该文件（F-05）
       - name: 发布前体检（verify + 基线自描述一致）
         run: python3 scripts/nf.py release
+      - name: 端到端显式步（与 nf release 内嵌同源；失败即红，便于定位）
+        run: python3 scripts/e2e_desktop_headless.py
       - name: 覆盖率门槛（core ≥80）
         run: |
           coverage run --source=desktop/src/core -m unittest discover -s desktop/tests

@@ -1,0 +1,64 @@
+{
+ "schema": "nf-text-hygiene-golden/1",
+ "generated": "2026-09-27",
+ "source": "desktop/src/core/text_hygiene.py 原文复制后按脚本执行（真源 __main__ 同一段代码，逐字节 stdout）",
+ "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h16",
+ "digest_rule": "sha256(\"\\n\".join(stdout.splitlines()))[:32]  ← 与引擎 Result.LogDigest 同式",
+ "cases": {
+  "real": {
+   "python_exit": 0,
+   "digest32": "a49d33b5f3f8819840d0da3f564578de",
+   "fails": 0,
+   "summary": "文本 2773 件 / JSON 1033 件 / 键 168425 个 / 版本 111 个 / BOM 0 / CRLF 0",
+   "log": [
+    "文本 2773 件 / JSON 1033 件 / 键 168425 个 / 版本 111 个 / BOM 0 / CRLF 0"
+   ]
+  },
+  "synthetic_mixed": {
+   "python_exit": 1,
+   "digest32": "62705da4c6d1a6647f46aef038689209",
+   "fails": 7,
+   "summary": "文本 9 件 / JSON 4 件 / 键 5 个 / 版本 1 个 / BOM 1 / CRLF 1",
+   "log": [
+    "文本 9 件 / JSON 4 件 / 键 5 个 / 版本 1 个 / BOM 1 / CRLF 1",
+    "[FAIL] .gitattributes 未声明 `* text=auto eol=lf`（修复指引：全仓行尾纪律须显式声明，见仓库根 .gitattributes）",
+    "[FAIL] a_bom.md 以 UTF-8 BOM 开头（修复指引：去掉 BOM——BOM 会让 json/yaml 首键解析失败，也让摘要随编辑器变化）",
+    "[FAIL] b_crlf.md 含 CRLF 行尾（修复指引：仓库 EOL 纪律 = LF（.gitattributes `* text=auto eol=lf`）；本地去 CR 后存回，勿改内容）",
+    "[FAIL] d_dup.json JSON 重复键 'a'（修复指引：RFC 8259 §4 要求名唯一——多数解析器后值覆盖前值、静默丢数据；删掉其中一条）",
+    "[FAIL] e_key.json JSON 键 '好\\xa0键' 违规：含隐形/同形字符 不换行空格(NBSP)（U+00A0）（修复指引：键须 NFC + 字符集内；同形/隐形字符会让机器侧当成另一个键）",
+    "[FAIL] f_non_nfc.json JSON 键 'é' 违规：非 NFC 规范化形态（UAX #15：同形异码会让机器侧不等）（修复指引：键须 NFC + 字符集内；同形/隐形字符会让机器侧当成另一个键）",
+    "[FAIL] community/示例包/protocol.yaml 的版本值 '1.0' 违规：缺补丁号（SemVer 要求 MAJOR.MINOR.PATCH 三段）（修复指引：按 SemVer 2.0.0 改写，破坏性变更须 bump 主版本并留迁移记录）"
+   ],
+   "files_b64": {
+    ".gitattributes": "KiB0ZXh0PWF1dG8gZW9sPWNybGYK",
+    "a_bom.md": "77u/5q2j5paHCg==",
+    "b_crlf.md": "6KGM5LiADQrooYzkuowNCg==",
+    "d_dup.json": "eyJhIjoxLCJhIjoyLCJrIjozfQo=",
+    "e_key.json": "eyLlpb3CoOmUriI6MX0K",
+    "f_non_nfc.json": "eyJlzIEiOjF9Cg==",
+    "g_ok.json": "eyJnb29kX2tleSI6MX0K",
+    "h_binary.bin": "AAECYmluYXJ5LWlzaAo=",
+    "_cov_tmp.json": "eyJleGNsdWRlZOOAgGtleSI6MX0K",
+    ".git/inside.md": "5o6S6Zmk55uu5b2V6YeM55qE5Lu25LiN6K+l6KKr5omrCg==",
+    "community/示例包/protocol.yaml": "aWQ6IOekuuS+i+WMhQp2ZXJzaW9uOiAxLjAK",
+    "community/示例包/modules/M01.md": "IyDmqKHlnZcgTTAxIMK3IOekuuS+iwo="
+   }
+  },
+  "synthetic_bad_utf8": {
+   "python_exit": 1,
+   "digest32": "830beb0befc9d3916cbccd42da973bcf",
+   "fails": 1,
+   "summary": "文本 2 件 / JSON 0 件 / 键 0 个 / 版本 0 个 / BOM 0 / CRLF 0",
+   "log": [
+    "文本 2 件 / JSON 0 件 / 键 0 个 / 版本 0 个 / BOM 0 / CRLF 0",
+    "[FAIL] c_bad.txt 不是合法 UTF-8：'utf-8' codec can't decode byte 0xff in position 0: invalid start byte（修复指引：RFC 3629 只许 UTF-8——重存为 UTF-8 无 BOM）"
+   ],
+   "irreducible_tail": true,
+   "prefix": "c_bad.txt 不是合法 UTF-8：",
+   "files_b64": {
+    ".gitattributes": "KiB0ZXh0PWF1dG8gZW9sPWxmCg==",
+    "c_bad.txt": "//5BQgo="
+   }
+  }
+ }
+}

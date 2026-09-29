@@ -105,9 +105,14 @@
       "nf:sha256": "9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674"
     },
     {
+      "@id": "nf:file/decisions/ADR-0005-新增NET引擎线.md",
+      "@type": "prov:Entity",
+      "nf:sha256": "e9c7a1627e7e07b80b3523ae4d5c90e4834d8be761ef3e47029787e9398fb762"
+    },
+    {
       "@id": "nf:file/decisions/INDEX.md",
       "@type": "prov:Entity",
-      "nf:sha256": "5f17635586265f67916cd497dc41e13c590659774ca3aff03aca3909b174a1b6"
+      "nf:sha256": "e2bd0a3e0da7d435da858994e87904358fe024b2463f1ea352f2e178ad67df0a"
     },
     {
       "@id": "nf:file/desktop/src/core/registry.json",
@@ -162,7 +167,7 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "c5d98ea11a0438dceddcede64c12511f1e191edc2fb7c4acf4393d027dfea4f7"
+      "nf:sha256": "4ef294d99d7d94f1b3f19c2660daf7145418b381f3be98d204f3a9fb4c58756a"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",
@@ -338,6 +343,6 @@
   "x-nf-counts": {
     "activities": 3,
     "agents": 3,
-    "entities": 56
+    "entities": 57
   }
 }

@@ -181,6 +181,68 @@ class NestedMemoSharingTest(unittest.TestCase):
                                  "新作用域必须看到新文件")
 
 
+class FaceReuseBudgetTest(unittest.TestCase):
+    """一次 `nf score` 的**面指纹重算次数**——**确定性判据**（本仓纪律：能数就别计时）。
+
+    依据（实测 2026-09-29，连测两轮逐位一致）：确知改 `docs/` ⇒ **1** 次；确知改产物件 ⇒ **2** 次；
+    确知改 `04_模块库` ⇒ **4** 次；**说不清 ⇒ 6 次**（fail-closed：一律全算）。
+
+    为什么值得立成判据：次数是**确定量**（CI 上墙钟会抖，次数不会），它能把「某个面又开始全量重算」
+    这类回归当场抓住——例如把 `face_fingerprint` 换回 `content_fingerprint`、或新增扫描器却忘了申报面。
+    改这些数字必须给依据。
+    """
+
+    KNOWN_CASES = (("改文档", ("docs/44_m2_ai通用数据规范.md",), 1),
+                   ("改包产物件", ("community/ai能力资源域包/outputs/index.json",), 2),
+                   ("改 04_模块库", ("04_模块库/通用类/m00_数据结构.md",), 4))
+    UNKNOWN_FULL_COUNT = 6
+
+    def test_fingerprint_recompute_budget(self):
+        import importlib
+        from core import daemon as dm
+        rs = importlib.import_module("core.regression_score")
+        qds = importlib.import_module("core.quality_depth_scan")
+
+        def count(known, paths):
+            cs.clear_changes()
+            if known:
+                cs.note_changes(paths)
+            dm.reset_process_caches()
+            calls = {"n": 0}
+            orig = cs.content_fingerprint
+
+            def traced(root, patterns):
+                calls["n"] += 1
+                return orig(root, patterns)
+
+            cs.content_fingerprint = traced          # type: ignore[assignment]
+            try:
+                rs.evaluate(ROOT)
+            finally:
+                cs.content_fingerprint = orig         # type: ignore[assignment]
+            return calls["n"]
+
+        cs.install_resident(ROOT)
+        try:
+            rs.evaluate(ROOT)                        # 预热：把各面指纹填进缓存
+            with cs.read_memo():
+                cs.content_fingerprint(ROOT, qds.QD_INPUTS)
+            rs.evaluate(ROOT)
+            for label, paths, limit in self.KNOWN_CASES:
+                n = count(True, paths)
+                self.assertLessEqual(n, limit,
+                                     "%s 时重算了 %d 个面指纹（上限 %d）——复用是不是失效了？"
+                                     % (label, n, limit))
+            n_unknown = count(False, ())
+            self.assertGreaterEqual(n_unknown, max(c[2] for c in self.KNOWN_CASES),
+                                    "说不清时必须按「全都可能变了」处理（fail-closed）")
+            self.assertEqual(self.UNKNOWN_FULL_COUNT, n_unknown,
+                             "说不清时的全算是 %d 个面；这个数字变了要给依据"
+                             % self.UNKNOWN_FULL_COUNT)
+        finally:
+            cs.clear_changes()
+
+
 class FaceFingerprintTest(unittest.TestCase):
     """`face_fingerprint`：值必须与 `content_fingerprint` **逐位相同**，且只在「确知没变」时复用。
 

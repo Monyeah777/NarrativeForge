@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "tool": "nf assemble",
+      "phase": "plan",
+      "requirement": "校园情感，毕业遗憾线",
+      "status": "preset",
+      "matched": true,
+      "package": "西幻生存领域包",
+      "pipeline": "P03",
+      "allowed_modules": 44,
+      "ok": true,
+      "issues": [],
+      "stats": {"segments": 8}
+    },
+    {
+      "tool": "nf assemble",
+      "phase": "check",
+      "requirement": "校园情感，毕业遗憾线",
+      "matched": false,
+      "ok": false,
+      "issues": ["组合包引用缺失：P03"],
+      "stats": {"segments": 0}
+    },
+    {"tool": "nf"},
+    {"tool": "nf pipeline dryrun", "phase": "run", "ok": 0, "matched": 1}
+  ]
+}

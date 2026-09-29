@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <!-- 见 src/Nf.Engine/Nf.Engine.csproj 的说明：ICU 归一化须可用（UAX #15 NFC 判据），
+         确定性由 CulturePin（显式 invariant culture）兜。 -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyName>nf-dotnet</AssemblyName>
+    <RootNamespace>Nf.Cli</RootNamespace>
+    <Version>0.1.0</Version>
+    <!-- 分发面：可作为 .NET 全局工具安装（dotnet tool install）。
+         PackAsTool 产出的包是框架依赖（目标机需 .NET 8 运行时）；
+         若要零依赖分发，用 `dotnet publish` 的自包含多文件形态（见 README「交付形态」）。 -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>nf-dotnet</ToolCommandName>
+    <PackageId>NarrativeForge.Engine.Cli</PackageId>
+    <Authors>NarrativeForge</Authors>
+    <Description>NF .NET 工业引擎 CLI（只读判据面：回执/透明链/组合证书/断言表/决策门禁/馆藏门/建模三件 + 性能基线）</Description>
+    <PackageTags>narrativeforge;verification;read-only</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Nf.Engine/Nf.Engine.csproj" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" Link="README.md" />
+  </ItemGroup>
+</Project>

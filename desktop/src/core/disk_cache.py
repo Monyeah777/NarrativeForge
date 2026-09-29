@@ -26,7 +26,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Dict, Optional, Tuple
 
 ENV_OFF = "NF_NO_DISK_CACHE"
 KEEP = 16

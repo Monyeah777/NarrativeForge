@@ -1,0 +1,502 @@
+{
+ "schema": "nf-regression-score-golden/1",
+ "generated": "2026-09-27",
+ "source": "真源模块原文：regression_score.evaluate/compare · conformance_scan.scan · quality_depth_scan.scan · doc_hygiene.check_markers",
+ "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h16",
+ "digest_rule": "sha256(\"\\n\".join(渲染行))[:32]  ← 与引擎侧同式",
+ "boundary": [
+  "purity_clean"
+ ],
+ "compare_pairs": [
+  {
+   "case": "no_regression",
+   "current": {
+    "score": 100.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "baseline": {
+    "score": 100.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   }
+  },
+  {
+   "case": "signal_drop",
+   "current": {
+    "score": 96.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 0.8
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "baseline": {
+    "score": 100.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   }
+  },
+  {
+   "case": "overall_drop_only",
+   "current": {
+    "score": 90.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "baseline": {
+    "score": 100.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   }
+  },
+  {
+   "case": "within_tolerance",
+   "current": {
+    "score": 95.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "baseline": {
+    "score": 100.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "tolerance": 5.0
+  },
+  {
+   "case": "exempted",
+   "current": {
+    "score": 98.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 0.8
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "baseline": {
+    "score": 100.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "exceptions": [
+    {
+     "signal": "schema_clean",
+     "reason": "已批准的单信号回归（合成例）"
+    }
+   ]
+  },
+  {
+   "case": "no_baseline",
+   "current": {
+    "score": 80.0,
+    "signals": [
+     {
+      "name": "schema_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "conformance_clean",
+      "weight": 0.2,
+      "value": 1.0
+     },
+     {
+      "name": "doc_hygiene",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "depth_clean",
+      "weight": 0.15,
+      "value": 1.0
+     },
+     {
+      "name": "asset_density",
+      "weight": 0.15,
+      "value": 1.0
+     }
+    ]
+   },
+   "baseline": {
+    "score": 0.0,
+    "signals": []
+   }
+  }
+ ],
+ "compare_pairs_b64": "WwogewogICJjYXNlIjogIm5vX3JlZ3Jlc3Npb24iLAogICJjdXJyZW50IjogewogICAic2NvcmUiOiAxMDAuMCwKICAgInNpZ25hbHMiOiBbCiAgICB7CiAgICAgIm5hbWUiOiAic2NoZW1hX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJjb25mb3JtYW5jZV9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMiwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiZG9jX2h5Z2llbmUiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkZXB0aF9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImFzc2V0X2RlbnNpdHkiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfQogICBdCiAgfSwKICAiYmFzZWxpbmUiOiB7CiAgICJzY29yZSI6IDEwMC4wLAogICAic2lnbmFscyI6IFsKICAgIHsKICAgICAibmFtZSI6ICJzY2hlbWFfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjIsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImNvbmZvcm1hbmNlX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkb2NfaHlnaWVuZSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImRlcHRoX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiYXNzZXRfZGVuc2l0eSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9CiAgIF0KICB9CiB9LAogewogICJjYXNlIjogInNpZ25hbF9kcm9wIiwKICAiY3VycmVudCI6IHsKICAgInNjb3JlIjogOTYuMCwKICAgInNpZ25hbHMiOiBbCiAgICB7CiAgICAgIm5hbWUiOiAic2NoZW1hX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDAuOAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJjb25mb3JtYW5jZV9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMiwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiZG9jX2h5Z2llbmUiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkZXB0aF9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImFzc2V0X2RlbnNpdHkiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfQogICBdCiAgfSwKICAiYmFzZWxpbmUiOiB7CiAgICJzY29yZSI6IDEwMC4wLAogICAic2lnbmFscyI6IFsKICAgIHsKICAgICAibmFtZSI6ICJzY2hlbWFfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjIsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImNvbmZvcm1hbmNlX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkb2NfaHlnaWVuZSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImRlcHRoX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiYXNzZXRfZGVuc2l0eSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9CiAgIF0KICB9CiB9LAogewogICJjYXNlIjogIm92ZXJhbGxfZHJvcF9vbmx5IiwKICAiY3VycmVudCI6IHsKICAgInNjb3JlIjogOTAuMCwKICAgInNpZ25hbHMiOiBbCiAgICB7CiAgICAgIm5hbWUiOiAic2NoZW1hX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJjb25mb3JtYW5jZV9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMiwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiZG9jX2h5Z2llbmUiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkZXB0aF9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImFzc2V0X2RlbnNpdHkiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfQogICBdCiAgfSwKICAiYmFzZWxpbmUiOiB7CiAgICJzY29yZSI6IDEwMC4wLAogICAic2lnbmFscyI6IFsKICAgIHsKICAgICAibmFtZSI6ICJzY2hlbWFfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjIsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImNvbmZvcm1hbmNlX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkb2NfaHlnaWVuZSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImRlcHRoX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiYXNzZXRfZGVuc2l0eSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9CiAgIF0KICB9CiB9LAogewogICJjYXNlIjogIndpdGhpbl90b2xlcmFuY2UiLAogICJjdXJyZW50IjogewogICAic2NvcmUiOiA5NS4wLAogICAic2lnbmFscyI6IFsKICAgIHsKICAgICAibmFtZSI6ICJzY2hlbWFfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjIsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImNvbmZvcm1hbmNlX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkb2NfaHlnaWVuZSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImRlcHRoX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiYXNzZXRfZGVuc2l0eSIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9CiAgIF0KICB9LAogICJiYXNlbGluZSI6IHsKICAgInNjb3JlIjogMTAwLjAsCiAgICJzaWduYWxzIjogWwogICAgewogICAgICJuYW1lIjogInNjaGVtYV9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMiwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiY29uZm9ybWFuY2VfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjIsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImRvY19oeWdpZW5lIiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiZGVwdGhfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJhc3NldF9kZW5zaXR5IiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0KICAgXQogIH0sCiAgInRvbGVyYW5jZSI6IDUuMAogfSwKIHsKICAiY2FzZSI6ICJleGVtcHRlZCIsCiAgImN1cnJlbnQiOiB7CiAgICJzY29yZSI6IDk4LjAsCiAgICJzaWduYWxzIjogWwogICAgewogICAgICJuYW1lIjogInNjaGVtYV9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMiwKICAgICAidmFsdWUiOiAwLjgKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiY29uZm9ybWFuY2VfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjIsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImRvY19oeWdpZW5lIiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiZGVwdGhfY2xlYW4iLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJhc3NldF9kZW5zaXR5IiwKICAgICAid2VpZ2h0IjogMC4xNSwKICAgICAidmFsdWUiOiAxLjAKICAgIH0KICAgXQogIH0sCiAgImJhc2VsaW5lIjogewogICAic2NvcmUiOiAxMDAuMCwKICAgInNpZ25hbHMiOiBbCiAgICB7CiAgICAgIm5hbWUiOiAic2NoZW1hX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJjb25mb3JtYW5jZV9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMiwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiZG9jX2h5Z2llbmUiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkZXB0aF9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImFzc2V0X2RlbnNpdHkiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfQogICBdCiAgfSwKICAiZXhjZXB0aW9ucyI6IFsKICAgewogICAgInNpZ25hbCI6ICJzY2hlbWFfY2xlYW4iLAogICAgInJlYXNvbiI6ICLlt7Lmibnlh4bnmoTljZXkv6Hlj7flm57lvZLvvIjlkIjmiJDkvovvvIkiCiAgIH0KICBdCiB9LAogewogICJjYXNlIjogIm5vX2Jhc2VsaW5lIiwKICAiY3VycmVudCI6IHsKICAgInNjb3JlIjogODAuMCwKICAgInNpZ25hbHMiOiBbCiAgICB7CiAgICAgIm5hbWUiOiAic2NoZW1hX2NsZWFuIiwKICAgICAid2VpZ2h0IjogMC4yLAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJjb25mb3JtYW5jZV9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMiwKICAgICAidmFsdWUiOiAxLjAKICAgIH0sCiAgICB7CiAgICAgIm5hbWUiOiAiZG9jX2h5Z2llbmUiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfSwKICAgIHsKICAgICAibmFtZSI6ICJkZXB0aF9jbGVhbiIsCiAgICAgIndlaWdodCI6IDAuMTUsCiAgICAgInZhbHVlIjogMS4wCiAgICB9LAogICAgewogICAgICJuYW1lIjogImFzc2V0X2RlbnNpdHkiLAogICAgICJ3ZWlnaHQiOiAwLjE1LAogICAgICJ2YWx1ZSI6IDEuMAogICAgfQogICBdCiAgfSwKICAiYmFzZWxpbmUiOiB7CiAgICJzY29yZSI6IDAuMCwKICAgInNpZ25hbHMiOiBbXQogIH0KIH0KXQ==",
+ "cases": {
+  "conformance_real": {
+   "log": [
+    "Conformance 统计：机读块 248 / 协议包 111 / 导出面 4"
+   ],
+   "digest32": "9519e11e210362720ff3ef9523ac39ec",
+   "fails": 0
+  },
+  "depth_real": {
+   "log": [
+    "质量纵深 子扫描：14/14 零缺口"
+   ],
+   "digest32": "6258b79e9313ea3fac4cceb8f6eccfb6",
+   "fails": 0
+  },
+  "markers_real": {
+   "log": [
+    "文档卫生：零缺口"
+   ],
+   "digest32": "405738e515e30e94ce29d5ccf59b01e2",
+   "fails": 0
+  },
+  "score_real": {
+   "log": [
+    "schema_clean=1.0",
+    "conformance_clean=1.0",
+    "doc_hygiene=1.0",
+    "depth_clean=1.0",
+    "asset_density=1.0",
+    "score=100.0",
+    "boundary=purity_clean",
+    "issues=零缺口"
+   ],
+   "digest32": "9ffe6f5ce4088211a35880403abeea8e",
+   "fails": 0
+  },
+  "compare_cases": {
+   "log": [
+    "no_regression: ok=True delta=0.0 verdict=通过（无回归）",
+    "signal_drop: ok=False delta=-4.0 verdict=回归（信号回落）：schema_clean",
+    "overall_drop_only: ok=False delta=-10.0 verdict=回归（整体分下降 10.00 > 容差 0.00）",
+    "within_tolerance: ok=True delta=-5.0 verdict=通过（无回归）",
+    "exempted: ok=True delta=-2.0 verdict=通过（含 1 项审计例外）",
+    "no_baseline: ok=True delta=80.0 verdict=无基线（只报当前分值，未做回归判定）"
+   ],
+   "digest32": "e27d94b51aa676d41137b0657afd011d",
+   "fails": 0
+  },
+  "conformance_negative": {
+   "log": [
+    "[FAIL] 04_模块库/通用类/T02.md: conformance 虚标 L3 > 可证 L1（'M99' 不在装配在册证据）",
+    "[FAIL] 04_模块库/通用类/T03.md: 模块 id 与 04_模块库/通用类/T01.md 重复（mc.id=M01）——编号是全局寻址面，运行时索引会静默择一，须改号（修复指引：按 01 §1.6.11 换类内段号或 M91-M99 段号）",
+    "[FAIL] 04_模块库/通用类/T03.md: machine_contract 缺/非法 conformance 声明 'L0'",
+    "[FAIL] community/测试包/protocol.yaml: conformance 虚标 L2 > 可证 L1（包不在 registry protocols[]）",
+    "[FAIL] 导出面 x: 证据文件缺失 missing.txt",
+    "[FAIL] 导出面 x: 证据门禁 check99 不在 verify.sh",
+    "[FAIL] 导出面 y: conformance 应为 L3（导出门禁锁定面）",
+    "Conformance 统计：机读块 3 / 协议包 2 / 导出面 2"
+   ],
+   "digest32": "f5f0809f803efdf76e4a3280df867f96",
+   "fails": 7,
+   "files_b64": {
+    "desktop/src/core/registry.json": "ewogIm1vZHVsZXMiOiBbCiAgewogICAiaWQiOiAiTTAxIgogIH0KIF0sCiAicHJvdG9jb2xzIjogWwogIHsKICAgImlkIjogIlAwMSIsCiAgICJtb2R1bGVfaWRzIjogWwogICAgIk0wMiIKICAgXQogIH0KIF0KfQ==",
+    "verify.sh": "IyDniYjmnKwgOiB2MS4wCmNoZWNrMTgKY2hlY2syMgo=",
+    "a.txt": "eAo=",
+    "protocol/export_conformance.json": "ewogImNvbmZvcm1hbmNlX3ZlcnNpb24iOiAiMSIsCiAiaXRlbXMiOiBbCiAgewogICAiaWQiOiAieCIsCiAgICJjb25mb3JtYW5jZSI6ICJMMyIsCiAgICJldmlkZW5jZSI6IFsKICAgICJhLnR4dCIsCiAgICAibWlzc2luZy50eHQiCiAgIF0sCiAgICJnYXRlcyI6IFsKICAgICJjaGVjazE4IiwKICAgICJjaGVjazk5IgogICBdCiAgfSwKICB7CiAgICJpZCI6ICJ5IiwKICAgImNvbmZvcm1hbmNlIjogIkwyIiwKICAgImV2aWRlbmNlIjogW10sCiAgICJnYXRlcyI6IFtdCiAgfQogXQp9",
+    "04_模块库/通用类/T01.md": "IyBUMDEKYGBgeWFtbAptYWNoaW5lX2NvbnRyYWN0OgogIGlkOiBNMDEKICBjb25mb3JtYW5jZTogTDIKYGBgCg==",
+    "04_模块库/通用类/T02.md": "IyBUMDIKYGBgeWFtbAptYWNoaW5lX2NvbnRyYWN0OgogIGlkOiBNOTkKICBjb25mb3JtYW5jZTogTDMKYGBgCg==",
+    "04_模块库/通用类/T03.md": "IyBUMDMKYGBgeWFtbAptYWNoaW5lX2NvbnRyYWN0OgogIGlkOiBNMDEKICBjb25mb3JtYW5jZTogTDAKYGBgCg==",
+    "community/入库包/protocol.yaml": "cGFja2FnZToKICBjb25mb3JtYW5jZTogIkwxIgogIGlkOiBQMDEK",
+    "community/测试包/protocol.yaml": "cGFja2FnZToKICBjb25mb3JtYW5jZTogIkwyIgogIGlkOiDmtYvor5XljIUK"
+   }
+  },
+  "markers_negative": {
+   "log": [
+    "[FAIL] 01_核心协议.md 缺「最后更新」位（头部 2 行内）",
+    "[FAIL] 02_联动注册表.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] 06_Agent执行协议.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] 07_官方核心出厂与社区预设导航.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/mcp.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/ai-menu-fieldtest-v1.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/迁移指南-基于nf-sig-diff.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/需求收敛模板.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/42_M1_协议可执行性自测规范.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/42_M1_P03_演练集.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/42_M2_回合状态头_v1.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/42_M3_纯度体检.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] agent_组装指令包_v0.2.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/44_M1_执行演练扩展.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/44_M2_AI通道内容规范.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/45_执行遥测规范.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/45_M2_回合级drill.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/45_M3_techdoc载荷提案.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] DEEP_DIVE.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/library.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/receipts.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/conformance.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/io_types.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/pipelinerun.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/machine_contract.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/approval.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/module_signature.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/lsp.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/driver.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/patterns.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/bench.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/endpoint.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/rfc.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/knowledge.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/assertions.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/modeling.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/interop.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/output-forms.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/domain-packs.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/combos.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/text-hygiene.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/decision-layer.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/terminal.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/layers.md 缺失（须入 REQUIRED_DOCS 清单）",
+    "[FAIL] docs/ai-menu.md 缺「⛔ 操作指令」标识头（指令类文档须全覆盖）",
+    "文档卫生：FAIL 45"
+   ],
+   "digest32": "3c10e35d1319e23adfebd296ed4054e4",
+   "fails": 45,
+   "files_b64": {
+    "01_核心协议.md": "IyDmoLjlv4PljY/orq4K5q2j5paHCg==",
+    "docs/ai-menu.md": "PiDmnIDlkI7mm7TmlrDvvJoyMDI2LTAxLTAxCuato+aWhwo="
+   }
+  }
+ }
+}

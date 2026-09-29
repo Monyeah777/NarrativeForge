@@ -1,0 +1,349 @@
+{
+  "declared": {
+    "expected_checks": 39,
+    "expected_pass": 68,
+    "verify_version": "v2.29"
+  },
+  "items": [
+    {
+      "id": "purity",
+      "issues": 0,
+      "name": "架构纯度体检（R1-R7 + 分层阶梯 L1-L4）",
+      "sample": [],
+      "source": "purity_scan.scan",
+      "stats": {
+        "docs": 4,
+        "import_residue": [],
+        "imports": 14,
+        "layers": {
+          "asset_levels": 5,
+          "crosscut": 6,
+          "derived": 6,
+          "rules": 10,
+          "surfaces": 4,
+          "tiers": 4
+        },
+        "raises": 55,
+        "sinks": 12
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "schema",
+      "issues": 0,
+      "name": "协议层 IDL schema 门禁",
+      "sample": [],
+      "source": "schema_lint.scan",
+      "stats": {
+        "asset_entries": 2,
+        "contract_covered": 248,
+        "module_docs": 248,
+        "pipelines": 114,
+        "protocols": 111,
+        "schema_files": 5
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "conformance",
+      "issues": 0,
+      "name": "社区领域包 conformance 分级",
+      "sample": [],
+      "source": "conformance_scan.scan",
+      "stats": {
+        "export_items": 4,
+        "modules_mc": 248,
+        "packages": 111
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "contract",
+      "issues": 0,
+      "name": "机读契约面（官方核心 13 件 id/标题一致）",
+      "sample": [],
+      "source": "machine_contract.scan",
+      "stats": {
+        "checked": 13,
+        "l0": 0,
+        "l0_list": []
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "knowledge",
+      "issues": 0,
+      "name": "双源知识层（权威分层/顺序/时效/巡检）",
+      "sample": [],
+      "source": "knowledge.scan",
+      "stats": {
+        "contract": 3,
+        "order": [
+          "nf-protocol",
+          "nf-library",
+          "nf-patterns",
+          "tool-face-candidates",
+          "ext-validation-assets",
+          "ext-fixtures"
+        ],
+        "reference": 3,
+        "sources": 6,
+        "transforms": 0
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "rating",
+      "issues": 0,
+      "name": "馆藏内容分级声明",
+      "sample": [],
+      "source": "rating_gate.scan",
+      "stats": {
+        "counts": {
+          "general": 2,
+          "teen": 1
+        },
+        "entries": 3,
+        "issues": 0,
+        "vocabulary": [
+          "general",
+          "teen",
+          "mature",
+          "unrated"
+        ]
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "license",
+      "issues": 0,
+      "name": "许可证门",
+      "sample": [],
+      "source": "license_gate.scan",
+      "stats": {
+        "declared": 2,
+        "entries": 3,
+        "mismatched": [],
+        "no_inline": [],
+        "undeclared": [
+          "NF-WORLDCAMPUS-Monyeah777-1"
+        ],
+        "unknown": [],
+        "warnings": [
+          "许可未声明（待投稿人确认）：NF-WORLDCAMPUS-Monyeah777-1"
+        ]
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "intake",
+      "issues": 0,
+      "name": "投稿闸门三方一致",
+      "sample": [],
+      "source": "intake.scan",
+      "stats": {
+        "channels": 2,
+        "modes": [
+          "author_only",
+          "open"
+        ]
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "payload",
+      "issues": 0,
+      "name": "事件载荷注册表",
+      "sample": [],
+      "source": "payload_registry.scan",
+      "stats": {
+        "declared": 442,
+        "pending": 1,
+        "registered": 443,
+        "used": 443
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "doc_markers",
+      "issues": 0,
+      "name": "文档 marker 卫生",
+      "sample": [],
+      "source": "doc_hygiene.check_markers",
+      "stats": {},
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "assets_ledger",
+      "issues": 0,
+      "name": "资产 ledger 投影一致",
+      "sample": [],
+      "source": "asset_ledger_projection.verify",
+      "stats": {
+        "entries": 924
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "instruction",
+      "issues": 0,
+      "name": "指令档步骤审计",
+      "sample": [],
+      "source": "instruction_step_audit.scan",
+      "stats": {
+        "docs": 5,
+        "steps": 9
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "baseline",
+      "issues": 0,
+      "name": "基线自描述一致（verify 版本 / check 数）",
+      "sample": [],
+      "source": "quality_baseline.scan",
+      "stats": {
+        "checks": 39,
+        "verify_version": "v2.29"
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "library",
+      "issues": 0,
+      "name": "图书馆 frontmatter + 投影一致",
+      "sample": [],
+      "source": "library.verify",
+      "stats": {
+        "active": 3,
+        "entries": 3,
+        "ids": [
+          "NF-1",
+          "NF-TECHDOC-Monyeah777-1",
+          "NF-WORLDCAMPUS-Monyeah777-1"
+        ],
+        "warns": [
+          "NF-1 有 ssh-sig 锚但未提供 allowed_signers → 本轮无法校验（修复指引：--ssh-allowed-signers <文件>）"
+        ]
+      },
+      "status": "warn",
+      "warns": 1
+    },
+    {
+      "id": "library_projection",
+      "issues": 0,
+      "name": "图书馆 INDEX/ALIAS 实时一致",
+      "sample": [],
+      "source": "library.check_projection",
+      "stats": {},
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "receipts",
+      "issues": 0,
+      "name": "馆藏回执折叠到根",
+      "sample": [],
+      "source": "receipts.verify_wrapped",
+      "stats": {
+        "entries": 3,
+        "root": "be9562d619c464ebfd23696498187cdc3c9f5eeb17d16dc8babce662592bd545"
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "conformance_report",
+      "issues": 0,
+      "name": "一致性报告（已提交 == 实时重算）",
+      "sample": [],
+      "source": "conformance_report.verify_committed",
+      "stats": {
+        "contracts": 27,
+        "passed": 27,
+        "root": "b2c5f9de3590aca74a86291090068f90ef02327f4c2c0bfb1f3ce22b28633d19",
+        "verdict": "conformant"
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "audit",
+      "issues": 0,
+      "name": "审计件被审对象 digest",
+      "sample": [],
+      "source": "audit.scan",
+      "stats": {
+        "audits": 36,
+        "legacy": 11,
+        "subjects_ok": 205,
+        "with_header": 25
+      },
+      "status": "warn",
+      "warns": 1
+    },
+    {
+      "id": "self_stats",
+      "issues": 0,
+      "name": "自述数字 == 实算（README/llms 生成区）",
+      "sample": [],
+      "source": "repo_stats.check_strict",
+      "stats": {
+        "baseline_checks": 39,
+        "baseline_pass": 68,
+        "concept_graphs": 101,
+        "core_modules": 13,
+        "core_pipelines": [
+          "P00",
+          "P01",
+          "P90"
+        ],
+        "domain_packs": 100,
+        "library_items": 3,
+        "pack_assets": 363,
+        "pack_dirs": 111,
+        "registered_packs": 111,
+        "schema": "nf-repo-stats/1",
+        "standard_bindings": 1200,
+        "standards_bodies": 194,
+        "standards_by_layer": {
+          "data": 148,
+          "eng": 38,
+          "form": 29,
+          "gov": 71,
+          "iface": 84
+        },
+        "standards_edges": 206,
+        "standards_reachable": 332,
+        "standards_total": 370,
+        "standards_unreachable": 38,
+        "subdivisions_total": 1200,
+        "verify_checks": 39,
+        "verify_version": "2.29"
+      },
+      "status": "pass",
+      "warns": 0
+    }
+  ],
+  "root_digest": "5e912637eed9d1983de18055da695dd5899ff65ea49b7f606e2159c7e0f8f80d",
+  "schema": "nf-verify-report/1",
+  "summary": {
+    "error": 0,
+    "fail": 0,
+    "pass": 17,
+    "warn": 2
+  }
+}

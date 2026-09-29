@@ -1,0 +1,41 @@
+{
+  "boundary_faces": 1,
+  "conformance_ported": [
+    "assertions",
+    "audit",
+    "canonical-digest-determinism",
+    "cognition",
+    "decisions",
+    "declaration",
+    "doc-kinds",
+    "endpoint-contract",
+    "event-backing",
+    "handover",
+    "io-types",
+    "knowledge-sources",
+    "library-projection",
+    "library-verify",
+    "mcp-package",
+    "modeling",
+    "module-signature",
+    "patterns",
+    "pipeline-dryrun",
+    "postmortem",
+    "public-surface",
+    "rfc-heads",
+    "schema-clean",
+    "st-quality",
+    "state-front",
+    "type-backlog"
+  ],
+  "conformance_total": 27,
+  "conformance_unported": [
+    "purity-clean"
+  ],
+  "date": null,
+  "face_parity_faces": 183,
+  "probe_scripts_on_disk": 43,
+  "probes": 43,
+  "schema": "nf-net-no-regression/1",
+  "selftest_cases": 227
+}

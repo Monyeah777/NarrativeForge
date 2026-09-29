@@ -1,0 +1,44 @@
+{
+  "schema": "nf-zero-dep-sample/1",
+  "note": "外部侧复算样例的**口径源**。样例只读 NF 契约件（不改、不依赖 NF 代码），用 .NET 引擎复算证书并自验摘要。",
+  "corpus": {
+    "truth_source_commit": "b1f9a28",
+    "snapshot_name": "nf-snap-h8",
+    "corpus_fingerprint": "17fb5a632888dd75",
+    "obtain": "git archive <commit> --format=tar -o snap.tar，再用 Python tarfile 解包（勿走管道：CJK 文件名会被打坏）",
+    "required_files": [
+      "protocol/combo_certificates.json",
+      "protocol/*.json",
+      "community/*/protocol.yaml",
+      "community/*/modules/*.md",
+      "04_模块库/*.md"
+    ]
+  },
+  "engine": {
+    "delivery_form": "f111",
+    "criterion_lib_sha256_12": "d194b358d25f83e4",
+    "win": "dist/nf-dotnet-win-x64-f111-2026-09-28/nf-dotnet.exe",
+    "linux": "dist/nf-dotnet-linux-x64-f111-2026-09-28/nf-dotnet",
+    "external_deps": "零（自包含产物：不需要 .NET 运行时、不需要 Python）"
+  },
+  "scenarios": [
+    {
+      "id": "small",
+      "label": "先例：AI系统×量化金融",
+      "certificate_index": 1,
+      "expected_digest": "734852bc6e33b28d67bf24b5e965af5b",
+      "expected_module_count": 4,
+      "expected_legal": true,
+      "why": "两包同装、4 模块、2 层栈——最小可读的跨域组合，适合人眼逐步核对"
+    },
+    {
+      "id": "limit",
+      "label": "极限：全部 111 包",
+      "certificate_index": 16,
+      "expected_digest": "77b55bc7b7008deb348163e0d22bf9fc",
+      "expected_module_count": 235,
+      "expected_legal": true,
+      "why": "理论广度上界：111 包 / 235 模块同装——证明样例不是小玩具"
+    }
+  ]
+}

@@ -1,0 +1,406 @@
+    /// <summary>`probes/_fixtures/_metrics_golden.json` 的内容（金标向量：输入 CSV + 真源导出期望）。机械导出。</summary>
+    public const string GoldenJson = @"[
+ {
+  ""csv"": ""id,prob,gold\nc0,0.05,0\nc1,0.15,0\nc2,0.25,0\nc3,0.35,1\nc4,0.45,0\nc5,0.55,1\nc6,0.65,1\nc7,0.75,1\nc8,0.85,1\nc9,0.95,0\nc10,1.0,1\nc11,0.0,0\nc12,0.5,1\nc13,0.5,0\nc14,0.92,1\nc15,0.08,1\nc16,0.62,0\nc17,0.71,1\nc18,0.33,0\nc19,0.99,1\n"",
+  ""expected"": {
+   ""bins"": 10,
+   ""brier"": 0.197765,
+   ""buckets"": [
+    {
+     ""accuracy"": 0.333333,
+     ""confidence"": 0.043333,
+     ""gap"": 0.29,
+     ""n"": 3,
+     ""range"": ""[0.0,0.1]""
+    },
+    {
+     ""accuracy"": 0.0,
+     ""confidence"": 0.15,
+     ""gap"": 0.15,
+     ""n"": 1,
+     ""range"": ""[0.1,0.2]""
+    },
+    {
+     ""accuracy"": 0.0,
+     ""confidence"": 0.25,
+     ""gap"": 0.25,
+     ""n"": 1,
+     ""range"": ""[0.2,0.3]""
+    },
+    {
+     ""accuracy"": 0.5,
+     ""confidence"": 0.34,
+     ""gap"": 0.16,
+     ""n"": 2,
+     ""range"": ""[0.3,0.4]""
+    },
+    {
+     ""accuracy"": 0.0,
+     ""confidence"": 0.45,
+     ""gap"": 0.45,
+     ""n"": 1,
+     ""range"": ""[0.4,0.5]""
+    },
+    {
+     ""accuracy"": 0.666667,
+     ""confidence"": 0.516667,
+     ""gap"": 0.15,
+     ""n"": 3,
+     ""range"": ""[0.5,0.6]""
+    },
+    {
+     ""accuracy"": 0.5,
+     ""confidence"": 0.635,
+     ""gap"": 0.135,
+     ""n"": 2,
+     ""range"": ""[0.6,0.7]""
+    },
+    {
+     ""accuracy"": 1.0,
+     ""confidence"": 0.73,
+     ""gap"": 0.27,
+     ""n"": 2,
+     ""range"": ""[0.7,0.8]""
+    },
+    {
+     ""accuracy"": 1.0,
+     ""confidence"": 0.85,
+     ""gap"": 0.15,
+     ""n"": 1,
+     ""range"": ""[0.8,0.9]""
+    },
+    {
+     ""accuracy"": 0.75,
+     ""confidence"": 0.965,
+     ""gap"": 0.215,
+     ""n"": 4,
+     ""range"": ""[0.9,1.0]""
+    }
+   ],
+   ""digits"": 6,
+   ""ece"": 0.2155,
+   ""family"": ""calibration"",
+   ""n"": 20,
+   ""nonempty_bins"": 10,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）""
+  },
+  ""family"": ""calibration"",
+  ""name"": ""calibration-bins10"",
+  ""params"": {
+   ""bins"": 10,
+   ""code"": ""G01"",
+   ""domain"": ""AI+合成""
+  }
+ },
+ {
+  ""csv"": ""id,prob,gold\nc0,0.05,0\nc1,0.15,0\nc2,0.25,0\nc3,0.35,1\nc4,0.45,0\nc5,0.55,1\nc6,0.65,1\nc7,0.75,1\nc8,0.85,1\nc9,0.95,0\nc10,1.0,1\nc11,0.0,0\nc12,0.5,1\nc13,0.5,0\nc14,0.92,1\nc15,0.08,1\nc16,0.62,0\nc17,0.71,1\nc18,0.33,0\nc19,0.99,1\n"",
+  ""expected"": {
+   ""bins"": 5,
+   ""brier"": 0.197765,
+   ""buckets"": [
+    {
+     ""accuracy"": 0.25,
+     ""confidence"": 0.07,
+     ""gap"": 0.18,
+     ""n"": 4,
+     ""range"": ""[0.0,0.2]""
+    },
+    {
+     ""accuracy"": 0.333333,
+     ""confidence"": 0.31,
+     ""gap"": 0.023333,
+     ""n"": 3,
+     ""range"": ""[0.2,0.4]""
+    },
+    {
+     ""accuracy"": 0.5,
+     ""confidence"": 0.5,
+     ""gap"": 0.0,
+     ""n"": 4,
+     ""range"": ""[0.4,0.6]""
+    },
+    {
+     ""accuracy"": 0.75,
+     ""confidence"": 0.6825,
+     ""gap"": 0.0675,
+     ""n"": 4,
+     ""range"": ""[0.6,0.8]""
+    },
+    {
+     ""accuracy"": 0.8,
+     ""confidence"": 0.942,
+     ""gap"": 0.142,
+     ""n"": 5,
+     ""range"": ""[0.8,1.0]""
+    }
+   ],
+   ""digits"": 6,
+   ""ece"": 0.0885,
+   ""family"": ""calibration"",
+   ""n"": 20,
+   ""nonempty_bins"": 5,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）""
+  },
+  ""family"": ""calibration"",
+  ""name"": ""calibration-bins5"",
+  ""params"": {
+   ""bins"": 5
+  }
+ },
+ {
+  ""csv"": ""query_id,rank,relevant\nq1,1,0\nq1,2,1\nq1,3,0\nq1,4,0\nq1,5,1\nq1,6,0\nq1,7,0\nq2,1,1\nq2,2,0\nq2,3,0\nq2,4,1\nq2,5,0\nq2,6,0\nq2,7,1\n"",
+  ""expected"": {
+   ""digits"": 6,
+   ""family"": ""retrieval"",
+   ""k"": 3,
+   ""map"": 0.546429,
+   ""mrr"": 0.75,
+   ""n"": 14,
+   ""ndcg_at_k"": 0.428066,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""precision_at_k"": 0.333333,
+   ""queries"": 2,
+   ""recall_at_k"": 0.416667
+  },
+  ""family"": ""retrieval"",
+  ""name"": ""retrieval-k3"",
+  ""params"": {
+   ""k"": 3
+  }
+ },
+ {
+  ""csv"": ""query_id,rank,relevant\nq1,1,0\nq1,2,1\nq1,3,0\nq1,4,0\nq1,5,1\nq1,6,0\nq1,7,0\nq2,1,1\nq2,2,0\nq2,3,0\nq2,4,1\nq2,5,0\nq2,6,0\nq2,7,1\n"",
+  ""expected"": {
+   ""digits"": 6,
+   ""family"": ""retrieval"",
+   ""k"": 5,
+   ""map"": 0.546429,
+   ""mrr"": 0.75,
+   ""n"": 14,
+   ""ndcg_at_k"": 0.647718,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""precision_at_k"": 0.4,
+   ""queries"": 2,
+   ""recall_at_k"": 0.833333
+  },
+  ""family"": ""retrieval"",
+  ""name"": ""retrieval-k5"",
+  ""params"": {
+   ""k"": 5
+  }
+ },
+ {
+  ""csv"": ""task_id,passed\nt1,1\nt1,1\nt1,0\nt1,0\nt1,1\nt1,0\nt1,1\nt1,0\nt2,0\nt2,0\nt2,0\nt2,0\nt2,1\nt2,1\nt2,1\nt2,0\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt4,0\nt4,0\nt4,1\nt4,0\n"",
+  ""expected"": {
+   ""digits"": 6,
+   ""family"": ""exact_judgement"",
+   ""k"": 2,
+   ""n"": 28,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""pass_at_1"": 0.53125,
+   ""pass_at_k"": 0.732143,
+   ""tasks"": 4,
+   ""tasks_skipped_insufficient_samples"": 0,
+   ""tasks_used_for_passk"": 4
+  },
+  ""family"": ""exact_judgement"",
+  ""name"": ""exact-k2"",
+  ""params"": {
+   ""k"": 2
+  }
+ },
+ {
+  ""csv"": ""task_id,passed\nt1,1\nt1,1\nt1,0\nt1,0\nt1,1\nt1,0\nt1,1\nt1,0\nt2,0\nt2,0\nt2,0\nt2,0\nt2,1\nt2,1\nt2,1\nt2,0\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt3,1\nt4,0\nt4,0\nt4,1\nt4,0\n"",
+  ""expected"": {
+   ""digits"": 6,
+   ""family"": ""exact_judgement"",
+   ""k"": 8,
+   ""n"": 28,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""pass_at_1"": 0.53125,
+   ""pass_at_k"": 1.0,
+   ""tasks"": 4,
+   ""tasks_skipped_insufficient_samples"": 1,
+   ""tasks_used_for_passk"": 3
+  },
+  ""family"": ""exact_judgement"",
+  ""name"": ""exact-k8"",
+  ""params"": {
+   ""k"": 8
+  }
+ },
+ {
+  ""csv"": ""task_id,passed\nz0,1\nz1,0\nz2,1\nz3,0\nz4,0\nz5,1\nz6,1\nz7,1\n"",
+  ""expected"": {
+   ""digits"": 6,
+   ""family"": ""exact_judgement"",
+   ""k"": 4,
+   ""n"": 8,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""pass_at_1"": 0.625,
+   ""pass_at_k"": 0.0,
+   ""tasks"": 8,
+   ""tasks_skipped_insufficient_samples"": 8,
+   ""tasks_used_for_passk"": 0
+  },
+  ""family"": ""exact_judgement"",
+  ""name"": ""exact-allpass-tie"",
+  ""params"": {
+   ""k"": 4
+  }
+ },
+ {
+  ""csv"": ""latency_ms,tokens_in,tokens_out\n100,120,40\n107,121,42\n114,122,44\n121,123,46\n128,124,48\n135,125,50\n142,126,52\n149,127,54\n156,128,56\n163,129,58\n170,130,60\n177,131,62\n"",
+  ""expected"": {
+   ""cost_per_1k_calls"": 139.25,
+   ""cost_total"": 1.671,
+   ""digits"": 6,
+   ""family"": ""latency_cost"",
+   ""max_ms"": 177.0,
+   ""mean_ms"": 138.5,
+   ""n"": 12,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""p50_ms"": 135.0,
+   ""p95_ms"": 177.0,
+   ""p99_ms"": 177.0,
+   ""price_per_1k_in"": 0.5,
+   ""price_per_1k_out"": 1.5,
+   ""tokens_in"": 1506,
+   ""tokens_out"": 612
+  },
+  ""family"": ""latency_cost"",
+  ""name"": ""latency-priced"",
+  ""params"": {
+   ""price_per_1k_in"": 0.5,
+   ""price_per_1k_out"": 1.5
+  }
+ },
+ {
+  ""csv"": ""bucket,expected,actual\nb1,0.40,0.35\nb2,0.30,0.28\nb3,0.20,0.22\nb4,0.10,0.15\n"",
+  ""expected"": {
+   ""buckets"": 4,
+   ""detail"": [
+    {
+     ""actual"": 0.350001,
+     ""bucket"": ""b1"",
+     ""expected"": 0.400001,
+     ""term"": 0.006677
+    },
+    {
+     ""actual"": 0.280001,
+     ""bucket"": ""b2"",
+     ""expected"": 0.300001,
+     ""term"": 0.00138
+    },
+    {
+     ""actual"": 0.220001,
+     ""bucket"": ""b3"",
+     ""expected"": 0.200001,
+     ""term"": 0.001906
+    },
+    {
+     ""actual"": 0.150001,
+     ""bucket"": ""b4"",
+     ""expected"": 0.100001,
+     ""term"": 0.020273
+    }
+   ],
+   ""digits"": 6,
+   ""family"": ""drift"",
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""psi"": 0.030236,
+   ""smoothing_epsilon"": 1e-06
+  },
+  ""family"": ""drift"",
+  ""name"": ""drift-basic"",
+  ""params"": {}
+ },
+ {
+  ""csv"": ""id,valid,missing_fields\nr0,1,\nr1,0,a|b\nr2,1,\nr3,0,a;c\nr4,0,b\n"",
+  ""expected"": {
+   ""compliance_rate"": 0.4,
+   ""digits"": 6,
+   ""family"": ""contract_compliance"",
+   ""missing_top"": [
+    {
+     ""count"": 2,
+     ""field"": ""a""
+    },
+    {
+     ""count"": 2,
+     ""field"": ""b""
+    },
+    {
+     ""count"": 1,
+     ""field"": ""c""
+    }
+   ],
+   ""n"": 5,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""violations"": 3
+  },
+  ""family"": ""contract_compliance"",
+  ""name"": ""contract-top5"",
+  ""params"": {}
+ },
+ {
+  ""csv"": ""id,a,b\na1,x,y\na2,x,x\na3,y,y\na4,y,x\na5,x,y\n"",
+  ""expected"": {
+   ""cohen_kappa"": -0.153846,
+   ""confusion"": {
+    ""x"": {
+     ""x"": 1,
+     ""y"": 2
+    },
+    ""y"": {
+     ""x"": 1,
+     ""y"": 1
+    }
+   },
+   ""digits"": 6,
+   ""expected_agreement"": 0.48,
+   ""family"": ""agreement"",
+   ""labels"": 2,
+   ""n"": 5,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""observed_agreement"": 0.4
+  },
+  ""family"": ""agreement"",
+  ""name"": ""agreement-basic"",
+  ""params"": {}
+ },
+ {
+  ""csv"": ""id,judge,human\np1,a,a\np2,b,a\np3,a,b\np4,tie,a\np5,b,b\n"",
+  ""expected"": {
+   ""agreement"": 0.4,
+   ""digits"": 6,
+   ""family"": ""preference"",
+   ""loss"": 2,
+   ""n"": 5,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""tie"": 1,
+   ""win"": 2,
+   ""win_rate_excl_tie"": 0.5
+  },
+  ""family"": ""preference"",
+  ""name"": ""preference-basic"",
+  ""params"": {}
+ },
+ {
+  ""csv"": ""id,reference,output\ng0,the quick brown fox,the quick brown fox\ng1,hello world,hello  world!\ng2,,x\ng3,abc,\n"",
+  ""expected"": {
+   ""char_f1"": 0.485294,
+   ""digits"": 6,
+   ""exact_match"": 0.25,
+   ""family"": ""generation"",
+   ""n"": 4,
+   ""note"": ""样例集上的口径值（非模型能力声明）；口径公式见 docs/domain-packs.md；本报告由 core/domain_metrics.py 确定性复算（T4）"",
+   ""token_set_f1"": 0.375
+  },
+  ""family"": ""generation"",
+  ""name"": ""generation-edge"",
+  ""params"": {}
+ }
+]
+";
+

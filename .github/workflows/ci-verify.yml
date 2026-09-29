@@ -34,3 +34,14 @@ jobs:
           pip install -r .github/requirements-ci.txt  # 版本固定见该文件（F-05）
       - name: 分层门禁（verify.sh v2.27，L0-L2 默认锁）
         run: bash verify.sh
+      - name: 门禁机器可读报告（静态可核验面：落盘 + 新鲜度校验 + 留工件）
+        run: |
+          python scripts/verify_report.py --write
+          python scripts/verify_report.py --check
+      - name: 上传门禁报告工件（机器可读结论留档）
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
+        with:
+          name: verification-report
+          path: protocol/verification_report.json
+          if-no-files-found: warn

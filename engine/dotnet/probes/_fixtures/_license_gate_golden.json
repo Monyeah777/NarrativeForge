@@ -1,0 +1,43 @@
+{
+ "schema": "nf-license-gate-golden/1",
+ "generated": "2026-09-27",
+ "source": "desktop/src/core/license_gate.py 原文导入执行（快照内那份），统一渲染规则见探针头",
+ "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h5",
+ "digest_rule": "sha256(\"\\n\".join(render(issues, stats)))[:32]  ← 与引擎 Result.LogDigest 同式",
+ "cases": {
+  "real": {
+   "log": [
+    "[WARN] 许可未声明（待投稿人确认）：NF-WORLDCAMPUS-Monyeah777-1",
+    "[STAT] entries=3 declared=2 undeclared=['NF-WORLDCAMPUS-Monyeah777-1'] unknown=[] no_inline=[] mismatched=[]"
+   ],
+   "digest32": "ee4bb55acf6688bf0e6cb8621fd1b979",
+   "fails": 0,
+   "warns": 1
+  },
+  "synthetic_mixed": {
+   "log": [
+    "[FAIL] 许可取值不合规：NF-BADID-1 = GPL-3.0-only（许可 id 不在词表：GPL-3.0-only（允许：Apache-2.0、BSD-2-Clause、BSD-3-Clause、CC-BY-4.0、CC-BY-SA-4.0、CC0-1.0、ISC、MIT、专有；或用 `LicenseRef-<自定义>` 显式自造）；允许：Apache-2.0、BSD-2-Clause、BSD-3-Clause、CC-BY-4.0、CC-BY-SA-4.0、CC0-1.0、ISC、MIT、专有、未声明）",
+    "[FAIL] 登记行缺「许可」列值：NF-EMPTY-1（修复指引：按许可词表补值，投稿人未回填写「未声明」）",
+    "[FAIL] 许可取值不合规：NF-BADOP-1 = MIT AND AND Apache-2.0（运算符 AND 前缺少操作数；允许：Apache-2.0、BSD-2-Clause、BSD-3-Clause、CC-BY-4.0、CC-BY-SA-4.0、CC0-1.0、ISC、MIT、专有、未声明）",
+    "[FAIL] 许可取值不合规：NF-PAREN-1 = (MIT OR Apache-2.0（括号不配平；允许：Apache-2.0、BSD-2-Clause、BSD-3-Clause、CC-BY-4.0、CC-BY-SA-4.0、CC0-1.0、ISC、MIT、专有、未声明）",
+    "[FAIL] 许可取值不合规：NF-CHAR-1 = MIT ©（含非法字符（修复指引：SPDX id / AND / OR / WITH / 括号 / `+` 之外不得出现）；允许：Apache-2.0、BSD-2-Clause、BSD-3-Clause、CC-BY-4.0、CC-BY-SA-4.0、CC0-1.0、ISC、MIT、专有、未声明）",
+    "[WARN] 许可双源不一致：NF-EXPR-1 登记=MIT OR Apache-2.0 文件=MIT",
+    "[WARN] 条目文件缺内联许可声明：NF-REF-1（修复指引：文件头补 「> 许可：<SPDX>」）",
+    "[WARN] 许可未声明（待投稿人确认）：NF-UNDECL-1",
+    "[WARN] 许可双源不一致：NF-MISMATCH-1 登记=MIT 文件=Apache-2.0",
+    "[STAT] entries=10 declared=5 undeclared=['NF-UNDECL-1'] unknown=['NF-BADID-1', 'NF-BADOP-1', 'NF-PAREN-1', 'NF-CHAR-1'] no_inline=['NF-REF-1'] mismatched=['NF-EXPR-1', 'NF-MISMATCH-1']"
+   ],
+   "digest32": "ec3b4ca338650df71a93c8c476acad79",
+   "fails": 5,
+   "warns": 4,
+   "files_b64": {
+    "library/INDEX.md": "IyDkupHnq6/lm77kuabppobntKLlvJXvvIjmjqLpkojlkIjmiJDor63mlpnvvIkKCnwg57yW5Y+3IHwg5qCH6aKYIHwg5b2i5oCBL+mihuWfnyB8IOaKleeov+S6uiB8IOWFpeW6k+aXpeacnyB8IOiuuOWPryB8IOWIhue6pyB8IOeKtuaAgSB8IOS4gOWPpeivnSB8CnwtLS18LS0tfC0tLXwtLS18LS0tfC0tLXwtLS18LS0tfC0tLXwKfCBORi1PSy0xIHwg5qC35L6L5LiAIHwg5LiW55WMIHwgYSB8IDIwMjYtMDEtMDEgfCBNSVQgfCB0ZWVuIHwgYWN0aXZlIHwg5ZCI6KeEIHwKfCBORi1FWFBSLTEgfCDmoLfkvovkuowgfCDkuJbnlYwgfCBiIHwgMjAyNi0wMS0wMiB8IE1JVCBPUiBBcGFjaGUtMi4wIHwgdGVlbiB8IGFjdGl2ZSB8IOihqOi+vuW8jyB8CnwgTkYtUkVGLTEgfCDmoLfkvovkuIkgfCDkuJbnlYwgfCBjIHwgMjAyNi0wMS0wMyB8IExpY2Vuc2VSZWYtQ3VzdG9tLTEgfCB0ZWVuIHwgYWN0aXZlIHwg6Ieq6YCgIGlkIHwKfCBORi1VTkRFQ0wtMSB8IOagt+S+i+WbmyB8IOS4lueVjCB8IGQgfCAyMDI2LTAxLTA0IHwg5pyq5aOw5piOIHwgZ2VuZXJhbCB8IGFjdGl2ZSB8IOacquWjsOaYjiB8CnwgTkYtTUlTTUFUQ0gtMSB8IOagt+S+i+S6lCB8IOS4lueVjCB8IGUgfCAyMDI2LTAxLTA1IHwgTUlUIHwgZ2VuZXJhbCB8IGFjdGl2ZSB8IOWPjOa6kOS4jeS4gOiHtCB8CnwgTkYtQkFESUQtMSB8IOagt+S+i+WFrSB8IOS4lueVjCB8IGYgfCAyMDI2LTAxLTA2IHwgR1BMLTMuMC1vbmx5IHwgZ2VuZXJhbCB8IGFjdGl2ZSB8IOi2iuivjeihqCB8CnwgTkYtRU1QVFktMSB8IOagt+S+i+S4gyB8IOS4lueVjCB8IGcgfCAyMDI2LTAxLTA3IHwgeCB8CnwgTkYtQkFET1AtMSB8IOagt+S+i+WFqyB8IOS4lueVjCB8IGggfCAyMDI2LTAxLTA4IHwgTUlUIEFORCBBTkQgQXBhY2hlLTIuMCB8IGdlbmVyYWwgfCBhY3RpdmUgfCDov5DnrpfnrKbnvLrmk43kvZzmlbAgfAp8IE5GLVBBUkVOLTEgfCDmoLfkvovkuZ0gfCDkuJbnlYwgfCBpIHwgMjAyNi0wMS0wOSB8IChNSVQgT1IgQXBhY2hlLTIuMCB8IGdlbmVyYWwgfCBhY3RpdmUgfCDmi6zlj7fkuI3phY3lubMgfAp8IE5GLUNIQVItMSB8IOagt+S+i+WNgSB8IOS4lueVjCB8IGogfCAyMDI2LTAxLTEwIHwgTUlUIMKpIHwgZ2VuZXJhbCB8IGFjdGl2ZSB8IOmdnuazleWtl+espiB8Cg==",
+    "library/NF-OK-1.md": "IyDmoLfkvovkuIAKCj4g6K645Y+v77yaTUlUCg==",
+    "library/NF-EXPR-1.md": "IyDmoLfkvovkuowKCj4g6K645Y+v77yaTUlUIE9SIEFwYWNoZS0yLjAK",
+    "library/NF-REF-1.md": "IyDmoLfkvovkuIkKCu+8iOaXoOWGheiBlOiuuOWPr+WjsOaYjuKAlOKAlOW6lOiusCBXQVJO77yJCg==",
+    "library/NF-UNDECL-1.md": "IyDmoLfkvovlm5sKCj4g6K645Y+v77ya5pyq5aOw5piOCg==",
+    "library/NF-MISMATCH-1.md": "IyDmoLfkvovkupQKCj4g6K645Y+v77yaQXBhY2hlLTIuMAo="
+   }
+  }
+ }
+}

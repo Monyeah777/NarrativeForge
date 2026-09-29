@@ -1,0 +1,38 @@
+{
+ "schema": "nf-workloop-golden/1",
+ "generated": "2026-09-27",
+ "source": "真源 core/workloop.py::scan + summary（check33 第 16 条框法）",
+ "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h5",
+ "digest_rule": "sha256(\"\\n\".join(渲染行))[:32]  ← 与引擎侧同式",
+ "cases": {
+  "workloop_real": {
+   "log": [
+    "构建回路：待办 1229 项（未定型字段 86 · advisory 1142）· 适配器 3 · 已拉取候选 ['laya-multilingual'] · stub 工单 WO-2e887a3d069d"
+   ],
+   "digest32": "fb09f03eaf08d2aaad0e54098a6b79f4",
+   "fails": 0
+  },
+  "workloop_synthetic": {
+   "log": [
+    "构建回路：待办 5 项（未定型字段 2 · advisory 1）· 适配器 1 · 已拉取候选 ['合成候选'] · stub 工单 WO-81a4c69810b0"
+   ],
+   "digest32": "440b2a6a5f4c1b597dd5c9e54755c028",
+   "fails": 0,
+   "files_b64": {
+    "protocol/type_backlog.json": "ewogImNvdW50IjogMiwKICJmaWVsZHMiOiBbCiAgewogICAiZXZlbnQiOiAiZXYuYWxwaGEiLAogICAiZmllbGQiOiAicGF5bG9hZC54IiwKICAgIm5vdGUiOiAi5b6F5qC4IgogIH0sCiAgewogICAiZXZlbnQiOiAiZXYuYmV0YSIsCiAgICJmaWVsZCI6ICJwYXlsb2FkLnkiCiAgfQogXQp9",
+    "protocol/pipeline_advisory.json": "ewogImNvdW50IjogMSwKICJjb3VudHMiOiB7CiAgIui3qOWMhS/lpJbpg6jkuovku7YiOiAxCiB9LAogIml0ZW1zIjogWwogIHsKICAgInBpcGVsaW5lIjogIlAwOSIsCiAgICJjYXRlZ29yeSI6ICLot6jljIUv5aSW6YOo5LqL5Lu2IiwKICAgImRldGFpbCI6ICLlkIjmiJDmoLfmnKwiCiAgfQogXQp9",
+    "protocol/decision_layer.json": "ewogInNjaGVtYSI6ICJuZi1kZWNpc2lvbi1sYXllci8xIiwKICJwcmltaXRpdmVzIjogewogICJjaG9pY2UiOiAi5Zyo6LCD55So5pa557uZ5a6a6YCJ6aG55LiK57uZ5qaC546H5YiG5biDICsgYXJnbWF4IiwKICAibm91bCI6ICLlr7nmmK/pnZ7pl67popjmiqXmpoLnjocgcCIsCiAgInNjb3JlIjogIuWvueacieW6j+etiee6p+aKpeamgueOh+WIhuW4gyArIOacn+acm+WAvCIKIH0sCiAiYWRhcHRlcnMiOiBbCiAgewogICAiaWQiOiAic3R1YiIsCiAgICJraW5kIjogIm9mZmxpbmUtZGV0ZXJtaW5pc3RpYyIsCiAgICJpbl9nYXRlX3BhdGgiOiB0cnVlLAogICAiY2FsaWJyYXRlZCI6IGZhbHNlLAogICAibm90ZSI6ICLpl6jnpoHnlKjnmoTnprvnur/noa7lrprmgKfpgILphY3lmajvvIjlkIjmiJDor63mlpnvvIkiCiAgfQogXSwKICJjYW5kaWRhdGVzIjogWwogIHsKICAgImlkIjogIuWQiOaIkOWAmemAiSIsCiAgICJzb3VyY2UiOiAiaGY65ZCI5oiQL+WAmemAiSIsCiAgICJsaWNlbnNlIjogImFwYWNoZS0yLjAiLAogICAiZXZpZGVuY2UiOiAi5ZCI5oiQ6K+t5paZIiwKICAgInB1bGxlZCI6IHRydWUsCiAgICJsb2NhbCI6IHsKICAgICJob3ciOiAiaCIsCiAgICAicnVudGltZSI6ICJyIiwKICAgICJzZXJ2ZWRfYnkiOiAicyIKICAgfQogIH0KIF0sCiAiYm91bmRhcmllcyI6IFsKICAi5LiN5omn6KGM5Yqo5L2cIiwKICAi5LiN55Sf5oiQ5q2j5paHIiwKICAi5LiN5YWl6Zeo56aB6Lev5b6EIgogXQp9",
+    "scripts/nf.py": "aW1wb3J0IGFyZ3BhcnNlCmRlZiBidWlsZChzdWIpOgogICAgc3ViLmFkZF9wYXJzZXIoImRlY2lzaW9ucyIpCiAgICBzdWIuYWRkX3BhcnNlcigic2NvcmUiKQogICAgc3ViLmFkZF9wYXJzZXIoIndvcmtsb29wIikKICAgIHN1Yi5hZGRfcGFyc2VyKCJyZWNlaXB0cyIpCiAgICBzdWIuYWRkX3BhcnNlcigiZW5kcG9pbnQiKQogICAgcCA9IHN1Yi5hZGRfcGFyc2VyKCJpbnRlcm9wIikKICAgIHAuYWRkX2FyZ3VtZW50KCItLWtpbmQiLCBkZWZhdWx0PSJvcGVuYXBpIiwgY2hvaWNlcz1bIm9wZW5hcGkiLCAiYXN5bmNhcGkiXSkK"
+   }
+  },
+  "workloop_empty": {
+   "log": [
+    "[FAIL] 构建回路：待办真源为空（protocol/type_backlog.json、protocol/pipeline_advisory.json 均无条目）——回路无活可挑",
+    "[FAIL] 构建回路：问题面为空（无法向决策层提问）",
+    "构建回路：待办 0 项（未定型字段 0 · advisory 0）· 适配器 0 · 已拉取候选 [] · stub 工单 "
+   ],
+   "digest32": "acfeff33bd0f55d5315fecf706575719",
+   "fails": 2
+  }
+ }
+}
