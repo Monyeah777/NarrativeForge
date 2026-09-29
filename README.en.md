@@ -1,5 +1,7 @@
 # NarrativeForge · Document Generation Workshop (spec-driven) — English mirror
 
+[![verify gate ci-verify](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml)
+
 > MIT License · original open source · please cite the source when deriving/referencing
 
 **In one sentence**: NF is a **content contract layer** — it defines the protocols, quality gates and asset standards for "AI reliably produces long-form content"; narrative is only the first official domain package, while the protocol itself is domain-neutral and model-agnostic.

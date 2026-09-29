@@ -1,5 +1,7 @@
 # NarrativeForge · 文档生成工坊（规范驱动）
 
+[![门禁 ci-verify](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml)
+
 > MIT License · 原创开源 · 衍生/引用请注明来源
 
 **一句话**：NF 是内容契约层——定义“AI 稳定产出长内容”的协议、质量与资产标准；叙事只是官方第一域包，协议本身域中立、模型无关。
