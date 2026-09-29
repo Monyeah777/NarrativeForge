@@ -30,9 +30,12 @@ jobs:
         with:
           persist-credentials: false
       - name: 跑 OpenSSF Scorecard
-        uses: ossf/scorecard-action@99c09fe975337306107572b4fdf4db224cf8e2f2  # v2.4.3
-        # v2.4.0 的镜像在 gcr.io（拉取被「需开 billing」拒绝，实测 2026-09-29 run #1）——
-        # v2.4.1 起迁到 ghcr.io，故钉 v2.4.3。
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a  # v2.4.3
+        # ① v2.4.0 的镜像在 gcr.io（拉取被「需开 billing」拒绝，实测 2026-09-29 run #1）：
+        #    v2.4.1 起迁到 ghcr.io ⇒ 换 v2.4.3。
+        # ② 钉的必须是**提交** SHA：`git/ref/tags/v2.4.3` 给的是**注解 tag 对象**的 SHA
+        #    （99c09fe9…），平台侧 workflow 校验会判 imposter commit（实测 run #2）——
+        #    故此处钉 tag 解引用后的提交 4eaacf05…。
         with:
           results_file: results.sarif
           results_format: sarif

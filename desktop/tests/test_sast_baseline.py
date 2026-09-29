@@ -87,7 +87,8 @@ class RealRepoTest(unittest.TestCase):
         self.assertTrue(any("上升" in i for i in self.m.compare(higher, section)[0]),
                         "当前 > 基线 ⇒ 必判上升")
         self.assertEqual({}, self.m.platform_baseline({}))
-        self.assertEqual({}, self.m.platform_baseline({"platforms": {"posix": section}}))
+        other = "posix" if self.m.PLATFORM != "posix" else "nt"     # 不许依赖跑测平台
+        self.assertEqual({}, self.m.platform_baseline({"platforms": {other: section}}))
         self.assertEqual(section, self.m.platform_baseline({"platforms": {self.m.PLATFORM: section}}))
 
     def test_requirements_sast_is_pinned(self):
