@@ -23,6 +23,38 @@ from core import quant_metrics as qm  # noqa: E402
 ROOT = str(Path(__file__).resolve().parents[2])
 
 
+class PackKeyReuseTest(unittest.TestCase):
+    """**确知变更面**驱动的键复用：只在「确知本包切片没变」时复用；说不清一律重算（fail-closed）。
+
+    依据（实测 2026-09-29）：`index_verify` 为 106 个包各算一次切片指纹（合计 ~15 ms），而最常见的
+    改动（`04_模块库` 正文、文档、声明面外的件）**一件都不落在任何包切片里**——算完 106 次才发现全都
+    没变。读层一直在用「确知变更路径」精确失效（`drop_resident`），**键层过去没用**。判据直接问三态：
+    不知道 / 确知没沾到 / 确知沾到了（外加「共享面变了也不许复用」）。
+    """
+
+    def _with_changes(self, known, paths):
+        from unittest import mock
+        return mock.patch.object(of._csc, "changed_paths", lambda: (known, set(paths)))
+
+    def test_reuses_only_when_change_face_is_known_and_clean(self):
+        pkg = of._pack_dirs(ROOT)[0]
+        shared = of.shared_face_key(ROOT)
+        of._PACK_KEY_MEMO.clear()
+        of._PACK_KEY_MEMO[pkg] = (shared, "SENTINEL")
+        with self._with_changes(False, []):                       # 说不清 → 不许复用
+            self.assertNotEqual("SENTINEL", of.pack_content_key(ROOT, pkg, shared))
+        of._PACK_KEY_MEMO[pkg] = (shared, "SENTINEL")
+        with self._with_changes(True, ["docs/x.md"]):             # 确知没沾到本包切片 → 复用
+            self.assertEqual("SENTINEL", of.pack_content_key(ROOT, pkg, shared))
+        of._PACK_KEY_MEMO[pkg] = (shared, "SENTINEL")
+        with self._with_changes(True, ["community/%s/outputs/INDEX.json".lower() % pkg]):
+            self.assertNotEqual("SENTINEL", of.pack_content_key(ROOT, pkg, shared),
+                                "切片的件确知变了（且监听给的是小写）时必须重算")
+        of._PACK_KEY_MEMO[pkg] = ("别的共享面带", "SENTINEL")
+        with self._with_changes(True, ["docs/x.md"]):             # 共享面变了 → 不许复用
+            self.assertNotEqual("SENTINEL", of.pack_content_key(ROOT, pkg, shared))
+
+
 class PackKeyReadCoverageTest(unittest.TestCase):
     """逐包内容键必须**覆盖 `_verify_pack` 真读的件**——同族陈旧洞的可执行判据。
 

@@ -114,7 +114,32 @@ def install_resident(root) -> None:
     global _RESIDENT
     root_abs = os.path.normcase(os.path.abspath(str(root)))
     _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}, "digest": {},
-                 "raw": {}}
+                 "raw": {},
+                 #: **确知变更面**（见 `changed_paths`）：装层时为空且**未确知**（fail-closed——
+                 #: 新装的层不知道装之前发生过什么，任何「跳过重算」的推理都不许建立在这上面）。
+                 "changed": set(), "changed_known": False}
+
+
+#: 「确知变更面」的用途：读层一直在用它精确失效（`drop_resident`）；**键层**过去没用——于是
+#: 「改一件、106 个键都要重算一遍」才发现一个都没变。有了这条信息，「确知没变」的面可以直接复用
+#: 上一次的键（见 `output_forms._PACK_KEY_MEMO`）。纪律与读层完全一致：**说不清就整批作废**。
+def note_changes(paths) -> None:
+    """记下这一批**确知**变更的仓库相对路径（由守护的监听给出；`drop_resident` 会顺手调用）。"""
+    if _RESIDENT is None:
+        return
+    _RESIDENT["changed_known"] = True
+    _RESIDENT["changed"].update(str(p) for p in (paths or ()))
+
+
+def changed_paths() -> Tuple[bool, set]:
+    """`(known, paths)`：本进程**确知**自上次取用以来变过哪些仓库相对路径。
+
+    `known=False`（没装层 / 监听说不清 / 刚装层）表示**不许做任何「没变」的推理**——调用方必须按
+    「全都可能变了」处理（fail-closed）。
+    """
+    if _RESIDENT is None or not _RESIDENT.get("changed_known"):
+        return False, set()
+    return True, set(_RESIDENT["changed"])
 
 
 def resident_active() -> bool:
@@ -193,10 +218,14 @@ def drop_resident(paths) -> None:
     """按**确知变更**的路径精确失效：正文按件删；目录条目按**父目录**删（增删都会改父目录清单）。
 
     `paths` 是监听给出的仓库相对路径（`/` 分隔、小写）；解析不过来的路径直接忽略。
+
+    顺带把这一批**确知变更**记进 `changed`（见 `note_changes`）——键层据此判断「哪些面确知没变，
+    可以复用上一次的键」。
     """
     res = _RESIDENT
     if res is None:
         return
+    note_changes(paths)
     root = res["root"]
     for rel in paths or ():
         key = os.path.normcase(os.path.join(root, str(rel).replace("/", os.sep)))

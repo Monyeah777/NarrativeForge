@@ -754,6 +754,48 @@ def shared_face_key(root: str = ".") -> str:
     return hashlib.sha256(("%s\x00%s" % (raw, core)).encode("utf-8")).hexdigest()
 
 
+_PACK_KEY_MEMO: Dict[str, Any] = {}
+_PACK_KEY_MEMO_MAX = 4096
+
+
+def _pack_key_reusable(root: str, pkg: str, shared: str) -> Any:
+    """**确知变更面**驱动的键复用：本包切片确知没变 ⇒ 复用上一次的键（返回该键；否则 None）。
+
+    依据（实测 2026-09-29）：`index_verify` 要为 106 个包各算一次切片指纹（合计 ~15 ms），而最常见的
+    改动（改 `04_模块库` 正文、改文档、改协议声明外的件）**一件都不落在任何包的切片里**——算完 106 次
+    才发现全都没变。读层早就在用「确知变更路径」精确失效（`drop_resident`），键层过去没用。
+
+    fail-closed：`conformance_scan.changed_paths()` 说「不知道」（没装常驻层 / 监听说不清 / 刚装层）
+    时**一律不复用**；只有「确知这一批变更里没有一件落在本包切片模式内」才复用。
+    """
+    prev = _PACK_KEY_MEMO.get(pkg)
+    if not prev or prev[0] != shared:
+        return None
+    known, changed = _csc.changed_paths()
+    if not known:
+        return None
+    if any(_matches_any(rel, _pack_slice_patterns(pkg)) for rel in changed):
+        return None                              # 本包切片里有确知变更 → 老老实实重算
+    return prev[1]
+
+
+def _pack_slice_patterns(pkg: str):
+    return tuple("community/%s/%s" % (pkg, rel) for rel in _PACK_FACE_SLICE)
+
+
+def _matches_any(rel: str, patterns) -> bool:
+    """仓库相对路径是否落在任一模式内（语义与 `iter_files` 同源：`**` 跨目录、`*` 不跨）。
+
+    两侧都按 `lower()` 归一：① 监听给的是**小写**相对路径，而模式里有 `INDEX.json` 这种大写；
+    ② 归一后若「本该不匹配却被判成匹配」，后果只是**多算一次**（安全方向）——反过来才会陈旧。
+    """
+    segs = [s.lower() for s in str(rel).replace("\\", "/").split("/")]
+    for pat in patterns:
+        if _csc._match_parts(segs, _csc._compiled_parts(str(pat).replace("\\", "/").lower())):
+            return True
+    return False
+
+
 def pack_slice_index(root: str) -> Dict[str, List[str]]:
     """**一次枚举**四条包面，按包切成 `{包名: [该包的相对路径…]}`（每条面内有序）。
 
@@ -784,11 +826,18 @@ def pack_content_key(root: str, pkg: str, shared: str = "", rels=None) -> str:
     """
     if not shared:                        # 单调用方（如单测）自己用时不强求外部先算
         shared = shared_face_key(root)
+    reused = _pack_key_reusable(root, pkg, shared)
+    if reused is not None:
+        return reused
     if rels is None:                      # 单独调用（如单测）时仍按包枚举，结果与切片路线**逐位相同**
         rels = [r for rel_pat in _PACK_FACE_SLICE
                 for r in _csc.iter_files(root, "community/%s/%s" % (pkg, rel_pat))]
     per_pack = _csc.fingerprint_of(root, rels)
-    return hashlib.sha256(("%s\x00%s" % (shared, per_pack)).encode("utf-8")).hexdigest()
+    key = hashlib.sha256(("%s\x00%s" % (shared, per_pack)).encode("utf-8")).hexdigest()
+    if len(_PACK_KEY_MEMO) >= _PACK_KEY_MEMO_MAX:
+        _PACK_KEY_MEMO.clear()
+    _PACK_KEY_MEMO[pkg] = (shared, key)
+    return key
 
 
 def _pack_verify_ok(value) -> bool:
