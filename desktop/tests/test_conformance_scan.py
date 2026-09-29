@@ -258,22 +258,30 @@ class FaceFingerprintTest(unittest.TestCase):
         那是探针自己绕过了读层失效，不是实现缺陷。
 
         另一条前提（实测踩到，故在这里钉死）：监听的相对路径是**小写**，`iter_files` 是**真实
-        大小写**（`Face/F1.MD`）⇒ 判定「成员集合有没有变」必须**大小写不敏感**，否则改一件内容会被
+        大小写**（`Face/F1.md`）⇒ 判定「成员集合有没有变」必须**大小写不敏感**，否则改一件内容会被
         误判成新增件、增量路径静默退化（安全但白算）。
+
+        夹具纪律（2026-09-29 CI 首跑红因）：模式的**固定段与后缀必须写成真实大小写**（`Face/*.md`）。
+        `_segment_regex` 只在 `os.name == "nt"` 时忽略大小写（对齐 `Path.glob` 的平台行为），故
+        POSIX 上小写模式匹配不到 `Face/` ⇒ 面为空 ⇒ 本判据**空转**（三平台 CI 里表现为「增量 0 次」）。
+        大小写不敏感只该落在**成员集合比对**这一处（监听小写 ↔ `iter_files` 真实大小写），
+        不该靠文件系统替我们兜。空转由下面的「面必须非空」断言当场拦下。
         """
         import pathlib
         with tempfile.TemporaryDirectory() as tmp:
             d = pathlib.Path(tmp, "Face")
             d.mkdir(parents=True)
             for i in range(3):
-                (d / ("F%d.MD" % i)).write_text("v1-%d\n" % i, encoding="utf-8")
-            pats = ("face/*.md",)
+                (d / ("F%d.md" % i)).write_text("v1-%d\n" % i, encoding="utf-8")
+            pats = ("Face/*.md",)
             cs.install_resident(tmp)
             try:
                 cs._FACE_CACHE.clear()
                 cs.clear_changes()
                 fp1, _ = cs.face_digests(tmp, pats)
-                (d / "F1.MD").write_text("v2\n", encoding="utf-8")
+                self.assertEqual(3, len(cs.iter_files(tmp, "Face/*.md")),
+                                 "夹具必须在本平台建出非空面——否则以下判据全部空转")
+                (d / "F1.md").write_text("v2\n", encoding="utf-8")
                 cs.drop_resident(["face/f1.md"])          # 监听给的是小写相对路径
                 before = cs._FACE_FP_STATS["incremental"]
                 fp2, digs2 = cs.face_digests(tmp, pats)
@@ -285,20 +293,20 @@ class FaceFingerprintTest(unittest.TestCase):
                 fp3, digs3 = cs.face_digests(tmp, pats)
                 self.assertEqual(fp2, fp3, "增量结果必须与整面重算逐位相同")
                 self.assertEqual(digs3, digs2, "增量更新后的逐件摘要必须与重算一致")
-                (d / "F9.MD").write_text("new\n", encoding="utf-8")
+                (d / "F9.md").write_text("new\n", encoding="utf-8")
                 cs.drop_resident(["face/f9.md"])
                 rec = cs._FACE_FP_STATS["recomputes"]
                 fp4, _ = cs.face_digests(tmp, pats)
                 self.assertEqual(rec + 1, cs._FACE_FP_STATS["recomputes"],
                                  "新增件 ⇒ 成员集合变了 ⇒ 必须整面重建")
                 self.assertNotEqual(fp3, fp4)
-                os.remove(d / "F0.MD")
+                os.remove(d / "F0.md")
                 cs.drop_resident(["face/f0.md"])
                 rec = cs._FACE_FP_STATS["recomputes"]
                 fp5, digs5 = cs.face_digests(tmp, pats)
                 self.assertEqual(rec + 1, cs._FACE_FP_STATS["recomputes"],
                                  "删件 ⇒ 成员集合变了 ⇒ 必须整面重建")
-                self.assertNotIn("Face/F0.MD", digs5, "删掉的件不许留在摘要表里")
+                self.assertNotIn("Face/F0.md", digs5, "删掉的件不许留在摘要表里")
             finally:
                 cs.clear_changes()
                 cs.clear_resident()
