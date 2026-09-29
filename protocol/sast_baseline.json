@@ -1,89 +1,94 @@
 {
-  "bandit": {
-    ".github/scripts/gitee_ingest.py::B310": 1,
-    ".github/scripts/gitee_ingest.py::B404": 1,
-    ".github/scripts/gitee_ingest.py::B603": 1,
-    ".github/scripts/gitee_ingest.py::B607": 1,
-    ".github/scripts/library_ingest.py::B310": 1,
-    ".github/scripts/library_ingest.py::B404": 1,
-    ".github/scripts/library_ingest.py::B603": 1,
-    ".github/scripts/library_ingest.py::B607": 1,
-    "desktop/src/core/daemon.py::B110": 7,
-    "desktop/src/core/daemon.py::B404": 1,
-    "desktop/src/core/daemon.py::B603": 1,
-    "desktop/src/core/pack_combo.py::B311": 1,
-    "desktop/src/core/watch.py::B110": 1,
-    "scripts/check_external_links.py::B104": 1,
-    "scripts/instruction_evidence.py::B404": 1,
-    "scripts/instruction_evidence.py::B603": 1,
-    "scripts/interop_thirdparty_kit.py::B404": 1,
-    "scripts/nf.py::B404": 1,
-    "scripts/nf.py::B603": 4,
-    "scripts/perf_budget.py::B404": 1,
-    "scripts/perf_budget.py::B603": 1,
-    "scripts/sast_check.py::B404": 1,
-    "scripts/sast_check.py::B603": 1
-  },
-  "meta": {
-    "bandit": {
-      "severities": [
-        [
-          "LOW",
-          29
-        ],
-        [
-          "MEDIUM",
-          3
-        ]
-      ],
-      "total": 32
-    },
-    "ruff": {
-      "total": 74
+  "note": "SAST 计数棘轮（(工具,文件,规则) 计数只许下降；新增/上升判 FAIL，下降提示重冻）。按平台分段：platforms[nt] / platforms[posix] 各自冻结、各自只许下降，缺段即失败。",
+  "platforms": {
+    "nt": {
+      "bandit": {
+        ".github/scripts/gitee_ingest.py::B310": 1,
+        ".github/scripts/gitee_ingest.py::B404": 1,
+        ".github/scripts/gitee_ingest.py::B603": 1,
+        ".github/scripts/gitee_ingest.py::B607": 1,
+        ".github/scripts/library_ingest.py::B310": 1,
+        ".github/scripts/library_ingest.py::B404": 1,
+        ".github/scripts/library_ingest.py::B603": 1,
+        ".github/scripts/library_ingest.py::B607": 1,
+        "desktop/src/core/daemon.py::B110": 7,
+        "desktop/src/core/daemon.py::B404": 1,
+        "desktop/src/core/daemon.py::B603": 1,
+        "desktop/src/core/pack_combo.py::B311": 1,
+        "desktop/src/core/watch.py::B110": 1,
+        "scripts/check_external_links.py::B104": 1,
+        "scripts/instruction_evidence.py::B404": 1,
+        "scripts/instruction_evidence.py::B603": 1,
+        "scripts/interop_thirdparty_kit.py::B404": 1,
+        "scripts/nf.py::B404": 1,
+        "scripts/nf.py::B603": 4,
+        "scripts/perf_budget.py::B404": 1,
+        "scripts/perf_budget.py::B603": 1,
+        "scripts/sast_check.py::B404": 1,
+        "scripts/sast_check.py::B603": 1,
+        "scripts/verify_run.py::B404": 1
+      },
+      "meta": {
+        "bandit": {
+          "severities": [
+            [
+              "LOW",
+              30
+            ],
+            [
+              "MEDIUM",
+              3
+            ]
+          ],
+          "total": 33
+        },
+        "ruff": {
+          "total": 75
+        }
+      },
+      "ruff": {
+        ".github/scripts/gitee_ingest.py::S310": 2,
+        ".github/scripts/gitee_ingest.py::S603": 1,
+        ".github/scripts/gitee_ingest.py::S607": 1,
+        ".github/scripts/library_ingest.py::S310": 1,
+        ".github/scripts/library_ingest.py::S603": 1,
+        ".github/scripts/library_ingest.py::S607": 1,
+        "desktop/src/core/assemble_plan.py::S112": 1,
+        "desktop/src/core/attest.py::S603": 4,
+        "desktop/src/core/closure_scan.py::S112": 1,
+        "desktop/src/core/community_inventory.py::S112": 3,
+        "desktop/src/core/composer.py::S110": 1,
+        "desktop/src/core/composer.py::S112": 1,
+        "desktop/src/core/daemon.py::S110": 7,
+        "desktop/src/core/decision_layer.py::S310": 4,
+        "desktop/src/core/interop_export.py::S110": 1,
+        "desktop/src/core/library.py::S110": 1,
+        "desktop/src/core/lsp.py::S110": 1,
+        "desktop/src/core/mcp_runtime.py::S110": 3,
+        "desktop/src/core/mvu_adapter.py::S110": 1,
+        "desktop/src/core/output_forms.py::S314": 2,
+        "desktop/src/core/pack_combo.py::S311": 1,
+        "desktop/src/core/pipeline_loader.py::S112": 1,
+        "desktop/src/core/protocol_golden.py::S112": 1,
+        "desktop/src/core/retriever.py::S110": 2,
+        "desktop/src/core/storage.py::S110": 1,
+        "desktop/src/core/storage.py::S112": 5,
+        "desktop/src/core/watch.py::S110": 1,
+        "desktop/src/core/workloop.py::S110": 1,
+        "scripts/check_external_links.py::S104": 1,
+        "scripts/check_external_links.py::S310": 2,
+        "scripts/check_interop_schemas.py::S310": 4,
+        "scripts/instruction_evidence.py::S603": 1,
+        "scripts/nf.py::S110": 2,
+        "scripts/nf.py::S112": 3,
+        "scripts/nf.py::S603": 6,
+        "scripts/nf_verify.py::S603": 1,
+        "scripts/perf_budget.py::S603": 1,
+        "scripts/pull_decision_model.py::S603": 1,
+        "scripts/sast_check.py::S603": 1,
+        "scripts/verify_run.py::S603": 1
+      }
     }
-  },
-  "note": "SAST 计数棘轮（(工具,文件,规则) 计数只许下降；新增/上升判 FAIL，下降提示重冻）",
-  "ruff": {
-    ".github/scripts/gitee_ingest.py::S310": 2,
-    ".github/scripts/gitee_ingest.py::S603": 1,
-    ".github/scripts/gitee_ingest.py::S607": 1,
-    ".github/scripts/library_ingest.py::S310": 1,
-    ".github/scripts/library_ingest.py::S603": 1,
-    ".github/scripts/library_ingest.py::S607": 1,
-    "desktop/src/core/assemble_plan.py::S112": 1,
-    "desktop/src/core/attest.py::S603": 4,
-    "desktop/src/core/closure_scan.py::S112": 1,
-    "desktop/src/core/community_inventory.py::S112": 3,
-    "desktop/src/core/composer.py::S110": 1,
-    "desktop/src/core/composer.py::S112": 1,
-    "desktop/src/core/daemon.py::S110": 7,
-    "desktop/src/core/decision_layer.py::S310": 4,
-    "desktop/src/core/interop_export.py::S110": 1,
-    "desktop/src/core/library.py::S110": 1,
-    "desktop/src/core/lsp.py::S110": 1,
-    "desktop/src/core/mcp_runtime.py::S110": 3,
-    "desktop/src/core/mvu_adapter.py::S110": 1,
-    "desktop/src/core/output_forms.py::S314": 2,
-    "desktop/src/core/pack_combo.py::S311": 1,
-    "desktop/src/core/pipeline_loader.py::S112": 1,
-    "desktop/src/core/protocol_golden.py::S112": 1,
-    "desktop/src/core/retriever.py::S110": 2,
-    "desktop/src/core/storage.py::S110": 1,
-    "desktop/src/core/storage.py::S112": 5,
-    "desktop/src/core/watch.py::S110": 1,
-    "desktop/src/core/workloop.py::S110": 1,
-    "scripts/check_external_links.py::S104": 1,
-    "scripts/check_external_links.py::S310": 2,
-    "scripts/check_interop_schemas.py::S310": 4,
-    "scripts/instruction_evidence.py::S603": 1,
-    "scripts/nf.py::S110": 2,
-    "scripts/nf.py::S112": 3,
-    "scripts/nf.py::S603": 4,
-    "scripts/nf.py::S607": 2,
-    "scripts/nf_verify.py::S603": 1,
-    "scripts/perf_budget.py::S603": 1,
-    "scripts/pull_decision_model.py::S603": 1,
-    "scripts/sast_check.py::S603": 1
   },
   "schema": "nf-sast/1"
 }

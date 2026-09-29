@@ -30,7 +30,9 @@ jobs:
         with:
           persist-credentials: false
       - name: 跑 OpenSSF Scorecard
-        uses: ossf/scorecard-action@62b2cac7ed8198b15735ed49ab1e5cf35480ba46  # v2.4.0
+        uses: ossf/scorecard-action@99c09fe975337306107572b4fdf4db224cf8e2f2  # v2.4.3
+        # v2.4.0 的镜像在 gcr.io（拉取被「需开 billing」拒绝，实测 2026-09-29 run #1）——
+        # v2.4.1 起迁到 ghcr.io，故钉 v2.4.3。
         with:
           results_file: results.sarif
           results_format: sarif

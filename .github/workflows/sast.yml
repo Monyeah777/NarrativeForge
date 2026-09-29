@@ -28,4 +28,12 @@ jobs:
           pip install -r .github/requirements-sast.txt
           pip install -r .github/requirements-lint.txt
       - name: SAST 计数棘轮（新增/上升即红）
-        run: python scripts/sast_check.py
+        run: |
+          python scripts/sast_check.py --json > .sast-counts.json || true
+          python - <<'PY'
+          import json
+          doc = json.load(open(".sast-counts.json", encoding="utf-8"))
+          print("本平台计数：bandit %d · ruff-S %d"
+                % (sum(doc["bandit"].values()), sum(doc["ruff"].values())))
+          PY
+          python scripts/sast_check.py

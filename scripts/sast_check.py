@@ -28,6 +28,12 @@ ROOT = Path(__file__).resolve().parent.parent
 BASELINE_REL = "protocol/sast_baseline.json"
 SCHEMA = "nf-sast/1"
 SCAN_TARGETS = ("desktop/src", "scripts", ".github/scripts")
+#: 计数**按平台分段**：同一棵树在 Linux 与 Windows 上的命中面并不相同（实测 2026-09-29：Linux
+#: bandit 33 / ruff-S 75，Windows 32 / 74，差别在 `S603/S607` 一类子进程规则）。棘轮语义不变——
+#: 每个平台各自只许下降；缺本平台段即 FAIL（修复指引：在该平台跑 `--write` 落段）。
+PLATFORM = "nt" if os.name == "nt" else "posix"
+NOTE = ("SAST 计数棘轮（(工具,文件,规则) 计数只许下降；新增/上升判 FAIL，下降提示重冻）。"
+        "按平台分段：platforms[nt] / platforms[posix] 各自冻结、各自只许下降，缺段即失败。")
 
 
 def _run(argv) -> tuple:
@@ -92,6 +98,13 @@ def load_baseline() -> dict:
         return {}
 
 
+def platform_baseline(doc: dict) -> dict:
+    """取**本平台**那一段（`platforms[PLATFORM]`）；没有该段 → `{}`（compare 判 FAIL）。"""
+    if not doc:
+        return {}
+    return (doc.get("platforms") or {}).get(PLATFORM) or {}
+
+
 def _tool_diff(tool: str, cur: dict, base: dict, issues: list, warns: list) -> None:
     """单工具双向比对：新增/上升 → issues；下降 → warns（(文件,规则) 键形态由 current() 统一产出）。"""
     for key, n in sorted(cur.items()):
@@ -116,7 +129,8 @@ def compare(cur: dict, base: dict) -> tuple:
     issues: list = []
     warns: list = []
     if not base:
-        warns.append("无 SAST 基线 %s（修复指引：python scripts/sast_check.py --write）" % BASELINE_REL)
+        issues.append("缺本平台 SAST 基线 %s[%s]（修复指引：在该平台跑 "
+                      "python scripts/sast_check.py --write 落段）" % (BASELINE_REL, PLATFORM))
         return issues, warns, {"bandit": sum(cur["bandit"].values()),
                                "ruff": sum(cur["ruff"].values()),
                                "baseline_bandit": 0, "baseline_ruff": 0}
@@ -129,20 +143,21 @@ def compare(cur: dict, base: dict) -> tuple:
 
 
 def scan() -> tuple:
-    """→ (issues, warns, stats)（读真仓当前计数 + 基线，交给 compare）。"""
-    return compare(current(), load_baseline())
+    """→ (issues, warns, stats)（读真仓当前计数 + **本平台**基线段，交给 compare）。"""
+    return compare(current(), platform_baseline(load_baseline()))
 
 
 def write() -> tuple:
     cur = current()
-    doc = {"schema": SCHEMA,
-           "note": "SAST 计数棘轮（(工具,文件,规则) 计数只许下降；新增/上升判 FAIL，下降提示重冻）",
-           "bandit": cur["bandit"], "ruff": cur["ruff"],
-           "meta": cur["meta"]}
+    doc = load_baseline()                      # 保留其它平台的段（各平台各自冻结）
+    doc["schema"] = SCHEMA
+    doc["note"] = NOTE
+    section = {"bandit": cur["bandit"], "ruff": cur["ruff"], "meta": cur["meta"]}
+    (doc.setdefault("platforms", {}))[PLATFORM] = section
     (ROOT / BASELINE_REL).write_text(
         json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8", newline="\n")
-    return [], doc
+    return [], section
 
 
 def main(argv=None) -> int:
@@ -152,10 +167,11 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     if args.write:
-        issues, doc = write()
+        issues, section = write()
         print("== 冻结 SAST 基线 ==")
-        print("  ✓ 已写入 %s（bandit %d 条 · ruff %d 条）"
-              % (BASELINE_REL, sum(doc["bandit"].values()), sum(doc["ruff"].values())))
+        print("  ✓ 已写入 %s[%s]（bandit %d 条 · ruff %d 条）"
+              % (BASELINE_REL, PLATFORM, sum(section["bandit"].values()),
+                 sum(section["ruff"].values())))
         for i in issues:
             print("  ✗ %s" % i, file=sys.stderr)
         return 1 if issues else 0
@@ -166,8 +182,9 @@ def main(argv=None) -> int:
 
     issues, warns, stats = scan()
     print("== SAST 基线闸门 ==")
-    print("  bandit %d（基线 %d）· ruff-S %d（基线 %d）"
-          % (stats["bandit"], stats["baseline_bandit"], stats["ruff"], stats["baseline_ruff"]))
+    print("  平台 %s · bandit %d（基线 %d）· ruff-S %d（基线 %d）"
+          % (PLATFORM, stats["bandit"], stats["baseline_bandit"],
+             stats["ruff"], stats["baseline_ruff"]))
     for w in warns:
         print("  [WARN] %s" % w)
     for i in issues[:10]:

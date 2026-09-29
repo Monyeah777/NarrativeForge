@@ -27,10 +27,11 @@ class CompareTest(unittest.TestCase):
     def setUp(self):
         self.m = _load()
 
-    def test_no_baseline_warns_without_crash(self):
-        issues, warns, stats = self.m.compare({"bandit": {"a.py::B101": 1}, "ruff": {}}, {})
-        self.assertEqual([], issues)
-        self.assertTrue(any(self.m.BASELINE_REL in w for w in warns), warns)
+    def test_missing_platform_section_fails_closed(self):
+        """缺**本平台**段 = FAIL（fail-closed）：没有冻过的平台不许靠空基线蒙过。"""
+        issues, _warns, stats = self.m.compare({"bandit": {"a.py::B101": 1}, "ruff": {}}, {})
+        self.assertTrue(any(self.m.BASELINE_REL in i and self.m.PLATFORM in i for i in issues),
+                        issues)
         self.assertEqual(0, stats["baseline_bandit"], "缺基线时基线计数须为 0（不得 KeyError）")
         self.assertEqual(1, stats["bandit"])
 
@@ -61,14 +62,33 @@ class CompareTest(unittest.TestCase):
 
 
 class RealRepoTest(unittest.TestCase):
+    def setUp(self):
+        self.m = _load()
+
     def test_baseline_committed_and_wellformed(self):
         p = ROOT / "protocol" / "sast_baseline.json"
         self.assertTrue(p.is_file(), "须提交 SAST 基线：protocol/sast_baseline.json")
         doc = json.loads(p.read_text(encoding="utf-8"))
         self.assertEqual("nf-sast/1", doc["schema"])
-        self.assertIn("bandit", doc)
-        self.assertIn("ruff", doc)
-        self.assertGreater(sum(doc["bandit"].values()), 0, "基线须非空（实算而来）")
+        plats = doc.get("platforms") or {}
+        self.assertIn("nt", plats, "Windows 段须在册（原基线在此冻结）")
+        for name, sec in plats.items():
+            self.assertIn("bandit", sec, "platforms[%s] 缺 bandit" % name)
+            self.assertIn("ruff", sec, "platforms[%s] 缺 ruff" % name)
+            self.assertGreater(sum(sec["bandit"].values()) + sum(sec["ruff"].values()), 0,
+                               "platforms[%s] 不许为空（须实算而来）" % name)
+
+    def test_platform_section_is_what_scan_uses(self):
+        """比对只吃**本平台**那一段：换平台不会拿另一平台的计数去判。"""
+        cur = {"bandit": {"a.py::B101": 1}, "ruff": {}}
+        section = {"bandit": {"a.py::B101": 1}, "ruff": {}}
+        self.assertEqual([], self.m.compare(cur, section)[0])
+        higher = {"bandit": {"a.py::B101": 2}, "ruff": {}}
+        self.assertTrue(any("上升" in i for i in self.m.compare(higher, section)[0]),
+                        "当前 > 基线 ⇒ 必判上升")
+        self.assertEqual({}, self.m.platform_baseline({}))
+        self.assertEqual({}, self.m.platform_baseline({"platforms": {"posix": section}}))
+        self.assertEqual(section, self.m.platform_baseline({"platforms": {self.m.PLATFORM: section}}))
 
     def test_requirements_sast_is_pinned(self):
         p = ROOT / ".github" / "requirements-sast.txt"
