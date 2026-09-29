@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -31,6 +32,7 @@ class LauncherFallbackTest(unittest.TestCase):
         self.home = tempfile.mkdtemp(prefix="nf_launcher_")
         self.env = dict(os.environ)
         self.env["NARRATIVE_FORGE_HOME"] = self.home
+        self.env["NF_AUTOSTART"] = "0"   # 本类测**回退路径**：显式关自动拉起（免得后台守护串场/泄漏进程）
 
     def tearDown(self):
         shutil.rmtree(self.home, ignore_errors=True)
@@ -74,8 +76,8 @@ class AutostartTest(unittest.TestCase):
         self.addCleanup(shutil.rmtree, home, ignore_errors=True)
         return home
 
-    def _run(self, home, *argv, autostart=None):
-        env = dict(os.environ)
+    def _run(self, home, *argv, autostart=None, env=None):
+        env = dict(env) if env else dict(os.environ)
         env["NARRATIVE_FORGE_HOME"] = home
         env.pop("NF_AUTOSTART", None)
         if autostart is not None:
@@ -84,14 +86,39 @@ class AutostartTest(unittest.TestCase):
                               capture_output=True, text=True, encoding="utf-8",
                               errors="replace", timeout=300)
 
+    def _sleepy_shim(self, home, sleep_seconds=5):
+        """PATH shim：只在 `daemon start` 那一跑里先睡 N 秒——用来判「拉起**非阻塞**」。
+
+        阻塞式实现会让首条命令≥N 秒；非阻塞式只有 ~0.3–0.6 s。差一个数量级 ⇒ 不是靠抖动判。
+        """
+        bin_dir = os.path.join(home, "shim")
+        os.makedirs(bin_dir, exist_ok=True)
+        log = os.path.join(home, "starts.log")
+        real = subprocess.run([BASH, "-c", "command -v python || command -v python3"],
+                              capture_output=True, text=True, encoding="utf-8").stdout.strip()
+        body = ('#!/bin/sh\n'
+                'printf "%s %s\\n" "$0" "$*" >> "' + log.replace("\\", "/") + '"\n'
+                'case "$*" in *"daemon start"*) sleep ' + str(sleep_seconds) + ' ;; esac\n'
+                'exec "' + real + '" "$@"\n')
+        for name in ("python", "python3"):
+            path = os.path.join(bin_dir, name)
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(body)
+            os.chmod(path, 0o755)
+        env = dict(os.environ)
+        env["NARRATIVE_FORGE_HOME"] = home
+        env["PATH"] = bin_dir + os.pathsep + env.get("PATH", "")
+        return env, log
+
     def _stop(self, home):
         env = dict(os.environ)
         env["NARRATIVE_FORGE_HOME"] = home
         subprocess.run([sys.executable, "scripts/nf.py", "daemon", "stop"], cwd=ROOT,
                        env=env, capture_output=True, timeout=120)
 
-    def test_disabled_by_default_and_for_falsey_values(self):
-        for value in (None, "0", "false", "no", "off"):
+    def test_falsey_values_disable_autostart(self):
+        """显式关：`0|false|no|off` 一律不许拉起守护（诊断/对照/测试要可复现）。"""
+        for value in ("0", "false", "no", "off"):
             home = self._home()
             self.addCleanup(self._stop, home)
             p = self._run(home, "--version", autostart=value)
@@ -100,14 +127,41 @@ class AutostartTest(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(home, "daemon.json")),
                              "NF_AUTOSTART=%r 不得拉起守护" % value)
 
+    def test_default_engages_autostart_without_blocking_the_command(self):
+        """**默认开且非阻塞**（2026-09-29 起）：首条命令不等守护，随后守护自己起来。
+
+        非阻塞怎么**确定性**地判：把 shim 的 `daemon start` 那一跑挂 5 s 睡眠——
+        阻塞式实现会让首条命令≥5 s，非阻塞式只有 ~0.3–0.6 s（差一个数量级，不是靠抖动判）。
+        """
+        home = self._home()
+        self.addCleanup(self._stop, home)
+        env, _log = self._sleepy_shim(home, sleep_seconds=5)
+        env.pop("NF_AUTOSTART", None)                 # 不给开关 ⇒ 走默认
+        t0 = time.time()
+        p = self._run(home, "--version", env=env)
+        elapsed = time.time() - t0
+        self.assertEqual(0, p.returncode, p.stderr or p.stdout)
+        self.assertIn("nf ", p.stdout)
+        self.assertLess(elapsed, 5.0,
+                        "首条命令等了后台起守护（阻塞式实现）——必须非阻塞：%.1fs" % elapsed)
+        deadline = time.time() + 40                      # 后台拉起是**稍后**发生，允许慢机
+        while time.time() < deadline and not os.path.exists(os.path.join(home, "daemon.json")):
+            time.sleep(0.2)
+        self.assertTrue(os.path.exists(os.path.join(home, "daemon.json")),
+                        "默认必须把守护（后台）拉起来，否则毫秒级拿不到")
+
     def test_enabled_starts_the_daemon_then_serves(self):
         home = self._home()
         self.addCleanup(self._stop, home)
         p = self._run(home, "--version", autostart="1")
         self.assertEqual(0, p.returncode, p.stderr or p.stdout)
         self.assertIn("nf ", p.stdout)
+        # 拉起是**非阻塞**的（本条命令不等它）⇒ 状态文件是**稍后**出现，故轮询而不是立刻断言
+        deadline = time.time() + 40
+        while time.time() < deadline and not os.path.exists(os.path.join(home, "daemon.json")):
+            time.sleep(0.2)
         self.assertTrue(os.path.exists(os.path.join(home, "daemon.json")),
-                        "设了开关就必须真把守护拉起来（否则毫秒级拿不到）")
+                        "开关开着就必须真把守护拉起来（否则毫秒级拿不到）")
         q = self._run(home, "--version", autostart="1")
         self.assertEqual(0, q.returncode)
         self.assertEqual(p.stdout, q.stdout, "拉起前后输出必须一致（只加速不改语义）")
@@ -153,7 +207,7 @@ class InterpreterLaunchBudgetTest(unittest.TestCase):
                            capture_output=True, text=True, encoding="utf-8")
         return r.stdout.strip()
 
-    def _shim_env(self, stub_python3=False):
+    def _shim_env(self, stub_python3=False, autostart="0"):
         """PATH 最前挂一个只放 shim 的目录：`python`/`python3` 先记一笔再 `exec` 真解释器。
 
         `stub_python3=True` 时 `python3` 换成**永远 rc=49、零输出**的桩——这是 Microsoft Store
@@ -174,7 +228,8 @@ class InterpreterLaunchBudgetTest(unittest.TestCase):
         env = dict(os.environ)
         env["NARRATIVE_FORGE_HOME"] = self.home
         env["PATH"] = bin_dir + os.pathsep + env.get("PATH", "")
-        env.pop("NF_AUTOSTART", None)
+        # 本类量的是**回退路径**的解释器次数：默认关掉自动拉起才可复现（要测自动拉起就传 "1"）
+        env["NF_AUTOSTART"] = autostart
         return env, log
 
     @staticmethod
@@ -229,6 +284,37 @@ class InterpreterLaunchBudgetTest(unittest.TestCase):
             self.assertEqual(first.stdout, p.stdout, "只加速不改语义")
             self.assertEqual(1, self._starts(log),
                              "第 %d 次回退仍应恰好一次解释器启动（终判必须走缓存）" % i)
+
+    def test_daemon_serves_next_command_with_zero_interpreter_starts(self):
+        """自动拉起（**默认开、非阻塞**）之后：第二条命令 **0 次**解释器启动——这才是"毫秒级"的账。
+
+        实测（2026-09-29 本机）：首条 ~0.6 s（照常直跑，同时后台起守护）⇒ 其后每条 **59 ms**
+        （冷直跑 300–900 ms）。判据用**次数**（与机器快慢、噪声无关）：稳态第二条一次都不许起。
+        """
+        env, log = self._shim_env(autostart="1")
+        first = self._run("--version", env=env)
+        self.assertEqual(0, first.returncode, first.stderr or first.stdout)
+        deadline = time.time() + 40
+        while time.time() < deadline and not os.path.exists(
+                os.path.join(self.home, "daemon.json")):
+            time.sleep(0.2)
+        self.assertTrue(os.path.exists(os.path.join(self.home, "daemon.json")),
+                        "默认必须把守护（后台）拉起来，否则毫秒级拿不到")
+        before = self._starts(log)
+        # 落盘 ≠ 已在监听：守护写状态文件与真正 accept 之间有一小段窗口，故**轮询到稳态**为止
+        # （实测这中间会有一条命令仍走回退）。判据仍是**次数**：稳态那条必须 0 次。
+        deadline = time.time() + 60
+        steady = None
+        while time.time() < deadline:
+            before = self._starts(log)
+            second = self._run("stats", "--check", env=env)
+            self.assertEqual(0, second.returncode, second.stderr or second.stdout)
+            if self._starts(log) == before:          # 本次一次解释器都没起 ⇒ 守护快路接管
+                steady = 0
+                break
+            time.sleep(0.3)
+        self.assertEqual(0, steady,
+                         "守护起来后命令仍走回退（每次都在起解释器）——快路没生效")
 
     def test_store_stub_like_python3_is_avoided(self):
         """`python3` 是「存在但跑不了」的桩时，启动器必须**仍可用**（Windows Store 桩的真实形状）。

@@ -291,7 +291,7 @@
       "max_fn_lines": 178
     },
     "desktop/src/core/lazy_yaml.py": {
-      "lines": 64,
+      "lines": 82,
       "max_fn_cc": 10,
       "max_fn_lines": 24
     },

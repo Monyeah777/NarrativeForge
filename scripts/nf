@@ -166,21 +166,21 @@ if [ -n "${BASH_VERSION:-}" ]; then
   # 实测后果：守护没在跑时 `nf <任何命令>` 一律 **rc=127 且零输出**（连 `nf shell` / `nf serve`
   # 这种本来就必须回退的也一样）。故这里显式吞掉「不接手」：
   daemon_try "$@" || true
-  # 可选自动拉起（**默认关**）：`NF_AUTOSTART=1` 时，若快路不接手（多半是守护不在），就先
-  # 起一个带 --watch 的守护、再试一次快路。为什么默认关：首条命令要付 ~0.65 s 起守护 + 本身
-  # 计算（比直跑慢），**从第二条起才 10 ms**——这是个"赌重复调用"的开关，不该替所有人默认打开。
-  # 与 `nf daemon exec` 的语义一致（那条默认就会拉起，且可 --no-start 拒绝）。
-  case "${NF_AUTOSTART:-}" in
-    ""|0|false|no|off) : ;;
+  # 自动拉起（**默认开 · 非阻塞**）：快路不接手（多半是守护不在）⇒ 把带 `--watch` 的守护
+  # **丢到后台**拉起，本条命令照常走 python 直跑、**不等它**。
+  # 为什么可以默认开（2026-09-29 实测）：起守护确实要 ~0.65 s，但后台起**不占本条命令的时间**
+  # （首条只多一次 fork ≈10 ms），而**从第二条起任命令 40–80 ms**（冷直跑 300–900 ms）。
+  # 旧「默认关」的理由是「首条要付 0.65 s」——非阻塞形态下这条不成立，故默认关 → 默认开。
+  # `NF_AUTOSTART=0|false|no|off` 可关；长驻/自指命令（daemon/shell/serve）照旧不拉。
+  case "${NF_AUTOSTART:-1}" in
+    0|false|no|off) : ;;
     *)
       case "${1:-}" in
         daemon|shell|serve) : ;;                       # 长驻/自指命令本就不走守护，别去起它
         *)
-          # 上面 `daemon_try` 已经 decline（= 服不了这条命令），所以这里直接拉一次即可；
-          # `daemon start` 自身幂等（已在跑就很快返回「已在运行」），失败也静默走回退。
+          # `daemon start` 自身幂等（已在跑就很快返回「已在运行」）：重复调用只多一次 fork。
           nf_pick_py
-          "$NF_PY" $(nf_diet_flag) "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 || true
-          daemon_try "$@" || true
+          { "$NF_PY" $(nf_diet_flag) "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 & } || true
           ;;
       esac
       ;;

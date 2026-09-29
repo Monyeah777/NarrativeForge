@@ -3,8 +3,8 @@
 """PyYAML 的**惰性**入口：`import yaml` ≈ 40 ms，而缓存命中的冷跑根本不解析 YAML。
 
 依据（实测 2026-09-29，`-X importtime`）：冷 `nf score` 的导入自时 184.6 ms 里 **yaml 子树 39.9 ms**
-（22%），而派生结果全部命中落盘缓存时**一次都不解析**——那 40 ms 是纯浪费。于是把导入推迟到真要
-用的时候；缺 PyYAML 一律返回 `None`，调用方维持既有「缺依赖即报」的语义（不吞不造）。
+（22%），而派生结果全命中落盘缓存时一次都不解析——那 40 ms 是纯浪费，故推迟到真要用时。
+缺 PyYAML **不是「即报」而是静默降级**（调用方回退子集口径 ⇒ 结果偏小），故本模块出声一次。
 
 `conformance_scan` 另用 PEP 562 的 `__getattr__` 继续暴露 `yaml` / `SAFE_LOADER` 两个名字——
 `pipeline_loader`（存在性探测）与其它调用方过去直接读它们，**名字不许消失**。
@@ -15,6 +15,23 @@ import os
 
 _YAML = None
 _TRIED = False
+_WARNED = False
+
+
+def _note_missing() -> None:
+    """缺 PyYAML 时**报一次**（`NF_QUIET_YAML=1` 可静默）。
+
+    为什么必须出声：调用方是**静默降级**的——`pipeline_loader` 回退内置子集解析器、
+    `conformance_scan` 干脆解析不出 YAML 字段。实测（2026-09-29）后果不是「慢一点」而是
+    **结果偏小**：`nf doctor` 的 tool_face 1/1/1→0/0/0、world_model 1/4/3/4→0/0/0/0。
+    """
+    global _WARNED
+    if _WARNED or os.environ.get("NF_QUIET_YAML"):
+        return
+    _WARNED = True
+    import sys
+    print("  [WARN] 未装 PyYAML：已退回**子集口径**（YAML 字段可能解析不全 ⇒ 计数/结果偏小）；"
+          "修复指引：装 PyYAML（要静默则设 NF_QUIET_YAML=1）", file=sys.stderr)
 
 
 def module():
@@ -27,6 +44,7 @@ def module():
             _YAML = _m
         except Exception:                                    # noqa: BLE001 - 缺依赖不是崩溃理由
             _YAML = None
+            _note_missing()
     return _YAML
 
 
