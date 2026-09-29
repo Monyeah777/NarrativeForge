@@ -307,19 +307,42 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
         依据（2026-09-29 实测）：守护判定代码换版时会把 `core.*` 整块摘掉重载（保证不跑旧代码），
         于是新模块的常驻层是**空的**——不搬回来，改一行代码就要让下一条重命令把整棵语料重读一遍
         （实测 ~2 s）。这里把一个临时 NF_HOME 的守护逼到「判代码换版」那条路上，断言层还活着。
+
+        **进程内卫生（2026-09-29 补，实测踩到）**：换版会把 `sys.modules` 里的 `core.*` 换成**新对象**，
+        于是「本模块导入时绑的旧对象」与「CLI/扫描器正在用的新对象」并存——任何拿旧对象当观测面的
+        判据都会读出**看着像 bug 的读数**（实测：`FaceReuseBudgetTest`「说不清 ⇒ 0 次重算」、
+        `QualityDepthScanTest.test_repo_clean` 读到 0 次读、`test_session_watch` 看到两层不是一份）。
+        本用例只关心「常驻层有没有被搬回来」，故在 `finally` 里把**模块身份与常驻层一起还原**。
         """
         self._call(["--version"])
         csc_live = sys.modules["core.conformance_scan"]
         csc_live.read_text_cached(os.path.join(ROOT, "protocol", "LAYERS.json"))
         self.assertGreater(dm.query_stats()["resident"]["text"], 0)
+        saved_mods = {k: v for k, v in list(sys.modules.items())
+                      if k == "core" or k.startswith("core.")}
         real = dm._code_fingerprint
         dm._code_fingerprint = lambda root: ("forced-code-change",)
         try:
             dm._sync_code(Path(ROOT))
+            self.assertIsNot(csc_live, sys.modules.get("core.conformance_scan"),
+                             "判据自身要有效：`_sync_code` 必须真的换出新模块对象")
         finally:
             dm._code_fingerprint = real
+            live = sys.modules.get("core.conformance_scan")
+            layer = None
+            if live is not None:
+                try:
+                    if live.resident_active():
+                        layer = live.take_resident()
+                except Exception:                        # noqa: BLE001 - 还原失败只影响本用例的观测面
+                    layer = None
+            sys.modules.update(saved_mods)               # 模块身份还原（同进程其它判据的观测面）
+            if layer is not None:
+                saved_mods["core.conformance_scan"].adopt_resident(layer)
         self.assertGreater(dm.query_stats()["resident"]["text"], 0,
                            "代码换版后常驻层被清空了 —— 下一条重命令要重读整棵语料（~2 s）")
+        self.assertIs(csc_live, sys.modules.get("core.conformance_scan"),
+                      "本用例结束后必须还原模块身份（否则同进程其它判据会拿旧对象读出假数）")
 
     def test_resident_layer_is_wired_and_unknown_change_clears_it(self):
         """守护**接线**判据：带 `--watch` 的守护必须装上常驻语料层；说不清的变更必须整批作废。
