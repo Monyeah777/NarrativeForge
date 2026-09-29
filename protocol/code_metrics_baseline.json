@@ -121,9 +121,9 @@
       "max_fn_lines": 34
     },
     "desktop/src/core/daemon.py": {
-      "lines": 746,
-      "max_fn_cc": 22,
-      "max_fn_lines": 70
+      "lines": 723,
+      "max_fn_cc": 14,
+      "max_fn_lines": 67
     },
     "desktop/src/core/decision_layer.py": {
       "lines": 459,
@@ -520,6 +520,11 @@
       "max_fn_cc": 19,
       "max_fn_lines": 77
     },
+    "desktop/src/core/response_cache.py": {
+      "lines": 149,
+      "max_fn_cc": 7,
+      "max_fn_lines": 38
+    },
     "desktop/src/core/retriever.py": {
       "lines": 195,
       "max_fn_cc": 15,
@@ -561,9 +566,9 @@
       "max_fn_lines": 25
     },
     "desktop/src/core/session_watch.py": {
-      "lines": 125,
+      "lines": 111,
       "max_fn_cc": 4,
-      "max_fn_lines": 19
+      "max_fn_lines": 15
     },
     "desktop/src/core/skill_adapter.py": {
       "lines": 79,
@@ -726,7 +731,7 @@
       "max_fn_lines": 44
     },
     "scripts/nf.py": {
-      "lines": 5417,
+      "lines": 5416,
       "max_fn_cc": 98,
       "max_fn_lines": 951
     },
@@ -751,9 +756,9 @@
       "max_fn_lines": 36
     },
     "scripts/sast_check.py": {
-      "lines": 179,
+      "lines": 196,
       "max_fn_cc": 8,
-      "max_fn_lines": 28
+      "max_fn_lines": 30
     },
     "scripts/serve_decision_model.py": {
       "lines": 180,

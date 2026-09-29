@@ -86,5 +86,112 @@ class SessionCacheTest(unittest.TestCase):
                 sw.release()
 
 
+class SessionResponseCacheTest(unittest.TestCase):
+    """会话**响应缓存**（`core.response_cache`）的判据：命中逐字相同 + 改了必重算 + 写形态必作废。
+
+    会话命令走 `Session.invoke` 的捕获层，故「命中」判据必须是**逐字节相同**而不是「看起来像」；
+    另两条（新鲜度、非准入作废）与守护同源，见 `core.response_cache` 的纪律段。
+    """
+
+    @staticmethod
+    def _live():
+        """绑**当前**模块实例（理由同 `SessionCacheTest._live`：换版用例会把 `core.*` 换掉）。"""
+        import importlib
+        return (importlib.import_module("core.response_cache"),
+                importlib.import_module("core.session_watch"),
+                importlib.import_module("core.daemon"),
+                importlib.import_module("core.watch"))
+
+    def setUp(self):
+        self.rc, self.sw, self.dm, self.watch = self._live()
+        self.rc.clear()
+
+    def tearDown(self):
+        self.sw.release()
+        self.rc.clear()
+
+    @staticmethod
+    def _capture(runner, argv):
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+            code = runner(list(argv))
+        return code, buf.getvalue()
+
+    @staticmethod
+    def _counter(state):
+        """假命令：每**真跑**一次就自增并打印——命中回放时计数不动、文本也不变。"""
+        def base(argv, *a, **k):
+            state["n"] += 1
+            print("输出 %d" % state["n"])
+            return 0
+        return base
+
+    def _runner(self, tmp, state):
+        return self.rc.wrap_runner(self._counter(state), self._decide,
+                                   lambda: self.sw.sync(tmp))
+
+    def _decide(self, argv):
+        """代际 + 准入判据（与守护同源；由调用方给出 ⇒ `response_cache` 不依赖上层模块）。"""
+        return self.dm._watch_generation(), self.dm.cacheable([str(a) for a in argv])
+
+    @unittest.skipUnless(watch.available(), "本平台没有目录监听实现")
+    def test_hit_replays_identical_bytes_without_rerun(self):
+        """命中 = **不重跑** + 回放同一份字节（准入命令：`stats` 在守护的准入表里）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertTrue(self.sw.attach(tmp), "监听启动失败")
+            state = {"n": 0}
+            run = self._runner(tmp, state)
+            first = self._capture(run, ["stats"])
+            second = self._capture(run, ["stats"])
+            self.assertEqual(1, state["n"], "命中不得重跑命令")
+            self.assertEqual((0, "输出 1\n"), first)
+            self.assertEqual(first, second, "命中必须回放同一份字节")
+
+    @unittest.skipUnless(watch.available(), "本平台没有目录监听实现")
+    def test_edit_recomputes_and_serves_new_output(self):
+        """**新鲜度**：会话内改了件 ⇒ 下一条准入命令必须重算（宁可慢，不可错）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp, "probe.md")
+            p.write_text("一\n", encoding="utf-8")
+            self.assertTrue(self.sw.attach(tmp), "监听启动失败")
+            state = {"n": 0}
+            run = self._runner(tmp, state)
+            self._capture(run, ["stats"])
+            before = self.dm._watch_generation()
+            p.write_text("二\n", encoding="utf-8")
+            self.assertTrue(_wait_generation(self.dm._WATCHER, before), "改动未被监听到")
+            code, out = self._capture(run, ["stats"])
+            self.assertEqual(2, state["n"], "改了就必须重算（不得回放旧响应）")
+            self.assertEqual((0, "输出 2\n"), (code, out))
+
+    @unittest.skipUnless(watch.available(), "本平台没有目录监听实现")
+    def test_non_cacheable_invalidates_whole_cache(self):
+        """非准入（无法证明只读）⇒ **立刻整批作废**：下一条准入命令不得再命中。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertTrue(self.sw.attach(tmp), "监听启动失败")
+            state = {"n": 0}
+            run = self._runner(tmp, state)
+            self._capture(run, ["stats"])
+            self.assertEqual(1, self.rc.entries())
+            self._capture(run, ["help"])               # `help` 不在准入表里
+            self.assertEqual(0, self.rc.entries(), "非准入命令必须立刻整批作废")
+            self._capture(run, ["stats"])
+            # 计数账：`stats` 真跑(1) + `help` 真跑(2) + 作废后的 `stats` 再真跑(3)——若第二遍
+            # 命中，第三次就不会跑（仍是 2）⇒ 这一条断言正是「作废是否真的发生了」。
+            self.assertEqual(3, state["n"], "作废之后不得再命中（命中会少跑一次）")
+
+    def test_no_watcher_means_no_caching_at_all(self):
+        """fail-closed：代际不可知 ⇒ 一律不命中、不建档（行为与加缓存之前逐字一致）。"""
+        self.sw.release()
+        state = {"n": 0}
+        run = self.rc.wrap_runner(self._counter(state), self._decide, None)
+        self._capture(run, ["stats"])
+        self._capture(run, ["stats"])
+        self.assertEqual(2, state["n"], "没有监听时必须每条都真跑")
+        self.assertEqual(0, self.rc.entries(), "没有监听时不得留下任何缓存条目")
+
+
 if __name__ == "__main__":
     unittest.main()

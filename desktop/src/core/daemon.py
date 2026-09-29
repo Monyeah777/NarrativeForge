@@ -270,17 +270,15 @@ _CLI_CACHE: Dict[str, Any] = {}
 _CHILD: Optional[Any] = None
 
 #: 响应缓存（**只在守护进程内、只在树没变时**复用整条命令的 stdout/stderr/退出码）。
-#: 为什么敢缓存整条响应：这些命令是「树状态的纯函数」（见 `CACHEABLE_COMMANDS` 的准入判据），
-#: 而「树没变」由 `watch.DirWatcher` 的**通知制**代际提供——没有通知就不重算。
-#: 键含 cwd（输出里有仓库相对路径）。上限防无界增长。
-_RESP_CACHE: Dict[Any, Tuple[int, int, bytes, bytes]] = {}
-_RESP_CACHE_MAX = 256
+#: 判据与账本在 `core.response_cache`（会话 `session_watch` 与守护共用同一套 ⇒ 只有一种说法）。
+from core import response_cache as _rc  # noqa: E402 - 与下面的常量一组，便于阅读
+
+_CACHE_STATS = _rc.STATS
 #: 当前监听件（`serve_forever(watch=True)` 装；单测可注入假件）。
 _WATCHER: Optional[Any] = None
 #: 关闭「常驻语料层」的开关（诊断/对照用）：设了就整批作废且不再收录，退回每次重读。
 RESIDENT_ENV_OFF = "NF_NO_RESIDENT"
-#: 观测计数（`nf daemon status` 会显示；单测据此判「命中/未命中」）。
-_CACHE_STATS: Dict[str, int] = {"hits": 0, "misses": 0, "stores": 0, "skipped": 0}
+#: 观测计数由 `response_cache.STATS` 提供（上面 `_CACHE_STATS` 即同一个字典对象）。
 
 #: 响应缓存的**准入表**：仅纯读、且对同一棵树**逐字节可复现**的命令。
 #: 表项是 **argv 前缀**（不是顶层命令名）：`module` / `decisions` / `patterns` 这些顶层命令
@@ -358,14 +356,14 @@ def cache_stats() -> Dict[str, Any]:
     gen = _watch_generation()
     from core import conformance_scan as _csc
     return {"enabled": gen is not None, "generation": gen,
-            "entries": len(_RESP_CACHE), **dict(_CACHE_STATS),
+            "entries": _rc.entries(), **dict(_CACHE_STATS),
             # 常驻语料层的规模也一并报出来：它是「不重读」的账本，出问题时第一个要看的就是它。
             "resident": _csc.resident_stats()}
 
 
 def reset_response_cache() -> None:
     """清空响应缓存（监听件报溢出/不可用时调用——宁可全废，不可错答）。"""
-    _RESP_CACHE.clear()
+    _rc.clear()
 
 
 def _code_fingerprint(root: Path) -> Tuple:
@@ -443,25 +441,11 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
                "（修复指引：在普通终端里直接跑；守护只承载一次性命令）\n" % argv[0])
         return 2, b"", msg.encode("utf-8")
     _sync_resident(root)          # 常驻层按监听变更集失效（说不清就整批作废）——必须在任何读之前
-    # 响应缓存：**只在「树没变」有可证信号时**才会命中（见 `_watch_generation`）。
-    # 键必须含**会改变输出文本**的环境面：`terminal` 按 NO_COLOR / CLICOLOR_FORCE 决定是否着色，
-    # 不含它就会出现「在无色环境里回放了带 ANSI 的旧响应」。
-    key = (tuple(str(a) for a in argv), cwd or os.getcwd(),
-           os.environ.get("NO_COLOR", ""), os.environ.get("CLICOLOR_FORCE", ""))
-    gen = _watch_generation()
-    if gen is None:
-        if cacheable(argv):
-            _CACHE_STATS["skipped"] += 1
-        if _RESP_CACHE:                    # 监听不可用 ⇒ 旧响应一律作废（宁可全废不可错答）
-            reset_response_cache()
-    elif cacheable(argv):
-        hit = _RESP_CACHE.get(key)
-        if hit is not None and hit[0] == gen:
-            _CACHE_STATS["hits"] += 1
-            return hit[1], hit[2], hit[3]
-        _CACHE_STATS["misses"] += 1
-    else:
-        _CACHE_STATS["skipped"] += 1
+    # 响应缓存：**只在「树没变」有可证信号时**才可能命中（判据与账本在 core.response_cache）。
+    gen, allowed = _watch_generation(), bool(cacheable(argv))
+    hit = _rc.lookup(argv, gen, allowed, cwd)
+    if hit is not None:
+        return hit
     _sync_code(root)          # 源码变了就先重载（否则会用旧逻辑回话）
     reset_process_caches()
     nf = _load_cli(root)
@@ -493,17 +477,10 @@ def execute(argv: List[str], root: Path, cwd: Optional[str] = None
         except Exception:                 #  # 几条命令之后会让键层复用退化成全量重算——实测踩过）
             pass
     code, out, err = int(code), out_buf.getvalue(), err_buf.getvalue()
-    if gen is not None and cacheable(argv) and code == 0:
-        if len(_RESP_CACHE) >= _RESP_CACHE_MAX:
-            _RESP_CACHE.clear()
-        _RESP_CACHE[key] = (gen, code, out, err)
-        _CACHE_STATS["stores"] += 1
-    elif gen is not None and _RESP_CACHE:
-        # **非准入命令 = 无法证明只读**（可能写仓库）⇒ 立刻把整批缓存作废，**不等监听线程
-        # 异步察觉**。竞态（实测判据 test_watch.test_unknown_command_invalidates_*）：作废原本只靠
-        # 监听的几毫秒窗口，脚本里 `nf conformance --write; nf score` 连跑就可能吃到写之前的旧响应。
-        # 宁可多算（下次重算），不可错答。
-        reset_response_cache()
+    _rc.store(argv, gen, allowed, code, out, err, cwd)
+    # **非准入命令 = 无法证明只读**（可能写仓库）⇒ 立刻整批作废，不等监听线程异步察觉（写在
+    # `note_uncacheable` 里：脚本里 `nf conformance --write; nf score` 连跑曾吃到写之前的旧响应）。
+    _rc.note_uncacheable(allowed, code, gen)
     return code, out, err
 
 

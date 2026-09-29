@@ -4403,8 +4403,10 @@ def _cmd_shell(args) -> int:
         for i in self_issues:
             print("  [FAIL] 基线自身不合规：%s" % i)
         for r in failed:
-            print("  [FAIL] %s：退出码 %s（证据：nf %s；期望含 %r 且不含 %r）"
-                  % (r["id"], r["exit"], " ".join(r["argv"]), r["expect"], r["forbid"]))
+            why = ("耗时 %s ms > 预算 %s ms" % (r["ms"], r["max_ms"]) if r["content_ok"]
+                   else "期望含 %r 且不含 %r" % (r["expect"], r["forbid"]))
+            print("  [FAIL] %s：退出码 %s（证据：nf %s；%s）"
+                  % (r["id"], r["exit"], " ".join(r["argv"]), why))
         return 0 if (not self_issues and not failed) else 1
 
     if args.verify:
@@ -4416,11 +4418,8 @@ def _cmd_shell(args) -> int:
             live_buf = io.StringIO()
 
             def _live(argv):
-                """活体执行：**捕获**输出（机器面须纯 JSON；人读面另行打印）。
-
-                逐条 `--help` 的扫描输出不留在 `live_buf`——否则人读面会把最后一条 help
-                当成「活体输出」打印（实测踩过）。只保留真正的活体命令输出。
-                """
+                """活体执行：**捕获**输出（机器面须纯 JSON）。逐条 `--help` 的扫描输出不留在
+                `live_buf`——否则人读面会把最后一条 help 当成「活体输出」打印（实测踩过）。"""
                 is_help_sweep = len(argv) >= 2 and str(argv[-1]) == "--help"
                 buf = io.StringIO()
                 with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
