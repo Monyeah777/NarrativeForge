@@ -174,22 +174,48 @@ def matches_any(rel: str, patterns) -> bool:
 #: 其余宽面（conformance 的模块/协议面、pack_combo 的声明面、schema_lint 的面……）全部免算。
 _FACE_FP: Dict[Any, str] = {}
 _FACE_FP_MAX = 1024
+#: 观测位：**真正重算了多少次面指纹**（复用的那几次不算）。判据 `FaceReuseBudgetTest` 用它把
+#: 「确知没变就复用」变成**确定性**数字——不能靠数 `content_fingerprint`：本函数现在自己枚举 + 摘要
+#: （为了把逐件摘要一起交给 `usage_scan`），那条计数会恒为 0（实测踩过）。
+_FACE_FP_STATS: Dict[str, int] = {"recomputes": 0}
 
 
 def face_fingerprint(root: str, patterns) -> str:
     """`content_fingerprint` 的**带确知变更面复用**版本（值逐位相同，只在确知没变时省掉重算）。"""
+    return face_digests(root, patterns)[0]
+
+
+def face_digests(root: str, patterns):
+    """`(面指纹, {相对路径: 逐件摘要})`——一次枚举 + 一次摘要**服务两种口径**。
+
+    `face_fingerprint` 就是本函数的第一个返回值（两者值**逐位相同**）。
+    依据（实测 2026-09-29）：`asset_density.usage_scan` 的内容键要按**同一张语料面**取指纹，而它随后
+    又要给 2815 份语料各取一次逐件摘要当**逐件缓存键**——同一批摘要算了两遍（~5.6 ms）。这个入口把
+    「枚举 + 摘要」一次做完，指纹与逐件摘要一起交出。
+    """
     pats = tuple(str(p) for p in patterns)
     key = (os.path.normcase(os.path.abspath(str(root))), pats)
     hit = _FACE_FP.get(key)
     if hit is not None:
         known, changed = changed_paths()
         if known and not any(matches_any(rel, pats) for rel in changed):
-            return hit
-    fp = content_fingerprint(root, patterns)
+            return hit, None          # 复用：值有了，但摘要没在手（调用方需要就自己算）
+    rels: List[str] = []
+    for pat in patterns:
+        rels.extend(iter_files(root, str(pat)))
+    digests = {rel: _payload_digest(root, rel) for rel in rels}
+    _FACE_FP_STATS["recomputes"] += 1
+    h = hashlib.sha256()
+    for rel in rels:
+        h.update(rel.encode("utf-8"))
+        h.update(b"\x00")
+        h.update(digests[rel])
+        h.update(b"\x01")
+    fp = h.hexdigest()
     if len(_FACE_FP) >= _FACE_FP_MAX:
         _FACE_FP.clear()
     _FACE_FP[key] = fp
-    return fp
+    return fp, digests
 
 
 def resident_active() -> bool:

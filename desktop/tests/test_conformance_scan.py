@@ -208,19 +208,9 @@ class FaceReuseBudgetTest(unittest.TestCase):
             if known:
                 cs.note_changes(paths)
             dm.reset_process_caches()
-            calls = {"n": 0}
-            orig = cs.content_fingerprint
-
-            def traced(root, patterns):
-                calls["n"] += 1
-                return orig(root, patterns)
-
-            cs.content_fingerprint = traced          # type: ignore[assignment]
-            try:
-                rs.evaluate(ROOT)
-            finally:
-                cs.content_fingerprint = orig         # type: ignore[assignment]
-            return calls["n"]
+            before = cs._FACE_FP_STATS["recomputes"]
+            rs.evaluate(ROOT)
+            return cs._FACE_FP_STATS["recomputes"] - before
 
         cs.install_resident(ROOT)
         try:
@@ -260,19 +250,19 @@ class FaceFingerprintTest(unittest.TestCase):
         from unittest import mock
         pats = ("04_模块库/*/*.md",)
         cs._FACE_FP.clear()
-        with mock.patch.object(cs, "content_fingerprint", wraps=cs.content_fingerprint) as spy:
-            cs.face_fingerprint(ROOT, pats)                       # 第一次：没有上次的值，必算
-            self.assertEqual(1, spy.call_count)
-            with mock.patch.object(cs, "changed_paths", lambda: (False, set())):
-                cs.face_fingerprint(ROOT, pats)                   # 说不清 → 必算（fail-closed）
-                self.assertEqual(2, spy.call_count)
-            with mock.patch.object(cs, "changed_paths", lambda: (True, {"docs/x.md"})):
-                cs.face_fingerprint(ROOT, pats)                   # 确知没沾到 → 复用
-                self.assertEqual(2, spy.call_count)
-            with mock.patch.object(cs, "changed_paths",
-                                   lambda: (True, {"04_模块库/通用类/m00_数据结构.md"})):
-                cs.face_fingerprint(ROOT, pats)                   # 确知沾到（且路径是小写）→ 必算
-                self.assertEqual(3, spy.call_count)
+        base = cs._FACE_FP_STATS["recomputes"]
+        cs.face_fingerprint(ROOT, pats)                    # 第一次：没有上次的值，必算
+        self.assertEqual(base + 1, cs._FACE_FP_STATS["recomputes"])
+        with mock.patch.object(cs, "changed_paths", lambda: (False, set())):
+            cs.face_fingerprint(ROOT, pats)                # 说不清 → 必算（fail-closed）
+            self.assertEqual(base + 2, cs._FACE_FP_STATS["recomputes"])
+        with mock.patch.object(cs, "changed_paths", lambda: (True, {"docs/x.md"})):
+            cs.face_fingerprint(ROOT, pats)                # 确知没沾到 → 复用
+            self.assertEqual(base + 2, cs._FACE_FP_STATS["recomputes"])
+        with mock.patch.object(cs, "changed_paths",
+                               lambda: (True, {"04_模块库/通用类/m00_数据结构.md"})):
+            cs.face_fingerprint(ROOT, pats)                # 确知沾到（且路径是小写）→ 必算
+            self.assertEqual(base + 3, cs._FACE_FP_STATS["recomputes"])
 
 
 class LogicalReadFaceAuditTest(unittest.TestCase):

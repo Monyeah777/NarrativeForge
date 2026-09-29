@@ -8,12 +8,13 @@ auditor: 本轮执行者
 subjects:
   - .github/PULL_REQUEST_TEMPLATE.md:27e7688cf590aded0bbd4574235d0a8e47d5aa1680284ad99450daeda2a8e66d
   - CONTRIBUTING.md:2a3e7848221cc8a642e6dac9aa4f08da3437a63b2c0fca5a5bfe3473a784efe2
-  - desktop/src/core/asset_density.py:f7181ec6f08499cf62cece930cfad575795e4bd015f5abdfd9588b53765f1cc9
+  - desktop/src/core/asset_density.py:857c45743ec4cf62cead9771073de43caed54b7f002fb7ac20e97f6f584cd94c
   - desktop/src/core/asset_line_baseline.py:c62eda98405249b1a31fbd17bf08256b29426eeb171dd3a2bfeb2ecbcd8120e1
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
 > subjects 语义：本件是「外部输入筛选」结论，绑定的四条是**判定所依据的仓内证据件**——它们一改，本件结论即须重审（审计协议同款语义）。
+> 重审（2026-09-29 · 他证修复波）：`asset_density.py::usage_scan` 的键提取改锚 `root`（原 `Path(rel)` 按 **CWD** 解析、读不到即静默降级成「仅文件名令牌」，实测键数 8→4 / 引用 24→12）——**结论复核不变**（筛选判定与资产密度度量口径均未变），subjects 依「重审并更新 digest」处置。
 
 ## 一、对象与形态（先取证）
 

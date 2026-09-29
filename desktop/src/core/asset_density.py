@@ -264,21 +264,18 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         for rel in csc.iter_files(root, pat):
             if rel.rsplit("/", 1)[-1] == "README.md":
                 continue
-            # 路径必须锚在 `root` 上（`Path(rel)` 是按 **CWD** 解析的），且把正文传进去——
-            # `_keys_of` 在 `text is None` 时会自行读件，读失败则**静默降级**成「仅文件名令牌」：
-            # 实测同树上「键 8→4、引用 24→12」且不报 issue（同文件 scan / thickness_scan 两处本就传 text）。
-            shelf = Path(root) / rel
-            try:
-                text = csc.read_text_cached(shelf)
-            except OSError:
-                text = None
-            for k in _keys_of(shelf, text):
+            # 路径必须锚在 `root` 上：`Path(rel)` 是按 **CWD** 解析的，读不到时 `_keys_of`
+            # 的自带兜底会**静默降级**成「仅文件名令牌」（实测同树上 键 8→4 / 引用 24→12 且不报 issue）。
+            for k in _keys_of(Path(root) / rel):
                 keys.setdefault(k, rel)
     # 内容键：**语料面指纹**（常驻层逐件摘要，不读正文）＋ 键集。口径与旧实现一致（同一批件、
     # 同一 payload 语义），但不再把 3.5 MB 正文逐件 `encode()` + 重哈希——而且键能**先算**，
     # 于是命中时**根本不必把 2815 份语料读成列表**（旧实现是「先全读、再查表」）。
+    # 面指纹与**逐件摘要**一次拿到：未命中时 `face_digests` 已经把 2815 份语料的摘要算齐，
+    # 下面 `count_keys_additive` 的逐件缓存键直接复用它们——过去同一批摘要算了两遍（实测 ~5.6 ms）。
+    fp, digest_map = csc.face_digests(root, CORPUS_PATTERNS)
     h = hashlib.sha256()
-    h.update(csc.face_fingerprint(root, CORPUS_PATTERNS).encode("utf-8"))
+    h.update(fp.encode("utf-8"))
     h.update(b"\x00")
     for k in sorted(keys):
         h.update(k.encode("utf-8"))
@@ -306,8 +303,10 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                 corpus.append(csc.read_text_cached(Path(root) / rel))
             except OSError:
                 continue
-            # 摘要已在常驻层（上面的语料面指纹刚把它们算齐）⇒ 这里只是取用，不再编码 + 重哈希
-            digests.append(csc._payload_digest(root, rel).hex())
+            dg = (digest_map or {}).get(rel)
+            if dg is None:                     # 面指纹是**复用**来的（手里没摘要）→ 现取
+                dg = csc._payload_digest(root, rel)
+            digests.append(dg.hex())
         counts = count_keys_additive(corpus, keys, digests=digests)
         disk_cache.store("census", dkey, counts)
     if ckey not in _CENSUS_CACHE:

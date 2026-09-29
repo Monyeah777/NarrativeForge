@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-09-29",
   "approved_by": "执行者（作者授权本波裁决）",
-  "note": "purity 逐件 findings 缓存 + 面复用预算判据",
+  "note": "usage 面指纹与逐件摘要共用一次枚举 + 面重算观测位",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "4ef294d99d7d94f1b3f19c2660daf7145418b381f3be98d204f3a9fb4c58756a"

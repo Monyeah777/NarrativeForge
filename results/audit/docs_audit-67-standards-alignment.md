@@ -7,13 +7,14 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/domain_pack.py:50c8fae22e6fc75800bf9944a3147bd4efba04c1ca38821e73133d739d1884bc
-  - desktop/src/core/asset_density.py:f7181ec6f08499cf62cece930cfad575795e4bd015f5abdfd9588b53765f1cc9
+  - desktop/src/core/asset_density.py:857c45743ec4cf62cead9771073de43caed54b7f002fb7ac20e97f6f584cd94c
   - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
 > subjects = 4 件（工厂、资产密度度量、公开文档、数据契约登记）；**不含派生物**
+> 重审（2026-09-29 · 他证修复波）：`asset_density.py::usage_scan` 的键提取改锚 `root`（同 AUD-0004 的重审说明）——**结论复核不变**，subjects 依「重审并更新 digest」处置。
 > （`protocol/standards_catalog.json` 与 `protocol/standards_binding.json` 由脚本/工厂可复算，
 > 是**证据与投影**而非源——按口径不入审计绑定）。
 
