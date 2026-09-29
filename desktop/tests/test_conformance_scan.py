@@ -653,37 +653,53 @@ class CodeScopeFaceTest(unittest.TestCase):
 
 
 class ModuleDocsMemoTest(unittest.TestCase):
-    """`_module_docs` 的「列目录」缓存：**一次只读调用内只走一遍文件系统**，且不跨调用复用。
+    """`_module_docs` 的作用域缓存与**新鲜度**：同作用域两次一致，新作用域必须看见新增件。
 
-    依据：一次 `regression_score.evaluate` 里它被调 **5** 次（各扫描器各自重走 `04_模块库` +
-    `community/*/modules`）。作用域与读缓存同生命周期（`read_memo`），出口即清——所以每次调用
-    都重新列目录，不存在陈旧。实测时间收益约 60 ms（目录枚举已被 OS 缓存，故**很小**），
-    但**遍历次数是确定性的 5 → 1**，本判据盯的就是这个确定性部分。
+    口径（2026-09-29 修订）：本函数已改走**共享枚举器**（`iter_files`；目录清单在常驻层里），
+    不再是「一次 `os.walk`」，所以判据从「数 `os.walk` 次数」改成**行为**：同作用域稳定、
+    跨作用域不许陈旧。真仓库上的**逐件等价**由 `ModuleDocsEquivalenceTest` 另行守着。
     """
 
-    def test_listed_once_per_scope_and_fresh_next_scope(self):
-        # 口径：数**文件系统遍历**（`os.walk`），不是数调用——调用两次是正常的，遍历只该一次。
-        walks = []
-        orig_walk = os.walk
-
-        def counting_walk(*a, **k):
-            walks.append(a)
-            return orig_walk(*a, **k)
-
-        os.walk = counting_walk
-        try:
+    def test_fresh_next_scope_and_stable_within_scope(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for rel in ("04_模块库/通用类/A01_x.md", "community/包甲/modules/M01_x.md"):
+                path = os.path.join(tmp, *rel.split("/"))
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                    fh.write("x\n")
             with cs.read_memo():
-                first = cs._module_docs(ROOT)
-                second = cs._module_docs(ROOT)
+                first = cs._module_docs(tmp)
+                second = cs._module_docs(tmp)
             self.assertEqual(first, second, "同一作用域内两次结果必须一致")
-            self.assertEqual(1, len(walks), "同一作用域内只该遍历一次目录树")
-            walks.clear()
+            self.assertEqual(2, len(first), first)
+            with open(os.path.join(tmp, "community", "包甲", "modules", "M02_y.md"),
+                      "w", encoding="utf-8", newline="\n") as fh:
+                fh.write("y\n")
             with cs.read_memo():
-                third = cs._module_docs(ROOT)
-            self.assertEqual(1, len(walks), "新作用域必须重新遍历（不许跨调用陈旧）")
-            self.assertEqual(first, third, "重新列目录的结果必须与上次相同")
-        finally:
-            os.walk = orig_walk
+                third = cs._module_docs(tmp)
+            self.assertEqual(3, len(third), "新作用域必须看见新增件（不许跨调用陈旧）")
+
+
+class ModuleDocsEquivalenceTest(unittest.TestCase):
+    """`_module_docs()` 换枚举器（`os.walk` + 逐包 `listdir` → `iter_files`）后面必须**逐件一致**。
+
+    依据（实测 2026-09-29）：旧写法在守护口径下每次新内容状态都要重付——**107 次 `listdir` +
+    113 次 `isdir` ≈ 21 ms**（占该状态 os/stat 面的四分之一）；共享枚举器同一张面 **~0.5 ms**。
+    """
+
+    def test_matches_legacy_enumeration(self):
+        legacy: list = []
+        for dirpath, _dirs, files in os.walk(os.path.join(ROOT, "04_模块库")):
+            legacy += [os.path.join(dirpath, f) for f in files if f.endswith(".md")]
+        pkg_dir = os.path.join(ROOT, "community")
+        for pkg in sorted(os.listdir(pkg_dir)):
+            mdir = os.path.join(pkg_dir, pkg, "modules")
+            if os.path.isdir(mdir):
+                legacy += [os.path.join(mdir, f) for f in sorted(os.listdir(mdir))
+                           if f.endswith(".md")]
+        want = sorted(legacy)
+        self.assertGreater(len(want), 100, "面太小，判据没测到东西")
+        self.assertEqual(want, cs._module_docs(ROOT), "面与旧枚举不一致（换实现改动了面）")
 
 
 class YamlLoaderEquivalenceTest(unittest.TestCase):

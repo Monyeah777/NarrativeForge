@@ -685,22 +685,20 @@ def _module_docs(root: str) -> List[str]:
 
     实测：一次 `evaluate` 里本函数被调 **5** 次（各扫描器各自重走 `04_模块库` + `community/*/modules`），
     合计 167 ms。作用域与读缓存同生命周期，出口即清——下一次调用照常重新列目录，故不会陈旧。
+
+    2026-09-29 再改**枚举器**：原实现是 `os.walk("04_模块库")` + 逐包 `os.listdir(mdir)` +
+    `os.path.isdir(mdir)`，在守护口径下每次新内容状态都要重付——实测 **107 次 `listdir` + 113 次
+    `isdir` ≈ 21 ms**（占该状态 os/stat 面的四分之一）。改走共享枚举器（目录清单已在常驻层）
+    后同一张面 **~0.5 ms**；面**逐件一致**由 `test_conformance_scan.ModuleDocsEquivalenceTest`
+    用旧口径原样重算比对，**跨作用域新鲜**由 `ModuleDocsMemoTest` 用合成树盯着。
     """
     key = os.path.normcase(os.path.abspath(str(root)))
     if _DIR_MEMO is not None and key in _DIR_MEMO:
         return list(_DIR_MEMO[key])
     out: List[str] = []
-    for sub in ["04_模块库"]:
-        base = os.path.join(root, sub)
-        if os.path.isdir(base):
-            for dirpath, _, files in os.walk(base):
-                out += [os.path.join(dirpath, f) for f in files if f.endswith(".md")]
-    pkg_dir = os.path.join(root, "community")
-    if os.path.isdir(pkg_dir):
-        for pkg in sorted(os.listdir(pkg_dir)):
-            mdir = os.path.join(pkg_dir, pkg, "modules")
-            if os.path.isdir(mdir):
-                out += [os.path.join(mdir, f) for f in sorted(os.listdir(mdir)) if f.endswith(".md")]
+    for pattern in ("04_模块库/**/*.md", "community/*/modules/*.md"):
+        for rel in iter_files(root, pattern):
+            out.append(os.path.join(root, *rel.split("/")))
     out = sorted(out)
     if _DIR_MEMO is not None:
         _DIR_MEMO[key] = out

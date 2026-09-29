@@ -2,6 +2,14 @@
 
 ## [2.12.0] - 未发布
 
+- **执行层：模块文档清单换共享枚举器（`conformance_scan.scan` 33 → 13 ms；端到端 0.427 → 0.385 s）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
+  ① **扫法（第二类钱）**：把 `os.stat` / `os.scandir` / `os.listdir` / `os.walk` / `json.loads` / `open` / `Path.read_text` / `Path.read_bytes` 的调用点按「函数 @ 调用点 file:line」整体记账（真墙钟 + 次数），在守护口径下跑唯一新状态。
+  ② **抓到的**：`conformance_scan._module_docs`（模块文档清单）用的是 `os.walk("04_模块库")` + 逐包 `os.listdir` + `os.path.isdir`——**107 次 `listdir` + 113 次 `isdir` ≈ 21 ms**，占该状态 os/stat 面的四分之一。**同一张面**在 `pack_combo`（上一波已修）与 `schema_lint`（两波前已修）早就走共享枚举器，只剩这一处还是老写法。
+  ③ **改法**：改走 `iter_files("04_模块库/**/*.md")` + `iter_files("community/*/modules/*.md")`（目录清单已在常驻层 `dirs` 桶里），返回形态同契约（os 路径 + 有序）。
+  ④ **判据**：新增 `test_conformance_scan.ModuleDocsEquivalenceTest`（旧口径原样重算逐件比对，真仓库 >100 件）；原 `ModuleDocsMemoTest` 的口径从「数 `os.walk` 次数」改成**行为**——同作用域稳定 + 新作用域必须看见中途新增件（换枚举器后 `os.walk` 已不再被调用，旧判据失效，故随语义一起改，不偷偷放宽）。
+  ⑤ **实测**：`conformance_scan.scan` **33–34 → 13–15 ms**；`score.evaluate` 唯一新状态（3 轮）**346 → 305 ms**；**端到端（一次性唯一正文，4 样本中位）0.427 → 0.385 s**；同状态重放 **~51 ms**、树没变 **50 ms**、冷进程 **~1.67 s**。
+  ⑥ **本轮踩到并如实记**：我一度把探针与测试**并行**跑，`04_模块库` 里那个一次性探针件被 `index_verify` 的「读盘面 ⊆ 申报输入面」判据当场抓住判红——**判据是对的，观察者是错的**；此后探针与测试一律串行。
+
 - **执行层：热路径上三处「隐式逐条 stat / glob」换共享枚举器（stat 面 29–33 → 8.8–12.5 ms；端到端 0.466 → 0.427 s）**（**作者目标**：「……数据结构跃迁……达到顶尖工业水准」）：
   ① **扫法**：不再逐个猜函数，而是把 `pathlib` 与 `glob` 的调用点**整体记账**（`Path.is_file` / `is_dir` / `iterdir` / `rglob` / `glob` / `exists` + `glob.glob`，按「方法 @ 调用点 file:line」汇总**真墙钟**与次数），在守护口径（`reset_process_caches()` + 确知变更）下跑一次唯一新状态——一眼看出 money 花在哪一行。
   ② **抓到的三处**（都不是新代码，是老写法留在热路径上）：`conformance_scan` 的协议包枚举 `glob.glob(community/*/protocol.yaml)` **9–13 ms**；`pack_combo._module_contracts` 的 `Path.glob("community/*/modules/*.md")`——`Path.glob` 非末段逐条 `is_dir()` ⇒ **111 次** ≈ **10 ms**（同一张面走共享枚举器 0.4 ms）；`layer_model._rule_issues` 的 L9 逐 pattern `Path.glob`（6 条 derived），与同一次扫描里其它展开是**两套口径**。
