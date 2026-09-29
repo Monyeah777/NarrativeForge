@@ -15,7 +15,7 @@ subjects:
   - community/量化金融域包/outputs/INDEX.json:cfe9272a362e138f9cb6d15615176cbb348716336d31b372bf411645f74a7bb6
   - community/AI系统域包/outputs/INDEX.json:95103926c6736571fb38e5c95f8234b76dddf26ee286270e3bdbdf3fd4c33a99
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
-  - desktop/tests/test_output_forms.py:c24bf955bbf211dd502fd3678e9f2dea92950cd085cc3a6b87575d09049e3be0
+  - desktop/tests/test_output_forms.py:ae331de38238ed0a7d287ad0ed41f15f44800ef90759497b2cf2ea9b2359ff9e
   - desktop/tests/test_quant_metrics.py:bed9322e0961f98df2b7f588fd0d81f1b2ff92b45373e0ecfc3cc7da8739d4f3
 ---
 
