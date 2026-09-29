@@ -95,8 +95,8 @@ nf() {
         *[!0-9]*) : ;;
         *)
           local _o="" _e=""
-          if [ "$_olen" -gt 0 ]; then LC_ALL=C IFS= read -r -N "$_olen" _o <&9 || true; printf '%s' "$_o"; fi
-          if [ "$_elen" -gt 0 ]; then LC_ALL=C IFS= read -r -N "$_elen" _e <&9 || true; printf '%s' "$_e" >&2; fi
+          if [ "$_olen" -gt 0 ]; then LC_ALL=C IFS= read -r -d '' -n "$_olen" _o <&9 || true; printf '%s' "$_o"; fi
+          if [ "$_elen" -gt 0 ]; then LC_ALL=C IFS= read -r -d '' -n "$_elen" _e <&9 || true; printf '%s' "$_e" >&2; fi
           exec 9<&- || true
           return "$_code"
           ;;

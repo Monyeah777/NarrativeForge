@@ -106,15 +106,17 @@ daemon_try() {
   case "$NF_CODE$NF_OLEN$NF_ELEN" in
     *[!0-9]*) exec 9<&-; return 127 ;;             # 头不是数字 = 不是本协议，回退
   esac
-  # LC_ALL=C 下 `read -N` 按**字节**读（否则按字符，UTF-8 会短读）
+  # 读正文：**不用 `read -N`** —— 它是 bash 4+ 才有的（macOS 自带 bash 3.2 没有，实测
+  # 2026-09-29 三平台门禁 macOS 腿：读空 + `|| true` 吞掉 ⇒ rc=0 却零输出）。改用 `-d ''`
+  # （分隔符设 NUL，故不会在正文换行处短读）+ `-n`（bash 2+ 即有）；LC_ALL=C 下按**字节**计。
   if [ "$NF_OLEN" -gt 0 ]; then
     local NF_OUT=""
-    LC_ALL=C IFS= read -r -N "$NF_OLEN" NF_OUT <&9 || true
+    LC_ALL=C IFS= read -r -d '' -n "$NF_OLEN" NF_OUT <&9 || true
     printf '%s' "$NF_OUT"
   fi
   if [ "$NF_ELEN" -gt 0 ]; then
     local NF_ERR=""
-    LC_ALL=C IFS= read -r -N "$NF_ELEN" NF_ERR <&9 || true
+    LC_ALL=C IFS= read -r -d '' -n "$NF_ELEN" NF_ERR <&9 || true
     printf '%s' "$NF_ERR" >&2
   fi
   exec 9<&-
