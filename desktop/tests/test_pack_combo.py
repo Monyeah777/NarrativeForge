@@ -18,6 +18,22 @@ from core import pack_combo as pc  # noqa: E402
 ROOT = str(Path(__file__).resolve().parents[2])
 
 
+def _write_pack(root, name, mid, inputs=(), publish=(), subscribe=()):
+    """最小可组合包：`protocol.yaml`（包 id + 模块清单 + 挂载层）+ 一份 `machine_contract` 模块件。"""
+    d = Path(root, "community", name)
+    (d / "modules").mkdir(parents=True, exist_ok=True)
+    (d / "protocol.yaml").write_text(
+        "protocol:\n  package:\n    id: %s\n    pipeline: P90\n    module_id_range:\n"
+        '      - "%s"\n    mount_layers:\n      P40 行为决策: {default: [%s], available: []}\n'
+        % (name, mid, mid), encoding="utf-8")
+    stem = mid.split(":")[-1]
+    (d / "modules" / ("%s_x.md" % stem)).write_text(
+        "```yaml\nmachine_contract:\n  id: %s\n  layer: P40\n  inputs: [%s]\n"
+        "  outputs: [x]\n  events:\n    publish: [%s]\n    subscribe: [%s]\n```\n"
+        % (mid, ", ".join(inputs), ", ".join(publish), ", ".join(subscribe)),
+        encoding="utf-8")
+
+
 class ContentKeyedDerivedCacheTest(unittest.TestCase):
     """派生缓存按**内容**（不是按 root）：输入没变就复用；输入一变就重算（不许陈旧）。
 
@@ -30,9 +46,9 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
     def test_breadth_reuses_within_same_content(self):
         """键即内容：同内容**第二次不得新增** combine 调用；且判据自身先证明有效。
 
-        口径（2026-09 修订）：本函数现在有两层缓存（进程内内容键 + **持久**内容键），
-        所以「第一次一定真跑」不再是真不变量——**先在两层都关掉的最冷状态下证明计数器有效**
-        （必须真跑 >1000 次），**再**测真不变量（第二次零新增）。
+        口径（2026-09 修订）：本函数现在有**三层**缓存（进程内内容键 + **持久**内容键 +
+        逐组合判决层），所以「第一次一定真跑」不再是真不变量——**先在三层都清空/关掉的最冷状态下
+        证明计数器有效**（必须真跑 >1000 次），**再**测真不变量（第二次零新增）。
         """
         import os
 
@@ -58,6 +74,7 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
         os.environ[dc.ENV_OFF] = "1"
         try:
             pc._CONTENT_CACHE.clear()
+            pc._COMBO_CACHE.clear()            # 逐组合层也算一层：最冷状态必须把它清空
             _, cold = run_with_counter()
         finally:
             if old_off is None:
@@ -85,6 +102,78 @@ class ContentKeyedDerivedCacheTest(unittest.TestCase):
             mod.write_text("内容二\n", encoding="utf-8")
             self.assertNotEqual(f1, pc._inputs_fingerprint(tmp),
                                 "输入一变指纹必须变（否则会读到陈旧派生结果）")
+
+
+class ComboCacheTest(unittest.TestCase):
+    """逐组合判决缓存：等价（不改判定）／同状态零重算／**见证覆盖跨包闭包**（变异注入）。
+
+    依据（实测，2026-09-29）：广度证明 **6885** 次组合 ≈ **982 ms**（唯一新状态里最大单项），而
+    「合不合法 + 悬挂/未桥证据」只是「包声明 + 模块契约 + 核心发布集」的纯函数。接缓存后，
+    把外层两层缓存**全部作废**，第二名仍是 0 次组合（982 ms → 255 ms，判决逐字段一致）；
+    真守护里的新状态实测 `pack_combo.scan` 723 ms → 184 ms。
+    """
+
+    def test_combo_verdicts_survive_outer_cache_invalidation(self):
+        """真不变量：外层两层缓存都作废，逐组合层仍不许再跑一次组合。"""
+        import os
+
+        from core import disk_cache as dc
+
+        calls = []
+        orig_combine = pc.combine
+
+        def counting(*a, **k):
+            calls.append(1)
+            return orig_combine(*a, **k)
+
+        old_off = os.environ.get(dc.ENV_OFF)
+        os.environ[dc.ENV_OFF] = "1"          # 关持久层：第二名必须由逐组合层兜住，不许它顶包
+        pc.combine = counting                 # type: ignore[assignment]
+        try:
+            pc.cache_clear()
+            pc._CONTENT_CACHE.clear()
+            pc._COMBO_CACHE.clear()
+            first = pc.breadth(ROOT)
+            n_first = len(calls)
+            pc.cache_clear()
+            pc._CONTENT_CACHE.clear()         # 只作废外层两层，逐组合层留着
+            calls.clear()
+            second = pc.breadth(ROOT)
+            n_second = len(calls)
+        finally:
+            pc.combine = orig_combine         # type: ignore[assignment]
+            if old_off is None:
+                os.environ.pop(dc.ENV_OFF, None)
+            else:
+                os.environ[dc.ENV_OFF] = old_off
+            pc.cache_clear()
+            pc._CONTENT_CACHE.clear()
+        self.assertGreater(n_first, 1000, "首次应真跑组合（判据自身要有效）")
+        self.assertEqual(0, n_second, "外层作废后逐组合层仍应全命中")
+        self.assertEqual(first, second, "命中缓存的判决必须与首算逐字段一致")
+
+    def test_witness_covers_cross_pack_closure(self):
+        """变异注入：**没被点名的包**的模块契约一变，见证必须变、判决必须跟着变。
+
+        这就是「键不许只取参与包自己碰得到的模块」的判据——组合闭包会经 `pub_index` 拉入
+        **任意发布方**、经 `by_id` 拉入**任意依赖件**，参与包的 `references` 根本框不住它们。
+        按「involved modules」做细键的实现会在这里读到陈旧判决（假绿）。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            _write_pack(tmp, "包甲", "包甲:M01", subscribe=["ev_pull"])
+            _write_pack(tmp, "包丙", "包丙:M01", publish=["ev_pull"])
+            w_before = pc._combo_witness(tmp, pc.profiles(tmp), pc._module_contracts(tmp))
+            cert = pc.combine(tmp, packs=["包甲"])
+            self.assertIn("包丙:M01", cert["modules"], "事件闭包应拉入第三方发布方")
+            self.assertTrue(cert["legal"], "闭包补齐后：无悬挂、未桥")
+
+            _write_pack(tmp, "包丙", "包丙:M01", publish=["ev_pull"], inputs=["查无此件"])
+            # 按 root 的进程缓存是**逐请求**清的（守护每请求清一次），测试里手工清，模拟下一条命令
+            pc.cache_clear()
+            w_after = pc._combo_witness(tmp, pc.profiles(tmp), pc._module_contracts(tmp))
+            self.assertNotEqual(w_before, w_after,
+                                "第三方包的契约一变，见证必须变（否则会读到陈旧判决）")
+            self.assertFalse(pc.combine(tmp, packs=["包甲"])["legal"], "悬挂依赖应让判决翻转")
 
 
 class CombineTest(unittest.TestCase):

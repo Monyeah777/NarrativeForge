@@ -309,6 +309,68 @@ def _digest(obj: Dict[str, Any]) -> str:
     return hashlib.sha256(blob).hexdigest()[:32]
 
 
+#: **逐组合**判决缓存（进程内）：键 = (参与包名, 本轮**全局见证**)。
+#:
+#: 依据（实测，2026-09-29）：广度证明要跑 **6910** 次组合、约 **723 ms**（唯一新状态里最大单项），
+#: 而「该组合合不合法 + 悬挂/未桥证据」只是「包声明 + 模块契约 + 核心发布集」的纯函数。
+#:
+#: **为什么见证必须是全局的（别改回「参与包碰得到的模块」那种细键）**：组合闭包会经 `by_id`
+#: 拉入**任意第三方包**的模块（`inputs` 依赖），并经 `pub_index` 拉入**任意发布方**的模块
+#: （事件闭包）。所以 A+B 的判决依赖**整棵模块契约面**，而不只是 A、B 自己加上它们
+#: `references` 点名的模块——细键在跨包闭包上会**静默读到陈旧判决**（假绿）。判据见
+#: `test_pack_combo.ComboCacheTest.test_witness_covers_cross_pack_closure`（变异注入）。
+#: 取全局后：任一声明/契约一变 ⇒ 全量重算，与无缓存同价，不会假绿。
+#: 收益场景（唯一新状态实测）：新增/编辑 `04_模块库` 正文、包内正文、`registry.json` 这类
+#: **不改 `machine_contract` 与协议声明**的编辑 ⇒ 见证不变 ⇒ 6910 次组合全命中。
+#: 只做进程内一层：6910 条结果落盘不划算（外层 `pack-breadth` 已有跨进程内容缓存）。
+_COMBO_CACHE: Dict[Any, Any] = {}
+_COMBO_CACHE_MAX = 65536
+#: 参与见证的包声明字段（`module_recs` 由**模块契约面**统一覆盖，不在这里重复计入）。
+_COMBO_DECL_KEYS = ("package", "pipeline", "references", "assets", "layers",
+                    "publishes", "subscribes")
+
+
+def _canon(obj: Any) -> bytes:
+    return json.dumps(obj, ensure_ascii=False, sort_keys=True, default=str).encode("utf-8")
+
+
+def _combo_witness(root: str, prof: Dict[str, Any], contracts: Dict[str, Any]) -> str:
+    """本轮「组合语义面」的**全局见证**：逐包声明 + 逐模块契约 + 核心发布集（规范 JSON 后哈希）。
+
+    每次广度证明只算一遍（111 包 + 235 契约，实测 < 1 ms），其后 ~6900 次组合共用同一份。
+    """
+    h = hashlib.sha256()
+    for p in sorted(prof):
+        rec = prof[p] or {}
+        h.update(_canon(["decl", str(p), {k: rec.get(k) for k in _COMBO_DECL_KEYS}]))
+    for mid in sorted(contracts):
+        h.update(_canon(["contract", str(mid), contracts[mid]]))
+    _by_id, _pub, core_pub = indexes(root)
+    h.update(_canon(["core_pub", sorted(core_pub)]))
+    return h.hexdigest()
+
+
+def _verdict_cached(root: str, names: Sequence[str], prof: Dict[str, Any],
+                    contracts: Dict[str, Any],
+                    witness: str) -> Tuple[bool, List[Any], List[Any]]:
+    """`combine()` 的逐组合判决缓存 → `(legal, dangling[:2], unbridged[:2])`。
+
+    只留广度证明真正消费的三个字段（不整个证书）：6700+ 条证书常驻守护会把内存顶起来，
+    而判决是同一个纯函数的值。键见 `_COMBO_CACHE` 的说明。
+    """
+    key = (tuple(names), witness)
+    hit = _COMBO_CACHE.get(key)
+    if hit is None:
+        cert = combine(root, packs=list(names), _prof=prof, _contracts=contracts)
+        hit = (bool(cert["legal"]),
+               list((cert.get("dependency_closure") or {}).get("dangling") or [])[:2],
+               list((cert.get("event_closure") or {}).get("unbridged") or [])[:2])
+        if len(_COMBO_CACHE) >= _COMBO_CACHE_MAX:
+            _COMBO_CACHE.clear()
+        _COMBO_CACHE[key] = hit
+    return hit
+
+
 def combine(root: str = ".", packs: Sequence[str] = (), extra_modules: Sequence[str] = (),
             extra_assets: Sequence[str] = (), _prof: Any = None,
             _contracts: Any = None) -> Dict[str, Any]:
@@ -500,6 +562,7 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
     key = _cache_key(root)
     prof = profiles(root)
     contracts = _module_contracts(root)
+    witness = _combo_witness(root, prof, contracts)    # 逐组合判决缓存的全局见证（本轮算一遍）
     cached = _CACHE.get(key) or {}
     cached.update({"prof": prof, "contracts": contracts})
     _CACHE[key] = cached
@@ -510,30 +573,29 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
                              "sexts": 0, "sexts_legal": 0,
                              "failures": []}
     for a, b in itertools.combinations(names, 2):
-        c = combine(root, packs=[a, b], _prof=prof, _contracts=contracts)
+        legal, dangling, unbridged = _verdict_cached(root, (a, b), prof, contracts, witness)
         stats["pairs"] += 1
-        stats["pairs_legal"] += 1 if c["legal"] else 0
-        if not c["legal"] and len(stats["failures"]) < 10:
-            stats["failures"].append({"combo": [a, b],
-                                      "dangling": c["dependency_closure"]["dangling"][:2],
-                                      "unbridged": c["event_closure"]["unbridged"][:2]})
+        stats["pairs_legal"] += 1 if legal else 0
+        if not legal and len(stats["failures"]) < 10:
+            stats["failures"].append({"combo": [a, b], "dangling": dangling,
+                                      "unbridged": unbridged})
     rnd = random.Random(seed)
     triples: Set[Tuple[str, ...]] = set()
     if len(names) >= 3:
         while len(triples) < min(triple_sample, 5000):
             triples.add(tuple(sorted(rnd.sample(names, 3))))
     for t in sorted(triples):
-        c = combine(root, packs=list(t), _prof=prof, _contracts=contracts)
+        legal, _dg, _ub = _verdict_cached(root, t, prof, contracts, witness)
         stats["triples"] += 1
-        stats["triples_legal"] += 1 if c["legal"] else 0
+        stats["triples_legal"] += 1 if legal else 0
     quads: Set[Tuple[str, ...]] = set()
     if len(names) >= 4:
         while len(quads) < min(quad_sample, 5000):
             quads.add(tuple(sorted(rnd.sample(names, 4))))
     for q in sorted(quads):
-        c = combine(root, packs=list(q), _prof=prof, _contracts=contracts)
+        legal, _dg, _ub = _verdict_cached(root, q, prof, contracts, witness)
         stats["quads"] += 1
-        stats["quads_legal"] += 1 if c["legal"] else 0
+        stats["quads_legal"] += 1 if legal else 0
     for size, tag in ((5, "quints"), (6, "sexts")):
         want = min(quint_sample if size == 5 else sext_sample, 5000)
         picks: Set[Tuple[str, ...]] = set()
@@ -541,13 +603,12 @@ def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
             while len(picks) < want:
                 picks.add(tuple(sorted(rnd.sample(names, size))))
         for p in sorted(picks):
-            c = combine(root, packs=list(p), _prof=prof, _contracts=contracts)
+            legal, dangling, unbridged = _verdict_cached(root, p, prof, contracts, witness)
             stats[tag] += 1
-            stats[tag + "_legal"] += 1 if c["legal"] else 0
-            if not c["legal"] and len(stats["failures"]) < 10:
-                stats["failures"].append({"combo": list(p),
-                                          "dangling": c["dependency_closure"]["dangling"][:2],
-                                          "unbridged": c["event_closure"]["unbridged"][:2]})
+            stats[tag + "_legal"] += 1 if legal else 0
+            if not legal and len(stats["failures"]) < 10:
+                stats["failures"].append({"combo": list(p), "dangling": dangling,
+                                          "unbridged": unbridged})
     stats["all_legal"] = bool(
         stats["pairs"] == stats["pairs_legal"]
         and stats["triples"] == stats["triples_legal"]
