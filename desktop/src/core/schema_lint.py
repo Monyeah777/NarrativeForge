@@ -18,12 +18,21 @@ properties/propertyNames/enum/pattern/minLength/minItems/maxItems/minimum
 from __future__ import annotations
 
 import glob
+import hashlib
 import json
 import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from core import conformance_scan as _csc   # 统一 YAML 加载器 / 围栏解析缓存真源
+
+#: 逐件校验（围栏解析 + 子集校验）的**内容键缓存**用的占位路径前缀：结果按「与路径无关」的形状存，
+#: 取用时再把前缀换成真实相对路径。依据（实测 2026-09-29）：`schema_lint.scan` 稳态 51 ms 里，
+#: 逐件子集校验与围栏解析是绝大部分（`subset_validate` 28291 次调用、`_fence_yaml` 363 次），
+#: 而它们只是「**该件正文** + schema 定义」的纯函数——改与协议件无关的件时必然不变。
+_PATH_PLACEHOLDER = "\x00NFDOC\x00"
+_DOC_LINT_CACHE: Dict[Any, Any] = {}
+_DOC_LINT_CACHE_MAX = 4096
 
 try:
     import yaml  # PyYAML（仓库既有依赖，check16 同源）
@@ -269,6 +278,41 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
                           code_modules=("core.schema_lint",))
 
 
+def _schema_fp(schema: Any) -> str:
+    """schema 定义的**内容指纹**（进逐件缓存键）：schema 一变，所有逐件结果必须重算。"""
+    if schema is None:
+        return "-"
+    return hashlib.sha256(json.dumps(schema, ensure_ascii=False, sort_keys=True,
+                                     default=str).encode("utf-8")).hexdigest()
+
+
+def _lint_doc_cached(text: str, marker: str, schema: Any, schema_fp: str, prefix: str,
+                     obj_key: str = ""):
+    """一份件的「围栏解析 + 子集校验」结果（**键即内容**）；返回 `None` 表示没有该围栏。
+
+    结果按**与路径无关**的形状缓存（消息里的路径前缀用 `_PATH_PLACEHOLDER` 占位，取用时再替换），
+    所以同一份正文出现在不同路径上也能复用。判据：`test_schema_lint.DocLintCacheTest` 用**未缓存的
+    参考实现**在真仓库全部模块/管线/协议件上逐条比对，并断言「面内改动必换键、面外改动不换键」。
+    """
+    key = (marker, obj_key, hashlib.sha256(text.encode("utf-8")).hexdigest(), schema_fp)
+    hit = _DOC_LINT_CACHE.get(key)
+    if hit is None:
+        parsed = _fence_yaml(text, marker)
+        if parsed is None:
+            hit = None
+        else:
+            want = obj_key or marker
+            obj = parsed.get(want, parsed) if want in parsed else parsed
+            errs = subset_validate(obj, schema, _PATH_PLACEHOLDER) if schema is not None else []
+            hit = tuple(errs)
+        if len(_DOC_LINT_CACHE) >= _DOC_LINT_CACHE_MAX:
+            _DOC_LINT_CACHE.clear()
+        _DOC_LINT_CACHE[key] = hit
+    if hit is None:
+        return None
+    return [m.replace(_PATH_PLACEHOLDER, prefix) for m in hit]
+
+
 def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     """真算（未命中缓存时走这里）。"""
     issues: List[str] = []
@@ -294,6 +338,7 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
     asset_schema = by_name.get("asset.schema.json")
 
     contract_covered = 0
+    contract_fp = _schema_fp(contract_schema)
     for doc in module_docs:
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
@@ -301,17 +346,12 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
-        parsed = _fence_yaml(text, "machine_contract")
-        if parsed is None:
+        msgs = _lint_doc_cached(text, "machine_contract", contract_schema, contract_fp,
+                                f"{rel} machine_contract")
+        if msgs is None:
             continue  # 存量旧格式模块（check16 过渡策略：缺块不阻断）
         contract_covered += 1
-        if "machine_contract" in parsed:
-            mc = parsed["machine_contract"]
-        else:
-            mc = parsed
-        if contract_schema is not None:
-            for msg in subset_validate(mc, contract_schema, f"{rel} machine_contract"):
-                issues.append(msg)
+        issues += msgs
 
     # registry 投影（module.schema.json）
     reg_path = os.path.join(root, "desktop", "src", "core", "registry.json")
@@ -327,6 +367,7 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
                 issues.append(msg)
 
     # 管线声明（pipeline.schema.json）
+    pipeline_fp = _schema_fp(pipeline_schema)
     for doc in pipeline_docs:
         rel = os.path.relpath(doc, root).replace(os.sep, "/")
         try:
@@ -334,14 +375,12 @@ def _scan_impl(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         except Exception as exc:
             issues.append(f"{rel}: 读取失败 {exc}")
             continue
-        parsed = _fence_yaml(text, "Pipeline:")
-        if parsed is None:
+        msgs = _lint_doc_cached(text, "Pipeline:", pipeline_schema, pipeline_fp,
+                                f"{rel} Pipeline", obj_key="Pipeline")
+        if msgs is None:
             issues.append(f"{rel}: Pipeline yaml 缺失/解析失败")
             continue
-        obj = parsed.get("Pipeline", parsed)
-        if pipeline_schema is not None:
-            for msg in subset_validate(obj, pipeline_schema, f"{rel} Pipeline"):
-                issues.append(msg)
+        issues += msgs
 
     # community 协议声明（protocol.schema.json）
     for proto in protocol_files:

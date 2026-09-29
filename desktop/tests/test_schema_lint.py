@@ -5,6 +5,7 @@ import os
 import unittest
 
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
@@ -99,6 +100,73 @@ class SchemaSubsetValidatorTest(unittest.TestCase):
         mut = dict(self._m00_contract(),
                    tool_face=[{"purpose": "示例能力", "guidance": {"check": "在场"}}])
         self.assertEqual(sl.subset_validate(mut, schema), [])
+
+
+class DocLintCacheTest(unittest.TestCase):
+    """逐件「围栏解析 + 子集校验」的内容键缓存：与**未缓存参考实现**逐件等价 + 键即内容。
+
+    依据（实测 2026-09-29）：`schema_lint.scan` 稳态 51 ms 里逐件校验是绝大部分（`subset_validate`
+    **28291** 次调用、`_fence_yaml` 363 次）；缓存后 `scan` **51 → 18–23 ms**、调用数降到 **5183**，
+    而消息里的路径前缀靠占位符替换，故**同一份正文在不同路径上也能复用**。
+    """
+
+    def _schemas(self):
+        issues, schemas = sl.check_schema_files(ROOT)
+        self.assertEqual(issues, [])
+        return {os.path.basename(s["$id"]): s for s in schemas if "$id" in s}
+
+    def test_module_docs_match_reference(self):
+        schema = self._schemas()["contract.schema.json"]
+        fp = sl._schema_fp(schema)
+        sl._DOC_LINT_CACHE.clear()
+        seen = 0
+        for doc in sl.discover(ROOT)["module_docs"]:
+            rel = os.path.relpath(doc, ROOT).replace(os.sep, "/")
+            text = Path(doc).read_text(encoding="utf-8")
+            parsed = sl._fence_yaml(text, "machine_contract")
+            want = None
+            if parsed is not None:
+                mc = parsed["machine_contract"] if "machine_contract" in parsed else parsed
+                want = sl.subset_validate(mc, schema, f"{rel} machine_contract")
+            self.assertEqual(want, sl._lint_doc_cached(
+                text, "machine_contract", schema, fp, f"{rel} machine_contract"), rel)
+            seen += 1
+        self.assertGreater(seen, 100, "模块件太少，判据没测到东西")
+
+    def test_pipeline_docs_match_reference(self):
+        schema = self._schemas()["pipeline.schema.json"]
+        fp = sl._schema_fp(schema)
+        sl._DOC_LINT_CACHE.clear()
+        seen = 0
+        for doc in sl.discover(ROOT)["pipeline_docs"]:
+            rel = os.path.relpath(doc, ROOT).replace(os.sep, "/")
+            text = Path(doc).read_text(encoding="utf-8")
+            parsed = sl._fence_yaml(text, "Pipeline:")
+            want = None
+            if parsed is not None:
+                want = sl.subset_validate(parsed.get("Pipeline", parsed), schema, f"{rel} Pipeline")
+            self.assertEqual(want, sl._lint_doc_cached(
+                text, "Pipeline:", schema, fp, f"{rel} Pipeline", obj_key="Pipeline"), rel)
+            seen += 1
+        self.assertGreater(seen, 20, "管线件太少，判据没测到东西")
+
+    def test_content_keyed_and_path_independent(self):
+        schema = {"type": "object", "properties": {"id": {"type": "integer"}},
+                  "additionalProperties": False}
+        fp = sl._schema_fp(schema)
+        text = "```yaml\nmachine_contract:\n  id: X\n  layer: P40\n```\n"
+        sl._DOC_LINT_CACHE.clear()
+        a = sl._lint_doc_cached(text, "machine_contract", schema, fp, "甲/a.md machine_contract")
+        self.assertTrue(a and any("应为 integer" in m for m in a), a)
+        self.assertEqual(1, len(sl._DOC_LINT_CACHE), "第一次必须落缓存")
+        b = sl._lint_doc_cached(text, "machine_contract", schema, fp, "乙/b.md machine_contract")
+        self.assertEqual(1, len(sl._DOC_LINT_CACHE), "同正文同 schema 必须命中（路径不同不是理由）")
+        self.assertEqual([m.replace("甲/a.md machine_contract", "乙/b.md machine_contract")
+                          for m in a], b, "前缀替换必须与参考实现逐条一致")
+        other = sl._lint_doc_cached(text + "# 尾巴\n", "machine_contract", schema, fp, "甲/a.md machine_contract")
+        self.assertEqual(2, len(sl._DOC_LINT_CACHE), "正文一变必须换键（否则读到陈旧校验）")
+        self.assertEqual(a, other, "只加注释不该改结论")
+        self.assertIsNone(sl._lint_doc_cached("没有围栏\n", "machine_contract", schema, fp, "x"))
 
 
 class DirectEnumerationTest(unittest.TestCase):
