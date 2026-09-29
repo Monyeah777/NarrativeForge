@@ -344,11 +344,11 @@
       "sample": [],
       "source": "code_metrics.scan",
       "stats": {
-        "baseline": 155,
-        "files": 157,
+        "baseline": 158,
+        "files": 158,
         "max_fn_cc": 150,
         "max_fn_lines": 951,
-        "max_lines": 5416
+        "max_lines": 5418
       },
       "status": "pass",
       "warns": 0
@@ -389,11 +389,11 @@
       "sample": [],
       "source": "coupling_metrics.scan",
       "stats": {
-        "cycles": 4,
-        "modules": 133,
-        "registered_cycles": 4,
-        "registered_sdp": 7,
-        "sdp": 7
+        "cycles": 3,
+        "modules": 134,
+        "registered_cycles": 3,
+        "registered_sdp": 6,
+        "sdp": 6
       },
       "status": "pass",
       "warns": 0
@@ -459,7 +459,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "fe5e9082c01f275174943dd19fd464f11710792eb2ba39ccca047186ff4a4d56",
+  "root_digest": "2e630e4311f47015d190bd98e64673e40ff5a614ca2987630512fc91de150763",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

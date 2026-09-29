@@ -2752,7 +2752,9 @@ def _cmd_domain(args):
         return 0
     if sub == "build":
         spec = dp.load_spec(ROOT, args.spec)
-        out = dp.build(ROOT, spec, write=args.write, render=not args.no_render)
+        from core import output_forms as of           # 渲染器由调用方注入（工厂不再反向依赖产出面）
+        out = dp.build(ROOT, spec, write=args.write, render=not args.no_render,
+                       renderer=of.render_outputs)
         if args.json:
             print(_json.dumps(out, ensure_ascii=False, indent=2, sort_keys=True))
         else:

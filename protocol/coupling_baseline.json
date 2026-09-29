@@ -9,11 +9,6 @@
       "import_graph"
     ],
     [
-      "domain_pack",
-      "output_forms",
-      "pack_combo"
-    ],
-    [
       "library",
       "receipts"
     ]
@@ -136,8 +131,8 @@
     },
     "daemon": {
       "ca": 1,
-      "ce": 6,
-      "i": 0.8571
+      "ce": 7,
+      "i": 0.875
     },
     "decision_layer": {
       "ca": 2,
@@ -166,8 +161,8 @@
     },
     "domain_pack": {
       "ca": 2,
-      "ce": 5,
-      "i": 0.7143
+      "ce": 4,
+      "i": 0.6667
     },
     "drill_fidelity": {
       "ca": 0,
@@ -261,6 +256,11 @@
     },
     "ir": {
       "ca": 11,
+      "ce": 0,
+      "i": 0.0
+    },
+    "json_schema": {
+      "ca": 2,
       "ce": 0,
       "i": 0.0
     },
@@ -360,9 +360,9 @@
       "i": 0.6667
     },
     "output_forms": {
-      "ca": 3,
-      "ce": 6,
-      "i": 0.6667
+      "ca": 1,
+      "ce": 7,
+      "i": 0.875
     },
     "pack_combo": {
       "ca": 3,
@@ -534,6 +534,11 @@
       "ce": 1,
       "i": 1.0
     },
+    "response_cache": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
+    },
     "retriever": {
       "ca": 0,
       "ce": 3,
@@ -576,7 +581,7 @@
     },
     "session_watch": {
       "ca": 0,
-      "ce": 4,
+      "ce": 5,
       "i": 1.0
     },
     "skill_adapter": {
@@ -659,6 +664,11 @@
       "ce": 0,
       "i": 0.0
     },
+    "workflow_policy": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
     "workloop": {
       "ca": 0,
       "ce": 3,
@@ -693,10 +703,6 @@
     [
       "pack_combo",
       "domain_pack"
-    ],
-    [
-      "pack_combo",
-      "output_forms"
     ],
     [
       "prose_lint",

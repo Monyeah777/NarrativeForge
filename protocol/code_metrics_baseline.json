@@ -151,7 +151,7 @@
       "max_fn_lines": 78
     },
     "desktop/src/core/domain_pack.py": {
-      "lines": 2069,
+      "lines": 2073,
       "max_fn_cc": 63,
       "max_fn_lines": 149
     },
@@ -250,6 +250,11 @@
       "max_fn_cc": 7,
       "max_fn_lines": 26
     },
+    "desktop/src/core/json_schema.py": {
+      "lines": 197,
+      "max_fn_cc": 76,
+      "max_fn_lines": 129
+    },
     "desktop/src/core/judgement_coverage.py": {
       "lines": 114,
       "max_fn_cc": 11,
@@ -346,9 +351,9 @@
       "max_fn_lines": 58
     },
     "desktop/src/core/output_forms.py": {
-      "lines": 1589,
-      "max_fn_cc": 76,
-      "max_fn_lines": 129
+      "lines": 1412,
+      "max_fn_cc": 26,
+      "max_fn_lines": 62
     },
     "desktop/src/core/pack_combo.py": {
       "lines": 1268,
@@ -650,6 +655,11 @@
       "max_fn_cc": 13,
       "max_fn_lines": 51
     },
+    "desktop/src/core/workflow_policy.py": {
+      "lines": 109,
+      "max_fn_cc": 12,
+      "max_fn_lines": 36
+    },
     "desktop/src/core/workloop.py": {
       "lines": 364,
       "max_fn_cc": 17,
@@ -731,7 +741,7 @@
       "max_fn_lines": 44
     },
     "scripts/nf.py": {
-      "lines": 5416,
+      "lines": 5418,
       "max_fn_cc": 98,
       "max_fn_lines": 951
     },
@@ -774,6 +784,11 @@
       "lines": 29,
       "max_fn_cc": 1,
       "max_fn_lines": 4
+    },
+    "scripts/workflow_policy.py": {
+      "lines": 39,
+      "max_fn_cc": 6,
+      "max_fn_lines": 17
     }
   },
   "limits": {
@@ -781,6 +796,6 @@
     "max_fn_cc": 25,
     "max_fn_lines": 120
   },
-  "note": "存量冻结的规模/复杂度上限（棘轮：只可下降；上调须评审后重冻）。初值于 2026-09-29 按首次入库的树整表冻结（155 件）。2026-09-29 评审后重冻一处：scripts/sast_check.py 179 → 196 行（棘轮基线改按平台分段：platforms[nt]/platforms[posix] 各自冻结、缺段判 FAIL），函数级指标同步下降。",
+  "note": "存量冻结的规模/复杂度上限（棘轮：只可下降；上调须评审后重冻）。初值 2026-09-29 按首次入库的树整表冻结；随后两次**评审后**重冻均有据可查：① sast_check 179→196（基线改按平台分段）；② 2026-09-29 拆环一次——output_forms 1589→1412（JSON Schema 子集校验器迁到叶子件 core/json_schema.py，断掉 output_forms↔pack_combo 双向对）、domain_pack 2069→2073 与 scripts/nf.py 5416→5418（渲染器改由调用方注入，工厂不再反向依赖产出面）、新增条目 json_schema.py / workflow_policy.py / scripts/workflow_policy.py。",
   "schema": "nf-code-metrics/1"
 }

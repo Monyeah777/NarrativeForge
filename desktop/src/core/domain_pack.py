@@ -1702,12 +1702,17 @@ def _register_protocols(root: str, spec: Dict[str, Any], alloc: Dict[str, Any]) 
 
 
 def build(root: str, spec: Dict[str, Any], write: bool = False,
-          render: bool = True) -> Dict[str, Any]:
+          render: bool = True, renderer=None) -> Dict[str, Any]:
     """生成整包：文件 + 登记三处（02 §8 / verify.sh DOMAIN / registry protocols[]）+ 渲染产出面。
 
     登记三处**一次做完**（2026-09-23 实测教训：漏跑 `nf register --apply` 会让
     check14 ⑦ / check15 ⑤ / check29 虚标 / check32 名录四处红——工厂把这一步收进来，
     从构造上消除「建了包没登记」这一类）。
+
+    渲染产出面改由**调用方注入**（`renderer(root, package=…, write=…)`，见
+    `output_forms.render_outputs`）：工厂不再反向 import 产出面——`domain_pack → output_forms
+    → pack_combo → domain_pack` 那条模块级环由此断掉（2026-09-29；环由 `coupling_metrics`
+    机检，零环是硬判据）。不注入 renderer 即不渲染，工厂自身的职责不变。
     """
     alloc, files = plan(root, spec)
     changed, written = [], []
@@ -1728,9 +1733,8 @@ def build(root: str, spec: Dict[str, Any], write: bool = False,
         reg["domain_list"] = _append_domain_list(root, spec)
         reg["protocols"] = _register_protocols(root, spec, alloc)
         update_manifest(root, spec, write=True)
-        if render:
-            from core import output_forms as of
-            issues, rows = of.render_outputs(root, package=spec["pack_name"], write=True)
+        if render and renderer is not None:
+            issues, rows = renderer(root, package=spec["pack_name"], write=True)
             reg["render"] = rows
             reg["render_issues"] = issues
     return {"spec": spec["code"], "pipeline": alloc["pipeline"],

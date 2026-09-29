@@ -1230,12 +1230,12 @@ def _certificate_lines(root: str, cert: Dict[str, Any], witness: str) -> List[st
     「**该证书正文** + 本轮契约面」的纯函数：改与组合无关的件（04 模块库正文、文档、协议件）时
     它们必然不变。键 = (证书正文 sha256, 本轮全局见证)；两者任一变即重算，无陈旧面。
     """
-    from core import output_forms as of
+    from core import json_schema as _js       # 只取叶子校验器：不再 import output_forms（断双向对）
     key = (hashlib.sha256(_canon(cert)).hexdigest(), witness)
     hit = _CERT_CACHE.get(key)
     if hit is None:
         unsup: List[str] = []
-        schema_errs = list(of.json_schema_check(cert, CERT_SCHEMA, unsupported=unsup))
+        schema_errs = list(_js.json_schema_check(cert, CERT_SCHEMA, unsupported=unsup))
         sub, _st = verify_certificate(root, cert)
         hit = (schema_errs, sorted(set(unsup)), list(sub))
         if len(_CERT_CACHE) >= _CERT_CACHE_MAX:
