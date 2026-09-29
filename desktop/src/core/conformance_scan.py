@@ -34,33 +34,30 @@ _T = chr(96) * 3
 #: （实测 7.8× 快；本仓 1395 个 YAML 块两种加载器**逐块等价**，见 `test_conformance_scan`）。
 SAFE_LOADER = getattr(yaml, "CSafeLoader", None) or getattr(yaml, "SafeLoader", None)
 #: 围栏 YAML 解析缓存：键 = (marker, **文本本身**)，值 = 解析结果或 None（见 `_fence_yaml`）。
-#: **负结果（2026-09 受控 A/B，勿重复尝试）**：本缓存与 `_BODY_CACHE` **不落盘**——575 块全量「纯
-#: 解析」139 ms vs「从盘读回」108 ms，不值得多近千个缓存文件（cProfile 会把这类代码放大成 ~0.65 s）。
+#: **负结果（勿重复尝试）**：本缓存与 `_BODY_CACHE` **不落盘**——575 块「纯解析」139 ms vs「从盘
+#: 读回」108 ms，不值得多近千个缓存文件（cProfile 会把这类代码放大成 ~0.65 s）。
 _FENCE_CACHE: Dict[Tuple[str, str], Any] = {}
 _FENCE_CACHE_MAX = 4096
-#: 围栏**正文**缓存：键 = 正文本身。给「自己抽正文」的调用方用（pipeline_loader /
-#: concept_graph 过去直接调 load_yaml，等于每轮都重解析——与 `_fence_yaml` 的缓存互补）。
+#: 围栏**正文**缓存（键 = 正文本身）：给「自己抽正文」的调用方用（pipeline_loader / concept_graph
+#: 过去直接调 load_yaml，等于每轮都重解析——与 `_fence_yaml` 互补）。
 _BODY_CACHE: Dict[str, Any] = {}
 _BODY_CACHE_MAX = 4096
 
-#: 「一次**只读**扫描内共享语料」的读缓存：作用域由 `read_memo()` 框定，出口即清；聚合入口都是纯读
-#: （写路径 `--write` 在聚合**之后**才发生）⇒ 冷却语义与「新起进程」一致。必要性（实测）：一次
-#: `evaluate` 打开 7833 次文件、只有 2354 个不同文件（70% 冗余读）。同生命周期的还有列目录缓存。
+#: 「一次**只读**扫描内共享语料」的**四层作用域缓存**（`read_memo()` 框定、出口即清；聚合入口都是
+#: 纯读 ⇒ 冷却语义与「新起进程」一致）：读文本 / 列目录 / 按模式枚举 / 子树清单。依据（实测）：
+#: 一次 `evaluate` 打开 7833 次文件而只有 2354 个不同文件（70% 冗余读），并建过 5403 次 `scandir`。
 _READ_MEMO: Optional[Dict[str, Any]] = None
 _DIR_MEMO: Optional[Dict[str, Any]] = None
 #: 与读缓存同生命周期的**逐件内容摘要**缓存（键＝文件）：输入面高度重叠，一次调用里每件只算一次。
 _DIGEST_MEMO: Optional[Dict[str, bytes]] = None
 #: 同生命周期的「按模式枚举」缓存：一次调用内同一 (root, pattern) 只走一遍文件系统（实测 44% 白走）。
 _PAT_MEMO: Optional[Dict[Tuple[str, str], Tuple[str, ...]]] = None
-#: 同生命周期的「子树文件清单」缓存：键即目录 ⇒ 目录没变清单就一样；出口即清（与冷读语义一致）。
-#: 依据（实测）：一次 `evaluate` 建了 5403 个 `os.scandir`（仅建扫描器 687 ms / 25%），其中
-#: `community` 一棵树被 layer_model 的 `_walk_files`、两个指纹、若干扫描器各自走了一遍。
+#: 同生命周期的「子树文件清单」缓存：键即目录 ⇒ 目录没变清单就一样。
 _TREE_MEMO: Optional[Dict[str, Tuple[str, ...]]] = None
 
-#: **常驻层**（`_RESIDENT`）：跨调用、跨请求活着的一份「语料正文 + 目录条目」。依据（实测）：改一件
-#: 后守护第一条重命令要 1.6–2.0 s——作用域缓存出口即清，下一请求要重枚举千余目录并重读数千次。
-#: 不比响应缓存多信任任何东西：只在守护带监听且监听健康时安装，只按监听的**确知路径**失效，
-#: 说不清即整批作废（`clear_resident`）；只缓存监听根之下的件，根外一律走原路。
+#: **常驻层**（`_RESIDENT`）：跨调用、跨请求活着的一份「语料正文 + 目录条目」（依据：改一件后守护
+#: 第一条重命令要 1.6–2.0 s，作用域缓存出口即清）。不比响应缓存多信任任何东西：只在守护带监听且
+#: 监听健康时安装、只按**确知路径**失效、说不清即整批作废；只缓存监听根之下的件。
 _RESIDENT: Optional[Dict[str, Any]] = None
 #: 常驻层的容量上界（目录条数与正文条数）：超出即停止收录（不影响正确性，只是退回按需读）。
 _RESIDENT_DIR_MAX = 8192
@@ -93,16 +90,14 @@ def install_resident(root) -> None:
     """安装常驻层（**只在守护带监听且监听健康时调用**）。"""
     global _RESIDENT
     root_abs = os.path.normcase(os.path.abspath(str(root)))
-    _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}, "digest": {},
-                 "raw": {},
+    _RESIDENT = {"root": root_abs, "dirs": {}, "text": {}, "bytes": {}, "digest": {}, "raw": {},
                  #: **确知变更面**（见 `changed_paths`）：装层时为空且**未确知**（fail-closed——
                  #: 新装的层不知道装之前发生过什么，任何「跳过重算」的推理都不许建立在这上面）。
                  "changed": set(), "changed_known": False}
 
 
-#: 「确知变更面」的用途：读层一直在用它精确失效（`drop_resident`）；**键层**过去没用——于是
-#: 「改一件、106 个键都要重算一遍」才发现一个都没变。有了这条信息，「确知没变」的面可以直接复用
-#: 上一次的键（见 `output_forms._PACK_KEY_MEMO`）。纪律与读层完全一致：**说不清就整批作废**。
+#: 「确知变更面」的用途：读层一直用它精确失效（`drop_resident`）；**键层**过去没用——于是「改一件、
+#: 106 个键都要重算」才发现全没变。有了它，「确知没变」的面直接复用上次的键；说不清就整批作废。
 def note_changes(paths) -> None:
     """记下这一批**确知**变更的仓库相对路径（由守护的监听给出；`drop_resident` 会顺手调用）。"""
     if _RESIDENT is None:
@@ -148,14 +143,12 @@ def matches_any(rel: str, patterns) -> bool:
     return False
 
 
-#: **面指纹**缓存（键 = (绝对 root, 模式元组)）：把「确知变更面」用到**键的取法**上——确知这批变更
-#: 没一件落在该面内就整个复用（不枚举、不摘要），说不清一律重算。条目形如
-#: `{"rels", "index"（小写→真实路径）, "digests", "fp"}`；两级复用见 `face_digests`。
+#: **面指纹**缓存（键 = (绝对 root, 模式元组)）：确知这批变更没一件落在该面内就整个复用（不枚举、
+#: 不摘要），说不清一律重算。条目 `{"rels", "index", "digests", "fp"}`；两级复用见 `face_digests`。
 _FACE_CACHE: Dict[Any, Any] = {}
 _FACE_FP_MAX = 1024
 #: 观测位：**整面重算** / **增量更新** 各多少次（复用不算）。判据 `FaceReuseBudgetTest` 用它把
-#: 「确知没变就复用」变成**确定性**数字——不能靠数 `content_fingerprint`：本函数现在自己枚举 + 摘要
-#: （为了把逐件摘要一起交给 `usage_scan`），那条计数会恒为 0（实测踩过）。
+#: 「确知没变就复用」变成**确定性**数字——不能靠数 `content_fingerprint`（那是 0，实测踩过）。
 _FACE_FP_STATS: Dict[str, int] = {"recomputes": 0, "incremental": 0}
 
 
@@ -582,9 +575,8 @@ def read_text_cached(path) -> str:
             if _READ_MEMO is not None:
                 _READ_MEMO[key] = hit
             return hit
-    # **一次物理读服务两种口径**：底层读原始字节（常驻层也存它），文本由同一份字节按「通用换行」
-    # 语义解出——与 `Path.read_text("utf-8")` 逐字节一致（判据 `ResidentRawEquivalenceTest`），
-    # 而「同一件既当文本又当字节读」时不再读第二遍（实测这类重复读 211 次/一次重算）。
+    # **一次物理读服务三种口径**：字节→文本按「通用换行」解出（与 `Path.read_text("utf-8")` 逐字节
+    # 一致，判据 `ResidentRawEquivalenceTest`），摘要直接吃同一份字节（见 `_payload_digest`）。
     raw = _raw_bytes(path, key)
     text = _decode_text(raw)
     if _READ_MEMO is not None:
@@ -596,12 +588,25 @@ def read_text_cached(path) -> str:
 
 
 def _raw_bytes(path, key: str) -> bytes:
-    """取**原始字节**（常驻层优先）：一次物理读之后，文本与字节两种口径都从这里出。"""
+    """取**原始字节**（作用域 + 常驻层优先）：一次物理读之后，文本/字节/摘要三种口径都从这里出。
+
+    读法（实测 2799 件 18.9 MB）：`buffering=0`（裸 FileIO）357 ms 最快，pathlib 408 / 缓冲 532 /
+    `os.open` 510 ms。字节进 `_READ_MEMO["b:"+key]` ⇒ 摘要与文本**共用同一次物理读**。
+    """
+    if _READ_MEMO is not None:
+        hit = _READ_MEMO.get("b:" + key)
+        if hit is not None:
+            return hit
     if _RESIDENT is not None:
         hit = _RESIDENT["raw"].get(key)
         if hit is not None:
+            if _READ_MEMO is not None:
+                _READ_MEMO["b:" + key] = hit
             return hit
-    raw = Path(path).read_bytes()
+    with open(path, "rb", buffering=0) as fh:       # buffering=0 ⇒ 拿到裸 FileIO（实测最快）
+        raw = fh.read()
+    if _READ_MEMO is not None:
+        _READ_MEMO["b:" + key] = raw
     if _RESIDENT is not None and _resident_under(key) \
             and len(_RESIDENT["raw"]) < _RESIDENT_TEXT_MAX:
         _RESIDENT["raw"][key] = raw
@@ -616,21 +621,16 @@ def _decode_text(raw: bytes) -> str:
 
 
 def read_bytes_cached(path) -> bytes:
-    """读字节：同上（`_recompute_entry` 的逐字节比对用）。"""
+    """读字节：同上（`_recompute_entry` 的逐字节比对用）。作用域与 `raw` 层都归 `_raw_bytes`，
+    本函数只多一层「二进制面」常驻条目（`_RESIDENT["bytes"]`）；2026-09-29 去重掉抄一遍的 20 行。"""
     key = _resident_key(path)
-    if _READ_MEMO is not None:
-        hit = _READ_MEMO.get("b:" + key)
-        if hit is not None:
-            return hit                          # type: ignore[return-value]
-    if _RESIDENT is not None:                   # 同上（二进制面：图片等非 UTF-8 件）
+    if _RESIDENT is not None:
         hit = _RESIDENT["bytes"].get(key)
         if hit is not None:
             if _READ_MEMO is not None:
                 _READ_MEMO["b:" + key] = hit
             return hit
     raw = _raw_bytes(path, key)
-    if _READ_MEMO is not None:
-        _READ_MEMO["b:" + key] = raw            # type: ignore[assignment]
     if _RESIDENT is not None and _resident_under(key) \
             and len(_RESIDENT["bytes"]) < _RESIDENT_TEXT_MAX:
         _RESIDENT["bytes"][key] = raw
@@ -677,9 +677,9 @@ def fingerprint_of(root: str, rels) -> str:
 def _payload_digest(root: str, rel: str) -> bytes:
     """单件的**内容摘要**（`sha256` 的 raw digest）；键＝文件，随监听变更逐件失效。
 
-    payload 口径与 `content_fingerprint` 历史口径**完全一致**：能按 UTF-8 读出的文本按
-    `encode("utf-8")`（与重编码后的字节等价），读不出（图片等）按**原始字节**——所以摘要换来的
-    加速不改变任何已有指纹值。
+    payload 口径与历史口径**完全一致**：能按 UTF-8 读出的文本按 encode("utf-8")（与重编码后的
+    字节等价），读不出（图片等）按**原始字节**。**快路径**：正文无 `\\r` 时「解码再编码」是恒等
+    变换（`\\r` 是通用换行翻译的唯一触发器）⇒ 直接摘要原始字节（本仓 2799 件 0 件含 CR，省 ~100 ms）。
     """
     path = os.path.join(str(root), *rel.split("/"))
     key = _resident_key(path)
@@ -693,13 +693,13 @@ def _payload_digest(root: str, rel: str) -> bytes:
             if _DIGEST_MEMO is not None:
                 _DIGEST_MEMO[key] = hit
             return hit
-    try:
-        payload = read_text_cached(path).encode("utf-8")
-    except UnicodeDecodeError:
-        # 非 UTF-8（图片等二进制）按**字节**取指纹：输入面一旦变宽就会遇到它们，
-        # 这里**不许崩**（崩了等于把「多放一个二进制附件」变成「命令直接失败」）。
-        payload = read_bytes_cached(path)
-    digest = hashlib.sha256(payload).digest()
+    raw = _raw_bytes(path, key)                     # 一次物理读：文本口径也从这份字节解出
+    if b"\r" in raw:
+        try:
+            raw = _decode_text(raw).encode("utf-8")  # 有 CR 才需要通用换行翻译后再编码
+        except UnicodeDecodeError:
+            pass       # 非 UTF-8（图片等）按**字节**取指纹：多放个二进制附件不该让命令失败
+    digest = hashlib.sha256(raw).digest()
     if _DIGEST_MEMO is not None:
         _DIGEST_MEMO[key] = digest
     if _RESIDENT is not None and _resident_under(key):
@@ -898,8 +898,8 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
               keep: int = 8, code_modules=None, fp: str = None):
     """`(issues, stats)` 形状的派生结果缓存（**进程内 + 持久**两层；键即内容）。
 
-    纪律与 `scan()` 完全一致：输入面（`patterns`，须穷举）变 ⇒ 指纹变 ⇒ 必重算；持久层键里
-    另含代码面 + 运行时（`disk_cache.key`）；读回必过 `result_pair_ok`；一切 IO 尽力而为。
+    纪律与 `scan()` 一致：输入面（`patterns`，须穷举）变 ⇒ 指纹变 ⇒ 必重算；持久层键另含代码面 +
+    运行时（`disk_cache.key`）；读回必过 `result_pair_ok`；一切 IO 尽力而为。
 
     `code_modules`（如 `("core.schema_lint",)`）把**代码面**缩到「这段派生自己的导入闭包」——改别的
     模块不再换键（闭包算不出/含动态导入时自动退回整块代码面，见 `disk_cache.key`）。

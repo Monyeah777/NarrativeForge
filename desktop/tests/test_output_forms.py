@@ -187,21 +187,21 @@ class ReadMemoTest(unittest.TestCase):
             p = Path(tmp) / "a.txt"
             p.write_text("一", encoding="utf-8")
             calls = []
-            # 2026-09-29 起共享读是**一次物理读服务两种口径**：文本与字节都从
-            # `Path.read_bytes()` 出（文本经通用换行语义解出）。所以计数口径要**两条都数**，
-            # 否则「一次读」这条不变量会被读成 0 次（实际是换了一层实现，不是没读）。
-            orig_text, orig_bytes = Path.read_text, Path.read_bytes
+            # 计数口径必须钉在**最底层**（2026-09-29 第二次更正）：共享读先走
+            # `Path.read_bytes()`、后改走裸 `open(..., buffering=0)`（实测 408 → 357 ms），
+            # 每换一层实现，数 `Path.*` 的旧口径就会把「这次真读了」读成 0 次。
+            # 现在只数真开文件的那一处：`io.open`（pathlib 内部走它）与 `builtins.open`
+            # （裸 open 走它）——两者本是同一个对象，但**名字要各打一遍补丁**才都拦得住。
+            import builtins
+            import io
+            orig_open = io.open
 
-            def counting(self, *a, **k):
-                calls.append(str(self))
-                return orig_text(self, *a, **k)
+            def counting(path, *a, **k):
+                calls.append(str(path))
+                return orig_open(path, *a, **k)
 
-            def counting_bytes(self, *a, **k):
-                calls.append(str(self))
-                return orig_bytes(self, *a, **k)
-
-            Path.read_text = counting                      # type: ignore[assignment]
-            Path.read_bytes = counting_bytes               # type: ignore[assignment]
+            io.open = counting                             # type: ignore[assignment]
+            builtins.open = counting                       # type: ignore[assignment]
             try:
                 with of._memo_reads():
                     self.assertEqual("一", of._read_text_cached(p))
@@ -216,8 +216,8 @@ class ReadMemoTest(unittest.TestCase):
                     self.assertEqual("二", of._read_text_cached(p),
                                      "新的一次调用必须看到新内容（作用域出口即清）")
             finally:
-                Path.read_text = orig_text                 # type: ignore[assignment]
-                Path.read_bytes = orig_bytes               # type: ignore[assignment]
+                io.open = orig_open                        # type: ignore[assignment]
+                builtins.open = orig_open                  # type: ignore[assignment]
 
 
 class RegistryTest(unittest.TestCase):
