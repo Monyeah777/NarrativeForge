@@ -733,7 +733,22 @@ def shared_face_key(root: str = ".") -> str:
     return _csc.content_fingerprint(root, _PACK_FACE_SHARED)
 
 
-def pack_content_key(root: str, pkg: str, shared: str = "") -> str:
+def pack_slice_index(root: str) -> Dict[str, List[str]]:
+    """**一次枚举**四条包面，按包切成 `{包名: [该包的相对路径…]}`（每条面内有序）。
+
+    依据（实测 2026-09-29）：`pack_content_key` 过去按包拼模式（106 包 × 4 条 = 424 个不同模式），
+    一次 `nf score` 里 `iter_files` 因此被调 **619 次（35.5 ms）**，其中 ~424 次是「同一批面按包切」。
+    一次枚举 + 内存切片后只剩 4 次枚举（实测 ~8 ms），**键值逐位不变**（同一条路径清单、同一顺序），
+    由 `test_output_forms.PackSliceIndexTest` 在真仓库上逐包比对守着。
+    """
+    out: Dict[str, List[str]] = {}
+    for rel_pat in _PACK_FACE_SLICE:
+        for rel in _csc.iter_files(root, "community/*/" + rel_pat):
+            out.setdefault(rel.split("/")[1], []).append(rel)
+    return out
+
+
+def pack_content_key(root: str, pkg: str, shared: str = "", rels=None) -> str:
     """一个包的**内容键** = `(共享面指纹, 该包切片指纹)` 两者的组合（见 `shared_face_key`）。
 
     为什么要按切片而不是整棵包树：判据（`DerivedResultCacheTest.test_reads_stay_inside_declared_input_face`）
@@ -748,8 +763,10 @@ def pack_content_key(root: str, pkg: str, shared: str = "") -> str:
     """
     if not shared:                        # 单调用方（如单测）自己用时不强求外部先算
         shared = shared_face_key(root)
-    slice_patterns = tuple("community/%s/%s" % (pkg, rel) for rel in _PACK_FACE_SLICE)
-    per_pack = _csc.content_fingerprint(root, slice_patterns)
+    if rels is None:                      # 单独调用（如单测）时仍按包枚举，结果与切片路线**逐位相同**
+        rels = [r for rel_pat in _PACK_FACE_SLICE
+                for r in _csc.iter_files(root, "community/%s/%s" % (pkg, rel_pat))]
+    per_pack = _csc.fingerprint_of(root, rels)
     return hashlib.sha256(("%s\x00%s" % (shared, per_pack)).encode("utf-8")).hexdigest()
 
 
@@ -759,9 +776,9 @@ def _pack_verify_ok(value) -> bool:
             and isinstance(value["issues"], list) and isinstance(value["rows"], list))
 
 
-def _verify_pack_cached(root: str, pkg: str, shared: str = ""):
+def _verify_pack_cached(root: str, pkg: str, shared: str = "", rels=None):
     """按包内容键取校验结果：进程内一层 + **落盘**一层（新进程也能免付未变包的账）。"""
-    key = pack_content_key(root, pkg, shared)
+    key = pack_content_key(root, pkg, shared, rels)
     hit = _PACK_VERIFY_CACHE.get(key)
     if hit is None:
         hit = _verify_pack_io(root, pkg, key)
@@ -1281,8 +1298,9 @@ def _index_verify_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     issues: List[str] = []
     rows: List[Dict[str, Any]] = []
     shared = shared_face_key(root)                 # 共享面每个内容状态只算一遍（过去 111 遍）
+    slices = pack_slice_index(root)                # 包切片一次枚举（过去 106 包各 4 条模式 = 424 次）
     for pkg in _pack_dirs(root):
-        hit = _verify_pack_cached(root, pkg, shared)   # 逐包内容键：只有被改的包会重算（落盘可跨进程）
+        hit = _verify_pack_cached(root, pkg, shared, slices.get(pkg, []))
         issues += hit[0]
         rows += hit[1]
     stats = {"packages": len(_pack_dirs(root)), "outputs": len(rows),

@@ -23,6 +23,34 @@ from core import quant_metrics as qm  # noqa: E402
 ROOT = str(Path(__file__).resolve().parents[2])
 
 
+class PackSliceIndexTest(unittest.TestCase):
+    """逐包键改「一次枚举 + 按包切片」后，**键值必须逐包不变**（面与顺序都不许动）。
+
+    依据（实测 2026-09-29）：104 包 × 4 条面 = 424 个包级模式，一次 `nf score` 里 `iter_files`
+    因此被调 619 次（35.5 ms），其中约 424 次是「同一批面按包切」。
+    """
+
+    def test_index_route_equals_per_pack_route(self):
+        shared = of.shared_face_key(ROOT)
+        slices = of.pack_slice_index(ROOT)
+        pkgs = of._pack_dirs(ROOT)
+        self.assertGreater(len(pkgs), 50, "包太少，判据没测到东西")
+        for pkg in pkgs:
+            self.assertEqual(of.pack_content_key(ROOT, pkg, shared),           # 逐包枚举（旧路线）
+                             of.pack_content_key(ROOT, pkg, shared, slices.get(pkg, [])),
+                             "%s 的键在两条路线上不一致" % pkg)
+
+    def test_index_covers_exactly_the_declared_slice(self):
+        """切片索引的**路径集合**必须等于该包在声明面里的那几条（多一条少一条都是面变了）。"""
+        from core import conformance_scan as csc
+        slices = of.pack_slice_index(ROOT)
+        for pkg in of._pack_dirs(ROOT)[:3]:
+            want = [r for rel_pat in of._PACK_FACE_SLICE
+                    for r in csc.iter_files(ROOT, "community/%s/%s" % (pkg, rel_pat))]
+            self.assertTrue(want, "%s 的切片为空，判据没测到东西" % pkg)
+            self.assertEqual(want, slices[pkg], "%s 的切片面不一致" % pkg)
+
+
 class PackEnumerationTest(unittest.TestCase):
     """`_pack_dirs()` 换枚举器（`iterdir` + 逐条 stat → `csc.iter_files`）后**面必须逐件一致**。
 

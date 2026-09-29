@@ -535,13 +535,26 @@ def content_fingerprint(root: str, patterns) -> str:
     （按监听变更**逐件**失效）。于是「面再宽」也只剩「枚举 + 合并」：实测 8 个面（含 3439 件的宽面）
     的见证成本从 **228 ms 降到 ~30 ms**，而**指纹口径逐位不变**（同一件同一 payload ⇒ 同一摘要）。
     """
-    h = hashlib.sha256()
+    rels: List[str] = []
     for pat in patterns:
-        for rel in iter_files(root, str(pat)):
-            h.update(rel.encode("utf-8"))
-            h.update(b"\x00")
-            h.update(_payload_digest(root, rel))
-            h.update(b"\x01")
+        rels.extend(iter_files(root, str(pat)))
+    return fingerprint_of(root, rels)
+
+
+def fingerprint_of(root: str, rels) -> str:
+    """按**给定的相对路径清单**取内容指纹（口径与 `content_fingerprint` 逐位相同）。
+
+    为什么要这个入口（2026-09-29 实测）：`content_fingerprint` 每调一次就要**枚举一遍面**，而
+    `output_forms` 的逐包内容键是按包拼模式调的——470 个包级模式 ⇒ 一次 `nf score` 里
+    `iter_files` 被调 **619 次（35.5 ms）**，其中 ~424 次是「同一批面按包切」。能一次枚举、
+    按包切片，就只剩四次枚举。
+    """
+    h = hashlib.sha256()
+    for rel in rels:
+        h.update(rel.encode("utf-8"))
+        h.update(b"\x00")
+        h.update(_payload_digest(root, rel))
+        h.update(b"\x01")
     return h.hexdigest()
 
 
