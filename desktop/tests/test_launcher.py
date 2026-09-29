@@ -127,6 +127,24 @@ class AutostartTest(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(home, "daemon.json")),
                              "NF_AUTOSTART=%r 不得拉起守护" % value)
 
+    def test_rapid_commands_start_the_daemon_once(self):
+        """连发命令**只许拉一次**守护（拉起按 NF_HOME 串行化，标记 60 s 自愈）。
+
+        依据（实测 2026-09-29）：`daemon start` 要 ~0.65 s 才写状态文件，窗口内每条命令各拉一次会
+        赛出**多个守护**（各自空转到 idle）——一次测试套件实测漏下 **13 个**空转进程。判据是**次数**：
+        shim 记下每次解释器启动的 argv，`daemon start` 只许出现 **1** 次。
+        """
+        home = self._home()
+        self.addCleanup(self._stop, home)
+        env, log = self._sleepy_shim(home, sleep_seconds=0)     # 只记账、不睡
+        env["NF_AUTOSTART"] = "1"
+        for _ in range(4):
+            p = self._run(home, "--version", env=env)
+            self.assertEqual(0, p.returncode, p.stderr or p.stdout)
+        starts = [ln for ln in open(log, encoding="utf-8").read().splitlines()
+                  if "daemon start" in ln] if os.path.exists(log) else []
+        self.assertEqual(1, len(starts), "连发 4 条却拉了 %d 次守护：%s" % (len(starts), starts))
+
     def test_default_engages_autostart_without_blocking_the_command(self):
         """**默认开且非阻塞**（2026-09-29 起）：首条命令不等守护，随后守护自己起来。
 

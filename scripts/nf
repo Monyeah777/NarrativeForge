@@ -178,9 +178,23 @@ if [ -n "${BASH_VERSION:-}" ]; then
       case "${1:-}" in
         daemon|shell|serve) : ;;                       # 长驻/自指命令本就不走守护，别去起它
         *)
-          # `daemon start` 自身幂等（已在跑就很快返回「已在运行」）：重复调用只多一次 fork。
-          nf_pick_py
-          { "$NF_PY" $(nf_diet_flag) "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 & } || true
+          # **串行化拉起**：`daemon start` 要 ~0.65 s 才写状态文件，而连发命令会在这个窗口里各拉一次
+          # ⇒ 赛出**多个守护**（各自空转到 idle；实测一次套件漏下 **13 个** 空转进程）。故先写一个
+          # 「正在拉起」标记（60 s 自愈：崩溃/半途失败不会永久封住），窗口内不重复拉。
+          _dm_marker="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.starting"
+          _dm_now=${EPOCHSECONDS:-0}
+          _dm_prev=""
+          if [ -f "$_dm_marker" ]; then IFS= read -r _dm_prev < "$_dm_marker" 2>/dev/null || _dm_prev=""; fi
+          case "$_dm_prev" in ''|*[!0-9]*) _dm_prev=0 ;; esac
+          if [ "$_dm_now" -gt 0 ] && [ $((_dm_now - _dm_prev)) -lt 60 ]; then
+            :                                          # 上一轮已经拉过 ⇒ 本条不重复拉
+          else
+            nf_pick_py
+            _dm_dir=${_dm_marker%/*}
+            [ "$_dm_dir" = "$_dm_marker" ] || mkdir -p "$_dm_dir" 2>/dev/null || true
+            printf '%s\n' "$_dm_now" > "$_dm_marker" 2>/dev/null || true
+            { "$NF_PY" $(nf_diet_flag) "$NF_ROOT/nf.py" daemon start --watch >/dev/null 2>&1 & } || true
+          fi
           ;;
       esac
       ;;
