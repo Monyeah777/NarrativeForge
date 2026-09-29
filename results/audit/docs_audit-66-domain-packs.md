@@ -10,12 +10,12 @@ subjects:
   - desktop/src/core/domain_metrics.py:0ad13aa11f650f7f47abcfd4f643f16c760cde0121c194b86d08096f37234fb6
   - desktop/src/core/output_forms.py:b09b3a1dabd98e3c467eb981b17cf6fdc992eb7339784ed335ec88d705377efb
   - desktop/src/core/quality_depth_scan.py:8fe8402638ea4419c52a28bf5ddf73c138dc3bd98313537db86e92950915df4a
-  - desktop/src/core/doc_hygiene.py:c6c4346401b13323b1d60d5fba5ab524b9b738395d48918c6eaa29ddc3818cc1
+  - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
   - scripts/nf.py:3ef6b75ac4e2594bea4a96687471e11a66efcce23f19bbc02d40530d44a7b138
   - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
-  - verify.sh:375d47db17b594f5732ae5b24e769f3b6d21eb99ebb7bcf4dd54a2476f11f23e
+  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

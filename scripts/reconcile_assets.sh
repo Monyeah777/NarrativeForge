@@ -76,9 +76,9 @@ reconcile_pkg(){
     echo " $mod_ids " | grep -q " $r " && ex=1
     echo " $rem " | grep -q " $r " && ex=1
     [ -n "$ex" ] && continue
-    G=$((G+1)); echo "  [幽灵编号] $name assets/README.md 引用 M$r：无对应文件（非官方核心 / 非本包 modules / 非源编号残留豁免）"
+    G=$((G+1)); echo "  [幽灵编号] ${name} assets/README.md 引用 M${r}：无对应文件（非官方核心 / 非本包 modules / 非源编号残留豁免）"
   done
-  say "== $name：在册 $(echo $reg_ids | wc -w) / 实存 $(echo $mod_ids | wc -w) / README 引用 $(echo $refs | wc -w) 编号扫描 =="
+  say "== ${name}：在册 $(echo $reg_ids | wc -w) / 实存 $(echo $mod_ids | wc -w) / README 引用 $(echo $refs | wc -w) 编号扫描 =="
 }
 
 say '=================================================='

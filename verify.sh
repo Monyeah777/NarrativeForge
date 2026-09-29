@@ -396,7 +396,7 @@ check13(){
     if [ -z "$miss" ]; then
       ok '迁移记录在场：02 §9.3 四步齐备（现状快照/bump 声明/迁移说明/校验回读）'
     else
-      no "02 §9.3 迁移记录缺步：$miss（bump 实体必有迁移记录，按 01 §7 迁移实操四步补全）"; err=1
+  no "02 §9.3 迁移记录缺步：${miss}（bump 实体必有迁移记录，按 01 §7 迁移实操四步补全）"; err=1
     fi
   else
     no '02 缺 §9.3 迁移记录节（版本 bump 实体必有迁移记录）'; err=1
@@ -2238,7 +2238,9 @@ print('%s 子扫描：%s' % (label, '零缺口' if not issues else 'FAIL %d' % l
 sys.exit(1 if issues else 0)
 PYEOF
       then
-        ok "出口面全绿：$label（check38 子扫描）"
+        # 变量一律加花括号：`$var` 紧跟全角标点（`（`/`：`）时，macOS 自带 bash 3.2 会把后续
+        # 字节并进变量名 ⇒ `unbound variable` 崩栈（实测 2026-09-29 三平台门禁 macOS 腿）。
+        ok "出口面全绿：${label}（check38 子扫描）"
       else
         no "$label 出口面不一致——见 nf_check38_$mod.log：$(tail -2 "$NFL_TMP"/nf_check38_$mod.log 2>/dev/null | tr '\n' ' ')"
         err=1

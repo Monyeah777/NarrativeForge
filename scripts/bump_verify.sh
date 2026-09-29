@@ -55,5 +55,5 @@ if [ "$MODE" = "dry" ]; then
   echo "dry-run done（未写盘）"
 else
   python scripts/nf.py release --fast
-  echo "bump done: verify label -> $NEW（改动已写入，确认后提交）"
+  echo "bump done: verify label -> ${NEW}（改动已写入，确认后提交）"
 fi

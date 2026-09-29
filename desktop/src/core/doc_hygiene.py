@@ -315,10 +315,11 @@ def text_sanity(root: str = ".", globs=None) -> list:
     out: list = []
     files = sorted({p for g in (globs or TEXT_SANITY_GLOBS)
                     for p in glob.glob(os.path.join(root, g), recursive=True)})
-    for rel in files:
-        rel = os.path.relpath(rel)
+    for path_ in files:
+        # 报告相对**调用方 root**；Windows 跨盘符（CI：D: 工作区 vs C: 临时树）relpath 会抛 ⇒ 退回原路径
+        rel = os.path.relpath(path_, root) if os.path.splitdrive(path_)[0] == os.path.splitdrive(root)[0] else path_
         try:
-            text = csc.read_text_cached(rel)
+            text = csc.read_text_cached(path_)
         except (OSError, UnicodeDecodeError) as exc:
             out.append("WARN: 正文不可读 %s（%s）" % (rel, exc))
             continue
@@ -327,8 +328,7 @@ def text_sanity(root: str = ".", globs=None) -> list:
         if fences % 2:
             out.append("WARN: 围栏未配平 %s（标记 %d 个，须为偶数——未配平的正文渲染与"
                        "按围栏切段的解析都会走偏）" % (rel, fences))
-        bad = sum(1 for ln in lines
-                  if sum(1 for ch in ln if ch in MOJIBAKE_MARKERS) >= MOJIBAKE_MIN_HITS)
+        bad = sum(1 for ln in lines if sum(1 for ch in ln if ch in MOJIBAKE_MARKERS) >= MOJIBAKE_MIN_HITS)
         if bad:
             out.append("WARN: 正文疑似 mojibake %s（%d 行命中编码特征——疑似 UTF-8/GBK 双重转换）"
                        % (rel, bad))
