@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 30          # 挂死上限（2026-10-01 统一）：dotnet 构建/探针不许占满默认 6h
     steps:
       # ubuntu-latest 镜像自带 .NET 8 SDK 与 pwsh ⇒ 不引 setup-dotnet（少一个需钉 SHA 的依赖）
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4（与仓库既有 workflow 同钉法）
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v4（与仓库既有 workflow 同钉法）
       - name: 工具链就绪（.NET 8 / pwsh）
         run: |
           dotnet --list-sdks
