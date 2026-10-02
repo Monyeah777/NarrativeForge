@@ -4,7 +4,7 @@
     "algorithm": "RFC6962-style sha256 domain-separated",
     "count": 52,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "cdfc82d6e117b717c68bca2e425602d052ca379ee17c22c119c0d1cec1bb1a1e",
+    "root": "3435f1dd927349eb2e1acc92e37cdd153f9b53370263b871089722e789a60c44",
     "scope": "protocol"
   },
   "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
@@ -41,7 +41,7 @@
     },
     {
       "digest": {
-        "sha256": "5c2cc5477408a6b1d48b9e1a906e84ff0d7604c30b23afb6f047c711bd08003a"
+        "sha256": "8bfa95ee84ac75be4a1596d884308cd317271756da7054a9432b624ee4abb9fb"
       },
       "name": "llms.txt"
     },
@@ -59,7 +59,7 @@
     },
     {
       "digest": {
-        "sha256": "c2a684b0bf39325f31d455ceddfcdef8b04e5547987b4e1be2167677405f3aa2"
+        "sha256": "7f990dff6f358c400a29910fcdd0483f0879e3f3957f6403925720f3d46c7dce"
       },
       "name": "protocol/event_registry.json"
     },
@@ -89,7 +89,7 @@
     },
     {
       "digest": {
-        "sha256": "ee8aec4ec8f698a02442595208cf466015a59c525c9683935763a2b1e1a1b131"
+        "sha256": "aad2a9338005f35f70468172c634cc8b27f3485e582b219172f871329bfeb669"
       },
       "name": "protocol/type_backlog.json"
     },
@@ -107,13 +107,13 @@
     },
     {
       "digest": {
-        "sha256": "fceaa24b1e80bdbbb7058cc1e9c213a358bae15f930ee0d732dfe82677241a1a"
+        "sha256": "8225689a75dce1f3088fb1d49f0cc11a607afbc39c56732a3bcc32576fc01c10"
       },
       "name": "protocol/module_signatures.json"
     },
     {
       "digest": {
-        "sha256": "4ef294d99d7d94f1b3f19c2660daf7145418b381f3be98d204f3a9fb4c58756a"
+        "sha256": "07fc2a36e0dcc4975254077398c6adb279a9ec445412240ab40132c791ce8040"
       },
       "name": "protocol/conformance_report.json"
     },
@@ -239,7 +239,7 @@
     },
     {
       "digest": {
-        "sha256": "93291a7384281da61b974fdfd93c3b54cc73fc3bba29951cd32a87f590e3243d"
+        "sha256": "d7fae10fd800c979bd48ba38c4ff64a59b423969ab0ece41251eab907e9cd3c4"
       },
       "name": "protocol/mcp_package.json"
     },

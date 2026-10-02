@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Sequence, Set, Tuple
 
 from core import conformance_scan as csc
+from core import atomic_write
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
 from core import import_graph as _ig
@@ -106,7 +107,7 @@ def _inputs_fingerprint(root: str = ".") -> str:
 def _read_json(path: Path) -> Any:
     try:
         return json.loads(csc.read_text_cached(path))
-    except (OSError, ValueError):
+    except (OSError, ValueError):  # 件不可读/不可解析 ⇒ None（调用方按「无该面」处理）
         return None
 
 
@@ -191,7 +192,7 @@ def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     for p in _face_paths(root, "community/*/modules/*.md"):
         try:
             text = csc.read_text_cached(p)
-        except OSError:
+        except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
         parsed = csc._fence_yaml(text, "machine_contract")
         mc = (parsed or {}).get("machine_contract") or {}
@@ -234,7 +235,7 @@ def _core_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
     for p in _face_paths(root, "04_模块库/*/*.md"):
         try:
             text = csc.read_text_cached(p)
-        except OSError:
+        except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
         mc = (csc._fence_yaml(text, "machine_contract") or {}).get("machine_contract") or {}
         if not isinstance(mc, dict) or not mc:
@@ -763,8 +764,8 @@ def certify(root: str = ".", packs: Sequence[str] = (), label: str = "", note: s
     doc["count"] = len(doc["certificates"])
     doc["max_packs"] = max((len(c.get("packs") or []) for c in doc["certificates"]), default=0)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
-                    encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30 收口）：组合证书是在仓产物（`protocol/` 侧），并发读者可能读到半截。
+    atomic_write.write_text(path, json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
     return cert
 
 
@@ -799,11 +800,6 @@ def _flatten_sources(root: str, packs: Sequence[str]) -> Tuple[Dict[str, List[st
     return out, combo_packs
 
 
-def _yaml_kv(items: List[Tuple[str, str]], indent: int = 2) -> List[str]:
-    pad = " " * indent
-    return ["%s%s: %s" % (pad, k, v) for k, v in items]
-
-
 def materialize(root: str = ".", packs: Sequence[str] = (), combo_id: str = "",
                 category: str = "", write: bool = False) -> Dict[str, Any]:
     """把一次组合落成**可装载的组合包**（派生协议 + 派生管线 + 借阅索引 + 机验产出面）。
@@ -818,7 +814,6 @@ def materialize(root: str = ".", packs: Sequence[str] = (), combo_id: str = "",
     cert = combine(root, packs=packs)
     if not cert["legal"]:
         return {"ok": False, "reason": "组合非法（先修五不变量）", "certificate": cert}
-    prof = profiles(root)
     src_map, combo_packs = _flatten_sources(root, packs)
     own = sorted({m for ms in src_map.values() for m in ms})
     if not own:
@@ -903,7 +898,9 @@ def materialize(root: str = ".", packs: Sequence[str] = (), combo_id: str = "",
         changed.append(rel)
         if write:
             p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text(text, encoding="utf-8", newline="\n")
+            # 原子写（2026-09-30 收口）：组合包产物落在 `community/<组合包>/…`，
+            # 写入期间有人跑 check14/15/32 会读到半截正文。
+            atomic_write.write_text(p, text)
             written.append(rel)
     return {"ok": True, "package": name, "pipeline": pid, "category": cat,
             "references": sum(len(ms) for _, ms in refs), "modules": len(own),

@@ -17,6 +17,7 @@ jobs:
   verify:
     name: verify-sh-l0-l2
     runs-on: ubuntu-latest
+    timeout-minutes: 60          # 挂死上限（2026-10-01 统一：CI 不许把 runner 占满 6h 默认）
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
       - name: 密钥明文扫描（40 总纲 S8：常见 token 前缀全量正则，命中即红）

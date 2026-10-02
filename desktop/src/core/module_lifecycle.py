@@ -146,7 +146,7 @@ def _protocol_ids(root: str) -> dict:
         try:
             with open(p, encoding="utf-8") as fh:
                 text = fh.read()
-        except OSError:
+        except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
         for num in _ID_NUM.findall(text):
             hits.setdefault("M" + num, []).append(os.path.relpath(p, root).replace("\\", "/"))

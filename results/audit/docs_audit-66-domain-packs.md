@@ -6,16 +6,17 @@ scope: 作者指令「八小时内按 AI 品类清单逐项建域包；参照 AI
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/domain_pack.py:b740817bc2e2dab2566dc5e2cdaa9b0ef864f83d004f07a16e08122af663b5af
+  - desktop/src/core/domain_pack.py:eb13ee6eba1105d86aec8435ad7df0fa2995913a4d45435a414f797f64e627f5
   - desktop/src/core/domain_metrics.py:0ad13aa11f650f7f47abcfd4f643f16c760cde0121c194b86d08096f37234fb6
-  - desktop/src/core/output_forms.py:8c7101db859572967d0f77ad00f40236b086837f07da5a07c43e668013c200f1
-  - desktop/src/core/quality_depth_scan.py:75ee6b4fd8a63b03ec4687f37deaa80dd7076d89d76d5911f2333e8c7c1491da
+  - desktop/src/core/output_forms.py:dca00a246f8294a180b1bd30ac2c2957849b668e25bdbb3ac9780a0f1ccb5d7d
+  - desktop/src/core/quality_depth_scan.py:29d5bfa5a653277ff6629dde7bfc7e629c936750ec988316992ca17cc9449df4
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
-  - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - docs/domain-packs.md:4c9ee3987699c24f1d78910281b446287dceebb3a77632ef458a07ba618f62d0
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
-  - desktop/tests/test_domain_pack.py:bd3e36a8e81cd89a4ca4afb785295002cbe7d68fe762b776e816925bafd11ed7
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
+  - desktop/tests/test_domain_pack.py:4d79a3e53f7f7f4533b12ca2ee789d83cecc7ce29001a3882b07018fdcfdecaa
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

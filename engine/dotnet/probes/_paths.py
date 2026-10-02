@@ -51,6 +51,17 @@ def snap_src(snap: str | None = None) -> str:
     return str(Path(snap or SNAP) / "desktop" / "src")
 
 
+def portable(path: str | Path) -> str:
+    """绝对路径 → **便携标签**（只留末段目录名）。
+
+    金标注据会进仓库、给别人用——写成绝对路径既是**作者机器路径泄漏**，也让记录只在
+    一台机器上可解释。证据里一律只留标签（如 `nf-snap-h16`），机器相关的路径由调用方
+    自己的 `NF_SNAPSHOT` 决定。
+    """
+    name = Path(str(path)).name
+    return name or "<snapshot>"
+
+
 def newest_dist(rid: str) -> Path:
     """`dist/` 下该 RID 的最大 `fNN` 交付形态目录；找不到时返回当前目录（调用方一般都会显式覆盖）。"""
     best, best_n = Path("."), -1

@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -42,6 +43,10 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     candidates = 0
     faces = []
     for doc in csc._module_docs(str(r)):
+        # 机读面只回**仓库相对**路径（2026-10-01 收口）：`_module_docs` 在绝对 root 下给的是
+        # 本机绝对路径，直接进 `--json` 就是**隐私泄漏 + 换机不可解释**。口径同 world_model
+        # 的 `source`（那里一直是 rel）与 `_no_machine_paths`（失败消息同款纪律）。
+        rel = os.path.relpath(doc, os.path.abspath(str(r))).replace(os.sep, "/")
         text = csc.read_text_cached(doc)
         parsed = csc._fence_yaml(text, "machine_contract")
         mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
@@ -49,11 +54,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
             continue
         face = mc["tool_face"]
         if not isinstance(face, list) or not face:
-            issues.append("%s: tool_face 非空列表" % doc)
+            issues.append("%s: tool_face 非空列表" % rel)
             continue
         modules += 1
-        faces.append({"module": (mc.get("id") or doc),
-                      "source": doc,
+        faces.append({"module": (mc.get("id") or rel),
+                      "source": rel,
                       "entries": len(face)})
         for e in face:
             entries += 1

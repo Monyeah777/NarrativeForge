@@ -7503,7 +7503,32 @@
       "payload_status": "declared"
     },
     "faction_event": {
-      "fields": {},
+      "fields": {
+        "action_type": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "gang": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "outcome": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "rep_impact": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "target_area": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "territory_delta": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "array"
+        }
+      },
       "note": "证据:M15_帮派势力 机读块 events.publish；载荷形状待补",
       "payload_status": "declared"
     },
@@ -7614,6 +7639,18 @@
         "action": {
           "type": "string"
         },
+        "affinity_delta": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "context": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "flags": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "array"
+        },
         "npc_id": {
           "type": "string"
         },
@@ -7622,6 +7659,10 @@
         },
         "tick": {
           "type": "number"
+        },
+        "type": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
         }
       },
       "note": "官方 M13 NPC 交互结果"
@@ -7706,8 +7747,24 @@
     },
     "narrative_event": {
       "fields": {
+        "beats": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "array"
+        },
+        "causal_chain": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
         "payload": {
           "type": "object"
+        },
+        "pov": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "seq_no": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
         },
         "tick": {
           "type": "number"
@@ -7846,8 +7903,28 @@
     },
     "quest_state": {
       "fields": {
+        "location": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "next_quest": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "objective": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
+        "phase": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
+        },
         "quest_id": {
           "type": "string"
+        },
+        "reward": {
+          "note": "正文 payload 收割（证据可溯）",
+          "type": "untyped"
         },
         "state": {
           "type": "string"
@@ -8150,8 +8227,8 @@
           "type": "untyped"
         },
         "modifiers": {
-          "note": "正文证据字段名；类型待核",
-          "type": "untyped"
+          "note": "45 类型收窄（正文 payload 收割，证据可溯）",
+          "type": "object"
         },
         "region": {
           "note": "正文证据字段名；类型待核",

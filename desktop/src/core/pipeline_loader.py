@@ -89,7 +89,7 @@ class _Node:
 
 
 def _build_tree(lines: List[str]) -> List[_Node]:
-    """按缩进建树（仅处理我们关心的子集）。"""
+    """按缩进建树（只处理本实现需要的子集：键值行与 `- ` 列表行，标题行跳过）。"""
     roots: List[_Node] = []
     stack: List[_Node] = []
     for raw in lines:

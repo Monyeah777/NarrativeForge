@@ -23,8 +23,8 @@ machine_contract:
       closure_conflict_list: untyped
     inputs:
       M00: state
-      '知识问答与检索增强:M01': untyped
       M50: untyped
+      知识问答与检索增强:M01: untyped
 ```
 
 ## 1. 职责

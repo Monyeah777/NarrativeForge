@@ -5,7 +5,6 @@ import ast
 import os
 import sys
 import tempfile
-import time
 import unittest
 from pathlib import Path
 
@@ -279,11 +278,19 @@ class PurityScanTest(unittest.TestCase):
         但被调者名字随接收者变、按整串匹配会整类漏掉）——当时本仓 core 里有 **6 处 `.unlink()`**
         全部一路绿灯穿过 R6，基线随之 5 → **12**（新增 6 处已登记站点：disk_cache / domain_pack /
         pack_combo / storage / watch ×2）。
+
+        2026-09-30 再 +1（12 → **13**）：`atomic_write.py` 的**失败清理**（只删本模块
+        `tempfile.mkstemp` 现造的 `.tmp`；成功路径不删任何东西）——理由已登记进
+        `SINK_ALLOW["atomic_write.py:unlink"]`。本断言的作用正是逼这条上调**显式发生**。
+
+        2026-09-30 再 +1（13 → **14**，二次收口）：`atomic_write` 新增**二进制入口**
+        `write_bytes`（签名锚 `.sig` 需要「要么旧全量、要么新全量」），它是同一条受控
+        `os.fdopen(..., "wb")` 落盘——与 `write_text` 那处同键、同理由，故只在计数上 +1。
         """
         issues, stats = ps.scan(ROOT)
         self.assertEqual([i for i in issues if "危险 sink" in i], [],
                          "真仓库出现未登记 sink 即 FAIL")
-        self.assertLessEqual(stats.get("sinks", 0), 12)
+        self.assertLessEqual(stats.get("sinks", 0), 14)
 
 
 class SinkRegistryTest(unittest.TestCase):

@@ -40,11 +40,6 @@ class ProtocolForm:
     doc_semantics: str = ""
 
 
-def _fmt_list(items) -> str:
-    return "\n".join(f"    - {i!r}" if not str(i).startswith("M") or ":" in str(i)
-                     else f'    - "{i}"' for i in items)
-
-
 def build_protocol_yaml(form: ProtocolForm) -> str:
     """表单 → 合规 protocol.yaml 文本（结构对齐真实实例）。"""
     # A1 补遗：产出语义声明非空时校验值域并写入 package 段（空=不写，兼容真实实例）

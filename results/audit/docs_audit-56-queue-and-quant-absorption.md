@@ -6,14 +6,15 @@ scope: ① 执行作者裁决队列六项（闭包跨域形态 / 证据强度入
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/concept_graph.py:2c50dcf37ddf8cf889958667d791ef96b3c66fb10ad779bada73e996f7517de9
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
-  - README.en.md:7eb6bb6ab038945353b9572a9c0d89c406aa5405fb8c9d10af5895b2ec95c0c0
-  - scripts/check_external_links.py:4410f000e4d0efb7b58b00522420d2db9c23f8194ab01b38b90290ae6de47966
+  - desktop/src/core/concept_graph.py:0f4bbd6b92ab0cb3daf47956378f7afd0d20432ed23f59e5d669621da7d239be
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - README.en.md:4e64877efabd081093e62988d730ee15256bd3d90751566d896b723ac0ea8e13
+  - scripts/check_external_links.py:539e77b705f11e8f3efd72e66774041a5a7e107d753523eef55cbc86da2e9c58
   - community/量化金融域包/assets/DATA_CONTRACT.md:3815cd420ce535b571149a1ca0725b2d5c1757660e83d0edd8ed1d5c14ed2af1
   - community/量化金融域包/assets/STRATEGY_SPECS.md:9174638b5caf2d5d8586b80d07ed9aeca5d221e16f01ec19ce0e4c0f50859e65
   - community/量化金融域包/assets/QUANT_GRAPH.md:331d63943effe51462440c41832202df3b8e6bb2553734472947ac77927e094c
   - .github/workflows/external-links.yml:3aa09434f507dd88969994666f4c25d1bf70eb3dbc940fa132a24eae8565c2dc
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

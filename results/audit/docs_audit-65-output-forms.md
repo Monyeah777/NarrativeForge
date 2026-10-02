@@ -6,17 +6,18 @@ scope: 作者指令「两个域包产出几乎都是文本…产出没有功能�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/output_forms.py:8c7101db859572967d0f77ad00f40236b086837f07da5a07c43e668013c200f1
+  - desktop/src/core/output_forms.py:dca00a246f8294a180b1bd30ac2c2957849b668e25bdbb3ac9780a0f1ccb5d7d
   - desktop/src/core/quant_metrics.py:fef3a30d38387f4aefcedbe2ecbb68867a488e705fb4b2576a9dddaa0a85e6a0
-  - desktop/src/core/quality_depth_scan.py:75ee6b4fd8a63b03ec4687f37deaa80dd7076d89d76d5911f2333e8c7c1491da
+  - desktop/src/core/quality_depth_scan.py:29d5bfa5a653277ff6629dde7bfc7e629c936750ec988316992ca17cc9449df4
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
   - protocol/output_forms.json:aff71eccf1cd0b57c51a86681c613580e79d346bb6e5dfdd97a873a2436943e9
   - community/量化金融域包/outputs/INDEX.json:cfe9272a362e138f9cb6d15615176cbb348716336d31b372bf411645f74a7bb6
   - community/AI系统域包/outputs/INDEX.json:95103926c6736571fb38e5c95f8234b76dddf26ee286270e3bdbdf3fd4c33a99
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
-  - desktop/tests/test_output_forms.py:ae331de38238ed0a7d287ad0ed41f15f44800ef90759497b2cf2ea9b2359ff9e
+  - desktop/tests/test_output_forms.py:b90f7228cec7fef70355d44c8feba6678ce0d153eef214448256dc070ea6531e
   - desktop/tests/test_quant_metrics.py:bed9322e0961f98df2b7f588fd0d81f1b2ff92b45373e0ecfc3cc7da8739d4f3
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

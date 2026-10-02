@@ -137,7 +137,7 @@ def main() -> int:
             "schema": "nf-geo-export-golden/1",
             "generated": "2026-09-27",
             "source": "真源 scripts/geo_export.py::check（check38 子扫描 3 框法）",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(渲染行))[:32]  ← 与引擎侧同式',
             "cases": results,
         }

@@ -54,12 +54,16 @@ def _declared_max_date(root: str) -> str:
 def _read_json(root: str, rel: str) -> Dict[str, Any]:
     path = os.path.join(root, rel)
     if not os.path.isfile(path):
+        # 缺件 ⇒ 空面（可选源，例如 provenance/transform_log 在局部树上可能不在场）
         return {}
     with open(path, encoding="utf-8") as fh:
         try:
             return json.load(fh)
-        except json.JSONDecodeError:
-            return {}
+        except json.JSONDecodeError as exc:
+            # **在场但坏** 不是「空面」：静默当空会让导出的标准文档**悄悄少一大段**
+            # （而 check 判的是「在盘产物 == 实时派生」，两边一起空 ⇒ 永远绿）。fail-closed。
+            raise ValueError("源件不可解析：%s（%s）（修复指引：修好该 JSON 后重跑 "
+                             "`nf interop --all`）" % (rel, exc)) from None
 
 
 _TYPE_MAP = {"string", "integer", "number", "boolean", "object", "array"}

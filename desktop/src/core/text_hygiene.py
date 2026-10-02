@@ -277,6 +277,13 @@ def summary(stats: Dict[str, Any]) -> str:
 if __name__ == "__main__":  # pragma: no cover - 手动体检入口
     import sys
 
+    # UTF-8 stdio（2026-10-01 实测）：本模块是**文档里可照抄的入口**
+    # （`docs/text-hygiene.md`：`cd desktop/src && python -m core.text_hygiene ../..`），而此前没钉
+    # 输出编码 ⇒ Windows 控制台/管道下摘要以 **GBK 字节**吐出，按 UTF-8 读就是 `�ı� 3079 …`——
+    # 正是 `test_stdio_encoding` 记载的「写给管道消费者的是 GBK」那类缺陷。口径与 `scripts/nf.py` 同。
+    for _s in (sys.stdout, sys.stderr):
+        if hasattr(_s, "reconfigure"):
+            _s.reconfigure(encoding="utf-8")
     _root = sys.argv[1] if len(sys.argv) > 1 else "."
     _issues, _stats = scan(_root)
     print(summary(_stats))

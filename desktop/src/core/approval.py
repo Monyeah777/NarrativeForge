@@ -18,6 +18,8 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import atomic_write
+
 SCHEMA = "nf-approval/1"
 DIR_REL = "protocol/approvals"
 
@@ -44,8 +46,10 @@ def approve(root: str, subject: str, approved_by: str, note: str = "",
     safe = subject.replace("/", "__").replace("\\", "__")
     dest = Path(root) / DIR_REL / ("%s.json" % safe)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps(rec, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                    encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30 收口）：批准记录是**在仓产物**（protocol/approvals/*.json），
+    # 并发 `verify`/`nf audit` 读者此前可能读到半截 JSON（裸 write_text）。
+    atomic_write.write_text(dest, json.dumps(rec, ensure_ascii=False,
+                                             indent=2, sort_keys=True) + "\n")
     return dest.relative_to(Path(root)).as_posix()
 
 

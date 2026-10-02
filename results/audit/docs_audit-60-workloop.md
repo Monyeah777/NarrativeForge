@@ -6,13 +6,14 @@ scope: 作者澄清「让这些模型替我干活，来构建 NF」——把决�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
-  - desktop/src/core/workloop.py:25df02cccb732a1a06b71e7ca55ddf82cb136bfb273f9488e184fb47c0a58d8d
+  - desktop/src/core/workloop.py:b1fe26b927902d071b027c6926c0ff2c9c763f6e17c39ec297682162af0bafba
   - desktop/src/core/decision_layer.py:f9b87bb638e1ffef0a71a0a3b87c97646337a86788e53d6fea8fca22b8bf9e36
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
-  - docs/decision-layer.md:85ac1dc81c879cf98a15a0c089ba1c825c67649fe3ee431a9172336c09b04314
+  - docs/decision-layer.md:46cd91d13c1b98120318b6aff5d720fc3abe22541de8b1b1762db57a0e8dbeeb
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

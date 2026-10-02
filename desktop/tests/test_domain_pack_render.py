@@ -79,5 +79,37 @@ class SyntheticSpecRenderingTest(unittest.TestCase):
         self.assertIsInstance(dp.dump_yaml(spec), list)
 
 
+class SpecPathShapeTest(unittest.TestCase):
+    """规格**代码**与**包名**的形状判据（数据 → 路径 的越界面，2026-09-30 补口）。
+
+    实测形态：`load_spec(root, code)` 是 `Path(root)/SPEC_DIR/("%s.json" % code)` 直拼——
+    `code = "../secret"` 会读到规格目录之外；而 `pack_name` 直接拼进
+    `community/<pack_name>/…` 的**全部写盘路径**，写成 `../x` 即写到仓库外。两处都不依赖
+    私档，故用例在干净检出里照跑。
+    """
+
+    def test_spec_code_shape_is_rejected_before_any_read(self):
+        import tempfile
+        for bad in ("../secret", "..\\secret", "/etc/passwd", "A01/../x", ""):
+            with self.assertRaises(ValueError, msg=bad) as ctx:
+                dp.load_spec(str(ROOT), bad)
+            self.assertIn("形态非法", str(ctx.exception), bad)
+            self.assertIn("修复指引", str(ctx.exception), bad)
+        # 取证：形状判据前置于读盘——目录外真放一份同名件也不会被读（不是「文件不存在」那种拒法）
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "secret.json").write_text("{}", encoding="utf-8")
+            with self.assertRaises(ValueError) as ctx:
+                dp.load_spec(tmp, "../secret")
+            self.assertIn("形态非法", str(ctx.exception))
+
+    def test_pack_name_shape_is_enforced(self):
+        for bad in ("../evil", "a/b", "a\\b", "x" * 41, "带 空格"):
+            issues = dp.spec_issues(dict(_spec(), pack_name=bad))
+            self.assertTrue([i for i in issues if "pack_name" in i], bad)
+        for good in ("测试域包", "组合包-AI_1", "test_domain"):
+            issues = dp.spec_issues(dict(_spec(), pack_name=good))
+            self.assertFalse([i for i in issues if "pack_name" in i], good)
+
+
 if __name__ == "__main__":
     unittest.main()

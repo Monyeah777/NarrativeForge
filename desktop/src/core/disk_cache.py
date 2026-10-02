@@ -26,7 +26,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional, Tuple
+from typing import Any, Callable, Optional
 
 ENV_OFF = "NF_NO_DISK_CACHE"
 KEEP = 16
@@ -84,6 +84,19 @@ def defer_flush() -> int:
 
 def enabled() -> bool:
     return not os.environ.get(ENV_OFF)
+
+
+def canonical(value: Any) -> Any:
+    """把「刚算出来的值」规范化到与**落盘再读回**完全相同的形状（键序固定）。
+
+    为什么（2026-10-01 取证）：`store` 落盘时用 `sort_keys=True`，而**未命中路径**是把内存里的
+    值直接交回调用方 ⇒ 同一份派生账，首跑按插入序打印、第二跑（命中）按字典序打印：
+    `nf layers --json` 实测首跑 sha `d265f466…` / 次跑 `4acfa0a3…`（**同长不同序**），
+    守护路径与直跑路径也因此逐字节不一致——「同一输入两次运行逐字节一致」这条口径
+    在**带缓存的机器面**上此前是假真。规范化一次（小对象往返，微秒级）就把两条路径收成一条，
+    且对**所有** `memo_pair` / `scan` 站点同时生效（不必逐个打印面排序）。
+    """
+    return json.loads(json.dumps(value, ensure_ascii=False, sort_keys=True))
 
 
 def root_dir() -> Path:

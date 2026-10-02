@@ -21,6 +21,7 @@ from typing import List, Optional
 
 from .ir import IRDocument
 from .ccv3_adapter import map_ir_to_ccv3, world_entries
+from core import atomic_write
 from .skill_adapter import export_skill
 from .agent_rules_adapter import export_agents, export_claude
 from .mcp_adapter import export_mcp
@@ -45,10 +46,9 @@ def _export_ccv3(ir: IRDocument, dest_dir: Path, res: ExportResult) -> None:
     dest_dir.mkdir(parents=True, exist_ok=True)
     chara_path = dest_dir / "chara.json"
     world_path = dest_dir / "world.json"
-    chara_path.write_text(json.dumps(chara, ensure_ascii=False, indent=2),
-                          encoding="utf-8")
-    world_path.write_text(json.dumps(world, ensure_ascii=False, indent=2),
-                          encoding="utf-8")
+    # 原子写（2026-09-30 收口）：交付件不留半截（半截 JSON 会被消费方读成「卡损坏」）。
+    atomic_write.write_text(chara_path, json.dumps(chara, ensure_ascii=False, indent=2))
+    atomic_write.write_text(world_path, json.dumps(world, ensure_ascii=False, indent=2))
     res.files.extend([str(chara_path), str(world_path)])
     # 未映射检查（映射不静默丢弃不变量）：IR 叙事层模块应全部进 world
     narrative = [m.full_id for l in ir.layers if l.id not in ("P00", "P80")

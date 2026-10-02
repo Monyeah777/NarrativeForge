@@ -15834,7 +15834,38 @@
         "contentType": "application/json",
         "name": "faction_event",
         "payload": {
-          "properties": {},
+          "properties": {
+            "action_type": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "gang": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "outcome": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "rep_impact": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "target_area": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "territory_delta": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            }
+          },
           "type": "object"
         },
         "x-nf-note": "证据:M15_帮派势力 机读块 events.publish；载荷形状待补"
@@ -15981,6 +16012,21 @@
               "description": "string",
               "type": "string"
             },
+            "affinity_delta": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "context": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "flags": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
             "npc_id": {
               "description": "string",
               "type": "string"
@@ -15992,6 +16038,11 @@
             "tick": {
               "description": "number",
               "type": "number"
+            },
+            "type": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
             }
           },
           "type": "object"
@@ -16104,9 +16155,29 @@
         "name": "narrative_event",
         "payload": {
           "properties": {
+            "beats": {
+              "description": "array",
+              "items": {},
+              "type": "array"
+            },
+            "causal_chain": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
             "payload": {
               "additionalProperties": true,
               "description": "object",
+              "type": "object"
+            },
+            "pov": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "seq_no": {
+              "additionalProperties": true,
+              "description": "untyped",
               "type": "object"
             },
             "tick": {
@@ -16284,9 +16355,34 @@
         "name": "quest_state",
         "payload": {
           "properties": {
+            "location": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "next_quest": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "objective": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
+            "phase": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
+            },
             "quest_id": {
               "description": "string",
               "type": "string"
+            },
+            "reward": {
+              "additionalProperties": true,
+              "description": "untyped",
+              "type": "object"
             },
             "state": {
               "description": "string",
@@ -16683,7 +16779,7 @@
             },
             "modifiers": {
               "additionalProperties": true,
-              "description": "untyped",
+              "description": "object",
               "type": "object"
             },
             "region": {

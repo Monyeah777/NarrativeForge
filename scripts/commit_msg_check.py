@@ -147,4 +147,8 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     raise SystemExit(main())

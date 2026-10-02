@@ -185,7 +185,7 @@ def main() -> int:
             "schema": "nf-shell-check-golden/1",
             "generated": "2026-09-27",
             "source": f"verify.sh 抽出 {'/'.join(names)} 函数本体 + 真源同款 ok/no/wn 助手，交 {Path(args.bash).name} 执行",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(仅 [PASS]/[FAIL]/[WARN] 行))[:32]',
             "cases": results,
         }

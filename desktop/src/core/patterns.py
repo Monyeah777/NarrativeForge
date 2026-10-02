@@ -20,6 +20,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import atomic_write
 from core.library import parse_frontmatter
 
 GLOB = "patterns/*/PATTERN.md"
@@ -123,8 +124,7 @@ def write_projection(root: str = ".") -> Dict[str, Any]:
     p = Path(root) / INDEX_REL
     if not p.is_file():
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text("# NF Patterns 索引\n\n" + BEGIN + "\n" + END + "\n",
-                     encoding="utf-8", newline="\n")
+        atomic_write.write_text(p, "# NF Patterns 索引\n\n" + BEGIN + "\n" + END + "\n")
     text = p.read_text(encoding="utf-8")
     block = render_index(root)
     if BEGIN in text and END in text:
@@ -133,7 +133,7 @@ def write_projection(root: str = ".") -> Dict[str, Any]:
         new = text.rstrip("\n") + "\n\n" + block + "\n"
     changed = new != text
     if changed:
-        p.write_text(new, encoding="utf-8", newline="\n")
+        atomic_write.write_text(p, new)
     return {"changed": changed, "path": INDEX_REL}
 
 

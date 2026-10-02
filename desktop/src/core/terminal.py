@@ -42,19 +42,78 @@ QUIT_WORDS = ("quit", "exit", "q", "退出", "再见")
 YES_WORDS = ("y", "yes", "ok", "是", "确认", "可以")
 
 #: 需要显式确认的写入面标记（命令里出现任一即视为写盘/不可逆动作）
-CONFIRM_FLAGS = ("--write", "--apply", "--register", "--tag", "--force",
-                 "--push", "--delete", "--rm")
+CONFIRM_FLAGS = ("--write", "--apply", "--register", "--force",
+                 "--out", "--dest", "--build",
+                 # 2026-10-01 补：**写盘但不叫 `--write`** 的三个旗标——按 help 清点「收文件/
+                 # 写产物的旗标」时逐个核对 `needs_confirm` 抓到（此前 shell 里可无确认改仓库）：
+                 #   `--write-baseline`（nf score 重签回归基线）、`--fix`（nf lint 机械修复
+                 #   **就地改源件**）。
+                 "--write-baseline", "--fix",
+                 # 2026-10-01 三补（**机械枚举全部旗标**后逐条核对写 sink 抓到）：上一轮是
+                 # 按「已知写旗标名」清的（`--write*` / `--re-sign` / `--fix`），漏掉了三个
+                 # **不带任何 `--write` 语义**却直接改仓库的旗标：
+                 #   `nf module types --harvest`  → 写 `protocol/event_registry.json`
+                 #   `nf pipeline dryrun --write-advisory` → 写 `protocol/pipeline_advisory.json`
+                 #   `nf combine plan --certify`  → 写 `protocol/combo_certificates.json`
+                 # 外加一个「写你自己命名的文件」的旗标（与已入闸的 `--out` 同类）：
+                 #   `nf assemble … --save <文件>`（可给仓库相对路径 ⇒ 在 shell 粘贴面里能落仓）。
+                 "--harvest", "--write-advisory", "--certify", "--save")
+#: 2026-10-01 清掉 5 个**死条目**（表里有、`nf` 的 argparse 面里没有）：`--tag` / `--push` /
+#: `--delete` / `--rm` / `--re-sign`——都是更早版本的残影（`nf release` 如今只有 `--fast`；
+#: `nf asset baseline` 的重签旗标是 **`--write`**，已被上面那条覆盖，行为面并没有因此漏拦）。
+#: 死条目的害处不是漏拦（它们匹配不到任何东西），而是**误导读者的口径**：文档写着「命中
+#: `--re-sign` 才需要确认」，读者照着敲只会拿到用法错误。判据见 `test_write_flag_gate`：闸门
+#: 三表的每一条都必须真在 argparse 面里（本类问题由它兜住）。
 #: 需要显式确认的 (命令, 子命令) 组合（无标记位也写盘的动词）
 CONFIRM_VERBS = (("asset", "add"), ("asset", "rm"), ("asset", "deprecate"),
                  ("module", "deprecate"), ("module", "restore"),
                  ("module", "signature"), ("register", ""), ("import", ""),
-                 ("rename", ""), ("release", ""))
+                 ("rename", ""), ("release", ""),
+                 # 2026-09-30 补：这些动词**不带 `--write` 也直接改仓库件**（投影重建 / 生命周期
+                 # 流转 / frontmatter 落锚 / 派生新件），此前只在 `CONFIRM_FLAGS` 里找标记位，
+                 # 于是 `nf shell --exec "nf library deprecate <id>"` 这类**无标记写盘**漏过闸门。
+                 ("pipeline", "new"), ("decisions", "reindex"), ("patterns", "reindex"),
+                 ("library", "reindex"), ("library", "deprecate"), ("library", "restore"),
+                 ("library", "supersede"), ("library", "attest"),
+                 # 2026-10-01 补：`nf approve <对象> --by <人>` 会写**批准记录**
+                 # （`protocol/approvals/*.json`）——那是治理/问责产物，且**不带任何写旗标**，
+                 # 此前在 shell 里可无确认落一条批准。
+                 ("approve", ""),
+                 # 2026-10-01 再补（**机械枚举**变异类子命令后逐条核对 `needs_confirm` 抓到）：
+                 #   `nf asset restore` 与 `nf asset deprecate` 同型（改台账 + 资产文件头），
+                 #   但动词表里只登记了 deprecate ⇒ 恢复方向漏过闸门；
+                 #   `nf knowledge transform add|promote` 会写 `protocol/transform_log.json`
+                 #   （消化记录），同样不带旗标。
+                 ("asset", "restore"), ("knowledge", "transform"),
+                 # 2026-10-01 新增 `nf preset` 面时的同步登记：`save` / `rm` / `import` 会改
+                 # **本机预设库**（`<NF_HOME>/presets/*.json`）——与 `library deprecate` 同型
+                 # （无旗标、直接改状态），`ls` / `show` / `apply` 是只读解析面，不入闸。
+                 ("preset", "save"), ("preset", "rm"), ("preset", "import"))
+#: 「某命令 + 某旗标」才写盘的组合：同一旗标在别的命令上是只读（`pipeline --all` 只扫不改），
+#: 故不能把 `--all` 放进 `CONFIRM_FLAGS`。
+#: 「某命令 + 某旗标」才写盘的组合：同一旗标在别的命令上是只读，故不能放进 `CONFIRM_FLAGS`。
+#: - `interop --all`：只扫不改（`--all` 在别处是只读全集），只有 interop 的面才是落盘全集；
+#: - `assemble --trace` / `--session`：这两个旗标在 `nf knowledge frequency --trace` 与
+#:   `nf shell --session` 上是**读/仓外受控**（shell 那条另有「必须绝对路径且不得落仓库内」的
+#:   硬闸），只有 `nf assemble` 的这两条会**写你自己命名的文件**（可仓库相对 ⇒ 粘贴面能落仓）。
+CONFIRM_FLAG_PAIRS = (("interop", "--all"),
+                       ("assemble", "--trace"), ("assemble", "--session"))
 #: 会话内不直接执行：长驻/递归/需独占终端的动词 → 给指引
 BLOCKED_IN_SHELL = {
     "shell": "终端内不再开终端（避免递归会话）：请另开一个终端窗口运行 nf shell。",
     "serve": "serve 是长驻 MCP 服务（会占住当前终端）：请另开终端运行 "
              "nf serve <快照.json>，本终端可继续用只读命令面。",
+    # 2026-10-01 补：`lsp` 与 `serve` **同型**——常驻 stdio 服务，`LspServer.serve()` 是
+    # `while True: stdin.readline(...)`，交互会话里跑它会**静默占住终端**（实测：给空 stdin
+    # 才立刻退；活终端会一直等帧）。此前只拦了 serve，本条按同一口径补齐。
+    "lsp": "lsp 是常驻 stdio 服务（等编辑器发 Content-Length 帧，会占住当前终端）："
+           "请由编辑器/IDE 直接拉起（nf lsp），本终端可继续用只读命令面。",
 }
+#: 别名单源：`nf terminal` 是 `nf shell` 的 argparse 别名（`add_parser("shell",
+#: aliases=["terminal"])`）。此前只有 `_cmd_shell` 内部自己认这两个拼写，会话层的
+#: `BLOCKED_IN_SHELL` 查不到 `terminal` ⇒ 会**先执行再被 handler 拒**（结果一样，但拦截点晚
+#: 一拍）。这里补上别名键、消息仍只有一份（引用同一条），两种拼写都在**执行前**拦下。
+BLOCKED_IN_SHELL["terminal"] = BLOCKED_IN_SHELL["shell"]
 
 #: 能力菜单（单一真源）：键 / 稳定 id / 标题 / 一句话 / 示例命令（可执行原文）
 #: 覆盖端壳退役前 GUI 七区的能力面（导入 / 校验 / 管线 / 生成 / 资产 / 预设 / 社区），
@@ -108,8 +167,8 @@ FAMILIES = (
      "summary": "第一次进 NF：体检、一键演示、自述数字、抽象阶梯",
      "commands": ("doctor", "demo", "stats", "layers")},
     {"id": "forge", "name": "装配与生产",
-     "summary": "从需求到产物：装配计划、全链管道、渲染、协议件读写、入库登记",
-     "commands": ("assemble", "run", "render", "spec", "register", "import")},
+     "summary": "从需求到产物：装配计划、预设（管线+模块+资产包一次组装）、全链管道、渲染、协议件读写、入库登记",
+     "commands": ("assemble", "preset", "run", "render", "spec", "register", "import")},
     {"id": "shelf", "name": "资产与货架",
      "summary": "市场、资产台账、模块生命周期、管线派生、组合引擎、域包工厂、产出形态",
      "commands": ("market", "asset", "module", "pipeline", "combine", "domain",
@@ -393,7 +452,76 @@ FORMS = (
     {"id": "receipts-write", "title": "重签协议层回执",
      "summary": "内容改动后重新冻结 protocol/RECEIPTS.json（随后通常重跑 conformance / 批准）",
      "steps": (), "argv": ("receipts", "--scope", "protocol", "--write")},
+    # ---- 第二批（2026-10-01）：把「已入闸但没表」的常用写面补成组装式命令 ----
+    # 依据：闸门表（CONFIRM_VERBS / CONFIRM_FLAGS / CONFIRM_FLAG_PAIRS）是写面的**穷举真源**，
+    # 而表单此前只覆盖其中 8 张 ⇒ 其余写面在终端里只能手敲全参数。本批先补 agent 高频的四类，
+    # 其余逐条登记在 `FORM_EXEMPT`（写明「为什么不为它建表」），由判据保证「写面必有去处」。
+    {"id": "preset-save", "title": "保存预设", "summary": "把一条装配清单存成本机预设（落在 NF_HOME，非仓库）",
+     "steps": ({"key": "name", "prompt": "预设名", "required": True, "hint": "如 西幻生存-最小"},
+               {"key": "pipeline", "prompt": "管线 id（可空）", "required": False, "hint": "如 P04"},
+               {"key": "modules", "prompt": "模块 full_id，逗号分隔（可空）", "required": False,
+                "hint": "如 通用类:M00,轻混类:M91"},
+               {"key": "assets", "prompt": "资产包名（可空）", "required": False},
+               {"key": "force", "prompt": "要覆盖同名预设就填 --force，否则留空", "required": False}),
+     "argv": ("preset", "save", "{name}", "--pipeline", "{pipeline}", "--modules", "{modules}",
+              "--assets", "{assets}", "{force}")},
+    {"id": "library-deprecate", "title": "馆藏条目弃用",
+     "summary": "生命周期流转 → deprecated（不再推荐、仍可读）",
+     "steps": ({"key": "entry", "prompt": "馆藏编号", "required": True, "hint": "如 NF-1"},),
+     "argv": ("library", "deprecate", "{entry}")},
+    {"id": "library-restore", "title": "馆藏条目回退",
+     "summary": "生命周期回退 → active", "steps": ({"key": "entry", "prompt": "馆藏编号", "required": True},),
+     "argv": ("library", "restore", "{entry}")},
+    {"id": "pipeline-new", "title": "派生新管线",
+     "summary": "自 P00 骨架派生新管线（改 id/name/领域标签；登记 02 与填层名挂载按 README 三步）",
+     "steps": ({"key": "id", "prompt": "新管线 id", "required": True, "hint": "如 P07"},
+               {"key": "name", "prompt": "显示名", "required": True, "hint": "如 演示领域管线"},
+               {"key": "from", "prompt": "模板管线 md（可空 = 03_管线库/P00…）", "required": False},
+               {"key": "domain", "prompt": "领域标签（可空）", "required": False},
+               {"key": "dest", "prompt": "输出路径（可空 = 官方管线位）", "required": False}),
+     "argv": ("pipeline", "new", "--id", "{id}", "--name", "{name}", "--from", "{from}",
+              "--domain", "{domain}", "--dest", "{dest}")},
+    {"id": "approve-subject", "title": "批准内容绑定",
+     "summary": "给被批准对象落一条批准记录（protocol/approvals/*.json）",
+     "steps": ({"key": "subject", "prompt": "被批准对象路径（仓库相对）", "required": True},
+               {"key": "by", "prompt": "批准人标识（可空）", "required": False},
+               {"key": "note", "prompt": "批准说明（可空）", "required": False}),
+     "argv": ("approve", "{subject}", "--by", "{by}", "--note", "{note}")},
 )
+
+
+#: 已入闸但**刻意不建表**的写面 → 理由（逐条点名）。判据：闸门表里的每一项要么有表、要么在这里
+#: 有理由，否则红——这样新写面不会「悄悄没有组装式入口」（2026-10-01：表单只覆盖 8/30 个写面，
+#: 而没有任何判据盯着这个比例）。
+FORM_EXEMPT = {
+    "--build": "输出类：`assemble --build` 的产物形态随需求变，一表装不下（闸门仍拦）",
+    "--certify": "输出类：`combine plan --certify` 与组合证书绑定，参数由组合面推导",
+    "--dest": "输出类：落点随命令而异，手敲路径比填表更快",
+    "--fix": "机械修复：`lint --fix` 就地改源件，先跑 `lint` 看清单再决定",
+    "--harvest": "登记类：`module types --harvest` 与 I/O 类型面绑定，属批量维护",
+    "--out": "输出类：`interop --out` / `attest --out` 等落点由用例决定",
+    "--register": "登记类：`import --register` 载荷来自外部件，先落盘再登记",
+    "--save": "输出类：`assemble --save` 写用户命名的档案文件",
+    "--write-advisory": "输出类：`pipeline dryrun --write-advisory` 写 advisory 台账",
+    "--write-baseline": "基线类：`score --write-baseline` 重签回归基线，签发是评审动作",
+    "asset deprecate": "货架维护：条目少、动作一次性，`nf asset ls` 后手敲更直接",
+    "asset restore": "货架维护：同上（恢复路径带原层级，表单装不下）",
+    "asset rm": "货架维护：删除类动作刻意不给一键表（留一步手敲）",
+    "decisions reindex": "维护类：全量重建索引，一次一条命令即可",
+    "import": "入库类：载荷是外部 SKILL.md / chara.json，路径与来源逐次不同",
+    "knowledge transform": "维护类：`knowledge transform` 写 protocol/transform_log.json",
+    "library attest": "签名类：要 `--key-file` / `--ssh-key`，密钥路径不该进表单回放",
+    "library reindex": "维护类：全量重建索引（改 frontmatter 后跑一次）",
+    "library supersede": "生命周期：取代链要指向新条目，取舍由作者判断",
+    "module signature": "签名类：`module signature` 要密钥/身份件，同上",
+    "patterns reindex": "维护类：实践包索引全量重建",
+    "preset import": "本机态：导入要外部文件路径，`,` 与 `--store` 由使用场景决定",
+    "preset rm": "本机态：与 `preset ls` 成对，手敲一眼确认删的是哪条",
+    "release": "发布类：动词 `release` 改模块发布位，属评审动作",
+    "interop --all": "导出类：`interop --all` 一条命令落全量 12 面，无需参数组装",
+    "assemble --trace": "遥测类：trace 文件由上一次 `--trace` 产出，路径逐次不同",
+    "assemble --session": "会话类：`--session` 要绝对路径且不得落仓库内（硬闸），表单帮不上",
+}
 
 
 def form_table() -> tuple:
@@ -535,11 +663,11 @@ def save_session_state(path: str, session) -> bool:
             "last_zone": str(session.last_zone or "")}
     try:
         os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-        with open(path, "w", encoding="utf-8", newline="\n") as fh:
-            json.dump(data, fh, ensure_ascii=False, indent=2, sort_keys=True)
-            fh.write("\n")
+        from . import atomic_write
+        atomic_write.write_text(
+            path, json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
         return True
-    except OSError:
+    except OSError:  # 会话落盘失败 ⇒ False（调用方据返回值告警）
         return False
 
 
@@ -607,14 +735,27 @@ def parse(line: str) -> Intent:
 
 
 def needs_confirm(argv: list) -> bool:
-    """判定一条命令是否属于写入/不可逆面（须显式确认才放行）。"""
+    """判定一条命令是否属于写入/不可逆面（须显式确认才放行）。
+
+    **闸门守的是「文本驱动」的面（2026-10-01 实测后写明）**：交互输入、`nf shell --exec`、
+    `nf shell --file` —— 这三条都可能承载**粘贴/注入**进来的文本，机器不替人判断「这行该不该
+    跑」。而**显式 argv** 的面不设这道闸：`nf <cmd> …` 直跑与 `nf daemon exec <argv>` 等价于
+    操作者自己敲的命令（后者文档即写明「输出/退出码与直跑一致」）。实测对照：
+    `nf shell --exec "nf stats --write"` → **exit 2（拒）**、`nf shell --file <含写命令的脚本>`
+    → 同（两者加 `--yes` 即显式放行）；`nf daemon exec stats --write` → 照跑。
+
+    **改口径要两边一起改**：谁要动这条边界（例如也给 `daemon exec` 加确认），必须同时更新本
+    段说明与 CHANGELOG——不要只改一边，那会让「闸门到底守哪条面」重新变成无人可查的问题。
+    """
     if any(tok in CONFIRM_FLAGS for tok in argv):
         return True
     if not argv:
         return False
     head = argv[0]
     sub = argv[1] if len(argv) > 1 and not argv[1].startswith("-") else ""
-    return (head, sub) in CONFIRM_VERBS or (head, "") in CONFIRM_VERBS
+    if (head, sub) in CONFIRM_VERBS or (head, "") in CONFIRM_VERBS:
+        return True
+    return any((head, tok) in CONFIRM_FLAG_PAIRS for tok in argv)
 
 
 def example_resolves(example: str, commands, root_flags) -> bool:
@@ -884,6 +1025,16 @@ TERMINAL_BASELINE = (
     {"id": "write-gate", "name": "写盘闸门（非交互默认拒跑）",
      "argv": ("shell", "--exec", "nf stats --write", "--no-banner"),
      "expect": "确认", "expect_exit": 2},
+    # 2026-09-30 补：**无标记写盘动词**与**命令+旗标**配对的闸门（此前只拦 `--write` 一族）
+    {"id": "write-gate-verb", "name": "写盘闸门（无标记动词：library 生命周期）",
+     "argv": ("shell", "--exec", "nf library deprecate NF-ZZZ", "--no-banner"),
+     "expect": "确认", "expect_exit": 2},
+    {"id": "write-gate-reindex", "name": "写盘闸门（投影重建）",
+     "argv": ("shell", "--exec", "nf decisions reindex", "--no-banner"),
+     "expect": "确认", "expect_exit": 2},
+    {"id": "write-gate-pair", "name": "写盘闸门（interop --all 落盘）",
+     "argv": ("shell", "--exec", "nf interop --all", "--no-banner"),
+     "expect": "确认", "expect_exit": 2},
     {"id": "nested-shell-guard", "name": "递归/长驻拦截（serve/shell）",
      "argv": ("shell", "--exec", "nf shell", "--no-banner"),
      "expect": "另开", "expect_exit": 2},
@@ -1018,9 +1169,27 @@ def run_baseline(runner, rows=None) -> tuple:
     return results, stats
 
 
+def portable_rows(results) -> list:
+    """把基线结果里的**本机临时路径**还原成 `{TMP}` 占位符（仅供展示/机器面）。
+
+    为什么（2026-10-01 取证）：`run_baseline` 为了让证据命令真跑，把 `{TMP}` 展开成了本机
+    临时目录；那份**原始结果**要留着（单测断言展开值、排障要看真实路径），但直接进人读面/
+    `--json` 就是**机器绝对路径回吐**（实测 `nf shell --baseline` 与 `--baseline --json` 都在
+    打印 `C:\\Users\\<user>\\…`）。故拆开：执行/诊断用原值，**展示用本函数**。
+    """
+    tmp_now = baseline_tmp_dir()
+    out = []
+    for r in results or []:
+        row = dict(r)
+        row["argv"] = [str(a).replace(tmp_now, BASELINE_TMP) for a in r.get("argv") or []]
+        f = str(r.get("expect_file") or "")
+        row["expect_file"] = f.replace(tmp_now, BASELINE_TMP) if f else ""
+        out.append(row)
+    return out
+
+
 def render_baseline(results, stats, width=None, color: bool = False) -> str:
     """渲染基线逐行结果（人读）：一行一项能力 + 判定 + 证据命令。"""
-    w = term_width(width)
     lines = [style("== 顶尖 CLI 基线（%d 项 · 逐条可复跑）==" % stats["rows"], "head", color),
              "  通过 %d/%d · 总耗时 %s ms · 最慢 %s ms（每行有延迟预算，超时即判效率退化）"
              % (stats["passed"], stats["rows"], stats.get("total_ms", "-"),
@@ -1212,7 +1381,7 @@ def load_history(path: str, limit: int = 200) -> list:
     try:
         with open(path, encoding="utf-8") as fh:
             rows = [ln.rstrip("\n") for ln in fh if ln.strip()]
-    except OSError:
+    except OSError:  # 历史文件缺失/坏件 ⇒ 空历史（等价于首次运行）
         return []
     return rows[-int(limit):] if limit else rows
 
@@ -1230,7 +1399,7 @@ def append_history(path: str, line: str) -> bool:
         with open(path, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(text + "\n")
         return True
-    except OSError:
+    except OSError:  # 历史追加失败 ⇒ False（调用方据此告警；历史是便利面）
         return False
 
 
@@ -1761,7 +1930,7 @@ def install_readline(completer_text, history_path=None):
         if history_path:
             try:
                 readline.read_history_file(history_path)
-            except OSError:
+            except OSError:  # 历史文件读不到（首次运行/权限）⇒ 从空历史开始
                 pass
             readline.set_history_length(200)
 

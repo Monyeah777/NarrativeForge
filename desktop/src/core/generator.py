@@ -18,16 +18,6 @@ from typing import List, Optional, Tuple
 from .models import Module, Pipeline, AssetPack
 from .ir import IRDocument, IRLayer, IRModule, normalize_module_body, ir_to_md
 
-DOC_TEMPLATE = """# {title}
-
-> 由叙事工坊桌面工具生成
-> 管线：{pipeline_name}（{pipeline_id}）｜ 模块 {module_count} 个 ｜ 资产包：{asset_text}
-> 生成时间：{timestamp}
-
-{toc}
----
-"""
-
 
 def order_modules(modules: List[Module],
                   pipeline: Pipeline) -> Tuple[List[Module], List[str]]:

@@ -18,9 +18,8 @@ from __future__ import annotations
 import hashlib
 import importlib
 import json
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 REPORT_REL = "protocol/verification_report.json"
 SCHEMA = "nf-verify-report/1"
@@ -140,7 +139,8 @@ def write(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     report = build(root)
     out = Path(root) / REPORT_REL
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(render(report), encoding="utf-8", newline="\n")
+    from core import atomic_write              # 在仓协议件：原子落盘（2026-10-01）
+    atomic_write.write_text(out, render(report))
     issues = ["判据 %s 未过（%d 条）" % (i["id"], i["issues"])
               for i in report["items"] if i["status"] in ("fail", "error")]
     return issues, report

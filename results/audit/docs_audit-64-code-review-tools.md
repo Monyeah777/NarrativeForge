@@ -7,14 +7,15 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/audit.py:73131f81a8ca797fce5d4d30e63caca71e5ea50ee0d2b4d8a605e6999a73093c
-  - desktop/src/core/export_schema.py:3b80c1b772bb8309d918e461b4adcc80d1ce887aa69882f0cbb48c7bd7780e5b
+  - desktop/src/core/export_schema.py:a7243117bf6cfdd2cdf62984e3da732e1f6802892152996eb69e28c94f4aac59
   - desktop/src/core/decision_layer.py:f9b87bb638e1ffef0a71a0a3b87c97646337a86788e53d6fea8fca22b8bf9e36
-  - desktop/src/core/storage.py:a27095530fab6f4cd5677b0950ffe3cd190ac5b6578c89ab97d75b171f9c065b
-  - desktop/src/core/gap_review.py:0aa993b9aada1a4e9718f3b62b9ae2683e551f5ed4ac10e28e999d37400a20ab
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
-  - scripts/check_external_links.py:4410f000e4d0efb7b58b00522420d2db9c23f8194ab01b38b90290ae6de47966
-  - scripts/check_interop_schemas.py:6cae41b5247e8ea594b3825ff61bc3b9186caf21c170bc122d31861d30974c74
-  - scripts/ai_domain_closure.py:e7c582b05a707dab6cf5cb9217d88cf841b4cbf24ea0a55c9486bc32757446f8
+  - desktop/src/core/storage.py:48a394f253cee8ef569ba61eeab4dc0b6c363e203c8f9d00388c4901ba039845
+  - desktop/src/core/gap_review.py:856f2c86600ca75bbc9a802968d97b0b5170f10281374f92aea9bdcc9df52d0e
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - scripts/check_external_links.py:539e77b705f11e8f3efd72e66774041a5a7e107d753523eef55cbc86da2e9c58
+  - scripts/check_interop_schemas.py:26443ff0a340be6ba292435ecc81ee859438c2531088427a91e4ea1f111fc30b
+  - scripts/ai_domain_closure.py:2d5a1ed9e59dda0e72c185aed189647520183c6e2d4e942a2548dadd654cec1e
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

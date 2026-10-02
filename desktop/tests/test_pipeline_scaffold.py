@@ -61,6 +61,18 @@ class ScaffoldPipelineTest(unittest.TestCase):
         self.assertTrue(name.startswith("P07_"))
         self.assertTrue(name.endswith(".md"))
 
+    def test_default_filename_refuses_traversal_ids(self):
+        """路径安全（本轮 CLI 注入审计）：不安全的名字必须**根本构造不出来**。"""
+        for bad in ("../../../tmp/evil", "..\\evil", "P07/../../x", "", "Q07"):
+            with self.assertRaises(ValueError, msg=bad):
+                ps.default_filename(bad, "名字")
+
+    def test_default_filename_never_carries_separators(self):
+        name = ps.default_filename("p07", "../../evil name")
+        self.assertNotIn("/", name)
+        self.assertNotIn("\\", name)
+        self.assertTrue(name.startswith("P07_"))
+
 
 if __name__ == "__main__":
     unittest.main()

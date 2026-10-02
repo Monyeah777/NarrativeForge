@@ -24,7 +24,6 @@
 from __future__ import annotations
 
 import csv
-import contextlib
 import copy
 import hashlib
 import io
@@ -36,10 +35,13 @@ import xml.etree.ElementTree as ET  # noqa: S405  # nosec B405 -- self-authored 
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
+from core import atomic_write
+
 from core import conformance_scan as _csc   # 共享语料（读缓存 / 列目录缓存 / 内容指纹）
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
 from core import import_graph as _ig
+from core import paths as _paths            # 仓库内包含性判据（单一真相源）
 
 REGISTRY_REL = "protocol/output_forms.json"
 BASELINE_REL = "protocol/output_forms_baseline.json"
@@ -49,13 +51,6 @@ REGISTRY_INPUT = "desktop/src/core/registry.json"
 
 #: 机检档位（递增）；档位 = **本仓可做的判定强度**，不是「格式有多高级」
 TIERS: Tuple[str, ...] = ("T0", "T1", "T2", "T3", "T4")
-TIER_MEANING = {
-    "T0": "散文（只能人读，机器无判据）",
-    "T1": "良构（有语法，可判是否可解析）",
-    "T2": "形状（有 schema / 结构断言：类型·必填·枚举）",
-    "T3": "语义（引用完整·单位口径·双源一致）",
-    "T4": "可复算（本仓引擎重算并与在盘产物逐字段一致）",
-}
 
 #: 形态状态（对外可判定口径）
 #: supported=本仓既有产出/校验面；absorbed=本波从零构建；planned=登记未做（带触发条件）；
@@ -238,6 +233,7 @@ def detect(root: str, rel: str) -> Tuple[str, str]:
 # `output_forms ↔ pack_combo` 是模块级双向对（pack_combo 只用这一个纯函数），迁出后
 # 两边都单向依赖叶子，零环由 `coupling_metrics` 机检。
 from core.json_schema import json_schema_check as _js_check
+from core.json_schema import pattern_issue as _pattern_issue
 
 json_schema_check = _js_check          # 兼容别名：本模块既有调用点（1115/1429 等）不变
 
@@ -1057,11 +1053,54 @@ def _gen_id(entry: dict) -> str:
 
 
 def _pkg_rel(entry: dict, rel: str) -> str:
-    """包内声明的相对路径 → 仓库相对路径（以本包目录为根）。"""
+    """包内声明的相对路径 → 仓库相对路径（以本包目录为根）。
+
+    **外来数据面**：社区域包是外来投稿，清单里的 `path` / `inputs` / `graph` / `schema` /
+    `dual_source` 都出自投稿者之手。此前这些字段直拼进 `community/<包>/…`——实测把 `path`
+    写成 `../../../PWNED.mmd` 再跑 `nf output render --write`，文件**真的落到了仓库外**。
+    故此处先过形状判据（`_reject_escape_forms`），越界一律抛 `ValueError`（调用方转成
+    「清单越界」问题，不读也不写仓库外的文件）。
+    """
+    _reject_escape_forms(rel, "清单相对路径")
     pkg = entry.get("_pkg") or ""
     if rel.startswith("community/") or not pkg:
         return rel
     return "community/%s/%s" % (pkg, rel.lstrip("/"))
+
+
+def _reject_escape_forms(rel: Any, what: str) -> None:
+    """外来清单里的路径**形状**判据：越界写法 / 备用数据流一律抛 `ValueError`。"""
+    text = str(rel or "")
+    if not text.strip():
+        raise ValueError("%s 为空（修复指引：给出包内相对路径，如 outputs/REPORT.json）" % what)
+    if text.startswith(("\\", "/")) or re.match(r"^[A-Za-z]:", text) or text.startswith("~"):
+        raise ValueError("%s 含绝对/盘符写法 %r（修复指引：改为包内相对路径，如 outputs/x.json）"
+                         % (what, text))
+    if ".." in text.replace("\\", "/").split("/"):
+        raise ValueError("%s 含 `..` 段 %r（修复指引：改为包内相对路径）" % (what, text))
+    if re.search(r"\.[A-Za-z0-9]{1,8}:[^\\/\s]", text):
+        raise ValueError("%s 含备用数据流写法 %r（修复指引：改用常规文件名）" % (what, text))
+
+
+def _declared_out_rel(root: str, pkg: str, rel: Any) -> str:
+    """清单声明的产出路径 → 仓库相对路径（形状 + **包内包含性**双判据，越界抛 `ValueError`）。
+
+    包含性收在**声明包自己的目录**内，不只是仓库根：否则「包 A 声明 `community/包 B/outputs/x.json`」
+    就能在被渲染时改写包 B 的产物（跨包越权写）。实测存量 1046 条声明路径**全部**以本包
+    `outputs/` 开头，`schema` 也全在包内——判据不误伤。
+    """
+    _reject_escape_forms(rel, "产出路径")
+    text = str(rel)
+    out_rel = text if text.startswith("community/") else "community/%s/%s" % (pkg, text.lstrip("/"))
+    try:
+        _paths.validate_path(str(root), out_rel)
+    except _paths.PathEscapeError as exc:
+        raise ValueError("产出路径越界：%s" % exc)
+    if pkg and not _paths.contained(os.path.join(str(root), "community", pkg),
+                                    os.path.join(str(root), out_rel)):
+        raise ValueError("产出路径越界：%s 不在本包目录内（修复指引：产出面只许落在 "
+                         "community/%s/ 下，勿指向其它包）" % (text, pkg))
+    return out_rel
 
 
 def _dump(value: Any) -> str:
@@ -1076,10 +1115,17 @@ def _recompute_entry(root: str, entry: dict) -> Tuple[List[str], Dict[str, Any]]
     gen = GENERATORS.get(_gen_id(entry))
     if gen is None:
         return ["%s 声明复算 %r 无对应引擎（不得假装可复算）" % (out_rel, _gen_id(entry))], {}
-    fresh, errs = gen(root, entry)
+    try:
+        fresh, errs = gen(root, entry)
+    except ValueError as exc:                     # 外来清单里的越界路径 → 复算失败，不读盘
+        return ["%s: %s" % (out_rel, exc)], {}
     if fresh is None:
         return ["%s: %s" % (out_rel, e) for e in errs], {}
-    on_disk = _read_bytes_cached(_rel(root, _pkg_rel(entry, out_rel)))
+    try:
+        disk_rel = _declared_out_rel(root, str(entry.get("_pkg") or ""), out_rel)
+    except ValueError as exc:
+        return ["%s: %s" % (out_rel, exc)], {}
+    on_disk = _read_bytes_cached(_rel(root, disk_rel))
     if isinstance(fresh, str):
         diffs = [] if on_disk == _dump(fresh).encode("utf-8") else ["文本面与复算不一致（逐字节）"]
     else:
@@ -1113,11 +1159,19 @@ def render_outputs(root: str = ".", package: str = "", write: bool = False
             if gen is None:
                 issues.append("%s/%s: 未登记生成器 %r" % (pkg, entry.get("path"), gid))
                 continue
-            value, errs = gen(root, {**entry, "_pkg": pkg})
+            try:
+                value, errs = gen(root, {**entry, "_pkg": pkg})
+            except ValueError as exc:                 # 清单里的越界路径 → 问题，不渲染
+                issues.append("%s/%s: %s" % (pkg, entry.get("path"), exc))
+                continue
             if value is None:
                 issues += ["%s/%s: %s" % (pkg, entry.get("path"), e) for e in errs]
                 continue
-            dest = _rel(root, "community/%s/%s" % (pkg, entry["path"]))
+            try:
+                dest = _rel(root, _declared_out_rel(root, pkg, entry["path"]))
+            except ValueError as exc:                 # 落点越界 → 问题，**不写盘**
+                issues.append("%s/%s: %s" % (pkg, entry.get("path"), exc))
+                continue
             text = _dump(value)
             # 逐字节比对（含 EOL）：产物契约 = LF，故 CRLF 也算「需要重渲染」
             changed = (not dest.is_file()) or dest.read_bytes() != text.encode("utf-8")
@@ -1125,7 +1179,9 @@ def render_outputs(root: str = ".", package: str = "", write: bool = False
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 # EOL 纪律：仓库 = LF（.gitattributes `* text=auto eol=lf`）；Windows 文本模式
                 # 默认会把 \n 写成 \r\n → 必须显式 newline="\n"（check33 编码卫生会判 FAIL）
-                dest.write_text(text, encoding="utf-8", newline="\n")
+                # 原子写（2026-09-30 收口）：产出面落点在仓库内，写入期间有人跑 check32/33
+                # 会读到半截产物（`atomic_write` 内部同样按 LF 落盘）。
+                atomic_write.write_text(dest, text)
             rows.append({"package": pkg, "path": entry["path"], "generator": gid,
                          "changed": changed, "written": bool(write and changed)})
     return issues, rows
@@ -1228,26 +1284,35 @@ def _verify_pack(root: str, pkg: str) -> Tuple[List[str], List[Dict[str, Any]]]:
         if tier not in TIERS:
             issues.append("%s: %s 档位非法 %r" % (rel, path, tier))
             continue
-        if not _rel(root, "community/%s/%s" % (pkg, path)).is_file():
+        try:
+            out_rel = _declared_out_rel(root, pkg, path)
+        except ValueError as exc:                     # 外来清单里的越界写法 → 问题，不读盘
+            issues.append("%s: %s" % (rel, exc))
+            continue
+        if not _rel(root, out_rel).is_file():
             issues.append("%s: 声明产出面不存在 %s" % (rel, path))
             continue
-        got_form, got_tier = detect(root, "community/%s/%s" % (pkg, path))
+        got_form, got_tier = detect(root, out_rel)
         if form and form != got_form:
             issues.append("%s: %s 声明形态 %s，实测 %s" % (rel, path, form, got_form))
         if TIERS.index(tier) > TIERS.index(got_tier):
             issues.append("%s: %s 声明档位 %s 超出本仓可判上限 %s"
                           % (rel, path, tier, got_tier))
         checker = _FORM_CHECK.get(form or got_form)
-        sub = checker(root, "community/%s/%s" % (pkg, path)) if checker else []
+        sub = checker(root, out_rel) if checker else []
         issues += ["%s: %s %s" % (rel, path, s) for s in sub]
         sch_rel = entry.get("schema") or ""
         if sch_rel:
-            full = "community/%s/%s" % (pkg, sch_rel)
-            schema, serr = _read_json(_rel(root, full))
+            try:
+                full = _declared_out_rel(root, pkg, sch_rel)
+            except ValueError as exc:
+                issues.append("%s: %s %s" % (rel, path, exc))
+                full = ""
+            schema, serr = _read_json(_rel(root, full)) if full else (None, "schema 路径越界")
             if serr:
                 issues.append("%s: %s schema %s" % (rel, path, serr))
             else:
-                inst, ierr = _read_json(_rel(root, "community/%s/%s" % (pkg, path)))
+                inst, ierr = _read_json(_rel(root, out_rel))
                 if ierr:
                     issues.append("%s: %s %s" % (rel, path, ierr))
                 else:
@@ -1257,7 +1322,7 @@ def _verify_pack(root: str, pkg: str) -> Tuple[List[str], List[Dict[str, Any]]]:
         ds = entry.get("dual_source")
         if isinstance(ds, dict):
             issues += ["%s: %s %s" % (rel, path, m)
-                       for m in _dual_source_check(root, pkg, path, ds)]
+                       for m in _dual_source_check(root, pkg, out_rel, ds)]
         rc = entry.get("recompute")
         if isinstance(rc, dict):
             sub_issues, _st = _recompute_entry(root, {**entry, "_pkg": pkg})
@@ -1279,14 +1344,24 @@ def _count(rows: Sequence[Dict[str, Any]], key: str) -> Dict[str, int]:
 def _dual_source_check(root: str, pkg: str, path: str, ds: dict) -> List[str]:
     """双源一致：数据面 vs 散文面（键集必须互为子集）。"""
     md_rel = ds.get("markdown") or ""
-    key_re = re.compile(ds.get("key_pattern") or r"`([A-Z][A-Z0-9_]{2,})`")
-    md_path = _rel(root, "community/%s/%s" % (pkg, md_rel))
+    key_text = str(ds.get("key_pattern") or r"`([A-Z][A-Z0-9_]{2,})`")
+    # 投稿者可写 `key_pattern`——与 schema 的 `pattern` 同一类风险（指数回溯把门禁挂死），
+    # 故复用同一条形态闸门：命中即判 FAIL，**不拿它去 findall**（2026-09-30）。
+    why = _pattern_issue(key_text, "dual_source.key_pattern")
+    if why:
+        return ["双源 key_pattern 不合形态：%s" % why]
+    key_re = re.compile(key_text)
+    try:
+        md_full = _declared_out_rel(root, pkg, md_rel)
+    except ValueError as exc:
+        return [str(exc)]
+    md_path = _rel(root, md_full)
     if not md_path.is_file():
         return ["双源对照件不存在：%s" % md_rel]
     md_keys = set(key_re.findall(_read_text_cached(md_path)))
     for drop in (ds.get("exclude") or []):
         md_keys.discard(str(drop))
-    data, err = _read_json(_rel(root, "community/%s/%s" % (pkg, path)))
+    data, err = _read_json(_rel(root, path))
     if err:
         return [err]
     field = ds.get("field") or "id"
@@ -1385,8 +1460,9 @@ def write_baseline(root: str = ".") -> Dict[str, Any]:
     }
     dest = _rel(root, BASELINE_REL)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                    encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30 收口）：产出形态基线是在仓产物（check32 的比对对象）。
+    atomic_write.write_text(dest, json.dumps(doc, ensure_ascii=False,
+                                             indent=2, sort_keys=True) + "\n")
     return doc
 
 

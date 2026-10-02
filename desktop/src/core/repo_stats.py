@@ -31,6 +31,8 @@ import re
 import sys
 from typing import Any, Dict, List, Tuple
 
+from core import atomic_write
+
 STATS_REL = "protocol/repo_stats.json"
 BEGIN = "<!-- nf:stats:begin -->"
 END = "<!-- nf:stats:end -->"
@@ -205,13 +207,10 @@ def write(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         if not ok:
             issues.append("%s 缺 marker（%s / %s），未写入" % (rel, BEGIN, END))
             continue
-        with open(path, "w", encoding="utf-8", newline="") as fh:
-            fh.write(new)
+        atomic_write.write_text(path, new)          # 原子替换：并发/密集调用下读者不见半截
     out = os.path.join(root, STATS_REL)
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    with open(out, "w", encoding="utf-8", newline="") as fh:
-        json.dump(stats, fh, ensure_ascii=False, indent=2, sort_keys=True)
-        fh.write("\n")
+    atomic_write.write_text(out, json.dumps(stats, ensure_ascii=False, indent=2,
+                                            sort_keys=True) + "\n")
     return issues, stats
 
 

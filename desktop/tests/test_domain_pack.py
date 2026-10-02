@@ -18,8 +18,6 @@ if str(Path(__file__).resolve().parent.parent / "src") not in sys.path:
 
 from core import domain_metrics as dm  # noqa: E402
 from core import domain_pack as dp  # noqa: E402
-from core import output_forms as of  # noqa: E402
-
 ROOT = str(Path(__file__).resolve().parents[2])
 
 

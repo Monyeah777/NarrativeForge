@@ -22,11 +22,12 @@ import json
 import os
 import re
 import shutil
-import subprocess
 import sys
 from typing import Any, Dict, List, Tuple
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))   # core.*（原子写单源；2026-10-01）
+from core import atomic_write  # noqa: E402
 DOC_REL = "docs/interop-thirdparty.md"
 STATUS_REL = "results/interop-thirdparty-status.md"
 UNFILLED = "未回填（通道就绪）"
@@ -300,6 +301,9 @@ def emit(base: str = "") -> List[str]:
         note = f["why"] if f["kind"] == "not-applicable" else ""
         rows.append("| `%s` | %s | %s | %s | `%s` |  |  |  |  | %s | %s |"
                     % (f["id"], f["kind"], f["peer"], f["install"], f["command"], UNFILLED, note))
+    # 落点目录（2026-10-01）：`--root <新目录>` 时 DOC_REL 与 STATUS_REL 分属两棵子树，
+    # 此前只给 docs/ 建了目录 ⇒ 写 results/ 那件直接 FileNotFoundError（裸 traceback）。
+    os.makedirs(os.path.join(base, os.path.dirname(STATUS_REL)), exist_ok=True)
     with open(os.path.join(base, STATUS_REL), "w", encoding="utf-8", newline="") as fh:
         fh.write("\n".join(rows) + "\n")
     return []
@@ -354,9 +358,20 @@ def record(base: str, evidence_path: str) -> Tuple[List[str], int]:
     base = _root(base)
     spath = os.path.join(base, STATUS_REL)
     if not os.path.isfile(spath):
-        return ["缺回填状态表（先 --emit）"], 0
-    with open(evidence_path, encoding="utf-8") as fh:
-        rows = [json.loads(l) for l in fh if l.strip()]
+        return ["缺回填状态表（修复指引：先 `--emit` 建通道，再回填第三方证据）"], 0
+    # 输入形状闸门（2026-10-01）：`--record <不存在的证据件>` 此前直接
+    # `FileNotFoundError` 冒泡成**裸 traceback**（既是用户输入问题，又无修复指引）；
+    # 逐行 `json.loads` 同理（坏 JSONL 会抛 JSONDecodeError）。
+    if not os.path.isfile(evidence_path):
+        return ["证据件不存在：%s（修复指引：给**JSONL 文件**——每行一条第三方证据，字段 "
+                "face / tool / tool_version / run_by / run_at / verdict（command 与 "
+                "note 选填）；先跑 `--dry-run` 看本机探测到的面）" % evidence_path], 0
+    try:
+        with open(evidence_path, encoding="utf-8") as fh:
+            rows = [json.loads(l) for l in fh if l.strip()]
+    except ValueError as exc:
+        return ["证据件不是合法 JSONL：%s（修复指引：每行一个 JSON 对象，见 `--dry-run` "
+                "输出的面 id）" % exc], 0
     with open(spath, encoding="utf-8") as fh:
         lines = fh.read().splitlines()
     issues: List[str] = []
@@ -384,8 +399,7 @@ def record(base: str, evidence_path: str) -> Tuple[List[str], int]:
             cells[4] = "`%s`" % str(ev["command"]).replace("|", "\\|")
         lines[i] = "| " + " | ".join(cells) + " |"
         done += 1
-    with open(spath, "w", encoding="utf-8", newline="") as fh:
-        fh.write("\n".join(lines) + "\n")
+    atomic_write.write_text(spath, "\n".join(lines) + "\n")
     return issues, done
 
 
@@ -425,4 +439,9 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台/管道默认 GBK 下，中文修复指引会被写成 GBK 字节，
+    # 消费方（CI / agent / 本仓测试）按 UTF-8 读就成乱码（同 nf.py 与另 19 件入口的纪律）。
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     sys.exit(main())

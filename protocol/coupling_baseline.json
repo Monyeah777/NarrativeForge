@@ -3,13 +3,18 @@
   "metrics": {
     "agent_rules_adapter": {
       "ca": 1,
-      "ce": 2,
-      "i": 0.6667
+      "ce": 3,
+      "i": 0.75
     },
     "approval": {
       "ca": 0,
-      "ce": 0,
-      "i": 0.0
+      "ce": 1,
+      "i": 1.0
+    },
+    "assemble_build": {
+      "ca": 0,
+      "ce": 1,
+      "i": 1.0
     },
     "assemble_plan": {
       "ca": 2,
@@ -28,7 +33,7 @@
     },
     "asset_ledger": {
       "ca": 0,
-      "ce": 1,
+      "ce": 2,
       "i": 1.0
     },
     "asset_ledger_projection": {
@@ -38,6 +43,11 @@
     },
     "asset_line_baseline": {
       "ca": 0,
+      "ce": 1,
+      "i": 1.0
+    },
+    "atomic_write": {
+      "ca": 30,
       "ce": 0,
       "i": 0.0
     },
@@ -53,8 +63,8 @@
     },
     "autofix": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ce": 2,
+      "i": 0.6667
     },
     "bench": {
       "ca": 0,
@@ -73,8 +83,8 @@
     },
     "code_metrics": {
       "ca": 0,
-      "ce": 0,
-      "i": 0.0
+      "ce": 1,
+      "i": 1.0
     },
     "cognition": {
       "ca": 1,
@@ -93,8 +103,8 @@
     },
     "concept_graph": {
       "ca": 2,
-      "ce": 2,
-      "i": 0.5
+      "ce": 1,
+      "i": 0.3333
     },
     "conformance_decl": {
       "ca": 1,
@@ -103,13 +113,13 @@
     },
     "conformance_report": {
       "ca": 0,
-      "ce": 27,
+      "ce": 28,
       "i": 1.0
     },
     "conformance_scan": {
       "ca": 34,
-      "ce": 4,
-      "i": 0.1053
+      "ce": 5,
+      "i": 0.1282
     },
     "content_face": {
       "ca": 3,
@@ -118,8 +128,8 @@
     },
     "coupling_metrics": {
       "ca": 0,
-      "ce": 0,
-      "i": 0.0
+      "ce": 1,
+      "i": 1.0
     },
     "daemon": {
       "ca": 1,
@@ -133,8 +143,8 @@
     },
     "decisions": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ce": 2,
+      "i": 0.6667
     },
     "disk_cache": {
       "ca": 7,
@@ -158,7 +168,7 @@
     },
     "drill_fidelity": {
       "ca": 0,
-      "ce": 2,
+      "ce": 3,
       "i": 1.0
     },
     "driver": {
@@ -183,8 +193,8 @@
     },
     "exporter": {
       "ca": 1,
-      "ce": 7,
-      "i": 0.875
+      "ce": 8,
+      "i": 0.8889
     },
     "face_key": {
       "ca": 1,
@@ -203,8 +213,8 @@
     },
     "handover": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ce": 2,
+      "i": 0.6667
     },
     "impact_check": {
       "ca": 0,
@@ -217,14 +227,14 @@
       "i": 0.5
     },
     "import_graph": {
-      "ca": 12,
+      "ca": 6,
       "ce": 2,
-      "i": 0.1429
+      "i": 0.25
     },
     "instruction_evidence": {
       "ca": 0,
-      "ce": 0,
-      "i": 0.0
+      "ce": 1,
+      "i": 1.0
     },
     "instruction_step_audit": {
       "ca": 1,
@@ -241,10 +251,15 @@
       "ce": 2,
       "i": 0.6667
     },
+    "interp_diet": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
+    },
     "io_types": {
       "ca": 2,
-      "ce": 1,
-      "i": 0.3333
+      "ce": 2,
+      "i": 0.5
     },
     "ir": {
       "ca": 11,
@@ -268,8 +283,8 @@
     },
     "knowledge": {
       "ca": 2,
-      "ce": 1,
-      "i": 0.3333
+      "ce": 2,
+      "i": 0.5
     },
     "knowledge_sig": {
       "ca": 0,
@@ -287,14 +302,14 @@
       "i": 0.0
     },
     "library": {
-      "ca": 9,
-      "ce": 4,
-      "i": 0.3077
+      "ca": 8,
+      "ce": 5,
+      "i": 0.3846
     },
     "library_entries": {
-      "ca": 2,
-      "ce": 0,
-      "i": 0.0
+      "ca": 3,
+      "ce": 1,
+      "i": 0.25
     },
     "license_gate": {
       "ca": 1,
@@ -308,7 +323,7 @@
     },
     "machine_contract": {
       "ca": 0,
-      "ce": 1,
+      "ce": 2,
       "i": 1.0
     },
     "market_analyzer": {
@@ -318,8 +333,8 @@
     },
     "mcp_adapter": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ce": 2,
+      "i": 0.6667
     },
     "mcp_package": {
       "ca": 1,
@@ -328,8 +343,13 @@
     },
     "mcp_runtime": {
       "ca": 5,
-      "ce": 4,
-      "i": 0.4444
+      "ce": 5,
+      "i": 0.5
+    },
+    "md_blocks": {
+      "ca": 2,
+      "ce": 0,
+      "i": 0.0
     },
     "modeling": {
       "ca": 1,
@@ -348,23 +368,23 @@
     },
     "module_signature": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
-    },
-    "mvu_adapter": {
-      "ca": 1,
       "ce": 2,
       "i": 0.6667
     },
+    "mvu_adapter": {
+      "ca": 1,
+      "ce": 3,
+      "i": 0.75
+    },
     "output_forms": {
       "ca": 1,
-      "ce": 8,
-      "i": 0.8889
+      "ce": 10,
+      "i": 0.9091
     },
     "pack_combo": {
       "ca": 3,
-      "ce": 5,
-      "i": 0.625
+      "ce": 6,
+      "i": 0.6667
     },
     "parser": {
       "ca": 2,
@@ -372,14 +392,14 @@
       "i": 0.3333
     },
     "paths": {
-      "ca": 2,
+      "ca": 3,
       "ce": 0,
       "i": 0.0
     },
     "patterns": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ce": 2,
+      "i": 0.6667
     },
     "payload_consumer": {
       "ca": 1,
@@ -417,9 +437,9 @@
       "i": 1.0
     },
     "pipeline_loader": {
-      "ca": 2,
+      "ca": 3,
       "ce": 2,
-      "i": 0.5
+      "i": 0.4
     },
     "pipeline_scaffold": {
       "ca": 0,
@@ -443,8 +463,8 @@
     },
     "postmortem": {
       "ca": 1,
-      "ce": 1,
-      "i": 0.5
+      "ce": 2,
+      "i": 0.6667
     },
     "preset_manager": {
       "ca": 0,
@@ -483,7 +503,7 @@
     },
     "quality_depth_scan": {
       "ca": 0,
-      "ce": 14,
+      "ce": 13,
       "i": 1.0
     },
     "quality_gate": {
@@ -503,8 +523,8 @@
     },
     "receipts": {
       "ca": 3,
-      "ce": 1,
-      "i": 0.25
+      "ce": 2,
+      "i": 0.4
     },
     "registry_cross": {
       "ca": 1,
@@ -513,8 +533,8 @@
     },
     "registry_loader": {
       "ca": 6,
-      "ce": 1,
-      "i": 0.1429
+      "ce": 2,
+      "i": 0.25
     },
     "registry_sync": {
       "ca": 1,
@@ -528,7 +548,7 @@
     },
     "repo_stats": {
       "ca": 0,
-      "ce": 1,
+      "ce": 2,
       "i": 1.0
     },
     "response_cache": {
@@ -563,8 +583,8 @@
     },
     "schema_lint": {
       "ca": 3,
-      "ce": 2,
-      "i": 0.4
+      "ce": 1,
+      "i": 0.25
     },
     "semantic_conflict": {
       "ca": 0,
@@ -580,6 +600,11 @@
       "ca": 0,
       "ce": 5,
       "i": 1.0
+    },
+    "shell_ledger": {
+      "ca": 0,
+      "ce": 0,
+      "i": 0.0
     },
     "skill_adapter": {
       "ca": 1,
@@ -641,6 +666,11 @@
       "ce": 0,
       "i": 0.0
     },
+    "trust_boundary": {
+      "ca": 1,
+      "ce": 0,
+      "i": 0.0
+    },
     "validator": {
       "ca": 0,
       "ce": 2,
@@ -696,6 +726,10 @@
     [
       "import_graph",
       "disk_cache"
+    ],
+    [
+      "library",
+      "receipts"
     ],
     [
       "pack_combo",

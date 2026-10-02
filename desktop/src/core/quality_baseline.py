@@ -25,6 +25,11 @@ EXPECTED_PASS = 68
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     r = Path(root)
     issues: List[str] = []
+    # 缺根/缺基线真源时**如实报 issue**，不抛裸 FileNotFoundError（与 `payload_registry.scan`
+    # 同一条纪律——极端渗透 F-5 只修了那一个入口，2026-10-01 空根普查发现本入口漏修）。
+    if not (r / "verify.sh").is_file():
+        return (["读不到基线真源 verify.sh（修复指引：在 NF 仓库根运行本扫描，"
+                 "或先补齐该件——本模块以它为单一真值做四处自洽断言）"], {})
     verify_text = (r / "verify.sh").read_text(encoding="utf-8")
     m = re.search(r"# 版本 : (v\d+\.\d+)", verify_text)
     ver = m.group(1) if m else ""

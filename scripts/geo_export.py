@@ -23,6 +23,8 @@ import sys
 from typing import Any, Dict, List, Tuple
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))   # core.*（原子写单源；2026-10-01）
+from core import atomic_write  # noqa: E402
 CATALOG_REL = "protocol/standards_catalog.json"
 BINDING_REL = "protocol/standards_binding.json"
 INDEX_REL = "docs/standards/index.md"
@@ -148,8 +150,7 @@ def write(root: str = ROOT) -> Tuple[List[str], int]:
     for rel, text in outs.items():
         path = os.path.join(root, rel)
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8", newline="") as fh:
-            fh.write(text)
+        atomic_write.write_text(path, text)
     return [], len(outs)
 
 
@@ -208,4 +209,8 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     sys.exit(main())

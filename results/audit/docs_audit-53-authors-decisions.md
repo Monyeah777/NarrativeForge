@@ -6,12 +6,13 @@ scope: 收口四项作者裁决的挂账（均取自本会话外挂账队列）�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/concept_graph.py:2c50dcf37ddf8cf889958667d791ef96b3c66fb10ad779bada73e996f7517de9
-  - desktop/src/core/intake.py:6a0d584c81dcdeb1439bf4e3f16b201e08e618c8d6296e80a63c6f5266447e56
-  - desktop/src/core/asset_ledger.py:f9aef22b7ce299d7733eeec8fc539f4249936d53c13172f75a5194b58615937a
-  - scripts/ai_domain_closure.py:e7c582b05a707dab6cf5cb9217d88cf841b4cbf24ea0a55c9486bc32757446f8
+  - desktop/src/core/concept_graph.py:0f4bbd6b92ab0cb3daf47956378f7afd0d20432ed23f59e5d669621da7d239be
+  - desktop/src/core/intake.py:f52bb9a841b6ff75d40193980472a2787528f8da0cf2f1d902cb6c6fc985591d
+  - desktop/src/core/asset_ledger.py:f169ffd0d0670b4d7111d6bc85b0c89cb24a07362ef88c3a73260626c0d18149
+  - scripts/ai_domain_closure.py:2d5a1ed9e59dda0e72c185aed189647520183c6e2d4e942a2548dadd654cec1e
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

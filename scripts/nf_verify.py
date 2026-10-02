@@ -34,6 +34,8 @@ import sys
 
 SCHEMA = "nf-receipts/1"
 SSH_NS = "nf-attest"
+#: 外挂验证器（ssh-keygen）调用上限（秒）——不返回时 fail-closed，绝不无限等待
+TOOL_TIMEOUT_S = 60
 SSH_PAYLOAD_PREFIX = "nf-attest-v1\nsubject_sha256:"
 _EXCLUDE = re.compile(r"^(attestation|attested_at|anchor_[a-z_]+)\s*:")
 
@@ -88,10 +90,15 @@ def verify_ssh(digest: str, anchor, allowed_signers: str, identity: str):
     if not exe:
         return False, ("ssh-sig 验签需要外部命令 ssh-keygen，但 PATH 中找不到"
                        "（修复指引：先安装 OpenSSH ≥8.9 后重试）")
-    proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
-                           "-I", ident, "-n", str(anchor.get("ns") or SSH_NS),
-                           "-s", sig],
-                          input=payload, capture_output=True)
+    try:
+        proc = subprocess.run([exe, "-Y", "verify", "-f", allowed_signers,  # nosec B404/B603/B607 —— 只调 ssh-keygen（argv 列表、无 shell、路径经 which 解析）
+                               "-I", ident, "-n", str(anchor.get("ns") or SSH_NS),
+                               "-s", sig],
+                              input=payload, capture_output=True,
+                              timeout=TOOL_TIMEOUT_S)      # 超时上限：外挂工具不返回时 fail-closed
+    except subprocess.TimeoutExpired:
+        return False, ("ssh-sig 校验超时（%d s，ssh-keygen 未返回）→ fail-closed"
+                       "（修复指引：确认 ssh-keygen 可用后重试）" % TOOL_TIMEOUT_S)
     msg = (proc.stderr or proc.stdout or b"").decode("utf-8", "replace").strip()
     return (proc.returncode == 0, "ssh-sig 匹配" if proc.returncode == 0
             else "ssh-sig 校验失败：%s" % msg[:160])
@@ -174,6 +181,10 @@ def main(argv=None) -> int:
         checks.append(("anchor", True, "该条未挂签名锚（仅包含关系可验）"))
 
     ok_all = all(ok for _n, ok, _m in checks)
+    # 结论行的**诚实度**（2026-09-30 补）：无签名锚时只验了「包含关系 + 内容绑定」，**真实性
+    # 一字未验**——此前结论行照样只说「可验证通过」，读者容易把它读成「签名已验」。退出码与
+    # JSON 形状不变（读者侧契约不动），只把结论行写清。
+    anchored = bool(hit.get("anchor"))
     if args.json:
         print(json.dumps({"entry": hit["id"], "root": root, "digest": digest,
                           "ok": ok_all,
@@ -186,8 +197,14 @@ def main(argv=None) -> int:
         for n, o, m in checks:
             print("  %s %-10s %s" % ("✓" if o else "✗", n, m))
         print("  => %s" % ("可验证通过" if ok_all else "未通过（详上）"))
+        if ok_all and not anchored:
+            print("     （口径：真实性**未验**——该条未挂签名锚；上表只证包含关系与内容绑定）")
     return 0 if ok_all else 1
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     sys.exit(main())

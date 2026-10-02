@@ -38,5 +38,10 @@ def propose(root: str = ".") -> Dict[str, Any]:
 
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
+    # 缺根/缺协议件时**如实报 issue**，不抛裸 FileNotFoundError（与 `payload_registry.scan`
+    # 同一条纪律——极端渗透 F-5 只修了那一个入口，2026-10-01 空根普查发现本入口漏修）。
+    if not (Path(root) / "protocol/event_registry.json").is_file():
+        return (["缺 protocol/event_registry.json（修复指引：在 NF 仓库根运行本扫描，"
+                 "或先补齐该协议件——类型收窄提案要以它为准）"], {})
     return [], {"proposal_events": len(propose(str(Path(root)))["events"]),
                 "status": "proposal-only（确认后按 registry 落 typed）"}

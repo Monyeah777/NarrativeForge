@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-09-29",
-  "approved_by": "执行者（作者授权本波裁决）",
-  "note": "冷路径第四波：摘要走裸 FileIO + 无 CR 跳过解码；审计摘要重绑（output_forms 判据计数口径更正）",
+  "approved_at": "2026-10-02",
+  "approved_by": "执行者（作者指令本波：派生面收口）",
+  "note": "本波：io_types 派生面补全（105 件文档 --write：5 件真收窄 + 100 件形态归一；行式读者补含冒号键、inputs 侧补对账）→ I/O 覆盖 28.9→26.9%（分母补全：隐藏的跨包键计入）· 类型积压 86→101 项（载荷收割显形）；Merkle 根随之重算，复核差异后重新批准。",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "4ef294d99d7d94f1b3f19c2660daf7145418b381f3be98d204f3a9fb4c58756a"
+  "subject_digest": "07fc2a36e0dcc4975254077398c6adb279a9ec445412240ab40132c791ce8040"
 }

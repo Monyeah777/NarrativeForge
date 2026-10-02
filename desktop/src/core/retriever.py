@@ -169,7 +169,7 @@ def referenced_by(module_id: str, path=None) -> List[dict]:
     try:
         from .registry_loader import load_registry
         registry = load_registry(path)
-    except Exception:
+    except Exception:  # registry 不可用 ⇒ 空引用集（等价于「无引用」；registry 本身由 nf doctor 把关）
         return []
     q = str(module_id)
     q_cat, q_bare = (q.split(":", 1)[0], q.split(":", 1)[1]) if ":" in q else ("", q)

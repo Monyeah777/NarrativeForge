@@ -33,7 +33,19 @@ _BINARY = re.compile(r"不是[^。；\n]{1,20}而是|不仅[^。；\n]{1,20}而�
                      r"既要[^。；\n]{1,20}又要")
 _QUAD = re.compile(r"(?:[\u4e00-\u9fa5]{4}、){2,}[\u4e00-\u9fa5]{4}")
 _PUNCT = re.compile(r"[\u4e00-\u9fa5][,;:!?]")
+#: 行内代码 `` `…` ``（遮成等长空格：行号与列位不受影响，规则不该对代码内容发声）
+_CODE_SPAN_MASK = re.compile(r"`[^`\n]+`")
 _FENCE = re.compile(r"^\s*```")
+
+
+def _mask_code(s: str) -> str:
+    """行内代码 → 等长空格。
+
+    实测（2026-09-30 判据降噪）：`nf lint --prose` 的 13 条命中里大半是**假阳性**——
+    行内代码里的 `通用:M10`、`--context \"C6:<slug>; 澄清稿:…\"` 被当成「中英标点混用」。
+    遮掉代码内容后，规则只对**叙事正文**发声。
+    """
+    return _CODE_SPAN_MASK.sub(lambda m: " " * len(m.group(0)), s)
 
 #: 资产扩展槽（存在则并入自定义词表）
 CUSTOM_ASSET = "05_资产库/用户自定义/PROSE_LINT.md"
@@ -80,33 +92,39 @@ def lint_text(text: str, extra_terms: Optional[List[str]] = None,
     terms = list(CLICHES) + list(extra_terms or [])
 
     for no, s in lines:
-        hit = next((w for w in terms if w in s), None)
+        masked = _mask_code(s)          # 代码内容不参与正文规则（降噪，见 _mask_code）
+        hit = next((w for w in terms if w in masked), None)
         if hit:
             out.append({"rule": "cliche_open", "line": no,
                         "message": "陈词滥调/套话：「%s」" % hit, "snippet": s[:40]})
-        tail = next((w for w in SUMMARY_TAILS if w in s), None)
+        tail = next((w for w in SUMMARY_TAILS if w in masked), None)
         if tail:
             out.append({"rule": "summary_tail", "line": no,
                         "message": "总结腔：「%s」" % tail, "snippet": s[:40]})
-        lec = next((w for w in LECTURE if w in s), None)
+        lec = next((w for w in LECTURE if w in masked), None)
         if lec:
             out.append({"rule": "lecture_tone", "line": no,
                         "message": "说教腔：「%s」" % lec, "snippet": s[:40]})
-        m = _BINARY.search(s)
+        m = _BINARY.search(masked)
         if m:
             out.append({"rule": "binary_parallel", "line": no,
                         "message": "对称句式（AI 腔高发）：%s" % m.group(0)[:20],
                         "snippet": s[:40]})
-        q = _QUAD.search(s)
+        q = _QUAD.search(masked)
         if q and q.group(0).count("、") + 1 >= TRIPLE_ADJ_MIN:
             out.append({"rule": "triple_adj", "line": no,
                         "message": "四字词堆砌（≥%d 连）：%s"
                                    % (TRIPLE_ADJ_MIN, q.group(0)[:24]),
                         "snippet": s[:40]})
-        p = _PUNCT.search(s)
-        if p:
+        # `punct_mix`：CJK 后紧跟 ASCII 标点。**豁免 ID 语法**——`通用:M10` / `事件:M22`
+        # 是仓内既有模块 id 形态（ASCII 冒号 + 标识符），不是中英标点混用（实测假阳性来源）。
+        for p in _PUNCT.finditer(masked):
+            ch, nxt = p.group(0)[-1], masked[p.end():p.end() + 1]
+            if ch == ":" and nxt and (nxt.isascii() and (nxt.isalnum() or nxt == "_")):
+                continue
             out.append({"rule": "punct_mix", "line": no,
                         "message": "中英标点混用：%s" % p.group(0), "snippet": s[:40]})
+            break
 
     starts = [s[:4] for _no, s in lines]
     for c in CONNECTORS:
@@ -166,7 +184,14 @@ def command_face(root: str = ".") -> tuple:
     cmds = set()
     if os.path.exists(nf_path):
         with open(nf_path, encoding="utf-8") as fh:
-            cmds = set(re.findall(r'sub\.add_parser\(\s*"([a-z0-9-]+)"', fh.read()))
+            nf_src = fh.read()
+        cmds = set(re.findall(r'sub\.add_parser\(\s*"([a-z0-9-]+)"', nf_src))
+        # **别名也算命令面**（2026-10-01 修）：`add_parser("shell", aliases=["terminal"])` 的
+        # `nf terminal` 是 argparse 真能跑的命令，而上面的正则只认主名 ⇒ 文档写别名反被判
+        # 「不是 CLI 子命令」（实测：`docs/terminal.md` 写 `nf terminal` 被本判据误红）。
+        # 口径与 `nf shell --commands` 一致——那张表里 `terminal` 本来就是在册条目。
+        for group in re.findall(r"aliases\s*=\s*\[([^\]]*)\]", nf_src):
+            cmds.update(re.findall(r'"([a-z0-9-]+)"', group))
     try:
         import sys
         sys.path.insert(0, os.path.join(root, "desktop", "src"))

@@ -156,4 +156,12 @@ def main(argv: List[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
+    # UTF-8 stdio（2026-10-01 实测）：本模块是**文档里可照抄的入口**
+    # （`docs/42_M1_协议可执行性自测规范.md`：`PYTHONPATH=desktop/src python -m core.execution_drill …`），
+    # 而此前没钉输出编码 ⇒ Windows 管道下逐例结果以 **GBK 字节**吐出（实测
+    # `== execution_drill��… ==`、`����=[]`），按 UTF-8 读全是乱码——与 `core.text_hygiene`
+    # 同一类缺陷（`test_stdio_encoding` 管的是 `scripts/` 面，模块入口此前无人扫）。
+    for _s in (sys.stdout, sys.stderr):
+        if hasattr(_s, "reconfigure"):
+            _s.reconfigure(encoding="utf-8")
     sys.exit(main())

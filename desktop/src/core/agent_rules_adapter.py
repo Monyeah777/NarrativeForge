@@ -22,6 +22,7 @@ from pathlib import Path
 
 from .ir import IRDocument
 from .semantics import classify_doc_semantics, PROJECT_RULES
+from core import atomic_write
 
 
 def _slug(name: str) -> str:
@@ -65,7 +66,7 @@ def export_agents(ir: IRDocument, dest_dir: Path, res) -> None:
     dest_dir = Path(dest_dir)
     dest_dir.mkdir(parents=True, exist_ok=True)
     agents_path = dest_dir / "AGENTS.md"
-    agents_path.write_text(_build_agents_md(ir), encoding="utf-8")
+    atomic_write.write_text(agents_path, _build_agents_md(ir))   # 原子写：交付件不留半截
     res.files.append(str(agents_path))
 
 
@@ -79,5 +80,5 @@ def export_claude(ir: IRDocument, dest_dir: Path, res) -> None:
     dest_dir = Path(dest_dir)
     dest_dir.mkdir(parents=True, exist_ok=True)
     claude_path = dest_dir / "CLAUDE.md"
-    claude_path.write_text(_build_agents_md(ir), encoding="utf-8")
+    atomic_write.write_text(claude_path, _build_agents_md(ir))   # 原子写：交付件不留半截
     res.files.append(str(claude_path))

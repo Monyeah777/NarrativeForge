@@ -46,5 +46,34 @@ class TestRenderProtocol(unittest.TestCase):
             render_protocol(str(PKG), "mcp")
 
 
+class RenderCliErrorFramingTest(unittest.TestCase):
+    """`nf render <dir>` 的**输入错误**必须是干净错误（不得报成「内部错误」）。
+
+    实测（2026-09-30 全命令面系统扫：65 命令 × 2 种畸形输入）——此处是唯一余项：修复前
+    给不存在的目录会漏成「内部错误：No such file or directory: '…\\protocol.yaml'（重跑
+    NF_DEBUG=1 看堆栈）」，把用户输入问题说成内部故障。
+    """
+
+    def _run(self, *argv):
+        import subprocess
+        root = Path(__file__).resolve().parents[2]
+        return subprocess.run([sys.executable, str(root / "scripts" / "nf.py"), *argv],
+                              capture_output=True, encoding="utf-8", errors="replace",
+                              timeout=180)
+
+    def test_missing_package_dir_is_a_clean_error(self):
+        p = self._run("render", "__NF_PROBE__")
+        self.assertEqual(2, p.returncode)
+        self.assertIn("不是协议包目录", p.stderr)
+        self.assertNotIn("内部错误", p.stderr)
+        self.assertNotIn("NF_DEBUG", p.stderr)
+
+    def test_dir_without_protocol_yaml_is_a_clean_error(self):
+        p = self._run("render", "protocol")
+        self.assertEqual(2, p.returncode)
+        self.assertIn("protocol.yaml", p.stderr)
+        self.assertNotIn("内部错误", p.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()

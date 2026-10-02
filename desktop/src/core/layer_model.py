@@ -30,9 +30,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 from core import conformance_scan as csc
 from core import face_key as _fk
+from core import atomic_write
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
-from core import import_graph as _ig
 
 DECL_REL = "protocol/LAYERS.json"
 SCHEMA = "nf-layers/1"
@@ -478,8 +478,9 @@ def write_region(root: str = ".") -> str:
     head, rest = text.split(MARK_BEGIN, 1)
     _old, tail = rest.split(MARK_END, 1)
     new = head + MARK_BEGIN + "\n" + render_markdown(doc) + "\n" + MARK_END + tail
-    with open(path, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(new)
+    # 原子写（2026-09-30 收口）：`docs/layers.md` 是**活文档**，且 `layer_model` 自己会把
+    # 它当常驻语料读（L8/L10）——裸 `open(w)` 下并发读者可能读到半截正文。
+    atomic_write.write_text(path, new)
     return DOC_REL
 
 

@@ -8,8 +8,6 @@ from __future__ import annotations
 
 import re
 
-DEFAULT_TEMPLATE = "03_管线库/P00_通用文档生成管线.md"
-
 
 def normalize_pipeline_id(raw: str) -> str:
     pid = (raw or "").strip().upper()
@@ -19,6 +17,14 @@ def normalize_pipeline_id(raw: str) -> str:
 
 
 def default_filename(pid: str, name: str) -> str:
+    """`<id>_<安全名>.md`——**id 先过校验**，任何情况下都不许把路径分隔符带进文件名。
+
+    实测（本轮 CLI 注入审计）：修复前本函数原样拼 `pid`，`default_filename("../../x", …)`
+    会返回 `../../x_名字.md`——安全性完全依赖调用方「先 `scaffold_pipeline` 校验、后取名」
+    的**顺序**；任何新调用方只要先取名，就能拼出可逃逸的相对路径。这里把校验前移，让
+    不安全的文件名**根本构造不出来**（分隔符一律不可能出现）。
+    """
+    pid = normalize_pipeline_id(pid)
     safe = re.sub(r"[^\w\u4e00-\u9fff]+", "_", name.strip()).strip("_")
     return "%s_%s.md" % (pid, safe or "派生管线")
 

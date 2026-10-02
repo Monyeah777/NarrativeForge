@@ -27,7 +27,6 @@ from typing import Any, Dict, List, Optional, Tuple
 from core import conformance_scan as _csc   # 统一 YAML 加载器 / 围栏解析缓存真源
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
-from core import import_graph as _ig
 
 #: 逐件校验（围栏解析 + 子集校验）的**内容键缓存**用的占位路径前缀：结果按「与路径无关」的形状存，
 #: 取用时再把前缀换成真实相对路径。依据（实测 2026-09-29）：`schema_lint.scan` 稳态 51 ms 里，

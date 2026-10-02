@@ -28,6 +28,8 @@ retro-fit 取值规则（确定性、有据可依，非人工猜测）：
 from __future__ import annotations
 
 import json
+
+from core import atomic_write
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -37,7 +39,10 @@ KINDS = ("string", "integer", "number", "boolean", "array", "object",
 EVENT_REGISTRY = "protocol/event_registry.json"
 _IO_RE = re.compile(r"^(\s*)io_types:\s*$")
 _SUB_RE = re.compile(r"^(\s*)(outputs|inputs):\s*(\{\})?\s*$")
-_PAIR_RE = re.compile(r"^(\s*)([^:\s]+):\s*(\S+)\s*$")
+#: 键**允许冒号**（跨包依赖键写作 `AI保险:M01`）——旧模式 `[^:\s]+` 会把这类键整条读不出来，
+#: 于是「写出去的键读不回来」（YAML 读者认、本行式读者不认，两个 reader 不同源；2026-10-02）。
+#: 非贪婪键 + 锚定行尾：`AI保险:M01: untyped` 会正确地切成 键=`AI保险:M01` / 值=`untyped`。
+_PAIR_RE = re.compile(r"^(\s*)(\S+?):\s*(\S+)\s*$")
 
 
 def event_field_types(root: str = ".") -> Dict[str, str]:
@@ -47,7 +52,7 @@ def event_field_types(root: str = ".") -> Dict[str, str]:
         return {}
     try:
         data = json.loads(p.read_text(encoding="utf-8"))
-    except ValueError:
+    except ValueError:  # 事件注册表坏件 ⇒ 字段面留空（保守：不凭空造字段）
         return {}
     out: Dict[str, str] = {}
     for body in (data.get("events") or {}).values():
@@ -96,7 +101,8 @@ def parse_io_types(text: str) -> Optional[Dict[str, Dict[str, str]]]:
             continue
         pm = _PAIR_RE.match(ln)
         if pm and sub in out:
-            out[sub][pm.group(2)] = pm.group(3)
+            # 兼容旧渲染留下的加引号键（`'AI保险:M01': untyped`）——与 YAML 读者同口径。
+            out[sub][pm.group(2).strip().strip("'\"")] = pm.group(3)
     return out
 
 
@@ -168,7 +174,7 @@ def apply(root: str = ".", write: bool = False) -> List[Dict[str, Any]]:
         new = inject(text, io)
         changed = new != text
         if changed and write:
-            Path(doc).write_text(new, encoding="utf-8", newline="\n")
+            atomic_write.write_text(doc, new)      # 就地编辑源件：原子替换，防截断
         out.append({"path": rel, "id": str(mc.get("id")), "changed": changed,
                     "io_types": io})
     return out
@@ -205,6 +211,14 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         if declared != marked:
             warns.append("%s io_types.outputs 与 outputs 键集不一致（缺 %s / 多 %s）"
                          % (mid, sorted(declared - marked), sorted(marked - declared)))
+        # `inputs` 侧**此前从不核对**（2026-10-02 补）：读者读不出含冒号的跨包依赖键，而这一侧
+        # 没有任何对账 ⇒ 盲区不可见。口径与 outputs 侧一致（键集对齐，不判死、但可数）。
+        declared_in = {str(x) for x in (mc.get("inputs") or [])}
+        marked_in = set((io.get("inputs") or {}).keys())
+        if declared_in != marked_in:
+            warns.append("%s io_types.inputs 与 inputs 键集不一致（缺 %s / 多 %s）"
+                         % (mid, sorted(declared_in - marked_in),
+                            sorted(marked_in - declared_in)))
         provided[mid] = io.get("outputs") or {}
     # 可证不匹配：消费方声明期望类型，提供方有类型声明但无一匹配
     for rel, text, mc, _doc in rows:

@@ -4,6 +4,10 @@
 - 用 requirement 重建装配允许集；
 - 对 source 转录重跑 round_drill；
 - 断言「重跑判定 == trace.ok」——不一致 = 遥测与实现漂移（FAIL）。
+
+判定口径分档（2026-09-30 统一）：`ok` 是**命令总判定**，只有加了 `--rounds` 才含回合级；
+新写的 trace 逐字带 `rounds:{checked,ok}`。有该键时按它核（`checked=False` ⇒ 返回
+`verdict_scope="none"`，即**不适用**，不做漂移断言）；老 trace（无该键）沿用总判定。
 """
 
 from __future__ import annotations
@@ -33,10 +37,25 @@ def analyze(trace_path: str, root: str = ".") -> Tuple[List[str], Dict[str, Any]
     plan_ = ap.plan(requirement)
     allowed = plan_.get("allowed_module_ids") or []
     r_issues, r_stats = rd.scan(transcript.read_text(encoding="utf-8"), allowed)
-    expected_ok = bool(trace.get("ok"))
+    # 判定口径分档（2026-09-30）：`nf assemble --check --trace` 的总判定 `ok` 只在加了
+    # `--rounds` 时才含回合级；新写法的 trace 逐字带 `rounds:{checked,ok}`。有它就用它
+    # （checked=False ⇒ **不适用**，不做漂移断言，详见返回的 verdict_scope），
+    # 老 trace（无该键）沿用总判定，保持向后兼容。
+    scope = trace.get("rounds") if isinstance(trace.get("rounds"), dict) else None
+    if scope is not None and scope.get("checked") is False:
+        return (["trace 未含回合级判定（写时未加 --rounds）⇒ 不做漂移断言"],
+                {"transcript_turns": r_stats["turns"], "expected_ok": None,
+                 "actual_ok": not r_issues, "verdict_scope": "none"})
+    if scope is not None and scope.get("checked") and scope.get("ok") is not None:
+        expected_ok = bool(scope["ok"])
+        verdict_scope = "rounds"
+    else:
+        expected_ok = bool(trace.get("ok"))
+        verdict_scope = "overall"
     actual_ok = not r_issues
     if actual_ok != expected_ok:
-        issues.append("verdict 漂移：trace.ok=%s 重跑判定=%s（issue=%s）"
-                      % (expected_ok, actual_ok, r_issues[:3]))
+        issues.append("verdict 漂移：trace 记录 %s（口径=%s）· 重跑判定 %s（issue=%s）"
+                      % (expected_ok, verdict_scope, actual_ok, r_issues[:3]))
     return issues, {"transcript_turns": r_stats["turns"],
-                    "expected_ok": expected_ok, "actual_ok": actual_ok}
+                    "expected_ok": expected_ok, "actual_ok": actual_ok,
+                    "verdict_scope": verdict_scope}

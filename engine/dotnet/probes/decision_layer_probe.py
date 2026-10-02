@@ -122,7 +122,7 @@ def main() -> int:
             "schema": "nf-decision-layer-golden/1",
             "generated": "2026-09-27",
             "source": "desktop/src/core/decision_layer.py 原文导入执行（快照内那份）+ check33 的框法",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(渲染行))[:32]  ← 与引擎 Result.LogDigest 同式',
             "cases": results,
         }

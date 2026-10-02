@@ -25,6 +25,20 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "desktop" / "src"))
 
 from core import daemon as dm  # noqa: E402
+from core import posix_shell as psh  # noqa: E402
+
+
+def _bash():
+    """POSIX sh（启动器 / 快路判据用）：PATH → Git for Windows 反推 → Unix 常规位。
+
+    依据（2026-09-30 跳过审计）：原先只看 `shutil.which("bash")`，本机（Windows 原生 +
+    Git for Windows，bash 不在 PATH）**整类跳过**——判据不在场就是假绿；
+    `core.posix_shell` 会做同样解析（`scripts/instruction_evidence.py` 早已这么用）。
+    """
+    try:
+        return shutil.which("bash") or psh.posix_shell()
+    except Exception:                    # noqa: BLE001 - 解析不到按原口径跳过
+        return None
 
 
 def _plain_request(sock, token, argv, cwd):
@@ -225,7 +239,7 @@ class DaemonSpeedTest(DaemonHarness):
         **没有一个判据盯着启动器本身**。这条把它钉住：本机（Windows/MSYS）实测 178 ms vs 357 ms
         （spawn 是地板，故只要求显著更小）；Linux（CI）上 bash spawn 只要几毫秒，故要求 3×。
         """
-        bash = shutil.which("bash")
+        bash = _bash()
         if not bash:
             self.skipTest("本机无 bash（启动器快路需要 bash 的 /dev/tcp）")
         argv = ["--version"]
@@ -409,7 +423,7 @@ class DaemonShellInitTest(unittest.TestCase):
         script = self._generated()
         self.assertIn("nf() {", script)
         self.assertIn(str(ROOT), script)
-        bash = shutil.which("bash")
+        bash = _bash()
         if not bash:
             self.skipTest("本机无 bash（跳过语法检查）")
         tmp = Path(tempfile.mkdtemp(prefix="nf_shell_init_")) / "init.sh"
@@ -426,7 +440,7 @@ class DaemonShellInitTest(unittest.TestCase):
         **rc=127 + `C:Program: command not found`**。`bash -n` 对此完全无感（它语法合法），
         所以本判据必须真的 `eval` 一次并在**没有守护**的环境里跑一条命令。
         """
-        bash = shutil.which("bash")
+        bash = _bash()
         if not bash:
             self.skipTest("本机无 bash（无法 eval 快路函数）")
         script = self._generated()
@@ -443,6 +457,202 @@ class DaemonShellInitTest(unittest.TestCase):
                          "守护不在时函数必须回退 python 直跑（未加引号的解释器路径会 127）\n%s"
                          % (r.stderr or r.stdout))
         self.assertIn("nf ", r.stdout)
+
+    def test_shell_init_fast_path_matches_direct_with_daemon_up(self):
+        """**有守护时**：`eval` 出来的 `nf` 与直跑**逐字节一致**，且长驻命令必须绕过快路。
+
+        依据（2026-10-01）：这份模板是文档推荐的**毫秒级客户端**（`eval "$(nf daemon shell-init
+        bash)"`），但既有判据只盖了「语法合法」与「守护不在时能回退」两条 —— **快路真的接管时
+        输出是否与直跑一致**、以及长驻/自指命令是否被模板的排除表挡在快路外，此前没人验。
+        参考实现：`nf daemon exec` 那条路已有逐字节等价判据（test_daemon_parity），本件把**第三个
+        客户端**（bash 函数）补进同一口径。
+        """
+        bash = _bash()
+        if not bash:
+            self.skipTest("本机无 bash（无法 eval 快路函数）")
+        script = self._generated()
+        home = tempfile.mkdtemp(prefix="nf_shell_init_fast_")
+        old = os.environ.get("NARRATIVE_FORGE_HOME")
+        os.environ["NARRATIVE_FORGE_HOME"] = home
+        try:
+            ok, msg = dm.start(Path(ROOT), idle_timeout=300.0)
+            self.assertTrue(ok, "守护启动失败：%s" % msg)
+            try:
+                # `nf terminal` 会读 stdin：**必须显式 DEVNULL**，否则判据随宿主 stdin 变形——
+                # 2026-10-02 实测：本件在 pre-push 钩子里跑时，git 传给钩子的 ref 列表
+                # （`refs/heads/main …`）被终端当命令读走，多出一行「未知命令」→ 与快路客户端
+                # 逐字节比对当场红，而手工 `bash verify.sh`（stdin 为空）是绿的。
+                for argv in (["--version"], ["stats", "--check"], ["terminal"]):
+                    r = subprocess.run(
+                        [bash, "-c", 'eval "$1"; nf %s' % " ".join(argv), "nfinit", script],
+                        cwd=str(ROOT), env=dict(os.environ), capture_output=True, text=True,
+                        encoding="utf-8", errors="replace", timeout=300,
+                        stdin=subprocess.DEVNULL)
+                    d = subprocess.run(
+                        [sys.executable, str(Path(ROOT) / "scripts" / "nf.py")] + argv,
+                        cwd=str(ROOT), env=dict(os.environ), capture_output=True, text=True,
+                        encoding="utf-8", errors="replace", timeout=300,
+                        stdin=subprocess.DEVNULL)
+                    self.assertEqual((d.returncode, d.stdout), (r.returncode, r.stdout),
+                                     "shell-init 客户端与直跑不一致：%s\n%s"
+                                     % (argv, (r.stderr or "")[:200]))
+                    # 同一口径覆盖**启动器本体**（`scripts/nf`）：它是另一条被文档写成「快路」的入口，
+                    # 有守护时同样必须与直跑逐字节一致。
+                    lr = subprocess.run([bash, "scripts/nf"] + argv, cwd=str(ROOT),
+                                        env=dict(os.environ), capture_output=True, text=True,
+                                        encoding="utf-8", errors="replace", timeout=300,
+                                        stdin=subprocess.DEVNULL)
+                    self.assertEqual((d.returncode, d.stdout), (lr.returncode, lr.stdout),
+                                     "启动器 scripts/nf 与直跑不一致：%s\n%s"
+                                     % (argv, (lr.stderr or "")[:200]))
+            finally:
+                dm.stop()
+        finally:
+            if old is None:
+                os.environ.pop("NARRATIVE_FORGE_HOME", None)
+            else:
+                os.environ["NARRATIVE_FORGE_HOME"] = old
+            shutil.rmtree(home, ignore_errors=True)
+
+
+class DaemonLivenessTest(unittest.TestCase):
+    """**陈旧状态文件不算在线**（2026-09-30 补）：liveness 靠一次真往返，不靠文件在场。
+
+    依据：状态文件里可能有「上一轮守护留下」的 port/token（进程已死、端口已失效）。若把
+    「文件形状合法」当成在线，`nf daemon status` 会骗人，启动器也会把命令投给不存在的端点。
+    本判据伪造一份形状合法但连不上的状态文件，要求 `ping` 判假、CLI 面报「未运行」。
+    """
+
+    def test_stale_state_file_is_not_online(self):
+        home = tempfile.mkdtemp(prefix="nf_daemon_stale_")
+        self.addCleanup(shutil.rmtree, home, ignore_errors=True)
+        Path(home, "daemon.json").write_text(json.dumps(
+            {"proto": dm.PROTO, "port": 1, "token": "t" * 8, "pid": 999999,
+             "root": str(ROOT), "started": 0}), encoding="utf-8")
+        env = dict(os.environ, NARRATIVE_FORGE_HOME=home)
+        old = os.environ.get("NARRATIVE_FORGE_HOME")
+        os.environ["NARRATIVE_FORGE_HOME"] = home
+        try:
+            doc = dm.read_state()
+            self.assertIsNotNone(doc, "形状合法 ⇒ read_state 应读出（是否在线交给 ping 判）")
+            self.assertFalse(dm.ping(doc, timeout=1.0), "连不上 ⇒ 不得判在线")
+        finally:
+            if old is None:
+                os.environ.pop("NARRATIVE_FORGE_HOME", None)
+            else:
+                os.environ["NARRATIVE_FORGE_HOME"] = old
+        p = subprocess.run([sys.executable, "scripts/nf.py", "daemon", "status"],
+                           cwd=ROOT, env=env, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", timeout=180)
+        self.assertIn("未运行", p.stdout, "CLI 面也须如实报「未运行」：%s" % (p.stdout or p.stderr))
+
+
+@unittest.skipUnless(os.name == "posix", "POSIX 权限语义（Windows 交回 ACL 继承）")
+class DaemonStatePermsTest(unittest.TestCase):
+    """状态文件含**一次性令牌**，而令牌就是守护的信任边界（回环不是）——须仅属主可读写。
+
+    依据（2026-09-30）：`write_state` 此前按默认 umask 落盘（常见 0644）。多用户主机上，同机
+    另一个用户读到 `daemon.json` 里的 token 就能连回环口、以属主身份执行命令。本件把「0600」
+    钉住。Windows 分支不判（chmod 无对应语义，ACL 由用户目录继承）。
+    """
+
+    def test_state_file_is_owner_only(self):
+        home = tempfile.mkdtemp(prefix="nf_daemon_perms_")
+        self.addCleanup(shutil.rmtree, home, ignore_errors=True)
+        old = os.environ.get("NARRATIVE_FORGE_HOME")
+        os.environ["NARRATIVE_FORGE_HOME"] = home
+        try:
+            dm.write_state({"proto": dm.PROTO, "port": 1, "token": "t" * 8, "pid": os.getpid(),
+                            "root": ".", "started": "now"})
+            p = dm.state_path()
+            self.assertEqual(0, p.stat().st_mode & 0o077,
+                             "含令牌的状态文件须仅属主可读写（实测 %o）" % (p.stat().st_mode & 0o777))
+            self.assertIsNotNone(dm.read_state(), "权限收紧不得影响自读")
+        finally:
+            if old is None:
+                os.environ.pop("NARRATIVE_FORGE_HOME", None)
+            else:
+                os.environ["NARRATIVE_FORGE_HOME"] = old
+
+
+class ResponseCacheWriteSafetyTest(unittest.TestCase):
+    """**写动作绝不进响应缓存**：闸门表（写面的穷举真源）与守护的缓存准入表必须互相负责。
+
+    依据（2026-10-01 取证）：守护的响应缓存按「命令前缀在 `CACHEABLE_COMMANDS` 里 + argv 里没有
+    写盘旗标」准入，而**这套准入此前没有任何判据**——`cacheable()` 的注释自己写着「宁可不缓存，
+    不可把旧输出当新输出」，但两条表（终端写盘闸门 ⇄ 守护缓存准入）从未对账：新写面入闸后，
+    若它恰好落在某个可缓存命令前缀下、又没进 `_WRITE_FLAG_PREFIXES`，第二次调用就会**回放写之前
+    的旧输出**（静默过期，最坏情况下命令根本没跑而调用方以为跑了）。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+        from core import terminal as term
+        cls.term = term
+
+    def _inventory(self):
+        """命令面清单（与 test_cli_json_face / test_daemon_parity 同一真源）。"""
+        if not hasattr(self, "_rows"):
+            nf = str(ROOT / "scripts" / "nf.py")
+            p = subprocess.run([sys.executable, nf, "shell", "--commands", "--json"],
+                               capture_output=True, text=True, encoding="utf-8",
+                               errors="replace", timeout=300)
+            self._rows = json.loads(p.stdout).get("rows") or []
+        return self._rows
+
+    def test_every_gated_face_is_uncacheable(self):
+        """闸门表里每一项拿去问 `cacheable()`，必须一律 False。
+
+        旗标面按**真实用法**取（命令面清单里真存在的「可缓存命令 × 该旗标」组合）——`doctor --force`
+        这种 argparse 根本不接受的拼法不算洞，拿它当判据只会造出假红。
+        """
+        bad = []
+        for row in self._inventory():
+            toks = row["path"].split()
+            if not any(tuple(toks[:len(pre)]) == pre for pre in dm.CACHEABLE_COMMANDS):
+                continue
+            for flag in (row.get("flags") or []):
+                if flag in self.term.CONFIRM_FLAGS or flag in {f for _c, f in self.term.CONFIRM_FLAG_PAIRS}:
+                    if dm.cacheable(toks + [flag]):
+                        bad.append("%s %s" % (row["path"], flag))
+        for cmd, sub in self.term.CONFIRM_VERBS:
+            argv = [cmd] + ([sub] if sub else [])
+            if dm.cacheable(argv):
+                bad.append(" ".join(argv))
+        for cmd, flag in self.term.CONFIRM_FLAG_PAIRS:
+            if dm.cacheable([cmd, flag]):
+                bad.append("%s %s" % (cmd, flag))
+        self.assertEqual([], bad, "写面被响应缓存接纳（会回放写之前的旧输出）：%s" % bad)
+
+    def test_pure_reads_are_still_cacheable(self):
+        """正例对照：只读面必须仍然可缓存（否则「全禁缓存」也能假绿）。"""
+        for argv in (["--version"], ["stats", "--check"], ["doctor"], ["module", "ls"],
+                     ["patterns", "ls"], ["decisions", "show"]):
+            self.assertTrue(dm.cacheable(argv), "只读面被误禁缓存：%s" % argv)
+
+    def test_gate_flags_on_cacheable_commands_have_a_write_prefix(self):
+        """**覆盖对账**：可缓存命令上真出现的闸门旗标，必须被 `_WRITE_FLAG_PREFIXES` 覆盖。
+
+        覆盖用前缀语义（`--write-baseline` 由 `--write` 覆盖），与 `cacheable()` 同一判据。
+        """
+        prefixes = tuple(dm._WRITE_FLAG_PREFIXES)
+        gate_flags = set(self.term.CONFIRM_FLAGS) | {f for _c, f in self.term.CONFIRM_FLAG_PAIRS}
+        orphans = []
+        checked = 0
+        for row in self._inventory():
+            toks = row["path"].split()
+            if not any(tuple(toks[:len(pre)]) == pre for pre in dm.CACHEABLE_COMMANDS):
+                continue
+            for flag in (row.get("flags") or []):
+                if flag not in gate_flags:
+                    continue
+                checked += 1
+                if not flag.startswith(prefixes):
+                    orphans.append("%s %s" % (row["path"], flag))
+        self.assertGreater(checked, 0, "没扫到任何「可缓存命令 × 闸门旗标」组合（判据可能已失效）")
+        self.assertEqual([], orphans,
+                         "可缓存命令上的闸门旗标没进 `_WRITE_FLAG_PREFIXES`（写会被缓存）：%s" % orphans)
 
 
 if __name__ == "__main__":

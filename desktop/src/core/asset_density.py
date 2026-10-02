@@ -304,7 +304,7 @@ def usage_scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         for rel in (r for pat in CORPUS_PATTERNS for r in csc.iter_files(root, pat)):
             try:
                 corpus.append(csc.read_text_cached(Path(root) / rel))
-            except OSError:
+            except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
             dg = (digest_map or {}).get(rel)
             if dg is None:                     # 面指纹是**复用**来的（手里没摘要）→ 现取
@@ -345,7 +345,7 @@ def _thickness_impl(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                 continue
             try:
                 text = csc.read_text_cached(Path(root) / rel)
-            except OSError:
+            except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
             if not text.strip():
                 continue

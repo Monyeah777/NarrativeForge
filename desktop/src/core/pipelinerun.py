@@ -60,7 +60,7 @@ def _module_files(root: str = ".") -> Dict[str, Dict[str, Any]]:
                         rec["cat_id"] = str(mc["id"])
                     from core import io_types as _iot
                     rec["io_types"] = _iot.parse_io_types(text) or {}
-            except OSError:
+            except OSError:  # 件不可读 ⇒ 该模块无契约摘要（跳过，不伪造）
                 pass
             for key in (stem, rec["cat_id"], fid_key(rec["cat_id"])):
                 out.setdefault(key, rec)
@@ -72,7 +72,7 @@ def _core_ids(root: str = ".") -> List[str]:
     path = Path(root) / "desktop" / "src" / "core" / "registry.json"
     try:
         reg = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+    except (OSError, ValueError):  # 扫描失败 ⇒ 空集（下游按「无核心件」处理）
         return []
     return [str(m.get("id")) for m in (reg.get("modules") or []) if m.get("id")]
 
@@ -277,9 +277,10 @@ def advisory_report(root: str = ".", write: bool = False) -> Dict[str, Any]:
            "pipelines": total["pipelines"], "counts": total["advisory_buckets"],
            "total": total["notes"], "items": total["advisory_items"]}
     if write:
+        from core import atomic_write          # 在仓协议件：原子落盘（2026-10-01）
         p = Path(root) / "protocol" / "pipeline_advisory.json"
-        p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                     encoding="utf-8", newline="\n")
+        atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False, indent=2,
+                                              sort_keys=True) + "\n")
     return doc
 
 

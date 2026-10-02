@@ -160,7 +160,7 @@ def main() -> int:
             "schema": "nf-workloop-golden/1",
             "generated": "2026-09-27",
             "source": "真源 core/workloop.py::scan + summary（check33 第 16 条框法）",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(渲染行))[:32]  ← 与引擎侧同式',
             "cases": results,
         }

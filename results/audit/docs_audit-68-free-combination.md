@@ -6,14 +6,15 @@ scope: 作者目标「将所有域包达到任意几个域包可自由任意组�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/pack_combo.py:871c2ce752f6daf5ae53ccdb04c5d1fc3923869b4630e7734ec5cabac9f96373
-  - desktop/src/core/quality_depth_scan.py:75ee6b4fd8a63b03ec4687f37deaa80dd7076d89d76d5911f2333e8c7c1491da
+  - desktop/src/core/pack_combo.py:5d5b4df69b8438ab9a075d87d4d6055c25f452f08e0f60756c199ec02f82aec0
+  - desktop/src/core/quality_depth_scan.py:29d5bfa5a653277ff6629dde7bfc7e629c936750ec988316992ca17cc9449df4
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - docs/combos.md:4d25fe6d366687213df7090badd52b815bdf07f774df856e598d7cf8a1d130de
-  - desktop/tests/test_pack_combo.py:e8f3b50793aa0d62a3b854f219782e10aeb1ed49447c4064ad999d014a416a61
+  - desktop/tests/test_pack_combo.py:1da6e573247542f8bff69939098bb7919c0e3f83c63e48bd15ad5276e4eb0c54
   - community/校园西幻轻混组合包/protocol.yaml:093cc817ae089981b7cfe4aaf57ec7f5d2374455bb63fc8b7af06dc2d29a02a3
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

@@ -230,7 +230,7 @@ def main() -> int:
             "generated": "2026-09-27",
             "source": ("真源模块原文：regression_score.evaluate/compare · conformance_scan.scan · "
                        "quality_depth_scan.scan · doc_hygiene.check_markers"),
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(渲染行))[:32]  ← 与引擎侧同式',
             "boundary": list(BOUNDARY),
             "compare_pairs": pairs,

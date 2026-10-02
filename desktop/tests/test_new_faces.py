@@ -116,6 +116,19 @@ class TestPayloadHarvestApply(unittest.TestCase):
 
 
 class TestMachineContract(unittest.TestCase):
+    def test_cli_wires_the_outputs_backfill(self):
+        """`nf module contract --write` 必须**同时**接线 outputs 行补全（2026-10-01 补）。
+
+        依据：`apply_outputs`（只给「outputs 为空 + 有事件载荷证据」的模块补 outputs 行，
+        幂等）此前**只被单测调用、没有任何用户可达路径**——而文档写的
+        `nf module contract --write` 正是「补机读块（幂等）」。实测接线时真仓
+        `changed=0`（12 件候选、0 件需改）⇒ 不改变今天的产物，只补可达性。
+        """
+        src = (ROOT / "scripts" / "nf.py").read_text(encoding="utf-8")
+        self.assertIn("mctl.apply_outputs(ROOT, write=True)", src,
+                      "outputs 行补全未接线（能力仍不可达）")
+        self.assertIn("mctl.apply(ROOT, write=True)", src)
+
     def test_insert_point_and_inject_fallbacks(self):
         # 无 `## ` 章节头 → 兜底插在引用块之后；无引用块 → 插在文首
         self.assertEqual(mc._insert_point("> 头\n\n正文\n"), 1)

@@ -92,6 +92,21 @@ class RealRepoTest(unittest.TestCase):
         self.assertIn("声明 check1-", line)
         self.assertIn("PASS=", line)
 
+    def test_committed_report_is_fresh(self):
+        """**提交件 == 实时重算**——本地也要判（2026-10-01 取证）。
+
+        为什么缺这条会出事：`ci-verify.yml` 与 `release-gate.yml` 都是**先 `--write` 再
+        `--check`**（写一遍再比，天然通过），而 `verify.sh` **不跑** `verify_report`；
+        于是「提交的机器可读报告陈旧」在**本地与云端都不会红**——本轮实测：
+        `protocol/verification_report.json` 记录 `7ef20df0…` vs 实测 `1efe3d61…`（陈旧），
+        而门禁全绿。`nf release --fresh` 会红，但那是可选入口。本件把它钉进常驻单测。
+        """
+        issues, live = vr.check(str(ROOT))
+        self.assertEqual([], issues,
+                         "机器可读报告过期（修复指引：python scripts/verify_report.py --write）：%s"
+                         % issues)
+        self.assertEqual(vr.SCHEMA, live.get("schema"))
+
 
 if __name__ == "__main__":
     unittest.main()

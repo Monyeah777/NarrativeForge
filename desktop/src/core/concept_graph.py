@@ -32,7 +32,6 @@ from typing import Any, Dict, List, Sequence, Set, Tuple
 from core import conformance_scan as csc
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
-from core import import_graph as _ig
 
 BLOCK_MARKER = "concept_graph"
 LAYERS = ("P00", "P10", "P20", "P30", "P40", "P50", "P60", "P70", "P80")
@@ -87,7 +86,7 @@ def graph_assets(root: str = ".") -> List[str]:
         for f in sorted(glob.glob(os.path.join(root, pattern))):
             try:
                 text = csc.read_text_cached(f)
-            except OSError:
+            except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
             if fenced_block(text):
                 out.append(Path(f).relative_to(Path(root)).as_posix())

@@ -145,7 +145,8 @@ def init_worksheet(question: str, context: str = "",
     txt = _frontmatter(question, context, decider) + head + "\n".join(body)
     txt += "\n\n## 引导模板（填充后删除本段）\n\n" + templates
     if path is not None:
-        path.write_text(txt, encoding="utf-8")
+        from core import atomic_write          # 工件落盘：原子写（2026-10-01）
+        atomic_write.write_text(path, txt)
     return txt
 
 
@@ -283,7 +284,7 @@ def scan_steelman(root) -> List[str]:
     for p in sorted(base.glob("*.md")):
         try:
             head = p.read_text(encoding="utf-8")[:500]
-        except OSError:
+        except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
         if head.startswith("---") and "decision:" in head and "date:" in head:
             # 提取 context 简述

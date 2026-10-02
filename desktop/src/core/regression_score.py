@@ -51,7 +51,7 @@ def _count(root: str, module: str, fn: str) -> Optional[int]:
     try:
         mod = __import__("core.%s" % module, fromlist=[fn])
         issues = getattr(mod, fn)(root)
-    except Exception:
+    except Exception:  # 计数面算不出 ⇒ None（调用方按「该项缺失」如实呈现）
         return None
     if isinstance(issues, tuple):
         issues = issues[0]
@@ -137,7 +137,7 @@ def _markers(root: str) -> Optional[list]:
     try:
         from core import doc_hygiene
         return doc_hygiene.check_markers(root)
-    except Exception:
+    except Exception:  # 标记面算不出 ⇒ None（调用方按「该项缺失」如实呈现）
         return None
 
 
@@ -210,6 +210,6 @@ def save_baseline(path: str, evaluation: Dict[str, Any],
     parent = os.path.dirname(os.path.abspath(path))
     if parent:
         os.makedirs(parent, exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(json.dumps(payload, ensure_ascii=False, indent=2,
-                            sort_keys=True) + "\n")
+    from core import atomic_write              # 在仓协议件：原子落盘（2026-10-01）
+    atomic_write.write_text(path, json.dumps(payload, ensure_ascii=False, indent=2,
+                                             sort_keys=True) + "\n")

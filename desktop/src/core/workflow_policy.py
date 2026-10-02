@@ -10,7 +10,9 @@
 1. 每条 `uses:` 的引用必须是 40 位十六进制**提交** SHA——`@v4` 这类可变引用判 FAIL；
    本地动作（`./…`）豁免；`# vX.Y.Z` 注释记 WARN（可读性，不判死）。
 2. 每个工作流须有**显式** `permissions:` 段，且不得 `write-all`。
-3. `.github/requirements-*.txt` 的每条依赖须钉 `==` 具体版本（同一标准的「包度量」面；
+3. 每个工作流的 job 须声明 `timeout-minutes`（**挂死有界**：GitHub 默认 6h，挂死的 job
+   会把 runner 占满并挤掉后续定时任务——2026-10-01 补，实测 8 件工作流缺此项）。
+4. `.github/requirements-*.txt` 的每条依赖须钉 `==` 具体版本（同一标准的「包度量」面；
    出处之二：FAIR4RS v1.0（DOI 10.5281/zenodo.6374314）的 **R（Reusable）**——可复现要求
    依赖可重建，故版本不得浮动）。
 
@@ -18,13 +20,11 @@
 """
 from __future__ import annotations
 
-import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 WORKFLOWS_REL = ".github/workflows"
-REQS_GLOB = ".github/requirements-*.txt"
 USES_RE = re.compile(r"^\s*(?:-\s*)?uses:\s*(\S+)(.*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 
@@ -36,6 +36,19 @@ def workflows(root: str = ".") -> List[str]:
         return []
     return sorted("%s/%s" % (WORKFLOWS_REL, p.name)
                   for p in d.iterdir() if p.suffix in (".yml", ".yaml"))
+
+
+def _timeout_issues(rel: str, text: str) -> List[str]:
+    """每个工作流必须有 job 级 `timeout-minutes`（2026-10-01 补，Fail-Closed 面）。
+
+    为什么：GitHub 的默认上限是 **6 小时**——一个挂死的 job（网络等待、工具卡住）会把
+    runner 占满到默认上限，期间**后续定时任务被挤掉**（`gitee-poll` 是每 10 分钟一轮的
+    轮询入库线）。显式声明上限 = 「挂死有界」这条不变量的可核载体。
+    """
+    if re.search(r"^\s*timeout-minutes:\s*\d+\s*(?:#.*)?$", text, re.M):
+        return []
+    return ["%s 未声明 job 级 `timeout-minutes`（修复指引：在该 job 的 `runs-on` 下一行加 "
+            "`timeout-minutes: <分钟>`；挂死不许占满默认 6h）" % rel]
 
 
 def _pin_issues(rel: str, text: str) -> List[str]:
@@ -81,6 +94,7 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         text = (Path(root) / rel).read_text(encoding="utf-8", errors="replace")
         issues += _pin_issues(rel, text)
         issues += _perm_issues(rel, text)
+        issues += _timeout_issues(rel, text)
         for line in text.splitlines():
             m = USES_RE.match(line)
             if m and SHA_RE.match(m.group(1).rpartition("@")[2].rstrip(",")):

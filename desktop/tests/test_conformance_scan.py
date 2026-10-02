@@ -21,7 +21,6 @@ from core import asset_density as ad  # noqa: E402
 from core import asset_ledger_projection as alp  # noqa: E402
 from core import conformance_scan as cs  # noqa: E402
 from core import concept_graph as cg  # noqa: E402
-from core import disk_cache  # noqa: E402
 from core import domain_pack as dpk  # noqa: E402
 from core import layer_model as lm  # noqa: E402
 from core import output_forms as of  # noqa: E402

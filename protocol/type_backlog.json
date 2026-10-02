@@ -1,5 +1,5 @@
 {
-  "count": 86,
+  "count": 101,
   "fields": [
     {
       "event": "campus_gift_intent",
@@ -107,6 +107,31 @@
       "note": "45_M3 提案确认；类型待核"
     },
     {
+      "event": "faction_event",
+      "field": "action_type",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "faction_event",
+      "field": "gang",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "faction_event",
+      "field": "outcome",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "faction_event",
+      "field": "rep_impact",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "faction_event",
+      "field": "target_area",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
       "event": "ghost_event",
       "field": "ghost_id",
       "note": "正文证据字段名；类型待核"
@@ -152,6 +177,21 @@
       "note": "45_M3 提案确认；类型待核"
     },
     {
+      "event": "interaction_update",
+      "field": "affinity_delta",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "interaction_update",
+      "field": "context",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "interaction_update",
+      "field": "type",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
       "event": "level_up",
       "field": "gained_attrs",
       "note": "正文证据字段名；类型待核"
@@ -170,6 +210,21 @@
       "event": "market_event",
       "field": "type",
       "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "narrative_event",
+      "field": "causal_chain",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "narrative_event",
+      "field": "pov",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "narrative_event",
+      "field": "seq_no",
+      "note": "正文 payload 收割（证据可溯）"
     },
     {
       "event": "npc_action",
@@ -225,6 +280,31 @@
       "event": "production_output",
       "field": "recipe_id",
       "note": "正文证据字段名；类型待核"
+    },
+    {
+      "event": "quest_state",
+      "field": "location",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "quest_state",
+      "field": "next_quest",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "quest_state",
+      "field": "objective",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "quest_state",
+      "field": "phase",
+      "note": "正文 payload 收割（证据可溯）"
+    },
+    {
+      "event": "quest_state",
+      "field": "reward",
+      "note": "正文 payload 收割（证据可溯）"
     },
     {
       "event": "relationship_change",
@@ -409,11 +489,6 @@
     {
       "event": "weather_state",
       "field": "day_phase",
-      "note": "正文证据字段名；类型待核"
-    },
-    {
-      "event": "weather_state",
-      "field": "modifiers",
       "note": "正文证据字段名；类型待核"
     },
     {

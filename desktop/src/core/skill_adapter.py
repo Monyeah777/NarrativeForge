@@ -75,5 +75,6 @@ def export_skill(ir: IRDocument, dest_dir: Path, res) -> None:
     skill_dir = dest_dir / _slug(ir.pipeline_id or ir.title)
     skill_dir.mkdir(parents=True, exist_ok=True)
     skill_path = skill_dir / "SKILL.md"
-    skill_path.write_text(_build_skill_md(ir), encoding="utf-8")
+    from core import atomic_write              # 交付件：原子落盘（半截 SKILL.md 不留，2026-10-01）
+    atomic_write.write_text(skill_path, _build_skill_md(ir))
     res.files.append(str(skill_path))

@@ -17,6 +17,8 @@
 from __future__ import annotations
 
 import glob
+
+from core import atomic_write
 import hashlib
 import json
 import os
@@ -68,7 +70,7 @@ def load(root: str = ".") -> Dict[str, Any]:
     try:
         with open(p, encoding="utf-8") as fh:
             return json.load(fh)
-    except ValueError:
+    except ValueError:  # 基线缺失/坏件 ⇒ 空基线：调用方按「无基线」如实提示，不回填默认值
         return {}
 
 
@@ -123,7 +125,5 @@ def write(root: str = ".", recorded_at: str = "") -> str:
     """重签基线 → 写入 BASELINE_REL，返回绝对路径。"""
     doc = build(root, recorded_at=recorded_at)
     p = os.path.join(root, BASELINE_REL)
-    os.makedirs(os.path.dirname(p), exist_ok=True)
-    with open(p, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     return p

@@ -18,12 +18,7 @@ tags:
   - 装配样本
   - 引用式
 attestation: a3872e040ba2dc307bc665896908cc0b2a53802517bf867d39ba34d1dea83866
-attested_at: 2026-09-21
-anchor_scheme: ssh-sig
-anchor_ns: nf-attest
-anchor_identity: nf-demo@local
-anchor_sig_file: library/anchors/NF-1.sig
-anchor_fingerprint: SHA256:RytmBjDCNbJ7He6VN9UHzVO/QtTc8HG3h5vP9ZIFrwg
+attested_at: 2026-09-30
 ---
 
 # 叙事世界完整版：校园情感流（高二 · 毕业遗憾线）

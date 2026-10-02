@@ -7,7 +7,6 @@
 交给上游标签（tag 重指即换代码）。本测试把「一律按提交 SHA 引用」这条钉住，
 同时要求 dependabot 在场，避免「固定」退化成「冻结」。
 """
-import os
 import re
 import unittest
 from pathlib import Path

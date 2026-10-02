@@ -270,9 +270,9 @@ def write_order(root: str, doc: Dict[str, Any]) -> str:
     rel = "%s/%s.json" % (ORDER_DIR, doc["order_id"])
     path = os.path.join(root, rel)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(doc, fh, ensure_ascii=False, indent=2, sort_keys=True)
-        fh.write("\n")
+    from core import atomic_write              # 内部档案件：原子写（worker 读到半截即误判，2026-10-01）
+    atomic_write.write_text(path, json.dumps(doc, ensure_ascii=False, indent=2,
+                                             sort_keys=True) + "\n")
     return rel
 
 
@@ -304,9 +304,9 @@ def close(root: str, order_id: str, outcome: str, gate: str, note: str = "") -> 
     rel = "%s/%s.close.json" % (ORDER_DIR, order_id)
     path = os.path.join(root, rel)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(rec, fh, ensure_ascii=False, indent=2, sort_keys=True)
-        fh.write("\n")
+    from core import atomic_write              # 内部档案件：原子写（2026-10-01）
+    atomic_write.write_text(path, json.dumps(rec, ensure_ascii=False, indent=2,
+                                             sort_keys=True) + "\n")
     return rel
 
 

@@ -2,7 +2,7 @@
  "schema": "nf-text-hygiene-golden/1",
  "generated": "2026-09-27",
  "source": "desktop/src/core/text_hygiene.py 原文复制后按脚本执行（真源 __main__ 同一段代码，逐字节 stdout）",
- "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h16",
+ "snapshot": "nf-snap-h16",
  "digest_rule": "sha256(\"\\n\".join(stdout.splitlines()))[:32]  ← 与引擎 Result.LogDigest 同式",
  "cases": {
   "real": {

@@ -10,8 +10,10 @@
   F-5 payload_registry.scan 缺根返回 issue（不再抛裸 FileNotFoundError）
   F-6 nf run --pipeline 收编号 + 未知编号给可操作指引
 """
-import json
+import importlib
+import inspect
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -157,6 +159,87 @@ class RunPipelineArgTest(unittest.TestCase):
         out = (p.stdout or "") + (p.stderr or "")
         self.assertIn("修复指引", out)
         self.assertIn("P01", out, "指引须列出可用管线编号")
+
+
+_SCAN_DEF = re.compile(r"^def scan\(", re.M)
+
+#: 名字里有 `scan(` 但**不是根扫描器**的（签名不符）→ 理由。集合须与实测恰好相等（新增即红）。
+NOT_A_ROOT_SCANNER = {
+    "round_drill": "`scan(transcript, allowed)` 是录入扫描，不是「给个根就扫」的入口",
+}
+
+
+def _root_scanners():
+    """→ [(模块名, scan 可调用)]：`core/*.py` 里签名能吃下「一个根参数」的扫描器。"""
+    out = []
+    for p in sorted((ROOT / "desktop" / "src" / "core").glob("*.py")):
+        if not _SCAN_DEF.search(p.read_text(encoding="utf-8", errors="replace")):
+            continue
+        fn = getattr(importlib.import_module("core.%s" % p.stem), "scan", None)
+        if not callable(fn):
+            continue
+        params = list(inspect.signature(fn).parameters.values())
+        required = [q for q in params
+                    if q.default is inspect.Parameter.empty
+                    and q.kind in (inspect.Parameter.POSITIONAL_ONLY,
+                                   inspect.Parameter.POSITIONAL_OR_KEYWORD)]
+        out.append((p.stem, fn if len(required) <= 1 else None))
+    return out
+
+
+def _empty_root_crash(fn, root: str) -> str:
+    """把扫描器指向空根 → 失败描述（空串 = 不崩）。"""
+    try:
+        fn(root)
+    except Exception as exc:                    # noqa: BLE001 — 本判据要的正是「任何裸异常」
+        return "%s: %s" % (type(exc).__name__, exc)
+    return ""
+
+
+class EmptyRootScannerTest(unittest.TestCase):
+    """F-9（2026-10-01 扩面）：**任何** core 扫描器在空根下都不许抛裸异常，须如实报 issue。
+
+    依据：F-5 当时只把 `payload_registry.scan` 一个入口改成「缺根 ⇒ 报 issue」，
+    同一条纪律（"其余扫描器在空根下都返回 issue 列表，只有本入口会崩——同一纪律须一致"）
+    从未被机检。2026-10-01 把每个 `core/*.py` 的 `scan(root)` 指向空目录，抓到 **6 个**漏修：
+    `instruction_step_audit` / `payload_consumer` / `payload_typing` / `quality_baseline` /
+    `quality_depth_scan`（聚合面：子扫描器硬读 `scripts/nf.py`）/ `payload_evidence`
+    （`root` 参数**根本没被用**——枚举写死模块级 `_ROOT`，传别的根直接 ValueError）。六处已修，
+    本件把「空根不崩」立成常驻判据。
+    """
+
+    def test_every_scanner_survives_an_empty_root(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            checked, skipped, bad = 0, set(), []
+            for name, fn in _root_scanners():
+                if fn is None:
+                    skipped.add(name)
+                    continue
+                checked += 1
+                err = _empty_root_crash(fn, tmp)
+                if err:
+                    bad.append("%s.scan -> %s" % (name, err))
+        self.assertGreaterEqual(checked, 40, "受检扫描器太少（判据面可能已失效）")
+        self.assertEqual(set(NOT_A_ROOT_SCANNER), skipped,
+                         "「不是根扫描器」的集合与登记表不一致（新增即红：签名不符的扫描器必须"
+                         "在 NOT_A_ROOT_SCANNER 里写明理由）")
+        self.assertEqual([], bad,
+                         "扫描器在空根下抛裸异常（修复指引：缺根/缺件时**如实报 issue 列表**再 "
+                         "return，不得让 FileNotFoundError 冒到调用方——与 payload_registry 同口径）：%s"
+                         % bad)
+
+    def test_predicate_has_catch_power(self):
+        """变异自证：一个「空根即崩」的合成扫描器，必须被同一段判定逻辑抓到。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp, "probe_scanner.py")
+            src.write_text("import os\n\n\ndef scan(root='.'):\n"
+                           "    with open(os.path.join(root, 'missing.json')) as fh:\n"
+                           "        return fh.read()\n", encoding="utf-8", newline="\n")
+            spec = importlib.util.spec_from_file_location("nf_probe_scanner", src)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            self.assertTrue(_empty_root_crash(mod.scan, tmp),
+                            "「空根即崩」的合成扫描器没被判定逻辑抓到（判据将永远是绿的）")
 
 
 if __name__ == "__main__":

@@ -63,4 +63,9 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8（2026-10-01）：本件结论行含中文，管道消费者（CI / agent / 本仓测试）
+    # 按 UTF-8 读；Windows 默认 GBK 会把它们写成 GBK 字节 ⇒ 乱码（同 nf.py 的纪律）。
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     sys.exit(main())

@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from core import lazy_yaml as _lyaml          # PyYAML **惰性**入口（`import yaml` ≈ 40 ms，见其 docstring）
+from core import atomic_write
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
 from core import import_graph as _ig
@@ -389,7 +390,7 @@ def _scandir_list(path: str):
     try:
         with os.scandir(path) as it:
             entries = list(it)
-    except OSError:
+    except OSError:  # 目录列不到 ⇒ 空清单（IO/权限问题；该类缺口由对应门禁另行报出，见 AUD-0016）
         return []
     if memo is not None:
         _DIR_MEMO[memo] = entries
@@ -443,7 +444,7 @@ def _enumerate_rel(root_abs: str, pattern: str) -> List[str]:
                         out.append(rel + entry.name)
                 elif entry.is_dir():
                     match(entry.path, rel + entry.name + "/", i + 1)
-            except OSError:
+            except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
 
     match(root_abs, "", 0)
@@ -539,7 +540,7 @@ def tree_files(root, rel_dir: str = "") -> List[str]:
                         walk(entry.path, rel + entry.name + "/")
                 elif entry.is_file():
                     out.append(rel + entry.name)
-            except OSError:
+            except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
 
     start_rel = "" if not rel_dir else str(rel_dir).strip("/") + "/"
@@ -602,8 +603,10 @@ def _raw_bytes(path, key: str) -> bytes:
             if _READ_MEMO is not None:
                 _READ_MEMO["b:" + key] = hit
             return hit
-    with open(path, "rb", buffering=0) as fh:       # buffering=0 ⇒ 拿到裸 FileIO（实测最快）
-        raw = fh.read()
+    # 读侧短重试（2026-09-30）：并发原子写（`os.replace`）下 Windows 读者会瞬时拿到
+    # PermissionError（WinError 5/32）——实测 119 万次读里 1055 次（≈0.09%）。这里是全仓
+    # 语料的**唯一物理读**入口，故重试接在这里即可覆盖 purity / layer_model / 各 check。
+    raw = atomic_write.read_bytes(path)
     if _READ_MEMO is not None:
         _READ_MEMO["b:" + key] = raw
     if _RESIDENT is not None and _resident_under(key) \
@@ -770,7 +773,7 @@ def _parse_fence_yaml(text: str, marker: str) -> Any:
             continue
         try:
             parsed = load_yaml_cached(body) if _lyaml.module() is not None else None
-        except Exception:
+        except Exception:  # 围栏 YAML 不可解析 ⇒ None（等价于「本件无该块」）
             return None
         if isinstance(parsed, dict):
             return parsed
@@ -874,11 +877,11 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, int]]:
         cached = disk_cache.load("scan", dkey, validate=result_pair_ok)
         if cached is None:
             got = _scan_impl(root)
-            disk_cache.store("scan", dkey,
-                             {"issues": list(got[0]), "stats": got[1]})
-        else:
-            got = (list(cached["issues"]), dict(cached["stats"]))
-        hit = _SCAN_CACHE[fp] = copy.deepcopy(got)
+            cached = disk_cache.canonical({"issues": list(got[0]), "stats": got[1]})
+            disk_cache.store("scan", dkey, cached)
+        # 命中与未命中必须**逐字节一致**：落盘是 `sort_keys` 规范化过的，新算的那份也要过同一道
+        # 规范化（否则首跑/次跑换序——见 `disk_cache.canonical` 的取证）。
+        hit = _SCAN_CACHE[fp] = (list(cached["issues"]), dict(cached["stats"]))
     return copy.deepcopy(hit[0]), copy.deepcopy(hit[1])
 
 
@@ -926,7 +929,9 @@ def memo_pair(tag: str, patterns, impl, root: str = ".",
         packed = disk_cache.load(tag, dkey, validate=result_pair_ok)
         if packed is None:
             got = impl(root)
-            packed = {"issues": list(got[0]), "stats": got[1]}
+            # 未命中也要与命中**逐字节一致**：落盘走 `sort_keys` 规范化 ⇒ 新算的这份同过一道
+            # （否则首跑/次跑换序；见 `disk_cache.canonical` 的实证）。
+            packed = disk_cache.canonical({"issues": list(got[0]), "stats": got[1]})
             disk_cache.store(tag, dkey, packed)
         if len(mem) >= keep:
             mem.clear()

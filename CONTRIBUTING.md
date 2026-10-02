@@ -67,7 +67,7 @@ python3 -m compileall -q desktop/src scripts
 
 **① 协议合规自检（提交前，贡献者必过）**
 - **protocol.yaml 三要件齐备**（02 §8.3）：包根机读协议声明在场（01 §6.1 Schema 必填 12 字段，check14 ①-⑥ 断言）；登记要素（包目录/管线/模块/资产/类别）齐备；组合包另须 references 合规（02 §8.4 四规则：在册可寻址 / 依赖闭包闭合 / 同层 default 唯一 / 契约断裂 FAIL 阻断 + 自动仲裁）。
-- **本地自检单**：`bash verify.sh` check1–32 全绿（0 WARN / 0 FAIL；check14 注册门禁 / check15 组合门禁为社区包专项）；代码/语法按 §3 三步验证门槛全过；资产经 asset_get 寻址、登记溯源索引并满足 EXT 闭合，`bash scripts/reconcile_assets.sh --quiet` 全清（§4.3）。
+- **本地自检单**：`bash verify.sh` 全绿（0 WARN / 0 FAIL；其中 check14 注册门禁 / check15 组合门禁为社区包专项）——**不钉运行时计数**（check 数与 PASS 基线见 `quality_baseline.EXPECTED_*` 与 `nf stats --check` 的生成区，钉死必漂）；代码/语法按 §3 三步验证门槛全过；资产经 asset_get 寻址、登记溯源索引并满足 EXT 闭合，`bash scripts/reconcile_assets.sh --quiet` 全清（§4.3）。
 
 **② 提交（分支 / commit / 引用规范）**
 - 分支策略按 §2（单主干 main 直推或短命分支合并）；commit 信息遵循 §1 Conventional Commits——type 取 `feat`（新包落盘）/ `docs`（协议改动），scope 取 `community`。
@@ -75,7 +75,7 @@ python3 -m compileall -q desktop/src scripts
 
 **③ PR 评审（reviewer 判据）**
 - 使用 .github/PULL_REQUEST_TEMPLATE.md，勾选「社区包」改动域 + 门禁自检清单（§5）。
-- **协议层 reviewer 判据 = 02 §8.1–8.4 登记规则 + check 全绿**：整包登记对照 §8.3 登记三要件、组合登记对照 §8.4 登记判定四规则；verify.sh check1–36 PASS=59 全绿为合并前提。
+- **协议层 reviewer 判据 = 02 §8.1–8.4 登记规则 + check 全绿**：整包登记对照 §8.3 登记三要件、组合登记对照 §8.4 登记判定四规则；**`bash verify.sh` 全绿（WARN 0 / FAIL 0）为合并前提**——当前 check 数与 PASS 基线以 `quality_baseline.EXPECTED_*` 与 `nf stats --check` 的生成区为准，**本文件不钉运行时计数**（钉死会漂，2026-09-30 实测此处曾落后到 check1-36/PASS=59）。
 - 评审范围含题材/资产合规：模块遵循 R1（包间禁互引）/ R2（类别独占）/ R3（装配契约）；资产 EXT 闭合 + 溯源索引在册（§4.3）。
 
 **④ 登记（协作流程终点的机读落地）**
@@ -116,4 +116,4 @@ python3 -m compileall -q desktop/src scripts
 - **workflow 最小权限**：顶层默认 `contents: read`；需要写 Release/推送的 job 单独声明 `contents: write`——新增 workflow 或步骤前对照现有 permissions 模式（ci-verify/e2e 只读、build job 单提权）。
 - **Release 校验和**：发布资产随行 `sha256sum` 校验和文件（用户下载后可验完整性）。
 - **secret 扫描**：提交前自查常见 token 前缀（`ghp_` / `gho_` / `sk-` 等）；完整自动扫描入 ci-verify 为波 A 项（40 总纲 S8 全量，v2.7）。
-- **沙箱意识**：工具执行限项目目录内。路径逃逸的拦截由**宿主 harness 的工具层**负责——仓库不对该层作实现承诺（旧文案写「被 validatePath 拦截」，而仓库内并无该实现，属虚假保证；2026-09-24 起文档只写真实载体）。仓库内组件之间的包含性判据 = `desktop/src/core/paths.py::validate_path`（资产台账已收敛到它，有单测 `desktop/tests/test_paths.py`），不得绕过。
+- **沙箱意识**：工具执行限项目目录内。路径逃逸的拦截由**宿主 harness 的工具层**负责——仓库不对该层作实现承诺（旧文案写「被 validatePath 拦截」，而仓库内并无该实现，属虚假保证；2026-09-24 起文档只写真实载体）。仓库内组件之间的包含性判据 = `desktop/src/core/paths.py::validate_path`（**资产台账**与**产出面清单**已收敛到它，有单测 `desktop/tests/test_paths.py` + `desktop/tests/test_output_path_escape.py`），不得绕过。

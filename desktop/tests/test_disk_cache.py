@@ -186,8 +186,13 @@ class ImportGraphCacheTest(unittest.TestCase):
             self.assertEqual(first, ig.load_or_parse(tmp, "a", listing["a.py"]))
             self.assertEqual(ig.dc_digest(tmp, "a", listing["a.py"]),
                              ig.dc_digest(tmp, "a", listing["a.py"]))
-            # ② 改正文（size 变）⇒ 键必变，且图跟着换（不许拿旧图当新图）
-            (core / "a.py").write_text("from core import c\nimport os\n", encoding="utf-8")
+            # ② 改正文（**长度也变**）⇒ 键必变，且图跟着换（不许拿旧图当新图）
+            # 注意（2026-09-30 实测 flaky）：原夹具把 `b` 改成 `c` ——**同长度**，键只能靠
+            # mtime 区分；而 Windows 对短时间内的重复写入会**延迟刷新 last-write 时间**，
+            # 整包跑（文件系统压力大）时两个键会撞成同一个，判据偶发假红。夹具改成变长写入
+            # （多一行 import），键的区分就不依赖时间戳粒度了。
+            (core / "a.py").write_text("from core import c\nimport os\nimport sys\n",
+                                       encoding="utf-8")
             (core / "c.py").write_text("y = 1\n", encoding="utf-8")
             listing2 = ig.listing(tmp)
             self.assertNotEqual(ig.dc_digest(tmp, "a", listing["a.py"]),

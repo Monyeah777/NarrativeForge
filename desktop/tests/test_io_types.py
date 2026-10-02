@@ -98,5 +98,48 @@ class TestIoTypes(unittest.TestCase):
         self.assertLessEqual(cov["coverage"], 100.0)
 
 
+class LiveFaceConsistencyTest(unittest.TestCase):
+    """`io_types` 派生面必须与**实时推导**一致，且「写了就要读得到」（读写口径同源）。
+
+    依据（2026-10-02 追查）：`nf module types --write` 一次改写了 **105** 件模块文档，逐件核对后
+    发现其中 **100 件是纯形态归一**（旧渲染给含冒号的键加了引号、键序也不同，**YAML 层内容逐字段
+    相同**），只有 5 件是真收窄（`untyped→object/boolean/string/array`）。但这次归一暴露了两处真
+    缺口：① 本模块的行式读者 `parse_io_types` 的键模式是 `[^:\\s]+`——**含冒号的键（跨包依赖
+    `AI保险:M01` 这类）永远读不出来**，即"写出去的键读不回来"（YAML 读者认、行式读者不认，两个
+    reader 不同源）；② `scan` 只核对 `outputs` 键集，**`inputs` 侧从不核对**，所以①的盲区一直
+    不可见。本件把三件事钉住：派生面不许陈旧、两个 reader 往返一致、`inputs` 键集也须对齐。
+    """
+
+    def test_derived_face_is_not_stale(self):
+        rows = iot.apply(ROOT, write=False)
+        changed = [r["path"] for r in rows if r.get("changed")]
+        self.assertGreaterEqual(len(rows), 200, "模块面塌缩（判据可能已失效）")
+        self.assertEqual([], changed,
+                         "io_types 派生面陈旧（修复指引：nf module types --write 后重签边界）：%s"
+                         % changed[:5])
+
+    def test_both_sections_have_no_key_set_mismatch(self):
+        _issues, warns, _stats = iot.scan(ROOT)
+        bad = [w for w in warns if "键集不一致" in w]
+        self.assertEqual([], bad, "io_types 与声明键集不一致：%s" % bad[:3])
+
+    def test_reader_reads_what_the_writer_writes(self):
+        """写→读**往返**：含冒号的跨包依赖键也必须读得回来（旧读者把它们整条丢掉）。"""
+        io = {"outputs": {"tick": "number"},
+              "inputs": {"M00": "state", "AI保险:M01": "untyped"}}
+        text = iot.inject(MOD, io)
+        self.assertEqual(io, iot.parse_io_types(text),
+                         "写出去的键读不回来（读者/写者口径不同源）")
+
+    def test_reader_tolerates_the_legacy_quoted_form(self):
+        """变异自证的另一半：旧渲染留下的**加引号**写法也要读得回来（不许把历史形态读成缺键）。"""
+        legacy = MOD.replace(
+            "  interfaces: []",
+            "  interfaces: []\n  io_types:\n    outputs:\n      tick: number\n"
+            "    inputs:\n      M00: state\n      'AI保险:M01': untyped")
+        got = iot.parse_io_types(legacy)
+        self.assertEqual("untyped", (got or {}).get("inputs", {}).get("AI保险:M01"))
+
+
 if __name__ == "__main__":
     unittest.main()

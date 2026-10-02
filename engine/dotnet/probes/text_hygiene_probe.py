@@ -163,7 +163,7 @@ def main() -> int:
             "schema": "nf-text-hygiene-golden/1",
             "generated": "2026-09-27",
             "source": f"{SOURCE_REL} 原文复制后按脚本执行（真源 __main__ 同一段代码，逐字节 stdout）",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(stdout.splitlines()))[:32]  ← 与引擎 Result.LogDigest 同式',
             "cases": results,
         }

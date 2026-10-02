@@ -9,6 +9,7 @@
 """
 import json
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -380,6 +381,28 @@ class JsonSchemaSubsetTest(unittest.TestCase):
         of.json_schema_check({}, {"if": {"type": "object"}}, unsupported=unsup)
         self.assertTrue(unsup, "不支持的官方关键字必须显式上报（不得静默通过）")
 
+    def test_deep_nesting_fails_instead_of_crashing(self):
+        """深度闸门（2026-09-30 补）：schema 与实例**同时**深嵌套时判 FAIL，不许打爆 Python 栈。
+
+        依据：这条链路吃的是**外来投稿**（社区域包声明的 artifact + 它的 schema）——实测 2000 层
+        同时深嵌套会 `RecursionError`。「一份恶意投稿 ⇒ 门禁不可用」比误报严重得多。存量 321
+        份 schema 实测最深 **11** 层，闸门 64 层留了 ≥5× 余量（不误伤真实数据）。
+        """
+        from core import json_schema as js
+        deep = int(js.MAX_DEPTH) + 20
+        inst, sch = {"a": "x"}, {"type": "object", "properties": {"a": {"type": "string"}}}
+        for _ in range(deep):
+            inst, sch = {"a": inst}, {"type": "object", "properties": {"a": sch}}
+        errs = js.json_schema_check(inst, sch)          # 不许抛异常
+        self.assertTrue(errs, "超深嵌套须判 FAIL")
+        self.assertIn("嵌套超过上限", errs[0])
+        self.assertIn("修复指引", errs[0])
+        # 反向：正常深度不受影响
+        inst2, sch2 = {"a": "x"}, {"type": "object", "properties": {"a": {"type": "string"}}}
+        for _ in range(10):
+            inst2, sch2 = {"a": inst2}, {"type": "object", "properties": {"a": sch2}}
+        self.assertEqual([], js.json_schema_check(inst2, sch2))
+
     def test_local_ref_resolves_remote_does_not(self):
         schema = {"$defs": {"x": {"type": "string"}}, "properties": {"a": {"$ref": "#/$defs/x"}},
                   "type": "object"}
@@ -387,6 +410,29 @@ class JsonSchemaSubsetTest(unittest.TestCase):
         unsup = []
         of.json_schema_check({}, {"$ref": "https://example.com/s.json"}, unsupported=unsup)
         self.assertTrue(unsup)
+
+    def test_redos_shaped_pattern_is_rejected_not_executed(self):
+        """形态闸门（2026-09-30 补）：投稿者给的 pattern 不得真拿去跑指数回溯。
+
+        依据：`pattern` / `patternProperties` 的表达式**来自投稿者的 schema**——实测 `(a+)+$`
+        对 26 字符已 3.9 s、30 字符再翻约 30 倍（等于把门禁挂死）。命中即判 FAIL，**不执行**。
+        存量 442 条 pattern 实测零命中（不误伤真实数据）。
+        """
+        import time as _t
+        sch = {"type": "object", "patternProperties": {r"(a+)+$": {"type": "string"}}}
+        t0 = _t.perf_counter()
+        errs = of.json_schema_check({"a" * 40 + "X": "v"}, sch)
+        self.assertLess(_t.perf_counter() - t0, 1.0, "不得真的去跑指数回溯")
+        self.assertTrue(errs and "嵌套量词" in errs[0], errs)
+        self.assertIn("修复指引", errs[0])
+        bad = of.json_schema_check("a" * 40 + "X", {"type": "string", "pattern": r"(a+)*$"})
+        self.assertTrue(bad and "嵌套量词" in bad[0], bad)
+        # 反向：正常 pattern 照常判定；超长 pattern 单独判拒
+        self.assertEqual([], of.json_schema_check("A01-07", {"type": "string",
+                                                            "pattern": "^A01-[0-9]{2}$"}))
+        self.assertTrue(of.json_schema_check("X", {"type": "string", "pattern": "^A01-[0-9]{2}$"}))
+        over = of.json_schema_check("a", {"type": "string", "pattern": "a" * 600})
+        self.assertTrue(over and "过长" in over[0], over)
 
 
 class FormValidatorTest(unittest.TestCase):
@@ -475,6 +521,51 @@ class RenderAndRecomputeTest(unittest.TestCase):
             mod, _, fn = m["engine"].partition(":")
             self.assertEqual(mod, "quant_metrics")
             self.assertTrue(hasattr(qm, fn), m["id"])
+
+
+class DualSourcePatternGateTest(unittest.TestCase):
+    """双源 `key_pattern` 也吃投稿者输入：形态闸门须在跑匹配**之前**拦住（2026-09-30 补）。
+
+    依据：`_dual_source_check` 用 `re.compile(ds["key_pattern"]).findall(正文)` 对**投稿件的
+    正文**跑匹配——与 schema `pattern` 同一类风险（指数回溯把门禁挂死），而这条路径此前没有
+    任何闸门。修后复用同一条 `pattern_issue` 形态判据，命中即判 FAIL、不执行匹配。
+    """
+
+    def _fixture(self, tmp, key_pattern):
+        pkg = "测试包"
+        (tmp / "community" / pkg / "outputs").mkdir(parents=True)
+        (tmp / "community" / pkg / "assets").mkdir(parents=True)
+        (tmp / "community" / pkg / "assets" / "SPEC.md").write_text(
+            "`" + "A" * 30 + "`\n", encoding="utf-8")
+        idx = {"schema": "nf-output-index/1", "package": pkg, "outputs": [
+            {"path": "outputs/DOMAIN_SPEC.json", "form": "domain-spec", "tier": "T3",
+             "role": "data",
+             "dual_source": {"markdown": "assets/SPEC.md", "key_pattern": key_pattern}}]}
+        (tmp / "community" / pkg / "outputs" / "INDEX.json").write_text(
+            json.dumps(idx, ensure_ascii=False), encoding="utf-8")
+        (tmp / "community" / pkg / "outputs" / "DOMAIN_SPEC.json").write_text(
+            '{"declared_only": []}', encoding="utf-8")
+        return pkg
+
+    def test_redos_key_pattern_is_refused_without_matching(self):
+        import tempfile
+        import time as _t
+        tmp = Path(tempfile.mkdtemp(prefix="nf_ds_gate_"))
+        self.addCleanup(shutil.rmtree, tmp, True)
+        self._fixture(tmp, r"(A+)+$")
+        t0 = _t.perf_counter()
+        issues, _stats = of.index_verify(str(tmp))
+        self.assertLess(_t.perf_counter() - t0, 1.0, "不得真的拿投稿表达式去跑匹配")
+        self.assertTrue([i for i in issues if "key_pattern" in i],
+                        "指数回溯形态的 key_pattern 必须判 FAIL：%s" % issues[:3])
+
+    def test_normal_key_pattern_still_works(self):
+        import tempfile
+        tmp = Path(tempfile.mkdtemp(prefix="nf_ds_ok_"))
+        self.addCleanup(shutil.rmtree, tmp, True)
+        self._fixture(tmp, r"`([A-Z][A-Z0-9_]{2,})`")
+        issues, _stats = of.index_verify(str(tmp))
+        self.assertFalse([i for i in issues if "key_pattern" in i], issues)
 
 
 if __name__ == "__main__":

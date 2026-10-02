@@ -6,17 +6,18 @@ scope: 作者指令「删除 NF 中的 GUI，且为 NF 构建一个终端（CLI 
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/terminal.py:c0946df686ffb46821f750bdeeef5d11bd8f7fc4adc3e8c97aa97fac5f6c119b
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
-  - desktop/tests/test_terminal.py:7ce3581ac5469acebfbd5c46108a0b104cf35bab3943f023d958fceca9bc722f
-  - scripts/nf:08586b4d23aef6cf66dc32fadbf206d2125401541532642f78eaafcd1ecb499d
-  - scripts/nf.cmd:a971167b0b74c79dff3e3ac0bba0e6156340029fa9673f570c995680797ea4de
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
-  - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
+  - desktop/src/core/terminal.py:4c77704d0f8b9d3b16edcad9ee37c0d3e14e7d033db12cf4ee69e345940c1ea4
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - desktop/tests/test_terminal.py:e6c72b62e62b15bc6b27ffba43e6cdd586442ce07c841ca4bf8336e0bfd0fea5
+  - scripts/nf:7e8a94b3a03ef1bd862ba0096643be849f8a2b55479797e5ad8e86d395557222
+  - scripts/nf.cmd:55bb1d8816b9f7de1821eba7c1746a2b01120d35de282353de91a1d15d1e47c8
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - desktop/src/core/quality_baseline.py:8095d26c8360ec16397b0a0b8ee79033f4aa7c057cac3c465b564bb6c30ca757
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
-  - docs/terminal.md:641be72bb8bb1a148045eb90534c7ad7128c83683de9fa85d0b33856f482c00d
+  - docs/terminal.md:92e24e664616ce7316d4433eb34b6b809e70f4469eb061ade0c82f466d6fc083
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

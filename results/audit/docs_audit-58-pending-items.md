@@ -6,20 +6,21 @@ scope: 作者指令「遗留全部补上」——处置 AUD-0009 §五 列出的
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
-  - desktop/src/core/transparency_log.py:ffb298d1a55611f03ee8dca1a57aa6148fd06bfaeb4cbd6a07dade279ebddd00
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - desktop/src/core/transparency_log.py:6a3ccb12f5376304c0926e5d2a490f08d10bfc3ca3fa5a76623d9f017bd12796
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
-  - desktop/src/core/interop_export.py:98be4b86f7b8a83359ee3f894e0b11531cd992a51dc25cb9aa887c6321dcbe93
+  - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
   - desktop/src/core/ccv3_adapter.py:cb33b76eb4e3af332f73fceefd5ef8e7ed171d76cc4ee02327555f21bb5c9ca1
-  - desktop/src/core/export_schema.py:3b80c1b772bb8309d918e461b4adcc80d1ce887aa69882f0cbb48c7bd7780e5b
-  - desktop/src/core/mcp_runtime.py:104e72d90c207132a1479297ba5853a50e525e65f17ff12c08524c9520708751
+  - desktop/src/core/export_schema.py:a7243117bf6cfdd2cdf62984e3da732e1f6802892152996eb69e28c94f4aac59
+  - desktop/src/core/mcp_runtime.py:127a6d900166eaf3a7fe0e0b7dc7a7f95b1473fad4f36fb4208c7676b602704b
   - desktop/src/core/import_adapter.py:5620194e56ce42b175e02f69d4bc6d03b99f35b43e5d38ab6c0d4aab9eaab333
-  - desktop/src/core/library.py:7a50260205d12049e47262389cf6a6fdb2f29d33f0dd448c3bca75af9b88518b
-  - scripts/check_interop_schemas.py:6cae41b5247e8ea594b3825ff61bc3b9186caf21c170bc122d31861d30974c74
-  - scripts/check_external_links.py:4410f000e4d0efb7b58b00522420d2db9c23f8194ab01b38b90290ae6de47966
+  - desktop/src/core/library.py:2b489a88fc209b551938d879be84a3c6d10d208e1a334ee2229adefa48f2a00a
+  - scripts/check_interop_schemas.py:26443ff0a340be6ba292435ecc81ee859438c2531088427a91e4ea1f111fc30b
+  - scripts/check_external_links.py:539e77b705f11e8f3efd72e66774041a5a7e107d753523eef55cbc86da2e9c58
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
   - docs/external-validation-assets/E1_ccv3_sample_lightmix_P04_chara.json:528935dcf5be9caf69e25a88ec1637b64b8b725c51a539e1ede1d3a864dbcb45
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

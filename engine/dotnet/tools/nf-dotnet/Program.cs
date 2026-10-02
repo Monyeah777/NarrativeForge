@@ -2174,7 +2174,7 @@ int CorpusCommand()
                                 + "不是「引擎坏了」：");
         Console.Error.WriteLine("      ① 复基线：按《双跑对账表》各片的探针流程重生成 fixtures 并重嵌 SelfTest 常量；");
         Console.Error.WriteLine("      ② 或改跑**活仓库**（带 .git → 语义模式，不拿死摘要比漂动语料）："
-                                + "-Root C:\\Users\\mon_7\\Downloads\\NarrativeForge-main。");
+                                + "-Root <仓库根>（如 . 或你的检出目录）。");
     }
     return 0;
 }

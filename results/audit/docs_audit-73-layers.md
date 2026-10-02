@@ -7,21 +7,22 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
-  - desktop/src/core/layer_model.py:5a1e0a93c4d09e2e65adcf9c02c234684b2bfb1548605ed6b10d4caa40b2e94e
+  - desktop/src/core/layer_model.py:d2fc9a44a6bc52eb3bb40c87b3cb94f7b497b35cb1c86ceea57b871646bd0c10
   - desktop/tests/test_layer_model.py:0bacafa7ec8c92486916b3cc50d3fa7f83e2d3fe74874b108c0437fb93713669
-  - desktop/src/core/purity_scan.py:30d054c039dedb3d594fd8c7683c5ea9dfd590fce637e99dd076642c9476539e
-  - desktop/tests/test_purity_scan.py:5ebdb961f36009f2babfd44d159100ea41110e653c1fb43408a8dda07d664d8e
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
+  - desktop/src/core/purity_scan.py:345ad321120e8901d4e6ceaabefa41603c88166ee4b63737a0519489cf71fa03
+  - desktop/tests/test_purity_scan.py:6c1539361d2d927a7c5f89013e20f9188e31215c0ada176f9f0b397c4d5c731d
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - protocol/normative.json:3ea1e37d1879cee532b930e83ba3029fbc171efe99606fd42bc775f0968b84a5
   - protocol/glossary.json:4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60
-  - desktop/src/core/receipts.py:7bf7144d595410af35468ddfc1a29a8642bc89f4436982735182ddaad8e03055
+  - desktop/src/core/receipts.py:b83d1d226778bb1b4b3925fadd944ebfdc82731dc463577dd299a9c2ebaf7655
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
   - decisions/ADR-0004-抽象阶梯两轴与纵切.md:9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

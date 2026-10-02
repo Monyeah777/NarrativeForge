@@ -7,9 +7,10 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - .github/PULL_REQUEST_TEMPLATE.md:27e7688cf590aded0bbd4574235d0a8e47d5aa1680284ad99450daeda2a8e66d
-  - CONTRIBUTING.md:2a3e7848221cc8a642e6dac9aa4f08da3437a63b2c0fca5a5bfe3473a784efe2
-  - desktop/src/core/asset_density.py:1f44ceb9dc445214b3cfdcaacbc28ebb8bc6f7592a7fe22701a11767bcdd850f
-  - desktop/src/core/asset_line_baseline.py:c62eda98405249b1a31fbd17bf08256b29426eeb171dd3a2bfeb2ecbcd8120e1
+  - CONTRIBUTING.md:3adce64f93d2f84719f12d4f56ab895e5a53152ae2f6b69f4c796a6fd78e228d
+  - desktop/src/core/asset_density.py:84511253fa41989674eed66142fd572e4da7af288b6859b8e111a24eac999050
+  - desktop/src/core/asset_line_baseline.py:c4ffec0b25060e3d11b070c58614f6fcef2cfbf0a2c9c6780afa5f11194be3ee
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

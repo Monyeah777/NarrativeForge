@@ -6,14 +6,19 @@
       "max_fn_lines": 0
     },
     "desktop/src/core/agent_rules_adapter.py": {
-      "lines": 83,
+      "lines": 84,
       "max_fn_cc": 11,
       "max_fn_lines": 23
     },
     "desktop/src/core/approval.py": {
-      "lines": 99,
+      "lines": 103,
       "max_fn_cc": 9,
       "max_fn_lines": 21
+    },
+    "desktop/src/core/assemble_build.py": {
+      "lines": 335,
+      "max_fn_cc": 22,
+      "max_fn_lines": 40
     },
     "desktop/src/core/assemble_plan.py": {
       "lines": 220,
@@ -31,12 +36,12 @@
       "max_fn_lines": 66
     },
     "desktop/src/core/asset_ledger.py": {
-      "lines": 420,
+      "lines": 449,
       "max_fn_cc": 27,
       "max_fn_lines": 72
     },
     "desktop/src/core/asset_ledger_projection.py": {
-      "lines": 98,
+      "lines": 97,
       "max_fn_cc": 8,
       "max_fn_lines": 20
     },
@@ -45,10 +50,15 @@
       "max_fn_cc": 14,
       "max_fn_lines": 33
     },
-    "desktop/src/core/attest.py": {
-      "lines": 318,
-      "max_fn_cc": 16,
+    "desktop/src/core/atomic_write.py": {
+      "lines": 221,
+      "max_fn_cc": 8,
       "max_fn_lines": 43
+    },
+    "desktop/src/core/attest.py": {
+      "lines": 363,
+      "max_fn_cc": 16,
+      "max_fn_lines": 53
     },
     "desktop/src/core/audit.py": {
       "lines": 151,
@@ -56,7 +66,7 @@
       "max_fn_lines": 40
     },
     "desktop/src/core/autofix.py": {
-      "lines": 118,
+      "lines": 95,
       "max_fn_cc": 13,
       "max_fn_lines": 21
     },
@@ -76,7 +86,7 @@
       "max_fn_lines": 30
     },
     "desktop/src/core/code_metrics.py": {
-      "lines": 140,
+      "lines": 142,
       "max_fn_cc": 12,
       "max_fn_lines": 33
     },
@@ -96,7 +106,7 @@
       "max_fn_lines": 34
     },
     "desktop/src/core/concept_graph.py": {
-      "lines": 401,
+      "lines": 400,
       "max_fn_cc": 35,
       "max_fn_lines": 73
     },
@@ -106,12 +116,12 @@
       "max_fn_lines": 43
     },
     "desktop/src/core/conformance_report.py": {
-      "lines": 392,
+      "lines": 391,
       "max_fn_cc": 8,
       "max_fn_lines": 26
     },
     "desktop/src/core/conformance_scan.py": {
-      "lines": 1044,
+      "lines": 1049,
       "max_fn_cc": 36,
       "max_fn_lines": 107
     },
@@ -126,7 +136,7 @@
       "max_fn_lines": 34
     },
     "desktop/src/core/daemon.py": {
-      "lines": 724,
+      "lines": 765,
       "max_fn_cc": 14,
       "max_fn_lines": 67
     },
@@ -141,7 +151,7 @@
       "max_fn_lines": 87
     },
     "desktop/src/core/disk_cache.py": {
-      "lines": 228,
+      "lines": 241,
       "max_fn_cc": 8,
       "max_fn_lines": 30
     },
@@ -156,9 +166,9 @@
       "max_fn_lines": 78
     },
     "desktop/src/core/domain_pack.py": {
-      "lines": 2076,
+      "lines": 2067,
       "max_fn_cc": 63,
-      "max_fn_lines": 149
+      "max_fn_lines": 150
     },
     "desktop/src/core/drill_fidelity.py": {
       "lines": 128,
@@ -176,19 +186,19 @@
       "max_fn_lines": 104
     },
     "desktop/src/core/execution_drill.py": {
-      "lines": 159,
+      "lines": 167,
       "max_fn_cc": 12,
       "max_fn_lines": 24
     },
     "desktop/src/core/export_schema.py": {
-      "lines": 239,
+      "lines": 235,
       "max_fn_cc": 26,
       "max_fn_lines": 45
     },
     "desktop/src/core/exporter.py": {
       "lines": 114,
       "max_fn_cc": 5,
-      "max_fn_lines": 23
+      "max_fn_lines": 22
     },
     "desktop/src/core/face_key.py": {
       "lines": 32,
@@ -196,17 +206,17 @@
       "max_fn_lines": 8
     },
     "desktop/src/core/gap_review.py": {
-      "lines": 206,
-      "max_fn_cc": 16,
-      "max_fn_lines": 57
+      "lines": 252,
+      "max_fn_cc": 17,
+      "max_fn_lines": 66
     },
     "desktop/src/core/generator.py": {
-      "lines": 241,
+      "lines": 231,
       "max_fn_cc": 20,
       "max_fn_lines": 77
     },
     "desktop/src/core/handover.py": {
-      "lines": 135,
+      "lines": 120,
       "max_fn_cc": 27,
       "max_fn_lines": 47
     },
@@ -226,14 +236,14 @@
       "max_fn_lines": 29
     },
     "desktop/src/core/instruction_evidence.py": {
-      "lines": 137,
+      "lines": 148,
       "max_fn_cc": 23,
       "max_fn_lines": 46
     },
     "desktop/src/core/instruction_step_audit.py": {
-      "lines": 58,
-      "max_fn_cc": 11,
-      "max_fn_lines": 30
+      "lines": 63,
+      "max_fn_cc": 12,
+      "max_fn_lines": 35
     },
     "desktop/src/core/intake.py": {
       "lines": 96,
@@ -241,19 +251,19 @@
       "max_fn_lines": 50
     },
     "desktop/src/core/interop_export.py": {
-      "lines": 953,
+      "lines": 957,
       "max_fn_cc": 150,
       "max_fn_lines": 234
     },
     "desktop/src/core/interp_diet.py": {
       "lines": 53,
       "max_fn_cc": 4,
-      "max_fn_lines": 11
+      "max_fn_lines": 12
     },
     "desktop/src/core/io_types.py": {
-      "lines": 236,
-      "max_fn_cc": 24,
-      "max_fn_lines": 52
+      "lines": 250,
+      "max_fn_cc": 27,
+      "max_fn_lines": 60
     },
     "desktop/src/core/ir.py": {
       "lines": 147,
@@ -261,9 +271,9 @@
       "max_fn_lines": 26
     },
     "desktop/src/core/json_schema.py": {
-      "lines": 197,
-      "max_fn_cc": 76,
-      "max_fn_lines": 129
+      "lines": 245,
+      "max_fn_cc": 79,
+      "max_fn_lines": 142
     },
     "desktop/src/core/judgement_coverage.py": {
       "lines": 114,
@@ -276,7 +286,7 @@
       "max_fn_lines": 27
     },
     "desktop/src/core/knowledge.py": {
-      "lines": 464,
+      "lines": 482,
       "max_fn_cc": 62,
       "max_fn_lines": 100
     },
@@ -286,7 +296,7 @@
       "max_fn_lines": 45
     },
     "desktop/src/core/layer_model.py": {
-      "lines": 560,
+      "lines": 561,
       "max_fn_cc": 81,
       "max_fn_lines": 178
     },
@@ -296,12 +306,12 @@
       "max_fn_lines": 24
     },
     "desktop/src/core/library.py": {
-      "lines": 503,
+      "lines": 504,
       "max_fn_cc": 48,
-      "max_fn_lines": 90
+      "max_fn_lines": 94
     },
     "desktop/src/core/library_entries.py": {
-      "lines": 101,
+      "lines": 104,
       "max_fn_cc": 17,
       "max_fn_lines": 37
     },
@@ -311,22 +321,22 @@
       "max_fn_lines": 36
     },
     "desktop/src/core/lsp.py": {
-      "lines": 237,
+      "lines": 268,
       "max_fn_cc": 20,
       "max_fn_lines": 51
     },
     "desktop/src/core/machine_contract.py": {
-      "lines": 317,
+      "lines": 322,
       "max_fn_cc": 16,
-      "max_fn_lines": 36
+      "max_fn_lines": 38
     },
     "desktop/src/core/market_analyzer.py": {
-      "lines": 284,
+      "lines": 283,
       "max_fn_cc": 29,
       "max_fn_lines": 78
     },
     "desktop/src/core/mcp_adapter.py": {
-      "lines": 76,
+      "lines": 78,
       "max_fn_cc": 5,
       "max_fn_lines": 17
     },
@@ -336,9 +346,14 @@
       "max_fn_lines": 48
     },
     "desktop/src/core/mcp_runtime.py": {
-      "lines": 1061,
-      "max_fn_cc": 25,
-      "max_fn_lines": 67
+      "lines": 1352,
+      "max_fn_cc": 30,
+      "max_fn_lines": 69
+    },
+    "desktop/src/core/md_blocks.py": {
+      "lines": 36,
+      "max_fn_cc": 8,
+      "max_fn_lines": 17
     },
     "desktop/src/core/modeling.py": {
       "lines": 230,
@@ -346,7 +361,7 @@
       "max_fn_lines": 53
     },
     "desktop/src/core/models.py": {
-      "lines": 191,
+      "lines": 180,
       "max_fn_cc": 3,
       "max_fn_lines": 11
     },
@@ -356,32 +371,32 @@
       "max_fn_lines": 26
     },
     "desktop/src/core/module_signature.py": {
-      "lines": 87,
+      "lines": 94,
       "max_fn_cc": 7,
-      "max_fn_lines": 21
+      "max_fn_lines": 24
     },
     "desktop/src/core/mvu_adapter.py": {
-      "lines": 323,
+      "lines": 325,
       "max_fn_cc": 23,
       "max_fn_lines": 58
     },
     "desktop/src/core/output_forms.py": {
-      "lines": 1415,
-      "max_fn_cc": 26,
-      "max_fn_lines": 62
+      "lines": 1491,
+      "max_fn_cc": 29,
+      "max_fn_lines": 71
     },
     "desktop/src/core/pack_combo.py": {
-      "lines": 1271,
+      "lines": 1268,
       "max_fn_cc": 63,
       "max_fn_lines": 145
     },
     "desktop/src/core/parser.py": {
-      "lines": 227,
+      "lines": 218,
       "max_fn_cc": 35,
       "max_fn_lines": 54
     },
     "desktop/src/core/paths.py": {
-      "lines": 87,
+      "lines": 98,
       "max_fn_cc": 9,
       "max_fn_lines": 34
     },
@@ -391,19 +406,19 @@
       "max_fn_lines": 53
     },
     "desktop/src/core/payload_consumer.py": {
-      "lines": 39,
-      "max_fn_cc": 11,
-      "max_fn_lines": 23
+      "lines": 44,
+      "max_fn_cc": 12,
+      "max_fn_lines": 28
     },
     "desktop/src/core/payload_evidence.py": {
-      "lines": 69,
+      "lines": 75,
       "max_fn_cc": 10,
       "max_fn_lines": 25
     },
     "desktop/src/core/payload_harvest.py": {
-      "lines": 234,
-      "max_fn_cc": 18,
-      "max_fn_lines": 34
+      "lines": 264,
+      "max_fn_cc": 21,
+      "max_fn_lines": 41
     },
     "desktop/src/core/payload_registry.py": {
       "lines": 58,
@@ -411,12 +426,12 @@
       "max_fn_lines": 38
     },
     "desktop/src/core/payload_typing.py": {
-      "lines": 42,
+      "lines": 47,
       "max_fn_cc": 7,
       "max_fn_lines": 15
     },
     "desktop/src/core/perf_budget.py": {
-      "lines": 122,
+      "lines": 123,
       "max_fn_cc": 21,
       "max_fn_lines": 38
     },
@@ -431,12 +446,12 @@
       "max_fn_lines": 47
     },
     "desktop/src/core/pipeline_scaffold.py": {
-      "lines": 91,
+      "lines": 97,
       "max_fn_cc": 25,
       "max_fn_lines": 66
     },
     "desktop/src/core/pipelinerun.py": {
-      "lines": 303,
+      "lines": 304,
       "max_fn_cc": 52,
       "max_fn_lines": 146
     },
@@ -451,19 +466,19 @@
       "max_fn_lines": 15
     },
     "desktop/src/core/postmortem.py": {
-      "lines": 154,
+      "lines": 139,
       "max_fn_cc": 33,
       "max_fn_lines": 48
     },
     "desktop/src/core/preset_manager.py": {
-      "lines": 106,
+      "lines": 107,
       "max_fn_cc": 7,
       "max_fn_lines": 29
     },
     "desktop/src/core/prose_lint.py": {
-      "lines": 200,
-      "max_fn_cc": 14,
-      "max_fn_lines": 54
+      "lines": 225,
+      "max_fn_cc": 19,
+      "max_fn_lines": 60
     },
     "desktop/src/core/protocol_golden.py": {
       "lines": 194,
@@ -476,29 +491,29 @@
       "max_fn_lines": 39
     },
     "desktop/src/core/protocol_wizard.py": {
-      "lines": 133,
+      "lines": 128,
       "max_fn_cc": 20,
       "max_fn_lines": 48
     },
     "desktop/src/core/purity_scan.py": {
-      "lines": 525,
+      "lines": 528,
       "max_fn_cc": 24,
       "max_fn_lines": 84
     },
     "desktop/src/core/quality_baseline.py": {
-      "lines": 56,
-      "max_fn_cc": 8,
-      "max_fn_lines": 32
+      "lines": 61,
+      "max_fn_cc": 9,
+      "max_fn_lines": 37
     },
     "desktop/src/core/quality_depth_scan.py": {
-      "lines": 116,
+      "lines": 124,
       "max_fn_cc": 8,
       "max_fn_lines": 49
     },
     "desktop/src/core/quality_gate.py": {
-      "lines": 135,
+      "lines": 145,
       "max_fn_cc": 8,
-      "max_fn_lines": 23
+      "max_fn_lines": 24
     },
     "desktop/src/core/quant_metrics.py": {
       "lines": 345,
@@ -511,7 +526,7 @@
       "max_fn_lines": 33
     },
     "desktop/src/core/receipts.py": {
-      "lines": 253,
+      "lines": 259,
       "max_fn_cc": 13,
       "max_fn_lines": 34
     },
@@ -521,7 +536,7 @@
       "max_fn_lines": 29
     },
     "desktop/src/core/registry_loader.py": {
-      "lines": 256,
+      "lines": 259,
       "max_fn_cc": 15,
       "max_fn_lines": 42
     },
@@ -536,14 +551,14 @@
       "max_fn_lines": 52
     },
     "desktop/src/core/repo_stats.py": {
-      "lines": 241,
+      "lines": 240,
       "max_fn_cc": 19,
       "max_fn_lines": 77
     },
     "desktop/src/core/response_cache.py": {
-      "lines": 149,
+      "lines": 157,
       "max_fn_cc": 7,
-      "max_fn_lines": 38
+      "max_fn_lines": 46
     },
     "desktop/src/core/retriever.py": {
       "lines": 195,
@@ -571,7 +586,7 @@
       "max_fn_lines": 14
     },
     "desktop/src/core/schema_lint.py": {
-      "lines": 436,
+      "lines": 435,
       "max_fn_cc": 44,
       "max_fn_lines": 103
     },
@@ -590,8 +605,18 @@
       "max_fn_cc": 4,
       "max_fn_lines": 15
     },
+    "desktop/src/core/shell_ledger.py": {
+      "lines": 120,
+      "max_fn_cc": 9,
+      "max_fn_lines": 36
+    },
+    "desktop/src/core/silent_skip.py": {
+      "lines": 102,
+      "max_fn_cc": 18,
+      "max_fn_lines": 41
+    },
     "desktop/src/core/skill_adapter.py": {
-      "lines": 79,
+      "lines": 80,
       "max_fn_cc": 8,
       "max_fn_lines": 29
     },
@@ -611,12 +636,12 @@
       "max_fn_lines": 49
     },
     "desktop/src/core/steelman.py": {
-      "lines": 298,
+      "lines": 299,
       "max_fn_cc": 20,
       "max_fn_lines": 43
     },
     "desktop/src/core/storage.py": {
-      "lines": 263,
+      "lines": 320,
       "max_fn_cc": 10,
       "max_fn_lines": 31
     },
@@ -626,29 +651,34 @@
       "max_fn_lines": 19
     },
     "desktop/src/core/terminal.py": {
-      "lines": 1850,
+      "lines": 2019,
       "max_fn_cc": 51,
       "max_fn_lines": 133
     },
     "desktop/src/core/text_hygiene.py": {
-      "lines": 285,
+      "lines": 292,
       "max_fn_cc": 26,
       "max_fn_lines": 92
     },
     "desktop/src/core/tool_face.py": {
-      "lines": 63,
+      "lines": 68,
       "max_fn_cc": 12,
-      "max_fn_lines": 29
+      "max_fn_lines": 33
     },
     "desktop/src/core/trace_drill.py": {
-      "lines": 42,
-      "max_fn_cc": 7,
-      "max_fn_lines": 25
+      "lines": 61,
+      "max_fn_cc": 13,
+      "max_fn_lines": 40
     },
     "desktop/src/core/transparency_log.py": {
       "lines": 128,
       "max_fn_cc": 18,
       "max_fn_lines": 44
+    },
+    "desktop/src/core/trust_boundary.py": {
+      "lines": 162,
+      "max_fn_cc": 10,
+      "max_fn_lines": 26
     },
     "desktop/src/core/validator.py": {
       "lines": 83,
@@ -671,9 +701,9 @@
       "max_fn_lines": 51
     },
     "desktop/src/core/workflow_policy.py": {
-      "lines": 109,
+      "lines": 123,
       "max_fn_cc": 12,
-      "max_fn_lines": 36
+      "max_fn_lines": 37
     },
     "desktop/src/core/workloop.py": {
       "lines": 364,
@@ -681,7 +711,7 @@
       "max_fn_lines": 87
     },
     "desktop/src/core/world_model.py": {
-      "lines": 687,
+      "lines": 685,
       "max_fn_cc": 94,
       "max_fn_lines": 229
     },
@@ -691,42 +721,47 @@
       "max_fn_lines": 30
     },
     "scripts/ai_domain_closure.py": {
-      "lines": 391,
+      "lines": 395,
       "max_fn_cc": 25,
       "max_fn_lines": 90
     },
+    "scripts/build_verification_cards.py": {
+      "lines": 125,
+      "max_fn_cc": 6,
+      "max_fn_lines": 26
+    },
     "scripts/check37_knowledge.py": {
-      "lines": 66,
+      "lines": 71,
       "max_fn_cc": 14,
       "max_fn_lines": 50
     },
     "scripts/check_external_links.py": {
-      "lines": 328,
+      "lines": 335,
       "max_fn_cc": 17,
       "max_fn_lines": 71
     },
     "scripts/check_interop_schemas.py": {
-      "lines": 361,
+      "lines": 386,
       "max_fn_cc": 22,
       "max_fn_lines": 66
     },
     "scripts/code_metrics.py": {
-      "lines": 54,
+      "lines": 58,
       "max_fn_cc": 9,
       "max_fn_lines": 30
     },
     "scripts/commit_msg_check.py": {
-      "lines": 150,
+      "lines": 154,
       "max_fn_cc": 9,
       "max_fn_lines": 33
     },
     "scripts/coupling_metrics.py": {
-      "lines": 52,
+      "lines": 56,
       "max_fn_cc": 7,
       "max_fn_lines": 28
     },
     "scripts/drill_fidelity.py": {
-      "lines": 58,
+      "lines": 62,
       "max_fn_cc": 8,
       "max_fn_lines": 34
     },
@@ -736,72 +771,77 @@
       "max_fn_lines": 6
     },
     "scripts/fde_sample_run.py": {
-      "lines": 298,
+      "lines": 302,
       "max_fn_cc": 26,
       "max_fn_lines": 95
     },
     "scripts/geo_export.py": {
-      "lines": 211,
+      "lines": 216,
       "max_fn_cc": 25,
       "max_fn_lines": 64
     },
     "scripts/instruction_evidence.py": {
-      "lines": 91,
+      "lines": 95,
       "max_fn_cc": 18,
       "max_fn_lines": 40
     },
     "scripts/interop_thirdparty_kit.py": {
-      "lines": 428,
+      "lines": 447,
       "max_fn_cc": 18,
-      "max_fn_lines": 44
+      "max_fn_lines": 52
     },
     "scripts/nf.py": {
-      "lines": 5430,
-      "max_fn_cc": 98,
-      "max_fn_lines": 951
+      "lines": 6766,
+      "max_fn_cc": 111,
+      "max_fn_lines": 1012
+    },
+    "scripts/nf_client.py": {
+      "lines": 167,
+      "max_fn_cc": 11,
+      "max_fn_lines": 44
     },
     "scripts/nf_verify.py": {
-      "lines": 193,
-      "max_fn_cc": 25,
-      "max_fn_lines": 90
+      "lines": 210,
+      "max_fn_cc": 27,
+      "max_fn_lines": 96
     },
     "scripts/perf_budget.py": {
-      "lines": 101,
+      "lines": 105,
       "max_fn_cc": 21,
       "max_fn_lines": 47
     },
     "scripts/pull_decision_model.py": {
-      "lines": 159,
+      "lines": 163,
       "max_fn_cc": 24,
       "max_fn_lines": 77
     },
     "scripts/rebuild_selfcontained_sample.py": {
-      "lines": 145,
+      "lines": 152,
       "max_fn_cc": 12,
-      "max_fn_lines": 36
+      "max_fn_lines": 35
     },
     "scripts/sast_check.py": {
-      "lines": 196,
-      "max_fn_cc": 8,
+      "lines": 233,
+      "max_fn_cc": 12,
       "max_fn_lines": 30
     },
     "scripts/serve_decision_model.py": {
-      "lines": 180,
+      "lines": 185,
       "max_fn_cc": 19,
       "max_fn_lines": 29
     },
     "scripts/verify_report.py": {
-      "lines": 78,
+      "lines": 82,
       "max_fn_cc": 18,
       "max_fn_lines": 47
     },
     "scripts/verify_run.py": {
-      "lines": 29,
+      "lines": 33,
       "max_fn_cc": 1,
       "max_fn_lines": 4
     },
     "scripts/workflow_policy.py": {
-      "lines": 39,
+      "lines": 43,
       "max_fn_cc": 6,
       "max_fn_lines": 17
     }

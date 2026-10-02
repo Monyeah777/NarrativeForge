@@ -229,5 +229,51 @@ class TestValidationNegative(unittest.TestCase):
             self.assertTrue(lib.check_projection(tmp))
 
 
+class LibraryWriteErrorFramingTest(unittest.TestCase):
+    """写命令的**输入错误**必须是干净错误（不得报成「内部错误」）。
+
+    实测修复前：`nf library deprecate <错编号>` 冒到 CLI 兜底 → 「内部错误：条目未找到…（重跑
+    NF_DEBUG=1 看堆栈）」——把用户输入问题说成内部故障，还把排查方向指到堆栈上。
+    """
+
+    def _run(self, *argv):
+        import subprocess
+        return subprocess.run([sys.executable, str(Path(ROOT, "scripts", "nf.py")), *argv],
+                              capture_output=True, encoding="utf-8", errors="replace",
+                              timeout=180)
+
+    def test_unknown_entry_is_a_clean_error(self):
+        for verb in ("deprecate", "restore"):
+            p = self._run("library", verb, "NO-SUCH-ID")
+            self.assertEqual(1, p.returncode, verb)
+            self.assertIn("条目未找到", p.stderr, verb)
+            self.assertNotIn("内部错误", p.stderr, verb)
+            self.assertNotIn("NF_DEBUG", p.stderr, verb)
+
+    def test_supersede_self_reference_is_a_clean_error(self):
+        p = self._run("library", "supersede", "NF-1", "NF-1")
+        self.assertEqual(1, p.returncode)
+        self.assertIn("取代者不能是自己", p.stderr)
+        self.assertNotIn("内部错误", p.stderr)
+
+
+class AttestationFailClosedTest(unittest.TestCase):
+    """条目读不到**不得**当作「未漂移」（2026-09-30 收口：原实现静默 pass = 给读不到的件发通行证）。"""
+
+    def test_unreadable_entry_is_reported_not_swallowed(self):
+        from unittest import mock
+        real = lib.entry_digest
+
+        def boom(root, rel):
+            raise OSError("模拟：条目在读之前消失/不可读")
+
+        with mock.patch.object(lib, "entry_digest", boom):
+            issues, _warns, _stats = lib.verify(str(Path(__file__).resolve().parents[2]))
+        hits = [i for i in issues if "条目不可读" in i]
+        self.assertTrue(hits, "读不到条目时不得静默放过：%s" % issues[:3])
+        self.assertIn("修复指引", hits[0])
+        self.assertEqual(real, lib.entry_digest)          # 打桩已还原
+
+
 if __name__ == "__main__":
     unittest.main()

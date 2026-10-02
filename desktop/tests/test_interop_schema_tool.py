@@ -32,6 +32,28 @@ class InteropSchemaToolTest(unittest.TestCase):
     def setUpClass(cls):
         cls.tool = _tool()
 
+    def test_remote_body_is_capped(self):
+        """远端响应体有上限（2026-09-30 补）：超限如实告警并按「取不到」处理，**不静默截断**。
+
+        依据：`resp.read()` 无界——目标站点坏掉/被换成长流会把本脚本读爆内存；而截断成半截
+        JSON 只会让调用方报「解析失败」，把人指向错误的排查方向。
+        """
+        class _Resp:
+            url = "https://example.org/big"
+
+            def __init__(self, blob):
+                self._blob = blob
+
+            def read(self, n=-1):
+                return self._blob[:n] if n and n > 0 else self._blob
+
+        self.assertEqual(b'{"a":1}', self.tool._read_capped(_Resp(b'{"a":1}')))
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            got = self.tool._read_capped(_Resp(b"x" * (self.tool.MAX_FETCH_BYTES + 1)))
+        self.assertEqual(b"", got, "超限不得静默截断成半截 JSON")
+        self.assertIn("超上限", err.getvalue())
+
     def test_schema_table_covers_all_faces(self):
         faces = set(ie.KINDS)
         declared = set(self.tool.SCHEMAS) | set(self.tool.NOSCHEMA)

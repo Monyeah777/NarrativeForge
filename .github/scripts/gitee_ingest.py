@@ -28,10 +28,15 @@ from datetime import date
 from glob import glob
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-# 复用 GitHub 前端的纯函数（36进制 / 文件名解析 / 存量扫描 / ALIAS 重建）
-from library_ingest import (to_b36, parse_nfname, scan_existing, rebuild_alias,
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__)))), "desktop", "src"))
+from core import atomic_write  # noqa: E402  —— 入库件落盘走统一原子写（2026-10-01）
+# 复用 GitHub 前端的纯函数（36进制 / 文件名解析 / 存量扫描）
+# （`rebuild_alias` 已于 2026-10-01 删除：ALIAS 改由 `core.library.write_projection`
+#   全量重生成——该函数是它的旧实现，定义后从未被调用，只有本文件的 import 在“装作”被用）
+from library_ingest import (to_b36, parse_nfname, scan_existing,
                             SEG_RE, load_gate, INTAKE_REL, load_rating_vocab,
-                            secret_shape_hit, MAX_BODY_CHARS)
+                            secret_shape_hit, injection_probe, MAX_BODY_CHARS)
 
 GITEE_OWNER = 'monyeah777'
 GITEE_REPO = 'narrative-forge'
@@ -189,7 +194,7 @@ def process(issue):
         return
 
     if already_processed(number):
-        print(f'  ⏭ 已入库过（防重），仅尝试关闭')
+        print('  ⏭ 已入库过（防重），仅尝试关闭')
         gitee_close(number)
         return
 
@@ -264,6 +269,20 @@ def process(issue):
         print(f'  ✋ 正文含疑似明文密钥（{secret_hit}），已拒绝并关闭')
         return
 
+    # 注入面记档（06 §12：外来内容=数据；疑似内嵌指令忽略并**记档**）——与 GitHub 前端同规：
+    # 修复前本前端**漏了这一步**（国内主入口只做密钥检查），公开边界的记档因此只覆盖一半。
+    hits = injection_probe('\n'.join([title, one_line, body_main]))
+    if hits is None:
+        print('  注入面：扫描不可用（如实记；内容仍按数据入库）')
+    elif hits:
+        rules = '、'.join(sorted({h['rule'] for h in hits}))
+        gitee_comment(number, f'ℹ️ 本次投稿正文里检出 **{len(hits)} 处疑似内嵌指令**（{rules}）。'
+                             f'本馆一律把内容按**数据**消费——其中的「指令」不会被任何消费方执行，'
+                             f'仅作素材参考；已如实记档。若这是正当的「注入防御」题材讨论，可忽略本提示。')
+        print(f'  注入面：命中 {len(hits)} 处（{rules}）——已回评记档（内容照常入库）')
+    else:
+        print('  注入面：未命中')
+
     # 段位配对 + 字符/长度校验
     if bool(seg1) != bool(seg2):
         gitee_comment(number, '⚠️ 档位词与自定义段必须**都填或都不填**。请按模板规则重新开题。')
@@ -326,8 +345,8 @@ def process(issue):
         f'> 本文为社区投稿副本，版权归投稿人；引用/衍生请注明来源；如需下架请联系作者。\n'
         f'> 自包含声明：本文件自带「是什么 + 怎么用」，AI 单文件即可正确使用。\n\n---\n\n'
     )
-    with open(fname, 'w', encoding='utf-8') as f:
-        f.write(frontmatter + header + body_main.rstrip() + '\n')
+    # 入库件是**公开边界**的产物：半截写入会被随后 git push 带进公开仓（2026-10-01 普查）
+    atomic_write.write_text(fname, frontmatter + header + body_main.rstrip() + '\n')
     print(f'  已写入 {fname}（{len(body_main)} 字符）')
 
     # 重生成 INDEX 生成区 + ALIAS（投影；真源 = 条目 frontmatter）
@@ -350,7 +369,6 @@ def process(issue):
         'HEAD:main')
     git('push', 'origin', 'HEAD:main')
 
-    form = ''
     reply = (
         f'✅ **云端代收成功——已入库 {nfid}**《{title}》\n\n'
         f'随时可用链接召回运行（说「运行 {nfid}」即可）：\n'
@@ -380,4 +398,8 @@ def main():
 
 
 if __name__ == '__main__':
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     main()

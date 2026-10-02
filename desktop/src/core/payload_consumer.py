@@ -16,6 +16,11 @@ _ROOT = Path(__file__).resolve().parents[3]
 
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     r = Path(root)
+    # 缺根/缺协议件时**如实报 issue**，不抛裸 FileNotFoundError（与 `payload_registry.scan`
+    # 同一条纪律——极端渗透 F-5 只修了那一个入口，2026-10-01 空根普查发现本入口漏修）。
+    if not (r / "protocol/event_registry.json").is_file():
+        return (["缺 protocol/event_registry.json（修复指引：在 NF 仓库根运行本扫描，"
+                 "或先补齐该协议件——消费核对要以它当真源）"], {})
     reg = json.loads((r / "protocol/event_registry.json").read_text(encoding="utf-8"))
     subs: Dict[str, List[str]] = {}
     from core import conformance_scan as csc

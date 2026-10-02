@@ -18,19 +18,18 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
 
 from core import conformance_scan as csc
+from core import atomic_write
+from core import io_types as _iot
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
-from core import import_graph as _ig
-
+# ——故本模块**不再** import import_graph（残留的那行已于 2026-10-01 删除：定义后从未用到）
 SPEC_DIR = ".rivet/private_archive/ai_packs/specs"
 MANIFEST_REL = "protocol/domain_packs.json"
-DOMAIN_LIST_ANCHOR = "DOMAIN = ["
 REGISTRY_REL = "desktop/src/core/registry.json"
 STANDARDS_REL = "protocol/standards_catalog.json"
 BINDING_REL = "protocol/standards_binding.json"
@@ -55,13 +54,21 @@ SUB_COUNT = 12
 
 
 def load_spec(root: str, code: str) -> Dict[str, Any]:
+    # 读进来之前先定形：`code` 来自命令行，`Path(root)/SPEC_DIR/("%s.json" % code)` 这种拼法
+    # 在 `code = "../x"` 时会读到规格目录之外（实测形态）。规格**内容**的校验（`spec_issues`）
+    # 发生在读盘之后，挡不住这一步——故形状判据前置（与 `pack_combo.materialize` 同名同规）。
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,16}", str(code or "")):
+        raise ValueError("域规格代码形态非法：%r（修复指引：代码取 <A-F><两位数>，如 A01；"
+                         "只许字母/数字/-/_）" % code)
     p = Path(root) / SPEC_DIR / ("%s.json" % code)
     if not p.is_file():
-        raise ValueError("域规格不存在：%s" % p)
+        raise ValueError("域规格不存在：%s.json（修复指引：`nf domain specs` 列全量规格代码）"
+                         % code)
     spec = json.loads(csc.read_text_cached(p))
     issues = spec_issues(spec)
     if issues:
-        raise ValueError("域规格不合规：%s" % "；".join(issues))
+        raise ValueError("域规格不合规：%s（修复指引：按 spec_issues 逐条补齐规格字段）"
+                         % "；".join(issues))
     return spec
 
 
@@ -178,8 +185,6 @@ AUTHENTICITY_THRESHOLD = 0.95
 DENSITY_THRESHOLD = 1.25
 #: 绑定标准的本机实测可达率门槛（bot 防护 / 付费墙类如实计入不可达）
 REACHABLE_RATIO_THRESHOLD = 0.9
-#: 锚（细分权威锚）已探率门槛（anchor_status 非空/非 0）
-ANCHOR_PROBED_THRESHOLD = 0.95
 
 #: 载体锚（辅锚）关键词规则：细分名命中 → 该细分**产出承载形态**对应的标准。
 #: 与主锚（域口径锚）分工：主锚 = 这条细分依据什么口径；辅锚 = 这条细分的产出靠什么承载/交换。
@@ -409,6 +414,12 @@ def spec_issues(spec: Dict[str, Any]) -> List[str]:
     code = str(spec.get("code") or "")
     if not re.fullmatch(r"[A-F]\d{2}", code):
         issues.append("code 形态应为 <A-F><两位数>，实为 %r" % code)
+    # `pack_name` 直接拼进 `community/<pack_name>/…` 的**全部写盘路径**——形状必须先定死
+    # （实测形态：写成 `../x` 即写到仓库外；与 `pack_combo` 的组合包名同一条判据）。
+    pack = str(spec.get("pack_name") or "")
+    if pack and not re.fullmatch(r"[\u4e00-\u9fffA-Za-z0-9_-]{2,40}", pack):
+        issues.append("pack_name 写法定形失败：%r（须 2–40 位中英文/数字/-/_，不含路径分隔符）"
+                      % pack)
     subs = spec.get("subdivisions") or []
     if len(subs) != SUB_COUNT:
         issues.append("细分条目须 %d 条，实为 %d" % (SUB_COUNT, len(subs)))
@@ -449,26 +460,19 @@ def _read_json(path: Path) -> Any:
 def _write_text_retry(path: Path, text: str, tries: int = 5) -> None:
     """带重试的落盘（Windows 实测：杀软/句柄扫描会让 write_text 偶发 EINVAL(22)）。
 
-    只重试写盘本身（内容已确定），不改语义；最终失败仍抛错，不静默。
+    落点是**在仓产物**（`community/<包>/…`），并发读者（check32/33/39 各扫描）此前可能
+    读到半截。**重试与原子性已收敛到唯一出处**（2026-09-30）：`atomic_write` 现在自带
+    瞬时错短重试（EACCES/EBUSY/EINVAL）+ 同目录临时件 `os.replace`——本函数保留为
+    **薄兼容壳**（调用方签名不变），不再自己写第二套重试循环。
     """
-    import time
-
-    last: Exception | None = None
-    for i in range(tries):
-        try:
-            path.write_text(text, encoding="utf-8", newline="\n")
-            return
-        except OSError as exc:
-            last = exc
-            time.sleep(0.4 * (i + 1))
-    raise last  # type: ignore[misc]
+    atomic_write.write_text(path, text)
 
 
 def _read_json_raw(path: Path) -> Any:
     """读 JSON；缺件/坏件返回 None（工厂在局部树上也要能工作——由调用方决定语义）。"""
     try:
         return json.loads(csc.read_text_cached(path))
-    except (OSError, ValueError):
+    except (OSError, ValueError):  # 缺件/坏件 ⇒ None（调用方决定语义；工厂在局部树上也要能跑）
         return None
 
 
@@ -482,14 +486,6 @@ def used_pipeline_ids(root: str = ".") -> List[str]:
         if m:
             out.append(m.group(1))
     return out
-
-
-def host_categories(root: str = ".") -> List[str]:
-    cats: List[str] = []
-    reg = _read_json(Path(root) / REGISTRY_REL) or {}
-    for p in (reg.get("protocols") or []):
-        cats += [str(c) for c in (p.get("categories") or [])]
-    return cats
 
 
 def module_stems(root: str = ".") -> Dict[str, List[str]]:
@@ -586,11 +582,6 @@ def dump_yaml(obj: Any, indent: int = 0) -> List[str]:
                 out.append("%s- %s" % (pad, _yaml_scalar(item)))
         return out
     return ["%s%s" % (pad, _yaml_scalar(obj))]
-
-
-def _anchor_evidence(spec: Dict[str, Any]) -> Dict[str, Any]:
-    """锚可达性实证（外部探针结果，由作者侧写入 spec；缺则如实标未探）。"""
-    return {s["anchor"]: s.get("anchor_status") for s in spec["subdivisions"]}
 
 
 def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
@@ -729,7 +720,7 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
 
 
 def domain_spec_md(spec: Dict[str, Any], root: str = ".") -> str:
-    code, name = spec["code"], spec["name"]
+    name = spec["name"]
     tier = spec.get("content_tier", "authored")
     tier_note = (
         "> **内容档位（如实标注）**：本包为 **derived 档**——12 条细分名取自品类清单，"
@@ -787,7 +778,7 @@ def domain_spec_md(spec: Dict[str, Any], root: str = ".") -> str:
 
 
 def standards_md(spec: Dict[str, Any], root: str = ".") -> str:
-    code, name = spec["code"], spec["name"]
+    name = spec["name"]
     cat = standards_catalog(root)
     bd = bindings_full(spec, cat)
     lines = [
@@ -898,15 +889,16 @@ def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:
         "    publish: [%s]" % ", ".join(pub),
         "    subscribe: [%s]" % ", ".join(sub_ev),
         "  interfaces: [%s_query]" % outs[0],
-        "  io_types:",
-        "    outputs:",
     ]
-    for o in outs:
-        lines.append("      %s: untyped" % o)
-    lines += ["    inputs:", "      M00: state"]
+    # io_types 块**由 `core.io_types.render_io_types` 渲染**（单一真相源）：生成器与
+    # `nf module types --write` 必须产出**逐字相同**的形态（键序 + 是否引号），否则工厂自检
+    # `domain_pack.verify` 立刻判「与生成器漂移」——2026-10-02 实测：一次 --write 归一了键序与
+    # 引号写法，A01 包当场飘红。生成模块的 outputs 恒为 `untyped`（无事件证据可依，不许编造）。
+    _ins: Dict[str, str] = {"M00": "state", "M50": "untyped"}
     if which == 2:
-        lines.append("      '%s:M01': untyped" % cat)
-    lines.append("      M50: untyped")
+        _ins["%s:M01" % cat] = "untyped"
+    lines += _iot.render_io_types({"outputs": {o: "untyped" for o in outs},
+                                   "inputs": _ins}).splitlines()
     lines += [
         "```",
         "",
@@ -1454,7 +1446,7 @@ SYSTEM_CARD_SCHEMA_JSON = {
 
 
 def system_card(spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
-    code, cat, name = spec["code"], spec["category"], spec["name"]
+    code, name = spec["code"], spec["name"]
     doc = {
         "kind": "nf-system-card/1",
         "system": {"id": "NF-%s-PACK" % code, "name": spec["pack_name"], "version": "1.0.0",
@@ -2005,7 +1997,6 @@ def manifest_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         # 可扩展标准绑定面（2026-09-23 对齐）：覆盖率 100% + 引用在册 + 概念密度不回落
         spec_path = Path(root) / SPEC_DIR / ("%s.json" % p.get("code", ""))
         if spec_path.is_file():
-            spec = json.loads(csc.read_text_cached(spec_path))
             payload = _read_json(Path(root) / "community" / pkg / "outputs"
                                  / "DOMAIN_SPEC.json") or {}
             subs = payload.get("subdivisions") or []

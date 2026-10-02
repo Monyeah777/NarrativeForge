@@ -10,6 +10,7 @@ Windows 上可能解析到 Microsoft Store 的应用别名桩（`…/WindowsApps
 脚本。两处修好后，本判据把「回退可用」钉住——此前的测试只覆盖了「守护开着」的快路。
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -21,7 +22,20 @@ from pathlib import Path
 ROOT = str(Path(__file__).resolve().parents[2])
 if str(Path(ROOT) / "desktop" / "src") not in sys.path:
     sys.path.insert(0, str(Path(ROOT) / "desktop" / "src"))
-BASH = shutil.which("bash")
+
+#: 启动器是 POSIX sh 脚本——**用仓库自己的解析器**找 shell，而不是只看 PATH。
+#: 依据（2026-09-30 实测缺口）：本机（Windows 原生 + Git for Windows）`bash` 不在 PATH 上，
+#: 于是这 8 条用例**整类跳过**——而 `core.posix_shell` 早就会「PATH → Git for Windows 反推 →
+#: Unix 常规位」解析（`scripts/instruction_evidence.py` 正是用它避免把环境差异记成「不可执行」
+#: 的**假证据**）。跳过 = 判据不在场，是假绿的一种。
+from core import posix_shell as psh  # noqa: E402
+
+try:
+    BASH = shutil.which("bash") or psh.posix_shell()
+except Exception:                      # noqa: BLE001 - 解析不到就按原口径跳过
+    BASH = None
+if BASH and not os.path.isfile(BASH):
+    BASH = None
 
 
 def _stop_daemon(home, wait=10.0):
@@ -77,14 +91,123 @@ class LauncherFallbackTest(unittest.TestCase):
         self.assertIn("{", p.stdout)
 
 
+class AutostartDefaultDocumentationTest(unittest.TestCase):
+    """口径门禁：启动器**实现的**默认值 ⇄ 人读文档（缺省是否自动拉起）。
+
+    依据（2026-09-30 取证）：「默认关 → 默认开」这一改（作者指令：默认路径开、适应 agent
+    密集重复调用）落进了 `scripts/nf`，但 `docs/terminal.md` 与本文件的类说明仍写着「默认关」
+    并附「首条要付 0.65 s」的旧理由——**文档与实现的默认值已经分叉**，而没有任何判据盯着。
+    本件把两处钉在一起：改默认值就必须同步改文档，反之亦然。
+    """
+
+    def test_documented_default_matches_the_launcher(self):
+        launcher = (Path(ROOT) / "scripts" / "nf").read_text(encoding="utf-8")
+        doc = (Path(ROOT) / "docs" / "terminal.md").read_text(encoding="utf-8")
+        m = re.search(r'\$\{NF_AUTOSTART:-([01])\}', launcher)
+        self.assertIsNotNone(m, "启动器未声明 NF_AUTOSTART 的缺省值（无法与文档对账）")
+        if m.group(1) == "1":
+            self.assertIn("自动拉起（默认开", doc, "实现默认开，文档没写清默认开")
+            self.assertIn("NF_AUTOSTART=0", doc, "默认开时文档须给出关闭开关")
+        else:
+            self.assertIn("自动拉起（默认关", doc, "实现默认关，文档没写清默认关")
+        self.assertNotIn("**默认关**，是否默认化由作者裁决", doc)
+
+    def test_cmd_launcher_is_never_advertised_as_the_fastest(self):
+        """文档凡把 `nf.cmd` 与延迟并列，就必须同时说明**它不是快路**（2026-10-01 修过一次）。
+
+        取证：`docs/terminal.md` 曾把 `scripts\\nf.cmd stats --json` 写成 **23 ms**——「最快的
+        入口」；而该启动器**自身注释**写着「cmd.exe 没有内建 socket，本包装器始终走 python 直跑」，
+        实测也确实是 **≈391 ms**（比直跑还慢）。文档与实现各自为真、合起来是假——本判据把它变成
+        结构性的：**提及即需限定词**，免得下一个人又把 `.cmd` 当推荐入口写回去。
+
+        更新（2026-10-01 同日晚些）：`.cmd` **现在确实有快路**（`scripts/nf_client.py`，≈170 ms，
+        此前 ≈391 ms），但**仍比 POSIX 启动器慢**（多一层 cmd.exe 外壳；POSIX ≈132 ms）——
+        所以限定词从「不是快路」扩成「谁更快」：凡并列延迟，必须点明 POSIX 才是毫秒级那一档。
+        """
+        doc = (Path(ROOT) / "docs" / "terminal.md").read_text(encoding="utf-8")
+        qualifiers = ("不是快路", "直跑", "python 直跑", "比 POSIX 启动器慢")
+        bad = [ln.strip()[:120] for ln in doc.splitlines()
+               if "nf.cmd" in ln and ("ms" in ln or "快路" in ln)
+               and not any(q in ln for q in qualifiers)]
+        self.assertEqual([], bad, "文档把 nf.cmd 与延迟并列却未限定「不是快路」：%s" % bad)
+
+    def test_one_current_number_per_launcher(self):
+        """同一个启动器在文档里**只能有一个「当前」时延数字**（历史值必须带史标记）。
+
+        依据（2026-10-01，本轮自查抓获）：给 `.cmd` 补快路时，我保留了旧三档表（`…≈391 ms`）
+        又追加了新说法（`≈170 ms`）⇒ **同一条启动器在同一段里出现两个「当前」数字**，读者无法
+        判断哪个是真。判据按句子判：句里出现启动器名 + `N ms` 时，若该句带史标记（此前 / 曾 /
+        旧 / 历史）则归历史档，否则归当前档；**每个启动器最多一个当前值**。
+        """
+        doc = (Path(ROOT) / "docs" / "terminal.md").read_text(encoding="utf-8")
+        history = ("此前", "曾", "旧", "历史", "原写", "修正前")
+        #: 只认「同一条命令的三档时延表」：段里必须带 `stats --json`，否则会把启动器自己的
+        #: 成本拆解（`dirname` ≈58 ms 之类）也算进来——首版判据就栽在这（还顺带被
+        #: `scripts/nf` 是 `scripts/nf.py` 的前缀误伤）。
+        launchers = ("scripts\\nf.cmd", "scripts/nf.cmd", "scripts/nf.py", "bash scripts/nf")
+        current = {}
+        for seg in re.split(r"[·。\n]", doc):
+            if "stats --json" not in seg:
+                continue
+            for name in launchers:
+                if name not in seg:
+                    continue
+                key = name.replace("\\", "/")
+                for m in re.finditer(r"(≈?\d+)\s*ms", seg):
+                    before = seg[max(0, m.start() - 12):m.start()]
+                    if any(h in before for h in history):
+                        continue                  # 历史值：允许与当前值并存
+                    current.setdefault(key, set()).add(m.group(1).lstrip("≈"))
+        bad = {k: sorted(v) for k, v in current.items() if len(v) > 1}
+        self.assertEqual({}, bad, "同一启动器在一句话/一段里有多个「当前」时延数字：%s" % bad)
+        self.assertGreaterEqual(len(current), 3,
+                                "没扫到三个启动器的当前时延数字（判据可能已失效）：%s" % sorted(current))
+
+
+@unittest.skipUnless(BASH, "启动器是 POSIX sh 脚本，需 bash 执行快路")
+class LongRunningNeverTakesTheFastPathTest(unittest.TestCase):
+    """长驻/自指命令（**含别名与常驻面**）不得走守护快路——它们是「占住前台」的面。
+
+    依据（2026-10-01 实测缺陷）：快路排除表当时写的是 `daemon|shell|serve`，而 `nf terminal`
+    是 `shell` 的 argparse 别名、`nf lsp` 是常驻 stdio 服务——两条都会进守护在进程内执行，
+    而守护把 stdin 设成空串 ⇒ **rc=0 且零输出**：调用方（人 / 编辑器 / agent）把「静默无事
+    发生」当成成功，直跑却会真的把终端或服务拉起来。本判据在**守护在跑**的前提下跑
+    `bash scripts/nf terminal`，要求它仍走直跑（打印终端横幅）且守护事后仍存活。
+    """
+
+    def test_alias_terminal_still_runs_for_real_when_daemon_is_up(self):
+        from core import daemon as dm          # noqa: PLC0415 - 只有本用例需要守护
+        home = tempfile.mkdtemp(prefix="nf_longrun_")
+        self.addCleanup(shutil.rmtree, home, ignore_errors=True)
+        env = dict(os.environ, NARRATIVE_FORGE_HOME=home)
+        ok, msg = dm.start(Path(ROOT), idle_timeout=120.0)
+        self.addCleanup(dm.stop)
+        self.assertTrue(ok, "守护启动失败：%s" % msg)
+        r = subprocess.run([BASH, "scripts/nf", "terminal"], cwd=ROOT, env=env,
+                           capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", timeout=120, stdin=subprocess.DEVNULL)
+        out = r.stdout or ""
+        self.assertEqual(0, r.returncode, "别名 `nf terminal` 应能真跑（stderr=%s）" % r.stderr[:200])
+        self.assertIn("终端", out,
+                      "守护在跑时 `nf terminal` 没走直跑（旧缺陷：rc=0 且零输出）")
+        self.assertTrue(dm.ping(timeout=5.0), "长驻命令不该把守护占死")
+
+
 @unittest.skipUnless(BASH, "启动器是 POSIX sh 脚本，需 bash 执行快路")
 class AutostartTest(unittest.TestCase):
-    """`NF_AUTOSTART` 开关（**默认关**）：守护不在时先拉起带 `--watch` 的守护，再服务这条命令。
+    """`NF_AUTOSTART` 开关（**默认开（非阻塞）**；`=0` 可关）：守护不在时先把带 `--watch` 的守护
+    丢到后台，再照常服务这条命令（不等它）。
 
     依据：毫秒级链路的最后一段是「守护得在跑」——而守护默认 1 小时空闲自退，忘了重启就跌回秒级。
-    实测账（本机）：首条命令要付 **~0.65 s 起守护**（含机制自检）+ 本身计算（**比直跑慢**），
-    **从第二条起才 10 ms**——所以这是个"赌重复调用"的开关，**默认关**，是否默认化由作者裁决。
-    与 `nf daemon exec` 的语义一致（那条默认就会拉起，且可 `--no-start` 拒绝）。
+    实测账（本机，各 6 连发取中位；数字随机器变，只作量级参照）：后台起守护要 ~0.65 s，但不占
+    本条命令的时间（首条只多一次 fork ≈10 ms）；**从第二条起命令落到守护快路**——`bash
+    scripts/nf stats --json` **≈132 ms**，而每条都冷起解释器的 `python scripts/nf.py stats
+    --json` 是 **≈257 ms**。**`scripts/nf.cmd`（反斜杠写法同上）不是快路**（**≈391 ms**，比直跑还慢：cmd.exe 多
+    一层外壳 + 一次 `where python` 探测；该文件自身注释已写明它始终走 python 直跑），毫秒级客户端
+    只有 POSIX 启动器 `scripts/nf` 配 `eval "$(nf daemon shell-init bash)"`——此处原写「`nf.cmd`
+    23 ms」属**已修正的错数**（2026-10-01：与启动器注释、与实测都不符）。「默认关」的旧理由
+    （首条要付 0.65 s）在非阻塞形态下不成立，故默认关 → 默认开；与 `nf daemon exec` 的语义一致
+    （那条默认就会拉起，且可 `--no-start` 拒绝）。
     """
 
     def _home(self):
@@ -154,7 +277,9 @@ class AutostartTest(unittest.TestCase):
         for _ in range(4):
             p = self._run(home, "--version", env=env)
             self.assertEqual(0, p.returncode, p.stderr or p.stdout)
-        starts = [ln for ln in open(log, encoding="utf-8").read().splitlines()
+        # 用 `Path.read_text`（此前是裸 `open(...).read()`，句柄不关 ⇒ 解释器退出时
+        # ResourceWarning；2026-10-01 清）。
+        starts = [ln for ln in Path(log).read_text(encoding="utf-8").splitlines()
                   if "daemon start" in ln] if os.path.exists(log) else []
         self.assertEqual(1, len(starts), "连发 4 条却拉了 %d 次守护：%s" % (len(starts), starts))
 
@@ -522,8 +647,22 @@ class InterpreterDietTest(unittest.TestCase):
             return [ln.strip() for ln in fh if ln.strip()]
 
     def test_dash_s_is_byte_identical_for_read_commands(self):
-        """节食不许改一个字节：两模式在**真读盘**的命令上 stdout/stderr/退出码全等。"""
-        for argv in (["doctor"], ["toolface", "--json"]):
+        """节食不许改一个字节：两模式在**真读盘**的命令上 stdout/stderr/退出码全等。
+
+        面单（2026-10-01 加宽）：原先只比 `doctor` / `toolface --json` 两条，而「节食会静默算错」
+        的**真实来源**是那些吃第三方解析器的面——`lazy_yaml`（YAML 面：`conformance` / `layers`
+        / `patterns ls`）、模块扫描（`module ls`）与自述数字（`stats --check`）。实测这 7 条两模式
+        逐字节一致（本轮普查 10 条全一致），故把有代表性的 5 条也钉进判据：**新加一条依赖
+        site-packages 的代码路径**时，这里会比「只有 doctor」更早红。
+        """
+        faces = (["doctor"],                        # 依赖清单（历史用例）
+                 ["toolface", "--json"],            # 工具面（历史用例）
+                 ["stats", "--check", "--json"],    # 自述数字：全仓计数
+                 ["layers", "--json"],              # YAML 面：层声明
+                 ["conformance", "--json"],         # YAML 面：协议一致性扫描
+                 ["module", "ls", "--json"],        # 模块扫描（最大的一条机器面，≈35 KB）
+                 ["patterns", "ls", "--json"])      # frontmatter（YAML）解析
+        for argv in faces:
             plain = subprocess.run([sys.executable, "scripts/nf.py", *argv], cwd=ROOT,
                                    capture_output=True, text=True, encoding="utf-8",
                                    errors="replace", timeout=300)

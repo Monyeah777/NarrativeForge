@@ -19,7 +19,6 @@
         "scripts/check_external_links.py::B104": 1,
         "scripts/instruction_evidence.py::B404": 1,
         "scripts/instruction_evidence.py::B603": 1,
-        "scripts/interop_thirdparty_kit.py::B404": 1,
         "scripts/nf.py::B404": 1,
         "scripts/nf.py::B603": 4,
         "scripts/perf_budget.py::B404": 1,
@@ -33,14 +32,14 @@
           "severities": [
             [
               "LOW",
-              30
+              29
             ],
             [
               "MEDIUM",
               3
             ]
           ],
-          "total": 33
+          "total": 32
         },
         "ruff": {
           "total": 75

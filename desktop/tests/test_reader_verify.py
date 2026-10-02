@@ -63,6 +63,32 @@ def _run(tmp, *extra, cwd):
 
 
 class TestReaderVerifier(unittest.TestCase):
+    def test_verifier_has_zero_nf_dependencies(self):
+        """**结构性**钉住「纯标准库、不依赖 NF」这句承诺（子进程 e2e 只是**间接**保证）。
+
+        依据（2026-10-01）：脚本 docstring / `llms.txt` / 技能面都写着「读者侧……不依赖 NF 代码」，
+        而现有 5 例是子进程 e2e——它们在 `cwd=<临时目录>` 下跑，`import core` 本来就会失败，所以
+        **间接**成立；但「只在某条分支里 import 仓内模块」（例如验锚路径才用到）不会被 e2e 覆盖。
+        这里直接过 AST：任何 `import core…` / `from core…` / `from desktop…` 一律判红。
+        """
+        import ast
+        tree = ast.parse(VERIFIER.read_text(encoding="utf-8"))
+        offenders = []
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                offenders += [a.name for a in node.names
+                              if a.name.split(".")[0] in ("core", "desktop")]
+            elif isinstance(node, ast.ImportFrom):
+                mod = node.module or ""
+                if mod.split(".")[0] in ("core", "desktop"):
+                    offenders.append(mod)
+        self.assertEqual([], offenders,
+                         "读者侧验证器 import 了仓内模块（读者机器上没有 NF 也读不到）：%s" % offenders)
+        # 非空转：脚本必须真被解析到（否则路径写错也「通过」）
+        self.assertTrue(VERIFIER.is_file() and any(isinstance(n, ast.Import)
+                                                   for n in ast.walk(tree)),
+                        "没解析到验证器脚本或其 import 面")
+
     def test_inclusion_and_content_pass_without_anchor(self):
         with tempfile.TemporaryDirectory() as tmp:
             _fixture(tmp)
@@ -94,6 +120,33 @@ class TestReaderVerifier(unittest.TestCase):
             bad = _run(tmp, "--key-file", str(kp), cwd=tmp)
             self.assertEqual(bad.returncode, 1)
             self.assertIn("hmac 锚不匹配", bad.stdout)
+
+    @unittest.skipUnless(shutil.which("ssh-keygen"), "需要 ssh-keygen")
+    def test_ssh_verifier_timeout_is_fail_closed(self):
+        """外挂验证器**不返回**时，读者侧也必须 fail-closed（2026-10-01 补超时上限）。
+
+        说明：本件其余用例刻意按「读者姿势」走子进程（见文件头）；这一条打的是**超时分支**，
+        只能打桩——故按单元面加载脚本模块（仍然不 import NF 的 core）。
+        """
+        import importlib.util
+        from unittest import mock
+        spec = importlib.util.spec_from_file_location("nf_verify_mod", VERIFIER)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        with tempfile.TemporaryDirectory() as tmp:
+            signers = Path(tmp, "allowed_signers")
+            signers.write_text("t@nf ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAAA\n",
+                               encoding="utf-8")
+            sig = Path(tmp, "x.sig")
+            sig.write_bytes(b"-----BEGIN SSH SIGNATURE-----\n")
+            anchor = {"sig_file": str(sig), "ns": "nf-attest", "identity": "t@nf"}
+            with mock.patch.object(subprocess, "run",
+                                   side_effect=subprocess.TimeoutExpired(cmd="ssh-keygen",
+                                                                        timeout=1)):
+                ok, msg = mod.verify_ssh("c" * 64, anchor, str(signers), "t@nf")
+        self.assertFalse(ok, "超时必须判不可验证（fail-closed）")
+        self.assertIn("超时", msg)
+        self.assertIn("fail-closed", msg)
 
     @unittest.skipUnless(shutil.which("ssh-keygen"), "需要 ssh-keygen")
     def test_ssh_anchor_roundtrip(self):

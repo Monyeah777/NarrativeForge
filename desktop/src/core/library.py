@@ -13,15 +13,19 @@
 """
 from __future__ import annotations
 
-import hashlib
 import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 # 条目读取迁到叶子件（见 core/library_entries.py）；此处兼容转发，调用点零改动。
-from core.library_entries import (ENTRY_GLOB, entries, entry_digest,
-                                  parse_frontmatter, read_entry)
+from core import atomic_write
+from core.library_entries import entries, entry_digest
+# `parse_frontmatter` 是**对外转发面**（audit / decisions / handover / patterns /
+# postmortem 与本仓测试都 `from core.library import parse_frontmatter`）：本文件里确实
+# 没有调用点，删掉会破兼容（2026-10-01 实测：删后 test_library.TestFrontmatter 两例 ERROR）。
+# `ENTRY_GLOB` / `read_entry` 同样是旧转发，但全仓**零消费者** ⇒ 2026-10-01 已删。
+from core.library_entries import parse_frontmatter  # noqa: F401  （对外转发面，见上）
 
 INDEX_REL = "library/INDEX.md"
 ALIAS_REL = "library/ALIAS.md"
@@ -114,7 +118,11 @@ def verify(root: str = ".", key: Optional[bytes] = None,
                     live = entry_digest(root, e["path"])
                     drifted = live != att.lower()
                 except OSError:
-                    pass
+                    # fail-closed：读不到条目就无法核对摘要——**不能当作「未漂移」**（那等于
+                    # 给一个读不到的件发通行证）。如实报问题，由人处置（2026-09-30 收口）。
+                    issues.append("%s 条目不可读，无法核对 attestation 摘要（修复指引：确认 "
+                                  "library/%s.md 在场可读；确认后 nf library verify 复跑）"
+                                  % (eid, eid))
             scheme = str(fm.get("anchor_scheme") or "").strip()
             if drifted:
                 if scheme:
@@ -243,11 +251,11 @@ def write_projection(root: str = ".") -> Dict[str, Any]:
         new = _replace_region(text, BEGIN_MIRROR, END_MIRROR, render_mirror_block())
         new = _replace_region(new, BEGIN_INDEX, END_INDEX, render_index_block(root))
         if new != text:
-            idx.write_text(new, encoding="utf-8", newline="\n")
+            atomic_write.write_text(idx, new)
             changed.append(INDEX_REL)
     new_alias = render_alias(root)
     if not ali.exists() or ali.read_text(encoding="utf-8") != new_alias:
-        ali.write_text(new_alias, encoding="utf-8", newline="\n")
+        atomic_write.write_text(ali, new_alias)
         changed.append(ALIAS_REL)
     return {"changed": changed}
 
@@ -374,8 +382,7 @@ def _rewrite_frontmatter(path: str, updates: Dict[str, Optional[str]]) -> None:
     for key, val in updates.items():
         if key not in done and val is not None:
             out.append("%s: %s" % (key, val))
-    with open(path, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write("\n".join(["---"] + out + body) + "\n")
+    atomic_write.write_text(path, "\n".join(["---"] + out + body) + "\n")
 
 
 def set_status(root: str, entry_id: str, status: str,
@@ -406,14 +413,6 @@ def set_status(root: str, entry_id: str, status: str,
          "superseded_by": superseded_by if status == "superseded" else None})
     write_projection(root)
     return hit["path"]
-
-
-def digest_of_entry(path: str) -> str:
-    """条目内容摘要（供 attestation 字段挂接）。"""
-    with open(path, "rb") as fh:
-        return hashlib.sha256(fh.read()).hexdigest()
-
-
 
 
 def set_attestation(root: str, entry_id: str, issuer: str = "nf library",
@@ -447,8 +446,10 @@ def set_attestation(root: str, entry_id: str, issuer: str = "nf library",
         sig_rel = "library/anchors/%s.sig" % hit["id"]
         dest = os.path.join(root, sig_rel)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
-        with open(info["sig_file"], "rb") as src, open(dest, "wb") as dst:
-            dst.write(src.read())
+        # 原子写（2026-09-30 收口）：签名锚是在仓产物，半截的 `.sig` 会让校验方判
+        # 「签名无效」而不是「没写完」——读者永远该看到旧全量或新全量。
+        with open(info["sig_file"], "rb") as src:
+            atomic_write.write_bytes(dest, src.read())
         level = _attest.SCHEME_SSH
         anchor_fields = {"anchor_ns": info["ns"],
                          "anchor_identity": info["identity"],

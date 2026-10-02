@@ -18,7 +18,17 @@ from pathlib import Path
 
 ROOT = str(Path(__file__).resolve().parents[2])
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-BASH = shutil.which("bash")            # 两条 shell 客户端都是 POSIX sh/bash 形态
+
+#: 两条 shell 客户端都是 POSIX sh/bash 形态——**用仓库自己的解析器**找 shell。
+#: 依据（2026-09-30 跳过审计）：只看 `shutil.which("bash")` 会让本机（Windows 原生 +
+#: Git for Windows，bash 不在 PATH）**整类跳过**；`core.posix_shell` 会「PATH → Git for
+#: Windows 反推 → Unix 常规位」解析（`instruction_evidence` 早已这么用）。
+from core import posix_shell as _psh  # noqa: E402
+
+try:
+    BASH = shutil.which("bash") or _psh.posix_shell()
+except Exception:                      # noqa: BLE001 - 解析不到按原口径跳过
+    BASH = None
 
 from core import daemon as dm  # noqa: E402
 from core import conformance_scan as csc  # noqa: E402
@@ -258,7 +268,7 @@ class WatchDaemonIntegrationTest(unittest.TestCase):
         证据用**守护侧**的响应缓存命中计数——只有守护的 `execute` 才会让它涨，回退到 python 直跑
         不会。这条同时钉住"生成函数里的解释器路径/引号没问题"（未加引号时函数直接 127）。
         """
-        bash = shutil.which("bash")
+        bash = BASH
         if not bash:
             self.skipTest("本机无 bash（无法 eval 快路函数）")
         gen = subprocess.run([sys.executable, "scripts/nf.py", "daemon", "shell-init", "bash"],

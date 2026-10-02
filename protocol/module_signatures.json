@@ -134,7 +134,7 @@
       "path": "community/西幻生存领域包/modules/M07_地图区域.md"
     },
     "M08": {
-      "digest": "aaae32b7c76f412c995843089bbf5b88d10dfc2a97df5f7a1bb5af8763ae047d",
+      "digest": "fb7935e007674962b5d1b9a651d62056ab538d10846961805a2992d8c97c13c3",
       "path": "04_模块库/世界类/M08_季节天气.md"
     },
     "M09": {
@@ -242,7 +242,7 @@
       "path": "04_模块库/技术文档类/M90_技术文档结构.md"
     },
     "M91": {
-      "digest": "7b4563ac5564aed3f109c75149df232d81146373386d1b0380ab8ba745518c2f",
+      "digest": "2f8d6fb90226fc64446be74955338ec0db5dc560a3a11b37c716c36dd6a68bc8",
       "path": "community/校园西幻轻混组合包/modules/M91_异界身份桥.md"
     },
     "M92": {
@@ -250,7 +250,7 @@
       "path": "community/校园西幻轻混组合包/modules/M92_轻混装配执行.md"
     },
     "M93": {
-      "digest": "d1ed9b6a0a82571112819d5dba49cfdb6bf8591e1ef952fe980e35f16e5a2a7f",
+      "digest": "0e80a095f06336c850c4318e16157e41f2bc0f04d8b769a7f6196570de50e35f",
       "path": "community/通用核心基础包/modules/M93_通用状态快照.md"
     },
     "M94": {
@@ -258,11 +258,11 @@
       "path": "community/通用核心基础包/modules/M94_通用节拍桥.md"
     },
     "M95": {
-      "digest": "7a971fa0f61a33c171f8dd773918ab21ef337ced9d57ac2a72e8310952424626",
+      "digest": "c31b6543591c15944c2ef6be95d260fab81a0ed39b760c9edf8e3a00227391ec",
       "path": "community/通用核心基础包/modules/M95_通用决策汇总.md"
     },
     "M96": {
-      "digest": "c0ebd6d6b7af7c1ca6f29946888511e275e87dc54cdb25cea7f131a1eb04774a",
+      "digest": "d87fba1fe26b860d86343bb42afe81184e64de6074c7817aa8b487e1d00f8749",
       "path": "community/通用核心基础包/modules/M96_通用输出润色.md"
     },
     "M97": {

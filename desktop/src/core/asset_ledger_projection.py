@@ -13,10 +13,10 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import atomic_write
 from core import conformance_scan as csc   # 共享语料：一次只读调用内同文只读一遍
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
-from core import import_graph as _ig
 
 _ROOT = Path(__file__).resolve().parents[3]
 _LEDGER = "protocol/community_asset_ledger.json"
@@ -64,9 +64,8 @@ def refresh(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     r = Path(root)
     rows = build(str(r))
     data = {"schema": "community-asset-ledger/1", "entries": rows}
-    (r / _LEDGER).write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8", newline="\n")
+    atomic_write.write_text(r / _LEDGER,
+                            json.dumps(data, ensure_ascii=False, indent=2) + "\n")
     return [], {"entries": len(rows)}
 
 

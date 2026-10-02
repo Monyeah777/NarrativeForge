@@ -23,6 +23,7 @@ import re
 from pathlib import Path
 
 from .ir import IRDocument
+from core import atomic_write
 
 
 def _slug(name: str) -> str:
@@ -71,6 +72,7 @@ def export_mcp(ir: IRDocument, dest_dir: Path, res) -> None:
     dest_dir = Path(dest_dir)
     dest_dir.mkdir(parents=True, exist_ok=True)
     mcp_path = dest_dir / "mcp.json"
-    mcp_path.write_text(json.dumps(_build_mcp_json(ir), ensure_ascii=False,
-                                   indent=2), encoding="utf-8")
+    # 原子写（2026-09-30 收口）：交付件不留半截（MCP 客户端会在装载时读它）。
+    atomic_write.write_text(mcp_path, json.dumps(_build_mcp_json(ir),
+                                                 ensure_ascii=False, indent=2))
     res.files.append(str(mcp_path))

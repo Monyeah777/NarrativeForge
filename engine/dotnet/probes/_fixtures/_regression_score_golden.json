@@ -2,7 +2,7 @@
  "schema": "nf-regression-score-golden/1",
  "generated": "2026-09-27",
  "source": "真源模块原文：regression_score.evaluate/compare · conformance_scan.scan · quality_depth_scan.scan · doc_hygiene.check_markers",
- "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h16",
+ "snapshot": "nf-snap-h16",
  "digest_rule": "sha256(\"\\n\".join(渲染行))[:32]  ← 与引擎侧同式",
  "boundary": [
   "purity_clean"

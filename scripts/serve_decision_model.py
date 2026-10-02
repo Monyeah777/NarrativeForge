@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Dict, Optional, Sequence
@@ -177,4 +178,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8（2026-10-01）：同一纪律——中文结论行不该依赖宿主控制台编码。
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     raise SystemExit(main())

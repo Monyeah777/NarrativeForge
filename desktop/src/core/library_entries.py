@@ -13,6 +13,8 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from core import atomic_write
+
 
 ENTRY_GLOB = "library/NF-*.md"
 
@@ -94,8 +96,9 @@ def entry_digest(root: str, rel: str) -> str:
     剔除项 = `attestation` / `attested_at` / `anchor_scheme` / `anchor_mac` /
     `anchor_key_id` / `anchor_issuer`。
     """
-    with open(os.path.join(root, rel), encoding="utf-8") as fh:
-        text = fh.read().replace("\r\n", "\n")
+    # 读侧短重试（2026-09-30）：馆藏条目会被 `nf library ... --write` 原子重写，
+    # 并发读者在 Windows 上会瞬时 PermissionError（见 atomic_write 的实测）。
+    text = atomic_write.read_text(os.path.join(root, rel)).replace("\r\n", "\n")
     kept = [ln for ln in text.split("\n")
             if not re.match(r"^(attestation|attested_at|anchor_[a-z_]+)\s*:", ln)]
     return hashlib.sha256("\n".join(kept).encode("utf-8")).hexdigest()

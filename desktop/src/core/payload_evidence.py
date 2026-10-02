@@ -19,12 +19,18 @@ _FIELD = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 _BRACE = re.compile(r"payload\s*[:：]\s*\{([^}]{2,200})\}")
 
 
-def _module_docs() -> List[Path]:
+def _module_docs(root: str = ".") -> List[Path]:
+    """模块文档清单——**按传入的根**枚举。
+
+    此前写死模块级 `_ROOT` 且 `scan(root)` 不传它：传别的根时，枚举到的是**真仓**的文件，
+    紧接着 `p.relative_to(新根)` 直接抛 `ValueError: … is not in the subpath of …`
+    （2026-10-01 空根普查抓到：`root` 参数等于**谎报**，且是空根下唯一抛 ValueError 的入口）。
+    """
+    r = Path(root)
     out = []
     for sub in ("04_模块库",):
-        for p in (_ROOT / sub).rglob("*.md"):
-            out.append(p)
-    for pkg in sorted((_ROOT / "community").iterdir()):
+        out += sorted((r / sub).rglob("*.md"))
+    for pkg in sorted((r / "community").iterdir()) if (r / "community").is_dir() else []:
         mdir = pkg / "modules"
         if mdir.is_dir():
             out += sorted(mdir.glob("*.md"))
@@ -34,10 +40,10 @@ def _module_docs() -> List[Path]:
 def scan(root: str = ".") -> Dict[str, Any]:
     r = Path(root)
     candidates: Dict[str, List[Dict[str, Any]]] = {}
-    for p in _module_docs():
+    for p in _module_docs(root):
         try:
             lines = p.read_text(encoding="utf-8").splitlines()
-        except OSError:
+        except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
         rel = p.relative_to(r).as_posix()
         for i, ln in enumerate(lines):

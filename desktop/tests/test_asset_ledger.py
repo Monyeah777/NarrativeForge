@@ -65,6 +65,48 @@ class AddAssetTest(AssetLedgerTestBase):
             al.add_asset(self.root, "A1.md", "A9", source="s9")
 
 
+class ConcurrentAddTest(AssetLedgerTestBase):
+    """**并发入库不丢条目**（2026-10-01 实测缺口：RMW 无锁会丢）。
+
+    依据：`atomic_write` 只保证「读者不见半截」，**不保证不丢更新**——同形探针实测两个进程
+    各「读→追加→原子写」同一 JSON 会只剩一条。台账是资产真源，故加锁 + **锁内重读复查**。
+    本用例跨进程真跑，并把「读→写」窗口拉大（子进程里给 `load_ledger` 插睡）以保证**有捕获力**：
+    若锁被去掉，两条里必丢一条。
+    """
+
+    CHILD = (
+        "import sys, time\n"
+        "sys.path.insert(0, sys.argv[4])\n"
+        "from core import asset_ledger as al\n"
+        "_orig = al.load_ledger\n"
+        "def slow(p):\n"
+        "    doc = _orig(p)\n"
+        "    time.sleep(float(sys.argv[3]))   # 拉大「读→写」窗口，制造并发\n"
+        "    return doc\n"
+        "al.load_ledger = slow\n"
+        "al.add_asset(sys.argv[1], sys.argv[2], sys.argv[2].split('/')[-1][:-3], '并发来源')\n")
+
+    def test_two_concurrent_adds_both_land(self):
+        import subprocess
+        root = self.root
+        os.makedirs(os.path.join(root, "assets"), exist_ok=True)
+        for name in ("A1.md", "A2.md"):
+            (Path(root, "assets", name)).write_text("# %s\n" % name, encoding="utf-8")
+        src = str(Path(__file__).resolve().parent.parent / "src")
+        procs = [subprocess.Popen(
+            [sys.executable, "-c", self.CHILD, root, "assets/%s.md" % name, "0.15", src],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE) for name in ("A1", "A2")]
+        errs = []
+        for p in procs:
+            _, err = p.communicate(timeout=120)
+            if p.returncode != 0:
+                errs.append(err.decode("utf-8", "replace"))
+        self.assertEqual([], errs, "并发入库进程报错：%s" % errs)
+        doc = al.load_ledger(al.default_ledger_path(root))
+        keys = sorted(e["key"] for e in doc["assets"])
+        self.assertEqual(["A1", "A2"], keys, "并发入库丢条目：%s" % keys)
+
+
 class EntryValidationTest(unittest.TestCase):
     def test_missing_required_fields_rejected(self):
         with self.assertRaises(al.AssetLedgerError):

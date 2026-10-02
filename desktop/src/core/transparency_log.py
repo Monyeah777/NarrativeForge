@@ -123,6 +123,6 @@ def write(root: str = ".") -> str:
     """把实时重算的链写入生成物位（确定性；同一回执两次写字节一致）。"""
     dest = os.path.join(root, GENERATED_REL)
     os.makedirs(os.path.dirname(dest), exist_ok=True)
-    with open(dest, "wb") as fh:
-        fh.write(render(build(root)))
+    from core import atomic_write              # 在仓生成物：原子落盘（2026-10-01）
+    atomic_write.write_bytes(dest, render(build(root)))
     return GENERATED_REL

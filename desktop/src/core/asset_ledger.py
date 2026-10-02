@@ -17,6 +17,7 @@ import json
 import os
 import re
 
+from core import atomic_write
 from core import paths
 
 LEDGER_SCHEMA_VERSION = "1"
@@ -83,11 +84,9 @@ def load_ledger(ledger_path: str) -> dict:
 
 
 def save_ledger(ledger: dict, ledger_path: str) -> None:
-    """写盘（UTF-8、缩进 2、ensure_ascii=False）。"""
-    os.makedirs(os.path.dirname(os.path.abspath(ledger_path)), exist_ok=True)
-    with open(ledger_path, "w", encoding="utf-8") as f:
-        json.dump(ledger, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    """写盘（UTF-8、缩进 2、ensure_ascii=False）；原子替换（并发读者不见半截台账）。"""
+    atomic_write.write_text(ledger_path,
+                            json.dumps(ledger, ensure_ascii=False, indent=2) + "\n")
 
 
 def make_entry(file_rel: str, key: str, source: str, module: str = "",
@@ -110,6 +109,22 @@ def make_entry(file_rel: str, key: str, source: str, module: str = "",
         entry["module"] = str(module)
     entry["added"] = added or _today()
     return entry
+
+
+def _guard_duplicates(ledger: dict, key: str, file_rel: str) -> None:
+    """键唯一 + 文件唯一（**写前**与**锁内重读后**各查一次：并发窗口可能刚被别人写进去）。"""
+    for e in ledger.get("assets") or []:
+        if e.get("key") == key:
+            raise AssetLedgerError("台账已托管该键：%s（先 nf asset rm / restore）" % key)
+        if e.get("file") == file_rel.replace("\\", "/"):
+            raise AssetLedgerError("台账已托管该文件：%s" % file_rel)
+
+
+def _guard_tier(ledger: dict, tier) -> None:
+    """一册一货架：已建档台账的 tier 不得与本次冲突。"""
+    if tier is not None and ledger.get("tier") and ledger.get("tier") != tier:
+        raise AssetLedgerError("台账已属 tier=%s，与本次 tier=%s 冲突（一册一货架）"
+                               % (ledger.get("tier"), tier))
 
 
 def _safe_join(assets_root: str, file_rel: str) -> str:
@@ -154,17 +169,11 @@ def add_asset(assets_root: str, file_rel: str, key: str, source: str,
     if os.path.isfile(lp):
         ledger = load_ledger(lp)
         if tier is not None:
-            if ledger.get("tier") and ledger.get("tier") != tier:
-                raise AssetLedgerError(
-                    "台账已属 tier=%s，与本次 tier=%s 冲突（一册一货架）" % (ledger.get("tier"), tier))
+            _guard_tier(ledger, tier)
             ledger["tier"] = tier
     else:
         ledger = blank_ledger(package=package, tier=tier or "official")
-    for e in ledger["assets"]:
-        if e.get("key") == key:
-            raise AssetLedgerError("台账已托管该键：%s（先 nf asset rm / restore）" % key)
-        if e.get("file") == file_rel.replace("\\", "/"):
-            raise AssetLedgerError("台账已托管该文件：%s" % file_rel)
+    _guard_duplicates(ledger, key, file_rel)
     with open(full, encoding="utf-8") as f:
         text = f.read()
     existing = parse_header(text)
@@ -174,10 +183,19 @@ def add_asset(assets_root: str, file_rel: str, key: str, source: str,
             % (HEADER_MARK, existing.get("key")))
     entry = make_entry(file_rel.replace("\\", "/"), key, source,
                        module=module, version=version, status=status, added=added)
-    with open(full, "w", encoding="utf-8") as f:
-        f.write(render_header(entry) + text)
-    ledger["assets"].append(entry)
-    save_ledger(ledger, lp)
+    atomic_write.write_text(full, render_header(entry) + text)   # 资产件也原子落盘
+    # 台账读-改-写加锁（2026-10-01）：与 registry 同形——原子写只保证「读者不见半截」，
+    # 并发 add 会**丢条目**（同形探针实测：两个 RMW 写者最终只剩一条）。锁内**重读 + 复查**
+    # （键/文件唯一 + tier 冲突），把并发窗口里刚写进去的那条如实并进来或如实拒掉。
+    with atomic_write.lock_file(lp, what="资产台账（nf asset add）"):
+        fresh = load_ledger(lp) if os.path.isfile(lp) else \
+            blank_ledger(package=package, tier=tier or "official")
+        _guard_tier(fresh, tier)
+        _guard_duplicates(fresh, key, file_rel)
+        if tier:
+            fresh["tier"] = tier
+        fresh["assets"].append(entry)
+        save_ledger(fresh, lp)
     return entry
 
 
@@ -194,7 +212,16 @@ def set_status(assets_root: str, key: str, status: str, ledger_path: str | None 
     """状态流转（active/deprecated/retired）；同步改写资产文件头 status 位（双源一致）。"""
     if status not in VALID_STATUS:
         raise AssetLedgerError("status 非法：%s" % status)
-    ledger, target, lp = _load_for_update(assets_root, ledger_path, key)
+    # 读-改-写加锁（2026-10-01）：与 `add_asset` 同一台账，锁内**重读**再改（并发窗口不丢更新）。
+    with atomic_write.lock_file(ledger_path or default_ledger_path(assets_root),
+                                what="资产台账（nf asset 状态流转）"):
+        ledger, target, lp = _load_for_update(assets_root, ledger_path, key)
+        return _set_status_locked(assets_root, ledger, target, lp, status)
+
+
+def _set_status_locked(assets_root: str, ledger: dict, target: dict, lp: str,
+                       status: str) -> dict:
+    """锁内执行状态流转（调用方已持锁）——拆出来只为让持锁范围一眼可见。"""
     if target["status"] == status:
         return target
     target["status"] = status
@@ -207,17 +234,19 @@ def set_status(assets_root: str, key: str, status: str, ledger_path: str | None 
                 '<!-- %s: key="%s" version="%s" status="%s" -->'
                 % (HEADER_MARK, target["key"], target["version"], target["status"]),
                 text, count=1)
-            with open(full, "w", encoding="utf-8") as f:
-                f.write(text)
+            atomic_write.write_text(full, text)
     save_ledger(ledger, lp)
     return target
 
 
 def remove_entry(assets_root: str, key: str, ledger_path: str | None = None) -> dict:
     """从台账摘除条目（只删台账不删文件；文件仍带旧头时 verify 报孤儿头，提示手动清理）。"""
-    ledger, target, lp = _load_for_update(assets_root, ledger_path, key)
-    ledger["assets"] = [e for e in ledger["assets"] if e.get("key") != key]
-    save_ledger(ledger, lp)
+    # 读-改-写加锁（2026-10-01）：摘除也走同一把锁，锁内重读（并发 add 不会复活被摘条目）。
+    with atomic_write.lock_file(ledger_path or default_ledger_path(assets_root),
+                                what="资产台账（nf asset rm）"):
+        ledger, target, lp = _load_for_update(assets_root, ledger_path, key)
+        ledger["assets"] = [e for e in ledger["assets"] if e.get("key") != key]
+        save_ledger(ledger, lp)
     return target
 
 
@@ -360,7 +389,7 @@ def iter_assets(root: str):
             continue
         try:
             ledger = load_ledger(os.path.join(base, LEDGER_FILE))
-        except AssetLedgerError:
+        except AssetLedgerError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
         rel_dir = os.path.relpath(base, root).replace("\\", "/")
         for e in ledger["assets"]:

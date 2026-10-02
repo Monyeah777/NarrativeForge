@@ -14,8 +14,10 @@
 from __future__ import annotations
 
 import os
+
+from core import atomic_write
 from datetime import date as _date
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 LAST_UPDATED_PREFIX = "> 最后更新："
 INSTRUCTION_MARK = "⛔ 操作指令"
@@ -88,31 +90,6 @@ def fix_file(path: str, root: str = ".", today: str = "",
     after = apply_rules(before, rules, today)
     changed = after != before
     if changed and not dry_run:
-        with open(path, "w", encoding="utf-8", newline="\n") as fh:
-            fh.write(after)
+        atomic_write.write_text(path, after)      # 机械修复也原子落盘（崩在中途不留截断件）
     return {"path": path, "rules": rules, "changed": changed,
             "applied": rules, "dry_run": dry_run}
-
-
-def fix_targets(paths, root: str = ".", today: str = "",
-                dry_run: bool = False) -> List[Dict[str, object]]:
-    """批量修复给定文件（调用方决定目标集）。"""
-    return [fix_file(p, root=root, today=today, dry_run=dry_run)
-            for p in paths]
-
-
-def fix_repo(root: str = ".", today: str = "",
-             dry_run: bool = False,
-             only: Optional[List[str]] = None) -> List[Dict[str, object]]:
-    """按 doc_hygiene 清单修复仓库关键/指令文档（确定性目标集）。"""
-    try:
-        from core import doc_hygiene as dh
-    except Exception:
-        return []
-    rels = list(only) if only else sorted(set(dh.REQUIRED_DOCS) | set(dh.INSTRUCTION_DOCS))
-    out = []
-    for rel in rels:
-        p = os.path.join(root, rel)
-        if os.path.exists(p):
-            out.append(fix_file(p, root=root, today=today, dry_run=dry_run))
-    return out

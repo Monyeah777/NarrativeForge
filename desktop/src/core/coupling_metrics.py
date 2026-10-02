@@ -18,6 +18,8 @@
 from __future__ import annotations
 
 import ast
+
+from core import atomic_write
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Set, Tuple
@@ -107,7 +109,7 @@ def load_baseline(root: str = ".") -> Dict[str, Any]:
         return {}
     try:
         return json.loads(p.read_text(encoding="utf-8"))
-    except ValueError:
+    except ValueError:  # 基线缺失/坏件 ⇒ 空基线：全部环/违例按「新增」判（fail-closed，宁可全报）
         return {}
 
 
@@ -156,7 +158,5 @@ def write(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
            "sdp": [list(p) for p in sdp_violations(deps, metrics)],
            "metrics": metrics}
     p = Path(root) / BASELINE_REL
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     return [], doc

@@ -107,7 +107,7 @@ nf_confirm_py() {
 daemon_try() {
   [ -n "${BASH_VERSION:-}" ] || return 127          # 需要 bash 的 /dev/tcp
   case "${1:-}" in
-    daemon|shell|serve) return 127 ;;               # 长驻/自指命令不走守护（与守护拒绝面一致）
+    daemon|shell|terminal|serve|lsp) return 127 ;;  # 长驻/自指命令不走守护（与守护拒绝面一致）
   esac
   # 明文框是**逐行** argv：参数含换行会被拆开、**静默改变参数个数**（实测：`help` 收到
   # `line1\nline2` 时只看到 `line1`）——这类命令不接快路，交 python 直跑（JSON 框才支持任意字符）。
@@ -171,12 +171,12 @@ if [ -n "${BASH_VERSION:-}" ]; then
   # 为什么可以默认开（2026-09-29 实测）：起守护确实要 ~0.65 s，但后台起**不占本条命令的时间**
   # （首条只多一次 fork ≈10 ms），而**从第二条起任命令 40–80 ms**（冷直跑 300–900 ms）。
   # 旧「默认关」的理由是「首条要付 0.65 s」——非阻塞形态下这条不成立，故默认关 → 默认开。
-  # `NF_AUTOSTART=0|false|no|off` 可关；长驻/自指命令（daemon/shell/serve）照旧不拉。
+  # `NF_AUTOSTART=0|false|no|off` 可关；长驻/自指命令（daemon/shell/terminal/serve/lsp）照旧不拉。
   case "${NF_AUTOSTART:-1}" in
     0|false|no|off) : ;;
     *)
       case "${1:-}" in
-        daemon|shell|serve) : ;;                       # 长驻/自指命令本就不走守护，别去起它
+        daemon|shell|terminal|serve|lsp) : ;;          # 长驻/自指命令本就不走守护，别去起它
         *)
           # **串行化拉起**：`daemon start` 要 ~0.65 s 才写状态文件，而连发命令会在这个窗口里各拉一次
           # ⇒ 赛出**多个守护**（各自空转到 idle；实测一次套件漏下 **13 个** 空转进程）。故先写一个

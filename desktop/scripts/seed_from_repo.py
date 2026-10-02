@@ -2,7 +2,7 @@
 """种子数据导入器：从 NarrativeForge 仓库导入 模块/资产包/管线 到本地 NF_HOME。
 
 用法：
-    python3 scripts/seed_from_repo.py [仓库根目录] [NF_HOME]
+    python3 desktop/scripts/seed_from_repo.py [仓库根目录] [NF_HOME]
 
 - 管线：解析 03_管线库/*.md → 保存为 cache/pipelines.json（工具启动时读取）
 - 模块：扫描 04_模块库/<分类>/*.md → parse_module（仓库格式）→ store.save_module
@@ -28,13 +28,24 @@ from core.pipeline_loader import discover_pipelines          # noqa: E402
 
 
 def find_repo_root() -> Path:
-    """自动定位仓库根：/tmp/NarrativeForge 或参数传入。"""
-    for cand in (Path("/tmp/NarrativeForge"),
-                 Path("/sdcard/Download/NarrativeForge"),
-                 Path.home() / "NarrativeForge"):
-        if (cand / "03_管线库").exists():
+    """自动定位仓库根：**本脚本自定位优先** → 当前工作目录 → 历史候选路径 → 报错。
+
+    为什么要自定位（2026-10-01 取证）：此前只试 `/tmp/NarrativeForge` 等三个**固定历史
+    路径**——在本仓真实工作目录（Windows / 任意克隆点）一律找不到，命令直接 SystemExit，
+    等于「路径不可达」。仓库根可从本文件位置算（`desktop/scripts/` 的上两级），先试它；
+    当前工作目录其次；历史盘 / 手机路径保留给旧环境。都没有才报错，并在指引里要求显式传参。
+    """
+    candidates = [Path(__file__).resolve().parents[2],   # desktop/scripts/ → 仓库根
+                  Path.cwd(),
+                  Path("/tmp/NarrativeForge"),
+                  Path("/sdcard/Download/NarrativeForge"),
+                  Path.home() / "NarrativeForge"]
+    for cand in candidates:
+        if (cand / "03_管线库").is_dir():
             return cand
-    raise SystemExit("找不到 NarrativeForge 仓库（需含 03_管线库 目录），请显式传入路径")
+    raise SystemExit("找不到 NarrativeForge 仓库（需含 03_管线库 目录）：已试 %s；"
+                     "请显式传入仓库根，如 `python3 desktop/scripts/seed_from_repo.py <仓库根>`"
+                     % "、".join(str(c) for c in candidates))
 
 
 def seed_modules(repo: Path, store: Store) -> dict:
@@ -113,7 +124,7 @@ def main() -> int:
     repo = Path(repo_arg) if repo_arg else find_repo_root()
     home = Path(home_arg) if home_arg else default_home()
 
-    # 测试环境统一落 /tmp，避免污染真实用户目录
+    # NF_HOME 缺省 = ~/.NarrativeForge（可用环境变量 NARRATIVE_FORGE_HOME 覆盖，测试友好）
     store = Store(home)
     print(f"仓库: {repo}")
     print(f"NF_HOME: {store.home}")

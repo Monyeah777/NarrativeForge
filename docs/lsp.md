@@ -7,6 +7,9 @@
 `nf lsp` 是**最小 LSP 服务器**（stdio，`Content-Length` 分帧）：full-sync、发布诊断、
 quickfix code action；诊断源与 `nf lint` / `nf lint --prose` 同源，**不自行写盘**。
 
+**入站资源闸门**：单条消息（含表头行）上限 **8 MiB**——`Content-Length` 超限或为负、表头行
+不发换行地超长，一律判坏帧回 `-32700` 并**继续服务**（与 MCP 面同一档上限、同一类取证）。
+
 ## 怎么接
 
 VS Code（`settings.json`，需 `vscode-languageclient` 类通用客户端或自建扩展）：

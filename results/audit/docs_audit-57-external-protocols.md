@@ -6,25 +6,26 @@ scope: 作者指示的七项任务（NF 深析 / 外部协议清单 ≥100 条 /
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
-  - desktop/src/core/text_hygiene.py:44f22d14c2ab470a2d30a5484b484a81c57baaf3111a5a1fcec0005a9d0cdeae
-  - desktop/src/core/interop_export.py:98be4b86f7b8a83359ee3f894e0b11531cd992a51dc25cb9aa887c6321dcbe93
-  - desktop/src/core/mcp_runtime.py:104e72d90c207132a1479297ba5853a50e525e65f17ff12c08524c9520708751
-  - desktop/src/core/prose_lint.py:680715a34a1c43687a87113edc323c1491ab7577f99352bda4b30633b064b15c
+  - desktop/src/core/text_hygiene.py:525d94f35221d0a14922cfb760d2488536e14a4c35e9154e689003ccd9eca6ab
+  - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
+  - desktop/src/core/mcp_runtime.py:127a6d900166eaf3a7fe0e0b7dc7a7f95b1473fad4f36fb4208c7676b602704b
+  - desktop/src/core/prose_lint.py:0f0aab7aecb0f666131c5eb6917055a8741e7c830dd0c073522c4c59dadc2707
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
-  - desktop/src/core/purity_scan.py:30d054c039dedb3d594fd8c7683c5ea9dfd590fce637e99dd076642c9476539e
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
-  - scripts/check_external_links.py:4410f000e4d0efb7b58b00522420d2db9c23f8194ab01b38b90290ae6de47966
-  - scripts/check_interop_schemas.py:6cae41b5247e8ea594b3825ff61bc3b9186caf21c170bc122d31861d30974c74
+  - desktop/src/core/purity_scan.py:345ad321120e8901d4e6ceaabefa41603c88166ee4b63737a0519489cf71fa03
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - scripts/check_external_links.py:539e77b705f11e8f3efd72e66774041a5a7e107d753523eef55cbc86da2e9c58
+  - scripts/check_interop_schemas.py:26443ff0a340be6ba292435ecc81ee859438c2531088427a91e4ea1f111fc30b
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
   - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c
   - docs/text-hygiene.md:36edf35f60bc669192443a8c16a4bcdc7c22408270fff5ea15308a16a756f986
   - docs/endpoint.md:4da6d07f9d0ed0a7166c028b1a4070a370f2edc9e70e700cce03c3d38b4e930f
-  - docs/mcp.md:fb8c5a30492705190e879e7f0124ecd01d95c4d7a099980ccbf8c1976acb9ca5
-  - llms.txt:5c2cc5477408a6b1d48b9e1a906e84ff0d7604c30b23afb6f047c711bd08003a
+  - docs/mcp.md:cffaae148e5bd7d33f5257eb57fb1668625db20ddf62d6698c643990c288c0f1
+  - llms.txt:8bfa95ee84ac75be4a1596d884308cd317271756da7054a9432b624ee4abb9fb
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

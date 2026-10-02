@@ -46,8 +46,37 @@ PROTO = 1
 BIND_HOST = "127.0.0.1"
 #: 请求体上限（1 MiB）：一条命令的 argv 远小于此；设上限防「自称超长」的无界读。
 MAX_REQUEST_BYTES = 1 << 20
-#: 守护内**拒跑**的命令：长驻（serve / shell）与自指（daemon）。
-REFUSED_COMMANDS = ("serve", "shell", "daemon")
+#: 单条 argv 上限（字符）：参数是「命令 + 选项 + 标识符」，不是正文载荷。
+MAX_ARGV_CHARS = 8192
+#: argv 合计上限（字符）：防「一条 1 MB 请求 → CLI 回吐 200 KB 用法」这类放大。
+MAX_ARGV_TOTAL = 65536
+
+
+def _check_argv_size(argv) -> None:
+    """argv 体量上限 → 越界抛 ValueError（上层归「请求不可读」，exit 2）。
+
+    修复前实测：单条 **200 KB** 的 argv 会被照单执行——CLI 回吐 200 KB 的 argparse 用法，
+    请求体最大 1 MB 也兜不住这种放大。参数只该是命令/选项/标识符；正文请落盘后传路径。
+    """
+    if not isinstance(argv, list):
+        return
+    for a in argv:
+        if isinstance(a, str) and len(a) > MAX_ARGV_CHARS:
+            raise ValueError("单个参数超过上限 %d 字符（修复指引：正文/长文本先落盘，改传路径）"
+                             % MAX_ARGV_CHARS)
+    total = sum(len(a) for a in argv if isinstance(a, str))
+    if total > MAX_ARGV_TOTAL:
+        raise ValueError("参数合计超过上限 %d 字符（修复指引：减少参数，或改传文件路径）"
+                         % MAX_ARGV_TOTAL)
+#: 守护内**拒跑**的命令：长驻（`serve` / `shell` / `terminal` / `lsp`）与自指（`daemon`）。
+#:
+#: 为什么是这五个（2026-10-01 修）：此前只有 `serve` / `shell` / `daemon`，于是**别名与常驻面漏网**——
+#: `nf terminal`（`shell` 的 argparse 别名）与 `nf lsp`（常驻 stdio 服务）会进守护在进程内执行，
+#: 而守护把 stdin 设成空串 ⇒ `lsp` 立刻读到 EOF 后**以 0 退出且零输出**，调用方（编辑器 / agent）
+#: 把「静默无事发生」当成成功，直跑却会真的起服务：**同一条命令两条路径两种结果**。
+#: 口径：凡是会占住前台的命令，守护一律拒跑（集合与 `core.terminal.BLOCKED_IN_SHELL` 相等，
+#: 由 `desktop/tests/test_daemon_parity.py` 的集合判据钉住；别名闭合同件）。
+REFUSED_COMMANDS = ("serve", "shell", "terminal", "lsp", "daemon")
 #: 连接读写超时（秒）：客户端卡住不得拖死守护。
 SOCKET_TIMEOUT = 30.0
 STATE_NAME = "daemon.json"
@@ -55,7 +84,7 @@ STATE_NAME = "daemon.json"
 #: bash 快路模板（`nf daemon shell-init bash` 原样输出，供 `eval "$(…)"` 装进交互 shell）。
 #: 关键点：**全部用 bash 内建**（/dev/tcp + printf + read -N），因此 `nf …` 是当前 shell 里的
 #: 一次函数调用 + 一次套接字往返——没有子进程、没有解释器启动，这才是真正的毫秒级客户端。
-#: 长驻/自指命令（daemon/shell/serve）与「无参」一律直落 python 入口（与守护拒绝面一致）。
+#: 长驻/自指命令（见 `REFUSED_COMMANDS`）与「无参」一律直落 python 入口（与守护拒绝面一致）。
 SHELL_INIT_BASH = """# NF 执行层快路（生成自 `nf daemon shell-init bash`）
 # 用法：  eval "$(nf daemon shell-init bash)"        # 或写进 ~/.bashrc
 # 卸载：  unset -f nf
@@ -65,7 +94,7 @@ SHELL_INIT_BASH = """# NF 执行层快路（生成自 `nf daemon shell-init bash
 # 语法检查抓不到这种错（它语法合法），所以判据必须是**行为级**的（见 test_launcher/test_daemon）。
 nf() {
   case "${1:-}" in
-    daemon|shell|serve|"") command "{py}" "{root}/scripts/nf.py" "$@"; return $? ;;
+    daemon|shell|terminal|serve|lsp|"") command "{py}" "{root}/scripts/nf.py" "$@"; return $? ;;
   esac
   # 明文框是**逐行** argv：参数里含换行会被拆开、**静默改变参数个数**（实测：`help` 收到
   # `line1\\nline2` 时只看到 `line1`）——这类命令一律不接快路，交 python 直跑
@@ -119,7 +148,7 @@ def read_state() -> Optional[Dict[str, Any]]:
     """读守护状态；文件缺失/不可解析/版本不符 → None（一律按「没有守护」处理）。"""
     try:
         doc = json.loads(state_path().read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+    except (OSError, ValueError):  # 无状态文件/坏件 ⇒ None（等价于「守护未运行」，调用方回退直跑）
         return None
     if not isinstance(doc, dict) or doc.get("proto") != PROTO:
         return None
@@ -129,13 +158,31 @@ def read_state() -> Optional[Dict[str, Any]]:
 
 
 def write_state(doc: Dict[str, Any]) -> None:
-    """写状态文件（UTF-8 + LF；父目录按需创建）。空表 = 已停用标记。"""
+    """写状态文件（UTF-8 + LF；父目录按需创建）。空表 = 已停用标记。
+
+    **权限**（2026-09-30 补）：状态文件里带**一次性令牌**，而令牌就是本守护的信任边界
+    （module docstring：回环不是信任边界）。POSIX 上把它收紧到 `0600`（只给属主读写）——
+    否则在多用户主机上，同机另一个用户读到令牌即可连回环口、以属主身份执行命令。
+    Windows 上 ACL 随用户目录继承（`chmod` 无对应语义），故只在 posix 分支收紧。
+    """
     p = state_path()
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(".json.tmp")
     with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(json.dumps(doc, ensure_ascii=False, sort_keys=True) + "\n")
+    _harden_perms(tmp)
     os.replace(tmp, p)          # 原子替换：读者永远看不到半截 JSON
+    _harden_perms(p)
+
+
+def _harden_perms(path: Path) -> None:
+    """POSIX：把含令牌的状态文件收紧到仅属主可读写；Windows 交回 ACL 继承。"""
+    if os.name != "posix":
+        return
+    try:
+        os.chmod(path, 0o600)
+    except OSError:  # noqa: S110 - 尽力而为：权限收紧失败不阻断守护（文件系统可能不支持）
+        pass
 
 
 def clear_state() -> None:
@@ -158,21 +205,6 @@ def reset_process_caches() -> None:
         registry_loader.load_registry.cache_clear()
     except Exception:                                    # noqa: BLE001
         pass
-
-
-def _recv_line(sock: socket.socket, limit: int = MAX_REQUEST_BYTES) -> bytes:
-    """读一行（含上限）：超限即抛 ValueError（调用方转成错误响应）。"""
-    buf = bytearray()
-    while True:
-        chunk = sock.recv(65536)
-        if not chunk:
-            break
-        buf += chunk
-        if len(buf) > limit:
-            raise ValueError("请求超过上限 %d 字节" % limit)
-        if b"\n" in chunk:
-            break
-    return bytes(buf).split(b"\n", 1)[0]
 
 
 class _LineReader:
@@ -215,10 +247,13 @@ def _parse_request(reader: "_LineReader") -> Dict[str, Any]:
         if n < 0 or n > 4096:
             raise ValueError("NFREQ argv 条数越界：%d" % n)
         argv = [reader.readline().decode("utf-8", "replace") for _ in range(n)]
+        _check_argv_size(argv)
         return {"proto": PROTO, "token": parts[2], "cwd": cwd, "argv": argv}
     req = json.loads(head or "{}")
     if not isinstance(req, dict):
         raise ValueError("请求不是 JSON 对象")
+    if "argv" in req:
+        _check_argv_size(req.get("argv"))
     return req
 
 
@@ -295,8 +330,14 @@ CACHEABLE_COMMANDS = (
     ("decisions", "verify"), ("decisions", "show"),
 )
 #: 写盘类开关：出现任一前缀即**不缓存**（哪怕命令在准入表里）。宁可不缓存，不可把旧输出当新输出。
-_WRITE_FLAG_PREFIXES = ("--write", "--out", "--save", "--fix", "--apply", "--yes",
-                        "--baseline", "--freeze", "--record", "--sign", "--delete", "--rm")
+_WRITE_FLAG_PREFIXES = ("--write", "--out", "--dest", "--build", "--save", "--fix",
+                        "--apply", "--yes", "--baseline", "--freeze", "--record",
+                        "--sign", "--delete", "--rm", "--all")
+#: 为什么有 `--all`（2026-10-01 判据抓到的洞）：`interop --all` 是**写面**（落盘 results/interop/*），
+#: 而 `interop` 在 `CACHEABLE_COMMANDS` 里、`--all` 又不在上面的旗标前缀里 ⇒ 第二次调用会被
+#: **响应缓存回放**（命令根本没跑，调用方却拿到成功输出）。这正是本表存在的理由：「宁可不缓存，
+#: 不可把旧输出当新输出」。`interop --check --all` 因此也一并放弃缓存（保守方向，代价可忽略）。
+#: 对账判据：`test_daemon.ResponseCacheWriteSafetyTest`（闸门表 × 可缓存命令 × 本表三方对齐）。
 
 
 def cacheable(argv: Sequence[str]) -> bool:
@@ -381,7 +422,7 @@ def _code_fingerprint(root: Path) -> Tuple:
                         continue
                     st = ent.stat()
                     rows.append((rel + "/" + ent.name, st.st_mtime_ns, st.st_size))
-        except OSError:
+        except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
     rows.sort()
     return tuple(rows)
@@ -571,7 +612,7 @@ def serve_forever(root: Path, idle_timeout: float = 0.0, ready: Optional[Any] = 
                 break
             try:
                 conn, _addr = srv.accept()
-            except socket.timeout:
+            except socket.timeout:  # 空闲 accept 超时属正常循环（继续等下一条连接）
                 continue
             except KeyboardInterrupt:
                 break

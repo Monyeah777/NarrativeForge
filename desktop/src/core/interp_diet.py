@@ -28,7 +28,8 @@ def site_dirs() -> list:
     if getuser is not None:
         try:
             dirs.append(getuser())
-        except Exception:                      # noqa: BLE001 - 拿不到就少挂一条，不影响主流程
+        # 拿不到 user site 就少挂一条目录，不影响主流程；下面这行同时向 ruff 与 bandit 声明
+        except Exception:  # nosec B110  # noqa: BLE001, S110 - 少挂一条目录不影响主流程
             pass
     return [d for d in dirs if d and os.path.isdir(d)]
 
@@ -50,4 +51,3 @@ def available(names=("yaml", "jsonschema")) -> str:
     """本解释器下可导入的第三方名（逗号连接）——启动器用它比对「节食 / 普通」两模式是否等价。"""
     import importlib.util
     return ",".join(n for n in names if importlib.util.find_spec(n) is not None)
-

@@ -23,8 +23,8 @@ machine_contract:
       closure_conflict_list: untyped
     inputs:
       M00: state
-      'AI人力资源与招聘:M01': untyped
       M50: untyped
+      AI人力资源与招聘:M01: untyped
 ```
 
 ## 1. 职责

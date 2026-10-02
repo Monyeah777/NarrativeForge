@@ -37,6 +37,7 @@ import re
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from core import atomic_write
 from core import receipts
 
 SCHEMA = "nf-conformance/1"
@@ -278,7 +279,7 @@ def _c_public_surface(root: str) -> Tuple[bool, str]:
                 continue
             try:
                 text = p.read_text(encoding="utf-8")
-            except (OSError, UnicodeDecodeError):
+            except (OSError, UnicodeDecodeError):  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
             if _ABS_PATH.search(text):
                 bad.append("%s 含绝对路径" % p.relative_to(r).as_posix())
@@ -358,9 +359,7 @@ def write(root: str = ".", rel: str = REPORT_REL,
     """把实时报告写入盘（`doc` 可由调用方传入，避免为了「写」再跑一遍全量契约）。"""
     doc = run(root) if doc is None else doc
     p = Path(root) / rel
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     return rel
 
 

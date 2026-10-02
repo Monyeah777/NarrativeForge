@@ -49,7 +49,7 @@ def collect(root: str = ".") -> Dict[str, List[str]]:
         for p in sorted(r.glob(pat)):
             try:
                 head = p.read_text(encoding="utf-8", errors="replace")[:600]
-            except OSError:
+            except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
             m = re.search(r'nf-asset:\s*key="([^"]*)"', head)
             if m:
@@ -58,7 +58,7 @@ def collect(root: str = ".") -> Dict[str, List[str]]:
         for p in sorted(r.glob(pat)):
             try:
                 doc = json.loads(p.read_text(encoding="utf-8"))
-            except (OSError, ValueError):
+            except (OSError, ValueError):  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
             for a in (doc.get("assets") or []) if isinstance(doc, dict) else []:
                 k = (a or {}).get("key")

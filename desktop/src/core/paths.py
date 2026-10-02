@@ -16,11 +16,19 @@ NF 既不声称也无法在自身代码里实现工具级沙箱；文档须同�
 from __future__ import annotations
 
 import os
+import re
 import tempfile
 
 
 class PathEscapeError(ValueError):
     """路径逃逸既定根目录（修复指引：改用根内相对路径，去掉绝对路径与 `..` 段）。"""
+
+
+#: 盘符相对写法（`C:foo`）：Windows 独有的一种**不是绝对路径**的越界写法——
+#: `ntpath.join("D:\\repo", "C:foo") == "C:foo"`，于是同一个值在 D 盘仓上会落到 C 盘进程
+#: 当前目录、在 C 盘仓上又会「看起来没问题」（本机 cwd 恰在 C 盘 ⇒ 老判据放行）。
+#: 口径：根内相对路径**不带盘符**，带盘符一律拒（与 `core.trust_boundary` 的参数面同源）。
+_DRIVE_RELATIVE = re.compile(r"^[A-Za-z]:(?![\\/])")
 
 
 def contained(root: str, target: str) -> bool:
@@ -42,6 +50,9 @@ def validate_path(root: str, rel: str, *, allow_absolute: bool = False) -> str:
         raise PathEscapeError("路径为空（修复指引：给出根内相对路径，如 assets/A1.md）")
     if os.path.isabs(text) and not allow_absolute:
         raise PathEscapeError("不接受绝对路径：%s（修复指引：改用根内相对路径）" % text)
+    if _DRIVE_RELATIVE.match(text):
+        raise PathEscapeError("不接受盘符相对写法：%s（修复指引：改用根内相对路径，"
+                              "勿写 `C:foo` 这类会随盘符换根的写法）" % text)
     if ".." in text.replace("\\", "/").split("/"):
         raise PathEscapeError("路径不得含 `..` 段：%s（修复指引：改用根内相对路径）" % text)
     full = os.path.realpath(os.path.join(os.path.realpath(str(root)), text))

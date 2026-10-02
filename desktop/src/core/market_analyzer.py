@@ -22,7 +22,6 @@ OFFICIAL13: List[str] = [
 GRADE_OFFICIAL = "official"
 GRADE_COMMUNITY = "community"
 GRADE_EXPERIMENTAL = "experimental"
-VALID_GRADES = (GRADE_OFFICIAL, GRADE_COMMUNITY, GRADE_EXPERIMENTAL)
 
 #: M91-M99 社区预留段（02 §8 编号规则：第三方段，实验级默认）
 _EXPERIMENTAL_NUMS = {"M91", "M92", "M93", "M94", "M95", "M96", "M97", "M98", "M99"}

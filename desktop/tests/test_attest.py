@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """内容外挂签名 / attestation 单测（三级信任 + fail-closed）。"""
+import shutil
 import sys
 import tempfile
 import unittest
@@ -57,6 +58,46 @@ class TestAttest(unittest.TestCase):
         self.assertFalse(ok)
         self.assertEqual(level, "sigstore-keyless")
         self.assertTrue(issues)
+
+    def test_external_tool_timeout_is_fail_closed(self):
+        """外挂验证器**不返回**时必须超时拒绝，不许挂住调用方（2026-10-01 补超时）。
+
+        依据：`ssh-keygen` / `cosign` 调用此前只见处理了 stdin（防口令提问），**没有超时**
+        ——工具因别的理由卡住会把 agent 会话/CI 无限期挂住。现在超时一律 fail-closed。
+        """
+        import subprocess as _sp
+        from unittest import mock
+        from core import attest as att_mod
+        with tempfile.TemporaryDirectory() as tmp:
+            signers = Path(tmp, "allowed_signers")
+            signers.write_text("t@nf ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAAA\n",
+                               encoding="utf-8")
+            sig = Path(tmp, "x.sig")
+            sig.write_bytes(b"-----BEGIN SSH SIGNATURE-----\n")
+            anchor = {"sig_file": str(sig), "ns": "nf-attest", "identity": "t@nf"}
+            with mock.patch.object(_sp, "run",
+                                   side_effect=_sp.TimeoutExpired(cmd="ssh-keygen", timeout=1)):
+                ok, issues = att_mod.verify_ssh_anchor("a" * 64, anchor,
+                                                       str(signers), "t@nf")
+        self.assertFalse(ok, "超时必须判不可信（fail-closed）")
+        self.assertTrue(any("超时" in i for i in issues), issues)
+
+    @unittest.skipUnless(shutil.which("ssh-keygen"), "需要 ssh-keygen")
+    def test_signing_timeout_raises_with_guidance(self):
+        """签名侧超时：抛带修复指引的 `ValueError`，不静默、不返回半成品。"""
+        import subprocess as _sp
+        from unittest import mock
+        from core import attest as att_mod
+        with tempfile.TemporaryDirectory() as tmp:
+            key = Path(tmp, "k")
+            _sp.run(["ssh-keygen", "-t", "ed25519", "-N", "", "-f", str(key)],
+                    capture_output=True, timeout=60)
+            with mock.patch.object(_sp, "run",
+                                   side_effect=_sp.TimeoutExpired(cmd="ssh-keygen", timeout=1)):
+                with self.assertRaises(ValueError) as ctx:
+                    att_mod.sign_digest_ssh("b" * 64, str(key), "t@nf")
+        self.assertIn("超时", str(ctx.exception))
+        self.assertIn("修复指引", str(ctx.exception))
 
     def test_unknown_scheme_rejected(self):
         att = attest.build(self.rel, root=self.dir)

@@ -37,8 +37,13 @@ NOTE = ("SAST 计数棘轮（(工具,文件,规则) 计数只许下降；新增/
 
 
 def _run(argv) -> tuple:
-    p = subprocess.run(argv, cwd=str(ROOT), capture_output=True, text=True,
-                       encoding="utf-8", errors="replace")
+    # 本地分析器（bandit / ruff）也是外部进程：给上限，避免工具卡住时把门禁挂死
+    try:
+        p = subprocess.run(argv, cwd=str(ROOT), capture_output=True, text=True, timeout=900,
+                           encoding="utf-8", errors="replace")
+    except subprocess.TimeoutExpired:
+        return 124, "", ("SAST 工具超时（900 s 未返回）：%s（修复指引：手动跑该命令确认工具可用）"
+                         % " ".join(argv))
     return p.returncode, p.stdout or "", p.stderr or ""
 
 
@@ -46,7 +51,13 @@ def _counts(rows: list, field: str) -> dict:
     """命中行 → {(仓库相对文件, 规则): 计数}（bandit / ruff 共同的落键口径）。"""
     cnt: collections.Counter = collections.Counter()
     for r in rows:
-        rel = os.path.relpath(str(r.get("filename")), str(ROOT)).replace("\\", "/")
+        # 工具在 cwd=ROOT 下跑，报的 `filename` 是**相对 ROOT** 的；`os.path.relpath` 会把
+        # 相对路径按**进程 cwd** 解析 —— 从 `desktop/` 里跑本脚本时，键会变成
+        # `desktop/scripts/nf.py::B404`，与基线（`scripts/nf.py::B404`）对不上，于是**每一条**
+        # 都被判「新增命中」（假红）。这里先按 ROOT 归一化再取相对（2026-10-01 取证）。
+        fn = str(r.get("filename"))
+        abs_fn = fn if os.path.isabs(fn) else os.path.join(str(ROOT), fn)
+        rel = os.path.relpath(os.path.normpath(abs_fn), str(ROOT)).replace("\\", "/")
         cnt[(rel, str(r.get(field)))] += 1
     return dict(cnt)
 
@@ -55,8 +66,9 @@ def bandit_counts() -> tuple:
     """→ (counts, meta)：{(文件, 规则): n}；工具缺失 → ({}, {"error": ...})。"""
     code, out, err = _run([sys.executable, "-m", "bandit", "-r", *SCAN_TARGETS,
                            "-f", "json", "-q"])
-    if "No module named" in err or code == 127:
-        return {}, {"error": "bandit 不在（修复指引：pip install -r .github/requirements-sast.txt）"}
+    if "No module named" in err or code in (124, 127):
+        why = err.strip().splitlines()[-1] if (code == 124 and err.strip()) else "bandit 不在"
+        return {}, {"error": "%s（修复指引：pip install -r .github/requirements-sast.txt）" % why}
     try:
         rows = json.loads(out[out.index("{"):]).get("results", []) if "{" in out else []
     except ValueError as exc:
@@ -70,8 +82,9 @@ def ruff_counts() -> tuple:
     """→ (counts, meta)：ruff `--select S` 的 {(文件, 规则): n}。"""
     code, out, err = _run([sys.executable, "-m", "ruff", "check", "--select", "S",
                            "--output-format", "json", *SCAN_TARGETS])
-    if "No module named" in err or code == 127:
-        return {}, {"error": "ruff 不在（修复指引：pip install -r .github/requirements-lint.txt）"}
+    if "No module named" in err or code in (124, 127):
+        why = err.strip().splitlines()[-1] if (code == 124 and err.strip()) else "ruff 不在"
+        return {}, {"error": "%s（修复指引：pip install -r .github/requirements-lint.txt）" % why}
     try:
         rows = json.loads(out) if out.strip().startswith("[") else []
     except ValueError as exc:
@@ -94,7 +107,7 @@ def load_baseline() -> dict:
         return {}
     try:
         return json.loads(p.read_text(encoding="utf-8"))
-    except ValueError:
+    except ValueError:  # 基线缺失/坏件 ⇒ 空基线：全部命中按「新增」判（fail-closed，宁可全报）
         return {}
 
 
@@ -128,6 +141,14 @@ def compare(cur: dict, base: dict) -> tuple:
     """纯函数比对（可单测）：→ (issues, warns, stats)。计数上升/新增 = FAIL；下降 = WARN。"""
     issues: list = []
     warns: list = []
+    # fail-closed（2026-10-01 修，实测 fail-open）：工具**跑不出来**时 `cur[tool]` 是空表，
+    # 而空表对着非空基线只会产生「命中数下降」WARN —— 门禁**绿着放行**，把「没扫」当成
+    # 「没命中」。这里把工具级错误直接判 FAIL（标准不得无载体）。
+    for tool in ("bandit", "ruff"):
+        meta = (cur.get("meta") or {}).get(tool) or {}
+        if meta.get("error"):
+            issues.append("[%s] 工具未跑成：%s（fail-closed：不把「跑不出来」当「零命中」）"
+                          % (tool, meta["error"]))
     if not base:
         issues.append("缺本平台 SAST 基线 %s[%s]（修复指引：在该平台跑 "
                       "python scripts/sast_check.py --write 落段）" % (BASELINE_REL, PLATFORM))
@@ -135,6 +156,8 @@ def compare(cur: dict, base: dict) -> tuple:
                                "ruff": sum(cur["ruff"].values()),
                                "baseline_bandit": 0, "baseline_ruff": 0}
     for tool in ("bandit", "ruff"):
+        if (cur.get("meta") or {}).get(tool, {}).get("error"):
+            continue                       # 已在上面判 FAIL；不再用空表刷「下降」噪声
         _tool_diff(tool, cur[tool], base.get(tool) or {}, issues, warns)
     stats = {"bandit": sum(cur["bandit"].values()), "ruff": sum(cur["ruff"].values()),
              "baseline_bandit": sum((base.get("bandit") or {}).values()),
@@ -149,14 +172,24 @@ def scan() -> tuple:
 
 def write() -> tuple:
     cur = current()
+    # fail-closed（2026-10-01）：工具没跑成时**拒绝冻结**——否则会把「没扫」冻成
+    # 「零命中」的基线，此后真命中全被判「新增」或干脆看不出（污染基线）。
+    bad = [t for t in ("bandit", "ruff")
+           if (cur.get("meta") or {}).get(t, {}).get("error")]
+    if bad:
+        return (["拒绝冻结基线：%s 未跑成（修复指引：先让工具可用再 --write）"
+                 % "、".join(bad)], {})
     doc = load_baseline()                      # 保留其它平台的段（各平台各自冻结）
     doc["schema"] = SCHEMA
     doc["note"] = NOTE
     section = {"bandit": cur["bandit"], "ruff": cur["ruff"], "meta": cur["meta"]}
     (doc.setdefault("platforms", {}))[PLATFORM] = section
-    (ROOT / BASELINE_REL).write_text(
-        json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30 收口）：SAST 基线是**在仓产物**，而 verify 的 sast 段正好是并发读者
+    # ——半截基线会被读成「基线文件损坏」而不是「正在写」。
+    sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
+    from core import atomic_write    # noqa: PLC0415
+    atomic_write.write_text(ROOT / BASELINE_REL,
+                            json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     return [], section
 
 
@@ -193,4 +226,8 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     raise SystemExit(main())

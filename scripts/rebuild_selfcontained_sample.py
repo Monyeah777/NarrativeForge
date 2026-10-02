@@ -25,6 +25,10 @@ import os
 import re
 import sys
 
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))   # core.*（原子写单源；2026-10-01）
+from core import atomic_write  # noqa: E402
+
 MARKER_RE = re.compile(r"^\*\*4\.\d+ .+? · 归属：.+? · 溯源：(.+?)\s*$")
 PIPELINE_LEAD = "管线声明原文（内嵌）："
 FENCE = "```"
@@ -133,8 +137,7 @@ def main(argv=None) -> int:
         if not same:
             drift += 1
             if args.write:
-                with open(path, "w", encoding="utf-8", newline="\n") as fh:
-                    fh.write("\n".join(new_lines) + "\n")
+                atomic_write.write_text(path, "\n".join(new_lines) + "\n")
                 print("    [OK] 已写回：%s" % path)
     if args.check:
         return 1 if drift else 0
@@ -142,4 +145,8 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8（2026-10-01）：同一纪律——中文结论行不该依赖宿主控制台编码。
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     raise SystemExit(main())

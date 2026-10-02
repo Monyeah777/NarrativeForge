@@ -27,6 +27,30 @@ class CompareTest(unittest.TestCase):
     def setUp(self):
         self.m = _load()
 
+    def test_tool_error_is_fail_closed(self):
+        """工具**跑不出来**必须判 FAIL——否则「没扫」会被读成「零命中」（实测 fail-open）。
+
+        取证（2026-10-01）：`bandit_counts()` 在工具缺失时返回空表 + `meta.error`，而
+        `compare()` 只对着非空基线逐键判「下降」→ 全是 WARN、**rc=0**，门禁绿着放行。
+        """
+        cur = {"bandit": {}, "ruff": {},
+               "meta": {"bandit": {"error": "bandit 不在"}, "ruff": {}}}
+        issues, warns, _s = self.m.compare(cur, {"bandit": {"a.py::B101": 2}, "ruff": {}})
+        self.assertTrue(any("工具未跑成" in i and "fail-closed" in i for i in issues), issues)
+        self.assertEqual([], warns, "已在上面判 FAIL，不该再用空表刷「下降」噪声")
+
+    def test_write_refuses_when_a_tool_errorred(self):
+        """工具没跑成时**拒绝冻结**基线（否则会把「没扫」冻成「零命中」）。"""
+        from unittest import mock
+        m = self.m
+        with mock.patch.object(m, "current",
+                               return_value={"bandit": {}, "ruff": {},
+                                             "meta": {"bandit": {"error": "bandit 不在"},
+                                                      "ruff": {}}}):
+            issues, section = m.write()
+        self.assertTrue(any("拒绝冻结基线" in i for i in issues), issues)
+        self.assertEqual({}, section)
+
     def test_missing_platform_section_fails_closed(self):
         """缺**本平台**段 = FAIL（fail-closed）：没有冻过的平台不许靠空基线蒙过。"""
         issues, _warns, stats = self.m.compare({"bandit": {"a.py::B101": 1}, "ruff": {}}, {})
@@ -59,6 +83,33 @@ class CompareTest(unittest.TestCase):
         self.assertEqual([], issues)
         self.assertEqual([], warns)
         self.assertEqual(3, stats["bandit"] + stats["ruff"])
+
+
+class LiveSastRatchetTest(unittest.TestCase):
+    """CI 的 `sast.yml` 那条**活棘轮**，本机也要能跑（工具缺席则**明示跳过**）。
+
+    为什么（2026-10-01 取证）：`sast.yml` 跑 `scripts/sast_check.py`（bandit + ruff-S 计数棘轮，
+    上升即红），而 `verify.sh` 与 `nf release` 都**不跑它** ⇒ 新增一处 bandit/ruff-S 命中会
+    **云端红、本机绿**——与本轮刚补的 ruff 语法检查同一款「本地面留缝」。本件按软依赖纪律
+    补上：`bandit` / `ruff` 任一无**实际产出**（`current()` 的 meta 里报了 error）就跳过并说明，
+    否则用**与 CI 完全相同的 `compare()`** 判本平台基线。
+    """
+
+    def test_live_ratchet_matches_the_committed_baseline(self):
+        m = _load()
+        cur = m.current()
+        meta = cur.get("meta") or {}
+        missing = [t for t in ("bandit", "ruff") if (meta.get(t) or {}).get("error")]
+        if missing:
+            self.skipTest("本机缺 %s（CI 的 sast.yml 会跑；修复指引：pip install -r "
+                          ".github/requirements-sast.txt -r .github/requirements-lint.txt）"
+                          % "/".join(missing))
+        base = m.platform_baseline(m.load_baseline())
+        self.assertTrue(base, "缺本平台 SAST 基线段（修复指引：python scripts/sast_check.py --write）")
+        issues, _warns, stats = m.compare(cur, base)
+        self.assertEqual([], issues,
+                         "SAST 计数相对基线上升/新增（逐条修或重冻）：%s；实测 bandit %d · ruff-S %d"
+                         % (issues, stats["bandit"], stats["ruff"]))
 
 
 class RealRepoTest(unittest.TestCase):

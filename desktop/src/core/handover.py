@@ -26,23 +26,8 @@ _DATED = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _BULLET = re.compile(r"^\s*[-*]\s+(.+)$", re.M)
 
 
-def _bullet_blocks(text: str) -> List[str]:
-    """列表按「bullet 块」切分（含缩进续行）——换行续写也算同一条未决项。"""
-    blocks: List[str] = []
-    cur: List[str] = []
-    for line in text.splitlines():
-        if re.match(r"^\s*[-*]\s+", line):
-            if cur:
-                blocks.append("\n".join(cur).strip())
-            cur = [line]
-        elif cur and line.strip():
-            cur.append(line)
-        elif cur:
-            blocks.append("\n".join(cur).strip())
-            cur = []
-    if cur:
-        blocks.append("\n".join(cur).strip())
-    return blocks
+#: 列表块解析的**唯一出处**（与 postmortem 曾逐字重复的两份拷贝，2026-10-01 收口）
+from core.md_blocks import bullet_blocks as _bullet_blocks
 
 
 def decl(root: str = ".") -> Dict[str, Any]:

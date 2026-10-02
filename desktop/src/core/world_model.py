@@ -20,8 +20,6 @@ from typing import Any, Dict, List, Tuple
 
 KINDS = {"string", "integer", "number", "boolean", "array"}
 ITEM_KINDS = {"string", "integer", "number", "boolean"}
-_ROOT = Path(__file__).resolve().parents[3]
-SLOT_REGISTRY_PATH = _ROOT / "protocol" / "world_slots.json"
 
 
 def load_slots(root: str = ".") -> Dict[str, Dict[str, Any]]:

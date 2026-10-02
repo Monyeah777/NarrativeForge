@@ -143,7 +143,7 @@ def main() -> int:
             "schema": "nf-license-gate-golden/1",
             "generated": "2026-09-27",
             "source": "desktop/src/core/license_gate.py 原文导入执行（快照内那份），统一渲染规则见探针头",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(render(issues, stats)))[:32]  ← 与引擎 Result.LogDigest 同式',
             "cases": results,
         }

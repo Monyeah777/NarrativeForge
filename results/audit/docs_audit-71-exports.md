@@ -6,18 +6,19 @@ scope: 作者指令「自述数字自动化，互操作性从他证，标准目�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
-  - desktop/src/core/repo_stats.py:6a8c111d36556d62878ffcc7c4ad83e85b90dea636d0c0e64ede51fcc5f19560
-  - desktop/src/core/quality_baseline.py:2f56d683a21da1971ce69fc219bd3d6f5e336dc71ea37560920cfa744779d8e0
-  - scripts/interop_thirdparty_kit.py:8cce6520081b7bce7e4d97d88f5d26180b2d1a0247110f727bb006e261f37dc3
-  - scripts/geo_export.py:edc802fb3e4e1a0c2fb61f6c5b1c45860e247f0b8400c6daf3ab85af825405ad
-  - scripts/fde_sample_run.py:d270ca8c8281d89da179053b38209e123606cf5e4d593cd0a9b731aa9b6ebe3e
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - desktop/src/core/repo_stats.py:5572728906751a33e25f70d73869e9796165b4fe7191cfae12cf25b53fdffbe6
+  - desktop/src/core/quality_baseline.py:8095d26c8360ec16397b0a0b8ee79033f4aa7c057cac3c465b564bb6c30ca757
+  - scripts/interop_thirdparty_kit.py:e741e5f80c792b05f2613efdc9a5dd942a1526e3c351b3b72ccb704cb43d9501
+  - scripts/geo_export.py:5c959b2dc6bf26179968e988afb7ec0fb4f770920fc85dc881c24cae2d2e0959
+  - scripts/fde_sample_run.py:903fc0c54e6d34f0a14e6ca225d37b2ddafb0e5856ab0a5d314f80a460ff84f7
   - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
-  - docs/fde-stack.md:d916a683be6058b9a390ab88b1407452c3ef1c4d7cbfd046824b1e50c4e9cfee
+  - docs/fde-stack.md:eb0f23ea12870e75945803f301469a67c737f2072f0b2b2ffd2e495b9c7631cb
   - docs/fde-sample/README.md:c17984ad90f50d39131fd932c37915b978e28bf606f9c397128de1c8417e4168
   - docs/interop-thirdparty.md:637dff4598a4b8ff21f81090c20b625269cea49903d396a3fc2968f2f1e1f2fc
-  - results/interop-thirdparty-status.md:c1c8e93b635580409fbbd58599eae3bce30bd0ef8c27bdd0a5456748b984a8c5
+  - results/interop-thirdparty-status.md:a46b9a6342202f528afb9d4ccaa53ec99d1d6bcda5b808664c37346707b4be8f
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

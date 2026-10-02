@@ -29,6 +29,11 @@ _CMD = re.compile(r"`([^`\n]{1,160})`")
 def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     r = Path(root)
     issues: List[str] = []
+    # 缺根/缺 CLI 真源时**如实报 issue**，不抛裸 FileNotFoundError（与 `payload_registry.scan`
+    # 同一条纪律——极端渗透 F-5 只修了那一个入口，2026-10-01 空根普查发现本入口漏修）。
+    if not (r / "scripts/nf.py").is_file():
+        return (["读不到 CLI 真源 scripts/nf.py（修复指引：在 NF 仓库根运行本扫描，"
+                 "或先补齐该件——本扫描要拿它当子命令面的单一真值）"], {})
     nf_subs = set(re.findall(r'add_parser\(\s*"([^"]+)"',
                              csc.read_text_cached(r / "scripts/nf.py")))
     steps = 0

@@ -12,13 +12,19 @@ NF_HOME 默认 ~/.NarrativeForge，可用环境变量 NARRATIVE_FORGE_HOME 覆�
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import re
+import shutil
+import subprocess  # nosec B404 - 只问 `git check-ignore`（argv 列表、无 shell）
 from pathlib import Path
 from typing import List, Optional
 
 from .models import Module, AssetPack, Preset, now_str, fid_key
 from . import paths as nf_paths
+
+#: 文件名主干上限（字符）：给「截断 + 摘要后缀」留出余量，稳稳落在各文件系统 255 字节上限内。
+MAX_FILE_STEM = 120
 
 ENV_HOME = "NARRATIVE_FORGE_HOME"
 
@@ -42,12 +48,51 @@ class Store:
             str(home) if home else str(default_home()),
             root=repo_root, default=str(default_home()),
             label="NF_HOME（--store / %s）" % ENV_HOME))
+        # 形状闸门（2026-09-30）：落点已存在但是**文件** ⇒ 立刻给可读错误。
+        # 此前会落到 `_ensure_dirs()` 的 `mkdir` 上抛 WinError 183/EEXIST，冒到 CLI 兜底报
+        # 「内部错误」并回吐机器绝对路径（用户问题被当成内部故障）。
+        if self.home.exists() and not self.home.is_dir():
+            raise ValueError("NF_HOME 落点是文件而非目录：%s（修复指引：`--store` /"
+                             " `NARRATIVE_FORGE_HOME` 要给目录路径；该文件若确实要当 store，"
+                             "请改名或移走后重试）" % self.home)
+        # 仓内落点闸门（2026-10-01 探针）：`--store` 落在**仓库内**且**不在 .gitignore 覆盖面**时
+        # 拒绝——本类会建 modules / assets / presets / cache 四个目录，未忽略的仓内落点直接变成
+        # `git status` 里的未跟踪垃圾（与 `trace.json` / `档案.md` 那类残留同一类），还可能被误提交。
+        # 仓库自己的约定是 `.rivet/scratch/…` 这类**已忽略**路径（既有用例正落在那儿），故只拦这一种。
+        _in_repo_issue = self._in_repo_unignored_issue(repo_root)
+        if _in_repo_issue:
+            raise ValueError(_in_repo_issue)
         self.config_path = self.home / "config.json"
         self.modules_root = self.home / "modules"
         self.assets_root = self.home / "assets"
         self.presets_root = self.home / "presets"
         self.cache_root = self.home / "cache"
         self._ensure_dirs()
+
+    def _in_repo_unignored_issue(self, repo_root: str) -> str:
+        """落点在仓库内且未被 git 忽略 → 问题描述（否则空串；无 git / 非仓内一律放行）。"""
+        try:
+            home = self.home.resolve()
+            root = Path(repo_root).resolve()
+        except OSError:
+            return ""
+        if not home.is_relative_to(root):
+            return ""
+        exe = shutil.which("git")          # 绝对路径（同 attest.py 口径：裸名走 PATH 有 cwd 劫持面）
+        if not exe:
+            return ""                      # 没有 git：不拦（闸门只做加法）
+        try:
+            probe = subprocess.run(  # nosec B603  # noqa: S603 - argv 列表、无 shell、子命令固定
+                                   [exe, "-C", str(root), "check-ignore", "-q", str(home)],
+                                   capture_output=True, timeout=15)
+        except (OSError, subprocess.SubprocessError):
+            return ""                      # 没有 git / 调用失败：不拦（闸门只做加法）
+        if probe.returncode == 0:
+            return ""                      # 已忽略：仓库自己的 `.rivet/scratch/…` 约定
+        return ("--store 落在**仓库内**且未被 .gitignore 覆盖：%s（修复指引：NF_HOME 是**用户态**"
+                "工作区，会建 modules/assets/presets/cache 四个目录——请指到仓库外（缺省 = "
+                "~/.NarrativeForge），或落到已有的忽略面（如 .rivet/scratch/<名字>）；"
+                "确实要在仓库内长期存放，请先把该路径写进 .gitignore）" % self.home)
 
     # ---------- 基础 ----------
     def _ensure_dirs(self):
@@ -56,8 +101,20 @@ class Store:
             d.mkdir(parents=True, exist_ok=True)
 
     def _safe_name(self, s: str) -> str:
-        """文件名安全化"""
-        return re.sub(r"[^\w\u4e00-\u9fff-]", "_", s).strip("_") or "unnamed"
+        """文件名安全化（**有界**）。
+
+        依据（2026-10-01 敌意输入普查）：此前只做字符替换、**不限长**，于是
+        `nf preset save <4096 个字符>` 会拼出超过文件系统上限的文件名 ⇒ `open` 抛
+        `[Errno 2] No such file or directory: '<NF_HOME>/presets/AAAA…'`，冒到 CLI 兜底报
+        「✗ 内部错误」**且回吐机器绝对路径**（用户输入问题被框成内部故障）。
+        现在：**超长即截断 + 挂原文摘要后缀**——确定性（同一个名字永远同一个文件名，查/删仍命中），
+        且不同长名不会撞成同一个文件；逻辑名不受影响（JSON 里仍存原名，CLI 也照原样回显）。
+        """
+        safe = re.sub(r"[^\w\u4e00-\u9fff-]", "_", s).strip("_") or "unnamed"
+        if len(safe) <= MAX_FILE_STEM:
+            return safe
+        tag = hashlib.sha256(str(s).encode("utf-8")).hexdigest()[:8]
+        return "%s-%s" % (safe[:MAX_FILE_STEM - 9], tag)
 
     # ---------- config ----------
     def load_config(self) -> dict:
@@ -250,7 +307,7 @@ class Store:
         if f.exists():
             try:
                 return json.loads(f.read_text(encoding="utf-8"))
-            except Exception:
+            except Exception:  # 缓存坏件/缺件 ⇒ 无命中（等价于未缓存，重算即可）
                 return None
         return None
 

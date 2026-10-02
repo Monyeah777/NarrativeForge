@@ -2509,6 +2509,9 @@ echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
   echo '>>> 存在 FAIL = 协议事故：请回滚本次修改，修正后重新运行验收 <<<'
+  # 指引面接线（2026-09-30）：每条 check 都有「缺什么 / 补什么」条目（nf explain 1-39），
+  # 但此前从不把用户指过去——红的时候只有「请回滚」，没有下一步。这里补一句可执行的指引。
+  echo "    修复指引：python scripts/nf.py explain <check 号>（逐条：缺什么 / 补什么 / 示例；全量见 explain all）"
   exit 1
 else
   echo '>>> 全部通过（WARN 仅提示非致命），变更可提交 <<<'

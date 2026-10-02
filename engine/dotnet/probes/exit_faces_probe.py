@@ -185,7 +185,7 @@ def main() -> int:
             "schema": "nf-exit-faces-golden/1",
             "generated": "2026-09-27",
             "source": "他证通道=真源脚本 check()；入仓面=check33 第 14 条原文逻辑（ie.KINDS × render 逐字节）",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(渲染行))[:32]  ← 与引擎侧同式',
             "cases": results,
         }

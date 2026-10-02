@@ -26,4 +26,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8（2026-10-01）：同一纪律——中文结论行不该依赖宿主控制台编码。
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     raise SystemExit(main())

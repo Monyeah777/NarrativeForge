@@ -230,15 +230,15 @@ def _build(root: str) -> Dict[str, str]:
 def run(root: str = ROOT) -> Tuple[List[str], int]:
     import datetime
     outs = _build(root)
-    manifest_path = os.path.join(root, EV, "manifest.json")
     stamp = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M %z")
     outs["%s/manifest.json" % EV] = outs["%s/manifest.json" % EV].replace('"generated_at": ""',
                                                                          '"generated_at": "%s"' % stamp)
     for rel, text in outs.items():
         path = os.path.join(root, rel)
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8", newline="") as fh:
-            fh.write(text)
+        sys.path.insert(0, os.path.join(root, "desktop", "src"))
+        from core import atomic_write          # 交付件：原子写（2026-10-01 普查补齐）
+        atomic_write.write_text(path, text)
     doc = json.loads(outs["%s/manifest.json" % EV])
     return doc.get("issues") or [], len(outs)
 
@@ -295,4 +295,8 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     sys.exit(main())

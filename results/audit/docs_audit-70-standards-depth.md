@@ -6,11 +6,12 @@ scope: 作者指令「先搜集所有可扩展标准；把所有域包在概念�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/domain_pack.py:b740817bc2e2dab2566dc5e2cdaa9b0ef864f83d004f07a16e08122af663b5af
-  - desktop/src/core/retriever.py:c8f2f384b1fdd34132b6a643ff4fefef6139bcb8e53c9a00e2487749f935b13b
+  - desktop/src/core/domain_pack.py:eb13ee6eba1105d86aec8435ad7df0fa2995913a4d45435a414f797f64e627f5
+  - desktop/src/core/retriever.py:9f827c8d32af387570bb48b6e43afa116d440ab9446269153bfcebd177465a19
   - desktop/tests/test_retriever.py:15b841c434d3cdecde9c12d326b04e642d176dfd59dd8dfe8287a3e496bb29e2
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
-  - docs/domain-packs.md:5196a140e3bdb8af995cde13d7eba8c6ca39722e79b9711f767ad3f981ce2c79
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - docs/domain-packs.md:4c9ee3987699c24f1d78910281b446287dceebb3a77632ef458a07ba618f62d0
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

@@ -47,6 +47,16 @@ python scripts/nf.py market community/校园情感领域包
 python scripts/nf.py assemble "<需求>" --check 成品.md
 python scripts/nf.py assemble "<需求>" --save 需求档案.md
 python scripts/nf.py assemble "<需求>" --trace trace.json --rounds
+python scripts/nf.py assemble "<需求>" --check-trace trace.json
 ```
+
+`--check` 与**无法解析**的需求一起用时会被明确拒（exit 2，提示「未执行验收」）：允许集来自
+需求解析，解析不出就不能假装核对过——脚本里的 `... --check 成品.md && 发布` 因此不会把
+「没验收」读成「验收通过」。
+
+`--check-trace trace.json` 是**写→读回自证**闭环：把 `--trace` 落盘的遥测件喂回，
+按需求重建允许集、对转录重跑回合级 drill，断言「重跑判定 == trace 记录」——漂移即
+exit 1。读回要求 trace 写时带过 `--rounds`（回合级判定的口径来源）；否则明确拒
+（exit 2，提示「未执行漂移断言」），不把「没做」读成「通过」。
 
 出口前逐项检查：八段骨架齐、编号合法、模块要素齐、事件闭合、资产键真实、装配记录写明来源与缺口。任一为否，先修正再交付。

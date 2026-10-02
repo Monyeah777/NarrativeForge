@@ -39,7 +39,7 @@ def load(root: str = ".") -> Dict[str, Any]:
         return {}
     try:
         data = json.loads(p.read_text(encoding="utf-8"))
-    except ValueError:
+    except ValueError:  # 缺件/坏 JSON ⇒ 空 dict（由 intake.scan 报 FAIL，不静默放行）
         return {}
     return data if isinstance(data, dict) else {}
 

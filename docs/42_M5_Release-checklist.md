@@ -4,7 +4,7 @@
 
 - [ ] **变更全齐**：CHANGELOG 归档（[Unreleased] 内容迁至版本段并清空）+ VERSION-MATRIX 同步（版本×方案×能力行）。
 - [ ] **audit 建档在**：docs_audit-<N>-vX.Y.md verdict 通过（含五维自评段）。
-- [ ] **verify 全绿**：`bash verify.sh`（check1-32 PASS=51，v2.22）0 WARN 0 FAIL。
+- [ ] **verify 全绿**：`bash verify.sh` 0 WARN 0 FAIL——**本模板不钉运行时计数**（check 数与 PASS 基线见 `nf stats --check` 生成区与 `quality_baseline.EXPECTED_*`；模板里钉死必漂，2026-09-30 实测此处曾停在 check1-32/PASS=51）。
 - [ ] **覆盖率数字公示**：`bash scripts/coverage_summary.sh`（core ≥80%）。
 - [ ] **判级器词表核验**：06 §11 无新增未定义强度词（必须/禁止/应/可之外）。
 - [ ] **错误信息审计零缺失**：check27 R4 绿。

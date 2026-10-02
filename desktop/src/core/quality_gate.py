@@ -121,10 +121,20 @@ def default_rules() -> List[Rule]:
 # ------------------------------------------------------------------ 执行
 def run_gate(ir: IRDocument,
              rules: Optional[List[Rule]] = None) -> GateResult:
-    """执行质检门。rules 缺省 = default_rules()。"""
+    """执行质检门。rules 缺省 = `default_rules()`。
+
+    `n_pass` 的口径 = **零违例的规则数**（规则评估了就算通过）。实测教训（2026-09-30）：
+    四条默认规则在成功时都返回空表，而旧实现只在规则显式吐 `pass` 级 Issue 时才自增
+    ⇒ **干净装配恒显示 `PASS 0`**（`nf demo` 首屏就是 `质量门：PASS 0 · WARN 0 · FAIL 0`），
+    把「四条全绿」说成了「零通过」——首屏口径失真，故按「评估即计数」修正。
+    """
     result = GateResult()
     for rule in rules if rules is not None else default_rules():
-        for issue in rule(ir):
+        emitted = list(rule(ir))
+        if not emitted:                       # 零违例 = 该规则通过（旧实现漏计这一类）
+            result.n_pass += 1
+            continue
+        for issue in emitted:
             result.issues.append(issue)
             if issue.level == "fail":
                 result.n_fail += 1

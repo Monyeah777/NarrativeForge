@@ -147,6 +147,9 @@ SINK_ALLOW = {
     "disk_cache.py:unlink":
         "缓存裁剪：落点在 <NF_HOME>/cache/<tag>/ 之下，文件名是本模块自己算的 sha256（非外部输入），"
         "且只删超出保留份数的旧条目（按 mtime 排序）",
+    "atomic_write.py:unlink":
+        "原子写的**失败清理**：临时件由本模块 tempfile.mkstemp 现造（名与落点皆非外部输入），"
+        "只删自己刚写的那一个 .tmp；`os.replace` 成功路径不删除任何东西",
     "domain_pack.py:unlink":
         "域包工厂的陈旧件清理：只在目标包自己的 modules/ 与 pipelines/ 内、且文件名令牌匹配该包代码，"
         "删的是本轮未列入 planned 的旧产物（可复算，删旧即安全）",
@@ -472,7 +475,7 @@ def _scan_impl(root: str = ".", _layer_fp: str = None) -> tuple:
             rel = "desktop/src/core/" + fname
             try:
                 text = csc.read_text_cached(os.path.join(core_dir, fname))
-            except OSError:
+            except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                 continue
             got, delta = _file_findings(rel, text, env, root)
             issues += got

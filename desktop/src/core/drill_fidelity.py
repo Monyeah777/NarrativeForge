@@ -17,6 +17,8 @@
 from __future__ import annotations
 
 import json
+
+from core import atomic_write
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -121,8 +123,6 @@ def write(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     """把度量结果落盘（供机器消费）→ (issues, doc)。"""
     m = measure(root)
     p = Path(root) / REPORT_REL
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(m, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    atomic_write.write_text(p, json.dumps(m, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     issues, _w, _s = scan(root)
     return issues, m

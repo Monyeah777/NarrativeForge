@@ -98,7 +98,7 @@ python scripts/pull_decision_model.py --candidate laya-multilingual --run --yes
 python scripts/nf.py workloop --list --top 10        # 看候选面（决策层能挑的活）
 python scripts/nf.py workloop --top 5                # 决策层挑出一项 → 打印工单
 python scripts/nf.py workloop --top 5 --write         # 工单落内部档案 .rivet/private_archive/work_orders/
-python scripts/nf.py workloop --close WO-xxxx --outcome landed --gate "PASS=61" --note "…"
+python scripts/nf.py workloop --close WO-xxxx --outcome landed --gate "PASS=<当次 verify 输出的 PASS 数>" --note "…"
 ```
 
 工单自带：目标 / 条目 / 证据 / 落点提示 / **完成判据** / **验收命令**；决策元信息含

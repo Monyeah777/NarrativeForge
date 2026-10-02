@@ -29,6 +29,19 @@ def _write(root, rel, text):
 
 
 class InteropExportTest(unittest.TestCase):
+    def test_derived_face_never_reads_the_wall_clock(self):
+        """派生面**不许读墙钟**（2026-09-30 补）：check33 逐字节比对入仓产物与实时派生——
+        任何 `date.today()` / `datetime.now()` / `time.time()` 都会让它**次日自动变红**。
+        本仓的合法来源是「**仓内已声明日期**的最大值」（`_declared_max_date`），不是当前时间。
+        """
+        import re
+        src = (Path(ROOT) / "desktop" / "src" / "core" / "interop_export.py").read_text(
+            encoding="utf-8")
+        hits = [m.group(0) for m in re.finditer(
+            r"\b(date\.today|datetime\.now|datetime\.utcnow|time\.time|time\.monotonic)\s*\(",
+            src)]
+        self.assertEqual([], hits, "派生面读了墙钟（修复指引：改用仓内已声明日期最大值）")
+
     def test_repo_export_is_consistent(self):
         issues, stats = ie.verify(ROOT)
         self.assertEqual(issues, [], "仓库导出面须自洽：%s" % issues[:3])

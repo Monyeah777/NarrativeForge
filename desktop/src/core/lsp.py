@@ -61,14 +61,26 @@ def write_message(stream, msg: Dict[str, Any]) -> None:
         flush()
 
 
+#: 传输层**解不出**消息（非法 UTF-8 / 非法 JSON / 坏 Content-Length）——与「对端关闭」区分：
+#: 前者要回 `-32700` 后**继续服务**，后者（None）才收摊。实测教训：修复前这两类直接冒到 CLI
+#: 兜底报「内部错误」并以 rc=1 退出——**一条坏帧打死整个长驻会话**（与 MCP 面 2026-09-30 修的是同一类）。
+_BAD_FRAME = object()
+#: 单条入站消息上限（含表头行）——与 MCP 面同一档 8 MiB，理由相同：不发换行/报一个巨大的
+#: `Content-Length` 就能让长驻服务把任意量数据读进内存（2026-09-30 补；此前 `length` 直接
+#: 喂给 `src.read()`，负值更会「读到 EOF」）。
+MAX_MESSAGE_BYTES = 8 * 1024 * 1024
+
+
 def read_message(stream) -> Optional[Dict[str, Any]]:
-    """读一条 LSP 消息；EOF → None。"""
+    """读一条 LSP 消息；EOF → `None`，坏帧 → `_BAD_FRAME`（调用方据此回错误码后继续）。"""
     src = _binary(stream)
     length = None
     while True:
-        line = src.readline()
+        line = src.readline(MAX_MESSAGE_BYTES + 1)
         if not line:
             return None
+        if len(line) > MAX_MESSAGE_BYTES:
+            return _BAD_FRAME          # 表头行本身超限 ⇒ 直接判坏帧（内存有界，不读完）
         if isinstance(line, bytes):
             line = line.decode("utf-8", "replace")
         line = line.strip()
@@ -78,16 +90,19 @@ def read_message(stream) -> Optional[Dict[str, Any]]:
             try:
                 length = int(line.split(":", 1)[1].strip())
             except ValueError:
-                return None
-    if length is None:
-        return None
+                return _BAD_FRAME
+    if length is None or length < 0 or length > MAX_MESSAGE_BYTES:
+        return _BAD_FRAME
     body = src.read(length)
     if isinstance(body, bytes):
-        body = body.decode("utf-8")
+        try:
+            body = body.decode("utf-8")
+        except UnicodeDecodeError:
+            return _BAD_FRAME
     try:
         return json.loads(body)
     except json.JSONDecodeError:
-        return None
+        return _BAD_FRAME
 
 
 def diagnose(path: str, text: str, root: str = ".") -> List[Dict[str, Any]]:
@@ -219,6 +234,22 @@ class LspServer:
             msg = read_message(stdin)
             if msg is None:
                 return 0
+            if msg is _BAD_FRAME:
+                # 坏帧不杀会话：回 -32700（id 不可判定 ⇒ null）后继续读下一帧。
+                write_message(stdout, {
+                    "jsonrpc": "2.0", "id": None,
+                    "error": {"code": -32700,
+                              "message": "Parse error（非法 UTF-8 / 非法 JSON / 坏 Content-Length；"
+                                         "修复指引：Content-Length 以**字节**计，正文为 UTF-8 JSON）"}})
+                continue
+            if not isinstance(msg, dict):
+                # JSON-RPC 2.0：消息须为对象（本实现不支持批量数组）→ -32600 后继续。
+                write_message(stdout, {
+                    "jsonrpc": "2.0", "id": None,
+                    "error": {"code": -32600,
+                              "message": "Invalid Request（消息须为 JSON 对象；"
+                                         "修复指引：勿发数组/标量，本服务不支持批量请求）"}})
+                continue
             if msg.get("method") == M_EXIT:
                 return 0
             try:

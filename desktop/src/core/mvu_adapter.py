@@ -26,6 +26,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from .ir import IRDocument
+from core import atomic_write
 
 ADAPTER_VERSION = "mvu_adapter/0.1"
 DOC_CHECK_DATE = "2026-09-16"
@@ -295,11 +296,13 @@ def export_mvu(ir: IRDocument, dest_dir: Path, res) -> None:
     p2 = dest / "mvu_worldbook.json"
     p3 = dest / "mvu_README.md"
     p4 = dest / "mvu_regex.json"
-    p1.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                  encoding="utf-8", newline="\n")
-    p2.write_text(json.dumps(_worldbook_draft(payload), ensure_ascii=False, indent=2,
-                             sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-    p3.write_text(
+    # 原子写（2026-09-30 收口）：交付件不留半截——半截 `mvu_variables.json` 会被消费方
+    # 读成「变量表损坏」，而这类产物是要被 ST 侧装载的。
+    atomic_write.write_text(p1, json.dumps(payload, ensure_ascii=False, indent=2,
+                                           sort_keys=True) + "\n")
+    atomic_write.write_text(p2, json.dumps(_worldbook_draft(payload), ensure_ascii=False,
+                                           indent=2, sort_keys=True) + "\n")
+    atomic_write.write_text(p3,
         "# MVU 变量模板（由 NarrativeForge 导出）\n\n"
         "- 生成器：%s ｜ 目标格式锚点核对日期：%s\n- 契约来源：%s\n\n"
         "## 产物\n\n"
@@ -312,10 +315,9 @@ def export_mvu(ir: IRDocument, dest_dir: Path, res) -> None:
         "故 worldbook 保持 draft。\n"
         "- 正则五件套条目名已核对并产出（规则正文待作者填）；美化产物须全内联样式。\n"
         "- 未核对清单：%s\n"
-        % (ADAPTER_VERSION, DOC_CHECK_DATE, DOC_SOURCE, "、".join(UNVERIFIED)),
-        encoding="utf-8", newline="\n")
-    p4.write_text(json.dumps(_regex_suite_draft(), ensure_ascii=False, indent=2,
-                             sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+        % (ADAPTER_VERSION, DOC_CHECK_DATE, DOC_SOURCE, "、".join(UNVERIFIED)))
+    atomic_write.write_text(p4, json.dumps(_regex_suite_draft(), ensure_ascii=False,
+                                           indent=2, sort_keys=True) + "\n")
     res.files.extend([str(p1), str(p2), str(p3), str(p4)])
     for w in payload.get("warnings") or []:
         res.warnings.append(w)

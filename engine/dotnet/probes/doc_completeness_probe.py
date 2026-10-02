@@ -148,7 +148,7 @@ def main() -> int:
             "schema": "nf-doc-completeness-golden/1",
             "generated": "2026-09-27",
             "source": "verify.sh check20 内联 Python 原文（探针机械抽取后执行，逐字节 stdout）",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(stdout.splitlines()))[:32]  ← 与引擎 Result.LogDigest 同式',
             "cases": results,
         }

@@ -2,7 +2,7 @@
  "schema": "nf-shell-check-golden/1",
  "generated": "2026-09-27",
  "source": "verify.sh 抽出 check2/check3/check4/check5/check6/check9/check10/check11 函数本体 + 真源同款 ok/no/wn 助手，交 bash.exe 执行",
- "snapshot": "C:\\Users\\mon_7\\Downloads\\nf-snap-h5",
+ "snapshot": "nf-snap-h5",
  "digest_rule": "sha256(\"\\n\".join(仅 [PASS]/[FAIL]/[WARN] 行))[:32]",
  "cases": {
   "real": {

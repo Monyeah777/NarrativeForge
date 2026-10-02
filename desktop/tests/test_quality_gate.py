@@ -25,6 +25,24 @@ def _ir(layers=None, extra=None, missing=None):
 
 
 class TestRunGate(unittest.TestCase):
+    def test_pass_counts_clean_rules(self):
+        """口径：**零违例的规则数**要计入 PASS——旧实现让干净装配恒显示 `PASS 0`。"""
+        from core.quality_gate import default_rules
+        clean = _ir(layers=[
+            IRLayer(id="P00", name="数据基座", modules=[
+                IRModule(full_id="通用类:M00", name="数据结构", layer="P00",
+                         content="正文")]),
+            IRLayer(id="P80", name="输出呈现", modules=[
+                IRModule(full_id="通用类:M80", name="输出生成器", layer="P80",
+                         content="正文")]),
+        ])
+        res = run_gate(clean)
+        self.assertTrue(res.ok(), res.issues)
+        self.assertEqual(len(default_rules()), res.n_pass,
+                         "干净装配应四条规则全计 PASS（首屏口径）")
+        self.assertEqual(0, res.n_warn)
+        self.assertEqual(0, res.n_fail)
+
     def test_empty_assembly_fails(self):
         ir = _ir()   # 无任何层模块
         res = run_gate(ir)

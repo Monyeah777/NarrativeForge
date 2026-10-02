@@ -90,6 +90,49 @@ class TestProseLint(unittest.TestCase):
         issues, _ = pl.command_face(tmp)
         self.assertEqual(issues, [], "本仓文档命令面须零漂移：%s" % issues[:3])
 
+    def test_command_face_accepts_argparse_aliases(self):
+        """**别名也是命令面**（2026-10-01 修）。
+
+        取证：注册表由 `sub.add_parser("name"` 正则而来，**只认主名**；而
+        `add_parser("shell", aliases=["terminal"])` 的 `nf terminal` 是 argparse 真能跑的
+        命令（`nf shell --commands` 里也确在册）⇒ 文档写别名反被判「不是 CLI 子命令」，
+        本仓 `docs/terminal.md` 就这么被误红过一次。本件把「别名进注册表」钉住。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, "scripts"))
+            with open(os.path.join(tmp, "scripts", "nf.py"), "w", encoding="utf-8") as fh:
+                fh.write('sub.add_parser("shell", aliases=["terminal"])\n')
+            with open(os.path.join(tmp, "README.md"), "w", encoding="utf-8") as fh:
+                fh.write("入口：`nf shell`，别名 `nf terminal`。\n")
+            issues, stats = pl.command_face(tmp)
+            self.assertEqual(issues, [], issues)
+            self.assertEqual(stats["commands_checked"], 2)
+
+
+class PunctMixPrecisionTest(unittest.TestCase):
+    """`punct_mix` 降噪（2026-09-30）：只报**真·中英标点混用**，两类假阳性豁免。
+
+    实测：`nf lint --prose` 全仓 13 条命中里 7 条是假阳性——行内代码里的 `通用:M10` /
+    `--context "C6:<slug>; 澄清稿:…"`、以及正文里的模块 id 语法，都被当成「中英标点混用」。
+    """
+
+    def _rules(self, text):
+        return [h["rule"] for h in pl.lint_text(text)]
+
+    def test_id_syntax_is_exempt(self):
+        self.assertNotIn("punct_mix",
+                         self._rules("重号模块以类别前缀限定（通用:M10 vs 生存:M10）"))
+
+    def test_inline_code_is_exempt(self):
+        self.assertNotIn("punct_mix",
+                         self._rules('命令示例 `--context "C6:$slug; 澄清稿:docs/x.md"` 里的冒号'))
+
+    def test_real_mixed_punctuation_is_still_caught(self):
+        self.assertIn("punct_mix", self._rules("这一步做完,再进入下一步"))
+
+    def test_fullwidth_punctuation_is_clean(self):
+        self.assertNotIn("punct_mix", self._rules("口径：三件齐备。"))
+
 
 if __name__ == "__main__":
     unittest.main()

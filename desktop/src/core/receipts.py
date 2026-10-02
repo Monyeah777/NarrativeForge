@@ -17,6 +17,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from core import atomic_write
+
 SCHEMA = "nf-receipts/1"
 RECEIPTS_REL = "library/RECEIPTS.json"
 
@@ -151,8 +153,11 @@ def write(root: str = ".", rel: str = RECEIPTS_REL) -> str:
     doc = build(root)
     p = Path(root) / rel
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    # 原子写（2026-10-01）：回执单根是**在仓产物**（check35 逐条断言），裸 `write_text` 在
+    # 并发读者/杀软句柄扫描下会抛 `[Errno 22]`（本轮收口时真跑到一次，冒成「内部错误」），
+    # 也可能留下半截 JSON——走唯一原子写出处（自带瞬时错短重试）。
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False,
+                                          indent=2, sort_keys=True) + "\n")
     return rel
 
 
@@ -248,6 +253,7 @@ def write_scope(root: str = ".", scope: str = "protocol") -> str:
     doc = build_scope(root, scope=scope)
     p = Path(root) / PROTOCOL_RECEIPTS_REL
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    # 原子写（2026-10-01）：同 `write()`——协议层回执也是 check35 的比对对象。
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False,
+                                          indent=2, sort_keys=True) + "\n")
     return PROTOCOL_RECEIPTS_REL

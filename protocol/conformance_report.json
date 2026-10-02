@@ -58,15 +58,15 @@
     },
     {
       "description": "I/O 类型面（可证不匹配）",
-      "detail": "可证不匹配 0 · 类型覆盖 28.9%（294/1018 字段）",
-      "digest": "93b53d0605b63fb7eafbfa77155a8e6607cd184f2998eae3f5a267bf70d0bc65",
+      "detail": "可证不匹配 0 · 类型覆盖 26.9%（303/1125 字段）",
+      "digest": "717a771bed5815d7ffdb93c40446a617fee021c2f1ad1f9f3d25f39997b3c257",
       "id": "io-types",
       "ok": true
     },
     {
       "description": "类型积压显式化",
-      "detail": "不可推断 untyped 86 项（台账同步）",
-      "digest": "9bf8e17efed46f802b3f0c325e21b2b8207c9bbb72cbd0aa784c4441aff56515",
+      "detail": "不可推断 untyped 101 项（台账同步）",
+      "digest": "6d3cd0e53464f4debd196203a9c6d006ae04d6d6ec0f8b69a610a395cfaf3f4b",
       "id": "type-backlog",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "b2c5f9de3590aca74a86291090068f90ef02327f4c2c0bfb1f3ce22b28633d19",
+  "root": "fe99e166fe50ecb9779993609585357f11c1420a34033773f9551600e2c1e09f",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

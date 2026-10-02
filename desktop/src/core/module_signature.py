@@ -17,6 +17,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import atomic_write
+
 SCHEMA = "nf-module-signatures/1"
 BASELINE_REL = "protocol/module_signatures.json"
 _BOUNDARY_KEYS = ("inputs", "outputs", "events", "interfaces", "layer", "category",
@@ -60,8 +62,9 @@ def write(root: str = ".", rel: str = BASELINE_REL) -> str:
                        for k, v in sorted(sigs.items())}}
     p = Path(root) / rel
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30 收口）：在仓基线（模块边界签名），并发 readers 此前可能读到半截。
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False,
+                                          indent=2, sort_keys=True) + "\n")
     return rel
 
 
@@ -78,8 +81,12 @@ def verify(root: str = ".", rel: str = BASELINE_REL) -> Tuple[List[str], List[st
         if mid not in base_mods:
             warns.append("新模块未签边界：%s（修复指引：nf module signature --write）" % mid)
         elif base_mods[mid].get("digest") != rec["digest"]:
-            issues.append("边界漂移：%s（inputs/outputs/events/interfaces 变了）"
-                          "（修复指引：评审后 nf module signature --write 重新冻结）" % mid)
+            # 报**签名覆盖面**（`_BOUNDARY_KEYS` 单一真相源），不写死四个名字——旧措辞只列
+            # inputs/outputs/events/interfaces，而签名其实还含 layer/category/**io_types**
+            # （2026-10-02：一次只改 io_types 的重签里，那句话把读者引向了别的字段）。
+            issues.append("边界漂移：%s（签名覆盖面：%s）"
+                          "（修复指引：评审后 nf module signature --write 重新冻结）"
+                          % (mid, "/".join(_BOUNDARY_KEYS)))
     for mid in sorted(set(base_mods) - set(sigs)):
         warns.append("基线中的模块已不在仓库：%s（修复指引：重签以撤下）" % mid)
     stats = {"modules": len(sigs), "signed": len(base_mods),

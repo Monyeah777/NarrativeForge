@@ -6,14 +6,15 @@ scope: 作者指令「执行」（承接「让这些模型替我干活，来构�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - scripts/serve_decision_model.py:130920912feb38b20cd463f1181fa39f4e6fba45b0e4ad059e1dc74a49bfa4f7
+  - scripts/serve_decision_model.py:6691cb4a375853284fe0b4a771ff3163718c0be164d999a2bab05d1fd9f9c516
   - desktop/src/core/decision_layer.py:f9b87bb638e1ffef0a71a0a3b87c97646337a86788e53d6fea8fca22b8bf9e36
-  - desktop/src/core/purity_scan.py:30d054c039dedb3d594fd8c7683c5ea9dfd590fce637e99dd076642c9476539e
+  - desktop/src/core/purity_scan.py:345ad321120e8901d4e6ceaabefa41603c88166ee4b63737a0519489cf71fa03
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - community/通用核心基础包/modules/M94_通用节拍桥.md:5c9605e3becbec64e87d5d3ab32b7e25a22150d949d3b8cf787eaa1e01f0e2c4
   - community/校园西幻轻混组合包/modules/M92_轻混装配执行.md:1e261dcc10d0b7134d8194f6e548ecae0d7230d9ba8e258d48825627503360d6
-  - docs/decision-layer.md:85ac1dc81c879cf98a15a0c089ba1c825c67649fe3ee431a9172336c09b04314
+  - docs/decision-layer.md:46cd91d13c1b98120318b6aff5d720fc3abe22541de8b1b1762db57a0e8dbeeb
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

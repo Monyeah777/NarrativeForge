@@ -37,15 +37,6 @@ def _norm_list(v) -> list:
     return [str(v)]
 
 
-def _extract_yaml_list(text: str) -> list:
-    """从规则文本里抓 [] 列表：['M00','M40'] 或 [M00, M40]"""
-    m = re.search(r"\[([^\]]*)\]", text)
-    if not m:
-        return []
-    inner = m.group(1).replace("'", "").replace('"', "")
-    return [p.strip() for p in re.split(r"[、,，;\s]+", inner) if p.strip()]
-
-
 def parse_module(content: str, category_hint: str = "") -> Module:
     """从文本解析模块。解析失败时抛 ValueError（附原因）。"""
     if not content or not content.strip():

@@ -141,8 +141,8 @@ def write_golden(root: str) -> List[str]:
     written: List[str] = []
     for name, blob in ((REPORT_NAME, render_json(data)), (SUMMARY_NAME, render_markdown(data))):
         path = os.path.join(out_dir, name)
-        with open(path, "wb") as fh:
-            fh.write(blob)
+        from core import atomic_write          # 在仓生成物：原子落盘（2026-10-01）
+        atomic_write.write_bytes(path, blob)
         written.append(os.path.relpath(path, root).replace(os.sep, "/"))
     return written
 

@@ -6,6 +6,23 @@ dist/
 __pycache__/
 *.pyc
 
+# 敏感文件（AGENTS.md「敏感文件禁止」硬性闸门的**忽略侧**）：本地留用，一律不入仓。
+# 高信号形态才入本表（含 *.pem/*.key/*.p12 与 id_rsa*/id_ed25519*/credentials.*）——
+# 不用 `*token*`/`*secret*` 这类宽 glob，免得把将来的说明文档也静默吞掉；
+# 内容侧由 CI 密钥扫描 + check12 的公开面泄漏判据守着。
+.env
+.env.*
+credentials.json
+credentials.yaml
+credentials.yml
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*.kdbx
+
 # 工具本地缓存（mypy / pylint / pytest 等；可再生，不入仓、不进门禁扫描）
 .mypy_cache/
 .pylint.d/

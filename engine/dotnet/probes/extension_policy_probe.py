@@ -211,7 +211,7 @@ def main() -> int:
             "schema": "nf-extension-policy-golden/1",
             "generated": "2026-09-27",
             "source": "verify.sh check30 内联 Python 原文（机械抽取后执行）",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(stdout.splitlines()))[:32]  ← 与引擎 Result.LogDigest 同式',
             "cases": results,
         }

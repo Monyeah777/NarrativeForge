@@ -45,7 +45,7 @@ def listing(root: str) -> dict:
                 if ent.name.endswith(".py"):
                     st = ent.stat()
                     out[ent.name] = (st.st_mtime_ns, st.st_size)
-    except OSError:
+    except OSError:  # 列目录失败 ⇒ 空表：调用方退回逐件 stat（不把「列不到」当不存在）
         return {}
     return out
 

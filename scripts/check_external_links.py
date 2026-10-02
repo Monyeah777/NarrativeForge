@@ -24,6 +24,9 @@ import time
 from pathlib import Path
 from typing import Callable, Dict, List, Sequence, Tuple
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "desktop" / "src"))  # core.*（原子写单源）
+from core import atomic_write  # noqa: E402
+
 #: 默认巡检目标（人读入口与公开文档；不含脚本、测试夹具与协议层）
 DEFAULT_TARGETS = ("README.md", "README.en.md", "llms.txt", "AGENT_START.md", "ROUTES.md")
 DEFAULT_GLOBS = ("docs/*.md",)
@@ -163,7 +166,7 @@ def collect(root: str, targets: Sequence[str] = DEFAULT_TARGETS,
     for p in files:
         try:
             text = p.read_text(encoding="utf-8")
-        except OSError:
+        except OSError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
             continue
         links = extract_links(text, skip)
         if links:
@@ -318,11 +321,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.write:
         p = Path(args.root) / args.write
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                     encoding="utf-8", newline="\n")
+        atomic_write.write_text(
+            p, json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
         print("  报告已写入：%s" % args.write)
     return 1 if report["failed"] else 0
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     sys.exit(main())

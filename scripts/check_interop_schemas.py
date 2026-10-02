@@ -28,6 +28,9 @@ import urllib.request
 from pathlib import Path
 from typing import Dict, Sequence, Tuple
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "desktop" / "src"))  # core.*（原子写单源）
+from core import atomic_write  # noqa: E402
+
 #: 派生面 → (主 URL, GitHub 兜底 (owner/repo, path, ref))；raw 取不到时走 contents API
 SCHEMAS: Dict[str, tuple] = {
     "openapi": ("https://spec.openapis.org/oas/3.1/schema/2022-10-07", None),
@@ -72,13 +75,31 @@ NOSCHEMA: Dict[str, str] = {
 }
 
 
+#: 远端响应体上限（`--fetch` 路径；schema / 源码件正常是 KB 量级，留两个数量级余量）。
+MAX_FETCH_BYTES = 8 * 1024 * 1024
+
+
+def _read_capped(resp) -> bytes:
+    """读响应体（带上限）；超限**如实告警**并按「取不到」处理，不静默截断。
+
+    依据（2026-09-30）：`resp.read()` 是无界的——目标站点坏掉/被替换成长流，本脚本会一路读进
+    内存。截断成半截 JSON 只会让调用方报「解析失败」（指向错误的排查方向），故超限即弃。
+    """
+    blob = resp.read(MAX_FETCH_BYTES + 1)
+    if len(blob) > MAX_FETCH_BYTES:
+        print("  [WARN] 远端响应超上限（> %d 字节）：%s（按「取不到」处理；请核对该地址是否仍"
+              "返回 schema/源码）" % (MAX_FETCH_BYTES, getattr(resp, "url", "?")), file=sys.stderr)
+        return b""
+    return blob
+
+
 def fetch(url: str, timeout: int = 25) -> Tuple[int, bytes]:
     req = urllib.request.Request(url, headers={"User-Agent": "nf-interop-schema/1.0"})
     try:
         if not str(url).startswith(("http://", "https://")):
             return 0, b""
         with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310 —— 已在上方校验 scheme ∈ {http,https}；端点由调用方显式给出
-            return int(getattr(resp, "status", 200)), resp.read()
+            return int(getattr(resp, "status", 200)), _read_capped(resp)
     except urllib.error.HTTPError as exc:
         return exc.code, b""
     except Exception:  # noqa: BLE001 - 网络类异常如实计为取不到
@@ -93,7 +114,7 @@ def fetch_via_api(repo: str, path: str, ref: str, timeout: int = 25) -> Tuple[in
                  "Accept": "application/vnd.github.raw"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310 —— 已在上方校验 scheme ∈ {http,https}；端点由调用方显式给出
-            return int(getattr(resp, "status", 200)), resp.read()
+            return int(getattr(resp, "status", 200)), _read_capped(resp)
     except urllib.error.HTTPError as exc:
         return exc.code, b""
     except Exception:  # noqa: BLE001
@@ -352,10 +373,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                             str(r["detail"]).replace("|", "/")))
         lines += ["", "> 口径：`unavailable` = schema 取不到（网络/地址问题，不判派生面不合格）；",
                   "> `skipped` = 本机缺 validator；`fail` = 官方 schema 判定派生面不合规（须修派生面）。", ""]
-        out.write_text("\n".join(lines), encoding="utf-8", newline="\n")
+        atomic_write.write_text(out, "\n".join(lines))
         print("  报告已写入：%s" % args.write)
     return 1 if failed else 0
 
 
 if __name__ == "__main__":
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     raise SystemExit(main())

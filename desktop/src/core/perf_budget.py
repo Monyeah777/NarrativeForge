@@ -117,6 +117,7 @@ def record(root: str = ".", only: str = "", runner=None, today: _dt.date | None 
         if float(e.get("budget_ms") or 0) and mid > float(e.get("budget_ms") or 0):
             bad.append(eid)
     p = Path(root) / DECL_REL
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    from core import atomic_write              # 在仓协议件：原子落盘（2026-10-01）
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False, indent=2,
+                                          sort_keys=True) + "\n")
     return bad, doc

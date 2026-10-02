@@ -18,6 +18,8 @@
 from __future__ import annotations
 
 import json
+
+from core import atomic_write
 import os
 import re
 from pathlib import Path
@@ -131,7 +133,7 @@ def _provable_level(root: str, mid: str, package_dir: str) -> str:
             if mid in (p.get("module_ids") or []):
                 registered = True
                 break
-    except (OSError, ValueError):
+    except (OSError, ValueError):  # registry 不可读/不可解析 ⇒ 保守判 L1（不冒认 L2）
         pass
     referenced = False
     for pat in ("03_管线库/*.md", "community/*/pipelines/*.md"):
@@ -204,7 +206,8 @@ def apply(root: str = ".", write: bool = False) -> List[Dict[str, Any]]:
         level = _provable_level(root, spec["id"], pkg)
         new = inject_contract(text, spec, level)
         if write:
-            Path(doc).write_text(new, encoding="utf-8", newline="\n")
+            # 原子写（2026-09-30）：就地编辑**源件**——崩在中途不许留下截断的模块/管线件。
+            atomic_write.write_text(doc, new)
         out.append({"path": rel, "id": spec["id"], "level": level,
                     "missing": [k for k in ("layer", "inputs") if not spec.get(k)],
                     "events": {"publish": spec["publish"], "subscribe": spec["subscribe"]}})
@@ -253,7 +256,7 @@ def apply_outputs(root: str = ".", write: bool = False) -> List[Dict[str, Any]]:
             for ev, body in (data.get("events") or {}).items():
                 ev_fields[ev] = {k: (v.get("type") if isinstance(v, dict) else "untyped")
                                  for k, v in (body.get("fields") or {}).items()}
-        except ValueError:
+        except ValueError:  # 事件注册表不可读/不可解析 ⇒ 字段面留空（不凭空造字段）
             pass
     out = []
     for doc in csc._module_docs(root):
@@ -273,7 +276,9 @@ def apply_outputs(root: str = ".", write: bool = False) -> List[Dict[str, Any]]:
         new = _replace_outputs_line(text, toks)
         changed = new != text
         if changed and write:
-            Path(doc).write_text(new, encoding="utf-8", newline="\n")
+            # 原子写（2026-09-30 收口）：这是**就地编辑源件**（模块 md 的 outputs 行），
+            # 与同文件 `:210` 那处同规——裸 `write_text` 崩在中途会把源件截断成半截。
+            atomic_write.write_text(Path(doc), new)
         out.append({"path": rel, "id": str(mc["id"]), "tokens": toks,
                     "changed": changed, "reason": "事件载荷证据"})
     return out

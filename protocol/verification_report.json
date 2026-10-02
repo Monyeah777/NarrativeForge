@@ -23,8 +23,8 @@
           "surfaces": 4,
           "tiers": 4
         },
-        "raises": 55,
-        "sinks": 12
+        "raises": 58,
+        "sinks": 14
       },
       "status": "pass",
       "warns": 0
@@ -165,8 +165,8 @@
       "sample": [],
       "source": "payload_registry.scan",
       "stats": {
-        "declared": 442,
-        "pending": 1,
+        "declared": 443,
+        "pending": 0,
         "registered": 443,
         "used": 443
       },
@@ -235,12 +235,10 @@
           "NF-TECHDOC-Monyeah777-1",
           "NF-WORLDCAMPUS-Monyeah777-1"
         ],
-        "warns": [
-          "NF-1 有 ssh-sig 锚但未提供 allowed_signers → 本轮无法校验（修复指引：--ssh-allowed-signers <文件>）"
-        ]
+        "warns": []
       },
-      "status": "warn",
-      "warns": 1
+      "status": "pass",
+      "warns": 0
     },
     {
       "id": "library_projection",
@@ -260,7 +258,7 @@
       "source": "receipts.verify_wrapped",
       "stats": {
         "entries": 3,
-        "root": "be9562d619c464ebfd23696498187cdc3c9f5eeb17d16dc8babce662592bd545"
+        "root": "5f29853cba9dc4505fb0d74e743056ddbd0d0d036b0876110e3370e69d4d5bf1"
       },
       "status": "pass",
       "warns": 0
@@ -274,7 +272,7 @@
       "stats": {
         "contracts": 27,
         "passed": 27,
-        "root": "b2c5f9de3590aca74a86291090068f90ef02327f4c2c0bfb1f3ce22b28633d19",
+        "root": "fe99e166fe50ecb9779993609585357f11c1420a34033773f9551600e2c1e09f",
         "verdict": "conformant"
       },
       "status": "pass",
@@ -344,11 +342,11 @@
       "sample": [],
       "source": "code_metrics.scan",
       "stats": {
-        "baseline": 160,
-        "files": 160,
+        "baseline": 169,
+        "files": 169,
         "max_fn_cc": 150,
-        "max_fn_lines": 951,
-        "max_lines": 5418
+        "max_fn_lines": 1012,
+        "max_lines": 6766
       },
       "status": "pass",
       "warns": 0
@@ -390,10 +388,10 @@
       "source": "coupling_metrics.scan",
       "stats": {
         "cycles": 0,
-        "modules": 136,
+        "modules": 143,
         "registered_cycles": 0,
-        "registered_sdp": 6,
-        "sdp": 6
+        "registered_sdp": 7,
+        "sdp": 7
       },
       "status": "pass",
       "warns": 0
@@ -405,9 +403,9 @@
       "sample": [],
       "source": "perf_budget.scan",
       "stats": {
-        "declared": 5,
+        "declared": 8,
         "over_budget": 0,
-        "recorded": 5
+        "recorded": 8
       },
       "status": "pass",
       "warns": 0
@@ -459,12 +457,12 @@
       "warns": 0
     }
   ],
-  "root_digest": "7ef20df00824ee4a6cf9b70df3d2e7193a1c42147919a7c446ea4264ba917297",
+  "root_digest": "012fe4b6d0b028c9bb87c26295c189452967c89a8024642bbe0975154d225044",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,
     "fail": 0,
-    "pass": 25,
-    "warn": 2
+    "pass": 26,
+    "warn": 1
   }
 }

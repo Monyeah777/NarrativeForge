@@ -25,6 +25,26 @@ VERIFIER = ROOT / "scripts" / "nf_verify.py"
 
 
 class TestProofScale(unittest.TestCase):
+    def test_receipts_write_is_idempotent(self):
+        """回执写入口**再跑一次逐字节不变**（2026-10-01 改原子写后补）。
+
+        依据：agent 密集重复调用会重发同一写命令；回执单根又是 check35 的比对对象——
+        写侧若引入任何抖动（时间戳/顺序），第二次跑就会把入仓面打红。另：本仓实测
+        11 条 `--write` 命令二次调用**全部不改工作树指纹**（只读取证）。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp, "library")
+            d.mkdir(parents=True, exist_ok=True)
+            (d / "NF-1.md").write_text(
+                "---\nid: NF-1\ntype: 测试件\ntitle: 幂等件\ndescription: d\n"
+                "license: MIT\ngenerated: 2026-09-14\nstatus: active\n"
+                "sources:\n  - Issue #1\n---\n\n正文\n", encoding="utf-8", newline="\n")
+            rc.write(tmp)
+            target = Path(tmp, rc.RECEIPTS_REL)
+            first = target.read_bytes()
+            rc.write(tmp)
+            self.assertEqual(first, target.read_bytes(), "回执二次写必须逐字节不变")
+
     def test_proofs_fold_to_root_for_many_sizes(self):
         for n in (1, 2, 3, 4, 5, 8, 9, 16, 17, 24, 100):
             leaves = [hashlib.sha256(b"%d-%d" % (n, i)).digest() for i in range(n)]

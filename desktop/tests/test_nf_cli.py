@@ -5,8 +5,10 @@
 覆盖子命令参数面与装配链 smoke（替代手工冒烟；不依赖 GUI/端壳）。
 """
 import argparse
+import ast
 import builtins
 import collections
+import re
 import contextlib
 import importlib.util
 import io
@@ -22,6 +24,51 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 spec = importlib.util.spec_from_file_location("nfcli", ROOT / "scripts" / "nf.py")
 nf = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(nf)
+
+_TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+
+
+def declared_flags(src: str) -> list:
+    """→ `[(行号, dest, 长选项串表)]`：全部 `add_argument` 声明（纯函数）。"""
+    tree = ast.parse(src)
+    out = []
+    for call in [n for n in ast.walk(tree)
+                 if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                 and n.func.attr == "add_argument"]:
+        opts = [a.value for a in call.args
+                if isinstance(a, ast.Constant) and isinstance(a.value, str)
+                and a.value.startswith("-")]
+        longs = [o for o in opts if o.startswith("--")]
+        if not longs:
+            continue                    # 只有短选项（`-h`）或位置参数，跳过
+        dest, decl_hits = "", 0
+        for kw in call.keywords:
+            if kw.arg == "dest" and isinstance(kw.value, ast.Constant):
+                dest = str(kw.value.value)
+                decl_hits = 1           # 显式 `dest="x"` 字面量本身占 1 次词元
+        if not dest:
+            dest = longs[-1][2:].replace("-", "_")
+        out.append((call.lineno, dest, longs, decl_hits))
+    return out
+
+
+def unread_flags(src: str) -> list:
+    """→ 「**声明了、却从没被读过**」的旗标 `[(行号, dest, 长选项串)]`（纯函数，变异自证直接喂它）。
+
+    口径（探针先证伪过一版）：隐式 dest 的**声明行不含 dest 词元**——`--no-render` 分词成
+    `no` + `render`，一次「读」是 `args.no_render` 这种写法。第一版按「词元数 ≤1 即零引用」判，
+    把 7 个真在用的旗标（`--no-render`/`--state-text`/`--no-banner`/`--no-history`/`--no-start`/
+    `--no-include-refs`/`--write-advisory`）全报成死旗标——所以阈值必须区分「显式 dest=」与
+    「由选项串推出来的 dest」。
+    """
+    counts = collections.Counter(_TOKEN.findall(src))
+    out = []
+    for lineno, dest, longs, decl_hits in declared_flags(src):
+        if dest in ("help", "version"):
+            continue
+        if counts[dest] <= decl_hits:
+            out.append((lineno, dest, longs[-1]))
+    return out
 
 
 class LightCommandReadBudgetTest(unittest.TestCase):
@@ -73,6 +120,41 @@ class LightCommandReadBudgetTest(unittest.TestCase):
                 got, self.BUDGET,
                 "`nf %s` 打开了 %d 个文件（>%d）——轻命令里混进了全仓扫描？"
                 % (" ".join(argv), got, self.BUDGET))
+
+
+class NoDeadFlagTest(unittest.TestCase):
+    """CLI 面：**声明了却从没被读过**的旗标必须为零。
+
+    依据（2026-10-02，作者指令「清除逻辑垃圾（注意辨别）」「内外口径统一」）：本轮修
+    `nf review --scope` 时发现它属「读了但不起作用」；比它更早一层的形态是**压根没读**——
+    旗标进了 `--help`、进了 shell 补全、进了文档，却没有任何代码路径看它一眼。本判据把这一层
+    钉住（「读了但不生效」那类语义问题另由各自的真跑用例守）。
+    """
+
+    def test_no_declared_flag_is_unread(self):
+        src = (ROOT / "scripts" / "nf.py").read_text(encoding="utf-8")
+        declared = declared_flags(src)
+        self.assertGreaterEqual(len(declared), 60,
+                                "旗标面塌缩（判据可能已失效）：%d" % len(declared))
+        got = unread_flags(src)
+        self.assertEqual([], got,
+                         "声明了却从没读过的旗标（修复指引：接线到代码，或删掉声明与文档）：%s"
+                         % ["%s:%d %s" % (ROOT.joinpath("scripts/nf.py").as_posix(), ln, opt)
+                            for ln, _dest, opt in got])
+
+    def test_predicate_has_catch_power(self):
+        """变异自证：**没读**的旗标必判红；`args.x` 读过的、显式 dest= 的不许误报。"""
+        dead = ("p = subparsers.add_parser('x')\n"
+                "p.add_argument('--never-read', action='store_true', help='说明')\n")
+        self.assertEqual([(2, "never_read", "--never-read")], unread_flags(dead))
+        used = ("p = subparsers.add_parser('x')\n"
+                "p.add_argument('--no-render', action='store_true')\n"
+                "def f(args):\n    return not args.no_render\n")
+        self.assertEqual([], unread_flags(used))
+        explicit = ("p = subparsers.add_parser('x')\n"
+                    "p.add_argument('--x-y', dest='foo', action='store_true')\n"
+                    "def f(args):\n    return args.foo\n")
+        self.assertEqual([], unread_flags(explicit))
 
 
 class NfCliSmokeTest(unittest.TestCase):
@@ -153,6 +235,19 @@ class NfCliSmokeTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn('"target": "M90"', out)
         self.assertIn('"kind"', out)
+
+    def test_id_arguments_tolerate_surrounding_whitespace(self):
+        """**标识符**入参裁空白：粘贴常带看不见的尾随/前导空格（2026-10-01 口径统一）。
+
+        实测缺口：`nf who-refers "M90 "` / `nf related "M90 "` / `nf impact "M90 "` 此前判
+        「不在册」——那是**假事实**（id 本来就是对的）；而 `library show` / `decisions show`
+        / `patterns show` 一直是裁的。路径类入参**不裁**（POSIX 下尾随空格是合法文件名），
+        故本件只钉标识符面。
+        """
+        for argv in (["related", " M90 "], ["who-refers", "M90 "],
+                     ["impact", " M90"], ["domain", "build", "--spec", " A01 "]):
+            code, out = self._run(argv)
+            self.assertEqual(0, code, "%s 应当接受带空白的标识符：%s" % (argv, out[:120]))
 
     def test_asset_ls_json(self):
         code, out = self._run(["asset", "ls", "--json", "--root", str(ROOT)])
@@ -253,6 +348,21 @@ class NfCliSmokeTest(unittest.TestCase):
                                "帮我组装一个西幻生存世界的完整版",
                                "--check", sample])
         self.assertEqual(code, 0, out)
+
+    def test_assemble_check_is_not_silently_skipped_by_a_vague_requirement(self):
+        """`--check` 是**验收动作**（2026-09-30 修）：需求无法解析时须明确拒（rc=2），不许回 0。
+
+        修复前：`nf assemble "x" --check out.md` 走澄清分支后 `return 0`——脚本里的
+        `nf assemble "$REQ" --check out.md && 发布` 会把「**根本没验收**」读成「验收通过」
+        （与工具面那些「看起来正常的错答」同类）。允许集来自需求解析，解析不出就不能假装核对过。
+        """
+        sample = os.path.join(ROOT, "docs", "完整版样本_西幻生存流P03.md")
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            code, out = self._run(["assemble", "x", "--check", sample])
+        self.assertEqual(2, code, out)
+        self.assertIn("未执行验收", err.getvalue())
+        self.assertIn("修复指引", err.getvalue())
 
     def test_asset_usage_json(self):
         code, out = self._run(["asset", "usage", "--json", "--root", str(ROOT)])
@@ -506,6 +616,119 @@ class NfCliSmokeTest(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0)
         self.assertIn("nf 1.0.0", proc.stdout)
+
+
+SKIP_DESTS = {"help", "cmd"}
+READ_PATTERNS = (
+    r"args\.%s\b",
+    r"getattr\(args,\s*[\"']%s[\"']",
+    r"[\"']%s[\"']\s*\)",
+)
+
+
+def unread_flag_dests(parser, source: str, allow=()) -> list:
+    """→ 声明了却**没人读**的旗标 dest 清单（纯函数：parser + 入口源码文本）。
+
+    为什么要有这条：「声明面 = 执行面」是本仓纪律（MCP 那轮的同一条）。一个 `--flag`
+    只在 `_build_parser()` 里挂着、代码里从不读它，就是**传了也没用的静默空转**——
+    用户按 `--help` 传参却得到默认行为，比报错更难发现。
+    """
+    import re as _re
+    found = {}
+
+    def _walk(p):
+        for act in p._actions:
+            if isinstance(act, argparse._SubParsersAction):
+                for name, sp in act.choices.items():
+                    _walk(sp)
+                continue
+            if not act.option_strings:
+                continue
+            dest = act.dest
+            if not dest or dest in SKIP_DESTS or dest in allow:
+                continue
+            found.setdefault(dest, act.option_strings)
+
+    _walk(parser)
+    out = []
+    for dest, flags in sorted(found.items()):
+        if not any(_re.search(pat % _re.escape(dest), source) for pat in READ_PATTERNS):
+            out.append((dest, tuple(flags)))
+    return out
+
+
+class DeclaredFlagsAreReadTest(unittest.TestCase):
+    """「声明面 = 执行面」：`nf` 的每个旗标都必须真被读到（防静默空转）。"""
+
+    def test_no_declared_flag_is_unread(self):
+        source = (ROOT / "scripts" / "nf.py").read_text(encoding="utf-8")
+        got = unread_flag_dests(nf._build_parser(), source)
+        self.assertEqual([], got, "声明了却没人读的旗标（修复指引：在处理器里读它，"
+                         "或删掉这个假接口）：%s" % got)
+
+    def test_predicate_flags_unread_but_spares_read(self):
+        """变异自证：只声明不读的旗标必判红；被 `args.x` / `getattr(args, "x")` 读的不许误报。"""
+        p = argparse.ArgumentParser(prog="t")
+        p.add_argument("--dead")
+        p.add_argument("--live")
+        p.add_argument("--gotten")
+        src = 'print(args.live)\nprint(getattr(args, "gotten", False))\n'
+        got = {d for d, _f in unread_flag_dests(p, src)}
+        self.assertEqual({"dead"}, got)
+
+
+class RootFlagHonoredTest(unittest.TestCase):
+    """**声明了 `--root` 就必须真按它扫**（2026-09-30 补）。
+
+    为什么要这条：`--root` 的用途是「对另一棵树做同一套体检」（例如在临时夹具上验证规则）。
+    若某个命令声明了参数却仍扫真仓，用户会拿到**真仓的结论**当夹具的结论——一种安静的错答。
+    判据取「空树 ⇒ 空结论」：把 `--root` 指向一个空临时目录，命令必须如实报空。
+    """
+
+    def _run(self, argv):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            code = nf.main(list(argv))
+        return code, out.getvalue()
+
+    def test_declared_root_is_honored(self):
+        with tempfile.TemporaryDirectory(prefix="nf_root_") as tmp:
+            for argv, marker in (
+                    (["asset", "ls", "--root", tmp], "货架为空"),
+                    (["module", "ls", "--root", tmp], "合计 0"),
+                    (["module", "verify", "--root", tmp], "模块 0"),
+                    (["asset", "density", "--root", tmp], "资产文件 0"),
+                    (["asset", "usage", "--root", tmp], "资产键 0"),
+                    (["asset", "thickness", "--root", tmp], "资产档 0"),
+                    (["asset", "inventory", "--root", tmp], "无 provenance"),
+                    (["asset", "verify", "--root", tmp], "台账 0"),
+                    (["design", "audit", "--root", tmp], "无 audit.md"),
+                    (["design", "steelman", "--root", tmp], "无 steelman")):
+                code, out = self._run(argv)
+                self.assertEqual(0, code, (argv, out))
+                self.assertIn(marker, out, "--root 未被兑现：%s" % (argv,))
+
+    def test_non_directory_root_is_refused_not_answered(self):
+        """`--root` 落点不在场 / 是文件 ⇒ 必须**拒**，不得对没有载体的树下肯定结论。
+
+        实测缺口（2026-09-30，同族复扫）：`nf asset verify --root README.md` →
+        「✓ 台账闭合：每资产可溯源 / 可发现 / 键无孤儿」、`nf module verify --root
+        <不存在>` → 「✓ 无 deprecated/retired 模块被引用」——对**不存在的树**报绿，
+        正是「看起来正常的错答」（同 `drill_fidelity`「标准不得无载体」）。空树体检
+        （在场但空的目录）仍按 `test_declared_root_is_honored` 报空结论。
+        """
+        for argv in (["asset", "verify", "--root", "README.md"],
+                     ["asset", "ls", "--root", "README.md"],
+                     ["module", "verify", "--root", "README.md"],
+                     ["asset", "verify", "--root", "__NF_NO_SUCH_ROOT__"]):
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                code = nf.main(argv)
+            text = out.getvalue() + err.getvalue()
+            self.assertEqual(2, code, (argv, text))
+            self.assertIn("--root 落点不是在场目录", text, (argv, text))
+            self.assertIn("修复指引", text, (argv, text))
+            self.assertNotIn("内部错误", text, argv)
 
 
 class ParserBuildBudgetTest(unittest.TestCase):

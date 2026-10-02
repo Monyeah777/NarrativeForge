@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import json
+import io
 import sys
 import tempfile
 import unittest
@@ -23,9 +24,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core.exporter import export  # noqa: E402
 from core.ir import IRDocument, IRLayer, IRModule  # noqa: E402
+from core import mcp_runtime as mrt  # noqa: E402
 from core.mcp_runtime import (INVALID_PARAMS, INVALID_REQUEST,  # noqa: E402
                               McpRuntime, encode_message, is_single_line_message,
                               load_snapshot, template_matches, uri_template_issue,
+                              MAX_MESSAGE_BYTES,
                               _repo_resource_metas, _repo_resource_templates)
 
 
@@ -208,6 +211,48 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertTrue(all(r["uri"].startswith("nf://repo/module/")
                             for r in page))
         self.assertTrue(all(r.get("package") == "官方" for r in page))
+
+    def test_resources_list_param_admission(self):
+        """资源面参数准入（2026-09-30 补）：非法 cursor / 非法 type / 陌生键一律 `-32602`。
+
+        依据：此前非法 cursor 被**静默当 0**（客户端以为从第一页开始）、非法 `type` **静默给
+        空表**（客户端以为「没有这类资源」）——只读面里的静默错答，与工具参数面同一类。
+        """
+        for params in ({"cursor": "abc"}, {"cursor": -5}, {"type": 123},
+                       {"typo": "x"}, {"type": "不存在"}):
+            resp = self.srv.handle(_req(60, "resources/list", params))
+            self.assertEqual(INVALID_PARAMS, resp["error"]["code"], params)
+            self.assertIn("修复指引", resp["error"]["message"], params)
+        for params in ({}, {"type": "module"}, {"cursor": "0"}, {"cursor": "20"}):
+            resp = self.srv.handle(_req(61, "resources/list", params))
+            self.assertIn("result", resp, params)
+
+    def test_method_level_param_admission(self):
+        """方法级参数准入：其余四个带参方法同样只认自己声明的键（2026-09-30 补）。
+
+        同一条纪律的收口：参数写法不被理解时宁可拒绝，也不静默忽略——`resources/read` 与
+        `prompts/get` 此前会忽略陌生键（客户端以为过滤生效了），`initialize` 连
+        `capabilities` 类型都不看。`_` 前缀是协议保留区（`_meta` 用于每请求版本协商），放行。
+        """
+        for method, params in (("resources/read", {"uri": "nf://repo/module/M90", "foo": 1}),
+                               ("prompts/get", {"name": "assemble_guide", "foo": 1}),
+                               ("server/discover", {"foo": 1}),
+                               ("initialize", {"protocolVersion": "2025-11-25",
+                                               "capabilities": {}, "clientInfo": {}, "foo": 1})):
+            resp = self.srv.handle(_req(70, method, params))
+            self.assertEqual(INVALID_PARAMS, resp["error"]["code"], (method, params))
+            self.assertIn("修复指引", resp["error"]["message"], method)
+        bad = self.srv.handle(_req(72, "initialize", {"protocolVersion": "2025-11-25",
+                                                     "capabilities": "x", "clientInfo": {}}))
+        self.assertEqual(INVALID_PARAMS, bad["error"]["code"], bad)
+        # 反向：合规形态与保留名不受影响
+        for method, params in (("resources/read", {"uri": "nf://repo/module/M90"}),
+                               ("prompts/get", {"name": "assemble_guide"}),
+                               ("initialize", {"protocolVersion": "2025-11-25",
+                                               "capabilities": {}, "clientInfo": {}}),
+                               ("tools/list", {"_meta": {"io.modelcontextprotocol/"
+                                                         "protocolVersion": "2026-07-28"}})):
+            self.assertIn("result", self.srv.handle(_req(71, method, params)), (method, params))
 
     def test_read_repo_module_resource_content(self):
         """44 深化：resources/read 经 nf://repo/… 取模块正文实质内容。"""
@@ -501,6 +546,29 @@ class TestMcpRuntime(unittest.TestCase):
         self.assertEqual(json.loads(lines[0])["error"]["code"], -32700)
         self.assertEqual(json.loads(lines[1])["id"], 84)
 
+    def test_oversized_inbound_message_is_rejected_and_session_survives(self):
+        """入站资源闸门（2026-09-30 补）：超上限的单条消息干净拒，且**不打死会话**。
+
+        依据：此前 `for raw in buf` 读任意长度的一行——客户端只要不发换行，就能让服务端把整条
+        流灌进内存（实测 20 MB 单帧照单全收）。现在按 `MAX_MESSAGE_BYTES` 截断拒收并丢弃到行尾
+        （行对齐不破），后续消息照常服务。
+        """
+        class _FakeIn(io.StringIO):
+            def __init__(self, raw: bytes):
+                super().__init__("")
+                self.buffer = io.BytesIO(raw)      # `_iter_lines` 走字节路径才受上限约束
+
+        big = (b'{"jsonrpc":"2.0","id":1,"method":"ping","params":{"x":"'
+               + b"y" * (MAX_MESSAGE_BYTES + 64) + b'"}}\n')
+        good = b'{"jsonrpc":"2.0","id":2,"method":"ping"}\n'
+        out = StringIO()
+        self.srv.serve_stdio(stdin=_FakeIn(big + good), stdout=out)
+        lines = [json.loads(ln) for ln in out.getvalue().splitlines() if ln.strip()]
+        self.assertEqual(2, len(lines), lines)
+        self.assertEqual(INVALID_REQUEST, lines[0]["error"]["code"])
+        self.assertIn("超上限", lines[0]["error"]["message"])
+        self.assertEqual(2, lines[1]["id"])          # 超长帧不污染后续消息
+
     # —— 资源模板面（RFC 6570 一级子集）：模板合法 + 真实 uri 全覆盖 ——
     def test_uri_template_subset_validated(self):
         for good in ("nf://repo/library/{id}", "nf://repo/asset/{package}/{key}"):
@@ -535,6 +603,224 @@ class TestMcpRuntime(unittest.TestCase):
             self.assertEqual(result["resultType"], "complete")
             self.assertIsInstance(result["ttlMs"], int)
             self.assertIn(result["cacheScope"], ("public", "private"))
+
+
+class VersionDeclarationKeyTest(unittest.TestCase):
+    """版本声明**只认规范键名**：`_meta["io.modelcontextprotocol/protocolVersion"]`。
+
+    依据（2026-10-01 实测，本判据的补面）：`-32022` 的判据已由既有用例覆盖（命名空间键 + 不支持
+    版本 ⇒ `-32022` + `supported`/`requested`），但**「用别的键名算不算声明」没有钉住**——
+    实测裸键 `_meta["protocolVersion"]` **不算声明**（服务端按 legacy 处理、不回 `-32022`）。
+    这条口径容易两头出错（客户端以为声明了、服务端根本没看到），故写进 `docs/mcp.md` 并在此钉住：
+    **只有规范键名触发版本校验**，裸键既不报错也不生效。
+    """
+
+    def setUp(self):
+        self.rt = mrt.McpRuntime({"mcp": {"name": "probe", "version": "0", "resources": []}})
+
+    def _list(self, meta):
+        return self.rt.handle({"jsonrpc": "2.0", "id": 1, "method": "resources/list",
+                               "params": {"_meta": meta}})
+
+    def test_only_the_namespaced_key_declares_a_version(self):
+        err = (self._list({"io.modelcontextprotocol/protocolVersion": "1900-01-01"})
+               .get("error") or {})
+        self.assertEqual(mrt.UNSUPPORTED_PROTOCOL_VERSION, err.get("code"),
+                         "命名空间键声明了不支持版本，必须 -32022")
+        self.assertIn("1900-01-01", str(err.get("data", {}).get("requested")))
+        # 裸键：不算版本声明 ⇒ 不报 -32022（按 legacy 处理），但仍须正常服务
+        ok = self._list({"protocolVersion": "1900-01-01"})
+        self.assertNotIn("error", ok, "裸键不构成版本声明，不该被当版本错误（口径见 docs/mcp.md）")
+        self.assertTrue(ok.get("result", {}).get("resources"), "裸键请求仍须正常返回资源")
+        # 规范键名 + 受支持版本 ⇒ 正常
+        good = self._list({"io.modelcontextprotocol/protocolVersion": "2026-07-28"})
+        self.assertNotIn("error", good)
+
+
+class PromptGetInteropTest(unittest.TestCase):
+    """`prompts/get` 必须接受**协议自带的空 `arguments`**（否则一部分客户端取不到模板）。
+
+    依据（2026-10-01 实测）：MCP 的 `prompts/get` 参数是 `{name, arguments?}`（后者可选），而很多
+    客户端会**总是**带上它。此前本服务把 `arguments` 当陌生键一律 `-32602` ⇒ 这类客户端调用
+    `{"name": "assemble_guide", "arguments": {}}` 直接失败。现在：**允许出现、须为空对象**
+    （本模板无参数）；非对象或非空 → 带指引的 `-32602`。
+    """
+
+    def setUp(self):
+        self.rt = mrt.McpRuntime({"mcp": {"name": "probe", "version": "0", "resources": []}})
+
+    def _get(self, params):
+        return self.rt.handle({"jsonrpc": "2.0", "id": 1, "method": "prompts/get",
+                               "params": params})
+
+    def test_empty_arguments_is_accepted(self):
+        for params in ({"name": "assemble_guide"},
+                       {"name": "assemble_guide", "arguments": {}}):
+            r = self._get(params)
+            self.assertNotIn("error", r, "协议合法的空 arguments 被拒：%s" % params)
+            msg = r["result"]["messages"][0]["content"]["text"]
+            self.assertIn("NarrativeForge", msg, "模板正文不得为空")
+
+    def test_non_empty_or_wrong_typed_arguments_carry_guidance(self):
+        for params in ({"name": "assemble_guide", "arguments": {"x": "1"}},
+                       {"name": "assemble_guide", "arguments": "x"}):
+            r = self._get(params)
+            err = r.get("error") or {}
+            self.assertEqual(mrt.INVALID_PARAMS, err.get("code"), params)
+            self.assertIn("修复指引", str(err.get("message")), params)
+
+    def test_unknown_prompt_is_refused_with_guidance(self):
+        err = (self._get({"name": "nope"}).get("error") or {})
+        self.assertEqual(mrt.INVALID_PARAMS, err.get("code"))
+        self.assertIn("prompts/list", str(err.get("message")), "拒收须指明可枚举面")
+
+
+class ResourceListPagingAndFilterTest(unittest.TestCase):
+    """`resources/list` 的**分页**与 **type / package 过滤**必须自洽（客户端只信这两件事）。
+
+    依据（2026-10-01 普查）：全量翻页 965 条**零重复、零漏项**，与运行时可寻址集合等长；
+    `type=<kind>` 逐类**只回该类**且条数与全量同型子集相等；`package=<原值>` 只回该包。
+    同轮排除一处**探针自身的错**：`package` 过滤要的是**列表项里 `package` 字段的原值**
+    （中文名本身），我首版传了 uri 里的百分号编码段 ⇒ 空表——那是调用方用错，不是实现错，
+    已在 `docs/mcp.md` 把这条口径写明，并在此把它钉住。
+    """
+
+    KINDS = ("module", "pipeline", "asset", "library", "pattern")
+
+    def setUp(self):
+        self.rt = mrt.McpRuntime({"mcp": {"name": "probe", "version": "0", "resources": []}})
+
+    def _list_all(self, **params) -> list:
+        out, cursor = [], ""
+        for _ in range(300):
+            p = dict(params)
+            if cursor:
+                p["cursor"] = cursor
+            body = self.rt.handle({"jsonrpc": "2.0", "id": 1, "method": "resources/list",
+                                   "params": p}).get("result") or {}
+            out += body.get("resources") or []
+            cursor = body.get("nextCursor") or ""
+            if not cursor:
+                break
+        return out
+
+    def test_paging_is_complete_and_duplicate_free(self):
+        rows = self._list_all()
+        uris = [r["uri"] for r in rows]
+        self.assertEqual(len(uris), len(set(uris)), "分页出现重复条目（游标不前进？）")
+        self.assertEqual(len(self.rt._repo_meta) + len(self.rt._meta), len(uris),
+                         "翻完所有页的总数与运行时可寻址集合不等（漏列或多列）")
+
+    def test_type_filter_is_exact(self):
+        full = self._list_all()
+        for kind in self.KINDS:
+            got = self._list_all(type=kind)
+            self.assertTrue(got, "type=%s 空表（判据可能已失效）" % kind)
+            self.assertTrue(all(r["uri"].split("/")[3] == kind for r in got),
+                            "type=%s 混入了别的类" % kind)
+            self.assertEqual(len([u for u in full if u["uri"].split("/")[3] == kind]), len(got),
+                             "type=%s 的条数与全量同型子集不等" % kind)
+
+    def test_package_filter_uses_the_item_field_value(self):
+        rows = [r for r in self._list_all(type="asset")]
+        self.assertTrue(rows, "没有 asset 类资源（判据可能已失效）")
+        pkg = rows[0]["package"]
+        got = self._list_all(type="asset", package=pkg)
+        self.assertTrue(got, "按列表项 package 字段过滤得到空表（口径分叉）")
+        self.assertTrue(all(r.get("package") == pkg for r in got),
+                        "package=%s 的过滤结果混入了别的包" % pkg)
+
+
+class LiveResourceReachabilityTest(unittest.TestCase):
+    """实时仓库面：**列出来的资源必须真读得出来**（客户端只做 list → read 两件事）。
+
+    依据（2026-10-01 全量普查）：`resources/list` 是**分页**的（默认每页 20，实测翻 **49 页**
+    共 **965** 条：asset 597 / module 248 / pipeline 114 / library 3 / pattern 3），逐条
+    `resources/read` **965/965 全部读出、零失败**（用时 23.8 s）。全量太贵，故本件钉三件更省的
+    强不变式：① 翻完所有页后总条数 == 运行时内部可寻址集合的大小（防「列了读不出」与「漏列」）；
+    ② 五种 kind 都在列；③ **每种 kind 抽 6 条**真读（含 uri 编码/包名/条目键三条路径），
+    任一条读不出即红。全量那一遍作为一次性取证留档。
+    """
+
+    KINDS = ("module", "pipeline", "asset", "library", "pattern")
+
+    def _rt(self):
+        return mrt.McpRuntime({"mcp": {"name": "probe", "version": "0", "resources": []}})
+
+    @staticmethod
+    def _call(rt, method, params=None):
+        return rt.handle({"jsonrpc": "2.0", "id": 1, "method": method, "params": params or {}})
+
+    def test_listed_resources_are_all_readable(self):
+        rt = self._rt()
+        uris, cursor, pages = [], "", 0
+        while True:
+            res = self._call(rt, "resources/list", {"cursor": cursor} if cursor else {})
+            body = res.get("result") or {}
+            uris += [r["uri"] for r in body.get("resources") or []]
+            pages += 1
+            cursor = body.get("nextCursor") or ""
+            if not cursor:
+                break
+            self.assertLess(pages, 200, "分页游标不收敛（客户端会死循环）")
+        self.assertGreater(len(uris), 100, "列出的资源太少（判据可能已失效）")
+        self.assertEqual(len(rt._repo_meta) + len(rt._meta), len(uris),
+                         "resources/list 的总数与运行时可寻址集合不一致（漏列或多列）")
+        by_kind = {}
+        for u in uris:
+            parts = u.split("/")
+            if len(parts) > 3:
+                by_kind.setdefault(parts[3], []).append(u)
+        for kind in self.KINDS:
+            self.assertTrue(by_kind.get(kind), "live 面缺少 %s 类资源" % kind)
+        bad = []
+        for kind, rows in sorted(by_kind.items()):
+            for uri in rows[:6]:
+                resp = self._call(rt, "resources/read", {"uri": uri})
+                if "error" in resp or not resp.get("result"):
+                    bad.append("%s :: %s" % (uri, str(resp.get("error"))[:60]))
+        self.assertEqual([], bad, "列出的资源读不出（客户端会拿到 -32602）：%s" % bad)
+        self.assertTrue(self._call(rt, "resources/templates/list").get("result", {})
+                        .get("resourceTemplates"), "模板面必须非空")
+
+
+class DeclaredSurfaceVsHandlersTest(unittest.TestCase):
+    """声明面 ⇄ 实现面**逐名一致**：声明了没人接的工具是死面，接了没声明的工具是暗面。
+
+    依据（2026-10-01）：`TOOL_DEFS`（对客户端声明的 `inputSchema`）与 `TOOL_HANDLERS`（真派发）
+    此前**没有判据**对账——`test_mcp_packaging` 管的是「上架声明 ⇄ 运行时」，`test_mcp_runtime`
+    管的是「调用行为」，两份声明各自为真却可能整体分叉：加一个工具忘了接线 ⇒ 客户端能看见、
+    调用却回 `-32601`；加了处理器忘了声明 ⇒ 能力存在但没人知道。本件把三处（声明 / 派发 /
+    真调一次）钉在一起。
+    """
+
+    def test_declared_tools_match_handlers(self):
+        declared = {t["name"] for t in mrt.TOOL_DEFS}
+        handled = set(mrt.TOOL_HANDLERS)
+        self.assertTrue(declared, "声明面为空（判据可能已失效）")
+        self.assertEqual(declared, handled,
+                         "声明与派发分叉：只声明没接线=%s；只接线没声明=%s"
+                         % (sorted(declared - handled), sorted(handled - declared)))
+
+    def test_declared_prompts_match_runtime(self):
+        declared = {p["name"] for p in mrt.PROMPT_DEFS}
+        self.assertEqual({"assemble_guide"}, declared, "提示面与运行时分叉：%s" % sorted(declared))
+
+    def test_every_declared_tool_is_reachable(self):
+        """真派发一次：用声明里的必填参数名喂合法值，不得回 `-32601`（未知工具）。"""
+        rt = mrt.McpRuntime({"name": "declared", "version": "0", "resources": []})
+        samples = {"pipeline_ls": {}, "spec_ls": {}, "registry_query": {"query": "M90"},
+                   "library_search": {"query": "NF"}, "library_read": {"entry_id": "NF-1"},
+                   "pattern_read": {"pattern_id": "fail-closed-verification"},
+                   "knowledge_order": {}, "module_read": {"module_id": "M90"},
+                   "pipeline_read": {"pipeline": "P01"}, "asset_get": {"key": "TECH_RULES"}}
+        for spec in mrt.TOOL_DEFS:
+            name = spec["name"]
+            self.assertIn(name, samples, "新工具 %s 没有抽样参数（判据需同步）" % name)
+            resp = rt.handle({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+                              "params": {"name": name, "arguments": samples[name]}})
+            self.assertNotEqual(mrt.METHOD_NOT_FOUND, (resp.get("error") or {}).get("code"),
+                                "声明了却不可达：%s → %s" % (name, resp))
 
 
 if __name__ == "__main__":

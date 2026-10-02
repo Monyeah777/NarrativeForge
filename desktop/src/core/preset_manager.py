@@ -70,7 +70,7 @@ def import_preset_json(text: str) -> Optional[Preset]:
     """从 JSON 文本还原 Preset。非法格式/缺核心字段返回 None。"""
     try:
         data = json.loads(text)
-    except json.JSONDecodeError:
+    except json.JSONDecodeError:  # JSON 坏件 ⇒ None（调用方据此报「预设不可用」）
         return None
     if isinstance(data, dict) and "preset" in data:
         data = data["preset"]
@@ -89,7 +89,7 @@ def import_preset_file(store: Store, path: Path | str) -> Optional[Preset]:
         return None
     try:
         text = f.read_text(encoding="utf-8")
-    except Exception:
+    except Exception:  # 件不可读 ⇒ None（调用方据此报「预设不可用」）
         return None
     p = import_preset_json(text)
     if p:
@@ -100,7 +100,8 @@ def import_preset_file(store: Store, path: Path | str) -> Optional[Preset]:
 def export_preset_file(preset: Preset, path: Path | str) -> bool:
     """导出预设到外部文件。"""
     try:
-        Path(path).write_text(export_preset_json(preset), encoding="utf-8")
+        from core import atomic_write          # 交付件：原子写（半截迁移件不留，2026-10-01）
+        atomic_write.write_text(path, export_preset_json(preset))
         return True
-    except Exception:
+    except Exception:  # 落盘失败 ⇒ False（调用方据返回值报失败）
         return False

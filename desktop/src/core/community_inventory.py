@@ -86,7 +86,7 @@ def load_community_module(pkg: str, full_id: str) -> Optional[Module]:
         return None
     try:
         return parse_module(f.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception:  # 件不可读/不可解析 ⇒ None（调用方据此报「不可用」）
         return None
 
 
@@ -170,7 +170,7 @@ def install_module(store: Store, item: CommunityItem) -> bool:
     try:
         store.save_module(m)
         return True
-    except Exception:
+    except Exception:  # 安装失败 ⇒ False（调用方据返回值报失败）
         return False
 
 

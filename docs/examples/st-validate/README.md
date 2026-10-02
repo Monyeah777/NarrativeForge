@@ -7,6 +7,7 @@
 |---|---|
 | `fixture_card_v2_clean.json` | 结构合规的 V2 卡 → 期望 **fail 0**（演示"干净长什么样"） |
 | `fixture_worldbook_messy.json` | 故意留坑的世界书 → 期望 **W1 fail + W2 warn + W5 warn**（演示"报告怎么指问题"） |
+| `../st-validate-report.md` | **R4 变量面**样例报告（对象 = `docs/examples/mvu-output/mvu_variables.json`，属真实产物而非自造卡）——本目录只放自造 fixture，故它留在 `docs/examples/` 顶层 |
 
 复现：
 

@@ -35,6 +35,7 @@ sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 # 渗透实证 F-10 —— 原实现把 NF_TEST_HOME 原样当删除目标，`=~`/`=<仓库根>`/`=/` 时会
 # 静默递归删除主目录/仓库/盘根（本脚本 CI 每次 push 都跑），与 AGENTS.md 的 rm -rf 红线冲突。
 from core import paths as nf_paths  # noqa: E402  —— 须在 sys.path 就绪之后导入
+from core import atomic_write  # noqa: E402  —— 产物落盘走统一原子写（2026-10-01）
 
 HOME = nf_paths.guard_recursive_delete_target(
     os.environ.get("NF_TEST_HOME", ""), root=ROOT,
@@ -145,8 +146,7 @@ print("[6] generate_document 生成文档")
 title = "CI 端到端冒烟：轻混装配流"
 md, warns = generate_document(p04, selected, asset_pack=None, title=title)
 check("warns 为空（层位精确匹配）", warns == [], f"实际 {warns}")
-with open(OUT_MD, "w", encoding="utf-8") as fh:
-    fh.write(md)
+atomic_write.write_text(OUT_MD, md)
 check("产物文件在场且非空",
       os.path.isfile(OUT_MD) and len(md) > 2000, f"md {len(md)} 字节")
 

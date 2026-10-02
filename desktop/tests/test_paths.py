@@ -57,6 +57,22 @@ class ValidatePathTest(unittest.TestCase):
                 with self.assertRaises(paths.PathEscapeError):
                     paths.validate_path(root, bad)
 
+    def test_drive_relative_writing_is_rejected(self):
+        """盘符相对写法（`C:foo`）：不是绝对路径、却能换根——2026-10-01 对账判据抓到的缺口。
+
+        取证：本机 cwd 恰在 C 盘 ⇒ 老判据把 `C:foo` 解析成 `<cwd>/foo` 后判「在根内」而放行；
+        同一值在 D 盘仓上却会整段替换成 C 盘路径（`ntpath.join` 语义）⇒ 「同一个字符串两个落点」。
+        口径与 `core.trust_boundary` 的参数面一致：带盘符一律拒。
+        """
+        with tempfile.TemporaryDirectory() as root:
+            for bad in ("C:foo", "z:evil.md", "C:tmp/x.md"):
+                with self.assertRaises(paths.PathEscapeError, msg=bad):
+                    paths.validate_path(root, bad)
+            # 正例对照：正常的相对路径与（被允许的）根内绝对路径不受影响
+            self.assertTrue(paths.validate_path(root, "assets/A1.md"))
+            self.assertTrue(paths.validate_path(root, os.path.join(root, "A1.md"),
+                                                allow_absolute=True))
+
     def test_message_carries_fix_guidance(self):
         with tempfile.TemporaryDirectory() as root:
             try:

@@ -54,14 +54,44 @@ def _type_ok(value: Any, want: str) -> bool:
     return isinstance(value, py)
 
 
-def json_schema_check(instance: Any, schema: dict, path: str = "$",
-                      root_schema: Optional[dict] = None,
-                      unsupported: Optional[List[str]] = None) -> List[str]:
+#: 递归深度上限（2026-09-30 补）：schema 与实例**同时**深嵌套时会打爆 Python 栈（实测 2000 层
+#: → `RecursionError`）——而这条链路吃的是**外来投稿**（社区域包声明的 artifact + 它的 schema）。
+#: 崩掉等于把「一份恶意投稿」变成「门禁不可用」；超限一律**判 FAIL 并给修复指引**。
+MAX_DEPTH = 64
+
+#: 失控回溯（ReDoS）形态闸门：pattern **来自投稿者**（社区域包声明的 schema），嵌套量词一族
+#: 会让匹配时间指数增长——实测 `(a+)+$` 对 26 字符已 3.9 s、30 字符再翻约 30 倍。命中即判 FAIL
+#: （这是**形态**问题，不是「不支持的关键字」）。存量 442 条 pattern 实测零命中（不误伤）。
+_NESTED_QUANT = re.compile(r"\([^()]*[+*][^()]*\)\s*[+*{]")
+#: pattern 长度上限（防「写完就挂」的超长表达式；本仓最长实测 < 100 字符）。
+MAX_PATTERN_CHARS = 512
+
+
+def pattern_issue(pat: Any, path: str) -> str:
+    """→ 该 pattern 的形态问题（空串 = 可用）。"""
+    text = str(pat)
+    if len(text) > MAX_PATTERN_CHARS:
+        return ("%s: pattern 过长（%d > %d 字符）（修复指引：只写必要的约束）"
+                % (path, len(text), MAX_PATTERN_CHARS))
+    if _NESTED_QUANT.search(text):
+        return ("%s: pattern 含嵌套量词 %r（可能指数回溯）（修复指引：改写表达式，"
+                "避免 `(x+)+` / `(x*)*` 这类形态）" % (path, text))
+    return ""
+
+
+def _check(instance: Any, schema: dict, path: str = "$",
+           root_schema: Optional[dict] = None,
+           unsupported: Optional[List[str]] = None, _depth: int = 0) -> List[str]:
     """JSON Schema 2020-12 **子集**校验：返回错误清单；不支持的官方关键字进 unsupported。
 
     子集边界（公开声明，不假装全实现）：见 `_SUPPORTED`；超出即上报，
     「不支持」绝不等价「通过」。
+
+    深度：超过 `MAX_DEPTH` 即停（深度是**输入属性**，不是「不支持的关键字」）——报错而不是崩。
     """
+    if _depth > MAX_DEPTH:
+        return ["%s: 嵌套超过上限 %d 层（修复指引：schema/实例别做这么深的结构；本仓判据面"
+                "只处理扁平声明）" % (path, MAX_DEPTH)]
     if root_schema is None:
         root_schema = schema
     if unsupported is None:
@@ -79,7 +109,7 @@ def json_schema_check(instance: Any, schema: dict, path: str = "$",
         if target is None:
             unsupported.append("远程/悬空 $ref %s@%s" % (schema["$ref"], path))
         else:
-            errors += json_schema_check(instance, target, path, root_schema, unsupported)
+            errors += _check(instance, target, path, root_schema, unsupported, _depth + 1)
     types = schema.get("type")
     if types is not None:
         cand = types if isinstance(types, list) else [types]
@@ -95,8 +125,12 @@ def json_schema_check(instance: Any, schema: dict, path: str = "$",
             errors.append("%s: 长度 < %s" % (path, schema["minLength"]))
         if "maxLength" in schema and len(instance) > schema["maxLength"]:
             errors.append("%s: 长度 > %s" % (path, schema["maxLength"]))
-        if "pattern" in schema and not re.search(str(schema["pattern"]), instance):
-            errors.append("%s: 不匹配 pattern %s" % (path, schema["pattern"]))
+        if "pattern" in schema:
+            why = pattern_issue(schema["pattern"], path)
+            if why:
+                errors.append(why)
+            elif not re.search(str(schema["pattern"]), instance):
+                errors.append("%s: 不匹配 pattern %s" % (path, schema["pattern"]))
         fmt = schema.get("format")
         if fmt:
             errors += _format_errors(instance, fmt, path)
@@ -124,14 +158,14 @@ def json_schema_check(instance: Any, schema: dict, path: str = "$",
         if isinstance(prefix, list):
             for i, sub in enumerate(prefix):
                 if i < len(instance):
-                    errors += json_schema_check(instance[i], sub, "%s[%d]" % (path, i),
-                                                root_schema, unsupported)
+                    errors += _check(instance[i], sub, "%s[%d]" % (path, i),
+                                            root_schema, unsupported, _depth + 1)
         items = schema.get("items")
         if isinstance(items, dict):
             start = len(prefix) if isinstance(prefix, list) else 0
             for i in range(start, len(instance)):
-                errors += json_schema_check(instance[i], items, "%s[%d]" % (path, i),
-                                            root_schema, unsupported)
+                errors += _check(instance[i], items, "%s[%d]" % (path, i),
+                                            root_schema, unsupported, _depth + 1)
     if isinstance(instance, dict):
         props = schema.get("properties") or {}
         pats = schema.get("patternProperties") or {}
@@ -147,30 +181,34 @@ def json_schema_check(instance: Any, schema: dict, path: str = "$",
             matched = False
             if key in props:
                 matched = True
-                errors += json_schema_check(value, props[key], "%s.%s" % (path, key),
-                                            root_schema, unsupported)
+                errors += _check(value, props[key], "%s.%s" % (path, key),
+                                            root_schema, unsupported, _depth + 1)
             for pat, sub in pats.items():
+                why = pattern_issue(pat, path)
+                if why:
+                    errors.append(why)          # 形态闸门：不拿投稿者的表达式去跑匹配
+                    continue
                 if re.search(pat, key):
                     matched = True
-                    errors += json_schema_check(value, sub, "%s.%s" % (path, key),
-                                                root_schema, unsupported)
+                    errors += _check(value, sub, "%s.%s" % (path, key),
+                                                root_schema, unsupported, _depth + 1)
             if not matched:
                 ap = schema.get("additionalProperties", True)
                 if ap is False:
                     errors.append("%s: 多余字段 %s（additionalProperties=false）" % (path, key))
                 elif isinstance(ap, dict):
-                    errors += json_schema_check(value, ap, "%s.%s" % (path, key),
-                                                root_schema, unsupported)
+                    errors += _check(value, ap, "%s.%s" % (path, key),
+                                                root_schema, unsupported, _depth + 1)
         pn = schema.get("propertyNames")
         if isinstance(pn, dict):
             for key in instance:
-                errors += json_schema_check(key, pn, "%s<键:%s>" % (path, key),
-                                            root_schema, unsupported)
+                errors += _check(key, pn, "%s<键:%s>" % (path, key),
+                                            root_schema, unsupported, _depth + 1)
     for kw, mode in (("allOf", "all"), ("anyOf", "any"), ("oneOf", "one")):
         subs = schema.get(kw)
         if not isinstance(subs, list):
             continue
-        results = [json_schema_check(instance, s, path, root_schema, unsupported)
+        results = [_check(instance, s, path, root_schema, unsupported, _depth + 1)
                    for s in subs]
         ok = sum(1 for r in results if not r)
         if mode == "all" and ok != len(subs):
@@ -179,8 +217,8 @@ def json_schema_check(instance: Any, schema: dict, path: str = "$",
             errors.append("%s: anyOf 全不成立" % path)
         if mode == "one" and ok != 1:
             errors.append("%s: oneOf 命中 %d 个（须恰 1）" % (path, ok))
-    if isinstance(schema.get("not"), dict) and not json_schema_check(
-            instance, schema["not"], path, root_schema, unsupported):
+    if isinstance(schema.get("not"), dict) and not _check(
+            instance, schema["not"], path, root_schema, unsupported, _depth + 1):
         errors.append("%s: not 子式被满足" % path)
     return errors
 
@@ -195,3 +233,13 @@ def _format_errors(value: str, fmt: str, path: str) -> List[str]:
         return ([] if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", value)
                 else ["%s: 非绝对 URI" % path])
     return []
+
+def json_schema_check(instance: Any, schema: dict, path: str = "$",
+                      root_schema: Optional[dict] = None,
+                      unsupported: Optional[List[str]] = None) -> List[str]:
+    """公开入口（签名与历史一致）：内部走 `_check(..., _depth=0)`，带 `MAX_DEPTH` 深度闸门。
+
+    为什么要包一层：递归实现需要把深度沿调用链传下去（否则闸门形同虚设），但**调用方不该关心
+    这个参数**——本仓 4 个调用面（schema_lint / output_forms / check28 / 工具箱）签名一字不变。
+    """
+    return _check(instance, schema, path, root_schema, unsupported, 0)

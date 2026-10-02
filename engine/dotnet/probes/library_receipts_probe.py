@@ -188,7 +188,7 @@ def main() -> int:
             "schema": "nf-library-receipts-golden/1",
             "generated": "2026-09-27",
             "source": "真源 core/receipts.py::build + verify（馆藏作用域 · check35 第二条腿框法）",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(渲染行))[:32]  ← 与引擎侧同式',
             "cases": results,
         }

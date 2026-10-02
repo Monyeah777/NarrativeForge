@@ -2,6 +2,43 @@
 
 [![verify gate ci-verify](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml)
 
+**NF terminal (TUI) demo** — a full-screen human entry built on the standard library only; its menu and actions are controlled callers of the real `nf` CLI.
+Keybindings follow the mainstream terminal conventions: `Tab` switches panes, `↑↓` moves inside the focused pane, `/` filters, `?` opens the keymap.
+
+```
+┌ NF TUI v1.0.0 · NarrativeForge 内容契约层 ───────────────────────────────────────────────────┐
+│仓库 NarrativeForge · 能力区 8                                    焦点 动作 · 就绪（0 项待办）│
+├────────────────────────┬─────────────────────────────────────────────────────────────────────┤
+│  能力区 1/8            │▍ 动作 · 环境自检（2）                                               │
+│▸ 0 环境自检（2）       │❯ 只读体检   nf doctor                                               │
+│  1 一键演示（1）       │  体检（机器面）                                                     │
+│  2 需求→装配（2）      │                                                                     │
+│  3 全链生产（2）       ├─────────────────────────────────────────────────────────────────────┤
+│  4 校验体检（4）       │  输出 · 1-3/3 · 已跟随                                              │
+│  5 货架资产（4）       │❯ nf doctor   （退出码 0 · 0.42s）                                   │
+│  6 管线模块（4）       │环境自检：Python 3.11 · 仓库在场 · 模块 13 · 管线 3                  │
+│  7 帮助命令面（2）     │✔ 只读体检通过：无缺件 / 无越界 / 无非确定性输出                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+│                        │                                                                     │
+├────────────────────────┴─────────────────────────────────────────────────────────────────────┤
+│ Tab 切面板 · ↑↓ 移动 · / 过滤 · Enter 运行 · ? 帮助 · q 退出                                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+`python tui/nf.py` opens the full-screen UI; `--selftest` runs the security self-check, `--demo` prints exactly the frame above, and `--exec "nf doctor"` is the scriptable surface
+(no TTY needed either: `--list-actions --json` gives agents the actions and exit codes). Commands run on a worker thread, so `Ctrl-C` while running cancels just that command;
+path arguments pass repository-containment checks, writes require typing `yes`, and API keys are read from the environment and masked. A single-file executable is shipped alongside.
+Details: `tui/README.md`.
+
 > MIT License · original open source · please cite the source when deriving/referencing
 
 **In one sentence**: NF is a **content contract layer** — it defines the protocols, quality gates and asset standards for "AI reliably produces long-form content"; narrative is only the first official domain package, while the protocol itself is domain-neutral and model-agnostic.
@@ -35,7 +72,8 @@ AI assembly:
 2. Read `agent_组装指令包_v0.2.md`
 3. Take `01_核心协议.md` / `02_联动注册表.md` / `06_Agent执行协议.md` / `07_官方核心出厂与社区预设导航.md` and community packages as needed
 4. Assemble a self-contained full version and pass the `##7` self-check
-5. `nf assemble "<requirement>" --check <out.md>`
+5. `nf assemble "<requirement>" --build --dest <dir>` (assembly command: emits an "full version" single file directly)
+6. `nf assemble "<requirement>" --check <out.md>`
 
 ## Capabilities and assets
 
@@ -56,7 +94,7 @@ AI assembly:
 | Library | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | Community | `community/README.md` · `community/模板制作指令包.md` |
 | AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
-| Tooling | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `scripts/nf.py` · `scripts/verify.sh` |
+| Tooling | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `scripts/nf.py` · `tui/nf.py` · `verify.sh` |
 | Collection | `library/INDEX.md` · `ROUTES.md` |
 
 ## Version block

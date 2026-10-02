@@ -18,7 +18,7 @@
       "cmd": "python scripts/e2e_desktop_headless.py",
       "exit_code": 0,
       "output_sha256": "ce0ce1c9a76d910cbbb5f07e00fbf19197dd878dad4d87aebb086a63d0897d4a",
-      "output_tail": "[产物] C:\\Users\\mon_7\\AppData\\Local\\Temp\\nf_e2e_home\\ci_e2e_out.md（11713 字节）\n\n★ E2E DESKTOP HEADLESS PASSED ✓（官方13件 + M91/M92 + P04 → 装配 → 生成 → 断言全绿）",
+      "output_tail": "[产物] <path> 字节）\n\n★ E2E DESKTOP HEADLESS PASSED ✓（官方13件 + M91/M92 + P04 → 装配 → 生成 → 断言全绿）",
       "ran_at": "2026-09-29"
     },
     "release": {
@@ -46,7 +46,7 @@
       "cmd": "python scripts/verify_run.py",
       "exit_code": 1,
       "output_sha256": "020988b9157e3d02102c6d708574087cf89b749eaf715262e22fb4a65b24d08f",
-      "output_tail": ">>> 存在 FAIL = 协议事故：请回滚本次修改，修正后重新运行验收 <<<\n== 一键复现：C:\\comfyui\\Git\\bin\\bash.exe verify.sh（cwd=C:\\Users\\mon_7\\Downloads\\nf-v10）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.2oeeXZOU3n",
+      "output_tail": ">>> 存在 FAIL = 协议事故：请回滚本次修改，修正后重新运行验收 <<<\n== 一键复现：<path> verify.sh（cwd=<path>）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.2oeeXZOU3n",
       "ran_at": "2026-09-29"
     }
   },

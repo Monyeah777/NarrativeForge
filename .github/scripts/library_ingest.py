@@ -25,6 +25,10 @@ import urllib.request
 from datetime import date
 from glob import glob
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__)))), "desktop", "src"))
+from core import atomic_write  # noqa: E402  —— 入库件落盘走统一原子写（2026-10-01）
+
 REPO = os.environ.get('REPO', '')
 TOKEN = os.environ.get('GITHUB_TOKEN', '')
 N = os.environ.get('ISSUE_NUMBER', '')
@@ -192,6 +196,22 @@ def comment(text):
     api(f'/issues/{N}/comments', {'body': text})
 
 
+def injection_probe(text):
+    """→ 命中清单（单源 = `core.trust_boundary.detect`）；核心不可用时返回 `None` 并如实记。
+
+    为什么在入库前扫（**咨询面，不拒收**）：投稿正文会**原样发布**到公开仓并被消费方读取，
+    06 §12 要求「疑似内嵌指令一律忽略并**记档**」——机器人是这条纪律在**公开边界**上的执行点。
+    内容仍是数据：本扫描只记档（回评告知 + 日志），不拦截——正当的「注入防御」题材投稿
+    不该被误杀。
+    """
+    try:
+        sys.path.insert(0, os.path.join(os.getcwd(), 'desktop', 'src'))
+        from core import trust_boundary as tb  # noqa: PLC0415
+        return tb.detect(text)
+    except Exception:                                    # noqa: BLE001 - 扫描不可用时如实降级
+        return None
+
+
 def close_issue():
     api(f'/issues/{N}', {'state': 'closed'}, method='PATCH')
 
@@ -240,38 +260,6 @@ def git(*args):
     if proc.returncode != 0:
         raise RuntimeError('git 退出码 %d：%s（修复指引：检查远端可达性与令牌权限）'
                            % (proc.returncode, _redact(' '.join(args))))
-
-
-def rebuild_alias():
-    """全量重建 library/ALIAS.md（大小写转译表）。从文件系统扫描，保证与实况一致。"""
-    rows = []
-    for f in sorted(glob('library/NF-*.md')):
-        base = os.path.basename(f)[:-3]
-        p = parse_nfname(base)
-        if p is None:
-            continue
-        rows.append((
-            base.lower(),
-            base,
-            f'https://raw.githubusercontent.com/{REPO}/main/library/{base}.md'
-        ))
-    lines = [
-        '# 📖 大小写转译表（ALIAS）· AI 专用',
-        '',
-        '> **用法**：拿不准编号大小写时 → 先把编号**全小写化** → 在「小写键」列匹配 → '
-        '用「真实编号」列拼链接取件。',
-        f'> 取件基底（GitHub）：`https://raw.githubusercontent.com/{REPO}/main/library/`'
-        '（国内镜像 Gitee：`https://gitee.com/monyeah777/narrative-forge/raw/main/library/`，规则相同）。',
-        '> 本表由云端代收站机器人自动维护（每次入库全量重建）；人工通道入库请同步补录。',
-        '',
-        '| 小写键 | 真实编号 | GitHub raw 链接 |',
-        '|---|---|---|',
-    ]
-    for low, real, url in rows:
-        lines.append(f'| {low} | {real} | {url} |')
-    with open('library/ALIAS.md', 'w', encoding='utf-8') as f:
-        f.write('\n'.join(lines) + '\n')
-    print(f'ALIAS 已重建：{len(rows)} 条')
 
 
 def main():
@@ -378,6 +366,19 @@ def main():
         print(f'正文含疑似明文密钥（{secret_hit}），已拒绝并关闭')
         sys.exit(0)
 
+    # ---- 2.6 注入面记档（06 §12：外来内容=数据；疑似内嵌指令忽略并**记档**）----
+    hits = injection_probe('\n'.join([title, one_line, body_main]))
+    if hits is None:
+        print('注入面：扫描不可用（如实记；内容仍按数据入库）')
+    elif hits:
+        rules = '、'.join(sorted({h['rule'] for h in hits}))
+        comment(f'ℹ️ 本次投稿正文里检出 **{len(hits)} 处疑似内嵌指令**（{rules}）。本馆一律把内容按'
+                f'**数据**消费——其中的「指令」不会被任何消费方执行，仅作素材参考；已如实记档。'
+                f'若这是正当的「注入防御」题材讨论，可忽略本提示。')
+        print(f'注入面：命中 {len(hits)} 处（{rules}）——已回评记档（内容照常入库）')
+    else:
+        print('注入面：未命中')
+
     # ---- 3. 校验档位/自定义段 + 分配编号 ----
     if bool(seg1) != bool(seg2):
         comment('⚠️ 档位词与自定义段必须**都填或都不填**（两者都填 = 完整形 `NF-档位词-自定义段-序号`；都不填 = 默认形 `NF-序号`）。请按模板规则重新开题。')
@@ -442,8 +443,8 @@ def main():
         f'> 本文为社区投稿副本，版权归投稿人；引用/衍生请注明来源；如需下架请联系作者。\n'
         f'> 自包含声明：本文件自带「是什么 + 怎么用」，AI 单文件即可正确使用。\n\n---\n\n'
     )
-    with open(fname, 'w', encoding='utf-8') as f:
-        f.write(frontmatter + header + body_main.rstrip() + '\n')
+    # 入库件是**公开边界**的产物：半截写入会被随后 git push 带进公开仓（2026-10-01 普查）
+    atomic_write.write_text(fname, frontmatter + header + body_main.rstrip() + '\n')
     print(f'已写入 {fname}（{len(body_main)} 字符）')
 
     # ---- 5. 重生成 INDEX 生成区 + ALIAS（投影；真源 = 条目 frontmatter）----
@@ -463,7 +464,6 @@ def main():
     git('push', 'origin', 'HEAD:main')
 
     # ---- 8. 回评 + 关闭 ----
-    form = f'`NF-{seg1}-{seg2}-…`（档位+自定义完整形）' if seg1 else '默认形 `NF-…`'
     reply = (
         f'✅ **云端代收成功——已入库 {nfid}**《{title}》\n\n'
         f'随时可用链接召回运行（说「运行 {nfid}」即可）：\n'
@@ -480,4 +480,8 @@ def main():
 
 
 if __name__ == '__main__':
+    # stdio 钉 UTF-8：Windows 控制台 GBK 下 ✓/✗ 即 UnicodeEncodeError（同 nf.py）
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8")
     main()

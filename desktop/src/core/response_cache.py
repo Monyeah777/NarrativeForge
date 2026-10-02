@@ -137,12 +137,20 @@ def wrap_runner(base, decide, sync=None):
         # 两个文本层必须**活到读走字节之后**：它们被回收时会连底层 BytesIO 一起关掉（实测踩到
         # `ValueError: I/O operation on closed file`），故不写成 `redirect_stdout(_text(...))`。
         out_txt, err_txt = _text(out_buf), _text(err_buf)
-        with redirect_stdout(out_txt), redirect_stderr(err_txt):
-            code = int(base(argv, *a, **k) or 0)
-        out_txt.flush()
-        err_txt.flush()
-        out, err = out_buf.getvalue(), err_buf.getvalue()
-        _replay(out, err)
+        code = 0
+        try:
+            with redirect_stdout(out_txt), redirect_stderr(err_txt):
+                code = int(base(argv, *a, **k) or 0)
+        finally:
+            # **必须放 finally**：argparse 的 `--help` / 用法错误走 `SystemExit` 穿出 `with`——
+            # 修复前回放被整段跳过 ⇒ **输出丢失**（实测：`nf shell --exec "nf stats --help"`
+            # 只剩「结果：run（exit=0）」，帮助文本一个字都没有；参数错误同样只留 exit=2 而无
+            # usage）。捕获层是适配器，不得吞掉被包装者的输出。SystemExit 在 finally 之后继续上抛
+            # ⇒ 走到 `store` 的只有正常返回，失败/帮助路径不入缓存。
+            out_txt.flush()
+            err_txt.flush()
+            out, err = out_buf.getvalue(), err_buf.getvalue()
+            _replay(out, err)
         store(argv, gen, allowed, code, out, err)
         return code
 

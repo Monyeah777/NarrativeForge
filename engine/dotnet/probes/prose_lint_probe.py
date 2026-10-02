@@ -184,7 +184,7 @@ def main() -> int:
             "schema": "nf-prose-lint-golden/1",
             "generated": "2026-09-27",
             "source": "desktop/src/core/prose_lint.py 原文导入执行（快照内那份），统一渲染规则见探针头",
-            "snapshot": str(snap),
+            "snapshot": _paths.portable(snap),
             "digest_rule": 'sha256("\\n".join(渲染行))[:32]  ← 与引擎侧摘要同式',
             "cases": results,
         }

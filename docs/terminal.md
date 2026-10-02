@@ -24,9 +24,10 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 ```
 
 三条启动路径的定位（**别混用**）：`scripts/nf`（POSIX）带**守护快路**，配合
-`eval "$(nf daemon shell-init bash)"` 才是毫秒级客户端；`scripts\nf.cmd` 是 Windows cmd 的
-**python 直跑**包装（cmd 没有内建套接字，故拿不到快路，只保证可用与等价）；`python scripts/nf.py`
-是唯一真源入口，前两者都只是它的启动器。
+`eval "$(nf daemon shell-init bash)"` 是毫秒级客户端；`scripts\nf.cmd` 同样带快路（比 POSIX 启动器慢）——
+cmd.exe 没有内建套接字，故由 `scripts/nf_client.py`（**纯 stdlib**、`python -S` 起，不 import
+仓库模块）代走一次套接字往返，拿不到守护就退回直跑（与 POSIX 启动器同一契约）；
+`python scripts/nf.py` 是唯一真源入口，前两者都只是它的启动器。
 
 进入后：输入 `0`–`7` 看能力区示例，`/menu` 重看菜单，`/help` 看用法，`quit` 退出。
 任意命令可直接直通，例：`nf doctor`、`nf market --list`、`nf assemble "西幻生存"`。
@@ -73,7 +74,7 @@ python scripts/nf.py shell         # 跨平台等价写法（Windows 亦可用 s
 终端的瓶颈从来不是命令少，而是**找不到**——CLI 有 64 个顶层命令、135 条含二级的入口。三条入口解决它：
 
 ```bash
-python scripts/nf.py shell --map                 # 能力地图：8 个能力族，覆盖全部 64 个命令
+python scripts/nf.py shell --map                 # 能力地图：按能力族分区，覆盖全部命令
 python scripts/nf.py shell --map 治理            # 只看某一族（也可按命令片段过滤）
 python scripts/nf.py shell --commands            # 列出全部可达命令（顶层 + 二级）
 python scripts/nf.py shell --commands asset      # 按子串过滤
@@ -99,16 +100,33 @@ python scripts/nf.py shell --baseline          # 逐行跑证据命令并给判�
 python scripts/nf.py shell --baseline --json   # 机器面（纯 JSON：ok / stats / rows）
 ```
 
-基线真源在 `desktop/src/core/terminal.py` 的 `TERMINAL_BASELINE`：每行 = 一项能力 + **一条证据命令**（+ 必须出现/必须不出现的片段 + 期望退出码，必要时 + stdin 输入 + **期待落盘的文件**）。当前 **17 行**覆盖：命令面可达 / 关键词检索 / 能力地图 / 拼错建议 / **写盘闸门（该被拒）** / **递归长驻拦截（该被拒）** / 补全 / 限长提示 / 非 TTY 无色 / 脚本面 / **历史重放** / **历史落盘** / **会话持久化** / **菜单↔族互标** / 表单 dry-run / 纯 JSON 机器面 / 活体自检。
+基线真源在 `desktop/src/core/terminal.py` 的 `TERMINAL_BASELINE`：每行 = 一项能力 + **一条证据命令**（+ 必须出现/必须不出现的片段 + 期望退出码，必要时 + stdin 输入 + **期待落盘的文件**）。当前 **20 行**覆盖（下表按主题归并——4 条写盘闸门行合成一项，逐行清单见 `terminal.py`）：命令面可达 / 关键词检索 / 能力地图 / 拼错建议 / **写盘闸门（该被拒）** / **递归长驻拦截（该被拒）** / 补全 / 限长提示 / 非 TTY 无色 / 脚本面 / **历史重放** / **历史落盘** / **会话持久化** / **菜单↔族互标** / 表单 dry-run / 纯 JSON 机器面 / 活体自检。
 
 四条纪律：① 证据行**只读仓库**（带 `--write`/`--apply`/`--yes` 等旗标会被基线自身判违规）；② 允许声明「该被拒」（`expect_exit: 2` + 拒跑理由），安全面因此也在基线内；③ 交互态证据（历史/会话）用 `{TMP}` 占位展开到**系统临时目录**下的固定目录 `<临时目录>/nf_baseline`（仓库之外；固定名避免 `mkdtemp` 在本环境无法删除而堆积），并用「期待落盘文件」断言状态**真的写下去了**；④ verify check39 逐行断言同一份表——**「对标顶尖 CLI」的完成度可以逐条核**，不靠观感。
 
 - **`--verify --deep`（活体档）**：在静态面（索引/策展/菜单）之上再核**本机环境与可执行性**——① 真跑一条只读命令（`nf layers --verify`）核对退出码；② **逐条**跑 `nf <cmd> --help`（当前 64 条，只读，约 11 秒）核对退出码——「最全功能」由此从「索引里查得到」升级为「命令真的跑得通」；③ 探测历史/会话落点**可写性**（沿祖先目录判断，**不落探针文件**）；④ 如实报告 TTY / readline / 分页器现状。所有结论与静态档同一套口径（`terminal.deep_check` 调 `self_check`），退出码即结论。
 - **机器面（`--json`）**：`--commands --json`（逐条命令 + 摘要 + 旗标）、`--map --json`（族分区）、`--form --json`（表单真源）/ `--form <id> --json`（组装计划 argv）、`--verify [--deep] --json`（ok / issues / stats）。**输出必须是纯 JSON**——活体输出会被捕获进字段而不是混进 stdout，check39 直接断言这一点。
 
+- **面判别键（全命令口径 · 2026-10-01 收口）**：任何声明了 `--json` 的面，成功输出一律是
+  **对象**且顶层带面判别键 `kind`（协议件面用 `schema`）；失败一律
+  `{"ok": false, "error": … , "exit": N}`。此前新旧两套信封并存（实跑 64 个可无参运行的
+  `--json` 面：17 带键 / 47 不带，其中 7 个还是裸数组——成功回数组、失败回对象，
+  消费方**无法区分**），本轮统一。**唯一豁免是 `nf interop`**：它导出的是第三方标准文档
+  （OpenAPI / AsyncAPI / SPDX / CycloneDX / in-toto / VC / C2PA / CID），**不得**加 NF
+  私键（加了会被官方 meta-schema 判越界，AUD-0010 实测），改由规范自身版本键自证。
+  判据：`desktop/tests/test_cli_json_face.py`（静态字典面 + 动态真跑 + 豁免面逐一点名）。
+
+- **成功面不得回吐本机绝对路径（2026-10-01 收口）**：同一条纪律此前只写在失败消息
+  （`_no_machine_paths`）、入仓文件（`conformance_report._c_public_surface`）与
+  `test_leak_surface` 上；实测 `nf doctor --json` / `nf toolface --json` /
+  `nf daemon status --json` 三处**成功面**仍把 `C:\\Users\\<用户名>\\…` 原样写出。现改为
+  **仓库相对**（doctor 明细、toolface 的 `source`）或**可移植写法**（daemon 的 `root` /
+  `state_file` → `~/…`，见 `_portable_path`）。判据并入 `test_cli_json_face`（机器面 + 人读面
+  各扫一遍本机路径形状）。
+
 ## 写盘表单与会话状态（会改仓库的动作由人安全驱动）
 
-`nf` 的写盘命令都要参数齐 + `--yes`，对人是负担。终端把它拆成**逐项追问**：`/form <id>` 开始，一次问一项（可选项**空行跳过**），填齐后打印**组装好的命令**再问 `yes/no`，确认后才执行——而且最终仍走同一条**写盘闸门**（终端不绕过它）。当前 8 张表覆盖真实写盘点：`deprecate-module` / `restore-module` / `types-write` / `stats-write` / `asset-add` / `register-apply` / `rename-apply` / `receipts-write`。
+`nf` 的写盘命令都要参数齐 + `--yes`，对人是负担。终端把它拆成**逐项追问**：`/form <id>` 开始，一次问一项（可选项**空行跳过**），填齐后打印**组装好的命令**再问 `yes/no`，确认后才执行——而且最终仍走同一条**写盘闸门**（终端不绕过它）。当前 **13 张表**覆盖常用写盘点：`deprecate-module` / `restore-module` / `types-write` / `stats-write` / `asset-add` / `register-apply` / `rename-apply` / `receipts-write` / `preset-save` / `library-deprecate` / `library-restore` / `pipeline-new` / `approve-subject`。**其余写面逐条登记在 `terminal.FORM_EXEMPT`**（写明为什么不为它建表），判据保证「闸门表里的每个写面要么有表、要么有理由」——新写面入闸却没人想起配表即红。
 
 非交互也能用（dry-run 优先）：
 
@@ -119,7 +137,7 @@ python scripts/nf.py shell --form deprecate-module --answer file=community/x/M1.
 python scripts/nf.py shell --form stats-write --yes              # 显式放行才真正执行
 ```
 
-- **参数真源**：表单模板里的 `{key}` 由 step 填；模板只能指向**真实 CLI 动词**（check39 断言），空值连同其旗标一起丢弃（不留悬空 `--reason`）。
+- **参数真源**：表单模板里的 `{key}` 由 step 填；模板只能指向**真实 CLI 动词**（check39 断言），空值连同其旗标一起丢弃（不留悬空 `--reason`）。**布尔旗标**用「单占位」表达：把 `{key}` 单独放一格，填 `--force` 就带上、留空即丢（见 `preset-save`）。
 - **二次确认**：交互态 `yes/no`；非交互态必须显式 `--yes`（缺省只 dry-run）。
 - **会话状态**：`--session <文件>` 持久化视图设置与上次分区（`/set` 后立即落盘）。守卫：路径须**绝对**且**不得落在仓库内**——仓库里留状态件会被 `git add -A` 吞掉（2026-09-26 实测过一次 tmp 文件事故）。
 
@@ -185,18 +203,40 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
 - **补全**：`complete()` 是纯函数（任何平台都能用：`/complete <前缀>`、行尾 `Tab`、`nf shell --complete`），候选覆盖命令 / 二级子命令 / 旗标 / 斜杠命令 / 能力族；POSIX 上若 `readline` 可用则自动接管 Tab（`install_readline`），Windows 无该模块时走候选列表回退——`nf shell --verify` 如实报告当前走的是哪条路。
 - **历史**：仅**交互态**写 `<NF_HOME>/shell_history`（`--history <文件>` 换路径、`--no-history` 关闭）；`quit` 与 Tab 行不入历史；`--exec` / `--file` **一律不写**——脚本面确定性是硬契约（单测直接断言 `run_lines` 无历史钩子）。
 
-会话内**不执行**两类命令（避免卡死终端）：`serve`（长驻 MCP 服务）与 `shell`（递归会话）——
-终端只给指引，请另开一个终端窗口运行。
+会话内**不执行**三类命令（避免卡死终端）：`serve`（长驻 MCP 服务）、`lsp`（常驻 stdio
+服务，等编辑器发 Content-Length 帧——与 `serve` 同型，2026-10-01 补齐）与 `shell`
+（递归会话，`nf terminal` 是它的别名、同拦）——终端只给指引，请另开终端或由 IDE 拉起。
 
 ## 写盘闸门
 
-命中以下任一形态即视为写入/不可逆面，默认拒跑（退出码 2 + 修复指引）：
+**真源 = `desktop/src/core/terminal.py` 的三张表**（`CONFIRM_FLAGS` / `CONFIRM_VERBS` /
+`CONFIRM_FLAG_PAIRS`）；本页只写口径与**节选**清单，且判据会核对本页出现的每一项都真在表里
+（防文档飘）。命中以下任一形态即视为写入/不可逆面，默认拒跑（退出码 2 + 修复指引）：
 
-- 标记位：`--write` `--apply` `--register` `--tag` `--force` `--push` `--delete` `--rm`
-- 动词：`register` / `import` / `rename` / `release` / `asset add|rm|deprecate` /
-  `module deprecate|restore|signature`
+- 标记位：`--write` `--apply` `--register` `--force`
+  `--out` `--dest` `--build`，以及**名字里没有 `--write` 但同样写盘**的：`--write-baseline`
+  （`nf score` 重签回归基线；`nf asset baseline` 的重签用的是 `--write`）、`--fix`
+  （`nf lint` 机械修复就地改源件）、`--harvest`（`nf module types` 写事件载荷注册表）、
+  `--write-advisory`（`nf pipeline dryrun` 写管线 advisory 台账）、`--certify`
+  （`nf combine plan` 写组合证书）、`--save`（`nf assemble` 写**你自己命名**的档案文件，
+  可给仓库相对路径 ⇒ 与 `--out` 同类）
+- 动词（**不带任何旗标也直接改仓库件**）：`register` / `import` / `rename` / `release` /
+  `approve`（落 `protocol/approvals/*.json`）/ `asset add|rm|deprecate|restore` /
+  `module deprecate|restore|signature` / `pipeline new` / `decisions reindex` /
+  `patterns reindex` / `knowledge transform`（写 `protocol/transform_log.json`）/
+  `library reindex|deprecate|restore|supersede|attest`
+- 命令+旗标配对：`interop --all`（落盘 `results/interop/*`；同名的 `interop --check` 只读，
+  不拦——`pipeline dryrun --all` 同理）；`--trace` / `--session` **只在 `nf assemble` 上算写**
+  （写你命名的文件）——`nf knowledge frequency --trace` 是**读**、`nf shell --session` 另有
+  「必须绝对路径且不得落仓库内」的硬闸，两条都不拦
 
 放行方式只有两种：交互会话里就地回答 `yes`（只放行当次），或调用方显式 `--yes`。
+
+**闸门守的是哪条面（口径）**：只守**文本驱动**的面——交互输入、`nf shell --exec`、
+`nf shell --file`（这三条都可能承载**粘贴/注入**进来的文本，机器不替人判断「这行该不该跑」）。
+**显式 argv** 的面不设这道闸：`nf <cmd> …` 直跑与 `nf daemon exec <argv>` 等价于操作者自己敲的
+命令（后者文档即写明「输出/退出码与直跑一致」）。实测对照：`nf shell --exec "nf stats --write"`
+→ exit 2（拒），加 `--yes` 即放行；`nf daemon exec stats --write` → 照跑。
 
 ## 非交互模式（CI / 脚本 / 回归）
 
@@ -222,6 +262,16 @@ Microsoft Store 别名桩要 ~300 ms）。三笔分别改成参数展开、按�
 判据是**解释器启动次数**（PATH 上挂 shim：先记一笔再转发真解释器，与机器快慢无关）——
 快路命中 **0 次**、回退**稳态恰好 1 次**（修前每条 2 次）、`python3` 是桩时必须换成能跑的那个
 （`test_launcher.InterpreterLaunchBudgetTest`）。
+
+> **2026-10-02 同口径复测（min of 5，同一手法）**：bash 地板 **40.8 ms**、`scripts/nf --version`
+> 经守护 **71.9 ms**（一次解释器都不起）、无守护 **260.9 ms**（恰好 1 次）、
+> `python scripts/nf.py --version` **189.3 ms**。即上表「经守护 48 ms」的分项如今是
+> **地板 41 ms + 套接字往返 ≈31 ms**（当初往返 ≈9 ms），组合式（地板 + 一次往返）没变；
+> 「无守护 296 ms」与今日 261 ms 同量级。
+> 口径提醒：本节数字是**带日期的实测记录**，不是承诺——**机制面**（快路起几次解释器、回退稳态
+> 几次）由 `test_launcher.InterpreterLaunchBudgetTest` 确定性守着，**墙钟数字**随机器与负载漂，
+> 复测请沿用「同轮同时量墙钟 + 启动次数」的手法（第一版只量墙钟、不与启动次数同轮比对，
+> 曾把无守护路径读成与快路同速）。
 
 常驻对**重命令**同样有效（内容键缓存跨请求保留；实测本机，min of N）：
 
@@ -269,7 +319,7 @@ Microsoft Store 别名桩要 ~300 ms）。三笔分别改成参数展开、按�
 - **准入表按 argv 前缀**（不是顶层命令名）：只有**纯读、且对同一棵树逐字节可复现**的形态可缓存——`--version` / `score` / `conformance` / `layers` / `stats` / `doctor` / `interop` / `toolface` / `assertions` / `cognition`，以及 `patterns ls|show|for|verify` / `module ls|status|verify` / `decisions verify|show`。带 `--write` 一类写盘开关的一律绕过。
   「按前缀」是必须的：`module` / `decisions` / `patterns` 这些顶层命令**同时有读写子命令**（`module deprecate`、`decisions reindex`、`patterns reindex`），只按顶层名放行会把写形态一起放进来。两条准入判据都可执行：① 同树连跑两次，退出码 / stdout / stderr 逐字节相同；② 逐条跑完 `git status` 前后不变（候选 12 条实测全部既纯净又可复现）。
 - **本波只实现 Windows 监听**：其他平台 `watch.available()` 为假，守护自动降级——不写没跑过的平台代码。
-- **可选自动拉起（`NF_AUTOSTART=1`，默认关）**：设了它，启动器在守护不在时会先拉起一个带 `--watch` 的守护、再服务这条命令（`daemon` / `shell` / `serve` 本就不走守护，不触发）。**为什么默认关**：实测首条命令要付 **~0.65 s 起守护**（含机制自检）+ 本身计算，**比直跑慢**；**从第二条起才 10 ms**——这是「赌重复调用」的开关，不该替所有人默认打开（`nf daemon exec` 是同类语义：那条默认拉起，且可 `--no-start` 拒绝）。
+- **自动拉起（默认开 · 非阻塞；`NF_AUTOSTART=0` 可关）**：守护不在时，启动器把带 `--watch` 的守护**丢到后台**拉起，**本条命令照常走 python 直跑、不等它**（`daemon` / `shell` / `terminal` / `serve` / `lsp` 本就不走守护，不触发）。**为什么默认开**：起守护要 ~0.65 s，但后台起**不占本条命令的时间**（首条只多一次 fork ≈10 ms），而**从第二条起命令落到守护快路**。实测（本机，各 7 连发取中位；**数字随机器变，只作量级参照**）：`python scripts/nf.py stats --json` **≈223 ms**（每条冷起解释器）· `bash scripts/nf stats --json` **≈123 ms** · `scripts/nf.cmd stats --json` **≈194 ms**（2026-10-01 起经 `scripts/nf_client.py` 走快路；**此前 ≈391 ms**）。`.cmd` 这一档仍**比 POSIX 启动器慢**（多一层 cmd.exe 外壳，且比它自己的客户端 `python -S scripts/nf_client.py` ≈155 ms 又多 ≈40 ms）——毫秒级那一档是 POSIX 启动器 `scripts/nf` 配 `eval "$(nf daemon shell-init bash)"`。默认路径因此对「agent 密集重复调用」是毫秒级；若你只跑一次性命令、不想让守护常驻，`NF_AUTOSTART=0` 关掉即可（`nf daemon exec` 是同类语义：那条默认拉起，且可 `--no-start` 拒绝）。
 
 ### 不重读：常驻语料 + 目录索引（按监听变更**精确**失效）
 
@@ -377,7 +427,7 @@ nf daemon stop                       # 停用：立刻回到 python 直跑，不
   保留**内容键**缓存（围栏 YAML、引用度普查——键即内容，天然不陈旧）；另按 `core/scripts` **源码指纹**
   判断是否整块重载，绝不拿旧代码回话。
 - **安全边界**：只绑 `127.0.0.1`（**没有**放行外网的开关）+ 一次性令牌（回环不是信任边界）+ 请求
-  1 MiB 上限；长驻/自指命令（`serve` / `shell` / `daemon`）在守护内**拒跑**，且拒绝后守护仍存活。
+  1 MiB 上限；长驻/自指命令（`serve` / `shell` / `terminal` / `lsp` / `daemon`）在守护内**拒跑**，且拒绝后守护仍存活。**别名与常驻面一视同仁**（2026-10-01 修）：`terminal` 是 `shell` 的别名、`lsp` 是常驻 stdio 服务，此前不在拒跑表里 ⇒ 经守护快路会**静默零输出地以 0 退出**，直跑却真起服务。
 - **可回退**：任何一步不成立（无状态文件 / 无 bash / 连不上 / 协议头不对）启动器都**静默回退** python 直跑。
 
 ```sh

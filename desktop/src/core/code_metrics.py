@@ -19,6 +19,8 @@
 from __future__ import annotations
 
 import ast
+
+from core import atomic_write
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -84,7 +86,7 @@ def load_baseline(root: str = ".") -> Dict[str, Any]:
         return {}
     try:
         doc = json.loads(p.read_text(encoding="utf-8"))
-    except ValueError:
+    except ValueError:  # 基线缺失/坏件 ⇒ 空基线：scan 据此发「无基线」WARN（不静默）
         return {}
     return (doc.get("files") or {}) if isinstance(doc, dict) else {}
 
@@ -133,8 +135,8 @@ def write(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
            "files": {rel: {k: m[k] for k in ("lines", "max_fn_lines", "max_fn_cc")}
                      for rel, m in sorted(cur.items()) if not m.get("syntax_error")}}
     out = Path(root) / BASELINE_REL
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                   encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30）：agent 密集/并发调用下，读者（`python scripts/code_metrics.py`、check12）
+    # 绝不该看到半截 JSON——同 `repo_stats` 的理由，收敛到唯一出处 `core.atomic_write`。
+    atomic_write.write_text(out, json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     issues = [rel for rel, m in cur.items() if m.get("syntax_error")]
     return issues, doc

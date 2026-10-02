@@ -31,6 +31,14 @@ _TYPE_WORDS = {"bool": "boolean", "boolean": "boolean", "int": "integer",
                "float": "number", "number": "number", "list": "array",
                "array": "array", "object": "object", "dict": "object"}
 
+#: 块映射写法（`publish:` 换行 + 缩进一层的事件键）里**不是事件名**的结构键——
+#: 命中即不当事件名，避免把 `subscribers:` / `payload:` 之类误当事件。
+_NOT_EVENT_KEYS = frozenset((
+    "payload", "subscribers", "subscribe", "publish", "produce", "emit",
+    "description", "inputs", "output", "outputs", "type", "domain", "name",
+    "event", "events", "fields", "note", "notes", "version", "status", "steps",
+))
+
 
 def _split_top_level(body: str) -> List[str]:
     """按顶层逗号切分（跳过 {} / [] 内部）。"""
@@ -50,8 +58,20 @@ def _split_top_level(body: str) -> List[str]:
     return out
 
 
+#: 字段名尾部的**括注**（`location(M07)` = 「该字段由 M07 提供」的跨模块引用说明）不是
+#: 名字的一部分——注册表的键必须是可消费的标识符，否则收割出来的键没人能对上。
+#: 实测全仓 payload 行只有 1 处这种写法（见本波 CHANGELOG）。
+_ANNOTATION = re.compile(r"\s*[（(][^()（）]*[)）]\s*$")
+
+
 def _field_type(token: str) -> Tuple[str, str]:
     """单个字段 token → (字段名, 类型)。"""
+    name, kind = _field_type_raw(token)
+    return _ANNOTATION.sub("", name).strip(), kind
+
+
+def _field_type_raw(token: str) -> Tuple[str, str]:
+    """类型判定本体（名字清洗在 `_field_type`）。"""
     token = token.strip().rstrip("?")
     if not token:
         return "", ""
@@ -90,33 +110,42 @@ def harvest_doc(text: str) -> Dict[str, Dict[str, str]]:
     """单篇模块文档 → {事件名: {字段: 类型}}。"""
     out: Dict[str, Dict[str, str]] = {}
     for fence in _FENCE.findall(text):
-        event, payload_raw = "", ""
+        event, block_event = "", ""          # 显式标记（`event:`/`name:`/行内 `publish:`）优先
+        in_publish, publish_indent, event_indent = False, -1, -1
         for line in fence.splitlines():
+            if not line.strip():
+                continue
+            indent = len(line) - len(line.lstrip())
             m = re.match(r"\s*(?:event|name)\s*:\s*([a-z_][a-z0-9_]*)", line)
             if m:
                 event = m.group(1)
+                in_publish, event_indent = False, -1
             # 事件标记三写法（实测缺口：模块正文用 `produce:` 时旧规则认不出 →
-            # 28 处 payload 行的类型证据全被漏收，见 AUD-0015）
+            # 28 处 payload 行的类型证据全被漏收，见 AUD-0015；块映射写法见本波 CHANGELOG）
             m2 = re.match(r"\s*(?:publish|produce)\s*:\s*\[?\s*([a-z_][a-z0-9_]*)", line)
             if m2 and not event:
-                event = m2.group(1)
+                event, in_publish, event_indent = m2.group(1), False, -1
+            elif re.match(r"\s*(?:publish|produce)\s*:\s*$", line):
+                # 块映射写法：`publish:` 换行之后，**缩进一层的事件键**才是事件名
+                in_publish, publish_indent, event_indent, block_event = True, indent, -1, ""
+            elif in_publish:
+                mk = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)\s*:", line)
+                if indent <= publish_indent:
+                    in_publish, event_indent, block_event = False, -1, ""
+                elif mk and mk.group(1) not in _NOT_EVENT_KEYS:
+                    if event_indent < 0:
+                        event_indent = indent
+                    if indent == event_indent:
+                        block_event = mk.group(1)
             m3 = re.match(r"\s*payload\s*:\s*\{(.*)\}\s*$", line)
-            if m3:
-                payload_raw = m3.group(1)
-                if not event:
-                    for back in fence.splitlines():
-                        m4 = re.match(r"\s*([a-z_][a-z0-9_]{3,})\s*:", back)
-                        if m4 and m4.group(1) not in ("payload", "description", "inputs",
-                                                      "output", "type", "domain"):
-                            continue
-                if event:
-                    fields = {}
-                    for tok in _split_top_level(payload_raw):
-                        name, kind = _field_type(tok)
-                        if name:
-                            fields[name] = kind
-                    if fields:
-                        out.setdefault(event, {}).update(fields)
+            if m3 and (event or block_event):
+                fields = {}
+                for tok in _split_top_level(m3.group(1)):
+                    name, kind = _field_type(tok)
+                    if name:
+                        fields[name] = kind
+                if fields:
+                    out.setdefault(event or block_event, {}).update(fields)
     return out
 
 
@@ -161,9 +190,9 @@ def apply(root: str = ".", write: bool = False) -> Dict[str, Any]:
                 elif ctype != kind and kind != "untyped" and ctype != "untyped":
                     conflicts.append("%s.%s: 注册表=%s vs 正文=%s" % (ev, f, ctype, kind))
     if write:
-        reg_path.write_text(json.dumps(data, ensure_ascii=False, indent=2,
-                                       sort_keys=True) + "\n",
-                            encoding="utf-8", newline="\n")
+        from core import atomic_write          # 在仓协议件：原子落盘（半截件不留，2026-10-01）
+        atomic_write.write_text(reg_path, json.dumps(data, ensure_ascii=False, indent=2,
+                                                     sort_keys=True) + "\n")
     return {"added": added, "narrowed": narrowed, "conflicts": conflicts}
 
 
@@ -206,9 +235,10 @@ def backlog(root: str = ".", write: bool = False) -> Dict[str, Any]:
                     "纪律：不得新增无 note 的 untyped。"),
            "count": len(rows), "missing_note": missing_note, "fields": rows}
     if write:
+        from core import atomic_write          # 在仓协议件：原子落盘（2026-10-01）
         p = Path(root) / "protocol" / "type_backlog.json"
-        p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                     encoding="utf-8", newline="\n")
+        atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False, indent=2,
+                                              sort_keys=True) + "\n")
     return doc
 
 

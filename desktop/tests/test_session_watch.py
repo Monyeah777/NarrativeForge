@@ -14,8 +14,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from core import conformance_scan as csc  # noqa: E402
-from core import session_watch as sw  # noqa: E402
 from core import watch  # noqa: E402
 
 

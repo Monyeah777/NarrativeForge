@@ -18,7 +18,6 @@ from __future__ import annotations
 from typing import Any, Dict, List, Tuple
 
 # 导入闭包指纹：由调用方算（持久层不再反向依赖解析层，见 2026-09-29 拆环）
-from core import import_graph as _ig
 
 
 #: `scan()` 的输入面：**所有子扫描器的面取并集**（语料 + 协议/文档 + 代码 + 判据脚本）。
@@ -54,8 +53,17 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     「读盘面 ⊆ 输入面」由 `test_conformance_scan.DerivedResultCacheTest` 的同一张表守着。
     """
     from core import conformance_scan as _csc
-    return _csc.memo_pair("quality-depth", QD_INPUTS, _inner, root,
-                          code_modules=("core.quality_depth_scan",))
+    try:
+        return _csc.memo_pair("quality-depth", QD_INPUTS, _inner, root,
+                              code_modules=("core.quality_depth_scan",))
+    except OSError as exc:
+        # 缺根/缺输入件时**如实报 issue**，不抛裸异常（与 `payload_registry.scan` 同一条纪律——
+        # 极端渗透 F-5 只修了那一个入口，2026-10-01 空根普查发现聚合面整条链都漏修：本聚合的
+        # 子扫描器会硬读 `scripts/nf.py` 等件，空根下直接 FileNotFoundError）。
+        # 这里返回的是 **issue（会 FAIL）**，不是静默放行——报缺件 + 修复指引。
+        return (["读不到聚合扫描的输入件：%s（修复指引：在 NF 仓库根运行本扫描——聚合面的输入是"
+                 "整棵语料；若某件只是子扫描器的可选件，请把它并入 QD_INPUTS 的可选面）"
+                 % (getattr(exc, "filename", None) or exc)], {})
 
 
 def _inner(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:

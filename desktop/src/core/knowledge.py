@@ -23,6 +23,8 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import atomic_write
+
 DECL_REL = "protocol/knowledge_sources.json"
 LOG_REL = "protocol/transform_log.json"
 USAGE_REL = "protocol/knowledge_usage.json"
@@ -285,8 +287,10 @@ def harvest_frequency(trace_path: str) -> Dict[str, int]:
     p = Path(trace_path)
     text = p.read_text(encoding="utf-8")
     records: List[Any] = []
+    parsed_any = False
     try:
         data = json.loads(text)
+        parsed_any = True
         if isinstance(data, list):
             records = data
         elif isinstance(data, dict):
@@ -297,8 +301,16 @@ def harvest_frequency(trace_path: str) -> Dict[str, int]:
             if line:
                 try:
                     records.append(json.loads(line))
-                except ValueError:
+                    parsed_any = True
+                except ValueError:  # 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁另行报出（见 AUD-0016）
                     continue
+    # 全件都解析不出来 ⇒ **如实失败**，不是「0 源有事件」（2026-10-01 取证：截断/坏件的
+    # trace 此前 rc=0 且报「0 源」，读者会把「文件坏了」读成「这份运行没用到知识源」——
+    # 静默错答）。空件仍按 0 记录放行（空 = 合法）。
+    if text.strip() and not parsed_any:
+        raise ValueError(
+            "trace 不是合法 JSON/JSONL：%s（修复指引：收 `nf assemble --check <成品.md> "
+            "--trace <trace.json>` 落的件，或 `{\"records\": [...]}` / 逐行 JSON）" % p)
     counts: Dict[str, int] = {}
     for r in records:
         if not isinstance(r, dict):
@@ -318,8 +330,9 @@ def write_usage(root: str = ".", counts: Dict[str, int] | None = None) -> str:
            "counts": clean, "total": sum(clean.values())}
     p = Path(root) / USAGE_REL
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30 收口）：在仓台账，并发读（check37 / `nf knowledge`）此前可能读到半截。
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False,
+                                          indent=2, sort_keys=True) + "\n")
     return USAGE_REL
 
 
@@ -332,8 +345,9 @@ def write_log(root: str = ".", entries: List[Dict[str, Any]] | None = None) -> s
                                                             str(e.get("to"))))
     p = Path(root) / LOG_REL
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    # 原子写（2026-09-30 收口）：同上，消化记录也是在仓台账。
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False,
+                                          indent=2, sort_keys=True) + "\n")
     return LOG_REL
 
 
@@ -390,7 +404,11 @@ def verify_reuse(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]
     digests: Dict[str, List[str]] = {}
     for p in lib:
         fm, _body = None, None
-        from core.library import parse_frontmatter
+        # 直连**叶子件**（2026-09-30）：`library` 只是把 `parse_frontmatter` 从
+        # `library_entries` 兼容转发出来；从这里绕一手会平白多一条 knowledge → library 的
+        # 依赖边，而 library 的不稳定性（i≈0.36）高于 knowledge（i≈0.33）⇒ 撞 SDP 判据
+        # 「稳定侧不得依赖更不稳的一侧」。改直连叶子后这条边消失（同一实现，零行为变化）。
+        from core.library_entries import parse_frontmatter
         fm, _body = parse_frontmatter(p.read_text(encoding="utf-8"))
         eid = str((fm or {}).get("id") or "")
         if not eid:

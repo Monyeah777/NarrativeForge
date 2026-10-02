@@ -17,12 +17,23 @@
 from __future__ import annotations
 
 import datetime as _dt
+
+from core import atomic_write
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 DECL_REL = "protocol/instruction_evidence.json"
 SCHEMA = "nf-instruction-evidence/1"
+
+#: 机器绝对路径（Windows 盘符 / macOS / Linux 家目录）——证据件进公开仓，**不得**带作者机器路径。
+_MACHINE_PATH = re.compile(r"(?:[A-Za-z]:[\\/][^\s\"'）)】]*)|(?:/(?:Users|home)/[^\s\"'）)】]*)")
+
+
+def redact_paths(text: str) -> str:
+    """把输出摘要里的机器绝对路径换成 `<path>`（泄漏面收口；只影响人读摘要，不动哈希）。"""
+    return _MACHINE_PATH.sub("<path>", text or "")
 
 
 def load(root: str = ".") -> Tuple[Dict[str, Any], List[str]]:
@@ -124,11 +135,11 @@ def record(root: str = ".", only: str = "", runner=None,
         cmd = str(item.get("cmd") or "")
         code, out = runner(cmd)
         ev[iid] = {"cmd": cmd, "exit_code": int(code), "ran_at": today.isoformat(),
-                   "output_tail": "\n".join(out.strip().splitlines()[-3:])[:400],
+                   "output_tail": redact_paths(
+                       "\n".join(out.strip().splitlines()[-3:]))[:400],
                    "output_sha256": _h.sha256(out.encode("utf-8", "replace")).hexdigest()}
     p = Path(root) / DECL_REL
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-                 encoding="utf-8", newline="\n")
+    atomic_write.write_text(p, json.dumps(doc, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     # 汇总口径与 scan 一致：`evidence_policy: recorded` 的入口（不动点例外）非零退出不算 bad。
     pol = {str((i or {}).get("id") or ""): str((i or {}).get("evidence_policy") or "green")
            for i in doc.get("instructions") or []}

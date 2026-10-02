@@ -32,7 +32,7 @@
 |---|---|---|
 | 装载 | 三条装载路径（A 有 API / B1 能读文件 / B2 纯粘贴） | `AI_ROUTING.md`；机读入口 `llms.txt` |
 | 装配 | 模块 + 管线 + 资产的声明式装配（域包自带装配流） | `community/*/protocol.yaml` + `pipelines/*` |
-| 门禁 | 单入口验收：`bash verify.sh` | `check1-38` 常驻；期望基线在 `desktop/src/core/quality_baseline.py` |
+| 门禁 | 单入口验收：`bash verify.sh` | check 全量常驻（**数不写死**：当前值看 `nf stats --check` 生成区；期望基线在 `desktop/src/core/quality_baseline.py`） |
 | 证据 | 回执单根 + 逐门结论 + 产物指纹 | `protocol/RECEIPTS.json` · `fde_sample_run.py --check` |
 | 交付样例 | 一次完整 FDE 交付的可跑样例 | `docs/fde-sample/`（五门证据） |
 

@@ -6,17 +6,18 @@ scope: 作者指令「拉取 jev 或 laya 这种模型作为决策层」——�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:431fae999be2bd4f3bd750561f174dfcab40a2e3f14d734876078bd71960d241
+  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - protocol/normative.json:3ea1e37d1879cee532b930e83ba3029fbc171efe99606fd42bc775f0968b84a5
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - desktop/src/core/decision_layer.py:f9b87bb638e1ffef0a71a0a3b87c97646337a86788e53d6fea8fca22b8bf9e36
-  - desktop/src/core/receipts.py:7bf7144d595410af35468ddfc1a29a8642bc89f4436982735182ddaad8e03055
+  - desktop/src/core/receipts.py:b83d1d226778bb1b4b3925fadd944ebfdc82731dc463577dd299a9c2ebaf7655
   - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
-  - scripts/nf.py:dbaa7b96a16ae23684124c05defada188e5d31ead451bedcb32eb6ad58398cf0
-  - scripts/pull_decision_model.py:5e61f8d48a590943e915ab501f35172a13eb5fd41368a378abe386eebecdc227
-  - docs/decision-layer.md:85ac1dc81c879cf98a15a0c089ba1c825c67649fe3ee431a9172336c09b04314
+  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - scripts/pull_decision_model.py:f9344c0acb2a3e2761681dd2aff2b7f257153f8674e5d7582df9b0738220d347
+  - docs/decision-layer.md:46cd91d13c1b98120318b6aff5d720fc3abe22541de8b1b1762db57a0e8dbeeb
+
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

@@ -1,6 +1,6 @@
 # NF 决策记录（ADR）
 
-> ⛔ 操作指令：阅读即执行——新决策一律 `nf decisions new`/手写本目录 ADR 文件后跑 `nf decisions verify`。
+> ⛔ 操作指令：阅读即执行——新增决策 = 手写本目录 `ADR-NNNN-*.md`（按下方格式）→ 跑 `nf decisions reindex` 重建投影 → 跑 `nf decisions verify` 机检。
 
 **分工**（与相邻品类划清边界，避免混装）：
 

@@ -14,6 +14,9 @@ python scripts/nf.py run \
 
 python scripts/nf.py assemble "帮我组装一个西幻生存世界的完整版"
 python scripts/nf.py assemble "需求" --check 成品.md --save 档案.md --trace trace.json --rounds
+
+python scripts/nf.py preset ls                    # 本机预设：管线 + 模块 + 资产包 的一次组装（落点 NF_HOME）
+python scripts/nf.py preset apply <预设名>         # 解析成装配清单（本地缺失模块如实进 warnings）
 ```
 
 ## 市场与协议
@@ -21,7 +24,7 @@ python scripts/nf.py assemble "需求" --check 成品.md --save 档案.md --trac
 ```bash
 python scripts/nf.py market --list
 python scripts/nf.py market community/西幻生存领域包
-python scripts/nf.py market --tier community --json
+python scripts/nf.py market --list --tier community --json
 python scripts/nf.py spec --help
 python scripts/nf.py register --help
 ```

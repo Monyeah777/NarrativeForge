@@ -38,6 +38,7 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 from .models import fid_key
+from core import atomic_write
 
 #: 技术文档领域派生实例挂载层（02 §7 P90）。modules 表登记 M90（source="核心（P90
 #: 实证样例）"）但 02 §9 声明 P90 领域实例不纳入 mount_points 投影——validate_assembly
@@ -230,7 +231,7 @@ class Registry:
             return None
         try:
             return target.read_text(encoding="utf-8")
-        except (OSError, UnicodeDecodeError):
+        except (OSError, UnicodeDecodeError):  # registry 坏件 ⇒ None（等价于「未找到」，由调用方给指引）
             return None
 
 @lru_cache(maxsize=4)
@@ -243,7 +244,9 @@ def load_registry(path: Optional[Union[str, Path]] = None) -> Registry:
     显式暴露，不静默回退硬编码。
     """
     p = Path(path) if path is not None else Path(__file__).with_name("registry.json")
-    raw = json.loads(p.read_text(encoding="utf-8"))
+    # 读侧短重试（2026-09-30）：registry.json 会被 `nf register/rename --apply` 原子重写，
+    # 并发下 Windows 读者会瞬时 PermissionError（WinError 5/32）——见 atomic_write 实测。
+    raw = json.loads(atomic_write.read_text(p))
     return Registry(
         registry_schema_version=raw.get("registry_schema_version", ""),
         schema_name=raw.get("schema_name", ""),

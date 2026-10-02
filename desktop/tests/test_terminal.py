@@ -15,6 +15,9 @@ import importlib.util
 import io
 import json
 import os
+import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -36,6 +39,28 @@ def _top_commands():
         if isinstance(act, argparse._SubParsersAction):
             return set(act.choices)
     return set()
+
+
+def _nf_surface() -> tuple:
+    """→ `(全部长旗标, 全部命令/子命令名)`——**从真 parser 解**（不是抄清单）。
+
+    为什么用 parser 而不是读源码正则：`nf.py` 的 `add_subparsers()` 容器变量名会被复用，
+    静态解析已实测会误判（见 CHANGELOG 2026-10-01「静态解析两次误判」）。parser 是运行时真源。
+    """
+    parser = nf._build_parser()
+    flags, names = set(), set()
+
+    def walk(p, depth=0):
+        for act in p._actions:
+            for opt in act.option_strings or ():
+                flags.add(opt)
+            if isinstance(act, argparse._SubParsersAction):
+                for name, sub in act.choices.items():
+                    names.add(name)
+                    if depth < 3:
+                        walk(sub, depth + 1)
+    walk(parser)
+    return flags, names
 
 
 def _run(argv):
@@ -126,17 +151,261 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(intent.payload[0], "C:/tools/nf.py")
 
 
+class FormCoverageTest(unittest.TestCase):
+    """写面**必有去处**：闸门表里每一项，要么有组装式表单，要么在 `FORM_EXEMPT` 里逐条点名。
+
+    依据（2026-10-01）：闸门表（`CONFIRM_VERBS` / `CONFIRM_FLAGS` / `CONFIRM_FLAG_PAIRS`）是写面的
+    **穷举真源**，而表单当时只覆盖 8 张 —— 其余写面在终端里只能手敲全参数，且**没有任何判据**
+    盯着这个比例：新写面入闸后不会有人想起给它配表。本件把「写面覆盖」变成可数事实。
+    """
+
+    def _faces(self) -> set:
+        """闸门表 → 规范面名集合（`verb sub` / `--flag` / `cmd --flag`）。"""
+        out = set(term.CONFIRM_FLAGS)
+        for cmd, sub in term.CONFIRM_VERBS:
+            out.add(("%s %s" % (cmd, sub)).strip())
+        for cmd, flag in term.CONFIRM_FLAG_PAIRS:
+            out.add("%s %s" % (cmd, flag))
+        return out
+
+    def _covered(self) -> set:
+        """表单覆盖到的面：把每个面名按**空白切词**看成一段，在模板里找连续窗口（占位符 `{k}`
+        当通配）——这样 `{force}` 也算覆盖 `--force`，而不靠文案或人工列表。"""
+        forms = [[str(t) for t in (f.get("argv") or [])] for f in term.form_table()]
+        covered = set()
+        for face in self._faces():
+            want = face.split()
+            for toks in forms:
+                if any(all(w == t or t.startswith("{") for w, t in zip(want, toks[i:i + len(want)]))
+                       for i in range(len(toks) - len(want) + 1)):
+                    covered.add(face)
+                    break
+        return covered
+
+    def test_every_write_face_has_a_form_or_a_named_exemption(self):
+        faces, covered, exempt = self._faces(), self._covered(), set(term.FORM_EXEMPT)
+        orphan = sorted(faces - covered - exempt)
+        self.assertEqual([], orphan, "写面既没有表单也没有登记理由（修复指引：加一张表，"
+                                     "或写进 FORM_EXEMPT 并说明为什么不为它建表）：%s" % orphan)
+
+    def test_exemptions_are_not_stale(self):
+        faces, exempt = self._faces(), set(term.FORM_EXEMPT)
+        stale = sorted(exempt - faces)
+        self.assertEqual([], stale, "FORM_EXEMPT 有失效条目（闸门表里已没有这个面）：%s" % stale)
+        empty = sorted(k for k, v in term.FORM_EXEMPT.items() if not str(v).strip())
+        self.assertEqual([], empty, "FORM_EXEMPT 有条目没写理由：%s" % empty)
+
+    def test_forms_target_gated_actions_and_are_not_vacuous(self):
+        """每张表都必须指向**真入闸**的动作（否则表是摆设），且条数/豁免条数不得退化成空转。"""
+        for form in term.form_table():
+            answers = {st["key"]: "x" for st in form.get("steps") or [] if st.get("required")}
+            argv = term.build_argv(form, answers)
+            self.assertTrue(term.needs_confirm(argv),
+                            "表单 %s 组装出的 argv 不在写盘闸门内：%s" % (form.get("id"), argv))
+        self.assertGreater(len(term.form_table()), 8, "表单数量退化了")
+        self.assertGreater(len(term.FORM_EXEMPT), 10, "豁免登记退化成空转")
+
+    def test_new_forms_assemble_the_documented_argv(self):
+        """抽查第二批的四张表：组装结果必须与 CLI 面逐字一致（防模板手滑）。"""
+        cases = {
+            "preset-save": ({"name": "演示", "pipeline": "P04"}, ["preset", "save", "演示",
+                                                                  "--pipeline", "P04"]),
+            "library-deprecate": ({"entry": "NF-1"}, ["library", "deprecate", "NF-1"]),
+            "pipeline-new": ({"id": "P07", "name": "演示管线"},
+                             ["pipeline", "new", "--id", "P07", "--name", "演示管线"]),
+            "approve-subject": ({"subject": "protocol/CONFORMANCE.md"},
+                                ["approve", "protocol/CONFORMANCE.md"]),
+        }
+        for fid, (answers, want) in cases.items():
+            form = term.form_by_id(fid)
+            self.assertIsNotNone(form, "表单不见了：%s" % fid)
+            self.assertEqual(want, term.build_argv(form, answers), "表单 %s 组装结果漂了" % fid)
+
+    def test_doc_form_count_matches_the_table(self):
+        """文档里的表数量声明必须等于真源条数（本仓「活文档」纪律：计数不许钉死除非有判据）。
+
+        依据（2026-10-01）：`docs/terminal.md` 写着「当前 **13 张表**」，而 `FORMS` 是唯一真源——
+        这类**声明式计数**此前没人盯（同 `LiveTotalCountTest` 管 PASS=/check 计数，但不管这条）。
+        """
+        doc = (ROOT / "docs" / "terminal.md").read_text(encoding="utf-8")
+        declared = {int(m) for m in re.findall(r"当前 \*\*(\d+) 张表\*\*", doc)}
+        self.assertTrue(declared, "文档里没找到「当前 **N 张表**」的声明（改了措辞请同步判据）")
+        self.assertEqual({len(term.form_table())}, declared,
+                         "文档表数量与真源分叉：文档=%s / 真源=%d" % (declared, len(term.form_table())))
+
+
+class GateDocSyncTest(unittest.TestCase):
+    """`docs/terminal.md`「写盘闸门」一节**不得出现表里没有的项**（防文档飘）。
+
+    为什么（2026-10-01 实测）：闸门补齐 6 项（`--write-baseline` / `--re-sign` / `--fix` /
+    `approve` / `asset restore` / `knowledge transform`）后，**文档那一节仍停在旧清单**——而
+    那正是使用者判断「这条命令要不要确认」的唯一出处，是「口径不统一」的典型。判据取**子集**：
+    文档可以不写全（写成节选），但凡写了的必须真在表里。
+    """
+
+    SECTION = "## 写盘闸门"
+
+    def _section(self) -> str:
+        text = (ROOT / "docs" / "terminal.md").read_text(encoding="utf-8")
+        start = text.index(self.SECTION)
+        rest = text[start + len(self.SECTION):]
+        end = rest.find("\n## ")
+        return rest[:end if end != -1 else len(rest)]
+
+    def test_doc_flags_exist_in_gate_tables(self):
+        import re
+        section = self._section()
+        flags = set(re.findall(r"`(--[a-z][a-z-]*)`", section))
+        known = set(term.CONFIRM_FLAGS) | {f for _cmd, f in term.CONFIRM_FLAG_PAIRS}
+        self.assertTrue(flags, "该节没列出任何旗标（判据可能已失效）")
+        # `--yes` 是**放行**旗标（本节明写「调用方显式 --yes」），不是闸门项 ⇒ 不算飘
+        stale = sorted(f for f in flags if f not in known and f != "--yes")
+        self.assertEqual([], stale, "文档列了闸门表里没有的旗标：%s（改文档或补表）" % stale)
+
+    def test_doc_verb_pairs_exist_in_gate_tables(self):
+        import re
+        section = self._section()
+        pairs = []
+        for span in re.findall(r"`([a-z]+ [a-z|]+)`", section):
+            cmd, subs = span.split(" ", 1)
+            if cmd == "nf":
+                continue        # `nf score` / `nf lint` 是**命令引用**，不是闸门动词对
+            for sub in subs.split("|"):
+                pairs.append((cmd, sub))
+        self.assertTrue(pairs, "该节没列出任何动词对（判据可能已失效）")
+        stale = [p for p in pairs if p not in term.CONFIRM_VERBS]
+        self.assertEqual([], stale, "文档列了闸门表里没有的动词对：%s" % stale)
+
+
+class BlockedDocSyncTest(unittest.TestCase):
+    """`docs/terminal.md`「会话内不执行」一节列的命令必须真在 `BLOCKED_IN_SHELL` 里。
+
+    为什么（2026-10-01）：这一节与写盘闸门那节同型——它是使用者判断「会话里这条能不能跑」的
+    唯一人读出处。上一轮补 `lsp` / `terminal` 别名时**两边都改了**，但没有任何判据盯着；
+    按 `GateDocSyncTest` 同一纪律取**子集**：文档可以只写节选，但凡写了的必须真在表里。
+    """
+
+    MARK = "会话内**不执行**"
+
+    def _section(self) -> str:
+        text = (ROOT / "docs" / "terminal.md").read_text(encoding="utf-8")
+        start = text.index(self.MARK)
+        rest = text[start:]
+        end = rest.find("\n## ")
+        return rest[:end if end != -1 else len(rest)]
+
+    def test_doc_lists_only_blocked_commands(self):
+        import re
+        section = self._section()
+        names = set(re.findall(r"`([a-z][a-z-]*)`", section))
+        self.assertTrue(names, "该节没列出任何命令（判据可能已失效）")
+        stale = sorted(n for n in names
+                       if n not in term.BLOCKED_IN_SHELL and n not in ("nf", "ide"))
+        self.assertEqual([], stale,
+                         "文档列了 BLOCKED_IN_SHELL 里没有的命令：%s（改文档或补表）" % stale)
+
+
 class ConfirmGateTest(unittest.TestCase):
     def test_write_flags_need_confirm(self):
         for argv in (["stats", "--write"], ["module", "types", "--write"],
                      ["import", "--register", "payload.md"],
-                     ["release", "--tag"], ["rename", "a.md", "b.md"]):
+                     ["asset", "baseline", "--write"], ["rename", "a.md", "b.md"]):
             self.assertTrue(term.needs_confirm(argv), argv)
 
     def test_readonly_commands_do_not_need_confirm(self):
         for argv in (["doctor"], ["market", "--list"], ["asset", "ls"],
                      ["module", "ls"], ["assemble", "西幻生存"]):
             self.assertFalse(term.needs_confirm(argv), argv)
+
+    def test_unflagged_write_verbs_need_confirm(self):
+        """**无标记写盘**动词也要入闸（2026-09-30 补）。
+
+        依据：闸门此前只在 argv 里找 `--write` 一族旗标 + 一张动词表，而 `library deprecate`
+        / `library reindex` / `decisions reindex` / `patterns reindex` / `pipeline new` 这些
+        **不带任何旗标就直接改仓库件**（生命周期流转 / 投影重建 / 派生新件）全都不在表里——
+        非交互 `nf shell --exec` 一路照跑。
+        """
+        for argv in (["library", "deprecate", "NF-1"], ["library", "restore", "NF-1"],
+                     ["library", "supersede", "NF-1", "NF-2"], ["library", "attest", "NF-1"],
+                     ["library", "reindex"], ["decisions", "reindex"],
+                     ["patterns", "reindex"], ["pipeline", "new", "P99"]):
+            self.assertTrue(term.needs_confirm(argv), argv)
+
+    def test_command_scoped_flag_pairs_need_confirm(self):
+        """`interop --all` 落盘要拦，但**同名的只读形态不许误拦**（`pipeline dryrun --all` 只扫）。"""
+        self.assertTrue(term.needs_confirm(["interop", "--all"]))
+        self.assertFalse(term.needs_confirm(["interop", "--check"]))
+        self.assertFalse(term.needs_confirm(["pipeline", "dryrun", "--all"]))
+        # 2026-10-01 三补：`--trace` / `--session` 只在 `nf assemble` 上是**写**（写你自己命名的
+        # 文件，可仓库相对 ⇒ 粘贴面能落仓）；在其余命令上是只读输入或仓外受控 ⇒ **不许误拦**。
+        self.assertTrue(term.needs_confirm(["assemble", "--check", "x.md", "--trace", "t.json"]))
+        self.assertTrue(term.needs_confirm(["assemble", "需求", "--session", "s.json"]))
+        self.assertFalse(term.needs_confirm(["knowledge", "frequency", "--trace", "t.json"]))
+        self.assertFalse(term.needs_confirm(["shell", "--session", "C:/tmp/s.json"]))
+
+    def test_long_running_faces_are_blocked_in_shell(self):
+        """长驻/递归面在会话内**不执行**（给指引而不是占住终端）。
+
+        2026-10-01 补：`serve` 一直被拦，而 **`lsp` 与它同型**（`LspServer.serve()` 是
+        `while True: stdin.readline(...)`）却漏了——交互会话里跑它会静默占住终端。本判据把
+        「长驻四件」钉住（`shell` / `terminal` 是同一命令的别名，两条拼写都要拦）。
+        """
+        for cmd in ("shell", "terminal", "serve", "lsp"):
+            self.assertIn(cmd, term.BLOCKED_IN_SHELL, "%s 未被拦（会占住会话）" % cmd)
+        # 防过度拦截：普通只读命令不许进这张表
+        for cmd in ("stats", "doctor", "market", "asset", "layers", "daemon"):
+            self.assertNotIn(cmd, term.BLOCKED_IN_SHELL)
+
+    def test_every_write_capable_form_is_gated(self):
+        """**写能力清点**：凡会改仓库件的形态都必须被闸门拦下（2026-10-01 补）。
+
+        依据：按 help 把「写产物的旗标 / 无标记写盘的动词」逐条清点后，用 `needs_confirm`
+        反向核对，抓到 4 处漏网——`nf score --write-baseline`、`nf asset baseline --re-sign`、
+        `nf lint --fix`（三个**写盘但不叫 `--write`** 的旗标）与 **`nf approve <对象> --by <人>`**
+        （会落 `protocol/approvals/*.json` 这条**治理/问责**记录，且不带任何写旗标）——此前在
+        `nf shell` 里都能**不经确认**改仓库。
+
+        2026-10-01 三补（**机械枚举全部旗标**，不再靠「已知名字」）：又抓三个不带写语义却直接
+        改仓库件的旗标——`nf module types --harvest`（写 event_registry）、`nf pipeline dryrun
+        --write-advisory`（写 pipeline_advisory）、`nf combine plan --certify`（写
+        combo_certificates），外加与已入闸 `--out` 同类的 `nf assemble --save <文件>`。
+        本判据把清点后的写形态逐条钉住，防回退。
+        """
+        for argv in (["stats", "--write"],
+                     ["run", "--pipeline", "p", "--modules", "m", "--dest", "d"],
+                     ["interop", "--all"],
+                     ["domain", "build", "--spec", "X", "--write"],
+                     ["combine", "materialize", "--write"],
+                     ["output", "render", "--write"],
+                     ["receipts", "--write"],
+                     ["conformance", "--write"],
+                     ["score", "--write-baseline"],
+                     ["asset", "baseline", "--write"],
+                     ["asset", "add", "x.md", "--key", "k", "--source", "s"],
+                     ["asset", "rm", "k"],
+                     ["module", "deprecate", "x.md"],
+                     ["register", "pkg", "--apply"],
+                     ["import", "x.md", "--register"],
+                     ["rename", "A", "B", "--apply"],
+                     ["pipeline", "new", "P99", "--id", "P99", "--name", "x"],
+                     ["decisions", "reindex"],
+                     ["patterns", "reindex"],
+                     ["library", "reindex"],
+                     ["library", "deprecate", "NF-1"],
+                     ["library", "attest", "NF-1"],
+                     ["approve", "README.md", "--by", "tester"],
+                     ["asset", "restore", "k"],
+                     ["knowledge", "transform", "add", "--src", "s", "--dst", "d"],
+                     ["release", "--fast"],
+                     ["knowledge", "frequency", "--trace", "t.json", "--write"],
+                     ["lint", "--fix"],
+                     ["module", "types", "--harvest"],
+                     ["pipeline", "dryrun", "--all", "--write-advisory"],
+                     ["combine", "plan", "--packs", "X", "--certify"],
+                     ["assemble", "需求", "--save", "a.md"],
+                     ["assemble", "--check", "x.md", "--trace", "t.json"],
+                     ["assemble", "需求", "--session", "s.json"]):
+            self.assertTrue(term.needs_confirm(argv), "写形态漏过闸门：%s" % argv)
 
     def test_gate_blocks_by_default_and_opens_on_confirm(self):
         seen = []
@@ -412,6 +681,19 @@ class FormTest(unittest.TestCase):
                 self.assertTrue(st.get("key") and st.get("prompt"), form["id"])
             self.assertIn(form["argv"][0], cmds,
                           "表单 %s 的模板动词不存在：%s" % (form["id"], form["argv"][0]))
+            # 2026-10-01 补：表单模板的**子命令与旗标**也必须在真命令面上——此前只核了第一个
+            # token（顶层命令）与占位符↔steps 的对应，`--reason` / `--apply` / `--scope` 这类
+            # 旗标写错不会有任何检查察觉（`--form-run` 要真跑才暴露）；`nf.py` 换过旗标名时，
+            # 表单就是下一个「文档/表与真实面分叉」的现场。
+            all_flags, all_subs = _nf_surface()
+            argv = [t for t in form["argv"] if isinstance(t, str)]
+            for tok in argv:
+                if tok.startswith("--"):
+                    self.assertIn(tok, all_flags,
+                                  "表单 %s 的旗标不在 argparse 面：%s" % (form["id"], tok))
+            if len(argv) > 1 and not argv[1].startswith(("-", "{")):
+                self.assertIn(argv[1], all_subs,
+                              "表单 %s 的子命令不在 argparse 面：%s" % (form["id"], argv[1]))
             for tok in form["argv"]:
                 if tok.startswith("{") and tok.endswith("}"):
                     self.assertIn(tok[1:-1], keys,
@@ -580,6 +862,62 @@ class OutputExperienceTest(unittest.TestCase):
         self.assertNotIn("\x1b", term.menu())
         self.assertNotIn("\x1b", term.render_map())
         self.assertIn("\x1b[", term.menu(color=True))
+
+
+class TerminalBaselineDocCountTest(unittest.TestCase):
+    """`docs/terminal.md` 的「当前 **N 行**覆盖」必须等于 `TERMINAL_BASELINE` 真实行数。
+
+    依据（2026-10-01）：这个数字此前是**手工**跟着基线走的——本轮恢复外部事故时它就停在 17
+    （真实 20），而没有任何判据盯着；同一行还并列着**按主题归并**的摘要清单（4 条写盘闸门行合成
+    一项），于是「20 行」配上「17 项」看起来自相矛盾。现在：数字由判据钉住，摘要与真实行的关系
+    在文档里写明（「下表按主题归并……逐行清单见 `terminal.py`」）。
+    """
+
+    def test_doc_baseline_count_matches_the_table(self):
+        doc = (ROOT / "docs" / "terminal.md").read_text(encoding="utf-8")
+        declared = {int(m) for m in re.findall(r"当前 \*\*(\d+) 行\*\*覆盖", doc)}
+        self.assertTrue(declared, "文档里没找到「当前 **N 行**覆盖」的声明（改了措辞请同步判据）")
+        self.assertGreaterEqual(len(term.TERMINAL_BASELINE), 15, "基线行数异常（判据可能已失效）")
+        self.assertEqual({len(term.TERMINAL_BASELINE)}, declared,
+                         "文档声明的基线行数与真源分叉：文档=%s / 真源=%d"
+                         % (declared, len(term.TERMINAL_BASELINE)))
+
+
+class TerminalHostileInputTest(unittest.TestCase):
+    """终端**机器面**喂敌意输入：不得冒「内部错误 / Python 栈」。
+
+    依据（2026-10-01 探针，6 例全过）：`--exec` 500 条命令、`--exec` 8 KB 单行、`--form` 4096
+    字符回答、未知 `--form` id、4096 字符检索词、超长 `--history` 路径——逐条真跑，**零内部错误、
+    零栈、零挂起**。本件把这一点钉住（退出码按各面语义分别断言：执行成功 0 / 用法与未命中 2 /
+    坏路径 1）。NF_HOME 隔离到临时目录，避免长名预设落进真实预设库。
+    """
+
+    def _run(self, *argv):
+        home = tempfile.mkdtemp(prefix="nf_term_hostile_")
+        self.addCleanup(shutil.rmtree, home, ignore_errors=True)
+        env = dict(os.environ, NARRATIVE_FORGE_HOME=home, NF_AUTOSTART="0")
+        return subprocess.run([sys.executable, str(Path(ROOT) / "scripts" / "nf.py"), *argv],
+                              cwd=ROOT, env=env, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace", timeout=300,
+                              stdin=subprocess.DEVNULL)
+
+    def test_hostile_inputs_do_not_crash_the_terminal_faces(self):
+        big_script = "; ".join("nf stats --check" for _ in range(500))
+        cases = (
+            ("--exec 500 条", ["shell", "--exec", big_script, "--no-banner"], 0),
+            ("--exec 8KB 单行", ["shell", "--exec", "nf doctor" + " " * 8000, "--no-banner"], 0),
+            ("--form 超长回答", ["shell", "--form", "preset-save", "--answer",
+                                 "name=" + "X" * 4096, "--json"], 0),
+            ("--form 未知 id", ["shell", "--form", "no-such-form", "--json"], 2),
+            ("--search 超长词", ["shell", "--search", "A" * 4096, "--json"], 2),
+            ("--history 超长路径", ["shell", "--history", "C:" + "x" * 4000], 1),
+        )
+        for label, argv, want in cases:
+            p = self._run(*argv)
+            blob = (p.stdout or "") + (p.stderr or "")
+            self.assertEqual(want, p.returncode, "%s：rc 变了（%s）" % (label, p.stderr[:150]))
+            self.assertNotIn("内部错误", blob, "%s：不得冒内部错误" % label)
+            self.assertNotIn("Traceback", blob, "%s：不得冒栈" % label)
 
 
 class CompletionHistoryTest(unittest.TestCase):
@@ -873,7 +1211,6 @@ class NavigationConsistencyTest(unittest.TestCase):
     def test_map_marks_quick_zones(self):
         text = term.render_map()
         for z in term.zone_table():
-            key = z["key"]
             if term.zones_of_family(z["family"]):
                 self.assertIn("菜单快捷区：", text)
                 break

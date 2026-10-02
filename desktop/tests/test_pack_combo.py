@@ -4,7 +4,6 @@
 
 负例取自组合引擎的真实失效类：未知包、悬挂依赖、未桥事件、未解析引用、层栈不稳定。
 """
-import json
 import sys
 import tempfile
 import unittest
@@ -122,7 +121,7 @@ class ContractCacheTest(unittest.TestCase):
 
     def test_community_contracts_cache_is_content_keyed(self):
         with tempfile.TemporaryDirectory() as tmp:
-            core = self._tree(tmp)
+            self._tree(tmp)
             pc.cache_clear()
             pc._CONTRACTS_CACHE.clear()
             first = pc._module_contracts(tmp)

@@ -27,10 +27,6 @@ from typing import List
 #: v3 内容字段位于 `data`；此前只校顶层字段，会放过「v2 字段 + v3 头」这种假 v3。
 CCV3_CHARA_KEYS = {"spec", "spec_version", "data"}
 CCV3_COMPAT_MIRROR = ("name", "description")
-CCV3_CHARA_OPT = {"personality", "scenario", "first_mes", "mes_example",
-                  "system_prompt", "post_history_instructions",
-                  "alternate_greetings", "tags", "creator",
-                  "character_version", "character_book"}
 #: world 条目必填（对齐 ccv3_adapter world_entries 产出）
 WORLD_ENTRY_KEYS = {"name", "keys", "content", "enabled",
                     "insertion_order", "id"}
