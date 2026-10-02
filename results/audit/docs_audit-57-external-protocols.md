@@ -24,7 +24,7 @@ subjects:
   - docs/text-hygiene.md:36edf35f60bc669192443a8c16a4bcdc7c22408270fff5ea15308a16a756f986
   - docs/endpoint.md:4da6d07f9d0ed0a7166c028b1a4070a370f2edc9e70e700cce03c3d38b4e930f
   - docs/mcp.md:cffaae148e5bd7d33f5257eb57fb1668625db20ddf62d6698c643990c288c0f1
-  - llms.txt:8bfa95ee84ac75be4a1596d884308cd317271756da7054a9432b624ee4abb9fb
+  - llms.txt:80e4a2627b26b43e8535275cd247e6c481b4c78415b0eae9aceddf56ad6619db
 
 ---
 

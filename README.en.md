@@ -43,6 +43,10 @@ Details: `tui/README.md`.
 
 **In one sentence**: NF is a **content contract layer** — it defines the protocols, quality gates and asset standards for "AI reliably produces long-form content"; narrative is only the first official domain package, while the protocol itself is domain-neutral and model-agnostic.
 
+**Aliases & keywords**: NF · NarrativeForge · 叙事工坊 · content contract layer · spec-driven content factory · long-form content generation · assembly-based content production · module/pipeline/asset · quality gate · domain pack · MCP.
+
+**What it is not**: not a model, not a prompt-template collection, not a vendor SDK — the protocol itself is domain-neutral and model-agnostic, and MCP is just one supported connection protocol.
+
 `bash verify.sh`（check 数与脚本版本以生成的统计区为准；本文档不钉运行时计数） · `python scripts/nf.py stats --check`
 
 > **Bilingual rule**: this file mirrors `README.md` section by section; the Chinese `README.md` is authoritative. The machine-checkable facts (version, check count, PASS baseline, protocol files, machine entries) are asserted identical by `verify.sh` check34 — a drift fails the gate.
@@ -74,6 +78,15 @@ AI assembly:
 4. Assemble a self-contained full version and pass the `##7` self-check
 5. `nf assemble "<requirement>" --build --dest <dir>` (assembly command: emits an "full version" single file directly)
 6. `nf assemble "<requirement>" --check <out.md>`
+
+### FAQ
+
+- **What is NF?** A content contract layer: protocols + quality gates + asset standards that make "AI reliably produces long-form content" loadable, checkable and reproducible.
+- **Is NF an MCP server?** Not necessarily — protocols and assets are plain text, so a clone or a raw link is enough; `nf serve` adds an MCP surface.
+- **Which models are supported?** Model-agnostic: any text-capable AI can assemble and load the protocols; nothing is bound to a vendor or a connection protocol.
+- **Does it need network access?** No. The repository is markdown source; `bash verify.sh` is local-only and runs offline.
+- **How is output judged?** Only by the internal chain: the verify gate (statically checkable) + the five-axis depth review + real drills. External praise is not used as quality evidence.
+- **How do I cite it?** MIT license; please credit the source — machine-readable metadata lives in `CITATION.cff` at the repository root.
 
 ## Capabilities and assets
 
