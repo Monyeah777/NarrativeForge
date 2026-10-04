@@ -12,10 +12,15 @@
 import argparse
 import importlib.util
 import re
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT / "desktop" / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT / "desktop" / "src"))
+
+from core import repo_face as _repo_face  # noqa: E402
 
 #: 入口文档面（agent 与人的第一跳）：新增入口文档须同步入表，否则本门禁漏检。
 ENTRY_DOCS = (
@@ -122,16 +127,15 @@ EXEMPT_DOCS = {
     "docs/fde-stack.md": "FDE 样例文本——引用的 results/interop/* 为运行期产物",
     "engine/dotnet/_aux_golden.cs.txt": "负例 golden 夹具——含刻意不存在的路径",
 }
-_SKIP_DIRS = {".git", ".rivet", "__pycache__", ".ruff_cache", ".mypy_cache", "node_modules"}
-
-
 def _living_docs() -> list:
-    """全部「在场文档」（.md/.txt，排除结果归档与变更日志）——口径必须与仓库实况一致。"""
+    """全部「在场文档」（.md/.txt，排除结果归档与变更日志）——口径必须与仓库实况一致。
+
+    面 = 仓库件（`core.paths.walk_repo_paths`）：被 `.gitignore` 覆盖的暂存副本不算在场文档
+    （否则同一份正文以第二份路径进面，路径可达判据会对着副本的裁剪面假红）。
+    """
     out = []
-    for p in ROOT.rglob("*"):
-        if any(part in _SKIP_DIRS for part in p.parts):
-            continue
-        if not p.is_file() or p.suffix not in (".md", ".txt"):
+    for p in _repo_face.walk_repo_paths(str(ROOT)):
+        if p.suffix not in (".md", ".txt"):
             continue
         rel = p.relative_to(ROOT).as_posix()
         if rel == "CHANGELOG.md" or rel.startswith("results/"):

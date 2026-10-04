@@ -93,8 +93,8 @@
     },
     {
       "description": "实践包品类",
-      "detail": "实践包 3 条（格式/可证/投影）",
-      "digest": "b57eea94772fae2208283d796f58496959b4fbd47aefee99488adf3aee8ec925",
+      "detail": "实践包 7 条（格式/可证/投影）",
+      "digest": "088daf2f577b270b03bf696107856a9e7be9f7efc4bcfbd22a14841d65bacde0",
       "id": "patterns",
       "ok": true
     },
@@ -135,8 +135,8 @@
     },
     {
       "description": "接力协议（SBAR 五段 + 未决带判据）",
-      "detail": "交接件 1 件 · 未决 3 条",
-      "digest": "fd8027c38beb9dccc6f0b65db8d8fb0e7fd93e2005630491420ad92d91353220",
+      "detail": "交接件 2 件 · 未决 12 条",
+      "digest": "c68f82f021754691fc89ebf6415602b427b8d13666604d9cd2eacd3787379405",
       "id": "handover",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "fe99e166fe50ecb9779993609585357f11c1420a34033773f9551600e2c1e09f",
+  "root": "819e1beb8fb0b2c66a7097300c72795158035515ecaa40ab6c4fd2799c22e35d",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

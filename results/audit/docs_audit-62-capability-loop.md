@@ -6,10 +6,10 @@ scope: 作者指令「利用决策模型来进行 NF 项目内目前已有的功
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/workloop.py:b1fe26b927902d071b027c6926c0ff2c9c763f6e17c39ec297682162af0bafba
+  - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
   - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
-  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
-  - scripts/check_interop_schemas.py:26443ff0a340be6ba292435ecc81ee859438c2531088427a91e4ea1f111fc30b
+  - scripts/nf.py:25e420b37084d709b7b8c895cf9093afd9c5fd1d691e2bc02a76125ac1231b5d
+  - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
   - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c
   - desktop/tests/test_interop_export.py:8bf3c9e23cd21700cfe55e4155c3904e48e0fce0463634da1dbc761ebd941caa
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54

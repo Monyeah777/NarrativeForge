@@ -62,7 +62,8 @@ class DeclaredPathEscapeTest(unittest.TestCase):
         self.assertFalse((root / "outside").exists())
 
     def test_absolute_and_drive_and_ads_forms_are_refused(self):
-        for declared in ("/tmp/PWNED.mmd", "C:PWNED.mmd", "outputs/x.md:hidden"):
+        for declared in ("/tmp/PWNED.mmd", "C:PWNED.mmd", "outputs/x.md:hidden",
+                         "outputs/NUL", "outputs/CON.txt", "a\x00b.mmd"):
             tmp, root, issues, rows = self._run(declared)
             self.assertTrue(_refused(issues), "%s 未被拒：%s" % (declared, issues))
             self.assertFalse([r for r in rows if "PWNED" in str(r.get("path"))], rows)
@@ -92,7 +93,8 @@ class DeclaredPathEscapeTest(unittest.TestCase):
         self.assertTrue(_refused(issues), issues)
 
     def test_pkg_rel_rejects_escape_forms_and_keeps_legit_ones(self):
-        for bad in ("../../x.md", "/etc/passwd", "C:x.md", "x.md:hidden", ""):
+        for bad in ("../../x.md", "/etc/passwd", "C:x.md", "x.md:hidden", "NUL",
+                    "outputs/NUL", "a\x00b.md", ""):
             with self.assertRaises(ValueError, msg=bad):
                 of._pkg_rel({"_pkg": PKG}, bad)
         for good in ("outputs/REPORT.json", "assets/DOMAIN_SPEC.md",

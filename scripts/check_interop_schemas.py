@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import Dict, Sequence, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "desktop" / "src"))  # core.*（原子写单源）
-from core import atomic_write  # noqa: E402
+from core import atomic_write
 
 #: 派生面 → (主 URL, GitHub 兜底 (owner/repo, path, ref))；raw 取不到时走 contents API
 SCHEMAS: Dict[str, tuple] = {

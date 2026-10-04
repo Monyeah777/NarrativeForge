@@ -457,7 +457,7 @@ def _read_json(path: Path) -> Any:
     return _read_json_raw(path)
 
 
-def _write_text_retry(path: Path, text: str, tries: int = 5) -> None:
+def _write_text_retry(path: Path, text: str, _tries: int = 5) -> None:
     """带重试的落盘（Windows 实测：杀软/句柄扫描会让 write_text 偶发 EINVAL(22)）。
 
     落点是**在仓产物**（`community/<包>/…`），并发读者（check32/33/39 各扫描）此前可能
@@ -842,7 +842,7 @@ def _event_names(spec: Dict[str, Any], which: int) -> Tuple[str, str]:
     return "%s_%s_ready" % (code, kind), "%s_%s_conflict" % (code, kind)
 
 
-def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:
+def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:  # noqa: ARG001 - 调用契约：测试按 alloc= 关键字传入
     """which: 1 = P40 口径层，2 = P60 收口层。"""
     code, cat, name = spec["code"], spec["category"], spec["name"]
     mid = "%s:M%02d" % (cat, which)
@@ -1155,7 +1155,7 @@ def protocol_yaml(spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
     ]) + "\n"
 
 
-def provenance_json(spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
+def provenance_json(spec: Dict[str, Any], _alloc: Dict[str, Any]) -> str:
     cat = spec["category"]
     doc = {
         "schema_version": "1",
@@ -1672,7 +1672,7 @@ def _append_domain_list(root: str, spec: Dict[str, Any]) -> bool:
     return True
 
 
-def _register_protocols(root: str, spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
+def _register_protocols(root: str, spec: Dict[str, Any], _alloc: Dict[str, Any]) -> str:
     """把包投影进 registry protocols[]（与 `nf register --apply` 同一套纯函数）。"""
     from core import protocol_projection as pp
     from core import registry_sync as rsync

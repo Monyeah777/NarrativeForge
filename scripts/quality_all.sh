@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# nf-io: inputs=verify.sh outputs=-
 # 42 M5.4 本地质量一键聚合：verify（协议/门禁）+ e2e（core 直驱端到端）。
 # 端壳冒烟/基准（bench/smoke_gui 等）已随 L3 端壳线 2026-09-09 退役移除（见 L3_FROZEN.md）；本地聚合 = verify + e2e（headless core 直驱）。
 set -e

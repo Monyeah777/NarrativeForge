@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from core import atomic_write
 from core import conformance_scan as csc   # 共享语料：一次只读调用内同文只读一遍
@@ -22,7 +22,7 @@ _ROOT = Path(__file__).resolve().parents[3]
 _LEDGER = "protocol/community_asset_ledger.json"
 
 
-def _file_keys(path: Path, text: str = None) -> List[str]:
+def _file_keys(path: Path, text: Optional[str] = None) -> List[str]:
     """键发现（`text` 可由调用方传入——避免同一份件被读两遍）。"""
     keys = set(re.findall(r"[A-Z][A-Z0-9_]*", path.stem))
     if text is not None:

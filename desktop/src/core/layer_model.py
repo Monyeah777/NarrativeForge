@@ -27,7 +27,7 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from core import conformance_scan as csc
 from core import face_key as _fk
 from core import atomic_write
@@ -121,7 +121,7 @@ def load(root: str = ".") -> Dict[str, Any]:
         doc = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError("阶梯真源 %s 不是合法 JSON：%s（修复指引：修 JSON 语法后重跑）"
-                         % (DECL_REL, exc))
+                         % (DECL_REL, exc)) from exc
     if str(doc.get("schema") or "") != SCHEMA:
         raise ValueError("阶梯真源 schema 不匹配（期望 %s；修复指引：核对 schema 字段）"
                          % SCHEMA)
@@ -203,7 +203,7 @@ def _exists(root: str, rel: str) -> bool:
     return (Path(root) / str(rel)).exists()
 
 
-def _derived_files(root: str, doc: Dict[str, Any], cache: dict = None) -> set:
+def _derived_files(root: str, doc: Dict[str, Any], cache: Optional[dict] = None) -> set:
     if cache is None:
         return _expand(root, doc.get("derived") or [])
     return _expand_many(root, doc.get("derived") or [], cache)
@@ -255,7 +255,7 @@ def _rule_issues(root: str, doc: Dict[str, Any]) -> List[str]:
 
     # L2 归属互斥（派生物已扣除）
     faces = {tid: _expand_many(root, (t.get("source") or {}).get("globs"), cache) - derived
-             for t, tid in zip(tiers, tier_ids)}
+             for t, tid in zip(tiers, tier_ids, strict=True)}
     for i, a in enumerate(tier_ids):
         for b in tier_ids[i + 1:]:
             overlap = sorted(faces.get(a, set()) & faces.get(b, set()))
@@ -531,7 +531,7 @@ def face_fingerprint(root: str = ".") -> str:
     return _fk.fingerprint(root, _READ_FACE, patterns(root))
 
 
-def scan(root: str = ".", _fp: str = None) -> Tuple[List[str], Dict[str, Any]]:
+def scan(root: str = ".", _fp: Optional[str] = None) -> Tuple[List[str], Dict[str, Any]]:
     """阶梯体检 → (issues, stats)；issues 空 = 阶梯自洽（并入 check27 纯度面）。
 
     派生结果按**输入内容指纹**缓存（输入面见 `patterns()`：声明列了整棵语料，面很宽）。

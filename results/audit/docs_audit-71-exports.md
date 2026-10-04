@@ -6,14 +6,14 @@ scope: 作者指令「自述数字自动化，互操作性从他证，标准目�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
-  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - verify.sh:3b0ec76f976e38b74a3d2627cd85f395487fe62a53cc73aec548dd285d53482a
+  - scripts/nf.py:25e420b37084d709b7b8c895cf9093afd9c5fd1d691e2bc02a76125ac1231b5d
   - desktop/src/core/repo_stats.py:5572728906751a33e25f70d73869e9796165b4fe7191cfae12cf25b53fdffbe6
-  - desktop/src/core/quality_baseline.py:8095d26c8360ec16397b0a0b8ee79033f4aa7c057cac3c465b564bb6c30ca757
+  - desktop/src/core/quality_baseline.py:bfb2023fc0856f8d0752f489bf1d7cd95bc3b2ec4974504ad66c5acfcc0b76a6
   - scripts/interop_thirdparty_kit.py:e741e5f80c792b05f2613efdc9a5dd942a1526e3c351b3b72ccb704cb43d9501
-  - scripts/geo_export.py:5c959b2dc6bf26179968e988afb7ec0fb4f770920fc85dc881c24cae2d2e0959
+  - scripts/geo_export.py:e5872d64221e1f1d6dc0e99b8e691bf2f12b59f4fda87a3fb93c237d32245fa6
   - scripts/fde_sample_run.py:903fc0c54e6d34f0a14e6ca225d37b2ddafb0e5856ab0a5d314f80a460ff84f7
-  - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
+  - protocol/CONFORMANCE.md:e5fe7aab3d16d4aaebccc2579f84e544ec60661a96d9dd883375ad7595b7b609
   - docs/fde-stack.md:eb0f23ea12870e75945803f301469a67c737f2072f0b2b2ffd2e495b9c7631cb
   - docs/fde-sample/README.md:c17984ad90f50d39131fd932c37915b978e28bf606f9c397128de1c8417e4168
   - docs/interop-thirdparty.md:637dff4598a4b8ff21f81090c20b625269cea49903d396a3fc2968f2f1e1f2fc

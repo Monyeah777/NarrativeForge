@@ -12,29 +12,29 @@
       "sha256": "7eaaccd43afa4f68a36c3712620f23b94b30111174ca60d563a353991e245ea8"
     },
     {
-      "cid": "bafyreiflqg3amzds3g7aa5z2kvmy3b5d2yhsk7ov7qbxwc6q2mtuc4nxee",
+      "cid": "bafyreick322g3xulginfrk5osbfdudsqslwmnqrgdyra5qbzadnjdj3cu4",
       "path": "02_联动注册表.md",
-      "sha256": "ab81b6066472d9be00773a55598d87a3d60f257dd5fc037b0bd0d3274171b721"
+      "sha256": "4adeb46dde8b321a58abae904a3a0e5092ecc6c2261e220ec03900da91a762a7"
     },
     {
-      "cid": "bafyreie4qqw56g7u34o2246mtmshkeblun2p55inq3u4d6abaaqojp5gni",
+      "cid": "bafyreigpa6l7nbxolywvuvplzlog6uxbtqhsdzg3c54v2xsgv6wzzfrfjm",
       "path": "06_Agent执行协议.md",
-      "sha256": "9c842ddf1bf4df1dad73cc9b2475102ba374fef50d86e9c1f8010020e4bfa66a"
+      "sha256": "cf0797f686ee5e2d5a55ebcadc6f52e19c0f21e4db17795d5e46afad9c96254b"
     },
     {
-      "cid": "bafyreidnme6kpa2h22sgn3mvdaorgw6ifbd6zyc66etwwb2dm6akdfkjcy",
+      "cid": "bafyreid7iefhj6bjmhr5m7mjddthdl6efswflscitsral4ykn7kwsrrpsy",
       "path": "07_官方核心出厂与社区预设导航.md",
-      "sha256": "6d613ca78347d6a466ed95181d135bc82847ece05ef1276b07436780a1954916"
+      "sha256": "7f410a74f82961e3d67d8918e671afc42cac55c8489ca205f30a6fd569462f96"
     },
     {
-      "cid": "bafyreiea4srge6zgwq7iknjhltjepzweqg2mpbavwdvotlhn35lk2zqz3m",
+      "cid": "bafyreibcp7mmbbnih72yr46krtikb6nmfuiqfzf3jg24gxxczijy2s3ucy",
       "path": "llms.txt",
-      "sha256": "80e4a2627b26b43e8535275cd247e6c481b4c78415b0eae9aceddf56ad6619db"
+      "sha256": "227fd8c085a83ff588f3ca8cd0a0f9ac2d1102e4bb49b5c35ee2ca138d4b7416"
     },
     {
-      "cid": "bafyreifhml4thetp6mo35iuvmyrqhep4jj5poma2big7h3e66r4743ihiq",
+      "cid": "bafyreibpe77pkn67f4t263cmnhm5pvm7ib5cmqhtmtqj5zdfwor6y5wuda",
       "path": "library/INDEX.md",
-      "sha256": "a762f933926ff31dbea29566230391fc4a7af7301a0a0df3ec9ef479fe6d0744"
+      "sha256": "2f27fef537df2f27af6c4c69d9d7d59f407a2640f364e09ee465b3a3ec76d418"
     },
     {
       "cid": "bafyreif2y6sc3cpxhy3jhq3eyunlwwt2kfi7v36qu4pm4nwttam4tte3om",
@@ -87,9 +87,9 @@
       "sha256": "8225689a75dce1f3088fb1d49f0cc11a607afbc39c56732a3bcc32576fc01c10"
     },
     {
-      "cid": "bafyreiah7qvdnyg4yslvevahoommnlnspgu6yrcucisavnabgldzdtuaia",
+      "cid": "bafyreigksuc3ifum76cyrbdb3v47jejcto3q62hlo4u47hlrdqsxywwgki",
       "path": "protocol/conformance_report.json",
-      "sha256": "07fc2a36e0dcc4975254077398c6adb279a9ec445412240ab40132c791ce8040"
+      "sha256": "ca9505b4168cff85888461dd79f491229bb70f68eb7729cf9d711c257c5ac652"
     },
     {
       "cid": "bafyreiav4koretqkw26pbhyaw4e45ltrko727oqzo56f7pdn7zjljasc44",
@@ -97,9 +97,9 @@
       "sha256": "15e29d124e0ab6bcf09f00b709ceae7153bfafba19777c5fbc6dfe52b48242e7"
     },
     {
-      "cid": "bafyreicwn5twyhoh4p6poii6rqcmp7y4ibigsssawednqn5gkwldnz5igm",
+      "cid": "bafyreihf7z5kwpiw2svoxtgck6pyjzke5rqgmguw3hoyqm3vvv2zln5wbe",
       "path": "protocol/CONFORMANCE.md",
-      "sha256": "566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833"
+      "sha256": "e5fe7aab3d16d4aaebccc2579f84e544ec60661a96d9dd883375ad7595b7b609"
     },
     {
       "cid": "bafyreichnfsscxndastlvjslpqmb4xuq7l23xd2sicmjvbjs6qgnqag7by",

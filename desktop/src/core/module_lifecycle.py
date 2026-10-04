@@ -99,7 +99,7 @@ def _num_of(module_id: str):
     return m.group(1) if m else ""
 
 
-def parse_refs(meta: dict, module_id: str) -> set:
+def parse_refs(meta: dict, _module_id: str) -> set:
     """模块头依赖/被依赖/订阅的 id 集合（精确 id 或裸号唯一时匹配数值）。"""
     refs = set()
     for k in _REF_KEYS:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-  # nf-io: inputs=verify.sh outputs=docs/verification-cards.md
 """验证卡册生成器（`docs/verification-cards.md` 的**可复现**投影）。
 
 为什么入库：卡册此前自称由 `build_verification_cards.ps1` 生成，而该脚本**不在仓库**——

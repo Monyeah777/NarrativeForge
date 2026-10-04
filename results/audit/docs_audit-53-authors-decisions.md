@@ -8,10 +8,10 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/concept_graph.py:0f4bbd6b92ab0cb3daf47956378f7afd0d20432ed23f59e5d669621da7d239be
   - desktop/src/core/intake.py:f52bb9a841b6ff75d40193980472a2787528f8da0cf2f1d902cb6c6fc985591d
-  - desktop/src/core/asset_ledger.py:f169ffd0d0670b4d7111d6bc85b0c89cb24a07362ef88c3a73260626c0d18149
+  - desktop/src/core/asset_ledger.py:c61b5535c4bcb3ea98c40a4582137310a8d4049cbd5b5f66ffbefd9847967826
   - scripts/ai_domain_closure.py:2d5a1ed9e59dda0e72c185aed189647520183c6e2d4e942a2548dadd654cec1e
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
-  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - verify.sh:3b0ec76f976e38b74a3d2627cd85f395487fe62a53cc73aec548dd285d53482a
 
 ---
 
@@ -57,7 +57,7 @@ subjects:
 | 实现 | `asset_ledger.verify_shelf_shape()`：货架（`community/*/assets`、`05_资产库/用户自定义`）**不得含子目录**；`verify_root()` 聚合该项（`nf asset verify` 与 **verify check23** 同步生效） |
 | 依据 | 三面扫描（密度 / 键表投影 / 行数基线）非递归，台账面 `os.walk` 递归——子目录会造成「台账可见、三面不可见」（静默丢口径） |
 | 文档 | `05_资产库/README.md` 增「单层货架不变量」条（含修复指引：分组用键表 / 一包多文件） |
-| 回归 | `desktop/tests/test_asset_ledger.py` 15 → **20 例**（单层通过 / 包货架子目录被抓 / 用户货架同样覆盖 / `verify_root` 聚合与 shelves 统计 / 仓库真源四货架实测单层） |
+| 回归 | `desktop/tests/test_asset_ledger.py` 15 → **20 例**（单层通过 / 包货架子目录被抓 / 用户货架同样覆盖 / `verify_root` 聚合与 shelves 统计 / 仓库真源四货架实测单层）；2026-10-03 台账扫描面收口时补 **+2 例 ignored-copy 回归**（被 `.gitignore` 覆盖的副本不得被读成第二份货架，含「未忽略的必须读到」反向对照）→ 共 **23 例**，本件被审对象 digest 同步重绑 |
 
 ## 二、门禁与验收
 

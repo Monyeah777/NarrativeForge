@@ -93,6 +93,41 @@ class ValidatePathTest(unittest.TestCase):
             with self.assertRaises(paths.PathEscapeError):
                 paths.validate_path(root, "link/escape.md")
 
+    def test_control_chars_are_rejected(self):
+        """控制字符（NUL 等）不是可落盘的文件名：Windows 静默截断 / POSIX 抛 `ValueError`。
+
+        依据（2026-10-01 实测）：`validate_path(root, "ok\x00bad")` 此前**放行**并回一个含 NUL
+        的路径——同一套包含性判据在 MCP 参数面已拒、账本面却放行（见 `test_trust_boundary` 对账）。
+        """
+        with tempfile.TemporaryDirectory() as root:
+            for bad in ("ok\x00bad", "a\x1f/x.md", "x\x7f.md"):
+                with self.assertRaises(paths.PathEscapeError, msg=repr(bad)):
+                    paths.validate_path(root, bad)
+
+    def test_ads_writing_is_rejected(self):
+        """NTFS 备用数据流（`文件.md:流`）：按扩展名/文件名白名单的经典绕过面。
+
+        依据（2026-10-01 实测）：`x.md:hidden` 此前被 `validate_path` 放行并解析成同名文件的
+        **隐藏流**；参数面（`trust_boundary`）早已拒。两侧现共用 `paths.path_syntax_issue`。
+        """
+        with tempfile.TemporaryDirectory() as root:
+            for bad in ("x.md:hidden", "assets/A1.md:evil", "secrets.txt:stream"):
+                with self.assertRaises(paths.PathEscapeError, msg=bad):
+                    paths.validate_path(root, bad)
+            # 负例对照：合法文件名与限定式 id（含冒号但非「名字.扩展名:」形态）不受影响
+            for ok in ("assets/A1.md", "a..b", "版本:1.0", "P06_技术文档题材装配流管线.md"):
+                self.assertTrue(paths.validate_path(root, ok), ok)
+
+    def test_windows_reserved_device_names_are_rejected(self):
+        """`CON`/`NUL`/`COM1`… 指向设备而非文件：写进去静默丢数据（跨平台统一拒）。"""
+        with tempfile.TemporaryDirectory() as root:
+            for bad in ("NUL", "sub/CON", "aux.md", "COM1", "logs/LPT9.txt"):
+                with self.assertRaises(paths.PathEscapeError, msg=bad):
+                    paths.validate_path(root, bad)
+            # 负例对照：名字里含 CON/NUL 但不是保留名段
+            for ok in ("CONCEPT.md", "console/x.md", "COM10", "docs/NULL.md"):
+                self.assertTrue(paths.validate_path(root, ok), ok)
+
 
 class GuardRecursiveDeleteTargetTest(unittest.TestCase):
     """F-10：递归删除目标的落点闸门（灾难性落点必须拒）。

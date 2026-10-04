@@ -91,9 +91,9 @@ def _serve(argv) -> int:
         try:
             code = int(head[0])
             out_len, err_len = int(head[1]), int(head[2])
-        except ValueError:
+        except ValueError as exc:
             raise OSError("协议头不是数字：%r（修复指引：本客户端会回退直跑；端口被别的"
-                          "服务占用时 `nf daemon stop && nf daemon start`）" % (head,))  # noqa: B904
+                          "服务占用时 `nf daemon stop && nf daemon start`）" % (head,)) from exc
         out = fh.read(out_len) if out_len else b""
         err = fh.read(err_len) if err_len else b""
     if out:

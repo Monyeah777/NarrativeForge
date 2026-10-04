@@ -23,6 +23,8 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List, Tuple
 
+from core import paths as _paths
+
 #: 外来内容面（仓库根相对路径前缀）；这些面下的正文一律按数据消费。
 UNTRUSTED_PREFIXES = ("library/", "community/", "docs/reference/external/")
 
@@ -57,20 +59,12 @@ _EXFIL = re.compile(_SEND + r"[^\n]{0,12}" + _CRED + r"|" + _CRED + r"[^\n]{0,12
 #: 隐藏通道：零宽与双向控制字符（正文里不应出现，常被用来绕过审阅）。
 _HIDDEN = re.compile("[\u200b-\u200f\u202a-\u202e\u2060\u2066-\u2069\ufeff]")
 
-#: 参数里不允许出现的控制字符（\t \n \r 之外的 C0/C1 与 DEL）。
-_CONTROL = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
-#: 路径穿越写法（`..` 段）。
-_TRAVERSAL = re.compile(r"(^|[\\/])\.\.([\\/]|$)")
-#: 越界绝对写法（`/` `\` `C:\` `~`）。
+#: 越界绝对写法（`/` `\` `C:\` `~`）——**取件面额外严格**：`~` 在账本面按字面落在根内，
+#: 参数面按家目录语义拒（对账测试 `extra_strict` 已逐条登记）。
 _ABSOLUTE = re.compile(r"^([\\/]|[A-Za-z]:[\\/]|~)")
-#: 盘符相对写法（`C:foo`）：Windows 独有的一种**越界写法**——它不是 `isabs`，但
-#: `ntpath.join("D:\\repo", "C:foo") == "C:foo"`（盘符不同则整段替换），落到 D 盘的仓库就
-#: 被换成了 C 盘的进程临时目录；盘符相同时才退化成相对段。口径：参数只许「根内相对标识符」，
-#: 带盘符一律拒（含上面的 `C:\` 形态）。
-_DRIVE_RELATIVE = re.compile(r"^[A-Za-z]:(?![\\/])")
-#: NTFS 备用数据流（`file.md:hidden`）：同名文件的**隐藏流**，可绕过按扩展名/文件名的白名单。
-#: 只拦 `名字.扩展名:流名` 形态——限定式 id（`类别:M90`）与 `nf://` uri 不含 `.x:` 片段，不受影响。
-_ADS = re.compile(r"\.[A-Za-z0-9]{1,8}:[^\\/\s]")
+#: 控制字符 / `..` 段 / 盘符相对写法（`C:foo`）/ NTFS 备用数据流（`file.md:hidden`）
+#: 四条**与账本面共用**的判据由 `core.paths.path_syntax_issue` 单点定义（2026-10-01 收敛：
+#: 此前两处各写一份，账本面漏了控制字符与备用数据流 ⇒ 同一套包含性判据出现宽窄两版）。
 
 #: 检测规则表（顺序即报告顺序；同一行只记第一条命中，避免噪声）。
 _RULES: Tuple[Tuple[str, "re.Pattern[str]"], ...] = (
@@ -125,13 +119,10 @@ def relative_path_issue(value: str) -> str:
     两处引用；**包含性**（realpath 是否落在根内）由调用方用 stdlib 补，见 `_tool_pipeline_read`。
     """
     text = str(value or "")
-    if _CONTROL.search(text):
-        return "含控制字符"
-    if _TRAVERSAL.search(text) or _ABSOLUTE.match(text) or _DRIVE_RELATIVE.match(text):
+    if _ABSOLUTE.match(text):
         return "含越界路径写法（../ 段 / 绝对路径 / 盘符写法如 C:foo）"
-    if _ADS.search(text):
-        return "含备用数据流写法（`文件:流` 形态）"
-    return ""
+    # 其余词法判据（控制字符 / `..` 段 / 盘符写法 / 备用数据流）与账本面同源：单一出处
+    return _paths.path_syntax_issue(text)
 
 
 def check_arguments(tool: str, args: Dict[str, Any]) -> None:

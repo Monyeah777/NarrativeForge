@@ -26,7 +26,7 @@ import os
 import random
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Sequence, Set, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from core import conformance_scan as csc
 from core import atomic_write
@@ -591,7 +591,7 @@ def verify_certificate(root: str, cert: Dict[str, Any]) -> Tuple[List[str], Dict
 
 def breadth(root: str = ".", triple_sample: int = 400, quad_sample: int = 200,
             quint_sample: int = 120, sext_sample: int = 60,
-            seed: int = 20260923, _witness: str = None) -> Dict[str, Any]:
+            seed: int = 20260923, _witness: Optional[str] = None) -> Dict[str, Any]:
     """广度证明：全部两两 + 定种子抽样三元 / 四元 / 五元 / 六元，跑同一套不变量。
 
     参与面 = `community/` 下全部已登记协议包（域包 + 组合包 + 既有社区包）——
@@ -955,7 +955,7 @@ def combo_readme(name: str, packs: Sequence[str], cert: Dict[str, Any],
 
 
 def combo_assets_readme(refs: Sequence[Tuple[str, List[str]]],
-                        layers: Dict[str, List[str]]) -> str:
+                        _layers: Dict[str, List[str]]) -> str:
     lines = ["<!-- ai-index: borrow-only -->",
              "# 借阅索引（本包无自有内容资产）",
              "",
@@ -1016,7 +1016,7 @@ def combo_pipeline(name: str, pid: str, layers: Dict[str, List[str]],
 
 
 def combo_outputs(root: str, name: str, cert: Dict[str, Any],
-                  layers: Dict[str, List[str]]) -> Dict[str, str]:
+                  _layers: Dict[str, List[str]]) -> Dict[str, str]:
     """组合包的机验产出面（8 件）：证书（T4）+ 契约 + 数据 + 图表 + 图示 + 系统卡。"""
     pkg = "community/%s" % name
     import json as _json

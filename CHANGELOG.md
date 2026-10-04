@@ -2,6 +2,55 @@
 
 ## [2.12.0] - 未发布
 
+- **收口执行：`verify.sh` 回到全绿（`PASS=70 · WARN=0 · FAIL=0`）——审计 digest 重绑、派生报告重冻结、棘轮重冻**（2026-10-04）：
+  ① **冻结链**（顺序固定，先改代码后冻结）：`results/audit/**` **38 件**被审对象 digest 重绑（只校准被改动的承重件，
+     不改结论/正文）→ `nf conformance --write`（**conformant 27/27**）→ `nf approve protocol/conformance_report.json`
+     （对象改动即自动失效后重批）→ `nf receipts --scope protocol --write`（根刷新 + **12 个派生面**联动）
+     → `python scripts/verify_report.py --write`（判据 28 条：PASS 27 · FAIL 0 · WARN 1，`--check` rc=0）。
+  ② **裸写收口**：`scripts/nf.py` 的生成件落盘改走 `core.atomic_write.write_text`——该判据**逐行**判定，
+     写盘行须出现 `atomic_write` 字面量（别名写法仍判红）。
+  ③ **棘轮重冻**：`protocol/code_metrics_baseline.json` 重冻为 **173 件**（评审卷宗见交接件：terminal.py 的内聚性、
+     `_make_parser` 的声明式形态）。
+  ④ **泄漏面**：`engine/rust/tools/` 的**合成负例**生成器与 .NET probes 同口径纳入 `test_leak_surface` 豁免；
+     `engine/rust/README.md` 的示例路径改用占位写法（沿用本仓既有的转义/占位约定）。
+  ⑤ **修复指引**：`verify.sh` 红时指向的 `explain all 1-40` 实测 rc=2（该子命令只收一个位置参数）→
+     改为可跑的 `python scripts/nf.py explain all（覆盖 check1-40）`。
+  验收：`bash verify.sh` 全量 **PASS=70 · WARN=0 · FAIL=0**（`VERIFY_RC=0`）· `check1-40` 不变（不新增 check 序号）。
+
+- **「生成副本被读成第二份事实」在文本面与资产台账上收口：仓库件谓词收敛到单一出处 `core/repo_face.py`，并给扫描面立「只许缩小」的常驻纪律**（2026-10-03）：
+  ① **取证**——npm 一键包的暂存面（`packaging/npm/payload/`，gitignored 的生成副本）此前被多处自实现的目录白名单读成第二份事实：check12 的三处文本面因此假红；`asset_ledger` 的三处根遍历把副本当成第二份台账，`verify_root` 报「台账 206 / 托管资产 614」而真实值恰为一半（**103 / 307**），`nf asset inventory` 每件列两遍。
+  ② **修法**——新增**叶子模块** `core/repo_face.py`（静态目录名 + 以 `.gitignore` 为真源，谓词交给 git 判），7 个全仓文本面与 `asset_ledger._walk_repo` 全部改走它；`paths.py` 不因收口而膨胀。
+  ③ **判据**——`desktop/tests/test_repo_face.py` 登记「仓库根级扫描面」清单，断言每处都引用单一实现，且**清单只许缩小**（新增面须先接进来）；另含「被 `.gitignore` 覆盖的副本一份都不许读到」与「未被忽略的必须读到」两向对照。
+  ④ **同波**——实践包 `patterns/predicate-single-source`（扫描面收敛：一条判据只准有一处实现）。
+  ⑤ **同波留档的口径坑**——实践包 `patterns/worktree-vs-index`：门禁扫**工作区**、git 只在 `git add` 时规范化**索引**，故「`git status` 干净的 CRLF 件」仍会让 check12 报红；包内给了三种可能的判别顺序（未跟踪 / 工作区 vs 索引 / 门禁扫错面）与**唯一修法**（重写工作区文件）。
+
+- **智能体工具编排落地：能力目录 / 计划编译 / 确定性拓扑序 / fail-closed 派发（每步 `expects` 即验）**（2026-10-03）：
+  ① `core/orchestration.py` 为**叶子模块**——工具面由调用方注入，自身不 import 兄弟模块，避免给被依赖方抬高 Ca 而造出 SDP 违例（实测：最初自 import 工具面使 `mcp_runtime` 的 I 由 0.5 降到 0.4545，当场多出两条违例；改为注入后归零）。
+  ② 生产接缝 `core/driver.py`（`nf driver` 可达：工作流映射的工具必须能组成一步可编译计划，并入既有治理面、**不新增 check 序号**）；agent 入口 `scripts/orchestrate.py`（`--catalog` / `--plan` / `--check`）。
+  ③ **判据**——`desktop/tests/test_orchestration.py`：九类编排错误必判红 + 变异自证 + **真工具面端到端**（`routing` 工作流经 `mcp_runtime.TOOL_HANDLERS` 真调用；并证明「真工具成功但 `expects` 不齐同样即停」）。
+
+- **AOT 快线（`engine/rust`）从「声称与 Python 真源一致」变成逐面判据；并补掉几条「判据在、但没人跑」的接线缺口**（2026-10-03）：
+  ① `desktop/tests/test_rust_fastlane.py` 逐面 oracle：receipts 逐字节、stats / layers / density / schema-lint 文档等价、conformance seal 逐字节、**16/16 已移植契约逐字段**（迭代式——对方每移植一条自动覆盖）、未移植契约 fail-closed、`pyval reprf` 与 CPython `repr(float)` **2,019 例**逐字节。
+  ② 面清单**四源取并**（`--help` ∪ 二进制自述错误消息 ∪ 探针表 ∪ 实现源码 `main.rs` 顶层分派），并配「解析塌缩即红」与「`--help` ⊆ 源码解析」两道自盯——`pyval` / `density` / `score` / `schema-lint` / `schema-validate` 五个面正是这样被找出来的（它们都能跑，却都不在 usage 里）。
+  ③ **接线缺口**——发布工作流的两条自检 `packaging/npm/test/smoke.test.mjs` 与 `tools/verify-package.mjs`（点文件泄漏 / `__pycache__` / 体积预算 / LICENSE / bin 双别名）此前常驻面从不执行，现由 `desktop/tests/test_npm_package.py` 常驻跑；套件级由 `desktop/tests/test_suite_wiring.py` 兜住（要么进 discover 面、要么登记「由谁跑」，两个方向都断言）。
+  ⑤ **同波补齐 npm 交付线的真跑面（该文件 7 例）**：① 两条发布前自检（上）；② **零网络承诺**——静态扫 `bin/lib/tools` 的 JS 无 `fetch`/`http(s)://`/埋点原语（README 承诺「零网络请求、零遥测」）；③ **零安装脚本**——`package.json` 不得有 `preinstall/install/postinstall`（供应链最常用的一环；含防呆断言）；④ **解包主机制**——`npx narrativeforge doctor` 那条路（无 `--repo` 且 cwd 不在仓库树内 → payload 解到缓存 → 从缓存跑起来）；⑤ **物化路径**——`install --dest` 真落成运行时树（含「不含 `.git/.github/results`」这条承诺）且**非空目标 fail-closed**（rc=3 + 修复指引）、显式 `--force` 才覆盖。此前 `install` 只被正则断言过「帮助文本里提到了它」，**从未真的执行**。
+  ④ **同波**——实践包 `patterns/verifier-must-run`（判据必须接线）；同口径复核 `scripts/**` **34 件**（25 `.py` + 8 `.sh` + 1 `.cmd`）**零孤儿**（每件都被别处引用，含 `protocol/instruction_evidence.json` 的指令登记面）。
+
+
+- **协议真源口径统一（02/06/07）：执行顺序「10 步 vs 17 步」范围标注 + 认知边界「四层」计数校正 + 陈配套件修正**（外部实测 P2 待裁三项收口）：① **执行顺序两表分标范围**——`02 §6` 明标「官方核心装配（P01）10 步真相源」、`06 §3` 明标「跨预设并集 17 步」，两表互不覆盖；`02 §6` 增「预设级差异（R3）」条（社区预设可把模块降为 allowed 备选，如西幻 P03 的 M03/M23），消解 P03「M23 不默认挂载」与 02 §6 第 5 步的读法冲突；`07 §4` 系统提示骨架不再写死「17 步」。② **认知边界计数**——`06 §4` 标题/正文「四层」与列表 ①–⑤ 五段的矛盾修正：⑤ 锚点回验标注为**收尾校验（不计入四层）**，四层命名与 M23/各包 README 保持一致。③ **陈配套件**——`06` 头部与角色表：04_模块库 32→13 件、P02/P03 由「03_管线库」改指 community 两包、校园/西幻资产改述为随包分发。变更属 `editorial`（无机器字段增删改义，见 `protocol/EXTENSION.md`）；协议层回执已重签（`nf receipts --scope protocol --write`）。
+
+- **数字资产契约层落地：NF 从「内容契约层」补出「数字资产契约层」三面验证（数据 / 代码 / 脚本），check40 常驻**（**作者指令**：「全部补齐缺口」）：
+  ① **数据面**：JSON 严格如 RFC 8259（拒 NaN/Infinity）、CSV 表头 + 逐行列数、Markdown 表格列数、必填字段、可选 sha256 防篡改、可选 link（路径字段指向的文件行数 == 计数字段——输入输出一致性）。
+  ② **代码面**：AST 规范（可解析 + 禁用调用面）+ **可证**空指针（同一语句序列内 x = None 后解引用；分支不并入、`if x is None: return` 守卫正确放行）+ 测试用例在场；**安全漏洞面不重造**——SQL 拼接 / 命令注入等仍由 `scripts/sast_check.py`（bandit + ruff-S 计数棘轮）与 `purity_scan` R6 守。
+  ③ **脚本面**：Python/Bash/VBA 共用同一条 `nf-io:` 头，与声明件双源必须逐字一致；链上「A 的输出」必须落在「B 的输入」里且路径对齐；只判字面路径，变量拼接不判（不编造）。
+  ④ **接线**：真源 `protocol/asset_contracts.json`（11 件战例：4 数据 / 3 代码 / 4 脚本 / 1 链）；`nf asset contract [--face|--freeze|--run-tests|--json]`；check40；`verify_report` 判据表；单测 39 例（含仓库内驻留的三语言夹具链）。verify v2.29 → **v2.30**，`quality_baseline.EXPECTED_*` = check1-40 · PASS=70。
+
+- **终端面收敛为「单真值源 · 多视图」：全屏 TUI 不再手抄命令白名单/闸门表/动作目录——顺带堵住「命令 + 旗标才写盘」的面在全屏视图里不确认即可执行的旧缺口**：
+  ① **取证（2026-10-03）**：终端真值此前有三处肉身——`core/terminal.py` 的策展表（check39 判据在场）、`tui/nf.py` **手抄**的命令白名单 / 写盘闸门 / 动作目录（只在 `--selftest` 时与 argparse 面比对一次，平时可静默漂移）、文档表格。同型判据下的**实测缺口**：手抄闸门只有 `CONFIRM_FLAGS` 与 `CONFIRM_VERBS` 两张，漏了 `CONFIRM_FLAG_PAIRS` ⇒ `nf interop --all` / `nf assemble … --trace|--session` 这类配对写面在全屏视图里**不确认即可执行**，而 `nf shell` 侧是拦住的——同一仓库两套口径。
+  ② **修法**：真源仍在 `core/terminal.py`（全屏视图的动作目录并回 `ZONES[].actions`，含参数槽与提示语）；新增机器快照 `terminal.surface_payload()` / `render_surface_module()`；`nf shell --surface [--json]` 出机器面、`nf shell --surface-write` 生成 `tui/_surface.py`；`tui/nf.py` 改为 `import _surface` 物化（冻结态 exe 不能 import core，故消费生成件），闸门判定补上配对表。视图可**显式**额外收紧：TUI 的 `daemon` 整族拒跑写在 `TUI_EXTRA_LONG_RUNNING` 并注明是视图策略。新旗标 `--surface-write`（写生成件）按仓库既有口径**入闸**（进 `CONFIRM_FLAGS`）并在 `FORM_EXEMPT` 登记不建表单的理由——于是写旗标普查与「写面必有去处」两条既有判据同时保持绿，而不是新开一个例外桶。
+  ③ **判据**：check39 增「投影与真源**逐字节**对账（重算 → 报首个不一致行 + 重生命令）+ 视图闸门三表 ⊇ 真源 + 白名单与 argparse 面一致 + 动作 `argv[0]` 为真实命令 + 能力区数一致」；`nf shell --verify` 调**同一函数**（单源判据，人跑与门禁跑同语义）；单测 `test_terminal.TerminalSurfaceTest` + `test_nf_tui.SurfaceSingleSourceTest`（逐条枚举：视图闸门 ⊇ 真源、动作目录 = 真源、投影逐字节同源）；TUI `--selftest` 增「闸门口径（单源）」「投影同源」两行（后者现场跑 `nf shell --surface --json` 比摘要）。全屏视图的能力区标题随之统一到真源，README/README.en 的演示帧按渲染器重生成（`test_readme_demo_block_matches_the_renderer` 逐字比对）。
+  ④ **同波补齐视图面（写盘表单）**：`FORMS` 的 13 张表新增 `ZONES` 第 9 区（`id=forms`，标 `forms: True`，**不留动作字面量**），动作由 `terminal.zone_action_dicts()` 从表单真源投影——行模式仍是 `/form <id>` 逐项追问，全屏视图里则是 13 个可回车动作，一次登记两处可用。配套：表单步骤新增可选 `kind: "path"`（模块/资产/管线/批准对象等仓内路径参数在视图侧过包含性判据后才拼进 argv）；视图侧 `Action.build` 与 `terminal.build_argv` 同口径地「**空的可选值连同其旗标一起丢**」（否则表单动作会留下悬空 `--reason` 这类用法错误）。判据：单测逐条枚举「表单投影动作必须被判为 `write`」+「投影动作与表单真源逐字对映」+ 悬空旗标回归；`nf shell /zone 8` 逐条列出表单动作。
+
 - **「稳态毫秒级」声明做了同口径复测：机制面正常（快路 0 次解释器），墙钟数字已漂 → 补带日期的复测记录**（**作者指令**：「稳态毫秒级响应」「默认路径开（适应 agent 密集重复调用）」「内外口径统一」）：
   ① **机制面（结论：正常）**——用仓库自己的手法（PATH 挂解释器 shim 记一笔）**同轮**量「墙钟 + 启动次数」：`scripts/nf --version` **无守护 260.9 ms / 恰好 1 次**解释器、**经守护 71.9 ms / 0 次**、`python scripts/nf.py --version` 189.3 ms、bash 地板 40.8 ms。即「默认路径开」是真的（守护在跑时**一次解释器都不起**），且该性质有确定性判据守着（`test_launcher.InterpreterLaunchBudgetTest`：快路 0 次 / 回退稳态 1 次 / `python3` 是 Store 桩时须换能跑的）+ `test_daemon_serves_next_command_with_zero_interpreter_starts`（自动拉起后第二条命令 0 次）。
   ② **数字面（结论：已漂，已补记）**——`docs/terminal.md` 的「经守护 48 ms」是 2026-09-29 的带日期实测；同口径复测今天是 **71.9 ms**。分项对得上：bash 地板 41 ms + **套接字往返 ≈31 ms**（当初 ≈9 ms），**组合式（地板 + 一次往返）没变**，属机器/负载漂移而非机制退化。已在同一节补**带日期的复测记录**（历史值原样保留——改一个数字会抹掉一次实测），并把口径提醒写进去。

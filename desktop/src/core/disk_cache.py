@@ -167,7 +167,7 @@ def key(tag: str, *parts: str, root: str = ".", code_scope: Optional[str] = None
     `import_graph → disk_cache` 组成模块级环；零环是硬判据）。`code_scope=None` ⇒ 退回整块代码面
     （宁可多算，不可拿旧算法的账当新账）。
     """
-    code_bit = code_scope if code_scope else code_fingerprint(root)
+    code_bit = code_scope or code_fingerprint(root)
     h = hashlib.sha256()
     for piece in ("v1", str(tag), code_bit, runtime_tag()) + tuple(
             str(p) for p in parts):

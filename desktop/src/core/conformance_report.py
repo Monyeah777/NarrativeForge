@@ -48,7 +48,7 @@ EXPORT_GLOBS = ("desktop/tests/fixtures/external/**/*", "docs/external-validatio
 _ABS_PATH = re.compile(r"(?<![A-Za-z0-9])[A-Za-z]:[\\/]|/Users/|/home/[a-z]|\\Users\\")
 
 
-def _c_canonical(root: str) -> Tuple[bool, str]:
+def _c_canonical(_root: str) -> Tuple[bool, str]:
     from core import attest
     a = attest.canonical({"b": 2, "a": 1})
     b = attest.canonical({"a": 1, "b": 2})

@@ -21,9 +21,11 @@
 from __future__ import annotations
 
 import tempfile
+import hashlib
 import io
 import json
 import os
+import pprint
 import shlex
 import sys
 import time
@@ -57,7 +59,14 @@ CONFIRM_FLAGS = ("--write", "--apply", "--register", "--force",
                  #   `nf combine plan --certify`  → 写 `protocol/combo_certificates.json`
                  # 外加一个「写你自己命名的文件」的旗标（与已入闸的 `--out` 同类）：
                  #   `nf assemble … --save <文件>`（可给仓库相对路径 ⇒ 在 shell 粘贴面里能落仓）。
-                 "--harvest", "--write-advisory", "--certify", "--save")
+                 "--harvest", "--write-advisory", "--certify", "--save",
+                 # 2026-10-03 补（终端面单真值源波）：`nf shell --surface-write` 把终端面真源
+                 # 投影成生成件 `tui/_surface.py`——**它写仓库**，故按同一口径登记为写面标记。
+                 # 本旗标只属于 `shell` 自身，而 `shell` 在会话内被拒跑（`BLOCKED_IN_SHELL`），
+                 # 所以它在闸门里的作用面正是 `needs_confirm` 写明的那条：**文本驱动面**
+                 # （`--exec` / `--file` / 交互输入）里出现该旗标即须显式确认；显式 argv 直跑
+                 # 与其余写面同待遇（不额外设闸）。表单侧不建追问表，理由见 `FORM_EXEMPT`。
+                 "--surface-write")
 #: 2026-10-01 清掉 5 个**死条目**（表里有、`nf` 的 argparse 面里没有）：`--tag` / `--push` /
 #: `--delete` / `--rm` / `--re-sign`——都是更早版本的残影（`nf release` 如今只有 `--fast`；
 #: `nf asset baseline` 的重签旗标是 **`--write`**，已被上面那条覆盖，行为面并没有因此漏拦）。
@@ -115,52 +124,166 @@ BLOCKED_IN_SHELL = {
 #: 一拍）。这里补上别名键、消息仍只有一份（引用同一条），两种拼写都在**执行前**拦下。
 BLOCKED_IN_SHELL["terminal"] = BLOCKED_IN_SHELL["shell"]
 
-#: 能力菜单（单一真源）：键 / 稳定 id / 标题 / 一句话 / 示例命令（可执行原文）
+#: 能力菜单（**单一真源**）：键 / 稳定 id / 标题 / 一句话 / 示例命令（可执行原文）/
+#: 动作目录（argv 模板 + 参数槽，供全屏 TUI 物化成可回车执行的动作）。
 #: 覆盖端壳退役前 GUI 七区的能力面（导入 / 校验 / 管线 / 生成 / 资产 / 预设 / 社区），
 #: 但**只指向既有命令**——新增能力仍须先落 CLI，再登记进本表。
+#: 多视图纪律（2026-10-03）：行模式 `nf shell` 渲染 examples / 能力族 / 表单，全屏
+#: `tui/nf.py` 渲染 actions，`nf shell --surface --json` 出机器面——三者都是本表的**投影**，
+#: 表本身只有这一份（TUI 不再手抄）。投影件 `tui/_surface.py` 由 `nf shell --surface-write`
+#: 生成，check39 断言「重算结果与在场件逐字节一致」。
+#: 动作字典形态：{"key", "title", "argv", "params", "note"}；参数形态：
+#: {"name", "label", "kind": "text"|"path", "required"}——`kind=path` 的参数在 TUI 侧强制过
+#: 路径包含性判据（与 core/paths.py 同口径）。
 ZONES = (
     {"key": "0", "id": "doctor", "title": "环境自检",
      "family": "start",
      "summary": "只读体检：仓库件在场 / 解释器可用 / 基线自描述一致性",
-     "examples": ("nf doctor",)},
+     "examples": ("nf doctor",),
+     "actions": (
+         {"key": "doctor", "title": "只读体检", "argv": ("doctor",), "params": (), "note": ""},
+         {"key": "doctor-json", "title": "体检（机器面）", "argv": ("doctor", "--json"),
+          "params": (), "note": ""},
+     )},
     {"key": "1", "id": "demo", "title": "一键演示世界",
      "family": "start",
      "summary": "P04 轻混全链跑一遍（retrieve→compose→gate→export）并产出 CCV3 卡",
-     "examples": ("nf demo",)},
+     "examples": ("nf demo",),
+     "actions": (
+         {"key": "demo", "title": "跑一遍 P04 全链", "argv": ("demo",), "params": (), "note": ""},
+     )},
     {"key": "2", "id": "assemble", "title": "需求 → 装配计划",
      "family": "forge",
      "summary": "一句话需求 → 命中预设包或转用户自定义流；--check 验收成品",
      "examples": ("nf assemble \"帮我组装一个西幻生存世界的完整版\"",
-                  "nf assemble 西幻生存 --check sample.md")},
+                  "nf assemble 西幻生存 --check sample.md"),
+     "actions": (
+         {"key": "assemble", "title": "一句话→装配计划", "argv": ("assemble", "{need}"),
+          "params": ({"name": "need", "label": "需求（一句话）", "kind": "text",
+                      "required": True},),
+          "note": "产出装配计划文本，不落盘"},
+         {"key": "assemble-check", "title": "校验成品文档",
+          "argv": ("assemble", "{file}", "--check"),
+          "params": ({"name": "file", "label": "成品 .md（仓内路径）", "kind": "path",
+                      "required": True},),
+          "note": ""},
+     )},
     {"key": "3", "id": "run", "title": "全链生产",
      "family": "forge",
      "summary": "选管线与模块 → 装配 → 质量门 → 导出（--seed 装载官方核心 + 社区包）",
      "examples": ("nf run --pipeline community/校园西幻轻混组合包/pipelines/"
                   "P04_轻混装配流管线.md --modules 通用类:M00,轻混类:M91,"
-                  "轻混类:M92,通用类:M80 --seed",)},
+                  "轻混类:M92,通用类:M80 --seed",),
+     "actions": (
+         {"key": "run", "title": "跑全链管线",
+          "argv": ("run", "--pipeline", "{pipeline}", "--modules", "{modules}", "--seed"),
+          "params": ({"name": "pipeline", "label": "管线 .md（仓内路径）", "kind": "path",
+                      "required": True},
+                     {"name": "modules", "label": "模块 full_id（逗号分隔）", "kind": "text",
+                      "required": True}),
+          "note": ""},
+         {"key": "run-check", "title": "管线 dry-run", "argv": ("pipeline", "dryrun", "{pipeline}"),
+          "params": ({"name": "pipeline", "label": "管线 .md（仓内路径）", "kind": "path",
+                      "required": True},),
+          "note": ""},
+     )},
     {"key": "4", "id": "validate", "title": "校验与体检",
      "family": "verify",
      "summary": "正文 lint / 状态前置 / 一致性分级 / 模块引用门禁（端壳时代「校验区」）",
-     "examples": ("nf lint sample.md", "nf conformance", "nf module verify")},
+     "examples": ("nf lint sample.md", "nf conformance", "nf module verify"),
+     "actions": (
+         {"key": "conformance", "title": "契约一致性", "argv": ("conformance",), "params": (),
+          "note": ""},
+         {"key": "layers", "title": "抽象阶梯核验", "argv": ("layers", "--verify"), "params": (),
+          "note": ""},
+         {"key": "lint", "title": "文档语义体检", "argv": ("lint", "{file}"),
+          "params": ({"name": "file", "label": "文档 .md（仓内路径）", "kind": "path",
+                      "required": True},),
+          "note": ""},
+         {"key": "module-verify", "title": "模块门禁", "argv": ("module", "verify"),
+          "params": (), "note": ""},
+     )},
     {"key": "5", "id": "market", "title": "货架与资产",
      "family": "shelf",
      "summary": "市场浏览（--list）/ 单包详情 / 资产货架 / 供应链台账盘点",
-     "examples": ("nf market --list", "nf asset ls", "nf asset inventory")},
+     "examples": ("nf market --list", "nf asset ls", "nf asset inventory"),
+     "actions": (
+         {"key": "market", "title": "市场货架", "argv": ("market", "--list"), "params": (),
+          "note": ""},
+         {"key": "asset-ls", "title": "资产清单", "argv": ("asset", "ls"), "params": (), "note": ""},
+         {"key": "asset-density", "title": "资产密度", "argv": ("asset", "density"), "params": (),
+          "note": ""},
+         {"key": "library-search", "title": "馆藏检索", "argv": ("library", "search", "{query}"),
+          "params": ({"name": "query", "label": "关键词", "kind": "text", "required": True},),
+          "note": ""},
+     )},
     {"key": "6", "id": "pipeline", "title": "管线与模块",
      "family": "shelf",
      "summary": "管线派生（new）/ 抽象执行（dryrun）/ 模块状态位与边界签名",
-     "examples": ("nf pipeline new --id P07 --name 演示领域管线", "nf module ls")},
+     "examples": ("nf pipeline new --id P07 --name 演示领域管线", "nf module ls"),
+     "actions": (
+         {"key": "module-ls", "title": "模块清单", "argv": ("module", "ls"), "params": (),
+          "note": ""},
+         {"key": "patterns-ls", "title": "模式清单", "argv": ("patterns", "ls"), "params": (),
+          "note": ""},
+         {"key": "stats", "title": "自述数字核对", "argv": ("stats", "--check"), "params": (),
+          "note": ""},
+         {"key": "stats-write", "title": "自述数字：重写生成区（写盘）",
+          "argv": ("stats", "--write"), "params": (),
+          "note": "会改仓库文件，须键入 yes 确认"},
+     )},
     {"key": "7", "id": "help", "title": "帮助与命令面",
      "family": "meta",
      "summary": "全命令总览与任意子命令帮助（终端内输入 /help 同效）",
-     "examples": ("nf --help", "nf help assemble")},
+     "examples": ("nf --help", "nf help assemble"),
+     "actions": (
+         {"key": "help", "title": "命令总览", "argv": ("--help",), "params": (), "note": ""},
+         {"key": "help-cmd", "title": "看某命令帮助", "argv": ("help", "{cmd}"),
+          "params": ({"name": "cmd", "label": "子命令名", "kind": "text", "required": True},),
+          "note": ""},
+     )},
+    # 表单区：**不留动作字面量**——`forms: True` 表示本区的动作由 `FORMS` 投影而来
+    # （`zone_action_dicts`），于是「写盘表单」这张真源只有一个（改表即改视图）。
+    # 行模式用 `/form <id>` 逐项追问，全屏视图把它物化成可回车动作。
+    {"key": "8", "id": "forms", "title": "写盘表单",
+     "family": "meta",
+     "summary": "会改仓库的动作逐项追问：表单真源 FORMS 的每一张都是一个可执行动作",
+     "examples": (),
+     "actions": (),
+     "forms": True},
 )
+
+
+def form_action_dict(form) -> dict:
+    """一张写盘表单 → 动作字典（argv 模板与参数槽逐字取自表单真源，不加第二套语义）。
+
+    参数槽的 `kind` 由步骤自带的 `kind` 决定（`path` = 仓库内路径，视图侧须过包含性判据）；
+    步骤没写 `kind` 就是自由文本。`required=False` 的步骤在视图侧对应「留空则连同其旗标一起丢」。
+    """
+    params = [{"name": str(st["key"]), "label": str(st.get("prompt") or st["key"]),
+               "kind": str(st.get("kind") or "text"),
+               "required": bool(st.get("required"))}
+              for st in form.get("steps") or ()]
+    return {"key": str(form["id"]), "title": str(form["title"]),
+            "argv": [str(t) for t in form.get("argv") or ()],
+            "params": params, "note": str(form.get("summary") or "")}
+
+
+def zone_action_dicts(zone) -> list:
+    """某区的**有效动作表**：显式 `actions`，或（`forms: True` 的区）由 `FORMS` 投影而来。
+
+    单一出处：真源侧自检、投影件与全屏视图都走这里——「表单 → 动作」的映射不许抄第二遍，
+    否则表单改了而视图没跟上，正是本波要根除的那类漂移。
+    """
+    if zone.get("forms"):
+        return [form_action_dict(f) for f in FORMS]
+    return [dict(a) for a in zone.get("actions") or ()]
 
 #: 一行输入的解析结果：kind ∈ empty/quit/help/menu/zone/run/unknown
 Intent = namedtuple("Intent", "kind payload raw")
 
 #: 能力地图（**策展真源**）：把 CLI 的每个顶层命令恰好归入一个能力族。
-#: 菜单（0-7）是新手路径；本表是「全功能可见」的完整分面——两者分工不重叠。
+#: 菜单（0-8）是新手路径；本表是「全功能可见」的完整分面——两者分工不重叠。
 #: check39 与 `nf shell --verify` 共用同一判据：族分区必须恰好覆盖命令集（不缺不重不虚）。
 FAMILIES = (
     {"id": "start", "name": "上手与自检",
@@ -412,13 +535,13 @@ def _strip_nf(argv: list) -> list:
 FORMS = (
     {"id": "deprecate-module", "title": "弃用模块",
      "summary": "把某个模块文件标记为 deprecated（写文件头状态位）",
-     "steps": ({"key": "file", "prompt": "模块 md 路径", "required": True,
+     "steps": ({"key": "file", "prompt": "模块 md 路径", "required": True, "kind": "path",
                 "hint": "如 community/<包>/modules/M97_术语管理.md"},
                {"key": "reason", "prompt": "弃用原因（可空）", "required": False}),
      "argv": ("module", "deprecate", "{file}", "--reason", "{reason}")},
     {"id": "restore-module", "title": "恢复模块",
      "summary": "把 deprecated / retired 的模块恢复为 active",
-     "steps": ({"key": "file", "prompt": "模块 md 路径", "required": True},),
+     "steps": ({"key": "file", "prompt": "模块 md 路径", "required": True, "kind": "path"},),
      "argv": ("module", "restore", "{file}")},
     {"id": "types-write", "title": "补 I/O 类型面",
      "summary": "给有机读契约的模块补 io_types（确定性推导，未命中写 untyped）",
@@ -428,10 +551,12 @@ FORMS = (
      "steps": (), "argv": ("stats", "--write")},
     {"id": "asset-add", "title": "资产入库",
      "summary": "资产文件头写 nf-asset 头 + 台账 append（溯源键表自动生成）",
-     "steps": ({"key": "file", "prompt": "资产文件路径（相对 --root）", "required": True},
+     "steps": ({"key": "file", "prompt": "资产文件路径（相对 --root）", "required": True,
+                "kind": "path"},
                {"key": "key", "prompt": "溯源键（台账内唯一）", "required": True},
                {"key": "source", "prompt": "溯源说明（源文件/区间/登记日期）", "required": True},
-               {"key": "root", "prompt": "资产根目录", "required": True, "hint": "如 05_资产库"},
+               {"key": "root", "prompt": "资产根目录", "required": True, "kind": "path",
+                "hint": "如 05_资产库"},
                {"key": "module", "prompt": "消费模块 id（可空）", "required": False},
                {"key": "version", "prompt": "版本位（可空 = 1.0）", "required": False},
                {"key": "tier", "prompt": "货架分级 official/community/experimental（可空）",
@@ -441,7 +566,7 @@ FORMS = (
               "--tier", "{tier}")},
     {"id": "register-apply", "title": "本地登记写回",
      "summary": "protocol.yaml → registry protocols[]（校验全过后只增不删合并写）",
-     "steps": ({"key": "pkg_dir", "prompt": "包目录", "required": True,
+     "steps": ({"key": "pkg_dir", "prompt": "包目录", "required": True, "kind": "path",
                 "hint": "如 community/校园西幻轻混组合包"},),
      "argv": ("register", "{pkg_dir}", "--apply")},
     {"id": "rename-apply", "title": "模块改名重链",
@@ -476,14 +601,17 @@ FORMS = (
      "summary": "自 P00 骨架派生新管线（改 id/name/领域标签；登记 02 与填层名挂载按 README 三步）",
      "steps": ({"key": "id", "prompt": "新管线 id", "required": True, "hint": "如 P07"},
                {"key": "name", "prompt": "显示名", "required": True, "hint": "如 演示领域管线"},
-               {"key": "from", "prompt": "模板管线 md（可空 = 03_管线库/P00…）", "required": False},
+               {"key": "from", "prompt": "模板管线 md（可空 = 03_管线库/P00…）", "required": False,
+                "kind": "path"},
                {"key": "domain", "prompt": "领域标签（可空）", "required": False},
-               {"key": "dest", "prompt": "输出路径（可空 = 官方管线位）", "required": False}),
+               {"key": "dest", "prompt": "输出路径（可空 = 官方管线位）", "required": False,
+                "kind": "path"}),
      "argv": ("pipeline", "new", "--id", "{id}", "--name", "{name}", "--from", "{from}",
               "--domain", "{domain}", "--dest", "{dest}")},
     {"id": "approve-subject", "title": "批准内容绑定",
      "summary": "给被批准对象落一条批准记录（protocol/approvals/*.json）",
-     "steps": ({"key": "subject", "prompt": "被批准对象路径（仓库相对）", "required": True},
+     "steps": ({"key": "subject", "prompt": "被批准对象路径（仓库相对）", "required": True,
+                "kind": "path"},
                {"key": "by", "prompt": "批准人标识（可空）", "required": False},
                {"key": "note", "prompt": "批准说明（可空）", "required": False}),
      "argv": ("approve", "{subject}", "--by", "{by}", "--note", "{note}")},
@@ -521,6 +649,9 @@ FORM_EXEMPT = {
     "interop --all": "导出类：`interop --all` 一条命令落全量 12 面，无需参数组装",
     "assemble --trace": "遥测类：trace 文件由上一次 `--trace` 产出，路径逐次不同",
     "assemble --session": "会话类：`--session` 要绝对路径且不得落仓库内（硬闸），表单帮不上",
+    "--surface-write": "生成器类：`nf shell --surface-write` 把终端面真源投影成生成件，"
+                        "落点只有一项且内容由真源确定性重算（`nf shell --surface` 可先看结果），"
+                        "逐项追问给不出额外安全边际",
 }
 
 
@@ -788,9 +919,9 @@ def banner(baseline: str = "", color: bool = False) -> str:
 def menu(width=None, color: bool = False) -> str:
     """渲染能力菜单（人读表 + 可执行示例入口）。"""
     w = term_width(width)
-    lines = [style("== NF 能力菜单（端壳七区 → CLI 命令面）==", "head", color), ""]
+    lines = [style("== NF 能力菜单（%d 区 → CLI 命令面）==" % len(ZONES), "head", color), ""]
     for item in ZONES:
-        # 键固定 3 显示宽度（0-7），故不补宽——保持 `[0] 标题 —— 摘要` 的既有格式契约
+        # 键固定 1 显示宽度（0-9），故不补宽——保持 `[0] 标题 —— 摘要` 的既有格式契约
         left = style("[%s]" % item["key"], "cmd", color)
         lines.append("%s %s —— %s"
                      % (left, item["title"], clip(item["summary"], max(20, w - 30))))
@@ -798,9 +929,9 @@ def menu(width=None, color: bool = False) -> str:
               "看某区示例：输入编号（如 4）或 /zone 4；执行：把示例里的命令打进终端。"]
     rest = families_without_zone()
     if rest:
-        lines.append("  本菜单是**任务路径**（8 区）；完整面见 /map（8 族）。"
+        lines.append("  本菜单是**任务路径**（%d 区）；完整面见 /map（%d 族）。"
                      "未在此列的族：%s（在那几族里用 /find <词> 或 /commands 定位）"
-                     % "、".join(rest))
+                     % (len(ZONES), len(FAMILIES), "、".join(rest)))
     return "\n".join(lines)
 
 
@@ -811,9 +942,15 @@ def zone_detail(key: str, color: bool = False) -> str:
         return ("未识别的菜单键「%s」（可用键：%s；示例：输入 0 看环境自检）"
                 % (key, "、".join(z["key"] for z in ZONES)))
     lines = [style("== [%s] %s ==" % (item["key"], item["title"]), "head", color),
-             "  %s" % item["summary"],
-             "  示例命令（复制即用）："]
-    lines += ["    " + style(ex, "cmd", color) for ex in item["examples"]]
+             "  %s" % item["summary"]]
+    if item.get("examples"):
+        lines.append("  示例命令（复制即用）：")
+        lines += ["    " + style(ex, "cmd", color) for ex in item["examples"]]
+    else:
+        # 无示例的区（表单区）：列它投影出的动作——行模式用 `/form <id>` 逐项追问
+        lines.append("  本区动作（`/form <id>` 逐项追问，或在全屏视图里回车运行）：")
+        lines += ["    " + style("/form %s" % act["key"], "cmd", color) + "  —— %s"
+                  % act["title"] for act in zone_action_dicts(item)]
     return "\n".join(lines)
 
 
@@ -1188,7 +1325,7 @@ def portable_rows(results) -> list:
     return out
 
 
-def render_baseline(results, stats, width=None, color: bool = False) -> str:
+def render_baseline(results, stats, width=None, color: bool = False) -> str:  # noqa: ARG001 - 调用契约：nf.py/test 按 width= 传入
     """渲染基线逐行结果（人读）：一行一项能力 + 判定 + 证据命令。"""
     lines = [style("== 顶尖 CLI 基线（%d 项 · 逐条可复跑）==" % stats["rows"], "head", color),
              "  通过 %d/%d · 总耗时 %s ms · 最慢 %s ms（每行有延迟预算，超时即判效率退化）"
@@ -1279,7 +1416,7 @@ def deep_check(index, commands, root_flags=(), live_runner=None,
     return issues, stats
 
 
-def self_check(index, commands, root_flags=(), examples=None) -> tuple:
+def self_check(index, commands, root_flags=(), _examples=None) -> tuple:
     """终端自检 → (issues, stats)：策展完备性 + 索引覆盖 + 菜单示例可达。
 
     这是**单源判据**：`nf shell --verify`（给人跑）与 verify check39（给门禁跑）调用同一函数，
@@ -1326,14 +1463,30 @@ def self_check(index, commands, root_flags=(), examples=None) -> tuple:
         issues.append("未被能力地图策展的命令：%s（修复指引：登记进 FAMILIES——"
                       "「最全功能」= 每个命令都有归属）" % "、".join(uncurated[:8]))
 
-    # ③ 菜单：每条示例必须指向真实命令；键须从 0 连续
+    # ③ 菜单：每条示例与每个动作必须指向真实命令；键须从 0 连续
     flags = {str(x) for x in root_flags or []}
     ex_total = 0
+    act_total = 0
     for item in ZONES:
-        for ex in item["examples"]:
+        for ex in item.get("examples") or ():
             ex_total += 1
             if not example_resolves(ex, commands, flags):
                 issues.append("菜单指向死命令：%s（区 %s）" % (ex, item["id"]))
+        for act in zone_action_dicts(item):
+            act_total += 1
+            first = str((act.get("argv") or [""])[0])
+            if first.startswith("-"):
+                continue                    # 根级旗标（如 `nf --help`）按设计放行
+            if commands and first not in commands:
+                issues.append("菜单动作指向死命令：nf %s（动作 %s / 区 %s）"
+                              "（修复指引：动作 argv 只许用真实 CLI 动词）"
+                              % (first, act.get("key"), item.get("id")))
+            if not str(act.get("key") or "").strip():
+                issues.append("菜单动作缺稳定 key（区 %s）" % item.get("id"))
+        if not zone_action_dicts(item):
+            issues.append("菜单区缺可执行动作：%s（修复指引：全屏视图的动作面板由 "
+                          "zone_action_dicts 物化——显式登记 actions，或标 `forms: True` "
+                          "让本区投影写盘表单）" % item.get("id"))
     keys = [z["key"] for z in ZONES]
     if keys != [str(i) for i in range(len(keys))]:
         issues.append("菜单键不连续：%s（修复指引：从 0 起连续编号）" % keys)
@@ -1346,6 +1499,7 @@ def self_check(index, commands, root_flags=(), examples=None) -> tuple:
 
     stats = {"commands": len(commands), "families": len(FAMILIES),
              "index_entries": len(index_paths), "examples": ex_total,
+             "actions": act_total,
              "families_without_zone": families_without_zone()}
     return issues, stats
 
@@ -1923,7 +2077,7 @@ def install_readline(completer_text, history_path=None):
     这是**可选增强**而非依赖：补全判据本身在 `complete()` 里，任何平台都能用。
     """
     try:
-        import readline  # noqa: F401  (stdlib；Windows 无该模块)
+        import readline  # (stdlib；Windows 无该模块)
     except ImportError:
         return False
     try:
@@ -2017,3 +2171,168 @@ def run_file(path: str, runner, assume_yes: bool = False, as_json: bool = False,
     with open(path, encoding="utf-8") as fh:
         lines = fh.read().splitlines()
     return run_lines(lines, runner, assume_yes=assume_yes, as_json=as_json, index=index)
+
+
+# ---------------------------------------------------------------- 终端面投影（单真值源 → 多视图）
+# 单真值源 = 本模块的策展表（ZONES / FAMILIES / FORMS / 写盘闸门三表 / BLOCKED_IN_SHELL）
+#            + `scripts/nf.py` 的 argparse 面（命令的**存在性**）。
+# 多视图   = ① 行模式 `nf shell`：菜单示例 / 能力族 / 写盘表单
+#            ② 全屏 `tui/nf.py`：动作目录（把 ZONES[].actions 物化成可回车执行的动作）
+#            ③ 机器面 `nf shell --surface --json`：给 agent 与门禁的整面快照
+#            ④ 生成件 `tui/_surface.py`：全屏视图在源码态与冻结态的**唯一输入**（零 core 依赖）
+# 为什么要有这一节：全屏 TUI 冻结成单文件 exe，**不能 import core**，于是曾把命令白名单、
+# 写盘闸门与动作目录**各手抄一份**。手抄件的代价当场可见——它漏了 `CONFIRM_FLAG_PAIRS`，
+# 即 `nf interop --all` / `nf assemble --trace` 这类「命令 + 旗标才写盘」的面在全屏视图里
+# **不确认就执行**；而两份表只在 TUI 自检时比对，平时可以静默漂移。
+# 口径：视图只许**投影**真值，不许各自留表；漂移由 check39（生成件逐字节）+ 单测当场判红。
+
+SURFACE_SCHEMA = "nf-terminal-surface/1"
+#: 投影件规范落点（`nf shell --surface-write` 的缺省目标，check39 也按这里对账）
+SURFACE_MODULE_PATH = "tui/_surface.py"
+#: 投影源件（人读元信息；机器判据只认本模块的表 + argparse 面）
+SURFACE_SOURCE = {
+    "module": "desktop/src/core/terminal.py",
+    "tables": ["ZONES", "FAMILIES", "FORMS", "CONFIRM_FLAGS", "CONFIRM_VERBS",
+               "CONFIRM_FLAG_PAIRS", "BLOCKED_IN_SHELL"],
+    "commands": "scripts/nf.py 的 argparse 面",
+}
+
+
+def _surface_params(items) -> list:
+    """参数槽归一：只有这五个字段进投影（视图侧不许私加语义）。"""
+    return [{"name": str(p["name"]), "label": str(p.get("label") or p["name"]),
+             "kind": str(p.get("kind") or "text"),
+             "required": bool(p.get("required", True))}
+            for p in items or ()]
+
+
+def surface_payload(commands=(), root_flags=()) -> dict:
+    """终端面机器快照——**唯一**投影源，四个视图都由它派生（JSON 原生类型，可序列化）。
+
+    各节含义：`zones` 能力菜单（含 `actions` 动作目录）/ `families` 能力族策展 /
+    `forms` 写盘表单 / `gates` 写盘闸门三表（flags / verbs / pairs）/ `blocked` 会话内
+    不直接执行的动词与指引 / `commands`·`root_flags` 来自 argparse 面（存在性真源）。
+    `digest` 是除自身外全量的规范摘要——视图侧可用它做一次廉价对账。
+    """
+    zones = [{"key": str(z["key"]), "id": str(z["id"]), "title": str(z["title"]),
+              "family": str(z.get("family") or ""), "summary": str(z.get("summary") or ""),
+              "examples": [str(e) for e in z.get("examples") or ()],
+              # `forms: True` = 本区动作由 FORMS 投影（视图据此识别表单区，不必猜 id）
+              "forms": bool(z.get("forms")),
+              "actions": [{"key": str(a["key"]), "title": str(a["title"]),
+                           "argv": [str(t) for t in a.get("argv") or ()],
+                           "params": _surface_params(a.get("params")),
+                           "note": str(a.get("note") or "")}
+                          for a in zone_action_dicts(z)]}
+             for z in ZONES]
+    families = [{"id": str(f["id"]), "name": str(f["name"]),
+                 "summary": str(f.get("summary") or ""),
+                 "commands": [str(c) for c in f.get("commands") or ()]}
+                for f in FAMILIES]
+    forms = [{"id": str(f["id"]), "title": str(f["title"]), "summary": str(f.get("summary") or ""),
+              "steps": [{"key": str(s["key"]), "prompt": str(s.get("prompt") or ""),
+                         "required": bool(s.get("required")),
+                         "hint": str(s.get("hint") or "")}
+                        for s in f.get("steps") or ()],
+              "argv": [str(t) for t in f.get("argv") or ()]}
+             for f in FORMS]
+    payload = {
+        "kind": "nf-terminal-surface",
+        "schema": SURFACE_SCHEMA,
+        # 拷贝一份：投影是可被调用方改写的数据，不许把模块级常量交出去当可写对象
+        "source": {k: (list(v) if isinstance(v, list) else v)
+                   for k, v in SURFACE_SOURCE.items()},
+        "commands": sorted(str(c) for c in commands or ()),
+        "root_flags": sorted(str(f) for f in root_flags or ()),
+        "zones": zones,
+        "families": families,
+        "forms": forms,
+        "gates": {"flags": [str(x) for x in CONFIRM_FLAGS],
+                  "verbs": [[str(a), str(b)] for a, b in CONFIRM_VERBS],
+                  "pairs": [[str(a), str(b)] for a, b in CONFIRM_FLAG_PAIRS]},
+        "blocked": {str(k): str(v) for k, v in sorted(BLOCKED_IN_SHELL.items())},
+    }
+    payload["digest"] = surface_digest(payload)
+    return payload
+
+
+def surface_digest(payload) -> str:
+    """投影内容摘要（除 `digest` 自身外全量；键序归一，故与构造顺序无关）。"""
+    body = {k: v for k, v in (payload or {}).items() if k != "digest"}
+    text = json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+#: 生成件抬头（人读纪律写在件内，免得后人把它当手写表改）
+SURFACE_MODULE_HEAD = '''# -*- coding: utf-8 -*-
+"""NF 终端面投影（**生成件 · 请勿手改**）。
+
+真源：desktop/src/core/terminal.py 的策展表（ZONES / FAMILIES / FORMS / 写盘闸门三表 /
+      BLOCKED_IN_SHELL）+ scripts/nf.py 的 argparse 面（命令存在性）。
+生成：python scripts/nf.py shell --surface-write tui/_surface.py
+判据：verify check39「投影与真源同步」+ desktop/tests/test_nf_tui.py
+——本件被手改、或真源改了没重生成，都会在判据里当场判红（重算后逐字节比对）。
+"""'''
+
+
+def render_surface_module(payload) -> str:
+    """把机器快照渲染成可 import 的生成件（确定性：同输入逐字节一致）。"""
+    def lit(value):
+        return pprint.pformat(value, width=96, sort_dicts=False)
+
+    parts = [SURFACE_MODULE_HEAD, ""]
+    for name, key in (("KIND", "kind"), ("SCHEMA", "schema"), ("DIGEST", "digest"),
+                      ("SOURCE", "source"), ("COMMANDS", "commands"),
+                      ("ROOT_FLAGS", "root_flags")):
+        parts.append("%s = %s" % (name, lit(payload[key])))
+    for name, key in (("ZONES", "zones"), ("FAMILIES", "families"), ("FORMS", "forms"),
+                      ("GATES", "gates"), ("BLOCKED", "blocked")):
+        parts.append("")
+        parts.append("%s = %s" % (name, lit(payload[key])))
+    text = "\n".join(parts).rstrip("\n") + "\n"
+    return text.replace("\r\n", "\n")
+
+
+def surface_module_text(commands=(), root_flags=()) -> str:
+    """生成件应有内容（check39 与单测都用它重算，不另存第二份）。"""
+    return render_surface_module(surface_payload(commands, root_flags))
+
+
+def surface_sync_issues(module_text: str, commands=(), root_flags=()) -> list:
+    """投影件对账：重算 → 与在场文本逐字节比对；返回问题清单（空 = 同步）。"""
+    expected = surface_module_text(commands, root_flags)
+    if str(module_text) == expected:
+        return []
+    got = str(module_text).splitlines()
+    want = expected.splitlines()
+    where = "（在场 %d 行 / 应为 %d 行）" % (len(got), len(want))
+    for i, line in enumerate(want):
+        if i >= len(got) or got[i] != line:
+            where = "首个不一致在第 %d 行：在场 %r / 应为 %r" % (
+                i + 1, (got[i] if i < len(got) else "<缺行>"), line)
+            break
+    return ["%s 与真源不同步%s（修复指引：python scripts/nf.py shell --surface-write %s）"
+            % (SURFACE_MODULE_PATH, where, SURFACE_MODULE_PATH)]
+
+
+def render_surface(payload, width=None, color: bool = False) -> str:
+    """人读面：逐区列出动作与示例条数（机器面用 `--surface --json`）。"""
+    w = term_width(width)
+    lines = [style("== NF 终端面投影（%s · 命令 %d · 能力族 %d · 表单 %d）=="
+                   % (payload.get("schema"), len(payload.get("commands") or []),
+                      len(payload.get("families") or []), len(payload.get("forms") or [])),
+                   "head", color)]
+    for z in payload.get("zones") or []:
+        acts = z.get("actions") or []
+        lines.append(_row("[%s] %s" % (z["key"], z["title"]),
+                          "%s · 动作 %d：%s" % (z.get("family") or "", len(acts),
+                                                "、".join(str(a["title"]) for a in acts)),
+                          w, color))
+    g = payload.get("gates") or {}
+    lines.append("  写盘闸门：旗标 %d · 动词 %d · 命令+旗标 %d · 会话内不直跑 %d"
+                 % (len(g.get("flags") or []), len(g.get("verbs") or []),
+                    len(g.get("pairs") or []), len(payload.get("blocked") or {})))
+    lines.append("  四项视图同源：nf shell（示例/族/表单）· tui/nf.py（动作目录）· "
+                 "--surface --json（机器面）· %s（生成件）" % SURFACE_MODULE_PATH)
+    lines.append("  对账：nf shell --verify（终端自检）· verify check39（投影与真源同步）")
+    return "\n".join(lines)

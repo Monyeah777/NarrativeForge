@@ -1,15 +1,22 @@
 # NF 终端 TUI（nf-tui）
 
-> 最后更新：2026-10-02
+> 最后更新：2026-10-03
 
 > 全屏人机入口，配套（不是替代）`nf shell` 的逐行交互面。命令真源仍是 `scripts/nf.py`
-> 的 argparse 面——TUI 只做「菜单 / 参数 / 闸门 / 渲染」，不复制任何业务逻辑。
+> 的 argparse 面——TUI 只做「菜单 / 参数 / 闸门 / 渲染」，不复制任何业务逻辑，也**不留
+> 手抄表**：命令白名单、写盘闸门、能力区与动作目录全部来自生成件 `tui/_surface.py`
+> （`desktop/src/core/terminal.py` 策展表的投影）。
 
 ## 是什么
 
 `nf shell`（`desktop/src/core/terminal.py`）面向可重定向、可 diff、可进 CI 的**逐行**用法；
-本目录补另一档：**全屏 TUI**——固定框架 + 八能力区菜单 + 详情/输出双栏 + 键入式参数，
+本目录补另一档：**全屏 TUI**——固定框架 + 九能力区菜单（含「写盘表单」区）+ 详情/输出双栏 + 键入式参数，
 面向人开着窗口点着用的场景。两者共用同一套语义（写盘闸门、命令白名单、非 TTY 回退）。
+
+第 8 区「写盘表单」是**多视图**的直接体现：13 张写盘表单（真源 `terminal.FORMS`）在行模式里是
+`/form <id>` 逐项追问，在全屏视图里则是 13 个可回车动作——一次登记，两处可用。这些动作全部被判为
+`write`，回车后会先要求键入 `yes`；标了 `kind: "path"` 的参数（模块/资产/管线路径等）在拼进 argv 前
+过仓库包含性判据。
 
 ```sh
 python tui/nf.py                 # 全屏 TUI（TTY 下）
@@ -42,7 +49,7 @@ python tui/nf.py --exec "nf doctor"   # 非交互执行一条命令（脚本面�
 
 | 面 | 用途 | 输出契约 |
 |---|---|---|
-| `python tui/nf.py --list-actions --json` | 发现全部动作、argv 模板与参数名 | 对象，顶层 `kind=nf-tui-actions` + `actions` / `exit_codes` / `surfaces` |
+| `python tui/nf.py --list-actions --json` | 发现全部动作、argv 模板与参数名 | 对象，顶层 `kind=nf-tui-actions` + `actions` / `exit_codes` / `surfaces` / `surface`（投影 schema·摘要·命令区数·重生命令） |
 | `python tui/nf.py --exec "nf doctor"` | 跑一条命令并透传其退出码 | stdout/stderr 即子命令原样；退出码 = 子命令退出码 |
 | `python tui/nf.py --selftest --json` | 安全底线自检 | 对象，顶层 `kind=nf-tui-selftest` + `ok` + 逐条 `rows` |
 | `python tui/nf.py --demo` | 取一帧确定性演示画面 | 纯文本帧，无 ANSI，任何环境可渲染 |
@@ -55,9 +62,10 @@ python tui/nf.py --exec "nf doctor"   # 非交互执行一条命令（脚本面�
 1. **不用 shell**：子进程一律 `shell=False` + argv 列表，使用者输入只作字面参数。
    `split_argv()` 刻意**不是** shell 解析器——`;` `|` `&` `$` 反引号没有元字符语义。
    判据：`--selftest` 用真进程断言 `a;b|c&d` 原样送达。
-2. **命令白名单 + 长驻拒跑**：首个动词须在 `KNOWN_TOP` 内（与 CLI 的 argparse 面逐条比对漂移）；
-   `serve`/`daemon`/`shell`/`terminal`/`lsp` 直接拒跑（退出码 3）；写盘动词与写盘旗标须显式键入
-   `yes` 才放行，CLI 自己的 `--yes` 闸门仍是第二层。
+2. **命令白名单 + 长驻拒跑**：首个动词须在 `KNOWN_TOP` 内（**来自投影件**，与 CLI 的 argparse
+   面逐条比对漂移）；`serve`/`shell`/`terminal`/`lsp` 直接拒跑（退出码 3），`daemon` 是本视图
+   **额外**收紧的一条（前台独占会话，理由见 `TUI_EXTRA_LONG_RUNNING`）；写盘动词、写盘旗标与
+   「命令 + 旗标才写盘」的配对须显式键入 `yes` 才放行，CLI 自己的 `--yes` 闸门仍是第二层。
 3. **路径包含性**：任何路径参数过 `validate_rel_path()`——拒绝对路径、`..` 段、盘符相对写法
    （`C:foo`），realpath 归一后断言落在仓库根内；自由文本命令里的路径形 token 同样过闸。
    口径与 `desktop/src/core/paths.py` 的 `validate_path` 同源。
@@ -94,5 +102,11 @@ CLI 调用改用 PATH 上的 `python`；找不到仓库时 `--demo` / `--selftes
 
 - **不是第二套命令面**：菜单/动作只是 `scripts/nf.py` 真命令的受控调用方；
   `--selftest` 会拿真 argparse 面比对白名单，漂移即红。
+- **不留手抄表（单真值源）**：命令白名单、写盘闸门三表、能力区与动作目录全部来自生成件
+  `tui/_surface.py`——它是 `desktop/src/core/terminal.py` 策展表的**投影**，由
+  `python scripts/nf.py shell --surface-write` 生成；`--selftest` 的「投影同源」当场跑
+  `nf shell --surface --json` 比摘要，真源改了没重生成即红（verify check39 另有逐字节对账）。
+  历史教训：手抄的闸门表漏了 `CONFIRM_FLAG_PAIRS`，`nf interop --all` 在全屏视图里
+  **不确认就能执行**——单源化顺带堵住这条。
 - **不是 `nf shell` 的替代**：要可重定向、可 diff、可进 CI 的形态，用 `nf shell`（见 `docs/terminal.md`）。
 - **只在仓库内读写**：需要写仓外路径的动作请在普通终端用 `nf` 直跑。

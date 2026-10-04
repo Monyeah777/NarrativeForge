@@ -13,22 +13,36 @@
   细分名）——把主题词当泄漏会做成假红，由 `test_topic_word_is_not_flagged` 自证豁免。
 """
 import re
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SKIP_PARTS = {".git", ".rivet", "__pycache__", ".ruff_cache", ".mypy_cache",
-              "node_modules", ".pytest_cache"}
+if str(ROOT / "desktop" / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT / "desktop" / "src"))
+
+from core import repo_face as _repo_face  # noqa: E402
 #: 扫描面按**「agent 可能读到」**取，而不是按「像代码」取（2026-10-01 扩面）：
 #: 生成图（`.mmd` / `.graphml`：节点标签是人话）、PowerShell 门禁脚本（`.ps1`）、
 #: 逐行记录（`.jsonl`）、构建配置（`.csproj` / `.props` / `.toml`）此前都不在面内——
 #: 实测这些扩展名共 **222 件**、当时零命中，但**判据不在场就是假绿**（有人把转写粘进
 #: `.ps1` 或图标签里没人会拦）。
 EXTS = (".md", ".py", ".json", ".txt", ".yaml", ".yml", ".cs", ".csv", ".sh", ".cmd",
-        ".mmd", ".graphml", ".ps1", ".jsonl", ".toml", ".csproj", ".props")
+        ".mmd", ".graphml", ".ps1", ".jsonl", ".toml", ".csproj", ".props",
+        # 2026-10-04 补 `.rs`：AOT 快线 `engine/rust/src/**` 现有 45 件、注释是**中文散文**，
+        # 完全符合本判据「按 agent 可能读到取」的口径，但历次扩面都漏了它（按扩展名取面的老毛病）。
+        # 扩面前实测：面外 67 件（45 件 .rs + lock/gitignore/cff/vba 等）**零命中** ⇒ 扩展免费。
+        ".rs",
+        # 2026-10-04 同批补 `.mjs` / `.js`：npm 一键包与 HF Space 打包的 **9 件 JS 源码**（同样带中文注释），
+        # 扩面前实测零命中。
+        ".mjs", ".js")
 #: **无扩展名的文本件**：按名字点名（都能被 agent 读到）。判据会断言它们真的在场，
 #: 免得改名后这条覆盖静默失效。
-EXTRA_TEXT_FILES = ("scripts/nf", "LICENSE", ".gitattributes", ".gitignore")
+EXTRA_TEXT_FILES = ("scripts/nf", "LICENSE", ".gitattributes", ".gitignore",
+                    "packaging/hf-space/Dockerfile")
+#: **刻意留在面外**（逐条给理由，免得后人以为是漏了）：`Cargo.lock` 是生成物、`library/anchors/*.sig`
+#: 是签名（二进制语义）、`*.gitignore` 子目录副本与 `protocol/demo_signers/allowed_signers` 是纯模式配置、
+#: `CITATION.cff` 是登记元数据、`*.vba` 是资产契约的**夹具**（故意制造怪内容）。它们都不承载散文。
 #: 本判据自身的仓库相对路径（含负例样本 ⇒ 豁免，见 public_texts）
 SELF = "desktop/tests/test_cot_exposure.py"
 
@@ -55,9 +69,7 @@ def scan_texts(texts: dict) -> list:
 
 def public_texts() -> dict:
     out = {}
-    for p in ROOT.rglob("*"):
-        if not p.is_file() or any(part in SKIP_PARTS for part in p.parts):
-            continue
+    for p in _repo_face.walk_repo_paths(str(ROOT)):
         rel0 = p.relative_to(ROOT).as_posix()
         if p.suffix.lower() not in EXTS and rel0 not in EXTRA_TEXT_FILES:
             continue
@@ -91,6 +103,14 @@ class CotRuleTest(unittest.TestCase):
         self.assertTrue(any(r.endswith(".graphml") for r in texts), "生成图（.graphml）不在扫描面内")
         self.assertTrue(any(r.endswith(".ps1") for r in texts), "PowerShell 门禁脚本不在扫描面内")
         self.assertIn("scripts/nf", texts, "启动器 scripts/nf 不在扫描面内（它是被 agent 读的文本件）")
+        # 2026-10-04：AOT 快线的 .rs 源（注释是中文散文）必须真在面内，且留塌缩下限。
+        rust = [r for r in texts if r.endswith(".rs")]
+        self.assertIn("engine/rust/src/main.rs", texts, "快线 main.rs 不在扫描面内")
+        self.assertGreaterEqual(len(rust), 20, "快线 .rs 扫描面塌缩：%d 件" % len(rust))
+        # 2026-10-04：npm / HF 打包线的 JS 源码同样必须在面内（它们是带注释的散文载体）。
+        self.assertIn("packaging/npm/bin/nf.mjs", texts, "npm 启动器不在扫描面内")
+        self.assertGreaterEqual(len([r for r in texts if r.endswith((".mjs", ".js"))]), 6,
+                                "打包线 JS 扫描面塌缩")
 
     def test_topic_word_is_not_flagged(self):
         """变异自证：主题词 `思维链设计` 不许误报；真泄漏形态必判红。"""

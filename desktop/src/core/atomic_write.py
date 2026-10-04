@@ -205,12 +205,12 @@ def lock_file(path: str | os.PathLike, timeout: float = LOCK_TIMEOUT, what: str 
             try:
                 _lock_fd(fd)
                 break
-            except OSError:
+            except OSError as exc:
                 if time.monotonic() >= deadline:
                     raise TimeoutError(
                         "等待排他锁超时（%.1fs）：%s（修复指引：确认没有另一个 nf 进程正卡在写"
                         "同一真源；锁件 %s）——超时只在**真并发写**时才会出现，等对方结束后重跑即可"
-                        % (timeout, what or target.name, lock_path))
+                        % (timeout, what or target.name, lock_path)) from exc
                 time.sleep(_LOCK_POLL)
         yield
     finally:

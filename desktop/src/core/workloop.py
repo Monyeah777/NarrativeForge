@@ -23,7 +23,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from core import decision_layer as dl
 
@@ -276,7 +276,7 @@ def write_order(root: str, doc: Dict[str, Any]) -> str:
     return rel
 
 
-def render_brief(doc: Dict[str, Any], closed: Dict[str, Any] = None) -> str:
+def render_brief(doc: Dict[str, Any], closed: Optional[Dict[str, Any]] = None) -> str:
     """人读工单（给 worker 执行用）。"""
     if doc.get("status") != "ok":
         return "工单未成形：%s" % doc.get("reason")

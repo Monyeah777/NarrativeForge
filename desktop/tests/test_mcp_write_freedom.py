@@ -28,9 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "desktop" / "src"))
 
 from core import mcp_runtime as mrt  # noqa: E402
-
-SKIP_PARTS = {".git", ".rivet", "__pycache__", ".ruff_cache", ".mypy_cache",
-              "node_modules", ".pytest_cache"}
+from core import repo_face as _repo_face  # noqa: E402
 #: 写 sink（**精确名**；`open` 另按 mode 实参判，见 `_write_sinks`）
 SINK_NAMES = {"write_text", "write_bytes", "atomic_write", "replace", "remove", "unlink",
               "rmtree", "mkdir", "makedirs", "rename", "save_module", "save_asset",
@@ -39,11 +37,9 @@ _OPEN_MODES = ("w", "a", "x", "+")
 
 
 def _fingerprint() -> dict:
-    """整棵工作树的 sha256 指纹（跳过 .git/.rivet/缓存目录）。"""
+    """整棵工作树的 sha256 指纹（面 = 仓库件，见 `core.paths.walk_repo_paths`）。"""
     out = {}
-    for p in sorted(ROOT.rglob("*")):
-        if any(part in SKIP_PARTS for part in p.parts) or not p.is_file():
-            continue
+    for p in sorted(_repo_face.walk_repo_paths(str(ROOT))):
         rel = p.relative_to(ROOT).as_posix()
         try:
             out[rel] = hashlib.sha256(p.read_bytes()).hexdigest()

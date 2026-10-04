@@ -86,7 +86,7 @@ def _segments(text: str) -> Dict[str, str]:
     for line in _header_lines(text):
         for seg in _SEG_SPLIT.split(line):
             seg = seg.strip()
-            if not seg or "：" not in seg and ":" not in seg:
+            if not seg or ("：" not in seg and ":" not in seg):
                 continue
             key, val = re.split(r"[:：]", seg, maxsplit=1)
             key = key.strip()

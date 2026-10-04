@@ -1,8 +1,8 @@
 {
   "declared": {
-    "expected_checks": 39,
-    "expected_pass": 68,
-    "verify_version": "v2.29"
+    "expected_checks": 40,
+    "expected_pass": 70,
+    "verify_version": "v2.30"
   },
   "items": [
     {
@@ -215,8 +215,8 @@
       "sample": [],
       "source": "quality_baseline.scan",
       "stats": {
-        "checks": 39,
-        "verify_version": "v2.29"
+        "checks": 40,
+        "verify_version": "v2.30"
       },
       "status": "pass",
       "warns": 0
@@ -258,7 +258,7 @@
       "source": "receipts.verify_wrapped",
       "stats": {
         "entries": 3,
-        "root": "5f29853cba9dc4505fb0d74e743056ddbd0d0d036b0876110e3370e69d4d5bf1"
+        "root": "6d9040aa6ffa4d9b57f18b4733595d075ae32d9a1898f3b283524787f3a6920e"
       },
       "status": "pass",
       "warns": 0
@@ -272,7 +272,7 @@
       "stats": {
         "contracts": 27,
         "passed": 27,
-        "root": "fe99e166fe50ecb9779993609585357f11c1420a34033773f9551600e2c1e09f",
+        "root": "819e1beb8fb0b2c66a7097300c72795158035515ecaa40ab6c4fd2799c22e35d",
         "verdict": "conformant"
       },
       "status": "pass",
@@ -300,8 +300,8 @@
       "sample": [],
       "source": "repo_stats.check_strict",
       "stats": {
-        "baseline_checks": 39,
-        "baseline_pass": 68,
+        "baseline_checks": 40,
+        "baseline_pass": 70,
         "concept_graphs": 101,
         "core_modules": 13,
         "core_pipelines": [
@@ -329,8 +329,8 @@
         "standards_total": 370,
         "standards_unreachable": 38,
         "subdivisions_total": 1200,
-        "verify_checks": 39,
-        "verify_version": "2.29"
+        "verify_checks": 40,
+        "verify_version": "2.30"
       },
       "status": "pass",
       "warns": 0
@@ -342,11 +342,11 @@
       "sample": [],
       "source": "code_metrics.scan",
       "stats": {
-        "baseline": 169,
-        "files": 169,
+        "baseline": 173,
+        "files": 173,
         "max_fn_cc": 150,
-        "max_fn_lines": 1012,
-        "max_lines": 6766
+        "max_fn_lines": 1028,
+        "max_lines": 6871
       },
       "status": "pass",
       "warns": 0
@@ -388,7 +388,7 @@
       "source": "coupling_metrics.scan",
       "stats": {
         "cycles": 0,
-        "modules": 143,
+        "modules": 146,
         "registered_cycles": 0,
         "registered_sdp": 7,
         "sdp": 7
@@ -433,10 +433,10 @@
       "sample": [],
       "source": "judgement_coverage.scan",
       "stats": {
-        "consumed": 56,
+        "consumed": 58,
         "exceptions": 2,
         "orphans": 2,
-        "scanners": 58
+        "scanners": 60
       },
       "status": "pass",
       "warns": 0
@@ -448,21 +448,37 @@
       "sample": [],
       "source": "workflow_policy.scan",
       "stats": {
-        "pinned_uses": 28,
+        "pinned_uses": 29,
         "requirements_files": 4,
-        "with_explicit_permissions": 13,
-        "workflows": 13
+        "with_explicit_permissions": 14,
+        "workflows": 14
+      },
+      "status": "pass",
+      "warns": 0
+    },
+    {
+      "id": "asset_contract",
+      "issues": 0,
+      "name": "数字资产契约（数据/代码/脚本三面：格式+字段完整性+防篡改+AST 规范+脚本 I/O 对齐）",
+      "sample": [],
+      "source": "asset_contract.scan",
+      "stats": {
+        "chains": 1,
+        "code": 3,
+        "data": 4,
+        "files": 11,
+        "script": 4
       },
       "status": "pass",
       "warns": 0
     }
   ],
-  "root_digest": "012fe4b6d0b028c9bb87c26295c189452967c89a8024642bbe0975154d225044",
+  "root_digest": "3ca6b1275866f64d95d8678f1ec6ef253a1e5c5aad72d82f7f55951b571f0925",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,
     "fail": 0,
-    "pass": 26,
+    "pass": 27,
     "warn": 1
   }
 }

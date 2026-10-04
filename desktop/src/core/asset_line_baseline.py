@@ -117,7 +117,7 @@ def build(root: str = ".", recorded_at: str = "") -> Dict[str, Any]:
     return {"schema": SCHEMA,
             "note": "社区资产外形基线（文件数 / 行数 / 逐文件行数映射摘要）。内容改动后须显式重签："
                     "`nf asset baseline --write`——数字不写在 verify.sh 里，基线变更与内容变更同提交可见。",
-            "recorded_at": recorded_at or date.today().isoformat(),
+            "recorded_at": recorded_at or date.today().isoformat(),  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
             "packages": pkgs}
 
 

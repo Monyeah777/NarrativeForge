@@ -898,7 +898,7 @@ _DERIVED_MEMO: Dict[str, Dict[str, Any]] = {}
 
 
 def memo_pair(tag: str, patterns, impl, root: str = ".",
-              keep: int = 8, code_modules=None, fp: str = None):
+              keep: int = 8, code_modules=None, fp: Optional[str] = None):
     """`(issues, stats)` 形状的派生结果缓存（**进程内 + 持久**两层；键即内容）。
 
     纪律与 `scan()` 一致：输入面（`patterns`，须穷举）变 ⇒ 指纹变 ⇒ 必重算；持久层键另含代码面 +

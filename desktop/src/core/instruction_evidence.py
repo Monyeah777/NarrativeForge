@@ -75,7 +75,7 @@ def scan(root: str = ".", today: _dt.date | None = None
     warns: List[str] = []
     if not doc or issues:
         return issues, warns, {"declared": 0, "recorded": 0}
-    today = today or _dt.date.today()
+    today = today or _dt.date.today()  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
     decl = doc.get("instructions") or []
     ev = doc.get("evidence") or {}
     for item in decl:
@@ -123,7 +123,7 @@ def record(root: str = ".", only: str = "", runner=None,
     doc, issues = load(root)
     if not doc or issues:
         return issues, doc
-    today = today or _dt.date.today()
+    today = today or _dt.date.today()  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
     ev = doc.setdefault("evidence", {})
     for item in doc.get("instructions") or []:
         iid = str((item or {}).get("id") or "")

@@ -59,7 +59,9 @@ def _build_skill_md(ir: IRDocument) -> str:
         "---\n"
         f"name: {skill_name}\n"
         f"description: {desc}\n"
-        "license: Proprietary. LICENSE.txt has complete terms\n"
+        # 许可须与仓库 LICENSE 一致（外部实测 2026-10-02：原硬编码 Proprietary 与 MIT 冲突，
+        # 且仓库内并无 LICENSE.txt —— 导出物不该自带一个不存在的专有许可声明）
+        "license: MIT\n"
         "---\n")
     return frontmatter + "\n\n".join(body_parts)
 

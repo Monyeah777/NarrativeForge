@@ -55,7 +55,7 @@ def project_entry(pkg_dir: str) -> Dict[str, Any]:
         key = _layer_key(raw_key)
         spec = spec if isinstance(spec, dict) else {}
         mount_layers[key] = {
-            "name": (spec.get("name") if spec.get("name") else _layer_name(raw_key)),
+            "name": (spec.get("name") or _layer_name(raw_key)),
             "default": list(spec.get("default") or []),
             "available": list(spec.get("available") or []),
         }

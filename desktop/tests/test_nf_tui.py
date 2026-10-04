@@ -269,6 +269,36 @@ class InteractionTest(unittest.TestCase):
         self.assertTrue(payload["confirmed"])
         self.assertIn("--write", payload["argv"])
 
+    def test_form_action_runs_through_the_same_write_gate(self):
+        """表单投影出的动作走**同一条**交互闸门（不是另一套写路径）。"""
+        ui = TUI.Ui(root=Path("."))
+        forms_title = [z["title"] for z in TUI._surface.ZONES if z.get("forms")][0]
+        acts = [a for title, zone_acts in TUI.ZONES if title == forms_title for a in zone_acts]
+        act = [a for a in acts if a.key == "types-write"][0]       # 表单区专有（无参数、有写旗标）
+        self.assertEqual(["module", "types", "--write"], list(act.argv))
+        _goto_action(ui, lambda a: a.key == "types-write")
+        op, _p = TUI.handle_key(ui, "ENTER", self.lay)
+        self.assertEqual("none", op)
+        self.assertEqual("confirm-write", ui.prompt.kind)
+        ui.prompt.buf = "yes"
+        op, payload = TUI.handle_key(ui, "ENTER", self.lay)
+        self.assertEqual("run", op)
+        self.assertEqual(["module", "types", "--write"], payload["argv"])
+
+    def test_form_action_collects_required_param_before_running(self):
+        """需要参数的表单动作：先逐项追问（路径参数过包含性判据），再进写盘确认。"""
+        ui = TUI.Ui(root=Path("."))
+        ui.zone_filter = "写盘表单"
+        TUI.clamp_ui(ui, self.lay)
+        _goto_action(ui, lambda a: a.key == "library-deprecate")
+        op, _p = TUI.handle_key(ui, "ENTER", self.lay)
+        self.assertEqual("none", op)
+        self.assertEqual("param", ui.prompt.kind)
+        ui.prompt.buf = "NF-1"
+        op, _p = TUI.handle_key(ui, "ENTER", self.lay)
+        self.assertEqual("none", op)                       # 下一步是写盘确认，不是直接跑
+        self.assertEqual("confirm-write", ui.prompt.kind)
+
     def test_write_action_rejects_non_yes_answers(self):
         ui = TUI.Ui(root=Path("."))
         _goto_action(ui, lambda a: "--write" in a.argv)
@@ -373,6 +403,90 @@ class MachineSurfaceTest(unittest.TestCase):
         with contextlib.redirect_stderr(buf), mock.patch.dict(os.environ, {"NF_ROOT": ""}):
             code = TUI.main(["--plain", "--root", str(ROOT / "tui")])
         self.assertEqual(TUI.EXIT_ENV, code)
+
+
+class SurfaceSingleSourceTest(unittest.TestCase):
+    """单真值源 · 多视图（2026-10-03）：全屏视图的表**全部来自投影件**，口径不得弱于真源。
+
+    这一类判据堵的就是手抄表的旧缺口：`CONFIRM_FLAG_PAIRS`（`interop --all` /
+    `assemble --trace` 这类「命令 + 旗标才写盘」的面）曾在全屏视图里**不确认即可执行**。
+    现在逐条**机械枚举**真源三表，物化漏一条即红；投影件与真源不同步也即红。
+    """
+
+    def _cli(self):
+        spec = importlib.util.spec_from_file_location("nf_cli_truth", ROOT / "scripts" / "nf.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    def test_tables_come_from_the_projection(self):
+        self.assertEqual(tuple(TUI._surface.COMMANDS), TUI.KNOWN_TOP)
+        self.assertEqual([z["title"] for z in TUI._surface.ZONES],
+                         [title for title, _acts in TUI.ZONES])
+        self.assertEqual(TUI._surface.SCHEMA, "nf-terminal-surface/1")
+        self.assertTrue(TUI._surface.DIGEST.startswith("sha256:"))
+        # 视图只物化真源给的字段，不发明第二套语义：动作 key/title 逐条对映
+        for zone, materialized in zip(TUI._surface.ZONES, TUI.ZONES):
+            self.assertEqual([a["key"] for a in zone["actions"]],
+                             [a.key for a in materialized[1]])
+
+    def test_gate_tables_cover_every_truth_entry(self):
+        for flag in TUI.WRITE_FLAGS:
+            self.assertEqual("write", TUI.classify(["doctor", flag]), flag)
+        for cmd, sub in TUI.WRITE_VERBS:
+            self.assertEqual("write", TUI.classify([cmd, sub] if sub else [cmd]), cmd)
+        for cmd, flag in TUI.WRITE_PAIRS:
+            self.assertEqual("write", TUI.classify([cmd, flag]), "%s %s" % (cmd, flag))
+
+    def test_paired_write_flags_really_gate(self):
+        """配对表的**具体**形态回归（旧手抄表漏的就是这两条）。"""
+        self.assertEqual("write", TUI.classify(["interop", "--all"]))
+        self.assertEqual("write", TUI.classify(["assemble", "x", "--trace", "t.json"]))
+        self.assertEqual("read", TUI.classify(["pipeline", "--all"]))   # 同旗标在别处只读
+
+    def test_long_running_covers_truth_plus_view_policy(self):
+        for verb in TUI._surface.BLOCKED:
+            self.assertIn(verb, TUI.LONG_RUNNING)
+            self.assertEqual("long", TUI.classify([verb]))
+        # 本视图**额外**收紧的一条必须显式登记（视图策略，不是与真源分叉）
+        self.assertEqual(("daemon",), TUI.TUI_EXTRA_LONG_RUNNING)
+
+    def test_form_actions_are_projected_and_gated(self):
+        """写盘表单区：动作**恰好**等于表单真源，且每一条都落进写盘闸门（视图不许给未闸动作开口子）。"""
+        zones = [z for z in TUI._surface.ZONES if z.get("forms")]
+        self.assertEqual(1, len(zones), "投影里应有且仅有一个表单区")
+        target = zones[0]["title"]
+        acts = [a for title, zone_acts in TUI.ZONES if title == target for a in zone_acts]
+        self.assertEqual(len(TUI._surface.FORMS), len(acts))
+        self.assertEqual([str(f["id"]) for f in TUI._surface.FORMS], [a.key for a in acts])
+        for act in acts:
+            self.assertEqual("write", TUI.classify(list(act.argv)),
+                             "表单动作未被判为写盘：%s（%s）" % (act.title, " ".join(act.argv)))
+
+    def test_optional_param_drops_its_flag(self):
+        """可选参数留空时，**旗标与占位符一起丢**（否则表单类动作会留下悬空 `--reason`）。"""
+        act = TUI.Action("deprecate-module", "弃用模块",
+                         ["module", "deprecate", "{file}", "--reason", "{reason}"],
+                         (TUI.Param("file", "模块 md 路径", "path"),
+                          TUI.Param("reason", "弃用原因（可空）", "text", False)))
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, "m.md").write_text("x", encoding="utf-8")
+            self.assertEqual(["module", "deprecate", "m.md"], act.build(tmp, {"file": "m.md"}))
+            self.assertEqual(["module", "deprecate", "m.md", "--reason", "岗位调整"],
+                             act.build(tmp, {"file": "m.md", "reason": "岗位调整"}))
+            with self.assertRaises(TUI.UsageError):
+                act.build(tmp, {})
+
+    def test_projection_on_disk_matches_core_truth(self):
+        sys.path.insert(0, str(ROOT / "desktop" / "src"))
+        from core import terminal as term
+        module = self._cli()
+        tree = module._collect_cli_tree()
+        text = (ROOT / term.SURFACE_MODULE_PATH).read_text(encoding="utf-8")
+        self.assertEqual(term.surface_sync_issues(text, tree["commands"], tree["root_flags"]), [])
+        self.assertEqual(
+            term.surface_digest(term.surface_payload(tree["commands"], tree["root_flags"])),
+            TUI._surface.DIGEST)
 
 
 class CliDriftTest(unittest.TestCase):

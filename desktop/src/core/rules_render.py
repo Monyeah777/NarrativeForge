@@ -67,7 +67,8 @@ def _render_skill(data: Dict[str, Any]) -> str:
         "---\n"
         f"name: {pkg.get('id', 'protocol').lower()}\n"
         f"description: {name}（{pkg.get('pipeline', '')}）协议声明\n"
-        "license: Proprietary. LICENSE.txt has complete terms\n"
+        # 同 skill_adapter：许可与仓库 LICENSE 对齐（外部实测 2026-10-02 修）
+        "license: MIT\n"
         "---\n")
     body = [f"# {name}", "", "## 协议声明", ""]
     body.append(f"- 管线：{pkg.get('pipeline', '')}")

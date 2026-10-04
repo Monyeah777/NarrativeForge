@@ -9,14 +9,25 @@
 面向「人开着窗口点着用」的场景。两者不冲突：命令真源始终是 `scripts/nf.py` 的
 argparse 面，TUI 只是它的**受控调用方**（不复制业务逻辑，不维护第二份命令表）。
 
+单真值源 · 多视图
+------------------
+本模块**不留任何手抄表**：命令白名单、写盘闸门三表、能力区与动作目录全部来自生成件
+`tui/_surface.py`（`import _surface`）——它是 `desktop/src/core/terminal.py` 策展表的投影，
+由 `python scripts/nf.py shell --surface-write tui/_surface.py` 生成，真源改了没重生成会被
+`--selftest` 与 verify check39 当场判红。冻结态 exe 不能 import core，故消费生成件而非直接
+读表（`--demo` / `--list-actions` / `--selftest` 因此无仓库也可用）。
+历史教训：手抄的第二份闸门表漏了 `CONFIRM_FLAG_PAIRS`，`nf interop --all` 这类写面在全屏
+视图里**不确认就能执行**；单源化顺带堵住这条。
+
 四条安全底线（本模块自己守，不外包给调用方）
 --------------------------------------------
 1. **不用 shell**：所有子进程一律 ``shell=False`` + argv 列表；使用者输入只作**字面参数**，
    永不参与 shell 解析——``doctor; rm -rf /`` 会被当成一个普通参数原样传给目标进程
    （`--selftest` 有可执行判据）。
-2. **命令白名单 + 长驻拒跑**：可执行的首个动词必须在 `KNOWN_TOP` 内；
-   `serve` / `daemon` / `shell` / `terminal` / `lsp` 这类长驻面直接拒跑；
-   写盘动词与写盘旗标须使用者显式键入 `yes` 才放行（CLI 自己的 `--yes` 闸门是第二层）。
+2. **命令白名单 + 长驻拒跑**：可执行的首个动词必须在 `KNOWN_TOP` 内（该表来自投影件）；
+   `serve` / `shell` / `terminal` / `lsp` 直接拒跑（`daemon` 是本视图**额外**收紧的一条，
+   见 `TUI_EXTRA_LONG_RUNNING` 的理由）；写盘动词、写盘旗标与「命令+旗标」配对须使用者
+   显式键入 `yes` 才放行（CLI 自己的 `--yes` 闸门是第二层）。
 3. **路径包含性**：任何路径参数过 `validate_rel_path()`——拒绝对路径、`..` 段、
    Windows 盘符相对写法（`C:foo`），realpath 归一后断言落在仓库根内；
    口径与 `desktop/src/core/paths.py::validate_path` 同源，不另立一套语义。
@@ -50,6 +61,15 @@ import threading
 import time
 import unicodedata
 from pathlib import Path
+
+# 终端面投影（**生成件** `tui/_surface.py`）：命令白名单 / 写盘闸门三表 / 能力区与动作目录的
+# 唯一来源。真源是 `desktop/src/core/terminal.py` 的策展表；本模块**不手抄任何一张表**。
+# 同目录 import：源码态（`python tui/nf.py`）与 PyInstaller 冻结态都把本件所在目录放在搜索
+# 路径上；测试用 spec_from_file_location 加载本件时不在，故显式补一次。
+_SURFACE_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SURFACE_DIR not in sys.path:
+    sys.path.insert(0, _SURFACE_DIR)
+import _surface  # noqa: E402  （生成件：终端面投影；真源见件内抬头）
 
 # 控制台编码钉 UTF-8：Windows 默认按本地代码页落盘，中文框线与诊断会直接抛
 # UnicodeEncodeError（本模块的渲染面全是中文 + 框线字符）。
@@ -115,6 +135,14 @@ class EnvError(NfTuiError):
 # 安全原语：路径包含性 / 密钥遮蔽 / shell 无关的 argv 切分
 # --------------------------------------------------------------------------- #
 _DRIVE_RELATIVE = re.compile(r"^[A-Za-z]:(?![\\/])")
+#: 控制字符（\t \n \r 之外的 C0/C1 与 DEL）与 NTFS 备用数据流——与
+#: `core.paths.path_syntax_issue` 同一口径（本模块零第三方依赖不能 import core，故按同口径
+#: 重实现，并由 `--selftest` 对这两个形态对账）。
+_CONTROL = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+_ADS = re.compile(r"\.[A-Za-z0-9]{1,8}:[^\\/\s]")
+#: Windows 保留设备名（可带扩展名）：指向设备而非文件，写入静默丢数据。
+_RESERVED_DEVICE = re.compile(
+    r"(?i)(^|[\\/])(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\.[^\\/]*)?($|[\\/])")
 
 
 def contained(root: str, target: str) -> bool:
@@ -133,8 +161,8 @@ def validate_rel_path(root: str, value: str, *, allow_absolute: bool = False) ->
     text = str(value or "")
     if not text.strip():
         raise RefusedError("路径为空", "给出根内相对路径，如 docs/terminal.md")
-    if "\x00" in text or "\n" in text or "\r" in text:
-        raise RefusedError("路径含控制字符", "去掉换行/NUL 后重试")
+    if _CONTROL.search(text):
+        raise RefusedError("路径含控制字符", "去掉不可见控制字符（NUL/其它 C0 控制符）后重试")
     if os.path.isabs(text) and not allow_absolute:
         raise RefusedError("不接受绝对路径：%s" % text, "改用仓库内相对路径")
     if _DRIVE_RELATIVE.match(text):
@@ -142,6 +170,10 @@ def validate_rel_path(root: str, value: str, *, allow_absolute: bool = False) ->
                            "改用仓库内相对路径，勿写 `C:foo` 这类会随盘符换根的写法")
     if ".." in text.replace("\\", "/").split("/"):
         raise RefusedError("路径不得含 `..` 段：%s" % text, "改用仓库内相对路径")
+    if _ADS.search(text):
+        raise RefusedError("路径含备用数据流写法：%s" % text, "改用常规文件名")
+    if _RESERVED_DEVICE.search(text):
+        raise RefusedError("路径含 Windows 保留设备名：%s" % text, "改用常规文件名")
     full = os.path.realpath(os.path.join(os.path.realpath(str(root)), text))
     if not contained(root, full):
         raise RefusedError("路径逃逸仓库根：%s" % text, "目标须落在 %s 内" % root)
@@ -202,31 +234,26 @@ def split_argv(text: str) -> list:
 
 
 # --------------------------------------------------------------------------- #
-# 命令面元数据：白名单 / 写盘闸门 / 长驻拒跑 / 动作目录（菜单真源）
+# 命令面元数据：白名单 / 写盘闸门 / 长驻拒跑 / 动作目录——**全部来自投影件** `_surface`
+#   真源 = `desktop/src/core/terminal.py` 的策展表 + `scripts/nf.py` 的 argparse 面；
+#   本模块只做「物化 + 判定」，不再留任何手抄表（漂移由 selftest 与 check39 判红）。
 # --------------------------------------------------------------------------- #
-#: CLI 顶层命令（与 `scripts/nf.py` 的 argparse 面同源；有仓库时 `--selftest` 会逐条比对漂移）
-KNOWN_TOP = (
-    "approve", "assemble", "assertions", "asset", "attest", "audit", "bench", "cognition",
-    "combine", "completion", "conformance", "daemon", "decide", "decisions", "demo", "design",
-    "diff", "doctor", "domain", "driver", "endpoint", "events", "explain", "handover", "help",
-    "impact", "import", "interop", "knowledge", "layers", "library", "license", "lint", "lsp",
-    "market", "model", "module", "output", "patterns", "pipeline", "postmortem", "preset",
-    "receipts", "register", "related", "release", "rename", "render", "review", "rfc", "run",
-    "score", "serve", "shell", "sig", "spec", "state-front", "stats", "st-validate", "telemetry",
-    "terminal", "toolface", "transparency", "who-refers", "workloop", "worldmodel",
-)
+#: CLI 顶层命令（投影自带；有仓库时 `--selftest` 另与真 argparse 面逐条比对漂移）
+KNOWN_TOP = tuple(_surface.COMMANDS)
+#: 本视图**额外**收紧的长驻面：真源只列「会话内不直跑」的动词（serve/shell/terminal/lsp），
+#: 而 `nf daemon` 在 shell 里可用（`start` 已是非阻塞）。全屏 TUI 是前台独占会话：daemon 的
+#: 前台子命令（`run --watch`）会把界面吞掉，且起守护属「改本机状态」的维护动作——
+#: 故本视图整族拒跑，并在此显式声明是**视图策略**而非与真源分叉（判据断言本集 ⊇ 真源集）。
+TUI_EXTRA_LONG_RUNNING = ("daemon",)
 #: 长驻 / 自指面：在 TUI 里拒跑（会把前台会话吞掉，且不是「看一眼」类动作）
-LONG_RUNNING = ("serve", "daemon", "shell", "terminal", "lsp")
-#: 写盘旗标（出现任一即视为不可逆动作，须显式确认）——与 `core/terminal.py` 同一张表的口径
-WRITE_FLAGS = ("--write", "--apply", "--register", "--force", "--out", "--dest", "--build",
-               "--write-baseline", "--fix", "--harvest", "--write-advisory", "--certify", "--save")
-#: 无旗标也写盘的 (命令, 子命令) 组合
-WRITE_VERBS = (("asset", "add"), ("asset", "rm"), ("asset", "deprecate"), ("asset", "restore"),
-               ("module", "deprecate"), ("module", "restore"), ("module", "signature"),
-               ("register", ""), ("import", ""), ("rename", ""), ("release", ""), ("approve", ""),
-               ("pipeline", "new"), ("decisions", "reindex"), ("patterns", "reindex"),
-               ("library", "reindex"), ("library", "deprecate"), ("library", "restore"),
-               ("library", "supersede"), ("library", "attest"), ("combine", "certify"))
+LONG_RUNNING = tuple(sorted(set(_surface.BLOCKED) | set(TUI_EXTRA_LONG_RUNNING)))
+#: 写盘旗标（出现任一即视为不可逆动作，须显式确认）——真源 = `CONFIRM_FLAGS`
+WRITE_FLAGS = tuple(_surface.GATES["flags"])
+#: 无旗标也写盘的 (命令, 子命令) 组合——真源 = `CONFIRM_VERBS`（`""` = 整条命令）
+WRITE_VERBS = tuple((str(c), str(s)) for c, s in _surface.GATES["verbs"])
+#: 「命令 + 旗标」才写盘的组合——真源 = `CONFIRM_FLAG_PAIRS`（`interop --all` 等）。
+#: 手抄版曾漏掉这张表 ⇒ 全屏视图里这些写面**不确认就能跑**；单源化后由 selftest 逐条枚举断言。
+WRITE_PAIRS = tuple((str(c), str(f)) for c, f in _surface.GATES["pairs"])
 
 
 def classify(argv: list) -> str:
@@ -240,6 +267,8 @@ def classify(argv: list) -> str:
     if any(tok in WRITE_FLAGS for tok in argv):
         return "write"
     if (top, sub) in WRITE_VERBS or (top, "") in WRITE_VERBS:
+        return "write"
+    if {flag for cmd, flag in WRITE_PAIRS if cmd == top} & set(argv):
         return "write"
     return "read"
 
@@ -270,7 +299,7 @@ class Param:
 
 
 class Action:
-    """一条可执行动作：固定动词模板 + 参数槽（菜单真源，不允许自由拼 shell）。"""
+    """一条可执行动作：固定动词模板 + 参数槽（投影动作目录，不允许自由拼 shell）。"""
 
     __slots__ = ("key", "title", "argv", "params", "note")
 
@@ -278,68 +307,77 @@ class Action:
         self.key, self.title, self.argv = key, title, argv
         self.params, self.note = tuple(params), note
 
+    def _param(self, name):
+        for param in self.params:
+            if param.name == name:
+                return param
+        return None
+
+    def _value(self, param, root, raw: str) -> str:
+        """参数取值：路径类参数过仓库包含性判据后归一成**根内相对路径**（写法统一，落盘可预测）。"""
+        if param.kind == "path":
+            return os.path.relpath(validate_rel_path(root, raw), root).replace("\\", "/")
+        return raw
+
     def build(self, root, values) -> list:
-        argv = []
-        for token in self.argv:
+        """填参数槽 → argv；**空的可选值连同它的旗标一起丢**（与 `core.terminal.build_argv` 同口径）。
+
+        为什么要有「连旗标一起丢」：写盘表单的 argv 模板里可选参数是 `--reason {reason}` 这类
+        **旗标 + 占位符**成对形态；只丢占位符会留下悬空 `--reason`，命令直接用法错误。
+        """
+        toks = list(self.argv)
+        argv, i = [], 0
+        while i < len(toks):
+            token = toks[i]
+            nxt = toks[i + 1] if i + 1 < len(toks) else None
+            if (token.startswith("--") and nxt and nxt.startswith("{") and nxt.endswith("}")
+                    and self._param(nxt[1:-1]) is not None):
+                param = self._param(nxt[1:-1])
+                raw = str(values.get(param.name) or "").strip()
+                if not raw:
+                    if param.required:
+                        raise UsageError("参数 %s 未填" % param.label, "回车确认前先填这一项")
+                    i += 2                      # 旗标与占位符一起丢
+                    continue
+                argv += [token, self._value(param, root, raw)]
+                i += 2
+                continue
             filled = token
             for param in self.params:
-                if "{%s}" % param.name not in filled:
+                ph = "{%s}" % param.name
+                if ph not in filled:
                     continue
-                raw = str(values.get(param.name) or "")
-                if not raw.strip():
+                raw = str(values.get(param.name) or "").strip()
+                if not raw:
                     if param.required:
                         raise UsageError("参数 %s 未填" % param.label, "回车确认前先填这一项")
                     filled = ""
                     break
-                if param.kind == "path":
-                    raw = os.path.relpath(validate_rel_path(root, raw), root).replace("\\", "/")
-                filled = filled.replace("{%s}" % param.name, raw)
+                filled = filled.replace(ph, self._value(param, root, raw))
             if filled:
                 argv.append(filled)
+            i += 1
         return argv
 
 
-#: 能力区（对齐 `core/terminal.py::ZONES` 的八区口径）+ 每区的动作（命令真源：scripts/nf.py）
-ZONES = (
-    ("环境自检", (Action("doctor", "只读体检", ["doctor"]),
-                 Action("doctor-json", "体检（机器面）", ["doctor", "--json"]))),
-    ("一键演示", (Action("demo", "跑一遍 P04 全链", ["demo"]),)),
-    ("需求→装配", (
-        Action("assemble", "一句话→装配计划", ["assemble", "{need}"],
-               (Param("need", "需求（一句话）"),), note="产出装配计划文本，不落盘"),
-        Action("assemble-check", "校验成品文档", ["assemble", "{file}", "--check"],
-               (Param("file", "成品 .md（仓内路径）", "path"),)),
-    )),
-    ("全链生产", (
-        Action("run", "跑全链管线", ["run", "--pipeline", "{pipeline}", "--modules", "{modules}", "--seed"],
-               (Param("pipeline", "管线 .md（仓内路径）", "path"), Param("modules", "模块 full_id（逗号分隔）"))),
-        Action("run-check", "管线 dry-run", ["pipeline", "dryrun", "{pipeline}"],
-               (Param("pipeline", "管线 .md（仓内路径）", "path"),)),
-    )),
-    ("校验体检", (
-        Action("conformance", "契约一致性", ["conformance"]),
-        Action("layers", "抽象阶梯核验", ["layers", "--verify"]),
-        Action("lint", "文档语义体检", ["lint", "{file}"], (Param("file", "文档 .md（仓内路径）", "path"),)),
-        Action("module-verify", "模块门禁", ["module", "verify"]),
-    )),
-    ("货架资产", (
-        Action("market", "市场货架", ["market", "--list"]),
-        Action("asset-ls", "资产清单", ["asset", "ls"]),
-        Action("asset-density", "资产密度", ["asset", "density"]),
-        Action("library-search", "馆藏检索", ["library", "search", "{query}"], (Param("query", "关键词"),)),
-    )),
-    ("管线模块", (
-        Action("module-ls", "模块清单", ["module", "ls"]),
-        Action("patterns-ls", "模式清单", ["patterns", "ls"]),
-        Action("stats", "自述数字核对", ["stats", "--check"]),
-        Action("stats-write", "自述数字：重写生成区（写盘）", ["stats", "--write"],
-               note="会改仓库文件，须键入 yes 确认"),
-    )),
-    ("帮助命令面", (
-        Action("help", "命令总览", ["--help"]),
-        Action("help-cmd", "看某命令帮助", ["help", "{cmd}"], (Param("cmd", "子命令名"),)),
-    )),
-)
+def _materialize_zone(zone: dict) -> tuple:
+    """投影里的一区 → (标题, 动作元组)：把 `actions` 的 argv 模板与参数槽物化成可执行对象。
+
+    这里只做**机械物化**（字段一一对映），不加任何策展判断——标题、动作、参数、提示语都
+    来自真源（`core/terminal.py::ZONES`），本视图不发明第二套语义。
+    """
+    actions = tuple(
+        Action(str(a["key"]), str(a["title"]), [str(t) for t in a.get("argv") or ()],
+               tuple(Param(str(p["name"]), str(p.get("label") or p["name"]),
+                           str(p.get("kind") or "text"), bool(p.get("required", True)))
+                     for p in a.get("params") or ()),
+               str(a.get("note") or ""))
+        for a in zone.get("actions") or ())
+    return (str(zone["title"]), actions)
+
+
+#: 能力区（**投影物化**，真源 `core/terminal.py::ZONES`——本模块不留手抄表）
+ZONES = tuple(_materialize_zone(z) for z in _surface.ZONES)
 
 
 def all_actions():
@@ -440,7 +478,7 @@ def load_api_key(env=None) -> str:
                 key, _, value = line.partition("=")
                 if key.strip() in CREDENTIAL_ENV:
                     return value.strip().strip("\"'")
-        except OSError as exc:                                  # noqa: BLE001 - 读不到就当作没有
+        except OSError as exc:                                  # 读不到就当作没有
             raise EnvError("凭据文件不可读：%s" % exc, "检查文件权限，或改用环境变量") from exc
     return ""
 
@@ -1029,7 +1067,7 @@ def _footer(ui: Ui) -> tuple:
     return (keys, "footer")
 
 
-def _help_rows(inner: int, body: int) -> list:
+def _help_rows(_inner: int, body: int) -> list:
     entries = [
         ("Tab / ←→ / h l", "切换面板（能力区 / 动作 / 输出）"),
         ("↑↓ 或 j k", "在当前面板内移动选择（输出面板为滚动）"),
@@ -1368,6 +1406,13 @@ def selftest(root: Path | None = None, python: str | None = None) -> tuple:
         guard_path_tokens(tmp_root, ["lint", "docs/terminal.md"])
         good = validate_rel_path(tmp_root, os.path.join("docs", "terminal.md"))
         assert contained(tmp_root, good)
+        # 与 `core.paths.path_syntax_issue` 对齐（2026-10-01）：备用数据流与控制字符同样拒
+        for bad in ("x.md:hidden", "ok\x00bad", "a\x1f/x.md", "NUL", "sub/CON"):
+            try:
+                validate_rel_path(tmp_root, bad)
+                raise AssertionError("未拦住：%r" % bad)
+            except RefusedError:
+                pass
         return "越界写法全拦（含自由文本路径 token），根内相对路径放行"
 
     def no_shell():
@@ -1461,9 +1506,56 @@ def selftest(root: Path | None = None, python: str | None = None) -> tuple:
         assert not drift, "TUI 白名单与 CLI 面漂移：%s" % drift
         return "白名单与 argparse 面逐条一致（%d 条）" % len(real)
 
+    def gates():
+        """闸门口径**逐条**来自投影：三张表全枚举，classify 必须都定档 `write`。
+
+        这条判据的存在理由：手抄闸门表的年代，全屏视图漏了 `CONFIRM_FLAG_PAIRS`
+        （`nf interop --all` / `nf assemble --trace` 不确认就能跑）。现在口径只有真源一份，
+        本判据保证**物化没漏条**——机械枚举，不挑样本。
+        """
+        for flag in WRITE_FLAGS:
+            assert classify(["doctor", flag]) == "write", "旗标未入闸：%s" % flag
+        for cmd, sub in WRITE_VERBS:
+            argv = [cmd, sub] if sub else [cmd]
+            assert classify(argv) == "write", "写盘动词未入闸：%s" % " ".join(argv)
+        for cmd, flag in WRITE_PAIRS:
+            assert classify([cmd, flag]) == "write", "命令+旗标未入闸：%s %s" % (cmd, flag)
+        assert set(_surface.BLOCKED) <= set(LONG_RUNNING), "长驻集比真源窄（拒跑口径退化）"
+        for verb in LONG_RUNNING:
+            assert classify([verb]) == "long", "长驻面未拒跑：%s" % verb
+        return ("闸门三表 %d 旗标 / %d 动词 / %d 配对逐条成立；长驻 %d 条（真源 %d + 本视图收紧 %d）"
+                % (len(WRITE_FLAGS), len(WRITE_VERBS), len(WRITE_PAIRS), len(LONG_RUNNING),
+                   len(_surface.BLOCKED), len(TUI_EXTRA_LONG_RUNNING)))
+
+    def surface_sync():
+        """投影与真源**现场**对账：跑 `nf shell --surface --json` 比 digest。
+
+        生成件是冻结态的唯一输入，所以「它是不是当前真源的投影」必须能当场问出来：
+        真源改了没重生成 ⇒ 本行红（修复指引在断言消息里）。
+        """
+        if root is None or not python:
+            return "无仓库/解释器：跳过现场对账（在场生成件 %s）" % _surface.DIGEST[:19]
+        res = Runner(root, python, timeout=60.0, max_lines=200000).run(
+            ["shell", "--surface", "--json"])
+        assert res.code == 0, "nf shell --surface --json 退出码 %s：%s" % (
+            res.code, (res.err or res.out or "").strip()[-200:])
+        payload = json.loads(res.out)
+        assert payload.get("schema") == _surface.SCHEMA, \
+            "投影 schema 不一致：%s" % payload.get("schema")
+        live = str(payload.get("digest") or "")
+        assert live == _surface.DIGEST, (
+            "生成件与真源不同步（现场 %s / 在场 %s；修复指引：python scripts/nf.py shell "
+            "--surface-write tui/_surface.py）" % (live[:19], _surface.DIGEST[:19]))
+        return ("投影与真源同源（%s · 命令 %d · 区 %d · 动作 %d · 表单 %d）"
+                % (live[:19], len(payload.get("commands") or []), len(payload.get("zones") or []),
+                   sum(len(z.get("actions") or []) for z in payload.get("zones") or []),
+                   len(payload.get("forms") or [])))
+
     check("路径包含性", paths)
     check("无 shell 执行", no_shell)
     check("命令白名单与闸门", whitelist)
+    check("闸门口径（单源）", gates)
+    check("投影同源", surface_sync)
     check("密钥不硬编码", secrets)
     check("渲染确定性", frame)
     check("交互语义", keys)
@@ -1543,6 +1635,14 @@ def main(argv=None) -> int:
                                    "surfaces": ["--demo", "--selftest [--json]",
                                                 "--list-actions [--json]",
                                                 "--exec \"nf <cmd>\"", "--plain"],
+                                   "surface": {"schema": _surface.SCHEMA,
+                                               "digest": _surface.DIGEST,
+                                               "source": _surface.SOURCE["module"],
+                                               "commands": len(KNOWN_TOP),
+                                               "zones": len(ZONES),
+                                               "forms": len(_surface.FORMS),
+                                               "regenerate": "python scripts/nf.py shell "
+                                                             "--surface-write tui/_surface.py"},
                                    "actions": rows}, EXIT_OK)
             for row in rows:
                 sys.stdout.write("%-12s nf %s\n" % (row["zone"], " ".join(row["argv"])))

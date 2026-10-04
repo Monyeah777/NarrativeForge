@@ -509,6 +509,49 @@ class TestMcpRuntime(unittest.TestCase):
         ok = self.srv.handle({"jsonrpc": "2.0", "id": "abc", "method": "ping"})
         self.assertEqual(ok["id"], "abc")
 
+    def test_non_finite_id_is_refused(self):
+        """NaN / ±Infinity 不是合法 JSON（RFC 8259 §6）⇒ 不得当 id 放行。
+
+        依据（2026-10-01 实测）：Python `json.loads` 默认接受 `NaN`/`Infinity` 字面量，旧判据
+        `isinstance(rid, (str,int,float))` 放行 `float("nan")` ⇒ 响应把 id 原样写成 `NaN`，
+        严格客户端**整条回包解析不了**（实测 `{"id":NaN,"result":{}}`）。
+        """
+        for bad in (float("nan"), float("inf"), float("-inf")):
+            msg = self.srv.handle({"jsonrpc": "2.0", "id": bad, "method": "ping"})
+            self.assertEqual(msg["error"]["code"], INVALID_REQUEST, repr(bad))
+            self.assertIsNone(msg["id"], "非法 id 不得回显（§5：无法判定时为 null）")
+
+    def test_serve_stdio_rejects_non_finite_literals_as_parse_error(self):
+        """帧里裸写 NaN/Infinity → -32700（不是含 `NaN` 的非法回包），且会话继续。"""
+        payload = ('{"jsonrpc":"2.0","id":NaN,"method":"ping"}\n'
+                   '{"jsonrpc":"2.0","id":7,"method":"ping"}\n')
+        out = StringIO()
+        self.srv.serve_stdio(stdin=StringIO(payload), stdout=out)
+        lines = out.getvalue().splitlines()
+        self.assertEqual(2, len(lines), out.getvalue())
+        first = json.loads(lines[0])
+        self.assertEqual(-32700, first["error"]["code"], first)
+        self.assertIsNone(first["id"])
+        self.assertEqual(7, json.loads(lines[1])["id"])
+
+    def test_internal_error_echoes_request_id(self):
+        """§5：内部异常的错误响应也要回带 id——否则调用方按 id 匹配时「看不到」这次失败。"""
+        from io import StringIO
+
+        class _Boom(McpRuntime):
+            def _dispatch(self, method, params):
+                if method == "boom":
+                    raise KeyError("内部真实 bug")
+                return super()._dispatch(method, params)
+
+        out = StringIO()
+        _Boom(self.snap).serve_stdio(
+            stdin=StringIO(json.dumps({"jsonrpc": "2.0", "id": 42, "method": "boom"}) + "\n"),
+            stdout=out)
+        msg = json.loads(out.getvalue().strip())
+        self.assertEqual(-32603, msg["error"]["code"])
+        self.assertEqual(42, msg["id"], "内部异常响应丢了请求 id（§5）")
+
     def test_params_null_and_absent_are_accepted(self):
         for msg in ({"jsonrpc": "2.0", "id": 73, "method": "ping", "params": None},
                     {"jsonrpc": "2.0", "id": 74, "method": "ping"}):
@@ -821,6 +864,7 @@ class DeclaredSurfaceVsHandlersTest(unittest.TestCase):
                               "params": {"name": name, "arguments": samples[name]}})
             self.assertNotEqual(mrt.METHOD_NOT_FOUND, (resp.get("error") or {}).get("code"),
                                 "声明了却不可达：%s → %s" % (name, resp))
+
 
 
 if __name__ == "__main__":

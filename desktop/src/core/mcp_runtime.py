@@ -41,6 +41,7 @@ C7 只读工具面（41_v2.8.0_波C质量编译深化规划，2026-09-08）：
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -127,6 +128,32 @@ def _err_at(code: int, message: str, rid: Any) -> dict:
     return out
 
 
+def _echoable_id(msg: Any) -> Any:
+    """异常响应的**可回显 id**：形态合法且有限才回显，否则 None（§5：无法判定时为 null）。"""
+    if not isinstance(msg, dict) or "id" not in msg:
+        return None
+    rid = msg.get("id")
+    if rid is None or isinstance(rid, bool):
+        return None
+    if isinstance(rid, float) and not math.isfinite(rid):
+        return None
+    return rid if isinstance(rid, (str, int, float)) else None
+
+
+def _reject_json_constant(name: str) -> Any:
+    """`json.loads(parse_constant=…)` 的钩子：拒 NaN/±Infinity（RFC 8259 §6 只许有限数）。"""
+    raise ValueError("非有限数 %s 不是合法 JSON" % name)
+
+
+def _valid_request_id(rid: Any) -> bool:
+    """JSON-RPC 2.0 §4：id 须为 String / Number / null（布尔、结构体、非有限数皆非法）。"""
+    if rid is None:
+        return True
+    if isinstance(rid, bool) or not isinstance(rid, (str, int, float)):
+        return False
+    return not isinstance(rid, float) or math.isfinite(rid)
+
+
 #: stdio transport 的「行边界陷阱」字符（JSON-RPC over stdio = 一条消息一行）
 #: U+2028 行分隔 / U+2029 段分隔 / U+0085 NEL —— 按 Unicode 换行边界读行的客户端会把
 #: 它们当换行 → 一条消息被劈成两条。JSON 规范允许裸写这些字符，故须在**出口**转义。
@@ -199,7 +226,7 @@ def template_matches(template: str, uri: str) -> bool:
     u_parts = str(uri).split("/")
     if len(t_parts) != len(u_parts):
         return False
-    for t_part, u_part in zip(t_parts, u_parts):
+    for t_part, u_part in zip(t_parts, u_parts, strict=True):
         if t_part.startswith("{") and t_part.endswith("}"):
             if not u_part:
                 return False
@@ -918,11 +945,11 @@ class McpRuntime:
         # 通知：无 id 字段 → 处理但不应答
         is_request = "id" in msg
         rid = msg.get("id")
-        # JSON-RPC 2.0 §4：id MUST be String / Number / Null（布尔与结构体不是合法 id）
-        if is_request and not (rid is None or isinstance(rid, (str, int, float))
-                               and not isinstance(rid, bool)):
-            return _err(INVALID_REQUEST, "id 必须是字符串、数字或 null"
-                        "（修复指引：按 JSON-RPC 2.0 §4 用请求序号，勿用结构体/布尔）")
+        # §4：id MUST be String / Number / Null；非有限数（NaN/±Infinity）不是合法 JSON
+        # （RFC 8259 §6），放行会让响应原样写出 `NaN`（严格客户端解析不了）。
+        if is_request and not _valid_request_id(rid):
+            return _err(INVALID_REQUEST, "id 必须是字符串、有限数字或 null"
+                        "（修复指引：按 JSON-RPC 2.0 §4 用请求序号，勿用结构体/布尔/NaN/Infinity）")
         # JSON-RPC 2.0 §4.2：params 若在场 MUST be Structured（对象或数组）；
         # MCP 只定义按名对象参数 → 数组走 INVALID_PARAMS（本运行时无位置参数面）。
         if "params" in msg and msg.get("params") is not None:
@@ -1276,16 +1303,24 @@ class McpRuntime:
                 if not line:
                     continue
                 try:
-                    msg = json.loads(line)
+                    msg = json.loads(line, parse_constant=_reject_json_constant)
                 except json.JSONDecodeError:
                     out = _err(PARSE_ERROR, "Parse error")
+                    stdout.write(encode_message(out) or "")
+                    stdout.flush()
+                    continue
+                except ValueError as exc:
+                    # parse_constant 拒掉的 NaN/±Infinity：不是合法 JSON（RFC 8259 §6）⇒ -32700
+                    out = _err(PARSE_ERROR, "Parse error（%s；修复指引：JSON 只许有限数值）" % exc)
                     stdout.write(encode_message(out) or "")
                     stdout.flush()
                     continue
                 try:
                     resp = self.handle(msg)
                 except Exception as exc:  # 防御：单条消息异常不杀循环
-                    resp = _err(INTERNAL_ERROR, f"Internal error: {exc}")
+                    # JSON-RPC 2.0 §5：id 可判定时错误响应 MUST 回显——否则调用方按 id 匹配时
+                    # 「看不到」这次失败（实测此前一律回 id=null）。
+                    resp = _err_at(INTERNAL_ERROR, f"Internal error: {exc}", _echoable_id(msg))
                 if resp is not None:
                     stdout.write(encode_message(resp) or "")
                     stdout.flush()
@@ -1332,19 +1367,24 @@ def load_snapshot(path: str) -> Dict[str, Any]:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    """CLI 入口：python -m core.mcp_runtime <mcp.json>（stdio 服务）。"""
-    from core import plog
-    log = plog.get_logger("mcp_runtime")
+    """CLI 入口：python -m core.mcp_runtime <mcp.json>（stdio 服务）。
+
+    接线（2026-10-01 收口）：与 `nf serve` 一样注入 `json_schema.json_schema_check`。为守住
+    SDP（`endpoint` / `mcp_package` 依赖本模块），这里**以移除 `plog` 出边对等换入**
+    `json_schema` 出边（Ce 5 → 5，I 保持 0.50）——既不新增架构债，也不静默降级（此前本入口
+    照常启动但 `query:123` 冒成 -32603，是同一条参数在 `nf serve` 下回 -32602 的不一致）。
+    """
     args = list(argv) if argv is not None else sys.argv[1:]
     if not args:
-        log.error("用法: python -m core.mcp_runtime <mcp.json>  （stdio MCP 服务）")
+        sys.stderr.write("用法: python -m core.mcp_runtime <mcp.json>  （stdio MCP 服务）\n")
         return 2
     snap = load_snapshot(args[0])
-    srv = McpRuntime(snap)
-    log.info("MCP server 启动：%s v%s（stdio · 只读 resources/tools/prompts）",
-             srv.server_name, srv.server_version)
+    from core import json_schema
+    srv = McpRuntime(snap, schema_check=json_schema.json_schema_check)
+    sys.stderr.write("MCP server 启动：%s v%s（stdio · 只读 resources/tools/prompts）\n"
+                     % (srv.server_name, srv.server_version))
     rc = srv.serve_stdio()
-    log.info("MCP server 退出：rc=%s", rc)
+    sys.stderr.write("MCP server 退出：rc=%s\n" % rc)
     return rc
 
 

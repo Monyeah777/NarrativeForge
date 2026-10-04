@@ -118,7 +118,7 @@ def wrap_runner(base, decide, sync=None):
     避免「稳定模块反过来依赖不稳模块」（耦合判据会判红，实测）。`sync` = 每条命令前的常驻层
     同步回调；装不上监听时调用方**不套本包装**（逐字退回原路径）。
     """
-    def runner(argv, *a, **k):                           # noqa: F811 - 有意遮蔽
+    def runner(argv, *a, **k):                           # 有意遮蔽
         if sync is not None:
             sync()
         argv = [str(x) for x in argv]

@@ -8,12 +8,13 @@ auditor: 本轮执行者
 subjects:
   - CONTRIBUTING.md:3adce64f93d2f84719f12d4f56ab895e5a53152ae2f6b69f4c796a6fd78e228d
   - skills/narrativeforge/SKILL.md:8742a5f651473d1ecb5770b4ac2c1e190bce998e1205cfa7c424e677010982d0
-  - library/INDEX.md:a762f933926ff31dbea29566230391fc4a7af7301a0a0df3ec9ef479fe6d0744
+  - library/INDEX.md:2f27fef537df2f27af6c4c69d9d7d59f407a2640f364e09ee465b3a3ec76d418
 
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
 > subjects 语义：本件是「外部输入筛选」结论，绑定的三条是**判定所依据的仓内证据件**（准入面 / 语言面 / 索引面）——它们一改，本件结论即须重审。
+> **digest 重绑（2026-10-02）**：`library/INDEX.md` 因外部实测驱动的条目口径收窄（NF-TECHDOC 档位由「自包含」改为「内容自包含」）而 `nf library reindex` 投影变更，digest 重绑；本件结论（无净吸收项）未受影响。
 
 ## 一、对象与形态（先取证）
 

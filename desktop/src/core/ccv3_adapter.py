@@ -18,12 +18,36 @@ character_version / spec / spec_version。
 """
 from __future__ import annotations
 
+import re
 from typing import List
 
 from .ir import IRDocument
 
 # 引擎锚点层（01 §5 I2 核心固定：数据结构/输出呈现，非叙事内容不导出）
 _ENGINE_LAYERS = {"P00", "P80"}
+
+# 机器契约围栏（```machine_contract … ``` 等）：玩家可见文本不得携带（P03 §6 红线⑤）
+_FENCE_RE = re.compile(r"```.*?```", re.S)
+
+
+def _readable_head(content: str, limit: int = 400) -> str:
+    """scenario 可读头部：先剔机器契约围栏，再按自然边界截断（不切词）。
+
+    外部实测修正（2026-10-02）：原实现直接 `content[:400]`，会在词中间硬切
+    （实证切口落在 `…arrow-py/arrow` 的 `repo` 一词中段），并把 machine_contract
+    YAML 围栏带进玩家可见文本——撞 P03 §6 红线⑤「玩家可见文本禁止 JSON/YAML」。
+    改法：剔围栏 → 超限时回退到最近的段落/行/句读边界并加省略号；找不到合格
+    边界（窗口不足一半）才退回硬切，保证输出永远不超 limit 量级。
+    """
+    body = _FENCE_RE.sub("", content).strip()
+    if len(body) <= limit:
+        return body
+    window = body[:limit]
+    for sep in ("\n\n", "\n", "。", "；", "！", "？"):
+        cut = window.rfind(sep)
+        if cut >= limit // 2:
+            return body[:cut + len(sep)].strip() + "……"
+    return window.rstrip() + "……"
 
 
 def _module_entries(ir: IRDocument) -> List[dict]:
@@ -88,13 +112,13 @@ def world_entries(ir: IRDocument) -> List[dict]:
 
 
 def _scenario_text(ir: IRDocument) -> str:
-    """scenario：叙事入口层模块内容或引导语。"""
+    """scenario：叙事入口层模块内容或引导语（可读性由 `_readable_head` 保证）。"""
     for layer in ir.layers:
         if layer.id in _ENGINE_LAYERS:
             continue
         if layer.modules:
             first = layer.modules[0]
-            head = first.content[:400].strip()
+            head = _readable_head(first.content)
             if head:
                 return (f"{first.name}：{head}\n\n"
                         f"（叙事世界「{ir.title}」已就绪，故事由此展开）")

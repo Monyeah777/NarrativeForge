@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """40 总纲 v2.7 S2 —— nf asset 供应链台账单测（纯 unittest，L2 core 零依赖）。"""
 import os
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -25,6 +27,53 @@ class AssetLedgerTestBase(unittest.TestCase):
 
     def _ledger_path(self):
         return al.default_ledger_path(self.root)
+
+
+class IgnoredCopyNotReadTest(AssetLedgerTestBase):
+    """**生成副本不得被当成第二份台账**（2026-10-03 实测缺陷）。
+
+    取证：`asset_ledger` 三处根遍历用裸 `os.walk(root)`，npm 暂存面（gitignored 的生成副本）
+    因此被读成第二份货架——`verify_root` 报「台账 206 / 托管资产 614」，真实值恰为一半
+    （103 / 307），`nf asset inventory` 亦每件列两遍。
+
+    自证两向：被忽略的副本**一份都不许读到**；未被忽略的同一份**必须**读到（防判据退化成
+    「什么都不读」的空转）。
+    """
+
+    def _subtree(self, sub):
+        """在 `<root>/<sub>` 下造一份**合法**台账（走真实入库路径，不手写 schema）。"""
+        base = os.path.join(self.root, sub)
+        os.makedirs(base, exist_ok=True)
+        with open(os.path.join(base, "A1.md"), "w", encoding="utf-8") as fh:
+            fh.write("# 资产 A1\n内容\n")
+        al.add_asset(base, "A1.md", "A1", source="测试源 v1", module="M00")
+        return base
+
+    def _gitignore(self, pattern):
+        exe = shutil.which("git")
+        if not exe:
+            self.skipTest("无 git，跳过 .gitignore 面的自证")
+        r = subprocess.run([exe, "init", "-q"], cwd=self.root, capture_output=True)
+        if r.returncode != 0:
+            self.skipTest("git init 不可用")
+        with open(os.path.join(self.root, ".gitignore"), "w", encoding="utf-8") as fh:
+            fh.write(pattern + "\n")
+
+    def test_ignored_copy_is_not_read(self):
+        self._subtree("gen")
+        self._gitignore("gen/")
+        issues, stats = al.verify_root(self.root)
+        self.assertEqual([], issues, issues)
+        self.assertEqual(0, stats["ledgers"],
+                         "被 .gitignore 覆盖的生成副本被当成第二份台账读了")
+
+    def test_unignored_copy_is_read(self):
+        self._subtree("gen")
+        self._gitignore("other/")
+        issues, stats = al.verify_root(self.root)
+        self.assertEqual([], issues, issues)
+        self.assertEqual(1, stats["ledgers"],
+                         "反向对照：未被忽略的台账必须被读到（判据不许退化成「什么都不读」）")
 
 
 class AddAssetTest(AssetLedgerTestBase):

@@ -29,6 +29,7 @@ if str(Path(ROOT) / "desktop" / "src") not in sys.path:
 #: Unix 常规位」解析（`scripts/instruction_evidence.py` 正是用它避免把环境差异记成「不可执行」
 #: 的**假证据**）。跳过 = 判据不在场，是假绿的一种。
 from core import posix_shell as psh  # noqa: E402
+from core import repo_face as _repo_face  # noqa: E402
 
 try:
     BASH = shutil.which("bash") or psh.posix_shell()
@@ -570,10 +571,8 @@ class WindowsCmdLauncherTest(unittest.TestCase):
 
     def test_windows_launchers_are_ascii_only(self):
         offenders = []
-        for path in Path(ROOT).rglob("*"):
+        for path in _repo_face.walk_repo_paths(ROOT):
             if path.suffix.lower() not in (".cmd", ".bat"):
-                continue
-            if any(part in (".git", ".rivet", "__pycache__") for part in path.parts):
                 continue
             raw = path.read_bytes()
             if any(b > 0x7F for b in raw):

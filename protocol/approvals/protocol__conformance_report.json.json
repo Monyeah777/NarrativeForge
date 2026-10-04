@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-10-02",
-  "approved_by": "执行者（作者指令本波：派生面收口）",
-  "note": "本波：io_types 派生面补全（105 件文档 --write：5 件真收窄 + 100 件形态归一；行式读者补含冒号键、inputs 侧补对账）→ I/O 覆盖 28.9→26.9%（分母补全：隐藏的跨包键计入）· 类型积压 86→101 项（载荷收割显形）；Merkle 根随之重算，复核差异后重新批准。",
+  "approved_at": "2026-10-04",
+  "approved_by": "执行者（作者指令：确认执行收口）",
+  "note": "重绑审计后重批一致性报告",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "07fc2a36e0dcc4975254077398c6adb279a9ec445412240ab40132c791ce8040"
+  "subject_digest": "ca9505b4168cff85888461dd79f491229bb70f68eb7729cf9d711c257c5ac652"
 }

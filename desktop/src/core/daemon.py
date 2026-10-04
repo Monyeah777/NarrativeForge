@@ -181,7 +181,7 @@ def _harden_perms(path: Path) -> None:
         return
     try:
         os.chmod(path, 0o600)
-    except OSError:  # noqa: S110 - 尽力而为：权限收紧失败不阻断守护（文件系统可能不支持）
+    except OSError:  # 尽力而为：权限收紧失败不阻断守护（文件系统可能不支持）
         pass
 
 

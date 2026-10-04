@@ -19,7 +19,11 @@ try {
     $work = Join-Path $env:TEMP ("nf-tui-build-" + [guid]::NewGuid().ToString("N").Substring(0, 8))
 
     Write-Host "[2/3] PyInstaller onefile (work dir: $work)"
+    # _surface is the generated terminal-surface projection next to nf.py: declare
+    # the search path and hidden-import explicitly so the frozen bundle cannot
+    # miss it (without it --demo / --list-actions have no tables to render).
     python -m PyInstaller --noconfirm --clean --onefile --name nf `
+        --paths $here --hidden-import _surface `
         --distpath dist --workpath $work --specpath $work nf.py
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed (exit $LASTEXITCODE)" }
 

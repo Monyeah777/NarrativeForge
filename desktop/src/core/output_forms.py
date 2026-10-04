@@ -31,7 +31,7 @@ import json
 import os
 import re
 # 只解析本仓自持产出面；DTD/ENTITY 已在 _xml_guard 前置拒绝
-import xml.etree.ElementTree as ET  # noqa: S405  # nosec B405 -- self-authored artifacts only
+import xml.etree.ElementTree as ET  # nosec B405 -- self-authored artifacts only
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
@@ -580,7 +580,7 @@ _PACK_KEY_MEMO: Dict[str, Any] = {}
 _PACK_KEY_MEMO_MAX = 4096
 
 
-def _pack_key_reusable(root: str, pkg: str, shared: str) -> Any:
+def _pack_key_reusable(_root: str, pkg: str, shared: str) -> Any:
     """**确知变更面**驱动的键复用：本包切片确知没变 ⇒ 复用上一次的键（返回该键；否则 None）。
 
     依据（实测 2026-09-29）：`index_verify` 要为 106 个包各算一次切片指纹（合计 ~15 ms），而最常见的
@@ -755,7 +755,7 @@ def _gen_vega(root: str, entry: dict):
     return qm.vega_equity_curve(series, **params), []
 
 
-def _gen_mermaid(root: str, entry: dict):
+def _gen_mermaid(_root: str, entry: dict):
     from core import quant_metrics as qm
 
     spec = entry.get("recompute") or entry.get("render") or {}
@@ -907,7 +907,7 @@ def _gen_graphml_module_deps(root: str, entry: dict):
     return "\n".join(out) + "\n", []
 
 
-def _combo_module_inputs(root: str, entry: dict, module_id: str) -> List[str]:
+def _combo_module_inputs(root: str, _entry: dict, module_id: str) -> List[str]:
     from core import pack_combo as pc
 
     rec = pc.prof_get_module(root, module_id)
@@ -1021,7 +1021,7 @@ def _gen_graphml_concept_dag(root: str, entry: dict):
     return "\n".join(out) + "\n", []
 
 
-def m_prov(meta: dict, node: str, pre: str) -> str:
+def m_prov(meta: dict, node: str, _pre: str) -> str:
     """边溯源：取目标节点 provenance（概念图边级溯源在资产内，缺则标 unknown）。"""
     return str((meta.get(node) or {}).get("provenance") or "unknown")
 
@@ -1069,17 +1069,21 @@ def _pkg_rel(entry: dict, rel: str) -> str:
 
 
 def _reject_escape_forms(rel: Any, what: str) -> None:
-    """外来清单里的路径**形状**判据：越界写法 / 备用数据流一律抛 `ValueError`。"""
+    """外来清单里的路径**形状**判据：越界写法 / 备用数据流 / 控制字符 / 保留设备名抛 `ValueError`。
+
+    词法判据收敛到 `core.paths.path_syntax_issue`（单一出处）：此前本处自写一份（漏了控制字符
+    与保留设备名），与账本面/参数面各自为政。产出面**额外严格**：`~` 也当绝对写法拒。
+    """
     text = str(rel or "")
     if not text.strip():
         raise ValueError("%s 为空（修复指引：给出包内相对路径，如 outputs/REPORT.json）" % what)
     if text.startswith(("\\", "/")) or re.match(r"^[A-Za-z]:", text) or text.startswith("~"):
         raise ValueError("%s 含绝对/盘符写法 %r（修复指引：改为包内相对路径，如 outputs/x.json）"
                          % (what, text))
-    if ".." in text.replace("\\", "/").split("/"):
-        raise ValueError("%s 含 `..` 段 %r（修复指引：改为包内相对路径）" % (what, text))
-    if re.search(r"\.[A-Za-z0-9]{1,8}:[^\\/\s]", text):
-        raise ValueError("%s 含备用数据流写法 %r（修复指引：改用常规文件名）" % (what, text))
+    issue = _paths.path_syntax_issue(text)
+    if issue:
+        raise ValueError("%s %s %r（修复指引：改为包内相对路径，勿用 `..` 段 / 盘符写法 / "
+                         "`文件:流` 备用数据流 / 控制字符 / 保留设备名）" % (what, issue, text))
 
 
 def _declared_out_rel(root: str, pkg: str, rel: Any) -> str:
@@ -1095,7 +1099,7 @@ def _declared_out_rel(root: str, pkg: str, rel: Any) -> str:
     try:
         _paths.validate_path(str(root), out_rel)
     except _paths.PathEscapeError as exc:
-        raise ValueError("产出路径越界：%s" % exc)
+        raise ValueError("产出路径越界：%s" % exc) from exc
     if pkg and not _paths.contained(os.path.join(str(root), "community", pkg),
                                     os.path.join(str(root), out_rel)):
         raise ValueError("产出路径越界：%s 不在本包目录内（修复指引：产出面只许落在 "
@@ -1201,7 +1205,7 @@ def _deep_diff(a: Any, b: Any, path: str = "$", out: Optional[List[str]] = None)
     elif isinstance(a, list) and isinstance(b, list):
         if len(a) != len(b):
             out.append("%s 长度 %d≠%d" % (path, len(a), len(b)))
-        for i, (x, y) in enumerate(zip(a, b)):
+        for i, (x, y) in enumerate(zip(a, b, strict=False)):  # 长度不等已在上方报出
             _deep_diff(x, y, "%s[%d]" % (path, i), out)
     elif isinstance(a, (int, float)) and isinstance(b, (int, float)) \
             and not isinstance(a, bool) and not isinstance(b, bool):

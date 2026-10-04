@@ -11,10 +11,10 @@ subjects:
   - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
   - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102
   - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
-  - desktop/src/core/text_hygiene.py:525d94f35221d0a14922cfb760d2488536e14a4c35e9154e689003ccd9eca6ab
-  - desktop/src/core/workloop.py:b1fe26b927902d071b027c6926c0ff2c9c763f6e17c39ec297682162af0bafba
-  - scripts/serve_decision_model.py:6691cb4a375853284fe0b4a771ff3163718c0be164d999a2bab05d1fd9f9c516
-  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
+  - desktop/src/core/text_hygiene.py:63ceb140b09acf932f1eecd8b3a324889e61d18c8b4cda12d4130594d9eb94fd
+  - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
+  - scripts/serve_decision_model.py:fd96cba3538674b8ca49fe9109ad47f06fa5132e41c7688276395b5660385bb5
+  - scripts/nf.py:25e420b37084d709b7b8c895cf9093afd9c5fd1d691e2bc02a76125ac1231b5d
 
 ---
 

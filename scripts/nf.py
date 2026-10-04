@@ -302,6 +302,17 @@ def _make_parser() -> argparse.ArgumentParser:
                        help="重生成 ledger 文件（随资产变更提交）")
     a_led.add_argument("--json", action="store_true",
                        help="输出结构化 JSON（校验统计）")
+    a_ctr = asub.add_parser("contract",
+                            help="数字资产契约三面校验（数据/代码/脚本：格式+字段完整性+防篡改+AST 规范+可证空指针+脚本 I/O 对齐）",
+                            description="数字资产契约三面校验（真源 protocol/asset_contracts.json；与 verify check40 同源）")
+    a_ctr.add_argument("--root", default=ROOT, help="扫描根（缺省=仓库根）")
+    a_ctr.add_argument("--face", default="", choices=("", "data", "code", "script"),
+                       help="只跑某面（缺省=三面全跑）")
+    a_ctr.add_argument("--freeze", action="store_true",
+                       help="按当前内容重冻声明的 sha256（显式棘轮，不由扫描器偷偷写）")
+    a_ctr.add_argument("--run-tests", action="store_true",
+                       help="跑声明的测试件（显式开启；默认门禁不执行被声明代码）")
+    a_ctr.add_argument("--json", action="store_true", help="输出结构化 JSON")
     a_ls.add_argument("--pkg", default="", help="台账 package 过滤")
     a_ls.add_argument("--tier", default="",
                       choices=("official", "community", "experimental"))
@@ -1024,6 +1035,11 @@ def _make_parser() -> argparse.ArgumentParser:
                     help="表单回答（可多次；非交互模式下与 --form 配合）")
     sh.add_argument("--pager", choices=("auto", "never"), default="never",
                     help="分页（缺省 never：非交互面逐字节确定；auto 仅在真 TTY 且 less/more 在场时接管）")
+    sh.add_argument("--surface", action="store_true",
+                    help="终端面投影（单真值源 → 多视图）：打印机器快照，配 --json 出 JSON")
+    sh.add_argument("--surface-write", dest="surface_write", nargs="?", const="", default=None,
+                    metavar="路径",
+                    help="把终端面投影写成生成件（缺省 tui/_surface.py；改真源后必跑，check39 逐字节对账）")
     ly = sub.add_parser(
         "layers",
         help="抽象阶梯（两轴 + 纵切）：四阶真源/接口面 + 资产五子级 + 入口面 + 验证纵切",
@@ -1869,6 +1885,8 @@ def _cmd_asset(args) -> int:
                 for i in issues:
                     print("  [FAIL] %s" % i)
             return 1 if issues else 0
+        if args.asset_cmd == "contract":
+            return _asset_contract(args)
         # rm / deprecate / restore：写操作，需显式 --ledger + --key
         ledger_path = args.ledger
         assets_root = os.path.dirname(os.path.abspath(ledger_path))
@@ -1886,6 +1904,42 @@ def _cmd_asset(args) -> int:
         return 0
     except al.AssetLedgerError as exc:
         return _machine_fail(args, str(exc), 1)
+
+
+def _asset_contract(args) -> int:
+    """nf asset contract：数字资产契约三面（数据/代码/脚本）——与 verify check40 同源。
+
+    独立成函数是**结构需要**：留在 _cmd_asset 里会把该函数行数从 1012 顶到 1028，
+    越过 code_metrics 冻结的函数长上限（棘轮只增不减）。
+    """
+    import json as _json
+    from core import asset_contract as ac
+    if args.freeze:
+        issues, stats = ac.freeze(args.root)
+    elif args.run_tests:
+        issues, stats = ac.run_tests(args.root)
+    else:
+        issues, _warns, stats = ac.scan(
+            args.root, faces=([args.face] if args.face else ()))
+    if args.json:
+        print(_json.dumps({"kind": "asset-contract", "issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+    elif args.freeze:
+        print("== nf asset contract --freeze ==")
+        print("  已重冻摘要 %d 条（真源 protocol/asset_contracts.json）" % stats.get("frozen", 0))
+    elif args.run_tests:
+        print("== nf asset contract --run-tests ==")
+        print("  测试件 %d · 用例 %d" % (stats.get("files", 0), stats.get("tests", 0)))
+    else:
+        print("== nf asset contract（数字资产契约三面：数据/代码/脚本）==")
+        print("  面：data %d · code %d · script %d · 链 %d · 件 %d"
+              % (stats.get("data", 0), stats.get("code", 0), stats.get("script", 0),
+                 stats.get("chains", 0), stats.get("files", 0)))
+    for i in issues:
+        print("  [FAIL] %s" % i, file=sys.stderr)
+    if not issues and not args.json:
+        print("  ✓ 通过（真源 protocol/asset_contracts.json）")
+    return 1 if issues else 0
 
 
 def _cmd_pipeline(args) -> int:
@@ -2436,6 +2490,7 @@ CHECK_GUIDE = {
     "37": "缺什么：双源知识层违约（权威分层、查询有序、时效、消化可追溯、认知裁剪越权）。补什么：`nf knowledge lint` 逐条看巡检结论（`nf knowledge order|visible` 可复核顺序与可见性；本子命令**没有** `--check`）；补 `protocol/knowledge_sources.json` 声明或消化记录后重跑（越权源不得进入任何 clearance 的查询顺序）。",
     "38": "缺什么：出口自动化违约（自述数字与实算不一致、他证通道缺回填、GEO 出口过期、FDE 样例不过）。补什么：`nf stats --write` 重写生成区；`docs/standards/index.md` 与 `protocol/geo_export.json` 重渲染；FDE 样例跑 `python scripts/fde_sample_run.py` 看失败项。",
     "39": "缺什么：端壳残留回潮 / 终端三件缺失 / 菜单指向死命令 / 命令面未策展 / 输出不确定。补什么：按 `docs/L3_FROZEN.md` 裁决删除残留件；`nf shell --verify` 看终端自检逐项失败；新增命令要登记进 `core/terminal.py` 的能力族。",
+    "40": "缺什么：数字资产契约违约（数据格式/字段完整性/输入输出一致性/防篡改；代码 AST 规范、可证空指针、测试用例在场；脚本 nf-io 头与声明双源不一致、链上 A 输出不匹配 B 输入）。补什么：`nf asset contract` 逐条看；数据件改声明或补字段；脚本补 `# nf-io: inputs=… outputs=…` 头并与 protocol/asset_contracts.json 对齐；sha256 漂移确认后用 `nf asset contract --freeze` 重冻。",
 }
 
 def _cmd_preset(args):
@@ -4289,7 +4344,8 @@ def _rel_out(path):
         _paths.validate_path(ROOT, text)
     except _paths.PathEscapeError as exc:
         raise ValueError("路径写法越界：%s（修复指引：相对路径一律相对**仓库根**，不得含 `..` 段 / "
-                         "盘符相对写法；确实要写到仓库外请给**绝对路径**）（%s）" % (text, exc))
+                         "盘符相对写法；确实要写到仓库外请给**绝对路径**）（%s）"
+                         % (text, exc)) from exc
     return os.path.join(ROOT, text)
 
 
@@ -4386,7 +4442,7 @@ def _cmd_knowledge(args):
             import datetime as _dt
             src = args.src.strip()
             dst = args.dst.strip().replace("\\", "/")
-            at = args.at.strip() or _dt.date.today().isoformat()
+            at = args.at.strip() or _dt.date.today().isoformat()  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
             if not os.path.isfile(os.path.join(ROOT, dst)):
                 print("  ✗ 产物不存在：%s（记录的 to 必须是仓库内真实件）" % dst,
                       file=sys.stderr)
@@ -4503,7 +4559,7 @@ def _load_runs(path):
             raise ValueError("跑分件不是合法 JSON：%s（%s）（修复指引：收 `nf bench run "
                              "--case <夹具目录> --out runs/<名>.json` 产出的 JSON；"
                              "路径按仓库相对写法）"
-                             % (os.path.relpath(f, ROOT).replace("\\", "/"), exc))
+                             % (os.path.relpath(f, ROOT).replace("\\", "/"), exc)) from exc
         if isinstance(data, dict) and "runs" in data:
             data = data["runs"]
         runs += data if isinstance(data, list) else [data]
@@ -5315,6 +5371,15 @@ def _shell_command_index() -> list:
     return _INDEX_CACHE
 
 
+def _surface_module_on_disk() -> str:
+    """读终端面生成件（`tui/_surface.py`）的在场文本；缺失返回空串（对账据此判红）。"""
+    try:
+        with open(os.path.join(ROOT, "tui", "_surface.py"), encoding="utf-8") as fh:
+            return fh.read()
+    except OSError:
+        return ""
+
+
 def _shell_baseline() -> str:
     """终端横幅的基线句——数字取自 quality_baseline 真源与 verify.sh 版本头，不手写。"""
     try:
@@ -5487,6 +5552,42 @@ def _cmd_shell(args) -> int:
         print("  nf %s" % " ".join(argv))
         return runner(argv)
 
+    if args.surface_write is not None:
+        tree = _collect_cli_tree()
+        payload = term.surface_payload(tree["commands"], tree["root_flags"])
+        target = args.surface_write or term.SURFACE_MODULE_PATH
+        try:
+            from core import paths as _paths
+            full = _paths.validate_path(ROOT, target)
+        except Exception as exc:                         # noqa: BLE001 - 落点不合法即用法错误
+            return _machine_fail(args, "生成件落点不合法：%s" % exc, 2)
+        text = term.render_surface_module(payload)
+        parent = os.path.dirname(full)
+        if parent and not os.path.isdir(parent):
+            os.makedirs(parent, exist_ok=True)
+        from core import atomic_write
+        atomic_write.write_text(full, text)
+        rel = os.path.relpath(full, ROOT).replace("\\", "/")
+        if args.json:
+            import json as _json
+            print(_json.dumps({"kind": "surface-write", "ok": True, "path": rel,
+                               "digest": payload["digest"],
+                               "lines": len(text.splitlines()),
+                               "source": payload["source"]["module"]},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+            return 0
+        print("  ✓ 终端面投影已刷新：%s（真源 %s · %s）"
+              % (rel, payload["source"]["module"], payload["digest"][:19]))
+        return 0
+    if args.surface:
+        tree = _collect_cli_tree()
+        payload = term.surface_payload(tree["commands"], tree["root_flags"])
+        if args.json:
+            import json as _json
+            print(_json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
+            return 0
+        print(_page_text(term.render_surface(payload, width or None, color_on), args.pager))
+        return 0
     if args.commands is not None:
         if args.json:
             import json as _json
@@ -5590,6 +5691,9 @@ def _cmd_shell(args) -> int:
             stats["live_output"] = term.clip(live_buf.getvalue().strip(), 300)
         else:
             issues, stats = term.self_check(index, tree["commands"], tree["root_flags"])
+        # 投影对账（与 check39 同源判据）：真源改了却没重生成 ⇒ 当场红
+        issues = list(issues) + term.surface_sync_issues(
+            _surface_module_on_disk(), tree["commands"], tree["root_flags"])
         if args.json:
             import json as _json
             print(_json.dumps({"kind": "shell-verify", "ok": not issues,
@@ -5600,9 +5704,10 @@ def _cmd_shell(args) -> int:
               % (" · 活体档" if args.deep else ""))
         for i in issues:
             print("  [FAIL] %s" % i)
-        print("  命令 %d · 能力族 %d · 索引条目 %d · 菜单示例 %d → %s"
+        print("  命令 %d · 能力族 %d · 索引条目 %d · 菜单示例 %d · 动作 %d → %s"
               % (stats["commands"], stats["families"], stats["index_entries"],
-                 stats["examples"], "通过" if not issues else "FAIL %d" % len(issues)))
+                 stats["examples"], stats.get("actions", 0),
+                 "通过" if not issues else "FAIL %d" % len(issues)))
         if args.deep:
             print("  活体：%s 退出码 %s · 历史落点 %s · 会话落点 %s"
                   % (stats.get("live_command", "-"), stats.get("live_code", "-"),

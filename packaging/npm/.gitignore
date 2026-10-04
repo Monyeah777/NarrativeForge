@@ -1,0 +1,5 @@
+payload/
+node_modules/
+*.tgz
+.npmrc
+LICENSE

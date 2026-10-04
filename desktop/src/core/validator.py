@@ -64,7 +64,7 @@ def validate_module(parsed: Module,
     return errors
 
 
-def check_assembly(selected: List[Module], pipeline: Pipeline) -> List[str]:
+def check_assembly(selected: List[Module], pipeline: Pipeline) -> List[str]:  # noqa: ARG001 - 调用契约：调用方按 pipeline= 传入
     """装配前整体检查：管线各层是否有默认模块缺失/选中模块是否跨层齐全。"""
     issues: List[str] = []
     if not selected:

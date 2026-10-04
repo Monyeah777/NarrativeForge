@@ -35,7 +35,7 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
-def _protocol_refs(store: Store, pipeline_id: str) -> List[dict]:
+def _protocol_refs(_store: Store, pipeline_id: str) -> List[dict]:
     """registry protocols[] 按 id 找 references（I5）。异常返回 []。"""
     try:
         from .registry_loader import load_registry

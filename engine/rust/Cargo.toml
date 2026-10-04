@@ -1,0 +1,48 @@
+[package]
+name = "nf-rs"
+version = "0.1.0"
+edition = "2021"
+description = "NF 只读快线（Rust）—— 与 Python 真源逐字节对账"
+license = "MIT"
+
+# 依赖姿态：sha2（RustCrypto）+ serde_json（仅读入）+ regex（本线固定正则）+ fancy-regex（真源数据驱动模式）
+#          + rustpython-parser / rustpython-ast（内置 Python 解析器，AST 类判据的地基）。
+#          **刻意不引 windows-sys / windows-link / iana-time / chrono**（见下方理由）。
+# 依据（本机实测 2026-10-03）：windows-sys 走 raw-dylib，链接期强依赖 dlltool，而
+# rust-mingw 自带的 dlltool 是残废 shim（CreateProcess 失败）⇒ 引入它即无法在
+# windows-gnu host 上构建。本线只用 std + sha2，实测干净通过。
+[dependencies]
+sha2 = "0.10"
+# 只需**读**真源的机读件（registry / standards_catalog / standards_binding / domain_packs）。
+# 写出仍走本线自己的 pyjson（serde_json 的排版与 CPython 不同形，用它写就变"近似对账"）。
+# `preserve_order`：**必须开**。Python 的 `dict` 迭代是**插入序**，而 serde_json 默认用
+# BTreeMap ⇒ 键被排序。实测（2026-10-03）：`knowledge.verify_usage` 按 `counts.items()`
+# 逐键报 issue，排序后**消息次序与真源不同**——契约行因此不一致。
+# 这个缺口是「构造夹具逐条踩分支」的判据抓出来的；只靠真语料对账（那里 0 issues）抓不到。
+serde_json = { version = "1", features = ["preserve_order"] }
+# 正则：真源大量判据用 Python `re` 表述，逐条手写匹配器既慢又易错。
+# 实测（2026-10-03）：regex  crate 在本机 windows-gnu host **可构建，依赖树无 windows-sys**
+# ——不触发 raw-dylib/dlltool 陷阱。
+regex = "1"
+# 真源的**数据驱动**模式含 `regex` crate 不支持的构造（如负向后顾 `(?<!…)`，见
+# `protocol/assertions.json` 的 `regex_absent`）。fancy-regex 基于 regex 但走回溯，
+# 支持后顾/反向引用。**实测（2026-10-03）：本机 windows-gnu host 可构建，依赖树无 windows**。
+# 只用它跑真源给的模式；本线自己的固定正则仍走 regex（更快）。
+fancy-regex = "0.14"
+# Python 解析器（内置 AST）：`purity_scan` / `code_metrics` / `asset_contract` 三条判据建立在
+# Python 语法树与调用图之上，手写子集解析器复刻不了（要复刻 CPython 的 AST 语义）。
+# 实测（2026-10-04）：本机 `x86_64-pc-windows-gnu` 可构建可运行；依赖树**无** `windows-sys` /
+# `windows-link` / `iana-time` / `chrono` / `winapi` ⇒ 不触发 dlltool 陷阱。
+# 探针：`engine/rust/target/probe-pyparser`（一次性，已 gitignore）。
+# TOML 读取（真源 output_forms._check_toml 用 tomllib）——纯 Rust，实测依赖树无
+# windows-sys / windows-link / iana-time / chrono / winapi ⇒ 不触发 dlltool 陷阱。
+toml = "0.8"
+rustpython-parser = "0.4"
+# `visitor` 特性在 `rustpython-ast` 上（`rustpython-parser` 不转发）——本线要用它做带深度的遍历
+# 以还原 CPython `ast.walk` 的 **BFS** 序；`unparse` 用于调用目标名的重建。
+rustpython-ast = { version = "0.4", features = ["visitor", "unparse"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

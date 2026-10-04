@@ -6,17 +6,17 @@ scope: 作者指令「删除 NF 中的 GUI，且为 NF 构建一个终端（CLI 
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/terminal.py:4c77704d0f8b9d3b16edcad9ee37c0d3e14e7d033db12cf4ee69e345940c1ea4
-  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
-  - desktop/tests/test_terminal.py:e6c72b62e62b15bc6b27ffba43e6cdd586442ce07c841ca4bf8336e0bfd0fea5
+  - desktop/src/core/terminal.py:45098bbbe7b4d41c3fa9096de99c2d4a106193a9fce7f2c5d49508f690e650c9
+  - scripts/nf.py:25e420b37084d709b7b8c895cf9093afd9c5fd1d691e2bc02a76125ac1231b5d
+  - desktop/tests/test_terminal.py:c5c15713a3d22da6dcd0aa079ba292b298593e952345f652ee5d8f92813cbcad
   - scripts/nf:7e8a94b3a03ef1bd862ba0096643be849f8a2b55479797e5ad8e86d395557222
   - scripts/nf.cmd:55bb1d8816b9f7de1821eba7c1746a2b01120d35de282353de91a1d15d1e47c8
-  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
-  - desktop/src/core/quality_baseline.py:8095d26c8360ec16397b0a0b8ee79033f4aa7c057cac3c465b564bb6c30ca757
-  - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
-  - docs/terminal.md:92e24e664616ce7316d4433eb34b6b809e70f4469eb061ade0c82f466d6fc083
+  - verify.sh:3b0ec76f976e38b74a3d2627cd85f395487fe62a53cc73aec548dd285d53482a
+  - desktop/src/core/quality_baseline.py:bfb2023fc0856f8d0752f489bf1d7cd95bc3b2ec4974504ad66c5acfcc0b76a6
+  - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
+  - docs/terminal.md:ebaf6a7600254cbfdb7dc0916e3f3d4aa802119e8bb7110e58f98d9beedd9c20
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
-  - protocol/CONFORMANCE.md:566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833
+  - protocol/CONFORMANCE.md:e5fe7aab3d16d4aaebccc2579f84e544ec60661a96d9dd883375ad7595b7b609
 
 ---
 

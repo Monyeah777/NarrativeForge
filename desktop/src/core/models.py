@@ -177,4 +177,4 @@ class Preset:
 
 
 def now_str() -> str:
-    return datetime.now().isoformat(timespec="seconds")
+    return datetime.now().isoformat(timespec="seconds")  # noqa: DTZ005 - 产物墙钟时间戳是有意语义（本地时间，供人读）

@@ -50,8 +50,8 @@ def load_rows(path: str | Path) -> Tuple[List[Dict[str, str]], str]:
 def _num(row: Dict[str, str], key: str) -> float:
     try:
         return float(row.get(key, ""))
-    except (TypeError, ValueError):
-        raise ValueError("列 %s 非数值：%r" % (key, row.get(key)))
+    except (TypeError, ValueError) as exc:
+        raise ValueError("列 %s 非数值：%r" % (key, row.get(key))) from exc
 
 
 def _flag(row: Dict[str, str], key: str) -> int:
@@ -65,7 +65,7 @@ def _flag(row: Dict[str, str], key: str) -> int:
 
 # ------------------------------------------------------------------ 度量族
 
-def classification(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def classification(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """分类口径：accuracy / macro P-R-F1 / 混淆矩阵（混淆键 = 出现过的 gold 标签，字典序）。"""
     labels = sorted({str(r["gold"]) for r in rows} | {str(r["pred"]) for r in rows})
     cm = {g: {p: 0 for p in labels} for g in labels}
@@ -111,7 +111,7 @@ def _auc(pairs: Sequence[Tuple[float, int]]) -> float:
     return wins / (len(pos) * len(neg))
 
 
-def retrieval(rows: Sequence[Dict[str, str]], k: int = 5, **kw) -> Dict[str, Any]:
+def retrieval(rows: Sequence[Dict[str, str]], k: int = 5, **_kwargs) -> Dict[str, Any]:
     """检索口径：recall@k / precision@k / MRR / NDCG@k / MAP（按 query_id 分组，rank 升序）。"""
     groups: Dict[str, List[Tuple[int, int]]] = {}
     for r in rows:
@@ -150,7 +150,7 @@ def retrieval(rows: Sequence[Dict[str, str]], k: int = 5, **kw) -> Dict[str, Any
     }
 
 
-def extraction(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def extraction(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """抽取口径：整条精确匹配 + 字段级 P/R/F1（gold_fields / pred_fields = JSON 数组）。"""
     em, tp, fp, fn = 0, 0, 0, 0
     for r in rows:
@@ -169,7 +169,7 @@ def extraction(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
             "tp": tp, "fp": fp, "fn": fn}
 
 
-def generation(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def generation(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """生成口径（确定性代理）：精确匹配率 + 字符级 F1 + 词序不敏感的集合 F1。"""
     em, char_f1, set_f1 = 0, [], []
     for r in rows:
@@ -187,24 +187,24 @@ def generation(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
             "char_f1": _r(sum(char_f1) / n), "token_set_f1": _r(sum(set_f1) / n)}
 
 
-def regression(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def regression(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """回归口径：MAE / RMSE / R² / MAPE（MAPE 仅在 gold≠0 的样本上计算，样本数显式给出）。"""
     g = [_num(r, "gold") for r in rows]
     p = [_num(r, "pred") for r in rows]
     n = len(rows)
-    mae = sum(abs(a - b) for a, b in zip(g, p)) / n
-    rmse = math.sqrt(sum((a - b) ** 2 for a, b in zip(g, p)) / n)
+    mae = sum(abs(a - b) for a, b in zip(g, p, strict=True)) / n
+    rmse = math.sqrt(sum((a - b) ** 2 for a, b in zip(g, p, strict=True)) / n)
     mg = sum(g) / n
     ss_tot = sum((a - mg) ** 2 for a in g)
-    ss_res = sum((a - b) ** 2 for a, b in zip(g, p))
-    nz = [(a, b) for a, b in zip(g, p) if a != 0]
+    ss_res = sum((a - b) ** 2 for a, b in zip(g, p, strict=True))
+    nz = [(a, b) for a, b in zip(g, p, strict=True) if a != 0]
     mape = (sum(abs((a - b) / a) for a, b in nz) / len(nz)) if nz else 0.0
     return {"family": "regression", "n": n, "mae": _r(mae), "rmse": _r(rmse),
             "r2": _r(1 - _safe_div(ss_res, ss_tot)), "mape": _r(mape),
             "mape_samples": len(nz)}
 
 
-def calibration(rows: Sequence[Dict[str, str]], bins: int = 10, **kw) -> Dict[str, Any]:
+def calibration(rows: Sequence[Dict[str, str]], bins: int = 10, **_kwargs) -> Dict[str, Any]:
     """校准口径：ECE（等宽分箱，空箱跳过并给出非空箱数）/ Brier / 可靠性桶明细。"""
     pairs = [(_num(r, "prob"), _flag(r, "gold")) for r in rows]
     if any(not (0.0 <= p <= 1.0) for p, _ in pairs):
@@ -229,7 +229,7 @@ def calibration(rows: Sequence[Dict[str, str]], bins: int = 10, **kw) -> Dict[st
             "buckets": buckets}
 
 
-def agreement(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def agreement(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """标注一致性口径：Cohen's kappa（两标注者，公式 κ = (po − pe)/(1 − pe)）+ 原始一致率。"""
     labels = sorted({str(r["a"]) for r in rows} | {str(r["b"]) for r in rows})
     n = len(rows)
@@ -245,7 +245,7 @@ def agreement(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
             "confusion": {x: cm[x] for x in labels}}
 
 
-def preference(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def preference(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """偏好/对齐口径：一致率 + 胜率（ties 单列，不计入胜率分母之外）。"""
     n = len(rows)
     agree = sum(1 for r in rows if str(r["judge"]).strip() == str(r["human"]).strip())
@@ -257,7 +257,7 @@ def preference(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
             "win_rate_excl_tie": _r(_safe_div(win, win + loss))}
 
 
-def exact_judgement(rows: Sequence[Dict[str, str]], k: int = 4, **kw) -> Dict[str, Any]:
+def exact_judgement(rows: Sequence[Dict[str, str]], k: int = 4, **_kwargs) -> Dict[str, Any]:
     """形式化/问答判定口径：pass@1 与 pass@k（无偏估计，Chen et al. 2021 口径）。
 
     pass@k = 1 − C(n−c, k)/C(n, k)，n = 每题采样数，c = 其中通过数；c=0 记为 0，n<k 时该题跳过并计数。
@@ -290,7 +290,7 @@ def exact_judgement(rows: Sequence[Dict[str, str]], k: int = 4, **kw) -> Dict[st
 
 
 def latency_cost(rows: Sequence[Dict[str, str]], price_per_1k_in: float = 0.0,
-                 price_per_1k_out: float = 0.0, **kw) -> Dict[str, Any]:
+                 price_per_1k_out: float = 0.0, **_kwargs) -> Dict[str, Any]:
     """服务口径：时延分位（最近秩法，显式说明）+ 吞吐 + 成本/1k 调用（单价显式传入）。"""
     lat = sorted(_num(r, "latency_ms") for r in rows)
 
@@ -311,7 +311,7 @@ def latency_cost(rows: Sequence[Dict[str, str]], price_per_1k_in: float = 0.0,
             "cost_total": _r(cost), "cost_per_1k_calls": _r(cost / n * 1000)}
 
 
-def drift(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def drift(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """分布漂移口径：PSI（Population Stability Index）= Σ(p−q)·ln(p/q)，空桶用 1e-6 平滑并显式记档。"""
     eps = 1e-6
     psi = 0.0
@@ -327,7 +327,7 @@ def drift(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
             "smoothing_epsilon": eps, "detail": detail}
 
 
-def contract_compliance(rows: Sequence[Dict[str, str]], **kw) -> Dict[str, Any]:
+def contract_compliance(rows: Sequence[Dict[str, str]], **_kwargs) -> Dict[str, Any]:
     """契约合规口径：合规率 + 缺字段分布（缺字段数最多的前 5 项，便于定位修复）。"""
     n = len(rows)
     ok = sum(1 for r in rows if _flag(r, "valid") == 1)

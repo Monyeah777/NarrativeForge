@@ -67,17 +67,17 @@
     {
       "@id": "nf:file/02_联动注册表.md",
       "@type": "prov:Entity",
-      "nf:sha256": "ab81b6066472d9be00773a55598d87a3d60f257dd5fc037b0bd0d3274171b721"
+      "nf:sha256": "4adeb46dde8b321a58abae904a3a0e5092ecc6c2261e220ec03900da91a762a7"
     },
     {
       "@id": "nf:file/06_Agent执行协议.md",
       "@type": "prov:Entity",
-      "nf:sha256": "9c842ddf1bf4df1dad73cc9b2475102ba374fef50d86e9c1f8010020e4bfa66a"
+      "nf:sha256": "cf0797f686ee5e2d5a55ebcadc6f52e19c0f21e4db17795d5e46afad9c96254b"
     },
     {
       "@id": "nf:file/07_官方核心出厂与社区预设导航.md",
       "@type": "prov:Entity",
-      "nf:sha256": "6d613ca78347d6a466ed95181d135bc82847ece05ef1276b07436780a1954916"
+      "nf:sha256": "7f410a74f82961e3d67d8918e671afc42cac55c8489ca205f30a6fd569462f96"
     },
     {
       "@id": "nf:file/STRATEGY.md",
@@ -127,17 +127,17 @@
     {
       "@id": "nf:file/library/INDEX.md",
       "@type": "prov:Entity",
-      "nf:sha256": "a762f933926ff31dbea29566230391fc4a7af7301a0a0df3ec9ef479fe6d0744"
+      "nf:sha256": "2f27fef537df2f27af6c4c69d9d7d59f407a2640f364e09ee465b3a3ec76d418"
     },
     {
       "@id": "nf:file/llms.txt",
       "@type": "prov:Entity",
-      "nf:sha256": "80e4a2627b26b43e8535275cd247e6c481b4c78415b0eae9aceddf56ad6619db"
+      "nf:sha256": "227fd8c085a83ff588f3ca8cd0a0f9ac2d1102e4bb49b5c35ee2ca138d4b7416"
     },
     {
       "@id": "nf:file/protocol/CONFORMANCE.md",
       "@type": "prov:Entity",
-      "nf:sha256": "566f676c1dc7e3fcf7211e8c04c7ff1c4050694a40b106d837a6559636e7a833"
+      "nf:sha256": "e5fe7aab3d16d4aaebccc2579f84e544ec60661a96d9dd883375ad7595b7b609"
     },
     {
       "@id": "nf:file/protocol/LAYERS.json",
@@ -167,7 +167,7 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "07fc2a36e0dcc4975254077398c6adb279a9ec445412240ab40132c791ce8040"
+      "nf:sha256": "ca9505b4168cff85888461dd79f491229bb70f68eb7729cf9d711c257c5ac652"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",
@@ -329,7 +329,7 @@
       "@id": "nf:library/NF-TECHDOC-Monyeah777-1",
       "@type": "prov:Entity",
       "nf:license": "MIT",
-      "prov:label": "技术文档装配流 P06 · 自包含完整版"
+      "prov:label": "技术文档装配流 P06 · 内容自包含完整版"
     },
     {
       "@id": "nf:library/NF-WORLDCAMPUS-Monyeah777-1",

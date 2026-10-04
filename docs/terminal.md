@@ -1,6 +1,6 @@
 # NF 终端（`nf shell`）——端壳退役后的人机入口
 
-> 最后更新：2026-09-25
+> 最后更新：2026-10-03
 
 > ⛔ 操作指令：本文含可直接执行的命令与判定，读到即执行；勿当资料阅读。
 
@@ -29,7 +29,7 @@ cmd.exe 没有内建套接字，故由 `scripts/nf_client.py`（**纯 stdlib**�
 仓库模块）代走一次套接字往返，拿不到守护就退回直跑（与 POSIX 启动器同一契约）；
 `python scripts/nf.py` 是唯一真源入口，前两者都只是它的启动器。
 
-进入后：输入 `0`–`7` 看能力区示例，`/menu` 重看菜单，`/help` 看用法，`quit` 退出。
+进入后：输入 `0`–`8` 看能力区示例，`/menu` 重看菜单，`/help` 看用法，`quit` 退出。
 任意命令可直接直通，例：`nf doctor`、`nf market --list`、`nf assemble "西幻生存"`。
 
 ## 能力菜单（端壳七区 → CLI 命令面）
@@ -44,16 +44,18 @@ cmd.exe 没有内建套接字，故由 `scripts/nf_client.py`（**纯 stdlib**�
 | 5 | 货架与资产 | `nf market --list` · `nf asset ls` · `nf asset inventory` |
 | 6 | 管线与模块 | `nf pipeline new …` · `nf module ls` |
 | 7 | 帮助与命令面 | `nf --help` · `nf help <cmd>` |
+| 8 | 写盘表单 | `/form <id>` 逐项追问（13 张表，见下文「写盘表单」）——本区**不留动作字面量**：动作由 `FORMS` 投影而来 |
 
 菜单真源是 `desktop/src/core/terminal.py` 的 `ZONES`；**菜单只许指向真实命令**——
 由 verify check39 与 `desktop/tests/test_terminal.py` 共用同一判据逐条断言
-（`terminal.example_resolves`），新增能力须先落 CLI 再登记菜单。
+（`terminal.example_resolves`），新增能力须先落 CLI 再登记菜单。区的**动作**同样出自真源：
+显式 `actions`，或（表单区）由 `terminal.zone_action_dicts()` 从 `FORMS` 投影。
 
 ## 交互语法
 
 | 输入 | 行为 |
 |---|---|
-| `0`–`7` | 看该能力区的说明与可复制示例 |
+| `0`–`8` | 看该能力区的说明与可复制示例 |
 | `/menu` `/zone 4` | 重看菜单 / 看某区示例 |
 | `/find <词>`（`/search` 同义） | 在**全部命令面**上检索（命中给命令 + 一句话用途；未命中给候选） |
 | `/commands [过滤]` | 列出全部可达命令（顶层 + 二级，可按子串过滤） |
@@ -124,9 +126,54 @@ python scripts/nf.py shell --baseline --json   # 机器面（纯 JSON：ok / sta
   `state_file` → `~/…`，见 `_portable_path`）。判据并入 `test_cli_json_face`（机器面 + 人读面
   各扫一遍本机路径形状）。
 
+## 单真值源 · 多视图（投影面）
+
+终端面只有**一份真值**：`desktop/src/core/terminal.py` 的策展表（`ZONES` 能力区 + 动作目录 /
+`FAMILIES` 能力族 / `FORMS` 写盘表单 / 写盘闸门三表 / `BLOCKED_IN_SHELL`），加上
+`scripts/nf.py` 的 argparse 面（命令的**存在性**）。其余一切都是它的**投影**：
+
+| 视图 | 呈现什么 | 入口 |
+|---|---|---|
+| 行模式终端 | 菜单示例 / 能力族地图 / 写盘表单逐项追问 | `nf shell`（本文件上文各节） |
+| 全屏 TUI | 动作目录（含**写盘表单区**：13 张表各是一个可回车动作） | `python tui/nf.py` |
+| 机器面 | 整面快照（JSON） | `nf shell --surface --json` |
+| 生成件 | 全屏视图的离线输入（零 core 依赖） | `tui/_surface.py` |
+
+```bash
+python scripts/nf.py shell --surface            # 人读面：逐区列动作与闸门计数
+python scripts/nf.py shell --surface --json     # 机器面：kind=nf-terminal-surface
+python scripts/nf.py shell --surface-write      # 重生成 tui/_surface.py（真源改动后必跑）
+```
+
+三条纪律：
+
+1. **视图不许留第二份表**。全屏 TUI 冻结成单文件 exe、不能 import core，于是曾经手抄命令
+   白名单 / 闸门表 / 动作目录——手抄的闸门表漏了「命令 + 旗标才写盘」的配对表
+   （`terminal.CONFIRM_FLAG_PAIRS`），`nf interop --all` 这类写面在全屏视图里**不确认即可执行**。
+   现在 TUI 只 `import _surface`（生成件），口径由真源唯一持有；视图可以**显式**额外收紧
+   （例：TUI 把 `daemon` 整族列为拒跑，理由写在 `TUI_EXTRA_LONG_RUNNING`，属视图策略而非分叉）。
+2. **投影必须可对账**。`tui/_surface.py` 是**生成件**（件内抬头写明真源与重生命令）。真源改了
+   没重生成 ⇒ `nf shell --verify` 与 verify check39 都会红：重算投影后与在场件**逐字节**比对，
+   报出首个不一致行并给重生成命令。
+3. **视图口径只许更严，不许更松**。check39 逐条比对：全屏视图的写盘旗标 / 写盘动词 /
+   命令 + 旗标配对必须**覆盖**真源三表；命令白名单必须与 argparse 面一致；动作 `argv[0]` 必须是
+   真实命令；能力区数必须与真源一致。视图侧的写面同样受闸门约束：表单物化出的动作必须被判为
+   `write`（单测逐条枚举），空的可选参数与其旗标一起丢弃（与 `terminal.build_argv` 同口径，
+   免得留下悬空 `--reason`）。
+
+判据落点：`verify.sh` check39（投影逐字节 + 视图不弱于真源）、
+`desktop/tests/test_terminal.py`（`TerminalSurfaceTest`）、
+`desktop/tests/test_nf_tui.py`（`SurfaceSingleSourceTest`）、
+`python tui/nf.py --selftest`（「闸门口径（单源）」「投影同源」两行）。
+
 ## 写盘表单与会话状态（会改仓库的动作由人安全驱动）
 
 `nf` 的写盘命令都要参数齐 + `--yes`，对人是负担。终端把它拆成**逐项追问**：`/form <id>` 开始，一次问一项（可选项**空行跳过**），填齐后打印**组装好的命令**再问 `yes/no`，确认后才执行——而且最终仍走同一条**写盘闸门**（终端不绕过它）。当前 **13 张表**覆盖常用写盘点：`deprecate-module` / `restore-module` / `types-write` / `stats-write` / `asset-add` / `register-apply` / `rename-apply` / `receipts-write` / `preset-save` / `library-deprecate` / `library-restore` / `pipeline-new` / `approve-subject`。**其余写面逐条登记在 `terminal.FORM_EXEMPT`**（写明为什么不为它建表），判据保证「闸门表里的每个写面要么有表、要么有理由」——新写面入闸却没人想起配表即红。
+
+这 13 张表**同时是全屏视图的动作**：`ZONES` 的第 8 区（`id=forms`）标 `forms: True`，动作由
+`terminal.zone_action_dicts()` 从 `FORMS` 投影而来——于是「表单真源只有一份」（改表即改两个视图，
+不存在第二次登记）。表单步骤里带 `kind: "path"` 的参数在全屏视图里会成为**路径参数**：过仓库
+包含性判据后才拼进 argv。
 
 非交互也能用（dry-run 优先）：
 
@@ -219,7 +266,8 @@ python scripts/nf.py shell --form stats-write --yes              # 显式放行�
   （`nf lint` 机械修复就地改源件）、`--harvest`（`nf module types` 写事件载荷注册表）、
   `--write-advisory`（`nf pipeline dryrun` 写管线 advisory 台账）、`--certify`
   （`nf combine plan` 写组合证书）、`--save`（`nf assemble` 写**你自己命名**的档案文件，
-  可给仓库相对路径 ⇒ 与 `--out` 同类）
+  可给仓库相对路径 ⇒ 与 `--out` 同类）、`--surface-write`（`nf shell` **自身**的生成器旗标：
+  把终端面真源投影成 `tui/_surface.py`；只从 CLI 顶层可达——`shell` 在会话内被拒跑）
 - 动词（**不带任何旗标也直接改仓库件**）：`register` / `import` / `rename` / `release` /
   `approve`（落 `protocol/approvals/*.json`）/ `asset add|rm|deprecate|restore` /
   `module deprecate|restore|signature` / `pipeline new` / `decisions reindex` /

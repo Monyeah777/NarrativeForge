@@ -7,6 +7,17 @@
 `docs/fde-stack.md` 写 `check1-38 常驻`、`docs/decision-layer.md` 的示例把 `--gate "PASS=61"`
 当范例——四条都比当前基线旧。
 
+扫描面（2026-10-03 扩面）：除入口文档与 `docs/*.md` 外，**收入 `scripts/*.sh`**——实测
+`scripts/gates_all.sh` 的横幅停在 `check1-36 PASS=59`（当时真源已 v2.30 / check1-40 / PASS=70），
+而它既不是文档（不在原扫描面）也不是 CI 跑的脚本，于是长期无判据。同一类漂移在**脚本横幅**里
+与在文档里一样会误导读者，故并入本判据；`skills/**` 一并收入（**agent 第一跳的文案**——与
+`test_nf_cli` 的旗标可达判据把 skills 纳入同一理由：写错了没有人会替他改）；`.py` 暂不收
+（`--help` 里的占位示例、探针的运行时输出格式会造假红，宁少勿滥）；`scripts/` 下**无扩展名**的可执行
+启停器一并收入（2026-10-04 补：`scripts/nf` 是 208 行的 POSIX 启动器，属人对/agent 读的活文案，
+但当按 `.sh` 取面时**整个漏掉**——按扩展名取面的典型漏面）。实测当前**零命中**：
+8 个 `scripts/*.sh` + 1 个 `scripts/nf` + 5 个 `skills/**` 都没有钉运行时计数
+（`scripts/nf` 里的 `1.7 ms` / `260.9 ms` 属**带日期的计时记录**，不是运行时时点计数，判据不拦）。
+
 口径（防误杀）：
 - 豁免面：`CHANGELOG.md` / `VERSION-MATRIX.md`（发布史，记录当时值即其本分）、
   `docs/verification-cards.md`（由 `verify.sh` 生成，数字由生成器保证）、`docs/examples/**`
@@ -14,6 +25,13 @@
   `<!-- nf:stats:begin --> … <!-- nf:stats:end -->` 的生成区（`nf stats --write` 刷新）。
 - 历史留痕：同一行里出现「曾 / 历史 / 此前 / 漂移 / 旧 / 年份」即视为刻意留痕，放行
   （例：`CONTRIBUTING.md` 把「曾落后到 check1-36/PASS=59」写进句中，正是要留这段证据）。
+- **协议根文档（`01_核心协议.md` / `02_联动注册表.md` / `06_` / `07_`）刻意不在面内（2026-10-04 实测）**：
+  前两件在「校验回读」块里逐波记 `PASS=20/22/57/61`、`check1-35/37` 等**当时值**（01 有 16 行、02 有 1 行），
+  而这些**行内不含**上一条的历史留痕词（「保持」「校验回读」都不是）⇒ 纳入面会**当场假红**。
+  要给它们补留痕词也不便宜：`01_核心协议.md` 在 **receipts / normative 面内**（
+  `protocol/generated/receipt_chain.json`、`protocol/normative.json`、`protocol/LAYERS.json` 都引用它），
+  改它即让回执链过期——那是冻结链的活，不是顺手改的活。故本判据只覆盖**入口文档 + `docs/` + `scripts/` + `skills/`**；
+  要收 01/02 的正确顺序是：**先给那些行补历史留痕词 → 再纳入面 → 最后走冻结链刷新回执**。
 """
 import json
 import re
@@ -57,7 +75,11 @@ def live_docs() -> list:
             continue
         if rel in EXEMPT or rel.startswith(EXEMPT_PREFIX):
             continue
-        if rel in ENTRY_DOCS or (rel.startswith("docs/") and rel.endswith(".md")):
+        if (rel in ENTRY_DOCS
+                or (rel.startswith("docs/") and rel.endswith(".md"))
+                or (rel.startswith("scripts/") and rel.endswith(".sh"))
+                or (rel.startswith("scripts/") and "." not in Path(rel).name)
+                or rel.startswith("skills/")):
             out.append(rel)
     return out
 

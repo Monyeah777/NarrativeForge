@@ -304,9 +304,12 @@ class ToolPathContainmentTest(unittest.TestCase):
         root = str(Path(ROOT))
         #: 取件面**额外拒**的写法（逐条登记；`~` 在账本里按字面落在根内，取件面按家目录语义拒）
         extra_strict = {"~/x.md"}
+        # 2026-10-01 补两枚**此前样本集漏掉**的写法：备用数据流与控制字符——两套口径当时
+        # 只差在这两类上（参数面拒、账本面放行），样本集没覆盖所以对账一直没红；现已同源。
         battery = ["03_管线库/P90.md", "community/x/pipelines/P04_a.md", "", ".",
                    "../outside.md", "a/../../b.md", "C:/Windows/win.ini", "C:foo",
-                   "/etc/passwd", "~/x.md", "a/./b.md", "…/x.md"]
+                   "/etc/passwd", "~/x.md", "a/./b.md", "…/x.md",
+                   "x.md:hidden", "ok\x00bad", "NUL", "sub/CON"]
         for rel in battery:
             ledger_ok = True
             try:

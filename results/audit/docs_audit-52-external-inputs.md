@@ -9,7 +9,7 @@ subjects:
   - .github/PULL_REQUEST_TEMPLATE.md:27e7688cf590aded0bbd4574235d0a8e47d5aa1680284ad99450daeda2a8e66d
   - CONTRIBUTING.md:3adce64f93d2f84719f12d4f56ab895e5a53152ae2f6b69f4c796a6fd78e228d
   - desktop/src/core/asset_density.py:84511253fa41989674eed66142fd572e4da7af288b6859b8e111a24eac999050
-  - desktop/src/core/asset_line_baseline.py:c4ffec0b25060e3d11b070c58614f6fcef2cfbf0a2c9c6780afa5f11194be3ee
+  - desktop/src/core/asset_line_baseline.py:9c90c3dd0d1e0d9002ebf1fb0f68a32c740353ec4648983ad644d375b9a77aae
 
 ---
 

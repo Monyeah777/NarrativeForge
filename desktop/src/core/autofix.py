@@ -70,7 +70,7 @@ def apply_rules(text: str, rules, today: str = "") -> str:
         needs.append(INSTRUCTION_LINE)
     if "last_updated" in applied and not any(ln.startswith(LAST_UPDATED_PREFIX)
                                              for ln in head):
-        needs.append(LAST_UPDATED_PREFIX + (today or _date.today().isoformat()))
+        needs.append(LAST_UPDATED_PREFIX + (today or _date.today().isoformat()))  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
     if needs:
         insert_at = 1 if lines and lines[0].startswith("#") else 0
         lines[insert_at:insert_at] = needs

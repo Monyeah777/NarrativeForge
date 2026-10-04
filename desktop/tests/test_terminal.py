@@ -87,12 +87,16 @@ class MenuTest(unittest.TestCase):
         self.assertIsNone(term.zone_by_key("99"))
 
     def test_menu_examples_point_at_real_commands(self):
-        """菜单不许指向死命令（与 verify check39 同一判据）。"""
+        """菜单不许指向死命令（与 verify check39 同一判据）。
+
+        反空转断言按「可执行形态」算：区要么有 `nf …` 示例，要么有投影动作（表单区即后者——
+        它的可执行形态是 `/form <id>`，由 `zone_action_dicts` 从 `FORMS` 投影而来）。
+        """
         tree = nf._collect_cli_tree()
         cmds, flags = tree["commands"], tree["root_flags"]
         for item in term.zone_table():
-            self.assertTrue(item["examples"], item["id"])
-            for ex in item["examples"]:
+            self.assertTrue(item["examples"] or term.zone_action_dicts(item), item["id"])
+            for ex in item.get("examples") or ():
                 self.assertTrue(term.example_resolves(ex, cmds, flags), ex)
 
     def test_banner_is_deterministic_and_mentions_safety(self):
@@ -628,6 +632,117 @@ class CommandFaceTest(unittest.TestCase):
         self.assertEqual(term.parse("/map").kind, "map")
         self.assertEqual(term.parse("/map 治理").payload, "治理")
         self.assertEqual(term.parse("/族 govern").kind, "map")
+
+
+class TerminalSurfaceTest(unittest.TestCase):
+    """单真值源 · 多视图投影（2026-10-03）：真源 → 机器面 / 生成件 / 各视图。
+
+    这一类的判据面就是「三面同源」这句话的可执行形态：真源表变一处，投影件、机器面与
+    全屏视图必须同步；谁留了第二份手抄表，这里与 verify check39 都会红。
+    """
+
+    def _tree(self):
+        return nf._collect_cli_tree()
+
+    def test_payload_projects_every_table(self):
+        tree = self._tree()
+        payload = term.surface_payload(tree["commands"], tree["root_flags"])
+        self.assertEqual(payload["kind"], "nf-terminal-surface")
+        self.assertEqual(payload["schema"], term.SURFACE_SCHEMA)
+        self.assertEqual(len(payload["zones"]), len(term.zone_table()))
+        self.assertEqual(len(payload["families"]), len(term.family_table()))
+        self.assertEqual(len(payload["forms"]), len(term.form_table()))
+        self.assertEqual(payload["commands"], sorted(tree["commands"]))
+        self.assertEqual(payload["root_flags"], sorted(tree["root_flags"]))
+        self.assertEqual(payload["gates"]["flags"], list(term.CONFIRM_FLAGS))
+        self.assertEqual([tuple(v) for v in payload["gates"]["verbs"]], list(term.CONFIRM_VERBS))
+        self.assertEqual([tuple(p) for p in payload["gates"]["pairs"]],
+                         list(term.CONFIRM_FLAG_PAIRS))
+        self.assertEqual(sorted(payload["blocked"]), sorted(term.BLOCKED_IN_SHELL))
+        self.assertTrue(payload["digest"].startswith("sha256:"))
+        for zone in payload["zones"]:
+            self.assertTrue(zone["actions"], "区 %s 缺动作（全屏视图的动作面板会空）" % zone["id"])
+            for action in zone["actions"]:
+                self.assertTrue(action["key"] and action["title"])
+                for param in action["params"]:
+                    self.assertIn(param["kind"], ("text", "path"))
+
+    def test_digest_ignores_dict_order(self):
+        """摘要按规范 JSON 算，故与构造顺序无关——换序不该产生「假漂移」。"""
+        payload = term.surface_payload(["doctor"], ["--help"])
+        reordered = {k: payload[k] for k in reversed(list(payload))}
+        self.assertEqual(term.surface_digest(payload), term.surface_digest(reordered))
+
+    def test_module_text_is_deterministic_and_flags_drift(self):
+        tree = self._tree()
+        text = term.surface_module_text(tree["commands"], tree["root_flags"])
+        self.assertEqual(text, term.surface_module_text(tree["commands"], tree["root_flags"]))
+        self.assertEqual([], term.surface_sync_issues(text, tree["commands"], tree["root_flags"]))
+        issues = term.surface_sync_issues(text + "\n# 手改一行\n",
+                                          tree["commands"], tree["root_flags"])
+        self.assertTrue(issues and "不同步" in issues[0], issues)
+        self.assertIn("surface-write", issues[0])          # 修复指引给出重生成命令
+
+    def test_projection_on_disk_is_in_sync_with_truth(self):
+        """真源改了没重生成 ⇒ 红（这是「单真值源」在仓库里的落点判据）。"""
+        tree = self._tree()
+        path = ROOT / term.SURFACE_MODULE_PATH
+        self.assertTrue(path.is_file(), "%s 不在场（生成：nf shell --surface-write）"
+                        % term.SURFACE_MODULE_PATH)
+        issues = term.surface_sync_issues(path.read_text(encoding="utf-8"),
+                                          tree["commands"], tree["root_flags"])
+        self.assertEqual(issues, [])
+
+    def test_forms_zone_projects_every_form(self):
+        """表单区**不留动作字面量**：它的动作必须恰好等于表单真源（改表即改视图，无需二次登记）。"""
+        zones = [z for z in term.zone_table() if z.get("forms")]
+        self.assertEqual(1, len(zones), "应恰好有一个「由 FORMS 投影」的区")
+        acts = term.zone_action_dicts(zones[0])
+        self.assertEqual([str(f["id"]) for f in term.form_table()],
+                         [str(a["key"]) for a in acts])
+        tree = self._tree()
+        for act in acts:
+            self.assertIn(act["argv"][0], tree["commands"], act["key"])
+            self.assertEqual(list(term.form_by_id(act["key"])["argv"]), list(act["argv"]),
+                             "投影动作的 argv 与表单真源分叉：%s" % act["key"])
+        payload = term.surface_payload(tree["commands"], tree["root_flags"])
+        self.assertEqual(sum(len(z["actions"]) for z in payload["zones"]),
+                         sum(len(term.zone_action_dicts(z)) for z in term.zone_table()))
+
+    def test_self_check_catches_dead_action(self):
+        original = term.ZONES
+        bad = dict(original[0])
+        bad["actions"] = tuple(bad["actions"]) + (
+            {"key": "zzz", "title": "假动作", "argv": ("zzz-fake",), "params": (), "note": ""},)
+        term.ZONES = (bad,) + tuple(original[1:])
+        try:
+            tree = self._tree()
+            issues, stats = term.self_check(nf._shell_command_index(), tree["commands"],
+                                            tree["root_flags"])
+            self.assertTrue(any("菜单动作指向死命令" in i for i in issues), issues)
+            self.assertGreaterEqual(stats["actions"], 1)
+        finally:
+            term.ZONES = original
+
+    def test_human_face_lists_every_zone(self):
+        tree = self._tree()
+        text = term.render_surface(term.surface_payload(tree["commands"], tree["root_flags"]))
+        for zone in term.zone_table():
+            self.assertIn(zone["title"], text)
+
+    def test_cli_surface_json_is_pure_json(self):
+        code, out = _run(["shell", "--surface", "--json"])
+        self.assertEqual(code, 0)
+        payload = json.loads(out)
+        self.assertEqual(payload["kind"], "nf-terminal-surface")
+        self.assertEqual(payload["digest"],
+                         term.surface_payload(nf._collect_cli_tree()["commands"],
+                                              nf._collect_cli_tree()["root_flags"])["digest"])
+
+    def test_cli_surface_write_refuses_escape(self):
+        """生成件落点必须过包含性判据（写面不许把文件带出仓库）。"""
+        code, _out = _run(["shell", "--surface-write", "../escape.py"])
+        self.assertEqual(code, 2)
 
 
 class ShellScriptTest(unittest.TestCase):

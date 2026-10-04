@@ -6,25 +6,25 @@ scope: 作者指示的七项任务（NF 深析 / 外部协议清单 ≥100 条 /
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - verify.sh:3b0ec76f976e38b74a3d2627cd85f395487fe62a53cc73aec548dd285d53482a
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
-  - desktop/src/core/text_hygiene.py:525d94f35221d0a14922cfb760d2488536e14a4c35e9154e689003ccd9eca6ab
+  - desktop/src/core/text_hygiene.py:63ceb140b09acf932f1eecd8b3a324889e61d18c8b4cda12d4130594d9eb94fd
   - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
-  - desktop/src/core/mcp_runtime.py:127a6d900166eaf3a7fe0e0b7dc7a7f95b1473fad4f36fb4208c7676b602704b
+  - desktop/src/core/mcp_runtime.py:486169216c610398ccee23de64c10c0e7e9900f365d29a21a2cbf38075b87ef8
   - desktop/src/core/prose_lint.py:0f0aab7aecb0f666131c5eb6917055a8741e7c830dd0c073522c4c59dadc2707
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
-  - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
+  - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
-  - desktop/src/core/purity_scan.py:345ad321120e8901d4e6ceaabefa41603c88166ee4b63737a0519489cf71fa03
-  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
-  - scripts/check_external_links.py:539e77b705f11e8f3efd72e66774041a5a7e107d753523eef55cbc86da2e9c58
-  - scripts/check_interop_schemas.py:26443ff0a340be6ba292435ecc81ee859438c2531088427a91e4ea1f111fc30b
+  - desktop/src/core/purity_scan.py:bda7d3a0f0f3810b7b943db9edd281f032b779451a07da4876fb1bea9341d757
+  - scripts/nf.py:25e420b37084d709b7b8c895cf9093afd9c5fd1d691e2bc02a76125ac1231b5d
+  - scripts/check_external_links.py:df23d04dc3ab48006bdd4867e74d115871633397ad3d5ec6280093c8c47112b7
+  - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
   - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c
   - docs/text-hygiene.md:36edf35f60bc669192443a8c16a4bcdc7c22408270fff5ea15308a16a756f986
   - docs/endpoint.md:4da6d07f9d0ed0a7166c028b1a4070a370f2edc9e70e700cce03c3d38b4e930f
   - docs/mcp.md:cffaae148e5bd7d33f5257eb57fb1668625db20ddf62d6698c643990c288c0f1
-  - llms.txt:80e4a2627b26b43e8535275cd247e6c481b4c78415b0eae9aceddf56ad6619db
+  - llms.txt:227fd8c085a83ff588f3ca8cd0a0f9ac2d1102e4bb49b5c35ee2ca138d4b7416
 
 ---
 

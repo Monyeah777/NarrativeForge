@@ -43,6 +43,12 @@ def resolve(root: str = ".", workflow: str = "") -> Dict[str, Any]:
             "on_dispatch_failure": "stop（禁止回退到文本步骤）"}
 
 
+# 注（2026-10-04）：这里曾有一个 `compile_plan` 包装（把工具面注入后转发给 orchestration）——
+# 实测**零引用**：计划装配的唯一消费者是 CLI（`scripts/orchestrate.py`），而脚本自己注入工具面
+# 即可（脚本不在包内耦合度量里）。该包装因此既是墓碑、又与调用方重复，已删除；若将来 core 侧需要
+# 一个不依赖 mcp_runtime 的编译入口，再按「调用方注入」重加（见 patterns/dependency-direction）。
+
+
 def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     """机检 driver 声明 → (issues, warns, stats)。"""
     issues: List[str] = []
@@ -56,8 +62,9 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         from core.mcp_runtime import PROMPT_DEFS, TOOL_DEFS
         live_tools = {t["name"] for t in TOOL_DEFS}
         live_prompts = {p["name"] for p in PROMPT_DEFS}
+        tool_map = {t["name"]: t for t in TOOL_DEFS}
     except Exception:
-        live_tools, live_prompts = set(), set()
+        live_tools, live_prompts, tool_map = set(), set(), {}
     bind = doc.get("bindings") or {}
     for t in (bind.get("mcp.tools") or []):
         if t not in live_tools:
@@ -102,4 +109,9 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
              "tools_bound": len(bind.get("mcp.tools") or []),
              "fallback_files": sum(1 for w in (doc.get("workflows") or {}).values()
                                    if w.get("fallback"))}
+    # 编排可达性并入本门（不新增 check 序号）：工作流映射的工具必须能组成一步可编译计划。
+    from core import orchestration as _orch
+    o_issues, o_stats = _orch.scan(root, tool_map)
+    issues += ["编排：%s" % i for i in o_issues]
+    stats["orchestration"] = o_stats
     return issues, warns, stats

@@ -254,9 +254,9 @@ def sign_digest_ssh(subject_digest: str, key_path: str, identity: str,
                                "-Y", "sign", "-f", key_path, "-n", ns,
                                payload_path], capture_output=True, text=True,
                               stdin=subprocess.DEVNULL, timeout=TOOL_TIMEOUT_S)
-    except subprocess.TimeoutExpired:
+    except subprocess.TimeoutExpired as exc:
         raise ValueError("ssh-keygen 签名超时（%d s 未返回；修复指引：确认私钥可用、不带交互口令，"
-                         "或改用 --key-file 的 hmac 级）" % TOOL_TIMEOUT_S)
+                         "或改用 --key-file 的 hmac 级）" % TOOL_TIMEOUT_S) from exc
     if proc.returncode != 0:
         raise ValueError("ssh-keygen 签名失败：%s"
                          % (proc.stderr or proc.stdout).strip()[:200])

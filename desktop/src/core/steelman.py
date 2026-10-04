@@ -98,11 +98,11 @@ def _heading(num: int) -> str:
     return f"## {STEELMAN_SECTIONS[num - 1]}"
 
 
-def _frontmatter(question: str, context: str, decider: str) -> str:
+def _frontmatter(_question: str, context: str, decider: str) -> str:
     return (
         "---\n"
         f"decision: <一句话判断>\n"
-        f"date: {_dt.date.today().isoformat()}\n"
+        f"date: {_dt.date.today().isoformat()}\n"  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
         f"decider: {decider or '<人>'}\n"
         f"context: {context or '<方案号/域包名/触发场景>'}\n"
         "related: []\n"

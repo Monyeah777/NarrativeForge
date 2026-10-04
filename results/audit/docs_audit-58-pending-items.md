@@ -6,17 +6,17 @@ scope: 作者指令「遗留全部补上」——处置 AUD-0009 §五 列出的
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - verify.sh:3b0ec76f976e38b74a3d2627cd85f395487fe62a53cc73aec548dd285d53482a
   - desktop/src/core/transparency_log.py:6a3ccb12f5376304c0926e5d2a490f08d10bfc3ca3fa5a76623d9f017bd12796
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
   - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
-  - desktop/src/core/ccv3_adapter.py:cb33b76eb4e3af332f73fceefd5ef8e7ed171d76cc4ee02327555f21bb5c9ca1
+  - desktop/src/core/ccv3_adapter.py:ba1b6ff2012ccbcc485c864736ae19a7d790096ed2461cf0d662a8ff9271a38f
   - desktop/src/core/export_schema.py:a7243117bf6cfdd2cdf62984e3da732e1f6802892152996eb69e28c94f4aac59
-  - desktop/src/core/mcp_runtime.py:127a6d900166eaf3a7fe0e0b7dc7a7f95b1473fad4f36fb4208c7676b602704b
+  - desktop/src/core/mcp_runtime.py:486169216c610398ccee23de64c10c0e7e9900f365d29a21a2cbf38075b87ef8
   - desktop/src/core/import_adapter.py:5620194e56ce42b175e02f69d4bc6d03b99f35b43e5d38ab6c0d4aab9eaab333
   - desktop/src/core/library.py:2b489a88fc209b551938d879be84a3c6d10d208e1a334ee2229adefa48f2a00a
-  - scripts/check_interop_schemas.py:26443ff0a340be6ba292435ecc81ee859438c2531088427a91e4ea1f111fc30b
-  - scripts/check_external_links.py:539e77b705f11e8f3efd72e66774041a5a7e107d753523eef55cbc86da2e9c58
+  - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
+  - scripts/check_external_links.py:df23d04dc3ab48006bdd4867e74d115871633397ad3d5ec6280093c8c47112b7
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
   - docs/external-validation-assets/E1_ccv3_sample_lightmix_P04_chara.json:528935dcf5be9caf69e25a88ec1637b64b8b725c51a539e1ede1d3a864dbcb45
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
@@ -24,6 +24,7 @@ subjects:
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
+> **digest 重绑（2026-10-02）**：`desktop/src/core/ccv3_adapter.py` 因外部实测发现 `scenario` 硬切（`content[:400]` 切在词中段 + 泄漏 `machine_contract` 围栏）而修复（新增 `_readable_head` 边界截断），digest 重绑；本件结论（六条挂账收口）未受影响——该修复为新增项，登记于 `results/docs_external-validation-v2.7.md` §4。
 > subjects = 本波承重件十五件（门禁 / 透明日志 / 分级门 / 互操作导出 / CCV3 出口与判据 / MCP 运行时 / 还原适配器 / 图书馆真源 / 两个外部核验工具 / 链生成物 / 声明件 / E1 样本 / 取证报告）。
 > **口径修正（2026-09-22）**：subjects **不含派生物**——透明日志生成物每次重生成都会变，
 > 绑进审计只会制造假失效；派生物由自己的门禁自证（check31 golden / check35 回执 / check33 入仓面逐字节）。

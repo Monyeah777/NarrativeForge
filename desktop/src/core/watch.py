@@ -71,7 +71,7 @@ def _volume_supports_notifications(path) -> bool:
         return False
 
 
-def selfcheck(root=None) -> bool:
+def selfcheck(root=None) -> bool:  # noqa: ARG001 - 调用契约：测试按 root= 传入
     """**机制自检**：在一个临时目录上真起一次监听，验「创建 / 改 / 删除」三类通知都到。
 
     为什么必须自检：`ReadDirectoryChangesW` **打开句柄成功不等于通知会到**——网络盘、某些过滤

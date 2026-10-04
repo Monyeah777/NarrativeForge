@@ -16,7 +16,10 @@ python nf.py --selftest
 work="$(mktemp -d "${TMPDIR:-/tmp}/nf-tui-build-XXXXXX")"
 
 echo "[2/3] PyInstaller 单文件打包（工作目录：$work）"
+# `_surface` 是同目录的生成件（终端面投影）：显式声明搜索路径与 hidden-import，
+# 免得冻结态因模块搜索路径差异而漏掉它（漏了则 --demo/--list-actions 无表可渲染）。
 python -m PyInstaller --noconfirm --clean --onefile --name nf \
+    --paths "$here" --hidden-import _surface \
     --distpath dist --workpath "$work" --specpath "$work" nf.py
 
 echo "[3/3] 产物自检"

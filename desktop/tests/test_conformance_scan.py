@@ -21,6 +21,7 @@ from core import asset_density as ad  # noqa: E402
 from core import asset_ledger_projection as alp  # noqa: E402
 from core import conformance_scan as cs  # noqa: E402
 from core import concept_graph as cg  # noqa: E402
+from core import repo_face as _repo_face  # noqa: E402
 from core import domain_pack as dpk  # noqa: E402
 from core import layer_model as lm  # noqa: E402
 from core import output_forms as of  # noqa: E402
@@ -1036,22 +1037,19 @@ class YamlLoaderEquivalenceTest(unittest.TestCase):
             self.skipTest("本机 PyYAML 无 libyaml（CSafeLoader 不可用）")
         from yaml import SafeLoader, CSafeLoader
         texts = []
-        for path in sorted(pathlib.Path(ROOT).rglob("*.md")):
-            if ".git" in path.parts:
+        # 面 = 仓库件（core.repo_face）：被 .gitignore 覆盖的生成物（npm 暂存面等）不算语料，
+        # 否则同一份正文以第二份身份进面——既重复算，也会把生成物的排版差异算成真源问题。
+        for path in _repo_face.walk_repo_paths(ROOT):
+            if path.suffix not in (".md", ".yaml", ".yml"):
                 continue
             try:
                 text = path.read_text(encoding="utf-8")
             except OSError:
                 continue
-            texts += [m.group(1) for m in cs.FENCE.finditer(text)]
-        for pat in ("*.yaml", "*.yml"):
-            for path in sorted(pathlib.Path(ROOT).rglob(pat)):
-                if ".git" in path.parts:
-                    continue
-                try:
-                    texts.append(path.read_text(encoding="utf-8"))
-                except OSError:
-                    continue
+            if path.suffix == ".md":
+                texts += [m.group(1) for m in cs.FENCE.finditer(text)]
+            else:
+                texts.append(text)
         self.assertGreater(len(texts), 100, "本仓 YAML 文本块数量异常（判据失效）")
         for body in texts:
             try:

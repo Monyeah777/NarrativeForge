@@ -7,7 +7,7 @@
 - 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/{路径}`
 - 本仓库全部内容本身就是 markdown 源文件——不存在 HTML 版，因此 llms.txt v2 的 `page.md` 孪生约定天然满足；本文件即仓库描述文件（等价 `rel="describedby"` 指向物）。
 <!-- nf:stats:begin -->
-- 质量凭证（可静态实算）：verify v2.29 · check1-39 · PASS=68（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
+- 质量凭证（可静态实算）：verify v2.30 · check1-40 · PASS=70（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
 - 规模（实算真源 `protocol/repo_stats.json`）：111 登记包 · 363 资产档 · 101 概念图 · 标准目录 370 条（可达 332） · 标准绑定 1200 条 · 馆藏 3 件。
 - 标准目录 GEO 出口（可引用）：`docs/standards/index.md` · 机读 `protocol/geo_export.json`。
 <!-- nf:stats:end -->
@@ -21,7 +21,7 @@
 - [AGENT_START.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/AGENT_START.md)：装配师开场三句话（你是谁、按什么取货组装）
 - [AI_ROUTING.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/AI_ROUTING.md)：按能力边界选线（A 有 API / B1 能读文件 / B2 纯粘贴）
 - [DEEP_DIVE.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/DEEP_DIVE.md)：NF 为什么这样设计（心智模型层）
-- `tui/nf.py`（NF 终端 TUI，纯标准库）：人机全屏入口 + agent 机读面——`python tui/nf.py --list-actions --json` 列动作/argv/退出码，`--exec "nf doctor"` 跑单命令并透传退出码，`--selftest --json` 跑安全底线自检，`--demo` 取一帧确定性演示画面（**无仓库亦可展现内容**，TTY 下无仓库自动进演示模式）
+- `tui/nf.py`（NF 终端 TUI，纯标准库）：人机全屏入口 + agent 机读面——`python tui/nf.py --list-actions --json` 列动作/argv/退出码/投影摘要，`--exec "nf doctor"` 跑单命令并透传退出码，`--selftest --json` 跑安全底线自检（含「投影同源」「闸门口径（单源）」两行），`--demo` 取一帧确定性演示画面（**无仓库亦可展现内容**，TTY 下无仓库自动进演示模式）。终端面是**单真值源·多视图**：真源 = `desktop/src/core/terminal.py` 的策展表 + CLI 的 argparse 面，投影 = `nf shell --surface --json`（机器面）与生成件 `tui/_surface.py`（TUI 的唯一输入，`nf shell --surface-write` 重生成，check39 逐字节对账）
 
 ## 协议（契约层，装配与执行的真源）
 

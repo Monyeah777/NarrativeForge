@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================
 # NarrativeForge verify.sh —— 两段式验收门禁（07 §7 可执行化）
-# 版本 : v2.29  配套 : 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）+ 终端线 check39（端壳退役零回潮 + nf shell 终端入口在场 + 菜单无死命令 + 输出确定）
+# 版本 : v2.30  配套 : 数字资产契约层 check40（数据/代码/脚本三面；真源 protocol/asset_contracts.json）+ 07_官方核心出厂与社区预设导航.md §7（两级结构终验）+ 08_社区扩展规划与验收方案.md T5 A5（资产三方对账）+ 09_v0.6.0_协议中转站方案（check12 代码层门禁 + check13 协议版本一致性/迁移完整性）+ 10_v0.7.0_自定义协议方案（check14 社区协议登记门禁）+ 11_v0.8.0_自定义模块组合方案（check15 组合引用门禁）+ 12_v1.0.0_自定义模块组合方案（check16 契约仲裁门禁）+ 16_v1.4.0_质量治理闭环方案（check17 质量治理门）+ 17_v2.0.0_导出层CCV3方案（check18 导出契约门）+ 33_v2.2.0_外部吸收首波方案（check19 导出产物 schema 合规 + check20 文档完整性门禁 + check21 registry 引用图闭合门禁）+ 35_v2.4.0_外部吸收大包方案（check22 导出物规范体检门禁 + 40 总纲 v2.7 S2 check23 资产供应链闭合门禁 + 40 总纲 v2.8 波B S4-S7 check24 模块生命周期门禁 + 41_v2.8.0_波C 质量编译深化规划（check25 协议知识签名可复现门禁 + 41_v2.8.0_波C 质量编译深化规划（check26 语义矛盾扫描门禁 + 42_顶尖质量纵深工程规划（check27 架构纯度体检门禁 + 43_协议层顶尖化工程规划（check28 协议层 IDL schema + check29 Conformance 分级 + check30 扩展策略/bump 迁移 + check31 生成物 golden）+ 终端线 check39（端壳退役零回潮 + nf shell 终端入口在场 + 菜单无死命令 + 输出确定）
 #        46 吸收七面 check33：MCP dual-era 版本对齐（2026-07-28/2025-11-25 + server/discover）/
 #        内容外挂签名 attestation / 基线相对回归评分 / 机械修复 + LSP / 正文 lint / 图书馆许可证门 / 遥测 semconv
 #        图书馆面 check34：条目 frontmatter 真源（OKF 借鉴）/ INDEX·ALIAS 投影一致（I5）/ 生命周期 /
@@ -2322,6 +2322,53 @@ index = nf._shell_command_index()
 self_issues, self_stats = term.self_check(index, cmds, flags)
 problems += self_issues
 
+# ---- ③c 单真值源 · 多视图（2026-10-03）：投影与真源逐字节对账 + 视图口径不得弱于真源 ----
+# 真源 = core/terminal.py 的策展表 + 本 CLI 的 argparse 面；投影件 = tui/_surface.py（生成件）。
+# 判据两条：① 重算投影与在场件逐字节一致（真源改了没重生成即红）；
+#          ② 全屏视图的闸门三表与命令白名单必须**覆盖**真源（口径只许更严，不许更松）。
+_proj_text = ''
+try:
+    with open(os.path.join('tui', '_surface.py'), encoding='utf-8') as _fh:
+        _proj_text = _fh.read()
+except OSError:
+    pass
+problems += term.surface_sync_issues(_proj_text, cmds, flags)
+
+tui = None
+try:
+    _spec2 = importlib.util.spec_from_file_location('nf_tui_checks', os.path.join('tui', 'nf.py'))
+    tui = importlib.util.module_from_spec(_spec2)
+    _spec2.loader.exec_module(tui)
+except Exception as _texc:                                            # noqa: BLE001
+    problems.append('全屏视图不可加载：tui/nf.py（%s；修复指引：核对投影件在场且可 import）' % _texc)
+
+if tui is not None:
+    for _kind, _truth, _view in (('写盘旗标', set(term.CONFIRM_FLAGS), set(tui.WRITE_FLAGS)),
+                                 ('写盘动词', set(term.CONFIRM_VERBS), set(tui.WRITE_VERBS)),
+                                 ('命令+旗标配对', set(term.CONFIRM_FLAG_PAIRS),
+                                  set(tui.WRITE_PAIRS))):
+        _miss = sorted(_truth - _view)
+        if _miss:
+            problems.append('全屏视图闸门口径比真源窄：%s 漏 %s（修复指引：视图只许消费投影，'
+                            '不得自行维护第二份闸门表——手抄版曾漏掉配对表，写面不确认即可执行）'
+                            % (_kind, _miss[:3]))
+    _miss_blocked = sorted(set(term.BLOCKED_IN_SHELL) - set(tui.LONG_RUNNING))
+    if _miss_blocked:
+        problems.append('全屏视图长驻拒跑比真源窄：漏 %s' % _miss_blocked[:3])
+    if sorted(tui.KNOWN_TOP) != sorted(cmds):
+        problems.append('全屏视图命令白名单与 argparse 面不一致：%s'
+                        % sorted(set(tui.KNOWN_TOP) ^ cmds)[:5])
+    if len(tui.ZONES) != len(term.zone_table()):
+        problems.append('视图能力区数不一致：TUI %d / 真源 %d（修复指引：重生成投影件）'
+                        % (len(tui.ZONES), len(term.zone_table())))
+    for _no, _zone, _act in tui.all_actions():
+        _first = str((_act.argv or [''])[0])
+        if _first.startswith('-'):
+            continue
+        if _first not in cmds:
+            problems.append('全屏视图动作指向死命令：nf %s（动作 %s / 区 %s）'
+                            % (_first, _act.key, _zone))
+
 # ---- ③b 运行时面：检索 / 列出 / 地图 / 拼错建议 / 自检命令本身都可用 ----
 index_paths = {str(e.get('path')) for e in index}
 index_tops = {p.split(' ')[0] for p in index_paths}
@@ -2444,27 +2491,64 @@ except Exception as exc:
 
 for p in problems:
     print('[FAIL] %s' % p)
-print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d'
+print('端壳残留项：%d · 菜单区：%d · 菜单示例：%d · 菜单动作：%d（含表单投影）'
       % (len(shell_leftovers), len(term.zone_table()),
-         sum(len(z['examples']) for z in term.zone_table())))
+         sum(len(z['examples']) for z in term.zone_table()),
+         sum(len(term.zone_action_dicts(z)) for z in term.zone_table())))
+print('单真值源投影：%s · 摘要 %s · 视图闸门 旗标 %d / 动词 %d / 配对 %d'
+      % (term.SURFACE_MODULE_PATH, term.surface_payload(
+          cmds, flags)['digest'][:19],
+         len(getattr(tui, 'WRITE_FLAGS', ()) or ()), len(getattr(tui, 'WRITE_VERBS', ()) or ()),
+         len(getattr(tui, 'WRITE_PAIRS', ()) or ())))
 print('顶尖 CLI 基线：%d 行 · 通过 %d' % (_bstats['rows'], _bstats['passed']))
 sys.exit(1 if problems else 0)
 PYEOF
     then
-      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色/写盘表单/活体档/纯 JSON + 顶尖 CLI 基线逐行，行数不写死）'
+      ok '端壳残留零在场 + 终端入口在场 + 命令面全策展可达（check39 子扫描：源件/入口/打包线 + terminal.self_check 单源判据 + 检索/地图/自检/补全/限长/无色/写盘表单/活体档/纯 JSON + 单真值源投影对账（tui/_surface.py 逐字节 + 视图闸门不弱于真源）+ 顶尖 CLI 基线逐行，行数不写死）'
     else
       no "终端与端壳残留门禁异常——$(tail -3 "$NFL_TMP"/nf_check39.log 2>/dev/null | tr '\n' ' ')"; err=1
     fi
   else
     wn 'python3 不在 PATH（跳过 check39 终端与端壳残留门禁）'
   fi
-  if [ "$err" -eq 0 ]; then ok '终端与端壳残留门禁全绿（check39：端壳零回潮 + 终端三件在场 + 菜单无死命令 + 命令面全策展可达 + 输出确定）'
+  if [ "$err" -eq 0 ]; then ok '终端与端壳残留门禁全绿（check39：端壳零回潮 + 终端三件在场 + 菜单无死命令 + 命令面全策展可达 + 单真值源投影同源 + 输出确定）'
+  fi
+}
+
+check40(){
+  echo '== [40/段C] 数字资产契约门禁（数据/代码/脚本三面：格式 + 字段完整性 + 防篡改 + AST 规范 + 可证空指针 + 脚本 I/O 对齐）=='
+  local err=0
+  if [ -n "$PY3" ]; then
+    if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check40.log 2>&1
+import os, sys
+sys.path.insert(0, os.path.join('desktop', 'src'))
+try:
+    from core import asset_contract as ac
+except Exception as exc:
+    print('import 失败：%s' % exc)
+    sys.exit(1)
+issues, warns, stats = ac.scan('.')
+for i in issues:
+    print('[FAIL] %s' % i)
+print('三面统计：data %d / code %d / script %d / 链 %d / 件 %d'
+      % (stats['data'], stats['code'], stats['script'], stats['chains'], stats['files']))
+sys.exit(1 if issues else 0)
+PYEOF
+    then
+      ok '数字资产契约三面全绿（check40：数据格式/字段完整性/防篡改 + 代码 AST 规范/可证空指针/测试在场 + 脚本 nf-io 双源一致与链对齐）'
+    else
+      no "数字资产契约扫描异常——$(tail -3 "$NFL_TMP"/nf_check40.log 2>/dev/null | tr '\n' ' ')"; err=1
+    fi
+  else
+    wn 'python3 不在 PATH（跳过 check40 数字资产契约门禁）'
+  fi
+  if [ "$err" -eq 0 ]; then ok '数字资产契约门禁全绿（check40：声明即契约 + 只判可证；数据/代码/脚本三面真源 protocol/asset_contracts.json）'
   fi
 }
 
 # ================= 主执行体（三段式） =================
 echo '=================================================='
-echo ' NarrativeForge 三段式验收门禁  v2.29（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检 + 终端线 check39 端壳零回潮/终端入口；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
+echo ' NarrativeForge 三段式验收门禁  v2.30（对齐 07 §7 + 08 T5 A5 资产对账 + 09 v0.6.0 check12 代码层 + check13 迁移完整性 + 10 v0.7.0 check14 社区协议登记门禁 + 11 v0.8.0 check15 组合引用门禁 + 12 v1.0.0 check16 契约仲裁门禁 + 16 v1.4.0 check17 质量治理门 + 17 v2.0.0 check18 导出契约门 + 33 v2.2.0 check19-21 外部吸收首波 + 35 v2.4.0 check22 规范体检 + 终端线 check39 端壳零回潮/终端入口；分层治理 23 方案：L3 端壳退役移出，门禁默认锁 L0-L2）'
 echo '=================================================='
 echo '—— 段 A：官方核心出厂（无 community 亦须通过）——'
 check1; check2; check3; check4; check5; check6
@@ -2476,7 +2560,7 @@ elif [ -d community ]; then
 else
   wn 'community 不在场：社区段（check7-11）跳过——无包部署仅验收官方段'
 fi
-echo '—— 段 C：代码层门禁（L2 core：check12-check36 无条件执行；android 相关已随 L3 冻结移出）——'
+echo '—— 段 C：代码层门禁（L2 core：check12-check40 无条件执行；android 相关已随 L3 冻结移出）——'
 check12
 check13
 check14
@@ -2505,13 +2589,14 @@ check36
 check37
 check38
 check39
+check40
 echo '=================================================='
 echo "结果统计: PASS=$PASS  WARN=$WARN  FAIL=$FAIL"
 if [ "$FAIL" -gt 0 ]; then
   echo '>>> 存在 FAIL = 协议事故：请回滚本次修改，修正后重新运行验收 <<<'
   # 指引面接线（2026-09-30）：每条 check 都有「缺什么 / 补什么」条目（nf explain 1-39），
   # 但此前从不把用户指过去——红的时候只有「请回滚」，没有下一步。这里补一句可执行的指引。
-  echo "    修复指引：python scripts/nf.py explain <check 号>（逐条：缺什么 / 补什么 / 示例；全量见 explain all）"
+  echo "    修复指引：python scripts/nf.py explain <check 号>（逐条：缺什么 / 补什么 / 示例；全量见 python scripts/nf.py explain all（覆盖 check1-40））"
   exit 1
 else
   echo '>>> 全部通过（WARN 仅提示非致命），变更可提交 <<<'

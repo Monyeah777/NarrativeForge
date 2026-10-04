@@ -19,6 +19,7 @@ import re
 
 from core import atomic_write
 from core import paths
+from core import repo_face as _repo_face
 
 LEDGER_SCHEMA_VERSION = "1"
 LEDGER_FILE = "provenance.json"
@@ -48,7 +49,7 @@ class AssetLedgerError(ValueError):
 
 
 def _today() -> str:
-    return datetime.date.today().isoformat()
+    return datetime.date.today().isoformat()  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
 
 
 def blank_ledger(package: str = "", tier: str = "official", **meta) -> dict:
@@ -337,6 +338,23 @@ def verify_ledger_dir(ledger_dir: str, ledger_path: str | None = None) -> tuple:
     return issues, stats
 
 
+def _walk_repo(root: str):
+    """仓库件遍历：跳过 VCS/缓存 + 被 .gitignore 覆盖的生成物（产出 `(base, dirs, files)`）。
+
+    依据（2026-10-03 实测）：裸 `os.walk(root)` 会把已忽略的生成副本当**第二份台账**读进来——
+    npm 暂存面在场时 `verify_root` 报「台账 206 / 托管资产 614」，真实值恰为一半（103 / 307），
+    `iter_assets` 亦让每件资产列两遍。面判据收敛到 `core.repo_face`（单一出处）。
+    """
+    ignored = _repo_face.ignored_paths(root)
+    for base, dirs, files in os.walk(root):
+        rel = os.path.relpath(base, root).replace(os.sep, "/")
+        rel = "" if rel == "." else rel
+        dirs[:] = [d for d in dirs
+                   if d not in (".git", ".gitee", "__pycache__")
+                   and not _repo_face.is_ignored(("%s/%s" % (rel, d)) if rel else d, ignored)]
+        yield base, dirs, files
+
+
 def verify_root(root: str) -> tuple:
     """仓库级扫描：找出全部 provenance.json 台账目录并逐册校验；聚合统计。"""
     issues = []
@@ -344,8 +362,7 @@ def verify_root(root: str) -> tuple:
     shape_issues, shape_stats = verify_shelf_shape(root)
     issues.extend(shape_issues)
     stats["shelves"] = shape_stats["shelves"]
-    for base, dirs, files in os.walk(root):
-        dirs[:] = [d for d in dirs if d not in (".git", ".gitee", "__pycache__")]
+    for base, dirs, files in _walk_repo(root):
         if LEDGER_FILE in files:
             dir_issues, dir_stats = verify_ledger_dir(base, os.path.join(base, LEDGER_FILE))
             issues.extend(dir_issues)
@@ -383,8 +400,7 @@ def verify_shelf_shape(root: str = ".") -> tuple:
 def iter_assets(root: str):
     """浏览：逐台账展开为行（台账级 package/tier 与条目字段合并），按目录+文件排序。"""
     rows = []
-    for base, dirs, files in os.walk(root):
-        dirs[:] = [d for d in dirs if d not in (".git", ".gitee", "__pycache__")]
+    for base, dirs, files in _walk_repo(root):
         if LEDGER_FILE not in files:
             continue
         try:
@@ -424,8 +440,7 @@ def filter_rows(rows: list, pkg: str = "", tier: str = "",
 def inventory_root(root: str) -> list:
     """库存盘点：返回台账摘要行（目录/package/tier/在册数/未托管数/问题数），按目录排序。"""
     rows = []
-    for base, dirs, files in os.walk(root):
-        dirs[:] = [d for d in dirs if d not in (".git", ".gitee", "__pycache__")]
+    for base, dirs, files in _walk_repo(root):
         if LEDGER_FILE not in files:
             continue
         lp = os.path.join(base, LEDGER_FILE)

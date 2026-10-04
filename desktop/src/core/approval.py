@@ -41,7 +41,7 @@ def approve(root: str, subject: str, approved_by: str, note: str = "",
     rec = {"schema": SCHEMA, "subject": subject.replace("\\", "/"),
            "subject_digest": subject_digest(root, subject),
            "approved_by": approved_by.strip(),
-           "approved_at": today or date.today().isoformat(),
+           "approved_at": today or date.today().isoformat(),  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
            "note": note}
     safe = subject.replace("/", "__").replace("\\", "__")
     dest = Path(root) / DIR_REL / ("%s.json" % safe)

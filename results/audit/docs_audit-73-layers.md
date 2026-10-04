@@ -7,12 +7,12 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
-  - desktop/src/core/layer_model.py:d2fc9a44a6bc52eb3bb40c87b3cb94f7b497b35cb1c86ceea57b871646bd0c10
+  - desktop/src/core/layer_model.py:17dfbd2578e95f732798c8f119d3123542f1c71beb6e488979e6a0e0c1c31cc4
   - desktop/tests/test_layer_model.py:0bacafa7ec8c92486916b3cc50d3fa7f83e2d3fe74874b108c0437fb93713669
-  - desktop/src/core/purity_scan.py:345ad321120e8901d4e6ceaabefa41603c88166ee4b63737a0519489cf71fa03
+  - desktop/src/core/purity_scan.py:bda7d3a0f0f3810b7b943db9edd281f032b779451a07da4876fb1bea9341d757
   - desktop/tests/test_purity_scan.py:6c1539361d2d927a7c5f89013e20f9188e31215c0ada176f9f0b397c4d5c731d
-  - scripts/nf.py:687140811395b574f6fec7c6570e0bebad438cb5ed91831d42d6913c6baff45d
-  - verify.sh:46005ad41bbb135801676cb51c37c6877f4e36c30764fbb3cd189b204b475bde
+  - scripts/nf.py:25e420b37084d709b7b8c895cf9093afd9c5fd1d691e2bc02a76125ac1231b5d
+  - verify.sh:3b0ec76f976e38b74a3d2627cd85f395487fe62a53cc73aec548dd285d53482a
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
   - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102
@@ -20,7 +20,7 @@ subjects:
   - protocol/normative.json:3ea1e37d1879cee532b930e83ba3029fbc171efe99606fd42bc775f0968b84a5
   - protocol/glossary.json:4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60
   - desktop/src/core/receipts.py:b83d1d226778bb1b4b3925fadd944ebfdc82731dc463577dd299a9c2ebaf7655
-  - desktop/src/core/doc_hygiene.py:46f8e98c75718f5dc6e1aa83addff10668d42311b410b51ff0edc9c194a6c3ad
+  - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
   - decisions/ADR-0004-抽象阶梯两轴与纵切.md:9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674
 
 ---

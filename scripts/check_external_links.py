@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-  # nf-io: inputs=README.md,README.en.md,llms.txt,AGENT_START.md,ROUTES.md,docs/verification-cards.md outputs=results/external-links-report.json
 """外部链接巡检（**非门禁** · 可选联网 · 只读）。
 
 定位（2026-09-20 作者裁决执行）：NF 的门禁必须**静态可复现**（同输入同输出），因此外链
@@ -22,10 +22,10 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Callable, Dict, List, Sequence, Tuple
+from typing import Callable, Dict, List, Optional, Sequence, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "desktop" / "src"))  # core.*（原子写单源）
-from core import atomic_write  # noqa: E402
+from core import atomic_write
 
 #: 默认巡检目标（人读入口与公开文档；不含脚本、测试夹具与协议层）
 DEFAULT_TARGETS = ("README.md", "README.en.md", "llms.txt", "AGENT_START.md", "ROUTES.md")
@@ -64,7 +64,7 @@ def retry_after_seconds(detail: str, cap: float = 10.0) -> float:
 
 def probe_with_retry(url: str, single: Callable[[str], Tuple[bool, str]],
                      retries: int = 2, backoff: float = 1.5,
-                     sleep: Callable[[float], None] = None) -> Tuple[bool, str]:
+                     sleep: Optional[Callable[[float], None]] = None) -> Tuple[bool, str]:
     """带退避的探测：**只对瞬态失败重试**（4xx 除 408/425/429 一律定性，不再重试）。
 
     纪律：重试必须幂等（本工具只用 HEAD，天然幂等）；等待时长上界 = backoff * 2^n

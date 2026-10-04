@@ -121,7 +121,7 @@ def _asset_appendix(ir: IRDocument) -> str:
 
 def ir_to_md(ir: IRDocument) -> str:
     """IR → MD（默认原生适配器）。输出格式对齐原 generate_document。"""
-    ts = ir.meta.get("timestamp") or datetime.now().strftime("%Y-%m-%d %H:%M")
+    ts = ir.meta.get("timestamp") or datetime.now().strftime("%Y-%m-%d %H:%M")  # noqa: DTZ005 - 产物墙钟时间戳是有意语义（本地时间，供人读）
     asset_text = ir.meta.get("asset_text") or "无"
     header = f"""# {ir.title}
 

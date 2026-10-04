@@ -191,7 +191,7 @@ def render_ir(pipeline: Pipeline,
             missing.append(k)
 
     meta: dict = {
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),  # noqa: DTZ005 - 产物墙钟时间戳是有意语义（本地时间，供人读）
         "generator": "nf-ir-v1",
         "asset_text": asset_pack.name if asset_pack else "无",
     }
@@ -227,5 +227,5 @@ def generate_document(pipeline: Pipeline,
 
 
 def default_filename(pipeline: Pipeline) -> str:
-    ts = datetime.now().strftime("%Y%m%d_%H%M")
+    ts = datetime.now().strftime("%Y%m%d_%H%M")  # noqa: DTZ005 - 产物墙钟时间戳是有意语义（本地时间，供人读）
     return f"{pipeline.id}_{pipeline.name}_{ts}.md"

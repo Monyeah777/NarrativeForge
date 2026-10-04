@@ -59,6 +59,8 @@ SPECS: Tuple[Tuple[str, str, str, str, str], ...] = (
     ("judgement_coverage", "判据接线覆盖（暴露 scan() 的判据必须有消费者或例外登记）",
      "judgement_coverage", "scan", "scan"),
     ("workflow_policy", "工作流供应链策略（actions 钉 40 位 SHA + 显式最小 permissions）", "workflow_policy", "scan", "scan"),
+    ("asset_contract", "数字资产契约（数据/代码/脚本三面：格式+字段完整性+防篡改+AST 规范+脚本 I/O 对齐）",
+     "asset_contract", "scan", "scan"),
 )
 
 

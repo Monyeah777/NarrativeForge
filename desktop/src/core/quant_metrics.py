@@ -296,10 +296,10 @@ def performance_report(series: Dict[str, Any], *, period_start: str, period_end:
 def vega_equity_curve(series: Dict[str, Any], title: str = "净值曲线") -> Dict[str, Any]:
     """Vega-Lite v5 规格（图表即数据）——确定性：同输入逐字节一致。"""
     data = [{"date": d, "series": "策略", "value": v}
-            for d, v in zip(series["dates"], series["equity"])]
+            for d, v in zip(series["dates"], series["equity"], strict=False)]
     if series.get("benchmark"):
         data += [{"date": d, "series": "基准", "value": v}
-                 for d, v in zip(series["dates"], series["benchmark"])]
+                 for d, v in zip(series["dates"], series["benchmark"], strict=False)]
     return {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "description": title,
@@ -320,7 +320,7 @@ def vega_drawdown(series: Dict[str, Any], title: str = "回撤曲线") -> Dict[s
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "description": title,
         "data": {"values": [{"date": d, "value": -abs(v)}
-                            for d, v in zip(series["dates"], dd)]},
+                            for d, v in zip(series["dates"], dd, strict=False)]},
         "mark": {"type": "area", "line": True},
         "encoding": {
             "x": {"field": "date", "type": "temporal", "title": "日期"},

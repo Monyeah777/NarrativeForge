@@ -1,0 +1,46 @@
+name: npm-publish
+# 发 npm 包（v* tag 或手动触发）。来源证明（provenance）由 OIDC 签发，与 package.json 的
+# publishConfig.provenance=true 同源；优先走 npm trusted publishing（无 token），有 NPM_TOKEN 时回退 token。
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write          # provenance / trusted publishing 必需
+jobs:
+  publish:
+    name: npm-publish-provenance
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - name: 工具链自述
+        run: |
+          node --version
+          npm --version
+      - name: payload 暂存 + 发布前自检 + 冒烟
+        working-directory: packaging/npm
+        run: |
+          npm run stage
+          npm run verify
+          node --test test/smoke.test.mjs
+      - name: 打包并核对体积（tarball 体积是发布质量的一部分）
+        working-directory: packaging/npm
+        run: npm pack --dry-run
+      - name: 配置 registry 认证（有 token 写 .npmrc，否则走 OIDC）
+        working-directory: packaging/npm
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -n "\${NODE_AUTH_TOKEN}" ]; then
+            echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
+            echo "auth=token"
+          else
+            echo "auth=oidc(trusted publishing)"
+          fi
+      - name: 发布（带 provenance）
+        working-directory: packaging/npm
+        run: |
+          npm publish --provenance --access public
+          rm -f .npmrc

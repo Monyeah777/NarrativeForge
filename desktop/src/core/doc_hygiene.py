@@ -222,7 +222,7 @@ def check_markers(root: str = ".") -> list:
     return issues
 
 
-def kind_coverage(root: str = ".") -> list:
+def kind_coverage(_root: str = ".") -> list:
     """四型覆盖校验：关键文档与指令档每件都须有四型归属（新增件漏表即报）。"""
     issues = []
     for rel in sorted(set(REQUIRED_DOCS) | set(INSTRUCTION_DOCS)):
@@ -263,7 +263,7 @@ def kind_distribution(root: str = ".") -> dict:
 def stale(root: str = ".", month_limit: int = 3,
           today: str = "") -> list:
     """过期告警：关键文档「最后更新」距今超过 month_limit 个月 → WARN 清单。"""
-    today = today or _dt.date.today().isoformat()
+    today = today or _dt.date.today().isoformat()  # noqa: DTZ011 - 本地日历日期是有意语义（UTC 会在跨零点给出错误「今天」）
     now = _dt.date.fromisoformat(today)
     warns = []
     for rel in REQUIRED_DOCS:

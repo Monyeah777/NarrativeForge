@@ -115,5 +115,42 @@ class TestWorldEntries(unittest.TestCase):
         self.assertIn("M40", mapped)
 
 
+class TestScenarioHead(unittest.TestCase):
+    """外部实测回归（2026-10-02）：scenario 不得硬切词、不得夹带机器契约围栏。
+
+    实证缺陷：`_scenario_text` 原用 `content[:400]`，切口落在 `…arrow-py/arrow`
+    的 `repo` 一词中段，且把 ```machine_contract``` 围栏带进玩家可见文本。
+    """
+
+    @staticmethod
+    def _ir_with(content: str) -> IRDocument:
+        return IRDocument(
+            type="narrative", title="测试世界", pipeline_id="P04",
+            pipeline_name="轻混装配流",
+            layers=[IRLayer(id="P10", name="世界", modules=[
+                IRModule(full_id="通用类:M10", name="时间推进", layer="P10",
+                         content=content)])],
+            asset_refs={}, asset_missing=[], meta={})
+
+    def test_machine_contract_fence_excluded(self):
+        ir = self._ir_with("时间推进规则：每十分钟一刻。\n\n```machine_contract\nstep: 17\n```\n")
+        scen = map_ir_to_ccv3(ir)["scenario"]
+        self.assertNotIn("machine_contract", scen)
+        self.assertNotIn("```", scen)
+        self.assertIn("每十分钟一刻", scen)
+
+    def test_truncation_lands_on_a_sentence_boundary(self):
+        # 200 句 × 6 字 → 远超 400；硬切必然落在句中
+        body = "".join("第%03d句。" % i for i in range(200))
+        scen = map_ir_to_ccv3(self._ir_with(body))["scenario"]
+        head = scen.split("\n\n")[0]
+        self.assertTrue(head.endswith("……"), "超限须以省略号收尾：%r" % head[-8:])
+        self.assertEqual(head[-3], "。", "截断点须落在句读边界：%r" % head[-8:])
+
+    def test_short_content_untouched(self):
+        ir = self._ir_with("短说明，不截断。")
+        self.assertIn("短说明，不截断。", map_ir_to_ccv3(ir)["scenario"])
+
+
 if __name__ == "__main__":
     unittest.main()

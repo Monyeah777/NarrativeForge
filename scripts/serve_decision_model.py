@@ -50,7 +50,7 @@ def _load_agent(model_dir: str, device: str):
     except ImportError as exc:  # pragma: no cover - 环境相关
         raise SystemExit(
             "缺 laya 运行时：%s\n修复指引：python -m pip install laya（会带 torch/transformers）"
-            % exc)
+            % exc) from exc
     import os
     if not os.path.isdir(model_dir):
         raise SystemExit("模型目录不存在：%s\n修复指引：python -c \"from huggingface_hub "
@@ -109,7 +109,7 @@ def _normalize(raw: Dict[str, Any], questions: Dict[str, Any]) -> Dict[str, Any]
 class Handler(BaseHTTPRequestHandler):
     server_version = "nf-decision/1.0"
 
-    def log_message(self, fmt: str, *args: Any) -> None:   # 静默：日志由调用方决定
+    def log_message(self, _fmt: str, *_args: Any) -> None:   # 静默：日志由调用方决定
         return
 
     def _send(self, code: int, payload: Dict[str, Any]) -> None:
@@ -120,13 +120,13 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def do_GET(self) -> None:  # noqa: N802
+    def do_GET(self) -> None:
         if self.path.rstrip("/") in ("/health", "/v1/health"):
             self._send(200, {"status": "ok", "model_loaded": AGENT is not None})
             return
         self._send(404, {"error": "unknown path"})
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         if self.path.rstrip("/") != "/v1/systemone":
             self._send(404, {"error": "unknown path"})
             return

@@ -18,9 +18,10 @@ import re
 import unicodedata
 from typing import Any, Dict, List, Tuple
 
-#: 扫描排除目录（本地 AI 工作区 / 版本库元数据 / 缓存）
-EXCLUDE_DIRS = {".git", ".rivet", "__pycache__", ".ruff_cache",
-                ".mypy_cache", ".pylint.d", ".pytest_cache"}
+from core import repo_face as _repo_face
+
+#: 扫描面 = **仓库件**（`core.repo_face.walk_repo_paths` 单点定义：静态目录名 + `.gitignore`
+#: 覆盖面）。此前这里自持一份排除表且不看 `.gitignore`，生成物会以第二份正文进面（2026-10-03）。
 #: 排除的**工具临时产出**（与缓存同类：可再生、非仓库件）。实测教训（2026-09-22）：
 #: `scripts/per_module_coverage.sh` 正常路径会自删 `_cov_tmp.json`，一旦被中断就留在仓库根，
 #: 于是编码卫生把它当仓库件扫 → 整条 check12/check33 假红。按「先可数、再收口」补排除。
@@ -100,15 +101,14 @@ VERSION_SOURCES = (
 
 
 def _walk(root: str) -> List[str]:
+    """仓库件面（`walk_repo_paths` 单点）→ 绝对路径；再按本门自己的文件级排除收口。"""
     out: List[str] = []
-    for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
-        for fn in filenames:
-            if fn in EXCLUDE_FILES:
-                continue
-            if os.path.splitext(fn)[1].lower() in BINARY_EXT:
-                continue
-            out.append(os.path.join(dirpath, fn))
+    for path in _repo_face.walk_repo_paths(root):
+        if path.name in EXCLUDE_FILES:
+            continue
+        if path.suffix.lower() in BINARY_EXT:
+            continue
+        out.append(str(path))
     return sorted(out)
 
 

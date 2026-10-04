@@ -42,6 +42,8 @@ import json
 import os
 import re
 import sys
+from typing import Optional
+
 from core import conformance_scan as csc
 from core import disk_cache
 
@@ -442,7 +444,7 @@ def scan(root: str = ".") -> tuple:
                          code_modules=("core.purity_scan",), fp=fp)
 
 
-def _scan_impl(root: str = ".", _layer_fp: str = None) -> tuple:
+def _scan_impl(root: str = ".", _layer_fp: Optional[str] = None) -> tuple:
     """真算（未命中缓存时走这里）；`_layer_fp` 由 `scan()` 传下来，避免走两次阶梯面。"""
     issues = []
     stats = {"docs": 0, "raises": 0, "imports": 0, "import_residue": []}

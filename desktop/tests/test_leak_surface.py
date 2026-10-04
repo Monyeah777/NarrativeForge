@@ -10,15 +10,21 @@
 合成负例路径（如 `C:\\Users\\x`）用于测试拦截本身，非真实机器路径。
 """
 import re
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT / "desktop" / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT / "desktop" / "src"))
 
-SKIP_PARTS = {".git", ".rivet", "__pycache__", ".ruff_cache", ".mypy_cache", "node_modules"}
+from core import repo_face as _repo_face  # noqa: E402
 EXTS = (".md", ".json", ".yaml", ".yml", ".txt", ".csv", ".cs", ".cmd", ".sh", ".py")
-#: 合成负例路径允许存在的仪器源码（测试「拦截本身」，非真实机器路径）
-EXEMPT_PREFIX = "engine/dotnet/probes/"
+#: 合成负例路径允许存在的仪器源码（测试「拦截本身」，非真实机器路径）。
+#: 2026-10-04 增补 `engine/rust/tools/`：快线侧的同款生成器（`gen_public_surface_branches.py`）用
+#: **合成负例路径**造夹具来覆盖本门禁的分支，与 .NET probes 同一理由（此处照本文件自己的规矩，
+#: 不落真实形态串——否则本件会自己命中自己）。
+EXEMPT_PREFIX = ("engine/dotnet/probes/", "engine/rust/tools/")
 
 MACHINE_PATH = re.compile(r"C:[\\/]Users[\\/]|/Users/[A-Za-z]|/home/[a-z]")
 #: 探针把**绝对快照路径**写进金标的老写法（写侧口径：须走 `_paths.portable`）
@@ -30,9 +36,7 @@ SECRET_SHAPE = re.compile(
 
 def _public_files() -> list:
     out = []
-    for p in ROOT.rglob("*"):
-        if not p.is_file() or any(part in SKIP_PARTS for part in p.parts):
-            continue
+    for p in _repo_face.walk_repo_paths(str(ROOT)):
         if p.suffix not in EXTS:
             continue
         rel = p.relative_to(ROOT).as_posix()
