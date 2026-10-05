@@ -79,8 +79,8 @@
     },
     {
       "description": "一致性声明",
-      "detail": "版本 5 · scope 17 · 排除 11",
-      "digest": "1daf30b7857e3635eb574ec7ec0aa1e670972f31797078e9f2f46cf41c905060",
+      "detail": "版本 5 · scope 19 · 排除 11",
+      "digest": "e7e76a4af8705ad67f06ece0cb0608ee71329bdf52e6872bae4fd514f271c16e",
       "id": "declaration",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "22c20bab293a48eb04358acd9829521e1d2e4e988cb4952a40b4c158c8236f32",
+  "root": "80fe6f3669397b35fc1a38644f84a10b42ed562a919ca7a9cfb0c8c2ac778c9a",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

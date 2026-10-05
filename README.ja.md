@@ -20,7 +20,7 @@ NF は**コンテンツ契約層（content contract layer）**です——「AI 
 
 - これは何か：仕様駆動のドキュメント工場。モジュール／パイプライン／資産を搭載 → 検証 → 出力。
 - 入口チェーン：`AGENT_START.md`（着手）→ `AI_ROUTING.md`（経路選択）→ `DEEP_DIVE.md`（深く理解する）。
-- 機械証憑：`bash verify.sh`（現在の基準値は下部の生成領域「品質証憑」行。`nf stats --write` が書き込みます）。機械向け入口一覧は `llms.txt`、英語入口は `README.en.md`、日本語入口は本ファイル \`README.ja.md\`（機読事実の一致は `check34` が常時検証）。
+- 機械証憑：`bash verify.sh`（現在の基準値は下部の生成領域「品質証憑」行。`nf stats --write` が書き込みます）。機械向け入口一覧は `llms.txt`。言語面は `README.en.md` · `README.ja.md`（三面の機読事実と言語切替行は check34 の言語面スキャンが常時検証。登録表 = `protocol/locales.json`）。
 - 設計意図を知る：[DEEP_DIVE.md](DEEP_DIVE.md) を参照。
 
 ## クイックスタート

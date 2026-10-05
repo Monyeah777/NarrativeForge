@@ -7,10 +7,10 @@
     "contracts": 27,
     "id": "nf:conformance_report",
     "receiptCount": 57,
-    "receiptRoot": "2bf3d89cf46c420fae38bffd4f44108cb8be656ecb2585be30ee9cd4c1749bb0",
+    "receiptRoot": "cec820176d6f8fa5f9c8ffa9e777a1966a40b53b4c0a2ec571a6cbd22f755e80",
     "verdict": "conformant"
   },
-  "issuer": "执行者（作者指令本波：基线同源 + 三面补齐）",
+  "issuer": "执行者（作者指令：仓库口径整理）",
   "type": [
     "VerifiableCredential",
     "NfConformanceCredential"

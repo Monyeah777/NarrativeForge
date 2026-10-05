@@ -47,7 +47,14 @@ bash scripts/release_freeze.sh vX.Y.Z
 
 ## 変更エントリ
 
-変更を着地させるとき `changes/unreleased/` に一条書きます（`type:` + `note:`、語彙は `CONTRIBUTING §1` と同じ）。リリース時に計画の `changes-1` ステップが CHANGELOG の版節へ归档し、ディレクトリを空にします。規則と理由は `changes/README.md`。
+変更を着地させるとき `changes/unreleased/` に一条書きます（`type:` + `note:`、語彙は `CONTRIBUTING §1` と同じ）。リリース時に `nf changelog` が版節を**生成**し（決定的・各項は条目か規約的コミットに遡及可能）、`--write` で CHANGELOG へ挿入して条目を `changes/<version>/` へ归档します：
+
+```bash
+python scripts/nf.py changelog --version X.Y.Z --date YYYY-MM-DD          # プレビュー（リリース PR の原生的等価物）
+python scripts/nf.py changelog --version X.Y.Z --date YYYY-MM-DD --write  # 挿入 + 归档
+```
+
+規則と理由は `changes/README.md`。判据は check38 の `release_gate` 子スキャン。
 
 ## 境界（宣伝しない）
 

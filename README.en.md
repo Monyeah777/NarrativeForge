@@ -58,7 +58,7 @@ Details: `tui/README.md`.
 
 - What this is: a spec-driven document factory — load modules/pipelines/assets → validate → emit.
 - Entry chain: `AGENT_START.md` (start) → `AI_ROUTING.md` (pick a route) → `DEEP_DIVE.md` (go deep).
-- Machine credential: `bash verify.sh` (run it locally — the static check count and script version live in the generated stats block below; runtime counters are deliberately not pinned in prose); the machine entry list is `llms.txt`, the English entry is `README.en.md` (both entries' machine facts are asserted consistent by check34).
+- Machine credential: `bash verify.sh` (run it locally — the static check count and script version live in the generated stats block below; runtime counters are deliberately not pinned in prose); the machine entry list is `llms.txt`; locales are `README.en.md` · `README.ja.md` (all three entries' machine facts and language switcher lines are asserted consistent by check34's locale scan; registry = `protocol/locales.json`).
 - To understand why NF is designed this way: read [DEEP_DIVE.md](DEEP_DIVE.md).
 
 ## Quick start

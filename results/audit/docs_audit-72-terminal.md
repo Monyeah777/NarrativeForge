@@ -16,7 +16,7 @@ subjects:
   - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
   - docs/terminal.md:ebaf6a7600254cbfdb7dc0916e3f3d4aa802119e8bb7110e58f98d9beedd9c20
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
-  - protocol/CONFORMANCE.md:dc023b0b675c5023bafb04f33fe5b12c486c3bc81894e05c0315c8e56e692c1d
+  - protocol/CONFORMANCE.md:8a223b9e964de2595f8e6f1370a205704b2e303d96f56af524d5b414715f6dd8
 
 ---
 

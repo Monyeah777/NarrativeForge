@@ -576,7 +576,7 @@
       "max_fn_lines": 52
     },
     "desktop/src/core/release_gate.py": {
-      "lines": 313,
+      "lines": 312,
       "max_fn_cc": 26,
       "max_fn_lines": 82
     },

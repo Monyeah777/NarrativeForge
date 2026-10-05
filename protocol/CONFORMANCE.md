@@ -37,6 +37,8 @@
 - `desktop/tests`
 - `scripts`
 - `skills`
+- `integrations`
+- `changes`
 
 ## 排除
 

@@ -28,7 +28,6 @@ POLICY_DOC = "docs/release.md"
 #: 机读策略真源（配置即契约）。
 POLICY_JSON = "protocol/release_policy.json"
 POLICY_SCHEMA_ID = "nf:release-policy"
-INTEGRATION_SCHEMA_ID = "nf:integration"
 #: golden master 冻结根（scripts/release_freeze.sh 的产出面）。
 GOLDEN_DIR = ".release-frozen"
 #: 策略件必须写明的锚点（缺一即 FAIL——写了却没人看与没写同等不可核）。

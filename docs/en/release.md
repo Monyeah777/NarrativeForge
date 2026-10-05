@@ -47,7 +47,14 @@ Output = `.release-frozen/<tag>/sha256.manifest` (`01_核心协议.md` / `02_联
 
 ## Change entries
 
-When a change lands, add one entry under `changes/unreleased/` (`type:` + `note:`, vocabulary identical to `CONTRIBUTING §1`). At release, the plan's `changes-1` step archives them into the CHANGELOG version section and empties the directory. Rules and rationale: `changes/README.md`.
+When a change lands, add one entry under `changes/unreleased/` (`type:` + `note:`, vocabulary identical to `CONTRIBUTING §1`). At release, `nf changelog` **generates** the version section (deterministic; every bullet traces back to an entry or a conventional commit), then `--write` inserts it into the CHANGELOG and archives the entries under `changes/<version>/`:
+
+```bash
+python scripts/nf.py changelog --version X.Y.Z --date YYYY-MM-DD          # preview (native equivalent of a release PR)
+python scripts/nf.py changelog --version X.Y.Z --date YYYY-MM-DD --write  # insert + archive
+```
+
+Rules and rationale: `changes/README.md`; the judge is check38's `release_gate` sub-scan.
 
 ## Boundaries (not claimed)
 
