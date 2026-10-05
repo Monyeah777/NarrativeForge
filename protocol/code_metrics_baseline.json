@@ -686,9 +686,9 @@
       "max_fn_lines": 19
     },
     "desktop/src/core/terminal.py": {
-      "lines": 2341,
-      "max_fn_cc": 51,
-      "max_fn_lines": 133
+      "lines": 2394,
+      "max_fn_cc": 37,
+      "max_fn_lines": 89
     },
     "desktop/src/core/text_hygiene.py": {
       "lines": 292,

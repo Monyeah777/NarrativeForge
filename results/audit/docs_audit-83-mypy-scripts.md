@@ -14,7 +14,7 @@ subjects:
   - scripts/geo_export.py:616992be1e6f5e8251b5a9aa98abc8d27dfee22ddb9152a335538f17e28ea06a
   - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
   - scripts/check_external_links.py:ce954ac27b7fdc632b48e68a8867361f3415b5e2920d4d4dfd2f306574a60909
-  - protocol/code_metrics_baseline.json:aaac09b9da03934aa5cb5526e308a35ade7e4fb5d76e252a9de8ee53b17d41c1
+  - protocol/code_metrics_baseline.json:dce9f86a733d0d5f26517b15f5fc31efad5b42819d377e92c90c457cea71b72b
 
 ---
 

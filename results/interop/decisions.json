@@ -294,6 +294,12 @@
       "id": "AUD-0039",
       "title": "复杂度收敛第二批（decisions/endpoint 两 F 拆净，≥C −2 · ≥D −3）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0040",
+      "title": "复杂度收敛第三批（terminal.dispatch 查表化，55→2）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {
