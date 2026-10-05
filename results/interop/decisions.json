@@ -300,6 +300,12 @@
       "id": "AUD-0040",
       "title": "复杂度收敛第三批（terminal.dispatch 查表化，55→2）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0041",
+      "title": "复杂度收敛第四批（interop_export.verify 168→按面 13 个校验器）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

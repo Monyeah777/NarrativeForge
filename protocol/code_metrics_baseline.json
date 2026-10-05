@@ -266,9 +266,9 @@
       "max_fn_lines": 121
     },
     "desktop/src/core/interop_export.py": {
-      "lines": 957,
-      "max_fn_cc": 150,
-      "max_fn_lines": 234
+      "lines": 1028,
+      "max_fn_cc": 23,
+      "max_fn_lines": 95
     },
     "desktop/src/core/interp_diet.py": {
       "lines": 53,

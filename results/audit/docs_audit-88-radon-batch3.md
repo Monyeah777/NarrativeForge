@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/terminal.py:242372c3dcdf1fae1926cc8634bb00619c7430c59b24f3b8714aa23448725bde
-  - protocol/code_metrics_baseline.json:dce9f86a733d0d5f26517b15f5fc31efad5b42819d377e92c90c457cea71b72b
+  - protocol/code_metrics_baseline.json:6799bce34acc607422bfb485f33bcbe5f546f988d6fc48f13630d3f6f4c2daae
 
 ---
 
