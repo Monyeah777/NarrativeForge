@@ -69,6 +69,12 @@ def _git(root: Path, *args: str) -> Optional[str]:
     return p.stdout if p.returncode == 0 else None
 
 
+def _last_tag(root: str = ".") -> str:
+    """最近一个 tag（发布边界）——提交扫描只取「上次发布之后」，不把全史塞进版本节。"""
+    out = _git(Path(root), "describe", "--tags", "--abbrev=0")
+    return (out or "").strip()
+
+
 def commit_subjects(root: str = ".", since: str = "") -> List[str]:
     """提交主题（新→旧；git 不在场返回空）。"""
     args = ["log", "--pretty=%s"]
@@ -94,7 +100,8 @@ def _bullets(root: str, changes_dir: str, use_commits: bool) -> Dict[str, List[s
         groups.setdefault(e["type"] or "other", []).append(text)
     if use_commits:
         seen = set()
-        for subject in commit_subjects(root):
+        since = _last_tag(root)          # 边界 = 最近 tag（无 tag 时退化为全史，行为与旧版一致）
+        for subject in commit_subjects(root, since=since):
             parsed = parse_commit(subject)
             if not parsed:
                 continue

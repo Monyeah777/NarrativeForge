@@ -5,6 +5,9 @@
 丢内容守卫的出处：62 计划 §二·1「首例发布」取证（2026-10-05）——同版本节替换会把
 人工积累的未发布节静默换掉（实测 1790 行 → 13 行），故写面默认 fail-closed。
 """
+import os
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -33,6 +36,40 @@ CURATED = ("# Changelog\n\n## [2.12.0] - 未发布\n\n"
            "- **人工积累的详细条目二**\n\n"
            "## [2.11.0] - 2026-09-15\n\n- 旧版本条目\n")
 ENTRY = {"e.md": "type: feat\nsurface: x\nnote: 生成条目\n"}
+
+
+@unittest.skipUnless(shutil.which("git"), "需要 git 才能验证提交边界")
+class CommitBoundTest(unittest.TestCase):
+    def _repo(self, tmp):
+        env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@e",
+                   GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@e")
+
+        def git(*a):
+            subprocess.run(["git", *a], cwd=tmp, env=env, check=True, capture_output=True)
+
+        git("init", "-q")
+        Path(tmp, "a.txt").write_text("1", encoding="utf-8")
+        git("add", "-A")
+        git("commit", "-q", "-m", "feat: 旧提交")
+        git("tag", "v1.0.0")
+        Path(tmp, "b.txt").write_text("2", encoding="utf-8")
+        git("add", "-A")
+        git("commit", "-q", "-m", "fix: 新提交")
+
+    def test_commit_scan_is_bounded_to_last_tag(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._repo(tmp)
+            self.assertEqual("v1.0.0", cg._last_tag(tmp))
+            self.assertEqual(["fix: 新提交"], cg.commit_subjects(tmp, since=cg._last_tag(tmp)))
+
+    def test_bullets_do_not_dump_full_history(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._repo(tmp)
+            (Path(tmp) / "changes" / "unreleased").mkdir(parents=True)
+            groups = cg._bullets(tmp, "changes/unreleased", True)
+            texts = [b for g in groups.values() for b in g]
+            self.assertIn("新提交", texts)
+            self.assertNotIn("旧提交", texts, "发布边界之外的提交不得入节")
 
 
 class RenderTest(unittest.TestCase):
