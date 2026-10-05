@@ -1,8 +1,8 @@
 {
   "execution": {
-    "cases": 56,
+    "cases": 60,
     "fidelity": 1.0,
-    "passed": 56,
+    "passed": 60,
     "sets": [
       {
         "cases": 8,
@@ -20,8 +20,8 @@
         "set": "p03_drill_cases.json"
       },
       {
-        "cases": 8,
-        "passed": 8,
+        "cases": 12,
+        "passed": 12,
         "set": "p04_drill_cases.json"
       },
       {
@@ -42,13 +42,13 @@
     ]
   },
   "overall": {
-    "cases": 58,
+    "cases": 65,
     "fidelity": 1.0,
-    "passed": 58
+    "passed": 65
   },
   "rounds": {
     "fidelity": 1.0,
-    "matched": 2,
+    "matched": 5,
     "samples": [
       {
         "declared": "non-conformant",
@@ -56,6 +56,30 @@
         "live": "non-conformant",
         "matched": true,
         "sample": "bad.json",
+        "turns": 2
+      },
+      {
+        "declared": "non-conformant",
+        "first_issue": "第 1 回合无推进/状态留痕（R-R2）",
+        "live": "non-conformant",
+        "matched": true,
+        "sample": "bad_r2.json",
+        "turns": 1
+      },
+      {
+        "declared": "non-conformant",
+        "first_issue": "第 1 回合出现允许集外编号 M99（R-R3）",
+        "live": "non-conformant",
+        "matched": true,
+        "sample": "bad_r3.json",
+        "turns": 1
+      },
+      {
+        "declared": "conformant",
+        "first_issue": "",
+        "live": "conformant",
+        "matched": true,
+        "sample": "gap_ok.json",
         "turns": 2
       },
       {
@@ -67,7 +91,7 @@
         "turns": 2
       }
     ],
-    "total": 2
+    "total": 5
   },
   "schema": "nf-drill-fidelity/1"
 }

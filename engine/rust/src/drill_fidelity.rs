@@ -127,6 +127,14 @@ fn mention_tokens(output: &str) -> Vec<String> {
     module_token_re().find_iter(output).map(|m| m.as_str().to_string()).collect()
 }
 
+/// 真源「_ASSET_TOKEN」：大写下划线资产键（至少一个下划线）。
+fn asset_token_re() -> &'static regex::Regex {
+    static RE: std::sync::OnceLock<regex::Regex> = std::sync::OnceLock::new();
+    RE.get_or_init(|| {
+        regex::Regex::new(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b").expect("资产键正则固定合法")
+    })
+}
+
 /// 真源 `_clauses`：按 `[。！？；\n]+` 切分并 strip 掉空段。
 fn clauses(output: &str) -> Vec<String> {
     split_re()
@@ -137,11 +145,28 @@ fn clauses(output: &str) -> Vec<String> {
         .collect()
 }
 
-/// 真源 `_check_fabricated_id`。
-fn check_fabricated_id(output: &str, real_ids: &[String]) -> &'static str {
+/// 真源「_check_fabricated_id」：本管线真实编号放行；其它管线真实编号判跨管线串号；其余判编造。
+fn check_fabricated_id(output: &str, real_ids: &[String], other_ids: &[String]) -> &'static str {
     for tok in mention_tokens(output) {
-        if !real_ids.iter().any(|r| *r == tok) {
-            return "fabricated_id";
+        if real_ids.iter().any(|r| *r == tok) {
+            continue;
+        }
+        if other_ids.iter().any(|r| *r == tok) {
+            return "cross_pipeline_id";
+        }
+        return "fabricated_id";
+    }
+    ""
+}
+
+/// 真源「_check_fabricated_asset_key」：仅当给了允许集才判（无允许集不判，防误报）。
+fn check_fabricated_asset_key(output: &str, asset_keys: &[String]) -> &'static str {
+    if asset_keys.is_empty() {
+        return "";
+    }
+    for m in asset_token_re().find_iter(output) {
+        if !asset_keys.iter().any(|k| k == m.as_str()) {
+            return "fabricated_asset_key";
         }
     }
     ""
@@ -219,10 +244,15 @@ fn check_semantic_misalignment(output: &str, semantics: Option<&Json>) -> &'stat
 }
 
 /// 真源 `execution_drill.run_case` → 命中的失范规则名列表（**顺序即判据**）。
-fn run_case(case: &Json, real_ids: &[String], semantics: Option<&Json>, source_text: &str) -> Vec<String> {
+fn run_case(case: &Json, real_ids: &[String], semantics: Option<&Json>, source_text: &str,
+            other_ids: &[String], asset_keys: &[String]) -> Vec<String> {
     let output = py_str(get(case, "output"));
     let mut hits: Vec<String> = Vec::new();
-    let hit = check_fabricated_id(&output, real_ids);
+    let hit = check_fabricated_id(&output, real_ids, other_ids);
+    if !hit.is_empty() {
+        hits.push(hit.to_string());
+    }
+    let hit = check_fabricated_asset_key(&output, asset_keys);
     if !hit.is_empty() {
         hits.push(hit.to_string());
     }
@@ -377,6 +407,10 @@ fn exec_sets(root: &Path) -> Vec<ExecSet> {
         }
         let real_ids: Vec<String> =
             arr_items(get(&data, "real_ids")).iter().map(|v| py_str(Some(v))).collect();
+        let other_ids: Vec<String> =
+            arr_items(get(&data, "other_ids")).iter().map(|v| py_str(Some(v))).collect();
+        let asset_keys: Vec<String> =
+            arr_items(get(&data, "asset_keys")).iter().map(|v| py_str(Some(v))).collect();
         let semantics = get(&data, "semantics");
         // 真源 `data.get("source_text", "")`：**键不在场**才取默认；在场为 null 则传 None 下去
         let src_opt: Option<&Json> = get(&data, "source_text");
@@ -389,7 +423,7 @@ fn exec_sets(root: &Path) -> Vec<ExecSet> {
                 n += 1;
                 continue;
             }
-            let hits = run_case(case, &real_ids, semantics, &src);
+            let hits = run_case(case, &real_ids, semantics, &src, &other_ids, &asset_keys);
             let expect: Vec<String> =
                 arr_items(get(case, "expect_captured")).iter().map(|v| py_str(Some(v))).collect();
             let good = (expect.is_empty() && hits.is_empty())

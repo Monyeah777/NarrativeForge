@@ -210,6 +210,12 @@
       "id": "AUD-0025",
       "title": "抽象阶梯 v2 落地 —— 两轴 + 纵切 + 适应度函数（契约/资产/引擎/出口 × 入口面 × 验证纵切）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0026",
+      "title": "文档面 i18n 扩容（mcp/terminal/layers 三份指南 en/ja）+ 演练扩面（跨管线串号 / 资产键编造 / 回合级 R1–R4 样本）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

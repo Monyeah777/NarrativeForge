@@ -1,7 +1,7 @@
 # 45 A2 · 回合级 drill（执行转录回合断言）
 
 > ⛔ 操作指令：回合级断言口径（阅读即执行）。
-> 最后更新：2026-09-09
+> 最后更新：2026-10-05
 
 ## 用途
 
@@ -10,6 +10,8 @@
 - R-R2 每回合有推进/状态留痕（推进/进入/写回/快照/存档/状态）；
 - R-R3 每回合不得出现装配允许集外编号；
 - R-R4 回合计数连续性（跳号 → WARN 清单，不 FAIL）。
+
+样本集（`desktop/tests/fixtures/execution/rounds/`）覆盖 R1–R4：`good.json`（合规）· `bad.json`（R1+R3）· `bad_r2.json`（R2）· `bad_r3.json`（R3）· `gap_ok.json`（R4 跳号 → 仅 WARN，verdict 仍合规）。
 
 ## 调用
 

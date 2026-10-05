@@ -167,7 +167,7 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "28e7dc2075884d61187f79d8c6283aaf2dc3bd825f1498e056401e5ea290dfdd"
+      "nf:sha256": "e9221aa0e45d8a8eb5a32514825f97b2dfcc3aeb201617b7612aaf946a700af2"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",
@@ -232,7 +232,7 @@
     {
       "@id": "nf:file/protocol/locales.json",
       "@type": "prov:Entity",
-      "nf:sha256": "66517215b6cd6da38da1fb6a78cffb2390a06468c3618d6e11e944fe103feb42"
+      "nf:sha256": "054bb94f63ff7e1e815c5d63f01bbdca54595473019593fd9b155fa03b6060a5"
     },
     {
       "@id": "nf:file/protocol/mcp_package.json",

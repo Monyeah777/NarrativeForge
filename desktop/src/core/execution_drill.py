@@ -23,6 +23,8 @@ _MODULE_TOKEN = re.compile(r"(?:[\u4e00-\u9fff]+:)?M\d{2,3}")
 _DECISION = re.compile(r"(应|应该|必须|禁止|不得|下一步|输出|结论)")
 _CITATION = re.compile(r"(§\s*\d+(?:[.-]\d+)*|第\s*\d+\s*(?:节|步|章)|L\d+|行号|"
                        r"[0-9A-Za-z_]+:[MTP]\d{2,3}|/\d+|\b\d{1,3}\b\s*行)")
+#: 资产键形态：**大写下划线**标识（至少一个下划线）——模块号/管线号无下划线，天然不入面。
+_ASSET_TOKEN = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
 _PROGRESS = ("回合推进", "进入回合", "已进入第", "时间推进", "推进至", "进入下一回合")
 _SPLIT = re.compile(r"[。！？；\n]+")
 
@@ -30,6 +32,8 @@ _SPLIT = re.compile(r"[。！？；\n]+")
 RULE_LAW = {
     "no_citation": "L1",            # 引用后执行（必须）
     "fabricated_id": "L2",          # 禁止编造编号
+    "cross_pipeline_id": "L2",      # 禁止越界编号（编号真实但属其它管线）
+    "fabricated_asset_key": "L2",   # 禁止编造资产键
     "browse_repeat": "L3",          # 禁止浏览-复述
     "semantic_misalignment": "L4",  # 职责自洽（必须）
 }
@@ -48,10 +52,26 @@ def _clauses(output: str) -> List[str]:
     return [c.strip() for c in _SPLIT.split(output) if c.strip()]
 
 
-def _check_fabricated_id(output: str, real_ids: List[str]) -> str:
+def _check_fabricated_id(output: str, real_ids: List[str], other_ids: List[str]) -> str:
+    """编号断言：本管线真实编号放行；**其它管线真实编号**判「跨管线串号」；其余判编造。"""
+    others = set(other_ids or [])
     for tok in _mention_tokens(output):
-        if tok not in real_ids:
-            return "fabricated_id"
+        if tok in real_ids:
+            continue
+        if tok in others:
+            return "cross_pipeline_id"
+        return "fabricated_id"
+    return ""
+
+
+def _check_fabricated_asset_key(output: str, asset_keys: List[str]) -> str:
+    """资产键断言：只判「大写下划线键」且仅当调用方给了允许集（无允许集不判，防误报）。"""
+    allowed = set(asset_keys or [])
+    if not allowed:
+        return ""
+    for tok in _ASSET_TOKEN.findall(output):
+        if tok not in allowed:
+            return "fabricated_asset_key"
     return ""
 
 
@@ -91,11 +111,19 @@ def _check_semantic_misalignment(output: str, semantics: Dict[str, list]) -> str
 
 def run_case(case: Dict, real_ids: List[str],
                  semantics: Dict[str, list] | None = None,
-             source_text: str = "") -> List[str]:
-    """对单样本输出跑全部硬断言 → 返回命中的失范规则名列表。"""
+             source_text: str = "", other_ids: List[str] | None = None,
+             asset_keys: List[str] | None = None) -> List[str]:
+    """对单样本输出跑全部硬断言 → 返回命中的失范规则名列表。
+
+    other_ids = 其它管线真实编号集（判跨管线串号）；asset_keys = 本装配允许的资产键集
+    （判编造资产键；缺省为空 ⇒ 该断言不判，防无载体误报）。
+    """
     output = case.get("output") or ""
     hits = []
-    hit = _check_fabricated_id(output, real_ids)
+    hit = _check_fabricated_id(output, real_ids, other_ids or [])
+    if hit:
+        hits.append(hit)
+    hit = _check_fabricated_asset_key(output, asset_keys or [])
     if hit:
         hits.append(hit)
     hit = _check_browse_repeat(output, source_text or case.get("source_text", ""))
@@ -115,9 +143,11 @@ def run_file(path: str) -> Dict:
     real_ids = list(data.get("real_ids") or [])
     semantics = data.get("semantics") or {}
     source_text = data.get("source_text", "")
+    other_ids = list(data.get("other_ids") or [])
+    asset_keys = list(data.get("asset_keys") or [])
     results = []
     for case in data.get("cases", []):
-        hits = run_case(case, real_ids, semantics, source_text)
+        hits = run_case(case, real_ids, semantics, source_text, other_ids, asset_keys)
         expected = set(case.get("expect_captured") or [])
         results.append({
             "id": case.get("id"),
@@ -138,10 +168,12 @@ def main(argv: List[str] | None = None) -> int:
     real_ids = data.get("real_ids") or []
     semantics = data.get("semantics") or {}
     source_text = data.get("source_text", "")
+    other_ids = data.get("other_ids") or []
+    asset_keys = data.get("asset_keys") or []
     bad = 0
     print("== execution_drill（%s · %s）==" % (data.get("schema"), data.get("pipeline")))
     for case in data.get("cases", []):
-        hits = run_case(case, real_ids, semantics, source_text)
+        hits = run_case(case, real_ids, semantics, source_text, other_ids, asset_keys)
         expected = set(case.get("expect_captured") or [])
         ok = (not expected and not hits) or expected <= set(hits)
         bad += 0 if ok else 1

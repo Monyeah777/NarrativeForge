@@ -42,9 +42,10 @@ def _exec_sets(root: Path) -> List[Dict[str, Any]]:
             out.append({"set": f.name, "cases": 0, "passed": 0, "error": "JSON 不可解析：%s" % exc})
             continue
         real, sem, src = data.get("real_ids") or [], data.get("semantics") or {}, data.get("source_text", "")
+        other, keys = data.get("other_ids") or [], data.get("asset_keys") or []
         n = ok = 0
         for case in data.get("cases", []):
-            hits = ed.run_case(case, real, sem, src)
+            hits = ed.run_case(case, real, sem, src, other, keys)
             expect = set(case.get("expect_captured") or [])
             good = (not expect and not hits) or expect <= set(hits)
             n += 1

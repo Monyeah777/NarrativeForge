@@ -181,8 +181,8 @@
       "max_fn_lines": 150
     },
     "desktop/src/core/drill_fidelity.py": {
-      "lines": 128,
-      "max_fn_cc": 10,
+      "lines": 129,
+      "max_fn_cc": 12,
       "max_fn_lines": 25
     },
     "desktop/src/core/driver.py": {
@@ -196,9 +196,9 @@
       "max_fn_lines": 104
     },
     "desktop/src/core/execution_drill.py": {
-      "lines": 167,
-      "max_fn_cc": 12,
-      "max_fn_lines": 24
+      "lines": 199,
+      "max_fn_cc": 14,
+      "max_fn_lines": 27
     },
     "desktop/src/core/export_schema.py": {
       "lines": 235,

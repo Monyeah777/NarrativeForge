@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
-  "approved_by": "执行者（作者指令：仓库口径整理）",
-  "note": "语言面三语口径 + CONFORMANCE 范围补 integrations/changes + 译件同步 + 去零引用常量",
+  "approved_by": "执行者（作者指令：按 62 计划执行）",
+  "note": "AUD-0026 建档（文档面 i18n 扩容 + 演练扩面）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "28e7dc2075884d61187f79d8c6283aaf2dc3bd825f1498e056401e5ea290dfdd"
+  "subject_digest": "e9221aa0e45d8a8eb5a32514825f97b2dfcc3aeb201617b7612aaf946a700af2"
 }

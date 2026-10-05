@@ -32,7 +32,9 @@ class ExecutionDrillTest(unittest.TestCase):
     def _hits(self, data, case):
         return drill.run_case(case, data["real_ids"],
                               data.get("semantics") or {},
-                              data.get("source_text", ""))
+                              data.get("source_text", ""),
+                              data.get("other_ids") or [],
+                              data.get("asset_keys") or [])
 
     def test_deviation_capture_all(self):
         """失范样本须全部被硬断言捕获（无漏报）。"""
@@ -74,7 +76,7 @@ class ExecutionDrillTest(unittest.TestCase):
             law = rh.LAW_INDEX[law_id]
             self.assertIn(law["level"], ("必须", "禁止"),
                           "%s 不得映射到软级/自由级" % rule)
-        self.assertEqual(len(drill.RULE_LAW), 4)
+        self.assertEqual(len(drill.RULE_LAW), 6)
 
 
 if __name__ == "__main__":

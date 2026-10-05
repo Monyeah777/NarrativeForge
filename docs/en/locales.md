@@ -22,7 +22,7 @@ NF has two language surfaces: the **entry surface** (README.md / README.en.md / 
 
 ## Status and boundaries
 
-- Entry surface: **3 languages** (Chinese / English / Japanese). The document surface currently covers the release and localization guides.
+- Entry surface: **3 languages** (Chinese / English / Japanese). The document surface currently covers five guides: release, localization, MCP access, terminal, and the abstract ladder.
 - The rest of the documentation is still single-language - **explicitly declared** by the registry, not silently monolingual; new translations follow the four steps above.
 - No external translation platform and **no machine translation**: content quality is the translator's responsibility; the judge only guarantees that what is declared exists and is not stale.
 - Language owners live in the registry's codeowner field (same meaning as Home Assistant codeowners).

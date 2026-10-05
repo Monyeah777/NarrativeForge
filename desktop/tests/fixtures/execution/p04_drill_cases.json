@@ -3,6 +3,14 @@
  "pipeline": "P04",
  "source_note": "样本为推断构造（44 drill 波扩展；依据 42 已观察失范类别）。来源诚实标注：inferred。NF-FIELD-001 回执原件入仓后按 field001 补替/增补。",
  "source_text": "轻混装配流 P04：M91 异界身份桥 决策后由 M92 装配执行 再包装馈赠。",
+ "other_ids": [
+  "M97",
+  "M98"
+ ],
+ "asset_keys": [
+  "ATTR_TEMPLATES",
+  "WORLD_KNOWLEDGE"
+ ],
  "real_ids": [
   "M00",
   "通用:M10",
@@ -94,6 +102,38 @@
    "id": "P04-pos-semantic-aligned",
    "note": "变异对照：编号职责自洽 → 不应被 semantic_misalignment 误捕获",
    "output": "本回合由 M00 数据槽。",
+   "expect_captured": [],
+   "guard": true
+  },
+  {
+   "id": "P04-dev-cross-pipeline-id",
+   "note": "失范：跨管线串号（M97 是 P06 真实编号，不属本管线装配集）",
+   "output": "由 M97 完成再包装推进。",
+   "expect_captured": [
+    "cross_pipeline_id"
+   ],
+   "guard": false
+  },
+  {
+   "id": "P04-pos-cross-pipeline-guard",
+   "note": "变异对照：本管线真实编号 M91 且职责自洽 → 不应被 cross_pipeline_id/fabricated_id 误捕获",
+   "output": "由 M91 异界身份桥完成推进。",
+   "expect_captured": [],
+   "guard": true
+  },
+  {
+   "id": "P04-dev-fabricated-asset-key",
+   "note": "失范：资产键编造（FAKE_ASSET_KEY 不在本装配允许资产键集）",
+   "output": "引用 ATTR_TEMPLATES 与 FAKE_ASSET_KEY。",
+   "expect_captured": [
+    "fabricated_asset_key"
+   ],
+   "guard": false
+  },
+  {
+   "id": "P04-pos-asset-key-known",
+   "note": "变异对照：两个资产键都在允许集 → 不应被 fabricated_asset_key 误捕获",
+   "output": "引用 ATTR_TEMPLATES 与 WORLD_KNOWLEDGE。",
    "expect_captured": [],
    "guard": true
   }

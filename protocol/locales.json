@@ -44,11 +44,50 @@
       "translations": {
         "en": {
           "path": "docs/en/locales.md",
-          "source_sha256": "1e3816fe4456d2ce43e5f87c3e9fe0440d1db0d87c5002997da0ee6aac0437a8"
+          "source_sha256": "cf3a21039dad98832b3cd92ead92adaa6559b38bd9c96006fea87f0af81a6dc7"
         },
         "ja": {
           "path": "docs/ja/locales.md",
-          "source_sha256": "1e3816fe4456d2ce43e5f87c3e9fe0440d1db0d87c5002997da0ee6aac0437a8"
+          "source_sha256": "cf3a21039dad98832b3cd92ead92adaa6559b38bd9c96006fea87f0af81a6dc7"
+        }
+      }
+    },
+    {
+      "path": "docs/mcp.md",
+      "translations": {
+        "en": {
+          "path": "docs/en/mcp.md",
+          "source_sha256": "cffaae148e5bd7d33f5257eb57fb1668625db20ddf62d6698c643990c288c0f1"
+        },
+        "ja": {
+          "path": "docs/ja/mcp.md",
+          "source_sha256": "cffaae148e5bd7d33f5257eb57fb1668625db20ddf62d6698c643990c288c0f1"
+        }
+      }
+    },
+    {
+      "path": "docs/terminal.md",
+      "translations": {
+        "en": {
+          "path": "docs/en/terminal.md",
+          "source_sha256": "ebaf6a7600254cbfdb7dc0916e3f3d4aa802119e8bb7110e58f98d9beedd9c20"
+        },
+        "ja": {
+          "path": "docs/ja/terminal.md",
+          "source_sha256": "ebaf6a7600254cbfdb7dc0916e3f3d4aa802119e8bb7110e58f98d9beedd9c20"
+        }
+      }
+    },
+    {
+      "path": "docs/layers.md",
+      "translations": {
+        "en": {
+          "path": "docs/en/layers.md",
+          "source_sha256": "c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534"
+        },
+        "ja": {
+          "path": "docs/ja/layers.md",
+          "source_sha256": "c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534"
         }
       }
     }
