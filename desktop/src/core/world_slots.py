@@ -64,7 +64,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     m00_path = r / "04_模块库" / "通用类" / "M00_数据结构.md"
     if m00_path.is_file():
         m00_text = m00_path.read_text(encoding="utf-8")
-        slots = data.get("slots") if isinstance(data, dict) else {}
+        slots_raw = data.get("slots") if isinstance(data, dict) else {}
+        slots: Dict[str, Any] = slots_raw if isinstance(slots_raw, dict) else {}
         for slot in slots:
             for part in str(slot).split("."):
                 if part and part not in m00_text:
@@ -74,7 +75,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
                     )
     else:
         issues.append("04_模块库/通用类/M00_数据结构.md 缺失")
-    slots = data.get("slots") if isinstance(data, dict) else {}
+    slots_raw = data.get("slots") if isinstance(data, dict) else {}
+    slots = slots_raw if isinstance(slots_raw, dict) else {}
     arrays = sum(1 for v in slots.values()
                  if isinstance(v, dict) and v.get("kind") == "array")
     return issues, {

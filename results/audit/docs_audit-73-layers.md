@@ -19,7 +19,7 @@ subjects:
   - protocol/data_contracts.json:2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb
   - protocol/normative.json:0c9c21945def2250462392e5f932a3d30f3b3f9c366b4f67cbdec45f9329c943
   - protocol/glossary.json:4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60
-  - desktop/src/core/receipts.py:148dae81d0bbe9c998608c90d1e35f48cd516a998051a6f9ac6385dfdc368cba
+  - desktop/src/core/receipts.py:afc48b24b00775b04b67200055d954c5ad735eff980921da9571e87ee13f169f
   - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
   - decisions/ADR-0004-抽象阶梯两轴与纵切.md:9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674
 

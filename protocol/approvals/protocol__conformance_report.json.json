@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0031 类型收敛第四批 + code_metrics 重冻",
+  "note": "AUD-0032 类型收敛第五批 + code_metrics 重冻",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "805ce64a87e9c41beefa1feff06863489bebae7253de7b76b374920edab10775"
+  "subject_digest": "a98fa9680a44d9d7028f324d41aade7822d9d3f67cecf3ff2dee70fa7a9669fa"
 }

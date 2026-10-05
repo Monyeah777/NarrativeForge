@@ -140,7 +140,7 @@ class Store:
     # ---------- 模块库 ----------
     def module_dirs(self) -> List[Path]:
         """返回所有已安装模块的目录（每个模块一个文件夹）"""
-        out = []
+        out: List[Path] = []
         if not self.modules_root.exists():
             return out
         for cat in sorted(self.modules_root.iterdir()):
@@ -230,7 +230,7 @@ class Store:
 
     # ---------- 资产包 ----------
     def list_asset_packs(self) -> List[AssetPack]:
-        out = []
+        out: List[AssetPack] = []
         if not self.assets_root.exists():
             return out
         for d in sorted(self.assets_root.iterdir()):
@@ -271,7 +271,7 @@ class Store:
 
     # ---------- 预设 ----------
     def list_presets(self) -> List[Preset]:
-        out = []
+        out: List[Preset] = []
         if not self.presets_root.exists():
             return out
         for f in sorted(self.presets_root.glob("*.json")):

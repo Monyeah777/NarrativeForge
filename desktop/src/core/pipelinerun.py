@@ -101,7 +101,7 @@ def graph(pipeline_path: str, root: str = ".",
     if core is None:
         core = _core_ids(root)
     issues: List[str] = []
-    notes: List[str] = []
+    notes: List[Dict[str, str]] = []
     steps: List[Dict[str, Any]] = []
     edges: List[Dict[str, str]] = []
     tokens: List[str] = []
@@ -246,7 +246,7 @@ def sweep(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     陈旧索引，故共享范围只在本函数这一次调用内。
     """
     issues: List[str] = []
-    total = {"pipelines": 0, "notes": 0, "modules": 0, "core_base": 0}
+    total: Dict[str, Any] = {"pipelines": 0, "notes": 0, "modules": 0, "core_base": 0}
     buckets: Dict[str, int] = {}
     items: List[Dict[str, str]] = []
     index = _module_files(root)

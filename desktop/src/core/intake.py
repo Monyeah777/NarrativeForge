@@ -57,7 +57,8 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         issues.append("%s updated 非 YYYY-MM-DD：%r" % (INTAKE_REL, doc.get("updated")))
     if not str(doc.get("after_action") or "").strip():
         issues.append("%s 缺 after_action（事后处置口径须成文：违规内容怎么下架）" % INTAKE_REL)
-    channels = doc.get("channels") if isinstance(doc.get("channels"), dict) else {}
+    channels_raw = doc.get("channels")
+    channels: Dict[str, Any] = channels_raw if isinstance(channels_raw, dict) else {}
     if not channels:
         issues.append("%s channels 为空（修复指引：至少声明一条接收通道）" % INTAKE_REL)
     index_text = ""

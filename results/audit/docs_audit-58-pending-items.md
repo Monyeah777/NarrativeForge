@@ -12,7 +12,7 @@ subjects:
   - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
   - desktop/src/core/ccv3_adapter.py:ba1b6ff2012ccbcc485c864736ae19a7d790096ed2461cf0d662a8ff9271a38f
   - desktop/src/core/export_schema.py:a7243117bf6cfdd2cdf62984e3da732e1f6802892152996eb69e28c94f4aac59
-  - desktop/src/core/mcp_runtime.py:486169216c610398ccee23de64c10c0e7e9900f365d29a21a2cbf38075b87ef8
+  - desktop/src/core/mcp_runtime.py:00e30d272b7badcf6698c10e17a635b0444f393f40883e547d6c9bdb27c6113e
   - desktop/src/core/import_adapter.py:5620194e56ce42b175e02f69d4bc6d03b99f35b43e5d38ab6c0d4aab9eaab333
   - desktop/src/core/library.py:2b489a88fc209b551938d879be84a3c6d10d208e1a334ee2229adefa48f2a00a
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3

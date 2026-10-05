@@ -44,7 +44,7 @@ def merkle_root(leaves: List[bytes]) -> Optional[bytes]:
     mid = 1
     while mid * 2 < len(leaves):
         mid *= 2
-    return node_hash(merkle_root(leaves[:mid]), merkle_root(leaves[mid:]))
+    return node_hash(merkle_root(leaves[:mid]) or b"", merkle_root(leaves[mid:]) or b"")
 
 
 def inclusion_proof(leaves: List[bytes], index: int) -> List[Dict[str, str]]:
@@ -65,11 +65,11 @@ def inclusion_proof(leaves: List[bytes], index: int) -> List[Dict[str, str]]:
         while mid * 2 < len(sub):
             mid *= 2
         if i < mid:
-            sib = merkle_root(sub[mid:])
+            sib = merkle_root(sub[mid:]) or b""
             proof.append({"side": "right", "hash": sib.hex()})
             walk(sub[:mid], i)
         else:
-            sib = merkle_root(sub[:mid])
+            sib = merkle_root(sub[:mid]) or b""
             proof.append({"side": "left", "hash": sib.hex()})
             walk(sub[mid:], i - mid)
 

@@ -27,9 +27,9 @@ TECHDOC_IDS = {"M90", "M97", "M98"}
 
 def _contract(text: str) -> str:
     """返回含 machine_contract 的 yaml 代码块文本（无则空串）。"""
-    fences = []
+    fences: list[str] = []
     in_fence = False
-    buf = []
+    buf: list[str] = []
     for ln in text.splitlines():
         if not in_fence:
             if _YAML_FENCE.match(ln):
@@ -53,7 +53,7 @@ def _fence_field(fence: str, field: str) -> str:
 
 
 def _events_of(fence: str) -> dict:
-    out = {"publish": [], "subscribe": []}
+    out: dict[str, list[str]] = {"publish": [], "subscribe": []}
     for m in _EVENT_LIST.finditer(fence):
         kind = m.group(1)
         for e in re.split(r"[,\s]+", m.group(2).strip()):
@@ -86,7 +86,7 @@ def scan(root: str = ".") -> tuple:
         info = _module_info(root, rel)
         if info["id"]:
             infos.append(info)
-    publishers = {}
+    publishers: dict[str, list[str]] = {}
     for info in infos:
         for e in info["publish"]:
             publishers.setdefault(e, []).append(info["id"])

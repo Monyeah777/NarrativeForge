@@ -582,7 +582,7 @@ def _repo_module_index() -> list:
         rel = Path(doc).relative_to(root).as_posix()
         out.append({"mc_id": mid, "title_id": title_id, "rel": rel,
                     "text": text, "has_contract": bool(mid)})
-    out.sort(key=lambda x: x["rel"])
+    out.sort(key=lambda x: str(x["rel"]))
     return out
 
 
@@ -1100,7 +1100,7 @@ class McpRuntime:
                     "传参——键名/类型/枚举须一致，勿夹带多余键）"
                     % (name, "；".join((errs + unsup)[:4])))
         result = handler(args)
-        payload = {"content": [{"type": "text",
+        payload: Dict[str, Any] = {"content": [{"type": "text",
                                "text": json.dumps(result, ensure_ascii=False,
                                                   indent=2, sort_keys=True)}]}
         # 信任边界（06 §12）：结果里只要掺了外来面（library/ / community/ / 外部材料），
@@ -1160,7 +1160,7 @@ class McpRuntime:
             except (KeyError, OSError):
                 raise UnknownUriError(uri) from None
             text = (_repo_root() / rel).read_text(encoding="utf-8")
-            item = {"uri": uri, "mimeType": "text/markdown", "text": text}
+            item: Dict[str, Any] = {"uri": uri, "mimeType": "text/markdown", "text": text}
             note = _trust_note([rel], [text])                # 外来面 → 带信任标注
             if note:
                 item["_meta"] = note
@@ -1183,7 +1183,7 @@ class McpRuntime:
         `CacheableResult`，其 `required = [cacheScope, resultType, ttlMs]`——
         本仓此前只在 server/discover 上给了这三个键，list 三面缺它们（官方 schema 判 FAIL）。
         """
-        out = {"resultType": "complete"}
+        out: Dict[str, Any] = {"resultType": "complete"}
         out.update(payload)
         out.setdefault("ttlMs", ttl_ms)
         out.setdefault("cacheScope", cache_scope)

@@ -256,9 +256,9 @@
       "max_fn_lines": 35
     },
     "desktop/src/core/intake.py": {
-      "lines": 96,
+      "lines": 97,
       "max_fn_cc": 27,
-      "max_fn_lines": 50
+      "max_fn_lines": 51
     },
     "desktop/src/core/integrations.py": {
       "lines": 210,
@@ -751,9 +751,9 @@
       "max_fn_lines": 229
     },
     "desktop/src/core/world_slots.py": {
-      "lines": 83,
+      "lines": 85,
       "max_fn_cc": 16,
-      "max_fn_lines": 30
+      "max_fn_lines": 32
     },
     "scripts/ai_domain_closure.py": {
       "lines": 395,

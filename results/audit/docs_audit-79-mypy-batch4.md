@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/lsp.py:24ed01d7dfc3af6e051a500376c488ac34717cdb9575e09d492b5dbfb974d260
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
   - desktop/src/core/asset_contract.py:9a4e9ee0e73d03032218af84a0d6def58ab62b70bb84c8f697ab9f5e0743249c
-  - protocol/code_metrics_baseline.json:b2245698635fc9730195ed72132d15d045b8c125f0d66bebb96cd449da28794b
+  - protocol/code_metrics_baseline.json:ce95aa466a66ca72e51ec2f77987b1855d7c70435074b78beb549f617d61ca8d
 
 ---
 
