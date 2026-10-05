@@ -55,6 +55,107 @@ def _receipt_ids(root: str) -> set:
     return {str(e.get("id")) for e in (doc.get("entries") or [])}
 
 
+def _check_entry_id(fm: Dict[str, Any], name: str, did: str,
+                    ids: Dict[str, str], issues: List[str]) -> None:
+    """单条目编号面：id 形态、id ↔ 文件名一致、编号重复。"""
+    if not _ID.match(did):
+        issues.append("%s 的 id 不合法（须 ADR-四位数字）：%s" % (name, did))
+    m = _FILE_ID.match(name)
+    if not m or ("ADR-%s" % m.group(1)) != did:
+        issues.append("%s 的 id 与文件名不一致：%s" % (name, did))
+    if did in ids:
+        issues.append("ADR 编号重复：%s（%s 与 %s）" % (did, ids[did], name))
+
+
+def _check_required_fields(fm: Dict[str, Any], tag: str, issues: List[str]) -> None:
+    for k in ("title", "status", "date", "evidence"):
+        if not fm.get(k):
+            issues.append("%s 缺必填字段：%s" % (tag, k))
+
+
+def _check_sections(body: str, tag: str, issues: List[str]) -> None:
+    for sec in SECTIONS:
+        if sec not in body:
+            issues.append("%s 正文缺段落：%s" % (tag, sec))
+
+
+def _check_entry_fields(fm: Dict[str, Any], tag: str, body: str,
+                        issues: List[str]) -> str:
+    """单条目字段面（必填字段 / status 词表 / date 形态 / 正文段落）→ 返回 status。"""
+    _check_required_fields(fm, tag, issues)
+    st = str(fm.get("status") or "")
+    if st and st not in STATUSES:
+        issues.append("%s 的 status 越词表：%s（%s）" % (tag, st, "/".join(STATUSES)))
+    date = str(fm.get("date") or "")
+    if date and not _DATED.match(date):
+        issues.append("%s 的 date 非 YYYY-MM-DD：%s" % (tag, date))
+    _check_sections(body, tag, issues)
+    return st
+
+
+def _check_entry_evidence(fm: Dict[str, Any], tag: str, r: Path,
+                          checks: set, issues: List[str]) -> None:
+    """单条目证据面：空项 / 指向的 checkN 存在 / 跨 ADR 引用放行 / 路径可达。"""
+    for ev in (fm.get("evidence") or []):
+        s = str(ev).strip()
+        if not s:
+            issues.append("%s 的 evidence 有空项" % tag)
+            continue
+        c = _CHECK.match(s)
+        if c:
+            if c.group(1) not in checks:
+                issues.append("%s 的 evidence 指向不存在的 check：%s" % (tag, s))
+            continue
+        if _ADR.match(s):
+            continue                       # 跨 ADR 引用在链检查里统一判
+        sp = s.replace("\\", "/")
+        if not (r / sp).exists():
+            issues.append("%s 的 evidence 无法解析：%s（修复指引：改为真实件路径，"
+                          "或 checkN，或 ADR-N）" % (tag, s))
+
+
+def _check_entry_lifecycle(fm: Dict[str, Any], tag: str, path: str, st: str, did: str,
+                           has_receipts: bool, receipts: set,
+                           supby: Dict[str, str], issues: List[str]) -> None:
+    """单条目生命周期面：accepted 是否被回执锚定、superseded 是否给了 superseded_by。"""
+    if st == "accepted" and has_receipts and path not in receipts:
+        issues.append("%s 已 accepted 但未被协议回执锚定（修复指引：nf receipts --write）"
+                      "——未锚定的 accepted 等于可被偷改" % tag)
+    sb = str(fm.get("superseded_by") or "").strip()
+    if st == "superseded" and sb in _DASH:
+        issues.append("%s 标 superseded 但缺 superseded_by" % tag)
+    if sb not in _DASH:
+        supby[did] = sb
+
+
+def _check_supersede_chains(supby: Dict[str, str], ids: Dict[str, str],
+                            issues: List[str]) -> None:
+    """取代链：目标须在册、且**不成环**（最多走 len(supby)+1 跳）。"""
+    for did, target in supby.items():
+        if target not in ids:
+            issues.append("%s 的 superseded_by 指向不在册编号：%s" % (did, target))
+            continue
+        cur, hops = target, 0
+        while cur in supby and hops < len(supby) + 1:
+            cur = supby[cur]
+            hops += 1
+            if cur == did:
+                issues.append("取代链成环：%s → … → %s" % (did, did))
+                break
+
+
+def _check_supersedes(ids: Dict[str, str], rows: List[Dict[str, Any]],
+                      issues: List[str]) -> None:
+    """反向引用：「supersedes」指向的编号须在册。"""
+    for did in ids:
+        for other in rows:
+            if str(other["fm"].get("id")) != did:
+                continue
+            sup = str(other["fm"].get("supersedes") or "").strip()
+            if sup not in _DASH and sup not in ids:
+                issues.append("%s 的 supersedes 指向不在册编号：%s" % (did, sup))
+
+
 def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     """机检 → (issues, warns, stats)。"""
     issues: List[str] = []
@@ -76,68 +177,13 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         if not did:
             issues.append("%s 缺 frontmatter id" % name)
             continue
-        if not _ID.match(did):
-            issues.append("%s 的 id 不合法（须 ADR-四位数字）：%s" % (name, did))
-        m = _FILE_ID.match(name)
-        if not m or ("ADR-%s" % m.group(1)) != did:
-            issues.append("%s 的 id 与文件名不一致：%s" % (name, did))
-        if did in ids:
-            issues.append("ADR 编号重复：%s（%s 与 %s）" % (did, ids[did], name))
+        _check_entry_id(fm, name, did, ids, issues)
         ids[did] = name
-        for k in ("title", "status", "date", "evidence"):
-            if not fm.get(k):
-                issues.append("%s 缺必填字段：%s" % (tag, k))
-        st = str(fm.get("status") or "")
-        if st and st not in STATUSES:
-            issues.append("%s 的 status 越词表：%s（%s）" % (tag, st, "/".join(STATUSES)))
-        date = str(fm.get("date") or "")
-        if date and not _DATED.match(date):
-            issues.append("%s 的 date 非 YYYY-MM-DD：%s" % (tag, date))
-        for sec in SECTIONS:
-            if sec not in e["body"]:
-                issues.append("%s 正文缺段落：%s" % (tag, sec))
-        for ev in (fm.get("evidence") or []):
-            s = str(ev).strip()
-            if not s:
-                issues.append("%s 的 evidence 有空项" % tag)
-                continue
-            c = _CHECK.match(s)
-            if c:
-                if c.group(1) not in checks:
-                    issues.append("%s 的 evidence 指向不存在的 check：%s" % (tag, s))
-                continue
-            if _ADR.match(s):
-                continue                       # 跨 ADR 引用在链检查里统一判
-            sp = s.replace("\\", "/")
-            if not (r / sp).exists():
-                issues.append("%s 的 evidence 无法解析：%s（修复指引：改为真实件路径，"
-                              "或 checkN，或 ADR-N）" % (tag, s))
-        if st == "accepted" and has_receipts and path not in receipts:
-            issues.append("%s 已 accepted 但未被协议回执锚定（修复指引：nf receipts --write）"
-                          "——未锚定的 accepted 等于可被偷改" % tag)
-        sb = str(fm.get("superseded_by") or "").strip()
-        if st == "superseded" and sb in _DASH:
-            issues.append("%s 标 superseded 但缺 superseded_by" % tag)
-        if sb not in _DASH:
-            supby[did] = sb
-    for did, target in supby.items():
-        if target not in ids:
-            issues.append("%s 的 superseded_by 指向不在册编号：%s" % (did, target))
-            continue
-        cur, hops = target, 0
-        while cur in supby and hops < len(supby) + 1:
-            cur = supby[cur]
-            hops += 1
-            if cur == did:
-                issues.append("取代链成环：%s → … → %s" % (did, did))
-                break
-    for did, name in ids.items():
-        for other in rows:
-            if str(other["fm"].get("id")) != did:
-                continue
-            sup = str(other["fm"].get("supersedes") or "").strip()
-            if sup not in _DASH and sup not in ids:
-                issues.append("%s 的 supersedes 指向不在册编号：%s" % (did, sup))
+        st = _check_entry_fields(fm, tag, e["body"], issues)
+        _check_entry_evidence(fm, tag, r, checks, issues)
+        _check_entry_lifecycle(fm, tag, path, st, did, has_receipts, receipts, supby, issues)
+    _check_supersede_chains(supby, ids, issues)
+    _check_supersedes(ids, rows, issues)
     stats = {"decisions": len(ids),
              "accepted": sum(1 for e in rows if str(e["fm"].get("status")) == "accepted"),
              "chains": len(supby)}

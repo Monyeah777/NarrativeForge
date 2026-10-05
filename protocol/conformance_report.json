@@ -121,8 +121,8 @@
     },
     {
       "description": "内容建模三件（词表/规范说明件/数据契约）",
-      "detail": "词表 12 · 规范件 36 / 说明件 2377 · 数据契约 36",
-      "digest": "d76b0690dec1ee8ec5613ab56129fdec27f7fb3613f4f3b841d30c303e19dd29",
+      "detail": "词表 12 · 规范件 36 / 说明件 2378 · 数据契约 36",
+      "digest": "0fa45c8b562ad5434e707c4482464b2b0400c1bbb3fc247183ee863c89799d62",
       "id": "modeling",
       "ok": true
     },
@@ -149,8 +149,8 @@
     },
     {
       "description": "审计/验收（结论绑定对象 digest + 签收双要素）",
-      "detail": "审计 49 件（带审计头 38 · legacy 11）· 绑定对象 332",
-      "digest": "4f6b6278099a3e018ca1147b0ce9548b359f212e3391a006e8befbbfac72c563",
+      "detail": "审计 50 件（带审计头 39 · legacy 11）· 绑定对象 335",
+      "digest": "c522c7d739774298ccc27f1397a859b518438ff446295a3ef9553a3387f81931",
       "id": "audit",
       "ok": true
     },
@@ -191,7 +191,7 @@
     }
   ],
   "passed": 27,
-  "root": "91ce7a715904ffddff3df28c44eb565a498052a3248b0894ad5c99522662fe96",
+  "root": "722e10b6d2f3d04d7a4557b2325730101001192d653f51ffdc9c870ac674b125",
   "schema": "nf-conformance/1",
   "total": 27,
   "verdict": "conformant"

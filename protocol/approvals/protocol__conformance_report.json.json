@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0038 多语协议执行（lexicon + p07_en + Rust 镜像）",
+  "note": "AUD-0039 复杂度收敛第二批（decisions/endpoint）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "d9aeab6c57653b9b8e157fdc7afde17ca272ffe080f730deb84bdde67475477d"
+  "subject_digest": "c9e3e1744fffd3538a1d871743323a852226890f9ee43a898d19d00b9e8f6376"
 }

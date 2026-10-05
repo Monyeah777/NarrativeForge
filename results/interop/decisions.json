@@ -288,6 +288,12 @@
       "id": "AUD-0038",
       "title": "多语协议执行（lexicon 参数化 + 英文同构演练集 + Rust 镜像）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0039",
+      "title": "复杂度收敛第二批（decisions/endpoint 两 F 拆净，≥C −2 · ≥D −3）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

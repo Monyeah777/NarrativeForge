@@ -10,7 +10,7 @@ subjects:
   - desktop/src/core/assemble_plan.py:80cf369043d783f415c32a9c5afffd3ce816130173ebff8b873ae4dbf6fa8749
   - desktop/src/core/asset_ledger.py:c81b636c91b826a3b29bda0b24af09386297329da5c56c5c6fa9de0eae53f2ca
   - desktop/src/core/atomic_write.py:5bc7318e23a5e6dbd5433624186df8584e86d44b13a7a11e93ddea0790617df0
-  - protocol/code_metrics_baseline.json:0a550fc7daa2118e73018333d4b871ba07f2b298f03e8cce269b031337384290
+  - protocol/code_metrics_baseline.json:aaac09b9da03934aa5cb5526e308a35ade7e4fb5d76e252a9de8ee53b17d41c1
 
 ---
 

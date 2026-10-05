@@ -156,9 +156,9 @@
       "max_fn_lines": 85
     },
     "desktop/src/core/decisions.py": {
-      "lines": 185,
-      "max_fn_cc": 46,
-      "max_fn_lines": 87
+      "lines": 231,
+      "max_fn_cc": 8,
+      "max_fn_lines": 32
     },
     "desktop/src/core/disk_cache.py": {
       "lines": 241,
@@ -191,9 +191,9 @@
       "max_fn_lines": 66
     },
     "desktop/src/core/endpoint.py": {
-      "lines": 146,
-      "max_fn_cc": 54,
-      "max_fn_lines": 104
+      "lines": 207,
+      "max_fn_cc": 8,
+      "max_fn_lines": 20
     },
     "desktop/src/core/execution_drill.py": {
       "lines": 218,
