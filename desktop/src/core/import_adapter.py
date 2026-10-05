@@ -313,6 +313,49 @@ def _entry_to_module(e: dict, seen: set, warnings: List[str]) -> Optional[IRModu
                     content=content)
 
 
+def _record_asset(e: dict, full_id: str, asset_refs: dict, seen: set) -> bool:
+    """资产条目（comment 为资产标记且有 full_id）→ 记入 asset_refs；命中返回 True。"""
+    if str(e.get("comment") or "") == _COMMENT_ASSET and full_id:
+        asset_refs[full_id] = str(e.get("content") or "")
+        seen.add(full_id)
+        return True
+    return False
+
+
+def _place_module(m: IRModule, comment: str, layer_map: dict,
+                  layers: list, extra: list) -> None:
+    """把已解析模块归层：有层名则建层/入层，否则入 extra（不静默丢）。"""
+    if not m.layer:
+        extra.append(m)
+        return
+    if m.layer not in layer_map:
+        lm = _RE_COMMENT_LAYER.match(comment)
+        layer_map[m.layer] = IRLayer(id=m.layer, name=lm.group(2).strip() if lm else m.layer)
+        layers.append(layer_map[m.layer])
+    layer_map[m.layer].modules.append(m)
+
+
+def _skip_entry(full_id: str, seen: set) -> bool:
+    """world 侧去重判据：无 id 或已在册即跳过。"""
+    return not full_id or full_id in seen
+
+
+def _ingest_entries(entries: list, seen: set, warnings: list, layer_map: dict,
+                    layers: list, extra: list, asset_refs: dict, dedupe: bool) -> None:
+    """把一批条目归层/记资产（chara 与 world 两处同构；dedupe=True 时按 full_id 去重）。"""
+    for e in entries:
+        keys = e.get("keys") or []
+        full_id = str(keys[0]) if keys else str(e.get("name") or "")
+        if dedupe and _skip_entry(full_id, seen):
+            continue
+        if _record_asset(e, full_id, asset_refs, seen):
+            continue
+        m = _entry_to_module(e, seen, warnings)
+        if m is None:
+            continue
+        _place_module(m, str(e.get("comment") or ""), layer_map, layers, extra)
+
+
 def parse_ccv3(chara: dict, world: Optional[dict] = None) -> Ccv3ParseResult:
     """chara_card_v3 dict（+可选独立 world dict）→ 叙事型 IR 骨架。
 
@@ -353,68 +396,16 @@ def parse_ccv3(chara: dict, world: Optional[dict] = None) -> Ccv3ParseResult:
     asset_refs: dict = {}
     layer_map: dict = {}
 
-    def place(m: IRModule) -> None:
-        if m.layer and m.layer in layer_map:
-            layer_map[m.layer].modules.append(m)
-            return
-        if m.layer and m.layer not in layer_map:
-            # 无对应层名时补层名（同一 id 首次出现处）
-            pass
-        extra.append(m)
-
     # chara entries
-    for e in entries:
-        keys = e.get("keys") or []
-        full_id = str(keys[0]) if keys else str(e.get("name") or "")
-        comment = str(e.get("comment") or "")
-        if comment == _COMMENT_ASSET and full_id:
-            asset_refs[full_id] = str(e.get("content") or "")
-            seen.add(full_id)
-            continue
-        m = _entry_to_module(e, seen, warnings)
-        if m is None:
-            continue
-        if m.layer:
-            if m.layer not in layer_map:
-                lm = _RE_COMMENT_LAYER.match(str(e.get("comment") or ""))
-                layer_map[m.layer] = IRLayer(
-                    id=m.layer,
-                    name=lm.group(2).strip() if lm else m.layer)
-                layers.append(layer_map[m.layer])
-            layer_map[m.layer].modules.append(m)
-        else:
-            extra.append(m)
-
+    _ingest_entries(entries, seen, warnings, layer_map, layers, extra, asset_refs,
+                    dedupe=False)
     # world entries 补充（chara 内嵌 character_book 与独立 world 通常同源，
     # 重复条目按 full_id 去重——不重复入 IR）
     if world is not None:
         if not isinstance(world, dict):
             raise ValueError("world 应为 dict")
-        for e in list((world.get("entries") or [])):
-            keys = e.get("keys") or []
-            full_id = str(keys[0]) if keys else str(e.get("name") or "")
-            if not full_id:
-                continue
-            if full_id in seen:
-                continue
-            comment = str(e.get("comment") or "")
-            if comment == _COMMENT_ASSET:
-                asset_refs[full_id] = str(e.get("content") or "")
-                seen.add(full_id)
-                continue
-            m = _entry_to_module(e, seen, warnings)
-            if m is None:
-                continue
-            if m.layer:
-                if m.layer not in layer_map:
-                    lm = _RE_COMMENT_LAYER.match(comment)
-                    layer_map[m.layer] = IRLayer(
-                        id=m.layer,
-                        name=lm.group(2).strip() if lm else m.layer)
-                    layers.append(layer_map[m.layer])
-                layer_map[m.layer].modules.append(m)
-            else:
-                extra.append(m)
+        _ingest_entries(list((world.get("entries") or [])), seen, warnings, layer_map,
+                        layers, extra, asset_refs, dedupe=True)
 
     if not name:
         warnings.append("chara 缺少 name，IR title 留空")

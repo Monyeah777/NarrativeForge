@@ -276,6 +276,12 @@
       "id": "AUD-0036",
       "title": "类型收敛扩面到 desktop/tests（66 条清零，27 文件）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0037",
+      "title": "复杂度收敛第一批（import_adapter.parse_ccv3 46→20，含死代码删除）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

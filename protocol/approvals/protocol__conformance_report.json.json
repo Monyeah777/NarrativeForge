@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0036 类型收敛扩面 desktop/tests（全树 mypy 0 条）",
+  "note": "AUD-0037 复杂度收敛第一批",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "a43a6d02acfa7b460c67132d293087eb882e3cafe73f0fe19c36f14a0f87b9ee"
+  "subject_digest": "271b0ba665273d85fdab5edeb1e074363f4b739a67eccd98cd93c5eac8f7f96c"
 }

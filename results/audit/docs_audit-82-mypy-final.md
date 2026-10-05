@@ -26,7 +26,7 @@ subjects:
   - desktop/src/core/layer_model.py:f9988ba40d9db789f7acaf1af24a0e3e8dc07eee14e7a487bc94742d11f778f1
   - desktop/src/core/import_graph.py:929b6cdff4715dc4b007bbcd273cee5581fc6744ed5abcd90157c4cfef0a80b0
   - desktop/src/core/bench.py:a66769543e0a4546ec52d869baa326916a996748f86a4798ca1dd0f238c70153
-  - desktop/src/core/import_adapter.py:5130103b8a9fff436ca4bab1b7ec3ba710652d8f767f24f1d983a0d9a21991de
+  - desktop/src/core/import_adapter.py:f5fb23d18e5d54eb561d48aee6d4556917de7cc63c1b0c33da6035e39222cbf7
   - desktop/src/core/daemon.py:ac60f99e9b2e8d72d568884bc4e3840f1b69bff9fa8f9a0647c155f4f85948af
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/exporter.py:d396f742ccf012331c855c4f52f0925daebc6100cadff30d4e1f510a9dff4c04
