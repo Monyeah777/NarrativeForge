@@ -50,7 +50,7 @@ def listing(root: str) -> dict:
     return out
 
 
-def parse(text: str) -> Optional[Tuple[str, frozenset, bool]]:
+def parse(text: str) -> Optional[Tuple[frozenset, bool]]:
     """正文 → `(依赖名集合, 是否含动态导入)`；解析不出 → None（调用方退回整块代码面）。"""
     import ast
     try:

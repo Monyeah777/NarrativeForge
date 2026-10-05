@@ -183,7 +183,7 @@ def registry_verify(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
             issues.append("%s 缺可达性实证 evidence.reachable（不伪造：查不到也要记 false）" % fid)
         elif ev.get("reachable") is False:
             unreachable += 1
-        per_cat[f.get("category")] = per_cat.get(f.get("category"), 0) + 1
+        per_cat[str(f.get("category"))] = per_cat.get(str(f.get("category")), 0) + 1
         per_tier[str(f.get("tier"))] = per_tier.get(str(f.get("tier")), 0) + 1
         per_status[str(f.get("status"))] = per_status.get(str(f.get("status")), 0) + 1
     stats = {"forms": len(forms), "categories": len(cat_ids),

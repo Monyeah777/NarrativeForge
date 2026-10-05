@@ -76,9 +76,10 @@ def _prose(artifact: str) -> Tuple[float, int]:
 
 
 def _selfcheck(artifact: str) -> float:
-    if not _SELF_CHECK.search(artifact):
+    m = _SELF_CHECK.search(artifact)
+    if not m:
         return 0.0
-    tail = artifact[_SELF_CHECK.search(artifact).start():]
+    tail = artifact[m.start():]
     marks = len(_MARK.findall(tail))
     return round(min(1.0, marks / 7.0), 4)
 

@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0033 类型收敛第六批 + code_metrics 重冻",
+  "note": "AUD-0034 类型收敛收尾（desktop/src mypy 归零）+ code_metrics 重冻",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "49e1b6830c37862563e8d713b25eb28a186db4f7a9c8a2e90417598de529a2a0"
+  "subject_digest": "5fb79783c4ce7a8b2731cb2d3a17703307721f8f7a6af2acc7845c7edc25b416"
 }

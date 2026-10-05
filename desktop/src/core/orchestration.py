@@ -83,8 +83,8 @@ def catalog(root: str = ".", tools: Optional[Dict[str, Dict[str, Any]]] = None
             "properties": dict(sch.get("properties") or {}),
             "additional_properties": bool(sch.get("additionalProperties", True)),
         }
-    for name, tools in workflow_tools(root).items():
-        out["workflows"][name] = {"tools": tools}
+    for name, wf_tools in workflow_tools(root).items():
+        out["workflows"][name] = {"tools": wf_tools}
     out["plan"] = dict(PLAN_GUIDE)
     return out
 

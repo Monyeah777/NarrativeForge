@@ -21,7 +21,7 @@ import ast
 def silent_skips(text: str) -> list:
     """→ `[(try 行号, handler 行号, 'pass'|'continue', 是否有注释)]`（纯函数）。"""
     lines = text.splitlines()
-    out = []
+    out: list = []
     try:
         tree = ast.parse(text)
     except SyntaxError:                    # 语法都不成立的件交给语法级判据（ruff/py_compile）报
@@ -79,7 +79,7 @@ def silent_returns(text: str) -> list:
     for node in ast.walk(tree):
         if not isinstance(node, ast.Try):
             continue
-        fn = node
+        fn: ast.AST = node
         while fn in parents and not isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
             fn = parents[fn]
         doc = ast.get_docstring(fn) or "" if isinstance(

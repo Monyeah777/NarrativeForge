@@ -111,7 +111,7 @@ def render_markdown(data: Dict[str, Any]) -> bytes:
         _md_row(["schema", "模块文档", "机读契约", "管线", "协议包", "台账条目"]),
         _md_row(["-", "-", "-", "-", "-", "-"]),
         _md_row([
-            len(data["schema_ids"]),
+            str(len(data["schema_ids"])),
             data["coverage"]["module_docs"],
             data["coverage"]["contract_covered"],
             data["coverage"]["pipelines"],

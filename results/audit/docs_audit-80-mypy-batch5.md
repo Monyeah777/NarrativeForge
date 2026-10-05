@@ -13,7 +13,7 @@ subjects:
   - desktop/src/core/world_slots.py:4d7dc220020f9b63b7aeef6f3cd74d1647fe575bbcd804778d61d9de5840aea4
   - desktop/src/core/pipelinerun.py:551bfd5e16424e630cc132fc32926d00bf7031f7e87163ff01cacc30698053bb
   - desktop/src/core/mcp_runtime.py:00e30d272b7badcf6698c10e17a635b0444f393f40883e547d6c9bdb27c6113e
-  - protocol/code_metrics_baseline.json:0b7f467986f45f5a27c79aa84b3d2a85d5cc76a0613f2c97db9686d4ed1ad29d
+  - protocol/code_metrics_baseline.json:777b3636b9e986c12b938597708ee75422404a1115f2a0e7ae74833aa1800b2c
 
 ---
 

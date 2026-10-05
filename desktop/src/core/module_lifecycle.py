@@ -141,7 +141,7 @@ def set_status(text: str, status: str, reason: str = "", module_file: str = "") 
 
 def _protocol_ids(root: str) -> dict:
     """community protocol.yaml 里出现的模块 id 词频（core_modules/modules/… 行）。"""
-    hits = {}
+    hits: dict = {}
     for p in glob.glob(os.path.join(root, "community", "*", "protocol.yaml")):
         try:
             with open(p, encoding="utf-8") as fh:
@@ -156,7 +156,7 @@ def _collect_infos(root: str) -> tuple:
     """扫描模块文件 → {id: {status, file, refs}} + 统计。"""
     infos = {}
     counts = {"modules": 0, "active": 0, "deprecated": 0, "retired": 0}
-    num_ids = {}
+    num_ids: dict = {}
     for rel in iter_module_files(root):
         text = read_text(root, rel)
         mid = module_id_from_text(text)

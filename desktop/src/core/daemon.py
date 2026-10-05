@@ -294,6 +294,8 @@ def _cli_module(root: Path):
     """加载 CLI 真源 `scripts/nf.py`（与单测同一手法：按路径 import，不走包导入）。"""
     import importlib.util
     spec = importlib.util.spec_from_file_location("nfcli_daemon", Path(root) / "scripts" / "nf.py")
+    if spec is None:
+        raise RuntimeError("scripts/nf.py 路径无法构造加载规格（修复指引：确认 --root 指向 NF 仓库根，且 scripts/nf.py 在场）")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)          # type: ignore[union-attr]
     return mod

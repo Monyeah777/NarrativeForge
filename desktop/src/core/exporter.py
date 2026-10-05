@@ -17,7 +17,7 @@ import base64
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from .ir import IRDocument
 from .ccv3_adapter import map_ir_to_ccv3, world_entries
@@ -39,7 +39,7 @@ class ExportResult:
 # ------------------------------------------------------------------ 适配器
 def _export_ccv3(ir: IRDocument, dest_dir: Path, res: ExportResult) -> None:
     chara = map_ir_to_ccv3(ir)
-    world = {
+    world: Dict[str, Any] = {
         "name": f"{ir.title} · 世界书",
         "entries": world_entries(ir),
     }

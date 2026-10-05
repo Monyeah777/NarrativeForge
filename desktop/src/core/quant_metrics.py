@@ -59,9 +59,9 @@ def load_equity_curve(path: str | Path) -> Tuple[Dict[str, Any], str]:
     for i, row in enumerate(rows, 2):
         try:
             dates.append(str(row.get("date") or row.get("Date") or "").strip())
-            equity.append(float(row.get("equity") or row.get("Equity")))
+            equity.append(float(row.get("equity") or row.get("Equity") or ""))
             if has_bench:
-                bench.append(float(row.get("benchmark") or row.get("Benchmark")))
+                bench.append(float(row.get("benchmark") or row.get("Benchmark") or ""))
         except (TypeError, ValueError):
             return {}, "第 %d 行数值不可解析" % i
     if len(equity) < 3:

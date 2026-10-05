@@ -34,7 +34,7 @@ def scan(transcript: str, allowed: List[str]) -> Tuple[List[str], Dict[str, Any]
     if not turns:
         issues.append("未检测到回合标记（转录需含 回合 N： / 第 N 回合）")
         return issues, {"turns": 0, "warn_gaps": []}
-    allowed = set(allowed)
+    allowed_set = set(allowed)
     gaps = []
     for i, (num, body) in enumerate(turns):
         if not _CITE.search(body):
@@ -42,8 +42,8 @@ def scan(transcript: str, allowed: List[str]) -> Tuple[List[str], Dict[str, Any]
         if not any(k in body for k in _PROGRESS):
             issues.append("第 %d 回合无推进/状态留痕（R-R2）" % num)
         for tok in _MODULE.findall(body):
-            if tok not in allowed and tok.split(":", 1)[-1] not in {
-                    a.split(":", 1)[-1] for a in allowed}:
+            if tok not in allowed_set and tok.split(":", 1)[-1] not in {
+                    a.split(":", 1)[-1] for a in allowed_set}:
                 issues.append("第 %d 回合出现允许集外编号 %s（R-R3）" % (num, tok))
         if i > 0 and num != turns[i - 1][0] + 1:
             gaps.append((turns[i - 1][0], num))

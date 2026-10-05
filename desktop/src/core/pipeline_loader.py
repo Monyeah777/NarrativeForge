@@ -222,7 +222,7 @@ def load_pipeline_file(path: Path | str) -> Optional[Pipeline]:
 
 def discover_pipelines(directory: Path | str) -> List[Pipeline]:
     """扫描目录下所有管线 md，返回可解析的 Pipeline 列表。"""
-    out = []
+    out: List[Pipeline] = []
     d = Path(directory)
     if not d.exists():
         return out

@@ -83,7 +83,7 @@ def _entry_imports(text: str) -> List[Tuple[int, str]]:
                     names = []
                 for name in names:
                     if name in ENTRY_MODULE_NAMES:
-                        out.append((node.lineno, name))
+                        out.append((getattr(node, "lineno", 0), name))
     if len(_ENTRY_IMPORT_CACHE) >= _ENTRY_IMPORT_CACHE_MAX:
         _ENTRY_IMPORT_CACHE.clear()
     _ENTRY_IMPORT_CACHE[key] = out

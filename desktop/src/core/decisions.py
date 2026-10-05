@@ -37,7 +37,7 @@ _DASH = ("—", "-", "")
 
 def entries(root: str = ".") -> List[Dict[str, Any]]:
     r = Path(root)
-    out = []
+    out: List[Dict[str, Any]] = []
     for p in sorted(r.glob(GLOB)):
         fm, body = parse_frontmatter(p.read_text(encoding="utf-8"))
         out.append({"path": p.relative_to(r).as_posix(), "file": p.name,

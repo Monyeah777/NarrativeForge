@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import os
+import sys
 
 _YAML = None
 _TRIED = False
@@ -68,7 +69,7 @@ def dist_version(name: str = "PyYAML") -> str:
     #: 前缀**大小写不敏感**：本机装出来的目录名是小写 `pyyaml-6.0.3.dist-info`（Windows 上
     #: `startswith` 仍然按大小写比，所以不能直接拿发行名去比）。
     prefix = (str(name).split("-")[0] + "-").lower()
-    for base in os.sys.path:
+    for base in sys.path:
         if not base or not os.path.isdir(base):
             continue
         try:

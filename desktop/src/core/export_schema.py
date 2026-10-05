@@ -74,8 +74,8 @@ def check_ccv3_chara(path: str) -> List[str]:
         if not isinstance(entries, list):
             issues.append("ccv3 character_book.entries[] 缺失或非列表")
         else:
-            for i, e in enumerate(entries):
-                if not isinstance(e, dict) or not e.get("name") or not e.get("content"):
+            for i, entry in enumerate(entries):
+                if not isinstance(entry, dict) or not entry.get("name") or not entry.get("content"):
                     issues.append(f"ccv3 world 条目 {i} 缺 name/content")
     return issues
 
@@ -92,12 +92,12 @@ def check_ccv3_world(path: str) -> List[str]:
     entries = data.get("entries") if isinstance(data, dict) else None
     if not isinstance(entries, list):
         return ["ccv3 world.entries[] 缺失或非列表"]
-    for i, e in enumerate(entries):
-        if not isinstance(e, dict):
+    for i, entry in enumerate(entries):
+        if not isinstance(entry, dict):
             issues.append(f"world 条目 {i} 非对象")
             continue
         for k in WORLD_ENTRY_KEYS:
-            if k not in e:
+            if k not in entry:
                 issues.append(f"world 条目 {i} 缺键: {k}")
     return issues
 

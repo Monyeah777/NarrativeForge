@@ -46,7 +46,7 @@ def _resolve_ref(ref: str, root_schema: dict) -> Optional[dict]:
 
 
 def _type_ok(value: Any, want: str) -> bool:
-    py = _JSON_TYPES.get(want)
+    py: Any = _JSON_TYPES.get(want)
     if py is None:
         return True
     if want in ("number", "integer") and isinstance(value, bool):

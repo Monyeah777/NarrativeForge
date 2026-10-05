@@ -53,7 +53,7 @@ def _extract_fences(text: str) -> list:
     """提取 ```yaml 代码块内文本（纯文本切段，不做 yaml 解析）。"""
     out = []
     in_fence = False
-    buf = []
+    buf: list = []
     for ln in text.splitlines():
         if not in_fence:
             if _YAML_FENCE.match(ln):

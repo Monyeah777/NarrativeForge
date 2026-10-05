@@ -24,7 +24,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from .ir import IRDocument, IRLayer, IRModule
 
@@ -333,7 +333,8 @@ def parse_ccv3(chara: dict, world: Optional[dict] = None) -> Ccv3ParseResult:
     name = str(chara.get("name") or "")
     desc = str(chara.get("description") or "")
     # v3 真形状：内容字段在 `data` 内（外部实证 2026-09-21）；v2 旧形状仍兼容（顶层字段）
-    body = chara.get("data") if isinstance(chara.get("data"), dict) else chara
+    body_raw = chara.get("data")
+    body: Any = body_raw if isinstance(body_raw, dict) else chara
     cb = body.get("character_book") or chara.get("character_book") or {}
     entries = list(cb.get("entries") or [])
 

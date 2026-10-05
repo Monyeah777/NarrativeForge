@@ -76,7 +76,7 @@
       "max_fn_lines": 21
     },
     "desktop/src/core/bench.py": {
-      "lines": 159,
+      "lines": 160,
       "max_fn_cc": 11,
       "max_fn_lines": 30
     },
@@ -146,14 +146,14 @@
       "max_fn_lines": 34
     },
     "desktop/src/core/daemon.py": {
-      "lines": 765,
+      "lines": 767,
       "max_fn_cc": 14,
       "max_fn_lines": 67
     },
     "desktop/src/core/decision_layer.py": {
-      "lines": 459,
+      "lines": 460,
       "max_fn_cc": 43,
-      "max_fn_lines": 84
+      "max_fn_lines": 85
     },
     "desktop/src/core/decisions.py": {
       "lines": 185,
@@ -236,9 +236,9 @@
       "max_fn_lines": 39
     },
     "desktop/src/core/import_adapter.py": {
-      "lines": 438,
+      "lines": 439,
       "max_fn_cc": 48,
-      "max_fn_lines": 123
+      "max_fn_lines": 124
     },
     "desktop/src/core/import_graph.py": {
       "lines": 202,
@@ -316,7 +316,7 @@
       "max_fn_lines": 178
     },
     "desktop/src/core/lazy_yaml.py": {
-      "lines": 82,
+      "lines": 83,
       "max_fn_cc": 10,
       "max_fn_lines": 24
     },
@@ -542,7 +542,7 @@
     },
     "desktop/src/core/quant_metrics.py": {
       "lines": 345,
-      "max_fn_cc": 16,
+      "max_fn_cc": 18,
       "max_fn_lines": 50
     },
     "desktop/src/core/rating_gate.py": {

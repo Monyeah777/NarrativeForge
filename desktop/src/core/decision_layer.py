@@ -435,8 +435,9 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     if (a1.get("meta") or {}).get("calibrated") is not False:
         issues.append("stub 应答须自称 calibrated=false（排序信号不是概率）")
     # fail-closed：未登记适配器 / 缺 endpoint / 请求不合规 → abstained
-    for label, kwargs in (("未登记适配器", {"adapter": "ghost"}),
-                          ("缺 endpoint", {"adapter": "systemone-http"})):
+    cases: List[Tuple[str, Dict[str, Any]]] = [("未登记适配器", {"adapter": "ghost"}),
+                                             ("缺 endpoint", {"adapter": "systemone-http"})]
+    for label, kwargs in cases:
         out = decide(req, root=root, **kwargs)
         if out.get("status") != "abstained" or not out.get("reason"):
             issues.append("%s 未 fail-closed（应 abstained + reason）" % label)

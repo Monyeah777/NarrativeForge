@@ -182,7 +182,7 @@ def install_pipeline(store: Store, item: CommunityItem) -> bool:
     if pl is None:
         return False
     raw = store.load_cache("pipelines")
-    cur = list(raw) if isinstance(raw, list) else []
+    cur: list = list(raw) if isinstance(raw, list) else []
     seen = set()
     merged = []
     for d in cur:

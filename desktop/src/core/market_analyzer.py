@@ -220,7 +220,7 @@ def related_of(target: str, prots: Dict[str, Dict[str, Any]],
     for pid, p in prots.items():
         if isinstance(p, dict) and p.get("module_ids") is not None:
             pkgs[pid] = p
-    mod2pkgs = {}
+    mod2pkgs: dict = {}
     for pid, p in pkgs.items():
         for m in p.get("module_ids") or []:
             mod2pkgs.setdefault(m, set()).add(pid)

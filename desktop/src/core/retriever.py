@@ -70,7 +70,7 @@ def _asset_pack_hits(store: Store, q: str, limit: int) -> List[Hit]:
 
 
 def _pipeline_hits(store: Store, q: str, limit: int) -> List[Hit]:
-    out = []
+    out: List[Hit] = []
     raw = store.load_cache("pipelines")
     if isinstance(raw, list):
         for p in raw:

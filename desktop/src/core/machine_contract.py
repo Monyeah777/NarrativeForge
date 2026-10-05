@@ -248,7 +248,7 @@ def apply_outputs(root: str = ".", write: bool = False) -> List[Dict[str, Any]]:
     """给 **outputs 为空且有事件证据**的模块补 outputs 声明（幂等）。"""
     from core import conformance_scan as csc
 
-    ev_fields: Dict[str, Dict[str, str]] = {}
+    ev_fields: Dict[str, Dict[str, Any]] = {}
     reg = Path(root) / "protocol" / "event_registry.json"
     if reg.is_file():
         try:
@@ -317,6 +317,6 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
                           % (rel, mc.get("id"), spec["id"]))
     if l0:
         warns.append("仍为 L0（无机读块）：%d 件（修复指引：nf module contract --write）" % len(l0))
-    stats = {"l0": len(l0), "checked": checked}
+    stats: Dict[str, Any] = {"l0": len(l0), "checked": checked}
     stats["l0_list"] = l0
     return issues, warns, stats
