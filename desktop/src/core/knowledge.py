@@ -161,7 +161,8 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         loc = str(s.get("locator") or "")
         if loc and not (Path(root) / loc).exists():
             issues.append("源 %s 的 locator 不存在：%s（防纸面源）" % (sid, loc))
-        fresh = s.get("freshness") if isinstance(s.get("freshness"), dict) else {}
+        fresh_raw = s.get("freshness")
+        fresh: Dict[str, Any] = fresh_raw if isinstance(fresh_raw, dict) else {}
         pol = str(fresh.get("policy") or "")
         labelled = bool(s.get("requires_source_label"))
         if auth == "reference":
@@ -195,7 +196,8 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         con_idx = [pos[i] for i in ids if _auth(rows, i) == "contract"]
         if ref_idx and con_idx and max(con_idx) > min(ref_idx):
             issues.append("query_order 未把全部合同级排在参考级之前（查询有序被破坏）")
-    prom = decl.get("promotion") if isinstance(decl.get("promotion"), dict) else {}
+    prom_raw = decl.get("promotion")
+    prom: Dict[str, Any] = prom_raw if isinstance(prom_raw, dict) else {}
     if tuple(prom.get("evidence_tiers") or ()) != TIERS:
         issues.append("promotion.evidence_tiers 与判据不一致（期望 %s）" % "/".join(TIERS))
     if tuple(prom.get("triggers") or ()) != TRIGGERS:
@@ -204,12 +206,14 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         issues.append("promotion 缺 rule（晋升标准必须成文）")
     if str(prom.get("on_missing_evidence") or "") != "stay-reference":
         issues.append("promotion.on_missing_evidence 必须为 stay-reference（缺证据不得转正）")
-    rev = decl.get("review") if isinstance(decl.get("review"), dict) else {}
+    rev_raw = decl.get("review")
+    rev: Dict[str, Any] = rev_raw if isinstance(rev_raw, dict) else {}
     if not (rev.get("machine_gates") or []):
         issues.append("review 缺 machine_gates（消化审核必须列机检项）")
     if not str(rev.get("rule") or "").strip():
         issues.append("review 缺 rule（消化审核规则必须成文）")
-    cog = decl.get("cognition") if isinstance(decl.get("cognition"), dict) else {}
+    cog_raw = decl.get("cognition")
+    cog: Dict[str, Any] = cog_raw if isinstance(cog_raw, dict) else {}
     fid = str(cog.get("filter_module") or "")
     if not fid:
         issues.append("cognition 缺 filter_module（认知裁剪须指定执行模块）")
@@ -294,7 +298,8 @@ def harvest_frequency(trace_path: str) -> Dict[str, int]:
         if isinstance(data, list):
             records = data
         elif isinstance(data, dict):
-            records = data.get("records") if isinstance(data.get("records"), list) else [data]
+            rec = data.get("records")
+            records = rec if isinstance(rec, list) else [data]
     except ValueError:
         for line in text.splitlines():
             line = line.strip()

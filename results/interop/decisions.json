@@ -222,6 +222,12 @@
       "id": "AUD-0027",
       "title": "v2.12.0 首例发布（保留式收口 + 发布机制两处缺陷修复 + Golden Master）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0028",
+      "title": "类型分批收敛第一批（io_types / world_model / knowledge 三模块 mypy 归零）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

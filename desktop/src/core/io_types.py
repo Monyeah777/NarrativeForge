@@ -79,9 +79,10 @@ def parse_io_types(text: str) -> Optional[Dict[str, Dict[str, str]]]:
     lines = text.splitlines()
     start = None
     for i, ln in enumerate(lines):
-        if _IO_RE.match(ln):
+        m = _IO_RE.match(ln)
+        if m:
             start = i
-            base = len(_IO_RE.match(ln).group(1))
+            base = len(m.group(1))
             break
     if start is None:
         return None
@@ -124,7 +125,8 @@ def inject(text: str, io: Dict[str, Dict[str, str]]) -> str:
     lines = text.splitlines()
     io_start = next((i for i, ln in enumerate(lines) if _IO_RE.match(ln)), None)
     if io_start is not None:
-        base = len(_IO_RE.match(lines[io_start]).group(1))
+        m = _IO_RE.match(lines[io_start])
+        base = len(m.group(1)) if m else 0
         end = io_start + 1
         while end < len(lines):
             ln = lines[end]
@@ -145,8 +147,8 @@ def inject(text: str, io: Dict[str, Dict[str, str]]) -> str:
     if fence_open is None or fence_close is None:
         return text
     anchor = fence_close
-    block = render_io_types(io)
-    lines[anchor:anchor] = block.splitlines()
+    block_text = render_io_types(io)
+    lines[anchor:anchor] = block_text.splitlines()
     return "\n".join(lines) + ("\n" if text.endswith("\n") else "")
 
 

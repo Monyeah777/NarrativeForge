@@ -84,7 +84,7 @@ def validate_contract(wm: Any, label: str = "world_model",
     abstract = wm.get("abstract_state")
     if not isinstance(abstract, dict):
         issues.append(f"{label}.abstract_state: 缺失或非对象")
-        variables: List[Dict[str, Any]] = []
+        variables: Any = []
         initial: Any = None
     else:
         variables = abstract.get("variables")
@@ -157,7 +157,7 @@ def validate_contract(wm: Any, label: str = "world_model",
     if not isinstance(transition, dict):
         issues.append(f"{label}.transition: 缺失或非对象")
         initial_phase = None
-        phases: List[Dict[str, Any]] = []
+        phases: Any = []
     else:
         initial_phase = transition.get("initial_phase")
         phases = transition.get("phases")
@@ -263,8 +263,8 @@ def validate_contract(wm: Any, label: str = "world_model",
                 if declared_kinds.get(field) != "array":
                     issues.append(f"{at}.field: finite_sequence 只能用于 array 变量")
                 else:
-                    spec = next((v for v in valid_vars if v.get("name") == field), {})
-                    if spec.get("item_kind") not in (None, "string"):
+                    flow_spec = next((v for v in valid_vars if v.get("name") == field), {})
+                    if flow_spec.get("item_kind") not in (None, "string"):
                         issues.append(
                             f"{at}.field: finite_sequence 的 array 元素应为 string"
                         )
@@ -373,7 +373,7 @@ class WorldModelRuntime:
         for name, spec in self.variables.items():
             if name not in state:
                 continue
-            if not _matches(state[name], spec.get("kind"), spec.get("item_kind")):
+            if not _matches(state[name], spec.get("kind") or "", spec.get("item_kind")):
                 issues.append(
                     "state.%s 类型不匹配 kind=%r item_kind=%r"
                     % (name, spec.get("kind"), spec.get("item_kind"))

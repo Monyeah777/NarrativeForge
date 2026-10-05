@@ -167,7 +167,7 @@
     {
       "@id": "nf:file/protocol/conformance_report.json",
       "@type": "prov:Entity",
-      "nf:sha256": "aebd3508d74469d3f6007153bf5bd23262dfc464cdfb9b0b9c643adcd54c0eb9"
+      "nf:sha256": "08896dc7c133f3b1531689609afe4172a15469ec21d027dceba7cde5b434a7fc"
     },
     {
       "@id": "nf:file/protocol/data_contracts.json",

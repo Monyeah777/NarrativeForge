@@ -276,7 +276,7 @@
       "max_fn_lines": 12
     },
     "desktop/src/core/io_types.py": {
-      "lines": 250,
+      "lines": 252,
       "max_fn_cc": 27,
       "max_fn_lines": 60
     },
@@ -301,9 +301,9 @@
       "max_fn_lines": 27
     },
     "desktop/src/core/knowledge.py": {
-      "lines": 482,
+      "lines": 487,
       "max_fn_cc": 62,
-      "max_fn_lines": 100
+      "max_fn_lines": 104
     },
     "desktop/src/core/knowledge_sig.py": {
       "lines": 215,
