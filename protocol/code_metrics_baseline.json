@@ -131,7 +131,7 @@
       "max_fn_lines": 26
     },
     "desktop/src/core/conformance_scan.py": {
-      "lines": 1049,
+      "lines": 1050,
       "max_fn_cc": 36,
       "max_fn_lines": 107
     },
@@ -361,9 +361,9 @@
       "max_fn_lines": 17
     },
     "desktop/src/core/mcp_package.py": {
-      "lines": 70,
+      "lines": 71,
       "max_fn_cc": 27,
-      "max_fn_lines": 48
+      "max_fn_lines": 49
     },
     "desktop/src/core/mcp_runtime.py": {
       "lines": 1392,
@@ -411,7 +411,7 @@
       "max_fn_lines": 71
     },
     "desktop/src/core/pack_combo.py": {
-      "lines": 1268,
+      "lines": 1269,
       "max_fn_cc": 63,
       "max_fn_lines": 145
     },

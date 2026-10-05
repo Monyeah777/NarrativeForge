@@ -49,7 +49,7 @@ _BODY_CACHE_MAX = 4096
 #: 纯读 ⇒ 冷却语义与「新起进程」一致）：读文本 / 列目录 / 按模式枚举 / 子树清单。实测一次
 #: `evaluate` 打开 7833 次文件而只有 2354 个不同文件（70% 冗余读），并建过 5403 次 `scandir`。
 _READ_MEMO: Optional[Dict[str, Any]] = None
-_DIR_MEMO: Optional[Dict[str, Any]] = None
+_DIR_MEMO: Optional[Dict[Any, Any]] = None       # 键为 ("entries", path) 元组（与 _PAT_MEMO 串行会话隔离）
 #: 与读缓存同生命周期的**逐件内容摘要**缓存（键＝文件）：输入面高度重叠，一次调用里每件只算一次。
 _DIGEST_MEMO: Optional[Dict[str, bytes]] = None
 #: 同生命周期的「按模式枚举」缓存：一次调用内同一 (root, pattern) 只走一遍文件系统（实测 44% 白走）。
@@ -382,9 +382,10 @@ def _scandir_list(path: str):
         hit = _RESIDENT["dirs"].get(key)
         if hit is not None:
             return hit
-    memo = ("entries", key) if _DIR_MEMO is not None else None
-    if memo is not None:
-        hit = _DIR_MEMO.get(memo)
+    dir_memo = _DIR_MEMO
+    memo = ("entries", key) if dir_memo is not None else None
+    if memo is not None and dir_memo is not None:
+        hit = dir_memo.get(memo)
         if hit is not None:
             return hit
     try:
@@ -392,8 +393,8 @@ def _scandir_list(path: str):
             entries = list(it)
     except OSError:  # 目录列不到 ⇒ 空清单（IO/权限问题；该类缺口由对应门禁另行报出，见 AUD-0016）
         return []
-    if memo is not None:
-        _DIR_MEMO[memo] = entries
+    if memo is not None and dir_memo is not None:
+        dir_memo[memo] = entries
     if _RESIDENT is not None and _resident_under(key) \
             and len(_RESIDENT["dirs"]) < _RESIDENT_DIR_MAX:
         packed = []

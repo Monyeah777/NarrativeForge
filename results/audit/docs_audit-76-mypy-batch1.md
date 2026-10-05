@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/io_types.py:09296daf865db85bda582fb646cece708c51f97e190a9e91c0eecd07252475f7
   - desktop/src/core/world_model.py:55ac4cbfaa4c81a9d04e6d9c90ab749ddeb418ca27863fd552028289eebee42c
   - desktop/src/core/knowledge.py:01677496cd14fa3b3e2cf37cc396056634ba5a5ba82cbb9502721768f74485ad
-  - protocol/code_metrics_baseline.json:32b12cbe19748d4dad6a756e08e51a26531312fcb552a7afaa1690fd5094fd0f
+  - protocol/code_metrics_baseline.json:cbf1f79b0c77431590b9668ea20a090b872b03ff3173cba76ba3dbacf964e610
 
 ---
 

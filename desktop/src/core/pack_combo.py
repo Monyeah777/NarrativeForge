@@ -198,7 +198,7 @@ def _module_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
         mc = (parsed or {}).get("machine_contract") or {}
         if not isinstance(mc, dict) or not mc:
             continue
-        rec = {
+        rec: Dict[str, Any] = {
             "id": str(mc.get("id") or p.stem.split("_")[0]),
             "stem": p.stem.split("_")[0],
             "pack": p.parents[1].name,
@@ -240,7 +240,7 @@ def _core_contracts(root: str = ".") -> Dict[str, Dict[str, Any]]:
         mc = (csc._fence_yaml(text, "machine_contract") or {}).get("machine_contract") or {}
         if not isinstance(mc, dict) or not mc:
             continue
-        rec = {"id": str(mc.get("id") or p.stem.split("_")[0]),
+        rec: Dict[str, Any] = {"id": str(mc.get("id") or p.stem.split("_")[0]),
                "stem": p.stem.split("_")[0],
                "publish": [str(x) for x in ((mc.get("events") or {}).get("publish") or [])],
                "subscribe": [str(x) for x in ((mc.get("events") or {}).get("subscribe") or [])],
@@ -869,9 +869,9 @@ def materialize(root: str = ".", packs: Sequence[str] = (), combo_id: str = "",
         "  references:",
     ]
     for sp, ms in refs:
-        for m in ms:
+        for mid in ms:
             proto += ["    - source_package: %s" % sp,
-                      "      module_id: %s" % m,
+                      "      module_id: %s" % mid,
                       '      source_schema_version: "2"',
                       "      asset_readonly: true"]
     proto += ["  modules: []", "  assets:",
@@ -1027,7 +1027,7 @@ def combo_outputs(root: str, name: str, cert: Dict[str, Any],
                                                 "组合合法性由五不变量给出")
     params = {"packs": cert["packs"], "extra_modules": cert.get("extra_modules") or [],
               "label": cert_doc["label"], "note": cert_doc["note"]}
-    borrow = {}
+    borrow: Dict[str, List[str]] = {}
     for m in cert["modules"]:
         rec = prof_get_module(root, m)
         borrow.setdefault(str(rec.get("pack") or ""), []).append(m)
@@ -1175,7 +1175,8 @@ def combo_register(root: str, name: str, category: str, pipeline: str,
             "＋ 广度证明（全部两两 + 定种子抽样）——见 docs/combos.md 与 AUD-0020",
             "",
         ])
-        text = text[:m.start()] + seg + text[m.start():]
+        pos = m.start() if m else len(text)
+        text = text[:pos] + seg + text[pos:]
         dpk._write_text_retry(doc_path, text)
         did02 = True
     spec_like = {"code": "COMBO", "name": name, "pack_name": name, "category": category}

@@ -35,7 +35,8 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         issues.append("红线不得为空（上架包的纪律必须成文）")
     if str(d.get("status")) == "draft" and not (d.get("pending") or []):
         issues.append("status=draft 但 pending 为空——草案必须写明还差什么")
-    pkg = d.get("package") if isinstance(d.get("package"), dict) else {}
+    pkg_raw = d.get("package")
+    pkg: Dict[str, Any] = pkg_raw if isinstance(pkg_raw, dict) else {}
     if not (pkg.get("name_candidates") or []):
         issues.append("缺命名候选（B-S1 须给候选）")
     if not (pkg.get("one_liner_candidates") or []):
