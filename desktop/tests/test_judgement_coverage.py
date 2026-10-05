@@ -8,6 +8,7 @@
 """
 import json
 import sys
+from typing import Optional
 import tempfile
 import unittest
 from pathlib import Path
@@ -26,7 +27,7 @@ def _file(tmp: str, rel: str, text: str) -> Path:
     return p
 
 
-def _decl(tmp: str, exceptions=None, schema: str = None) -> None:
+def _decl(tmp: str, exceptions=None, schema: Optional[str] = None) -> None:
     _file(tmp, jc.DECL_REL, json.dumps(
         {"schema": schema if schema is not None else jc.SCHEMA,
          "exceptions": exceptions or {}}, ensure_ascii=False))

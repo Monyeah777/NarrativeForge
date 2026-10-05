@@ -146,6 +146,8 @@ class _DaemonFixture(unittest.TestCase):
     `DaemonParityTest`，于是把三条重判据又跑了一遍——套件平白多花 ~90 s。）
     """
 
+    doc: dict = {}
+
     @classmethod
     def setUpClass(cls):
         cls.home = tempfile.mkdtemp(prefix="nf_parity_home_")

@@ -11,7 +11,7 @@ subjects:
   - community/AI系统域包/modules/M25_前置闭包求值.md:407a0cd4758d8390d04cfb8a3fd3b1bc4153b4e414cf023dc52f028e18ec353f
   - community/AI系统域包/modules/M26_装载序就绪门.md:997415ffd94150b0a6599359eaf04252001cf1b834495f0dfcfb95f5c50bddc3
   - scripts/ai_domain_closure.py:2d5a1ed9e59dda0e72c185aed189647520183c6e2d4e942a2548dadd654cec1e
-  - desktop/tests/test_ai_domain_closure.py:dde7ad7c4087ce72c67c98eb8f5f8e3f123568e1b7dd6c31914235265bd97c80
+  - desktop/tests/test_ai_domain_closure.py:dc6a45d68ae576ae90a87700191ef5688aeb7db194139eff92317ecbc1140204
 
 ---
 

@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location("cmc", ROOT / "scripts" / "commit_msg_check.py")
+assert spec is not None and spec.loader is not None
 cmc = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cmc)
 

@@ -141,7 +141,7 @@ class ReviewLimitTest(unittest.TestCase):
         self.assertEqual(few["scanned"], 2)
         self.assertTrue(gr.summary(all_rows))
 
-    def test_limit_zero_means_all_rows(self):
+    def test_limit_two_caps_rows(self):
         all_rows = gr.review(ROOT, adapter="stub", limit=0)
         few = gr.review(ROOT, adapter="stub", limit=2)
         self.assertGreaterEqual(all_rows["scanned"], few["scanned"])

@@ -282,6 +282,8 @@ class GuidanceCommandReachabilityTest(unittest.TestCase):
     `ls` 这个子命令：照做的读者只会拿到 `invalid choice: 'ls'`。本件把这批也钉住。
     """
 
+    commands: set = set()
+
     @classmethod
     def setUpClass(cls):
         cls.commands = _subcommands()
@@ -328,6 +330,8 @@ class GuidancePathReachabilityTest(unittest.TestCase):
     同样会指路（「按 `docs/xxx.md` 裁决」「补 `protocol/yyy.json`」），这一批此前没人扫。
     判定沿用文档侧同一套 `_looks_like_rel_path`（含占位/模板过滤），命中后逐条核对能否解析。
     """
+
+    tops: set = set()
 
     @classmethod
     def setUpClass(cls):

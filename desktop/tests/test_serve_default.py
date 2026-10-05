@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 from core import mcp_runtime as mrt  # noqa: E402
 
 spec = importlib.util.spec_from_file_location("nfcli_serve_default", ROOT / "scripts" / "nf.py")
+assert spec is not None and spec.loader is not None
 nf = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(nf)
 

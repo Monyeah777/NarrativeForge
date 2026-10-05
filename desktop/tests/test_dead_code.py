@@ -49,7 +49,7 @@ def _tokens(text: str) -> collections.Counter:
 
 def zero_ref_defs(pool: dict, targets=TARGET_DIRS) -> list:
     """→ 零引用定义清单 `[(仓库相对路径, 函数名, 行号)]`（纯函数，便于变异自证）。"""
-    counts = collections.Counter()
+    counts: collections.Counter[str] = collections.Counter()
     per_file = {}
     for rel, text in pool.items():
         c = _tokens(text)
@@ -83,7 +83,7 @@ def zero_ref_constants(pool: dict, targets=TARGET_DIRS) -> list:
     阈值取 `[A-Z][A-Z0-9_]{2,}`（≥3 字符），与 `zero_ref_defs` 同一套「防误杀」思路：
     短名（`T0` 之类）不判，避免把字面量巧合当引用。
     """
-    counts = collections.Counter()
+    counts: collections.Counter[str] = collections.Counter()
     per_file = {}
     for rel, text in pool.items():
         c = _tokens(text)
@@ -157,7 +157,7 @@ def import_only_defs(pool: dict, targets=TARGET_DIRS) -> list:
     只有 `gitee_ingest.py` 的 import 在「装作」被用）。已删函数 + 该 import；
     本判据把这一类钉死（把 import 行剔掉再数引用，为 0 即「只被 import 引用」）。
     """
-    counts = collections.Counter()
+    counts: collections.Counter[str] = collections.Counter()
     for text in pool.values():
         body = "\n".join(ln for ln in text.splitlines() if not _IMPORT_LINE.match(ln))
         counts.update(_tokens(body))
@@ -292,7 +292,8 @@ def zero_ref_methods(pool: dict, targets=TARGET_DIRS, hooks=None) -> list:
     真零引用 = 连自己类里都没人叫它，且全仓**任意文本**都没出现过它的名字。
     """
     hooks = IMPLICIT_HOOKS if hooks is None else hooks
-    counts, per_file = collections.Counter(), {}
+    counts: collections.Counter[str] = collections.Counter()
+    per_file: dict = {}
     for rel, text in pool.items():
         c = _tokens(text)
         per_file[rel] = c
@@ -497,7 +498,7 @@ class ZeroRefRuleTest(unittest.TestCase):
 
 
 #: 已复核「不引用也不删」的 core 模块 → 理由（当前为空；有例外必须逐条写明）。
-REVIEWED_UNREFERENCED = {}
+REVIEWED_UNREFERENCED: dict = {}
 
 #: core 模块被「引用」的写法（缺一种就会把活模块判成墓碑）：
 #: - `from .x import` / `from ..x import`：包内相对导入（**首版探针就漏在这个**：

@@ -599,7 +599,7 @@ class TestMcpRuntime(unittest.TestCase):
         class _FakeIn(io.StringIO):
             def __init__(self, raw: bytes):
                 super().__init__("")
-                self.buffer = io.BytesIO(raw)      # `_iter_lines` 走字节路径才受上限约束
+                self.buffer = io.BytesIO(raw)  # type: ignore[misc]  # `_iter_lines` 走字节路径才受上限约束
 
         big = (b'{"jsonrpc":"2.0","id":1,"method":"ping","params":{"x":"'
                + b"y" * (MAX_MESSAGE_BYTES + 64) + b'"}}\n')
@@ -734,7 +734,8 @@ class ResourceListPagingAndFilterTest(unittest.TestCase):
         self.rt = mrt.McpRuntime({"mcp": {"name": "probe", "version": "0", "resources": []}})
 
     def _list_all(self, **params) -> list:
-        out, cursor = [], ""
+        out: list = []
+        cursor = ""
         for _ in range(300):
             p = dict(params)
             if cursor:

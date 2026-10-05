@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 TESTS = ROOT / "desktop" / "tests"
 #: 已知的外部/历史指认 → 理由（当前为空；有例外必须逐条写明）。
-KNOWN_EXTERNAL = {}
+KNOWN_EXTERNAL: dict = {}
 
 _FILE_REF = re.compile(r"\b(test_[a-z0-9_]+)\.py\b")
 _MEMBER_REF = re.compile(r"\b(test_[a-z0-9_]+)\.(test_[a-z0-9_]+|Test[A-Za-z0-9_]*)\*?")

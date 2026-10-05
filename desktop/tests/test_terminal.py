@@ -29,6 +29,7 @@ sys.path.insert(0, str(ROOT / "desktop" / "src"))
 from core import terminal as term  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("nfcli", ROOT / "scripts" / "nf.py")
+assert _spec is not None and _spec.loader is not None
 nf = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(nf)
 

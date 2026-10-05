@@ -7,7 +7,7 @@
     "contracts": 27,
     "id": "nf:conformance_report",
     "receiptCount": 57,
-    "receiptRoot": "96c7fa72feebac40590677c580ec2600d799d644564d999bf869affec6f0f5ad",
+    "receiptRoot": "b39d0395fe50d73904e0663698cb53cc1ab6fc81916a3edb6152d2d8a14b16f4",
     "verdict": "conformant"
   },
   "issuer": "执行者（作者指令：按 62 计划执行）",

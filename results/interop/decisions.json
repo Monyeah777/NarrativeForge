@@ -270,6 +270,12 @@
       "id": "AUD-0035",
       "title": "类型收敛扩面到 scripts（19 条清零，8 个脚本）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0036",
+      "title": "类型收敛扩面到 desktop/tests（66 条清零，27 文件）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

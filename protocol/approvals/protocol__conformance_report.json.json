@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0035 类型收敛扩面 scripts + code_metrics 重冻",
+  "note": "AUD-0036 类型收敛扩面 desktop/tests（全树 mypy 0 条）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "1b891fb255e914637afe4d0a483177ff64dc070b8d666506102bb55f9fe42ade"
+  "subject_digest": "a43a6d02acfa7b460c67132d293087eb882e3cafe73f0fe19c36f14a0f87b9ee"
 }

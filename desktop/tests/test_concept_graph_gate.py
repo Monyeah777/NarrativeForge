@@ -20,6 +20,7 @@ from core import concept_graph as cg  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location(
     "nf_ai_domain_closure", ROOT / "scripts" / "ai_domain_closure.py")
+assert _spec is not None and _spec.loader is not None
 adc = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(adc)
 

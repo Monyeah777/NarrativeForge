@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import sys
 import unittest
+from typing import Any
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
@@ -42,7 +43,8 @@ def _ir():
 
 def _book(card: dict) -> dict:
     """取世界书：v3 真形状在 `data` 内，v2 旧形状在顶层（两者都支持）。"""
-    body = card.get("data") if isinstance(card.get("data"), dict) else card
+    body_raw = card.get("data")
+    body: Any = body_raw if isinstance(body_raw, dict) else card
     return body.get("character_book") or {}
 
 

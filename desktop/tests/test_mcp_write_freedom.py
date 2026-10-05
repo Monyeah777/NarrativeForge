@@ -206,9 +206,10 @@ class McpToolsDoNotTouchTheRepoTest(unittest.TestCase):
     @staticmethod
     def _sample_args(rt) -> dict:
         """从实时资源面取**真 id**，让工具走成功路径（而不是被参数校验挡在门外）。"""
-        found, cursor = {}, None
+        found: dict = {}
+        cursor = None
         while True:
-            params = {"cursor": cursor} if cursor else {}
+            params: dict = {"cursor": cursor} if cursor else {}
             resp = rt.handle({"jsonrpc": "2.0", "id": 1, "method": "resources/list",
                               "params": params})
             res = (resp.get("result") or {}).get("resources") or []
@@ -219,7 +220,7 @@ class McpToolsDoNotTouchTheRepoTest(unittest.TestCase):
             cursor = (resp.get("result") or {}).get("nextCursor")
             if not cursor or not res:
                 break
-        args = {"pipeline_ls": {}, "spec_ls": {}, "knowledge_order": {},
+        args: dict = {"pipeline_ls": {}, "spec_ls": {}, "knowledge_order": {},
                 "registry_query": {"query": "M90"}, "library_search": {"query": "MCP"}}
         if isinstance(found.get("module"), str):
             args["module_read"] = {"module_id": found["module"]}

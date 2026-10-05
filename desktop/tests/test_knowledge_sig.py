@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 """v2.8.0 波C C1/C2 —— 知识签名 + 版本差异检测单测（41 规划，纯 unittest）。"""
 import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 sys_path = str(Path(__file__).resolve().parent.parent / "src")
-if sys_path not in os.sys.path:
-    os.sys.path.insert(0, sys_path)
+if sys_path not in sys.path:
+    sys.path.insert(0, sys_path)
 
 from core import knowledge_sig as ks  # noqa: E402
 

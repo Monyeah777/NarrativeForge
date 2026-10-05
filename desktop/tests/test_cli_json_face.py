@@ -92,7 +92,7 @@ class JsonFaceStaticTest(unittest.TestCase):
         self.assertEqual([], bad, "机器面字典缺面判别键（kind/schema）：%s" % bad[:12])
 
 
-_CACHE = {}
+_CACHE: dict = {}
 
 
 def _probe_faces():
@@ -150,7 +150,7 @@ class JsonFaceDynamicTest(unittest.TestCase):
 
 #: 预设面的**隔离 NF_HOME**：预设库在用户态，判据不许碰真实 `~/.NarrativeForge`
 #: （也保证面里那两条 `preset show/apply` 有真件可查，走的是**成功**分支）。
-_PRESET_STATE = {}
+_PRESET_STATE: dict = {}
 
 
 def _preset_env() -> dict:

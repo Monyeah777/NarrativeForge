@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location(
     "selfcontained", ROOT / "scripts" / "rebuild_selfcontained_sample.py")
+assert spec is not None and spec.loader is not None
 sc = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sc)
 

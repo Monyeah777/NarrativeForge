@@ -7,6 +7,7 @@ INDEX / 机器人未引用声明件；以及 fail-closed：声明不可解析即
 """
 import json
 import sys
+from typing import Optional
 import tempfile
 import unittest
 from pathlib import Path
@@ -33,7 +34,7 @@ def _decl(**over) -> dict:
     return doc
 
 
-def _tree(tmp: str, doc: dict = None, index_text: str = None, bots: bool = True) -> str:
+def _tree(tmp: str, doc: Optional[dict] = None, index_text: Optional[str] = None, bots: bool = True) -> str:
     root = Path(tmp)
     (root / "library").mkdir(parents=True, exist_ok=True)
     (root / "library" / "intake.json").write_text(

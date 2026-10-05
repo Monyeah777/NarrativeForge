@@ -75,7 +75,7 @@ def flags_with_write_sinks(src: str) -> dict:
             out.append(lines[j])
         return "\n".join(out)
 
-    dests = {}
+    dests: dict = {}
     for n in ast.walk(tree):
         if not (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
                 and n.func.attr == "add_argument"):
@@ -89,7 +89,7 @@ def flags_with_write_sinks(src: str) -> dict:
                 dest = kw.value.value
         dests.setdefault(dest, set()).update(opts)
 
-    out = {}
+    out: dict = {}
     for dest, opts in sorted(dests.items()):
         pat = re.compile(r"args\.%s\b|getattr\(args,\s*['\"]%s['\"]"
                          % (re.escape(dest), re.escape(dest)))

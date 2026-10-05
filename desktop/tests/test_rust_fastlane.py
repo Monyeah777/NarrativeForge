@@ -130,7 +130,7 @@ def rust_build(bin_path, root):
     return rust_run(bin_path, ["receipts", "build", "--root", str(root)])
 
 
-_REPORT = {}
+_REPORT: dict = {}
 
 
 #: pyval reprf 的固定边界样本（±0 / 次正规 / 最大双精度 / ±inf / 规范 nan / 平局样本）

@@ -14,6 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location("nfcli_import", ROOT / "scripts" / "nf.py")
+assert spec is not None and spec.loader is not None
 nf = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(nf)
 

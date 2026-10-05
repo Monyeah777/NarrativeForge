@@ -153,7 +153,7 @@ class LiveTotalCountTest(unittest.TestCase):
 
 
 #: 顶层 `count`/`total` 刻意**不数同层集合**的文件 → 理由（当前为空；有例外必须逐条写明）。
-NAMED_COUNTS = {}
+NAMED_COUNTS: dict = {}
 
 
 def self_counts(root: Path) -> dict:

@@ -22,6 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 spec = importlib.util.spec_from_file_location("nfcli", ROOT / "scripts" / "nf.py")
+assert spec is not None and spec.loader is not None
 nf = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(nf)
 
@@ -636,7 +637,7 @@ def unread_flag_dests(parser, source: str, allow=()) -> list:
     用户按 `--help` 传参却得到默认行为，比报错更难发现。
     """
     import re as _re
-    found = {}
+    found: dict = {}
 
     def _walk(p):
         for act in p._actions:
