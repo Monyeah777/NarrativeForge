@@ -515,8 +515,8 @@ def allocate(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
             return {"pipeline": p["pipeline"], "exist": True,
                     "module_ids": [str(x) for x in p.get("module_ids") or []]}
     used = set(used_pipeline_ids(root))
-    pipe = next((x for x in PIPELINE_POOL if x not in used), "")
-    if not pipe:
+    pipe_id = next((x for x in PIPELINE_POOL if x not in used), "")
+    if not pipe_id:
         raise ValueError("管线 id 池已用尽（%d 个）" % len(PIPELINE_POOL))
     stems = module_stems(root)
     ids = []
@@ -526,7 +526,7 @@ def allocate(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
         if others:
             raise ValueError("模块文件名 token 冲突：%s ∈ %s" % (stem, others))
         ids.append("%s:M%02d" % (spec["category"], 1 if letter == "a" else 2))
-    return {"pipeline": pipe, "exist": False, "module_ids": ids,
+    return {"pipeline": pipe_id, "exist": False, "module_ids": ids,
             "stems": ["%sa" % code, "%sb" % code]}
 
 
@@ -622,7 +622,7 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
         "| 条目键 | 概念 | 层 | 直接前置 | 证据 |",
         "|---|---|---|---|---|",
     ]
-    prereq = {s["id"]: [] for s in subs}
+    prereq: Dict[str, List[str]] = {s["id"]: [] for s in subs}
     for a, b in edges:
         prereq.setdefault(b, []).append(a)
     for s in std_ids:                    # 标准节点：概念 → 标准（该概念依据的标准）
@@ -641,10 +641,10 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
         lines.append("| `%s` | %s | %s | %s | %s |"
                      % (s["id"], s["name"], layer, pre, legend_key))
     for sid in std_ids:                  # 标准节点入条目键表（可寻址）
-        std = cat.get(sid) or {}
-        ev = std.get("evidence") or {}
+        std_entry = cat.get(sid) or {}
+        ev = std_entry.get("evidence") or {}
         lines.append("| `STD-%s` | 标准 · %s（%s｜%s｜实测 %s） | P80 | %s | std-catalog |"
-                     % (sid, std.get("title", sid), std.get("body", ""), std.get("layer", ""),
+                     % (sid, std_entry.get("title", sid), std_entry.get("body", ""), std_entry.get("layer", ""),
                         ("✓" if ev.get("reachable") else "✗"),
                         "、".join("`%s`" % x for x in prereq.get("STD-%s" % sid, [])) or "—"))
     for i, s in enumerate(subs):
@@ -672,9 +672,9 @@ def concept_graph_md(spec: Dict[str, Any], root: str = ".") -> str:
         })
     cs = "std-catalog"
     for sid in std_ids:
-        std = cat.get(sid) or {}
+        std_entry = cat.get(sid) or {}
         nodes.append({
-            "id": "STD-%s" % sid, "name": "标准 · %s" % std.get("title", sid),
+            "id": "STD-%s" % sid, "name": "标准 · %s" % std_entry.get("title", sid),
             "layer": "P80", "branch": "standards",
             "prereqs": prereq.get("STD-%s" % sid, []),
             "provenance": [cs],
@@ -864,7 +864,7 @@ def module_md(spec: Dict[str, Any], which: int, alloc: Dict[str, Any]) -> str:  
                 "报告与图与口径表三段同源，任一漂移即发布收口冲突事件")
         outs = ["domain_report", "closure_conflict_list"]
         pub = [ready_ev, conflict_ev]
-        sub_ev = [_event_names(spec, 1)[0], _event_names(spec, 1)[1]]
+        sub_ev = (_event_names(spec, 1)[0], _event_names(spec, 1)[1])
         assets = "DOMAIN_SPEC, CONCEPT_GRAPH"
     lines = [
         "# 模块 %s · %s" % (mid, title),
@@ -1849,7 +1849,7 @@ def manifest_entry(root: str, spec: Dict[str, Any]) -> Dict[str, Any]:
 def update_manifest(root: str, spec: Dict[str, Any], write: bool = False) -> Dict[str, Any]:
     """维护 `protocol/domain_packs.json`（公开名录：域码 → 包/管线/模块/产出面/机验率）。"""
     path = Path(root) / MANIFEST_REL
-    doc = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {
+    doc: Dict[str, Any] = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {
         "schema": "nf-domain-packs/1",
         "note": "AI 品类域包名录（公开结果面）。每包：域码 / 独占类别 / 管线 / 模块 / "
                 "资产数 / 产出面与机验率 / 规格摘要。机检：check32 domain_packs 子扫描"

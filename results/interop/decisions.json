@@ -228,6 +228,12 @@
       "id": "AUD-0028",
       "title": "类型分批收敛第一批（io_types / world_model / knowledge 三模块 mypy 归零）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0029",
+      "title": "类型分批收敛第二批（domain_pack / prose_lint 两模块 mypy 归零）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

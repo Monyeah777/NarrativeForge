@@ -149,7 +149,8 @@ def summarize(findings: List[Dict[str, object]]) -> Dict[str, int]:
     """按规则计数（便于门禁/报告聚合）。"""
     counts: Dict[str, int] = {}
     for f in findings:
-        counts[f["rule"]] = counts.get(f["rule"], 0) + 1
+        rule = str(f["rule"])
+        counts[rule] = counts.get(rule, 0) + 1
     return counts
 
 
