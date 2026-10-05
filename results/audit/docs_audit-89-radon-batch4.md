@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/interop_export.py:02b7153b36f75bafe55c36015a2ddb3f1b51d35f90735f5911c1fb8bddd089b8
-  - protocol/code_metrics_baseline.json:704204f0c9c052d6ec18a4f42bf18e243ef3ed13beb2f3147dc491d3d71f5b43
+  - protocol/code_metrics_baseline.json:f778061df0ffc6781829ce67de4f9222666e1f3f3656b2c2bac08aa469eaa019
 
 ---
 

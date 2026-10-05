@@ -311,9 +311,9 @@
       "max_fn_lines": 45
     },
     "desktop/src/core/layer_model.py": {
-      "lines": 561,
-      "max_fn_cc": 81,
-      "max_fn_lines": 178
+      "lines": 625,
+      "max_fn_cc": 22,
+      "max_fn_lines": 47
     },
     "desktop/src/core/lazy_yaml.py": {
       "lines": 83,

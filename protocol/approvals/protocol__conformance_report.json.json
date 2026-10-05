@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-10-05",
+  "approved_at": "2026-10-06",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0042 复杂度收敛第五批（world_model 按面拆分）",
+  "note": "AUD-0043 复杂度收敛第六批（layer_model L1-L10 拆分）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "82a6a5f7d7a8b393a846b1ff969d51854174fa31dab8de565056524098a1ab52"
+  "subject_digest": "9f41a47f238e55d35014c6c0afa5331dccc6c810d895e59d8a2da0ec35711737"
 }

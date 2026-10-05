@@ -23,14 +23,14 @@ subjects:
   - desktop/src/core/orchestration.py:a2c50663819521a2bb1b7064f14382e7254910a39eb6cf88785cb05efdfdf558
   - desktop/src/core/machine_contract.py:68e83ea3e474a788acc8574969b35573d7522726be8d9b98f30c4b6733aff3af
   - desktop/src/core/decisions.py:043707bf3774b3777f11fd30b5af8a21093c7fdc7dd29c67291e456a7bb81b94
-  - desktop/src/core/layer_model.py:f9988ba40d9db789f7acaf1af24a0e3e8dc07eee14e7a487bc94742d11f778f1
+  - desktop/src/core/layer_model.py:4b09c50a53884d1e3a5ed5541e42cc4bf8499bc031d5e00eebf38bc66c9b40d1
   - desktop/src/core/import_graph.py:929b6cdff4715dc4b007bbcd273cee5581fc6744ed5abcd90157c4cfef0a80b0
   - desktop/src/core/bench.py:a66769543e0a4546ec52d869baa326916a996748f86a4798ca1dd0f238c70153
   - desktop/src/core/import_adapter.py:f5fb23d18e5d54eb561d48aee6d4556917de7cc63c1b0c33da6035e39222cbf7
   - desktop/src/core/daemon.py:ac60f99e9b2e8d72d568884bc4e3840f1b69bff9fa8f9a0647c155f4f85948af
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/exporter.py:d396f742ccf012331c855c4f52f0925daebc6100cadff30d4e1f510a9dff4c04
-  - protocol/code_metrics_baseline.json:704204f0c9c052d6ec18a4f42bf18e243ef3ed13beb2f3147dc491d3d71f5b43
+  - protocol/code_metrics_baseline.json:f778061df0ffc6781829ce67de4f9222666e1f3f3656b2c2bac08aa469eaa019
 
 ---
 

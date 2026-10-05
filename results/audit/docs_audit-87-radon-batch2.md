@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/decisions.py:043707bf3774b3777f11fd30b5af8a21093c7fdc7dd29c67291e456a7bb81b94
   - desktop/src/core/endpoint.py:ddb7e4b0bbb2f60753f249a8b08fc0a1ba9629ff0f63ea24f91ca348204c373e
-  - protocol/code_metrics_baseline.json:704204f0c9c052d6ec18a4f42bf18e243ef3ed13beb2f3147dc491d3d71f5b43
+  - protocol/code_metrics_baseline.json:f778061df0ffc6781829ce67de4f9222666e1f3f3656b2c2bac08aa469eaa019
 
 ---
 

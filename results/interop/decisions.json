@@ -312,6 +312,12 @@
       "id": "AUD-0042",
       "title": "复杂度收敛第五批（world_model.validate_contract 105→按面 12 个校验器）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0043",
+      "title": "复杂度收敛第六批（layer_model._rule_issues 87→L1-L10 十三个校验器）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {
