@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-06",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0043 复杂度收敛第六批（layer_model L1-L10 拆分）",
+  "note": "AUD-0044 复杂度收敛第七批（json_schema 按关键字类拆分）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "9f41a47f238e55d35014c6c0afa5331dccc6c810d895e59d8a2da0ec35711737"
+  "subject_digest": "29857bbe2e2a6f04ff04f80d5dbab77368ab5badc77971507841cc312e81c9e1"
 }

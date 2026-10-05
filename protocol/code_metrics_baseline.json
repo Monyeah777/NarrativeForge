@@ -286,9 +286,9 @@
       "max_fn_lines": 26
     },
     "desktop/src/core/json_schema.py": {
-      "lines": 245,
-      "max_fn_cc": 79,
-      "max_fn_lines": 142
+      "lines": 368,
+      "max_fn_cc": 10,
+      "max_fn_lines": 32
     },
     "desktop/src/core/judgement_coverage.py": {
       "lines": 114,

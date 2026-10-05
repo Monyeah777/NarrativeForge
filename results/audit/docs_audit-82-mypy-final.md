@@ -18,7 +18,7 @@ subjects:
   - desktop/src/core/community_inventory.py:88659eb0df649794d4fcfaab2f0fb894ba53c190f3e57ed8b661cdca2216d7a0
   - desktop/src/core/retriever.py:1bab0db39be26c025e37cecab19e65d8fb439140f3bb224e869b771666c777fd
   - desktop/src/core/lazy_yaml.py:19df29d70c5a694ae63527f46e4537b041cd2b889baca358e6262b4dad0e151b
-  - desktop/src/core/json_schema.py:06c0e26f503fb53a6f23653417f889c8168b7579c412f963e507052c55c28f5d
+  - desktop/src/core/json_schema.py:6de58ac9c73b5165d2bcd924fe7f8210e1f5cd6907b26085f8b89e566497f9da
   - desktop/src/core/export_schema.py:9052dc891be0c70ceb5b42544eceeceeeb4dee8c4f107b1ec660913cf922ad3d
   - desktop/src/core/orchestration.py:a2c50663819521a2bb1b7064f14382e7254910a39eb6cf88785cb05efdfdf558
   - desktop/src/core/machine_contract.py:68e83ea3e474a788acc8574969b35573d7522726be8d9b98f30c4b6733aff3af
@@ -30,7 +30,7 @@ subjects:
   - desktop/src/core/daemon.py:ac60f99e9b2e8d72d568884bc4e3840f1b69bff9fa8f9a0647c155f4f85948af
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/exporter.py:d396f742ccf012331c855c4f52f0925daebc6100cadff30d4e1f510a9dff4c04
-  - protocol/code_metrics_baseline.json:f778061df0ffc6781829ce67de4f9222666e1f3f3656b2c2bac08aa469eaa019
+  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
 
 ---
 

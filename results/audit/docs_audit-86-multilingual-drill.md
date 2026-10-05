@@ -12,7 +12,7 @@ subjects:
   - engine/rust/src/drill_fidelity.rs:54fb9760bd7e2fa83b110b4b1c29e54f821434ca5a19b7d63ff0e1d4195e9e20
   - protocol/drill_fidelity.json:235c028d1d817085a67c79303b7e1b4f8bb92b68885e43b49bfea209e51c6c91
   - docs/44_M1_执行演练扩展.md:12e58d6ae4d1cab23faaaff5e98d0a0bc9a6455c7a17552bab0d57e0cf30866c
-  - protocol/code_metrics_baseline.json:f778061df0ffc6781829ce67de4f9222666e1f3f3656b2c2bac08aa469eaa019
+  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
 
 ---
 
