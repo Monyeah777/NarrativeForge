@@ -16,17 +16,17 @@ subjects:
   - docs/ja/terminal.md:673e4869c326ba148893df4ed4e42f35a929f245269ce05ad9f7315235345783
   - docs/en/layers.md:d7ed0692818069a4bffe9144187b048b5f33d5449c4cac2893baa4588d17dd64
   - docs/ja/layers.md:e8daebda2e1d60eb5a21c235ba6a95126be9107a0bb31aa6fb793e0619ec0f20
-  - docs/44_M1_执行演练扩展.md:64025d95cce689814376aa32db0722b41063fead1499a1f7bfd80d6524b164af
+  - docs/44_M1_执行演练扩展.md:12e58d6ae4d1cab23faaaff5e98d0a0bc9a6455c7a17552bab0d57e0cf30866c
   - docs/45_M2_回合级drill.md:55bf60d989aba4fe653bd30396b59c12af587151a3b100da9b65f3d2979429e0
-  - desktop/src/core/execution_drill.py:167ed0bcc1619a9f37ec720c0435e0bf25a4487bbe48c3ba56c27edeaef64afd
-  - desktop/src/core/drill_fidelity.py:a9c51046caea0bb044f23c2049ca36dd70a9a6a7c0ce5bdd0c7e36fca0e6d76e
+  - desktop/src/core/execution_drill.py:7f291a20d779213d3acedaaf042722d4ec7223ba3333ee2477be6b5285152dea
+  - desktop/src/core/drill_fidelity.py:42d1064477b9f14821e222c3abe89b27d5b624f011c19d166d7077b1aff7ee71
   - desktop/tests/test_execution_drill.py:f5f880b8eae0b5b00c7c6a94376922e291d079a9fd1c2c50ae1d8adf7eaaa2b2
   - desktop/tests/test_round_drill.py:67e963dace7dfdbf1a77385bc18dcc230ad102cf3934ea93209c49cb5cf3bab3
   - desktop/tests/fixtures/execution/p04_drill_cases.json:9237e2713bab59df20ed8cc4df18f8a4f9bd1fe0437a4acf642b03ccdd9c5d07
   - desktop/tests/fixtures/execution/rounds/bad_r2.json:9498fba916ea03db23cd75fb9279335ad92127850aab54adb73f5032f6b20d24
   - desktop/tests/fixtures/execution/rounds/bad_r3.json:985bc52b5a755bb6ca33a94817cb706beb9bfe6d9d13f7933f7bbcfe0ca46e8a
   - desktop/tests/fixtures/execution/rounds/gap_ok.json:55d09b1102f7729f31439fd68cf8ad25c7e0db55e0a9064db713a0ee582d4914
-  - protocol/code_metrics_baseline.json:060667035d17d359d69ad3603052e079d70b52d19000bac7db6a2bc50536b5ce
+  - protocol/code_metrics_baseline.json:0a550fc7daa2118e73018333d4b871ba07f2b298f03e8cce269b031337384290
 
 ---
 

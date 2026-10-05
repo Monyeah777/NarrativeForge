@@ -1,8 +1,8 @@
 {
   "execution": {
-    "cases": 60,
+    "cases": 69,
     "fidelity": 1.0,
-    "passed": 60,
+    "passed": 69,
     "sets": [
       {
         "cases": 8,
@@ -35,6 +35,11 @@
         "set": "p06_drill_cases.json"
       },
       {
+        "cases": 9,
+        "passed": 9,
+        "set": "p07_en_drill_cases.json"
+      },
+      {
         "cases": 8,
         "passed": 8,
         "set": "p90_drill_cases.json"
@@ -42,9 +47,9 @@
     ]
   },
   "overall": {
-    "cases": 65,
+    "cases": 74,
     "fidelity": 1.0,
-    "passed": 65
+    "passed": 74
   },
   "rounds": {
     "fidelity": 1.0,

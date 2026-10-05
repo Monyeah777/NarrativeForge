@@ -4,7 +4,7 @@
     "algorithm": "RFC6962-style sha256 domain-separated",
     "count": 57,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "cf3deb411e2a657231e6b0907bdd4a3ac689cffdcca2a41534643c75bc589735",
+    "root": "997c0614209e184d89ea9a1e0add09900e771e98661f309f6f3cd9145b7cb138",
     "scope": "protocol"
   },
   "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
@@ -113,7 +113,7 @@
     },
     {
       "digest": {
-        "sha256": "271b0ba665273d85fdab5edeb1e074363f4b739a67eccd98cd93c5eac8f7f96c"
+        "sha256": "d9aeab6c57653b9b8e157fdc7afde17ca272ffe080f730deb84bdde67475477d"
       },
       "name": "protocol/conformance_report.json"
     },

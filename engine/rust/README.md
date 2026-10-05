@@ -278,7 +278,7 @@ python desktop/tests/test_rust_fastlane.py                           # 同行独
 
 ### `drill_fidelity` 的分支级判据（本已补上）
 
-真语料上它**全绿**（58 例 / 7 集 / fidelity=1.0 / 2 个回合样本）⇒ 对账核不到错误分支。
+真语料上它**全绿**（69 例 / 8 集 / fidelity=1.0 / 5 个回合样本）⇒ 对账核不到错误分支。判定词表随 fixture 的 `lexicon` 键走（`p07_en_drill_cases.json` 为英文集），缺省仍是中文内置词表。
 现由 `tools/gen_drill_fidelity_branches.py` 生成分支级判据（标记区间替换），逐分支踩：
 执行演练四条硬断言各自的命中与不命中、`expect_captured` 未满足 ⇒ 保真度不足；
 回合级 R-R1 缺引用 / R-R2 无推进 / R-R3 越集（含「带前缀 tok ↔ 无前缀 allowed」同尾豁免）/

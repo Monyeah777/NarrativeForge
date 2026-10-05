@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/mcp_package.py:bc7d0a06a139427ca1d1f4988fcaa2b413d851556e6652254cb09c051578c273
   - desktop/src/core/conformance_scan.py:66fa09027a4f0f047c1bd4a2e14ac30ff8637dd46d9679b2fdffac97150dcacc
   - desktop/src/core/pack_combo.py:29b1b4d401ffd6d70d81a31be60262d00c6a3e132f79779effe9ad75b0300bf9
-  - protocol/code_metrics_baseline.json:060667035d17d359d69ad3603052e079d70b52d19000bac7db6a2bc50536b5ce
+  - protocol/code_metrics_baseline.json:0a550fc7daa2118e73018333d4b871ba07f2b298f03e8cce269b031337384290
 
 ---
 

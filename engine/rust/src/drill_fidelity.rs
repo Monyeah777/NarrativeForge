@@ -56,12 +56,8 @@ fn module_token_re() -> &'static regex::Regex {
     })
 }
 
-fn decision_re() -> &'static regex::Regex {
-    static RE: std::sync::OnceLock<regex::Regex> = std::sync::OnceLock::new();
-    RE.get_or_init(|| {
-        regex::Regex::new(r"(应|应该|必须|禁止|不得|下一步|输出|结论)").expect("决策词正则固定合法")
-    })
-}
+/// 真源 `execution_drill._DECISION_WORDS`（缺省中文；用例可在 fixture 的 lexicon 里覆盖）。
+const EXEC_DECISION: [&str; 8] = ["应", "应该", "必须", "禁止", "不得", "下一步", "输出", "结论"];
 
 /// 真源 `execution_drill._CITATION`。
 fn citation_re() -> &'static regex::Regex {
@@ -173,7 +169,7 @@ fn check_fabricated_asset_key(output: &str, asset_keys: &[String]) -> &'static s
 }
 
 /// 真源 `_check_browse_repeat`。
-fn check_browse_repeat(output: &str, source_text: &str) -> &'static str {
+fn check_browse_repeat(output: &str, source_text: &str, progress: &[String]) -> &'static str {
     if source_text.is_empty() || output.chars().count() < 8 {
         return "";
     }
@@ -181,15 +177,15 @@ fn check_browse_repeat(output: &str, source_text: &str) -> &'static str {
     let ob = bigrams(output);
     let inter = ob.intersection(&src).count();
     let overlap = inter as f64 / std::cmp::max(1, src.len()) as f64;
-    if overlap >= 0.55 && !EXEC_PROGRESS.iter().any(|p| output.contains(p)) {
+    if overlap >= 0.55 && !progress.iter().any(|p| output.contains(p.as_str())) {
         return "browse_repeat";
     }
     ""
 }
 
 /// 真源 `_check_no_citation`。
-fn check_no_citation(output: &str) -> &'static str {
-    if decision_re().is_match(output) && !citation_re().is_match(output) {
+fn check_no_citation(output: &str, decision: &[String], citation: &regex::Regex) -> &'static str {
+    if decision.iter().any(|w| output.contains(w.as_str())) && !citation.is_match(output) {
         if mention_tokens(output).is_empty() {
             return "no_citation";
         }
@@ -243,9 +239,40 @@ fn check_semantic_misalignment(output: &str, semantics: Option<&Json>) -> &'stat
     ""
 }
 
+/// 真源 `execution_drill._compile_citation` + 词表取法 → `(decision, progress, citation)`。
+/// 缺省用内置中文词表与单模式；fixture 里的 `lexicon` 按语言覆盖（多语协议执行）。
+fn exec_lexicon(lexicon: Option<&Json>) -> (Vec<String>, Vec<String>, regex::Regex) {
+    let decision_items = arr_items(lexicon.and_then(|l| get(l, "decision")));
+    let progress_items = arr_items(lexicon.and_then(|l| get(l, "progress")));
+    let citation_items = arr_items(lexicon.and_then(|l| get(l, "citation")));
+    let decision: Vec<String> = if decision_items.is_empty() {
+        EXEC_DECISION.iter().map(|s| s.to_string()).collect()
+    } else {
+        decision_items.iter().map(|v| py_str(Some(v))).collect()
+    };
+    let progress: Vec<String> = if progress_items.is_empty() {
+        EXEC_PROGRESS.iter().map(|s| s.to_string()).collect()
+    } else {
+        progress_items.iter().map(|v| py_str(Some(v))).collect()
+    };
+    let citation = if citation_items.is_empty() {
+        citation_re().clone()
+    } else {
+        let joined = citation_items
+            .iter()
+            .map(|v| format!("(?:{})", py_str(Some(v))))
+            .collect::<Vec<String>>()
+            .join("|");
+        regex::Regex::new(&joined).expect("lexicon.citation 模式须为合法正则")
+    };
+    (decision, progress, citation)
+}
+
+
 /// 真源 `execution_drill.run_case` → 命中的失范规则名列表（**顺序即判据**）。
 fn run_case(case: &Json, real_ids: &[String], semantics: Option<&Json>, source_text: &str,
-            other_ids: &[String], asset_keys: &[String]) -> Vec<String> {
+            other_ids: &[String], asset_keys: &[String], lexicon: Option<&Json>) -> Vec<String> {
+    let (decision, progress, citation) = exec_lexicon(lexicon);
     let output = py_str(get(case, "output"));
     let mut hits: Vec<String> = Vec::new();
     let hit = check_fabricated_id(&output, real_ids, other_ids);
@@ -262,11 +289,11 @@ fn run_case(case: &Json, real_ids: &[String], semantics: Option<&Json>, source_t
         None => String::new(),
     };
     let src = if source_text.is_empty() { case_src } else { source_text.to_string() };
-    let hit = check_browse_repeat(&output, &src);
+    let hit = check_browse_repeat(&output, &src, &progress);
     if !hit.is_empty() {
         hits.push(hit.to_string());
     }
-    let hit = check_no_citation(&output);
+    let hit = check_no_citation(&output, &decision, &citation);
     if !hit.is_empty() {
         hits.push(hit.to_string());
     }
@@ -412,6 +439,7 @@ fn exec_sets(root: &Path) -> Vec<ExecSet> {
         let asset_keys: Vec<String> =
             arr_items(get(&data, "asset_keys")).iter().map(|v| py_str(Some(v))).collect();
         let semantics = get(&data, "semantics");
+        let lexicon = get(&data, "lexicon");
         // 真源 `data.get("source_text", "")`：**键不在场**才取默认；在场为 null 则传 None 下去
         let src_opt: Option<&Json> = get(&data, "source_text");
         let src = plain_str_opt(src_opt);
@@ -423,7 +451,7 @@ fn exec_sets(root: &Path) -> Vec<ExecSet> {
                 n += 1;
                 continue;
             }
-            let hits = run_case(case, &real_ids, semantics, &src, &other_ids, &asset_keys);
+            let hits = run_case(case, &real_ids, semantics, &src, &other_ids, &asset_keys, lexicon);
             let expect: Vec<String> =
                 arr_items(get(case, "expect_captured")).iter().map(|v| py_str(Some(v))).collect();
             let good = (expect.is_empty() && hits.is_empty())

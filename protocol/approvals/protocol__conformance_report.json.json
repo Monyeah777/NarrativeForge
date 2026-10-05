@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0037 复杂度收敛第一批",
+  "note": "AUD-0038 多语协议执行（lexicon + p07_en + Rust 镜像）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "271b0ba665273d85fdab5edeb1e074363f4b739a67eccd98cd93c5eac8f7f96c"
+  "subject_digest": "d9aeab6c57653b9b8e157fdc7afde17ca272ffe080f730deb84bdde67475477d"
 }

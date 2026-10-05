@@ -1,0 +1,110 @@
+{
+ "schema": "nf-execution-drill/1",
+ "pipeline": "P07",
+ "source_note": "样本为推断构造（多语协议执行扩展，2026-10-05）：判定词表由本 fixture 的 lexicon 声明（decision/progress 为字面子串，citation 为 regex 源串），引擎不硬编码语言。来源诚实标注：inferred。",
+ "source_text": "Protocol P07 requires the executor to read the assembly declaration before acting. The light-mix pipeline bridges identity through M91, then hands execution to M92 for wrapping. Every decision must cite the clause it follows. Progress is recorded once per turn so the next reader can resume without guesswork.",
+ "other_ids": [
+  "M97"
+ ],
+ "asset_keys": [
+  "ATTR_TEMPLATES",
+  "WORLD_KNOWLEDGE"
+ ],
+ "real_ids": [
+  "M00",
+  "M91",
+  "M92"
+ ],
+ "semantics": {
+  "M91": [
+   "bridge",
+   "identity"
+  ],
+  "M92": [
+   "execution",
+   "wrap"
+  ]
+ },
+ "lexicon": {
+  "decision": [
+   "must",
+   "should",
+   "shall",
+   "required",
+   "prohibited",
+   "not allowed",
+   "next step",
+   "conclusion"
+  ],
+  "progress": [
+   "advance to",
+   "next turn",
+   "turn advanced",
+   "progress recorded"
+  ],
+  "citation": [
+   "§\\s*\\d+(?:[.-]\\d+)*",
+   "section \\d+",
+   "line \\d+"
+  ]
+ },
+ "cases": [
+  {
+   "id": "en_r1_fabricated",
+   "output": "M99 is required for the bridge step.",
+   "expect_captured": [
+    "fabricated_id"
+   ]
+  },
+  {
+   "id": "en_r2_cross_pipeline",
+   "output": "M97 coordinates the handoff.",
+   "expect_captured": [
+    "cross_pipeline_id"
+   ]
+  },
+  {
+   "id": "en_r2_asset_fabricated",
+   "output": "Load NOT_A_REAL_KEY before starting.",
+   "expect_captured": [
+    "fabricated_asset_key"
+   ]
+  },
+  {
+   "id": "en_r3_no_citation",
+   "output": "You must advance the pipeline before the next turn.",
+   "expect_captured": [
+    "no_citation"
+   ]
+  },
+  {
+   "id": "en_r2_browse_repeat",
+   "output": "Protocol P07 requires the executor to read the assembly declaration before acting. The light-mix pipeline bridges identity through M91, then hands execution to M92 for wrapping. Every decision must cite the clause it follows. Progress is recorded each cycle so the next reader can resume without guesswork.",
+   "expect_captured": [
+    "browse_repeat"
+   ]
+  },
+  {
+   "id": "en_r4_semantic_misalignment",
+   "output": "M91 handles execution and wrapping.",
+   "expect_captured": [
+    "semantic_misalignment"
+   ]
+  },
+  {
+   "id": "en_guard_cited",
+   "output": "M92 performs the execution and wrapping per §3.2 of the protocol.",
+   "guard": true
+  },
+  {
+   "id": "en_guard_decision_with_id",
+   "output": "M91 must bridge the identity before the handoff.",
+   "guard": true
+  },
+  {
+   "id": "en_guard_asset_allowed",
+   "output": "The asset key ATTR_TEMPLATES is declared in the contract.",
+   "guard": true
+  }
+ ]
+}

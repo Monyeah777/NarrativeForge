@@ -282,6 +282,12 @@
       "id": "AUD-0037",
       "title": "复杂度收敛第一批（import_adapter.parse_ccv3 46→20，含死代码删除）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0038",
+      "title": "多语协议执行（lexicon 参数化 + 英文同构演练集 + Rust 镜像）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

@@ -43,9 +43,10 @@ def _exec_sets(root: Path) -> List[Dict[str, Any]]:
             continue
         real, sem, src = data.get("real_ids") or [], data.get("semantics") or {}, data.get("source_text", "")
         other, keys = data.get("other_ids") or [], data.get("asset_keys") or []
+        lexicon = data.get("lexicon") or {}
         n = ok = 0
         for case in data.get("cases", []):
-            hits = ed.run_case(case, real, sem, src, other, keys)
+            hits = ed.run_case(case, real, sem, src, other, keys, lexicon)
             expect = set(case.get("expect_captured") or [])
             good = (not expect and not hits) or expect <= set(hits)
             n += 1

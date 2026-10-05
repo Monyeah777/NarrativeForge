@@ -181,8 +181,8 @@
       "max_fn_lines": 150
     },
     "desktop/src/core/drill_fidelity.py": {
-      "lines": 129,
-      "max_fn_cc": 12,
+      "lines": 130,
+      "max_fn_cc": 13,
       "max_fn_lines": 25
     },
     "desktop/src/core/driver.py": {
@@ -196,9 +196,9 @@
       "max_fn_lines": 104
     },
     "desktop/src/core/execution_drill.py": {
-      "lines": 199,
-      "max_fn_cc": 14,
-      "max_fn_lines": 27
+      "lines": 218,
+      "max_fn_cc": 15,
+      "max_fn_lines": 34
     },
     "desktop/src/core/export_schema.py": {
       "lines": 235,
@@ -236,9 +236,9 @@
       "max_fn_lines": 39
     },
     "desktop/src/core/import_adapter.py": {
-      "lines": 439,
-      "max_fn_cc": 48,
-      "max_fn_lines": 124
+      "lines": 430,
+      "max_fn_cc": 20,
+      "max_fn_lines": 73
     },
     "desktop/src/core/import_graph.py": {
       "lines": 202,

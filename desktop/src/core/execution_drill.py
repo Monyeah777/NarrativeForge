@@ -20,13 +20,21 @@ from pathlib import Path
 from typing import Dict, List
 
 _MODULE_TOKEN = re.compile(r"(?:[\u4e00-\u9fff]+:)?M\d{2,3}")
-_DECISION = re.compile(r"(应|应该|必须|禁止|不得|下一步|输出|结论)")
-_CITATION = re.compile(r"(§\s*\d+(?:[.-]\d+)*|第\s*\d+\s*(?:节|步|章)|L\d+|行号|"
-                       r"[0-9A-Za-z_]+:[MTP]\d{2,3}|/\d+|\b\d{1,3}\b\s*行)")
+#: 判定词表（缺省中文；用例可在 fixture 的 lexicon 里按语言覆盖——见 §多语协议执行）。
+_DECISION_WORDS = ("应", "应该", "必须", "禁止", "不得", "下一步", "输出", "结论")
+_CITATION_SRC = (r"§\s*\d+(?:[.-]\d+)*|第\s*\d+\s*(?:节|步|章)|L\d+|行号|"
+                 r"[0-9A-Za-z_]+:[MTP]\d{2,3}|/\d+|\b\d{1,3}\b\s*行")
 #: 资产键形态：**大写下划线**标识（至少一个下划线）——模块号/管线号无下划线，天然不入面。
 _ASSET_TOKEN = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
 _PROGRESS = ("回合推进", "进入回合", "已进入第", "时间推进", "推进至", "进入下一回合")
 _SPLIT = re.compile(r"[。！？；\n]+")
+
+
+def _compile_citation(patterns) -> "re.Pattern[str]":
+    """引用判据：缺省用内置单模式；用例声明列表时按 (?:p1|p2|…) 合成（多语各写各的模式）。"""
+    if not patterns:
+        return re.compile("(?:%s)" % _CITATION_SRC)
+    return re.compile("|".join("(?:%s)" % str(p) for p in patterns))
 
 #: 硬断言 ↔ 判级器（06 §11 / round_header.LAWS）映射（带状态头执行口径）
 RULE_LAW = {
@@ -75,18 +83,18 @@ def _check_fabricated_asset_key(output: str, asset_keys: List[str]) -> str:
     return ""
 
 
-def _check_browse_repeat(output: str, source_text: str) -> str:
+def _check_browse_repeat(output: str, source_text: str, progress) -> str:
     if not source_text or len(output) < 8:
         return ""
     src = _bigrams(source_text)
     overlap = len(_bigrams(output) & src) / max(1, len(src))
-    if overlap >= 0.55 and not any(p in output for p in _PROGRESS):
+    if overlap >= 0.55 and not any(p in output for p in progress):
         return "browse_repeat"
     return ""
 
 
-def _check_no_citation(output: str) -> str:
-    if _DECISION.search(output) and not _CITATION.search(output):
+def _check_no_citation(output: str, decision, citation) -> str:
+    if any(w in output for w in decision) and not citation.search(output):
         # 仅当整句既无引用也无真实模块编号时判失范
         if not _mention_tokens(output):
             return "no_citation"
@@ -112,12 +120,19 @@ def _check_semantic_misalignment(output: str, semantics: Dict[str, list]) -> str
 def run_case(case: Dict, real_ids: List[str],
                  semantics: Dict[str, list] | None = None,
              source_text: str = "", other_ids: List[str] | None = None,
-             asset_keys: List[str] | None = None) -> List[str]:
+             asset_keys: List[str] | None = None,
+             lexicon: Dict[str, list] | None = None) -> List[str]:
     """对单样本输出跑全部硬断言 → 返回命中的失范规则名列表。
 
     other_ids = 其它管线真实编号集（判跨管线串号）；asset_keys = 本装配允许的资产键集
     （判编造资产键；缺省为空 ⇒ 该断言不判，防无载体误报）。
+    lexicon = 判定词表（decision/progress 为字面子串，citation 为 regex 源串列表）；
+    缺省沿用中文内置词表——多语用例在 fixture 里声明自己的词表，引擎不硬编码语言。
     """
+    lex = lexicon or {}
+    decision = tuple(lex.get("decision") or _DECISION_WORDS)
+    progress = tuple(lex.get("progress") or _PROGRESS)
+    citation = _compile_citation(lex.get("citation"))
     output = case.get("output") or ""
     hits = []
     hit = _check_fabricated_id(output, real_ids, other_ids or [])
@@ -126,10 +141,10 @@ def run_case(case: Dict, real_ids: List[str],
     hit = _check_fabricated_asset_key(output, asset_keys or [])
     if hit:
         hits.append(hit)
-    hit = _check_browse_repeat(output, source_text or case.get("source_text", ""))
+    hit = _check_browse_repeat(output, source_text or case.get("source_text", ""), progress)
     if hit:
         hits.append(hit)
-    hit = _check_no_citation(output)
+    hit = _check_no_citation(output, decision, citation)
     if hit:
         hits.append(hit)
     hit = _check_semantic_misalignment(output, semantics or {})
@@ -145,9 +160,11 @@ def run_file(path: str) -> Dict:
     source_text = data.get("source_text", "")
     other_ids = list(data.get("other_ids") or [])
     asset_keys = list(data.get("asset_keys") or [])
+    lexicon = data.get("lexicon") or {}
     results = []
     for case in data.get("cases", []):
-        hits = run_case(case, real_ids, semantics, source_text, other_ids, asset_keys)
+        hits = run_case(case, real_ids, semantics, source_text, other_ids, asset_keys,
+                        lexicon)
         expected = set(case.get("expect_captured") or [])
         results.append({
             "id": case.get("id"),
@@ -170,10 +187,12 @@ def main(argv: List[str] | None = None) -> int:
     source_text = data.get("source_text", "")
     other_ids = data.get("other_ids") or []
     asset_keys = data.get("asset_keys") or []
+    lexicon = data.get("lexicon") or {}
     bad = 0
     print("== execution_drill（%s · %s）==" % (data.get("schema"), data.get("pipeline")))
     for case in data.get("cases", []):
-        hits = run_case(case, real_ids, semantics, source_text, other_ids, asset_keys)
+        hits = run_case(case, real_ids, semantics, source_text, other_ids, asset_keys,
+                        lexicon)
         expected = set(case.get("expect_captured") or [])
         ok = (not expected and not hits) or expected <= set(hits)
         bad += 0 if ok else 1
