@@ -126,16 +126,35 @@ def render(root: str = ".", version: str = "", date: str = "", changes_dir: str 
     return "\n".join(lines).rstrip("\n") + "\n"
 
 
+def _section_bullets(section_text: str) -> List[str]:
+    """版本节里的条目行（「- 」起首）——同版本替换前的**丢内容守卫**用。"""
+    return [ln for ln in section_text.splitlines() if ln.startswith("- ")]
+
+
+def _lost_bullets(old: str, section: str) -> List[str]:
+    """同版本替换会丢掉的条目（旧节有、生成节没有）；空 = 可安全替换。"""
+    generated = set(_section_bullets(section))
+    return [b for b in _section_bullets(old) if b not in generated]
+
+
 def insert_into_changelog(text: str, section: str, version: str) -> str:
-    """把版本节插到表头之后、第一个已有版本节之前；同版本已存在则替换该节（幂等）。"""
+    """把版本节插到表头之后、第一已有版本节之前；同版本已存在则替换（幂等）。
+
+    丢内容守卫（2026-10-05）：同版本节含未被生成覆盖的条目 → 抛 `ValueError`（写面 fail-closed）。
+    """
     if not text.startswith(_HEADER):
         return section + "\n" + text
     head, sep, rest = text.partition("\n")
     marker = "## [%s]" % version
     if version and marker in rest:
         pre, _s, post = rest.partition(marker)
-        _old, _s2, tail = post.partition("\n## [")
+        old, _s2, tail = post.partition("\n## [")
         tail = ("\n## [" + tail) if tail else ""
+        lost = _lost_bullets(old, section)
+        if lost:
+            raise ValueError(
+                "同版本节替换会丢失 %d 条未被生成的条目（首条：%s）——修复指引：先归档/合并既有节，"
+                "或改用新版本号（写面默认 fail-closed，不静默丢内容）" % (len(lost), lost[0][:80]))
         return head + sep + pre + section + tail
     parts = rest.split("\n", 1)
     tail = parts[1] if len(parts) > 1 else ""
@@ -154,7 +173,11 @@ def write(root: str = ".", version: str = "", date: str = "", changes_dir: str =
     cl = r / "CHANGELOG.md"
     txt = cl.read_text(encoding="utf-8") if cl.is_file() else (_HEADER + "\n")
     from core import atomic_write          # 活文档：原子写（半截文件会被门禁当漂移）
-    atomic_write.write_text(str(cl), insert_into_changelog(txt, section, version))
+    try:
+        new_text = insert_into_changelog(txt, section, version)
+    except ValueError as exc:              # 丢内容守卫：如实报出，不落半截/不静默删历史
+        return {"ok": False, "issues": [str(exc)]}
+    atomic_write.write_text(str(cl), new_text)
     archived: List[str] = []
     d = r / changes_dir
     if d.is_dir():

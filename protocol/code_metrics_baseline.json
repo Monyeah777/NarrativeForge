@@ -86,9 +86,9 @@
       "max_fn_lines": 47
     },
     "desktop/src/core/changelog_gen.py": {
-      "lines": 188,
+      "lines": 211,
       "max_fn_cc": 10,
-      "max_fn_lines": 22
+      "max_fn_lines": 26
     },
     "desktop/src/core/closure_scan.py": {
       "lines": 76,
