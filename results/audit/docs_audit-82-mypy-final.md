@@ -30,7 +30,7 @@ subjects:
   - desktop/src/core/daemon.py:ac60f99e9b2e8d72d568884bc4e3840f1b69bff9fa8f9a0647c155f4f85948af
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/exporter.py:d396f742ccf012331c855c4f52f0925daebc6100cadff30d4e1f510a9dff4c04
-  - protocol/code_metrics_baseline.json:777b3636b9e986c12b938597708ee75422404a1115f2a0e7ae74833aa1800b2c
+  - protocol/code_metrics_baseline.json:060667035d17d359d69ad3603052e079d70b52d19000bac7db6a2bc50536b5ce
 
 ---
 

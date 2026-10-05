@@ -10,7 +10,7 @@ subjects:
   - desktop/src/core/quant_metrics.py:ae2bd5a5b71531ee4cf4abe920f75a939a30a5bea105efa7aed011cc92369ce3
   - desktop/src/core/quality_depth_scan.py:29d5bfa5a653277ff6629dde7bfc7e629c936750ec988316992ca17cc9449df4
   - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
   - protocol/output_forms.json:aff71eccf1cd0b57c51a86681c613580e79d346bb6e5dfdd97a873a2436943e9
   - community/量化金融域包/outputs/INDEX.json:cfe9272a362e138f9cb6d15615176cbb348716336d31b372bf411645f74a7bb6
   - community/AI系统域包/outputs/INDEX.json:95103926c6736571fb38e5c95f8234b76dddf26ee286270e3bdbdf3fd4c33a99

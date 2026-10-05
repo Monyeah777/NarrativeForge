@@ -14,7 +14,7 @@ subjects:
   - desktop/src/core/receipts.py:afc48b24b00775b04b67200055d954c5ad735eff980921da9571e87ee13f169f
   - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
   - scripts/pull_decision_model.py:f9344c0acb2a3e2761681dd2aff2b7f257153f8674e5d7582df9b0738220d347
   - docs/decision-layer.md:46cd91d13c1b98120318b6aff5d720fc3abe22541de8b1b1762db57a0e8dbeeb
 

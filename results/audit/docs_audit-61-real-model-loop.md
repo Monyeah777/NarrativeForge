@@ -6,7 +6,7 @@ scope: 作者指令「执行」（承接「让这些模型替我干活，来构�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - scripts/serve_decision_model.py:fd96cba3538674b8ca49fe9109ad47f06fa5132e41c7688276395b5660385bb5
+  - scripts/serve_decision_model.py:69c401a98c6fcc81a7a04a274f061e65e20d0190bb38ccff1ba3fe2f6fa03db2
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f

@@ -53,6 +53,9 @@ def _baseline() -> tuple:
     src = (ROOT / "desktop" / "src" / "core" / "quality_baseline.py").read_text(encoding="utf-8")
     checks = re.search(r"EXPECTED_CHECKS = (\d+)", src)
     passed = re.search(r"EXPECTED_PASS = (\d+)", src)
+    if checks is None or passed is None:
+        raise SystemExit("quality_baseline.py 缺 EXPECTED_CHECKS/EXPECTED_PASS"
+                         "（修复指引：确认桌面核心基线常量在场）")
     return int(checks.group(1)), int(passed.group(1))
 
 

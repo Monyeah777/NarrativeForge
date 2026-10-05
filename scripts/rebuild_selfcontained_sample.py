@@ -52,8 +52,11 @@ def _next_nonblank(lines: list, i: int) -> int:
 
 def _blocks(lines: list, pipeline_src: str) -> list:
     """→ [{open, close, src, kind}]；open/close 为围栏行下标（close 为收尾围栏）。"""
-    marks = [(i, m.group(1).strip()) for i, ln in enumerate(lines)
-             for m in ([MARKER_RE.match(ln)] if MARKER_RE.match(ln) else [])]
+    marks = []
+    for i, ln in enumerate(lines):
+        m = MARKER_RE.match(ln)
+        if m:
+            marks.append((i, m.group(1).strip()))
     out = []
     for k, (idx, src) in enumerate(marks):
         op = _next_nonblank(lines, idx)
@@ -77,10 +80,10 @@ def _blocks(lines: list, pipeline_src: str) -> list:
                 continue
             # 收尾围栏 = 下一节脚手架标题（§3 注册表投影）之前的最后一个围栏
             stop = next((j for j in range(op, len(lines)) if SCAFFOLD_3_RE.match(lines[j])), len(lines))
-            cl = max((j for j in range(op, stop) if lines[j].strip() == FENCE), default=None)
-            if cl is None:
+            close_idx = max((j for j in range(op, stop) if lines[j].strip() == FENCE), default=None)
+            if close_idx is None:
                 raise SystemExit("管线段收尾围栏未找到（引 L%d）" % (i + 1))
-            out.append({"open": op, "close": cl, "src": pipeline_src, "kind": "pipeline"})
+            out.append({"open": op, "close": close_idx, "src": pipeline_src, "kind": "pipeline"})
     return sorted(out, key=lambda b: b["open"])
 
 

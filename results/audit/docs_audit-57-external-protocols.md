@@ -16,8 +16,8 @@ subjects:
   - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
   - desktop/src/core/endpoint.py:6d09b2efc63aa5d863093871d5ffdbdb19627e5a83c439fbc00fafde9fd4cf87
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
-  - scripts/check_external_links.py:df23d04dc3ab48006bdd4867e74d115871633397ad3d5ec6280093c8c47112b7
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
+  - scripts/check_external_links.py:ce954ac27b7fdc632b48e68a8867361f3415b5e2920d4d4dfd2f306574a60909
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
   - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c

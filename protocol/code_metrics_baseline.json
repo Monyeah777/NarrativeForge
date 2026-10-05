@@ -761,7 +761,7 @@
       "max_fn_lines": 90
     },
     "scripts/build_verification_cards.py": {
-      "lines": 125,
+      "lines": 128,
       "max_fn_cc": 6,
       "max_fn_lines": 26
     },
@@ -806,9 +806,9 @@
       "max_fn_lines": 6
     },
     "scripts/fde_sample_run.py": {
-      "lines": 302,
-      "max_fn_cc": 26,
-      "max_fn_lines": 95
+      "lines": 304,
+      "max_fn_cc": 27,
+      "max_fn_lines": 97
     },
     "scripts/geo_export.py": {
       "lines": 216,
@@ -826,7 +826,7 @@
       "max_fn_lines": 52
     },
     "scripts/nf.py": {
-      "lines": 7032,
+      "lines": 7036,
       "max_fn_cc": 113,
       "max_fn_lines": 1060
     },
@@ -856,8 +856,8 @@
       "max_fn_lines": 77
     },
     "scripts/rebuild_selfcontained_sample.py": {
-      "lines": 152,
-      "max_fn_cc": 12,
+      "lines": 155,
+      "max_fn_cc": 13,
       "max_fn_lines": 35
     },
     "scripts/sast_check.py": {

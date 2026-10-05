@@ -130,6 +130,8 @@ def _gates(root: str) -> Tuple[List[Dict[str, Any]], List[str], Dict[str, Any]]:
 
     s_issues, s_stats = rs.check(root)
     spec = importlib.util.spec_from_file_location("geo_export", os.path.join(root, "scripts/geo_export.py"))
+    if spec is None:
+        raise RuntimeError("无法构造 geo_export 加载规格（修复指引：确认 scripts/geo_export.py 在场）")
     geo = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(geo)  # type: ignore[union-attr]
     g_issues, g_stats = geo.check(root)

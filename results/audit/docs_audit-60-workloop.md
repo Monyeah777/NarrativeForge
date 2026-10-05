@@ -10,7 +10,7 @@ subjects:
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
   - docs/decision-layer.md:46cd91d13c1b98120318b6aff5d720fc3abe22541de8b1b1762db57a0e8dbeeb
 

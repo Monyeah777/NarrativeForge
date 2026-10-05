@@ -13,7 +13,7 @@ subjects:
   - desktop/tests/test_changelog_gen.py:3ddb12cc2247f8bf5649dc4e64d7521fc40795aba93c90f8dd34fc3df47377b8
   - protocol/release_policy.json:29eaf0c6692f6872971d3d582a23cdf18cbca60c6ac1e35aba7b04eb85e9ebbc
   - docs/release.md:1eb6c5fa7b79e8d9996ca1aa5d92dd9220c86c6a2b5d58e0607484b3c2ab1012
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
   - scripts/release_freeze.sh:30d8ae65f958d71e98411793affdacba75efaa5f0934373dab991e065fe530a3
 
 ---

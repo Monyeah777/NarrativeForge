@@ -26,7 +26,7 @@ subjects:
   - desktop/tests/fixtures/execution/rounds/bad_r2.json:9498fba916ea03db23cd75fb9279335ad92127850aab54adb73f5032f6b20d24
   - desktop/tests/fixtures/execution/rounds/bad_r3.json:985bc52b5a755bb6ca33a94817cb706beb9bfe6d9d13f7933f7bbcfe0ca46e8a
   - desktop/tests/fixtures/execution/rounds/gap_ok.json:55d09b1102f7729f31439fd68cf8ad25c7e0db55e0a9064db713a0ee582d4914
-  - protocol/code_metrics_baseline.json:777b3636b9e986c12b938597708ee75422404a1115f2a0e7ae74833aa1800b2c
+  - protocol/code_metrics_baseline.json:060667035d17d359d69ad3603052e079d70b52d19000bac7db6a2bc50536b5ce
 
 ---
 

@@ -7,12 +7,12 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - verify.sh:e62c132448d12805177e17a45b8c1b51d0fc3717364800b39aa81c9345050d35
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
   - desktop/src/core/repo_stats.py:06c15ce6361195390b2cdc2f8d84a9189c980e9bb226b9a40092bc330d10beff
   - desktop/src/core/quality_baseline.py:ff2884ea8eb52b5612ee9d03e424f61558b4098b112947393d31a6ea39124c2d
-  - scripts/interop_thirdparty_kit.py:e741e5f80c792b05f2613efdc9a5dd942a1526e3c351b3b72ccb704cb43d9501
-  - scripts/geo_export.py:e5872d64221e1f1d6dc0e99b8e691bf2f12b59f4fda87a3fb93c237d32245fa6
-  - scripts/fde_sample_run.py:903fc0c54e6d34f0a14e6ca225d37b2ddafb0e5856ab0a5d314f80a460ff84f7
+  - scripts/interop_thirdparty_kit.py:05772f664348a3682b94a0f5dceaa5e9a39a91c0701ba7614bf121ac5f450202
+  - scripts/geo_export.py:616992be1e6f5e8251b5a9aa98abc8d27dfee22ddb9152a335538f17e28ea06a
+  - scripts/fde_sample_run.py:a891a76e559c4d68260ecc8ea03b9d76109a793e859e53cb42a0bc5b0edf9560
   - protocol/CONFORMANCE.md:8a223b9e964de2595f8e6f1370a205704b2e303d96f56af524d5b414715f6dd8
   - docs/fde-stack.md:eb0f23ea12870e75945803f301469a67c737f2072f0b2b2ffd2e495b9c7631cb
   - docs/fde-sample/README.md:c17984ad90f50d39131fd932c37915b978e28bf606f9c397128de1c8417e4168

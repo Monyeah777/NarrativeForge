@@ -112,8 +112,8 @@ def build(root: str) -> Dict[str, str]:
     for layer in LAYERS:
         cards.append("- **%s** %d 条 → `docs/standards/layer-%s.md`"
                      % (layer, by_layer.get(layer, 0), layer))
-    bound_rows = sorted(({"id": k, **v} for k, v in counts.items()),
-                        key=lambda r: (-(r["main"] + r["support"]), r["id"]))
+    bound_src: List[Dict[str, Any]] = [{"id": k, **v} for k, v in counts.items()]
+    bound_rows = sorted(bound_src, key=lambda r: (-(r["main"] + r["support"]), r["id"]))
     cards += ["", "## 卡 3 · 哪些标准被域包绑定、绑了多少次？", "",
               "绑定总量 **1200**（%d 条不同标准被引用；主锚=口径锚，辅锚=产出承载锚）。绑定最多的 20 条：" % len(counts), ""]
     cards += ["- `%s` · 主锚 %d / 辅锚 %d" % (r["id"], r["main"], r["support"]) for r in bound_rows[:20]]

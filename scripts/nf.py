@@ -20,13 +20,14 @@
 import argparse
 import os
 import sys
+from typing import Any, Dict, List
 
 # argparse 的每个**内建** help 串都要过一次 `gettext.translation`（本机实测：建一次命令面 **432 次
 # → 0.11 s**，每次都去 stat locale 目录），而本 CLI 不做本地化（help 全是中文字面量）。把翻译钩子
 # 短路成恒等函数：实测 `_build_parser()` **102.8 → 8.4 ms**，~1900 次 stat 降到近乎零。必须在建面
 # 之前打这个补丁（argparse 在 import 期就把 `gettext.gettext` 绑成了模块级 `_`）。
-argparse._ = lambda message: message                                     # type: ignore[assignment]
-argparse.ngettext = lambda singular, plural, n: singular if n == 1 else plural
+argparse._ = lambda message: message                                     # type: ignore[attr-defined,assignment]
+argparse.ngettext = lambda singular, plural, n: singular if n == 1 else plural  # type: ignore[attr-defined]
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -6645,7 +6646,7 @@ def _cmd_daemon(args) -> int:
                 print("  ✗ " + msg, file=sys.stderr)
                 return 1
             doc = dm.read_state()
-        rows = []
+        rows: List[Dict[str, Any]] = []
         for argv in probes:
             cold = []
             for _ in range(max(1, args.runs)):
@@ -7002,7 +7003,10 @@ def cli(argv=None) -> int:
     """
     try:
         import signal
-        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+        # Windows 无 SIGPIPE：取不到即跳过（原写法在该平台靠 except 兜住，行为等价）。
+        _sigpipe = getattr(signal, "SIGPIPE", None)
+        if _sigpipe is not None:
+            signal.signal(_sigpipe, signal.SIG_DFL)
     except Exception:  # 尽力而为：跳过不可读/不可解析项（该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出）  # nosec B110 —— 尽力而为：跳过不可读/不可解析项（对应门禁另报；见 AUD-0016）
         pass
     try:

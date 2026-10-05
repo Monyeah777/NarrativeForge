@@ -32,7 +32,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Dict, Optional, Sequence
 
-AGENT = None          # 进程内单例（模型常驻，避免每请求重载）
+AGENT: Any = None     # 进程内单例（模型常驻，避免每请求重载）
 AGENT_LOCK = threading.Lock()
 
 #: 请求体上限（1 MiB）。本服务只吃 `{state, questions}`，正常请求远小于此。

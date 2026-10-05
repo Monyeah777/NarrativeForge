@@ -16,7 +16,7 @@ subjects:
   - desktop/src/core/import_adapter.py:5130103b8a9fff436ca4bab1b7ec3ba710652d8f767f24f1d983a0d9a21991de
   - desktop/src/core/library.py:2b489a88fc209b551938d879be84a3c6d10d208e1a334ee2229adefa48f2a00a
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
-  - scripts/check_external_links.py:df23d04dc3ab48006bdd4867e74d115871633397ad3d5ec6280093c8c47112b7
+  - scripts/check_external_links.py:ce954ac27b7fdc632b48e68a8867361f3415b5e2920d4d4dfd2f306574a60909
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
   - docs/external-validation-assets/E1_ccv3_sample_lightmix_P04_chara.json:528935dcf5be9caf69e25a88ec1637b64b8b725c51a539e1ede1d3a864dbcb45
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9

@@ -194,8 +194,8 @@ def _kcid_recompute(base: str) -> Tuple[bool, str]:
     if not entries:
         return False, "cid.json 无 entries（已知向量缺失）"
     stale, misencode, missing = [], [], []
-    for e in entries:
-        rel = str(e.get("path") or "")
+    for ent in entries:
+        rel = str(ent.get("path") or "")
         p = os.path.join(base, rel)
         if not os.path.isfile(p):
             missing.append(rel)
@@ -206,7 +206,7 @@ def _kcid_recompute(base: str) -> Tuple[bool, str]:
             stale.append(rel)
         mh = bytes([0x12, 0x20]) + bytes.fromhex(digests.get(rel) or actual)
         cid = "b" + base64.b32encode(bytes([0x01, 0x71]) + mh).decode("ascii").lower().rstrip("=")
-        if cid != e.get("cid"):
+        if cid != ent.get("cid"):
             misencode.append(rel)
     ok = not stale and not misencode and not missing
     detail = "向量 %d 条：摘要过期 %d · 编码不符 %d · 缺文件 %d" % (

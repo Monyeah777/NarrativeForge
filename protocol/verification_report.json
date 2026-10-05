@@ -272,7 +272,7 @@
       "stats": {
         "contracts": 27,
         "passed": 27,
-        "root": "1161fc44b42312a4e6ca1f7f5be0f98d6c02824c49e7005b3b46b9d65ef23c0d",
+        "root": "d0f8183c3815d4755e39bb6ee49c6366339ceec7c4d1f1db7c4769159b1f0c8d",
         "verdict": "conformant"
       },
       "status": "pass",
@@ -285,10 +285,10 @@
       "sample": [],
       "source": "audit.scan",
       "stats": {
-        "audits": 45,
+        "audits": 46,
         "legacy": 11,
-        "subjects_ok": 288,
-        "with_header": 34
+        "subjects_ok": 297,
+        "with_header": 35
       },
       "status": "warn",
       "warns": 1
@@ -346,7 +346,7 @@
         "files": 177,
         "max_fn_cc": 150,
         "max_fn_lines": 1060,
-        "max_lines": 7032
+        "max_lines": 7036
       },
       "status": "pass",
       "warns": 0
@@ -473,7 +473,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "7062768b012d69f9e3629f45cda5ac2a75cd49958f3b9e4eaf22883cc7306620",
+  "root_digest": "f250b32fc468c8799dee5ea9daf111a45eab50110582e7aac9b8c553ea857fab",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

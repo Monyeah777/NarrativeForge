@@ -11,8 +11,8 @@ subjects:
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/storage.py:a2077fe8eb54943883b374427168d943c359b5170a187dc7a66c940f425fc436
   - desktop/src/core/gap_review.py:856f2c86600ca75bbc9a802968d97b0b5170f10281374f92aea9bdcc9df52d0e
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
-  - scripts/check_external_links.py:df23d04dc3ab48006bdd4867e74d115871633397ad3d5ec6280093c8c47112b7
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
+  - scripts/check_external_links.py:ce954ac27b7fdc632b48e68a8867361f3415b5e2920d4d4dfd2f306574a60909
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
   - scripts/ai_domain_closure.py:2d5a1ed9e59dda0e72c185aed189647520183c6e2d4e942a2548dadd654cec1e
 

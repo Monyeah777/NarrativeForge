@@ -22,7 +22,7 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "desktop" / "src"))  # core.*（原子写单源）
 from core import atomic_write
@@ -216,7 +216,7 @@ def check(links_by_file: Dict[str, List[str]],
 
 def check_with_breaker(links_by_file: Dict[str, List[str]],
                        fetcher: Callable[[str], Tuple[bool, str]],
-                       limit: int = 0, breaker: "DomainBreaker" = None,
+                       limit: int = 0, breaker: Optional["DomainBreaker"] = None,
                        deadline=None) -> Dict[str, object]:
     """带域级熔断与时间预算的探测（breaker=None 即不熔断，行为与旧版一致）。"""
     seen: Dict[str, Tuple[bool, str]] = {}
@@ -301,7 +301,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     fetcher = (lambda url: probe_with_retry(url, base, retries=max(0, args.retries),
                                             backoff=max(0.0, args.backoff)))
     breaker = DomainBreaker(threshold=args.breaker) if args.breaker else None
-    report = check_with_breaker(
+    report: Dict[str, Any] = check_with_breaker(
         links, fetcher, limit=max(0, args.limit), breaker=breaker,
         deadline=(lambda: remaining_budget(started, args.max_seconds))
         if args.max_seconds > 0 else None)

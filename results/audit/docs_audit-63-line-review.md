@@ -13,8 +13,8 @@ subjects:
   - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
   - desktop/src/core/text_hygiene.py:63ceb140b09acf932f1eecd8b3a324889e61d18c8b4cda12d4130594d9eb94fd
   - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
-  - scripts/serve_decision_model.py:fd96cba3538674b8ca49fe9109ad47f06fa5132e41c7688276395b5660385bb5
-  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
+  - scripts/serve_decision_model.py:69c401a98c6fcc81a7a04a274f061e65e20d0190bb38ccff1ba3fe2f6fa03db2
+  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
 
 ---
 
