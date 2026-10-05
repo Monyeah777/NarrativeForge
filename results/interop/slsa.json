@@ -191,7 +191,7 @@
         "id": "https://narrativeforge.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "15e62a61adf7b1b5",
+        "invocationId": "3b35017bdb98609f",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -302,7 +302,7 @@
     },
     {
       "digest": {
-        "sha256": "a98fa9680a44d9d7028f324d41aade7822d9d3f67cecf3ff2dee70fa7a9669fa"
+        "sha256": "49e1b6830c37862563e8d713b25eb28a186db4f7a9c8a2e90417598de529a2a0"
       },
       "name": "protocol/conformance_report.json"
     },

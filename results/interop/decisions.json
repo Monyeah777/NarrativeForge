@@ -252,6 +252,12 @@
       "id": "AUD-0032",
       "title": "类型分批收敛第五批（七模块 mypy 归零；口径更正为错误条数）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0033",
+      "title": "类型分批收敛第六批（terminal / assemble_plan / asset_ledger / atomic_write 归零）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

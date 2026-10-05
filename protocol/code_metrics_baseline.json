@@ -21,9 +21,9 @@
       "max_fn_lines": 40
     },
     "desktop/src/core/assemble_plan.py": {
-      "lines": 220,
+      "lines": 221,
       "max_fn_cc": 18,
-      "max_fn_lines": 49
+      "max_fn_lines": 50
     },
     "desktop/src/core/assertions.py": {
       "lines": 149,
@@ -56,7 +56,7 @@
       "max_fn_lines": 33
     },
     "desktop/src/core/atomic_write.py": {
-      "lines": 221,
+      "lines": 225,
       "max_fn_cc": 8,
       "max_fn_lines": 43
     },
@@ -686,7 +686,7 @@
       "max_fn_lines": 19
     },
     "desktop/src/core/terminal.py": {
-      "lines": 2338,
+      "lines": 2341,
       "max_fn_cc": 51,
       "max_fn_lines": 133
     },

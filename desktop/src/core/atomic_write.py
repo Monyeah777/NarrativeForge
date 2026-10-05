@@ -129,8 +129,10 @@ def _read_with_retry(path: str | os.PathLike, binary: bool, encoding: str):
     last: Exception | None = None
     for i in range(_READ_ATTEMPTS):
         try:
-            with open(path, "rb" if binary else "r",
-                      **({} if binary else {"encoding": encoding})) as fh:
+            if binary:
+                with open(path, "rb") as fh:
+                    return fh.read()
+            with open(path, "r", encoding=encoding) as fh:
                 return fh.read()
         except PermissionError as exc:      # WinError 5/32：名字被写侧短暂占用
             last = exc
@@ -161,8 +163,9 @@ def _lock_fd(fd: int) -> None:
         os.lseek(fd, 0, os.SEEK_SET)
         msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
     else:
+        # typeshed 的 fcntl 面随平台收窄；本分支只在 Unix 执行，属性在场。
         import fcntl
-        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)  # type: ignore[attr-defined]
 
 
 def _unlock_fd(fd: int) -> None:
@@ -171,8 +174,9 @@ def _unlock_fd(fd: int) -> None:
         os.lseek(fd, 0, os.SEEK_SET)
         msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
     else:
+        # 同上：Unix 分支。
         import fcntl
-        fcntl.flock(fd, fcntl.LOCK_UN)
+        fcntl.flock(fd, fcntl.LOCK_UN)  # type: ignore[attr-defined]
 
 
 @contextlib.contextmanager

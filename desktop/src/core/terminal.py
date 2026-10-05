@@ -33,6 +33,7 @@ from collections import namedtuple
 from contextlib import redirect_stderr, redirect_stdout
 from functools import lru_cache
 from pathlib import Path
+from typing import Any
 
 SHELL_VERSION = "1.0.0"
 
@@ -135,7 +136,7 @@ BLOCKED_IN_SHELL["terminal"] = BLOCKED_IN_SHELL["shell"]
 #: 动作字典形态：{"key", "title", "argv", "params", "note"}；参数形态：
 #: {"name", "label", "kind": "text"|"path", "required"}——`kind=path` 的参数在 TUI 侧强制过
 #: 路径包含性判据（与 core/paths.py 同口径）。
-ZONES = (
+ZONES: tuple[dict[str, Any], ...] = (
     {"key": "0", "id": "doctor", "title": "环境自检",
      "family": "start",
      "summary": "只读体检：仓库件在场 / 解释器可用 / 基线自描述一致性",
@@ -285,7 +286,7 @@ Intent = namedtuple("Intent", "kind payload raw")
 #: 能力地图（**策展真源**）：把 CLI 的每个顶层命令恰好归入一个能力族。
 #: 菜单（0-8）是新手路径；本表是「全功能可见」的完整分面——两者分工不重叠。
 #: check39 与 `nf shell --verify` 共用同一判据：族分区必须恰好覆盖命令集（不缺不重不虚）。
-FAMILIES = (
+FAMILIES: tuple[dict[str, Any], ...] = (
     {"id": "start", "name": "上手与自检",
      "summary": "第一次进 NF：体检、一键演示、自述数字、抽象阶梯",
      "commands": ("doctor", "demo", "stats", "layers")},
@@ -319,7 +320,7 @@ FAMILIES = (
 )
 
 #: 斜杠命令词表（`/` 后首个词）：既是 `/x` 形态的判据，也是 MSYS 还原的判据
-SLASH_WORDS = ("quit", "exit", "q", "help", "?", "menu", "菜单",
+SLASH_WORDS: tuple[str, ...] = ("quit", "exit", "q", "help", "?", "menu", "菜单",
                "zone", "z", "区", "doctor", "自检", "version", "ver", "版本",
                "find", "search", "找", "查", "commands", "cmd", "cmds", "命令",
                "map", "families", "族", "地图",
@@ -532,7 +533,7 @@ def _strip_nf(argv: list) -> list:
 # 纪律：每张表的模板只能指向**真实存在的 CLI 动词**（check39 断言 argv[0] 在命令面内）；
 # 表单本身不改任何东西——它只把参数问齐，然后交给 CLI 与闸门。
 
-FORMS = (
+FORMS: tuple[dict[str, Any], ...] = (
     {"id": "deprecate-module", "title": "弃用模块",
      "summary": "把某个模块文件标记为 deprecated（写文件头状态位）",
      "steps": ({"key": "file", "prompt": "模块 md 路径", "required": True, "kind": "path",
@@ -1149,7 +1150,7 @@ def baseline_tmp_dir() -> str:
     return path
 
 
-TERMINAL_BASELINE = (
+TERMINAL_BASELINE: tuple[dict[str, Any], ...] = (
     {"id": "discover-commands", "name": "命令面可达（列出全部命令）",
      "argv": ("shell", "--commands", "--no-banner"), "expect": "nf 命令面"},
     {"id": "discover-search", "name": "关键词检索（按用途找命令）",
@@ -1445,7 +1446,7 @@ def self_check(index, commands, root_flags=(), _examples=None) -> tuple:
             issues.append("索引存在空路径条目（修复指引：核对索引派生）")
 
     # ② 策展：能力族必须恰好分区命令集（不缺 / 不重 / 不虚）
-    seen = {}
+    seen: dict[str, Any] = {}
     for fam in FAMILIES:
         if not fam.get("name") or not fam.get("summary") or not fam.get("commands"):
             issues.append("能力族 %s 缺 name/summary/commands（修复指引：补齐策展字段）"
@@ -1666,7 +1667,7 @@ class Session:
                              "请传入 scripts/nf.py 的 main（终端不自己执行命令）")
         self._runner = runner
         self.assume_yes = bool(assume_yes)
-        self.history = []      # 逐条记录 dict（line/kind/exit/argv/out/err/note）
+        self.history: list[dict[str, Any]] = []   # 逐条记录 dict（line/kind/exit/argv/out/err/note）
         self.last_zone = ""
         self.quit = False
         # 命令面索引（由 CLI 侧从 argparse 面派生）：用于检索 / 列命令 / 拼错建议。
@@ -1683,9 +1684,9 @@ class Session:
         self.stream = stream
         # 会话状态（`--session <file>`）：视图设置 + 上次分区；None = 不持久化
         self.session_path = str(session_path) if session_path else None
-        self.active_form = None      # {"form": …, "answers": {…}} —— 写盘表单进行中
+        self.active_form: dict[str, Any] | None = None   # {"form": …, "answers": {…}} —— 写盘表单进行中
         # 会话内命令记录（供 `!!` / `!n` / `!前缀` 重放；不含 replay 自身，避免自指）
-        self.commands = []           # [(原始行, …)] 只记「能重放」的类别
+        self.commands: list[Any] = []   # [(原始行, …)] 只记「能重放」的类别
 
     def invoke(self, argv: list) -> tuple:
         """执行一条命令 → (exit_code, stdout, stderr)；捕获输出以便落档与比对。
@@ -1885,8 +1886,9 @@ class Session:
 
     def _handle_form_line(self, text: str):
         """表单进行中的一行输入 → 记录 dict（除 `/cancel`/quit 外都算回答）。"""
-        form = self.active_form["form"]
-        answers = self.active_form["answers"]
+        active = self.active_form
+        form = active["form"] if active else {}
+        answers = active["answers"] if active else {}
         low = text.lower()
         rec = {"line": text, "kind": "form", "exit": 0, "argv": [], "out": "",
                "err": "", "note": ""}
@@ -1918,8 +1920,9 @@ class Session:
 
         空行 = **明确跳过**当前项（记空串），于是可选项也会被逐项问到、而不是被静默略过。
         """
-        form = self.active_form["form"]
-        answers = self.active_form["answers"]
+        active = self.active_form
+        form = active["form"] if active else {}
+        answers = active["answers"] if active else {}
         steps = list(form.get("steps") or [])
         key, _, val = text.partition("=")
         key = key.strip()

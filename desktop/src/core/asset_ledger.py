@@ -200,7 +200,7 @@ def add_asset(assets_root: str, file_rel: str, key: str, source: str,
     return entry
 
 
-def _load_for_update(assets_root: str, ledger_path: str, key: str):
+def _load_for_update(assets_root: str, ledger_path: str | None, key: str):
     lp = ledger_path or default_ledger_path(assets_root)
     ledger = load_ledger(lp)
     for e in ledger["assets"]:
@@ -271,7 +271,7 @@ def verify_ledger_dir(ledger_dir: str, ledger_path: str | None = None) -> tuple:
     目录无台账 → 不校验（存量未入库由 inventory 提示，不视为事故）。
     """
     lp = ledger_path or default_ledger_path(ledger_dir)
-    issues = []
+    issues: list[str] = []
     stats = {"assets": 0, "untracked": 0, "orphans": 0}
     if not os.path.isfile(lp):
         return issues, stats

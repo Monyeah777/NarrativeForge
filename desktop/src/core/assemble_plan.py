@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 _ROOT = Path(__file__).resolve().parents[3]
 
@@ -83,7 +83,7 @@ def clarify(requirement: str) -> Dict[str, Any]:
 
 
 def dossier(requirement: str, plan_: Dict[str, Any],
-            questions: List[str] = (), answers: List[str] = ()) -> str:
+            questions: Sequence[str] = (), answers: Sequence[str] = ()) -> str:
     """漏斗产出 → 需求档案（对齐 docs/需求收敛模板.md 八字段回填稿）。"""
     req = requirement.strip()
     status = "澄清中（nf assemble 已抛问句，待回填）" if questions else (
@@ -123,7 +123,8 @@ def dossier(requirement: str, plan_: Dict[str, Any],
 def plan(requirement: str) -> Dict[str, Any]:
     """需求 → 装配计划（预设包 + 取件清单）。"""
     req = requirement.strip()
-    pkg, pipeline = None, None
+    pkg: Optional[str] = None
+    pipeline: Optional[str] = None
     for keys, hit in DOMAIN_MAP:
         if any(k in req for k in keys):
             pkg, pipeline = hit
@@ -140,7 +141,7 @@ def plan(requirement: str) -> Dict[str, Any]:
             except Exception:
                 modules = []
     packages = _package_module_sets()
-    if not matched:
+    if pkg is None or not matched:
         # 用户自定义/未命中：允许全域已登记模块（官方核心 + 各社区包），
         # 并给出自定义预留槽位；自定义件须先按模板落库登记，验收才认。
         for mids in packages.values():
