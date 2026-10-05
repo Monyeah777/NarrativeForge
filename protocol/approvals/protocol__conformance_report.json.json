@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0041 复杂度收敛第四批（interop_export 按面拆分）",
+  "note": "AUD-0042 复杂度收敛第五批（world_model 按面拆分）",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "a534703bda0e23800d60c5f64b3fb9fb1998e352bfe38edd752b44feea9f3f9a"
+  "subject_digest": "82a6a5f7d7a8b393a846b1ff969d51854174fa31dab8de565056524098a1ab52"
 }

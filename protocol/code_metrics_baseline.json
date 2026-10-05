@@ -746,9 +746,9 @@
       "max_fn_lines": 87
     },
     "desktop/src/core/world_model.py": {
-      "lines": 685,
-      "max_fn_cc": 94,
-      "max_fn_lines": 229
+      "lines": 786,
+      "max_fn_cc": 28,
+      "max_fn_lines": 73
     },
     "desktop/src/core/world_slots.py": {
       "lines": 85,
