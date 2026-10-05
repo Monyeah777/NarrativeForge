@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "a2a-card",
+  "locales": {
+    "zh": {
+      "title": "A2A Agent Card 出口",
+      "summary": "只导出 Agent Card 形状，不运行 A2A 端点。"
+    },
+    "en": {
+      "title": "A2A Agent Card export",
+      "summary": "Exports the Agent Card shape only; no A2A endpoint is run."
+    },
+    "ja": {
+      "title": "A2A Agent Card 書き出し",
+      "summary": "Agent Card 形状のみを書き出す。A2A 端点は動かさない。"
+    }
+  }
+}

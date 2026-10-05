@@ -1,0 +1,24 @@
+{
+  "schema": "nf-integration/1",
+  "id": "mcp",
+  "title": "MCP 服务面（nf serve）",
+  "kind": "server",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "python scripts/nf.py serve"
+  },
+  "requires": [
+    "python>=3.11"
+  ],
+  "docs": [
+    "docs/mcp.md"
+  ],
+  "evidence": [
+    "desktop/src/core/mcp_runtime.py",
+    "protocol/mcp_package.json"
+  ],
+  "notes": "只读 MCP stdio 服务：resources/tools/prompts 全只读，dual-era 协议版本。"
+}

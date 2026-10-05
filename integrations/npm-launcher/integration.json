@@ -1,0 +1,25 @@
+{
+  "schema": "nf-integration/1",
+  "id": "npm-launcher",
+  "title": "npm 一键启动器",
+  "kind": "package",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "npx narrativeforge",
+    "path": "packaging/npm/package.json"
+  },
+  "requires": [
+    "node>=18.17"
+  ],
+  "docs": [
+    "packaging/npm/README.md"
+  ],
+  "evidence": [
+    "packaging/npm/package.json",
+    "packaging/npm/bin/nf.mjs"
+  ],
+  "notes": "npm 包：离线拉起 NF CLI（payload 随包分发）。"
+}

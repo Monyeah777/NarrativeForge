@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nf:integration",
+  "title": "NF 接入面描述件（integration descriptor）",
+  "description": "integrations/<id>/integration.json 的单一真相定义：封闭词表的 kind/status/tier + 入口 + 文档 + 证据（件在场由 core/integrations.py 另判）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "title",
+    "kind",
+    "status",
+    "version",
+    "codeowner",
+    "tier",
+    "entry",
+    "docs",
+    "evidence"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "nf-integration/1"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 2
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "server",
+        "client",
+        "cli",
+        "library",
+        "editor",
+        "package",
+        "export",
+        "collection"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "proposed",
+        "deprecated"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "codeowner": {
+      "type": "string",
+      "minLength": 2
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "core",
+        "community"
+      ]
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "type": "string",
+          "minLength": 3
+        },
+        "path": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "requires": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2
+      }
+    },
+    "docs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

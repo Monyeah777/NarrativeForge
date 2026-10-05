@@ -1,0 +1,25 @@
+{
+  "schema": "nf-integration/1",
+  "id": "tui",
+  "title": "终端 TUI（tui/nf.py）",
+  "kind": "cli",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "python tui/nf.py --selftest",
+    "path": "tui/nf.py"
+  },
+  "requires": [
+    "python>=3.11"
+  ],
+  "docs": [
+    "tui/README.md"
+  ],
+  "evidence": [
+    "tui/nf.py",
+    "tui/_surface.py"
+  ],
+  "notes": "全屏人机入口（纯标准库）；菜单与动作是 nf CLI 真命令的受控调用方。"
+}

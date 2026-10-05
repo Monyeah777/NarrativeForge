@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "library-raw",
+  "locales": {
+    "zh": {
+      "title": "云图书馆取件面",
+      "summary": "按编号寻址 + 镜像前缀路由；raw 喂 AI、网页给人。"
+    },
+    "en": {
+      "title": "Library pickup surface",
+      "summary": "Address by ID plus mirror-prefix routing; raw for AI, web pages for humans."
+    },
+    "ja": {
+      "title": "ライブラリ取件面",
+      "summary": "番号でアドレス、ミラー接頭辞でルーティング。AI には raw、人には Web。"
+    }
+  }
+}

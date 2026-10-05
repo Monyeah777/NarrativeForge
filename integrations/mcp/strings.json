@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "mcp",
+  "locales": {
+    "zh": {
+      "title": "MCP 服务面",
+      "summary": "只读 MCP stdio 服务：resources / tools / prompts 全只读，dual-era 协议版本。"
+    },
+    "en": {
+      "title": "MCP server surface",
+      "summary": "Read-only MCP stdio server: resources / tools / prompts, dual-era protocol versions."
+    },
+    "ja": {
+      "title": "MCP サービス面",
+      "summary": "読み取り専用の MCP stdio サービス：resources / tools / prompts、dual-era 対応。"
+    }
+  }
+}

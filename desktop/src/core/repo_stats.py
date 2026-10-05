@@ -36,7 +36,7 @@ from core import atomic_write
 STATS_REL = "protocol/repo_stats.json"
 BEGIN = "<!-- nf:stats:begin -->"
 END = "<!-- nf:stats:end -->"
-BLOCK_FILES = ("README.md", "README.en.md", "llms.txt")
+BLOCK_FILES = ("README.md", "README.en.md", "README.ja.md", "llms.txt")
 
 
 def _read_json(path: str) -> Any:
@@ -168,6 +168,29 @@ def _en(stats: Dict[str, Any]) -> str:
     ])
 
 
+def _ja(stats: Dict[str, Any]) -> str:
+    pipes = " / ".join(stats.get("core_pipelines") or []) or "—"
+    layers = stats.get("standards_by_layer") or {}
+    layer_txt = " · ".join("%s %s" % (k, layers[k]) for k in sorted(layers)) or "—"
+    return "\n".join([
+        BEGIN,
+        "**公式コア**：%d モジュール · %d パイプライン（%s） · コアプロトコル 01–07"
+        % (stats["core_modules"], len(stats.get("core_pipelines") or []), pipes),
+        "**コミュニティ規模**：%d 登録パッケージ · %d 資産ファイル · %d 概念グラフ · %d ドメインパック／%d 細分類 · 標準カタログ %d 件（到達可能 %d ／ 不可達 %d · 機関 %d · %d 依存辺） · 標準バインディング %d 件"
+        % (stats["registered_packs"], stats["pack_assets"], stats["concept_graphs"],
+           stats["domain_packs"], stats["subdivisions_total"],
+           stats["standards_total"], stats["standards_reachable"], stats["standards_unreachable"],
+           stats["standards_bodies"], stats["standards_edges"], stats["standard_bindings"]),
+        "**品質証憑**：verify v%s · check1-%d · PASS=%d（bash verify.sh の単一入口。期待基準は quality_baseline.EXPECTED_*） · 所蔵 %d 件"
+        % (stats["verify_version"], stats["baseline_checks"], stats["baseline_pass"], stats["library_items"]),
+        "",
+        "分层：%s （標準カタログ layer 別）" % layer_txt,
+        "",
+        "> 本区は python scripts/nf.py stats --write が生成します（手改禁止）。口径と実算真源は protocol/repo_stats.json。",
+        END,
+    ])
+
+
 def _llms(stats: Dict[str, Any]) -> str:
     return "\n".join([
         BEGIN,
@@ -183,7 +206,8 @@ def _llms(stats: Dict[str, Any]) -> str:
 
 
 def render(stats: Dict[str, Any]) -> Dict[str, str]:
-    return {"README.md": _zh(stats), "README.en.md": _en(stats), "llms.txt": _llms(stats)}
+    return {"README.md": _zh(stats), "README.en.md": _en(stats),
+            "README.ja.md": _ja(stats), "llms.txt": _llms(stats)}
 
 
 def _replace_block(text: str, block: str) -> Tuple[str, bool]:

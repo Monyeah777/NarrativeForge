@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nf:integration-strings",
+  "title": "NF 接入面本地化字符串（integration strings）",
+  "description": "integrations/<id>/strings.json 的单一真相定义（Home Assistant strings.json 同型）：逐语言的 title/summary；语言集须等于 protocol/locales.json 的注册语言（由 core/integrations.py 另判）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "locales"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "nf-integration-strings/1"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}$"
+    },
+    "locales": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "summary"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 2
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 4
+          }
+        }
+      }
+    }
+  }
+}

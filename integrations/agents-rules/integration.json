@@ -1,0 +1,25 @@
+{
+  "schema": "nf-integration/1",
+  "id": "agents-rules",
+  "title": "项目规则出口（AGENTS / CLAUDE）",
+  "kind": "export",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "python scripts/nf.py run --fmt agents",
+    "path": "agent_组装指令包_v0.2.md"
+  },
+  "requires": [
+    "python>=3.11"
+  ],
+  "docs": [
+    "agent_组装指令包_v0.2.md"
+  ],
+  "evidence": [
+    "desktop/src/core/rules_render.py",
+    "desktop/src/core/agent_rules_adapter.py"
+  ],
+  "notes": "doc_semantics=project_rules → AGENTS / CLAUDE 规则文件导出。"
+}

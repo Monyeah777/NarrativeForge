@@ -1,6 +1,6 @@
 {
   "baseline_checks": 40,
-  "baseline_pass": 70,
+  "baseline_pass": 72,
   "concept_graphs": 101,
   "core_modules": 13,
   "core_pipelines": [

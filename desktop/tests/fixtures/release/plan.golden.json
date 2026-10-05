@@ -1,0 +1,58 @@
+{
+  "freeze_chain": [
+    "python scripts/nf.py conformance --write",
+    "python scripts/nf.py approve protocol/conformance_report.json",
+    "python scripts/nf.py receipts --scope protocol --write"
+  ],
+  "steps": [
+    [
+      "pre-1",
+      "工作区状态"
+    ],
+    [
+      "pre-2",
+      "发布策略件"
+    ],
+    [
+      "gate-1",
+      "全量门禁"
+    ],
+    [
+      "gate-2",
+      "发布前体检"
+    ],
+    [
+      "changes-1",
+      "变更日志生成与归档"
+    ],
+    [
+      "freeze-1",
+      "一致性报告重算"
+    ],
+    [
+      "freeze-2",
+      "内容绑定批准"
+    ],
+    [
+      "freeze-3",
+      "协议层回执重签"
+    ],
+    [
+      "golden-1",
+      "Golden Master 冻结"
+    ],
+    [
+      "ver-1",
+      "版本面同步"
+    ],
+    [
+      "audit-1",
+      "审计建档"
+    ],
+    [
+      "tag-1",
+      "打标"
+    ]
+  ],
+  "policy_schema": "nf:release-policy"
+}

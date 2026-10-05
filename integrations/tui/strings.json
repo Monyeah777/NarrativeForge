@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "tui",
+  "locales": {
+    "zh": {
+      "title": "终端 TUI",
+      "summary": "全屏人机入口（纯标准库）；菜单与动作是 nf 真命令的受控调用方。"
+    },
+    "en": {
+      "title": "Terminal TUI",
+      "summary": "Full-screen human entry (stdlib only); menus call real nf commands."
+    },
+    "ja": {
+      "title": "ターミナル TUI",
+      "summary": "全画面の人間向け入口（標準ライブラリのみ）。メニューは実際の nf コマンドを呼ぶ。"
+    }
+  }
+}

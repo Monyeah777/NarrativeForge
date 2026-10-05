@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "lsp",
+  "locales": {
+    "zh": {
+      "title": "编辑器接入（LSP）",
+      "summary": "最小 LSP 服务器：stdio 分帧、full-sync、诊断与 quickfix，不写盘。"
+    },
+    "en": {
+      "title": "Editor integration (LSP)",
+      "summary": "Minimal LSP server: stdio framing, full-sync, diagnostics and quickfix; never writes."
+    },
+    "ja": {
+      "title": "エディタ接続（LSP）",
+      "summary": "最小 LSP サーバー：stdio フレーミング、full-sync、診断と quickfix。書き込みなし。"
+    }
+  }
+}

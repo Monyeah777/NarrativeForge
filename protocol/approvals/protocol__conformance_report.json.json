@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-10-04",
-  "approved_by": "执行者（作者指令：确认执行收口）",
-  "note": "重绑审计后重批一致性报告",
+  "approved_at": "2026-10-05",
+  "approved_by": "执行者（作者指令本波：基线同源 + 三面补齐）",
+  "note": "EXPECTED_PASS 70→72 同源；README.ja 纳入生成区；三面补齐随波",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "ca9505b4168cff85888461dd79f491229bb70f68eb7729cf9d711c257c5ac652"
+  "subject_digest": "8ef08d9b611fb7713054b4c04ad20e495daaf1e885a1243a1aa3c0424b4801ea"
 }

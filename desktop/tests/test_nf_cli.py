@@ -209,8 +209,10 @@ class NfCliSmokeTest(unittest.TestCase):
         code, out = self._run(["stats", "--json"])
         self.assertEqual(code, 0, out)
         data = json.loads(out)
-        self.assertEqual(40, data["baseline_checks"])
-        self.assertEqual(70, data["baseline_pass"])
+        # 期望值取自基线真源，不写字面量（此前钉死 40/70，基线一动本判据就假红）。
+        from core import quality_baseline as _qb
+        self.assertEqual(_qb.EXPECTED_CHECKS, data["baseline_checks"])
+        self.assertEqual(_qb.EXPECTED_PASS, data["baseline_pass"])
 
     def test_related_techdoc(self):
         code, out = self._run(["related", "技术文档域包"])

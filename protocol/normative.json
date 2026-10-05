@@ -10,6 +10,8 @@
     {"path": "protocol/CONFORMANCE.md"},
     {"path": "protocol/EXTENSION.md", "covered_by": ["check30"]},
     {"path": "protocol/LAYERS.json"},
+    {"path": "protocol/locales.json"},
+    {"path": "protocol/release_policy.json"},
     {"path": "protocol/driver.json"},
     {"path": "protocol/endpoint_contract.json"},
     {"path": "protocol/rfc_index.json"},
@@ -33,7 +35,10 @@
     {"path": "protocol/schema/module.schema.json"},
     {"path": "protocol/schema/pipeline.schema.json"},
     {"path": "protocol/schema/protocol.schema.json"},
-    {"path": "protocol/schema/asset.schema.json"}
+    {"path": "protocol/schema/asset.schema.json"},
+    {"path": "protocol/schema/release.schema.json"},
+    {"path": "protocol/schema/integration.schema.json"},
+    {"path": "protocol/schema/integration_strings.schema.json"}
   ],
   "informative": [
     "README.md", "CONTRIBUTING.md", "ROADMAP.md", "ROUTES.md",

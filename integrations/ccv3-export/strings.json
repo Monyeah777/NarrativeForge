@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "ccv3-export",
+  "locales": {
+    "zh": {
+      "title": "CCV3 角色卡出口",
+      "summary": "SillyTavern 系角色卡（v3 真形状：data 承载 + 顶层 v2 镜像）。"
+    },
+    "en": {
+      "title": "CCV3 character card export",
+      "summary": "SillyTavern-style card (true v3: data block plus top-level v2 mirror)."
+    },
+    "ja": {
+      "title": "CCV3 キャラカード書き出し",
+      "summary": "SillyTavern 系カード（v3 実形状：data ブロック + 顶层 v2 ミラー）。"
+    }
+  }
+}

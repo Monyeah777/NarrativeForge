@@ -68,7 +68,7 @@ CONFIRM_FLAGS = ("--write", "--apply", "--register", "--force",
                  # 与其余写面同待遇（不额外设闸）。表单侧不建追问表，理由见 `FORM_EXEMPT`。
                  "--surface-write")
 #: 2026-10-01 清掉 5 个**死条目**（表里有、`nf` 的 argparse 面里没有）：`--tag` / `--push` /
-#: `--delete` / `--rm` / `--re-sign`——都是更早版本的残影（`nf release` 如今只有 `--fast`；
+#: `--delete` / `--rm` / `--re-sign`——都是更早版本的残影（`nf release` 如今是 `--fast` / `--plan` / `--freeze [--apply]`；
 #: `nf asset baseline` 的重签旗标是 **`--write`**，已被上面那条覆盖，行为面并没有因此漏拦）。
 #: 死条目的害处不是漏拦（它们匹配不到任何东西），而是**误导读者的口径**：文档写着「命中
 #: `--re-sign` 才需要确认」，读者照着敲只会拿到用法错误。判据见 `test_write_flag_gate`：闸门
@@ -297,18 +297,18 @@ FAMILIES = (
      "commands": ("market", "asset", "module", "pipeline", "combine", "domain",
                   "output", "rename")},
     {"id": "verify", "name": "质检与验证",
-     "summary": "正文 lint、一致性报告、断言表、知识签名、评分、差异、解释、状态前置、发布体检、许可证、遥测",
+     "summary": "正文 lint、一致性报告、断言表、知识签名、评分、差异、解释、状态前置、发布体检与变更日志生成、许可证、遥测",
      "commands": ("lint", "conformance", "assertions", "sig", "score", "diff",
-                  "explain", "st-validate", "release", "license", "telemetry")},
+                  "explain", "st-validate", "release", "changelog", "license", "telemetry")},
     {"id": "library", "name": "图书馆与知识",
      "summary": "馆藏存取、双源知识、行话术语、实践包、协议件版本史、引用关系与影响面",
      "commands": ("library", "knowledge", "cognition", "patterns", "rfc",
                   "related", "who-refers", "impact")},
     {"id": "govern", "name": "治理与决策",
-     "summary": "决策记录（ADR）、审计、背书、回执、交接、复盘、决策层、评审、构建回路、批准、透明日志、设计审计",
+     "summary": "决策记录（ADR）、审计、背书、回执、交接、复盘、决策层、评审、构建回路、批准、透明日志、设计审计、语言面（本地化与责任方）",
      "commands": ("decisions", "audit", "attest", "receipts", "handover",
                   "postmortem", "decide", "model", "review", "workloop",
-                  "approve", "transparency", "design")},
+                  "approve", "transparency", "design", "locales")},
     {"id": "integrate", "name": "服务与集成",
      "summary": "MCP 服务面、编辑器面、跑分台、端点契约、互操作导出、指令档路由、事件背书、状态前置、世界模型、模块工具面",
      "commands": ("serve", "lsp", "bench", "endpoint", "interop", "driver",

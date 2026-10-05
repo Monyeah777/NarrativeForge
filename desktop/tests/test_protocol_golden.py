@@ -27,7 +27,8 @@ class ProtocolGoldenTest(unittest.TestCase):
         with open(os.path.join(ROOT, "protocol", "generated", "idl_report.json"),
                   encoding="utf-8") as fh:
             data = json.load(fh)
-        self.assertEqual(len(data["schema_ids"]), 5)
+        # 扩展协议面会合法增加 schema 数（判据是核心五份在场，见 test_schema_lint）。
+        self.assertGreaterEqual(len(data["schema_ids"]), 5)
         self.assertGreaterEqual(data["coverage"]["contract_covered"], 20)
         self.assertIn("event_closure", data)
         self.assertGreaterEqual(len(data["event_closure"]["linked_events"]), 10)

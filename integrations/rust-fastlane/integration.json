@@ -1,0 +1,25 @@
+{
+  "schema": "nf-integration/1",
+  "id": "rust-fastlane",
+  "title": "Rust 只读快线（nf-rs）",
+  "kind": "cli",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "cargo run --release --manifest-path engine/rust/Cargo.toml",
+    "path": "engine/rust/Cargo.toml"
+  },
+  "requires": [
+    "cargo>=1.75"
+  ],
+  "docs": [
+    "engine/rust/README.md"
+  ],
+  "evidence": [
+    "engine/rust/Cargo.toml",
+    "engine/rust/check_parity.ps1"
+  ],
+  "notes": "只读判据的 Rust 第二实现（内置 Python 解析器 + 深度子扫描器 + 聚合器）。"
+}

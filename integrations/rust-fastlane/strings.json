@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "rust-fastlane",
+  "locales": {
+    "zh": {
+      "title": "Rust 只读快线",
+      "summary": "只读判据的 Rust 第二实现（内置解析器 + 深度扫描器 + 聚合器）。"
+    },
+    "en": {
+      "title": "Rust read-only fast lane",
+      "summary": "Second read-only implementation (built-in parser, deep scanners, aggregator)."
+    },
+    "ja": {
+      "title": "Rust 読み取り専用ファストレーン",
+      "summary": "読み取り専用判据の第二実装（内蔵パーサ + 深層スキャナ + 集約器）。"
+    }
+  }
+}

@@ -269,7 +269,17 @@ class SchemaScanTest(unittest.TestCase):
     def test_schema_files_meta(self):
         issues, schemas = sl.check_schema_files(ROOT)
         self.assertEqual(issues, [])
-        self.assertEqual(len(schemas), 5)
+        # 判据是「五份核心 IDL 在场」而非「恰好五份」——扩展协议面（发布策略 / 接入面 schema）
+        # 会合法增份（2026-10-05 实测：7 份被 ==5 判红）。
+        core_idl = ("contract.schema.json", "module.schema.json", "pipeline.schema.json",
+                    "protocol.schema.json", "asset.schema.json")
+        import glob as _glob
+        import os as _os
+        names = {_os.path.basename(p) for p in
+                 _glob.glob(_os.path.join(ROOT, "protocol", "schema", "*.json"))}
+        for n in core_idl:
+            self.assertIn(n, names, "核心 IDL 定义缺失：%s" % n)
+        self.assertGreaterEqual(len(schemas), 5, "schema 面退化成空转")
 
     def test_repo_scan_clean(self):
         issues, stats = sl.scan(ROOT)
@@ -279,7 +289,7 @@ class SchemaScanTest(unittest.TestCase):
         self.assertGreaterEqual(stats["pipelines"], 8)
         self.assertGreaterEqual(stats["protocols"], 5)
         self.assertGreaterEqual(stats["asset_entries"], 2)
-        self.assertEqual(stats["schema_files"], 5)
+        self.assertGreaterEqual(stats["schema_files"], 5)
 
     def test_unsupported_keyword_rejected(self):
         """子集边界自洽：校验器未实现的关键字出现在 schema 定义即 FAIL（防假绿）。"""

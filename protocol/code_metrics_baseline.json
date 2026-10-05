@@ -85,6 +85,11 @@
       "max_fn_cc": 6,
       "max_fn_lines": 47
     },
+    "desktop/src/core/changelog_gen.py": {
+      "lines": 188,
+      "max_fn_cc": 10,
+      "max_fn_lines": 22
+    },
     "desktop/src/core/closure_scan.py": {
       "lines": 76,
       "max_fn_cc": 8,
@@ -255,6 +260,11 @@
       "max_fn_cc": 27,
       "max_fn_lines": 50
     },
+    "desktop/src/core/integrations.py": {
+      "lines": 210,
+      "max_fn_cc": 52,
+      "max_fn_lines": 121
+    },
     "desktop/src/core/interop_export.py": {
       "lines": 957,
       "max_fn_cc": 150,
@@ -324,6 +334,11 @@
       "lines": 146,
       "max_fn_cc": 19,
       "max_fn_lines": 36
+    },
+    "desktop/src/core/locales.py": {
+      "lines": 286,
+      "max_fn_cc": 54,
+      "max_fn_lines": 125
     },
     "desktop/src/core/lsp.py": {
       "lines": 268,
@@ -536,9 +551,9 @@
       "max_fn_lines": 33
     },
     "desktop/src/core/receipts.py": {
-      "lines": 259,
+      "lines": 260,
       "max_fn_cc": 13,
-      "max_fn_lines": 34
+      "max_fn_lines": 35
     },
     "desktop/src/core/registry_cross.py": {
       "lines": 88,
@@ -560,13 +575,18 @@
       "max_fn_cc": 19,
       "max_fn_lines": 52
     },
+    "desktop/src/core/release_gate.py": {
+      "lines": 313,
+      "max_fn_cc": 26,
+      "max_fn_lines": 82
+    },
     "desktop/src/core/repo_face.py": {
       "lines": 93,
       "max_fn_cc": 10,
       "max_fn_lines": 23
     },
     "desktop/src/core/repo_stats.py": {
-      "lines": 240,
+      "lines": 264,
       "max_fn_cc": 19,
       "max_fn_lines": 77
     },
@@ -806,9 +826,9 @@
       "max_fn_lines": 52
     },
     "scripts/nf.py": {
-      "lines": 6871,
-      "max_fn_cc": 111,
-      "max_fn_lines": 1028
+      "lines": 7026,
+      "max_fn_cc": 113,
+      "max_fn_lines": 1058
     },
     "scripts/nf_client.py": {
       "lines": 167,

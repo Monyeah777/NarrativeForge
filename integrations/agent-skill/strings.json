@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "agent-skill",
+  "locales": {
+    "zh": {
+      "title": "Agent Skill 出口",
+      "summary": "SKILL.md 形态的 agent 装载件（Claude / Codex 类客户端）。"
+    },
+    "en": {
+      "title": "Agent Skill export",
+      "summary": "SKILL.md bundle for agent clients (Claude / Codex style)."
+    },
+    "ja": {
+      "title": "Agent Skill 書き出し",
+      "summary": "SKILL.md 形式の agent 搭載物（Claude / Codex 系）。"
+    }
+  }
+}

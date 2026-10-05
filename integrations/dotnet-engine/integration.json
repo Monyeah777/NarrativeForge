@@ -1,0 +1,25 @@
+{
+  "schema": "nf-integration/1",
+  "id": "dotnet-engine",
+  "title": ".NET 引擎线（Nf.Engine）",
+  "kind": "library",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "dotnet build engine/dotnet/src/Nf.Engine/Nf.Engine.csproj",
+    "path": "engine/dotnet/src/Nf.Engine/Nf.Engine.csproj"
+  },
+  "requires": [
+    "dotnet>=8"
+  ],
+  "docs": [
+    "engine/dotnet/README.md"
+  ],
+  "evidence": [
+    "engine/dotnet/README.md",
+    "engine/dotnet/RUNBOOK.md"
+  ],
+  "notes": "只读判据的第二实现（BCL-only，逐字节对账 Python 侧）。"
+}

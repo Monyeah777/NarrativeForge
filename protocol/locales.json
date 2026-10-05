@@ -1,0 +1,56 @@
+{
+  "schema": "nf-locales/1",
+  "canonical": "zh",
+  "note": "语言面注册表：逐语言入口 + 责任方 + 覆盖面（entry = 只译入口；entry+guides = 入口 + docs 声明的文档译件）。文档译件须路径镜像并登记 source_sha256（源件一改即过期）。判据见 core/locales.py 与 check34。",
+  "locales": [
+    {
+      "id": "zh",
+      "label": "中文",
+      "entry": "README.md",
+      "codeowner": "@Monyeah777",
+      "coverage": "entry+guides"
+    },
+    {
+      "id": "en",
+      "label": "English",
+      "entry": "README.en.md",
+      "codeowner": "@Monyeah777",
+      "coverage": "entry+guides"
+    },
+    {
+      "id": "ja",
+      "label": "日本語",
+      "entry": "README.ja.md",
+      "codeowner": "@Monyeah777",
+      "coverage": "entry+guides"
+    }
+  ],
+  "docs": [
+    {
+      "path": "docs/release.md",
+      "translations": {
+        "en": {
+          "path": "docs/en/release.md",
+          "source_sha256": "1eb6c5fa7b79e8d9996ca1aa5d92dd9220c86c6a2b5d58e0607484b3c2ab1012"
+        },
+        "ja": {
+          "path": "docs/ja/release.md",
+          "source_sha256": "1eb6c5fa7b79e8d9996ca1aa5d92dd9220c86c6a2b5d58e0607484b3c2ab1012"
+        }
+      }
+    },
+    {
+      "path": "docs/locales.md",
+      "translations": {
+        "en": {
+          "path": "docs/en/locales.md",
+          "source_sha256": "1e3816fe4456d2ce43e5f87c3e9fe0440d1db0d87c5002997da0ee6aac0437a8"
+        },
+        "ja": {
+          "path": "docs/ja/locales.md",
+          "source_sha256": "1e3816fe4456d2ce43e5f87c3e9fe0440d1db0d87c5002997da0ee6aac0437a8"
+        }
+      }
+    }
+  ]
+}

@@ -8,13 +8,13 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/gap_review.py:856f2c86600ca75bbc9a802968d97b0b5170f10281374f92aea9bdcc9df52d0e
   - desktop/src/core/payload_harvest.py:690ba15643c4db7cff75a976530beccdd5bfed771426c1f4b6061b5d9b238bf9
-  - protocol/data_contracts.json:44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588
+  - protocol/data_contracts.json:2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb
   - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102
   - desktop/src/core/interop_export.py:7e8d9c106c50ec377bf6fc4ea51946ab41d911e78172ec7994758a8c44d58da7
   - desktop/src/core/text_hygiene.py:63ceb140b09acf932f1eecd8b3a324889e61d18c8b4cda12d4130594d9eb94fd
   - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
   - scripts/serve_decision_model.py:fd96cba3538674b8ca49fe9109ad47f06fa5132e41c7688276395b5660385bb5
-  - scripts/nf.py:25e420b37084d709b7b8c895cf9093afd9c5fd1d691e2bc02a76125ac1231b5d
+  - scripts/nf.py:4e9427866cd3a3e6115cf84300a032bc43be573042238ce3cdc7111d726445f8
 
 ---
 

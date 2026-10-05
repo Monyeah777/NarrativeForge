@@ -2,6 +2,14 @@
 
 ## [2.12.0] - 未发布
 
+- **基线声明同源（PASS 70→72）+ ja 入口纳入生成区**（2026-10-05）：check38 子扫描由四增至六，运行时 PASS 由 70 升至 **72**，而 `quality_baseline.EXPECTED_PASS` 仍停在 70——四处自洽断言与实跑出现「声明 ≠ 实跑」的隐性漂移。本波把 `EXPECTED_PASS` 同步为 **PASS=72**、`nf stats --write` 重生成入口生成区，并把 `README.ja.md` 纳入 `repo_stats.BLOCK_FILES`（新增 `_ja` 渲染器）——第三语言的统计块不再是手写。verify v2.30 · check1-40 · **PASS=72**。
+
+- **三项外部对标缺口的内部落地：发布编排 · 语言面注册 · 接入面目录**（2026-10-05 内部差距实证；对标扫描见 `.rivet/private_archive/60_采集回执_GitHub主题交叉_2026-10-05.md`，外部只作机制借鉴、不作质量背书）：
+  ① **发布编排**（`core/release_gate.py` + 策略声明件 `docs/release.md`）：把散在 `nf release` / `release_freeze.sh` / `bump_verify.sh` / 人工清单里的**顺序与前置**收成可编译的计划——`nf release --plan` 出 11 步有序计划（前置 → 门禁 → 冻结链 → golden master → 版本面 → 审计 → tag，每步给命令/产出/判据），`nf release --json` 出确定性证据摘要，`nf release --freeze [--apply]` 按 `FREEZE_CHAIN` 单源顺序走 conformance → approve → receipts（缺省 dry-run；argv 直调、无 shell、无注入面）。策略件须写明「冻结链 / 版本面 / Golden Master」三段锚点，缺一即红。
+  ② **语言面（locales）**：入口由**硬编码双语对**升级为**文件即真源**（`README.md` canonical + `README.<lang>.md`）——新增 `README.ja.md`（第三语言，逐节镜像）；`core/locales.py` 逐面判「机读事实锚点齐 + 语言切换行逐条列出全部在场语言 + H2 结构对齐 + canonical 引用的 .md 件齐」；check34 的旧双语断言（写死两份文件）**并入本注册面**，加语言不再改 check。
+  ③ **接入面目录（integrations）**：12 个接入面（MCP / LSP / CLI / TUI / 图书馆 raw / Agent Skill / AGENTS 规则出口 / CCV3 出口 / npm 启动器 / Rust 快线 / .NET 引擎 / A2A 卡片）各落 `integrations/<id>/integration.json`（kind/status 封闭词表 + 入口 + 文档 + 证据），`core/integrations.py` 判「描述件可解析 / id 唯一且与目录同名 / 入口与文档与证据件真实在场 / 无孤儿目录 / 投影逐字」，人读投影 `integrations/README.md` 与实时渲染逐字对账。
+  ④ **接线与口径**：三项均为 additive 面，**不新增 check 序号**（ADR-0002）——发布编排与接入面并入 check38 子扫描（四 → 六子扫描），语言面并入 check34；新增单测 `test_release_gate` / `test_locales` / `test_integrations`（共 18 例）；`code_metrics` 基线随新增件重冻（176 件）。
+
 - **收口执行：`verify.sh` 回到全绿（`PASS=70 · WARN=0 · FAIL=0`）——审计 digest 重绑、派生报告重冻结、棘轮重冻**（2026-10-04）：
   ① **冻结链**（顺序固定，先改代码后冻结）：`results/audit/**` **38 件**被审对象 digest 重绑（只校准被改动的承重件，
      不改结论/正文）→ `nf conformance --write`（**conformant 27/27**）→ `nf approve protocol/conformance_report.json`

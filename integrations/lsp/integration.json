@@ -1,0 +1,23 @@
+{
+  "schema": "nf-integration/1",
+  "id": "lsp",
+  "title": "编辑器接入（nf lsp）",
+  "kind": "editor",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "python scripts/nf.py lsp"
+  },
+  "requires": [
+    "python>=3.11"
+  ],
+  "docs": [
+    "docs/lsp.md"
+  ],
+  "evidence": [
+    "desktop/src/core/lsp.py"
+  ],
+  "notes": "最小 LSP 服务器（stdio、full-sync、诊断 + quickfix），诊断源与 nf lint 同源。"
+}

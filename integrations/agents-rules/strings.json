@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "agents-rules",
+  "locales": {
+    "zh": {
+      "title": "项目规则出口",
+      "summary": "doc_semantics=project_rules 生成 AGENTS / CLAUDE 规则文件。"
+    },
+    "en": {
+      "title": "Project rules export",
+      "summary": "doc_semantics=project_rules renders AGENTS / CLAUDE rule files."
+    },
+    "ja": {
+      "title": "プロジェクト規則の書き出し",
+      "summary": "doc_semantics=project_rules で AGENTS / CLAUDE を生成。"
+    }
+  }
+}

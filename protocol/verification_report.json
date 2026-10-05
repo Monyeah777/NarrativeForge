@@ -1,7 +1,7 @@
 {
   "declared": {
     "expected_checks": 40,
-    "expected_pass": 70,
+    "expected_pass": 72,
     "verify_version": "v2.30"
   },
   "items": [
@@ -41,7 +41,7 @@
         "module_docs": 248,
         "pipelines": 114,
         "protocols": 111,
-        "schema_files": 5
+        "schema_files": 8
       },
       "status": "pass",
       "warns": 0
@@ -272,7 +272,7 @@
       "stats": {
         "contracts": 27,
         "passed": 27,
-        "root": "819e1beb8fb0b2c66a7097300c72795158035515ecaa40ab6c4fd2799c22e35d",
+        "root": "22c20bab293a48eb04358acd9829521e1d2e4e988cb4952a40b4c158c8236f32",
         "verdict": "conformant"
       },
       "status": "pass",
@@ -301,7 +301,7 @@
       "source": "repo_stats.check_strict",
       "stats": {
         "baseline_checks": 40,
-        "baseline_pass": 70,
+        "baseline_pass": 72,
         "concept_graphs": 101,
         "core_modules": 13,
         "core_pipelines": [
@@ -342,11 +342,11 @@
       "sample": [],
       "source": "code_metrics.scan",
       "stats": {
-        "baseline": 173,
-        "files": 173,
+        "baseline": 177,
+        "files": 177,
         "max_fn_cc": 150,
-        "max_fn_lines": 1028,
-        "max_lines": 6871
+        "max_fn_lines": 1058,
+        "max_lines": 7026
       },
       "status": "pass",
       "warns": 0
@@ -388,7 +388,7 @@
       "source": "coupling_metrics.scan",
       "stats": {
         "cycles": 0,
-        "modules": 146,
+        "modules": 150,
         "registered_cycles": 0,
         "registered_sdp": 7,
         "sdp": 7
@@ -473,7 +473,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "3ca6b1275866f64d95d8678f1ec6ef253a1e5c5aad72d82f7f55951b571f0925",
+  "root_digest": "08a154e24d7f81fdd56981d83e12388150a825634c3337f0be909107d518cbfe",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

@@ -1,0 +1,24 @@
+{
+  "schema": "nf-integration/1",
+  "id": "cli",
+  "title": "命令行入口（nf）",
+  "kind": "cli",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "python scripts/nf.py --help",
+    "path": "scripts/nf.py"
+  },
+  "requires": [
+    "python>=3.11"
+  ],
+  "docs": [
+    "docs/terminal.md"
+  ],
+  "evidence": [
+    "scripts/nf.py"
+  ],
+  "notes": "单入口 CLI：装配 / 校验 / 导出 / 治理 / 发布全命令面。"
+}

@@ -2831,6 +2831,9 @@
     "asset.schema.json",
     "contract.schema.json",
     "module.schema.json",
+    "nf:integration",
+    "nf:integration-strings",
+    "nf:release-policy",
     "pipeline.schema.json",
     "protocol.schema.json"
   ]

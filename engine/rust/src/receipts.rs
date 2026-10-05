@@ -15,7 +15,7 @@ pub const ALGORITHM: &str = "RFC6962-style sha256 domain-separated";
 
 /// 真源 `protocol_subjects()` 的固定段——**顺序敏感**，真源按此序取件、不排序。
 /// 改动本表即改变根：任何增删都必须同步 `desktop/src/core/receipts.py`。
-const FIXED: [&str; 42] = [
+const FIXED: [&str; 44] = [
     "STRATEGY.md",
     "01_核心协议.md",
     "02_联动注册表.md",
@@ -44,6 +44,8 @@ const FIXED: [&str; 42] = [
     "protocol/knowledge_usage.json",
     "protocol/assertions.json",
     "protocol/LAYERS.json",
+    "protocol/locales.json",
+    "protocol/release_policy.json",
     "protocol/vocabularies.json",
     "protocol/normative.json",
     "protocol/data_contracts.json",

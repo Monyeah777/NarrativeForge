@@ -1,0 +1,21 @@
+{
+  "schema": "nf-integration/1",
+  "id": "a2a-card",
+  "title": "A2A Agent Card 出口",
+  "kind": "export",
+  "status": "proposed",
+  "version": "0.1.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "path": "results/interop/a2a.json"
+  },
+  "requires": [],
+  "docs": [
+    "docs/interop-thirdparty.md"
+  ],
+  "evidence": [
+    "results/interop/a2a.json"
+  ],
+  "notes": "只导出 Agent Card 形状，不运行 A2A 端点（故 status=proposed）。"
+}

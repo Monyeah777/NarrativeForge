@@ -966,9 +966,39 @@ def _make_parser() -> argparse.ArgumentParser:
                      help="显式允许把产物写进真源面目录（缺省 fail-closed："
                           "拒写 protocol/ 03_管线库/ 04_模块库/ 05_资产库/ community/ library/ 等）")
     rel = sub.add_parser("release",
-                         help="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）", description="发布前体检（45：verify + 基线自描述一致 + doctor；--fast 跳过 verify）")
+                         help="发布前体检与编排（体检照旧；--plan 出有序发布计划；--freeze [--apply] 按序走冻结链）",
+                         description="发布前体检与编排：默认=体检（verify + 基线自描述 + e2e + 覆盖率 + 报告新鲜度）；--plan=发布计划（只读）；--freeze [--apply]=冻结链（conformance → approve → receipts）")
     rel.add_argument("--fast", action="store_true",
                      help="跳过 verify.sh 全量（快速自检：基线自描述 + doctor）")
+    rel.add_argument("--plan", action="store_true",
+                     help="打印有序发布计划（命令/产出/判据），不执行任何写面")
+    rel.add_argument("--json", action="store_true",
+                     help="机读输出（配合 --plan；或体检结论摘要）")
+    rel.add_argument("--freeze", action="store_true",
+                     help="冻结链：conformance --write → approve → receipts（缺省只打印；--apply 才执行）")
+    rel.add_argument("--by", metavar="NAME",
+                     help="批准人（--freeze --apply 写进 protocol/approvals/*）")
+    rel.add_argument("--note", metavar="TEXT",
+                     help="批准说明（--freeze --apply；同批准人一并落档）")
+    cl = sub.add_parser("changelog",
+                        help="变更日志生成（从变更条目 + 约定式提交生成版本节；默认预览，--write 落盘并归档条目）",
+                        description="变更日志生成：渲染确定（无墙钟，版本/日期由参数给）+ 逐条可溯源（只分组、不改写）；"
+                                    "--write 把版本节插入 CHANGELOG 顶部并把 changes/unreleased/* 归档到 changes/<version>/")
+    cl.add_argument("--version", metavar="X.Y.Z",
+                    help="版本号（缺省 = CHANGELOG 最新节）")
+    cl.add_argument("--date", metavar="YYYY-MM-DD",
+                    help="发布日期（--write 必填；不臆造日期）")
+    cl.add_argument("--json", action="store_true", help="机读输出（版本节 + 自检结论）")
+    cl.add_argument("--write", action="store_true",
+                    help="落盘：插 CHANGELOG 版本节 + 归档 changes/unreleased/*（幂等）")
+    cl.add_argument("--no-commits", dest="no_commits", action="store_true",
+                    help="只用变更条目，不并入 git 提交主题")
+    loc = sub.add_parser("locales",
+                         help="语言面自检（--write 重签文档译件的源件摘要）",
+                         description="语言面：注册表 ⇄ 文件在场双向对账（入口锚点/切换行/结构；文档译件路径镜像 + source_sha256 防过期）")
+    loc.add_argument("--json", action="store_true", help="机读输出（issues + stats）")
+    loc.add_argument("--write", action="store_true",
+                     help="重签文档译件的 source_sha256（写 protocol/locales.json）")
     tf = sub.add_parser("toolface",
                         help="模块工具面浏览（45：machine_contract.tool_face 可选建议层，AI 裁量不入门禁）", description="模块工具面浏览（45：machine_contract.tool_face 可选建议层，AI 裁量不入门禁）")
     tf.add_argument("--json", action="store_true",
@@ -5217,7 +5247,13 @@ def _cmd_doctor(args):
         n_schema = 0
         chk("IDL schema 定义在场", False, str(exc))
     if os.path.isdir(sdir):
-        chk("IDL schema 定义在场（%d 份）" % n_schema, n_schema == 5, "protocol/schema")
+        # 判据是「五份核心 IDL 定义在场」而非「恰好五份」——扩展协议面（发布策略 / 接入面 schema）
+        # 会合法增份；写成 ==5 会把扩容判成缺陷（2026-10-05 实测：7 份被判 FAIL）。
+        _core_idl = ("contract.schema.json", "module.schema.json", "pipeline.schema.json",
+                     "protocol.schema.json", "asset.schema.json")
+        _names = set(os.listdir(sdir))
+        chk("IDL schema 定义在场（%d 份）" % n_schema,
+            all(x in _names for x in _core_idl), "protocol/schema")
 
     try:
         sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
@@ -6133,8 +6169,123 @@ def _cmd_assemble(args):
     return 0
 
 
+def _release_freeze(args):
+    """冻结链（conformance --write → approve → receipts --write）：缺省只打印，--apply 才执行。
+
+    顺序真源 = `core/release_gate.FREEZE_CHAIN`（不在此手抄第二份）；命令字符串用 `shlex.split`
+    切成 argv 列表直调（**不经 shell**），批准人与说明作为独立 argv 元素传入——无注入面。
+    """
+    import shlex
+    import subprocess  # nosec B404 —— argv 列表直调，无 shell
+    from core import release_gate as rg
+
+    by = (getattr(args, "by", None) or "").strip()
+    note = (getattr(args, "note", None) or "").strip()
+    chains = []
+    for i, spec in enumerate(rg.FREEZE_CHAIN, 1):
+        argv = shlex.split(spec)
+        if argv and argv[0] in ("python", "python3"):
+            argv[0] = sys.executable
+        chains.append((i, spec, argv))
+    if not getattr(args, "apply", False):
+        print("== 冻结链（dry-run；确认后加 --apply 执行）==")
+        for i, spec, argv in chains:
+            if "approve" in argv:
+                spec += " --by %s" % (by or "<批准人>")
+            print("  %d. %s" % (i, spec))
+        return 0
+    if not by:
+        print("  ✗ --freeze --apply 需要 --by <批准人>（批准记录缺批准人不可追溯）",
+              file=sys.stderr)
+        return 2
+    for i, _spec, argv in chains:
+        if "approve" in argv:
+            argv = argv + ["--by", by] + (["--note", note] if note else [])
+        print("== 冻结链 [%d/%d] %s ==" % (i, len(chains), " ".join(argv[2:])))
+        rc = subprocess.run(argv, cwd=ROOT).returncode  # noqa: S603  # nosec B603/B607 —— argv 列表、绝对解释器（无 shell、无注入面）
+        if rc != 0:
+            print("  ✗ 冻结链第 %d 步失败（rc=%d）——按序停，后继步骤不执行" % (i, rc), file=sys.stderr)
+            return rc
+    print("  ✓ 冻结链完成：conformance → approve → receipts（协议回执单根已按当前字节重签）")
+    return 0
+
+
+def _cmd_locales(args):
+    """nf locales：语言面自检；--write 重签文档译件的源件摘要。"""
+    import json as _json
+    from core import locales as lc
+
+    if getattr(args, "write", False):
+        res = lc.stamp(ROOT, write=True)
+        if not res.get("ok"):
+            print("  ✗ %s" % "；".join(res.get("issues") or []), file=sys.stderr)
+            return 2
+        print("  ✓ 已重签 %d 条文档译件的源件摘要" % len(res["stamped"]))
+        return 0
+    issues, stats = lc.check(ROOT)
+    if getattr(args, "json", False):
+        print(_json.dumps({"schema": "nf-locales-report/1", "issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+        return 1 if issues else 0
+    print("== nf locales（语言面）==")
+    print("  语言：%s · 文档译件 %d 件"
+          % ("、".join(stats.get("locales", [])), stats.get("translations", 0)))
+    for i in issues:
+        print("  [FAIL] %s" % i, file=sys.stderr)
+    return 1 if issues else 0
+
+
+def _cmd_changelog(args):
+    """nf changelog：从变更条目 + 约定式提交生成版本节（默认预览；--write 落盘并归档）。"""
+    import json as _json
+    from core import changelog_gen as cg
+    from core import release_gate as rg
+
+    version = getattr(args, "version", None) or rg.release_line(ROOT)
+    date = getattr(args, "date", None) or ""
+    use_commits = not getattr(args, "no_commits", False)
+    if getattr(args, "write", False):
+        if not date:
+            print("  ✗ --write 需要 --date YYYY-MM-DD（日期不臆造）", file=sys.stderr)
+            return 2
+        res = cg.write(ROOT, version=version, date=date, use_commits=use_commits)
+        if not res.get("ok"):
+            print("  ✗ %s" % "；".join(res.get("issues") or []), file=sys.stderr)
+            return 2
+        print("  ✓ 已写入 CHANGELOG [%s] 并归档 %d 条变更条目到 changes/%s/"
+              % (res["version"], len(res["archived"]), res["version"]))
+        return 0
+    text = cg.render(ROOT, version=version, date=date, use_commits=use_commits)
+    if getattr(args, "json", False):
+        issues, stats = cg.check(ROOT)
+        print(_json.dumps({"schema": "nf-changelog/1", "version": version, "date": date,
+                           "section": text, "issues": issues, "stats": stats},
+                          ensure_ascii=False, indent=2, sort_keys=True))
+        return 1 if issues else 0
+    print(text, end="")
+    return 0
+
+
 def _cmd_release(args):
-    """nf release：发布前体检——verify + 基线自描述一致（--fast 跳过 verify）。"""
+    """nf release：发布前体检；--plan 出计划；--freeze [--apply] 按序走冻结链。"""
+    from core import release_gate as rg
+
+    if getattr(args, "plan", False):
+        import json as _json
+        if getattr(args, "json", False):
+            print(_json.dumps({"schema": "nf-release-plan/1", "steps": rg.plan(ROOT)},
+                              ensure_ascii=False, indent=2, sort_keys=True))
+        else:
+            print(rg.render_plan(ROOT))
+        return 0
+    if getattr(args, "freeze", False):
+        return _release_freeze(args)
+    if getattr(args, "json", False) and not getattr(args, "fast", False):
+        # 机读发布面：确定性摘要（计划 + 前置 + golden 快照），供 CI/发布人留档；只读、不跑 verify。
+        import json as _json
+        man = rg.manifest(ROOT)
+        print(_json.dumps(man, ensure_ascii=False, indent=2, sort_keys=True))
+        return 1 if man["issues"] else 0
     import subprocess  # nosec B404/B603/B607 —— 调用 ssh-keygen/git/hf（argv 列表、无 shell、路径经 which 解析）
     from core import posix_shell as psh
     from core import quality_baseline as qb
@@ -6628,6 +6779,10 @@ def main(argv=None) -> int:
         return _cmd_preset(args)
     if args.cmd == "release":
         return _cmd_release(args)
+    if args.cmd == "changelog":
+        return _cmd_changelog(args)
+    if args.cmd == "locales":
+        return _cmd_locales(args)
     if args.cmd == "toolface":
         return _cmd_toolface(args)
     if args.cmd == "worldmodel":

@@ -1,0 +1,23 @@
+{
+  "schema": "nf-integration/1",
+  "id": "ccv3-export",
+  "title": "CCV3 角色卡出口",
+  "kind": "export",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "command": "python scripts/nf.py run --fmt ccv3"
+  },
+  "requires": [
+    "python>=3.11"
+  ],
+  "docs": [
+    "docs/output-forms.md"
+  ],
+  "evidence": [
+    "desktop/src/core/ccv3_adapter.py"
+  ],
+  "notes": "SillyTavern 系角色卡（v3 真形状：data 承载 + 顶层 v2 镜像）。"
+}

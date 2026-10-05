@@ -1,0 +1,28 @@
+{
+  "schema": "nf-release-policy/1",
+  "policy_doc": "docs/release.md",
+  "freeze_chain": [
+    "python scripts/nf.py conformance --write",
+    "python scripts/nf.py approve protocol/conformance_report.json",
+    "python scripts/nf.py receipts --scope protocol --write"
+  ],
+  "required_artifacts": [
+    "protocol/conformance_report.json",
+    "protocol/RECEIPTS.json",
+    "protocol/approvals",
+    "results/audit"
+  ],
+  "golden_required": [
+    "01_核心协议.md",
+    "02_联动注册表.md",
+    "06_Agent执行协议.md",
+    "07_官方核心出厂与社区预设导航.md",
+    "verify.sh"
+  ],
+  "version_faces": [
+    "CHANGELOG.md",
+    "VERSION-MATRIX.md",
+    "README.md"
+  ],
+  "changes_dir": "changes/unreleased"
+}

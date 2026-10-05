@@ -2,9 +2,9 @@
   "_type": "https://in-toto.io/Statement/v1",
   "predicate": {
     "algorithm": "RFC6962-style sha256 domain-separated",
-    "count": 52,
+    "count": 57,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "b843f3774a75de674745e3ae59c34456b16c6dd69517e14b9530a66749cdc827",
+    "root": "2bf3d89cf46c420fae38bffd4f44108cb8be656ecb2585be30ee9cd4c1749bb0",
     "scope": "protocol"
   },
   "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
@@ -41,7 +41,7 @@
     },
     {
       "digest": {
-        "sha256": "227fd8c085a83ff588f3ca8cd0a0f9ac2d1102e4bb49b5c35ee2ca138d4b7416"
+        "sha256": "ff0e56a791201a73f8cca4679fb4e488ddf97881a8ffa31cdd043f159d99b82b"
       },
       "name": "llms.txt"
     },
@@ -113,7 +113,7 @@
     },
     {
       "digest": {
-        "sha256": "ca9505b4168cff85888461dd79f491229bb70f68eb7729cf9d711c257c5ac652"
+        "sha256": "8ef08d9b611fb7713054b4c04ad20e495daaf1e885a1243a1aa3c0424b4801ea"
       },
       "name": "protocol/conformance_report.json"
     },
@@ -125,7 +125,7 @@
     },
     {
       "digest": {
-        "sha256": "e5fe7aab3d16d4aaebccc2579f84e544ec60661a96d9dd883375ad7595b7b609"
+        "sha256": "dc023b0b675c5023bafb04f33fe5b12c486c3bc81894e05c0315c8e56e692c1d"
       },
       "name": "protocol/CONFORMANCE.md"
     },
@@ -179,19 +179,31 @@
     },
     {
       "digest": {
+        "sha256": "66517215b6cd6da38da1fb6a78cffb2390a06468c3618d6e11e944fe103feb42"
+      },
+      "name": "protocol/locales.json"
+    },
+    {
+      "digest": {
+        "sha256": "29eaf0c6692f6872971d3d582a23cdf18cbca60c6ac1e35aba7b04eb85e9ebbc"
+      },
+      "name": "protocol/release_policy.json"
+    },
+    {
+      "digest": {
         "sha256": "62fde4ac67cd01ac8dddf5428f20234560429e8dfced571be664f5920e068173"
       },
       "name": "protocol/vocabularies.json"
     },
     {
       "digest": {
-        "sha256": "3ea1e37d1879cee532b930e83ba3029fbc171efe99606fd42bc775f0968b84a5"
+        "sha256": "0c9c21945def2250462392e5f932a3d30f3b3f9c366b4f67cbdec45f9329c943"
       },
       "name": "protocol/normative.json"
     },
     {
       "digest": {
-        "sha256": "44e394ce811c953bed5f462328544f3b26cda2ac5f48bd986e884daea5b2d588"
+        "sha256": "2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb"
       },
       "name": "protocol/data_contracts.json"
     },
@@ -275,6 +287,18 @@
     },
     {
       "digest": {
+        "sha256": "e158ec7a2998774a8605e0cb1325c8d961460234576bf07f4ada46b4ba162a40"
+      },
+      "name": "protocol/schema/integration.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "bc17666f19fc8fb9c7cb2b6556c78ebbd8bc8eaf93363aeeb6d670505daa9d0d"
+      },
+      "name": "protocol/schema/integration_strings.schema.json"
+    },
+    {
+      "digest": {
         "sha256": "4271c47cdd643524684f19a81c2d23dd6f9a1d85da704d7a49be870927e059b2"
       },
       "name": "protocol/schema/module.schema.json"
@@ -290,6 +314,12 @@
         "sha256": "7ee456048a6365d28ed82358998dedd72263cc99d13bd1a466934f46ada9a5d3"
       },
       "name": "protocol/schema/protocol.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "6d1dafa8b5dabb207d50d83f6f3a55f4b9a7908508d691dca182173a30f05b83"
+      },
+      "name": "protocol/schema/release.schema.json"
     },
     {
       "digest": {

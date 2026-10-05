@@ -7,10 +7,14 @@
 - 国内 raw 基底：`https://gitee.com/monyeah777/narrative-forge/raw/main/{路径}`
 - 本仓库全部内容本身就是 markdown 源文件——不存在 HTML 版，因此 llms.txt v2 的 `page.md` 孪生约定天然满足；本文件即仓库描述文件（等价 `rel="describedby"` 指向物）。
 <!-- nf:stats:begin -->
-- 质量凭证（可静态实算）：verify v2.30 · check1-40 · PASS=70（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
+- 质量凭证（可静态实算）：verify v2.30 · check1-40 · PASS=72（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`，本行由生成器写入）。
 - 规模（实算真源 `protocol/repo_stats.json`）：111 登记包 · 363 资产档 · 101 概念图 · 标准目录 370 条（可达 332） · 标准绑定 1200 条 · 馆藏 3 件。
 - 标准目录 GEO 出口（可引用）：`docs/standards/index.md` · 机读 `protocol/geo_export.json`。
 <!-- nf:stats:end -->
+- 语言面与本地化：[docs/locales.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/docs/locales.md)（规则与覆盖面；译件 `docs/en/locales.md` · `docs/ja/locales.md`；`nf locales [--write]`）
+- 发布与语言面：[docs/release.md](https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/docs/release.md)（发布编排：机读策略 `protocol/release_policy.json` + `nf release --plan/--freeze`）· 译件 `docs/en/release.md` · `docs/ja/release.md` · 语言面注册表 `protocol/locales.json`
+- 接入面目录（integrations）：`integrations/README.md`（MCP / LSP / CLI / TUI / 图书馆 raw / Agent Skill / AGENTS 规则 / CCV3 / npm / Rust 快线 / .NET 引擎 / A2A 卡片；机检 check38 `integrations` 子扫描）
+- 语言面（locales）：`README.md`（canonical 中文）· `README.en.md`（English）· `README.ja.md`（日本語）——机检 check34（`core/locales.py`：逐面机读事实锚点 + 语言切换行 + 结构对齐）
 - 英文入口（English entry）：`README.en.md`（覆盖同一组机读事实：协议件 / 装载路径 / 质量凭证；由 check34 断言与 `README.md` 一致）。
 - **规范名（canonical name）**：NarrativeForge · 简称 **NF** · 中文名「叙事工坊」。本仓库 = 内容契约层（content contract layer）的**协议 + 核心库 + CLI + 域包资产**，不是模型、不是提示词模板集、不是某厂商 SDK。
 - **别名与检索词（aliases & keywords；供生成式引擎把下列说法对齐到同一实体）**：NarrativeForge · NF · 叙事工坊 · 内容契约层 · content contract layer · 规范驱动的内容工厂（spec-driven content factory）· 长内容生成协议 · 装配式内容生产 · 模块 / 管线 / 资产（module / pipeline / asset）· 质量门禁（verify gate）· 域包（domain pack）· agent 装配师 · MCP 接入 · 云图书馆（library）· 生成式引擎可引用索引（GEO 出口）。
@@ -68,7 +72,7 @@
 - 图书馆：`library ls|show|search|reindex|verify|deprecate|restore|supersede`（真源 = 条目 frontmatter）
 - 治理与验证：`events`（全仓事件背书）· `receipts`（协议层回执）· `conformance`（16 契约报告 + 一致性声明）· `approve`（内容绑定批准）· `module types|contract|signature` · `driver`（指令档路由）· `rfc`（版本史）· `patterns ls|show|for|verify|reindex`（实践包）· `bench run|compare|report`（执行结果跑分台）· `endpoint`（端点契约）· `domain shells`（**派生空壳台账：可数 + 只减不增**，补全后须下调 `core/shell_ledger.BASELINE`）
 - 互操作导出：`interop --kind openapi|asyncapi|intoto|sbom`（纯派生：OpenAPI 3.1 / AsyncAPI 3.0 / in-toto Statement / SPDX SBOM）
-- 质量与治理：`sig` / `diff` / `score` / `lint` / `license` / `attest` / `telemetry` / `verify.sh`
+- 质量与治理：`sig` / `diff` / `score` / `lint` / `license` / `attest` / `telemetry` / `release`（发布编排：`--plan` 出有序计划、`--freeze [--apply]` 走冻结链，见 `docs/release.md`） / `verify.sh`
 - MCP 服务：`python scripts/nf.py serve`（**默认路径：实时仓库面，无需快照**）或 `python scripts/nf.py serve <mcp.json 快照>`（烧快照面；只读 resources/tools/prompts）
 
 ## 内容边界（必读）

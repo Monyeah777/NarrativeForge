@@ -1462,7 +1462,7 @@ PYEOF
   fi
 }
 check28(){
-  echo '== [28/段C] 协议层 IDL schema 门禁（43 A1：protocol/schema 五定义在场 + 全量件过 schema——machine_contract/registry 投影/管线声明/协议包/资产台账，任一字段漂移即 FAIL）=='
+  echo '== [28/段C] 协议层 IDL schema 门禁（43 A1：protocol/schema 全定义在场 + 全量件过 schema——machine_contract/registry 投影/管线声明/协议包/资产台账/发布策略/接入面，任一字段漂移即 FAIL）=='
   local err=0
   if [ -n "$PY3" ]; then
     if "$PY3" - <<'PYEOF' >"$NFL_TMP"/nf_check28.log 2>&1
@@ -1481,7 +1481,7 @@ print('IDL 扫描统计：schema %(schema_files)d / 模块文档 %(module_docs)d
 sys.exit(1 if issues else 0)
 PYEOF
     then
-      ok '协议层 IDL 全量件过 schema（A1：contract/module/pipeline/protocol/asset 五定义在场 + 零漂移）'
+      ok '协议层 IDL 全量件过 schema（A1：protocol/schema 全定义在场 + 零漂移）'
     else
       no "IDL schema 扫描异常——$(tail -2 "$NFL_TMP"/nf_check28.log | tr '\n' ' ')"; err=1
     fi
@@ -1976,48 +1976,18 @@ try:
 except Exception as exc:
     problems.append('投稿闸门声明确认不可用：%s' % exc)
 
-# 7 双语入口机读事实一致（2026-09-20 作者裁决收口）：README.md 与 README.en.md 须共享同一组
-#   机读锚点（版本 / check 数 / PASS 基线 / 核心协议件 / 机器入口），防「第二语言面腐烂」
-#   （外部实证：某清单的双语面无判据 → 中文面只剩英文面 ~54%）。期望值取自 quality_baseline，不写字面量。
+# 7 语言面（locales）：入口是**文件即真源**（README.md + README.<lang>.md）——每面须含同一组机读
+#   事实锚点 + 语言切换行（逐条列出**全部在场语言**）+ H2 结构对齐 + canonical 引用的 .md 件齐。
+#   2026-10-05：由**硬编码双语对**升级为**注册面**（单源 core/locales.py，判据不再写死语言数；
+#   此前外部实证：某清单双语面无判据 → 中文面只剩英文面 ~54%）。
 try:
-    import re as _re
-    from core import quality_baseline as _qb
-    _want = ('check1-%d' % _qb.EXPECTED_CHECKS, 'PASS=%d' % _qb.EXPECTED_PASS,
-             '01_核心协议.md', '06_Agent执行协议.md', 'llms.txt', 'community/')
-    for _rel in ('README.md', 'README.en.md'):
-        _p = os.path.join('.', _rel)
-        if not os.path.isfile(_p):
-            problems.append('双语入口：缺 %s（修复指引：中英入口须成对，英文入口覆盖同组机读事实）' % _rel)
-            continue
-        with open(_p, encoding='utf-8') as _fh:
-            _txt = _fh.read()
-        for _a in _want:
-            if _a not in _txt:
-                problems.append('双语入口：%s 缺机读锚点 %s（修复指引：与 README.md 同步机读事实）'
-                                % (_rel, _a))
-        if not _re.search(r'v\d+\.\d+', _txt):
-            problems.append('双语入口：%s 缺版本号（vX.Y）' % _rel)
+    from core import locales as _lc
+    _l_issues, _l_stats = _lc.check('.')
+    for _i in _l_issues:
+        problems.append('语言面：%s' % _i)
+    print('语言面：%s' % '、'.join(_l_stats.get('locales', [])))
 except Exception as exc:
-    problems.append('双语入口锚点检查不可用：%s' % exc)
-
-# 8 双语入口结构对齐（2026-09-20 收口）：H2 章节数一致 + 中文入口引用的 ASCII 名 .md 件在英文入口同样出现
-try:
-    with open('README.md', encoding='utf-8') as _fh:
-        _zh = _fh.read()
-    with open('README.en.md', encoding='utf-8') as _fh:
-        _en = _fh.read()
-    _zh_h2 = len(_re.findall(r'(?m)^## ', _zh))
-    _en_h2 = len(_re.findall(r'(?m)^## ', _en))
-    if _zh_h2 != _en_h2:
-        problems.append('双语入口：章节结构不对齐（README.md H2=%d，README.en.md H2=%d）'
-                        '（修复指引：英文面按中文面逐节镜像）' % (_zh_h2, _en_h2))
-    _refs = sorted(set(_re.findall(r'[A-Za-z0-9_\-\./]+\.md', _zh)))
-    _miss = [r for r in _refs if r not in _en]
-    if _miss:
-        problems.append('双语入口：README.en.md 缺中文入口引用的件：%s'
-                        '（修复指引：英文面须覆盖同组文档入口）' % '、'.join(_miss[:5]))
-except Exception as exc:
-    problems.append('双语入口结构对齐检查不可用：%s' % exc)
+    problems.append('语言面检查不可用：%s' % exc)
 
 for p in problems:
     print('[FAIL] %s' % p)
@@ -2212,17 +2182,18 @@ check37(){
 }
 
 check38(){
-  echo '== [38/段C] 出口自动化门禁（自述数字 / 他证通道 / GEO 出口 / FDE 样例）=='
+  echo '== [38/段C] 出口自动化门禁（自述数字 / 他证通道 / GEO 出口 / FDE 样例 / 发布编排 / 接入面）=='
   local err=0 sub mod label
   if [ -n "$PY3" ]; then
-    for sub in 'repo_stats:自述数字' 'interop_thirdparty:他证通道' 'geo_export:GEO 出口' 'fde_sample:FDE 样例'; do
+    for sub in 'repo_stats:自述数字' 'interop_thirdparty:他证通道' 'geo_export:GEO 出口' 'fde_sample:FDE 样例' 'release_gate:发布编排' 'integrations:接入面'; do
       mod=${sub%%:*}; label=${sub##*:}
       if "$PY3" - "$mod" "$label" >"$NFL_TMP"/nf_check38_$mod.log 2>&1 <<'PYEOF'
 import importlib.util, os, sys
 sys.path.insert(0, os.path.join('desktop', 'src'))
 mod, label = sys.argv[1], sys.argv[2]
-if mod == 'repo_stats':
-    from core import repo_stats as m
+if mod in ('repo_stats', 'release_gate', 'integrations'):
+    import importlib as _il
+    m = _il.import_module('core.' + mod)
     issues, stats = m.check('.')
 else:
     rel = {'interop_thirdparty': 'scripts/interop_thirdparty_kit.py',
@@ -2249,7 +2220,7 @@ PYEOF
   else
     wn 'python3 不在 PATH（跳过 check38 出口自动化门禁）'
   fi
-  if [ "$err" -eq 0 ]; then ok '出口自动化门禁全绿（check38：自述数字 + 他证通道 + GEO 出口 + FDE 样例 四子扫描）'
+  if [ "$err" -eq 0 ]; then ok '出口自动化门禁全绿（check38：自述数字 + 他证通道 + GEO 出口 + FDE 样例 + 发布编排 + 接入面 六子扫描）'
   fi
 }
 

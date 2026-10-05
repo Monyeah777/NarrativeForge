@@ -1,5 +1,7 @@
 # NarrativeForge · 文档生成工坊（规范驱动）
 
+<!-- nf:locales --> 语言 / Languages：**中文** · [English](README.en.md) · [日本語](README.ja.md)
+
 [![门禁 ci-verify](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml)
 
 **NF 终端（TUI）演示** —— 全屏人机入口（纯标准库）；菜单与动作是 `nf` CLI 真命令的受控调用方。
@@ -89,7 +91,7 @@ AI 装配：
 <!-- nf:stats:begin -->
 **官方核心**：13 模块 · 3 管线（P00 / P01 / P90） · 核心协议件 01–07
 **社区规模**：111 登记包 · 363 资产档 · 101 概念图 · 100 域包/1200 细分 · 标准目录 370 条（可达 332 / 不可达 38 · 机构 194 · 206 条依赖边） · 标准绑定 1200 条
-**质量凭证**：verify v2.30 · check1-40 · PASS=70（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`） · 馆藏 3 件
+**质量凭证**：verify v2.30 · check1-40 · PASS=72（`bash verify.sh` 单入口；期望基线取自 `quality_baseline.EXPECTED_*`） · 馆藏 3 件
 
 分层：data 148 · eng 38 · form 29 · gov 71 · iface 84 （按标准目录 layer）
 
@@ -105,7 +107,8 @@ AI 装配：
 | 库 | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | 社区 | `community/README.md` · `community/模板制作指令包.md` |
 | AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
-| 工具 | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `scripts/nf.py` · `tui/nf.py` · `verify.sh` |
+| 工具 | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `docs/release.md` · `scripts/nf.py` · `tui/nf.py` · `verify.sh` |
+| 接入面 | `integrations/README.md`（MCP / LSP / CLI / TUI / 图书馆 / Skill / npm / Rust / .NET / A2A） |
 | 馆 | `library/INDEX.md` · `ROUTES.md` |
 
 ## 版本块

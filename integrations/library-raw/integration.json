@@ -1,0 +1,22 @@
+{
+  "schema": "nf-integration/1",
+  "id": "library-raw",
+  "title": "云图书馆 raw 取件面",
+  "kind": "collection",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "path": "library/INDEX.md"
+  },
+  "requires": [],
+  "docs": [
+    "ROUTES.md"
+  ],
+  "evidence": [
+    "library/INDEX.md",
+    "library/ALIAS.md"
+  ],
+  "notes": "按编号寻址 + 镜像前缀路由；raw 喂 AI、网页给人。"
+}

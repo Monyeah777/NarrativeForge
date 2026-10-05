@@ -1,0 +1,21 @@
+{
+  "schema": "nf-integration/1",
+  "id": "agent-skill",
+  "title": "Agent Skill 出口",
+  "kind": "package",
+  "status": "active",
+  "version": "1.0.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "path": "skills/narrativeforge/SKILL.md"
+  },
+  "requires": [],
+  "docs": [
+    "skills/narrativeforge/SKILL.md"
+  ],
+  "evidence": [
+    "desktop/src/core/skill_adapter.py"
+  ],
+  "notes": "SKILL.md 形态的 agent 装载件（Claude / Codex 类客户端）。"
+}

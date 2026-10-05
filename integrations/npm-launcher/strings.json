@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "npm-launcher",
+  "locales": {
+    "zh": {
+      "title": "npm 一键启动器",
+      "summary": "npm 包：离线拉起 NF CLI（payload 随包分发）。"
+    },
+    "en": {
+      "title": "npm launcher",
+      "summary": "npm package that boots the NF CLI offline (payload shipped with the package)."
+    },
+    "ja": {
+      "title": "npm ランチャー",
+      "summary": "npm パッケージ：オフラインで NF CLI を起動（payload 同梱）。"
+    }
+  }
+}

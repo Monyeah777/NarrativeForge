@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "dotnet-engine",
+  "locales": {
+    "zh": {
+      "title": ".NET 引擎线",
+      "summary": "只读判据的第二实现（BCL-only，与 Python 侧逐字节对账）。"
+    },
+    "en": {
+      "title": ".NET engine line",
+      "summary": "Second read-only implementation (BCL-only, byte-identical parity with Python)."
+    },
+    "ja": {
+      "title": ".NET エンジン線",
+      "summary": "読み取り専用判据の第二実装（BCL のみ、Python 側とバイト一致）。"
+    }
+  }
+}

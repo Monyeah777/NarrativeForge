@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nf:release-policy",
+  "title": "NF 发布策略（release policy）",
+  "description": "protocol/release_policy.json 的单一真相定义：冻结链顺序 / 必需产物 / golden 快照件类 / 版本面 / 变更条目目录。人读投影见 docs/release.md。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "policy_doc",
+    "freeze_chain",
+    "required_artifacts",
+    "golden_required",
+    "version_faces",
+    "changes_dir"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "nf-release-policy/1"
+      ]
+    },
+    "policy_doc": {
+      "type": "string",
+      "pattern": "^docs/.+\\.md$"
+    },
+    "freeze_chain": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "minLength": 8
+      }
+    },
+    "required_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "golden_required": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "version_faces": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "changes_dir": {
+      "type": "string",
+      "minLength": 3
+    }
+  }
+}
