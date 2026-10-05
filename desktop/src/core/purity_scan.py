@@ -42,7 +42,7 @@ import json
 import os
 import re
 import sys
-from typing import Optional
+from typing import Any, Dict, List, Optional
 
 from core import conformance_scan as csc
 from core import disk_cache
@@ -76,7 +76,9 @@ def _doc_facts(text: str):
     hit = _DOC_FACTS_CACHE.get(key)
     if hit is not None:
         return hit
-    shell, private, seen = [], [], {}
+    shell: List[Any] = []
+    private: List[Any] = []
+    seen: Dict[str, List[int]] = {}
     for i, ln in enumerate(text.splitlines(), 1):     # `splitlines` 只做一遍（过去三遍）
         if _END_SHELL.search(ln):
             shell.append((i, ln.strip()[:80]))
@@ -333,8 +335,8 @@ def _file_findings(rel: str, text: str, env: str, root: str):
     hit = _FILE_FINDINGS.get(key)
     if hit is not None:
         return hit
-    out: list = []
-    delta = {"raises": 0, "imports": 0, "sinks": 0, "residue": []}
+    out: List[str] = []
+    delta: Dict[str, Any] = {"raises": 0, "imports": 0, "sinks": 0, "residue": []}
     facts = _facts_for(text)
     if facts is None:
         hit = (out, delta)
@@ -447,7 +449,7 @@ def scan(root: str = ".") -> tuple:
 def _scan_impl(root: str = ".", _layer_fp: Optional[str] = None) -> tuple:
     """真算（未命中缓存时走这里）；`_layer_fp` 由 `scan()` 传下来，避免走两次阶梯面。"""
     issues = []
-    stats = {"docs": 0, "raises": 0, "imports": 0, "import_residue": []}
+    stats: Dict[str, Any] = {"docs": 0, "raises": 0, "imports": 0, "import_residue": []}
     # R1/R2/R3：协议层文档
     for name in PROTO_DOCS:
         path = os.path.join(root, name)

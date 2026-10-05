@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/domain_pack.py:f9dd0189107ae7106339fe87c615053beccb9fe202ba002661b7395ebf930bd1
   - desktop/src/core/prose_lint.py:6e3297565d6eaf9cb0661ac659a942d625b78c9b3d1c4fe84844d37f0e8ac93f
-  - protocol/code_metrics_baseline.json:cbf1f79b0c77431590b9668ea20a090b872b03ff3173cba76ba3dbacf964e610
+  - protocol/code_metrics_baseline.json:b2245698635fc9730195ed72132d15d045b8c125f0d66bebb96cd449da28794b
 
 ---
 

@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - scripts/serve_decision_model.py:fd96cba3538674b8ca49fe9109ad47f06fa5132e41c7688276395b5660385bb5
   - desktop/src/core/decision_layer.py:f9b87bb638e1ffef0a71a0a3b87c97646337a86788e53d6fea8fca22b8bf9e36
-  - desktop/src/core/purity_scan.py:bda7d3a0f0f3810b7b943db9edd281f032b779451a07da4876fb1bea9341d757
+  - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - community/通用核心基础包/modules/M94_通用节拍桥.md:5c9605e3becbec64e87d5d3ab32b7e25a22150d949d3b8cf787eaa1e01f0e2c4
   - community/校园西幻轻混组合包/modules/M92_轻混装配执行.md:1e261dcc10d0b7134d8194f6e548ecae0d7230d9ba8e258d48825627503360d6

@@ -116,7 +116,7 @@ def _data_json(root: str, rel: str, text: str, spec: Dict[str, Any]
         else:
             from core import json_schema as js
             try:
-                errs = js.json_schema_check(obj, _strict_json(sch_text))
+                errs = js.json_schema_check(obj, _strict_json(sch_text or ""))
             except ValueError as exc:
                 errs = ["schema 本身不是合法 JSON：%s" % exc]
             issues += ["数据件 %s 不符 schema %s：%s" % (rel, sch_rel, e) for e in errs[:5]]
@@ -237,6 +237,7 @@ def _check_data(root: str, spec: Dict[str, Any]) -> Tuple[List[str], Dict[str, A
         if err:
             issues.append(err)
             continue
+        text = text or ""
         obj: Any = None
         if fmt == "json":
             sub, s = _data_json(root, rel, text, spec)
@@ -410,7 +411,7 @@ def _scan_block(stmts: List[ast.stmt], cur: set, rel: str,
 def _none_deref(tree: ast.AST, rel: str) -> List[str]:
     """可证空指针：x = None（或默认参数 None）之后在同一语句序列里解引用 x。"""
     out: List[Tuple[str, int, str]] = []
-    seeds = [(list(getattr(tree, "body", [])), set())]
+    seeds: List[Any] = [(list(getattr(tree, "body", [])), set())]
     for fn in ast.walk(tree):
         if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
             default_none = set()
@@ -418,7 +419,7 @@ def _none_deref(tree: ast.AST, rel: str) -> List[str]:
             pos_defaults = list(fn.args.defaults)
             # 位置默认值对应**尾部**参数（python 语义）——首版错配到头部，把普通形参也当成
             # None 默认（实测 json_schema._check 假红 37 条）；kw_defaults 与 kwonlyargs 一一对应。
-            pairs = list(zip(pos[len(pos) - len(pos_defaults):], pos_defaults))
+            pairs: List[Tuple[ast.arg, Any]] = list(zip(pos[len(pos) - len(pos_defaults):], pos_defaults))
             pairs += list(zip(fn.args.kwonlyargs, fn.args.kw_defaults))
             for arg, default in pairs:
                 if _is_none(default):
@@ -497,6 +498,7 @@ def _check_code(root: str, spec: Dict[str, Any]) -> Tuple[List[str], Dict[str, A
         if err:
             issues.append(err)
             continue
+        text = text or ""
         try:
             tree = ast.parse(text)
         except SyntaxError as exc:
@@ -570,6 +572,7 @@ def _check_script(root: str, spec: Dict[str, Any]) -> Tuple[List[str], Dict[str,
     text, err = _read(root, rel)
     if err:
         return [err], {"files": 1}
+    text = text or ""
     issues: List[str] = []
     header = parse_io_header(text)
     if header is None:

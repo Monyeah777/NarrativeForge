@@ -31,9 +31,9 @@
       "max_fn_lines": 29
     },
     "desktop/src/core/asset_contract.py": {
-      "lines": 737,
+      "lines": 740,
       "max_fn_cc": 20,
-      "max_fn_lines": 44
+      "max_fn_lines": 45
     },
     "desktop/src/core/asset_density.py": {
       "lines": 366,
@@ -521,7 +521,7 @@
       "max_fn_lines": 48
     },
     "desktop/src/core/purity_scan.py": {
-      "lines": 530,
+      "lines": 532,
       "max_fn_cc": 24,
       "max_fn_lines": 84
     },

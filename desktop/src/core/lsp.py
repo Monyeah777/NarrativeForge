@@ -71,7 +71,7 @@ _BAD_FRAME = object()
 MAX_MESSAGE_BYTES = 8 * 1024 * 1024
 
 
-def read_message(stream) -> Optional[Dict[str, Any]]:
+def read_message(stream) -> Any:
     """读一条 LSP 消息；EOF → `None`，坏帧 → `_BAD_FRAME`（调用方据此回错误码后继续）。"""
     src = _binary(stream)
     length = None
@@ -210,7 +210,7 @@ class LspServer:
         doc = self.docs.get(uri)
         if not doc:
             return []
-        rules = sorted({d.get("code") for d in diags
+        rules = sorted({str(d.get("code")) for d in diags
                         if d.get("code") in autofix.RULES})
         if not rules:
             return []

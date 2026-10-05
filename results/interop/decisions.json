@@ -240,6 +240,12 @@
       "id": "AUD-0030",
       "title": "类型分批收敛第三批（mcp_package / conformance_scan / pack_combo 归零 + 一处隐患修复）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0031",
+      "title": "类型分批收敛第四批（lsp / purity_scan / asset_contract 归零）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {
