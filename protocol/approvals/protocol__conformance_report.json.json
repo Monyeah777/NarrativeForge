@@ -1,8 +1,8 @@
 {
   "approved_at": "2026-10-05",
   "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0026 摘要重绑（code_metrics 重冻）+ 变更日志提交边界",
+  "note": "v2.12.0 首例发布收口（保留式）+ 发布机制四处缺陷修复",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "e9221aa0e45d8a8eb5a32514825f97b2dfcc3aeb201617b7612aaf946a700af2"
+  "subject_digest": "aebd3508d74469d3f6007153bf5bd23262dfc464cdfb9b0b9c643adcd54c0eb9"
 }

@@ -14,7 +14,7 @@ subjects:
   - desktop/src/core/text_hygiene.py:63ceb140b09acf932f1eecd8b3a324889e61d18c8b4cda12d4130594d9eb94fd
   - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
   - scripts/serve_decision_model.py:fd96cba3538674b8ca49fe9109ad47f06fa5132e41c7688276395b5660385bb5
-  - scripts/nf.py:4e9427866cd3a3e6115cf84300a032bc43be573042238ce3cdc7111d726445f8
+  - scripts/nf.py:b72ff59088f3c063f2283cc249e2054dde10c2ba2ba2031ec5bcdd0d807135c2
 
 ---
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.12.0] - 未发布
+## [2.12.0] - 2026-10-05
 
 - **基线声明同源（PASS 70→72）+ ja 入口纳入生成区**（2026-10-05）：check38 子扫描由四增至六，运行时 PASS 由 70 升至 **72**，而 `quality_baseline.EXPECTED_PASS` 仍停在 70——四处自洽断言与实跑出现「声明 ≠ 实跑」的隐性漂移。本波把 `EXPECTED_PASS` 同步为 **PASS=72**、`nf stats --write` 重生成入口生成区，并把 `README.ja.md` 纳入 `repo_stats.BLOCK_FILES`（新增 `_ja` 渲染器）——第三语言的统计块不再是手写。verify v2.30 · check1-40 · **PASS=72**。
 

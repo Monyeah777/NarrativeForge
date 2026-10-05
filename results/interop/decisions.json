@@ -216,6 +216,12 @@
       "id": "AUD-0026",
       "title": "文档面 i18n 扩容（mcp/terminal/layers 三份指南 en/ja）+ 演练扩面（跨管线串号 / 资产键编造 / 回合级 R1–R4 样本）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-05",
+      "id": "AUD-0027",
+      "title": "v2.12.0 首例发布（保留式收口 + 发布机制两处缺陷修复 + Golden Master）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {

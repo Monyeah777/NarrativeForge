@@ -976,6 +976,8 @@ def _make_parser() -> argparse.ArgumentParser:
                      help="机读输出（配合 --plan；或体检结论摘要）")
     rel.add_argument("--freeze", action="store_true",
                      help="冻结链：conformance --write → approve → receipts（缺省只打印；--apply 才执行）")
+    rel.add_argument("--apply", action="store_true",
+                     help="冻结链：真正执行（缺省 dry-run；首例发布取证 2026-10-05：此前只登记了 --freeze，--apply 被 argparse 拒收）")
     rel.add_argument("--by", metavar="NAME",
                      help="批准人（--freeze --apply 写进 protocol/approvals/*）")
     rel.add_argument("--note", metavar="TEXT",
@@ -6181,8 +6183,12 @@ def _release_freeze(args):
 
     by = (getattr(args, "by", None) or "").strip()
     note = (getattr(args, "note", None) or "").strip()
+    # 顺序真源 = 策略件 protocol/release_policy.json 的 freeze_chain（缺件退回 rg.DEFAULT_FREEZE_CHAIN）；
+    # 首例发布取证（2026-10-05）：此前写的是不存在的 rg.FREEZE_CHAIN ⇒ 该命令必抛内部错误。
+    pol, _ = rg.policy(ROOT)
+    chain_specs = list((pol or {}).get("freeze_chain") or rg.DEFAULT_FREEZE_CHAIN)
     chains = []
-    for i, spec in enumerate(rg.FREEZE_CHAIN, 1):
+    for i, spec in enumerate(chain_specs, 1):
         argv = shlex.split(spec)
         if argv and argv[0] in ("python", "python3"):
             argv[0] = sys.executable
