@@ -1,0 +1,7 @@
+# 不随静态资产上传的文件（.assetsignore 语法同 .gitignore，置于资产目录根）
+CNAME
+README.md
+DEPLOY-cloudflare-workers.md
+.nojekyll
+.assetsignore
+tools/

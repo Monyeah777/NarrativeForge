@@ -191,7 +191,7 @@
         "id": "https://ninfenz.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "f46d0711d622b414",
+        "invocationId": "af01ee019adb6784",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -230,7 +230,7 @@
     },
     {
       "digest": {
-        "sha256": "485b83346f499112f36e193d24472f5799a2507d7ac30f3b141b80fc5864fd4b"
+        "sha256": "1f4c74fc81ebfc2424d56fe13e08d42215192aa053f094111ae1b5e9971927fc"
       },
       "name": "llms.txt"
     },

@@ -1,0 +1,28 @@
+# Cloudflare Workers 静态资产自定义响应头（_headers）
+# 规则：块首行是路径/模式，随后缩进写 头名: 值
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+
+# 演示与预览图：内容寻址式，长缓存
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 机器入口与爬虫文件：短缓存，便于改名/改版后快速生效
+/llms.txt
+  Cache-Control: public, max-age=300
+/robots.txt
+  Cache-Control: public, max-age=300
+/sitemap.xml
+  Cache-Control: public, max-age=300
+
+# HTML：不缓存，保证改版立即生效
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/en/
+  Cache-Control: public, max-age=0, must-revalidate

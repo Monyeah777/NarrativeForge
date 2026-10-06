@@ -3,6 +3,7 @@
 <!-- nf:locales --> 语言 / Languages：[中文](README.md) · **English** · [日本語](README.ja.md)
 
 [![verify gate ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
+**Live site**: https://ninfenz.1764861918.workers.dev · machine entry [llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt)
 
 **NF terminal (TUI) demo** — a full-screen human entry built on the standard library only; its menu and actions are controlled callers of the real `nf` CLI.
 Keybindings follow the mainstream terminal conventions: `Tab` switches panes, `↑↓` moves inside the focused pane, `/` filters, `?` opens the keymap.

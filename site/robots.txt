@@ -1,4 +1,4 @@
-# NinFenz (宁封子) - https://ninfenz.dev
+# NinFenz (宁封子) - https://ninfenz.1764861918.workers.dev
 # 明确欢迎 AI 检索/引用（GEO：我们希望被选中为信源并吸收进答案）
 User-agent: GPTBot
 Allow: /
@@ -27,4 +27,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://ninfenz.dev/sitemap.xml
+Sitemap: https://ninfenz.1764861918.workers.dev/sitemap.xml

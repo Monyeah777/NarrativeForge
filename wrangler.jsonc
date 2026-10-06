@@ -1,0 +1,18 @@
+{
+  // NinFenz（宁封子）静态站 —— 纯静态资产 Worker（无 main 脚本，assets-only）
+  // 部署：npx wrangler deploy   预览：npx wrangler versions upload
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ninfenz",
+  "compatibility_date": "2026-10-06",
+  // 上线并绑定自定义域后，若不想让 workers.dev 上的副本被检索到，取消下一行注释并重新部署：
+  // "workers_dev": false,
+  "assets": {
+    "directory": "./site",
+    // /en/ 与 / 都能正确回落到各自的 index.html
+    "html_handling": "auto-trailing-slash",
+    // 未命中时返回站内 404.html（备选：none / single-page-application）
+    "not_found_handling": "404-page",
+    // 纯静态：先匹配资产，命中即不回源到 Worker
+    "run_worker_first": false
+  }
+}

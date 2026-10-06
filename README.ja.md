@@ -3,6 +3,7 @@
 <!-- nf:locales --> 语言 / Languages：[中文](README.md) · [English](README.en.md) · **日本語**
 
 [![ゲート ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
+**サイト（公開）**: https://ninfenz.1764861918.workers.dev · machine entry [llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt)
 
 **NF ターミナル（TUI）** —— 全画面の人間向け入口（標準ライブラリのみ）。メニューと各アクションは `nf` CLI の実コマンドの制御された呼び出し元です。キー操作は一流ターミナルの慣例に従います（`Tab` でパネル切替、`↑↓` で移動、`/` で絞り込み、`?` でキー一覧）。詳細は [tui/README.md](tui/README.md) を参照。
 
