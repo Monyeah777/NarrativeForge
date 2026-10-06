@@ -1110,7 +1110,7 @@ l2
         (
             r#"schema-missing"#,
             r#"{"format": "json", "id": "s5", "path": "ok.json", "schema": "nope.json"}"#,
-            &[r#"数据件 ok.json 的 schema 读不到：读不到 nope.json：[Errno 2] No such file or directory: 'C:\\Users\\mon_7\\Downloads\\NarrativeForge-main\\engine\\rust\\target\\test-fixtures\\asset-data-cases\\nope.json'（修复指引：核对声明里的路径在场）"#],
+            &[r#"数据件 ok.json 的 schema 读不到：读不到 nope.json：[Errno 2] No such file or directory: 'C:\\Users\\mon_7\\Downloads\\NinFenz-main\\engine\\rust\\target\\test-fixtures\\asset-data-cases\\nope.json'（修复指引：核对声明里的路径在场）"#],
             r#"{"fields": 0, "files": 1, "format": "json"}"#
         ),
         (

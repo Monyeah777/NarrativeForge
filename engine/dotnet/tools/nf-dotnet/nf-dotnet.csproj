@@ -17,10 +17,10 @@
          若要零依赖分发，用 `dotnet publish` 的自包含多文件形态（见 README「交付形态」）。 -->
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>nf-dotnet</ToolCommandName>
-    <PackageId>NarrativeForge.Engine.Cli</PackageId>
-    <Authors>NarrativeForge</Authors>
+    <PackageId>NinFenz.Engine.Cli</PackageId>
+    <Authors>NinFenz</Authors>
     <Description>NF .NET 工业引擎 CLI（只读判据面：回执/透明链/组合证书/断言表/决策门禁/馆藏门/建模三件 + 性能基线）</Description>
-    <PackageTags>narrativeforge;verification;read-only</PackageTags>
+    <PackageTags>ninfenz;verification;read-only</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>

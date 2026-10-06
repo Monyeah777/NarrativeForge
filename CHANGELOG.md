@@ -8,8 +8,12 @@
 - **按冻结链重生成**：`nf stats --write` → `nf locales --write`（10 条文档译件 `source_sha256` 重签）→ `nf library receipts --write`（根 `11d183057abb90e5`）→ `nf conformance --write`（**27/27 conformant**，root `7be9711887ef905d`）→ `nf approve` → `nf receipts --scope protocol --write`（根 `f46d0711d622b414` · 57 件，联动刷新 `protocol/generated/receipt_chain.json` 与 `results/interop/*.json` 12 面）→ `scripts/verify_report.py --write`（判据 28 条：PASS 26 · FAIL 0 · WARN 2）。**顺序即判据**：任一写回落后于内容变更，conformance 的 `schema-clean` / `audit` 契约立即转红（本波实测复现）。
 - **审计摘要重冻 31 件**：`results/audit/*.md` 的 `subjects: 路径:sha256` 按改名后内容重算（机械改名不改语义，故重签而非重审）。
 - **README 演示帧重生成**：`README.md` / `README.en.md` 顶部演示帧改为 `TUI.demo_frame(96, 26)` 的逐字输出（渲染器标题含规范名，改名后必然漂移）。
-- **未入面**：`engine/`（L3 退役冻结线）。Rust 源码本身不含旧名（`git grep narrativeforge -- engine` 只命中 dotnet 的 5 件）。
-- **本地闸门说明（诚实记录，本波唯一残留红项）**：`engine/rust/target/release/nf-rs.exe` 是 2026-10-05 的预构建产物（`/target` 被忽略，不入仓），与改名后的 Python 真源不同步，导致 check12 里两条 fastlane 平价判据（`test_ported_contracts_match_python_rows` / `test_verify_report_face_matches_python_document`）转红；本机无 Rust 工具链（`cargo`/`rustc` 不在场）无法重建。
+- **engine/ 一并入面（11 文件）**：首轮曾把 `engine/` 当作「退役冻结线」排除在外，并据 `git grep narrativeforge -- engine` 只命中 dotnet
+  判定「Rust 源码不含旧名」——**该结论是错的**：`git grep` 是大小写与连字符敏感的，漏掉了 `engine/rust/src/library.rs` 里
+  `https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/` 这类**硬编码镜像基底字面量**（Python 真源 `core/library.py` 有同一份）。
+  两侧渲染基底不同 → `library-projection` 与 `verify-report` 两条 fastlane 平价判据转红（已用「改名前的提交 + 同一二进制」交叉验证过：那两测在改名前是 PASS）。
+  修法：把 `engine/` 纳入改名（同 6 条规则，逐文件备份）+ `cargo build --release` 重编（1m53s）→ **两条平价判据 PASS**。
+- **本地闸门过程记录（含一处自纠）**：`engine/rust/target/release/nf-rs.exe` 初判为「陈旧预构建」；实测本机 Rust 工具链**已安装但不在 PATH**（`~/.cargo/bin/cargo.exe` 1.99.0，已配 rsproxy 镜像），故可重建。真正的差异源是 `WASM`…（见上条：`engine/` 里的硬编码基底字面量）。
 - **由此暴露的一处仓库脆弱点（值得另立一项收口）**：受跟踪的 `handovers/HO-0002-顶尖化两线与收口.md` 引用了**被忽略的构建产物** `engine/rust/target/release/nf-rs.exe`，而 `test_doc_reachability` 要求在场文档引用的相对路径必须存在——于是本机出现「有二进制则平价测红、无二进制则路径可达红」的两难，两种状态各留 1 项 FAIL。**该耦合与本次改名无关**，但会让「本机 verify 全绿」依赖一次本地 Rust 构建。
 - **处置**：保留二进制（不删不改路径，避免用移出判定面的方式把红项变成跳过），如实记录残留；**待补**：装 Rust 工具链 → `engine/rust/check_parity.ps1`（含 `cargo build --release`）→ 两条平价判据纳入验收。不得以「已跳过」当作已通过。
 - **待作者侧动作**：GitHub 仓库改名 → Gitee 镜像改名 → npm 以 `ninfenz` 发布首版 → 站点上线（`site/` 已按新名生成）。

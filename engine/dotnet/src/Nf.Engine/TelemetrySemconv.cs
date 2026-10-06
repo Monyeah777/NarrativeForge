@@ -62,7 +62,7 @@ public static class TelemetrySemconv
 
     /// <summary>单条 trace 记录 → semconv 属性 dict（未提供的字段**不杜撰**）。</summary>
     public static Dictionary<string, object?> AttributesFor(Dictionary<string, object?> record,
-                                                            string agentName = "narrativeforge")
+                                                            string agentName = "ninfenz")
     {
         var attrs = new Dictionary<string, object?>(StringComparer.Ordinal)
         {
@@ -92,7 +92,7 @@ public static class TelemetrySemconv
 
     /// <summary>trace 记录 → OTLP 形状 span（无时间戳：<c>timeUnixNano</c> 留空由采集方外套）。</summary>
     public static Dictionary<string, object?> ToSpan(Dictionary<string, object?> record,
-                                                     string spanId = "", string agentName = "narrativeforge")
+                                                     string spanId = "", string agentName = "ninfenz")
     {
         var name = OpExecuteTool + " " + ToolNameOf(record);
         var attributes = AttributesFor(record, agentName)
@@ -118,7 +118,7 @@ public static class TelemetrySemconv
 
     /// <summary>trace 记录集 → OTLP 形状 JSON（<c>resourceSpans → scopeSpans → spans</c>）。</summary>
     public static Dictionary<string, object?> ToExport(List<Dictionary<string, object?>> records,
-                                                       string agentName = "narrativeforge")
+                                                       string agentName = "ninfenz")
     {
         var spans = records.Select(r => (object?)ToSpan(r, agentName: agentName)).ToList();
         return new Dictionary<string, object?>(StringComparer.Ordinal)
@@ -135,7 +135,7 @@ public static class TelemetrySemconv
                             {
                                 ["key"] = "service.name",
                                 ["value"] = new Dictionary<string, object?>(StringComparer.Ordinal)
-                                    { ["stringValue"] = "narrativeforge" },
+                                    { ["stringValue"] = "ninfenz" },
                             },
                         },
                     },

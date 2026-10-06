@@ -14,7 +14,7 @@
 | 负例自检 | **227 例**（撞号 / 深链 / 未知包 / 悬空 / 未桥接 / 四类篡改 / 破坏输入 / 并行不变性 / 契约正反对照） |
 | `verify.sh` 覆盖率 | 39 道 check：**覆盖 32 / 不适用 6（有对应物）/ 范围外 1**；判据面无「部分」、无「未覆盖」 |
 | 判据探针 | **45 条**（`probes/`，跑法见 `RUNBOOK.md` §0） |
-| 分发 | 引擎库包 `NarrativeForge.Engine`（**零 NuGet 依赖**）+ CLI 工具包 `NarrativeForge.Engine.Cli` + 自包含多文件产物（当片 **f112**：win/linux 各 189 文件 / 72.4 MB） |
+| 分发 | 引擎库包 `NinFenz.Engine`（**零 NuGet 依赖**）+ CLI 工具包 `NinFenz.Engine.Cli` + 自包含多文件产物（当片 **f112**：win/linux 各 189 文件 / 72.4 MB） |
 | 可复现构建 | 同 RID 异地重建 **189/189 文件逐字节全等**（`Directory.Build.props` 的 `PathMap` 归一） |
 | 复基线 | **一条命令**：`run-rebaseline.ps1 -Snap <新快照> -SnapName <名> -Head <sha>`（预检 → 重生成夹具 → 断言式改写常量与**金标出处** → 重建三类产物 → 跑门；缺省 dry-run） |
 | 外部侧样例 | `samples/zero-dep-recompute/`：不跑 NF 代码、不依赖 Python，用自包含产物复算证书并自验（含 111 包极限工况与负对照） |

@@ -54,14 +54,14 @@ pub const ALLOWED: [&str; 10] = [
 const MIRRORS: [(&str, &str, &str, &str); 2] = [
     (
         "github",
-        "https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/",
-        "https://github.com/Monyeah777/NarrativeForge/blob/main/",
+        "https://raw.githubusercontent.com/Monyeah777/NinFenz/main/",
+        "https://github.com/Monyeah777/NinFenz/blob/main/",
         "",
     ),
     (
         "gitee",
-        "https://gitee.com/monyeah777/narrative-forge/raw/main/",
-        "https://gitee.com/monyeah777/narrative-forge/blob/main/",
+        "https://gitee.com/monyeah777/ninfenz/raw/main/",
+        "https://gitee.com/monyeah777/ninfenz/blob/main/",
         "",
     ),
 ];

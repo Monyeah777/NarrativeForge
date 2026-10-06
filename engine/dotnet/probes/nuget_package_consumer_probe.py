@@ -2,10 +2,10 @@
 
 这条判据回答的是"引擎到底能不能被别人用"，而不是"我本机跑得通"：
 
-  ① **可打包**：`dotnet pack src/Nf.Engine` 必须产出 `NarrativeForge.Engine.<v>.nupkg`，
+  ① **可打包**：`dotnet pack src/Nf.Engine` 必须产出 `NinFenz.Engine.<v>.nupkg`，
      且包内**不得出现任何 `<dependency>`**（引擎是 BCL-only，靠外部包才能用就不算零依赖）。
   ② **第三方可消费**：在一个**全新临时项目**里只写
-     `<PackageReference Include="NarrativeForge.Engine" />`（本地源，`<clear/>` 掉 nuget.org），
+     `<PackageReference Include="NinFenz.Engine" />`（本地源，`<clear/>` 掉 nuget.org），
      不引源码、不引工程引用，restore + build + run 必须成功。
   ③ **结果等价**：该外部消费者用公开 API（`CertificateVerifier.VerifyAll` + `PythonJson.Indented`）
      复算 17 条在盘证书，输出与引擎 CLI 的 `combine verify --json` **逐字节相同**。
@@ -41,7 +41,7 @@ import _paths  # 默认路径唯一出处（探针可移植）
 ENGINE = _paths.ENGINE
 DEFAULT_SNAP = _paths.SNAP
 DEFAULT_DOTNET = _paths.DOTNET
-PACKAGE_ID = "NarrativeForge.Engine"
+PACKAGE_ID = "NinFenz.Engine"
 
 CONSUMER_CSPROJ = """<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>

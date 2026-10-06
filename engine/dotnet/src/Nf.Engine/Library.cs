@@ -39,10 +39,10 @@ public static class Library
 
     private static readonly (string Id, string Raw, string Blob)[] Mirrors =
     {
-        ("github", "https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/",
-            "https://github.com/Monyeah777/NarrativeForge/blob/main/"),
-        ("gitee", "https://gitee.com/monyeah777/narrative-forge/raw/main/",
-            "https://gitee.com/monyeah777/narrative-forge/blob/main/"),
+        ("github", "https://raw.githubusercontent.com/Monyeah777/NinFenz/main/",
+            "https://github.com/Monyeah777/NinFenz/blob/main/"),
+        ("gitee", "https://gitee.com/monyeah777/ninfenz/raw/main/",
+            "https://gitee.com/monyeah777/ninfenz/blob/main/"),
     };
 
     public sealed record Entry(string Path, string Id, Dictionary<string, object?> Fm, string Body,

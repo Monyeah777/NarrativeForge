@@ -11,7 +11,7 @@ NF .NET 引擎 · 一键本地只读门（无 bash、无 Python）
 
 退出码：0 全通过 / 1 有失败项 / 2 用法或环境错误
 用法：
-  pwsh -File run-gate.ps1                                  # 默认对 NarrativeForge-main 工作区
+  pwsh -File run-gate.ps1                                  # 默认对 NinFenz-main 工作区
   pwsh -File run-gate.ps1 -Root <仓库或快照路径>
   pwsh -File run-gate.ps1 -Cli <nf-dotnet 可执行体路径>
 #>

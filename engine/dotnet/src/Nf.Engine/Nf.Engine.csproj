@@ -27,10 +27,10 @@
       纪律：**包元数据只许影响包，不许让已验产物失效**。故 Authors 不设（NuGet 会把 authors 落成包 id）；
       若作者要正式署名，那是**有意变更**——须重发 dist 并重跑判据，不能顺手加。
     -->
-    <PackageId>NarrativeForge.Engine</PackageId>
+    <PackageId>NinFenz.Engine</PackageId>
     <Version>1.0.0</Version>
     <PackageDescription>NF 判据面引擎（只读复算：组合证书 T4 / 回执 / 透明链 / 建模三件 / 决策层 / 馆藏门 / 编码卫生 …；零 NuGet 依赖，BCL-only）</PackageDescription>
-    <PackageTags>narrativeforge;verification;read-only;engine</PackageTags>
+    <PackageTags>ninfenz;verification;read-only;engine</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 </Project>

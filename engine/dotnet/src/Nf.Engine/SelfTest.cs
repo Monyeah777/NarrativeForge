@@ -3620,7 +3620,7 @@ public static class SelfTest
             && TelemetrySemconv.CallIdOf(record) == GoldenCallId
             && Convert.ToString(attrs.GetValueOrDefault(TelemetrySemconv.AttrOperation)) == "execute_tool"
             && Convert.ToString(attrs.GetValueOrDefault(TelemetrySemconv.AttrToolName)) == "nf.assemble"
-            && Convert.ToString(attrs.GetValueOrDefault(TelemetrySemconv.AttrAgentName)) == "narrativeforge"
+            && Convert.ToString(attrs.GetValueOrDefault(TelemetrySemconv.AttrAgentName)) == "ninfenz"
             && Convert.ToString(attrs.GetValueOrDefault(TelemetrySemconv.AttrConversation)) == "nf-plan"
             && args is not null && Convert.ToString(args.GetValueOrDefault("phase")) == "plan"
             && result is not null && Convert.ToString(result.GetValueOrDefault("pipeline")) == "P03"

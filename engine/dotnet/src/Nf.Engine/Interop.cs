@@ -174,7 +174,7 @@ public static class Interop
         var spdxIds = sbPackages.Select(p => p.GetValueOrDefault("SPDXID")).ToList();
         if (spdxIds.Count != spdxIds.Distinct().Count())
             issues.Add("SBOM 包 SPDXID 重复（修复指引：每依赖一个唯一 SPDXID）");
-        if (!sbPackages.Any(p => PyText(p.GetValueOrDefault("name")) == "NarrativeForge"))
+        if (!sbPackages.Any(p => PyText(p.GetValueOrDefault("name")) == "NinFenz"))
             issues.Add("SBOM 缺本项目包（修复指引：SBOM 须自述本仓）");
         var relationships = (sb.GetValueOrDefault("relationships") as List<object?> ?? new List<object?>())
             .OfType<Dictionary<string, object?>>().ToList();
@@ -309,7 +309,7 @@ public static class Interop
 
         // C2PA
         var c2 = C2pa(root);
-        if (!PyText(c2.GetValueOrDefault("claim_generator")).StartsWith("NarrativeForge", StringComparison.Ordinal))
+        if (!PyText(c2.GetValueOrDefault("claim_generator")).StartsWith("NinFenz", StringComparison.Ordinal))
             issues.Add("C2PA 缺 claim_generator（修复指引：须自述生成器）");
         var c2Assertions = (c2.GetValueOrDefault("assertions") as List<object?> ?? new List<object?>())
             .OfType<Dictionary<string, object?>>().ToList();
@@ -516,7 +516,7 @@ public static class Interop
             ["openapi"] = "3.1.0",
             ["info"] = new Dictionary<string, object?>(StringComparer.Ordinal)
             {
-                ["title"] = "NarrativeForge 服务端点契约（派生）",
+                ["title"] = "NinFenz 服务端点契约（派生）",
                 ["version"] = "1.0.0",
                 ["description"] = $"由 protocol/endpoint_contract.json 实时派生（status={PyText(contract.GetValueOrDefault("status"))}）；本文件非真源。",
             },
@@ -642,7 +642,7 @@ public static class Interop
             ["asyncapi"] = "3.0.0",
             ["info"] = new Dictionary<string, object?>(StringComparer.Ordinal)
             {
-                ["title"] = "NarrativeForge 事件登记（派生）",
+                ["title"] = "NinFenz 事件登记（派生）",
                 ["version"] = "1.0.0",
                 ["description"] = "由 protocol/event_registry.json + external_events.json 实时派生；本文件非真源。",
             },
@@ -746,7 +746,7 @@ public static class Interop
         {
             ["@id"] = "nf:agent/verify-sh",
             ["@type"] = "prov:SoftwareAgent",
-            ["prov:label"] = "NarrativeForge verify.sh 门禁",
+            ["prov:label"] = "NinFenz verify.sh 门禁",
             ["nf:present"] = File.Exists(Path.Combine(root, "verify.sh")),
         });
 
@@ -756,7 +756,7 @@ public static class Interop
             ["@context"] = new Dictionary<string, object?>(StringComparer.Ordinal)
             {
                 ["prov"] = "http://www.w3.org/ns/prov#",
-                ["nf"] = "https://narrativeforge.dev/ns#",
+                ["nf"] = "https://ninfenz.dev/ns#",
             },
             ["schema"] = "nf-prov/1",
             ["note"] = "由仓内声明件派生（资产 / 馆藏 / 消化记录 / 回执）；本文件非真源，空面即如实为空。",
@@ -875,13 +875,13 @@ public static class Interop
             ["name"] = PyText(ep.GetValueOrDefault("id")),
             ["description"] = $"maps_to {PyText(ep.GetValueOrDefault("maps_to"))}（" +
                               $"{PyText(ep.GetValueOrDefault("method"))} {PyText(ep.GetValueOrDefault("path"))}）",
-            ["tags"] = new List<object?> { "narrativeforge", "content-contract" },
+            ["tags"] = new List<object?> { "ninfenz", "content-contract" },
         }).ToList();
         var version = pkg.GetValueOrDefault("version") as string;
         return new Dictionary<string, object?>(StringComparer.Ordinal)
         {
             ["protocolVersion"] = "0.2.5",
-            ["name"] = "NarrativeForge",
+            ["name"] = "NinFenz",
             ["description"] = "内容契约层：装配 / 质检 / 图书馆 / 一致性报告（只读面）",
             ["url"] = "urn:nf:repo",
             ["preferredTransport"] = "stdio",
@@ -964,7 +964,7 @@ public static class Interop
         {
             ["_type"] = "https://in-toto.io/Statement/v1",
             ["subject"] = subject,
-            ["predicateType"] = "https://narrativeforge.dev/attestation/protocol-receipts/v1",
+            ["predicateType"] = "https://ninfenz.dev/attestation/protocol-receipts/v1",
             ["predicate"] = new Dictionary<string, object?>(StringComparer.Ordinal)
             {
                 ["algorithm"] = rec.GetValueOrDefault("algorithm") ?? "",
@@ -992,8 +992,8 @@ public static class Interop
         {
             new Dictionary<string, object?>(StringComparer.Ordinal)
             {
-                ["SPDXID"] = "SPDXRef-Package-narrativeforge",
-                ["name"] = "NarrativeForge",
+                ["SPDXID"] = "SPDXRef-Package-ninfenz",
+                ["name"] = "NinFenz",
                 ["versionInfo"] = nfVersion,
                 ["downloadLocation"] = "NOASSERTION",
                 ["licenseConcluded"] = LicenseName,
@@ -1035,14 +1035,14 @@ public static class Interop
             new Dictionary<string, object?>(StringComparer.Ordinal)
             {
                 ["spdxElementId"] = "SPDXRef-DOCUMENT",
-                ["relatedSpdxElement"] = "SPDXRef-Package-narrativeforge",
+                ["relatedSpdxElement"] = "SPDXRef-Package-ninfenz",
                 ["relationshipType"] = "DESCRIBES",
             },
         };
         relationships.AddRange(deps.Select(d => (object?)new Dictionary<string, object?>(StringComparer.Ordinal)
         {
             ["spdxElementId"] = d.Pkg,
-            ["relatedSpdxElement"] = "SPDXRef-Package-narrativeforge",
+            ["relatedSpdxElement"] = "SPDXRef-Package-ninfenz",
             ["relationshipType"] = d.Rel,
         }));
 
@@ -1051,8 +1051,8 @@ public static class Interop
             ["spdxVersion"] = "SPDX-2.3",
             ["dataLicense"] = "CC0-1.0",
             ["SPDXID"] = "SPDXRef-DOCUMENT",
-            ["name"] = "narrativeforge-sbom",
-            ["documentNamespace"] = $"https://narrativeforge.dev/spdx/{nfVersion}",
+            ["name"] = "ninfenz-sbom",
+            ["documentNamespace"] = $"https://ninfenz.dev/spdx/{nfVersion}",
             ["creationInfo"] = new Dictionary<string, object?>(StringComparer.Ordinal)
             {
                 ["creators"] = new List<object?> { "Tool: nf interop --kind sbom" },
@@ -1097,7 +1097,7 @@ public static class Interop
             {
                 ["buildDefinition"] = new Dictionary<string, object?>(StringComparer.Ordinal)
                 {
-                    ["buildType"] = "https://narrativeforge.dev/buildtypes/local-gate/v1",
+                    ["buildType"] = "https://ninfenz.dev/buildtypes/local-gate/v1",
                     ["externalParameters"] = new Dictionary<string, object?>(StringComparer.Ordinal)
                     {
                         ["gate"] = "verify.sh",
@@ -1118,7 +1118,7 @@ public static class Interop
                 {
                     ["builder"] = new Dictionary<string, object?>(StringComparer.Ordinal)
                     {
-                        ["id"] = "https://narrativeforge.dev/builder/verify-sh",
+                        ["id"] = "https://ninfenz.dev/builder/verify-sh",
                     },
                     ["metadata"] = new Dictionary<string, object?>(StringComparer.Ordinal)
                     {
@@ -1174,8 +1174,8 @@ public static class Interop
                 ["component"] = new Dictionary<string, object?>(StringComparer.Ordinal)
                 {
                     ["type"] = "application",
-                    ["bom-ref"] = $"pkg:nf/narrativeforge@{versionInfo}",
-                    ["name"] = "NarrativeForge",
+                    ["bom-ref"] = $"pkg:nf/ninfenz@{versionInfo}",
+                    ["name"] = "NinFenz",
                     ["licenses"] = new List<object?>
                     {
                         new Dictionary<string, object?>(StringComparer.Ordinal)
@@ -1188,7 +1188,7 @@ public static class Interop
                 {
                     new Dictionary<string, object?>(StringComparer.Ordinal)
                     {
-                        ["vendor"] = "NarrativeForge", ["name"] = "nf interop --kind cyclonedx", ["version"] = "1.0.0",
+                        ["vendor"] = "NinFenz", ["name"] = "nf interop --kind cyclonedx", ["version"] = "1.0.0",
                     },
                 },
                 ["properties"] = new List<object?>
@@ -1225,7 +1225,7 @@ public static class Interop
         }
         var first = approvals.Count > 0 ? approvals[0] : null;
         var issuer = first is null ? "" : (first.GetValueOrDefault("approved_by") as string ?? "");
-        if (issuer.Length == 0) issuer = "NarrativeForge";
+        if (issuer.Length == 0) issuer = "NinFenz";
         var validFrom = first is null ? "" : (first.GetValueOrDefault("approved_at") as string ?? "");
 
         return new Dictionary<string, object?>(StringComparer.Ordinal)
@@ -1233,7 +1233,7 @@ public static class Interop
             ["@context"] = new List<object?>
             {
                 "https://www.w3.org/ns/credentials/v2",
-                "https://narrativeforge.dev/ns/credentials/v1",
+                "https://ninfenz.dev/ns/credentials/v1",
             },
             ["type"] = new List<object?> { "VerifiableCredential", "NfConformanceCredential" },
             ["issuer"] = issuer,
@@ -1291,15 +1291,15 @@ public static class Interop
         }
         return new Dictionary<string, object?>(StringComparer.Ordinal)
         {
-            ["claim_generator"] = "NarrativeForge/1.0 (nf interop --kind c2pa)",
+            ["claim_generator"] = "NinFenz/1.0 (nf interop --kind c2pa)",
             ["claim_generator_info"] = new List<object?>
             {
                 new Dictionary<string, object?>(StringComparer.Ordinal)
                 {
-                    ["name"] = "NarrativeForge", ["version"] = "1.0.0",
+                    ["name"] = "NinFenz", ["version"] = "1.0.0",
                 },
             },
-            ["title"] = "NarrativeForge 协议层内容清单",
+            ["title"] = "NinFenz 协议层内容清单",
             ["format"] = "application/json",
             ["assertions"] = assertions,
             ["x-nf-package-status"] = "未封装（无 JUMBF/CBOR 容器）、未签名（无 X.509 证书链）——" +
