@@ -31,7 +31,10 @@ if (!origin) { console.error('无法确定 origin'); process.exit(2); }
   let ldOk = lds.length > 0;
   for (const b of lds) { try { const j = JSON.parse(b); ldTypes.push(...(j['@graph'] ? j['@graph'].map((x) => x['@type']) : [j['@type']])); } catch { ldOk = false; } }
   check('JSON-LD 可解析', ldOk, ldTypes.join('+'));
-  check('旧域残留=0', !html.includes('ninfenz.dev'), (html.match(/ninfenz\.dev/g) || []).length + ' 处');
+  // 判据应是「除自身 canonical 基址外，不出现其他已知基址」——不能写死某一个旧域名，否则换域后必误报。
+  const KNOWN_BASES = ['https://ninfenz.dev', 'https://ninfenz.1764861918.workers.dev', 'https://monyeah777.github.io/NinFenz', 'https://monyeah777.github.io'];
+  const foreign = KNOWN_BASES.filter((b) => b !== origin).filter((b) => html.includes(b));
+  check('无其他基址残留', foreign.length === 0, foreign.length ? foreign.join(' , ') : '0 处');
 
   for (const p of ['/en/', '/robots.txt', '/sitemap.xml', '/llms.txt', '/404.html', '/assets/site.css']) {
     const r = await get(p + '?v=' + Math.random().toString(36).slice(2));

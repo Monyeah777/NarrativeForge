@@ -4,7 +4,7 @@
     "algorithm": "RFC6962-style sha256 domain-separated",
     "count": 57,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "af01ee019adb678444a67a8f7c13a15e352b625d2dd39738de0478ad922818d4",
+    "root": "66459764d9fc950ac4ba4b01987070070f1d93291135ade404d1b90a0dcac783",
     "scope": "protocol"
   },
   "predicateType": "https://ninfenz.dev/attestation/protocol-receipts/v1",
@@ -41,7 +41,7 @@
     },
     {
       "digest": {
-        "sha256": "1f4c74fc81ebfc2424d56fe13e08d42215192aa053f094111ae1b5e9971927fc"
+        "sha256": "f940e15c51b6115cee20972e6d5604da52fffe71c210b7aad4c41fb299d87a8c"
       },
       "name": "llms.txt"
     },

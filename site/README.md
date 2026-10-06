@@ -1,6 +1,6 @@
 # site/ · 静态站（NinFenz 官网）
 
-> **线上地址**：https://ninfenz.1764861918.workers.dev （当前工期跑在 Cloudflare Workers 免费二级域；买下 ninfenz.dev 后用 site/tools/set-origin.mjs 一条命令切回）
+> **线上地址**：https://ninfenz.dev （Cloudflare Workers + 自定义域 ninfenz.dev；切源：`node site/tools/set-origin.mjs <base> --write`）
 
 纯静态、**零外部依赖**（无 CDN、无 webfont、无遥测）；双语 `/`（zh-CN）与 `/en/`。
 

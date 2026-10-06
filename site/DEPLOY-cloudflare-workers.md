@@ -1,6 +1,6 @@
 # Cloudflare Workers 部署（NinFenz 静态站）
 
-> **当前工期（2026-10-06）**：尚未购买域名，站点跑在免费二级域 **https://ninfenz.1764861918.workers.dev**，
+> **当前工期（2026-10-06）**：域名 **ninfenz.dev** 已注册并挂上自定义域（大陆裸网直连可达），
 > 站内 canonical / hreflang / og:url / JSON-LD @id / sitemap / robots / llms.txt **已全部指向该地址**（自洽）。
 > 买下 `ninfenz.dev` 后切回：`node site/tools/set-origin.mjs https://ninfenz.dev --write && npx wrangler deploy`。
 
