@@ -37,6 +37,8 @@ jobs:
           pip install -r .github/requirements-ci.txt  # 版本固定见该文件（F-05）
       - name: 分层门禁（verify.sh 全量，L0-L2 默认锁）
         run: bash verify.sh
+      - name: 站点数字与真源同步（site/tools/sync-numbers.mjs：站点发布旧数字即红）
+        run: node site/tools/sync-numbers.mjs
       - name: 门禁机器可读报告（静态可核验面：落盘 + 新鲜度校验 + 留工件）
         run: |
           python scripts/verify_report.py --write
