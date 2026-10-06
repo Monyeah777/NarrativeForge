@@ -1,18 +1,22 @@
 {
-  // NinFenz（宁封子）静态站 —— 纯静态资产 Worker（无 main 脚本，assets-only）
+  // NinFenz（宁封子）静态站 —— 静态资产 + 轻量 Worker（只做 www -> 裸域 301）
   // 部署：npx wrangler deploy   预览：npx wrangler versions upload
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ninfenz",
+  // 站点 Worker：www -> 裸域 301，其余交静态资产
+  "main": "site/worker.js",
+  // 正式域已生效；关掉 workers.dev 路由，避免出现第二个可达源（non-China 亦统一到 ninfenz.dev）
+  "workers_dev": false,
   "compatibility_date": "2026-10-06",
-  // 上线并绑定自定义域后，若不想让 workers.dev 上的副本被检索到，取消下一行注释并重新部署：
-  // "workers_dev": false,
   "assets": {
     "directory": "./site",
+    // run_worker_first=true 时必须声明资产绑定，否则 env.ASSETS 为 undefined（本波 dry-run 实测拦下）
+    "binding": "ASSETS",
     // /en/ 与 / 都能正确回落到各自的 index.html
     "html_handling": "auto-trailing-slash",
     // 未命中时返回站内 404.html（备选：none / single-page-application）
     "not_found_handling": "404-page",
-    // 纯静态：先匹配资产，命中即不回源到 Worker
-    "run_worker_first": false
+    // 每个请求先过 Worker（www 跳转需要），非 www 再交回 env.ASSETS.fetch()
+    "run_worker_first": true
   }
 }

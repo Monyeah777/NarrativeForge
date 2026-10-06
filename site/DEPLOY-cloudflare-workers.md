@@ -95,3 +95,37 @@ curl -s  https://ninfenz.dev/nope | findstr /I "404"             # 应回站内 
 - 站内 canonical / hreflang 已全部指向 `https://ninfenz.dev/`；两个源同时可访问时，canonical 声明首选是 `ninfenz.dev`。
 - 若要让 workers.dev 副本**彻底不被检索到**：绑定自定义域成功后，取消 `wrangler.jsonc` 里 `"workers_dev": false` 的注释，再 `npx wrangler deploy` 一次。
 - `npx wrangler versions upload`（预览命令）产出的 Version URL 同样挂在 workers.dev subdomain 下；关闭 `workers_dev` 前请确认自己不再需要它做预览评审。
+
+---
+
+## 八、上线后的实际架构（2026-10-06 定稿）
+
+| 组成 | 说明 |
+|---|---|
+| `wrangler.jsonc` · `main: site/worker.js` | 从 assets-only 升级为**静态资产 + 轻量 Worker**：Worker 只做 `www.*` → 裸域 **301**，其余原样交回 `env.ASSETS.fetch()` |
+| `assets.binding: "ASSETS"` | **必需**。`run_worker_first: true` 时若不声明绑定，`env.ASSETS` 是 `undefined`（本波 dry-run 实测拦下，否则全站崩） |
+| `assets.run_worker_first: true` | 每个请求先过 Worker（www 跳转必须），非 www 再交回资产层——`_headers` 规则实测照旧生效 |
+| `workers_dev: false` | 关掉 `*.workers.dev` 路由，全网只留 `ninfenz.dev` / `www` 一个可达源 |
+| 自定义域 | `ninfenz.dev` + `www.ninfenz.dev`（Workers 路由托管，证书自签）；Zone：`ssl=strict` · `always_use_https` · `min_tls_version=1.2` · `automatic_https_rewrites` · `brotli` · `http3` · `early_hints` · HSTS(180d) |
+
+### 为什么不用 Cloudflare Redirect Rules 做 www 跳转
+
+Redirect Rules 需要 Zone Rules 权限（当前 API token 返回 403）；放在 Worker 层不依赖额外授权，且 301 逻辑随版本一起受评审与回滚。
+
+### 发布钩子：站点数字必须与真源同步
+
+`site/` 是独立于生成器的手写静态面，仓库发版改了 verify/check/PASS 数字它不会自动跟随。
+2026-10-06 实测就漂移过：站点三面写 `v2.29/check1-39/PASS=68`，真源已是 `v2.30/check1-40/PASS=72`。
+
+```bash
+node site/tools/sync-numbers.mjs          # 检查（漂移则退出码 1）——发布前把关
+node site/tools/sync-numbers.mjs --write  # 同步写入
+```
+
+真源 = 仓库根 `llms.txt` 的 `nf:stats` 区块（由 `nf stats --write` 生成）。
+
+### 上线自检（一条命令，14 项判据）
+
+```bash
+node site/tools/site-check.mjs https://ninfenz.dev
+```

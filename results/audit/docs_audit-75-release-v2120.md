@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - CHANGELOG.md:ac4df44cdbfa5ac099a796c25c0e4c4187a86ae0295196bfb3a798b14d466f96
   - VERSION-MATRIX.md:abe7adfd40849a0191f738bb4d051ce487e811328d800c3049bbda7add455615
-  - README.md:5b51a16887d23823630c66cbf12e55df417391f6690044e822c5da73b8f65305
+  - README.md:f8790212e0f7b4c834e88bf1fa063648cdfa958e20eefbe8fac9b29ed3960f6a
   - desktop/src/core/changelog_gen.py:91f1c9eae7a48bbad209d041b48b2eb6d91dbe2eca36c08ee457ffdf21104e16
   - desktop/tests/test_changelog_gen.py:3ddb12cc2247f8bf5649dc4e64d7521fc40795aba93c90f8dd34fc3df47377b8
   - protocol/release_policy.json:29eaf0c6692f6872971d3d582a23cdf18cbca60c6ac1e35aba7b04eb85e9ebbc

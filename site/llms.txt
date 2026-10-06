@@ -11,7 +11,7 @@
 
 ## 可引用事实（带真源）
 
-- 质量凭证：verify v2.29 · check1-39 · PASS=68（单入口 bash verify.sh）
+- 质量凭证：verify v2.30 · check1-40 · PASS=72（单入口 bash verify.sh）
 - 规模：111 登记包 · 363 资产档 · 101 概念图 · 标准目录 370 条（可达 332 / 不可达 38）· 标准绑定 1200 条 · 馆藏 3 件（真源 protocol/repo_stats.json）
 - 官方核心：13 模块 · 3 管线 P00 / P01 / P90 · 协议件 01-07
 - 可验证产物：Merkle inclusion proof（RFC 6962）+ hmac / ssh-sig / sigstore-keyless 锚；缺验证器 fail-closed

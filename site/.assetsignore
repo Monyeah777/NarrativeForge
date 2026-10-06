@@ -5,3 +5,4 @@ DEPLOY-cloudflare-workers.md
 .nojekyll
 .assetsignore
 tools/
+worker.js
