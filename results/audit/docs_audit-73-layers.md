@@ -11,11 +11,11 @@ subjects:
   - desktop/tests/test_layer_model.py:b8f0d653573f088ae8c4b1a66a415697b82496fd3fd4443d2e6cb8f4983aa54e
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
   - desktop/tests/test_purity_scan.py:6c1539361d2d927a7c5f89013e20f9188e31215c0ada176f9f0b397c4d5c731d
-  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
-  - verify.sh:e62c132448d12805177e17a45b8c1b51d0fc3717364800b39aa81c9345050d35
+  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
+  - verify.sh:34ced4d23abda17d95ededd2c75d49decf1a11cba64913c5c389c2eb7b859d54
   - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
-  - protocol/assertions.json:b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102
+  - protocol/assertions.json:85ece6974b85d4877d3ff6e6b57f7e5e30147e0ac56fc1017e8c96c847ab8eb1
   - protocol/data_contracts.json:2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb
   - protocol/normative.json:0c9c21945def2250462392e5f932a3d30f3b3f9c366b4f67cbdec45f9329c943
   - protocol/glossary.json:4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60

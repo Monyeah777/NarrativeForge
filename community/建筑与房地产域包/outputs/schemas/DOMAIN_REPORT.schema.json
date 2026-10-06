@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://narrativeforge.local/schema/domain-report-d15.schema.json",
+  "$id": "https://ninfenz.local/schema/domain-report-d15.schema.json",
   "title": "建筑与房地产 域报告（可复算）",
   "description": "样例集上的口径值报告（T4）：由 outputs/samples/CASES.csv 经 core/domain_metrics 重算并逐字段比对。**非模型能力声明**。",
   "type": "object",

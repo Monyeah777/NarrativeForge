@@ -32,7 +32,7 @@
   ],
   "metadata": {
     "component": {
-      "bom-ref": "pkg:nf/narrativeforge@v2.30",
+      "bom-ref": "pkg:nf/ninfenz@v2.30",
       "licenses": [
         {
           "license": {
@@ -40,7 +40,7 @@
           }
         }
       ],
-      "name": "NarrativeForge",
+      "name": "NinFenz",
       "type": "application"
     },
     "properties": [
@@ -57,12 +57,12 @@
     "tools": [
       {
         "name": "nf interop --kind cyclonedx",
-        "vendor": "NarrativeForge",
+        "vendor": "NinFenz",
         "version": "1.0.0"
       }
     ]
   },
-  "serialNumber": "urn:uuid:3b2d1a99-6880-8301-086c-591551fc1648",
+  "serialNumber": "urn:uuid:4b38b1c2-2fab-cc5f-7824-e9fd117ec000",
   "specVersion": "1.5",
   "version": 1
 }

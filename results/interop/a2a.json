@@ -12,7 +12,7 @@
     "application/json"
   ],
   "description": "内容契约层：装配 / 质检 / 图书馆 / 一致性报告（只读面）",
-  "name": "NarrativeForge",
+  "name": "NinFenz",
   "preferredTransport": "stdio",
   "protocolVersion": "0.2.5",
   "skills": [
@@ -21,7 +21,7 @@
       "id": "assemble.plan",
       "name": "assemble.plan",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     },
@@ -30,7 +30,7 @@
       "id": "assemble.check",
       "name": "assemble.check",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     },
@@ -39,7 +39,7 @@
       "id": "library.read",
       "name": "library.read",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     },
@@ -48,7 +48,7 @@
       "id": "library.search",
       "name": "library.search",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     },
@@ -57,7 +57,7 @@
       "id": "registry.query",
       "name": "registry.query",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     },
@@ -66,7 +66,7 @@
       "id": "pipeline.dryrun",
       "name": "pipeline.dryrun",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     },
@@ -75,7 +75,7 @@
       "id": "bench.evaluate",
       "name": "bench.evaluate",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     },
@@ -84,7 +84,7 @@
       "id": "conformance.report",
       "name": "conformance.report",
       "tags": [
-        "narrativeforge",
+        "ninfenz",
         "content-contract"
       ]
     }

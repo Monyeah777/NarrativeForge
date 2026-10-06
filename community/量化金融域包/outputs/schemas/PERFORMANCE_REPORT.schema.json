@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://narrativeforge.local/schema/performance-report.schema.json",
+  "$id": "https://ninfenz.local/schema/performance-report.schema.json",
   "title": "量化金融域 · 绩效报告（GIPS 对齐披露面）",
   "description": "由 core/quant_metrics.py 从净值数据确定性复算的报告（T4）：口径四要素（收益口径 / 年化因子 / 无风险利率 / 区间与频率）与披露面齐备。**非 GIPS 合规声明**——合规需第三方鉴证与合成组合全量数据。",
   "type": "object",

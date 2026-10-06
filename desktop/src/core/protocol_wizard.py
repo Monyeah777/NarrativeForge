@@ -63,7 +63,7 @@ def build_protocol_yaml(form: ProtocolForm) -> str:
         mount_l += f"    {layer}: {{default: [{d}], available: [{a}]}}\n"
     mount_l = mount_l.rstrip("\n")
     n_asset = 0  # 向导新包默认零资产（机制包先例）；用户后续补资产手改 count
-    return f"""# protocol.yaml — 第三方协议声明（{form.name}，由叙事工坊协议定义向导生成）
+    return f"""# protocol.yaml — 第三方协议声明（{form.name}，由宁封子协议定义向导生成）
 # 依据 01 §6.1 Schema 模板骨架 + 02 §8.3 第三方协议登记；机读真相 = 本文件，人读速览 = README.md（双源一致，check14 ⑥ / check15 ⑤ 断言）
 protocol:
   schema_version: "2"          # 引用 Schema 版本，v2 起支持 references

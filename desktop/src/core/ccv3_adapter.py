@@ -140,7 +140,7 @@ def map_ir_to_ccv3(ir: IRDocument) -> dict:
     n_asset = len([v for v in (ir.asset_refs or {}).values() if v is not None])
     description = (
         f"{ir.pipeline_name}（{ir.pipeline_id}）装配产物 · {n_rule} 个规则模块"
-        f" + {n_asset} 项资产素材。由叙事工坊 2.0 导出层生成。")
+        f" + {n_asset} 项资产素材。由宁封子 2.0 导出层生成。")
     entries = world_entries(ir)
     data = {
         "name": ir.title,
@@ -150,7 +150,7 @@ def map_ir_to_ccv3(ir: IRDocument) -> dict:
         "scenario": _scenario_text(ir),
         "first_mes": f"你来到了「{ir.title}」。世界规则已加载，故事开始了……",
         "mes_example": "",
-        "creator_notes": f"由 NarrativeForge 2.0 导出层生成（{ir.pipeline_id}）",
+        "creator_notes": f"由 NinFenz 2.0 导出层生成（{ir.pipeline_id}）",
         "system_prompt": "",
         "post_history_instructions": "",
         "alternate_greetings": [],
@@ -159,7 +159,7 @@ def map_ir_to_ccv3(ir: IRDocument) -> dict:
             "entries": entries,
         },
         "tags": [ir.pipeline_id],
-        "creator": "NarrativeForge",
+        "creator": "NinFenz",
         "character_version": "2.0.0",
         "extensions": {},
     }

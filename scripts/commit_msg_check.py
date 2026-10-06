@@ -21,7 +21,7 @@
     python scripts/commit_msg_check.py --self-test        # 自检（正/反例各若干）
 
 **校准数据（本仓 385 条历史提交回放）**：合规 381 条，例外 4 条（1.0%）——3 条为早期
-无 type 的提交（`E3 MCP 协议级实测通过：…` / `T3-1 …chore(ci) A3/B3` / `Narrative Forge v1.0：…`），
+无 type 的提交（`E3 MCP 协议级实测通过：…` / `T3-1 …chore(ci) A3/B3` / `NinFenz v1.0：…`），
 1 条为**已退役 Android 线**的 `build(android): …`（该线已按裁决 #16 移除，`build` 不再入词表，
 构建类改动走 `chore`）。门禁**不回检历史**，只约束新提交。
 """

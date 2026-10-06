@@ -5,7 +5,7 @@ export const MIN_PYTHON = [3, 11];
 
 export function candidates(env = process.env) {
   const out = [];
-  if (env.NARRATIVEFORGE_PYTHON) out.push({ cmd: env.NARRATIVEFORGE_PYTHON, pre: [] });
+  if (env.NINFENZ_PYTHON) out.push({ cmd: env.NINFENZ_PYTHON, pre: [] });
   if (process.platform === 'win32') out.push({ cmd: 'py', pre: ['-3'] });
   out.push({ cmd: 'python3', pre: [] });
   out.push({ cmd: 'python', pre: [] });
@@ -39,11 +39,11 @@ export function findPython(env = process.env) {
     if (!found) { seen.push(cand.cmd); continue; }
     if (!atLeast(found.version, MIN_PYTHON)) {
       return { error: 'Python ' + found.version.join('.') + ' 过低（需 >= ' + MIN_PYTHON.join('.') + '）：' + found.cmd
-        + '（修复指引：装 Python ' + MIN_PYTHON.join('.') + '+ 后重跑；或用 NARRATIVEFORGE_PYTHON 指定解释器）' };
+        + '（修复指引：装 Python ' + MIN_PYTHON.join('.') + '+ 后重跑；或用 NINFENZ_PYTHON 指定解释器）' };
     }
     return { python: found };
   }
   return { error: '未找到可用的 Python（试过：' + seen.join(', ') + '）'
     + '（修复指引：装 Python ' + MIN_PYTHON.join('.') + '+；Windows 可装 python.org 版或 py -3；'
-    + '或用 NARRATIVEFORGE_PYTHON 指定解释器路径）' };
+    + '或用 NINFENZ_PYTHON 指定解释器路径）' };
 }

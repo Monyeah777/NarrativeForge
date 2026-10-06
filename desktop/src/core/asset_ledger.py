@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""NarrativeForge 资产供应链台账（40 总纲 v2.7 波 A S2：资产六环中的 入库/溯源/浏览/版本/淘汰）。
+"""NinFenz 资产供应链台账（40 总纲 v2.7 波 A S2：资产六环中的 入库/溯源/浏览/版本/淘汰）。
 
 设计定位：
 - 台账 = 资产根目录下 provenance.json（溯源键表，机读唯一真相）；

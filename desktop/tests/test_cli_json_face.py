@@ -148,7 +148,7 @@ class JsonFaceDynamicTest(unittest.TestCase):
                          "豁免面集合与实测不一致（防悄悄新增/失效豁免）")
 
 
-#: 预设面的**隔离 NF_HOME**：预设库在用户态，判据不许碰真实 `~/.NarrativeForge`
+#: 预设面的**隔离 NF_HOME**：预设库在用户态，判据不许碰真实 `~/.NinFenz`
 #: （也保证面里那两条 `preset show/apply` 有真件可查，走的是**成功**分支）。
 _PRESET_STATE: dict = {}
 

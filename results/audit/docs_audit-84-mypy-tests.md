@@ -13,7 +13,7 @@ subjects:
   - desktop/tests/test_rust_fastlane.py:b50481a83b030f5037f14601ae2056bce0253a31c127074c73a5e9bdb2d47e56
   - desktop/tests/test_quant_domain_package.py:d0ca63155f193536f7ef5509f4145b9375c04747f0b48438936ba611b1db2b51
   - desktop/tests/test_mcp_write_freedom.py:905806f235c67577594d4673140aa8709297f3673027c6b50e941a1de525d1c1
-  - desktop/tests/test_mcp_runtime.py:12d48890a73f60721fe39ce33c7b189c13601b29cfdd16bcc87ecc949a9adee0
+  - desktop/tests/test_mcp_runtime.py:81d5afe98731241bcde0b3508152cea6d616cfe48b5ca4ec649f2fcbc8b7ee1b
   - desktop/tests/test_live_doc_counts.py:97d927f138d8a01bf3647a6a4aef4fd67b4c5efc87f276d66148eeb840d1a6c9
   - desktop/tests/test_layer_model.py:b8f0d653573f088ae8c4b1a66a415697b82496fd3fd4443d2e6cb8f4983aa54e
   - desktop/tests/test_knowledge_sig.py:49d296144924aef62ecf80447ab631f98712c9f1113f8e7ec1f90b4677c66df3
@@ -28,7 +28,7 @@ subjects:
   - desktop/tests/test_daemon_parity.py:10582b2d9f5d7f9f6b2cb2f7e6bccc43b8b0ba1226d5153627ad7ff13cf89acb
   - desktop/tests/test_concept_graph_gate.py:446dbfd023c9d5171578ac4e7741c099fc40dce77e2f3bf1944f243f1f29a7e0
   - desktop/tests/test_commit_msg.py:505be6ffbee18922dc31eee174baf8a962d35f5dca9c28ba29fba352b3262cf8
-  - desktop/tests/test_cli_json_face.py:0af5d3e2955b01417dbbd242189f06f6ea4397614083df83c8cd87850c1b5c9d
+  - desktop/tests/test_cli_json_face.py:6fa26957393c18a31d428053f396b92eaf4cb141b3a2ed5e3f40e9af28d19d3f
   - desktop/tests/test_ccv3_adapter.py:38960758d0f9487b70e02963e3e79bfd0c1d30f1e6160944e3d5b65bdc584516
   - desktop/tests/test_ai_domain_closure.py:dc6a45d68ae576ae90a87700191ef5688aeb7db194139eff92317ecbc1140204
   - desktop/tests/test_terminal.py:6b5bfa40968209709789adfee5bc03d40432279a86207df91daf8f638e910e24

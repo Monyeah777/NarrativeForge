@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-10-06",
-  "approved_by": "执行者（作者指令：按 62 计划执行）",
-  "note": "AUD-0044 复杂度收敛第七批（json_schema 按关键字类拆分）",
+  "approved_by": "Monyeah",
+  "note": "",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "29857bbe2e2a6f04ff04f80d5dbab77368ab5badc77971507841cc312e81c9e1"

@@ -1,15 +1,15 @@
-# NarrativeForge · 文档生成工坊（规范驱动）
+# NinFenz · 文档生成工坊（规范驱动）
 
 <!-- nf:locales --> 语言 / Languages：**中文** · [English](README.en.md) · [日本語](README.ja.md)
 
-[![门禁 ci-verify](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml)
+[![门禁 ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
 
 **NF 终端（TUI）演示** —— 全屏人机入口（纯标准库）；菜单与动作是 `nf` CLI 真命令的受控调用方。
 键位按顶尖终端约定：`Tab` 切面板、`↑↓` 在当前面板内移动、`/` 过滤、`?` 看键位。
 
 ```
-┌ NF TUI v1.0.0 · NarrativeForge 内容契约层 ───────────────────────────────────────────────────┐
-│仓库 NarrativeForge · 能力区 9                                    焦点 动作 · 就绪（0 项待办）│
+┌ NF TUI v1.0.0 · NinFenz 内容契约层 ──────────────────────────────────────────────────────────┐
+│仓库 NinFenz · 能力区 9                                           焦点 动作 · 就绪（0 项待办）│
 ├────────────────────────┬─────────────────────────────────────────────────────────────────────┤
 │  能力区 1/9            │▍ 动作 · 环境自检（2）                                               │
 │▸ 0 环境自检（2）       │❯ 只读体检   nf doctor                                               │
@@ -44,7 +44,7 @@
 
 NF 是内容契约层——定义“AI 稳定产出长内容”的协议、质量与资产标准；协议本身域中立、模型无关。
 
-**别名与检索词**：NF · NarrativeForge · 叙事工坊 · 内容契约层（content contract layer）· 规范驱动的内容工厂 · 长内容生成协议 · 装配式内容生产 · 模块/管线/资产 · 质量门禁 · 域包 · MCP 接入。
+**别名与检索词**：NF · NinFenz · 宁封子 · 内容契约层（content contract layer）· 规范驱动的内容工厂 · 长内容生成协议 · 装配式内容生产 · 模块/管线/资产 · 质量门禁 · 域包 · MCP 接入。
 
 **不是什么**：不是模型、不是提示词模板集、不是某厂商 SDK——协议本体域中立、模型无关；MCP 只是可对接的连接协议之一。
 

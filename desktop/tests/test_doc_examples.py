@@ -110,7 +110,7 @@ class NonNfDocumentedCommandTest(unittest.TestCase):
         "docs/45_执行遥测规范.md": "JSON 遥测样例（数据，不是命令行）",
         "docs/lsp.md": "客户端配置（JSON / Lua 各一处），路径由编辑器填",
         "docs/mcp.md": "MCP 客户端配置（JSON 两处），路径由用户填",
-        "skills/narrativeforge/references/quickstart.md": "首行是仓库外动作（`git clone`），其后的 nf 命令由 doc-examples 覆盖",
+        "skills/ninfenz/references/quickstart.md": "首行是仓库外动作（`git clone`），其后的 nf 命令由 doc-examples 覆盖",
     }
     FENCE = re.compile(r"(?m)^```([a-zA-Z0-9_-]*)[ \t]*$")
     CMD_HEAD = re.compile(r"^(python\s+)?nf\b|^python scripts/nf")

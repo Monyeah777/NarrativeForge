@@ -1,12 +1,12 @@
 ---
-name: narrativeforge
-description: Use NarrativeForge to assemble long-form content from protocol modules, browse assets and packages, run the nf CLI/MCP, and verify outputs. Use for NarrativeForge tasks; not for generic writing or unrelated repositories.
+name: ninfenz
+description: Use NinFenz to assemble long-form content from protocol modules, browse assets and packages, run the nf CLI/MCP, and verify outputs. Use for NinFenz tasks; not for generic writing or unrelated repositories.
 license: MIT
 ---
 
-# NarrativeForge 用户技能
+# NinFenz 用户技能
 
-NarrativeForge（NF）是**内容契约层**：把长内容生产变成可装载、可质检、可复现的工程。叙事只是官方第一个域包，协议本身域中立、模型无关。本 skill 面向**外部使用者**，覆盖 NF 的核心使用面：装配内容、浏览模块/管线/资产、运行 CLI/MCP、验收产物。
+NinFenz（NF）是**内容契约层**：把长内容生产变成可装载、可质检、可复现的工程。叙事只是官方第一个域包，协议本身域中立、模型无关。本 skill 面向**外部使用者**，覆盖 NF 的核心使用面：装配内容、浏览模块/管线/资产、运行 CLI/MCP、验收产物。
 
 若你的任务是**修改 NF 仓库本身**，先读仓库内 `AGENTS.md` 和 `STRATEGY.md`，本 skill 只负责“怎么用”。
 

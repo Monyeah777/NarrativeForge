@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// NarrativeForge npm 一键入口：探测 Python → 首次解包 payload → 原样转发给 NF CLI。
+// NinFenz npm 一键入口：探测 Python → 首次解包 payload → 原样转发给 NF CLI。
 // 设计纪律：零安装脚本、零网络、零遥测；payload 带 sha256 清单，校验不过就拒绝启动。
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,18 +12,18 @@ const pkg = JSON.parse(fs.readFileSync(path.join(PACKAGE_ROOT, 'package.json'), 
 
 function usage() {
   const lines = [
-    'NarrativeForge (NF) ' + pkg.version + ' - content contract layer for AI long-form output',
+    'NinFenz (NF) ' + pkg.version + ' - content contract layer for AI long-form output',
     '',
     '用法：',
-    '  npx -y narrativeforge <nf 子命令> [...]      在 payload 工作树里跑 NF CLI',
-    '  npx -y narrativeforge tui [--demo|--selftest]  打开 NF 终端 TUI（纯标准库）',
-    '  npx -y narrativeforge --repo <目录> <子命令>   在已有仓库检出上跑（跳过解包）',
-    '  npx -y narrativeforge install --dest <目录>    把 payload 落成一份真实工作树',
-    '  npx -y narrativeforge --version | --help',
+    '  npx -y ninfenz <nf 子命令> [...]      在 payload 工作树里跑 NF CLI',
+    '  npx -y ninfenz tui [--demo|--selftest]  打开 NF 终端 TUI（纯标准库）',
+    '  npx -y ninfenz --repo <目录> <子命令>   在已有仓库检出上跑（跳过解包）',
+    '  npx -y ninfenz install --dest <目录>    把 payload 落成一份真实工作树',
+    '  npx -y ninfenz --version | --help',
     '',
     '环境变量：',
-    '  NARRATIVEFORGE_PYTHON  指定 Python 解释器（需 >= ' + MIN_PYTHON.join('.') + '）',
-    '  NARRATIVEFORGE_CACHE   指定解包缓存目录',
+    '  NINFENZ_PYTHON  指定 Python 解释器（需 >= ' + MIN_PYTHON.join('.') + '）',
+    '  NINFENZ_CACHE   指定解包缓存目录',
     ''
   ];
   return lines.join('\n');
@@ -60,7 +60,7 @@ if (loaded.error) fail(loaded.error, 4);
 const manifest = loaded.manifest;
 
 if (parsed.install) {
-  if (!parsed.dest) fail('install 缺 --dest <目录>（修复指引：npx -y narrativeforge install --dest ./nf）', 2);
+  if (!parsed.dest) fail('install 缺 --dest <目录>（修复指引：npx -y ninfenz install --dest ./nf）', 2);
   materialize(manifest, path.resolve(parsed.dest), parsed.force)
     .then(function (dest) {
       process.stdout.write('✓ 已落盘：' + dest + '\n');

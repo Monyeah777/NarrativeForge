@@ -1,4 +1,4 @@
-# 🍜 NF 菜单 · 给任意 AI 的 NarrativeForge 使用引导（B1 线 · v0.2）
+# 🍜 NF 菜单 · 给任意 AI 的 NinFenz 使用引导（B1 线 · v0.2）
 > ⛔ 操作指令：阅读即执行——本文含可直接执行的命令/步骤/判定，勿当资料阅读。
 > 最后更新：2026-09-08
 > **🔌 DRIVER OVERRIDE（先于本文件其余步骤执行）**：本文件对应工作流 `menu`（机读真源 `protocol/driver.json`）。
@@ -6,7 +6,7 @@
 > - 派发失败（工具报错 / 服务中途不可达）→ **如实报错并停止**，**不得回退**执行下面的文本步骤。
 > - 仅当**本工作流无映射**或**本会话未启用 MCP 面**时，才按本文件文本步骤执行（fallback）。
 
-> 本项目 = NarrativeForge（NF）：协议驱动的长篇创作引擎——把「世界观/角色/事件」编译成结构化协议，让任何 AI 都能按协议稳定装配长篇小说。**无需安装、无需 API key、无需客户端**：你有链接 + 能读文本就能干活。
+> 本项目 = NinFenz（NF）：协议驱动的长篇创作引擎——把「世界观/角色/事件」编译成结构化协议，让任何 AI 都能按协议稳定装配长篇小说。**无需安装、无需 API key、无需客户端**：你有链接 + 能读文本就能干活。
 
 ---
 
@@ -66,9 +66,9 @@
 ## 📖 按需展开（用户点哪个编号，执行哪段）
 
 ### 0️⃣ 我是谁
-NarrativeForge（作者 Monyeah777）——**让任意 AI 稳定产出长篇**的协议化创作系统。用户把 NF 协议文件（或链接）喂给 AI，AI 按协议逐层装配：世界观 → 角色 → 事件 → 输出，全程有质检门约束，不靠运气。三端仓库：
-- Gitee（国内快）：https://gitee.com/monyeah777/narrative-forge
-- GitHub：https://github.com/Monyeah777/NarrativeForge
+NinFenz（作者 Monyeah777）——**让任意 AI 稳定产出长篇**的协议化创作系统。用户把 NF 协议文件（或链接）喂给 AI，AI 按协议逐层装配：世界观 → 角色 → 事件 → 输出，全程有质检门约束，不靠运气。三端仓库：
+- Gitee（国内快）：https://gitee.com/monyeah777/ninfenz
+- GitHub：https://github.com/Monyeah777/NinFenz
 
 ### 1️⃣ 开跑装载（推荐从这里开始）
 流程：抓取任一「完整版样本」→ 通读 → 按样本内「## 6 装载指引」执行 → 至少推进 3 个回合并输出正文。
@@ -97,10 +97,10 @@ NarrativeForge（作者 Monyeah777）——**让任意 AI 稳定产出长篇**�
 
 ### 5️⃣ 投稿入库
 作者白名单通道（防滥用，非作者勿试）：
-1. 打开 Gitee Issues 新建：https://gitee.com/monyeah777/narrative-forge/issues/new
+1. 打开 Gitee Issues 新建：https://gitee.com/monyeah777/ninfenz/issues/new
 2. 标题以【NF投稿】开头 + 粘贴产物全文（正文贴全，别只给链接）
 3. 云端代收站机器人每 10 分钟轮询：自动净化 → 分配 NF-编号 → 入库 `library/NF-XXXX.md` → 更新 INDEX → 回评双端链接
-4. 想投 GitHub 侧同理（GitHub Issues，标题【NF投稿】）：https://github.com/Monyeah777/NarrativeForge/issues/new
+4. 想投 GitHub 侧同理（GitHub Issues，标题【NF投稿】）：https://github.com/Monyeah777/NinFenz/issues/new
 AI 协助用户做的事：把产物整理成投稿格式（标题规范、正文完整、可独立阅读）。
 
 ### 6️⃣ 扩展题材
@@ -119,15 +119,15 @@ Y5 出口：免费 AI 实测 NF 样本后，把「实测结果（装载是否顺
 
 | 用途 | Gitee raw（优先） | GitHub raw（备用） |
 |---|---|---|
-| 总入口 README | https://gitee.com/monyeah777/narrative-forge/raw/main/README.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/README.md |
-| 协议总纲（01） | https://gitee.com/monyeah777/narrative-forge/raw/main/01_核心协议.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/01_核心协议.md |
-| 联动注册表（02） | https://gitee.com/monyeah777/narrative-forge/raw/main/02_联动注册表.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/02_联动注册表.md |
-| Agent 执行协议（06） | https://gitee.com/monyeah777/narrative-forge/raw/main/06_Agent执行协议.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/06_Agent执行协议.md |
-| 官方导航 + 社区预设（07） | https://gitee.com/monyeah777/narrative-forge/raw/main/07_官方核心出厂与社区预设导航.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/07_官方核心出厂与社区预设导航.md |
-| 西幻完整样本（开跑首选） | https://gitee.com/monyeah777/narrative-forge/raw/main/docs/完整版样本_西幻生存流P03.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/docs/完整版样本_西幻生存流P03.md |
-| 校园样本（馆藏） | https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-1.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/NF-1.md |
-| 图书馆索引 | https://gitee.com/monyeah777/narrative-forge/raw/main/library/INDEX.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/library/INDEX.md |
-| 自助组装入口 | https://gitee.com/monyeah777/narrative-forge/raw/main/AGENT_START.md | https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/AGENT_START.md |
+| 总入口 README | https://gitee.com/monyeah777/ninfenz/raw/main/README.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/README.md |
+| 协议总纲（01） | https://gitee.com/monyeah777/ninfenz/raw/main/01_核心协议.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/01_核心协议.md |
+| 联动注册表（02） | https://gitee.com/monyeah777/ninfenz/raw/main/02_联动注册表.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/02_联动注册表.md |
+| Agent 执行协议（06） | https://gitee.com/monyeah777/ninfenz/raw/main/06_Agent执行协议.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/06_Agent执行协议.md |
+| 官方导航 + 社区预设（07） | https://gitee.com/monyeah777/ninfenz/raw/main/07_官方核心出厂与社区预设导航.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/07_官方核心出厂与社区预设导航.md |
+| 西幻完整样本（开跑首选） | https://gitee.com/monyeah777/ninfenz/raw/main/docs/完整版样本_西幻生存流P03.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/docs/完整版样本_西幻生存流P03.md |
+| 校园样本（馆藏） | https://gitee.com/monyeah777/ninfenz/raw/main/library/NF-1.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/library/NF-1.md |
+| 图书馆索引 | https://gitee.com/monyeah777/ninfenz/raw/main/library/INDEX.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/library/INDEX.md |
+| 自助组装入口 | https://gitee.com/monyeah777/ninfenz/raw/main/AGENT_START.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/AGENT_START.md |
 
 ---
 

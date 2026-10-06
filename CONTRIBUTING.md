@@ -1,6 +1,6 @@
 # 贡献规范（CONTRIBUTING）
 
-> **适用对象**：对 NarrativeForge **协议层（01–07 + 08/09 方案）**、**代码层（desktop/ scripts/）**、**社区领域包（community/）** 的任何改动。
+> **适用对象**：对 NinFenz **协议层（01–07 + 08/09 方案）**、**代码层（desktop/ scripts/）**、**社区领域包（community/）** 的任何改动。
 > **门禁铁律**：**任一 FAIL = 协议事故，回滚再改**；0 WARN / 0 FAIL 方可提交（verify.sh 语义）。
 
 ## 1. 提交信息格式（Conventional Commits）

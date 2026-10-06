@@ -2,7 +2,7 @@
   "_type": "https://in-toto.io/Statement/v1",
   "predicate": {
     "buildDefinition": {
-      "buildType": "https://narrativeforge.dev/buildtypes/local-gate/v1",
+      "buildType": "https://ninfenz.dev/buildtypes/local-gate/v1",
       "externalParameters": {
         "declaredBaseline": "check1-40 PASS=72",
         "gate": "verify.sh",
@@ -188,10 +188,10 @@
     },
     "runDetails": {
       "builder": {
-        "id": "https://narrativeforge.dev/builder/verify-sh"
+        "id": "https://ninfenz.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "1c2afb4fb9d73b35",
+        "invocationId": "f46d0711d622b414",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -206,7 +206,7 @@
     },
     {
       "digest": {
-        "sha256": "7eaaccd43afa4f68a36c3712620f23b94b30111174ca60d563a353991e245ea8"
+        "sha256": "47ab81db75ca0998e68e18ece9348290f850f5f023d7b7584782b03ab03e3024"
       },
       "name": "01_核心协议.md"
     },
@@ -218,31 +218,31 @@
     },
     {
       "digest": {
-        "sha256": "cf0797f686ee5e2d5a55ebcadc6f52e19c0f21e4db17795d5e46afad9c96254b"
+        "sha256": "e5e279fa869c3c711fb9cf4cbd1901a27ad0b4d1358e128dda36f9c18d9eba33"
       },
       "name": "06_Agent执行协议.md"
     },
     {
       "digest": {
-        "sha256": "7f410a74f82961e3d67d8918e671afc42cac55c8489ca205f30a6fd569462f96"
+        "sha256": "0431500d5c7f92a126ea5776e66bc13f38b989d543b1ca61a966a72d15d5d257"
       },
       "name": "07_官方核心出厂与社区预设导航.md"
     },
     {
       "digest": {
-        "sha256": "ff0e56a791201a73f8cca4679fb4e488ddf97881a8ffa31cdd043f159d99b82b"
+        "sha256": "485b83346f499112f36e193d24472f5799a2507d7ac30f3b141b80fc5864fd4b"
       },
       "name": "llms.txt"
     },
     {
       "digest": {
-        "sha256": "2f27fef537df2f27af6c4c69d9d7d59f407a2640f364e09ee465b3a3ec76d418"
+        "sha256": "2fcc4ca115a6f9e3d62ac4d4e91506c50459721bf8303c1f80225128c4488840"
       },
       "name": "library/INDEX.md"
     },
     {
       "digest": {
-        "sha256": "bac7a42d89f73e3693c364c51abb5a7a5151faefd0a71ece36d39819c9cc9b73"
+        "sha256": "6caa9215e3d4ff197a4b02feffc77fbbd53d60667601da70c081e4f65b5285c4"
       },
       "name": "library/ALIAS.md"
     },
@@ -356,7 +356,7 @@
     },
     {
       "digest": {
-        "sha256": "b2dae0ac8dc5fc76df5b182f629f8857ca68dee5e052d055fed15b86a05f5102"
+        "sha256": "85ece6974b85d4877d3ff6e6b57f7e5e30147e0ac56fc1017e8c96c847ab8eb1"
       },
       "name": "protocol/assertions.json"
     },
@@ -368,7 +368,7 @@
     },
     {
       "digest": {
-        "sha256": "054bb94f63ff7e1e815c5d63f01bbdca54595473019593fd9b155fa03b6060a5"
+        "sha256": "262938fa2d33e3aa7da6bc59f195c90c8e4d94de4aec0dd1a525fba1f1787a0b"
       },
       "name": "protocol/locales.json"
     },
@@ -440,7 +440,7 @@
     },
     {
       "digest": {
-        "sha256": "d7fae10fd800c979bd48ba38c4ff64a59b423969ab0ece41251eab907e9cd3c4"
+        "sha256": "30d96dd30d3d5cdcb1450bc8de7ce80096677dc63b2f83e178d91dd4aef8fe2f"
       },
       "name": "protocol/mcp_package.json"
     },
@@ -458,7 +458,7 @@
     },
     {
       "digest": {
-        "sha256": "581dab88b1c8fa0f8ae31e28d0c3a74a43a4c0b414ecec1efb27edd1eab34ae8"
+        "sha256": "2ff0785a2669177bd77d53c5f8c39da791ca26db413aab72948bc468e22a2695"
       },
       "name": "desktop/src/core/registry.json"
     },

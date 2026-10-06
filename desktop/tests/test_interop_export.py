@@ -97,7 +97,7 @@ class InteropExportTest(unittest.TestCase):
                          "%sT00:00:00Z" % ie._declared_max_date(ROOT))
         self.assertNotIn("documentComment", sb, "SPDX 2.3 词表无 documentComment（用 comment）")
         names = [p["name"] for p in sb["packages"]]
-        self.assertIn("NarrativeForge", names)
+        self.assertIn("NinFenz", names)
         from core import purity_scan as ps
         for dep in list(ps.HARD_ALLOW) + list(ps.SOFT_IMPORTS):
             self.assertIn(dep, names, "登记依赖须出现在 SBOM：%s" % dep)
@@ -145,7 +145,7 @@ class InteropExportTest(unittest.TestCase):
         self.assertIn("buildDefinition", pred)
         self.assertIn("runDetails", pred)
         self.assertEqual(pred["buildDefinition"]["buildType"],
-                         "https://narrativeforge.dev/buildtypes/local-gate/v1")
+                         "https://ninfenz.dev/buildtypes/local-gate/v1")
         note = pred["runDetails"]["metadata"]["note"]
         self.assertIn("不构成 SLSA 等级声明", note, "本地门禁不得虚标 SLSA 等级")
         self.assertRegex(pred["buildDefinition"]["externalParameters"]["gateVersion"], r"^v\d+")

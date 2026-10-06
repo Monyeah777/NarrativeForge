@@ -7,7 +7,7 @@
 | id | 面 | 类型 | 状态 | 版本 | 责任方 | 入口 | 文档 |
 |---|---|---|---|---|---|---|---|
 | a2a-card | A2A Agent Card 出口 | export | proposed | 0.1.0 | @Monyeah777 | results/interop/a2a.json | docs/interop-thirdparty.md |
-| agent-skill | Agent Skill 出口 | package | active | 1.0.0 | @Monyeah777 | skills/narrativeforge/SKILL.md | skills/narrativeforge/SKILL.md |
+| agent-skill | Agent Skill 出口 | package | active | 1.0.0 | @Monyeah777 | skills/ninfenz/SKILL.md | skills/ninfenz/SKILL.md |
 | agents-rules | 项目规则出口（AGENTS / CLAUDE） | export | active | 1.0.0 | @Monyeah777 | python scripts/nf.py run --fmt agents | agent_组装指令包_v0.2.md |
 | ccv3-export | CCV3 角色卡出口 | export | active | 1.0.0 | @Monyeah777 | python scripts/nf.py run --fmt ccv3 | docs/output-forms.md |
 | cli | 命令行入口（nf） | cli | active | 1.0.0 | @Monyeah777 | python scripts/nf.py --help | docs/terminal.md |
@@ -15,7 +15,7 @@
 | library-raw | 云图书馆 raw 取件面 | collection | active | 1.0.0 | @Monyeah777 | library/INDEX.md | ROUTES.md |
 | lsp | 编辑器接入（nf lsp） | editor | active | 1.0.0 | @Monyeah777 | python scripts/nf.py lsp | docs/lsp.md |
 | mcp | MCP 服务面（nf serve） | server | active | 1.0.0 | @Monyeah777 | python scripts/nf.py serve | docs/mcp.md |
-| npm-launcher | npm 一键启动器 | package | active | 1.0.0 | @Monyeah777 | npx narrativeforge | packaging/npm/README.md |
+| npm-launcher | npm 一键启动器 | package | active | 1.0.0 | @Monyeah777 | npx ninfenz | packaging/npm/README.md |
 | rust-fastlane | Rust 只读快线（nf-rs） | cli | active | 1.0.0 | @Monyeah777 | cargo run --release --manifest-path engine/rust/Cargo.toml | engine/rust/README.md |
 | tui | 终端 TUI（tui/nf.py） | cli | active | 1.0.0 | @Monyeah777 | python tui/nf.py --selftest | tui/README.md |
 <!-- nf:integrations:end -->

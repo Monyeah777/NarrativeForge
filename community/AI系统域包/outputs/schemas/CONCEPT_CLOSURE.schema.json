@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://narrativeforge.local/schema/concept-closure.schema.json",
+  "$id": "https://ninfenz.local/schema/concept-closure.schema.json",
   "title": "AI 系统域 · 前置闭包与装载序产物（可复算）",
   "description": "M25（前置闭包求值）/ M26（装载序就绪门）的产物面：由概念图资产确定性复算，check32 会重算并逐字段比对（T4）。",
   "type": "object",

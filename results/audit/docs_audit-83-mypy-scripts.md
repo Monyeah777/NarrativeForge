@@ -12,7 +12,7 @@ subjects:
   - scripts/interop_thirdparty_kit.py:05772f664348a3682b94a0f5dceaa5e9a39a91c0701ba7614bf121ac5f450202
   - scripts/build_verification_cards.py:08e105daceb38ca1b907193b408dfeaec8ea5cb8943b47902c5301d2107d0960
   - scripts/geo_export.py:616992be1e6f5e8251b5a9aa98abc8d27dfee22ddb9152a335538f17e28ea06a
-  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
+  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
   - scripts/check_external_links.py:ce954ac27b7fdc632b48e68a8867361f3415b5e2920d4d4dfd2f306574a60909
   - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
 

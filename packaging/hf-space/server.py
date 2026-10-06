@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""NarrativeForge Space（S1 在线 demo）—— 纯标准库 HTTP 服务，真跑 NF 门禁。
+"""NinFenz Space（S1 在线 demo）—— 纯标准库 HTTP 服务，真跑 NF 门禁。
 
 为什么不引 gradio：NF 全仓零第三方硬依赖，Space 侧也保持同一纪律；一个 stdlib HTTP
 服务就能把「粘贴文本 → 跑真实门禁 → 看逐条结论」做完整，且本地可复现。
@@ -94,7 +94,7 @@ def run_mode(mode: str, text: str = '') -> dict:
 PAGE = '''<!doctype html>
 <html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NarrativeForge Contract Gate</title>
+<title>NinFenz Contract Gate</title>
 <style>
  :root{--bg:#0e1116;--fg:#dfe3e9;--dim:#8a929f;--acc:#7ee2f0;--ok:#76cd82;--err:#eb7a7a;--line:#2a3040}
  body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.6 ui-monospace,Consolas,"MS Gothic",monospace}
@@ -108,13 +108,13 @@ PAGE = '''<!doctype html>
  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}
  code{color:var(--acc)}
 </style></head><body><div class="wrap">
-<h1>NarrativeForge · Contract Gate</h1>
+<h1>NinFenz · Contract Gate</h1>
 <p class="sub">在浏览器里跑 <b>真实</b> 的 NF 只读门禁：粘贴一段内容 → 看逐条判据结论。本地/离线同源，MIT。</p>
 <div class="row"><select id="mode"></select><button id="go">运行</button><span class="meta" id="hint"></span></div>
 <textarea id="text" placeholder="粘贴要体检的 markdown（仅 lint 模式使用）"></textarea>
 <div class="meta" id="meta">就绪</div>
 <pre id="out">点击「运行」开始。</pre>
-<p class="sub" style="margin-top:18px">完整 39 条门禁与离线复跑：<code>npx -y narrativeforge install --dest ./nf &amp;&amp; cd nf &amp;&amp; bash verify.sh</code> · 仓库 <a style="color:var(--acc)" href="https://github.com/Monyeah777/NarrativeForge">Monyeah777/NarrativeForge</a></p>
+<p class="sub" style="margin-top:18px">完整 39 条门禁与离线复跑：<code>npx -y ninfenz install --dest ./nf &amp;&amp; cd nf &amp;&amp; bash verify.sh</code> · 仓库 <a style="color:var(--acc)" href="https://github.com/Monyeah777/NinFenz">Monyeah777/NinFenz</a></p>
 </div><script>
 const MODES=__MODES__;
 const sel=document.getElementById('mode'),ta=document.getElementById('text'),hint=document.getElementById('hint');

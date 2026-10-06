@@ -31,7 +31,7 @@
       "kind": "regex_present",
       "params": {
         "path": "llms.txt",
-        "patterns": ["# NarrativeForge", "library/INDEX.md", "01_核心协议.md",
+        "patterns": ["# NinFenz", "library/INDEX.md", "01_核心协议.md",
                      "06_Agent执行协议.md", "agent_组装指令包_v0.2.md"]
       },
       "message": "llms.txt 缺机器入口锚点",
@@ -83,20 +83,20 @@
       "severity": "fail",
       "kind": "regex_present",
       "params": {
-        "path": "skills/narrativeforge/SKILL.md",
+        "path": "skills/ninfenz/SKILL.md",
         "patterns": ["name:", "description:", "license:"]
       },
       "message": "对外 skill 面缺必要前件（name / description / license）——装载方选不中或授权不明",
-      "fix": "在 skills/narrativeforge/SKILL.md 前件补 name/description/license；description 须写明适用与不适用",
+      "fix": "在 skills/ninfenz/SKILL.md 前件补 name/description/license；description 须写明适用与不适用",
       "evidence": "nf assertions / conformance::assertions"
     },
     {
       "id": "skill-face-references",
       "severity": "fail",
       "kind": "count_at_least",
-      "params": {"glob": "skills/narrativeforge/references/*.md", "min": 3},
+      "params": {"glob": "skills/ninfenz/references/*.md", "min": 3},
       "message": "对外 skill 面参考件少于 3 件（SKILL.md 引用的 references 面残缺）",
-      "fix": "补齐 skills/narrativeforge/references/ 下被 SKILL.md 引用的参考件",
+      "fix": "补齐 skills/ninfenz/references/ 下被 SKILL.md 引用的参考件",
       "evidence": "nf assertions / conformance::assertions"
     },
     {

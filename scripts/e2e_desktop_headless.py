@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""叙事工坊桌面端到端 headless 冒烟断言（C7 · T3-1 端到端测试入 CI，缺口⑩闭环）。
+"""宁封子桌面端到端 headless 冒烟断言（C7 · T3-1 端到端测试入 CI，缺口⑩闭环）。
 
 CI 用法：python3 scripts/e2e_desktop_headless.py
 前置：仓库完整 checkout（04_模块库 / 03_管线库 / community 在库）；无需 GUI、

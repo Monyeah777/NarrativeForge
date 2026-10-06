@@ -4,9 +4,9 @@
   "entries": [
     {
       "anchor": null,
-      "digest": "a3872e040ba2dc307bc665896908cc0b2a53802517bf867d39ba34d1dea83866",
+      "digest": "956b53fa685a9063dcd708f1cbb7286b5a4565fa170506028368ef9c975a5077",
       "id": "NF-1",
-      "leaf": "e3f94a99a05497046bd2df76c36f49f16c1749a1c8db96c0cfb2d0394a34699e",
+      "leaf": "47fc0efb186a74ae40c988c3877054ebb2bbc6cd5e3ece834daded31ca74c189",
       "path": "library/NF-1.md",
       "proof": [
         {
@@ -27,7 +27,7 @@
       "path": "library/NF-TECHDOC-Monyeah777-1.md",
       "proof": [
         {
-          "hash": "e3f94a99a05497046bd2df76c36f49f16c1749a1c8db96c0cfb2d0394a34699e",
+          "hash": "47fc0efb186a74ae40c988c3877054ebb2bbc6cd5e3ece834daded31ca74c189",
           "side": "left"
         },
         {
@@ -44,12 +44,12 @@
       "path": "library/NF-WORLDCAMPUS-Monyeah777-1.md",
       "proof": [
         {
-          "hash": "f2b1f83f3fdc3d727e8da91fc7e4e575ba14c8822e6fc85121575d99512c7fe8",
+          "hash": "80ada363d3fe4c1fd2be85dbc4a58e55ca43d8a7cf3665e56b9a791c5ba0e5a3",
           "side": "left"
         }
       ]
     }
   ],
-  "root": "6d9040aa6ffa4d9b57f18b4733595d075ae32d9a1898f3b283524787f3a6920e",
+  "root": "11d183057abb90e5feb27e4fe7322aa320b8f3563f175bb8a3f24b6b76c0ac7f",
   "schema": "nf-receipts/1"
 }

@@ -88,7 +88,7 @@ class NpmPackageGateTest(unittest.TestCase):
         self.assertEqual([], hits, "包内出现网络/埋点原语（与 README 的「零网络/零遥测」承诺冲突）：%s" % hits[:5])
 
     def test_install_materializes_a_run_tree(self):
-        """物化路径（README 第二种用法 `npx -y narrativeforge install --dest <目录>`）：
+        """物化路径（README 第二种用法 `npx -y ninfenz install --dest <目录>`）：
         必须真落成**运行时树**——含关键件，且**不含** `.git/`、`.github/`、`results/`。
 
         为什么补：冒烟套件只用正则断言 `--help` 里**提到**了这条用法，**从未执行过它**；
@@ -126,15 +126,15 @@ class NpmPackageGateTest(unittest.TestCase):
         """包的核心机制：**无 --repo 且 cwd 不在仓库树内**时，把随包 payload 解到缓存目录并从那里跑起来。
 
         为什么补这条：其余用例都靠 `--repo`（或 `--version` 快路）**绕开了这条路径**——而它正是用户
-        `npx -y narrativeforge install/doctor` 走的那条；不测它，等于这条交付线的主机制没人跑。
+        `npx -y ninfenz install/doctor` 走的那条；不测它，等于这条交付线的主机制没人跑。
         两个环境细节（都写在判据里，免得后人重踩）：① cwd 必须在**仓库外**，否则 `findRepoRoot` 命中，
-        launcher 会直接用该仓库、**不会解包**；② 缓存目录用 `NARRATIVEFORGE_CACHE` 指到**仓库内**
+        launcher 会直接用该仓库、**不会解包**；② 缓存目录用 `NINFENZ_CACHE` 指到**仓库内**
         （本机沙箱**只对 `nf-rs.exe` 写 `%TEMP%` 拒访问**（os error 5）——Python/Node 写 `%TEMP%` 正常，
         实测 e2e 与 npm 物化都写成功；缓存目录因此指到仓库内，不依赖沙箱策略）。
         """
         node = _node_or_skip(self)
         with tempfile.TemporaryDirectory(dir=str(ROOT / ".rivet")) as cache:
-            env = dict(os.environ, NARRATIVEFORGE_CACHE=cache)
+            env = dict(os.environ, NINFENZ_CACHE=cache)
             proc = subprocess.run([node, str(PKG / "bin" / "nf.mjs"), "doctor"],
                                   cwd=tempfile.gettempdir(), capture_output=True, env=env, timeout=900)
             out = (proc.stdout + proc.stderr).decode("utf-8", "replace")

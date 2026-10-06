@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://narrativeforge.local/schema/quant-metrics.schema.json",
+  "$id": "https://ninfenz.local/schema/quant-metrics.schema.json",
   "title": "量化金融域 · 指标口径注册表（机读面）",
   "description": "assets/QUANT_METRICS.md 的机读同源面：每条口径必须给出公式、单位、必备参数、常见事故与实现引擎；有引擎者必须被本仓引擎真实复算（T4）。",
   "type": "object",

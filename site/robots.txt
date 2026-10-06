@@ -1,0 +1,30 @@
+# NinFenz (宁封子) - https://ninfenz.dev
+# 明确欢迎 AI 检索/引用（GEO：我们希望被选中为信源并吸收进答案）
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ninfenz.dev/sitemap.xml

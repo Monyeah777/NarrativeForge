@@ -6,7 +6,7 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——62 计划
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/domain_pack.py:f9dd0189107ae7106339fe87c615053beccb9fe202ba002661b7395ebf930bd1
+  - desktop/src/core/domain_pack.py:768cccbafa835be8bf358b2d4e9d3510fd4a080c1ba8877fc5b82e400f2715a5
   - desktop/src/core/prose_lint.py:6e3297565d6eaf9cb0661ac659a942d625b78c9b3d1c4fe84844d37f0e8ac93f
   - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
 

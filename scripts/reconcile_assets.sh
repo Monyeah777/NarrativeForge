@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# NarrativeForge reconcile_assets.sh —— 资产-模块三方对账（08 方案 T5 A5）
+# NinFenz reconcile_assets.sh —— 资产-模块三方对账（08 方案 T5 A5）
 # 版本 : v1.0  配套 : 08_社区扩展规划与验收方案.md T5 动作2（C7 chore: A5）
 # 用法 : 仓库根目录执行  bash scripts/reconcile_assets.sh [--quiet]
 #   --quiet : 仅输出告警明细与汇总（供 verify.sh check11 静默调用，以退出码判结果）
@@ -82,7 +82,7 @@ reconcile_pkg(){
 }
 
 say '=================================================='
-say ' NarrativeForge 资产-模块三方对账  v1.0（T5 A5）'
+say ' NinFenz 资产-模块三方对账  v1.0（T5 A5）'
 say '=================================================='
 reconcile_pkg "$REG_XY" 'community/校园情感领域包' '校园' "$REMNANT_XY"
 reconcile_pkg "$REG_XH" 'community/西幻生存领域包' '西幻' "$REMNANT_XH"

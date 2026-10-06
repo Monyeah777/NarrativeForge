@@ -1,6 +1,6 @@
-# narrativeforge · npm 一键包
+# ninfenz · npm 一键包
 
-**NarrativeForge（NF）是内容契约层（content contract layer）**：把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议域中立、模型无关；叙事只是官方第一个域包。
+**NinFenz（NF）是内容契约层（content contract layer）**：把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议域中立、模型无关；叙事只是官方第一个域包。
 **不是**模型、**不是**提示词模板集、**不是**某厂商 SDK。MIT。
 
 本包是 NF 的**一键入口**：零安装脚本、零网络请求、零遥测；首次运行把随包 payload 解到缓存目录（带 sha256 清单校验），然后原样把参数转发给 NF CLI。
@@ -9,23 +9,23 @@
 
 ```bash
 # 跑一条只读体检（不需要 clone）
-npx -y narrativeforge doctor
+npx -y ninfenz doctor
 
 # 打开 NF 终端 TUI（纯标准库全屏界面）
-npx -y narrativeforge tui
+npx -y ninfenz tui
 
 # 看看命令面
-npx -y narrativeforge --help
+npx -y ninfenz --help
 
 # 把 payload 落成一份真实工作树（想自己跑 verify.sh 时）
-npx -y narrativeforge install --dest ./nf
+npx -y ninfenz install --dest ./nf
 cd nf && bash verify.sh        # Windows 用 Git Bash
 ```
 
 全局安装（可选）：
 
 ```bash
-npm i -g narrativeforge
+npm i -g ninfenz
 nf doctor
 ```
 
@@ -36,7 +36,7 @@ nf doctor
 | Node.js | **>= 18.17** | 只用于启动器（无第三方依赖） |
 | Python | **>= 3.11** | NF CLI 本体；纯标准库，无 pip 依赖 |
 
-Python 探测顺序：`NARRATIVEFORGE_PYTHON` → `py -3`（Windows）→ `python3` → `python`。
+Python 探测顺序：`NINFENZ_PYTHON` → `py -3`（Windows）→ `python3` → `python`。
 找不到或版本过低时**直接拒绝启动并给修复指引**（fail-closed，不静默降级）。
 
 > 可选：装了 PyYAML 时 YAML 字段全量解析；没装会打印一条 WARN 并退回**子集口径**（NF 本体零硬依赖，这是设计而非故障；静默可设 `NF_QUIET_YAML=1`）。
@@ -45,11 +45,11 @@ Python 探测顺序：`NARRATIVEFORGE_PYTHON` → `py -3`（Windows）→ `pytho
 
 | 入口 | 命令 | 用途 |
 |---|---|---|
-| npx | `npx -y narrativeforge <子命令>` | 一次性体验 / CI 里临时调用 |
-| 全局 | `npm i -g narrativeforge` → `nf <子命令>` | 常驻终端入口 |
+| npx | `npx -y ninfenz <子命令>` | 一次性体验 / CI 里临时调用 |
+| 全局 | `npm i -g ninfenz` → `nf <子命令>` | 常驻终端入口 |
 | 已有检出 | `nf --repo <目录> <子命令>` | 跳过解包，直接跑你的工作树 |
 | 物化 | `nf install --dest <目录>` | 把 payload 落成可用的运行时工作树（自证门禁走 git clone） |
-| MCP | `npx -y narrativeforge serve` | 只读 MCP 服务面（双协议版本） |
+| MCP | `npx -y ninfenz serve` | 只读 MCP 服务面（双协议版本） |
 
 ## 包里有什么（由 `tools/stage-payload.mjs` 从 git 受跟踪文件生成）
 
@@ -75,19 +75,19 @@ Python 探测顺序：`NARRATIVEFORGE_PYTHON` → `py -3`（Windows）→ `pytho
 
 | 变量 | 作用 |
 |---|---|
-| `NARRATIVEFORGE_PYTHON` | 指定 Python 解释器 |
-| `NARRATIVEFORGE_CACHE` | 指定解包缓存目录 |
+| `NINFENZ_PYTHON` | 指定 Python 解释器 |
+| `NINFENZ_CACHE` | 指定解包缓存目录 |
 | `PYTHONUTF8` / `PYTHONIOENCODING` | 启动器自动设为 `1` / `utf-8`（中文输出必需） |
 
-缓存目录：Windows `%LOCALAPPDATA%\narrativeforge\cache`；其余 `$XDG_CACHE_HOME/narrativeforge` 或 `~/.cache/narrativeforge`。
+缓存目录：Windows `%LOCALAPPDATA%\ninfenz\cache`；其余 `$XDG_CACHE_HOME/ninfenz` 或 `~/.cache/ninfenz`。
 清理：直接删该目录（不会影响已有检出）。
 
 ## 链接
 
-- 仓库（canonical）：https://github.com/Monyeah777/NarrativeForge
-- 国内镜像：https://gitee.com/monyeah777/narrative-forge
-- 机器入口 `llms.txt`：https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/llms.txt
-- MCP 接入：https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/docs/mcp.md
+- 仓库（canonical）：https://github.com/Monyeah777/NinFenz
+- 国内镜像：https://gitee.com/monyeah777/ninfenz
+- 机器入口 `llms.txt`：https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt
+- MCP 接入：https://raw.githubusercontent.com/Monyeah777/NinFenz/main/docs/mcp.md
 - 许可：MIT（见包内 `LICENSE`）
 
 ## 维护者：发布流程

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""叙事工坊桌面工具 · 核心逻辑层单元测试（unittest，无 GUI 依赖）。
+"""宁封子桌面工具 · 核心逻辑层单元测试（unittest，无 GUI 依赖）。
 
 运行：cd /tmp/nf-desktop && python3 -m unittest discover -s tests -v
-隔离：所有 Store 用例使用 tempfile 临时目录，绝不触碰真实 ~/.NarrativeForge。
+隔离：所有 Store 用例使用 tempfile 临时目录，绝不触碰真实 ~/.NinFenz。
 """
 from __future__ import annotations
 

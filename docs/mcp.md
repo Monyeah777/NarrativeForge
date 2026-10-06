@@ -1,4 +1,4 @@
-# NarrativeForge MCP 接入（`nf serve` · 40 总纲 v2.7 波A S1-E3 / X2）
+# NinFenz MCP 接入（`nf serve` · 40 总纲 v2.7 波A S1-E3 / X2）
 > 最后更新：2026-09-30
 
 > **状态**：公开化文档已随基础层 v2.7 落地；**E3 协议级装载实测已于 2026-09-08 通过**（stdio JSON-RPC 帧序列直测五方法全绿，见文末记录；修复 P06 管线两缺口——缺闭合 ``` / 缺 techdoc 声明）。41 波C C7（2026-09-08）开放只读 tools/prompts（本机 stdio 冒烟通过，见 docs/41_波C_C7_实测记录.md）。**宿主类客户端（Claude Desktop 等 GUI 装载）仍建议用户侧补录**——README 对 MCP 的宣告维持现状（S13 门按 docs_external-validation-v2.7.md 规则开），回填后补「转正」。
@@ -66,7 +66,7 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 ```json
 {
   "mcpServers": {
-    "narrativeforge": {
+    "ninfenz": {
       "command": "python",
       "args": ["<仓库绝对路径>/scripts/nf.py", "serve"]
     }
@@ -151,7 +151,7 @@ pattern / module / pipeline / asset）须满足——只许 `{var}` 简单展开
 
 | 字段 | 取值 |
 |---|---|
-| 名称（Name） | `NarrativeForge Content Gate` |
+| 名称（Name） | `NinFenz Content Gate` |
 | 一句话（One-liner） | 给任何 AI agent 一个可校验的内容规范与资产底座——先查契约，再落笔。 |
 | 类目（Category） | `content-creation` |
 | 传输（Transport） | `stdio`（dual-era：modern `2026-07-28` + legacy `2025-11-25`） |
@@ -176,7 +176,7 @@ python scripts/nf.py serve <输出目录>/mcp.json
 ```json
 {
   "mcpServers": {
-    "narrativeforge": {
+    "ninfenz": {
       "command": "python",
       "args": ["<仓库绝对路径>/scripts/nf.py", "serve"]
     }
@@ -224,7 +224,7 @@ python scripts/nf.py serve <输出目录>/mcp.json
 
 ### 六、提交文案（可直接粘贴到目录站表单）
 
-> **NarrativeForge Content Gate** — 一个只读 MCP 服务器：把长内容的验收标准
+> **NinFenz Content Gate** — 一个只读 MCP 服务器：把长内容的验收标准
 > （协议 / 模块 / 管线 / 资产 / 馆藏）变成 agent 可调用的检索与取件工具面。
 > 10 个只读工具 + 1 个装载引导 prompt，支持 modern `2026-07-28` 与 legacy `2025-11-25`
 > 双协议版本，零第三方依赖，无写路径。

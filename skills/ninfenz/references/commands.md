@@ -1,4 +1,4 @@
-# NarrativeForge CLI 命令族
+# NinFenz CLI 命令族
 
 统一入口：`python scripts/nf.py`。可用 `python scripts/nf.py help <cmd>` 查看任意子命令。
 

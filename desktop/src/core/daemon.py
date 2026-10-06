@@ -104,7 +104,7 @@ nf() {
     case "$_nf_a" in *$'\\n'*) _nf_nl=1 ;; esac
   done
   if [ -n "$_nf_nl" ]; then command "{py}" "{root}/scripts/nf.py" "$@"; return $?; fi
-  local _state="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json"
+  local _state="${NARRATIVE_FORGE_HOME:-$HOME/.NinFenz}/daemon.json"
   local _s="" _rest="" _port="" _token=""
   if [ -f "$_state" ]; then
     IFS= read -r _s < "$_state" || _s=""

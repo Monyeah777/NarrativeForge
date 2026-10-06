@@ -1,6 +1,6 @@
 {
   "registry_schema_version": "2",
-  "schema_name": "narrativeforge.registry",
+  "schema_name": "ninfenz.registry",
   "registry_name": "官方核心注册表",
   "truth_source": "02_联动注册表.md",
   "note": "02 文档为注册表真相源（I5）；本文件为 02 §2 模块表 / §3 订阅 / §5 挂载点的机读投影（v0.6.0 T1.1 引入）。同步纪律：改 02 必同步本文件，反之亦然，二者一致性由 verify.sh check13 断言（T2.3 实现）。动态订阅（社区题材包装配挂接的事件源）不属核心内部固定订阅，随社区包登记，不入本文件。社区包协议投影（protocols[]，v0.7.0 引入）：community 各领域包 protocol.yaml（01 §6.1 Schema）机读真相的登记投影，字段与 02 §8 在册一致，一致性由 verify.sh check14 ⑦ 断言。",

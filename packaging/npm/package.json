@@ -1,9 +1,9 @@
 {
-  "name": "narrativeforge",
+  "name": "ninfenz",
   "version": "1.0.0",
   "description": "Content contract layer for AI long-form output: plain-markdown protocol, deterministic gates, verifiable artifacts. One-click launcher for the NF CLI (offline, MIT).",
   "keywords": [
-    "narrativeforge",
+    "ninfenz",
     "nf",
     "content-contract-layer",
     "llm",
@@ -25,7 +25,7 @@
   },
   "bin": {
     "nf": "bin/nf.mjs",
-    "narrativeforge": "bin/nf.mjs"
+    "ninfenz": "bin/nf.mjs"
   },
   "files": [
     "bin/",
@@ -41,14 +41,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Monyeah777/NarrativeForge.git",
+    "url": "git+https://github.com/Monyeah777/NinFenz.git",
     "directory": "packaging/npm"
   },
-  "homepage": "https://github.com/Monyeah777/NarrativeForge",
+  "homepage": "https://github.com/Monyeah777/NinFenz",
   "bugs": {
-    "url": "https://github.com/Monyeah777/NarrativeForge/issues"
+    "url": "https://github.com/Monyeah777/NinFenz/issues"
   },
-  "author": "NarrativeForge",
+  "author": "NinFenz",
   "sideEffects": false,
   "config": {
     "payload_budget_mb": 14,

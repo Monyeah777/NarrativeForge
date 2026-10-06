@@ -1,15 +1,15 @@
-# NarrativeForge · Document Generation Workshop (spec-driven) — English mirror
+# NinFenz · Document Generation Workshop (spec-driven) — English mirror
 
 <!-- nf:locales --> 语言 / Languages：[中文](README.md) · **English** · [日本語](README.ja.md)
 
-[![verify gate ci-verify](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml)
+[![verify gate ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
 
 **NF terminal (TUI) demo** — a full-screen human entry built on the standard library only; its menu and actions are controlled callers of the real `nf` CLI.
 Keybindings follow the mainstream terminal conventions: `Tab` switches panes, `↑↓` moves inside the focused pane, `/` filters, `?` opens the keymap.
 
 ```
-┌ NF TUI v1.0.0 · NarrativeForge 内容契约层 ───────────────────────────────────────────────────┐
-│仓库 NarrativeForge · 能力区 9                                    焦点 动作 · 就绪（0 项待办）│
+┌ NF TUI v1.0.0 · NinFenz 内容契约层 ──────────────────────────────────────────────────────────┐
+│仓库 NinFenz · 能力区 9                                           焦点 动作 · 就绪（0 项待办）│
 ├────────────────────────┬─────────────────────────────────────────────────────────────────────┤
 │  能力区 1/9            │▍ 动作 · 环境自检（2）                                               │
 │▸ 0 环境自检（2）       │❯ 只读体检   nf doctor                                               │
@@ -45,7 +45,7 @@ Details: `tui/README.md`.
 
 **In one sentence**: NF is a **content contract layer** — it defines the protocols, quality gates and asset standards for "AI reliably produces long-form content"; narrative is only the first official domain package, while the protocol itself is domain-neutral and model-agnostic.
 
-**Aliases & keywords**: NF · NarrativeForge · 叙事工坊 · content contract layer · spec-driven content factory · long-form content generation · assembly-based content production · module/pipeline/asset · quality gate · domain pack · MCP.
+**Aliases & keywords**: NF · NinFenz · 宁封子 · content contract layer · spec-driven content factory · long-form content generation · assembly-based content production · module/pipeline/asset · quality gate · domain pack · MCP.
 
 **What it is not**: not a model, not a prompt-template collection, not a vendor SDK — the protocol itself is domain-neutral and model-agnostic, and MCP is just one supported connection protocol.
 

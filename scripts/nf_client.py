@@ -45,7 +45,7 @@ START_MARKER_TTL = 60.0
 def _home() -> str:
     env = os.environ.get("NARRATIVE_FORGE_HOME")
     return os.path.expanduser(env) if env else os.path.join(os.path.expanduser("~"),
-                                                            ".NarrativeForge")
+                                                            ".NinFenz")
 
 
 def _read_state():

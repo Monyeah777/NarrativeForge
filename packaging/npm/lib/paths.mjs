@@ -9,12 +9,12 @@ export const MANIFEST_NAME = 'payload-manifest.json';
 
 // 平台缓存根：Windows 用 LOCALAPPDATA，其余用 XDG_CACHE_HOME 或 ~/.cache。
 export function cacheRoot(env = process.env) {
-  if (env.NARRATIVEFORGE_CACHE) return path.resolve(env.NARRATIVEFORGE_CACHE);
+  if (env.NINFENZ_CACHE) return path.resolve(env.NINFENZ_CACHE);
   if (process.platform === 'win32' && env.LOCALAPPDATA) {
-    return path.join(env.LOCALAPPDATA, 'narrativeforge', 'cache');
+    return path.join(env.LOCALAPPDATA, 'ninfenz', 'cache');
   }
-  if (env.XDG_CACHE_HOME) return path.join(env.XDG_CACHE_HOME, 'narrativeforge');
-  return path.join(os.homedir(), '.cache', 'narrativeforge');
+  if (env.XDG_CACHE_HOME) return path.join(env.XDG_CACHE_HOME, 'ninfenz');
+  return path.join(os.homedir(), '.cache', 'ninfenz');
 }
 
 export function payloadHome(manifest, env = process.env) {

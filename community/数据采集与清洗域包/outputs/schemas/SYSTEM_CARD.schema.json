@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://narrativeforge.local/schema/domain-system-card.schema.json",
+  "$id": "https://ninfenz.local/schema/domain-system-card.schema.json",
   "title": "域包系统卡（模型无关的机验形态）",
   "description": "机制借鉴 Model Cards / Datasheets / NIST AI RMF 的字段面（取机制，不引外部文本背书）：把「这个域包是什么 / 能做什么 / 不能做什么 / 怎么验的」写成有 schema 的数据。",
   "type": "object",

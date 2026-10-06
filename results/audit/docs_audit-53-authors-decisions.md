@@ -8,10 +8,10 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/concept_graph.py:0f4bbd6b92ab0cb3daf47956378f7afd0d20432ed23f59e5d669621da7d239be
   - desktop/src/core/intake.py:23007fd42c627df44dcce7ffa6873a28f5679a68f3b00351f32e728bb25dcbe0
-  - desktop/src/core/asset_ledger.py:c81b636c91b826a3b29bda0b24af09386297329da5c56c5c6fa9de0eae53f2ca
+  - desktop/src/core/asset_ledger.py:2f679a74ebf76707aabd873136976b57aa395e57c92683cf76720f4130bd28c5
   - scripts/ai_domain_closure.py:2d5a1ed9e59dda0e72c185aed189647520183c6e2d4e942a2548dadd654cec1e
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
-  - verify.sh:e62c132448d12805177e17a45b8c1b51d0fc3717364800b39aa81c9345050d35
+  - verify.sh:34ced4d23abda17d95ededd2c75d49decf1a11cba64913c5c389c2eb7b859d54
 
 ---
 

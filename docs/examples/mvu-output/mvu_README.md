@@ -1,4 +1,4 @@
-# MVU 变量模板（由 NarrativeForge 导出）
+# MVU 变量模板（由 NinFenz 导出）
 
 - 生成器：mvu_adapter/0.1 ｜ 目标格式锚点核对日期：2026-09-16
 - 契约来源：https://raw.githubusercontent.com/Lunacaty/MVU-Maker/HEAD/README.md

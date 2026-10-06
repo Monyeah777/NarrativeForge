@@ -9,16 +9,16 @@
     ]
   },
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://narrativeforge.dev/spdx/v2.30",
-  "name": "narrativeforge-sbom",
+  "documentNamespace": "https://ninfenz.dev/spdx/v2.30",
+  "name": "ninfenz-sbom",
   "packages": [
     {
-      "SPDXID": "SPDXRef-Package-narrativeforge",
+      "SPDXID": "SPDXRef-Package-ninfenz",
       "copyrightText": "NOASSERTION",
       "downloadLocation": "NOASSERTION",
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
-      "name": "NarrativeForge",
+      "name": "NinFenz",
       "versionInfo": "v2.30"
     },
     {
@@ -52,27 +52,27 @@
   ],
   "relationships": [
     {
-      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relatedSpdxElement": "SPDXRef-Package-ninfenz",
       "relationshipType": "DESCRIBES",
       "spdxElementId": "SPDXRef-DOCUMENT"
     },
     {
-      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relatedSpdxElement": "SPDXRef-Package-ninfenz",
       "relationshipType": "DEPENDENCY_OF",
       "spdxElementId": "SPDXRef-Dependency-yaml"
     },
     {
-      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relatedSpdxElement": "SPDXRef-Package-ninfenz",
       "relationshipType": "OPTIONAL_DEPENDENCY_OF",
       "spdxElementId": "SPDXRef-Optional-PySide6"
     },
     {
-      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relatedSpdxElement": "SPDXRef-Package-ninfenz",
       "relationshipType": "OPTIONAL_DEPENDENCY_OF",
       "spdxElementId": "SPDXRef-Optional-jsonschema"
     },
     {
-      "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+      "relatedSpdxElement": "SPDXRef-Package-ninfenz",
       "relationshipType": "OPTIONAL_DEPENDENCY_OF",
       "spdxElementId": "SPDXRef-Optional-laya"
     }

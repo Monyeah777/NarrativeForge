@@ -7,11 +7,11 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
-  - desktop/src/core/interop_export.py:02b7153b36f75bafe55c36015a2ddb3f1b51d35f90735f5911c1fb8bddd089b8
-  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
+  - desktop/src/core/interop_export.py:520aaf0edb53d5ab679d3a1568c315f45ce8301ead3df90411e3e67572dc269a
+  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
   - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c
-  - desktop/tests/test_interop_export.py:8bf3c9e23cd21700cfe55e4155c3904e48e0fce0463634da1dbc761ebd941caa
+  - desktop/tests/test_interop_export.py:8e4174fab19d3970c98adbbcf2c0d0788ce820fb5eb129606026b5b26a5bcbf8
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
 
 ---

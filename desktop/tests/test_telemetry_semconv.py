@@ -35,7 +35,7 @@ class TestTelemetrySemconv(unittest.TestCase):
         attrs = ts.attributes_for(RECORD)
         self.assertEqual(attrs["gen_ai.operation.name"], "execute_tool")
         self.assertEqual(attrs["gen_ai.tool.name"], "nf.assemble")
-        self.assertEqual(attrs["gen_ai.agent.name"], "narrativeforge")
+        self.assertEqual(attrs["gen_ai.agent.name"], "ninfenz")
         self.assertEqual(attrs["gen_ai.tool.call.arguments"]["phase"], "plan")
         self.assertEqual(attrs["gen_ai.tool.call.result"]["pipeline"], "P03")
         self.assertIn("gen_ai.tool.call.id", attrs)

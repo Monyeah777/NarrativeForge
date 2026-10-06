@@ -702,7 +702,7 @@ class PromptGetInteropTest(unittest.TestCase):
             r = self._get(params)
             self.assertNotIn("error", r, "协议合法的空 arguments 被拒：%s" % params)
             msg = r["result"]["messages"][0]["content"]["text"]
-            self.assertIn("NarrativeForge", msg, "模板正文不得为空")
+            self.assertIn("NinFenz", msg, "模板正文不得为空")
 
     def test_non_empty_or_wrong_typed_arguments_carry_guidance(self):
         for params in ({"name": "assemble_guide", "arguments": {"x": "1"}},

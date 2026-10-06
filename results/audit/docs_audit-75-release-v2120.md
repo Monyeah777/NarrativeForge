@@ -6,14 +6,14 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——62 计划
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - CHANGELOG.md:2752df101c7336c8d8d2a3bf74fc6cd271b8dbeae1ce9c74797550941ac35375
+  - CHANGELOG.md:71d6d3e23f7c53e5475b3915d4e590c3f45706aa12c05952eb7b4b9d3a0caf9a
   - VERSION-MATRIX.md:abe7adfd40849a0191f738bb4d051ce487e811328d800c3049bbda7add455615
-  - README.md:2daed046f16137c5872b0155566aeb10edcc99df20a2fc857e5365839fa2e5f5
+  - README.md:4c83b513285a15deb40ae3b38e86b259a2aa81306850c8d22fbd3cf25c384396
   - desktop/src/core/changelog_gen.py:91f1c9eae7a48bbad209d041b48b2eb6d91dbe2eca36c08ee457ffdf21104e16
   - desktop/tests/test_changelog_gen.py:3ddb12cc2247f8bf5649dc4e64d7521fc40795aba93c90f8dd34fc3df47377b8
   - protocol/release_policy.json:29eaf0c6692f6872971d3d582a23cdf18cbca60c6ac1e35aba7b04eb85e9ebbc
   - docs/release.md:1eb6c5fa7b79e8d9996ca1aa5d92dd9220c86c6a2b5d58e0607484b3c2ab1012
-  - scripts/nf.py:afd588678bd58127a051f4dabef7ccfdae5be784ba4b75eeaa24cb79a22d13f4
+  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
   - scripts/release_freeze.sh:30d8ae65f958d71e98411793affdacba75efaa5f0934373dab991e065fe530a3
 
 ---

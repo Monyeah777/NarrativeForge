@@ -1,4 +1,4 @@
-# NarrativeForge MCP 接続（`nf serve` · 40 総綱 v2.7 波A S1-E3 / X2）
+# NinFenz MCP 接続（`nf serve` · 40 総綱 v2.7 波A S1-E3 / X2）
 > 最后更新：2026-09-30 (last updated)
 
 > **状態**：公開化文書は基礎層 v2.7 とともに着地済み。**E3 プロトコル級ロード実測は 2026-09-08 に通過**（stdio JSON-RPC フレーム列の直測で五方法すべて緑、文末の記録を参照。P06 パイプラインの缺口二つ——閉じ ``` の欠落 / techdoc 宣言の欠落——を修復）。41 波C C7（2026-09-08）で読み取り専用 tools/prompts を開放（本機 stdio スモーク通過、docs/41_波C_C7_实测记录.md を参照）。**宿主型クライアント（Claude Desktop などの GUI ロード）は依然ユーザ側での追記を推奨**——README の MCP 宣言は現状維持（S13 ゲートは docs_external-validation-v2.7.md の規則に従い開放）、追記後に「正式化」を補う。
@@ -66,7 +66,7 @@ MCP stdio をサポートする任意のクライアントで、`nf.py serve` �
 ```json
 {
   "mcpServers": {
-    "narrativeforge": {
+    "ninfenz": {
       "command": "python",
       "args": ["<仓库绝对路径>/scripts/nf.py", "serve"]
     }
@@ -151,7 +151,7 @@ pattern / module / pipeline / asset）は次を満たすこと——`{var}` の�
 
 | フィールド | 値 |
 |---|---|
-| 名称（Name） | `NarrativeForge Content Gate` |
+| 名称（Name） | `NinFenz Content Gate` |
 | 一言（One-liner） | あらゆる AI agent に検証可能なコンテンツ規範と資産基盤を——まず契約を引き、それから筆を執る。 |
 | カテゴリ（Category） | `content-creation` |
 | 転送（Transport） | `stdio`（dual-era：modern `2026-07-28` + legacy `2025-11-25`） |
@@ -176,7 +176,7 @@ python scripts/nf.py serve <输出目录>/mcp.json
 ```json
 {
   "mcpServers": {
-    "narrativeforge": {
+    "ninfenz": {
       "command": "python",
       "args": ["<仓库绝对路径>/scripts/nf.py", "serve"]
     }
@@ -224,7 +224,7 @@ python scripts/nf.py serve <输出目录>/mcp.json
 
 ### 六、提出文案（ディレクトリサイトのフォームへそのまま貼り付け可能）
 
-> **NarrativeForge Content Gate** — 読み取り専用の MCP サーバ：長文コンテンツの受入基準
+> **NinFenz Content Gate** — 読み取り専用の MCP サーバ：長文コンテンツの受入基準
 > （プロトコル / モジュール / パイプライン / 資産 / 館蔵）を agent が呼べる検索・取り出しのツール面に変えます。
 > 読み取り専用ツール 10 個 + ロードガイド prompt 1 個、modern `2026-07-28` と legacy `2025-11-25` の
 > 双プロトコル版をサポート、第三者依存ゼロ、書き込み経路なし。

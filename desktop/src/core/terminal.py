@@ -904,7 +904,7 @@ def example_resolves(example: str, commands, root_flags) -> bool:
 
 def banner(baseline: str = "", color: bool = False) -> str:
     """终端开场横幅：版本 + 基线 + 最快上手路径（无时间戳 → 可逐字节复现）。"""
-    lines = ["NarrativeForge 终端 v%s（端壳退役后的人机入口；命令真源 = nf CLI）"
+    lines = ["NinFenz 终端 v%s（端壳退役后的人机入口；命令真源 = nf CLI）"
              % SHELL_VERSION]
     if baseline:
         lines.append("  基线：%s" % baseline)
@@ -1527,7 +1527,7 @@ def default_history_path() -> str:
         home = storage.default_home()
     except Exception:                       # 尽力而为：storage 不可用时退回同样口径的字面约定
         home = Path(os.environ.get("NARRATIVE_FORGE_HOME")
-                    or (Path.home() / ".NarrativeForge"))
+                    or (Path.home() / ".NinFenz"))
     return str(home / "shell_history")
 
 

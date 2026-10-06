@@ -26,7 +26,7 @@ test('--version 走快路径且与包版本一致', function () {
 test('--help 打印用法', function () {
   const r = spawnSync(process.execPath, [path.join(PACKAGE_ROOT, 'bin', 'nf.mjs'), '--help'], { encoding: 'utf8' });
   assert.equal(r.status, 0);
-  assert.match(r.stdout, /narrativeforge install --dest/);
+  assert.match(r.stdout, /ninfenz install --dest/);
 });
 
 test('在已有检出上真跑一条只读命令', function () {

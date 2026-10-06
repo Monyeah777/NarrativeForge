@@ -125,7 +125,7 @@ def ir_to_md(ir: IRDocument) -> str:
     asset_text = ir.meta.get("asset_text") or "无"
     header = f"""# {ir.title}
 
-> 由叙事工坊桌面工具生成
+> 由宁封子桌面工具生成
 > 管线：{ir.pipeline_name}（{ir.pipeline_id}）｜ 模块 {sum(len(l.modules) for l in ir.layers) + len(ir.extra_modules)} 个 ｜ 资产包：{asset_text}
 > 生成时间：{ts}
 

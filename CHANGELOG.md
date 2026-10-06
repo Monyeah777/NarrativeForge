@@ -1,5 +1,18 @@
 # Changelog
 
+## [未发布] - 2026-10-06 · 项目改名：NarrativeForge → NinFenz（宁封子）
+
+- **全局替换规范名（413 个跟踪文件 · 760 处）**：`NarrativeForge`→`NinFenz`（260）· `narrativeforge`→`ninfenz`（416）· `narrative-forge`→`ninfenz`（40）· `NARRATIVEFORGE_`→`NINFENZ_`（13）· `Narrative Forge`→`NinFenz`（2）· 「叙事工坊」→「宁封子」（29）。替换只作用于 git 跟踪文件（本地 AI 工作区 `.rivet/`、缓存与 `.coverage` 不入面），逐文件先备份后写。
+- **路径改名**：`skills/narrativeforge/` → `skills/ninfenz/`（5 件，含 `references/` 三件与 `agents/openai.yaml`）。
+- **机器面刻意不变**（保住 NF 缩写的全部收益）：CLI `nf` · 契约 schema id `nf-*/1` · 统计标记 `<!-- nf:stats:begin -->` · 环境变量前缀语义面已随 `NINFENZ_*` 收敛但保留 `NF_*` 计数位 · 目录 `03/04/05_*`。
+- **按冻结链重生成**：`nf stats --write` → `nf locales --write`（10 条文档译件 `source_sha256` 重签）→ `nf library receipts --write`（根 `11d183057abb90e5`）→ `nf conformance --write`（**27/27 conformant**，root `7be9711887ef905d`）→ `nf approve` → `nf receipts --scope protocol --write`（根 `f46d0711d622b414` · 57 件，联动刷新 `protocol/generated/receipt_chain.json` 与 `results/interop/*.json` 12 面）→ `scripts/verify_report.py --write`（判据 28 条：PASS 26 · FAIL 0 · WARN 2）。**顺序即判据**：任一写回落后于内容变更，conformance 的 `schema-clean` / `audit` 契约立即转红（本波实测复现）。
+- **审计摘要重冻 31 件**：`results/audit/*.md` 的 `subjects: 路径:sha256` 按改名后内容重算（机械改名不改语义，故重签而非重审）。
+- **README 演示帧重生成**：`README.md` / `README.en.md` 顶部演示帧改为 `TUI.demo_frame(96, 26)` 的逐字输出（渲染器标题含规范名，改名后必然漂移）。
+- **未入面**：`engine/`（L3 退役冻结线）。Rust 源码本身不含旧名（`git grep narrativeforge -- engine` 只命中 dotnet 的 5 件）。
+- **本地闸门说明（诚实记录，本波唯一残留红项）**：`engine/rust/target/release/nf-rs.exe` 是 2026-10-05 的预构建产物（`/target` 被忽略，不入仓），与改名后的 Python 真源不同步，导致 check12 里两条 fastlane 平价判据（`test_ported_contracts_match_python_rows` / `test_verify_report_face_matches_python_document`）转红；本机无 Rust 工具链（`cargo`/`rustc` 不在场）无法重建。
+- **由此暴露的一处仓库脆弱点（值得另立一项收口）**：受跟踪的 `handovers/HO-0002-顶尖化两线与收口.md` 引用了**被忽略的构建产物** `engine/rust/target/release/nf-rs.exe`，而 `test_doc_reachability` 要求在场文档引用的相对路径必须存在——于是本机出现「有二进制则平价测红、无二进制则路径可达红」的两难，两种状态各留 1 项 FAIL。**该耦合与本次改名无关**，但会让「本机 verify 全绿」依赖一次本地 Rust 构建。
+- **处置**：保留二进制（不删不改路径，避免用移出判定面的方式把红项变成跳过），如实记录残留；**待补**：装 Rust 工具链 → `engine/rust/check_parity.ps1`（含 `cargo build --release`）→ 两条平价判据纳入验收。不得以「已跳过」当作已通过。
+- **待作者侧动作**：GitHub 仓库改名 → Gitee 镜像改名 → npm 以 `ninfenz` 发布首版 → 站点上线（`site/` 已按新名生成）。
 ## [2.12.0] - 2026-10-05
 
 - **基线声明同源（PASS 70→72）+ ja 入口纳入生成区**（2026-10-05）：check38 子扫描由四增至六，运行时 PASS 由 70 升至 **72**，而 `quality_baseline.EXPECTED_PASS` 仍停在 70——四处自洽断言与实跑出现「声明 ≠ 实跑」的隐性漂移。本波把 `EXPECTED_PASS` 同步为 **PASS=72**、`nf stats --write` 重生成入口生成区，并把 `README.ja.md` 纳入 `repo_stats.BLOCK_FILES`（新增 `_ja` 渲染器）——第三语言的统计块不再是手写。verify v2.30 · check1-40 · **PASS=72**。
@@ -41,7 +54,7 @@
   ① `desktop/tests/test_rust_fastlane.py` 逐面 oracle：receipts 逐字节、stats / layers / density / schema-lint 文档等价、conformance seal 逐字节、**16/16 已移植契约逐字段**（迭代式——对方每移植一条自动覆盖）、未移植契约 fail-closed、`pyval reprf` 与 CPython `repr(float)` **2,019 例**逐字节。
   ② 面清单**四源取并**（`--help` ∪ 二进制自述错误消息 ∪ 探针表 ∪ 实现源码 `main.rs` 顶层分派），并配「解析塌缩即红」与「`--help` ⊆ 源码解析」两道自盯——`pyval` / `density` / `score` / `schema-lint` / `schema-validate` 五个面正是这样被找出来的（它们都能跑，却都不在 usage 里）。
   ③ **接线缺口**——发布工作流的两条自检 `packaging/npm/test/smoke.test.mjs` 与 `tools/verify-package.mjs`（点文件泄漏 / `__pycache__` / 体积预算 / LICENSE / bin 双别名）此前常驻面从不执行，现由 `desktop/tests/test_npm_package.py` 常驻跑；套件级由 `desktop/tests/test_suite_wiring.py` 兜住（要么进 discover 面、要么登记「由谁跑」，两个方向都断言）。
-  ⑤ **同波补齐 npm 交付线的真跑面（该文件 7 例）**：① 两条发布前自检（上）；② **零网络承诺**——静态扫 `bin/lib/tools` 的 JS 无 `fetch`/`http(s)://`/埋点原语（README 承诺「零网络请求、零遥测」）；③ **零安装脚本**——`package.json` 不得有 `preinstall/install/postinstall`（供应链最常用的一环；含防呆断言）；④ **解包主机制**——`npx narrativeforge doctor` 那条路（无 `--repo` 且 cwd 不在仓库树内 → payload 解到缓存 → 从缓存跑起来）；⑤ **物化路径**——`install --dest` 真落成运行时树（含「不含 `.git/.github/results`」这条承诺）且**非空目标 fail-closed**（rc=3 + 修复指引）、显式 `--force` 才覆盖。此前 `install` 只被正则断言过「帮助文本里提到了它」，**从未真的执行**。
+  ⑤ **同波补齐 npm 交付线的真跑面（该文件 7 例）**：① 两条发布前自检（上）；② **零网络承诺**——静态扫 `bin/lib/tools` 的 JS 无 `fetch`/`http(s)://`/埋点原语（README 承诺「零网络请求、零遥测」）；③ **零安装脚本**——`package.json` 不得有 `preinstall/install/postinstall`（供应链最常用的一环；含防呆断言）；④ **解包主机制**——`npx ninfenz doctor` 那条路（无 `--repo` 且 cwd 不在仓库树内 → payload 解到缓存 → 从缓存跑起来）；⑤ **物化路径**——`install --dest` 真落成运行时树（含「不含 `.git/.github/results`」这条承诺）且**非空目标 fail-closed**（rc=3 + 修复指引）、显式 `--force` 才覆盖。此前 `install` 只被正则断言过「帮助文本里提到了它」，**从未真的执行**。
   ④ **同波**——实践包 `patterns/verifier-must-run`（判据必须接线）；同口径复核 `scripts/**` **34 件**（25 `.py` + 8 `.sh` + 1 `.cmd`）**零孤儿**（每件都被别处引用，含 `protocol/instruction_evidence.json` 的指令登记面）。
 
 
@@ -71,7 +84,7 @@
   ③ **判据**：`test_nf_cli.NoDeadFlagTest` 两件——① 声明面（≥60 条防塌缩）不许有「从未读过」的旗标；② **变异自证**（没读的必判红；`args.x` 读过的、显式 `dest=` 的不许误报）。
 
 - **`skills/**` 不在「旗标可达」判据面里（agent 第一跳的文案，写了错旗标无人管）**（**作者指令**：「路径保证一定可达」「内外口径统一」）：
-  ① **取证（2026-10-02）**：旗标级可达判据的扫描面是 `docs` + `desktop/src/core` + `scripts` 三处，而 `skills/narrativeforge/references/**` 是**给 agent 看的入口文案**（装配指令、命令族速查），同属「照抄就会撞墙」的面却漏在外面——子命令级可达早已覆盖它（`_living_docs` 收 `.md`/`.txt`），**旗标级**没有。把同一套谓词喂给该面实测：4 件文本件、**不可达旗标 0**（阴性结论，无既有缺陷）。
+  ① **取证（2026-10-02）**：旗标级可达判据的扫描面是 `docs` + `desktop/src/core` + `scripts` 三处，而 `skills/ninfenz/references/**` 是**给 agent 看的入口文案**（装配指令、命令族速查），同属「照抄就会撞墙」的面却漏在外面——子命令级可达早已覆盖它（`_living_docs` 收 `.md`/`.txt`），**旗标级**没有。把同一套谓词喂给该面实测：4 件文本件、**不可达旗标 0**（阴性结论，无既有缺陷）。
   ② **修法**：判据面补 `skills`（`FLAG_FACES` 扩为四处）——补的是**判据覆盖面**而非修缺陷；同轮把「为什么把 agent 入口也算进来」写进注释，免得后人以为误收。
 
 - **类方法级墓碑此前无人管（函数的零引用判据只遍历顶层函数）——扫 122 个方法，3 条候选全是**框架钩子**，逐条登记而非误杀**（**作者指令**：「清理墓碑代码（注意辨别）」「清除逻辑垃圾（注意辨别）」）：
@@ -127,7 +140,7 @@
   ③ **判据**：`test_doc_reachability.UnlinkedDocTest` 三件——① 每篇 `docs/**/*.md` 要么被别处引用、要么在 `ARCHIVE_DOCS` 里写明理由（件数 < 80 判空转）；② **登记表只许缩小**：条目一旦被引用或已不在场即红，防它变成掩盖新孤儿的黑洞；③ **变异自证**：零引用件必判红，路径引用 / 文件名引用都不许误报，且 `CHANGELOG.md` / `results/` / 判据自身**不算链接来源**（与同文件的 `_living_docs` 同一套口径——变更日志是历史流水、结果归档是生成物，都不是导航入口）。
 
 - **零引用**模块级常量** 12 处（含退役端壳遗留）——判据此前只管函数/模块**（**作者指令**：「清除逻辑垃圾（注意辨别）」「清理墓碑代码」）：
-  ① **取证（2026-10-01 普查）**：`desktop/src/core` 的 440 个模块级大写常量里，**12 个全仓只有定义行一处**（我自己那句「除定义行外出现过即算引用」的口径已把「同文件自身使用」算进去，故这 12 个是真无人用）：`domain_pack.DOMAIN_LIST_ANCHOR` / `ANCHOR_PROBED_THRESHOLD`、`export_schema.CCV3_CHARA_OPT`、`generator.DOC_TEMPLATE`、`market_analyzer.VALID_GRADES`、`mcp_runtime.META_CLIENT_INFO` / `META_CLIENT_CAPABILITIES`、`models.PIPELINE_ALIASES`、`output_forms.TIER_MEANING`、`pipeline_scaffold.DEFAULT_TEMPLATE`、`workflow_policy.REQS_GLOB`、`world_model.SLOT_REGISTRY_PATH`（连它唯一的依赖 `_ROOT` 一并失效）。**辨别**：其中 `DOC_TEMPLATE` 正文写着「由叙事工坊桌面工具生成」、`PIPELINE_ALIASES` 注释写着「桌面工具指令集功能C」——**退役端壳的遗留**；其余是重构后的孤儿。
+  ① **取证（2026-10-01 普查）**：`desktop/src/core` 的 440 个模块级大写常量里，**12 个全仓只有定义行一处**（我自己那句「除定义行外出现过即算引用」的口径已把「同文件自身使用」算进去，故这 12 个是真无人用）：`domain_pack.DOMAIN_LIST_ANCHOR` / `ANCHOR_PROBED_THRESHOLD`、`export_schema.CCV3_CHARA_OPT`、`generator.DOC_TEMPLATE`、`market_analyzer.VALID_GRADES`、`mcp_runtime.META_CLIENT_INFO` / `META_CLIENT_CAPABILITIES`、`models.PIPELINE_ALIASES`、`output_forms.TIER_MEANING`、`pipeline_scaffold.DEFAULT_TEMPLATE`、`workflow_policy.REQS_GLOB`、`world_model.SLOT_REGISTRY_PATH`（连它唯一的依赖 `_ROOT` 一并失效）。**辨别**：其中 `DOC_TEMPLATE` 正文写着「由宁封子桌面工具生成」、`PIPELINE_ALIASES` 注释写着「桌面工具指令集功能C」——**退役端壳的遗留**；其余是重构后的孤儿。
   ② **修法**：逐条删除（12 + 1 处），`compileall` 与全量门禁复验通过；常量数 440 → 428、零引用 → **0**。
   ③ **判据**：`test_dead_code.ConstantRuleTest` 两件——① 真仓**零引用常量必须为空**；② **变异自证**（无人用的大写常量必判红；同文件使用、跨文件使用、文档提及、短名都不许误报）。
 
@@ -327,7 +340,7 @@
 - **「长驻拦截」的人读出处也纳入文档↔表一致性判据（另两笔只读复核 0 缺件）**（**作者指令**：「内外口径统一」「路径保证一定可达」）：
   ① **判据**：`docs/terminal.md`「会话内不执行」一节**与写盘闸门同型**——它是使用者判断「会话里这条能不能跑」的唯一人读出处；上一轮补 `lsp` / `terminal` 别名时两边都改了，但**没有任何判据盯着**。新增 `BlockedDocSyncTest`，按 `GateDocSyncTest` 同一纪律取**子集**（文档可以只写节选，但凡写了的必须真在 `BLOCKED_IN_SHELL` 里）。实测解析到 `lsp` / `serve` / `shell` 三条，与表一致。
   ② **只读复核一（干净）**：`protocol/*.json` 的**自述计数**与真实数组长度逐条比对（`count`/`total` 对同层 `fields`/`entries`/`rows`/`items`，含嵌套）——50 件、**0 不一致**。
-  ③ **只读复核二（干净，且顺带证实一处覆盖已存在）**：agent 面参考 `skills/narrativeforge/references/commands.md` 是否在可达性判据的扫描范围内——`test_doc_reachability._living_docs()` 用 `ROOT.rglob("*.md")` 且 `skills/` 不在跳过目录里，实测**扫到 1006 篇在场文档、其中 4 篇属于 skills/**；也就是说我上一轮往技能参考里加的 `nf preset` 示例，**本来就落在既有判据的覆盖内**（不是空白区）。
+  ③ **只读复核二（干净，且顺带证实一处覆盖已存在）**：agent 面参考 `skills/ninfenz/references/commands.md` 是否在可达性判据的扫描范围内——`test_doc_reachability._living_docs()` 用 `ROOT.rglob("*.md")` 且 `skills/` 不在跳过目录里，实测**扫到 1006 篇在场文档、其中 4 篇属于 skills/**；也就是说我上一轮往技能参考里加的 `nf preset` 示例，**本来就落在既有判据的覆盖内**（不是空白区）。
 
 - **同一处错数还在测试的类说明里：一并纠正，并把它变成**结构性判据**（另清一处句柄泄漏）**（**作者指令**：「内外口径统一」「清除逻辑垃圾（注意辨别）」）：
   ① **续查**：上一轮只改了 `docs/terminal.md`，这轮按「同一个说法还有几处」续查——`desktop/tests/test_launcher.py` 的 `AutostartTest` 类说明里**原样重复**着「`scripts\nf.cmd stats --json` 23 ms / bash 80 ms / python 231 ms」。文档改了、测试说明没改，就是新的口径分叉（而且这个文件里恰好有一个专门管「文档 ⇄ 实现默认值一致」的判据类，说明这条纪律本来就该覆盖它）。
@@ -341,8 +354,8 @@
   ③ **修法**：改文档而非改代码——把三档换成当天实测值，并**明确写出 `nf.cmd` 不是快路**（毫秒级客户端只有 POSIX `scripts/nf` + `daemon shell-init`），同时标注「数字随机器变，只作量级参照」（免得下一台机器又变成「文档说谎」）。
   ④ **为什么值得记**：这是「默认路径开（适应 agent 密集重复调用）」这条目标的**证据面**——一个把最慢入口标成最快入口的表格，会直接把 agent 引到错误的默认路径上。数字类断言与路径类断言一样需要复核，只是此前没人复核过它。
 
-- **agent 面参考补上新命令：`skills/narrativeforge/references/commands.md` 增 `nf preset`（并复跑 119 条文档示例）**（**作者指令**：「增加nf组装式命令」「内外口径统一」）：
-  ① **问题**：新面 `nf preset` 只进了能力族（`FAMILIES`）与 CLI，**没进 agent 实际照抄的那份命令参考**（`skills/narrativeforge/references/commands.md` 是「装配与运行 / 市场与协议 / 资产模块管线 / 导出 MCP 治理 / 质检发布 / 图书馆」六大族的可复制清单）。外部 agent 按技能参考走，就看不到这条组装式命令。
+- **agent 面参考补上新命令：`skills/ninfenz/references/commands.md` 增 `nf preset`（并复跑 119 条文档示例）**（**作者指令**：「增加nf组装式命令」「内外口径统一」）：
+  ① **问题**：新面 `nf preset` 只进了能力族（`FAMILIES`）与 CLI，**没进 agent 实际照抄的那份命令参考**（`skills/ninfenz/references/commands.md` 是「装配与运行 / 市场与协议 / 资产模块管线 / 导出 MCP 治理 / 质检发布 / 图书馆」六大族的可复制清单）。外部 agent 按技能参考走，就看不到这条组装式命令。
   ② **修法**：在「装配与运行」族补两行——`nf preset ls`（本机预设 = 管线+模块+资产包的一次组装，落点 NF_HOME）与 `nf preset apply <预设名>`（解析成装配清单，本地缺失模块如实进 warnings）。**只放只读形态**：`save/rm/export/import` 是写面，不放进「照着抄就能跑」的示例（避免读者在真机上直接改自己的预设库）。
   ③ **复跑**：文档示例探针从 118 条变 **119 条**，其中我新加的那条**真跑 rc=0**；整体缺陷仍是**已知的 1 条**——`nf lint --prose` 报 rc=1 属**咨询面**（lint 找到问题就该非零；该面 help 已写明，早前已判定为误报，不是缺陷）。
   ④ **顺带核清**：全文相对链接普查（tracked `.md/.txt` 共 40 条相对链接）——**我方文档 0 断链**；6 条「断链」全落在 `community/*/assets/*` 与历史审计档，且是**散文里的伪链接**（`[参数](参数列表)` 这类），**不是缺陷**，也说明这条不适合做成常驻判据（第三方正文会持续误报）。
@@ -689,7 +702,7 @@
 - **写出去没人读回来：`--trace` 遥测件的消费端不可达，且「有没有做回合级」被压进同一个 `ok`**（**作者指令**：「已存在缺口全部补齐」「内外口径统一」「路径保证一定可达」）：
   ① **取证**：`core/trace_drill.py`（45 #3）是 `nf assemble --trace` 落盘件的设计消费端（重建允许集 → 重跑回合级 drill → 断言「重跑判定 == trace 记录」），却**只被自己的单测引用**——`nf` 命令面没有任何入口，等于「写→读回自证」这条链路**断了半截**。真接上去立刻暴露第二处：trace 的 `ok` 是**命令总判定**，只有加了 `--rounds` 才含回合级；不带 `--rounds` 写出的件读回必报**假漂移**（实测：同一份 P03 样本，写时不加 `--rounds` → 读回 `verdict 漂移：trace.ok=True 重跑判定=False`）——一个字段背两种口径。
   ② **修法**：**接入口**——`nf assemble --check-trace <trace.json>`（读回件重跑并断言，漂移 rc=1、件不在场 rc=1 带指引）；**统一口径**——`--check --trace` 落盘时逐字记 `rounds:{checked, ok}`，`trace_drill.analyze` 按它核（老 trace 无该键 ⇒ 沿用总判定，向后兼容）；`checked=False` ⇒ 返回 `verdict_scope="none"`，CLI 明确拒（**rc=2「未执行漂移断言」**，与 `--check` 遇无法解析需求时 rc=2「未执行验收」同规），**不把「没做」读成「通过」**。
-  ③ **判据**：`test_trace_drill` 7 例全绿——2 例原单测（老 trace 行为不变）+ 5 例新判据：真闭环往返零漂移（真实 P03 样本）、`--rounds` 缺失时 fail-closed（rc=2 + 修复指引）、漂移必报（rc=1）、件不在场为干净错误、`rounds` 口径分档的纯函数判据。文档同步：`skills/narrativeforge/references/assembly.md` 验收区补读回一行与口径说明。
+  ③ **判据**：`test_trace_drill` 7 例全绿——2 例原单测（老 trace 行为不变）+ 5 例新判据：真闭环往返零漂移（真实 P03 样本）、`--rounds` 缺失时 fail-closed（rc=2 + 修复指引）、漂移必报（rc=1）、件不在场为干净错误、`rounds` 口径分档的纯函数判据。文档同步：`skills/ninfenz/references/assembly.md` 验收区补读回一行与口径说明。
 
 - **「收文件」的命令喂**目录**：OS 层裸错误 + 回吐机器绝对路径（只读写命令全扫余项）**（**作者指令**：「防止提示词注入与越权调用机制」「路径保证一定可达」「内外口径统一」）：
   ① **扫法**（只读取证）：在仓库根对**收文件**的只读命令喂在场目录 `docs`（目录当文件用）与非 JSON 在场件（`st-validate README.md`）。前三波只喂了「不存在的路径 / 非法取值」，这一类（**存在但形状不符**）此前没进过探针。
@@ -765,7 +778,7 @@
   ① **取证**：`nf assemble "<需求>" --check 成品.md` 里，若需求含糊（进澄清漏斗），命令**根本没跑验收**就 `return 0`——实测 `nf assemble "x" --check docs/完整版样本_西幻生存流P03.md` → rc=0 且只打澄清三问。脚本里 `nf assemble "$REQ" --check out.md && 发布` 会因此把「没验收」读成「验收通过」，与工具面那类「看起来正常的错答」同源。
   ② **修法**：澄清分支里若带了 `--check`，先照常打澄清三问，然后**明确拒**：rc=2 + 「未执行验收」+ 修复指引（把需求写成可编排的一句话）。允许集来自需求解析，解析不出就不能假装核对过——这是实现能给的唯一诚实答案（另一条路「硬用默认允许集核对」会产出一批假 FAIL）。
   ③ **判据**：`test_nf_cli.test_assemble_check_is_not_silently_skipped_by_a_vague_requirement`——含糊需求 + `--check` 必须 rc=2 且 stderr 含「未执行验收」与「修复指引」；既有 `test_assemble_check_real_p03_sample`（可编排需求 + 真样本 → rc=0）继续守着反向。
-  ④ **口径同步**：`skills/narrativeforge/references/assembly.md` 的验收段补这条行为（含 `&& 发布` 的场景说明）。
+  ④ **口径同步**：`skills/ninfenz/references/assembly.md` 的验收段补这条行为（含 `&& 发布` 的场景说明）。
 
 - **稳态的前提没人守着：常驻缓存有上限常量，但没有一条判据**（**作者指令**：「稳态毫秒级响应」「已存在缺口全部补齐」）：
   ① **取证**：仓库的「稳态毫秒级」靠守护把语料/响应缓存在**进程生命周期内**活着——实现里各容器都写了上限（响应缓存 256、fence/正文缓存各 4096、常驻目录 8192、常驻正文 16384、面指纹 1024、磁盘缓存 `KEEP` + prune），但**全仓没有一条判据**盯着它们：谁去掉上限、或新加一个不设界的常驻容器，门禁一条都不会红，用户只会在长会话里慢慢觉得「越来越慢、越来越吃内存」。
@@ -802,7 +815,7 @@
   ④ **口径同步**：`docs/lsp.md` 补「入站资源闸门」一行。
 
 - **守护状态文件里的令牌按默认 umask 落盘（POSIX 常见 0644）**（**作者指令**：「防止提示词注入与越权调用机制」「已存在缺口全部补齐」）：
-  ① **取证**：`daemon.json` 存的是**一次性令牌**（`secrets.token_hex(32)`），而令牌正是本守护的信任边界——`daemon.py` 的模块 docstring 明写「只绑 127.0.0.1，回环**不是**信任边界，故另发一次性令牌」。但 `write_state` 此前按默认 umask 落盘：多用户主机上，同机另一个用户读到 `~/.NarrativeForge/daemon.json` 里的 token，就能连回环口、以属主身份执行命令。
+  ① **取证**：`daemon.json` 存的是**一次性令牌**（`secrets.token_hex(32)`），而令牌正是本守护的信任边界——`daemon.py` 的模块 docstring 明写「只绑 127.0.0.1，回环**不是**信任边界，故另发一次性令牌」。但 `write_state` 此前按默认 umask 落盘：多用户主机上，同机另一个用户读到 `~/.NinFenz/daemon.json` 里的 token，就能连回环口、以属主身份执行命令。
   ② **修法**：新增 `_harden_perms()`——POSIX 上把状态文件（含写盘前的 `.tmp`）收紧到 `0600`（仅属主可读写）；Windows 交回 ACL 继承（`chmod` 无对应语义，本机实测收紧后仍是 `0666`，如实分工）。收紧失败不阻断守护（文件系统可能不支持），该 `except` 已按静默跳过口径留下理由。
   ③ **判据**：`test_daemon.DaemonStatePermsTest`——POSIX 上断言状态文件 `mode & 0o077 == 0` **且自读不受影响**；Windows 跳过并写明理由（权限语义不同）。三平台 CI（`cross-platform.yml` 跑 ubuntu/macos/windows 全量 verify）覆盖 POSIX 分支。
   ④ **实测**：本机（Windows）`write_state` → `read_state` → `clear_state` 往返正常；`test_daemon` 23 例通过（1 例按平台跳过）。
@@ -1128,7 +1141,7 @@
 - **安全/治理面：信任边界守卫 + MCP 上架收口 + 路径可达门禁**（**作者指令**：「防止提示词注入与越权调用机制」「MCP 面上架」「路径保证一定可达」）：
   ① **新增机制 `core/trust_boundary.py`**——此前**代码层零判据**（只有 06 §12 / SECURITY 的成文声明）。三件纯函数：外来内容面（`library/` / `community/*` / 外部材料摘要）的**疑似指令注入六类标记检测**（权威前缀伪造 / 覆盖式指令 / 角色重定义 / 系统提示套取 / 凭据外带 / 隐藏通道字符）+「以下为数据」信封 + **工具参数准入硬面**（控制字符 / 超长载荷 / 路径穿越 / 非标量 / 参数走私 → 抛 `ValueError` 映射 `-32602`，消息带修复指引，fail-closed）。检测是**咨询面**（只记档不删改：讲注入防御的合法正文同样会命中，自动删改会误杀内容），准入是**硬面**。
   ② **接线**：`mcp_runtime._call_tool` 在进入处理器之前调用准入——越权/注入参数在到达 `_tool_*` 之前就被拒（实测 `../../etc/passwd` / 绝对路径 / NUL 控制字符 / 未知与写形工具名一律 `-32602`）。
-  ③ **MCP 面上架收口**：`protocol/mcp_package.json` status `draft → ready`（命名 `NarrativeForge Content Gate` / 一句话 / 类目 `content-creation` 定稿，pending 清空）；上架材料（对外标识 / 三步安装 / 英文安装说明 / 能力面 / 红线自查 / 可粘贴提交文案）落在 `docs/mcp.md`「上架材料」节。新门禁 `test_mcp_packaging` 断言「机读声明 ⇄ 人读投影 ⇄ 运行时工具面」三者逐项一致（多一个少一个即 FAIL）。**GUI 宿主装载仍属用户侧，维持不宣称**。
+  ③ **MCP 面上架收口**：`protocol/mcp_package.json` status `draft → ready`（命名 `NinFenz Content Gate` / 一句话 / 类目 `content-creation` 定稿，pending 清空）；上架材料（对外标识 / 三步安装 / 英文安装说明 / 能力面 / 红线自查 / 可粘贴提交文案）落在 `docs/mcp.md`「上架材料」节。新门禁 `test_mcp_packaging` 断言「机读声明 ⇄ 人读投影 ⇄ 运行时工具面」三者逐项一致（多一个少一个即 FAIL）。**GUI 宿主装载仍属用户侧，维持不宣称**。
   ④ **路径可达门禁**：`test_doc_reachability` 把「入口文档里写下的路径与 `nf` 子命令必须真实可达」立成判据（只认能在仓库根解析的写法，且子命令面从 `nf._make_parser()` 现取）。门禁当场抓出两处真缺陷并修复：README / README.en 把 `verify.sh` 误写成 `scripts/verify.sh`；`docs/mcp.md` 引用不在公开仓内的 33 号核查报告（改指 `results/audit/docs_audit-58-pending-items.md`）。
   ⑤ **判据与回读**：新增 3 个测试模块（信任边界 14 例 / 路径可达 3 例 / MCP 上架 11 例）随 check12 常驻；`code_metrics` 按评审重冻基线（161 → 162 件）；`nf conformance` → **conformant 27/27**；`nf receipts` → **52 件**根一致（重签后 `nf transparency` 链自洽、`nf interop --all` 12 面入仓面重生成）；3 份审计件按既有实践重绑 **4 条 subject 摘要**（只校摘要、不重写旧结论）。
 
@@ -1719,7 +1732,7 @@
 
 - 外部协议清单吸收波·**第二轮**（同一波续做：把第一轮判为「部分覆盖 / 挂账候选」的四项收成净吸收，清单判定随之更新为**已具备 74 / 部分覆盖 24 / 净吸收 19（归并 14 项机制）/ 挂账候选 7 / 不适面 38**）：① **stdio 帧纪律**（NDJSON 口径，A14）：`mcp_runtime.encode_message` / `is_single_line_message` —— 紧凑分隔符 + **行边界陷阱字符转义**（`U+2028` 行分隔 / `U+2029` 段分隔 / `U+0085` NEL：JSON 允许裸写，但按 Unicode 换行边界读行的客户端会把**一条消息劈成两条**），并断言「通知不写响应行」；check33 增第 13 面。② **端点幂等声明面**（RFC 9110 §9.2.2，C15）：`protocol/endpoint_contract.json` 默认幂等 + `idempotency_exceptions` 登记（本轮 1 条：`bench.evaluate` 落评测记录 → `key=required`），门禁判「例外 id 在册 / mode 与 key 在词表 / why 非空 / 要求幂等键时 conventions 必声明幂等语义」——**未声明幂等语义直接 FAIL**；派生面同步：OpenAPI 每 operation 带 `x-nf-idempotency`。③ **缺陷类型编码对齐**（CWE，H2）：`purity_scan` R6 每条 sink 带 `CWE-78`（shell 注入）/ `CWE-95`（动态执行）/ `CWE-470`（动态导入）/ `CWE-502`（不安全反序列化），并新增**登记表自洽判据**——缺 CWE 对齐即 FAIL、`SINK_ALLOW` 放行键必须指向已登记 sink（放行不得凭空出现）。④ **瞬态退避重试**（C16）：外链巡检加 `is_transient` / `retry_after_seconds` / `probe_with_retry` 与 `--retries/--backoff` ——**只对瞬态失败**（超时 / 5xx / 429 / 408 / 425）重试、退避逐次翻倍、尊重服务端 `Retry-After`（上限 10s）、`4xx` 一次定性（HEAD 幂等，重试安全）。测试 +10 例（stdio 3 / 幂等 1 + 弃用面第 ⑤ 例 / CWE 3 / 重试 3）；verify 基线不变（`check1-37` · `PASS=61` · `WARN=0`）；重审同步：一致性报告重写、`protocol/RECEIPTS.json` 重签、`protocol/approvals/protocol__conformance_report.json.json` 重批准。审计片：AUD-0009（同片续记）。
 
-- 外部协议清单吸收波·**第三轮**（同一波续做；清单判定更新为**已具备 74 / 部分覆盖 22 / 净吸收 22（归并 16 项机制）/ 挂账候选 6 / 不适面 38**）：① **SLSA Provenance v1 派生面**（D3）：`nf interop --kind slsa` —— 从**本地门禁事实**派生 in-toto 语句（`predicateType=slsa.dev/provenance/v1`、`buildType=https://narrativeforge.dev/buildtypes/local-gate/v1`、外部参数取 `verify.sh` 版本头与 `score_baseline` 的基线句、subject = 48 条回执 digest），并在 `runDetails.metadata.note` **显式写下「本地门禁执行事实，不构成 SLSA 等级声明」**——门禁判该注记必须在场（虚标等级比不声明更坏）。② **A2A Agent Card 派生面**（E5）：`nf interop --kind a2a` —— skills = 8 条端点契约的投影（id/description 同源），能力面声明 `streaming` 由契约 `streaming` 端点推出；服务本体未实装时卡片**必须**带「未实装」注记（门禁判）。③ **资源模板面**（B6，RFC 6570 一级子集）：`mcp_runtime.uri_template_issue` / `template_matches` —— 模板只许 `{var}` 简单展开（禁 `{+id}` 操作符 / `{x*}` 爆炸 / 前缀修饰）、变量名唯一、花括号配平、无查询串；并新增**模板⇄读取面一致判据**：每条真实资源 uri 必须被某条模板覆盖（实测 5 模板全合法、**390 条真实资源 uri 零未覆盖**）——防「列得出但取不回」。测试再 +5 例（SLSA 1 / A2A 1 / 模板 2 / 种类面 1）；verify 基线不变（`check1-37` · `PASS=61` · `WARN=0`）；`nf interop --check` 六面全绿（8 端点 / 43 通道 / 48 subject / 4 包 / 48 SLSA subject / 8 skills）。审计片：AUD-0009（同片续记）。
+- 外部协议清单吸收波·**第三轮**（同一波续做；清单判定更新为**已具备 74 / 部分覆盖 22 / 净吸收 22（归并 16 项机制）/ 挂账候选 6 / 不适面 38**）：① **SLSA Provenance v1 派生面**（D3）：`nf interop --kind slsa` —— 从**本地门禁事实**派生 in-toto 语句（`predicateType=slsa.dev/provenance/v1`、`buildType=https://ninfenz.dev/buildtypes/local-gate/v1`、外部参数取 `verify.sh` 版本头与 `score_baseline` 的基线句、subject = 48 条回执 digest），并在 `runDetails.metadata.note` **显式写下「本地门禁执行事实，不构成 SLSA 等级声明」**——门禁判该注记必须在场（虚标等级比不声明更坏）。② **A2A Agent Card 派生面**（E5）：`nf interop --kind a2a` —— skills = 8 条端点契约的投影（id/description 同源），能力面声明 `streaming` 由契约 `streaming` 端点推出；服务本体未实装时卡片**必须**带「未实装」注记（门禁判）。③ **资源模板面**（B6，RFC 6570 一级子集）：`mcp_runtime.uri_template_issue` / `template_matches` —— 模板只许 `{var}` 简单展开（禁 `{+id}` 操作符 / `{x*}` 爆炸 / 前缀修饰）、变量名唯一、花括号配平、无查询串；并新增**模板⇄读取面一致判据**：每条真实资源 uri 必须被某条模板覆盖（实测 5 模板全合法、**390 条真实资源 uri 零未覆盖**）——防「列得出但取不回」。测试再 +5 例（SLSA 1 / A2A 1 / 模板 2 / 种类面 1）；verify 基线不变（`check1-37` · `PASS=61` · `WARN=0`）；`nf interop --check` 六面全绿（8 端点 / 43 通道 / 48 subject / 4 包 / 48 SLSA subject / 8 skills）。审计片：AUD-0009（同片续记）。
 
 - 三条挂账一并执行（**证据升格 / 外链自动化 / 英文全镜像**；作者指示「去网上搜权威知识数据当示例，其他都执行」）：① **量化图证据强度升格**——Crossref REST API 取回 **10 条**经典工作元数据（Markowitz 1952 · Sharpe 1964/1966 · Black-Scholes 1973 · Fama-French 1993 · Jegadeesh-Titman 1993 · Kyle 1985 · Almgren-Chriss 2001 · Harvey-Liu-Zhu 2015 · Cont 2001，含 DOI 与年份）+ arXiv 摘要页 **3 条**（arXiv:2005.13665 / 2112.08534 / 1601.01987），据此给 **14/30 节点**挂外部来源锚 → 强度声明 `domain-logic` → **`mixed`**；判据同步升级为**四级阶梯 + 覆盖自洽**（`external` 须节点全覆盖 / `mixed` 须部分覆盖 / `domain-logic` 须零外部键，`concept_graph.py` 内实现，check32 既有子扫描生效）——AI系统域包机检为 `external`（47/47），量化金融为 `mixed`（14/30）；② **外链巡检接自动化**——新增 `.github/workflows/external-links.yml`（`workflow_dispatch` + 每周 cron；`contents: read` 最小权限；先离线 scan 再 `--fetch`，失败即红；报告走 artifact 不写回仓库）；③ **英文入口扩到全量**——`README.en.md` 重写为**逐节镜像**（5 个 H2 与 `README.md` 一一对应），并**校正中文 README 能力块的陈旧数字**（44 模块/8 管线/5 社区包/55 档 165 键/馆藏 2 → 48 模块/10 管线/7 社区包/60 档 326 键/概念图 2/馆藏 3），check34 增两条断言（**H2 章节数一致** + **中文入口引用的 ASCII 名 .md 件在英文入口同样出现**）。取回失败如实记档：arXiv API 406（改走摘要页）· Merton 1973 DOI 失效 · MIT OCW 与 QuantEcon 课程页不可取（故量化图仍无 orderings，不造序）· 一次 arXiv ID 误取已弃用。verify 基线不变（`check1-37` · `PASS=61` · WARN=0）。
 

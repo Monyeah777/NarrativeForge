@@ -1,4 +1,4 @@
-# NarrativeForge 快速开始
+# NinFenz 快速开始
 
 ## 安装本 skill
 
@@ -6,17 +6,17 @@
 
 ```bash
 scripts/install-skill-from-github.py \
-  --repo Monyeah777/NarrativeForge \
-  --path skills/narrativeforge
+  --repo Monyeah777/NinFenz \
+  --path skills/ninfenz
 ```
 
-也可以把 `skills/narrativeforge/` 目录复制到 `$CODEX_HOME/skills/`。
+也可以把 `skills/ninfenz/` 目录复制到 `$CODEX_HOME/skills/`。
 
 ## 准备仓库
 
 ```bash
-git clone https://github.com/Monyeah777/NarrativeForge.git
-cd NarrativeForge
+git clone https://github.com/Monyeah777/NinFenz.git
+cd NinFenz
 python scripts/nf.py --version
 python scripts/nf.py doctor
 ```

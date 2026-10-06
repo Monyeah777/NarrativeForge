@@ -16806,7 +16806,7 @@
   },
   "info": {
     "description": "由 protocol/event_registry.json + external_events.json 实时派生；本文件非真源。",
-    "title": "NarrativeForge 事件登记（派生）",
+    "title": "NinFenz 事件登记（派生）",
     "version": "1.0.0"
   },
   "operations": {

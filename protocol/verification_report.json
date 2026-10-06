@@ -235,10 +235,12 @@
           "NF-TECHDOC-Monyeah777-1",
           "NF-WORLDCAMPUS-Monyeah777-1"
         ],
-        "warns": []
+        "warns": [
+          "NF-1 attestation 与当前内容不符（内容已改，需重签）"
+        ]
       },
-      "status": "pass",
-      "warns": 0
+      "status": "warn",
+      "warns": 1
     },
     {
       "id": "library_projection",
@@ -258,7 +260,7 @@
       "source": "receipts.verify_wrapped",
       "stats": {
         "entries": 3,
-        "root": "6d9040aa6ffa4d9b57f18b4733595d075ae32d9a1898f3b283524787f3a6920e"
+        "root": "11d183057abb90e5feb27e4fe7322aa320b8f3563f175bb8a3f24b6b76c0ac7f"
       },
       "status": "pass",
       "warns": 0
@@ -473,12 +475,12 @@
       "warns": 0
     }
   ],
-  "root_digest": "1356816bd63a9cdfa558be2c858596d8a585b44e80f6b5647ad9e5cdec26afef",
+  "root_digest": "f304469375661b34db334b751a5fec40b73ae574d3944bc9b94f1a232e09b508",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,
     "fail": 0,
-    "pass": 27,
-    "warn": 1
+    "pass": 26,
+    "warn": 2
   }
 }

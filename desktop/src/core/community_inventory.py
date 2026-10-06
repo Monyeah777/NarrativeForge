@@ -7,7 +7,7 @@ E5 承接 E4（方案 21）：zone_g 从「本地已装检索」扩到「communi
 - catalog(store) -> list[CommunityItem]：盘点全部可装载项 + 已装判定
   （module: store.get_module 命中；pipeline: pipelines cache 含 id）。
 - install_module(store, item)：parse community/<pkg>/modules/*.md →
-  Store.save_module 装入用户工作区（~/.NarrativeForge/modules），幂等。
+  Store.save_module 装入用户工作区（~/.NinFenz/modules），幂等。
 - install_pipeline(store, item)：与 pipelines cache 按 id merge 去重 → save。
 - load_community_module / load_community_pipeline：只读源正文加载（I5：从源包
   parse，不复制进任何包目录）。

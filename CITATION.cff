@@ -1,20 +1,20 @@
 # GitHub「Cite this repository」与生成式引擎的机读引用元数据。
 # 纪律：本件不钉版本号（版本真源在 README 版本块 / VERSION-MATRIX），也不进协议回执面（固定清单）。
 cff-version: 1.2.0
-message: "If you use NarrativeForge (NF) in your work, please cite it as below."
-title: "NarrativeForge (NF) — 内容契约层 / content contract layer"
+message: "If you use NinFenz (NF) in your work, please cite it as below."
+title: "NinFenz (NF) — 内容契约层 / content contract layer"
 abstract: >-
-  NarrativeForge（NF）是内容契约层：定义「AI 稳定产出长内容」的协议、质量与资产标准，
+  NinFenz（NF）是内容契约层：定义「AI 稳定产出长内容」的协议、质量与资产标准，
   使长内容生产可装载、可质检、可复现。协议本体域中立、模型无关；叙事只是官方第一个域包。
   仓库内含核心协议件（01–07）、核心库与 CLI、管线 / 模块 / 资产库、社区域包与云图书馆。
 type: software
 license: MIT
 authors:
   - name: "Monyeah777"
-    alias: "NarrativeForge"
+    alias: "NinFenz"
     website: "https://github.com/Monyeah777"
-repository-code: "https://github.com/Monyeah777/NarrativeForge"
-url: "https://github.com/Monyeah777/NarrativeForge"
+repository-code: "https://github.com/Monyeah777/NinFenz"
+url: "https://github.com/Monyeah777/NinFenz"
 keywords:
   - content contract layer
   - spec-driven content factory
@@ -26,5 +26,5 @@ keywords:
   - domain pack
   - MCP
   - 内容契约层
-  - 叙事工坊
+  - 宁封子
   - 长内容生成协议

@@ -1,6 +1,6 @@
-# NarrativeForge · community 社区包指南
+# NinFenz · community 社区包指南
 
-`community/` 是 NarrativeForge 的**社区内容货架**：领域/题材包（模块 + 资产 + 管线 + 装载手册）与自制模板入口。仓库本体 = 协议规范库 + CLI 工具（01–07 号文档 + `scripts/nf.py`），**无桌面应用**——包内容按各包 README 装载手册灌给任意 AI 前端即可开跑（零 API、零代码）。
+`community/` 是 NinFenz 的**社区内容货架**：领域/题材包（模块 + 资产 + 管线 + 装载手册）与自制模板入口。仓库本体 = 协议规范库 + CLI 工具（01–07 号文档 + `scripts/nf.py`），**无桌面应用**——包内容按各包 README 装载手册灌给任意 AI 前端即可开跑（零 API、零代码）。
 
 ## 开箱即玩（零代码，三步）
 

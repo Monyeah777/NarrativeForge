@@ -6,9 +6,9 @@ scope: 机制借鉴类外部输入的筛选与逐条仓内实证（STRATEGY §3.
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - CONTRIBUTING.md:3adce64f93d2f84719f12d4f56ab895e5a53152ae2f6b69f4c796a6fd78e228d
-  - skills/narrativeforge/SKILL.md:8742a5f651473d1ecb5770b4ac2c1e190bce998e1205cfa7c424e677010982d0
-  - library/INDEX.md:2f27fef537df2f27af6c4c69d9d7d59f407a2640f364e09ee465b3a3ec76d418
+  - CONTRIBUTING.md:c72baeb7fa3069fc874321b3edddbac7a4c120ed78cf41769f01b10d3af58e60
+  - skills/ninfenz/SKILL.md:51909df96e15a07784e9d85c0f9425597fff8ea5d0ee36237a10fd04a0869504
+  - library/INDEX.md:2fcc4ca115a6f9e3d62ac4d4e91506c50459721bf8303c1f80225128c4488840
 
 ---
 
@@ -37,7 +37,7 @@ subjects:
 | 准入的 **scope 判据**（收什么 / 拒什么 / 拒后指向邻居清单） | 已具备（更结构化） | 01 §6 R1/R2/R3（依赖边界 / 类别独占 / 装配契约）+ 02 §8.3 登记三要件 + 入馆唯一硬标准（自包含可召回）；「拒后指路」= 07 导航 + `community/模板制作指令包.md` + 各 issue 模板 |
 | 准入的 **notability ≥50 stars** | **剔除（与方向层冲突）** | STRATEGY §2：决策函数只含**质量**一个变量，star / 热度类指标**显式排除**（不当目标、不当参考、不进入立项与排期论证）——与批次一（≥100 stars）同判 |
 | **外链可达性巡检（lychee）** | **剔除（离线纪律）** | NF 门禁须**静态可复现**（同输入同输出），网络可达性依赖第三方站点状态 → 会引入不稳定门禁；NF knowledge 层以「来源标注必填 + 时效 ttl/no-cache」声明外部引用（check37），执行面**刻意零网络**（L2 core 零第三方依赖红线）——与批次一 / 二同判 |
-| **多语言入口面（EN + ZH-CN）** | 已具备「纪律」，**无当前消费者 → 不产** | NF 现有对外入口为中文主体（README / llms.txt / AGENT_START / ROUTES），唯 `skills/narrativeforge/SKILL.md` 的 name/description 为英文（供英文侧工具发现）——故「英文发现面」已存在最小形态；而**该仓自身证明**：开了第二语言面却**无一致性判据**（CI 只巡检链接）→ 中文面腐烂到 EN 的 **~54%**（10 章/~197 条 vs 11 章/~366 条）。NF 的双源纪律（check14 ⑥ / check15 ⑤ / check34 投影一致）正是防此病的机制——**纪律已在场**，是否增开英文面属方向层取舍（封闭期 + 按需装配），本批不擅自动手 |
+| **多语言入口面（EN + ZH-CN）** | 已具备「纪律」，**无当前消费者 → 不产** | NF 现有对外入口为中文主体（README / llms.txt / AGENT_START / ROUTES），唯 `skills/ninfenz/SKILL.md` 的 name/description 为英文（供英文侧工具发现）——故「英文发现面」已存在最小形态；而**该仓自身证明**：开了第二语言面却**无一致性判据**（CI 只巡检链接）→ 中文面腐烂到 EN 的 **~54%**（10 章/~197 条 vs 11 章/~366 条）。NF 的双源纪律（check14 ⑥ / check15 ⑤ / check34 投影一致）正是防此病的机制——**纪律已在场**，是否增开英文面属方向层取舍（封闭期 + 按需装配），本批不擅自动手 |
 | CC0 许可 | 无需吸收 | NF：代码 MIT + 内容许可分列（`license_gate` 双源校验） |
 | 「此前基本无人管 → 逐步清理」的治理自述 | 观察（反向验证） | NF 侧对应：机检门禁族（check1-37）+ audit 建档 + CHANGELOG 对账 + 生命周期流转（deprecated/retired）——**该自述是 NF 路线的反证样本**，不构成吸收 |
 

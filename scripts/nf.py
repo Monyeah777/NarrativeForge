@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""NarrativeForge 全链管道 CLI（v2.1.0 B2：retrieve→compose→gate→export 单命令）。
+"""NinFenz 全链管道 CLI（v2.1.0 B2：retrieve→compose→gate→export 单命令）。
 
 用法：
   python scripts/nf.py run --pipeline <P04管线.md> \
@@ -74,7 +74,7 @@ def _make_parser() -> argparse.ArgumentParser:
     """真正构建 argparse 命令面（**只在缓存未命中时调用一次**——见 `_build_parser`）。"""
     p = argparse.ArgumentParser(
         prog="nf", description=(
-            "NarrativeForge 全链管道（B2：retrieve→compose→gate→export）。"
+            "NinFenz 全链管道（B2：retrieve→compose→gate→export）。"
             "分层引导（40 总纲 v2.8 波B S7）：作者五分钟上手 = run / demo / pipeline new；"
             "开发者与仓库治理工具族 = asset / module / register / market / spec / render / serve / "
             "design / audit / who-refers / impact / rename / import——README「五分钟快速开始」"
@@ -601,7 +601,7 @@ def _make_parser() -> argparse.ArgumentParser:
     pr_im.add_argument("--name", default="", help="改名导入（缺省用文件里的名字）")
     for _p3 in (pr_ls, pr_sh, pr_ap, pr_sv, pr_rm, pr_ex, pr_im):
         _p3.add_argument("--store", default="", metavar="NF_HOME",
-                         help="预设库根（缺省 = NF_HOME，即 ~/.NarrativeForge 或 NARRATIVE_FORGE_HOME）")
+                         help="预设库根（缺省 = NF_HOME，即 ~/.NinFenz 或 NARRATIVE_FORGE_HOME）")
         _p3.add_argument("--json", action="store_true", help="输出结构化 JSON")
     bn = sub.add_parser("bench",
                         help="执行结果跑分台（对 agent 产物五维确定性评分；多跑可比对）",

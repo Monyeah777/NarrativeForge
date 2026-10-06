@@ -1,4 +1,4 @@
-# NarrativeForge MCP access (`nf serve` · plan 40 v2.7 Wave A S1-E3 / X2)
+# NinFenz MCP access (`nf serve` · plan 40 v2.7 Wave A S1-E3 / X2)
 > 最后更新：2026-09-30 (last updated)
 
 > **Status**: the public documentation landed with base layer v2.7; **the E3 protocol-level load test passed on 2026-09-08** (a direct stdio JSON-RPC frame-sequence test of all five methods came back green — see the record at the end of this document; it fixed two P06 pipeline gaps — a missing closing ``` / a missing techdoc declaration). 41 Wave C C7 (2026-09-08) opened read-only tools/prompts (local stdio smoke test passed; see docs/41_波C_C7_实测记录.md). **Host-class clients (GUI loading such as Claude Desktop) still need user-side backfill** — the README's MCP claims stay as they are (the S13 gate opens per the docs_external-validation-v2.7.md rules), and "promotion" is filled in after the backfill.
@@ -66,7 +66,7 @@ In any client that supports MCP stdio, declare `nf.py serve` as a server (the ex
 ```json
 {
   "mcpServers": {
-    "narrativeforge": {
+    "ninfenz": {
       "command": "python",
       "args": ["<仓库绝对路径>/scripts/nf.py", "serve"]
     }
@@ -151,7 +151,7 @@ the filter had taken effect) — all "looks normal" wrong answers.
 
 | Field | Value |
 |---|---|
-| Name | `NarrativeForge Content Gate` |
+| Name | `NinFenz Content Gate` |
 | One-liner | Give any AI agent a verifiable content specification and asset foundation — check the contract first, then write. |
 | Category | `content-creation` |
 | Transport | `stdio` (dual-era: modern `2026-07-28` + legacy `2025-11-25`) |
@@ -176,7 +176,7 @@ python scripts/nf.py serve <输出目录>/mcp.json
 ```json
 {
   "mcpServers": {
-    "narrativeforge": {
+    "ninfenz": {
       "command": "python",
       "args": ["<仓库绝对路径>/scripts/nf.py", "serve"]
     }
@@ -224,7 +224,7 @@ python scripts/nf.py serve <输出目录>/mcp.json
 
 ### 6. Submission copy (ready to paste into directory-site forms)
 
-> **NarrativeForge Content Gate** — a read-only MCP server: it turns the acceptance criteria for long-form content
+> **NinFenz Content Gate** — a read-only MCP server: it turns the acceptance criteria for long-form content
 > (protocol / module / pipeline / asset / library) into a retrieval-and-pickup tool surface callable by agents.
 > 10 read-only tools + 1 loading-guide prompt, supporting modern `2026-07-28` and legacy `2025-11-25`
 > dual protocol versions, zero third-party dependencies, no write path.

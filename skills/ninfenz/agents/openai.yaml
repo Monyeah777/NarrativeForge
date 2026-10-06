@@ -1,0 +1,4 @@
+interface:
+  display_name: "NinFenz"
+  short_description: "Use NinFenz to assemble and verify content"
+  default_prompt: "Use $ninfenz to assemble a complete content work or operate the NinFenz CLI."

@@ -55,7 +55,7 @@ def run_bot(tmp, body=None, number="991", body_file=None):
     env = dict(os.environ)
     env.pop("ISSUE_BODY", None)
     env.pop("ISSUE_BODY_FILE", None)
-    env.update({"DRY_RUN": "1", "REPO": "Monyeah777/NarrativeForge",
+    env.update({"DRY_RUN": "1", "REPO": "Monyeah777/NinFenz",
                 "ISSUE_NUMBER": number, "ISSUE_AUTHOR": "monyeah777",
                 "ISSUE_TITLE": "【NF投稿】回归测试投稿"})
     if body_file is not None:
@@ -185,7 +185,7 @@ class BodyChannelTest(unittest.TestCase):
         m, saved = self._patched()
         try:
             m.BODY = ""
-            m.REPO, m.TOKEN, m.N = "Monyeah777/NarrativeForge", "tk", "7"
+            m.REPO, m.TOKEN, m.N = "Monyeah777/NinFenz", "tk", "7"
             m.api = lambda path, *a, **k: {"body": "来自议题 API 的正文"}
             self.assertEqual("来自议题 API 的正文", m.resolve_body())
         finally:
@@ -195,7 +195,7 @@ class BodyChannelTest(unittest.TestCase):
         m, saved = self._patched()
         try:
             m.BODY = "来自 env 的正文"
-            m.REPO, m.TOKEN, m.N = "Monyeah777/NarrativeForge", "tk", "7"
+            m.REPO, m.TOKEN, m.N = "Monyeah777/NinFenz", "tk", "7"
             m.api = lambda path, *a, **k: {"body": "不该被取到"}
             self.assertEqual("来自 env 的正文", m.resolve_body())
         finally:

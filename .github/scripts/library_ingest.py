@@ -43,7 +43,7 @@ DRY = os.environ.get('DRY_RUN', '') == '1'
 #: 两个机器人引用」三方一致（外部实证：某精选清单因投稿腐化整仓停投，闸门须可见可控）。
 INTAKE_REL = 'library/intake.json'
 GITEE_OWNER = 'monyeah777'
-GITEE_REPO = 'narrative-forge'
+GITEE_REPO = 'ninfenz'
 #: 投稿正文长度上限（字符）。零门槛通道下正文会**原样**成为仓库文件并进 CI 检出，
 #: 不设上限则任何人一次投稿即可把仓库撑大 / 拖长每次检出与门禁（可用性面）。
 #: 现役最长条目 ~61k 字符，256k 给了 4 倍余量。

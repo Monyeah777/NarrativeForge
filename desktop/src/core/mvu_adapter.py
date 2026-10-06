@@ -303,7 +303,7 @@ def export_mvu(ir: IRDocument, dest_dir: Path, res) -> None:
     atomic_write.write_text(p2, json.dumps(_worldbook_draft(payload), ensure_ascii=False,
                                            indent=2, sort_keys=True) + "\n")
     atomic_write.write_text(p3,
-        "# MVU 变量模板（由 NarrativeForge 导出）\n\n"
+        "# MVU 变量模板（由 NinFenz 导出）\n\n"
         "- 生成器：%s ｜ 目标格式锚点核对日期：%s\n- 契约来源：%s\n\n"
         "## 产物\n\n"
         "| 文件 | 内容 | 状态 |\n|---|---|---|\n"

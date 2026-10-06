@@ -24,7 +24,7 @@ need(pkg.type === 'module', 'type 应为 module（ESM）');
 need(pkg.publishConfig && pkg.publishConfig.provenance === true, 'publishConfig.provenance 必须为 true（发布须带来源证明）');
 need(Array.isArray(pkg.files) && pkg.files.indexOf('payload/') >= 0, 'files 未包含 payload/');
 need(Array.isArray(pkg.files) && pkg.files.indexOf('bin/') >= 0, 'files 未包含 bin/');
-need(pkg.bin && pkg.bin.nf === 'bin/nf.mjs' && pkg.bin.narrativeforge === 'bin/nf.mjs', 'bin 须同时暴露 nf 与 narrativeforge');
+need(pkg.bin && pkg.bin.nf === 'bin/nf.mjs' && pkg.bin.ninfenz === 'bin/nf.mjs', 'bin 须同时暴露 nf 与 ninfenz');
 need(Array.isArray(pkg.keywords) && pkg.keywords.length >= 8, 'keywords 过少（影响可发现性）');
 // 3) 入口件在位且可执行位由 npm 处理，这里只查存在。
 for (const rel of ['bin/nf.mjs', 'lib/paths.mjs', 'lib/python.mjs', 'lib/payload.mjs', 'README.md']) {

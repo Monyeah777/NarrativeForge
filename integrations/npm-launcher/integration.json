@@ -8,7 +8,7 @@
   "codeowner": "@Monyeah777",
   "tier": "core",
   "entry": {
-    "command": "npx narrativeforge",
+    "command": "npx ninfenz",
     "path": "packaging/npm/package.json"
   },
   "requires": [

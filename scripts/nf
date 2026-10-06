@@ -64,7 +64,7 @@ nf_pick_py() {
 # `NF_NO_DIET=1` 可整体关掉（诊断/对照用）。
 nf_diet_flag() {
   case "${NF_NO_DIET:-}" in 1|true|yes|on) return 0 ;; esac
-  local _c="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/diet.flag" _k _known=""
+  local _c="${NARRATIVE_FORGE_HOME:-$HOME/.NinFenz}/diet.flag" _k _known=""
   _k="$NF_PY|${OSTYPE:-}"
   if [ -f "$_c" ]; then IFS= read -r _known < "$_c" 2>/dev/null || _known=""; fi
   case "$_known" in
@@ -83,7 +83,7 @@ nf_diet_flag() {
 }
 
 nf_confirm_py() {
-  local _ok="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/interpreter.ok"
+  local _ok="${NARRATIVE_FORGE_HOME:-$HOME/.NinFenz}/interpreter.ok"
   local _key="$NF_PY|${OSTYPE:-}"
   local _known=""
   if [ -f "$_ok" ]; then IFS= read -r _known < "$_ok" 2>/dev/null || _known=""; fi
@@ -115,7 +115,7 @@ daemon_try() {
   for _nf_a in "$@"; do
     case "$_nf_a" in *$'\n'*) return 127 ;; esac
   done
-  NF_STATE="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json"
+  NF_STATE="${NARRATIVE_FORGE_HOME:-$HOME/.NinFenz}/daemon.json"
   [ -f "$NF_STATE" ] || return 127
   local s rest
   IFS= read -r s < "$NF_STATE" || return 127
@@ -181,7 +181,7 @@ if [ -n "${BASH_VERSION:-}" ]; then
           # **串行化拉起**：`daemon start` 要 ~0.65 s 才写状态文件，而连发命令会在这个窗口里各拉一次
           # ⇒ 赛出**多个守护**（各自空转到 idle；实测一次套件漏下 **13 个** 空转进程）。故先写一个
           # 「正在拉起」标记（60 s 自愈：崩溃/半途失败不会永久封住），窗口内不重复拉。
-          _dm_marker="${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.starting"
+          _dm_marker="${NARRATIVE_FORGE_HOME:-$HOME/.NinFenz}/daemon.starting"
           _dm_now=${EPOCHSECONDS:-0}
           _dm_prev=""
           if [ -f "$_dm_marker" ]; then IFS= read -r _dm_prev < "$_dm_marker" 2>/dev/null || _dm_prev=""; fi
@@ -200,7 +200,7 @@ if [ -n "${BASH_VERSION:-}" ]; then
       ;;
   esac
 elif command -v bash >/dev/null 2>&1 \
-     && [ -f "${NARRATIVE_FORGE_HOME:-$HOME/.NarrativeForge}/daemon.json" ]; then
+     && [ -f "${NARRATIVE_FORGE_HOME:-$HOME/.NinFenz}/daemon.json" ]; then
   exec bash "$0" "$@"                                # 非 bash 外壳但守护在：换 bash 走快路
 fi
 # 解释器选择 + 终判（带缓存；见上方 nf_pick_py 的说明）——只在**真要起解释器**时才付这笔钱

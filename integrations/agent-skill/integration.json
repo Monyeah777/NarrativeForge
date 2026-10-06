@@ -8,11 +8,11 @@
   "codeowner": "@Monyeah777",
   "tier": "core",
   "entry": {
-    "path": "skills/narrativeforge/SKILL.md"
+    "path": "skills/ninfenz/SKILL.md"
   },
   "requires": [],
   "docs": [
-    "skills/narrativeforge/SKILL.md"
+    "skills/ninfenz/SKILL.md"
   ],
   "evidence": [
     "desktop/src/core/skill_adapter.py"

@@ -96,7 +96,7 @@ bash tui/build_exe.sh                                          # POSIX
 
 产物是单文件可执行程序（Windows 上为 `nf.exe`）。冻结态下的行为差异只有一处：
 CLI 调用改用 PATH 上的 `python`；找不到仓库时 `--demo` / `--selftest` / `--list-actions`
-仍可离线运行，其余动作会以退出码 4 报「未发现 NarrativeForge 仓库」并给修复指引。
+仍可离线运行，其余动作会以退出码 4 报「未发现 NinFenz 仓库」并给修复指引。
 
 ## 边界
 

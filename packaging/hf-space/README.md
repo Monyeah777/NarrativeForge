@@ -1,5 +1,5 @@
 ---
-title: NarrativeForge Contract Gate
+title: NinFenz Contract Gate
 emoji: 🧾
 colorFrom: indigo
 colorTo: green
@@ -7,12 +7,12 @@ sdk: docker
 app_port: 7860
 pinned: false
 license: mit
-short_description: Run real NarrativeForge read-only gates in the browser
+short_description: Run real NinFenz read-only gates in the browser
 ---
 
-# NarrativeForge · Contract Gate（在线 demo / S1 入口）
+# NinFenz · Contract Gate（在线 demo / S1 入口）
 
-**NarrativeForge（NF）是内容契约层（content contract layer）**：把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。本 Space 让你**在浏览器里跑真实的 NF 只读门禁**——不是模拟，是同源 CLI。
+**NinFenz（NF）是内容契约层（content contract layer）**：把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。本 Space 让你**在浏览器里跑真实的 NF 只读门禁**——不是模拟，是同源 CLI。
 
 ## 能做什么
 
@@ -32,15 +32,15 @@ short_description: Run real NarrativeForge read-only gates in the browser
 ## 本地复现（与 Space 同源）
 
 ```bash
-npm i -g narrativeforge
-narrativeforge doctor                                    # 16 项只读体检
+npm i -g ninfenz
+ninfenz doctor                                    # 16 项只读体检
 
 # 完整 39 条门禁需要真实检出（verify.sh 依赖 .git / .github / results）
-git clone https://github.com/Monyeah777/NarrativeForge && cd NarrativeForge && bash verify.sh
+git clone https://github.com/Monyeah777/NinFenz && cd NinFenz && bash verify.sh
 ```
 
 ## 链接
 
-- 仓库（canonical）：https://github.com/Monyeah777/NarrativeForge
-- 机器入口 `llms.txt`：https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/llms.txt
+- 仓库（canonical）：https://github.com/Monyeah777/NinFenz
+- 机器入口 `llms.txt`：https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt
 - 许可：MIT

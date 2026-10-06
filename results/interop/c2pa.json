@@ -20,15 +20,15 @@
       "label": "c2pa.hash.data"
     }
   ],
-  "claim_generator": "NarrativeForge/1.0 (nf interop --kind c2pa)",
+  "claim_generator": "NinFenz/1.0 (nf interop --kind c2pa)",
   "claim_generator_info": [
     {
-      "name": "NarrativeForge",
+      "name": "NinFenz",
       "version": "1.0.0"
     }
   ],
   "format": "application/json",
-  "title": "NarrativeForge 协议层内容清单",
+  "title": "NinFenz 协议层内容清单",
   "x-nf-package-status": "未封装（无 JUMBF/CBOR 容器）、未签名（无 X.509 证书链）——只出 JSON 清单形状，不得当作可验证内容凭证",
   "x-nf-source": "protocol/RECEIPTS.json（回执摘要）"
 }

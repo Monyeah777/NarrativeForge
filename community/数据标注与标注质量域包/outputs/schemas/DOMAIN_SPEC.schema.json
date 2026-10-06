@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://narrativeforge.local/schema/domain-spec-c02.schema.json",
+  "$id": "https://ninfenz.local/schema/domain-spec-c02.schema.json",
   "title": "数据标注与标注质量 域口径表（机读投影）",
   "description": "assets/DOMAIN_SPEC.md 的机读投影契约；键集须与散文面双向一致（双源一致由 check32 output_forms 断言）。",
   "type": "object",

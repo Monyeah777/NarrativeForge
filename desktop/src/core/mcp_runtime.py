@@ -237,7 +237,7 @@ def template_matches(template: str, uri: str) -> bool:
 
 def _discover_instructions() -> str:
     """server/discover 的 instructions 位（可选自然语言自述，非协议语义）。"""
-    return ("NarrativeForge 只读内容服务：可枚举并取回 NF 仓库的模块/管线/资产正文"
+    return ("NinFenz 只读内容服务：可枚举并取回 NF 仓库的模块/管线/资产正文"
             "（resources + 只读 tools/prompts）。无写路径。")
 
 
@@ -732,7 +732,7 @@ TOOL_HANDLERS = {
 
 def _prompt_assemble_guide() -> str:
     return (
-        "你是 NarrativeForge 装配师。取件顺序：07_官方核心出厂与社区预设导航.md（包索引）→ "
+        "你是 NinFenz 装配师。取件顺序：07_官方核心出厂与社区预设导航.md（包索引）→ "
         "02_联动注册表.md（登记/依赖真相源）→ 01_核心协议.md（契约）→ 06_Agent执行协议.md。"
         "选装配包：community/<领域包>/README.md（含装载清单/资产/验收）。装配主规范："
         "agent_组装指令包_v0.2.md。输出完整版 md 自检过 "

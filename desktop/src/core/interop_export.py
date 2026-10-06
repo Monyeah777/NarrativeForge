@@ -159,7 +159,7 @@ def openapi_doc(root: str = ".") -> Dict[str, Any]:
         paths.setdefault(path, {})[method] = op
     return {
         "openapi": "3.1.0",
-        "info": {"title": "NarrativeForge 服务端点契约（派生）",
+        "info": {"title": "NinFenz 服务端点契约（派生）",
                  "version": "1.0.0",
                  "description": "由 protocol/endpoint_contract.json 实时派生（status=%s）；"
                                 "本文件非真源。" % contract.get("status", "")},
@@ -223,7 +223,7 @@ def asyncapi_doc(root: str = ".") -> Dict[str, Any]:
         }
     return {
         "asyncapi": "3.0.0",
-        "info": {"title": "NarrativeForge 事件登记（派生）", "version": "1.0.0",
+        "info": {"title": "NinFenz 事件登记（派生）", "version": "1.0.0",
                  "description": "由 protocol/event_registry.json + external_events.json "
                                 "实时派生；本文件非真源。"},
         "channels": channels,
@@ -248,7 +248,7 @@ def intoto_statement(root: str = ".") -> Dict[str, Any]:
     return {
         "_type": "https://in-toto.io/Statement/v1",
         "subject": subject,
-        "predicateType": "https://narrativeforge.dev/attestation/protocol-receipts/v1",
+        "predicateType": "https://ninfenz.dev/attestation/protocol-receipts/v1",
         "predicate": {
             "algorithm": rec.get("algorithm", ""),
             "root": rec.get("root", ""),
@@ -278,8 +278,8 @@ def sbom_doc(root: str = ".") -> Dict[str, Any]:
     except Exception:  # pragma: no cover - 登记面不可读即空表（门禁侧会报）
         hard, soft = {}, {}
     packages: List[Dict[str, Any]] = [{
-        "SPDXID": "SPDXRef-Package-narrativeforge",
-        "name": "NarrativeForge",
+        "SPDXID": "SPDXRef-Package-ninfenz",
+        "name": "NinFenz",
         "versionInfo": nf_version,
         "downloadLocation": "NOASSERTION",
         "licenseConcluded": LICENSE_NAME,
@@ -303,8 +303,8 @@ def sbom_doc(root: str = ".") -> Dict[str, Any]:
         "spdxVersion": "SPDX-2.3",
         "dataLicense": "CC0-1.0",
         "SPDXID": "SPDXRef-DOCUMENT",
-        "name": "narrativeforge-sbom",
-        "documentNamespace": "https://narrativeforge.dev/spdx/%s" % nf_version,
+        "name": "ninfenz-sbom",
+        "documentNamespace": "https://ninfenz.dev/spdx/%s" % nf_version,
         "creationInfo": {
             "creators": ["Tool: nf interop --kind sbom"],
             "created": ("%sT00:00:00Z" % _declared_max_date(root)) if _declared_max_date(root)
@@ -317,10 +317,10 @@ def sbom_doc(root: str = ".") -> Dict[str, Any]:
                    "score_baseline / provenance / approvals)（保确定性，非墙钟）。",
         "packages": packages,
         "relationships": ([{"spdxElementId": "SPDXRef-DOCUMENT",
-                            "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+                            "relatedSpdxElement": "SPDXRef-Package-ninfenz",
                             "relationshipType": "DESCRIBES"}]
                           + [{"spdxElementId": pkg,
-                              "relatedSpdxElement": "SPDXRef-Package-narrativeforge",
+                              "relatedSpdxElement": "SPDXRef-Package-ninfenz",
                               "relationshipType": rel} for pkg, rel in deps]),
     }
 
@@ -358,7 +358,7 @@ def slsa_provenance(root: str = ".") -> Dict[str, Any]:
         "predicateType": "https://slsa.dev/provenance/v1",
         "predicate": {
             "buildDefinition": {
-                "buildType": "https://narrativeforge.dev/buildtypes/local-gate/v1",
+                "buildType": "https://ninfenz.dev/buildtypes/local-gate/v1",
                 "externalParameters": {
                     "gate": "verify.sh",
                     "gateVersion": version,
@@ -371,7 +371,7 @@ def slsa_provenance(root: str = ".") -> Dict[str, Any]:
                                          for s in subjects],
             },
             "runDetails": {
-                "builder": {"id": "https://narrativeforge.dev/builder/verify-sh"},
+                "builder": {"id": "https://ninfenz.dev/builder/verify-sh"},
                 "metadata": {
                     "invocationId": str(rec.get("root") or "")[:16],
                     "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）",
@@ -437,12 +437,12 @@ def prov_document(root: str = ".") -> Dict[str, Any]:
              "nf:digest": str(t.get("digest") or "")})
     # ⑤ 代理：仓本体（软件代理）
     add({"@id": "nf:agent/verify-sh", "@type": "prov:SoftwareAgent",
-         "prov:label": "NarrativeForge verify.sh 门禁",
+         "prov:label": "NinFenz verify.sh 门禁",
          "nf:present": os.path.isfile(os.path.join(root, "verify.sh"))})
     graph = [nodes[k] for k in sorted(nodes)]
     return {
         "@context": {"prov": "http://www.w3.org/ns/prov#",
-                     "nf": "https://narrativeforge.dev/ns#"},
+                     "nf": "https://ninfenz.dev/ns#"},
         "schema": "nf-prov/1",
         "note": "由仓内声明件派生（资产 / 馆藏 / 消化记录 / 回执）；本文件非真源，"
                 "空面即如实为空。",
@@ -488,11 +488,11 @@ def cyclonedx_doc(root: str = ".") -> Dict[str, Any]:
         "version": 1,
         "metadata": {
             "timestamp": sbom.get("creationInfo", {}).get("created", ""),
-            "component": {"type": "application", "bom-ref": "pkg:nf/narrativeforge@%s"
+            "component": {"type": "application", "bom-ref": "pkg:nf/ninfenz@%s"
                           % sbom.get("packages", [{}])[0].get("versionInfo", "0.0.0"),
-                          "name": "NarrativeForge",
+                          "name": "NinFenz",
                           "licenses": [{"license": {"id": LICENSE_NAME}}]},
-            "tools": [{"vendor": "NarrativeForge", "name": "nf interop --kind cyclonedx",
+            "tools": [{"vendor": "NinFenz", "name": "nf interop --kind cyclonedx",
                        "version": "1.0.0"}],
             # CycloneDX 根级 additionalProperties=false（官方 meta-schema 实测拦下自定义键）
             # → 自述信息只许落在 metadata.properties 里
@@ -524,11 +524,11 @@ def vc_document(root: str = ".") -> Dict[str, Any]:
                 a = _read_json(root, os.path.join("protocol", "approvals", name))
                 if a:
                     approvals.append(a)
-    issuer = str((approvals[0].get("approved_by") if approvals else "") or "NarrativeForge")
+    issuer = str((approvals[0].get("approved_by") if approvals else "") or "NinFenz")
     valid_from = str((approvals[0].get("approved_at") if approvals else "") or "")
     return {
         "@context": ["https://www.w3.org/ns/credentials/v2",
-                     "https://narrativeforge.dev/ns/credentials/v1"],
+                     "https://ninfenz.dev/ns/credentials/v1"],
         "type": ["VerifiableCredential", "NfConformanceCredential"],
         "issuer": issuer,
         "validFrom": valid_from,
@@ -565,9 +565,9 @@ def c2pa_manifest(root: str = ".") -> Dict[str, Any]:
                            "data": {"alg": "sha256", "hash": str(sample.get("digest") or ""),
                                     "name": str(sample.get("path"))}})
     return {
-        "claim_generator": "NarrativeForge/1.0 (nf interop --kind c2pa)",
-        "claim_generator_info": [{"name": "NarrativeForge", "version": "1.0.0"}],
-        "title": "NarrativeForge 协议层内容清单",
+        "claim_generator": "NinFenz/1.0 (nf interop --kind c2pa)",
+        "claim_generator_info": [{"name": "NinFenz", "version": "1.0.0"}],
+        "title": "NinFenz 协议层内容清单",
         "format": "application/json",
         "assertions": assertions,
         "x-nf-package-status": "未封装（无 JUMBF/CBOR 容器）、未签名（无 X.509 证书链）——"
@@ -670,11 +670,11 @@ def a2a_agent_card(root: str = ".") -> Dict[str, Any]:
             "name": str(ep.get("id") or ""),
             "description": "maps_to %s（%s %s）" % (ep.get("maps_to"), ep.get("method"),
                                                     ep.get("path")),
-            "tags": ["narrativeforge", "content-contract"],
+            "tags": ["ninfenz", "content-contract"],
         })
     return {
         "protocolVersion": "0.2.5",
-        "name": "NarrativeForge",
+        "name": "NinFenz",
         "description": "内容契约层：装配 / 质检 / 图书馆 / 一致性报告（只读面）",
         "url": "urn:nf:repo",
         "preferredTransport": "stdio",
@@ -782,7 +782,7 @@ def _check_sbom(sb: dict, issues: List[str]) -> None:
     ids = [p.get("SPDXID") for p in _arr(sb.get("packages"))]
     if len(set(ids)) != len(ids):
         issues.append("SBOM 包 SPDXID 重复（修复指引：每依赖一个唯一 SPDXID）")
-    if not any(p.get("name") == "NarrativeForge" for p in _arr(sb.get("packages"))):
+    if not any(p.get("name") == "NinFenz" for p in _arr(sb.get("packages"))):
         issues.append("SBOM 缺本项目包（修复指引：SBOM 须自述本仓）")
     rels = _arr(sb.get("relationships"))
     if not [r for r in rels if r.get("relationshipType") == "DESCRIBES"]:
@@ -932,7 +932,7 @@ def _c2pa_hash(c2: dict) -> str:
 
 def _check_c2pa(c2: dict, issues: List[str]) -> None:
     """C2PA：claim_generator + hash.data 硬绑定 + 未封装状态注记。"""
-    if not str(c2.get("claim_generator") or "").startswith("NarrativeForge"):
+    if not str(c2.get("claim_generator") or "").startswith("NinFenz"):
         issues.append("C2PA 缺 claim_generator（修复指引：须自述生成器）")
     labels = {a.get("label") for a in _arr(c2.get("assertions"))}
     if "c2pa.hash.data" not in labels or "c2pa.actions" not in labels:

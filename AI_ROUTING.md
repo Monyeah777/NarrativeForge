@@ -40,5 +40,5 @@
 
 ## 取件基底
 
-- GitHub raw：`https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/`
-- Gitee raw（国内）：`https://gitee.com/monyeah777/narrative-forge/raw/main/`
+- GitHub raw：`https://raw.githubusercontent.com/Monyeah777/NinFenz/main/`
+- Gitee raw（国内）：`https://gitee.com/monyeah777/ninfenz/raw/main/`

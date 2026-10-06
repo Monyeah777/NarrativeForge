@@ -6,19 +6,19 @@ scope: 作者指令「遗留全部补上」——处置 AUD-0009 §五 列出的
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:e62c132448d12805177e17a45b8c1b51d0fc3717364800b39aa81c9345050d35
+  - verify.sh:34ced4d23abda17d95ededd2c75d49decf1a11cba64913c5c389c2eb7b859d54
   - desktop/src/core/transparency_log.py:6a3ccb12f5376304c0926e5d2a490f08d10bfc3ca3fa5a76623d9f017bd12796
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
-  - desktop/src/core/interop_export.py:02b7153b36f75bafe55c36015a2ddb3f1b51d35f90735f5911c1fb8bddd089b8
-  - desktop/src/core/ccv3_adapter.py:ba1b6ff2012ccbcc485c864736ae19a7d790096ed2461cf0d662a8ff9271a38f
+  - desktop/src/core/interop_export.py:520aaf0edb53d5ab679d3a1568c315f45ce8301ead3df90411e3e67572dc269a
+  - desktop/src/core/ccv3_adapter.py:ec9bfacffcb0dd6a73f88652a7273d631e40c4efd8cecfb00a5f0be831a511ad
   - desktop/src/core/export_schema.py:9052dc891be0c70ceb5b42544eceeceeeb4dee8c4f107b1ec660913cf922ad3d
-  - desktop/src/core/mcp_runtime.py:00e30d272b7badcf6698c10e17a635b0444f393f40883e547d6c9bdb27c6113e
-  - desktop/src/core/import_adapter.py:f5fb23d18e5d54eb561d48aee6d4556917de7cc63c1b0c33da6035e39222cbf7
-  - desktop/src/core/library.py:2b489a88fc209b551938d879be84a3c6d10d208e1a334ee2229adefa48f2a00a
+  - desktop/src/core/mcp_runtime.py:47e085e16cfa072250c098e918435a053004cd23d5592590dcec3f7d68e055bb
+  - desktop/src/core/import_adapter.py:d85c4bc3632106ad28d924ed0122834903eb6d7eddc614b661ab7fe3dfbef441
+  - desktop/src/core/library.py:e5a867a775bbab717c882250187578b7d057c51a233c334190e5179f903918bf
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
   - scripts/check_external_links.py:ce954ac27b7fdc632b48e68a8867361f3415b5e2920d4d4dfd2f306574a60909
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
-  - docs/external-validation-assets/E1_ccv3_sample_lightmix_P04_chara.json:528935dcf5be9caf69e25a88ec1637b64b8b725c51a539e1ede1d3a864dbcb45
+  - docs/external-validation-assets/E1_ccv3_sample_lightmix_P04_chara.json:a91f402cdf59faaab6808b64b00c1874cb7cc6c8df4d44fbb5379be7736b8edb
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
 
 ---

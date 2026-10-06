@@ -40,11 +40,11 @@ STATUSES = ("active", "deprecated", "superseded")
 #: 镜像前缀（双端；raw = 喂 AI，blob = 给人点开）
 MIRRORS = (
     {"id": "github", "label": "GitHub（海外）",
-     "raw": "https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/",
-     "blob": "https://github.com/Monyeah777/NarrativeForge/blob/main/"},
+     "raw": "https://raw.githubusercontent.com/Monyeah777/NinFenz/main/",
+     "blob": "https://github.com/Monyeah777/NinFenz/blob/main/"},
     {"id": "gitee", "label": "Gitee（国内直连 · 主入口）",
-     "raw": "https://gitee.com/monyeah777/narrative-forge/raw/main/",
-     "blob": "https://gitee.com/monyeah777/narrative-forge/blob/main/"},
+     "raw": "https://gitee.com/monyeah777/ninfenz/raw/main/",
+     "blob": "https://gitee.com/monyeah777/ninfenz/blob/main/"},
 )
 
 _DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")

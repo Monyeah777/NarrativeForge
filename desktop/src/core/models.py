@@ -1,6 +1,6 @@
 """核心数据模型：Module / Pipeline / AssetPack / Preset。
 
-对齐 NarrativeForge 协议与桌面工具指令集 3.3-3.5 的数据结构。
+对齐 NinFenz 协议与桌面工具指令集 3.3-3.5 的数据结构。
 """
 from __future__ import annotations
 

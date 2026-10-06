@@ -1242,7 +1242,7 @@ def domain_spec_schema(spec: Dict[str, Any]) -> str:
     code = spec["code"]
     return json.dumps({
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://narrativeforge.local/schema/domain-spec-%s.schema.json" % code.lower(),
+        "$id": "https://ninfenz.local/schema/domain-spec-%s.schema.json" % code.lower(),
         "title": "%s 域口径表（机读投影）" % spec["name"],
         "description": "assets/DOMAIN_SPEC.md 的机读投影契约；键集须与散文面双向一致（双源一致由 "
                        "check32 output_forms 断言）。",
@@ -1330,7 +1330,7 @@ def report_schema(spec: Dict[str, Any]) -> str:
     code = spec["code"]
     return json.dumps({
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://narrativeforge.local/schema/domain-report-%s.schema.json" % code.lower(),
+        "$id": "https://ninfenz.local/schema/domain-report-%s.schema.json" % code.lower(),
         "title": "%s 域报告（可复算）" % spec["name"],
         "description": "样例集上的口径值报告（T4）：由 outputs/samples/CASES.csv 经 "
                        "core/domain_metrics 重算并逐字段比对。**非模型能力声明**。",
@@ -1351,7 +1351,7 @@ def report_schema(spec: Dict[str, Any]) -> str:
 
 SYSTEM_CARD_SCHEMA_JSON = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://narrativeforge.local/schema/domain-system-card.schema.json",
+    "$id": "https://ninfenz.local/schema/domain-system-card.schema.json",
     "title": "域包系统卡（模型无关的机验形态）",
     "description": "机制借鉴 Model Cards / Datasheets / NIST AI RMF 的字段面（取机制，不引外部文本背书）："
                    "把「这个域包是什么 / 能做什么 / 不能做什么 / 怎么验的」写成有 schema 的数据。",

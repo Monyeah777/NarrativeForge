@@ -1,8 +1,8 @@
-# NarrativeForge · ドキュメント生成工房（仕様駆動）
+# NinFenz · ドキュメント生成工房（仕様駆動）
 
 <!-- nf:locales --> 语言 / Languages：[中文](README.md) · [English](README.en.md) · **日本語**
 
-[![ゲート ci-verify](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NarrativeForge/actions/workflows/ci-verify.yml)
+[![ゲート ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
 
 **NF ターミナル（TUI）** —— 全画面の人間向け入口（標準ライブラリのみ）。メニューと各アクションは `nf` CLI の実コマンドの制御された呼び出し元です。キー操作は一流ターミナルの慣例に従います（`Tab` でパネル切替、`↑↓` で移動、`/` で絞り込み、`?` でキー一覧）。詳細は [tui/README.md](tui/README.md) を参照。
 
@@ -10,7 +10,7 @@
 
 NF は**コンテンツ契約層（content contract layer）**です——「AI が長文コンテンツを安定して産出する」ためのプロトコル・品質ゲート・資産基準を定義します。プロトコル自体はドメイン中立・モデル非依存です。
 
-**別名と検索語**：NF · NarrativeForge · 叙事工坊 · コンテンツ契約層（content contract layer）· 仕様駆動のコンテンツ工場 · 長文生成プロトコル · 組立型コンテンツ生産 · モジュール／パイプライン／資産 · 品質ゲート · ドメインパック · MCP 接続。
+**別名と検索語**：NF · NinFenz · 宁封子 · コンテンツ契約層（content contract layer）· 仕様駆動のコンテンツ工場 · 長文生成プロトコル · 組立型コンテンツ生産 · モジュール／パイプライン／資産 · 品質ゲート · ドメインパック · MCP 接続。
 
 **そうではないもの**：モデルではなく、プロンプトテンプレート集でもなく、特定ベンダーの SDK でもありません——プロトコル本体はドメイン中立・モデル非依存で、MCP は接続可能なプロトコルの一つにすぎません。
 

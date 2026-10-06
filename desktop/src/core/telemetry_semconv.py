@@ -65,7 +65,7 @@ def call_id_of(record: Dict[str, Any]) -> str:
 
 
 def attributes_for(record: Dict[str, Any],
-                   agent_name: str = "narrativeforge") -> Dict[str, Any]:
+                   agent_name: str = "ninfenz") -> Dict[str, Any]:
     """单条 trace 记录 → semconv 属性 dict（未提供的字段不杜撰）。"""
     attrs: Dict[str, Any] = {
         A_OPERATION: OP_EXECUTE_TOOL,
@@ -86,7 +86,7 @@ def attributes_for(record: Dict[str, Any],
 
 
 def to_span(record: Dict[str, Any], span_id: str = "",
-            agent_name: str = "narrativeforge") -> Dict[str, Any]:
+            agent_name: str = "ninfenz") -> Dict[str, Any]:
     """trace 记录 → OTLP 形状 span（无 trace 时间戳：timeUnixNano 留空由采集方外套）。"""
     name = "%s %s" % (OP_EXECUTE_TOOL, tool_name_of(record))
     return {
@@ -117,12 +117,12 @@ def _otlp_value(value: Any) -> Dict[str, Any]:
 
 
 def to_export(records: List[Dict[str, Any]],
-              agent_name: str = "narrativeforge") -> Dict[str, Any]:
+              agent_name: str = "ninfenz") -> Dict[str, Any]:
     """trace 记录集 → OTLP 形状 JSON（resourceSpans → scopeSpans → spans）。"""
     spans = [to_span(r, agent_name=agent_name) for r in records]
     return {"resourceSpans": [{
         "resource": {"attributes": [
-            {"key": "service.name", "value": {"stringValue": "narrativeforge"}},
+            {"key": "service.name", "value": {"stringValue": "ninfenz"}},
         ]},
         "scopeSpans": [{
             "scope": {"name": SCOPE_NAME, "version": SCOPE_VERSION},

@@ -57,11 +57,11 @@
       "translations": {
         "en": {
           "path": "docs/en/mcp.md",
-          "source_sha256": "cffaae148e5bd7d33f5257eb57fb1668625db20ddf62d6698c643990c288c0f1"
+          "source_sha256": "b6680ab1534c717008813793450af6f30791b9f3ccd5c2594b33f2a979a39896"
         },
         "ja": {
           "path": "docs/ja/mcp.md",
-          "source_sha256": "cffaae148e5bd7d33f5257eb57fb1668625db20ddf62d6698c643990c288c0f1"
+          "source_sha256": "b6680ab1534c717008813793450af6f30791b9f3ccd5c2594b33f2a979a39896"
         }
       }
     },

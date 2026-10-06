@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""NarrativeForge 终端 TUI（nf-tui）——端壳退役后的全屏人机入口。
+"""NinFenz 终端 TUI（nf-tui）——端壳退役后的全屏人机入口。
 
 定位
 ----
@@ -452,7 +452,7 @@ CREDENTIAL_ENV = ("NF_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY")
 
 #: 找不到仓库时的统一指引（`--json` / 非交互 / 全屏演示模式三处共用同一份文案）
 NO_REPO_MSG = (
-    "未发现 NarrativeForge 仓库（需要 verify.sh 与 scripts/nf.py 同时在场）。\n"
+    "未发现 NinFenz 仓库（需要 verify.sh 与 scripts/nf.py 同时在场）。\n"
     "  修复指引：在仓库内运行，或用 --root <目录> / 环境变量 NF_ROOT 指定；\n"
     "            `--demo` / `--selftest` / `--list-actions` 不需要仓库，可直接跑。"
 )
@@ -1096,7 +1096,7 @@ def render_lines(ui: Ui, width=100, height=30) -> list:
     w, h, split = lay["w"], lay["h"], lay["split"]
     clamp_ui(ui, lay)
     rows = []
-    head = " NF TUI v%s · NarrativeForge 内容契约层 " % VERSION
+    head = " NF TUI v%s · NinFenz 内容契约层 " % VERSION
     rows.append(("┌%s┐" % (head + "─" * max(0, w - 2 - display_width(head))), "frame"))
     scope = ui.zone_filter or ui.action_filter
     left = "%s · 能力区 %d" % (("仓库 %s" % ui.repo) if ui.repo else "未发现仓库（演示模式）",
@@ -1565,7 +1565,7 @@ def selftest(root: Path | None = None, python: str | None = None) -> tuple:
 
 def demo_frame(width: int = 100, height: int = 30) -> list:
     """演示帧：固定输入 → 固定输出（README 顶部的终端演示即由它生成）。"""
-    ui = Ui(root=None, repo="NarrativeForge", demo=True, notice="就绪（0 项待办）")
+    ui = Ui(root=None, repo="NinFenz", demo=True, notice="就绪（0 项待办）")
     ui.focus = FOCUS_ACTIONS
     set_output(ui, [
         "❯ nf doctor   （退出码 0 · 0.42s）",
@@ -1580,7 +1580,7 @@ def demo_frame(width: int = 100, height: int = 30) -> list:
 # --------------------------------------------------------------------------- #
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="nf-tui", description="NarrativeForge 终端 TUI（全屏人机入口；命令真源仍是 nf CLI）",
+        prog="nf-tui", description="NinFenz 终端 TUI（全屏人机入口；命令真源仍是 nf CLI）",
         epilog="退出码：0 成功 · 1 运行失败 · 2 用法错误 · 3 安全拒跑 · 4 环境错误 · 130 中断")
     p.add_argument("--version", action="version", version="%s %s" % (APP, VERSION))
     p.add_argument("--root", default=None, help="仓库根（缺省自动发现）")

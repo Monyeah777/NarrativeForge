@@ -1,6 +1,6 @@
 ---
 name: 🐛 缺陷上报
-about: 提交缺陷帮助改进 NarrativeForge
+about: 提交缺陷帮助改进 NinFenz
 title: '[BUG] '
 labels: bug
 assignees: ''

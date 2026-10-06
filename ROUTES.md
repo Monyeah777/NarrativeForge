@@ -1,6 +1,6 @@
 # 🧭 NF 云端导购 · URL 路由表（AI 接待员手册 v1）
 
-> **本文件是「NarrativeForge 云端公共线」的导购中枢**：任何 AI 收到用户直贴的项目地址后，读本表即可扮演 NF 接待员——用户说一句自然语言需求，你查表拼链接，给结果或给直达链接。
+> **本文件是「NinFenz 云端公共线」的导购中枢**：任何 AI 收到用户直贴的项目地址后，读本表即可扮演 NF 接待员——用户说一句自然语言需求，你查表拼链接，给结果或给直达链接。
 > 配套文件：`README.md`（⚡ AI 入口段 + 📚 图书馆段）、`library/INDEX.md`（馆藏目录）、`library/ALIAS.md`（编号大小写转译）。
 > 更新：2026-09-07 · 云端公共线（Y 线）。
 
@@ -8,34 +8,34 @@
 
 | 形态 | GitHub（海外） | Gitee（国内直连 · 主入口） |
 |---|---|---|
-| 网页主页 | `https://github.com/Monyeah777/NarrativeForge` | `https://gitee.com/monyeah777/narrative-forge` |
-| 网页文件（给人点开看） | `https://github.com/Monyeah777/NarrativeForge/blob/main/{路径}` | `https://gitee.com/monyeah777/narrative-forge/blob/main/{路径}` |
-| **raw 原文（喂给 AI 读）** | `https://raw.githubusercontent.com/Monyeah777/NarrativeForge/main/{路径}` | `https://gitee.com/monyeah777/narrative-forge/raw/main/{路径}` |
-| 目录浏览 | `https://github.com/Monyeah777/NarrativeForge/tree/main/{路径}` | `https://gitee.com/monyeah777/narrative-forge/tree/main/{路径}` |
+| 网页主页 | `https://github.com/Monyeah777/NinFenz` | `https://gitee.com/monyeah777/ninfenz` |
+| 网页文件（给人点开看） | `https://github.com/Monyeah777/NinFenz/blob/main/{路径}` | `https://gitee.com/monyeah777/ninfenz/blob/main/{路径}` |
+| **raw 原文（喂给 AI 读）** | `https://raw.githubusercontent.com/Monyeah777/NinFenz/main/{路径}` | `https://gitee.com/monyeah777/ninfenz/raw/main/{路径}` |
+| 目录浏览 | `https://github.com/Monyeah777/NinFenz/tree/main/{路径}` | `https://gitee.com/monyeah777/ninfenz/tree/main/{路径}` |
 
 ## 二、功能后缀路由表（前缀 + 后缀 = 完整链接）
 
 | 用户需求 | 后缀（{路径} 处） | 完整示例（Gitee raw 形态） |
 |---|---|---|
-| 读馆藏目录 / 导购 | `library/INDEX.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/library/INDEX.md` |
-| **机器入口清单（首选）** | `llms.txt` | `https://gitee.com/monyeah777/narrative-forge/raw/main/llms.txt` |
-| 编号大小写拿不准 | `library/ALIAS.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/library/ALIAS.md` |
-| 取指定编号作品 | `library/{编号}.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/library/NF-WORLDCAMPUS-Monyeah777-1.md` |
-| 投稿（写入口） | `issues/new` | `https://gitee.com/monyeah777/narrative-forge/issues/new` |
-| 看投稿动态 / 公告 | `issues` | `https://gitee.com/monyeah777/narrative-forge/issues` |
-| 读协议规则入口 | `README.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/README.md` |
-| 读本路由表 | `ROUTES.md` | `https://gitee.com/monyeah777/narrative-forge/raw/main/ROUTES.md` |
+| 读馆藏目录 / 导购 | `library/INDEX.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/library/INDEX.md` |
+| **机器入口清单（首选）** | `llms.txt` | `https://gitee.com/monyeah777/ninfenz/raw/main/llms.txt` |
+| 编号大小写拿不准 | `library/ALIAS.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/library/ALIAS.md` |
+| 取指定编号作品 | `library/{编号}.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/library/NF-WORLDCAMPUS-Monyeah777-1.md` |
+| 投稿（写入口） | `issues/new` | `https://gitee.com/monyeah777/ninfenz/issues/new` |
+| 看投稿动态 / 公告 | `issues` | `https://gitee.com/monyeah777/ninfenz/issues` |
+| 读协议规则入口 | `README.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/README.md` |
+| 读本路由表 | `ROUTES.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/ROUTES.md` |
 
 > **实测备注（2026-09-07）**：raw 形态双镜像全 200（AI 通道可靠）；Gitee 网页形态（blob/tree/issues 页）对程序化访问返回 405/401（反爬/登录策略）——**网页形态仅供人用浏览器打开，程序/AI 一律走 raw**。
 
-> GitHub 投稿开题可带模板直达：`https://github.com/Monyeah777/NarrativeForge/issues/new?template=library_submission.md`（仅 GitHub 支持该参数；Gitee 不支持，开题后选模板即可）。
+> GitHub 投稿开题可带模板直达：`https://github.com/Monyeah777/NinFenz/issues/new?template=library_submission.md`（仅 GitHub 支持该参数；Gitee 不支持，开题后选模板即可）。
 
 ## 三、接待菜单（用户贴地址后，开场回复的结构）
 
 用户丢来项目地址（GitHub 或 Gitee 均可，镜像互通）并说了一句话 → 先给菜单再执行（用户直接说需求则跳过菜单）：
 
 ```
-🧭 这是 NarrativeForge 云端公共线——我能帮你：
+🧭 这是 NinFenz 云端公共线——我能帮你：
 ① 🎮 组装新世界 —— 给我需求，按协议装配完整版世界文档
 ② 🎁 取馆藏作品 —— 报 NF 编号，直达原文
 ③ 🔍 描述需求找作品 —— 说题材/场景，我查馆藏推荐

@@ -1,13 +1,13 @@
-"""存储层：~/.NarrativeForge 目录管理（config/modules/assets/presets/cache）。目录结构（指令集 3.2）：
+"""存储层：~/.NinFenz 目录管理（config/modules/assets/presets/cache）。目录结构（指令集 3.2）：
 
-~/.NarrativeForge/
+~/.NinFenz/
 ├── config.json          # 工具配置（管线选择、激活资产包）
 ├── modules/<分类>/<id_名称>/module.json + source.md
 ├── assets/<包名>/asset.json
 ├── presets/<预设名>.json
 └── cache/community_index.json
 
-NF_HOME 默认 ~/.NarrativeForge，可用环境变量 NARRATIVE_FORGE_HOME 覆盖（测试友好）。
+NF_HOME 默认 ~/.NinFenz，可用环境变量 NARRATIVE_FORGE_HOME 覆盖（测试友好）。
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ def default_home() -> Path:
     env = os.environ.get(ENV_HOME)
     if env:
         return Path(env).expanduser()
-    return Path.home() / ".NarrativeForge"
+    return Path.home() / ".NinFenz"
 
 
 class Store:
@@ -91,7 +91,7 @@ class Store:
             return ""                      # 已忽略：仓库自己的 `.rivet/scratch/…` 约定
         return ("--store 落在**仓库内**且未被 .gitignore 覆盖：%s（修复指引：NF_HOME 是**用户态**"
                 "工作区，会建 modules/assets/presets/cache 四个目录——请指到仓库外（缺省 = "
-                "~/.NarrativeForge），或落到已有的忽略面（如 .rivet/scratch/<名字>）；"
+                "~/.NinFenz），或落到已有的忽略面（如 .rivet/scratch/<名字>）；"
                 "确实要在仓库内长期存放，请先把该路径写进 .gitignore）" % self.home)
 
     # ---------- 基础 ----------

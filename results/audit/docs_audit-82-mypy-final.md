@@ -15,7 +15,7 @@ subjects:
   - desktop/src/core/knowledge_sig.py:2e1177ae8701b38cff3b26e92892b3cbef4a347a48b986dd8b1f95934f60323b
   - desktop/src/core/output_forms.py:4981ef6aea157be3d26754b4eade7a40340fd235795c50ba50fe193642cd5ea8
   - desktop/src/core/pipeline_loader.py:4c58b842a8b79abdce6917305f8f5c307e4334cfa377cb3dc1b9d6f226871588
-  - desktop/src/core/community_inventory.py:88659eb0df649794d4fcfaab2f0fb894ba53c190f3e57ed8b661cdca2216d7a0
+  - desktop/src/core/community_inventory.py:336add53e061938a937fe9775edda5b2df459d2492dcb52f154409965d87f341
   - desktop/src/core/retriever.py:1bab0db39be26c025e37cecab19e65d8fb439140f3bb224e869b771666c777fd
   - desktop/src/core/lazy_yaml.py:19df29d70c5a694ae63527f46e4537b041cd2b889baca358e6262b4dad0e151b
   - desktop/src/core/json_schema.py:6de58ac9c73b5165d2bcd924fe7f8210e1f5cd6907b26085f8b89e566497f9da
@@ -26,8 +26,8 @@ subjects:
   - desktop/src/core/layer_model.py:4b09c50a53884d1e3a5ed5541e42cc4bf8499bc031d5e00eebf38bc66c9b40d1
   - desktop/src/core/import_graph.py:929b6cdff4715dc4b007bbcd273cee5581fc6744ed5abcd90157c4cfef0a80b0
   - desktop/src/core/bench.py:a66769543e0a4546ec52d869baa326916a996748f86a4798ca1dd0f238c70153
-  - desktop/src/core/import_adapter.py:f5fb23d18e5d54eb561d48aee6d4556917de7cc63c1b0c33da6035e39222cbf7
-  - desktop/src/core/daemon.py:ac60f99e9b2e8d72d568884bc4e3840f1b69bff9fa8f9a0647c155f4f85948af
+  - desktop/src/core/import_adapter.py:d85c4bc3632106ad28d924ed0122834903eb6d7eddc614b661ab7fe3dfbef441
+  - desktop/src/core/daemon.py:bbc51933d74825f6b0b7f90b72e637cda8ce0c50eba56bd9053cba679e80d48f
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/exporter.py:d396f742ccf012331c855c4f52f0925daebc6100cadff30d4e1f510a9dff4c04
   - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68

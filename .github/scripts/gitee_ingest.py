@@ -39,8 +39,8 @@ from library_ingest import (to_b36, parse_nfname, scan_existing,
                             secret_shape_hit, injection_probe, MAX_BODY_CHARS)
 
 GITEE_OWNER = 'monyeah777'
-GITEE_REPO = 'narrative-forge'
-GH_REPO = os.environ.get('REPO', 'Monyeah777/NarrativeForge')
+GITEE_REPO = 'ninfenz'
+GH_REPO = os.environ.get('REPO', 'Monyeah777/NinFenz')
 TOKEN = os.environ.get('GITEE_TOKEN', '')
 DRY = os.environ.get('DRY_RUN', '') == '1'
 MAX_SEG = 16

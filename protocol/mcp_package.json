@@ -14,9 +14,9 @@
   ],
   "pending": [],
   "package": {
-    "name": "NarrativeForge Content Gate",
+    "name": "NinFenz Content Gate",
     "one_liner": "给任何 AI agent 一个可校验的内容规范与资产底座——先查契约，再落笔。",
-    "name_candidates": ["NarrativeForge Content Gate", "NF 内容质检面", "NF Spec Gate"],
+    "name_candidates": ["NinFenz Content Gate", "NF 内容质检面", "NF Spec Gate"],
     "one_liner_candidates": [
       "给任何 AI agent 一个可校验的内容规范与资产底座——先查契约，再落笔。",
       "把长内容的验收标准变成 agent 可调用的只读工具面。"
