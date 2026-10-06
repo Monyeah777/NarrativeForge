@@ -4,8 +4,8 @@
 
 ## 关键页
 
-- [中文主页](https://ninfenz.1764861918.workers.dev/): 定义、可引用事实、五分钟上手、对比表、FAQ
-- [English home](https://ninfenz.1764861918.workers.dev/en/): definition, citable facts, quickstart, comparison, FAQ
+- [中文主页](https://monyeah777.github.io/NinFenz/): 定义、可引用事实、五分钟上手、对比表、FAQ
+- [English home](https://monyeah777.github.io/NinFenz/en/): definition, citable facts, quickstart, comparison, FAQ
 - [仓库（canonical）](https://github.com/Monyeah777/NinFenz): 协议件、门禁、资产库
 - [仓库 llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt): agent 清单（权威机器入口）
 
