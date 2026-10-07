@@ -39,6 +39,8 @@ jobs:
         run: bash verify.sh
       - name: 站点数字与真源同步（site/tools/sync-numbers.mjs：站点发布旧数字即红）
         run: node site/tools/sync-numbers.mjs
+      - name: 站点离线体检（site-check.mjs --offline：JSON-LD / 机器面在场 / 抓取规则 / 无旧基址）
+        run: node site/tools/site-check.mjs --offline
       - name: 门禁机器可读报告（静态可核验面：落盘 + 新鲜度校验 + 留工件）
         run: |
           python scripts/verify_report.py --write

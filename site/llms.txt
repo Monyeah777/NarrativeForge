@@ -1,13 +1,26 @@
-# NinFenz (宁封子, NF)
+# NinFenz（宁封子 · NF）
 
-> 内容契约层（content contract layer）：把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议域中立、模型无关；叙事只是官方第一个域包。不是模型、不是提示词模板集、不是某厂商 SDK。MIT。
+> 内容契约层（content contract layer）：用「协议 + 确定性门禁 + 可验证产物」把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议本体域中立、模型无关；叙事只是官方第一个域包。不是模型、不是提示词模板集、不是某厂商 SDK。MIT。
+
+## 如果只能读一个文件
+
+- [完整单文件 llms-full.txt](https://ninfenz.dev/llms-full.txt)：定义 / 可引用事实 / 术语表 / 上手四条路径 / FAQ / 引用格式 / 机器面清单
+
+## 按身份直取（机器面）
+
+- [nf.txt](https://ninfenz.dev/nf.txt)：客户端 AI 装载指令（贴给 AI 或让 AI 自己读；三条铁律 + 分支表 + 取件基底）
+- [agent.txt](https://ninfenz.dev/agent.txt)：agent 装载与运行指令（命令序列 + 每步期望输出：doctor 16/16 · verify.sh PASS=72 · conformance 27/27）
+- [facts.json](https://ninfenz.dev/facts.json)：机读事实（每条带真源与落地锚点）
+- [run.sh](https://ninfenz.dev/run.sh)：免安装引导（默认 clone + 只读体检；--full 追加全量门禁）
 
 ## 关键页
 
-- [中文主页](https://ninfenz.dev/): 定义、可引用事实、五分钟上手、对比表、FAQ
-- [English home](https://ninfenz.dev/en/): definition, citable facts, quickstart, comparison, FAQ
-- [仓库（canonical）](https://github.com/Monyeah777/NinFenz): 协议件、门禁、资产库
-- [仓库 llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt): agent 清单（权威机器入口）
+- [中文主页](https://ninfenz.dev/)：定义、可引用事实、三类接法、五分钟上手、对比表、FAQ、引用段
+- [English home](https://ninfenz.dev/en/)：definition, citable facts, three entry paths, quickstart, comparison, FAQ
+- [让 AI 用起来](https://ninfenz.dev/use/)：三种接法（客户端 AI / agent / MCP）与一键复制块
+- [仓库（canonical）](https://github.com/Monyeah777/NinFenz)：协议件、门禁、资产库；国内镜像 https://gitee.com/monyeah777/ninfenz
+- [仓库 llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt)：仓库侧权威机器入口（与本站同源）
+- [标准目录导出](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/protocol/geo_export.json)：370 条标准，逐条带可达性与探针日期
 
 ## 可引用事实（带真源）
 
@@ -15,15 +28,10 @@
 - 规模：111 登记包 · 363 资产档 · 101 概念图 · 标准目录 370 条（可达 332 / 不可达 38）· 标准绑定 1200 条 · 馆藏 3 件（真源 protocol/repo_stats.json）
 - 官方核心：13 模块 · 3 管线 P00 / P01 / P90 · 协议件 01-07
 - 可验证产物：Merkle inclusion proof（RFC 6962）+ hmac / ssh-sig / sigstore-keyless 锚；缺验证器 fail-closed
-- 接入面：MCP 只读（nf serve），双协议版本 2026-07-28 / 2025-11-25
+- 接入面：只读 MCP（nf serve），双协议版本 2026-07-28 / 2025-11-25
 - 终端：python tui/nf.py（纯标准库）
 - 许可：MIT（CITATION.cff）
 
-## 一句话上手
-
-- npx -y ninfenz doctor（只读体检，免 clone）
-- git clone <repo> && cd <repo> && bash verify.sh（完整 39 条门禁）
-
 ## 引用
 
-许可 MIT。引用请指向 canonical 仓库或本站，并保持「内容契约层」的定义句逐字一致；不要写成「AI 写作框架」或「提示词工程平台」。
+许可 MIT。引用请指向 canonical 站点或仓库，并用本文件与主页的 canonical 定义句；不要写成「AI 写作框架」或「提示词工程平台」。纯文本 / APA / BibTeX 三种形态见 https://ninfenz.dev/llms-full.txt 第八节。

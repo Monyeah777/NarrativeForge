@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>宁封子 NinFenz · 内容契约层（content contract layer）</title>
-<meta name="description" content="宁封子（NinFenz，简称 NF）是内容契约层：把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议域中立、模型无关；39 条确定性门禁 + Merkle 证明与签名锚，MIT、可离线。">
+<meta name="description" content="宁封子（NinFenz，简称 NF）是内容契约层：用「协议 + 确定性门禁 + 可验证产物」把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议域中立、模型无关；check1-40 确定性门禁 · PASS=72 · Merkle 证明与签名锚；MIT、可离线。">
 <link rel="canonical" href="https://ninfenz.dev/">
 <link rel="alternate" hreflang="zh-CN" href="https://ninfenz.dev/">
 <link rel="alternate" hreflang="en" href="https://ninfenz.dev/en/">
 <link rel="alternate" hreflang="x-default" href="https://ninfenz.dev/">
+<link rel="describedby" href="llms.txt" type="text/plain" title="llms.txt">
+<link rel="alternate" href="llms-full.txt" type="text/plain" title="llms-full.txt（完整单文件）">
+<link rel="license" href="https://opensource.org/license/mit">
 <meta property="og:type" content="website">
 <meta property="og:title" content="宁封子 NinFenz · 内容契约层">
 <meta property="og:description" content="协议 + 确定性门禁 + 可验证产物。不是模型，不是提示词模板集，不是厂商 SDK。MIT、离线可跑。">
@@ -24,31 +27,128 @@
       "@type": "SoftwareApplication",
       "@id": "https://ninfenz.dev/#software",
       "name": "NinFenz",
-      "alternateName": ["宁封子", "NF"],
+      "alternateName": [
+        "宁封子",
+        "NF"
+      ],
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Windows, macOS, Linux",
       "license": "https://opensource.org/license/mit",
       "codeRepository": "https://github.com/Monyeah777/NinFenz",
+      "sameAs": [
+        "https://github.com/Monyeah777/NinFenz",
+        "https://gitee.com/monyeah777/ninfenz"
+      ],
       "programmingLanguage": "Python",
-      "description": "内容契约层：把 AI 稳定产出长内容变成可装载、可质检、可复现的工程。协议域中立、模型无关。",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      "softwareVersion": "1.0.0",
+      "description": "内容契约层：用「协议 + 确定性门禁 + 可验证产物」把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议域中立、模型无关。不是模型、不是提示词模板集、不是厂商 SDK。",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ninfenz.dev/#website",
+      "url": "https://ninfenz.dev/",
+      "name": "NinFenz（宁封子）",
+      "alternateName": "NF",
+      "inLanguage": [
+        "zh-CN",
+        "en"
+      ],
+      "publisher": {
+        "@id": "https://ninfenz.dev/#person"
+      },
+      "about": {
+        "@id": "https://ninfenz.dev/#software"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://ninfenz.dev/#person",
+      "name": "Monyeah777",
+      "url": "https://github.com/Monyeah777"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://ninfenz.dev/#term",
+      "name": "内容契约层",
+      "alternateName": "content contract layer",
+      "description": "用协议 + 确定性门禁 + 可验证产物定义「AI 稳定产出长内容」的工程层，使产出可装载、可质检、可复现；门禁管结构与可复现，不管文笔好坏。",
+      "inDefinedTermSet": {
+        "@id": "https://ninfenz.dev/#software"
+      }
     },
     {
       "@type": "FAQPage",
       "@id": "https://ninfenz.dev/#faq",
       "mainEntity": [
-        { "@type": "Question", "name": "宁封子 NinFenz 是什么？",
-          "acceptedAnswer": { "@type": "Answer", "text": "内容契约层（content contract layer）：用协议 + 确定性质量门 + 资产标准定义「AI 稳定产出长内容」，使产出可装载、可质检、可复现。" } },
-        { "@type": "Question", "name": "它是模型吗？",
-          "acceptedAnswer": { "@type": "Answer", "text": "不是。协议本体模型无关，任何能读文本的 AI 都能按协议装配与装载；叙事只是官方第一个域包。" } },
-        { "@type": "Question", "name": "和提示词模板集有什么区别？",
-          "acceptedAnswer": { "@type": "Answer", "text": "模板只给文本；NinFenz 给的是协议 + 可核验门禁 + 资产台账，产出可被判合格与否，并与冻结基线 diff。" } },
-        { "@type": "Question", "name": "必须联网吗？",
-          "acceptedAnswer": { "@type": "Answer", "text": "不必。仓库即 markdown 源件，bash verify.sh 只读本地，可离线运行。" } },
-        { "@type": "Question", "name": "产出可验证吗？",
-          "acceptedAnswer": { "@type": "Answer", "text": "可。产物带 Merkle inclusion proof（RFC 6962），并可挂 hmac / ssh-sig / sigstore-keyless 签名锚；缺验证器时 fail-closed。" } },
-        { "@type": "Question", "name": "许可与费用？",
-          "acceptedAnswer": { "@type": "Answer", "text": "MIT，无付费版、无托管服务；CITATION.cff 提供机读引用元数据。" } }
+        {
+          "@type": "Question",
+          "name": "宁封子 NinFenz 是什么？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "内容契约层（content contract layer）：用协议 + 确定性门禁 + 可验证产物定义「AI 稳定产出长内容」，使产出可装载、可质检、可复现。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "它是模型吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "不是。协议本体模型无关，任何能读文本的 AI 都能按协议装配与装载；叙事只是官方第一个域包。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "和提示词模板集有什么区别？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "模板只给文本；NinFenz 给协议 + 可核验门禁 + 资产台账，产出可被判合格与否，并与冻结基线 diff。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "必须联网吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "不必。仓库即 markdown 源件，bash verify.sh 只读本地，可离线运行。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "产出可验证吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "可。产物带 Merkle inclusion proof（RFC 6962），并可挂 hmac / ssh-sig / sigstore-keyless 签名锚；缺验证器时 fail-closed。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "怎么让我的 AI 客户端直接用它？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "让客户端读 https://ninfenz.dev/nf.txt 并按它执行；有本地检出时改走只读 MCP：python scripts/nf.py serve。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "国内网络怎么取件？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "用 Gitee 镜像 https://gitee.com/monyeah777/ninfenz ，或直接用本站机器面（本站托管在 Cloudflare，国内可直连）。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "许可与费用？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MIT，无付费版、无托管服务。"
+          }
+        }
       ]
     }
   ]
@@ -59,12 +159,20 @@
 <div class="wrap">
 <header class="top">
   <div class="brand">宁封子 <small>NinFenz · NF</small></div>
-  <nav><a href="en/">English</a><a href="https://github.com/Monyeah777/NinFenz">GitHub</a><a href="#faq">FAQ</a></nav>
+  <nav><a href="use/">让 AI 用</a><a href="en/">English</a><a href="https://github.com/Monyeah777/NinFenz">GitHub</a><a href="#faq">FAQ</a></nav>
 </header>
 
 <h1>内容契约层：让 AI 长内容可装载、可质检、可复现</h1>
 <p class="lede sub">宁封子（NinFenz，简称 NF）是<strong>内容契约层（content contract layer）</strong>：把「AI 稳定产出长内容」变成工程。协议本体<strong>域中立、模型无关</strong>；叙事只是官方第一个域包。</p>
 <p class="not">不是模型 · 不是提示词模板集 · 不是某厂商 SDK · MIT · 可离线</p>
+
+<h2>三种接法（按你的身份选）</h2>
+<div class="card">
+<p><strong>客户端 AI</strong>（零安装）：让它读 <a href="nf.txt">/nf.txt</a> 并按它执行。装载指令 = 三条铁律 + 分支表 + 取件基底；读不动链接就把要点整段粘过去。</p>
+<p><strong>agent</strong>（在本地跑通整个项目）：按 <a href="agent.txt">/agent.txt</a> 执行 —— clone → <code>python scripts/nf.py doctor</code>（16/16 通过）→ <code>bash verify.sh</code>（check1-40，PASS=72）。一键：<code>curl -fsSL https://ninfenz.dev/run.sh | sh</code>（默认只读；<code>--full</code> 跑全量门禁）。</p>
+<p><strong>MCP 客户端</strong>（已有本地检出）：<code>python scripts/nf.py serve</code> —— 只读 MCP，检索与取件，无写路径。</p>
+<p class="src">细节与一键复制块：<a href="use/">让 AI 用起来</a> · 一次读全：<a href="llms-full.txt">/llms-full.txt</a> · 机读事实：<a href="facts.json">/facts.json</a> · 清单：<a href="llms.txt">/llms.txt</a></p>
+</div>
 
 <h2>它是什么 / 不是什么</h2>
 <div class="card">
@@ -74,25 +182,28 @@
 
 <h2>可引用事实（每个数字可回指真源）</h2>
 <ul class="facts">
-<li>质量凭证：<strong>verify v2.30 · check1-40 · PASS=72</strong>，单入口 <code>bash verify.sh</code>。</li>
-<li>规模：<strong>111 登记包 · 363 资产档 · 101 概念图</strong>；标准目录 <strong>370 条</strong>（可达 332 / 不可达 38）· 标准绑定 <strong>1200 条</strong> · 馆藏 3 件。<span class="src">真源 protocol/repo_stats.json</span></li>
-<li>官方核心：<strong>13 模块 · 3 管线（P00 / P01 / P90）</strong>· 协议件 01–07。</li>
-<li>可验证产物：<strong>Merkle inclusion proof（RFC 6962）</strong> + hmac / ssh-sig / sigstore-keyless 签名锚；<strong>缺验证器 fail-closed</strong>。</li>
-<li>接入面：MCP 只读（<code>nf serve</code>），双协议版本 2026-07-28 / 2025-11-25。</li>
-<li>终端：<code>python tui/nf.py</code>（纯标准库全屏 TUI）。</li>
+<li id="fact-quality">质量凭证：<strong>verify v2.30 · check1-40 · PASS=72</strong>，单入口 <code>bash verify.sh</code>。</li>
+<li id="fact-scale">规模：<strong>111 登记包 · 363 资产档 · 101 概念图</strong>；标准目录 <strong>370 条</strong>（可达 332 / 不可达 38）· 标准绑定 <strong>1200 条</strong> · 馆藏 3 件。<span class="src">真源 protocol/repo_stats.json</span></li>
+<li id="fact-core">官方核心：<strong>13 模块 · 3 管线（P00 / P01 / P90）</strong>· 协议件 01–07。</li>
+<li id="fact-verifiable">可验证产物：<strong>Merkle inclusion proof（RFC 6962）</strong> + hmac / ssh-sig / sigstore-keyless 签名锚；<strong>缺验证器 fail-closed</strong>。</li>
+<li id="fact-mcp">接入面：只读 MCP（<code>nf serve</code>），双协议版本 2026-07-28 / 2025-11-25。</li>
+<li id="fact-terminal">终端：<code>python tui/nf.py</code>（纯标准库全屏 TUI）。</li>
 </ul>
+<p class="src">同一组事实的机读形态：<a href="facts.json">/facts.json</a>（每条带真源与落地锚点）· 标准目录导出 <a href="https://raw.githubusercontent.com/Monyeah777/NinFenz/main/protocol/geo_export.json">protocol/geo_export.json</a>（370 条逐条带可达性与探针日期）</p>
 
 <h2>五分钟跑起来</h2>
-<pre><code># 免 clone，直接跑只读体检
-npx -y ninfenz doctor
-
-# 打开终端 TUI
-npx -y ninfenz tui
-
-# 完整 39 条门禁（需要真实检出）
+<pre><code># 完整项目（唯一需要 clone 的路径）
 git clone https://github.com/Monyeah777/NinFenz
-cd NinFenz &amp;&amp; bash verify.sh</code></pre>
-<p class="src">前置：Node ≥ 18.17；Python ≥ 3.11（纯标准库，无 pip 依赖）。</p>
+cd NinFenz
+python scripts/nf.py doctor     # 只读体检：16/16 通过
+bash verify.sh                  # check1-40 全量门禁：PASS=72  WARN=0  FAIL=0
+
+# 人机全屏终端（纯标准库、离线）
+python tui/nf.py
+
+# agent 一键引导（默认只读体检；--full 追加全量门禁）
+curl -fsSL https://ninfenz.dev/run.sh | sh</code></pre>
+<p class="src">前置：Python ≥ 3.11（纯标准库，无 pip 依赖）；Node ≥ 18.17（仅 npm 免 clone 路径需要）。npm 包（包名 ninfenz）已备好但尚未公开发布——发布后 <code>npx -y ninfenz doctor</code> / <code>npx -y ninfenz tui</code> 可用。国内镜像：<a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>。</p>
 
 <h2>看它长什么样</h2>
 <p class="sub">终端 TUI（纯标准库、离线；9 秒演示）：</p>
@@ -102,7 +213,7 @@ cd NinFenz &amp;&amp; bash verify.sh</code></pre>
 <tr><th></th><th>提示词模板集</th><th>宁封子 NinFenz</th></tr>
 <tr><td>交付物</td><td>一段文本</td><td>协议 + 门禁 + 资产台账</td></tr>
 <tr><td>第二次产出</td><td>结构随机</td><td>与首次同构（有基线可 diff）</td></tr>
-<tr><td>判合格</td><td>靠人看</td><td>39 条确定性检查 + 冻结基线</td></tr>
+<tr><td>判合格</td><td>靠人看</td><td>check1-40 确定性检查 + 冻结基线</td></tr>
 <tr><td>可验证</td><td>无</td><td>Merkle inclusion proof + 签名锚，fail-closed</td></tr>
 <tr><td>边界</td><td>—</td><td>管结构与可复现，不管文笔好坏</td></tr>
 </table>
@@ -113,7 +224,7 @@ cd NinFenz &amp;&amp; bash verify.sh</code></pre>
 
 <h2 id="faq">常见问题</h2>
 <h3>宁封子 NinFenz 是什么？</h3>
-<p>内容契约层：用协议 + 确定性质量门 + 资产标准定义「AI 稳定产出长内容」，使产出可装载、可质检、可复现。</p>
+<p>内容契约层：用协议 + 确定性门禁 + 可验证产物定义「AI 稳定产出长内容」，使产出可装载、可质检、可复现。</p>
 <h3>它是模型吗？</h3>
 <p>不是。协议本体模型无关，任何能读文本的 AI 都能按协议装配与装载。</p>
 <h3>和提示词模板集有什么区别？</h3>
@@ -122,12 +233,31 @@ cd NinFenz &amp;&amp; bash verify.sh</code></pre>
 <p>不必。仓库即 markdown 源件，<code>bash verify.sh</code> 只读本地，可离线运行。</p>
 <h3>产出可验证吗？</h3>
 <p>可。产物带 Merkle inclusion proof（RFC 6962）与可选的 hmac / ssh-sig / sigstore 锚；缺验证器时 fail-closed，不静默通过。</p>
+<h3>怎么让我的 AI 客户端直接用它？</h3>
+<p>让客户端读 <a href="nf.txt">/nf.txt</a> 并按它执行（不装任何东西）；有本地检出时改走只读 MCP：<code>python scripts/nf.py serve</code>。三种接法的细节见 <a href="use/">让 AI 用起来</a>。</p>
+<h3>国内网络怎么取件？</h3>
+<p>用 Gitee 镜像 <a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>，或直接用本站机器面——本站托管在 Cloudflare，国内可直连（<code>*.workers.dev</code> 不行，自定义域可以）。</p>
 <h3>许可与费用？</h3>
 <p>MIT，无付费版、无托管服务。</p>
 
+<h2>引用这一段</h2>
+<pre><code>宁封子（NinFenz，简称 NF）是内容契约层（content contract layer）：用「协议 + 确定性门禁 + 可验证产物」把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程；协议本体域中立、模型无关，叙事只是官方第一个域包。
+
+纯文本：NinFenz（NF）— 内容契约层，Monyeah777，MIT，https://github.com/Monyeah777/NinFenz
+APA：Monyeah777. (2026). NinFenz (宁封子): a content contract layer [Computer software]. MIT. https://ninfenz.dev/
+BibTeX：
+@software{ninfenz,
+  title = {NinFenz (宁封子) - content contract layer},
+  author = {Monyeah777},
+  year = {2026},
+  url = {https://ninfenz.dev/},
+  license = {MIT}
+}</code></pre>
+<p class="src">机读引用元数据：仓库根 CITATION.cff · 三种形态同见 <a href="llms-full.txt">/llms-full.txt</a> 第八节。引用请指向 canonical 站点或仓库，并保持定义句逐字一致；量化事实请引 <a href="facts.json">/facts.json</a>，别手抄数字（会过期）。</p>
+
 <footer>
 <p><span class="badge">MIT</span><span class="badge">离线可跑</span><span class="badge">零第三方依赖</span><span class="badge">模型无关</span></p>
-<p>仓库：<a href="https://github.com/Monyeah777/NinFenz">github.com/Monyeah777/NinFenz</a> · 机器入口：<a href="https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt">llms.txt</a> · 本站 <a href="llms.txt">/llms.txt</a> · <a href="sitemap.xml">sitemap</a></p>
+<p>仓库：<a href="https://github.com/Monyeah777/NinFenz">github.com/Monyeah777/NinFenz</a> · 镜像：<a href="https://gitee.com/monyeah777/ninfenz">Gitee</a> · 机器面：<a href="llms.txt">/llms.txt</a> · <a href="llms-full.txt">/llms-full.txt</a> · <a href="facts.json">/facts.json</a> · <a href="nf.txt">/nf.txt</a> · <a href="agent.txt">/agent.txt</a> · <a href="sitemap.xml">sitemap</a></p>
 </footer>
 </div>
 </body>

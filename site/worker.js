@@ -1,10 +1,14 @@
-// NinFenz 站点 Worker：把 www.* 301 到裸域，其余全部交给静态资产。
+// NinFenz 站点 Worker：www.* 301 到裸域；首页支持机器面内容协商；其余交给静态资产。
 //
-// 为什么放在 Worker 层而不是 Cloudflare Redirect Rules：
-// Redirect Rules 需要 Zone Rules 权限（当前 API token 为 403），而 Worker 自持 301
-// 不依赖额外授权，且随版本一起受代码评审与回滚。
-// 配合 wrangler.jsonc 的 assets.run_worker_first = true：每个请求都先进这里，
-// 非 www 主机再原样交回 env.ASSETS.fetch()（_headers 规则照旧生效）。
+// 三件事，按序：
+//   1) www.* -> 裸域 301（Redirect Rules 需要 Zone Rules 权限，Worker 自持不依赖额外授权）
+//   2) 首页与 /en/ 上出现 Accept: text/markdown 时，回 /llms-full.txt 单文件机器面
+//      （生成式引擎与 agent 常用该协商；浏览器不会发这个 Accept，故对人无影响）
+//   3) 其余一律原样交回 env.ASSETS.fetch()（_headers 规则照旧生效）
+//
+// 配合 wrangler.jsonc 的 assets.run_worker_first = true 与 assets.binding = "ASSETS"。
+
+const MARKDOWN_ROUTES = new Set(['/', '/en/', '/en']);
 
 export default {
   async fetch(request, env) {
@@ -12,6 +16,28 @@ export default {
     if (url.hostname.startsWith('www.')) {
       url.hostname = url.hostname.slice(4);
       return Response.redirect(url.toString(), 301);
+    }
+    if (request.method === 'GET' && MARKDOWN_ROUTES.has(url.pathname)) {
+      const accept = request.headers.get('accept') || '';
+      if (accept.includes('text/markdown')) {
+        try {
+          const assetReq = new Request(new URL('/llms-full.txt', url.origin), { headers: request.headers });
+          const res = await env.ASSETS.fetch(assetReq);
+          if (res.ok) {
+            return new Response(res.body, {
+              status: 200,
+              headers: {
+                'content-type': 'text/markdown; charset=utf-8',
+                'cache-control': 'public, max-age=300',
+                'vary': 'Accept',
+                'x-ninfenz-negotiated': 'llms-full.txt',
+              },
+            });
+          }
+        } catch (e) {
+          // 协商失败不改变正常行为：回落到静态资产
+        }
+      }
     }
     return env.ASSETS.fetch(request);
   },

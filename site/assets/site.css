@@ -27,4 +27,9 @@ ul{padding-left:22px}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
 .badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px;color:var(--dim);margin:2px 6px 2px 0}
 .not{color:#f0b7b7}
+.copy{background:#16202e;color:var(--acc);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font:13px/1.4 inherit;cursor:pointer;margin:0 0 6px}
+.copy:hover{border-color:var(--acc)}
+.copy.done{color:var(--ok);border-color:var(--ok)}
+.block{margin:14px 0}
+.tbl-narrow td:first-child{white-space:nowrap}
 @media (max-width:560px){h1{font-size:22px}.wrap{padding:20px 14px 56px}}

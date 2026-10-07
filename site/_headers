@@ -11,18 +11,52 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# 机器入口与爬虫文件：短缓存，便于改名/改版后快速生效
+# HTML：不缓存，保证改版立即生效
+# Vary: Accept —— 首页支持机器面内容协商（Accept: text/markdown -> /llms-full.txt）
+/
+  Cache-Control: public, max-age=0, must-revalidate
+  Vary: Accept
+  Link: </llms.txt>; rel="describedby"; type="text/plain"
+/en/
+  Cache-Control: public, max-age=0, must-revalidate
+  Vary: Accept
+  Link: </llms.txt>; rel="describedby"; type="text/plain"
+/use/
+  Cache-Control: public, max-age=0, must-revalidate
+/en/use/
+  Cache-Control: public, max-age=0, must-revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# 机器面：给 AI 客户端与 agent 直取 —— 短缓存 + 明确类型 + 允许跨域
+# （浏览器内的 AI 客户端要 CORS；明确 Content-Type 免得客户端按二进制处理）
 /llms.txt
+  Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+/nf.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+/agent.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+/facts.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+/run.sh
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+
+# 爬虫文件：短缓存，便于改名/改版后快速生效
 /robots.txt
   Cache-Control: public, max-age=300
 /sitemap.xml
   Cache-Control: public, max-age=300
-
-# HTML：不缓存，保证改版立即生效
-/*.html
-  Cache-Control: public, max-age=0, must-revalidate
-/
-  Cache-Control: public, max-age=0, must-revalidate
-/en/
-  Cache-Control: public, max-age=0, must-revalidate

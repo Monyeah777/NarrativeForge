@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NinFenz · a content contract layer for AI long-form output</title>
-<meta name="description" content="NinFenz (NF) is a content contract layer: it turns reliable AI long-form output into something you can load, verify and reproduce. Domain-neutral, model-agnostic. 39 deterministic gates, Merkle inclusion proofs, MIT, offline.">
+<meta name="description" content="NinFenz (NF) is a content contract layer: a protocol plus deterministic gates plus verifiable artifacts, so AI long-form output can be loaded, checked and reproduced. Domain-neutral, model-agnostic. check1-40 gates, PASS=72, Merkle inclusion proofs, MIT, offline.">
 <link rel="canonical" href="https://ninfenz.dev/en/">
 <link rel="alternate" hreflang="zh-CN" href="https://ninfenz.dev/">
 <link rel="alternate" hreflang="en" href="https://ninfenz.dev/en/">
 <link rel="alternate" hreflang="x-default" href="https://ninfenz.dev/">
+<link rel="describedby" href="llms.txt" type="text/plain" title="llms.txt">
+<link rel="alternate" href="llms-full.txt" type="text/plain" title="llms-full.txt (single complete file)">
+<link rel="license" href="https://opensource.org/license/mit">
 <meta property="og:type" content="website">
 <meta property="og:title" content="NinFenz · content contract layer">
 <meta property="og:description" content="Protocol + deterministic gates + verifiable artifacts. Not a model, not a prompt set, not a vendor SDK. MIT, offline.">
@@ -19,38 +22,136 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": "https://ninfenz.dev/en/#faq",
-  "mainEntity": [
-    { "@type": "Question", "name": "What is NinFenz?",
-      "acceptedAnswer": { "@type": "Answer", "text": "A content contract layer: a protocol plus deterministic quality gates plus asset standards, so long-form AI output can be loaded, checked and reproduced." } },
-    { "@type": "Question", "name": "Is NinFenz a model?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No. The protocol is model-agnostic; any model that can read text can assemble and load it." } },
-    { "@type": "Question", "name": "How is NinFenz different from prompt templates?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Templates give text. NinFenz gives a protocol, verifiable gates and an asset ledger, so an output can be judged pass or fail against a frozen baseline." } },
-    { "@type": "Question", "name": "Does NinFenz need network access?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No. The repository is markdown source; bash verify.sh reads locally and runs offline." } },
-    { "@type": "Question", "name": "Can the output be verified?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Artifacts carry Merkle inclusion proofs (RFC 6962) and optional hmac, ssh-sig or sigstore anchors; a missing verifier fails closed instead of passing silently." } },
-    { "@type": "Question", "name": "What is the licence and cost?",
-      "acceptedAnswer": { "@type": "Answer", "text": "MIT. No paid tier and no hosted service." } }
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://ninfenz.dev/#software",
+      "name": "NinFenz",
+      "alternateName": [
+        "宁封子",
+        "NF"
+      ],
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Windows, macOS, Linux",
+      "license": "https://opensource.org/license/mit",
+      "codeRepository": "https://github.com/Monyeah777/NinFenz",
+      "sameAs": [
+        "https://github.com/Monyeah777/NinFenz",
+        "https://gitee.com/monyeah777/ninfenz"
+      ],
+      "programmingLanguage": "Python",
+      "softwareVersion": "1.0.0",
+      "description": "A content contract layer: a protocol plus deterministic gates plus verifiable artifacts, so AI long-form output can be loaded, checked and reproduced. Domain-neutral and model-agnostic. Not a model, not a prompt-template collection, not a vendor SDK.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ninfenz.dev/#website",
+      "url": "https://ninfenz.dev/",
+      "name": "NinFenz",
+      "alternateName": "NF",
+      "inLanguage": [
+        "zh-CN",
+        "en"
+      ],
+      "publisher": {
+        "@id": "https://ninfenz.dev/#person"
+      },
+      "about": {
+        "@id": "https://ninfenz.dev/#software"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://ninfenz.dev/#person",
+      "name": "Monyeah777",
+      "url": "https://github.com/Monyeah777"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://ninfenz.dev/#term",
+      "name": "content contract layer",
+      "alternateName": "内容契约层",
+      "description": "An engineering layer that defines reliable AI long-form output through a protocol plus deterministic gates plus verifiable artifacts, so output can be loaded, checked and reproduced. The gates judge structure and reproducibility, not prose quality.",
+      "inDefinedTermSet": {
+        "@id": "https://ninfenz.dev/#software"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://ninfenz.dev/en/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is NinFenz?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A content contract layer: a protocol plus deterministic gates plus verifiable artifacts, so AI long-form output can be loaded, checked and reproduced."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is NinFenz a model?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The protocol is model-agnostic; any model that can read text can assemble and load it. Narrative is only the first official domain pack."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is NinFenz different from prompt templates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Templates give text. NinFenz gives a protocol, verifiable gates and an asset ledger, so an output can be judged pass or fail against a frozen baseline."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does NinFenz need network access?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The repository is markdown source; bash verify.sh reads locally and runs offline."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can the output be verified?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Artifacts carry Merkle inclusion proofs (RFC 6962) plus optional hmac, ssh-sig or sigstore-keyless anchors; a missing verifier fails closed instead of passing silently."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I point an AI client at it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Have the client read https://ninfenz.dev/nf.txt and follow it; with a local checkout, attach the read-only MCP server: python scripts/nf.py serve."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I fetch it from mainland China?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the Gitee mirror https://gitee.com/monyeah777/ninfenz, or the machine surfaces on this site (hosted on Cloudflare, directly reachable)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the licence and cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MIT. No paid tier and no hosted service."
+          }
+        }
+      ]
+    }
   ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": "https://ninfenz.dev/en/#software",
-  "name": "NinFenz",
-  "alternateName": ["宁封子", "NF"],
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Windows, macOS, Linux",
-  "license": "https://opensource.org/license/mit",
-  "codeRepository": "https://github.com/Monyeah777/NinFenz",
-  "programmingLanguage": "Python",
-  "description": "A content contract layer: it turns reliable AI long-form output into something you can load, verify and reproduce. Domain-neutral and model-agnostic.",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
 </head>
@@ -58,12 +159,20 @@
 <div class="wrap">
 <header class="top">
   <div class="brand">NinFenz <small>宁封子 · NF</small></div>
-  <nav><a href="../">中文</a><a href="https://github.com/Monyeah777/NinFenz">GitHub</a><a href="#faq">FAQ</a></nav>
+  <nav><a href="use/">Put it to work</a><a href="../">中文</a><a href="https://github.com/Monyeah777/NinFenz">GitHub</a><a href="#faq">FAQ</a></nav>
 </header>
 
 <h1>A content contract layer for AI long-form output</h1>
 <p class="lede sub">NinFenz (NF) turns "AI produces long-form content reliably" into engineering you can <strong>load, verify and reproduce</strong>. The protocol is <strong>domain-neutral and model-agnostic</strong>; narrative is only the first official domain pack.</p>
 <p class="not">Not a model · not a prompt-template collection · not a vendor SDK · MIT · runs offline</p>
+
+<h2>Three entry paths (pick by who you are)</h2>
+<div class="card">
+<p><strong>Client AI</strong> (zero install): have it read <a href="nf.txt">/nf.txt</a> and follow it. That loader carries three hard rules, a branch table and the fetch bases; if it cannot open links, paste the essentials.</p>
+<p><strong>Agent</strong> (run the whole project locally): follow <a href="agent.txt">/agent.txt</a> - clone, then <code>python scripts/nf.py doctor</code> (16/16), then <code>bash verify.sh</code> (check1-40, PASS=72). One line: <code>curl -fsSL https://ninfenz.dev/run.sh | sh</code> (read-only by default; <code>--full</code> adds all gates).</p>
+<p><strong>MCP client</strong> (with a local checkout): <code>python scripts/nf.py serve</code> - a read-only MCP server for retrieval and content access, no write path.</p>
+<p class="src">Details and copy blocks: <a href="use/">Put it to work</a> · everything in one file: <a href="llms-full.txt">/llms-full.txt</a> · machine-readable facts: <a href="facts.json">/facts.json</a> · index: <a href="llms.txt">/llms.txt</a></p>
+</div>
 
 <h2>What it is / what it is not</h2>
 <div class="card">
@@ -73,25 +182,28 @@
 
 <h2>Citable facts (every number has a source)</h2>
 <ul class="facts">
-<li>Quality evidence: <strong>verify v2.30 · check1-40 · PASS=72</strong> via a single entry point, <code>bash verify.sh</code>.</li>
-<li>Scale: <strong>111 registered packs · 363 asset files · 101 concept graphs</strong>; standards catalogue <strong>370 entries</strong> (332 reachable / 38 not) · <strong>1200 bindings</strong>.<span class="src"> source protocol/repo_stats.json</span></li>
-<li>Official core: <strong>13 modules · 3 pipelines (P00 / P01 / P90)</strong> · protocol files 01-07.</li>
-<li>Verifiable artifacts: <strong>Merkle inclusion proofs (RFC 6962)</strong> plus optional hmac / ssh-sig / sigstore-keyless anchors; <strong>missing verifier = fail closed</strong>.</li>
-<li>Interop: read-only MCP surface (<code>nf serve</code>), dual-era 2026-07-28 / 2025-11-25.</li>
-<li>Terminal: <code>python tui/nf.py</code> - a full-screen TUI in the pure standard library.</li>
+<li id="fact-quality">Quality evidence: <strong>verify v2.30 · check1-40 · PASS=72</strong> via a single entry point, <code>bash verify.sh</code>.</li>
+<li id="fact-scale">Scale: <strong>111 registered packs · 363 asset files · 101 concept graphs</strong>; standards catalogue <strong>370 entries</strong> (332 reachable / 38 not) · <strong>1200 bindings</strong> · <strong>3 library items</strong>.<span class="src"> source protocol/repo_stats.json</span></li>
+<li id="fact-core">Official core: <strong>13 modules · 3 pipelines (P00 / P01 / P90)</strong> · protocol files 01-07.</li>
+<li id="fact-verifiable">Verifiable artifacts: <strong>Merkle inclusion proofs (RFC 6962)</strong> plus optional hmac / ssh-sig / sigstore-keyless anchors; <strong>missing verifier = fail closed</strong>.</li>
+<li id="fact-mcp">Interop: read-only MCP surface (<code>nf serve</code>), dual-era 2026-07-28 / 2025-11-25.</li>
+<li id="fact-terminal">Terminal: <code>python tui/nf.py</code> - a full-screen TUI in the pure standard library.</li>
 </ul>
+<p class="src">The same facts, machine-readable: <a href="facts.json">/facts.json</a> (each claim carries its source and an on-page anchor) · standards catalogue export: <a href="https://raw.githubusercontent.com/Monyeah777/NinFenz/main/protocol/geo_export.json">protocol/geo_export.json</a> (370 entries with reachability and probe date).</p>
 
 <h2>Run it in five minutes</h2>
-<pre><code># read-only checks, no clone needed
-npx -y ninfenz doctor
-
-# full-screen terminal TUI
-npx -y ninfenz tui
-
-# all 39 gates (needs a real checkout)
+<pre><code># the whole project (the only path that needs a clone)
 git clone https://github.com/Monyeah777/NinFenz
-cd NinFenz &amp;&amp; bash verify.sh</code></pre>
-<p class="src">Requires Node >= 18.17 and Python >= 3.11 (standard library only, no pip dependencies).</p>
+cd NinFenz
+python scripts/nf.py doctor     # read-only checks: 16/16 passed
+bash verify.sh                  # all check1-40 gates: PASS=72  WARN=0  FAIL=0
+
+# full-screen terminal UI (standard library only, offline)
+python tui/nf.py
+
+# agent bootstrap (read-only by default; --full adds all gates)
+curl -fsSL https://ninfenz.dev/run.sh | sh</code></pre>
+<p class="src">Requires Python >= 3.11 (standard library only, no pip dependencies) and Node >= 18.17 (only for the no-clone npm path). The npm package (name ninfenz) is prepared but not published yet, so <code>npx -y ninfenz doctor</code> / <code>npx -y ninfenz tui</code> start working after the first release. Mirror for mainland China: <a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>.</p>
 
 <h2>See it running</h2>
 <p class="sub">Terminal TUI (standard library only, offline; 9-second demo):</p>
@@ -101,7 +213,7 @@ cd NinFenz &amp;&amp; bash verify.sh</code></pre>
 <tr><th></th><th>Prompt collection</th><th>NinFenz</th></tr>
 <tr><td>Deliverable</td><td>a block of text</td><td>protocol + gates + asset ledger</td></tr>
 <tr><td>Second run</td><td>random structure</td><td>isomorphic to the first (diffable against a baseline)</td></tr>
-<tr><td>Pass/fail</td><td>a human eyeballs it</td><td>39 deterministic checks against a frozen baseline</td></tr>
+<tr><td>Pass/fail</td><td>a human eyeballs it</td><td>check1-40 deterministic checks against a frozen baseline</td></tr>
 <tr><td>Verifiable</td><td>no</td><td>Merkle inclusion proof + signature anchors, fail closed</td></tr>
 <tr><td>Boundary</td><td>-</td><td>structure and reproducibility, not prose quality</td></tr>
 </table>
@@ -111,7 +223,7 @@ cd NinFenz &amp;&amp; bash verify.sh</code></pre>
 
 <h2 id="faq">FAQ</h2>
 <h3>What is NinFenz?</h3>
-<p>A content contract layer: a protocol plus deterministic quality gates plus asset standards, so long-form AI output can be loaded, checked and reproduced.</p>
+<p>A content contract layer: a protocol plus deterministic gates plus verifiable artifacts, so long-form AI output can be loaded, checked and reproduced.</p>
 <h3>Is it a model?</h3>
 <p>No. The protocol is model-agnostic; any model that can read text can assemble and load it.</p>
 <h3>How is it different from prompt templates?</h3>
@@ -120,12 +232,31 @@ cd NinFenz &amp;&amp; bash verify.sh</code></pre>
 <p>No. The repo is markdown source; <code>bash verify.sh</code> reads locally and runs offline.</p>
 <h3>Can the output be verified?</h3>
 <p>Yes. Artifacts carry Merkle inclusion proofs (RFC 6962) and optional hmac / ssh-sig / sigstore anchors; a missing verifier fails closed instead of passing silently.</p>
+<h3>How do I point an AI client at it?</h3>
+<p>Have the client read <a href="nf.txt">/nf.txt</a> and follow it (nothing to install); with a local checkout, attach the read-only MCP server: <code>python scripts/nf.py serve</code>. All three paths are detailed in <a href="use/">Put it to work</a>.</p>
+<h3>How do I fetch it from mainland China?</h3>
+<p>Use the Gitee mirror <a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>, or the machine surfaces on this site - hosted on Cloudflare, directly reachable (<code>*.workers.dev</code> is not; the custom domain is).</p>
 <h3>Licence and cost?</h3>
 <p>MIT, no paid tier, no hosted service.</p>
 
+<h2>How to cite</h2>
+<pre><code>NinFenz (NF) - a content contract layer. A protocol plus deterministic gates plus verifiable artifacts, so AI long-form output can be loaded, checked and reproduced.
+
+Plain: NinFenz (NF) - content contract layer, Monyeah777, MIT, https://github.com/Monyeah777/NinFenz
+APA: Monyeah777. (2026). NinFenz (宁封子): a content contract layer [Computer software]. MIT. https://ninfenz.dev/
+BibTeX:
+@software{ninfenz,
+  title = {NinFenz (宁封子) - content contract layer},
+  author = {Monyeah777},
+  year = {2026},
+  url = {https://ninfenz.dev/},
+  license = {MIT}
+}</code></pre>
+<p class="src">Machine-readable citation metadata: CITATION.cff at the repository root · all three forms also in <a href="llms-full.txt">/llms-full.txt</a>, section 8. Cite the canonical site or repository, keep the definition sentence verbatim, and cite <a href="facts.json">/facts.json</a> for numbers instead of copying them (they move).</p>
+
 <footer>
 <p><span class="badge">MIT</span><span class="badge">offline</span><span class="badge">zero third-party deps</span><span class="badge">model-agnostic</span></p>
-<p>Repository: <a href="https://github.com/Monyeah777/NinFenz">github.com/Monyeah777/NinFenz</a> · machine entry: <a href="https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt">llms.txt</a> · this site: <a href="../llms.txt">/llms.txt</a> · <a href="../sitemap.xml">sitemap</a></p>
+<p>Repository: <a href="https://github.com/Monyeah777/NinFenz">github.com/Monyeah777/NinFenz</a> · mirror: <a href="https://gitee.com/monyeah777/ninfenz">Gitee</a> · machine surfaces: <a href="../llms.txt">/llms.txt</a> · <a href="../llms-full.txt">/llms-full.txt</a> · <a href="../facts.json">/facts.json</a> · <a href="../nf.txt">/nf.txt</a> · <a href="../agent.txt">/agent.txt</a> · <a href="../sitemap.xml">sitemap</a></p>
 </footer>
 </div>
 </body>

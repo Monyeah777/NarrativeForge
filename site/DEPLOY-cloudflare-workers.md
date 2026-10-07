@@ -129,3 +129,49 @@ node site/tools/sync-numbers.mjs --write  # 同步写入
 ```bash
 node site/tools/site-check.mjs https://ninfenz.dev
 ```
+---
+
+## 九、机器面（2026-10-07 增补：让 AI 客户端与 agent 直取）
+
+站点从「给人看的页面」扩到「给机器直取的面」。全部同源、纯静态、无构建步骤：
+
+| 面 | 给谁 | 内容 |
+|---|---|---|
+| `/llms.txt` | 检索 / AI（索引） | 有哪些面可读（llms.txt 惯例清单） |
+| `/llms-full.txt` | AI（完整） | 一文件读全：定义 / 事实 / 术语表 / 上手四条路径 / FAQ / 引用格式 |
+| `/nf.txt` | 客户端 AI | 装载指令：三条铁律 + 分支表 + 取件基底（读到即执行） |
+| `/agent.txt` | agent | 命令序列 + 每步期望输出（doctor 16/16 · verify.sh PASS=72 · conformance 27/27） |
+| `/facts.json` | AI（机读） | 事实清单，每条带真源与落地锚点；scale.values 与 protocol/repo_stats.json 机检对齐 |
+| `/run.sh` | agent | 免安装引导（默认 clone + 只读体检；--full 追加全量门禁） |
+
+### 为什么机器面要显式 Content-Type 与 CORS
+
+浏览器内的 AI 客户端（网页版助理、插件）抓取跨域资源时，缺 Access-Control-Allow-Origin 会被浏览器直接挡掉；
+缺明确 Content-Type 时有些客户端会按二进制处理。故 `_headers` 对上述六个面统一下发
+`Content-Type: text/plain|application/json; charset=utf-8` 与 `Access-Control-Allow-Origin: *`，
+并给 300 秒短缓存（改版后快速生效）。
+
+### 内容协商（Accept: text/markdown）
+
+`site/worker.js` 在 `/` 与 `/en/` 上：若请求带 `Accept: text/markdown`，直接回 `/llms-full.txt`
+（`content-type: text/markdown`，`Vary: Accept`）。浏览器不会发这个 Accept，故对人零影响；
+生成式引擎与 agent 常用该协商拿单文件。
+
+### 抓取与引用信号
+
+`robots.txt` 逐条列出 20+ AI 抓取面（GPTBot / OAI-SearchBot / ClaudeBot / PerplexityBot /
+Google-Extended / Applebot-Extended / Amazonbot / CCBot / Bytespider / DuckAssistBot / Meta-ExternalAgent /
+MistralAI-User / cohere-ai 等）并显式 `Allow: /`，另加 `Content-Signal: search=yes, ai-input=yes, ai-train=yes`
+声明本域对检索、生成式引用与训练取用的立场。
+
+### 站点侧门禁（两条，都不需要网络）
+
+```bash
+node site/tools/sync-numbers.mjs            # 数字与真源一致（质量凭证 + 规模 8 个数）；漂移即红
+node site/tools/site-check.mjs --offline    # 离线判据：JSON-LD / 机器面在场 / _headers 覆盖 / robots / 无旧基址
+node site/tools/site-check.mjs              # 联网判据（部署后）：状态码 / CORS / Content-Type / 协商 / facts 真值
+```
+
+CI 里已接 `sync-numbers.mjs` 与 `site-check.mjs --offline` 两步（.github/workflows/ci-verify.yml），
+所以站点数字或机器面漂移会与仓库门禁一起红。
+

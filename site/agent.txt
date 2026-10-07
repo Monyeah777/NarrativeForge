@@ -1,0 +1,86 @@
+# NinFenz（宁封子 · NF）— agent 装载与运行指令
+
+来源：https://ninfenz.dev/agent.txt
+给你：能执行命令的 agent（shell / coding agent / CI）
+事实真源：https://ninfenz.dev/facts.json
+客户端 AI 装载指令（不跑项目）：https://ninfenz.dev/nf.txt
+
+⛔ 读到本文件 = 按下面真跑。逐步核对「期望」；任一步不符就停下、如实报告、不要跳过继续。
+本文件只描述仓库里已经存在的命令：没有服务端、没有 API key、没有 pip 依赖，无需联网即可跑完。
+
+质量凭证（与仓库真源同步）：verify v2.30 · check1-40 · PASS=72（单入口 bash verify.sh）
+
+## 0 前置自检（缺一即停）
+python --version    需 >= 3.11（NF 核心纯标准库，无第三方依赖）
+git --version       需能 clone
+bash --version      verify.sh 需要 POSIX shell（Windows 用 Git Bash）
+node --version      需 >= 18.17；只有「免 clone」路径用它
+
+## 1 取全仓（唯一必需的一步）
+git clone https://github.com/Monyeah777/NinFenz
+cd NinFenz
+国内镜像等价（只换前缀，后缀不动）：
+git clone https://gitee.com/monyeah777/ninfenz
+cd ninfenz
+
+## 2 只读体检（秒级）
+python scripts/nf.py doctor
+期望：最后一行「体检：16/16 通过」，退出码 0；
+      其中一行是「基线自描述一致（verify v2.30 · check1-40 PASS=72）」。
+
+## 3 打开 nf 终端（人机全屏入口 + agent 机读面）
+python tui/nf.py                          全屏 TUI，纯标准库，离线；TTY 下无仓库自动进演示模式
+python tui/nf.py --selftest --json        机器可读安全底线自检
+  期望：{"kind": "nf-tui-selftest", "ok": true, ...}，9 行判据全 true，退出码 0
+python tui/nf.py --list-actions --json    列动作 / argv / 退出码 / 投影摘要
+python tui/nf.py --exec "nf doctor"       跑单条 nf 命令并透传退出码
+python scripts/nf.py shell                能力菜单 + nf 命令直通（写盘二次确认）
+python scripts/nf.py shell --exec "nf doctor" --json    非交互机器面
+
+## 4 跑完整项目（全量门禁 = 本仓库「跑通」的定义）
+bash verify.sh
+期望：check1-40 逐条 PASS，末尾「结果统计: PASS=72  WARN=0  FAIL=0」，退出码 0。
+      耗时以分钟计：它跑全量单元测试套件，不只是静态检查。
+python scripts/nf.py release
+期望：末尾「发布体检通过：verify 全绿 + 基线自描述一致（可打 tag）」；
+      它额外跑逐模块覆盖率、ruff 静态检查、端到端冒烟、门禁报告新鲜度。
+python scripts/e2e_desktop_headless.py
+期望：「端到端冒烟通过（官方 13 件 + M91/M92 + P04 → 装配 → 生成 → 断言）」。
+python scripts/nf.py conformance
+期望：verdict = conformant（27/27 契约），声明与真源逐条对齐。
+python scripts/nf.py demo
+全链管道演示：装配 → 生成 → 自检，产出可交付样件。
+
+## 5 MCP（把仓库能力只读暴露给客户端）
+python scripts/nf.py serve
+标准输入输出上的只读 MCP：resources / tools / prompts，无写面；未知 uri 与未知工具一律拒。
+客户端声明（任意支持 MCP stdio 的客户端；把 <仓库绝对路径> 换成你的检出路径）：
+{
+  "mcpServers": {
+    "ninfenz": {
+      "command": "python",
+      "args": ["<仓库绝对路径>/scripts/nf.py", "serve"]
+    }
+  }
+}
+连接后可用：检索类工具（library_search / registry_query / pipeline_ls / spec_ls）、
+内容通道工具（module_read / pipeline_read / asset_get）、装载引导 prompt（assemble_guide）。
+双协议版本并存：modern 2026-07-28 + legacy 2025-11-25。
+
+## 6 一键路径（可选，省去手抄）
+curl -fsSL https://ninfenz.dev/run.sh | sh                默认：clone 到 ./NinFenz，跑只读体检
+curl -fsSL https://ninfenz.dev/run.sh | sh -s -- --full   追加：跑 check1-40 全量门禁
+脚本只做三件事：clone、按需 cd、跑上面已经列过的官方命令；无 sudo，不写仓库以外的路径。
+
+## 7 免 clone 路径（只有 Node 时）
+npx -y ninfenz doctor
+npx -y ninfenz tui
+发布状态：npm 包（packaging/npm，包名 ninfenz）已备好但尚未公开发布——
+这条路径要等首次发布后才可用；在此之前请用 §1 的完整检出。
+
+## 8 你要交付给用户什么
+成功：贴出每步的真实命令与真实输出摘要（含退出码），并给可复核的证据（日志或产物路径）。
+失败：贴出失败的那一步、原始报错、以及你已排除的原因；不要用「已尝试」含糊过去。
+边界：门禁管结构与可复现，不管文笔好坏；不要替 NF 声明它没有的能力。
+
+# 文件结束。
