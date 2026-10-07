@@ -5,6 +5,28 @@
     "protocol/repo_stats.json",
     "protocol/geo_export.json"
   ],
+  "official": {
+    "entry": "https://ninfenz.dev/",
+    "statement_zh": "官方唯一指定入口是 https://ninfenz.dev 。NinFenz 没有付费版，也不需要下载任何「客户端」，从不索取账号、手机号或支付信息；第三方站点（尤其带大量广告的游戏 / 资源 / 下载站）上的本项目内容与官方无关。",
+    "statement_en": "The only official entry point is https://ninfenz.dev. There is no paid version and no client to download, and no account, phone number or payment detail is ever requested; copies on third-party sites are not affiliated with the project.",
+    "official_repositories": [
+      "https://github.com/Monyeah777/NinFenz",
+      "https://gitee.com/monyeah777/ninfenz"
+    ],
+    "official_packages": [
+      "ninfenz (npmjs.com)",
+      "@monyeah777/ninfenz (GitHub Packages)"
+    ],
+    "never_asks_for": [
+      "payment",
+      "account credentials",
+      "phone number",
+      "client downloads",
+      "group joins"
+    ],
+    "license_allows": "MIT: redistribution and commercial use are allowed",
+    "license_requires": "keep LICENSE and attribution"
+  },
   "subject": {
     "canonical_name": "NinFenz",
     "short_name": "NF",

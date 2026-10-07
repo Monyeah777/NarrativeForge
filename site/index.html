@@ -42,6 +42,7 @@
       "programmingLanguage": "Python",
       "softwareVersion": "1.0.0",
       "description": "内容契约层：用「协议 + 确定性门禁 + 可验证产物」把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议域中立、模型无关。不是模型、不是提示词模板集、不是厂商 SDK。",
+      "disambiguatingDescription": "官方唯一指定入口是 https://ninfenz.dev；没有付费版，也没有客户端下载；第三方站点上的本项目内容与官方无关。",
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -165,6 +166,7 @@
 <h1>内容契约层：让 AI 长内容可装载、可质检、可复现</h1>
 <p class="lede sub">宁封子（NinFenz，简称 NF）是<strong>内容契约层（content contract layer）</strong>：把「AI 稳定产出长内容」变成工程。协议本体<strong>域中立、模型无关</strong>；叙事只是官方第一个域包。</p>
 <p class="not">不是模型 · 不是提示词模板集 · 不是某厂商 SDK · MIT · 可离线</p>
+<p class="warn">⚠️ 官方唯一指定入口：<strong>https://ninfenz.dev</strong> —— NinFenz 没有付费版，也不需要下载任何「客户端」；第三方站点上的本项目内容与官方无关（<a href="#official">怎么辨识</a>）。</p>
 
 <h2>三种接法（按你的身份选）</h2>
 <div class="card">
@@ -222,6 +224,23 @@ curl -fsSL https://ninfenz.dev/run.sh | sh</code></pre>
 <p>取自《列仙传》：<strong>宁封子</strong>是黄帝的<strong>陶正</strong>——生料入窑，经<strong>火候</strong>与<strong>封缄</strong>，出的是耐久的成品。<strong>火候</strong>对应确定性门禁，<strong>封</strong>对应封缄验信（Merkle 证明 + 签名锚）。英文品牌名 <strong>NinFenz</strong> 是它的压缩形式，简称 <strong>NF</strong>。</p>
 <p class="src">考据说明：「封」在原典里来自葬于宁北山（封土）；此处取「封」字的封缄/验信义。</p>
 
+<h2 id="official">官方唯一入口与防伪</h2>
+<div class="card warnbox">
+<p><strong>⚠️ 官方唯一指定入口：<a href="https://ninfenz.dev/">https://ninfenz.dev</a></strong></p>
+<p>NinFenz（宁封子）<strong>没有付费版</strong>，<strong>不需要下载任何「客户端」</strong>，也从不索取账号、手机号或支付信息。若你在第三方网站——尤其是带大量广告的游戏 / 资源 / 软件下载站——看到本项目的内容，请<strong>不要在该站输入任何信息、不要下载任何文件</strong>：那些站点与官方无关，其文件不属于本项目。</p>
+</div>
+<table>
+<tr><th>你看到的东西</th><th>判定</th></tr>
+<tr><td>站点 <a href="https://ninfenz.dev/">ninfenz.dev</a>（<code>www</code> 会 301 到裸域）</td><td>✅ 官方唯一入口</td></tr>
+<tr><td>仓库 <a href="https://github.com/Monyeah777/NinFenz">github.com/Monyeah777/NinFenz</a>（镜像 <a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>）</td><td>✅ 官方来源</td></tr>
+<tr><td>命令行：<code>python scripts/nf.py</code> · <code>python tui/nf.py</code> · 只读 MCP <code>nf serve</code></td><td>✅ 官方形态（纯标准库脚本）</td></tr>
+<tr><td>npm 包：npmjs.com 上的 <code>ninfenz</code>，或 GitHub Packages 的 <code>@monyeah777/ninfenz</code></td><td>✅ 官方形态（npx 启动器）</td></tr>
+<tr><td>任何 <code>.exe</code> / <code>.apk</code> / 安装器 / 下载器 / 破解版 / 会员激活码</td><td>❌ 不是本项目</td></tr>
+<tr><td>资源站 / 网盘 / 加速器页面上的本项目内容</td><td>❌ 未获官方维护的转载，与官方无关</td></tr>
+<tr><td>任何要求付款、充值、加群、填表、扫码的行为</td><td>❌ 不是本项目（NF 从不收费，也没有客服渠道）</td></tr>
+</table>
+<p class="src">本项目以 MIT 许可发布：欢迎转载与商用，但<strong>必须保留 LICENSE 与来源署名</strong>；抹掉署名的转载不符合许可条件。怀疑某处内容真伪时，回到本页与 canonical 仓库逐项对照即可。</p>
+
 <h2 id="faq">常见问题</h2>
 <h3>宁封子 NinFenz 是什么？</h3>
 <p>内容契约层：用协议 + 确定性门禁 + 可验证产物定义「AI 稳定产出长内容」，使产出可装载、可质检、可复现。</p>
@@ -256,6 +275,7 @@ BibTeX：
 <p class="src">机读引用元数据：仓库根 CITATION.cff · 三种形态同见 <a href="llms-full.txt">/llms-full.txt</a> 第八节。引用请指向 canonical 站点或仓库，并保持定义句逐字一致；量化事实请引 <a href="facts.json">/facts.json</a>，别手抄数字（会过期）。</p>
 
 <footer>
+<p class="warn">⚠️ 官方唯一指定入口：https://ninfenz.dev —— 没有付费版、没有客户端下载；第三方站点上的本项目内容与官方无关。</p>
 <p><span class="badge">MIT</span><span class="badge">离线可跑</span><span class="badge">零第三方依赖</span><span class="badge">模型无关</span></p>
 <p>仓库：<a href="https://github.com/Monyeah777/NinFenz">github.com/Monyeah777/NinFenz</a> · 镜像：<a href="https://gitee.com/monyeah777/ninfenz">Gitee</a> · 机器面：<a href="llms.txt">/llms.txt</a> · <a href="llms-full.txt">/llms-full.txt</a> · <a href="facts.json">/facts.json</a> · <a href="nf.txt">/nf.txt</a> · <a href="agent.txt">/agent.txt</a> · <a href="sitemap.xml">sitemap</a></p>
 </footer>

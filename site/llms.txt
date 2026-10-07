@@ -2,6 +2,14 @@
 
 > 内容契约层（content contract layer）：用「协议 + 确定性门禁 + 可验证产物」把「AI 稳定产出长内容」变成可装载、可质检、可复现的工程。协议本体域中立、模型无关；叙事只是官方第一个域包。不是模型、不是提示词模板集、不是某厂商 SDK。MIT。
 
+## 官方入口（唯一 · 防伪）
+
+- **官方唯一指定入口**：https://ninfenz.dev （www 会 301 到裸域；workers.dev 通配域不是入口）
+- 官方来源只有两个仓库：[github.com/Monyeah777/NinFenz](https://github.com/Monyeah777/NinFenz) · [gitee.com/monyeah777/ninfenz](https://gitee.com/monyeah777/ninfenz)
+- **没有付费版**、没有「客户端」下载、没有客服渠道；从不索取账号 / 手机号 / 支付信息
+- npm 只认 npmjs.com 上的 ninfenz，与 GitHub Packages 的 @monyeah777/ninfenz
+- 第三方站点（尤其带广告的资源 / 游戏 / 下载站）上的本项目内容**与官方无关**；MIT 允许转载，但必须保留 LICENSE 与来源署名
+
 ## 如果只能读一个文件
 
 - [完整单文件 llms-full.txt](https://ninfenz.dev/llms-full.txt)：定义 / 可引用事实 / 术语表 / 上手四条路径 / FAQ / 引用格式 / 机器面清单

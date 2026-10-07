@@ -42,6 +42,7 @@ if (OFFLINE) {
   const canon = (idx.match(/rel="canonical" href="([^"]+)"/) || [])[1] || '';
   check('首页 canonical 自指', canon === origin + '/', canon || '(缺失)');
   check('首页 hreflang 三向', ['zh-CN', 'en', 'x-default'].every((l) => idx.includes('hreflang="' + l + '"')), 'zh-CN/en/x-default');
+  check('防伪声明在两语首页', read('index.html').includes('官方唯一指定入口') && read('en/index.html').includes('only official entry point'), 'zh + en');
   for (const p of ['llms.txt', 'llms-full.txt', 'nf.txt', 'agent.txt', 'facts.json', 'run.sh', 'robots.txt', 'sitemap.xml', 'worker.js', '_headers']) {
     check('机器面在场 ' + p, has(p), has(p) ? String(fs.statSync(path.join(SITE, p)).size) + 'B' : '缺');
   }
@@ -52,6 +53,8 @@ if (OFFLINE) {
     const q = ((fj.facts || []).find((x) => x.id === 'quality') || {}).claim_zh || '';
     check('facts 质量凭证与 llms-full 一致', read('llms-full.txt').includes(q.replace('质量凭证：', '')), q);
     check('facts 定义句在场', (fj.subject || {}).definition_zh && read('llms-full.txt').includes(fj.subject.definition_zh), 'definition_zh');
+    check('facts 官方入口', (fj.official || {}).entry === 'https://ninfenz.dev/', (fj.official || {}).entry || '(缺失)');
+    check('官方声明在机器面', read('llms-full.txt').includes('官方唯一指定入口') && read('llms.txt').includes('官方唯一指定入口') && read('nf.txt').includes('官方唯一入口'), 'llms.txt + llms-full.txt + nf.txt');
   }
   const hd = read('_headers');
   const missing = MACHINE.filter((p) => p !== '/use/' && p !== '/en/use/' && p !== '/404.html' && p !== '/assets/site.css').filter((p) => !hd.includes('\n' + p + '\n'));

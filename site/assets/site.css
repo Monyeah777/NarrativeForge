@@ -15,6 +15,7 @@ p,li{color:var(--fg)}
 .sub{color:var(--dim)}
 .lede{font-size:17px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+.warnbox{border-color:#5c3a2e;background:#1b1410}
 code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-size:14px}
 code{background:#0a0e14;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
 pre{background:#0a0e14;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto}
@@ -27,6 +28,7 @@ ul{padding-left:22px}
 footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
 .badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px;color:var(--dim);margin:2px 6px 2px 0}
 .not{color:#f0b7b7}
+.warn{color:#ffcf9a}
 .copy{background:#16202e;color:var(--acc);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font:13px/1.4 inherit;cursor:pointer;margin:0 0 6px}
 .copy:hover{border-color:var(--acc)}
 .copy.done{color:var(--ok);border-color:var(--ok)}
