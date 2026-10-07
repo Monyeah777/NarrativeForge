@@ -114,7 +114,7 @@ PAGE = '''<!doctype html>
 <textarea id="text" placeholder="粘贴要体检的 markdown（仅 lint 模式使用）"></textarea>
 <div class="meta" id="meta">就绪</div>
 <pre id="out">点击「运行」开始。</pre>
-<p class="sub" style="margin-top:18px">完整 39 条门禁与离线复跑：<code>npx -y ninfenz install --dest ./nf &amp;&amp; cd nf &amp;&amp; bash verify.sh</code> · 仓库 <a style="color:var(--acc)" href="https://github.com/Monyeah777/NinFenz">Monyeah777/NinFenz</a></p>
+<p class="sub" style="margin-top:18px">完整 check1-40 门禁与离线复跑：<code>npx -y ninfenz install --dest ./nf &amp;&amp; cd nf &amp;&amp; bash verify.sh</code> · 仓库 <a style="color:var(--acc)" href="https://github.com/Monyeah777/NinFenz">Monyeah777/NinFenz</a></p>
 </div><script>
 const MODES=__MODES__;
 const sel=document.getElementById('mode'),ta=document.getElementById('text'),hint=document.getElementById('hint');

@@ -109,3 +109,19 @@ if (!quiet) {
   process.stdout.write('  CLI 版本 ' + cli + ' · 源提交 ' + manifest.source_commit.slice(0, 12) + '\n');
   process.stdout.write('  预算（解包） ' + pkg.config.payload_budget_mb + ' MB × 3.5 ≈ ' + mb(pkg.config.payload_budget_mb * 3.5 * 1024 * 1024) + '\n');
 }
+// 包页文案的体积口径与清单**同步**（verify 里做判死）：同 site/tools/sync-numbers.mjs 的分工。
+// 为什么：README 就是 npm 页面正文，写着过期件数/体积等于发布旧数字（2026-10-07 实测：README 写
+// 2809 件 / 18.74 MB / 39 条门禁，真值已是 2939 件 / 19.72 MB / check1-40）。
+const README_PATH = path.join(PACKAGE_ROOT, 'README.md');
+const SIZE_RE = /当前体积：\*\*(\d+) 件 · 解包 ([\d.]+) MB\*\*/;
+if (fs.existsSync(README_PATH)) {
+  const text = fs.readFileSync(README_PATH, 'utf8');
+  const want = '当前体积：**' + count + ' 件 · 解包 ' + mb(total) + '**';
+  if (!SIZE_RE.test(text)) {
+    if (!quiet) process.stdout.write('  [WARN] README 缺体积口径行（verify 会判死；修复指引：补回「当前体积：**N 件 · 解包 X MB**」）\n');
+  } else if (!text.includes(want)) {
+    fs.writeFileSync(README_PATH, text.replace(SIZE_RE, want));
+    if (!quiet) process.stdout.write('  ✓ README 体积口径已同步：' + count + ' 件 · ' + mb(total) + '\n');
+  }
+}
+

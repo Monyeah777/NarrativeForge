@@ -64,7 +64,7 @@ if (parsed.install) {
   materialize(manifest, path.resolve(parsed.dest), parsed.force)
     .then(function (dest) {
       process.stdout.write('✓ 已落盘：' + dest + '\n');
-      process.stdout.write('  提示：这是运行时树（CLI / TUI / MCP 可用）。要跑完整 39 条门禁请 git clone 后 bash verify.sh\n');
+      process.stdout.write('  提示：这是运行时树（CLI / TUI / MCP 可用）。要跑完整 check1-40 门禁请 git clone 后 bash verify.sh\n');
     })
     .catch(function (e) { fail(e.message, 3); });
 } else {

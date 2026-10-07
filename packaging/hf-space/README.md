@@ -35,7 +35,7 @@ short_description: Run real NinFenz read-only gates in the browser
 npm i -g ninfenz
 ninfenz doctor                                    # 16 项只读体检
 
-# 完整 39 条门禁需要真实检出（verify.sh 依赖 .git / .github / results）
+# 完整 check1-40 门禁需要真实检出（verify.sh 依赖 .git / .github / results）
 git clone https://github.com/Monyeah777/NinFenz && cd NinFenz && bash verify.sh
 ```
 

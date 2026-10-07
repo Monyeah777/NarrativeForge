@@ -56,6 +56,26 @@ if (!fs.existsSync(manifestPath)) {
 // 5) 许可证文件。
 need(fs.existsSync(path.join(PAYLOAD_DIR, 'LICENSE')), 'payload 缺 LICENSE');
 
+// 6) 包页文案的体积口径必须与 payload 清单一致（发布旧数字比不写更糟；同 site 的 sync-numbers 口径）。
+if (fs.existsSync(manifestPath)) {
+  const pageManifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const readmePage = path.join(PACKAGE_ROOT, 'README.md');
+  if (!fs.existsSync(readmePage)) {
+    issues.push('缺包页 README.md（npm 页面正文）');
+  } else {
+    const mm = fs.readFileSync(readmePage, 'utf8').match(/当前体积：\*\*(\d+) 件 · 解包 ([\d.]+) MB\*\*/);
+    if (!mm) {
+      issues.push('README 缺体积口径行（修复指引：补回「当前体积：**N 件 · 解包 X MB**」，npm run stage 会自动同步）');
+    } else {
+      const wantCount = String(pageManifest.count);
+      const wantMb = (pageManifest.total_bytes / 1048576).toFixed(2);
+      need(mm[1] === wantCount, 'README 件数过期：README=' + mm[1] + ' vs 清单=' + wantCount + '（修复指引：npm run stage 自动同步后提交）');
+      need(mm[2] === wantMb, 'README 体积过期：README=' + mm[2] + ' MB vs 清单=' + wantMb + ' MB（修复指引：npm run stage 自动同步后提交）');
+    }
+  }
+}
+
+
 process.stdout.write('== NF npm 发布前自检 ==\n');
 for (const w of warns) process.stdout.write('  [WARN] ' + w + '\n');
 if (issues.length === 0) {
