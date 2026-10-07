@@ -2267,7 +2267,7 @@ int AssembleCommand()
                           + string.Join("、", (plan.GetValueOrDefault("fetch_modules") as List<object?> ?? new List<object?>()).Select(PyS)));
         Console.WriteLine("  装配允许集（官方核心 + 包模块）："
                           + PyS((plan.GetValueOrDefault("allowed_module_ids") as List<object?> ?? new List<object?>()).Count));
-        Console.WriteLine($"  下一步：读 agent_组装指令包_v0.2.md → 取件 → 输出完整版 → "
+        Console.WriteLine($"  下一步：读 docs/agent/agent_组装指令包_v0.2.md → 取件 → 输出完整版 → "
                           + $"nf assemble \"{requirement}\" --check <out.md> 验收");
     }
     else

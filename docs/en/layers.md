@@ -62,9 +62,9 @@ Before changing anything, ask three questions; the answers are written in the ta
 | Surface | Entry artifact | Serves rung | Framing |
 |---|---|---|---|
 | **Human–machine entry** | `scripts/nf`, `scripts/nf.cmd`, `scripts/nf.py` | engine | With no arguments it enters the terminal (nf shell → desktop/src/core/terminal.py); all other arguments pass through to the CLI. |
-| **AI assembly line** | `AGENT_START.md`, `agent_组装指令包_v0.2.md`, `AI_ROUTING.md` | asset | Any agent can self-serve and assemble the "full edition" from the repository URL alone; the same tier as line A (human–machine), with no model presupposed. |
+| **AI assembly line** | `docs/agent/AGENT_START.md`, `docs/agent/agent_组装指令包_v0.2.md`, `docs/agent/AI_ROUTING.md` | asset | Any agent can self-serve and assemble the "full edition" from the repository URL alone; the same tier as line A (human–machine), with no model presupposed. |
 | **MCP service surface** | `docs/mcp.md`, `protocol/mcp_package.json` | engine | Long-running runtime entry = nf serve (the CLI surface of the engine rung); this surface registers only the contract and the usage documentation. |
-| **Library pickup surface** | `ROUTES.md`, `library/INDEX.md`, `library/ALIAS.md` | asset | Address by number + mirrored routing; the holdings themselves belong to the asset rung, and this surface only handles "how to find it". |
+| **Library pickup surface** | `docs/agent/ROUTES.md`, `library/INDEX.md`, `library/ALIAS.md` | asset | Address by number + mirrored routing; the holdings themselves belong to the asset rung, and this surface only handles "how to find it". |
 
 ### Verification vertical slice (cuts across all four rungs, not a layer)
 

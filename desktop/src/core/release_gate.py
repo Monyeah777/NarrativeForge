@@ -83,7 +83,7 @@ def _version(root: Path) -> Tuple[str, int, int]:
 
     缺基线面时返回空三元组——由 check 如实报 issue，不在读文件处裸崩。
     """
-    need = ("verify.sh", "README.md", "CHANGELOG.md", "VERSION-MATRIX.md")
+    need = ("verify.sh", "README.md", "CHANGELOG.md", "docs/meta/VERSION-MATRIX.md")
     if not all((root / f).is_file() for f in need):
         return ("", 0, 0)
     from core import quality_baseline as qb
@@ -280,7 +280,7 @@ def check(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     if not rel:
         issues.append("CHANGELOG 无版本节（修复指引：加 \"## [X.Y.Z] - 未发布\" 节）")
     else:
-        matrix = r / "VERSION-MATRIX.md"
+        matrix = r / "docs/meta/VERSION-MATRIX.md"
         mtxt = matrix.read_text(encoding="utf-8") if matrix.is_file() else ""
         if rel not in mtxt:
             issues.append("发布线 v%s 未登记 VERSION-MATRIX（修复指引：补一行 v%s）" % (rel, rel))

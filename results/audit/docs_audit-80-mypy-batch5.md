@@ -7,12 +7,12 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/semantic_conflict.py:eb11b7e32ac07c52400c4c4a457ed877f434decc05a77fd69ef6d0bf2ddcf131
-  - desktop/src/core/storage.py:fec176fc2ce3c2d498c7288cb56cb83a0131f23cc6d79259f2e7ccebe2511f2a
+  - desktop/src/core/storage.py:3811f57302bc44e726abf44d028b363067ca1230a73e333cefe4074561f229ce
   - desktop/src/core/receipts.py:afc48b24b00775b04b67200055d954c5ad735eff980921da9571e87ee13f169f
   - desktop/src/core/intake.py:23007fd42c627df44dcce7ffa6873a28f5679a68f3b00351f32e728bb25dcbe0
   - desktop/src/core/world_slots.py:4d7dc220020f9b63b7aeef6f3cd74d1647fe575bbcd804778d61d9de5840aea4
   - desktop/src/core/pipelinerun.py:551bfd5e16424e630cc132fc32926d00bf7031f7e87163ff01cacc30698053bb
-  - desktop/src/core/mcp_runtime.py:47e085e16cfa072250c098e918435a053004cd23d5592590dcec3f7d68e055bb
+  - desktop/src/core/mcp_runtime.py:5baba43c842ce4f59878c0b54d14dd62bfcaa94c9523d74d41f39397945f4e69
   - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
 
 ---

@@ -19,7 +19,7 @@
 （`scripts/nf` 里的 `1.7 ms` / `260.9 ms` 属**带日期的计时记录**，不是运行时时点计数，判据不拦）。
 
 口径（防误杀）：
-- 豁免面：`CHANGELOG.md` / `VERSION-MATRIX.md`（发布史，记录当时值即其本分）、
+- 豁免面：`CHANGELOG.md` / `docs/meta/VERSION-MATRIX.md`（发布史，记录当时值即其本分）、
   `docs/verification-cards.md`（由 `verify.sh` 生成，数字由生成器保证）、`docs/examples/**`
   与 `docs/reference/**`（样本与外部材料）、以及 README / llms.txt 里
   `<!-- nf:stats:begin --> … <!-- nf:stats:end -->` 的生成区（`nf stats --write` 刷新）。
@@ -42,9 +42,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-ENTRY_DOCS = ("README.md", "README.en.md", "CONTRIBUTING.md", "AGENT_START.md", "AI_ROUTING.md",
-              "DEEP_DIVE.md", "ROADMAP.md", "SECURITY.md", "ROUTES.md", "llms.txt")
-EXEMPT = {"CHANGELOG.md", "VERSION-MATRIX.md", "docs/verification-cards.md"}
+ENTRY_DOCS = ("README.md", "README.en.md", "CONTRIBUTING.md", "docs/agent/AGENT_START.md", "docs/agent/AI_ROUTING.md",
+              "docs/meta/DEEP_DIVE.md", "docs/meta/ROADMAP.md", "SECURITY.md", "docs/agent/ROUTES.md", "llms.txt")
+EXEMPT = {"CHANGELOG.md", "docs/meta/VERSION-MATRIX.md", "docs/verification-cards.md"}
 EXEMPT_PREFIX = ("docs/examples/", "docs/reference/", "community/", "results/", "library/")
 
 COUNT = re.compile(r"PASS=\d+|check1-\d+")

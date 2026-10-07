@@ -77,7 +77,7 @@ pub fn scan(root: &Path) -> (Vec<String>, Option<BaselineStats>) {
         && readme.contains(&pass_tok);
     let changelog = std::fs::read_to_string(root.join("CHANGELOG.md")).unwrap_or_default();
     let head = changelog.split("\n## [2.8.0]").next().unwrap_or("").to_string();
-    let matrix = std::fs::read_to_string(root.join("VERSION-MATRIX.md")).unwrap_or_default();
+    let matrix = std::fs::read_to_string(root.join("docs/meta/VERSION-MATRIX.md")).unwrap_or_default();
 
     let checks: [(&str, &str, i64); 3] = [
         ("README", "基线句", if readme_ok { 1 } else { 0 }),

@@ -12,12 +12,12 @@
     "assemble": {
       "mcp_prompt": "assemble_guide",
       "mcp_tools": ["module_read", "pipeline_read", "asset_get"],
-      "fallback": "agent_组装指令包_v0.2.md"
+      "fallback": "docs/agent/agent_组装指令包_v0.2.md"
     },
     "routing": {
       "mcp_prompt": "",
       "mcp_tools": ["spec_ls", "registry_query"],
-      "fallback": "AI_ROUTING.md"
+      "fallback": "docs/agent/AI_ROUTING.md"
     },
     "menu": {
       "mcp_prompt": "assemble_guide",
@@ -26,8 +26,8 @@
     }
   },
   "documents": [
-    {"path": "agent_组装指令包_v0.2.md", "workflow": "assemble"},
-    {"path": "AI_ROUTING.md", "workflow": "routing"},
+    {"path": "docs/agent/agent_组装指令包_v0.2.md", "workflow": "assemble"},
+    {"path": "docs/agent/AI_ROUTING.md", "workflow": "routing"},
     {"path": "docs/ai-menu.md", "workflow": "menu"}
   ],
   "fail_closed": {

@@ -6143,7 +6143,7 @@ def _cmd_assemble(args):
         print("  取件模块：%s" % "、".join(plan_["fetch_modules"]))
         print("  装配允许集（官方核心 + 包模块）：%d"
               % len(plan_["allowed_module_ids"]))
-        print("  下一步：读 agent_组装指令包_v0.2.md → 取件 → 输出完整版 → "
+        print("  下一步：读 docs/agent/agent_组装指令包_v0.2.md → 取件 → 输出完整版 → "
               "nf assemble \"%s\" --check <out.md> 验收" % args.requirement)
     else:
         print("  未命中预设 → 用户自定义流（custom）")

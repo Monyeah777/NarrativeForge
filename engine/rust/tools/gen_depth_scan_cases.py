@@ -54,7 +54,7 @@ TEMPLATE = r'''
         }
         // 子扫描器真读的那三条（真源注释记的"陈旧洞"）必须在面内
         for must in [".rivet/private_archive/ai_packs/specs/*.json",
-                     "desktop/src/core/registry.json", "agent_组装指令包_v0.2.md"] {
+                     "desktop/src/core/registry.json", "docs/agent/agent_组装指令包_v0.2.md"] {
             assert!(QD_INPUTS.contains(&must), "并集面缺补齐项 {}：{:?}", must, QD_INPUTS);
         }
     }

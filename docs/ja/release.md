@@ -32,7 +32,7 @@ python scripts/nf.py release --freeze --apply --by <承認者> --note "<波の�
 | 面 | 真源 | リリース時の操作 |
 |---|---|---|
 | `CHANGELOG.md` | 最新節 `## [X.Y.Z]` | 未公開 → 公開済みにし、PASS 基準を記録 |
-| `VERSION-MATRIX.md` | 版 × 方案 × 能力の行 | 一行追加（版 / 日付状態 / 方案 / 能力） |
+| `docs/meta/VERSION-MATRIX.md` | 版 × 方案 × 能力の行 | 一行追加（版 / 日付状態 / 方案 / 能力） |
 | `README.md` 版ブロック | 「現行」行 | 現行行を新版へ移す |
 
 `bash verify.sh` が全量ゲートの単一入口です。`PASS` の期待値は宣言（`quality_baseline.EXPECTED_*`）であり、本文には書きません。

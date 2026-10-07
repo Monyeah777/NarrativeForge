@@ -7,15 +7,15 @@ NF 的运行循环是：**读 → 判 → 配 → 装 → 执 → 验**。每次
 - 组装完整版：从领域包选管线、模块、资产，生成单文件 `.md`。
 - 运行现成完整版：按产物内 `##6. 装载指引` 执行。
 - 制作单件：做模块、资产包或协议包。
-- 逛云端馆：读 `library/INDEX.md`、`ROUTES.md`。
+- 逛云端馆：读 `library/INDEX.md`、`docs/agent/ROUTES.md`。
 
 ## 2. 取货
 
 优先读：
 
-- `AGENT_START.md`
-- `agent_组装指令包_v0.2.md`
-- `AI_ROUTING.md`
+- `docs/agent/AGENT_START.md`
+- `docs/agent/agent_组装指令包_v0.2.md`
+- `docs/agent/AI_ROUTING.md`
 - `01_核心协议.md`
 - `02_联动注册表.md`
 - `06_Agent执行协议.md`
@@ -37,7 +37,7 @@ python scripts/nf.py market community/校园情感领域包
 
 ## 4. 执行与输出
 
-成品是**单文件自包含 Markdown**，须含完整骨架与装载指引。完整版应具备八段骨架，具体以 `agent_组装指令包_v0.2.md` 的 `##7` 自检为准。
+成品是**单文件自包含 Markdown**，须含完整骨架与装载指引。完整版应具备八段骨架，具体以 `docs/agent/agent_组装指令包_v0.2.md` 的 `##7` 自检为准。
 
 ## 5. 验收
 

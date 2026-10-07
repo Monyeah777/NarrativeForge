@@ -4,7 +4,7 @@ target: 45 A5 指令档步进级可机检审计
 verdict: 通过
 date: 2026-09-09
 auditor: 天枢（基于项目现状取证）
-related: [desktop/src/core/instruction_step_audit.py, agent_组装指令包_v0.2.md, docs/45_执行遥测规范.md, docs/45_M2_回合级drill.md, docs/45_M3_techdoc载荷提案.md, docs/44_M2_AI通道内容规范.md]
+related: [desktop/src/core/instruction_step_audit.py, docs/agent/agent_组装指令包_v0.2.md, docs/45_执行遥测规范.md, docs/45_M2_回合级drill.md, docs/45_M3_techdoc载荷提案.md, docs/44_M2_AI通道内容规范.md]
 ---
 
 # M_AUDIT 45 A5 · 指令档步进级审计

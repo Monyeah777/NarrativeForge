@@ -62,9 +62,9 @@ python scripts/nf.py layers --write    # 刷新本文件的生成区（改真源
 | 面 | 入口件 | 服务阶 | 口径 |
 |---|---|---|---|
 | **人机入口** | `scripts/nf`、`scripts/nf.cmd`、`scripts/nf.py` | engine | 无参数进终端（nf shell → desktop/src/core/terminal.py）；其余参数透传 CLI。 |
-| **AI 装配线** | `AGENT_START.md`、`agent_组装指令包_v0.2.md`、`AI_ROUTING.md` | asset | 任意 agent 仅凭仓库地址自助取件组装「完整版」；与 A 线（人机）同等级，不预设模型。 |
+| **AI 装配线** | `docs/agent/AGENT_START.md`、`docs/agent/agent_组装指令包_v0.2.md`、`docs/agent/AI_ROUTING.md` | asset | 任意 agent 仅凭仓库地址自助取件组装「完整版」；与 A 线（人机）同等级，不预设模型。 |
 | **MCP 服务面** | `docs/mcp.md`、`protocol/mcp_package.json` | engine | 长驻运行时入口 = nf serve（引擎阶 CLI 面）；本面只登记契约与用法文档。 |
-| **图书馆取件面** | `ROUTES.md`、`library/INDEX.md`、`library/ALIAS.md` | asset | 按编号寻址 + 镜像路由；馆藏本体属资产阶，本面只负责「怎么找到它」。 |
+| **图书馆取件面** | `docs/agent/ROUTES.md`、`library/INDEX.md`、`library/ALIAS.md` | asset | 按编号寻址 + 镜像路由；馆藏本体属资产阶，本面只负责「怎么找到它」。 |
 
 ### 验证纵切（贯穿四阶，不是层）
 

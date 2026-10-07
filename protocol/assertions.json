@@ -32,7 +32,7 @@
       "params": {
         "path": "llms.txt",
         "patterns": ["# NinFenz", "library/INDEX.md", "01_核心协议.md",
-                     "06_Agent执行协议.md", "agent_组装指令包_v0.2.md"]
+                     "06_Agent执行协议.md", "docs/agent/agent_组装指令包_v0.2.md"]
       },
       "message": "llms.txt 缺机器入口锚点",
       "fix": "按 docs/knowledge.md 之外的入口清单补齐锚点行",

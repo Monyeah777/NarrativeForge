@@ -15,7 +15,7 @@ related: [desktop/src/core/quality_baseline.py, desktop/src/core/asset_density.p
 
 | 项 | 内容 | 证据 |
 |---|---|---|
-| ① 文档可执行性 | `agent_组装指令包_v0.2.md`、`docs/44_M1_执行演练扩展.md`、`docs/44_M2_AI通道内容规范.md` 纳入 doc_hygiene REQUIRED_DOCS+INSTRUCTION_DOCS，头部补 ⛔/最后更新 | doc_hygiene 单测 + 清单 |
+| ① 文档可执行性 | `docs/agent/agent_组装指令包_v0.2.md`、`docs/44_M1_执行演练扩展.md`、`docs/44_M2_AI通道内容规范.md` 纳入 doc_hygiene REQUIRED_DOCS+INSTRUCTION_DOCS，头部补 ⛔/最后更新 | doc_hygiene 单测 + 清单 |
 | ② 动态可执行 | `nf assemble --check` 验收器按真实战例校准：编号真值 = 全库已登记模块；残留/不命中语境豁免；决策引用只查叙述非列表段；仓库 P03 完整样本落成常驻回归（单测） | test_nf_cli 真实样本例 |
 | ③ 资产密度 | `asset_density.py` + `nf asset density`（键/字符/无键计数/空档 FAIL） | 55 档 165 键 · 无空档 |
 | ④ 收口 | 本审计 + CHANGELOG [Unreleased] 45 节 | 见 §4 |

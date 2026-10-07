@@ -24,8 +24,8 @@ from core import repo_face as _repo_face  # noqa: E402
 
 #: 入口文档面（agent 与人的第一跳）：新增入口文档须同步入表，否则本门禁漏检。
 ENTRY_DOCS = (
-    "README.md", "README.en.md", "llms.txt", "ROUTES.md", "AGENT_START.md",
-    "AI_ROUTING.md", "DEEP_DIVE.md", "AGENTS.md", "CONTRIBUTING.md", "SECURITY.md",
+    "README.md", "README.en.md", "llms.txt", "docs/agent/ROUTES.md", "docs/agent/AGENT_START.md",
+    "docs/agent/AI_ROUTING.md", "docs/meta/DEEP_DIVE.md", "AGENTS.md", "CONTRIBUTING.md", "SECURITY.md",
     "docs/mcp.md", "docs/terminal.md", "docs/ai-menu.md", "docs/library.md",
     "docs/conformance.md",
 )

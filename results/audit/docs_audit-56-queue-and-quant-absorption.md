@@ -7,9 +7,9 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/concept_graph.py:0f4bbd6b92ab0cb3daf47956378f7afd0d20432ed23f59e5d669621da7d239be
-  - verify.sh:34ced4d23abda17d95ededd2c75d49decf1a11cba64913c5c389c2eb7b859d54
-  - README.en.md:0a4903b70c595b775cb4cf04dd0256391b823ee9955aedf8fc2e6cd9d3d31c3e
-  - scripts/check_external_links.py:ce954ac27b7fdc632b48e68a8867361f3415b5e2920d4d4dfd2f306574a60909
+  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
+  - README.en.md:02fed00159ffdfd36a17e4549a61cde38bba51181be4d5cd2171aace1ec136ca
+  - scripts/check_external_links.py:04cfe9fa4d7213021e60faac7ff88414db529090892ed38441ff61db8810861e
   - community/量化金融域包/assets/DATA_CONTRACT.md:3815cd420ce535b571149a1ca0725b2d5c1757660e83d0edd8ed1d5c14ed2af1
   - community/量化金融域包/assets/STRATEGY_SPECS.md:9174638b5caf2d5d8586b80d07ed9aeca5d221e16f01ec19ce0e4c0f50859e65
   - community/量化金融域包/assets/QUANT_GRAPH.md:331d63943effe51462440c41832202df3b8e6bb2553734472947ac77927e094c
@@ -37,7 +37,7 @@ subjects:
 |---|---|---|---|---|
 | `QUANTAXIS`（573 文件） | **MIT** | 中国市场量化框架：`QAData/QAFetch/QADataBridge`（数据桥）/ `QAEngine` / `QAFactor` / `QAIndicator` / `QAMarket` / `QAPubSub`（发布订阅）/ `QASchedule`（调度）/ `QAStrategy` / `QIFI`（**统一交易接口对象**）/ `QARSBridge` | **部分吸收（机制观察）** | ① 「统一交易接口/账户对象」→ 新资产 `DATA_CONTRACT` §5（账户 / 委托 / 成交对象）+ 新概念 `Q30 交易对象与账户口径`；② 调度与发布订阅 → **已具备**（NF M50 调度 + 事件总线） |
 | `zvt`（580 文件） | **MIT** | 数据—因子—记录器分层：`src/zvt/{domain, recorders, factors, contract, trader, sched, tag, informer, ml, api}` | **部分吸收（机制观察）** | 「领域对象 + 记录器 + 合约元数据」→ `DATA_CONTRACT` §3（合约与标的元数据）+ §6（数据源抽象与标准化）+ 新概念 `Q28` |
-| `QuantDinger`（961 文件） | Apache-2.0 | 「AI 交易操作系统」：`backend_api_python` + **`mcp_server`** + `docs/{AGENT_QUICKSTART, MCP_SETUP, openapi.yaml, agent-openapi.json}` | **已具备（不重做）** | 给 agent 的接入面（MCP + OpenAPI + agent 快速开始）↔ NF `nf serve`（MCP）+ `llms.txt` + `AGENT_START.md` + `protocol/endpoint_contract.json`；其「想法→策略→回测→模拟→实盘→监控」全链 ↔ 本域图 Q09–Q20 已覆盖 |
+| `QuantDinger`（961 文件） | Apache-2.0 | 「AI 交易操作系统」：`backend_api_python` + **`mcp_server`** + `docs/{AGENT_QUICKSTART, MCP_SETUP, openapi.yaml, agent-openapi.json}` | **已具备（不重做）** | 给 agent 的接入面（MCP + OpenAPI + agent 快速开始）↔ NF `nf serve`（MCP）+ `llms.txt` + `docs/agent/AGENT_START.md` + `protocol/endpoint_contract.json`；其「想法→策略→回测→模拟→实盘→监控」全链 ↔ 本域图 Q09–Q20 已覆盖 |
 | `OpenBB`（2191 文件） | **AGPL-3.0** | 开放数据平台：`openbb_platform/{core, extensions, providers}`（provider 抽象 + 核心 + 扩展插件） | **仅机制观察（不传导结构）** | 「provider 抽象 + 标准字段模型」是多源接入的公认机制 → 新概念 `Q28 数据源抽象与标准化` 的**存在性**观察；但 AGPL-3.0 属强 copyleft → **不入资产图例、不引用其结构**，概念与边仍标 `domain-logic` |
 | `QuantEcon.py`（270 文件） | **MIT** | 经济学数值库：`quantecon/{game_theory, markov, optimize, random, util}`（Markov DP / LQ / ARMA / 谱分析…）+ 教程 | **部分吸收（概念面）** | 数值方法与动态规划是域内独立能力面 → 新概念 `Q29 数值方法与动态规划`（**独立成支，不并入组合优化 prereqs**——弱工具依赖不立边） |
 | `quant-trading`（177 文件） | Apache-2.0 | 策略示例集：每策略一脚本 + `data/` + 主题项目（Monte Carlo / Oil Money / Ore Money / Smart Farmers） | **部分吸收（内容形态）** | 「策略示例集」形态 → 新资产 `STRATEGY_SPECS`（**自撰规格**：7 例 × 适用概念 / 必要前置 / 口径清单；只给规格不给代码、不给收益承诺） |

@@ -644,7 +644,7 @@ class StorePlacementTest(unittest.TestCase):
 
     依据（2026-10-01 探针）：`--store out_probe` 会在仓库里建出
     `out_probe/{assets,cache,modules,presets}`（实测 rc=0），直接成为 `git status` 的未跟踪垃圾——
-    与 `trace.json` / `档案.md` 那类残留同一类，还可能被误提交。仓库自己的约定是**已忽略的**
+    与 `trace.json` / `docs/meta/档案.md` 那类残留同一类，还可能被误提交。仓库自己的约定是**已忽略的**
     `.rivet/scratch/…`（既有用例正落在那儿），故闸门只拦「仓内 + 未忽略」这一种。
     """
 

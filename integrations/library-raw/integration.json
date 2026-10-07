@@ -12,7 +12,7 @@
   },
   "requires": [],
   "docs": [
-    "ROUTES.md"
+    "docs/agent/ROUTES.md"
   ],
   "evidence": [
     "library/INDEX.md",

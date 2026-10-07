@@ -45,7 +45,7 @@ public static class QualityBaseline
                        && readme.Contains(passToken, StringComparison.Ordinal);
         var changelog = Read("CHANGELOG.md");
         var head = changelog.Split("\n## [2.8.0]")[0];
-        var versions = Read("VERSION-MATRIX.md");
+        var versions = Read("docs/meta/VERSION-MATRIX.md");
         var checks = new (string Name, string What, int Count)[]
         {
             ("README", "基线句", readmeOk ? 1 : 0),

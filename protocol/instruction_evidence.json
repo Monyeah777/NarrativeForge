@@ -3,51 +3,51 @@
     "code_metrics": {
       "cmd": "python scripts/code_metrics.py",
       "exit_code": 0,
-      "output_sha256": "f675df4378d5cfaa2f551c115742f838b8f0e171ae3eaf87b79b03e19e4a5bfa",
-      "output_tail": "== 代码规模/复杂度上限 ==\n  文件 147（基线 147）· 最大行数 5416 · 最长函数 951 行 · 最大圈复杂度 150",
-      "ran_at": "2026-09-29"
+      "output_sha256": "d1e012975643e395e8d2415a0a7c466331adaff7680f40f2240286a785487ec2",
+      "output_tail": "== 代码规模/复杂度上限 ==\n  文件 177（基线 177）· 最大行数 7036 · 最长函数 1060 行 · 最大圈复杂度 113",
+      "ran_at": "2026-10-07"
     },
     "conformance": {
       "cmd": "python scripts/nf.py conformance",
       "exit_code": 0,
-      "output_sha256": "4d617433afef0a8a92a62bcea158048f21a7740f3507fba32e02206f30773110",
+      "output_sha256": "028e86fe6cbcaa0c9d88c1c51881fdfa6d1cf26b8c0d3d42d1375b5b8625075e",
       "output_tail": "  ✓ mcp-package                    工具 10 · 提示 1 · 类目 content-creation · 目标平台 4\n  ✓ state-front                    单件 0 · 族规则 1 · 族成员 3\n  ✓ public-surface                 公开导出面零泄漏",
-      "ran_at": "2026-09-29"
+      "ran_at": "2026-10-07"
     },
     "e2e": {
       "cmd": "python scripts/e2e_desktop_headless.py",
       "exit_code": 0,
-      "output_sha256": "ce0ce1c9a76d910cbbb5f07e00fbf19197dd878dad4d87aebb086a63d0897d4a",
+      "output_sha256": "aecdab7f563897aa163388680c17d9d80d2eefaade1755a0282f83e316a523be",
       "output_tail": "[产物] <path> 字节）\n\n★ E2E DESKTOP HEADLESS PASSED ✓（官方13件 + M91/M92 + P04 → 装配 → 生成 → 断言全绿）",
-      "ran_at": "2026-09-29"
+      "ran_at": "2026-10-07"
     },
     "release": {
       "cmd": "python scripts/nf.py release",
       "exit_code": 1,
-      "output_sha256": "7b2398748e79808def02a3219536f44e8b476c55bc5e96352c7fa9ed2237c3b0",
-      "output_tail": "  verify 版本 v2.29 · check 数 39（基线自描述一致：OK）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.b84zwWpUsq\n  ✗ 发布体检未过（基线/verify）——禁止发布",
-      "ran_at": "2026-09-29"
+      "output_sha256": "9443e07c7647b67cc31872fa33d5ddf61ab92d1242b593ca5d10fded96485bbd",
+      "output_tail": "  verify 版本 v2.30 · check 数 40（基线自描述一致：OK）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.btljylL0J4\n  ✗ 发布体检未过（基线/verify）——禁止发布",
+      "ran_at": "2026-10-07"
     },
     "report": {
       "cmd": "python scripts/verify_report.py --fresh",
       "exit_code": 0,
-      "output_sha256": "d4bd5d7569b310a348810f9f62b7f83b28e60e4a84f3197667d3e22487e2d503",
-      "output_tail": "== 门禁机器可读报告 check ==\n  判据 26 条：PASS 24 · FAIL 0 · WARN 2 · ERROR 0；声明 check1-39 / PASS=68 · verify v2.29\n  ✓ 已落盘报告与实时重算一致",
-      "ran_at": "2026-09-29"
+      "output_sha256": "bb8daefaa834062b45c30253ae0800d0879bfa3eee77c021c514b8c0400428e3",
+      "output_tail": "== 门禁机器可读报告 check ==\n  判据 28 条：PASS 24 · FAIL 2 · WARN 2 · ERROR 0；声明 check1-40 / PASS=72 · verify v2.30\n  ✓ 已落盘报告与实时重算一致",
+      "ran_at": "2026-10-07"
     },
     "stats_check": {
       "cmd": "python scripts/nf.py stats --check",
       "exit_code": 0,
-      "output_sha256": "ab5af01364e3bdc7323da6ea97369a0dfc7345e8d69ef51f0014c251ef8efd55",
-      "output_tail": "  标准目录：370 条（可达 332 / 不可达 38 · 机构 194 · 206 边） · 绑定 1200 条\n  质量凭证：verify check1-39 常驻（脚本 v2.29） · 馆藏 3 件\n  模式：check（只校验）",
-      "ran_at": "2026-09-29"
+      "output_sha256": "968fd313cf0a7995175374dd74b360f6854772fefe0c51fa46ad87e87731bed3",
+      "output_tail": "  标准目录：370 条（可达 332 / 不可达 38 · 机构 194 · 206 边） · 绑定 1200 条\n  质量凭证：verify check1-40 常驻（脚本 v2.30） · 馆藏 3 件\n  模式：check（只校验）",
+      "ran_at": "2026-10-07"
     },
     "verify": {
       "cmd": "python scripts/verify_run.py",
       "exit_code": 1,
-      "output_sha256": "020988b9157e3d02102c6d708574087cf89b749eaf715262e22fb4a65b24d08f",
-      "output_tail": ">>> 存在 FAIL = 协议事故：请回滚本次修改，修正后重新运行验收 <<<\n== 一键复现：<path> verify.sh（cwd=<path>）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.2oeeXZOU3n",
-      "ran_at": "2026-09-29"
+      "output_sha256": "9e2224d5faf7eac4f2ffb2640374baf2e933cdb4f927e465b31fdf0327b4e5cf",
+      "output_tail": "    修复指引：python scripts/nf.py explain <check 号>（逐条：缺什么 / 补什么 / 示例；全量见 python scripts/nf.py explain all（覆盖 check1-40））\n== 一键复现：<path> verify.sh（cwd=<path>）\n  [i] 本次有 FAIL —— 诊断日志保留在：/tmp/tmp.wYMV1PZBT1",
+      "ran_at": "2026-10-07"
     }
   },
   "instructions": [

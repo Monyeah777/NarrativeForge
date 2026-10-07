@@ -34,7 +34,7 @@ python scripts/nf.py release --freeze --apply --by <批准人> --note "<本波�
 | 处 | 真源 | 发布时动作 |
 |---|---|---|
 | `CHANGELOG.md` | 最新节 `## [X.Y.Z]` | 未发布 → 归档为已发布并留 PASS 基线 |
-| `VERSION-MATRIX.md` | 版本 × 方案 × 能力行 | 补一行（版本 / 日期状态 / 方案 / 能力） |
+| `docs/meta/VERSION-MATRIX.md` | 版本 × 方案 × 能力行 | 补一行（版本 / 日期状态 / 方案 / 能力） |
 | `README.md` 版本块 | 「当前」行 | 当前行切到新版本 |
 
 `bash verify.sh` 是全量门禁的单入口；`PASS` 期望值是声明（`quality_baseline.EXPECTED_*`），

@@ -17,7 +17,7 @@ from typing import Any, Dict, List, Tuple
 
 _ROOT = Path(__file__).resolve().parents[3]
 AUDIT_DOCS = [
-    "agent_组装指令包_v0.2.md",
+    "docs/agent/agent_组装指令包_v0.2.md",
     "docs/45_执行遥测规范.md",
     "docs/45_M2_回合级drill.md",
     "docs/45_M3_techdoc载荷提案.md",

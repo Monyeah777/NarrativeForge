@@ -1465,7 +1465,7 @@
    }
   },
   "files": {
-   "agent_组装指令包_v0.2.md": "跑 `nf stats` 看数字；再看 `docs/45_M2_回合级drill.md` 与 `python scripts/ai_domain_closure.py --list`。\n",
+   "docs/agent/agent_组装指令包_v0.2.md": "跑 `nf stats` 看数字；再看 `docs/45_M2_回合级drill.md` 与 `python scripts/ai_domain_closure.py --list`。\n",
    "docs/44_M2_AI通道内容规范.md": "",
    "docs/45_M2_回合级drill.md": "# drill\n",
    "docs/45_M3_techdoc载荷提案.md": "",
@@ -1489,7 +1489,7 @@
    }
   },
   "files": {
-   "agent_组装指令包_v0.2.md": "跑 `nf stats` 看数字；再看 `docs/45_M2_回合级drill.md` 与 `python scripts/ai_domain_closure.py --list`。\n",
+   "docs/agent/agent_组装指令包_v0.2.md": "跑 `nf stats` 看数字；再看 `docs/45_M2_回合级drill.md` 与 `python scripts/ai_domain_closure.py --list`。\n",
    "docs/44_M2_AI通道内容规范.md": "",
    "docs/45_M2_回合级drill.md": "# drill\n",
    "docs/45_M3_techdoc载荷提案.md": "跑 `nf 不存在` 与 `python scripts/不存在.py` 与 `docs/无此档.md` 都不该过。\n",
@@ -1511,7 +1511,7 @@
    }
   },
   "files": {
-   "agent_组装指令包_v0.2.md": "跑 `nf stats` 看数字；再看 `docs/45_M2_回合级drill.md` 与 `python scripts/ai_domain_closure.py --list`。\n",
+   "docs/agent/agent_组装指令包_v0.2.md": "跑 `nf stats` 看数字；再看 `docs/45_M2_回合级drill.md` 与 `python scripts/ai_domain_closure.py --list`。\n",
    "docs/45_M2_回合级drill.md": "# drill\n",
    "docs/45_M3_techdoc载荷提案.md": "",
    "docs/45_执行遥测规范.md": "",

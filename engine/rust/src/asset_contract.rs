@@ -1316,7 +1316,7 @@ l2
             r#"{"files": 1, "inputs": 2, "outputs": 8}"#
         ),
         (
-            r#"{"id": "external-links", "inputs": ["README.md", "README.en.md", "llms.txt", "AGENT_START.md", "ROUTES.md", "docs/verification-cards.md"], "lang": "python", "outputs": ["results/external-links-report.json"], "path": "scripts/check_external_links.py"}"#,
+            r#"{"id": "external-links", "inputs": ["README.md", "README.en.md", "llms.txt", "docs/agent/AGENT_START.md", "docs/agent/ROUTES.md", "docs/verification-cards.md"], "lang": "python", "outputs": ["results/external-links-report.json"], "path": "scripts/check_external_links.py"}"#,
             &[],
             r#"{"files": 1, "inputs": 6, "outputs": 1}"#
         ),

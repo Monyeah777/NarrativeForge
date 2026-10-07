@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-  # nf-io: inputs=README.md,README.en.md,llms.txt,AGENT_START.md,ROUTES.md,docs/verification-cards.md outputs=results/external-links-report.json
+# -*- coding: utf-8 -*-  # nf-io: inputs=README.md,README.en.md,llms.txt,docs/agent/AGENT_START.md,docs/agent/ROUTES.md,docs/verification-cards.md outputs=results/external-links-report.json
 """外部链接巡检（**非门禁** · 可选联网 · 只读）。
 
 定位（2026-09-20 作者裁决执行）：NF 的门禁必须**静态可复现**（同输入同输出），因此外链
@@ -28,7 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "desktop" / "src"))
 from core import atomic_write
 
 #: 默认巡检目标（人读入口与公开文档；不含脚本、测试夹具与协议层）
-DEFAULT_TARGETS = ("README.md", "README.en.md", "llms.txt", "AGENT_START.md", "ROUTES.md")
+DEFAULT_TARGETS = ("README.md", "README.en.md", "llms.txt", "docs/agent/AGENT_START.md", "docs/agent/ROUTES.md")
 DEFAULT_GLOBS = ("docs/*.md",)
 #: 不探测的链接前缀（站内锚点 / 邮件 / 电话）
 SKIP_PREFIXES = ("#", "mailto:", "tel:")

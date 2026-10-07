@@ -4,7 +4,7 @@ target: AI 通道顶尖化（44 内容通道 + 需求→自组装编排）收口
 verdict: 通过（内部验收线达成；外部语义按封闭期冻结，不作为本结论依据）
 date: 2026-09-08
 auditor: 天枢（基于项目现状取证）
-related: [docs/mcp.md, docs/44_M2_AI通道内容规范.md, agent_组装指令包_v0.2.md, desktop/src/core/mcp_runtime.py, desktop/src/core/assemble_plan.py]
+related: [docs/mcp.md, docs/44_M2_AI通道内容规范.md, docs/agent/agent_组装指令包_v0.2.md, desktop/src/core/mcp_runtime.py, desktop/src/core/assemble_plan.py]
 ---
 
 # M_AUDIT AI 通道工程审计（44 · 收口）

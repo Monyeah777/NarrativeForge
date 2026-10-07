@@ -142,7 +142,7 @@
      "note": "无参数进终端（nf shell → desktop/src/core/terminal.py）；其余参数透传 CLI。"},
     {"id": "ai", "name": "AI 装配线", "is_source_of_truth": false,
      "serves": ["asset"],
-     "entries": ["AGENT_START.md", "agent_组装指令包_v0.2.md", "AI_ROUTING.md"],
+     "entries": ["docs/agent/AGENT_START.md", "docs/agent/agent_组装指令包_v0.2.md", "docs/agent/AI_ROUTING.md"],
      "note": "任意 agent 仅凭仓库地址自助取件组装「完整版」；与 A 线（人机）同等级，不预设模型。"},
     {"id": "mcp", "name": "MCP 服务面", "is_source_of_truth": false,
      "serves": ["engine"],
@@ -150,7 +150,7 @@
      "note": "长驻运行时入口 = nf serve（引擎阶 CLI 面）；本面只登记契约与用法文档。"},
     {"id": "distribution", "name": "图书馆取件面", "is_source_of_truth": false,
      "serves": ["asset"],
-     "entries": ["ROUTES.md", "library/INDEX.md", "library/ALIAS.md"],
+     "entries": ["docs/agent/ROUTES.md", "library/INDEX.md", "library/ALIAS.md"],
      "note": "按编号寻址 + 镜像路由；馆藏本体属资产阶，本面只负责「怎么找到它」。"}
   ],
   "crosscut": {

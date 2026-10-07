@@ -13,7 +13,7 @@ python scripts/nf.py run \
   --seed --fmt ccv3 --dest out/
 
 python scripts/nf.py assemble "帮我组装一个西幻生存世界的完整版"
-python scripts/nf.py assemble "需求" --check 成品.md --save 档案.md --trace trace.json --rounds
+python scripts/nf.py assemble "需求" --check 成品.md --save docs/meta/档案.md --trace trace.json --rounds
 
 python scripts/nf.py preset ls                    # 本机预设：管线 + 模块 + 资产包 的一次组装（落点 NF_HOME）
 python scripts/nf.py preset apply <预设名>         # 解析成装配清单（本地缺失模块如实进 warnings）
@@ -133,7 +133,7 @@ python scripts/nf.py endpoint                # 服务端点契约（status: prop
 
 一致性**声明**在 `protocol/CONFORMANCE.md`（版本表 + scope 白名单 + 显式排除清单）；
 `nf conformance` 会把它作为 `declaration` 契约逐条与真源比对（声明了真源没有的规范项即 FAIL）。
-指令档（组装指令包 / `AI_ROUTING.md` / `docs/ai-menu.md`）头部带 `DRIVER OVERRIDE` 块：
+指令档（组装指令包 / `docs/agent/AI_ROUTING.md` / `docs/ai-menu.md`）头部带 `DRIVER OVERRIDE` 块：
 **有 MCP 实现就走 MCP；派发失败即停，禁止回退成文本步骤**（真源 `protocol/driver.json`）。
 
 ## 质量与遥测

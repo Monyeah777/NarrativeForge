@@ -274,7 +274,7 @@
       "stats": {
         "contracts": 27,
         "passed": 27,
-        "root": "7be9711887ef905d7c719968dcc46f6d49c75e85f7688db100cbd5134447bc5e",
+        "root": "55db2e5d16575fc334669f15cacae90605e7ede386b1666c8ddd5188044c6333",
         "verdict": "conformant"
       },
       "status": "pass",
@@ -450,7 +450,7 @@
       "sample": [],
       "source": "workflow_policy.scan",
       "stats": {
-        "pinned_uses": 29,
+        "pinned_uses": 30,
         "requirements_files": 4,
         "with_explicit_permissions": 14,
         "workflows": 14
@@ -475,7 +475,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "f304469375661b34db334b751a5fec40b73ae574d3944bc9b94f1a232e09b508",
+  "root_digest": "f18b516277b4024f6b5666351fb2507ae76cc9426f6733ee7d8fdfebda810973",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

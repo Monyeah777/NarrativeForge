@@ -127,7 +127,7 @@ Y5 出口：免费 AI 实测 NF 样本后，把「实测结果（装载是否顺
 | 西幻完整样本（开跑首选） | https://gitee.com/monyeah777/ninfenz/raw/main/docs/完整版样本_西幻生存流P03.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/docs/完整版样本_西幻生存流P03.md |
 | 校园样本（馆藏） | https://gitee.com/monyeah777/ninfenz/raw/main/library/NF-1.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/library/NF-1.md |
 | 图书馆索引 | https://gitee.com/monyeah777/ninfenz/raw/main/library/INDEX.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/library/INDEX.md |
-| 自助组装入口 | https://gitee.com/monyeah777/ninfenz/raw/main/AGENT_START.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/AGENT_START.md |
+| 自助组装入口 | https://gitee.com/monyeah777/ninfenz/raw/main/docs/agent/AGENT_START.md | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/docs/agent/AGENT_START.md |
 
 ---
 

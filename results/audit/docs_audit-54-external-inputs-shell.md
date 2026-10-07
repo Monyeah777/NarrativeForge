@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - CONTRIBUTING.md:c72baeb7fa3069fc874321b3edddbac7a4c120ed78cf41769f01b10d3af58e60
-  - skills/ninfenz/SKILL.md:51909df96e15a07784e9d85c0f9425597fff8ea5d0ee36237a10fd04a0869504
+  - skills/ninfenz/SKILL.md:aff2577e27fe04e2ebbaef72cdebcdb8bde03a4eaefcb0c1ccb0fc3aa61cd70c
   - library/INDEX.md:2fcc4ca115a6f9e3d62ac4d4e91506c50459721bf8303c1f80225128c4488840
 
 ---

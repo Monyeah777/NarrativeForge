@@ -14,7 +14,7 @@ subjects:
   - desktop/tests/test_quant_domain_package.py:d0ca63155f193536f7ef5509f4145b9375c04747f0b48438936ba611b1db2b51
   - desktop/tests/test_mcp_write_freedom.py:905806f235c67577594d4673140aa8709297f3673027c6b50e941a1de525d1c1
   - desktop/tests/test_mcp_runtime.py:81d5afe98731241bcde0b3508152cea6d616cfe48b5ca4ec649f2fcbc8b7ee1b
-  - desktop/tests/test_live_doc_counts.py:97d927f138d8a01bf3647a6a4aef4fd67b4c5efc87f276d66148eeb840d1a6c9
+  - desktop/tests/test_live_doc_counts.py:3c8ba51aeb3ca4dcc0b3784114ca522424f833fcccb90199a37f67022d76b7bb
   - desktop/tests/test_layer_model.py:b8f0d653573f088ae8c4b1a66a415697b82496fd3fd4443d2e6cb8f4983aa54e
   - desktop/tests/test_knowledge_sig.py:49d296144924aef62ecf80447ab631f98712c9f1113f8e7ec1f90b4677c66df3
   - desktop/tests/test_judgement_coverage.py:1ef21354be3d9046aa24f845f32a0f24a4e7cc84ef5061a0948779458d93b2b7
@@ -23,7 +23,7 @@ subjects:
   - desktop/tests/test_import_injection.py:bb39860e1dfa3276a648d38a7be3ec015279866a1407372f8c57c0a81a9fabc0
   - desktop/tests/test_gap_review.py:a66c19073a942e7e4d825ac759ffb9b2f8ecde7d981748f0290051cefb8a67fc
   - desktop/tests/test_explain_coverage.py:a64bc7bf7dacb57296b94d1babf8f2daa3aa51556d61676a603546804e4e3084
-  - desktop/tests/test_doc_reachability.py:3fc87bd136fe15a375ff23da9ba3fb5c7a529ef5fd07bde1938adad696f06291
+  - desktop/tests/test_doc_reachability.py:3938ea5c04ab143dbabab4478b9171f69194181e426d36f499ad059f1f2d1fe8
   - desktop/tests/test_dead_code.py:b511d344795c8d1f9c2ab6483f8c952ae0e85b3abc922bae943dd1f0eda3a687
   - desktop/tests/test_daemon_parity.py:10582b2d9f5d7f9f6b2cb2f7e6bccc43b8b0ba1226d5153627ad7ff13cf89acb
   - desktop/tests/test_concept_graph_gate.py:446dbfd023c9d5171578ac4e7741c099fc40dce77e2f3bf1944f243f1f29a7e0

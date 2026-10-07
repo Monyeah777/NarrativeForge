@@ -11,7 +11,7 @@ subjects:
   - desktop/src/core/asset_ledger.py:2f679a74ebf76707aabd873136976b57aa395e57c92683cf76720f4130bd28c5
   - scripts/ai_domain_closure.py:2d5a1ed9e59dda0e72c185aed189647520183c6e2d4e942a2548dadd654cec1e
   - library/intake.json:28288978a5c4dcbdcff5017bdac52a027f83ec2478f81034f39415c181190533
-  - verify.sh:34ced4d23abda17d95ededd2c75d49decf1a11cba64913c5c389c2eb7b859d54
+  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
 
 ---
 

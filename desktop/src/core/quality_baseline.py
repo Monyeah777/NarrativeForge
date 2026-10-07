@@ -51,7 +51,7 @@ def scan(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
     head = changelog.split("\n## [2.8.0]", 1)[0]
     checks.append(("CHANGELOG 最新节", "PASS=%d" % EXPECTED_PASS,
                    head.count("PASS=%d" % EXPECTED_PASS)))
-    matrix = (r / "VERSION-MATRIX.md").read_text(encoding="utf-8")
+    matrix = (r / "docs/meta/VERSION-MATRIX.md").read_text(encoding="utf-8")
     checks.append(("VERSION-MATRIX", "PASS=%d" % EXPECTED_PASS,
                    matrix.count("PASS=%d" % EXPECTED_PASS)))
     for name, what, n in checks:

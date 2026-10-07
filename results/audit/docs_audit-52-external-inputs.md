@@ -37,10 +37,10 @@ subjects:
 |---|---|---|
 | 课程 / 路线图形态（Getting started → bootcamp → 进阶） | 已具备（更机检） | 域包即「知识路线」的机检形态：概念图 + 前置闭包 + `load_order` + **就绪清单 frontier**（`community/AI系统域包/`，AUD-0003）；`docs/` 四型（Diátaxis 写法判据）+ 演练集 |
 | 分件资源清单（books / communities / newsletters / interviews / projects） | 已具备（更机检） | `library/`（frontmatter 真源 + INDEX·ALIAS 机读投影 + 许可列双源校验）· `patterns/`（实践包 INDEX）· `nf market`（tier 徽章）· check34/check36 投影一致断言 |
-| 环境前置件（`software.md`：需要装什么） | 已具备 | `AGENT_START.md` + README「五分钟快速开始」+ `nf doctor`（环境自检） |
+| 环境前置件（`software.md`：需要装什么） | 已具备 | `docs/agent/AGENT_START.md` + README「五分钟快速开始」+ `nf doctor`（环境自检） |
 | 素材随章节分发（materials/⟨模块⟩/{data,slides,notes}） | 已具备（分组方式不同，见 §三.①） | 资产随域包分发（`community/⟨包⟩/assets/`）+ `nf asset` 台账（溯源 / 版本 / 状态 / 可发现，check23）+ 资产密度 / 引用度 / 厚度体检（check32） |
 | 投稿与协作入口（PR / Issue 面） | 已具备（更具体） | `.github/PULL_REQUEST_TEMPLATE.md`（改动域 + 三条门禁自检）+ 4 个 issue 模板 + CONTRIBUTING 六节（含社区包协作流程五步） |
-| 「指针文件」入口（文件名即指令，正文仅一条链接） | 剔除 | 与 NF 入口纪律相悖：NF 用**统一入口清单**（`llms.txt` / `AGENT_START.md` / `ROUTES.md` / 07 导航）+ 四型归属机检（check34）承载入口；散落指针件制造第二真相源 |
+| 「指针文件」入口（文件名即指令，正文仅一条链接） | 剔除 | 与 NF 入口纪律相悖：NF 用**统一入口清单**（`llms.txt` / `docs/agent/AGENT_START.md` / `docs/agent/ROUTES.md` / 07 导航）+ 四型归属机检（check34）承载入口；散落指针件制造第二真相源 |
 | 商业导流与徽章（报名链接 / Trendshift 徽章） | 剔除（文案纪律） | STRATEGY §四 + 公开文案纪律：仓库只承载方向 / 结果 / 使用者文档；不做导流与推崇叙事 |
 | 大体积二进制素材（58 MB CSV / 49 MB dump / PDF / PNG） | 剔除（不适面） | NF 资产面是**内容文本**（`.md` 键表条目）；仓库轻量纪律；本域（内容契约层）不承载数据集与课件二进制 |
 | 许可未声明（顶层无 LICENSE） | 剔除（**结构亦不吸收**） | 04 §3 纪律要求借鉴处注明「来源 + 许可」；无许可声明 = 无法注明授权，故本件**不把其结构落进任何资产 / 溯源图例**，只作观察记录 |

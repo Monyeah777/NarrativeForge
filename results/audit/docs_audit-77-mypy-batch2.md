@@ -7,7 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/domain_pack.py:768cccbafa835be8bf358b2d4e9d3510fd4a080c1ba8877fc5b82e400f2715a5
-  - desktop/src/core/prose_lint.py:6e3297565d6eaf9cb0661ac659a942d625b78c9b3d1c4fe84844d37f0e8ac93f
+  - desktop/src/core/prose_lint.py:757c0507afb9149c1bdafd7e0a0dabcb9a84165cd5414c84a3c95b1f77a80799
   - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
 
 ---

@@ -39,8 +39,8 @@ python scripts/nf.py worldmodel --walk
 
 ## 不克隆仓库的 AI 装配路径
 
-1. 读 `AGENT_START.md` 确认装配师角色。
-2. 读 `agent_组装指令包_v0.2.md` 获取取货顺序、选件铁律、八段骨架、`##7` 自检。
+1. 读 `docs/agent/AGENT_START.md` 确认装配师角色。
+2. 读 `docs/agent/agent_组装指令包_v0.2.md` 获取取货顺序、选件铁律、八段骨架、`##7` 自检。
 3. 从仓库 raw 文件读取协议层 01/02/06/07 与 `community/*` 所需包。
 4. 交付单文件完整版 `.md`，并明确来源与缺口。
 

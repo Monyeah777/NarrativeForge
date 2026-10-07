@@ -8,11 +8,11 @@
 |---|---|---|---|---|---|---|---|
 | a2a-card | A2A Agent Card 出口 | export | proposed | 0.1.0 | @Monyeah777 | results/interop/a2a.json | docs/interop-thirdparty.md |
 | agent-skill | Agent Skill 出口 | package | active | 1.0.0 | @Monyeah777 | skills/ninfenz/SKILL.md | skills/ninfenz/SKILL.md |
-| agents-rules | 项目规则出口（AGENTS / CLAUDE） | export | active | 1.0.0 | @Monyeah777 | python scripts/nf.py run --fmt agents | agent_组装指令包_v0.2.md |
+| agents-rules | 项目规则出口（AGENTS / CLAUDE） | export | active | 1.0.0 | @Monyeah777 | python scripts/nf.py run --fmt agents | docs/agent/agent_组装指令包_v0.2.md |
 | ccv3-export | CCV3 角色卡出口 | export | active | 1.0.0 | @Monyeah777 | python scripts/nf.py run --fmt ccv3 | docs/output-forms.md |
 | cli | 命令行入口（nf） | cli | active | 1.0.0 | @Monyeah777 | python scripts/nf.py --help | docs/terminal.md |
 | dotnet-engine | .NET 引擎线（Nf.Engine） | library | active | 1.0.0 | @Monyeah777 | dotnet build engine/dotnet/src/Nf.Engine/Nf.Engine.csproj | engine/dotnet/README.md |
-| library-raw | 云图书馆 raw 取件面 | collection | active | 1.0.0 | @Monyeah777 | library/INDEX.md | ROUTES.md |
+| library-raw | 云图书馆 raw 取件面 | collection | active | 1.0.0 | @Monyeah777 | library/INDEX.md | docs/agent/ROUTES.md |
 | lsp | 编辑器接入（nf lsp） | editor | active | 1.0.0 | @Monyeah777 | python scripts/nf.py lsp | docs/lsp.md |
 | mcp | MCP 服务面（nf serve） | server | active | 1.0.0 | @Monyeah777 | python scripts/nf.py serve | docs/mcp.md |
 | npm-launcher | npm 一键启动器 | package | active | 1.0.0 | @Monyeah777 | npx ninfenz | packaging/npm/README.md |

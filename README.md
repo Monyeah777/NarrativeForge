@@ -1,12 +1,18 @@
 # NinFenz · 文档生成工坊（规范驱动）
 
-<!-- nf:locales --> 语言 / Languages：**中文** · [English](README.en.md) · [日本語](README.ja.md)
+<!-- nf:locales --> 语言 / Languages：**[中文](README.md)** · [English](README.en.md) · [日本語](README.ja.md)
 
 [![门禁 ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
+
 **站点（线上）**：https://ninfenz.dev · 机器入口 [llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt)
 
 **NF 终端（TUI）演示** —— 全屏人机入口（纯标准库）；菜单与动作是 `nf` CLI 真命令的受控调用方。
 键位按顶尖终端约定：`Tab` 切面板、`↑↓` 在当前面板内移动、`/` 过滤、`?` 看键位。
+
+![NF 终端 TUI 演示（框线不依赖读者字体）](site/assets/demo.gif)
+
+<details>
+<summary>演示帧文本 —— 与 `--demo` 渲染器逐字一致，便于检索/复制</summary>
 
 ```
 ┌ NF TUI v1.0.0 · NinFenz 内容契约层 ──────────────────────────────────────────────────────────┐
@@ -37,6 +43,8 @@
 └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+</details>
+
 `python tui/nf.py` 进全屏界面；`--selftest` 跑安全自检，`--demo` 打印上面这帧，`--exec "nf doctor"` 是脚本面
 （无 TTY 亦可：`--list-actions --json` 给 agent 列动作与退出码）。命令在后台线程跑，运行中 `Ctrl-C` 只取消该命令；
 路径参数过仓库包含性判据、写盘需键入 `yes` 确认、密钥只从环境变量读并遮蔽显示。细节见 `tui/README.md`。
@@ -54,9 +62,9 @@ NF 是内容契约层——定义“AI 稳定产出长内容”的协议、质�
 ## ⚡ 如果你是 AI / Agent
 
 - 这是什么：规范驱动的文档工厂，装模块/管线/资产 → 校验 → 输出。
-- 入口链：`AGENT_START.md`（开工）→ `AI_ROUTING.md`（选线）→ `DEEP_DIVE.md`（懂得深）。
+- 入口链：`docs/agent/AGENT_START.md`（开工）→ `docs/agent/AI_ROUTING.md`（选线）→ `docs/meta/DEEP_DIVE.md`（懂得深）。
 - 机器凭证：`bash verify.sh`（当前基线见下方生成区的「质量凭证」行，由 `nf stats --write` 写入）；机器入口清单见 `llms.txt`；语言面见 `README.en.md` · `README.ja.md`（三面的机读事实与语言切换行由 check34 的语言面扫描断言一致；注册表 = `protocol/locales.json`）。
-- 要懂 NF 为什么这样设计：读 [DEEP_DIVE.md](DEEP_DIVE.md)。
+- 要懂 NF 为什么这样设计：读 [docs/meta/DEEP_DIVE.md](docs/meta/DEEP_DIVE.md)。
 
 ## 快速开始
 
@@ -71,8 +79,8 @@ NF 是内容契约层——定义“AI 稳定产出长内容”的协议、质�
 
 AI 装配：
 
-1. 读 `AGENT_START.md`
-2. 读 `agent_组装指令包_v0.2.md`
+1. 读 `docs/agent/AGENT_START.md`
+2. 读 `docs/agent/agent_组装指令包_v0.2.md`
 3. 按需取 01/02/06/07 与 community 包
 4. 组装完整版并过 `##7` 自检
 5. `nf assemble "<需求>" --build --dest <目录>`（组装式命令：直接产「完整版」单文件）
@@ -107,10 +115,10 @@ AI 装配：
 | 协议 | `01_核心协议.md` · `02_联动注册表.md` · `06_Agent执行协议.md` · `07_官方核心出厂与社区预设导航.md` · `protocol/WORLD_MODEL.md` |
 | 库 | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | 社区 | `community/README.md` · `community/模板制作指令包.md` |
-| AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
+| AI | `docs/agent/AGENT_START.md` · `docs/agent/AI_ROUTING.md` · `docs/meta/DEEP_DIVE.md` |
 | 工具 | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `docs/release.md` · `scripts/nf.py` · `tui/nf.py` · `verify.sh` |
 | 接入面 | `integrations/README.md`（MCP / LSP / CLI / TUI / 图书馆 / Skill / npm / Rust / .NET / A2A） |
-| 馆 | `library/INDEX.md` · `ROUTES.md` |
+| 馆 | `library/INDEX.md` · `docs/agent/ROUTES.md` |
 
 ## 版本块
 
@@ -122,4 +130,4 @@ AI 装配：
 | v2.9.0 | 已发布 2026-09-08 · STRATEGY + 43/44 随波 |
 | v2.8.0 | 已发布 2026-09-08 · 41/42 波 C 质量收口 |
 
-详细版本演进见 `CHANGELOG.md` 与 `VERSION-MATRIX.md`。
+详细版本演进见 `CHANGELOG.md` 与 `docs/meta/VERSION-MATRIX.md`。

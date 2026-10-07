@@ -44,3 +44,28 @@ jobs:
         run: |
           npm publish --provenance --access public
           rm -f .npmrc
+
+  publish-github-packages:
+    name: npm-publish-github-packages
+    # GitHub Packages 只接受 scoped 包（@owner/name），故两通道**包名不同**：
+    #   npmjs.com        → ninfenz（unscoped，面向公众）
+    #   GitHub Packages  → @monyeah777/ninfenz（同仓发布用 GITHUB_TOKEN，无需 PAT；scoped 名须全小写）
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write          # 发布包到 GitHub Packages 必需
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - name: payload 暂存（与 npmjs 通道同源）
+        working-directory: packaging/npm
+        run: npm run stage
+      - name: 以 scoped 名发布到 GitHub Packages
+        working-directory: packaging/npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.name='@monyeah777/ninfenz';if(p.publishConfig)delete p.publishConfig.provenance;p.publishConfig=Object.assign({},p.publishConfig,{registry:'https://npm.pkg.github.com'});fs.writeFileSync('package.json',JSON.stringify(p,null,2));"
+          printf '@monyeah777:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > .npmrc
+          npm publish --access public
+          rm -f .npmrc

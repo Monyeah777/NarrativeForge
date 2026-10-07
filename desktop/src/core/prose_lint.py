@@ -155,8 +155,8 @@ def summarize(findings: List[Dict[str, object]]) -> Dict[str, int]:
 
 
 #: 命令面一致性扫描范围（入口文档 + 协议件 + 使用面 docs）
-FACE_DOCS = ("README.md", "README.en.md", "ROUTES.md", "AGENT_START.md",
-             "AI_ROUTING.md", "agent_组装指令包_v0.2.md", "llms.txt",
+FACE_DOCS = ("README.md", "README.en.md", "docs/agent/ROUTES.md", "docs/agent/AGENT_START.md",
+             "docs/agent/AI_ROUTING.md", "docs/agent/agent_组装指令包_v0.2.md", "llms.txt",
              "01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
              "07_官方核心出厂与社区预设导航.md")
 _CODE_SPAN = re.compile(r"`([^`\n]+)`")

@@ -24,7 +24,7 @@
 | 投稿（写入口） | `issues/new` | `https://gitee.com/monyeah777/ninfenz/issues/new` |
 | 看投稿动态 / 公告 | `issues` | `https://gitee.com/monyeah777/ninfenz/issues` |
 | 读协议规则入口 | `README.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/README.md` |
-| 读本路由表 | `ROUTES.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/ROUTES.md` |
+| 读本路由表 | `docs/agent/ROUTES.md` | `https://gitee.com/monyeah777/ninfenz/raw/main/docs/agent/ROUTES.md` |
 
 > **实测备注（2026-09-07）**：raw 形态双镜像全 200（AI 通道可靠）；Gitee 网页形态（blob/tree/issues 页）对程序化访问返回 405/401（反爬/登录策略）——**网页形态仅供人用浏览器打开，程序/AI 一律走 raw**。
 

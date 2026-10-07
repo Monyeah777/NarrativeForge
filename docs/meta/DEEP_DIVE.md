@@ -1,7 +1,7 @@
 # DEEP_DIVE · NF 心智模型（给 AI 的深刻理解层）
 
 > 最后更新：2026-09-09
-> 位置：AI 入口的“理解层”；读它不是为了会操作，而是为了懂 NF 为什么这样设计。操作路径见 `AGENT_START.md` / `AI_ROUTING.md`。
+> 位置：AI 入口的“理解层”；读它不是为了会操作，而是为了懂 NF 为什么这样设计。操作路径见 `docs/agent/AGENT_START.md` / `docs/agent/AI_ROUTING.md`。
 
 ## §1 本质
 
@@ -44,7 +44,7 @@ AI 消费 NF 的完整循环：**读 → 判 → 配 → 装 → 执 → 验**�
 
 ## §6 深读路径
 
-先读 STRATEGY → AGENT_START → 01 → 02 → 06 → 07；需要操作再读 `agent_组装指令包_v0.2.md`、`docs/mcp.md`、`AI_ROUTING.md`。看每个文件时：读“是什么”和“怎么被校验”，不逐行背方案正文。
+先读 STRATEGY → AGENT_START → 01 → 02 → 06 → 07；需要操作再读 `docs/agent/agent_组装指令包_v0.2.md`、`docs/mcp.md`、`docs/agent/AI_ROUTING.md`。看每个文件时：读“是什么”和“怎么被校验”，不逐行背方案正文。
 
 ## §7 自检十问
 

@@ -31,11 +31,11 @@
       "translations": {
         "en": {
           "path": "docs/en/release.md",
-          "source_sha256": "1eb6c5fa7b79e8d9996ca1aa5d92dd9220c86c6a2b5d58e0607484b3c2ab1012"
+          "source_sha256": "b4ddbad660793dba16a125e2f1b351ecb3dec462785642107297dc70ff40e1d1"
         },
         "ja": {
           "path": "docs/ja/release.md",
-          "source_sha256": "1eb6c5fa7b79e8d9996ca1aa5d92dd9220c86c6a2b5d58e0607484b3c2ab1012"
+          "source_sha256": "b4ddbad660793dba16a125e2f1b351ecb3dec462785642107297dc70ff40e1d1"
         }
       }
     },
@@ -83,11 +83,11 @@
       "translations": {
         "en": {
           "path": "docs/en/layers.md",
-          "source_sha256": "c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534"
+          "source_sha256": "5663d35232562db296f433c5f940b3d4f3017978229290f1f6c0e9eff234d619"
         },
         "ja": {
           "path": "docs/ja/layers.md",
-          "source_sha256": "c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534"
+          "source_sha256": "5663d35232562db296f433c5f940b3d4f3017978229290f1f6c0e9eff234d619"
         }
       }
     }

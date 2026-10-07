@@ -6,21 +6,21 @@ scope: 作者指令「对标顶尖架构设计再改一版」。把 NF 的分层
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - protocol/LAYERS.json:bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c
+  - protocol/LAYERS.json:f798b82969b07a89be304e799d9f383c4f6899649a6ed6d53921643026b09cd2
   - desktop/src/core/layer_model.py:4b09c50a53884d1e3a5ed5541e42cc4bf8499bc031d5e00eebf38bc66c9b40d1
   - desktop/tests/test_layer_model.py:b8f0d653573f088ae8c4b1a66a415697b82496fd3fd4443d2e6cb8f4983aa54e
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
   - desktop/tests/test_purity_scan.py:6c1539361d2d927a7c5f89013e20f9188e31215c0ada176f9f0b397c4d5c731d
-  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
-  - verify.sh:34ced4d23abda17d95ededd2c75d49decf1a11cba64913c5c389c2eb7b859d54
-  - docs/layers.md:c16bc46c91dbcf1a1d96cce4ff616d4cf6dbc7ac0952831c1576d9447e934534
+  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
+  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
+  - docs/layers.md:5663d35232562db296f433c5f940b3d4f3017978229290f1f6c0e9eff234d619
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
-  - protocol/assertions.json:85ece6974b85d4877d3ff6e6b57f7e5e30147e0ac56fc1017e8c96c847ab8eb1
+  - protocol/assertions.json:a434491b89d398091cb9c1a44fd92fcf88100cefbc61513551380ec438f079a5
   - protocol/data_contracts.json:2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb
-  - protocol/normative.json:0c9c21945def2250462392e5f932a3d30f3b3f9c366b4f67cbdec45f9329c943
+  - protocol/normative.json:b041ba07b0d7a146add5d93fc65f868da8a5af7c8dd2a75d35ea482790e47b7c
   - protocol/glossary.json:4561ddb5a221f8fc5beca4cfcca07580b3ea4dd403eb23434549a8eaa8409a60
   - desktop/src/core/receipts.py:afc48b24b00775b04b67200055d954c5ad735eff980921da9571e87ee13f169f
-  - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
+  - desktop/src/core/doc_hygiene.py:635926ce334273ceec59d8ec83d9234d5e14466d336d7c285efe0cf2f4e125ec
   - decisions/ADR-0004-抽象阶梯两轴与纵切.md:9881ef04d900dd8d9f44748d7e4477ca32c8914abc717fbccb7b7072c6167674
 
 ---

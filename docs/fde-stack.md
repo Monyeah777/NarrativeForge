@@ -30,7 +30,7 @@
 
 | 契约 | 形态 | 复算 |
 |---|---|---|
-| 装载 | 三条装载路径（A 有 API / B1 能读文件 / B2 纯粘贴） | `AI_ROUTING.md`；机读入口 `llms.txt` |
+| 装载 | 三条装载路径（A 有 API / B1 能读文件 / B2 纯粘贴） | `docs/agent/AI_ROUTING.md`；机读入口 `llms.txt` |
 | 装配 | 模块 + 管线 + 资产的声明式装配（域包自带装配流） | `community/*/protocol.yaml` + `pipelines/*` |
 | 门禁 | 单入口验收：`bash verify.sh` | check 全量常驻（**数不写死**：当前值看 `nf stats --check` 生成区；期望基线在 `desktop/src/core/quality_baseline.py`） |
 | 证据 | 回执单根 + 逐门结论 + 产物指纹 | `protocol/RECEIPTS.json` · `fde_sample_run.py --check` |
@@ -38,7 +38,7 @@
 
 ## 三、中游标准的五条达标线（可判定）
 
-1. **可装载**：AI/Agent 按 `llms.txt` 与 `AGENT_START.md` 能取到货并装配；判据 = 入口件在场且其指向路径存在（`nf stats --check` 覆盖入口一致性）。
+1. **可装载**：AI/Agent 按 `llms.txt` 与 `docs/agent/AGENT_START.md` 能取到货并装配；判据 = 入口件在场且其指向路径存在（`nf stats --check` 覆盖入口一致性）。
 2. **可质检**：任一交付物都能过单入口门禁；判据 = `bash verify.sh` 退出码 0。
 3. **可复现**：同一输入两次产出除时间戳外一致；判据 = 样例 `--run` 两次比对 + `--check` 逐字节比对证据。
 4. **零编造**：文档里的数字与状态全部来自产物实算；判据 = `nf stats --check` + `geo_export.py --check` 双绿。

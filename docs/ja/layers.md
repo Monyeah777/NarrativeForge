@@ -62,9 +62,9 @@ python scripts/nf.py layers --write    # 本ファイルの生成区を再描画
 | 面 | 入口件 | 提供先の階 | 口径 |
 |---|---|---|---|
 | **人機入口** | `scripts/nf`、`scripts/nf.cmd`、`scripts/nf.py` | engine | 引数なしで端末に入ります（nf shell → desktop/src/core/terminal.py）。その他の引数は CLI に透過します。 |
-| **AI アセンブリライン** | `AGENT_START.md`、`agent_组装指令包_v0.2.md`、`AI_ROUTING.md` | asset | 任意の agent がリポジトリ URL だけで自助的に取り出し、「完全版」をアセンブルできます。A ライン（人機）と同格で、モデルを前提にしません。 |
+| **AI アセンブリライン** | `docs/agent/AGENT_START.md`、`docs/agent/agent_组装指令包_v0.2.md`、`docs/agent/AI_ROUTING.md` | asset | 任意の agent がリポジトリ URL だけで自助的に取り出し、「完全版」をアセンブルできます。A ライン（人機）と同格で、モデルを前提にしません。 |
 | **MCP サービス面** | `docs/mcp.md`、`protocol/mcp_package.json` | engine | 常駐ランタイムの入口 = nf serve（エンジン階の CLI 面）。本面は契約と用法文書のみを登録します。 |
-| **図書館取り出し面** | `ROUTES.md`、`library/INDEX.md`、`library/ALIAS.md` | asset | 番号によるアドレッシング + ミラールーティング。蔵書本体は資産階に属し、本面は「どう見つけるか」だけを担います。 |
+| **図書館取り出し面** | `docs/agent/ROUTES.md`、`library/INDEX.md`、`library/ALIAS.md` | asset | 番号によるアドレッシング + ミラールーティング。蔵書本体は資産階に属し、本面は「どう見つけるか」だけを担います。 |
 
 ### 検証縦断（四階を貫く。層ではない）
 

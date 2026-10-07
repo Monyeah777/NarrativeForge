@@ -1,12 +1,72 @@
 {
-  "schema": "nf-asset-contracts/1",
-  "note": "数字资产契约声明面（三面：data / code / script）。data 面判格式 + 字段完整性 + 防篡改 + 输入输出一致性；code 面判 AST 规范 + 可证空指针 + 测试用例在场（安全漏洞面由 scripts/sast_check.py 的 bandit/ruff-S 计数棘轮与 purity_scan R6 守着，本面不重造第二套口径）；script 面判脚本自带 nf-io 头与声明的双源一致 + 链上 A 输出 ⊆ B 输入。真源单点：改本件即改契约，verify check40 与 nf asset contract 同源消费。",
+  "chains": [
+    {
+      "feeds": [
+        {
+          "input": "docs/verification-cards.md",
+          "output": "docs/verification-cards.md"
+        }
+      ],
+      "from": "cards",
+      "to": "external-links"
+    }
+  ],
+  "code": [
+    {
+      "deny_calls": [
+        "eval",
+        "exec",
+        "__import__",
+        "os.system",
+        "pickle.loads",
+        "marshal.loads"
+      ],
+      "id": "asset-contract",
+      "lang": "python",
+      "path": "desktop/src/core/asset_contract.py",
+      "tests": [
+        "desktop/tests/test_asset_contract.py"
+      ]
+    },
+    {
+      "deny_calls": [
+        "eval",
+        "exec",
+        "__import__",
+        "os.system"
+      ],
+      "id": "json-schema-leaf",
+      "lang": "python",
+      "path": "desktop/src/core/json_schema.py",
+      "tests": [
+        "desktop/tests/test_output_forms.py"
+      ]
+    },
+    {
+      "deny_calls": [
+        "eval",
+        "exec",
+        "__import__",
+        "os.system"
+      ],
+      "id": "content-face-leaf",
+      "lang": "python",
+      "path": "desktop/src/core/content_face.py",
+      "tests": [
+        "desktop/tests/test_content_face.py"
+      ]
+    }
+  ],
   "data": [
     {
-      "id": "pack-report-d05",
-      "path": "community/AI保险域包/outputs/REPORT.json",
       "format": "json",
-      "schema": "community/AI保险域包/outputs/schemas/DOMAIN_REPORT.schema.json",
+      "id": "pack-report-d05",
+      "link": {
+        "base": "community/AI保险域包",
+        "path_field": "sample",
+        "rows_field": "sample_rows"
+      },
+      "path": "community/AI保险域包/outputs/REPORT.json",
       "required_fields": [
         "kind",
         "code",
@@ -16,106 +76,57 @@
         "sample_rows",
         "metrics"
       ],
-      "link": {
-        "path_field": "sample",
-        "rows_field": "sample_rows",
-        "base": "community/AI保险域包"
-      }
+      "schema": "community/AI保险域包/outputs/schemas/DOMAIN_REPORT.schema.json"
     },
     {
-      "id": "pack-cases-d05",
-      "path": "community/AI保险域包/outputs/samples/CASES.csv",
       "format": "csv",
+      "id": "pack-cases-d05",
+      "min_rows": 1,
+      "path": "community/AI保险域包/outputs/samples/CASES.csv",
       "required_columns": [
         "case_id",
         "gold_fields",
         "pred_fields"
-      ],
-      "min_rows": 1
+      ]
     },
     {
+      "format": "markdown",
       "id": "library-index",
-      "path": "library/INDEX.md",
-      "format": "markdown"
+      "path": "library/INDEX.md"
     },
     {
+      "format": "json",
       "id": "ladder-truth",
       "path": "protocol/LAYERS.json",
-      "format": "json",
       "required_fields": [
         "schema",
         "rules",
         "tiers"
       ],
-      "sha256": "bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c"
+      "sha256": "f798b82969b07a89be304e799d9f383c4f6899649a6ed6d53921643026b09cd2"
     }
   ],
-  "code": [
-    {
-      "id": "asset-contract",
-      "path": "desktop/src/core/asset_contract.py",
-      "lang": "python",
-      "tests": [
-        "desktop/tests/test_asset_contract.py"
-      ],
-      "deny_calls": [
-        "eval",
-        "exec",
-        "__import__",
-        "os.system",
-        "pickle.loads",
-        "marshal.loads"
-      ]
-    },
-    {
-      "id": "json-schema-leaf",
-      "path": "desktop/src/core/json_schema.py",
-      "lang": "python",
-      "tests": [
-        "desktop/tests/test_output_forms.py"
-      ],
-      "deny_calls": [
-        "eval",
-        "exec",
-        "__import__",
-        "os.system"
-      ]
-    },
-    {
-      "id": "content-face-leaf",
-      "path": "desktop/src/core/content_face.py",
-      "lang": "python",
-      "tests": [
-        "desktop/tests/test_content_face.py"
-      ],
-      "deny_calls": [
-        "eval",
-        "exec",
-        "__import__",
-        "os.system"
-      ]
-    }
-  ],
+  "note": "数字资产契约声明面（三面：data / code / script）。data 面判格式 + 字段完整性 + 防篡改 + 输入输出一致性；code 面判 AST 规范 + 可证空指针 + 测试用例在场（安全漏洞面由 scripts/sast_check.py 的 bandit/ruff-S 计数棘轮与 purity_scan R6 守着，本面不重造第二套口径）；script 面判脚本自带 nf-io 头与声明的双源一致 + 链上 A 输出 ⊆ B 输入。真源单点：改本件即改契约，verify check40 与 nf asset contract 同源消费。",
+  "schema": "nf-asset-contracts/1",
   "script": [
     {
       "id": "cards",
-      "lang": "python",
-      "path": "scripts/build_verification_cards.py",
       "inputs": [
         "verify.sh"
       ],
+      "lang": "python",
       "outputs": [
         "docs/verification-cards.md"
-      ]
+      ],
+      "path": "scripts/build_verification_cards.py"
     },
     {
       "id": "geo-export",
-      "lang": "python",
-      "path": "scripts/geo_export.py",
       "inputs": [
         "protocol/standards_catalog.json",
         "protocol/standards_binding.json"
       ],
+      "lang": "python",
       "outputs": [
         "docs/standards/index.md",
         "docs/standards/answer-cards.md",
@@ -125,44 +136,33 @@
         "docs/standards/layer-form.md",
         "docs/standards/layer-gov.md",
         "docs/standards/layer-iface.md"
-      ]
+      ],
+      "path": "scripts/geo_export.py"
     },
     {
       "id": "external-links",
-      "lang": "python",
-      "path": "scripts/check_external_links.py",
       "inputs": [
         "README.md",
         "README.en.md",
         "llms.txt",
-        "AGENT_START.md",
-        "ROUTES.md",
+        "docs/agent/AGENT_START.md",
+        "docs/agent/ROUTES.md",
         "docs/verification-cards.md"
       ],
+      "lang": "python",
       "outputs": [
         "results/external-links-report.json"
-      ]
+      ],
+      "path": "scripts/check_external_links.py"
     },
     {
       "id": "quality-all",
-      "lang": "bash",
-      "path": "scripts/quality_all.sh",
       "inputs": [
         "verify.sh"
       ],
-      "outputs": []
-    }
-  ],
-  "chains": [
-    {
-      "from": "cards",
-      "to": "external-links",
-      "feeds": [
-        {
-          "output": "docs/verification-cards.md",
-          "input": "docs/verification-cards.md"
-        }
-      ]
+      "lang": "bash",
+      "outputs": [],
+      "path": "scripts/quality_all.sh"
     }
   ]
 }

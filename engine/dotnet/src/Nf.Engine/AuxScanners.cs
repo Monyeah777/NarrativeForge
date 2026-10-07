@@ -109,7 +109,7 @@ public static class AuxScanners
 
     public static readonly string[] AuditDocs =
     {
-        "agent_组装指令包_v0.2.md",
+        "docs/agent/agent_组装指令包_v0.2.md",
         "docs/45_执行遥测规范.md",
         "docs/45_M2_回合级drill.md",
         "docs/45_M3_techdoc载荷提案.md",

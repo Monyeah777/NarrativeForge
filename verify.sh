@@ -1950,7 +1950,7 @@ else:
     with open('llms.txt', encoding='utf-8') as fh:
         txt = fh.read()
     for anchor in ('# NinFenz', 'library/INDEX.md', '01_核心协议.md',
-                   '06_Agent执行协议.md', 'agent_组装指令包_v0.2.md'):
+                   '06_Agent执行协议.md', 'docs/agent/agent_组装指令包_v0.2.md'):
         if anchor not in txt:
             problems.append('llms.txt 缺锚点：%s' % anchor)
 

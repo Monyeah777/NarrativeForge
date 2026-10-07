@@ -365,7 +365,7 @@ class LogicalReadFaceAuditTest(unittest.TestCase):
     本判据改用 `read_text_cached` 级追踪 + **清空所有内容缓存**（含逐件/逐条/逐包/逐证书那些），
     于是「读了却没申报」无处可躲。它已经抓到两个真洞（实测 2026-09-29）：
     `output_forms.scan` 读了 `protocol/output_forms.json` 与 `protocol/output_forms_baseline.json`
-    却没申报（重签基线会命中旧结果）；`instruction_step_audit` 读 `agent_组装指令包_v0.2.md`
+    却没申报（重签基线会命中旧结果）；`instruction_step_audit` 读 `docs/agent/agent_组装指令包_v0.2.md`
     而 `QD_INPUTS` 没含它。
     """
 

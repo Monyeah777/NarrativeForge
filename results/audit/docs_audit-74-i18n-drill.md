@@ -6,7 +6,7 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——对应 62
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - protocol/locales.json:262938fa2d33e3aa7da6bc59f195c90c8e4d94de4aec0dd1a525fba1f1787a0b
+  - protocol/locales.json:d70028db605845d75e792cd5f5b804638252cca8aba1f0a24c50e5783a6ba337
   - docs/locales.md:cf3a21039dad98832b3cd92ead92adaa6559b38bd9c96006fea87f0af81a6dc7
   - docs/en/locales.md:348a2b32a6f04cf830cb332b47b0b05f59265332c2fe37ec79ee63c0563168fa
   - docs/ja/locales.md:7f870e599fc00ab10c998eb115350b7ceda21655a2ebfcf870f6a2b8300e5f34
@@ -14,8 +14,8 @@ subjects:
   - docs/ja/mcp.md:2cdf24c942ee621847874160ec64d31cf9fcca0891ed52a547fe3f1bf573d224
   - docs/en/terminal.md:19fd82dd77b72366c4fb0cde2ce62294f9d14b7eac10242d1bf2f08480fee862
   - docs/ja/terminal.md:673e4869c326ba148893df4ed4e42f35a929f245269ce05ad9f7315235345783
-  - docs/en/layers.md:d7ed0692818069a4bffe9144187b048b5f33d5449c4cac2893baa4588d17dd64
-  - docs/ja/layers.md:e8daebda2e1d60eb5a21c235ba6a95126be9107a0bb31aa6fb793e0619ec0f20
+  - docs/en/layers.md:211c4686053d4e1215ff384dad50e79809e01021bda2095afbd04f0be75b2373
+  - docs/ja/layers.md:9e56853e2db0e46d7c6575f1a4b360ff2044b645f4e186871ed8ed4aedd0cc09
   - docs/44_M1_执行演练扩展.md:12e58d6ae4d1cab23faaaff5e98d0a0bc9a6455c7a17552bab0d57e0cf30866c
   - docs/45_M2_回合级drill.md:55bf60d989aba4fe653bd30396b59c12af587151a3b100da9b65f3d2979429e0
   - desktop/src/core/execution_drill.py:7f291a20d779213d3acedaaf042722d4ec7223ba3333ee2477be6b5285152dea

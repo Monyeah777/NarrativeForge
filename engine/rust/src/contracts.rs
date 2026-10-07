@@ -1797,7 +1797,7 @@ mod state_front_tests {
         ("06_Agent执行协议.md", r#"# 章节
 只有说明文字，没有命令块。
 "#),
-        ("DEEP_DIVE.md", r#"# 说明
+        ("docs/meta/DEEP_DIVE.md", r#"# 说明
 这里解释**机制**与取舍。
 "#),
     ];

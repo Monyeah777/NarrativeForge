@@ -1,11 +1,11 @@
 """组装式命令内核：需求 → 引用式「完整版」世界文档（八段骨架）+ 自检。
 
 定位：`nf assemble` 此前只输出「装配计划」；本模块把它落到**可交付产物**——
-按 `agent_组装指令包_v0.2.md` 的八段骨架，从真源（`registry.json` / 管线件 /
+按 `docs/agent/agent_组装指令包_v0.2.md` 的八段骨架，从真源（`registry.json` / 管线件 /
 模块件 / 资产件）取件组装成**单文件完整版**。
 
 档位纪律：本档是**引用式**——契约、索引与出处完整，资产正文以仓库路径引用
-（`agent_组装指令包_v0.2.md` §常见问题：「引用式要求运行 agent 能取正文，
+（`docs/agent/agent_组装指令包_v0.2.md` §常见问题：「引用式要求运行 agent 能取正文，
 自包含档无此要求」）。缺口一律写进 `## 0 装配记录`，不编造编号/资产键。
 
 确定性：同输入同输出（不写入时间戳；`stamp` 为空即不落日期）。
@@ -98,7 +98,7 @@ def _section0(req: str, plan: Dict[str, Any], n_mod: int) -> List[str]:
     lines.append("- **取件模块**：%d 件；**装配允许集**：%d 件"
                  % (n_mod, len(plan.get("allowed_module_ids") or [])))
     lines.append("- **来源清单（本次组装实际读取）**：")
-    lines.append("  - 骨架真源：`agent_组装指令包_v0.2.md`（##0–##7 八段）")
+    lines.append("  - 骨架真源：`docs/agent/agent_组装指令包_v0.2.md`（##0–##7 八段）")
     lines.append("  - 注册表：`desktop/src/core/registry.json`（模块 %d 件）"
                  % len(plan.get("allowed_module_ids") or []))
     for rel in plan.get("pipeline_files") or []:

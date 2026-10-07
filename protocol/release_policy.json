@@ -21,7 +21,7 @@
   ],
   "version_faces": [
     "CHANGELOG.md",
-    "VERSION-MATRIX.md",
+    "docs/meta/VERSION-MATRIX.md",
     "README.md"
   ],
   "changes_dir": "changes/unreleased"

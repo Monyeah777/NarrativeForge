@@ -7,9 +7,9 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/pack_combo.py:29b1b4d401ffd6d70d81a31be60262d00c6a3e132f79779effe9ad75b0300bf9
-  - desktop/src/core/quality_depth_scan.py:29d5bfa5a653277ff6629dde7bfc7e629c936750ec988316992ca17cc9449df4
-  - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
-  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
+  - desktop/src/core/quality_depth_scan.py:5fe787f4c99395ec7503bf9e1e5be0097c0d79fcec2c6dcd3e9a6d7df38353b8
+  - desktop/src/core/doc_hygiene.py:635926ce334273ceec59d8ec83d9234d5e14466d336d7c285efe0cf2f4e125ec
+  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
   - protocol/data_contracts.json:2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb
   - docs/combos.md:4d25fe6d366687213df7090badd52b815bdf07f774df856e598d7cf8a1d130de
   - desktop/tests/test_pack_combo.py:1da6e573247542f8bff69939098bb7919c0e3f83c63e48bd15ad5276e4eb0c54

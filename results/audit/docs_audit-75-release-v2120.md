@@ -6,14 +6,14 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——62 计划
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - CHANGELOG.md:ac4df44cdbfa5ac099a796c25c0e4c4187a86ae0295196bfb3a798b14d466f96
-  - VERSION-MATRIX.md:abe7adfd40849a0191f738bb4d051ce487e811328d800c3049bbda7add455615
-  - README.md:5b51a16887d23823630c66cbf12e55df417391f6690044e822c5da73b8f65305
+  - CHANGELOG.md:e7fa142426064b7725804b30c9ab035c421a69b7bef71e11849d9555be8a7b73
+  - docs/meta/VERSION-MATRIX.md:abe7adfd40849a0191f738bb4d051ce487e811328d800c3049bbda7add455615
+  - README.md:e2c3aaba8f56e8a7ca3a436b8075542d3cad0358e65dc8c62615a671bbddc987
   - desktop/src/core/changelog_gen.py:91f1c9eae7a48bbad209d041b48b2eb6d91dbe2eca36c08ee457ffdf21104e16
   - desktop/tests/test_changelog_gen.py:3ddb12cc2247f8bf5649dc4e64d7521fc40795aba93c90f8dd34fc3df47377b8
-  - protocol/release_policy.json:29eaf0c6692f6872971d3d582a23cdf18cbca60c6ac1e35aba7b04eb85e9ebbc
-  - docs/release.md:1eb6c5fa7b79e8d9996ca1aa5d92dd9220c86c6a2b5d58e0607484b3c2ab1012
-  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
+  - protocol/release_policy.json:0c8ecfad8f1f23101442dc8a1c301cecb0f0cb9e33d293dd0ceb4caadc94f96d
+  - docs/release.md:b4ddbad660793dba16a125e2f1b351ecb3dec462785642107297dc70ff40e1d1
+  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
   - scripts/release_freeze.sh:30d8ae65f958d71e98411793affdacba75efaa5f0934373dab991e065fe530a3
 
 ---
@@ -36,7 +36,7 @@ subjects:
 | 缺陷一修复 | `changelog_gen.insert_into_changelog` 丢内容守卫：同版本节含未被生成覆盖的条目即抛 `ValueError`；写面 rc=2、不落盘、不归档（fail-closed）。`test_changelog_gen` 6 例 |
 | 缺陷二修复 | `changelog_gen._last_tag` + `_bullets` 接入发布边界（`v2.11.0..HEAD` = 228 条；无 tag 退化全史）。`test_changelog_gen` +2 例（临时真 git 仓） |
 | 收口 | `CHANGELOG.md` `[2.12.0]` 由「未发布」翻为「2026-10-05」（正文零改动）；`changes/unreleased/*` 5 条归档 `changes/2.12.0/`；`changes/unreleased/` 留 `.gitkeep` |
-| 版本面 | `VERSION-MATRIX.md` v2.12.0 行落日期/✅ 且终端线/顶尖对标/资产契约三行标「随 v2.12.0 收口」；`README.md` 版本块「当前」切 v2.12.0、v2.11.0 转已发布 |
+| 版本面 | `docs/meta/VERSION-MATRIX.md` v2.12.0 行落日期/✅ 且终端线/顶尖对标/资产契约三行标「随 v2.12.0 收口」；`README.md` 版本块「当前」切 v2.12.0、v2.11.0 转已发布 |
 | 冻结链缺陷修复 | `scripts/nf.py`：补登记 `--apply`（此前被 argparse 拒收）；顺序源改读策略件 `freeze_chain`（此前读不存在的 `rg.FREEZE_CHAIN`，必抛内部错误） |
 | 冻结链 | `nf release --freeze --apply`（conformance → approve → receipts） |
 | Golden Master | `bash scripts/release_freeze.sh v2.12.0`（`01/02/06/07` + `verify.sh` + `desktop/src/core/*.py` 摘要 + `nf sig --verify` 指纹） |

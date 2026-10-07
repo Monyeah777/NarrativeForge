@@ -3491,7 +3491,7 @@ public static class SelfTest
             && Convert.ToInt64(real.Stats["fallback_files"]) == 3
             && Convert.ToString(assemble.GetValueOrDefault("mode")) == "mcp"
             && Convert.ToString(assemble.GetValueOrDefault("prompt")) == "assemble_guide"
-            && Convert.ToString(assemble.GetValueOrDefault("fallback")) == "agent_组装指令包_v0.2.md"
+            && Convert.ToString(assemble.GetValueOrDefault("fallback")) == "docs/agent/agent_组装指令包_v0.2.md"
             && (assemble.GetValueOrDefault("tools") as List<object?>)?.Count == 3
             && Convert.ToString(noWorkflow.GetValueOrDefault("mode")) == "unknown",
             $"工作流 {real.Stats["workflows"]} · 文档 {real.Stats["documents"]} · 绑定工具 {real.Stats["tools_bound"]}"

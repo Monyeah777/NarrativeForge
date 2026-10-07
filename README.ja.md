@@ -1,11 +1,14 @@
 # NinFenz · ドキュメント生成工房（仕様駆動）
 
-<!-- nf:locales --> 语言 / Languages：[中文](README.md) · [English](README.en.md) · **日本語**
+<!-- nf:locales --> 语言 / Languages：[中文](README.md) · [English](README.en.md) · **[日本語](README.ja.md)**
 
 [![ゲート ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
+
 **サイト（公開）**: https://ninfenz.dev · machine entry [llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt)
 
 **NF ターミナル（TUI）** —— 全画面の人間向け入口（標準ライブラリのみ）。メニューと各アクションは `nf` CLI の実コマンドの制御された呼び出し元です。キー操作は一流ターミナルの慣例に従います（`Tab` でパネル切替、`↑↓` で移動、`/` で絞り込み、`?` でキー一覧）。詳細は [tui/README.md](tui/README.md) を参照。
+
+![NF ターミナル TUI デモ（枠線は閲覧者のフォントに依存しません）](site/assets/demo.gif)
 
 > MIT License · オリジナルのオープンソース · 派生・引用の際は出典を明記してください
 
@@ -20,9 +23,9 @@ NF は**コンテンツ契約層（content contract layer）**です——「AI 
 ## ⚡ AI / エージェントの方へ
 
 - これは何か：仕様駆動のドキュメント工場。モジュール／パイプライン／資産を搭載 → 検証 → 出力。
-- 入口チェーン：`AGENT_START.md`（着手）→ `AI_ROUTING.md`（経路選択）→ `DEEP_DIVE.md`（深く理解する）。
+- 入口チェーン：`docs/agent/AGENT_START.md`（着手）→ `docs/agent/AI_ROUTING.md`（経路選択）→ `docs/meta/DEEP_DIVE.md`（深く理解する）。
 - 機械証憑：`bash verify.sh`（現在の基準値は下部の生成領域「品質証憑」行。`nf stats --write` が書き込みます）。機械向け入口一覧は `llms.txt`。言語面は `README.en.md` · `README.ja.md`（三面の機読事実と言語切替行は check34 の言語面スキャンが常時検証。登録表 = `protocol/locales.json`）。
-- 設計意図を知る：[DEEP_DIVE.md](DEEP_DIVE.md) を参照。
+- 設計意図を知る：[docs/meta/DEEP_DIVE.md](docs/meta/DEEP_DIVE.md) を参照。
 
 ## クイックスタート
 
@@ -37,8 +40,8 @@ NF は**コンテンツ契約層（content contract layer）**です——「AI 
 
 AI による組立：
 
-1. `AGENT_START.md` を読む
-2. `agent_组装指令包_v0.2.md` を読む（`v0.2.md` は同一ファイル）
+1. `docs/agent/AGENT_START.md` を読む
+2. `docs/agent/agent_组装指令包_v0.2.md` を読む（`v0.2.md` は同一ファイル）
 3. 必要に応じて 01/02/06/07 と `community/` のパッケージを取得
 4. 「完全版」を組み立て、`##7` のセルフチェックを通す
 5. `nf assemble "<要件>" --build --dest <ディレクトリ>`（組立コマンド：単一ファイルの「完全版」を直接生成）
@@ -73,10 +76,10 @@ AI による組立：
 | プロトコル | `01_核心协议.md` · `02_联动注册表.md` · `06_Agent执行协议.md` · `07_官方核心出厂与社区预设导航.md` · `protocol/WORLD_MODEL.md` |
 | ライブラリ | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | コミュニティ | `community/README.md` · `community/模板制作指令包.md` |
-| AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
+| AI | `docs/agent/AGENT_START.md` · `docs/agent/AI_ROUTING.md` · `docs/meta/DEEP_DIVE.md` |
 | ツール | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `docs/release.md` · `scripts/nf.py` · `tui/nf.py` · `verify.sh` |
 | 接続面 | `integrations/README.md`（MCP / LSP / CLI / TUI / 図書館 / Skill / npm / Rust / .NET / A2A） |
-| 書庫 | `library/INDEX.md` · `ROUTES.md` |
+| 書庫 | `library/INDEX.md` · `docs/agent/ROUTES.md` |
 
 ## バージョンブロック
 
@@ -87,4 +90,4 @@ AI による組立：
 | v2.9.0 | 公開済み 2026-09-08 · STRATEGY + 43/44 随波 |
 | v2.8.0 | 公開済み 2026-09-08 · 41/42 波 C 品質収口 |
 
-詳細なバージョン履歴は `CHANGELOG.md` と `VERSION-MATRIX.md` を参照してください。
+詳細なバージョン履歴は `CHANGELOG.md` と `docs/meta/VERSION-MATRIX.md` を参照してください。

@@ -53,7 +53,7 @@ Python 探测顺序：`NINFENZ_PYTHON` → `py -3`（Windows）→ `python3` →
 
 ## 包里有什么（由 `tools/stage-payload.mjs` 从 git 受跟踪文件生成）
 
-- 协议件 `01–07`、`STRATEGY.md`、`llms.txt`、`AGENT_START.md`、`AI_ROUTING.md`、`DEEP_DIVE.md`
+- 协议件 `01–07`、`STRATEGY.md`、`llms.txt`、`docs/agent/AGENT_START.md`、`docs/agent/AI_ROUTING.md`、`docs/meta/DEEP_DIVE.md`
 - 核心库 `desktop/src/**`、CLI `scripts/**`、终端 `tui/nf.py`
 - 资产 `03_管线库` / `04_模块库` / `05_资产库`、域包 `community/**`、标准目录与注册表 `protocol/**`
 - 门禁 `verify.sh` 与其单测 `desktop/tests/**`

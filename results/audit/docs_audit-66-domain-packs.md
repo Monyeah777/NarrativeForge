@@ -9,13 +9,13 @@ subjects:
   - desktop/src/core/domain_pack.py:768cccbafa835be8bf358b2d4e9d3510fd4a080c1ba8877fc5b82e400f2715a5
   - desktop/src/core/domain_metrics.py:5916d5ccb3e27f16c7ecb9f080f445474de1e2ad4201abf4731edf5ead7eb03d
   - desktop/src/core/output_forms.py:4981ef6aea157be3d26754b4eade7a40340fd235795c50ba50fe193642cd5ea8
-  - desktop/src/core/quality_depth_scan.py:29d5bfa5a653277ff6629dde7bfc7e629c936750ec988316992ca17cc9449df4
-  - desktop/src/core/doc_hygiene.py:d44fc429edeed9e556e00d380053473ba89448a94eac7fb12880b72f11e72adb
-  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
+  - desktop/src/core/quality_depth_scan.py:5fe787f4c99395ec7503bf9e1e5be0097c0d79fcec2c6dcd3e9a6d7df38353b8
+  - desktop/src/core/doc_hygiene.py:635926ce334273ceec59d8ec83d9234d5e14466d336d7c285efe0cf2f4e125ec
+  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
   - docs/domain-packs.md:4c9ee3987699c24f1d78910281b446287dceebb3a77632ef458a07ba618f62d0
   - docs/output-forms.md:98716fc96333cdd1d8e012e307fb3911ead53888672c37a012761f3d41a8db4e
   - desktop/tests/test_domain_pack.py:4d79a3e53f7f7f4533b12ca2ee789d83cecc7ce29001a3882b07018fdcfdecaa
-  - verify.sh:34ced4d23abda17d95ededd2c75d49decf1a11cba64913c5c389c2eb7b859d54
+  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
 
 ---
 

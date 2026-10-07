@@ -9,12 +9,12 @@ subjects:
   - desktop/src/core/gap_review.py:856f2c86600ca75bbc9a802968d97b0b5170f10281374f92aea9bdcc9df52d0e
   - desktop/src/core/payload_harvest.py:690ba15643c4db7cff75a976530beccdd5bfed771426c1f4b6061b5d9b238bf9
   - protocol/data_contracts.json:2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb
-  - protocol/assertions.json:85ece6974b85d4877d3ff6e6b57f7e5e30147e0ac56fc1017e8c96c847ab8eb1
+  - protocol/assertions.json:a434491b89d398091cb9c1a44fd92fcf88100cefbc61513551380ec438f079a5
   - desktop/src/core/interop_export.py:520aaf0edb53d5ab679d3a1568c315f45ce8301ead3df90411e3e67572dc269a
   - desktop/src/core/text_hygiene.py:63ceb140b09acf932f1eecd8b3a324889e61d18c8b4cda12d4130594d9eb94fd
   - desktop/src/core/workloop.py:0dfcafb2f0dc15ee6c8552ae14a62b107f66db975fdf4070141a6aa3cadbc9cc
   - scripts/serve_decision_model.py:69c401a98c6fcc81a7a04a274f061e65e20d0190bb38ccff1ba3fe2f6fa03db2
-  - scripts/nf.py:d95fe0b60b7235e41d6ebc6a6c5ab48d33af6071c103994551590014296e9192
+  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
 
 ---
 

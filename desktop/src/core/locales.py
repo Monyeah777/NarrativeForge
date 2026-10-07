@@ -81,12 +81,11 @@ def label(lang: str) -> str:
 
 def switcher(locales: List[Tuple[str, str]], current: str) -> str:
     """语言切换行：当前语言加粗不链接，其余给链接——逐条列出**全部在场语言**。"""
-    parts: List[str] = []
-    for lang, fn in locales:
-        text = label(lang)
-        parts.append("**%s**" % text if lang == current else "[%s](%s)" % (text, fn))
+    # 每项都可点（当前语言用加粗链接标明"你在这里"）——GitHub 上一点即切换，不必先猜哪个能点。
     # 不用 emoji：issue 消息会把期望行原样回吐，而 GBK 控制台编不出 U+1F310。
-    return "%s 语言 / Languages：%s" % (SWITCH_MARK, " · ".join(parts))
+    return "%s 语言 / Languages：%s" % (SWITCH_MARK, " · ".join(
+        ("**[%s](%s)**" if lang == current else "[%s](%s)") % (label(lang), fn)
+        for lang, fn in locales))
 
 
 def anchors() -> Tuple[str, ...]:

@@ -1,12 +1,18 @@
 # NinFenz · Document Generation Workshop (spec-driven) — English mirror
 
-<!-- nf:locales --> 语言 / Languages：[中文](README.md) · **English** · [日本語](README.ja.md)
+<!-- nf:locales --> 语言 / Languages：[中文](README.md) · **[English](README.en.md)** · [日本語](README.ja.md)
 
 [![verify gate ci-verify](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml/badge.svg)](https://github.com/Monyeah777/NinFenz/actions/workflows/ci-verify.yml)
+
 **Live site**: https://ninfenz.dev · machine entry [llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt)
 
 **NF terminal (TUI) demo** — a full-screen human entry built on the standard library only; its menu and actions are controlled callers of the real `nf` CLI.
 Keybindings follow the mainstream terminal conventions: `Tab` switches panes, `↑↓` moves inside the focused pane, `/` filters, `?` opens the keymap.
+
+![NF terminal TUI demo (frame alignment independent of the reader's font)](site/assets/demo.gif)
+
+<details>
+<summary>Demo frame text - byte-for-byte the `--demo` renderer output, kept for search/copy</summary>
 
 ```
 ┌ NF TUI v1.0.0 · NinFenz 内容契约层 ──────────────────────────────────────────────────────────┐
@@ -37,6 +43,8 @@ Keybindings follow the mainstream terminal conventions: `Tab` switches panes, `�
 └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+</details>
+
 `python tui/nf.py` opens the full-screen UI; `--selftest` runs the security self-check, `--demo` prints exactly the frame above, and `--exec "nf doctor"` is the scriptable surface
 (no TTY needed either: `--list-actions --json` gives agents the actions and exit codes). Commands run on a worker thread, so `Ctrl-C` while running cancels just that command;
 path arguments pass repository-containment checks, writes require typing `yes`, and API keys are read from the environment and masked. A single-file executable is shipped alongside.
@@ -58,9 +66,9 @@ Details: `tui/README.md`.
 ## ⚡ If you are an AI / Agent
 
 - What this is: a spec-driven document factory — load modules/pipelines/assets → validate → emit.
-- Entry chain: `AGENT_START.md` (start) → `AI_ROUTING.md` (pick a route) → `DEEP_DIVE.md` (go deep).
+- Entry chain: `docs/agent/AGENT_START.md` (start) → `docs/agent/AI_ROUTING.md` (pick a route) → `docs/meta/DEEP_DIVE.md` (go deep).
 - Machine credential: `bash verify.sh` (run it locally — the static check count and script version live in the generated stats block below; runtime counters are deliberately not pinned in prose); the machine entry list is `llms.txt`; locales are `README.en.md` · `README.ja.md` (all three entries' machine facts and language switcher lines are asserted consistent by check34's locale scan; registry = `protocol/locales.json`).
-- To understand why NF is designed this way: read [DEEP_DIVE.md](DEEP_DIVE.md).
+- To understand why NF is designed this way: read [docs/meta/DEEP_DIVE.md](docs/meta/DEEP_DIVE.md).
 
 ## Quick start
 
@@ -75,8 +83,8 @@ Human (author/developer, 5 minutes):
 
 AI assembly:
 
-1. Read `AGENT_START.md`
-2. Read `agent_组装指令包_v0.2.md`
+1. Read `docs/agent/AGENT_START.md`
+2. Read `docs/agent/agent_组装指令包_v0.2.md`
 3. Take `01_核心协议.md` / `02_联动注册表.md` / `06_Agent执行协议.md` / `07_官方核心出厂与社区预设导航.md` and community packages as needed
 4. Assemble a self-contained full version and pass the `##7` self-check
 5. `nf assemble "<requirement>" --build --dest <dir>` (assembly command: emits an "full version" single file directly)
@@ -109,10 +117,10 @@ AI assembly:
 | Protocol | `01_核心协议.md` · `02_联动注册表.md` · `06_Agent执行协议.md` · `07_官方核心出厂与社区预设导航.md` · `protocol/WORLD_MODEL.md` |
 | Library | `03_管线库/` · `04_模块库/` · `05_资产库/` |
 | Community | `community/README.md` · `community/模板制作指令包.md` |
-| AI | `AGENT_START.md` · `AI_ROUTING.md` · `DEEP_DIVE.md` |
+| AI | `docs/agent/AGENT_START.md` · `docs/agent/AI_ROUTING.md` · `docs/meta/DEEP_DIVE.md` |
 | Tooling | `docs/mcp.md` · `docs/terminal.md` · `docs/layers.md` · `docs/release.md` · `scripts/nf.py` · `tui/nf.py` · `verify.sh` |
 | Integrations | `integrations/README.md` (MCP / LSP / CLI / TUI / library / Skill / npm / Rust / .NET / A2A) |
-| Collection | `library/INDEX.md` · `ROUTES.md` |
+| Collection | `library/INDEX.md` · `docs/agent/ROUTES.md` |
 
 ## Version block
 
@@ -123,4 +131,4 @@ AI assembly:
 | v2.9.0 | released 2026-09-08 · STRATEGY + waves 43/44 |
 | v2.8.0 | released 2026-09-08 · waves 41/42 quality closure |
 
-Full version history: `CHANGELOG.md` and `VERSION-MATRIX.md`.
+Full version history: `CHANGELOG.md` and `docs/meta/VERSION-MATRIX.md`.

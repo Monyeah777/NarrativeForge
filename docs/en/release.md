@@ -32,7 +32,7 @@ Three registrations must not dangle (recompute rules live in `core/quality_basel
 | Face | Source | Action at release |
 |---|---|---|
 | `CHANGELOG.md` | latest section `## [X.Y.Z]` | flip "unreleased" to released and record the PASS baseline |
-| `VERSION-MATRIX.md` | version × plan × capability row | add a row (version / date-status / plan / capability) |
+| `docs/meta/VERSION-MATRIX.md` | version × plan × capability row | add a row (version / date-status / plan / capability) |
 | `README.md` version block | the "current" row | move the current row to the new version |
 
 `bash verify.sh` is the single gate entry; the expected `PASS` value is a declaration (`quality_baseline.EXPECTED_*`) and is not hand-written here.

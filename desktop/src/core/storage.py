@@ -57,7 +57,7 @@ class Store:
                              "请改名或移走后重试）" % self.home)
         # 仓内落点闸门（2026-10-01 探针）：`--store` 落在**仓库内**且**不在 .gitignore 覆盖面**时
         # 拒绝——本类会建 modules / assets / presets / cache 四个目录，未忽略的仓内落点直接变成
-        # `git status` 里的未跟踪垃圾（与 `trace.json` / `档案.md` 那类残留同一类），还可能被误提交。
+        # `git status` 里的未跟踪垃圾（与 `trace.json` / `docs/meta/档案.md` 那类残留同一类），还可能被误提交。
         # 仓库自己的约定是 `.rivet/scratch/…` 这类**已忽略**路径（既有用例正落在那儿），故只拦这一种。
         _in_repo_issue = self._in_repo_unignored_issue(repo_root)
         if _in_repo_issue:

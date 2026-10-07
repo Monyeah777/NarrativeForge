@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 class VersionMatrixTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.text = (ROOT / "VERSION-MATRIX.md").read_text(encoding="utf-8")
+        cls.text = (ROOT / "docs/meta/VERSION-MATRIX.md").read_text(encoding="utf-8")
         cls.rows = [ln for ln in cls.text.splitlines()
                     if ln.startswith("| v") and "方案文件" not in ln]
 

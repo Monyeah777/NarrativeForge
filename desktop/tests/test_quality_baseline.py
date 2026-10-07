@@ -28,7 +28,8 @@ class QualityBaselineTest(unittest.TestCase):
             Path(tmp, "README.md").write_text("v2.19\n", encoding="utf-8")
             Path(tmp, "CHANGELOG.md").write_text(
                 "## [2.9.0]\nPASS=49\n", encoding="utf-8")
-            Path(tmp, "VERSION-MATRIX.md").write_text(
+            Path(tmp, "docs/meta").mkdir(parents=True, exist_ok=True)
+            Path(tmp, "docs/meta/VERSION-MATRIX.md").write_text(
                 "| v2.9.0（内容波收口） | PASS=49 |\n", encoding="utf-8")
             issues, stats = qb.scan(tmp)
             self.assertTrue(issues)

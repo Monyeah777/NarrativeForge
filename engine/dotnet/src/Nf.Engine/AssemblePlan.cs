@@ -257,7 +257,7 @@ public static class AssemblePlan
             "6. 风险与未知：关键词识别有界（未命中 ≠ 不适配，需回填确认）；"
             + "用户自定义件须先落库登记（M91-M99 或 <独占类别>:Mxx 类内段 / 资产 900+ / 新 Pxx 避让层位 id）验收才认；"
             + "外部实证按 STRATEGY 封闭期冻结（NF-FIELD-001 素材缺位）",
-            "7. 涉及协议 / 文件：agent_组装指令包_v0.2.md；"
+            "7. 涉及协议 / 文件：docs/agent/agent_组装指令包_v0.2.md；"
             + $"{(pipeFiles.Count > 0 ? string.Join("、", pipeFiles) : "（待定）")} 管线件；"
             + $"装配计划允许集 {ObjList(plan.GetValueOrDefault("allowed_module_ids")).Count} 模块；"
             + "community/模板制作指令包.md（如需建自定义件）",

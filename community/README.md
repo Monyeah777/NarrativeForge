@@ -51,6 +51,6 @@ AI 按指令格式输出正文 → 另存为 .md 文件
 ## 与主仓库的关系
 
 - 协议真相源：`01_核心协议.md` → `02_联动注册表.md`（§8 社区登记表）→ `06_Agent执行协议.md`（运行约束）
-- 入口导航：`07_官方核心出厂与社区预设导航.md`；AI 装配入口：根 `README.md` → `AGENT_START.md` / `AI_ROUTING.md` / `DEEP_DIVE.md`
+- 入口导航：`07_官方核心出厂与社区预设导航.md`；AI 装配入口：根 `README.md` → `docs/agent/AGENT_START.md` / `docs/agent/AI_ROUTING.md` / `docs/meta/DEEP_DIVE.md`
 - 工具：`scripts/nf.py`（CLI）· `verify.sh`（质量门禁，仓库根）· `docs/mcp.md`（MCP 服务）
 - **2026-09-09 起，桌面 GUI 端壳及打包/发布线已退役并移出公开面（W33）**——本目录不再包含桌面工具下载/操作指引；旧版「社区版工具」流程随端壳退役废止。

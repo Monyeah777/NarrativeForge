@@ -191,7 +191,7 @@
         "id": "https://ninfenz.dev/builder/verify-sh"
       },
       "metadata": {
-        "invocationId": "66459764d9fc950a",
+        "invocationId": "b490b38b6ab98887",
         "note": "本地门禁执行事实；**不构成 SLSA 等级声明**（无远程 builder）"
       }
     }
@@ -224,13 +224,13 @@
     },
     {
       "digest": {
-        "sha256": "0431500d5c7f92a126ea5776e66bc13f38b989d543b1ca61a966a72d15d5d257"
+        "sha256": "d3575309480b55ace9587cb3d7cd911b6003e716feb4d1d2527461d8d0a0cf45"
       },
       "name": "07_官方核心出厂与社区预设导航.md"
     },
     {
       "digest": {
-        "sha256": "f940e15c51b6115cee20972e6d5604da52fffe71c210b7aad4c41fb299d87a8c"
+        "sha256": "fc34cf77fa1cbb802a33c6b0250f83d7d0844501880297750f4b279fe13f18a4"
       },
       "name": "llms.txt"
     },
@@ -302,7 +302,7 @@
     },
     {
       "digest": {
-        "sha256": "29857bbe2e2a6f04ff04f80d5dbab77368ab5badc77971507841cc312e81c9e1"
+        "sha256": "604ea708c728163e56deaca2b6d1293838886d5312633e46d0d2dd36a1570120"
       },
       "name": "protocol/conformance_report.json"
     },
@@ -320,7 +320,7 @@
     },
     {
       "digest": {
-        "sha256": "476965215da304a6baa64b7c181e5e90faf5bb8f5240989a8532f40cd800df0e"
+        "sha256": "ce1575633ddb5f666605a5de9f385860a29b2a7d622ecdb494615b39acd0109d"
       },
       "name": "protocol/driver.json"
     },
@@ -356,25 +356,25 @@
     },
     {
       "digest": {
-        "sha256": "85ece6974b85d4877d3ff6e6b57f7e5e30147e0ac56fc1017e8c96c847ab8eb1"
+        "sha256": "a434491b89d398091cb9c1a44fd92fcf88100cefbc61513551380ec438f079a5"
       },
       "name": "protocol/assertions.json"
     },
     {
       "digest": {
-        "sha256": "bec48abcec388184847b424c14b4a1bbea0a7138e76a319963b7f86a6079c37c"
+        "sha256": "f798b82969b07a89be304e799d9f383c4f6899649a6ed6d53921643026b09cd2"
       },
       "name": "protocol/LAYERS.json"
     },
     {
       "digest": {
-        "sha256": "262938fa2d33e3aa7da6bc59f195c90c8e4d94de4aec0dd1a525fba1f1787a0b"
+        "sha256": "d70028db605845d75e792cd5f5b804638252cca8aba1f0a24c50e5783a6ba337"
       },
       "name": "protocol/locales.json"
     },
     {
       "digest": {
-        "sha256": "29eaf0c6692f6872971d3d582a23cdf18cbca60c6ac1e35aba7b04eb85e9ebbc"
+        "sha256": "0c8ecfad8f1f23101442dc8a1c301cecb0f0cb9e33d293dd0ceb4caadc94f96d"
       },
       "name": "protocol/release_policy.json"
     },
@@ -386,7 +386,7 @@
     },
     {
       "digest": {
-        "sha256": "0c9c21945def2250462392e5f932a3d30f3b3f9c366b4f67cbdec45f9329c943"
+        "sha256": "b041ba07b0d7a146add5d93fc65f868da8a5af7c8dd2a75d35ea482790e47b7c"
       },
       "name": "protocol/normative.json"
     },

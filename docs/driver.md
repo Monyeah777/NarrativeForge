@@ -4,7 +4,7 @@
 
 ## 是什么
 
-NF 的指令档（组装指令包 / `AI_ROUTING.md` / `docs/ai-menu.md`）头部现在带 **DRIVER OVERRIDE** 块，
+NF 的指令档（组装指令包 / `docs/agent/AI_ROUTING.md` / `docs/ai-menu.md`）头部现在带 **DRIVER OVERRIDE** 块，
 真源是 `protocol/driver.json`：**有 MCP 实现就走 MCP；派发失败即停，禁止回退成文本步骤**
 （机制借鉴 ACP：静默降级会把"按机器面取件"偷换成"凭记忆组装"，产物不可复现）。
 
