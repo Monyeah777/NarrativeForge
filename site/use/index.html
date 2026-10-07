@@ -128,7 +128,7 @@ curl -fsSL https://ninfenz.dev/run.sh | sh -s -- --full  # 追加：check1-40 �
 <li>门禁管<strong>结构与可复现</strong>，不管文笔好坏——这条边界是设计的一部分。</li>
 <li>没有托管服务、没有付费版、没有遥测、不需要 API key：仓库就是全部，MIT。</li>
 <li>不编造编号：查不到就说「NF 库里没有」，留空并注明缺口。</li>
-<li>npm 包（包名 <code>ninfenz</code>，源码在 <code>packaging/npm</code>）已备好但<strong>尚未公开发布</strong>：<code>npx -y ninfenz doctor</code> 要等首次发布后才可用，在那之前请走第二种接法。</li>
+<li>npm 包已发布（包名 <code>ninfenz</code> v1.0.0，源码在 <code>packaging/npm</code>，发布带 provenance 来源证明）：<code>npx -y ninfenz doctor</code>（只读体检）与 <code>npx -y ninfenz tui</code>（全屏终端）免 clone 可用；若本机 npm 指向尚未同步的国内镜像，加 <code>--registry https://registry.npmjs.org</code> 或稍后再试。</li>
 </ul>
 
 <footer>

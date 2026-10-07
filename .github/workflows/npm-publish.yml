@@ -43,10 +43,17 @@ jobs:
           else
             echo "auth=oidc(trusted publishing)"
           fi
-      - name: 发布（带 provenance）
+      - name: 发布（带 provenance；同版本已存在即跳过 = 幂等重跑）
         working-directory: packaging/npm
         run: |
-          npm publish --provenance --access public
+          # 幂等：重跑 workflow 时该版本已在 registry 上，再发必 409/403。跳过而不是失败——
+          # "这个版本已发布" 正是重跑想要的结果（要真重发请先 bump package.json 版本）。
+          V=$(node -p "require('./package.json').version")
+          if npm view "ninfenz@$V" version >/dev/null 2>&1; then
+            echo "::notice::ninfenz@$V 已存在于 npmjs —— 跳过发布（幂等重跑）"
+          else
+            npm publish --provenance --access public
+          fi
           rm -f .npmrc
 
   publish-github-packages:
@@ -76,5 +83,11 @@ jobs:
           # 正是栽在顺序上：先改名再 publish，prepack 回头重跑自检，自己把自己判红。
           node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.name='@monyeah777/ninfenz';if(p.publishConfig)delete p.publishConfig.provenance;p.publishConfig=Object.assign({},p.publishConfig,{registry:'https://npm.pkg.github.com'});fs.writeFileSync('package.json',JSON.stringify(p,null,2));"
           printf '@monyeah777:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > .npmrc
-          npm publish --access public --ignore-scripts
+          # 幂等同上：GitHub Packages 同一版本二次发布会 409 Conflict - Cannot publish over existing version
+          V=$(node -p "require('./package.json').version")
+          if npm view "@monyeah777/ninfenz@$V" version --registry https://npm.pkg.github.com >/dev/null 2>&1; then
+            echo "::notice::@monyeah777/ninfenz@$V 已存在于 GitHub Packages —— 跳过（幂等重跑）"
+          else
+            npm publish --access public --ignore-scripts
+          fi
           rm -f .npmrc

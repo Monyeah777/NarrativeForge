@@ -59,6 +59,7 @@
 
 ## 已知状态（诚实面）
 
-- **npm 包尚未公开发布**：packaging/npm 已备好（包名 ninfenz，npx 启动器 + payload），发布通道在
-  .github/workflows/npm-publish.yml；首次发布前，站内所有 npx 说法都标注「发布后可用」。
+- **npm 包已发布**：ninfenz v1.0.0（2026-10-07，npmjs.com；2947 文件 / 21.2 MB 解包，带 SLSA provenance
+  来源证明）。发布通道 = .github/workflows/npm-publish.yml（tag 或手动 dispatch）；GitHub Packages 通道为
+  @monyeah777/ninfenz。国内镜像（npmmirror）同步有延迟，站内已注明可用 --registry 绕开。
 - **workers.dev 域名**：已关闭（wrangler.jsonc 的 workers_dev: false）。大陆对该域 DNS 污染，别把它当入口。

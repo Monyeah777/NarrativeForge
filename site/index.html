@@ -190,6 +190,7 @@
 <li id="fact-verifiable">可验证产物：<strong>Merkle inclusion proof（RFC 6962）</strong> + hmac / ssh-sig / sigstore-keyless 签名锚；<strong>缺验证器 fail-closed</strong>。</li>
 <li id="fact-mcp">接入面：只读 MCP（<code>nf serve</code>），双协议版本 2026-07-28 / 2025-11-25。</li>
 <li id="fact-terminal">终端：<code>python tui/nf.py</code>（纯标准库全屏 TUI）。</li>
+<li id="fact-npm">分发：npm 包 <strong>ninfenz v1.0.0</strong>（2026-10-07 首发，带 SLSA provenance 来源证明）· 仓库 GitHub / Gitee · 站点 <strong>ninfenz.dev</strong>。</li>
 </ul>
 <p class="src">同一组事实的机读形态：<a href="facts.json">/facts.json</a>（每条带真源与落地锚点）· 标准目录导出 <a href="https://raw.githubusercontent.com/Monyeah777/NinFenz/main/protocol/geo_export.json">protocol/geo_export.json</a>（370 条逐条带可达性与探针日期）</p>
 
@@ -205,7 +206,7 @@ python tui/nf.py
 
 # agent 一键引导（默认只读体检；--full 追加全量门禁）
 curl -fsSL https://ninfenz.dev/run.sh | sh</code></pre>
-<p class="src">前置：Python ≥ 3.11（纯标准库，无 pip 依赖）；Node ≥ 18.17（仅 npm 免 clone 路径需要）。npm 包（包名 ninfenz）已备好但尚未公开发布——发布后 <code>npx -y ninfenz doctor</code> / <code>npx -y ninfenz tui</code> 可用。国内镜像：<a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>。</p>
+<p class="src">前置：Python ≥ 3.11（纯标准库，无 pip 依赖）；Node ≥ 18.17（仅 npm 免 clone 路径需要）。npm 包已发布（<code>ninfenz</code> v1.0.0，带 provenance 来源证明）：<code>npx -y ninfenz doctor</code>（只读体检）与 <code>npx -y ninfenz tui</code>（全屏终端）免 clone 可用；若本机 npm 指向尚未同步的国内镜像，加 <code>--registry https://registry.npmjs.org</code> 或稍后再试。国内镜像：<a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>。</p>
 
 <h2>看它长什么样</h2>
 <p class="sub">终端 TUI（纯标准库、离线；9 秒演示）：</p>

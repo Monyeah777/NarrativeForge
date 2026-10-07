@@ -75,8 +75,8 @@ curl -fsSL https://ninfenz.dev/run.sh | sh -s -- --full   追加：跑 check1-40
 ## 7 免 clone 路径（只有 Node 时）
 npx -y ninfenz doctor
 npx -y ninfenz tui
-发布状态：npm 包（packaging/npm，包名 ninfenz）已备好但尚未公开发布——
-这条路径要等首次发布后才可用；在此之前请用 §1 的完整检出。
+发布状态：npm 包已发布（包名 ninfenz v1.0.0，带 SLSA provenance 来源证明）——这条路径直接可用。
+若本机 npm 指向尚未同步的国内镜像而拉不到，加 --registry https://registry.npmjs.org，或改用 §1 的完整检出。
 
 ## 8 来源纪律（防伪）
 只从官方来源取件：github.com/Monyeah777/NinFenz（镜像 gitee.com/monyeah777/ninfenz）与站点 ninfenz.dev。

@@ -102,6 +102,14 @@
       "claim_zh": "终端：python tui/nf.py（纯标准库全屏 TUI）",
       "anchor": "https://ninfenz.dev/#fact-terminal",
       "source": "https://raw.githubusercontent.com/Monyeah777/NinFenz/main/docs/terminal.md"
+    },
+    {
+      "id": "npm",
+      "claim_zh": "分发：npm 包 ninfenz v1.0.0（2026-10-07 首次发布于 npmjs.com，2947 文件，带 SLSA provenance 来源证明）",
+      "claim_en": "Distribution: npm package ninfenz v1.0.0 (first published 2026-10-07 on npmjs.com, 2947 files, with SLSA provenance)",
+      "anchor": "https://ninfenz.dev/#fact-npm",
+      "source": "https://registry.npmjs.org/ninfenz",
+      "note": "另有 GitHub Packages 通道 @monyeah777/ninfenz"
     }
   ],
   "machine_endpoints": {
@@ -113,7 +121,9 @@
     "bootstrap_script": "https://ninfenz.dev/run.sh",
     "standards_export": "https://raw.githubusercontent.com/Monyeah777/NinFenz/main/protocol/geo_export.json",
     "sitemap": "https://ninfenz.dev/sitemap.xml",
-    "robots": "https://ninfenz.dev/robots.txt"
+    "robots": "https://ninfenz.dev/robots.txt",
+    "npm": "https://www.npmjs.com/package/ninfenz",
+    "npm_provenance": "https://registry.npmjs.org/-/npm/v1/attestations/ninfenz@1.0.0"
   },
   "citation": {
     "plain": "NinFenz（NF）— 内容契约层，Monyeah777，MIT，https://github.com/Monyeah777/NinFenz",

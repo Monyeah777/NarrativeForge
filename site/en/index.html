@@ -190,6 +190,7 @@
 <li id="fact-verifiable">Verifiable artifacts: <strong>Merkle inclusion proofs (RFC 6962)</strong> plus optional hmac / ssh-sig / sigstore-keyless anchors; <strong>missing verifier = fail closed</strong>.</li>
 <li id="fact-mcp">Interop: read-only MCP surface (<code>nf serve</code>), dual-era 2026-07-28 / 2025-11-25.</li>
 <li id="fact-terminal">Terminal: <code>python tui/nf.py</code> - a full-screen TUI in the pure standard library.</li>
+<li id="fact-npm">Distribution: npm package <strong>ninfenz v1.0.0</strong> (first published 2026-10-07, with SLSA provenance) - repositories on GitHub / Gitee, site at <strong>ninfenz.dev</strong>.</li>
 </ul>
 <p class="src">The same facts, machine-readable: <a href="facts.json">/facts.json</a> (each claim carries its source and an on-page anchor) · standards catalogue export: <a href="https://raw.githubusercontent.com/Monyeah777/NinFenz/main/protocol/geo_export.json">protocol/geo_export.json</a> (370 entries with reachability and probe date).</p>
 
@@ -205,7 +206,7 @@ python tui/nf.py
 
 # agent bootstrap (read-only by default; --full adds all gates)
 curl -fsSL https://ninfenz.dev/run.sh | sh</code></pre>
-<p class="src">Requires Python >= 3.11 (standard library only, no pip dependencies) and Node >= 18.17 (only for the no-clone npm path). The npm package (name ninfenz) is prepared but not published yet, so <code>npx -y ninfenz doctor</code> / <code>npx -y ninfenz tui</code> start working after the first release. Mirror for mainland China: <a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>.</p>
+<p class="src">Requires Python >= 3.11 (standard library only, no pip dependencies) and Node >= 18.17 (only for the no-clone npm path). The npm package is published (<code>ninfenz</code> v1.0.0, released with provenance): <code>npx -y ninfenz doctor</code> (read-only checks) and <code>npx -y ninfenz tui</code> (full-screen terminal) work with no clone. If your npm points at a regional mirror that has not synced it yet, add <code>--registry https://registry.npmjs.org</code> or retry later. Mirror for mainland China: <a href="https://gitee.com/monyeah777/ninfenz">gitee.com/monyeah777/ninfenz</a>.</p>
 
 <h2>See it running</h2>
 <p class="sub">Terminal TUI (standard library only, offline; 9-second demo):</p>

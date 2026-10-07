@@ -128,7 +128,7 @@ curl -fsSL https://ninfenz.dev/run.sh | sh -s -- --full   # adds: all check1-40 
 <li>The gates check <strong>structure and reproducibility</strong>, not prose quality - that boundary is part of the design.</li>
 <li>No hosted service, no paid tier, no telemetry, no API key: the repository is everything, MIT.</li>
 <li>Never invent identifiers: if it is not in the registry, say so, leave it blank and state the gap.</li>
-<li>The npm package (name <code>ninfenz</code>, source under <code>packaging/npm</code>) is prepared but <strong>not published yet</strong>: <code>npx -y ninfenz doctor</code> starts working after the first release. Until then use path 2.</li>
+<li>The npm package is published (<code>ninfenz</code> v1.0.0, source under <code>packaging/npm</code>, released with provenance): <code>npx -y ninfenz doctor</code> and <code>npx -y ninfenz tui</code> work with no clone. If your npm points at a regional mirror that has not synced it yet, add <code>--registry https://registry.npmjs.org</code> or retry later.</li>
 </ul>
 
 <footer>
