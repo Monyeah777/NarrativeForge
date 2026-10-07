@@ -31,11 +31,15 @@ jobs:
       - name: 配置 registry 认证（有 token 写 .npmrc，否则走 OIDC）
         working-directory: packaging/npm
         env:
-          NODE_AUTH_TOKEN: \${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          if [ -n "\${NODE_AUTH_TOKEN}" ]; then
-            echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
+          # 2026-10-07 首次运行实证：本文件此前多写了反斜杠转义 —— YAML 那一层让密钥表达式不被求值，
+          # bash 那一层让变量不被展开，于是 .npmrc 里落的是字面量而不是 token，publish 必然 401/404。
+          # 现在改成不转义的写法，并加一步 whoami 自检（token 坏了就当场红，不再拖到最后一步）。
+          if [ -n "$NODE_AUTH_TOKEN" ]; then
+            printf '//registry.npmjs.org/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > .npmrc
             echo "auth=token"
+            npm whoami || { echo "::error::NPM_TOKEN 无效或权限不足（whoami 失败）：建议用 Automation token，或 granular token 选 All packages: read and write"; exit 1; }
           else
             echo "auth=oidc(trusted publishing)"
           fi
@@ -57,15 +61,20 @@ jobs:
       packages: write          # 发布包到 GitHub Packages 必需
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
-      - name: payload 暂存（与 npmjs 通道同源）
+      - name: payload 暂存 + 发布前自检（先按 npmjs 口径自证，再改名）
         working-directory: packaging/npm
-        run: npm run stage
+        run: |
+          npm run stage
+          npm run verify
       - name: 以 scoped 名发布到 GitHub Packages
         working-directory: packaging/npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # 顺序要紧：自检必须在改名**之前**跑完 —— verify-package.mjs 要求 publishConfig.provenance=true，
+          # 而发到 GitHub Packages 的成品必须去掉它（该 registry 不收来源证明）。2026-10-07 首次运行
+          # 正是栽在顺序上：先改名再 publish，prepack 回头重跑自检，自己把自己判红。
           node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.name='@monyeah777/ninfenz';if(p.publishConfig)delete p.publishConfig.provenance;p.publishConfig=Object.assign({},p.publishConfig,{registry:'https://npm.pkg.github.com'});fs.writeFileSync('package.json',JSON.stringify(p,null,2));"
           printf '@monyeah777:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$NODE_AUTH_TOKEN" > .npmrc
-          npm publish --access public
+          npm publish --access public --ignore-scripts
           rm -f .npmrc
