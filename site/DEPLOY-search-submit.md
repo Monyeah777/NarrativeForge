@@ -13,7 +13,7 @@
 | Google Search Console | Google | sitemap.xml + 逐 URL 请求编入 | 你（需 Google 账号） | 待你操作（§3） |
 | Bing Webmaster Tools | Bing（供 DuckDuckGo/Ecosia 等下游） | 从 GSC 导入或自行验证 + sitemap | 你（微软/Google 账号） | 待你操作（§4） |
 | Yandex Webmaster | Yandex | sitemap.xml | 你（Yandex 账号） | 可选（§5） |
-| 百度搜索资源平台 | 百度 | sitemap.xml + 普通收录 API | 你（百度账号 + 实名） | 中国区主要入口（§6） |
+| ~~百度搜索资源平台~~ | 百度 | — | — | **不做**（非 www 主域不被接受 + 受众不在百度，见 §6） |
 | 360 / 神马 / 搜狗 / 头条 | 中国其它 | sitemap / 提交入口 | 你 | 视需要（§7） |
 | AI 生成式引擎 | ChatGPT/Claude/Perplexity/… | **没有提交口**，靠 llms.txt 与抓取面 | 已在做 | 见 §9 |
 
@@ -135,7 +135,14 @@ IndexNow 是 Bing 发起、Yandex / Seznam / Naver 共同采纳的即时提交�
 
 ---
 
-## 6 百度搜索资源平台（中国区主要入口）
+## 6 百度搜索资源平台 —— **已决定不做**（2026-10-08 作者裁定）
+
+> **结论：不提交百度，也不做 360 / 神马 / 搜狗。**
+> 两条理由：① 百度站长平台的站点管理**不接受非 www 主域**，而本项目的 canonical 是裸域 ninfenz.dev（www 只做 301，为的是 canonical 自洽），不为收录去破坏这条规则；
+> ② 项目受众是 **agent 与开发者** —— 检索面主力是 GitHub / npm / AI 生成式引擎 / Google，不是百度。
+> 本节以下内容仅作留档，除非将来受众变化或有 www 主域，不再执行。
+
+### 留档：假如将来要做
 
 1. https://ziyuan.baidu.com → 注册/登录（需实名）→ 用户中心 → 站点管理 → 添加网站，填 https://ninfenz.dev
 2. 验证三选一：
@@ -161,7 +168,8 @@ IndexNow 是 Bing 发起、Yandex / Seznam / Naver 共同采纳的即时提交�
 | 搜狗 | https://zhanzhang.sogou.com | 与微信搜索有协同，需注册 |
 | 头条搜索 | https://zhanzhang.toutiao.com | 有 sitemap/推送入口 |
 
-建议顺序：百度 → 360 → 神马 → 其余。后面几家基本是"填同一个 sitemap"，边际成本低。
+**本项目的决定：以上全部不做**（理由见 §6：受众是 agent 与开发者，且这些平台同样偏好 www 主域）。
+留档于此，仅为将来受众变化时省一次调研。
 
 ---
 
