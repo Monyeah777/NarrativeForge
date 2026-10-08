@@ -56,6 +56,26 @@
 | 仓库根安装说明（待推送后生效） | https://github.com/Monyeah777/NinFenz/blob/main/llms-install.md | 待推送 |
 | 图标下载（待推送后生效） | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/packaging/mcp/assets/icon-400.png | 待推送 |
 
+---
+
+## 0.6 每个渠道要粘/要传的直达文件（一键复制）
+
+| 渠道 | 要粘贴 / 要上传的文件 | 内容形态 |
+|---|---|---|
+| awesome-mcp-servers | [submissions/01-awesome-mcp-servers.md](submissions/01-awesome-mcp-servers.md) | 一整行 markdown + PR 标题 |
+| Cline Marketplace | [submissions/02-cline-marketplace.md](submissions/02-cline-marketplace.md) + **上传** [assets/icon-400.png](assets/icon-400.png) | Issue 正文整段 + 400×400 PNG |
+| mcp.so | [submissions/03-mcp-so.md](submissions/03-mcp-so.md) | 表单逐字段 |
+| Glama | [submissions/04-glama.md](submissions/04-glama.md) | 仓库地址 + 描述块 |
+| PulseMCP | [submissions/05-pulsemcp.md](submissions/05-pulsemcp.md) | 表单逐字段 |
+| 魔搭 ModelScope | [submissions/06-modelscope.md](submissions/06-modelscope.md) | 中文表单逐字段 |
+| mcpservers.org | [submissions/07-mcpservers-org.md](submissions/07-mcpservers-org.md) | 表单逐字段 |
+| mcpmarket.com | [submissions/08-mcpmarket.md](submissions/08-mcpmarket.md) | 表单逐字段 |
+| 其它（英文站） | [submissions/09-generic-en.md](submissions/09-generic-en.md) | 通用块 |
+| 其它（中文站） | [submissions/10-generic-zh.md](submissions/10-generic-zh.md) | 通用块 |
+
+> 每个文件都是"打开 → 全选 → 复制 → 粘贴"的单一用途件；GitHub 文件页右上角自带复制按钮。
+> 状态：这些文件与 `19a48de5` 一起在本地产出，**推送落地后**上面的 GitHub 链接才可点（本地路径现在就能用）。
+
 ## 1 通用材料包（备一次，处处粘贴）
 
 | 字段 | 取值 |
