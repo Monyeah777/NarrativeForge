@@ -1193,7 +1193,7 @@ TERMINAL_BASELINE: tuple[dict[str, Any], ...] = (
     {"id": "history-persist", "name": "历史落盘（交互态写文件）",
      "argv": ("shell", "--history", BASELINE_TMP + "/shell_history", "--no-banner"),
      "stdin": "nf --version\nquit\n",
-     "expect": "nf 1.0.0", "expect_file": BASELINE_TMP + "/shell_history"},
+     "expect": "nf 1.0.1", "expect_file": BASELINE_TMP + "/shell_history"},
     {"id": "session-persist", "name": "会话状态持久化（--session）",
      "argv": ("shell", "--session", BASELINE_TMP + "/shell_session.json",
               "--no-history", "--no-banner"),

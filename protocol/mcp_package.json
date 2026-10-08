@@ -1,6 +1,6 @@
 {
   "schema": "nf-mcp-package/1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "status": "ready",
   "note": "B 线（内容质检 MCP 包）的包装声明（机制：把「上架材料」里最易漂移的三样——工具面、类目、红线——变成可机检数据）。**只读面红线**由门禁钉死：声明的工具/提示必须与 mcp_runtime 的运行时面**逐名一致**，多一个少一个即 FAIL。上架材料（安装三步 + 中英说明 + 提交文案）落在 docs/mcp.md「上架材料」节，与本声明同源。",
   "category_vocabulary": ["content-creation", "developer-tools", "knowledge-management"],

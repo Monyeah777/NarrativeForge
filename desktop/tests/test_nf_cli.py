@@ -618,7 +618,7 @@ class NfCliSmokeTest(unittest.TestCase):
             capture_output=True, text=True, encoding="utf-8", timeout=60,
         )
         self.assertEqual(proc.returncode, 0)
-        self.assertIn("nf 1.0.0", proc.stdout)
+        self.assertIn("nf 1.0.1", proc.stdout)
 
 
 SKIP_DESTS = {"help", "cmd"}
@@ -797,7 +797,7 @@ class VersionShortCircuitTest(unittest.TestCase):
              str(ROOT / "scripts" / "nf.py"), "--version"],
             capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=180)
         self.assertEqual(0, proc.returncode, proc.stderr[-400:])
-        self.assertIn("nf 1.0.0", proc.stdout)
+        self.assertIn("nf 1.0.1", proc.stdout)
         self.assertNotIn("_make_parser", proc.stdout, "命令面被建了（入口没把 argv 递进去？）")
         self.assertNotIn("add_subparsers", proc.stdout, "命令面被建了（入口没把 argv 递进去？）")
 

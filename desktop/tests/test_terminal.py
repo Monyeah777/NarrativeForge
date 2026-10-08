@@ -445,7 +445,7 @@ class SessionTest(unittest.TestCase):
             print("  体检：3/3 通过")
             return 0
         if argv and argv[0] == "--version":
-            print("nf 1.0.0")
+            print("nf 1.0.1")
             return 0
         if argv and argv[0] == "help":
             return 0
@@ -1741,7 +1741,7 @@ class MachineFaceTest(unittest.TestCase):
     def test_terminal_alias_works(self):
         code, out = _run(["terminal", "--exec", "nf --version", "--no-banner"])
         self.assertEqual(code, 0)
-        self.assertIn("nf 1.0.0", out)
+        self.assertIn("nf 1.0.1", out)
 
     def test_help_and_description_present(self):
         tree = nf._collect_cli_tree()

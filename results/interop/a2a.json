@@ -90,6 +90,6 @@
     }
   ],
   "url": "urn:nf:repo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "x-nf-note": "能力面 = protocol/endpoint_contract.json 的投影；服务本体 status=proposed（未实装，本卡不据此宣称在线）"
 }

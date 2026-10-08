@@ -31,8 +31,8 @@ subjects:
   - desktop/tests/test_cli_json_face.py:6fa26957393c18a31d428053f396b92eaf4cb141b3a2ed5e3f40e9af28d19d3f
   - desktop/tests/test_ccv3_adapter.py:38960758d0f9487b70e02963e3e79bfd0c1d30f1e6160944e3d5b65bdc584516
   - desktop/tests/test_ai_domain_closure.py:dc6a45d68ae576ae90a87700191ef5688aeb7db194139eff92317ecbc1140204
-  - desktop/tests/test_terminal.py:6b5bfa40968209709789adfee5bc03d40432279a86207df91daf8f638e910e24
-  - desktop/tests/test_nf_cli.py:f21e9ce45b104179274cc79eaefc5d9dd2cc9852ee3bf8757331bf7ba2d9771e
+  - desktop/tests/test_terminal.py:4746211c2b01d9289a78198b5b8b5a4c5d5afd5303acc60f19ffbe63c9026ce7
+  - desktop/tests/test_nf_cli.py:dfbe0c927f7b14a5428d4cf347385c0f7d9753aaad86e6e63d95783dfb67fd58
 
 ---
 
