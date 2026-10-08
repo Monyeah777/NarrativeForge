@@ -24,6 +24,38 @@
 
 ---
 
+## 0.5 直达链接（逐条实测过状态码；标 302/403 的是"脚本被拦、浏览器正常"）
+
+### A 你需要点开的（提交 / 认领）
+
+| # | 渠道 | 直达链接 | 实测 | 你要做的动作 |
+|---|---|---|---|---|
+| 1 | awesome-mcp-servers | https://github.com/punkpeye/awesome-mcp-servers/edit/main/README.md | 302（→ 登录页，浏览器正常） | 粘 §2.1 那一行 → Propose changes → PR 标题末尾加 `🤖🤖🤖` |
+| 1b | ↑ 投稿规则 | https://github.com/punkpeye/awesome-mcp-servers/blob/main/CONTRIBUTING.md | 200 | 读一眼格式与 agent 快速通道说明 |
+| 2 | Cline Marketplace | https://github.com/cline/mcp-marketplace/issues/new?template=mcp-server-submission.yml | 302（→ 登录页） | 填仓库 URL + 上传 `icon-400.png` + 粘贴描述 + 勾实测确认 |
+| 3 | mcp.so | https://mcp.so/submit | 403（机器人拦截，浏览器正常） | 粘 §1 材料包 |
+| 4 | Glama | https://glama.ai/mcp/servers?query=ninfenz | 200 | 有条目 → Claim；没有 → 提交仓库地址 |
+| 5 | PulseMCP | https://www.pulsemcp.com/submit | 403（机器人拦截） | 粘 §1 材料包 |
+| 6 | 魔搭 ModelScope | https://modelscope.cn/mcp | 200 | 需魔搭账号，粘中文块 |
+| 7 | mcpservers.org | https://mcpservers.org/submit | 200 | 表单 |
+| 8 | mcpmarket.com | https://mcpmarket.com/ | 200 | 页脚提交入口 |
+| — | mcpdirectory.ai | https://mcpdirectory.ai/ | **000（本次不可达）** | 建议跳过 |
+
+### B 我这边用、你也可以自查的
+
+| 用途 | 直达链接 | 实测 |
+|---|---|---|
+| 官方注册表（人看） | https://registry.modelcontextprotocol.io/ | 200 |
+| 官方注册表（机器查） | https://registry.modelcontextprotocol.io/v0/servers?search=ninfenz | 脚本 000（本机代理路径不稳），发布器可正常读写 |
+| MCP 发布器下载 | https://github.com/modelcontextprotocol/registry/releases/latest | 302→release |
+| npm 包页 | https://www.npmjs.com/package/ninfenz | 403（机器人拦截，浏览器正常） |
+| 发布工作流（可看运行历史） | https://github.com/Monyeah777/NinFenz/actions/workflows/npm-publish.yml | 200 |
+| 站点机器入口 | https://ninfenz.dev/llms.txt | 200 |
+| 完整单文件 | https://ninfenz.dev/llms-full.txt | 200 |
+| 机读事实 | https://ninfenz.dev/facts.json | 200 |
+| 仓库根安装说明（待推送后生效） | https://github.com/Monyeah777/NinFenz/blob/main/llms-install.md | 待推送 |
+| 图标下载（待推送后生效） | https://raw.githubusercontent.com/Monyeah777/NinFenz/main/packaging/mcp/assets/icon-400.png | 待推送 |
+
 ## 1 通用材料包（备一次，处处粘贴）
 
 | 字段 | 取值 |
