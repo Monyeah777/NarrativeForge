@@ -1,0 +1,35 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.monyeah777/ninfenz",
+  "description": "Content contract layer: read-only retrieval over protocol, modules, pipelines, assets, library.",
+  "version": "1.0.0",
+  "websiteUrl": "https://ninfenz.dev/",
+  "repository": {
+    "url": "https://github.com/Monyeah777/NinFenz",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "ninfenz",
+      "version": "1.0.0",
+      "runtimeHint": "npx",
+      "runtimeArguments": [
+        {
+          "type": "positional",
+          "value": "-y"
+        }
+      ],
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "serve"
+        }
+      ],
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
