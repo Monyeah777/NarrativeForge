@@ -10,7 +10,7 @@
 
 | 渠道 | 提交形式 | 谁执行 | 前置 | 当前状态 |
 |---|---|---|---|---|
-| 官方 MCP Registry | `mcp-publisher` CLI | **我**（登录/校验已跑通） | npm 包带 `mcpName`（1.0.1 发布中） | 等 1.0.1 落地后 publish |
+| 官方 MCP Registry | `mcp-publisher` CLI | **我** | 已满足（npm 1.0.1 带 `mcpName`） | ✅ **已上架 v1.0.1**（2026-10-08） |
 | **awesome-mcp-servers**（最大聚合列表） | GitHub **PR** 改 README | 你（浏览器 2 分钟） | 无 | 待做（下面给现成整行） |
 | **Cline MCP Marketplace** | GitHub **Issue**（模板） | 你 | 400×400 PNG ✅ · `llms-install.md` ✅ · Cline 实测一次 | 待做 |
 | **mcp.so** | 站内表单 | 你 | 无 | 待做 |
@@ -183,7 +183,13 @@ Install: npx -y ninfenz serve    Repo: https://github.com/Monyeah777/NinFenz    
 ### 2.8 官方 MCP Registry（回顾：已自动化）
 
 发布链路：`packaging/mcp/server.json`（schema `2025-12-11`）→ `mcp-publisher validate` → `mcp-publisher login github --token <PAT>` → `mcp-publisher publish`。
-前置硬条件：**npm 包内必须带 `mcpName`**（注册表校验 npm 归属）；即 1.0.1 发布完成后才能 publish。
+前置硬条件：**npm 包内必须带 `mcpName`**（注册表校验 npm 归属），且 `server.json` 的 `version` / `packages[0].version` 必须与已发布版本同值 —— 2026-10-08 实证：版本不同值时注册表会去查旧版本并报 "missing 'mcpName' field"，改齐后一次通过。
+
+**已上架（2026-10-08）**：`io.github.Monyeah777/ninfenz@1.0.1`；查询（注意 search 区分大小写，用 `NinFenz` 或 `Monyeah777` 才命中）：
+
+```bash
+curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=NinFenz"
+```
 
 ---
 
