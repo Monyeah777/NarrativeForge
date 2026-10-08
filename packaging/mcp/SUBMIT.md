@@ -1,5 +1,7 @@
 # MCP 目录注册（NinFenz Content Gate）· 操作手册
 
+> **第三方目录（awesome / Cline / mcp.so / Glama / PulseMCP / 魔搭 …）的渠道、材料与逐步流程见 [DIRECTORIES.md](DIRECTORIES.md)。**
+
 > 面向 agent 的正面战场：把只读 MCP 服务登记进各目录，让 agent 与 MCP 客户端能搜到、一键装载。
 > 真源：`protocol/mcp_package.json`（机读）· 人读投影：`docs/mcp.md` 的「上架材料」节 · 本目录 `server.json`（官方注册表格式，按 2025-09-29 schema 校验）
 > 最后更新：2026-10-08
@@ -28,17 +30,26 @@
 
 发布用官方 `mcp-publisher`，命名空间所有权由 **GitHub 设备码登录**证明（我拿不到你的 OAuth，这一步只能你跑）。
 
-```bash
-# 1) 装发布器（Windows 用 Git Bash 跑更省事）
-curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_windows_amd64.tar.gz" | tar xz mcp-publisher
+### Windows（PowerShell）—— 正确写法
 
-# 2) 在 packaging/mcp 目录（server.json 所在处）登录
-cd packaging/mcp
-./mcp-publisher login github      # 会给一个设备码，浏览器里输入并授权
+```powershell
+# 1) 下载发布器（必须用 curl.exe：PowerShell 里的 curl 是 Invoke-WebRequest 的别名，不支持 -L 与管道）
+curl.exe -L -o mcp-publisher.tar.gz "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_windows_amd64.tar.gz"
+tar -xzf mcp-publisher.tar.gz        # 解出 mcp-publisher.exe（该资产确实存在，7.2 MB）
 
-# 3) 发布（会按 server.schema.json 校验 server.json）
-./mcp-publisher publish
+# 2) 只校验，不发布（先确认 server.json 合规）
+.\mcp-publisher.exe validate
+
+# 3) 登录：交互式设备码，或直接给 PAT（免交互）
+.\mcp-publisher.exe login github                # 打印设备码，浏览器授权
+.\mcp-publisher.exe login github --token <PAT>   # 或：用 GitHub PAT（命名空间归属按该账号校验）
+
+# 4) 发布（按 server.schema.json 校验后上传）
+.\mcp-publisher.exe publish
 ```
+
+> 其它子命令：``init``（生成模板）· ``status``（改生命周期 active/deprecated/deleted）· ``logout``（清本地凭据）。
+> 凭据落在 ```/.config/mcp-publisher/token.json```（工具自有位置，不在仓库内）。Linux/macOS 把 .exe 去掉、用 ./mcp-publisher 即可。
 
 发布成功后可查：
 ```bash
