@@ -113,6 +113,16 @@ IndexNow 是 Bing 发起、Yandex / Seznam / Naver 共同采纳的即时提交�
 4. 提交站点地图：左侧"站点地图" → 填 https://ninfenz.dev/sitemap.xml
 5. IndexNow：Bing 侧无需额外配置；§2 的提交会体现在"URL 提交"日志里
 
+**本次已就位的三个验证面（2026-10-08 实测）**
+
+| 方式 | 落地 | 实测 |
+|---|---|---|
+| 文件 | site/BingSiteAuth.xml（内容 user = BC986533673F959259865E7DE5291890） | https://ninfenz.dev/BingSiteAuth.xml → HTTP 200，内容逐字一致 |
+| meta | 两语首页 head 的 msvalidate.01 | / 与 /en/ 的 head 均含该标签 |
+| CNAME | 8cc813b1e1544d36dcad3a23c48528da → verify.bing.com | Cloudflare 记录 proxied=false（**DNS-only**），已创建 |
+
+> 坑：这条验证用 CNAME **必须保持 DNS-only（灰云）**。若日后手滑开了橙色云代理，Bing 的校验会失败（它拿到的将是 Cloudflare 的 IP 而不是 verify.bing.com）。改任何 DNS 记录前先看这里的说明。
+
 > Bing 的索引也供给 DuckDuckGo、Ecosia、Yahoo 等下游，Bing 一遍等于覆盖一批。
 
 ---
