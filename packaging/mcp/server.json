@@ -3,7 +3,7 @@
   "name": "io.github.Monyeah777/ninfenz",
   "title": "NinFenz Content Gate",
   "description": "Content contract layer: read-only retrieval over protocol, modules, pipelines, assets, library.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "websiteUrl": "https://ninfenz.dev/",
   "repository": {
     "url": "https://github.com/Monyeah777/NinFenz",
@@ -14,7 +14,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "ninfenz",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "runtimeHint": "npx",
       "runtimeArguments": [
         {
