@@ -15,9 +15,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
-      - name: 工具链自述
+      - name: 工具链自述 + 把 npm 升到支持 trusted publishing 的版本
         run: |
           node --version
+          npm --version
+          # npm trusted publishing（OIDC，免令牌）要求 npm >= 11.5.1；runner 自带的 10.x 不够。
+          # 2026-10-08 实证：带发布权的 bypass-2FA 令牌正在被 npm 弃用（2027-01 取消），令牌路线不可持续，
+          # 故本作业改为纯 OIDC 发布；NPM_TOKEN secret 一旦删除即自动走 OIDC 分支。
+          npm install -g npm@latest
           npm --version
       - name: payload 暂存 + 发布前自检 + 冒烟
         working-directory: packaging/npm
