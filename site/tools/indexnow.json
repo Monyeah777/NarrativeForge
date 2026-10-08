@@ -1,0 +1,20 @@
+{
+  "schema": "nf-indexnow/1",
+  "host": "ninfenz.dev",
+  "key": "ninfenzff1511339a8885ca8dbee4b8",
+  "keyLocation": "https://ninfenz.dev/ninfenzff1511339a8885ca8dbee4b8.txt",
+  "endpoint": "https://api.indexnow.org/indexnow",
+  "enginesCovered": [
+    "Bing",
+    "Yandex",
+    "Seznam",
+    "Naver"
+  ],
+  "urlList": [
+    "https://ninfenz.dev/",
+    "https://ninfenz.dev/en/",
+    "https://ninfenz.dev/use/",
+    "https://ninfenz.dev/en/use/"
+  ],
+  "sitemap": "https://ninfenz.dev/sitemap.xml"
+}

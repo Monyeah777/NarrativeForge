@@ -2,6 +2,7 @@
 CNAME
 README.md
 DEPLOY-cloudflare-workers.md
+DEPLOY-search-submit.md
 .nojekyll
 .assetsignore
 tools/
