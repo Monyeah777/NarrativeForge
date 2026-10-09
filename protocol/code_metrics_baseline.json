@@ -611,9 +611,9 @@
       "max_fn_lines": 23
     },
     "desktop/src/core/repo_stats.py": {
-      "lines": 264,
-      "max_fn_cc": 19,
-      "max_fn_lines": 77
+      "lines": 266,
+      "max_fn_cc": 20,
+      "max_fn_lines": 79
     },
     "desktop/src/core/response_cache.py": {
       "lines": 157,

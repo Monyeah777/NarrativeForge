@@ -41,6 +41,12 @@ def _mkroot(root):
     _write(root, "protocol/standards_binding.json", json.dumps({"bindings_total": 1200}))
     _write(root, "protocol/domain_packs.json", json.dumps(
         {"count": 100, "subdivisions_total": 1200}))
+    # 抽象阶梯是真源：品类注册表从它派生 level:declaration（否则包目录口径缺件）
+    _write(root, "protocol/LAYERS.json", json.dumps({
+        "schema": "nf-layers/1",
+        "tiers": [{"id": "contract", "name": "契约", "source": {"globs": ["protocol/*.json"]}}],
+        "asset_levels": [{"id": "declaration", "name": "声明", "tier": "asset",
+                          "globs": ["community/*/protocol.yaml"]}]}))
     _write(root, "library/NF-1.md", "# 条目\n")
     _write(root, "library/INDEX.md", "# 索引\n")
     _write(root, "verify.sh", "#!/usr/bin/env bash\n# 版本 : v2.28\ncheck1(){\n  :\n}\ncheck2(){\n  :\n}\n")
@@ -97,6 +103,14 @@ class ComputeTest(unittest.TestCase):
             _write(tmp, "community/packB/protocol.yaml", "schema_version: '2'\n")
             _, issues = rs.compute(tmp)
             self.assertTrue([i for i in issues if "盘上包目录" in i], issues)
+
+    def test_missing_layers_category_is_reported_not_zeroed(self):
+        """缺 LAYERS 真源时，包目录口径必须报 issue——不许静默归零（fail-closed）。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            _write(tmp, "community/packA/protocol.yaml", "schema_version: '2'\n")
+            stats, issues = rs.compute(tmp)
+            self.assertEqual(0, stats["pack_dirs"])
+            self.assertTrue([i for i in issues if "level:declaration" in i], issues)
 
     def test_missing_coverage_keys_are_flagged(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -24,13 +24,13 @@
 
 from __future__ import annotations
 
-import glob
 import json
 import os
 import re
 import sys
 from typing import Any, Dict, List, Tuple
 
+from core import category_registry as cr
 from core import atomic_write
 
 STATS_REL = "protocol/repo_stats.json"
@@ -58,18 +58,20 @@ def compute(root: str = ".") -> Tuple[Dict[str, Any], List[str]]:
     stats["core_modules"] = len(reg.get("modules") or [])
     stats["registered_packs"] = len(reg.get("protocols") or [])
 
-    pipes = sorted(os.path.basename(p)[:3] for p in glob.glob(os.path.join(root, "03_管线库/P*.md")))
+    pipes = sorted(p.split("/")[-1][:3] for p in cr.files(root, "core-pipelines"))
     stats["core_pipelines"] = pipes
 
-    pack_dirs = sorted(os.path.dirname(p)[len(os.path.join(root, "community")) + 1:].replace("\\", "/")
-                       for p in glob.glob(os.path.join(root, "community/*/protocol.yaml")))
+    if not cr.globs(root, "level:declaration"):
+        issues.append("品类注册表缺 level:declaration（修复指引：protocol/LAYERS.json 的 asset_levels "
+                      "须含 declaration；否则包目录口径会静默归零）")
+    pack_dirs = sorted(p.split("/")[1] for p in cr.files(root, "level:declaration"))
     stats["pack_dirs"] = len(pack_dirs)
     if pack_dirs and stats["pack_dirs"] != stats["registered_packs"]:
         issues.append("盘上包目录 %d ≠ registry 登记 %d（登记三要件与盘上实况不一致）"
                       % (stats["pack_dirs"], stats["registered_packs"]))
 
-    stats["pack_assets"] = len(glob.glob(os.path.join(root, "community/*/assets/*.md")))
-    stats["concept_graphs"] = len(glob.glob(os.path.join(root, "community/*/assets/CONCEPT_GRAPH.md")))
+    stats["pack_assets"] = len(cr.files(root, "package-assets"))
+    stats["concept_graphs"] = len(cr.files(root, "concept-graphs"))
 
     cat = _read_json(os.path.join(root, "protocol/standards_catalog.json")) or {}
     cov = cat.get("coverage") or {}
@@ -90,7 +92,7 @@ def compute(root: str = ".") -> Tuple[Dict[str, Any], List[str]]:
     stats["domain_packs"] = manifest.get("count", 0)
     stats["subdivisions_total"] = manifest.get("subdivisions_total", 0)
 
-    lib = [os.path.basename(p) for p in glob.glob(os.path.join(root, "library/*.md"))]
+    lib = [p.split("/")[-1] for p in cr.files(root, "library-items")]
     stats["library_items"] = len([f for f in lib if f not in ("INDEX.md", "ALIAS.md")])
 
     vpath = os.path.join(root, "verify.sh")

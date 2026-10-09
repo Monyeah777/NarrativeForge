@@ -18,7 +18,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 from core import doc_family
-from core.library import parse_frontmatter
 
 GLOB = "decisions/ADR-*.md"
 INDEX_REL = "decisions/INDEX.md"
