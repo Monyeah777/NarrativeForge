@@ -3,4 +3,4 @@
 # Kept separate so the lint job does not install PySide6 (~150MB) just to run a
 # static checker. Versions come from the PyPI JSON API as in requirements-ci.txt.
 # ASCII-only on purpose: pip parses requirements files with the locale encoding.
-ruff==0.16.8
+ruff==0.16.10
