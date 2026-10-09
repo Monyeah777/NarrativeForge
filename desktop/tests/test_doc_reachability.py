@@ -318,6 +318,8 @@ class GuidanceCommandReachabilityTest(unittest.TestCase):
 #: 代码指引里**刻意指向仓外**的路径（逐条写明理由；本表只许缩小）
 GUIDANCE_PATH_EXEMPT = {
     "docs/checks.md": "引的是**上游项目** ossf/scorecard 的仓内文件（非本仓路径）",
+    "packaging/npm/payload/": "npm 一键包的暂存产物：由 npm run stage 生成，且被 "
+                              "packaging/npm/.gitignore 忽略——fresh clone 本就不在场（生成物非仓库件）",
 }
 _CODE_FACE = ("desktop/src/core", "scripts")
 
