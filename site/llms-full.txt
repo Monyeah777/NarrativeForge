@@ -37,7 +37,7 @@ English: NinFenz (NF) is a content contract layer: a protocol plus deterministic
    锚点 https://ninfenz.dev/#fact-core
 4. 可验证产物：Merkle inclusion proof（RFC 6962）+ hmac / ssh-sig / sigstore-keyless 签名锚；缺验证器一律 fail-closed（如实报「无法校验」，绝不放行）。
    锚点 https://ninfenz.dev/#fact-verifiable · 真源 library/RECEIPTS.json 与 protocol/RECEIPTS.json
-5. 接入面：只读 MCP（nf serve）· 双协议版本 2026-07-28（modern）/ 2025-11-25（legacy）· 无写路径。
+5. 接入面：只读 MCP（nf serve）· 双协议版本 2026-07-28（modern）/ 2025-11-25（legacy）· 无写路径 · 已上架官方 MCP Registry（io.github.Monyeah777/ninfenz）。
    锚点 https://ninfenz.dev/#fact-mcp · 真源 docs/mcp.md
 6. 终端：python tui/nf.py（纯标准库全屏 TUI，离线可跑，无仓库时自动进演示模式）。
    锚点 https://ninfenz.dev/#fact-terminal
@@ -82,7 +82,7 @@ English: NinFenz (NF) is a content contract layer: a protocol plus deterministic
     pipeline_read / asset_get，以及装载引导 prompt assemble_guide。
 
 前置：Python >= 3.11（核心纯标准库，无 pip 依赖）；Node >= 18.17（仅 npx 免 clone 路径需要）。
-npm 包已发布：ninfenz v1.0.0（npmjs.com，带 SLSA provenance 来源证明）——npx -y ninfenz doctor 与 npx -y ninfenz tui 免 clone 可用；本机 npm 若指向尚未同步的国内镜像，加 --registry https://registry.npmjs.org。
+npm 包已发布：ninfenz v1.0.1（npmjs.com，2026-10-08，2953 文件，带 SLSA provenance 来源证明；经 OIDC trusted publishing 发布）——npx -y ninfenz doctor 与 npx -y ninfenz tui 免 clone 可用；本机 npm 若指向尚未同步的国内镜像，加 --registry https://registry.npmjs.org。
 
 ## 五、术语表（对齐实体，供生成式引擎消歧）
 
@@ -165,7 +165,8 @@ https://ninfenz.dev/facts.json         机读事实（每条带真源与锚点�
 https://ninfenz.dev/run.sh             免安装引导脚本（默认只读；--full 追加全量门禁）
 https://ninfenz.dev/sitemap.xml        站点地图
 https://ninfenz.dev/robots.txt         抓取规则（显式欢迎 AI 检索与引用）
-https://www.npmjs.com/package/ninfenz  npm 包（ninfenz v1.0.0，带 SLSA provenance 来源证明）
+https://www.npmjs.com/package/ninfenz  npm 包（ninfenz v1.0.1，带 SLSA provenance 来源证明）
+https://registry.modelcontextprotocol.io/v0/servers?search=NinFenz  官方 MCP Registry 条目（io.github.Monyeah777/ninfenz）
 https://registry.npmjs.org/ninfenz     registry 元数据（版本 / 完整性 / attestations）
 https://ninfenz.dev/                   中文主页 · https://ninfenz.dev/en/ 英文主页
 https://ninfenz.dev/use/               让 AI 用起来（中文）· https://ninfenz.dev/en/use/ English
