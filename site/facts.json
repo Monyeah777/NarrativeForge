@@ -93,9 +93,11 @@
     },
     {
       "id": "mcp",
-      "claim_zh": "接入面：只读 MCP（nf serve），双协议版本 2026-07-28 / 2025-11-25",
+      "claim_zh": "接入面：只读 MCP（nf serve），双协议版本 2026-07-28 / 2025-11-25；已上架官方 MCP Registry（io.github.Monyeah777/ninfenz，可用 npx -y ninfenz serve 装载）",
+      "claim_en": "Integration: read-only MCP (nf serve), dual protocol era 2026-07-28 / 2025-11-25; listed in the official MCP Registry as io.github.Monyeah777/ninfenz (install with npx -y ninfenz serve)",
       "anchor": "https://ninfenz.dev/#fact-mcp",
-      "source": "https://raw.githubusercontent.com/Monyeah777/NinFenz/main/docs/mcp.md"
+      "source": "https://raw.githubusercontent.com/Monyeah777/NinFenz/main/docs/mcp.md",
+      "note": "官方 MCP Registry 查询：https://registry.modelcontextprotocol.io/v0/servers?search=NinFenz"
     },
     {
       "id": "terminal",
@@ -105,8 +107,8 @@
     },
     {
       "id": "npm",
-      "claim_zh": "分发：npm 包 ninfenz v1.0.0（2026-10-07 首次发布于 npmjs.com，2947 文件，带 SLSA provenance 来源证明）",
-      "claim_en": "Distribution: npm package ninfenz v1.0.0 (first published 2026-10-07 on npmjs.com, 2947 files, with SLSA provenance)",
+      "claim_zh": "分发：npm 包 ninfenz v1.0.1（2026-10-08 发布于 npmjs.com，2953 文件 / 解包 20.25 MB，带 SLSA provenance 来源证明；经 OIDC trusted publishing 发布，无长期令牌）",
+      "claim_en": "Distribution: npm package ninfenz v1.0.1 (published 2026-10-08 on npmjs.com, 2953 files / 20.25 MB unpacked, with SLSA provenance, published via OIDC trusted publishing — no long-lived tokens)",
       "anchor": "https://ninfenz.dev/#fact-npm",
       "source": "https://registry.npmjs.org/ninfenz",
       "note": "另有 GitHub Packages 通道 @monyeah777/ninfenz"
@@ -123,7 +125,8 @@
     "sitemap": "https://ninfenz.dev/sitemap.xml",
     "robots": "https://ninfenz.dev/robots.txt",
     "npm": "https://www.npmjs.com/package/ninfenz",
-    "npm_provenance": "https://registry.npmjs.org/-/npm/v1/attestations/ninfenz@1.0.0"
+    "npm_provenance": "https://registry.npmjs.org/-/npm/v1/attestations/ninfenz@1.0.1",
+    "mcp_registry": "https://registry.modelcontextprotocol.io/v0/servers?search=NinFenz"
   },
   "citation": {
     "plain": "NinFenz（NF）— 内容契约层，Monyeah777，MIT，https://github.com/Monyeah777/NinFenz",

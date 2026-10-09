@@ -29,6 +29,7 @@
 - [仓库（canonical）](https://github.com/Monyeah777/NinFenz)：协议件、门禁、资产库；国内镜像 https://gitee.com/monyeah777/ninfenz
 - [仓库 llms.txt](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/llms.txt)：仓库侧权威机器入口（与本站同源）
 - [标准目录导出](https://raw.githubusercontent.com/Monyeah777/NinFenz/main/protocol/geo_export.json)：370 条标准，逐条带可达性与探针日期
+- [MCP 注册表条目](https://registry.modelcontextprotocol.io/v0/servers?search=NinFenz)：官方 MCP Registry 上的 NinFenz Content Gate（stdio 装载 → npx -y ninfenz serve）
 
 ## 可引用事实（带真源）
 
@@ -36,7 +37,7 @@
 - 规模：111 登记包 · 363 资产档 · 101 概念图 · 标准目录 370 条（可达 332 / 不可达 38）· 标准绑定 1200 条 · 馆藏 3 件（真源 protocol/repo_stats.json）
 - 官方核心：13 模块 · 3 管线 P00 / P01 / P90 · 协议件 01-07
 - 可验证产物：Merkle inclusion proof（RFC 6962）+ hmac / ssh-sig / sigstore-keyless 锚；缺验证器 fail-closed
-- 接入面：只读 MCP（nf serve），双协议版本 2026-07-28 / 2025-11-25
+- 接入面：只读 MCP（nf serve），双协议版本 2026-07-28 / 2025-11-25；已上架**官方 MCP Registry**（io.github.Monyeah777/ninfenz，装载：npx -y ninfenz serve）
 - 终端：python tui/nf.py（纯标准库）
 - 许可：MIT（CITATION.cff）
 
