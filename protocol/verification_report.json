@@ -345,7 +345,7 @@
       "source": "code_metrics.scan",
       "stats": {
         "baseline": 184,
-        "files": 187,
+        "files": 188,
         "max_fn_cc": 114,
         "max_fn_lines": 1073,
         "max_lines": 7063
@@ -390,7 +390,7 @@
       "source": "coupling_metrics.scan",
       "stats": {
         "cycles": 0,
-        "modules": 158,
+        "modules": 159,
         "registered_cycles": 0,
         "registered_sdp": 7,
         "sdp": 7
@@ -475,7 +475,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "5a13eb6214f4f320a789039cac20fe50d060c33ebf6302a01da303f53df5f9c1",
+  "root_digest": "3acb340ac3b52d8fb6d118a88610659ba078ef89f9288aa87c47ec151b669f32",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

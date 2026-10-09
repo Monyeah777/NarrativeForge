@@ -17,7 +17,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-from core import atomic_write
+from core import doc_family
 from core.library import parse_frontmatter
 
 GLOB = "decisions/ADR-*.md"
@@ -36,12 +36,7 @@ _DASH = ("—", "-", "")
 
 
 def entries(root: str = ".") -> List[Dict[str, Any]]:
-    r = Path(root)
-    out: List[Dict[str, Any]] = []
-    for p in sorted(r.glob(GLOB)):
-        fm, body = parse_frontmatter(p.read_text(encoding="utf-8"))
-        out.append({"path": p.relative_to(r).as_posix(), "file": p.name,
-                    "fm": fm or {}, "body": body or ""})
+    out = doc_family.entries(root, GLOB)
     out.sort(key=lambda e: str(e["fm"].get("id") or e["file"]))
     return out
 
@@ -164,8 +159,7 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     if not rows:
         return ["未发现任何 ADR（%s）" % GLOB], warns, {"decisions": 0}
     r = Path(root)
-    verify = (r / "verify.sh").read_text(encoding="utf-8") if (r / "verify.sh").is_file() else ""
-    checks = set(re.findall(r"^check(\d+)\(\)\{", verify, re.M))
+    checks = doc_family.check_numbers(root)
     receipts = _receipt_ids(root)
     has_receipts = (r / RECEIPTS_REL).is_file()
     ids: Dict[str, str] = {}
@@ -204,28 +198,13 @@ def render_index(root: str = ".") -> str:
 
 
 def write_projection(root: str = ".") -> Dict[str, Any]:
-    p = Path(root) / INDEX_REL
-    if not p.is_file():
-        p.parent.mkdir(parents=True, exist_ok=True)
-        atomic_write.write_text(p, "# NF 决策记录索引（INDEX）\n\n" + BEGIN + "\n" + END + "\n")
-    text = p.read_text(encoding="utf-8")
-    block = render_index(root)
-    if BEGIN in text and END in text:
-        new = text[:text.index(BEGIN)] + block + text[text.index(END) + len(END):]
-    else:
-        new = text.rstrip("\n") + "\n\n" + block + "\n"
-    changed = new != text
-    if changed:
-        atomic_write.write_text(p, new)
-    return {"changed": changed, "path": INDEX_REL}
+    return doc_family.write_index(
+        root, index_rel=INDEX_REL, header="# NF 决策记录索引（INDEX）\n\n",
+        begin=BEGIN, end=END, block=render_index(root))
 
 
 def check_projection(root: str = ".") -> List[str]:
-    p = Path(root) / INDEX_REL
-    if not p.is_file():
-        return ["缺 %s（修复指引：nf decisions reindex）" % INDEX_REL]
-    text = p.read_text(encoding="utf-8")
-    if BEGIN not in text or END not in text:
-        return ["%s 缺生成区标记" % INDEX_REL]
-    cur = text[text.index(BEGIN):text.index(END) + len(END)]
-    return [] if cur == render_index(root) else ["决策登记表与实时重算不一致（跑 nf decisions reindex）"]
+    return doc_family.check_index(
+        root, index_rel=INDEX_REL, begin=BEGIN, end=END, block=render_index(root),
+        missing_hint="nf decisions reindex",
+        mismatch="决策登记表与实时重算不一致（跑 nf decisions reindex）")

@@ -13,10 +13,10 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import doc_family
 from core.library import parse_frontmatter
 
 DECL_REL = "protocol/postmortem.json"
@@ -24,9 +24,6 @@ RECEIPTS_REL = "protocol/RECEIPTS.json"
 GLOB = "postmortems/PO-*.md"
 SCHEMA = "nf-postmortem/1"
 SECTIONS = ("## 现象", "## 影响", "## 根因", "## 行动项")
-_CHECK = re.compile(r"^check(\d+)$")
-_DATED = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-_BULLET = re.compile(r"^\s*[-*]\s+(.+)$", re.M)
 
 
 #: 列表块解析的**唯一出处**（与 handover 曾逐字重复的两份拷贝，2026-10-01 收口）
@@ -34,34 +31,11 @@ from core.md_blocks import bullet_blocks as _bullet_blocks
 
 
 def decl(root: str = ".") -> Dict[str, Any]:
-    p = Path(root) / DECL_REL
-    return json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+    return doc_family.load_decl(root, DECL_REL)
 
 
 def entries(root: str = ".") -> List[Dict[str, Any]]:
-    r = Path(root)
-    out = []
-    for p in sorted(r.glob(GLOB)):
-        fm, body = parse_frontmatter(p.read_text(encoding="utf-8"))
-        out.append({"path": p.relative_to(r).as_posix(), "file": p.name,
-                    "fm": fm or {}, "body": body or ""})
-    return out
-
-
-def _refs_ok(root: str, refs: Any, checks: set) -> List[str]:
-    issues: List[str] = []
-    if isinstance(refs, str):
-        refs = [refs]
-    for ref in (refs or []):
-        s = str(ref).strip()
-        c = _CHECK.match(s)
-        if c:
-            if c.group(1) not in checks:
-                issues.append("引用指向不存在的 check：%s" % s)
-            continue
-        if not (Path(root) / s.replace("\\", "/")).exists():
-            issues.append("引用无法解析：%s" % s)
-    return issues
+    return doc_family.entries(root, GLOB)
 
 
 def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
@@ -72,14 +46,10 @@ def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
     d = decl(root)
     fm, body = parse_frontmatter(p.read_text(encoding="utf-8"))
     fm, body = fm or {}, body or ""
-    issues: List[str] = []
-    for k in (d.get("required_fields") or ["id", "date", "trigger", "status", "refs"]):
-        if not fm.get(k):
-            issues.append("缺必填字段：%s" % k)
-    if str(fm.get("status")) not in (d.get("status_vocabulary") or ["open", "closed"]):
-        issues.append("status 越词表：%s" % fm.get("status"))
-    if not _DATED.match(str(fm.get("date") or "")):
-        issues.append("date 非 YYYY-MM-DD：%s" % fm.get("date"))
+    issues: List[str] = doc_family.frontmatter_issues(
+        fm, d, required=("id", "date", "trigger", "status", "refs"),
+        vocab_key="status_vocabulary", field="status",
+        default_vocab=("open", "closed"))
     for sec in SECTIONS:
         if sec not in body:
             issues.append("正文缺段落：%s" % sec)
@@ -99,12 +69,9 @@ def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
         if "判据" not in a:
             issues.append("行动项缺判据：%s" % a[:40])
     r = Path(root)
-    verify = (r / "verify.sh").read_text(encoding="utf-8") if (r / "verify.sh").is_file() else ""
-    checks = set(re.findall(r"^check(\d+)\(\)\{", verify, re.M))
-    for key in ("trigger",):
-        v = fm.get(key)
-        issues += _refs_ok(root, v, checks)
-    issues += _refs_ok(root, fm.get("refs"), checks)
+    checks = doc_family.check_numbers(root)
+    issues += doc_family.refs_issues(root, fm.get("trigger"), checks, label="引用")
+    issues += doc_family.refs_issues(root, fm.get("refs"), checks, label="引用")
     if str(fm.get("status")) == "closed" and (r / RECEIPTS_REL).is_file():
         doc = json.loads((r / RECEIPTS_REL).read_text(encoding="utf-8"))
         ids = {e.get("id") for e in (doc.get("entries") or [])}

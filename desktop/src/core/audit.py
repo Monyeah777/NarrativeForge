@@ -11,11 +11,11 @@
 """
 from __future__ import annotations
 
-import json
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import doc_family
 from core.library import parse_frontmatter
 
 DECL_REL = "protocol/audit.json"
@@ -59,8 +59,7 @@ def scan_audit(root: str = ".") -> List[str]:
 
 
 def decl(root: str = ".") -> Dict[str, Any]:
-    p = Path(root) / DECL_REL
-    return json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+    return doc_family.load_decl(root, DECL_REL)
 
 
 def _sha(path: Path) -> str:
@@ -69,13 +68,7 @@ def _sha(path: Path) -> str:
 
 
 def entries(root: str = ".") -> List[Dict[str, Any]]:
-    r = Path(root)
-    out = []
-    for p in sorted(r.glob(GLOB)):
-        fm, body = parse_frontmatter(p.read_text(encoding="utf-8"))
-        out.append({"path": p.relative_to(r).as_posix(), "file": p.name,
-                    "fm": fm or {}, "body": body or ""})
-    return out
+    return doc_family.entries(root, GLOB)
 
 
 def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
@@ -88,15 +81,10 @@ def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
     fm = fm or {}
     if not fm.get("id"):
         return [], {"legacy": True, "subjects": 0}
-    issues: List[str] = []
-    for k in (d.get("required_fields") or ["id", "date", "scope", "verdict",
-                                           "auditor", "subjects"]):
-        if not fm.get(k):
-            issues.append("缺必填字段：%s" % k)
-    if str(fm.get("verdict")) not in (d.get("verdict_vocabulary") or ["pass", "fail", "warn"]):
-        issues.append("verdict 越词表：%s" % fm.get("verdict"))
-    if not _DATED.match(str(fm.get("date") or "")):
-        issues.append("date 非 YYYY-MM-DD：%s" % fm.get("date"))
+    issues: List[str] = doc_family.frontmatter_issues(
+        fm, d, required=("id", "date", "scope", "verdict", "auditor", "subjects"),
+        vocab_key="verdict_vocabulary", field="verdict",
+        default_vocab=("pass", "fail", "warn"))
     subs = fm.get("subjects") or []
     if isinstance(subs, str):
         subs = [subs]

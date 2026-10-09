@@ -6,7 +6,7 @@ scope: 作者指令「拉取 ≥10 项代码审查工具；用工具 + 决策模
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/audit.py:73131f81a8ca797fce5d4d30e63caca71e5ea50ee0d2b4d8a605e6999a73093c
+  - desktop/src/core/audit.py:8433f38e55c1a66c72ed352e952310c4c43cd6616899c30c5c7526c705451e25
   - desktop/src/core/export_schema.py:9052dc891be0c70ceb5b42544eceeceeeb4dee8c4f107b1ec660913cf922ad3d
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/storage.py:3811f57302bc44e726abf44d028b363067ca1230a73e333cefe4074561f229ce

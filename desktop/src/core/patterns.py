@@ -20,7 +20,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-from core import atomic_write
+from core import doc_family
 from core.library import parse_frontmatter
 
 GLOB = "patterns/*/PATTERN.md"
@@ -121,31 +121,16 @@ def render_index(root: str = ".") -> str:
 
 
 def write_projection(root: str = ".") -> Dict[str, Any]:
-    p = Path(root) / INDEX_REL
-    if not p.is_file():
-        p.parent.mkdir(parents=True, exist_ok=True)
-        atomic_write.write_text(p, "# NF Patterns 索引\n\n" + BEGIN + "\n" + END + "\n")
-    text = p.read_text(encoding="utf-8")
-    block = render_index(root)
-    if BEGIN in text and END in text:
-        new = text[:text.index(BEGIN)] + block + text[text.index(END) + len(END):]
-    else:
-        new = text.rstrip("\n") + "\n\n" + block + "\n"
-    changed = new != text
-    if changed:
-        atomic_write.write_text(p, new)
-    return {"changed": changed, "path": INDEX_REL}
+    return doc_family.write_index(
+        root, index_rel=INDEX_REL, header="# NF Patterns 索引\n\n",
+        begin=BEGIN, end=END, block=render_index(root))
 
 
 def check_projection(root: str = ".") -> List[str]:
-    p = Path(root) / INDEX_REL
-    if not p.is_file():
-        return ["缺 %s（修复指引：nf patterns reindex）" % INDEX_REL]
-    text = p.read_text(encoding="utf-8")
-    if BEGIN not in text or END not in text:
-        return ["%s 缺生成区标记" % INDEX_REL]
-    cur = text[text.index(BEGIN):text.index(END) + len(END)]
-    return [] if cur == render_index(root) else ["patterns 登记表与实时重算不一致（跑 nf patterns reindex）"]
+    return doc_family.check_index(
+        root, index_rel=INDEX_REL, begin=BEGIN, end=END, block=render_index(root),
+        missing_hint="nf patterns reindex",
+        mismatch="patterns 登记表与实时重算不一致（跑 nf patterns reindex）")
 
 
 def for_path(root: str, target: str) -> List[Dict[str, str]]:

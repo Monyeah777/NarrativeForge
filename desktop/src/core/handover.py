@@ -10,20 +10,16 @@
 """
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from core import doc_family
 from core.library import parse_frontmatter
 
 DECL_REL = "protocol/handover.json"
 GLOB = "handovers/HO-*.md"
 SCHEMA = "nf-handover/1"
 SECTIONS = ("## 情境", "## 背景", "## 评估", "## 建议", "## 未决项")
-_CHECK = re.compile(r"^check(\d+)$")
-_ADR = re.compile(r"^ADR-\d{4}$")
-_DATED = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-_BULLET = re.compile(r"^\s*[-*]\s+(.+)$", re.M)
 
 
 #: 列表块解析的**唯一出处**（与 postmortem 曾逐字重复的两份拷贝，2026-10-01 收口）
@@ -31,19 +27,11 @@ from core.md_blocks import bullet_blocks as _bullet_blocks
 
 
 def decl(root: str = ".") -> Dict[str, Any]:
-    import json
-    p = Path(root) / DECL_REL
-    return json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+    return doc_family.load_decl(root, DECL_REL)
 
 
 def entries(root: str = ".") -> List[Dict[str, Any]]:
-    r = Path(root)
-    out = []
-    for p in sorted(r.glob(GLOB)):
-        fm, body = parse_frontmatter(p.read_text(encoding="utf-8"))
-        out.append({"path": p.relative_to(r).as_posix(), "file": p.name,
-                    "fm": fm or {}, "body": body or ""})
-    return out
+    return doc_family.entries(root, GLOB)
 
 
 def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
@@ -56,13 +44,10 @@ def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
     body = body or ""
     issues: List[str] = []
     d = decl(root)
-    for k in (d.get("required_fields") or ["id", "date", "from", "to", "status", "refs"]):
-        if not fm.get(k):
-            issues.append("缺必填字段：%s" % k)
-    if str(fm.get("status")) not in (d.get("status_vocabulary") or ["open", "closed"]):
-        issues.append("status 越词表：%s" % fm.get("status"))
-    if not _DATED.match(str(fm.get("date") or "")):
-        issues.append("date 非 YYYY-MM-DD：%s" % fm.get("date"))
+    issues += doc_family.frontmatter_issues(
+        fm, d, required=("id", "date", "from", "to", "status", "refs"),
+        vocab_key="status_vocabulary", field="status",
+        default_vocab=("open", "closed"))
     for sec in SECTIONS:
         if sec not in body:
             issues.append("正文缺段落：%s" % sec)
@@ -73,25 +58,8 @@ def check_doc(root: str, rel: str) -> Tuple[List[str], Dict[str, Any]]:
     for it in items:
         if "判据" not in it:
             issues.append("未决项缺判据（怎样算完成）：%s" % it[:40])
-    r = Path(root)
-    verify = (r / "verify.sh").read_text(encoding="utf-8") if (r / "verify.sh").is_file() else ""
-    checks = set(re.findall(r"^check(\d+)\(\)\{", verify, re.M))
-    refs = fm.get("refs") or []
-    if isinstance(refs, str):
-        refs = [refs]
-    for ref in refs:
-        s = str(ref).strip()
-        if s.startswith("[") and s.endswith("]"):
-            s = s.strip("[]").strip()
-        c = _CHECK.match(s)
-        if c:
-            if c.group(1) not in checks:
-                issues.append("refs 指向不存在的 check：%s" % s)
-            continue
-        if _ADR.match(s):
-            continue
-        if not (r / s.replace("\\", "/")).exists():
-            issues.append("refs 无法解析：%s" % s)
+    issues += doc_family.refs_issues(root, fm.get("refs"), doc_family.check_numbers(root),
+                                     label="refs", allow_adr=True, strip_brackets=True)
     return issues, {"pending": len(items), "sections": sum(1 for s in SECTIONS if s in body)}
 
 
