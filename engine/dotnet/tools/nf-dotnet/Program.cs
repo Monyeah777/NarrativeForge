@@ -1923,7 +1923,7 @@ int DecideCommand()
 // 两条在本仓语料上输出与真源逐字一致，判据弱化属实，故登记在此（面级对账仍逐字节比对）。
 int DoctorCommand()
 {
-    const string NfCliVersion = "1.0.0";   // 真源 scripts/nf.py::NF_CLI_VERSION
+    const string NfCliVersion = "1.0.1";   // 真源 scripts/nf.py::NF_CLI_VERSION
     var checks = new List<Dictionary<string, object?>>();
     void Chk(string name, bool ok, string detail) =>
         checks.Add(new Dictionary<string, object?>(StringComparer.Ordinal)

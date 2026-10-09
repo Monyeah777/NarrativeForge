@@ -41,7 +41,7 @@ sys.path.insert(0, os.path.join(ROOT, "desktop", "src"))
 from core import interp_diet  # noqa: E402 - 紧接路径设定；`-S` 下补回 site-packages（见其 docstring）
 interp_diet.restore()
 
-NF_CLI_VERSION = "1.0.0"
+NF_CLI_VERSION = "1.0.1"
 NF_CLI_EPILOG = (
     "入门：\n"
     "  nf shell              # 交互终端（能力菜单 + 命令直通；端壳退役后的人机入口）\n"
