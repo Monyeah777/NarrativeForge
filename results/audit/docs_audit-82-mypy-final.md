@@ -15,7 +15,7 @@ subjects:
   - desktop/src/core/knowledge_sig.py:2e1177ae8701b38cff3b26e92892b3cbef4a347a48b986dd8b1f95934f60323b
   - desktop/src/core/output_forms.py:4981ef6aea157be3d26754b4eade7a40340fd235795c50ba50fe193642cd5ea8
   - desktop/src/core/pipeline_loader.py:4c58b842a8b79abdce6917305f8f5c307e4334cfa377cb3dc1b9d6f226871588
-  - desktop/src/core/community_inventory.py:336add53e061938a937fe9775edda5b2df459d2492dcb52f154409965d87f341
+  - desktop/src/core/community_inventory.py:a7ac59ffb4d76215f12d1bfa2f560f8185622a6fd5d1fcdc46200c9273ff8851
   - desktop/src/core/retriever.py:1bab0db39be26c025e37cecab19e65d8fb439140f3bb224e869b771666c777fd
   - desktop/src/core/lazy_yaml.py:19df29d70c5a694ae63527f46e4537b041cd2b889baca358e6262b4dad0e151b
   - desktop/src/core/json_schema.py:6de58ac9c73b5165d2bcd924fe7f8210e1f5cd6907b26085f8b89e566497f9da

@@ -42,6 +42,12 @@ LOCAL_CATEGORIES: Tuple[Dict[str, Any], ...] = (
     {"id": "library-items", "title": "馆藏条目", "tier": "asset",
      "globs": ("library/*.md",), "attributed": False,
      "note": "asset 阶 source 的 library 子面；INDEX/ALIAS 由消费方按名剔除。"},
+    {"id": "community-modules", "title": "域包模块", "tier": "asset",
+     "globs": ("community/*/modules/*.md",), "attributed": False,
+     "note": "content 子级的 community 模块侧子面。"},
+    {"id": "community-pipelines", "title": "域包管线", "tier": "asset",
+     "globs": ("community/*/pipelines/*.md",), "attributed": False,
+     "note": "content 子级的 community 管线侧子面。"},
 )
 
 

@@ -52,6 +52,14 @@ def _package_dirs() -> List[Path]:
                   if d.is_dir() and not d.name.startswith("."))
 
 
+def _pkg_files(cat: str, pkg: str, sub: str) -> List[Path]:
+    """包内某子目录的件（枚举走包管理器面；缺根/缺件返回空表）。"""
+    from .package_index import files_under
+    root = _community_root()
+    return files_under(str(root.parent), cat,
+                       "community/%s/%s/" % (pkg, sub)) if root else []
+
+
 def _pipeline_ids_in_cache(store: Store) -> set:
     raw = store.load_cache("pipelines")
     ids: set = set()
@@ -63,12 +71,9 @@ def _pipeline_ids_in_cache(store: Store) -> set:
 
 
 def _module_file(pkg_dir: Path, module_ref: str) -> Optional[Path]:
-    """在包 modules/ 目录定位 <id>_*.md（id 取 ref 末段，如 M55）。"""
-    mod_dir = pkg_dir / "modules"
-    if not mod_dir.is_dir():
-        return None
+    """在包 modules/ 目录定位 <id>_*.md（id 取 ref 末段，如 M55）；枚举走包管理器面。"""
     num = str(module_ref).split(":")[-1]
-    for f in sorted(mod_dir.glob("*.md")):
+    for f in _pkg_files("community-modules", pkg_dir.name, "modules"):
         if f.name.startswith(num + "_") or f.stem == num:
             return f
     return None
@@ -96,10 +101,7 @@ def load_community_pipeline(pkg: str, pid: str) -> Optional[Pipeline]:
     root = _community_root()
     if root is None:
         return None
-    pdir = root / pkg / "pipelines"
-    if not pdir.is_dir():
-        return None
-    for f in sorted(pdir.glob("*.md")):
+    for f in _pkg_files("community-pipelines", pkg, "pipelines"):
         try:
             pl = load_pipeline_file(f)
         except Exception:  # nosec B110/B112 —— 尽力而为：跳过不可读/不可解析项；该类缺口由对应门禁与 AUD-0016 静默跳过清单另行报出
@@ -124,9 +126,8 @@ def catalog(store: Store) -> List[CommunityItem]:
     installed_mods = {fid_key(m.full_id) for m in store.list_modules()}
     for pkg_dir in _package_dirs():
         pkg = pkg_dir.name
-        mod_dir = pkg_dir / "modules"
-        if mod_dir.is_dir():
-            for f in sorted(mod_dir.glob("*.md")):
+        if (pkg_dir / "modules").is_dir():
+            for f in _pkg_files("community-modules", pkg, "modules"):
                 try:
                     m = load_community_module(pkg, f.stem.split("_")[0])
                 except Exception:
@@ -142,9 +143,8 @@ def catalog(store: Store) -> List[CommunityItem]:
                 items.append(CommunityItem(
                     kind="community_module", pkg=pkg, ref=m.full_id,
                     name=m.name, layer=m.layer, installed=installed))
-        pipe_dir = pkg_dir / "pipelines"
-        if pipe_dir.is_dir():
-            for f in sorted(pipe_dir.glob("*.md")):
+        if (pkg_dir / "pipelines").is_dir():
+            for f in _pkg_files("community-pipelines", pkg, "pipelines"):
                 try:
                     from .pipeline_loader import load_pipeline_file
                     pl = load_pipeline_file(f)
