@@ -30,7 +30,7 @@ subjects:
   - desktop/src/core/daemon.py:bbc51933d74825f6b0b7f90b72e637cda8ce0c50eba56bd9053cba679e80d48f
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/exporter.py:d396f742ccf012331c855c4f52f0925daebc6100cadff30d4e1f510a9dff4c04
-  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
+  - protocol/code_metrics_baseline.json:a5d5b487b13e999ab31dbb0bceadfd1d0a8a97489e2048b67363dc8e4302fa81
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

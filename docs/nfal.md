@@ -63,6 +63,24 @@ type: string / minLength: 1），仓内多处管线把它写成中文散文—�
 - 求值为三值 Kleene：unknown && false = false、unknown || true = true，其余 unknown；
 - 判决三态 pass / fail / abstain，abstain 永不折算为 pass（与决策层同源口径）。
 
+## 编辑器面（nf lsp）
+
+管线文档里的 condition（nf-expr）静态检查结果会随 nf lsp 发布为 LSP 诊断：
+
+- 源标记 nfal-guard；诊断码沿用 nfal（E0201 语法 / E0301 未登记符号 / E0302 非 bool / E0310 未收窄）；
+- 位置落在该 condition 行的表达式列（UTF-16 口径，编辑器可直接定位）；
+- 只对管线声明（03_管线库 与 community 的 pipelines）生效；非管线文档不产 guard 诊断；
+- 散文 condition 不产诊断（不冒充错误；由 nf nfal build 记 advisory A0201）。
+
+## 仓内迁移状态
+
+官方核心与社区域包的管线 condition 已由散文迁移为 nf-expr，统一取 M50 已声明的抽象相位：
+
+    condition: =data_bus.round.phase == "roll"                          # M50 调度下一回合 / 下一轮意图
+    condition: =data_bus.round.phase == "roll" && event.tick_day        # 叠加 通用:M10 节拍同拍推进
+
+真源：M50 的 world_model 有限相位集 begin/run/end/archive/roll 与其 roll 回卷迁移。
+
 ## 边界（不宣称）
 
 - 不做通用编程语言：无循环、赋值、函数定义、模块导入、I/O；

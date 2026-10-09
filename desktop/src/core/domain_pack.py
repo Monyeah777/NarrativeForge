@@ -1021,7 +1021,7 @@ def pipeline_md(spec: Dict[str, Any], alloc: Dict[str, Any]) -> str:
     for i, lay in enumerate(order):
         nxt = order[i + 1] if i + 1 < len(order) else "P00"
         cond = ("",
-                "\n        condition: 主循环回卷（M50 调度下一回合；通用:M10 节拍同拍推进）")[nxt == "P00"]
+                "\n        condition: =data_bus.round.phase == \"roll\" && event.tick_day")[nxt == "P00"]
         lines += ["      - from: %s" % lay, "        to: %s%s" % (nxt, cond)]
     layer_names = {"P00": "数据基座", "P10": "世界推进", "P20": "角色状态", "P30": "事件生产",
                    "P40": "行为决策", "P50": "交互执行", "P60": "长期演变", "P70": "叙事素材",

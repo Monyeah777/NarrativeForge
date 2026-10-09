@@ -11,7 +11,7 @@ subjects:
   - community/量化金融域包/assets/QUANT_METRICS.md:fd85b5a871729e04b9c4026cc177e66875e35ca44cd098808cadbeb46f19ef06
   - community/量化金融域包/modules/M31_因子与信号口径.md:6404dd6093d63828e39b5ff69b9e289a54c50fed32e61e5c8e15832ef371fd00
   - community/量化金融域包/modules/M32_回测与绩效口径.md:30a5a15d78272ea2cc95418423fc356f053c58da313f2ab2cf33cb777b851d8e
-  - community/量化金融域包/pipelines/P08_量化金融域装配流管线.md:2d1b47c702c1bce5418786643f3f0d9d89b9943c5ed39a0987433453d41d0e37
+  - community/量化金融域包/pipelines/P08_量化金融域装配流管线.md:925190c471938da22846bf2298fb8e7d10219a5ecbd37d2e945260e70344769c
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

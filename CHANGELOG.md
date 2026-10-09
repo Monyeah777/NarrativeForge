@@ -52,6 +52,7 @@
 - **处置**：保留二进制（不删不改路径，避免用移出判定面的方式把红项变成跳过），如实记录残留；**待补**：装 Rust 工具链 → `engine/rust/check_parity.ps1`（含 `cargo build --release`）→ 两条平价判据纳入验收。不得以「已跳过」当作已通过。
 - **待作者侧动作**：GitHub 仓库改名 → Gitee 镜像改名 → npm 以 `ninfenz` 发布首版 → 站点上线（`site/` 已按新名生成）。
 - **NFA-L 落地（声明式 + 命令式混合语言，不新增 check）**：新增 core/nf_expr.py（词法/语法）、core/nfal.py（符号面/类型检查/三值求值/NF-IR）、core/nfal_cli.py 与 nf nfal 入口（parse / check / build / eval / schema-check）；Pipeline 的 condition 现可用以 = 开头的封闭 guard 表达式记写，既静态可查又执行可判，散文 condition 仍只记 advisory A0201；pipeline.schema.json 的 condition 仅补描述（additive）；新增 docs/nfal.md 与 packaging/nfal/Dockerfile（零第三方依赖，镜像即分发单元）；测试 desktop/tests/test_nfal.py（26 例：词法/优先级/类型/三值/NF-IR 确定性/真仓散文回归）；code_metrics 棘轮按工具指引评审后重冻（scripts/nf.py +17 行）。
+- **NFA-L 收口续波（不新增 check）**：110 条管线 condition 由散文迁移为 nf-expr（统一取 M50 已声明相位 roll：`=data_bus.round.phase == "roll"`；M10 同拍者叠加 `&& event.tick_day`）；`nf lsp` 新增 nfal-guard 诊断（源/码/UTF-16 定位，见 docs/nfal.md）；终端能力族登记 `nfal` 并重生成 `tui/_surface.py`；修复 check12 的 12 项（命令面策展 / 投影同步 / 静默返回）与 check35/check39；`code_metrics` 棘轮按工具指引重冻 lsp_doc.py / terminal.py。
 ## [2.12.0] - 2026-10-05
 
 - **基线声明同源（PASS 70→72）+ ja 入口纳入生成区**（2026-10-05）：check38 子扫描由四增至六，运行时 PASS 由 70 升至 **72**，而 `quality_baseline.EXPECTED_PASS` 仍停在 70——四处自洽断言与实跑出现「声明 ≠ 实跑」的隐性漂移。本波把 `EXPECTED_PASS` 同步为 **PASS=72**、`nf stats --write` 重生成入口生成区，并把 `README.ja.md` 纳入 `repo_stats.BLOCK_FILES`（新增 `_ja` 渲染器）——第三语言的统计块不再是手写。verify v2.30 · check1-40 · **PASS=72**。

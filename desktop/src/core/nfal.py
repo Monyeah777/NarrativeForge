@@ -63,7 +63,7 @@ def diag(code: str, severity: str, message: str, pos: int = 0) -> Dict[str, Any]
 def _read_json(path: Path) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+    except (OSError, ValueError):  # 读不到/坏件 ⇒ None（调用方如实少给符号，不臆造；失败语义同 docstring）
         return None
 
 
@@ -92,24 +92,43 @@ def _load_events(root: Path) -> set:
     return set(events.keys()) if isinstance(events, dict) else set()
 
 
-def _load_tokens(root: Path, module_refs: Optional[List[str]]) -> Dict[str, str]:
-    """token 面 = 模块 machine_contract 的 outputs + io_types（复用 pipelinerun 索引）。"""
-    src = str(root / "desktop" / "src")
-    if src not in sys.path:
-        sys.path.insert(0, src)
+def _io_kinds(text: str) -> Dict[str, str]:
+    """模块 machine_contract 的 outputs 类型面（io_types 词表；缺件记 untyped）。"""
     try:
-        from core import pipelinerun as _pr
-        index = _pr._module_files(str(root))
-    except Exception:  # noqa: BLE001 —— 索引不可用 ⇒ 无 token 面（如实缺口，不伪造）
+        from core import io_types as iot
+        data = iot.parse_io_types(text) or {}
+        return {str(k): str(v) for k, v in (data.get("outputs") or {}).items()}
+    except Exception:  # noqa: BLE001 —— 词表不可用 ⇒ 类型记 untyped（合法值，不臆造）
         return {}
+
+
+def _load_tokens(root: Path, module_refs: Optional[List[str]]) -> Dict[str, str]:
+    """token 面 = 模块 machine_contract 的 outputs + io_types。
+
+    借统一围栏解析 conformance_scan 与 io_types 词表；**不依赖 pipelinerun**——
+    更稳的模块不得依赖更不稳的模块（SDP 不变量，见 coupling_metrics）。
+    """
+    try:
+        from core import conformance_scan as csc
+    except Exception:  # noqa: BLE001 —— 围栏解析不可用 ⇒ 无 token 面（如实缺口，不伪造）
+        return {}
+    wanted = {str(x) for x in (module_refs or [])}
+    bare = {x.split(":")[-1] for x in wanted}
     tokens: Dict[str, str] = {}
-    refs: List[Any] = list(module_refs) if module_refs else list(index.values())
-    for ref in refs:
-        rec = _pr._resolve(ref, index) if isinstance(ref, str) else ref
-        if not rec:
+    for doc in csc._module_docs(str(root)):
+        try:
+            text = Path(doc).read_text(encoding="utf-8")
+        except OSError:  # 该模块文档读不到 ⇒ 跳过它（不臆造其 outputs；缺件如实少给 token）
             continue
-        kinds = (rec.get("io_types") or {}).get("outputs") or {}
-        for tok in rec.get("outputs") or []:
+        parsed = csc._fence_yaml(text, "machine_contract")
+        mc = parsed.get("machine_contract") if isinstance(parsed, dict) else None
+        if not isinstance(mc, dict):
+            continue
+        mid = str(mc.get("id") or "")
+        if wanted and mid not in wanted and mid.split(":")[-1] not in bare:
+            continue
+        kinds = _io_kinds(text)
+        for tok in mc.get("outputs") or []:
             tokens.setdefault(str(tok), str(kinds.get(str(tok)) or "untyped"))
     return tokens
 

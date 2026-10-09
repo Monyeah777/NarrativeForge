@@ -6,11 +6,11 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——62 计划
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/terminal.py:f723afe6a5f8fb298305615fa7041be6c066c1e83a8597099f578aa1c3149dc1
+  - desktop/src/core/terminal.py:04a6370d7a2fd1aedb5cc4f09efcf21483067a935bff66d60899a27d5e88d93b
   - desktop/src/core/assemble_plan.py:b628126479e1d2ac6f58bfe7967df67b43ed184007f981db69557856df39363e
   - desktop/src/core/asset_ledger.py:2f679a74ebf76707aabd873136976b57aa395e57c92683cf76720f4130bd28c5
   - desktop/src/core/atomic_write.py:5bc7318e23a5e6dbd5433624186df8584e86d44b13a7a11e93ddea0790617df0
-  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
+  - protocol/code_metrics_baseline.json:a5d5b487b13e999ab31dbb0bceadfd1d0a8a97489e2048b67363dc8e4302fa81
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

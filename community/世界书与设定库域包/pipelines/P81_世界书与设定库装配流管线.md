@@ -28,7 +28,7 @@ Pipeline:
         to: P80
       - from: P80
         to: P00
-        condition: 主循环回卷（M50 调度下一回合；通用:M10 节拍同拍推进）
+        condition: =data_bus.round.phase == "roll" && event.tick_day
   layers:
     - id: P00
       name: 数据基座

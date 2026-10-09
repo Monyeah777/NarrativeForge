@@ -194,10 +194,11 @@ class TestNFIR(unittest.TestCase):
         decl = nfal.load_decl(tmp, str(Path(tmp, "P99.md")))
         self.assertEqual(decl["id"], "P99")
 
-    def test_real_p01_conditions_are_prose_advisory(self):
+    def test_real_p01_conditions_compile(self):
+        # 迁移后：真仓管线的 condition 已是 nf-expr（散文路径由合成夹具覆盖）
         ir = nfal.build_ir(str(ROOT), str(P01), with_tokens=False)
         sources = {e["guard"]["source"] for e in ir["edges"]}
-        self.assertIn("prose", sources)
+        self.assertIn("expr", sources)
         self.assertNotEqual(ir["verdict"], "fail")
 
 

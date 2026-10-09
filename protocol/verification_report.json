@@ -260,7 +260,7 @@
       "source": "receipts.verify_wrapped",
       "stats": {
         "entries": 3,
-        "root": "11d183057abb90e5feb27e4fe7322aa320b8f3563f175bb8a3f24b6b76c0ac7f"
+        "root": "a492d04bf4f363a301b656d8d1d80d7a8daa8eb038d7e002b433d8223626e292"
       },
       "status": "pass",
       "warns": 0
@@ -475,7 +475,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "864bf4fb391ec3b5ad1655ef96836d43551e60f8d60dab93fe3f5a8b8b735838",
+  "root_digest": "5a13eb6214f4f320a789039cac20fe50d060c33ebf6302a01da303f53df5f9c1",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

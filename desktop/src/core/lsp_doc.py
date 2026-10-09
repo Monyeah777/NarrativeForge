@@ -17,7 +17,8 @@ from typing import Any, Dict, List
 
 from core import autofix
 
-#: 诊断严重度（LSP DiagnosticSeverity.Warning）
+#: 诊断严重度（LSP DiagnosticSeverity）
+SEVERITY_ERROR = 1
 SEVERITY_WARNING = 2
 
 def u16_len(s: str) -> int:
@@ -163,9 +164,45 @@ def diagnose(path: str, text: str, root: str = ".") -> List[Dict[str, Any]]:
     出参列一律 UTF-16 码元（与 capabilities 的声明一致）。
     """
     lines = text.split("\n")
-    out = _machine_diags(path, text, root, lines) + _prose_diags(text, root, lines)
+    out = (_machine_diags(path, text, root, lines) + _prose_diags(text, root, lines)
+           + _guard_diags(path, text, root, lines))
     out.sort(key=lambda d: (d["range"]["start"]["line"], d["range"]["start"]["character"],
                             d["code"]))
+    return out
+
+
+def _guard_diags(path: str, text: str, root: str, lines: List[str]) -> List[Dict[str, Any]]:
+    """管线 condition（nf-expr guard）静态检查 → 诊断（源 nfal-guard）。
+
+    只对管线声明生效（03_管线库/*.md 与 community/*/pipelines/*.md）；未登记符号 / 非 bool /
+    未收窄 / 语法错误逐条落到该 condition 行的表达式列上（UTF-16 口径由 _range_of 保证）。
+    """
+    p = path.replace("\\", "/")
+    if not (p.startswith("03_管线库/") or "/pipelines/" in p):
+        return []
+    try:
+        from core import nfal
+        sym = nfal.SymbolTable.from_repo(root, with_tokens=False)
+    except Exception:  # noqa: BLE001 —— 编辑器面不得因符号面不可用而打崩：降级为不产 guard 诊断
+        return []
+    out: List[Dict[str, Any]] = []
+    for i, raw in enumerate(lines):
+        m = re.match(r"^\s*condition:\s*(.+?)\s*$", raw)
+        if not m:
+            continue
+        val = m.group(1)
+        if len(val) >= 2 and val[0] in "\"'" and val[-1] == val[0]:
+            val = val[1:-1]
+        if not val.startswith("="):
+            continue
+        expr = val[1:].strip()
+        start = max(0, raw.find("="))
+        res = nfal.check_expression(expr, sym)
+        for d in res["diagnostics"]:
+            out.append({
+                "range": _range_of(lines, i, start, start + len(val)),
+                "severity": SEVERITY_ERROR if d["severity"] == "fail" else SEVERITY_WARNING,
+                "source": "nfal-guard", "code": d["code"], "message": d["message"]})
     return out
 
 
