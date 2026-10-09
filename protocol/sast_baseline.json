@@ -42,7 +42,7 @@
           "total": 32
         },
         "ruff": {
-          "total": 75
+          "total": 74
         }
       },
       "ruff": {
@@ -62,7 +62,6 @@
         "desktop/src/core/decision_layer.py::S310": 4,
         "desktop/src/core/interop_export.py::S110": 1,
         "desktop/src/core/library.py::S110": 1,
-        "desktop/src/core/lsp.py::S110": 1,
         "desktop/src/core/mcp_runtime.py::S110": 3,
         "desktop/src/core/mvu_adapter.py::S110": 1,
         "desktop/src/core/output_forms.py::S314": 2,

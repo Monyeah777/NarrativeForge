@@ -10,6 +10,7 @@ import os
 import sys
 import tempfile
 import unittest
+import warnings
 from pathlib import Path
 
 if str(Path(__file__).resolve().parent.parent / "src") not in sys.path:
@@ -152,6 +153,49 @@ class TextHygieneTest(unittest.TestCase):
         _issues, stats_repo = th.scan(ROOT)
         self.assertGreaterEqual(stats_repo["values_checked"], 50,
                                 "仓库登记册标识值面须在扫")
+
+
+class SourceEscapeHygieneTest(unittest.TestCase):
+    """源文件不得含**无效转义序列**（如文档串里反引号或多出来的单反斜杠）。
+
+    为什么要立这条（2026-10-08 实测）：本仓新增模块的文档串里出现过「反斜杠 + 反引号」这类
+    生成笔误——今天只是 DeprecationWarning（IDE 里不显眼、门禁不红），未来 Python 版本会升级成
+    SyntaxError；同批还发现一处**既有**的 Windows 路径写法落在非 raw 文档串里。这类问题没有任何
+    常驻判据盯，只能靠人眼。判据用 compile() 的警告面：正例 = 全仓零命中，变异负例 = 合成违规必被抓。
+    """
+
+    def test_no_invalid_escape_sequences(self):
+        bad = []
+        files = sorted(Path(ROOT, "desktop").rglob("*.py"))
+        files += sorted(Path(ROOT, "scripts").rglob("*.py"))
+        self.assertGreater(len(files), 200, "扫描面塌缩（判据可能已失效）")
+        for path in files:
+            src = path.read_text(encoding="utf-8")
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                try:
+                    compile(src, str(path), "exec")
+                except SyntaxError as exc:
+                    bad.append("%s: %s" % (path.name, exc))
+                    continue
+            for w in caught:
+                if "invalid escape sequence" in str(w.message):
+                    bad.append("%s:%s %s" % (path.relative_to(ROOT).as_posix(),
+                                             getattr(w, "lineno", "?"), w.message))
+        self.assertEqual([], bad[:10], "源文件含无效转义序列（修复指引：改 raw 字符串或去掉多余反斜杠）")
+
+    def test_check_catches_a_planted_violation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trap = Path(tmp, "trap.py")
+            # 植入「反斜杠 + 点」：这是**无效转义**（编译给 DeprecationWarning），
+            # 不是真转义——用 \x 之类会变成 SyntaxError，考不到本判据要考的警告面。
+            planted = 'DOC = "' + "路径 " + chr(92) + '.x"' + chr(10)
+            trap.write_text(planted, encoding="utf-8", newline=chr(10))
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                compile(trap.read_text(encoding="utf-8"), str(trap), "exec")
+            self.assertTrue([w for w in caught if "invalid escape sequence" in str(w.message)],
+                            "变异负例未被抓到（判据失效）")
 
 
 if __name__ == "__main__":

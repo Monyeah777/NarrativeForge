@@ -2,7 +2,41 @@
 
 ## [未发布] - 2026-10-06 · 项目改名：NarrativeForge → NinFenz（宁封子）
 
+- **三轴接入生产级适配第一波：编辑器面从布尔到协议行为 · 站点面进常驻判据 · 对外文档对账门**（2026-10-07 内部差距实证，三轴只读审计逐条带 file:line 证据面；AUD-0045）：
+  ① **IDE**：新增叶子模块 `core/nf_language.py`（模块 id 取模块文件自身 `machine_contract.id/name`——域包 `大语言模型:M01` 落在 `A01a_*.md`，按文件名反解必漏；层位/订阅/事件/资产/管线全部单源派生；**歧义不猜**，`M10`/`P00` 同名候选列全、跳定义失败关闭）；`nf lsp` 由「full-sync 诊断 + quickfix」升级为完整编辑器面（utf-16 位码口径、didClose、rootUri 采纳、真实诊断定位、最小行级编辑且回放自校验、补全/悬停/跳定义/大纲/工作区符号、未 shutdown 的 exit 退出码 1），并新增 `nf lsp --print-config {neovim,emacs,helix}` 生成现成配置；check33 第 5 面由「codeActionProvider 为真」改为 `lsp.check` 真跑协议行为。
+  ② **文档平台**：`integrations/site/` 登记文档门户为接入面（status=proposed——件与本地判据在场，线上部署与联网自检待作者侧发布后回填）；新增 `desktop/tests/test_site_face.py` 把 `sync-numbers.mjs` 与 `site-check.mjs --offline` 纳入常驻套件（此前只在 CI 跑，同 test_npm_package 先例），并把 `site/facts.json` 的 quality/core/mcp/terminal 四类事实绑定到机读真源。
+  ③ **LLM 框架**：修正 `docs/decision-layer.md` 三处与 `protocol/decision_layer.json`（pulled/real_run）及运行时 `PROB_TOL` 相矛盾的陈述、`docs/mcp.md`（含 en/ja 译件）补 `resources/templates/list`、`protocol/driver.json` 与技能参考的 MCP 入口回到「默认无需快照」；新增 `desktop/tests/test_doc_truth.py` 把「决策层文档 ↔ 机读真源」与「`nf serve` 默认无需快照」钉成判据。
+  ④ **口径**：不新增 check 序号（ADR-0002），`PASS=72` 维持；`code_metrics` 棘轮按工具指引评审后重冻（`lsp.py` 268→772 行、`scripts/nf.py` +9 行，仍低于新文件 800 行上限）；`results/audit/**` 机械 digest 重绑（只校准被改动的承重件，结论未变）；冻结链 `conformance --write`（conformant 27/27）→ `approve` → `receipts --write` → `verify_report --write` 全过。
+  ⑤ **同波追加**：决策端口成功路径补常驻证据（`test_serve_decision_success.py`：真 HTTP 跑真 handler，钉 choice/score/noul 归一与 404·413·500 具名错误）、`site/facts.json` 的 verifiable/limits 两类绑真源、`docs/lsp.md` 的编辑器配置块改为生成器投影对账（`TestDocConfigStaysInSync`）。
 - **全局替换规范名（413 个跟踪文件 · 760 处）**：`NarrativeForge`→`NinFenz`（260）· `narrativeforge`→`ninfenz`（416）· `narrative-forge`→`ninfenz`（40）· `NARRATIVEFORGE_`→`NINFENZ_`（13）· `Narrative Forge`→`NinFenz`（2）· 「叙事工坊」→「宁封子」（29）。替换只作用于 git 跟踪文件（本地 AI 工作区 `.rivet/`、缓存与 `.coverage` 不入面），逐文件先备份后写。
+  ⑥ **再追加**：check33 遥测面扩为「属性四键 + 结构化入参/出参 + OTLP 形状/确定性/traceId 留空」；新增 `docs/en/lsp.md`/`docs/ja/lsp.md` 并登记（译件 10→12 件）。
+  ⑦ **再追加**：站点机器面（llms/nf/agent 三件）的仓库路径与 `nf` 子命令承诺绑真源（件不在场 / 命令未注册即红）。
+  ⑧ **再追加**：check29 门禁判据由「名子串」升为「真定义 + 主执行体真调用 + 有失败路径」（Python + Rust 快线镜像同步，`cargo build` 重建后平价 20 例全绿；真仓 conformance root 不变）。
+  ⑨ **再追加**：修掉 `docs/lsp.md`（含 en/ja）指向「不存在的 `lsp` 回填行」这处无法履行的承诺，并立同型判据（文档指向回填表具体行必须在册）。
+  ⑩ **再追加**：站点中英页四维平价 + `facts.json` 锚落点判据（`site/en` 此前无判据）；`uri ↔ 路径` 往返判据（盘符 / 空格 / 中文）。
+  ⑪ **再追加**：决策端口 HTTP 服务修掉「不读完请求体就回 404/413 ⇒ 客户端连接重置」（`_drain`，有界 1 MiB）；错误路径判据改为带 64 KiB 真请求体（该缺陷只在全量套件下暴露）。
+  ⑫ **再追加**：编辑器面补**端到端帧级金标**（`scripts/build_lsp_transcript.py` + `desktop/tests/fixtures/lsp/session.json`；帧回放逐字节对账、根路径折占位符便携（字符集内，键也折））；`integrations/lsp` 2.0.0 → 2.1.0（证据 additive）。
+  ⑬ **再追加**：站点机器面点名的 MCP 能力须在运行时（含 self-check 与下限）；根 `llms.txt` 的仓库路径承诺须在场（实测抓出 `core/locales.py` 这一处简称误当路径，已改全路径）。
+  ⑭ **再追加**：他证说明页抽成 `render_doc()` 并立逐字投影判据（`emit` 会重置第三方回填表，故真仓不可重跑它）；指令档头部 `DRIVER OVERRIDE` 声明的工具集/提示与 `protocol/driver.json` 逐名对账（只取连续引用块）。
+  ⑮ **再追加**：编辑器面修掉「每请求重扫仓库」的真实卡顿——索引签名复查加 TTL（1s）+ `build(root, sig)` 复用签名 + `didSave` 强制失效；实测**暖补全 158.33 ms → 0.51 ms/请求**，判据用调用计数（不看墙钟）。
+  ⑯ **再追加**：LSP `serverInfo` 版本改单一来源（`SERVER_NAME`/`SERVER_VERSION` + 接入面卡对账，改版本时帧级金标当场拦住未重签）；`lsp.py` 805 行越过上限 → 拆出 `core/lsp_client.py`（编辑器装配面独立变化原因），接入面卡 2.1.0 → 2.2.0。
+  ⑰ **再追加**：`site/run.sh`（对外最先执行的一件）并入机器入口承诺判据（路径在场 + `nf` 子命令在册，含 `"$PY" scripts/nf.py <cmd>` 形态）；同波一条「已具备不重做」——MCP 红线散文计数早有一条判据，新增件撤回。
+  ⑱ **再追加**：Agent Skill 的命令面进判据（`skills/**` 此前不在 `command_face` 扫描面内）；CLI 注册表抽取收敛为 `prose_lint.cli_commands()`（行为逐字不变）。
+  ⑲ **再追加**：编辑器面补**参数准入**——四类不合形参数旧路径回 `-32603` 内部错误，现回 `-32602` + 修复指引（通知则丢弃且不进状态）；准入层独立成 `core/lsp_params.py`（lsp.py 曾到 843 行/函数 37 行，两处棘轮同时亮），接入面卡 2.2.0 → 2.3.0。
+  ⑳ **再追加**：MCP `tools/call` 的 `arguments` 静默降级修掉（旧写法把 `[]`/`""`/`0` 当「没传参数」继续执行），现非对象一律 `-32602` + 修复指引；判据落真进程；接入面卡 1.0.0 → 1.1.0。
+  ㉑ **再追加**：决策端口把「客户端错/服务端错」分开（入参形状错 → 400 + 契约指引，推理失败仍 500），未支持方法回 405 JSON（旧为 HTML 501），HEAD 只回表头；另立**无效转义序列**卫生判据并修掉三处（含两处本波自查出的自家笔误）。
+  ㉒ **再追加**：站点 Worker 立**行为判据**（`site/tools/worker-check.mjs` 16 条：协商/`q=0`/通配/回落/www 301/透传），删掉 `site-check.mjs` 里两条空转的字符串判据；顺带修掉 `Accept: text/markdown;q=0` 被误当同意这处真缺陷；接入面卡 1.0.0 → 1.1.0。
+  ㉓ **再追加**：编辑器面补 **LSP 会话状态机**（未 initialize → `-32002`；重复 initialize / shutdown 后请求 → `-32600`；未握手前的通知不做）；传输分帧独立成 `core/lsp_framing.py`；接入面卡 2.3.0 → 2.4.0。
+  ㉔ **再追加**：`$/` **请求**改为回 `-32601`（旧实现静默吞掉，合规客户端会一直等）；端到端帧级金标 11 → **20 条应答**（willSave / willSaveWaitUntil / watchedFiles / configuration / $ 心跳 / didSave / 悬停与符号无命中 / 未知方法与 $/ 请求 / 连续全量同步 / 关闭后补全 / shutdown 后请求），判据同步钉语义；接入面卡 2.4.0 → 2.5.0。
+  ㉕ **再追加**：立**两轴同族判据**（`test_two_faces_jsonrpc.py`：未知请求/通知/非法参数/ping 在 LSP 与 MCP 两面逐条对齐，带变异负例）；它当场抓到 LSP 面对「请求当通知发」会回 `id=null` 应答（JSON-RPC §4.1 禁止），已修，并在帧级金标里补该入站帧（应答条数不变即证静默）。
+  ㉖ **再追加**：新增机械改写工装 `scripts/rewrite_text.py`（**默认干跑** + 逐行前后对照 + 爆炸半径闸门 + `atomic_write` 落盘 + `--check` 复验），判据 `desktop/tests/test_rewrite_tool.py` 五例；`CONTRIBUTING` §4.2 补「不做无对照的全仓替换」纪律。
+  ㉗ **再追加**：编辑器面新增 **`textDocument/references`**（只认 `registry.json` 登记关系：事件↔发布/订阅、模块↔挂载层、管线←域包，每条带 why；未登记一律空表，不做全文搜索）；帧级金标 20 → **21 条应答**；`lsp.py` 越 800 行 → 拆出 `core/lsp_doc.py`（打印边界 + 验证三件套）；文档三语同步；接入面卡 2.5.0 → 2.6.0。
+  ㉘ **再追加**：MCP 面把「只读」红线写成**协议层可机读**形式——10 个工具逐条声明 `annotations.readOnlyHint: true`（客户端可自动放行只读调用），判据四例（含「注解必须真出现在 `tools/list` 上」与变异负例）；文档三语同步；接入面卡 1.1.0 → 1.2.0。
+  ㉙ **再追加**：MCP 资源模板从「发布即承诺」变成「发布即验证」——修掉 `nf://repo/asset/{package}/{key}` 的替身（未编码）写法读不出的缺口（读入时转义等价归一，白名单不变），并补**反方向**判据 `test_template_substitution_is_readable`；接入面卡 1.2.0 → 1.3.0。
+  ㉚ **再追加**：MCP 工具面「声明即承诺」——删掉 `spec_ls` 从未实现的 `tier` 过滤声明（registry 无分级数据，旧行为是静默降级返回全量），并立通则判据 `ToolSchemaEffectTest`（每个声明属性置「绝无此值」后响应必须变化，含豁免表与变异负例）；接入面卡 1.3.0 → 1.4.0。
+  ㉛ **再追加**：编辑器配置面补**能用性判据**（四种根含 Windows/空格路径的 Helix 生成件须能过 `tomllib` 解析、Lua/elisp 括号平衡、**文档里那段三语都是合法 TOML**），门禁 check33 同步改为真解析 Helix 段；另补量模板反向覆盖（5 条模板皆命中真实 uri，无幽灵模板）。
+  ㉜ **再追加**：编辑器面新增 **`textDocument/foldingRange`**（标题小节 + 代码围栏；单行区间与尾部空行不折）——派生自大纲同一份标题口径；门禁增折叠体检、帧级金标 21 → **22 条应答**、三语文档同步；接入面卡 2.6.0 → 2.7.0。
+  ㉝ **再追加**：接入面卡的**命令承诺**纳入门禁——`entry.command` 里的 `nf <子命令>` 须与 `prose_lint.cli_commands()`（CLI 注册表单一真相）对上；拼错的 `nf srve` 此前全绿，现被抓，且注册表不在场时不误判（三例含变异负例）。
 - **路径改名**：`skills/narrativeforge/` → `skills/ninfenz/`（5 件，含 `references/` 三件与 `agents/openai.yaml`）。
 - **机器面刻意不变**（保住 NF 缩写的全部收益）：CLI `nf` · 契约 schema id `nf-*/1` · 统计标记 `<!-- nf:stats:begin -->` · 环境变量前缀语义面已随 `NINFENZ_*` 收敛但保留 `NF_*` 计数位 · 目录 `03/04/05_*`。
 - **按冻结链重生成**：`nf stats --write` → `nf locales --write`（10 条文档译件 `source_sha256` 重签）→ `nf library receipts --write`（根 `11d183057abb90e5`）→ `nf conformance --write`（**27/27 conformant**，root `7be9711887ef905d`）→ `nf approve` → `nf receipts --scope protocol --write`（根 `f46d0711d622b414` · 57 件，联动刷新 `protocol/generated/receipt_chain.json` 与 `results/interop/*.json` 12 面）→ `scripts/verify_report.py --write`（判据 28 条：PASS 26 · FAIL 0 · WARN 2）。**顺序即判据**：任一写回落后于内容变更，conformance 的 `schema-clean` / `audit` 契约立即转红（本波实测复现）。
@@ -17,6 +51,7 @@
 - **由此暴露的一处仓库脆弱点（值得另立一项收口）**：受跟踪的 `handovers/HO-0002-顶尖化两线与收口.md` 引用了**被忽略的构建产物** `engine/rust/target/release/nf-rs.exe`，而 `test_doc_reachability` 要求在场文档引用的相对路径必须存在——于是本机出现「有二进制则平价测红、无二进制则路径可达红」的两难，两种状态各留 1 项 FAIL。**该耦合与本次改名无关**，但会让「本机 verify 全绿」依赖一次本地 Rust 构建。
 - **处置**：保留二进制（不删不改路径，避免用移出判定面的方式把红项变成跳过），如实记录残留；**待补**：装 Rust 工具链 → `engine/rust/check_parity.ps1`（含 `cargo build --release`）→ 两条平价判据纳入验收。不得以「已跳过」当作已通过。
 - **待作者侧动作**：GitHub 仓库改名 → Gitee 镜像改名 → npm 以 `ninfenz` 发布首版 → 站点上线（`site/` 已按新名生成）。
+- **NFA-L 落地（声明式 + 命令式混合语言，不新增 check）**：新增 core/nf_expr.py（词法/语法）、core/nfal.py（符号面/类型检查/三值求值/NF-IR）、core/nfal_cli.py 与 nf nfal 入口（parse / check / build / eval / schema-check）；Pipeline 的 condition 现可用以 = 开头的封闭 guard 表达式记写，既静态可查又执行可判，散文 condition 仍只记 advisory A0201；pipeline.schema.json 的 condition 仅补描述（additive）；新增 docs/nfal.md 与 packaging/nfal/Dockerfile（零第三方依赖，镜像即分发单元）；测试 desktop/tests/test_nfal.py（26 例：词法/优先级/类型/三值/NF-IR 确定性/真仓散文回归）；code_metrics 棘轮按工具指引评审后重冻（scripts/nf.py +17 行）。
 ## [2.12.0] - 2026-10-05
 
 - **基线声明同源（PASS 70→72）+ ja 入口纳入生成区**（2026-10-05）：check38 子扫描由四增至六，运行时 PASS 由 70 升至 **72**，而 `quality_baseline.EXPECTED_PASS` 仍停在 70——四处自洽断言与实跑出现「声明 ≠ 实跑」的隐性漂移。本波把 `EXPECTED_PASS` 同步为 **PASS=72**、`nf stats --write` 重生成入口生成区，并把 `README.ja.md` 纳入 `repo_stats.BLOCK_FILES`（新增 `_ja` 渲染器）——第三语言的统计块不再是手写。verify v2.30 · check1-40 · **PASS=72**。

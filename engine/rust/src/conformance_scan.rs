@@ -52,6 +52,123 @@ fn evidence_ids(reg: Option<&Json>) -> Vec<String> {
     ids
 }
 
+/// 门禁函数体里「可能红」的字面落点（与真源 `_GATE_FAIL_TOKENS` 同式）：
+/// 一个都不含 ⇒ 该 check 任何分支都不会红，声明它「锁定导出面」是空话。
+const GATE_FAIL_TOKENS: [&str; 4] = ["err=1", "problems.append", "no \"", "no '"];
+
+/// Python `\w` 的近似（Unicode 字母数字 + 下划线）——门禁名的词边界判定用。
+fn is_word_char(c: char) -> bool {
+    c.is_alphanumeric() || c == '_'
+}
+
+/// 真源 `_gate_defs`：`{checkN 的 N: 函数体原文}`（行首 `checkN(){` 到行首 `}`）。
+fn gate_defs(verify_txt: &str) -> std::collections::HashMap<String, String> {
+    let mut defs: std::collections::HashMap<String, String> = std::collections::HashMap::new();
+    let mut cur: Option<String> = None;
+    let mut buf: Vec<String> = Vec::new();
+    for line in verify_txt.lines() {
+        if cur.is_none() {
+            if let Some(rest) = line.strip_prefix("check") {
+                if let Some(num) = rest.strip_suffix("(){") {
+                    if !num.is_empty() && num.bytes().all(|b| b.is_ascii_digit()) {
+                        cur = Some(num.to_string());
+                        buf.clear();
+                        continue;
+                    }
+                }
+            }
+            continue;
+        }
+        if line == "}" {
+            if let Some(n) = cur.take() {
+                defs.insert(n, buf.join("\n"));
+            }
+            continue;
+        }
+        buf.push(line.to_string());
+    }
+    defs
+}
+
+/// 真源 `_gate_calls`：主执行体里真被调用的 check 号（只取 `主执行体` 标记之后——
+/// 注释/表头里提一句不算跑；`check18extra` 也不得被当成 check18）。
+fn gate_calls(verify_txt: &str) -> std::collections::HashSet<String> {
+    let run = verify_txt.split("主执行体").last().unwrap_or("");
+    let mut out: std::collections::HashSet<String> = std::collections::HashSet::new();
+    for (idx, _c) in run.char_indices() {
+        if !run[idx..].starts_with("check") {
+            continue;
+        }
+        if run[..idx].chars().next_back().map_or(false, is_word_char) {
+            continue;
+        }
+        let rest = &run[idx + 5..];
+        let num: String = rest.chars().take_while(|c| c.is_ascii_digit()).collect();
+        if num.is_empty() {
+            continue;
+        }
+        let after = idx + 5 + num.len();
+        if run[after..].chars().next().map_or(false, is_word_char) {
+            continue;
+        }
+        out.insert(num);
+    }
+    out
+}
+
+/// 真源 `export_manifest_issues`：导出契约面 manifest 判据（check29 面）→ (issues, 项数)。
+///
+/// 门禁判据（2026-10-07 强化，原差距：只判「名字出现在 verify.sh 文本里」）：
+/// **名子串 ⇒ 真定义 + 主执行体真调用 + 有可失败路径**。
+fn export_manifest_issues(root: &Path, verify_txt: &str, manifest: &Json) -> (Vec<String>, i64) {
+    let mut issues: Vec<String> = Vec::new();
+    let items = arr_items(get(manifest, "items"));
+    let defs = gate_defs(verify_txt);
+    let calls = gate_calls(verify_txt);
+    for item in items.iter().copied() {
+        if !matches!(item, Json::Object(_)) {
+            issues.push("export manifest item 非对象".to_string());
+            continue;
+        }
+        let iid = py_str(get(item, "id"));
+        if py_str(get(item, "conformance")) != "L3" {
+            issues.push(format!("导出面 {}: conformance 应为 L3（导出门禁锁定面）", iid));
+        }
+        for ev in arr_items(get(item, "evidence")) {
+            let e = py_str(Some(ev));
+            if !root.join(&e).is_file() {
+                issues.push(format!("导出面 {}: 证据文件缺失 {}", iid, e));
+            }
+        }
+        for gate in arr_items(get(item, "gates")) {
+            let gid = py_str(Some(gate));
+            let num: &str = match gid.strip_prefix("check") {
+                Some(rest) if !rest.is_empty() && rest.bytes().all(|b| b.is_ascii_digit()) => rest,
+                _ => "",
+            };
+            if num.is_empty() || !defs.contains_key(num) {
+                issues.push(format!(
+                    "导出面 {}: 证据门禁 {} 在 verify.sh 无 check 定义（修复指引：只声明真存在的 checkN）",
+                    iid, gid
+                ));
+                continue;
+            }
+            if !calls.contains(num) {
+                issues.push(format!("导出面 {}: 证据门禁 {} 未在主执行体调用（声明了却不跑）", iid, gid));
+                continue;
+            }
+            let body = defs.get(num).map(String::as_str).unwrap_or("");
+            if !GATE_FAIL_TOKENS.iter().any(|t| body.contains(t)) {
+                issues.push(format!(
+                    "导出面 {}: 证据门禁 {} 无可失败路径（判据空转：该 check 任何分支都不会红）",
+                    iid, gid
+                ));
+            }
+        }
+    }
+    (issues, items.len() as i64)
+}
+
 pub struct ScanResult {
     pub issues: Vec<String>,
     pub stats: Json,
@@ -183,39 +300,9 @@ pub fn scan(root: &Path) -> ScanResult {
         )),
         Some(manifest) => {
             let verify_txt = std::fs::read_to_string(root.join("verify.sh")).unwrap_or_default();
-            for item in arr_items(get(&manifest, "items")) {
-                export_items += 1;
-                if !matches!(item, Json::Object(_)) {
-                    issues.push("export manifest item 非对象".to_string());
-                    continue;
-                }
-                if py_str(get(item, "conformance")) != "L3" {
-                    issues.push(format!(
-                        "导出面 {}: conformance 应为 L3（导出门禁锁定面）",
-                        py_str(get(item, "id"))
-                    ));
-                }
-                for ev in arr_items(get(item, "evidence")) {
-                    let e = py_str(Some(ev));
-                    if !root.join(&e).is_file() {
-                        issues.push(format!(
-                            "导出面 {}: 证据文件缺失 {}",
-                            py_str(get(item, "id")),
-                            e
-                        ));
-                    }
-                }
-                for gate in arr_items(get(item, "gates")) {
-                    let g = py_str(Some(gate));
-                    if !verify_txt.contains(&g) {
-                        issues.push(format!(
-                            "导出面 {}: 证据门禁 {} 不在 verify.sh",
-                            py_str(get(item, "id")),
-                            g
-                        ));
-                    }
-                }
-            }
+            let (man_issues, n_items) = export_manifest_issues(root, &verify_txt, &manifest);
+            export_items = n_items;
+            issues.extend(man_issues);
         }
     }
 

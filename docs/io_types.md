@@ -28,3 +28,7 @@ python scripts/nf.py module types --write    # 按上述规则补标（幂等）
 ## 边界
 
 覆盖率取决于模块**显式声明 outputs**；未声明就只能是 `untyped`——这是内容侧的活。
+
+## 相关
+
+- 命令式 guard 表达式（封闭、可静态检查 + 执行）：docs/nfal.md。

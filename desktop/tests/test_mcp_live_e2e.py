@@ -110,6 +110,26 @@ class McpLiveFaceTest(unittest.TestCase):
             self.assertIn("inputSchema", got[mid]["error"]["message"])
         self.assertIn("M90", got[4]["result"]["content"][0]["text"])
 
+    def test_arguments_must_be_an_object_not_a_list(self):
+        """`arguments` 是声明为**对象**的字段：传数组/标量一律 `-32602`。
+
+        内部差距（2026-10-08 实测）：旧实现写 `params.get("arguments") or {}`，于是 []/""/0
+        这些**假值**被静默当成「没传参数」并继续执行——客户端以为走了位置参数，服务端却按默认值
+        跑完还给了结果（静默降级）；口径也与 prompts/get 不一致（那边早已拒绝非对象）。
+        """
+        msgs, _, _ = _serve([
+            _init(),
+            _req(2, "tools/call", {"name": "spec_ls", "arguments": []}),
+            _req(3, "tools/call", {"name": "spec_ls", "arguments": 0}),
+            _req(4, "tools/call", {"name": "spec_ls", "arguments": "oops"}),
+            _req(5, "tools/call", {"name": "spec_ls", "arguments": {}}),
+        ])
+        got = _by_id(msgs)
+        for mid in (2, 3, 4):
+            self.assertEqual(INVALID_PARAMS, got[mid]["error"]["code"], got[mid])
+            self.assertIn("arguments", got[mid]["error"]["message"])
+        self.assertIn("result", got[5], "合法空对象参数仍应正常执行")
+
     def test_authorised_read_call_returns_repo_content(self):
         """① 续：白名单内的调用必须真读到仓库内容（拒出面之外还有正常面）。"""
         msgs, _, _ = _serve([

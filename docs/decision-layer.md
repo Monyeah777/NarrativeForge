@@ -60,8 +60,10 @@ python scripts/pull_decision_model.py --candidate laya-multilingual --run --yes
 | `laya-multilingual` | `hf:convaiinnovations/laya-multilingual` | apache-2.0 | mmBERT-base · 322M · ctx 1024 | **100+ 语言（含中文）** | 同族多语面 | 中文 state 应优先此变体而非英文专用 checkpoint |
 | `open-jev-9b` | `hf:ZefanCai/Open-Jev-9B` | apache-2.0 | Qwen3.5-9B 的 **LoRA 适配器 + 决策头**（非自回归） | 取决于 base | 只评调用方给的候选；`/v1/systemone` 服务口径；需 base 精确 revision `c2022362…` | 需 GPU + Open-Jev loader；`AutoPeftModel` 直调不实现该接口 |
 
-三者 `pulled=false`：**NF 不替作者决定下载数 GB 权重**（`pull_decision_model.py` 默认只打印命令，
-`--run --yes` 才执行）。
+拉取与运行状态一律以**机读真源**为准：`laya-typed-decisions` / `open-jev-9b` 为 `pulled=false`；
+`laya-multilingual` 已拉取（0.63 GB）并在本机 CPU **真跑过**（2026-09-22，证据见
+`results/audit/docs_audit-61-real-model-loop.md`）。**NF 不替作者决定下载数 GB 权重**：
+`pull_decision_model.py` 默认只打印命令，`--run --yes` 才执行。
 
 ## 判据（门禁 · check33 第 15 面）
 
@@ -70,7 +72,8 @@ python scripts/pull_decision_model.py --candidate laya-multilingual --run --yes
 2. **门禁只许 stub**：任何 `in_gate_path=true` 的非 stub 适配器即 FAIL（门禁必须离线确定）；
 3. **stub 确定性**：同输入两次结果逐字段一致，且自称 `calibrated=false`；
 4. **fail-closed**：未登记适配器 / 缺 endpoint / 请求不合规 / 输出不合 schema → `abstained` + `reason`；
-5. **应答契约**：概率和 ≈1（容差 1e-6）、长度对齐候选数、`argmax` 落在候选集内、
+5. **应答契约**：概率和 ≈1（容差 `1e-3`——真模型概率量化到 4 位小数，来源见 `protocol/decision_layer.json`
+   的 `real_run.lesson`）、长度对齐候选数、`argmax` 落在候选集内、
    `meta.non_gate=true`。
 
 ## 边界（不宣称）
@@ -79,8 +82,9 @@ python scripts/pull_decision_model.py --candidate laya-multilingual --run --yes
 - **不生成正文**：非自回归；内容由内容契约层（协议 + 模块 + 资产）承担；
 - **概率不是证书**：`calibrated=true` 只表示模型系以 proper scoring rule 训练；
   Laya 系自述仍过自信（ECE 0.213），**用前须在你自己的留出集上复核**；
-- **本机未跑通任何真实模型**：本仓只完成端口、声明、拉取脚手架与离线 stub 的验证；
-  真实模型的推理结果属外部运行事实，未经作者拉取与运行前不作任何性能声明。
+- **真跑过，但不作性能声明**：本机已跑通 `laya-multilingual`（CPU，2026-09-22，见
+  `results/audit/docs_audit-61-real-model-loop.md`）；`laya-typed-decisions` 与 `open-jev-9b` 未跑
+  （`pulled=false`）。推理质量属外部运行事实，**不据任何单次运行作性能声明**。
 
 ## 构建回路（让决策模型替你干活 · 2026-09-22）
 

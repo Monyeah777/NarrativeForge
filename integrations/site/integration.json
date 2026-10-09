@@ -1,0 +1,27 @@
+{
+  "schema": "nf-integration/1",
+  "id": "site",
+  "title": "文档站点（人 + 机器入口）",
+  "kind": "export",
+  "status": "proposed",
+  "version": "1.1.0",
+  "codeowner": "@Monyeah777",
+  "tier": "core",
+  "entry": {
+    "path": "site/index.html"
+  },
+  "requires": [
+    "node>=18（站点自检工装）"
+  ],
+  "docs": [
+    "site/README.md"
+  ],
+  "evidence": [
+    "site/worker.js",
+    "site/tools/site-check.mjs",
+    "site/tools/sync-numbers.mjs",
+    "site/tools/worker-check.mjs",
+    "desktop/tests/test_site_face.py"
+  ],
+  "notes": "对外文档门户面：静态站（人）+ llms/agent/nf/facts 机器入口（AI）+ Worker 内容协商（机器面）。判据：离线结构与数字（site-check / sync-numbers）+ Worker 16 条行为表（worker-check，含 q=0 与回落纪律），由 ci-verify 与常驻 desktop/tests/test_site_face.py 双跑；status=proposed 表示件与本地判据在场、线上部署与联网自检待作者侧发布后回填（site/DEPLOY-cloudflare-workers.md）。"
+}

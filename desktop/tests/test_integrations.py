@@ -106,6 +106,34 @@ class MutationTest(unittest.TestCase):
             self.assertTrue(issues)
             self.assertEqual({}, stats)
 
+    def test_unknown_nf_subcommand_in_entry_is_caught(self):
+        """接入面卡里的 **nf 子命令**也要在册：「nf srve」这种拼错此前全绿（只查引用的件在场）。"""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self._mini(root, self._rec(entry={"command": "python scripts/nf.py srve"}))
+            (root / "scripts").mkdir()
+            (root / "scripts" / "nf.py").write_text('sub.add_parser("serve")' + chr(10),
+                                                    encoding="utf-8", newline=chr(10))
+            issues, _ = it.check(d)
+            self.assertTrue(any("srve" in i for i in issues), issues)
+
+    def test_registered_nf_subcommand_passes(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self._mini(root, self._rec(entry={"command": "python scripts/nf.py serve"}))
+            (root / "scripts").mkdir()
+            (root / "scripts" / "nf.py").write_text('sub.add_parser("serve")' + chr(10),
+                                                    encoding="utf-8", newline=chr(10))
+            issues, _ = it.check(d)
+            self.assertEqual([], [i for i in issues if "子命令" in i], issues)
+
+    def test_no_registry_means_no_false_red(self):
+        """读不到 CLI 注册表时**不判**（宁少不假）——只有注册表在场才核子命令。"""
+        with tempfile.TemporaryDirectory() as d:
+            self._mini(Path(d), self._rec(entry={"command": "python scripts/nf.py srve"}))
+            issues, _ = it.check(d)
+            self.assertEqual([], [i for i in issues if "子命令" in i], issues)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -131,9 +131,9 @@
       "max_fn_lines": 26
     },
     "desktop/src/core/conformance_scan.py": {
-      "lines": 1050,
-      "max_fn_cc": 36,
-      "max_fn_lines": 107
+      "lines": 1106,
+      "max_fn_cc": 26,
+      "max_fn_lines": 96
     },
     "desktop/src/core/content_face.py": {
       "lines": 68,
@@ -261,9 +261,9 @@
       "max_fn_lines": 51
     },
     "desktop/src/core/integrations.py": {
-      "lines": 210,
-      "max_fn_cc": 52,
-      "max_fn_lines": 121
+      "lines": 230,
+      "max_fn_cc": 57,
+      "max_fn_lines": 133
     },
     "desktop/src/core/interop_export.py": {
       "lines": 1028,
@@ -336,14 +336,34 @@
       "max_fn_lines": 36
     },
     "desktop/src/core/locales.py": {
-      "lines": 286,
+      "lines": 285,
       "max_fn_cc": 54,
       "max_fn_lines": 125
     },
     "desktop/src/core/lsp.py": {
-      "lines": 268,
-      "max_fn_cc": 20,
-      "max_fn_lines": 51
+      "lines": 654,
+      "max_fn_cc": 12,
+      "max_fn_lines": 36
+    },
+    "desktop/src/core/lsp_client.py": {
+      "lines": 48,
+      "max_fn_cc": 5,
+      "max_fn_lines": 25
+    },
+    "desktop/src/core/lsp_doc.py": {
+      "lines": 281,
+      "max_fn_cc": 14,
+      "max_fn_lines": 45
+    },
+    "desktop/src/core/lsp_framing.py": {
+      "lines": 80,
+      "max_fn_cc": 14,
+      "max_fn_lines": 32
+    },
+    "desktop/src/core/lsp_params.py": {
+      "lines": 120,
+      "max_fn_cc": 12,
+      "max_fn_lines": 20
     },
     "desktop/src/core/machine_contract.py": {
       "lines": 322,
@@ -366,7 +386,7 @@
       "max_fn_lines": 49
     },
     "desktop/src/core/mcp_runtime.py": {
-      "lines": 1392,
+      "lines": 1436,
       "max_fn_cc": 30,
       "max_fn_lines": 71
     },
@@ -399,6 +419,11 @@
       "lines": 325,
       "max_fn_cc": 23,
       "max_fn_lines": 58
+    },
+    "desktop/src/core/nf_language.py": {
+      "lines": 423,
+      "max_fn_cc": 17,
+      "max_fn_lines": 29
     },
     "desktop/src/core/orchestration.py": {
       "lines": 344,
@@ -501,7 +526,7 @@
       "max_fn_lines": 29
     },
     "desktop/src/core/prose_lint.py": {
-      "lines": 226,
+      "lines": 232,
       "max_fn_cc": 19,
       "max_fn_lines": 60
     },
@@ -760,6 +785,11 @@
       "max_fn_cc": 25,
       "max_fn_lines": 90
     },
+    "scripts/build_lsp_transcript.py": {
+      "lines": 221,
+      "max_fn_cc": 8,
+      "max_fn_lines": 39
+    },
     "scripts/build_verification_cards.py": {
       "lines": 128,
       "max_fn_cc": 6,
@@ -821,14 +851,14 @@
       "max_fn_lines": 40
     },
     "scripts/interop_thirdparty_kit.py": {
-      "lines": 447,
+      "lines": 457,
       "max_fn_cc": 18,
       "max_fn_lines": 52
     },
     "scripts/nf.py": {
-      "lines": 7036,
-      "max_fn_cc": 113,
-      "max_fn_lines": 1060
+      "lines": 7063,
+      "max_fn_cc": 114,
+      "max_fn_lines": 1073
     },
     "scripts/nf_client.py": {
       "lines": 167,
@@ -860,13 +890,18 @@
       "max_fn_cc": 13,
       "max_fn_lines": 35
     },
+    "scripts/rewrite_text.py": {
+      "lines": 126,
+      "max_fn_cc": 9,
+      "max_fn_lines": 39
+    },
     "scripts/sast_check.py": {
       "lines": 233,
       "max_fn_cc": 12,
       "max_fn_lines": 30
     },
     "scripts/serve_decision_model.py": {
-      "lines": 185,
+      "lines": 284,
       "max_fn_cc": 19,
       "max_fn_lines": 29
     },

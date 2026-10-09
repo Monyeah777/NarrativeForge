@@ -1,8 +1,8 @@
 {
-  "approved_at": "2026-10-07",
+  "approved_at": "2026-10-08",
   "approved_by": "Monyeah",
-  "note": "",
+  "note": "机械重批（同既有记录批准人）：AUD-0045 第二十九段冻结链重算",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
-  "subject_digest": "604ea708c728163e56deaca2b6d1293838886d5312633e46d0d2dd36a1570120"
+  "subject_digest": "b123ba8fe253be6bca4b662e9f5f5baa6206f2b4f33149c846bf3b548a279e77"
 }

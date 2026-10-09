@@ -41,7 +41,7 @@ NinFenz（NF）是**内容契约层**：把长内容生产变成可装载、可�
 - **图书馆机器面**：条目 frontmatter = 单一真相源（OKF 借鉴），INDEX/ALIAS 为投影；正文级检索、生命周期流转、回执单根（MMR）。
 - **可验证性**：`nf conformance` 产 Merkle 根封缄的一致性报告（16 契约）；`nf approve` 写内容绑定批准记录（对象一改即失效）。
 - **治理声明与机器面**：`protocol/CONFORMANCE.md` 是一致性**声明**（符合哪些规范版本 + scope 白名单 + 显式排除清单，版本逐条与真源比对）；01/02/06/07 带 RFC 版本史头（`nf rfc`）；指令档带 `DRIVER OVERRIDE` 块（有 MCP 走 MCP、派发失败即停、禁止回退成文本步骤）；`patterns/` 是实践包货架；`nf bench` 是对 agent 产物的五维确定性跑分台；`protocol/endpoint_contract.json` 固定（未实现的）服务端点契约形状。
-- **MCP**：`nf serve <mcp.json 快照>` 提供标准 stdio JSON-RPC 运行时。
+- **MCP**：`nf serve` 提供标准 stdio JSON-RPC 运行时的只读检索/取件面——**默认实时仓库面，无需快照**；`nf run --fmt mcp` 产快照只在固化某次装配成果面时才需要。
 - **质检**：`verify.sh`、`assemble --check`、`assemble --rounds`、`worldmodel --run`、`asset verify` 等构成内部验收链。
 - **世界模型**：`protocol/WORLD_MODEL.md` + `protocol/world_slots.json`，可用 `nf worldmodel --walk/--run` 验证确定性状态契约。
 

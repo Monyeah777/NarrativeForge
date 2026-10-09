@@ -68,9 +68,11 @@ if (OFFLINE) {
   const sm = read('sitemap.xml');
   check('sitemap 覆盖四页', ['/', '/en/', '/use/', '/en/use/'].every((p) => sm.includes('<loc>' + origin + p + '</loc>')), '4 个 loc');
   check('run.sh 是脚本', read('run.sh').startsWith('#!'), read('run.sh').split('\n')[0]);
+  // worker.js 的**行为**判据移到 site/tools/worker-check.mjs（真跑模块 + 桩 ASSETS，16 条）。
+  // 此处原先的两条字符串包含判据（`includes('text/markdown')` / `includes('301')`）已删除：
+  // 它们抓不到任何真实行为缺陷（协商永不触发、q=0 当同意、回落写反都照样全绿），属空转判据。
   const wk = read('worker.js');
-  check('worker 内容协商', wk.includes('text/markdown') && wk.includes('env.ASSETS'), 'markdown + ASSETS');
-  check('worker www 跳转', wk.includes('301'), '301');
+  check('worker 有导出的 fetch', wk.includes('export default') && wk.includes('env.ASSETS'), 'entry ok');
   const foreign = [];
   for (const p of ['index.html', 'en/index.html', 'use/index.html', 'en/use/index.html', 'llms.txt', 'llms-full.txt', 'nf.txt', 'agent.txt', 'facts.json', 'robots.txt', 'sitemap.xml']) {
     const t = read(p);

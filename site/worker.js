@@ -10,6 +10,22 @@
 
 const MARKDOWN_ROUTES = new Set(['/', '/en/', '/en']);
 
+// 客户端是否**明确**点名 markdown（2026-10-08 修）：
+// - `q=0` 按 RFC 9110 §12.5.1 = 明确不要，旧实现用 includes() 会照回 markdown；
+// - 通配 `*/*` / `text/html` 不触发——curl 等通用客户端默认发 `*/*`，据此回 markdown 会让
+//   它们拿到「意外类型」；协商只在客户端点名 text/markdown（或 text/*）时生效。
+function wantsMarkdown(accept) {
+  for (const part of String(accept).split(',')) {
+    const [raw, ...params] = part.split(';');
+    const type = raw.trim().toLowerCase();
+    if (type !== 'text/markdown' && type !== 'text/*') continue;
+    const q = params.map((p) => p.trim().toLowerCase()).find((p) => p.startsWith('q='));
+    if (q !== undefined && Number(q.slice(2)) === 0) continue;
+    return true;
+  }
+  return false;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -19,7 +35,7 @@ export default {
     }
     if (request.method === 'GET' && MARKDOWN_ROUTES.has(url.pathname)) {
       const accept = request.headers.get('accept') || '';
-      if (accept.includes('text/markdown')) {
+      if (wantsMarkdown(accept)) {
         try {
           const assetReq = new Request(new URL('/llms-full.txt', url.origin), { headers: request.headers });
           const res = await env.ASSETS.fetch(assetReq);

@@ -56,6 +56,7 @@ python3 -m compileall -q desktop/src scripts
 ### 4.2 代码层（desktop/ scripts/）
 - **core 零第三方依赖**（纯标准库）；确需引入第三方依赖先开 Issue 讨论。
 - 新增可测逻辑放 desktop/tests/，纳入 unittest 体系（check12）；暂不做端到端 / GUI 测试入 CI。
+- **批量文本改写用 `python scripts/rewrite_text.py`**（默认**干跑**：先出「文件:行号 + 改前 → 改后」对照表，`--write` 才落盘，命中数超 `--max-hits` 直接拒绝）。纪律：改盘一律走 `core.atomic_write`，且**不做无对照的全仓替换**——写盘前先看表（判据：`desktop/tests/test_rewrite_tool.py`）。
 
 ### 4.3 社区领域包（community/）
 - 遵循 R1（包间禁互引）/ R2（类别独占）/ R3（装配契约）；新模块走 02 §8.1 登记，跑 verify.sh check7–11。

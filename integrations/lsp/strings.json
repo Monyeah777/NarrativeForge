@@ -4,15 +4,15 @@
   "locales": {
     "zh": {
       "title": "编辑器接入（LSP）",
-      "summary": "最小 LSP 服务器：stdio 分帧、full-sync、诊断与 quickfix，不写盘。"
+      "summary": "LSP 服务器：诊断/补全/悬停/跳定义/大纲/quickfix 全走同一套真源，含编辑器配置生成；不写盘。"
     },
     "en": {
       "title": "Editor integration (LSP)",
-      "summary": "Minimal LSP server: stdio framing, full-sync, diagnostics and quickfix; never writes."
+      "summary": "LSP server: diagnostics, completion, hover, go-to-definition, outline and quickfix share one source of truth, plus client config generation; never writes."
     },
     "ja": {
       "title": "エディタ接続（LSP）",
-      "summary": "最小 LSP サーバー：stdio フレーミング、full-sync、診断と quickfix。書き込みなし。"
+      "summary": "LSP サーバー：診断・補完・ホバー・定義ジャンプ・アウトライン・quickfix を単一の真源で提供し、クライアント設定生成も同梱。書き込みなし。"
     }
   }
 }

@@ -13,10 +13,11 @@
 | cli | 命令行入口（nf） | cli | active | 1.0.0 | @Monyeah777 | python scripts/nf.py --help | docs/terminal.md |
 | dotnet-engine | .NET 引擎线（Nf.Engine） | library | active | 1.0.0 | @Monyeah777 | dotnet build engine/dotnet/src/Nf.Engine/Nf.Engine.csproj | engine/dotnet/README.md |
 | library-raw | 云图书馆 raw 取件面 | collection | active | 1.0.0 | @Monyeah777 | library/INDEX.md | docs/agent/ROUTES.md |
-| lsp | 编辑器接入（nf lsp） | editor | active | 1.0.0 | @Monyeah777 | python scripts/nf.py lsp | docs/lsp.md |
-| mcp | MCP 服务面（nf serve） | server | active | 1.0.0 | @Monyeah777 | python scripts/nf.py serve | docs/mcp.md |
+| lsp | 编辑器接入（nf lsp） | editor | active | 2.7.0 | @Monyeah777 | python scripts/nf.py lsp | docs/lsp.md |
+| mcp | MCP 服务面（nf serve） | server | active | 1.4.0 | @Monyeah777 | python scripts/nf.py serve | docs/mcp.md |
 | npm-launcher | npm 一键启动器 | package | active | 1.0.0 | @Monyeah777 | npx ninfenz | packaging/npm/README.md |
 | rust-fastlane | Rust 只读快线（nf-rs） | cli | active | 1.0.0 | @Monyeah777 | cargo run --release --manifest-path engine/rust/Cargo.toml | engine/rust/README.md |
+| site | 文档站点（人 + 机器入口） | export | proposed | 1.1.0 | @Monyeah777 | site/index.html | site/README.md |
 | tui | 终端 TUI（tui/nf.py） | cli | active | 1.0.0 | @Monyeah777 | python tui/nf.py --selftest | tui/README.md |
 <!-- nf:integrations:end -->
 

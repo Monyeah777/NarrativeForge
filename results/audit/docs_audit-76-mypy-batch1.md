@@ -9,8 +9,7 @@ subjects:
   - desktop/src/core/io_types.py:09296daf865db85bda582fb646cece708c51f97e190a9e91c0eecd07252475f7
   - desktop/src/core/world_model.py:20108d40e0f708716df4c1b6c3df66081d14c51fdc2064d5bd32b77a5af9987c
   - desktop/src/core/knowledge.py:01677496cd14fa3b3e2cf37cc396056634ba5a5ba82cbb9502721768f74485ad
-  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
-
+  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

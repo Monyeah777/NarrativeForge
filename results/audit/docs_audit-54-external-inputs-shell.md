@@ -6,8 +6,8 @@ scope: 机制借鉴类外部输入的筛选与逐条仓内实证（STRATEGY §3.
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - CONTRIBUTING.md:c72baeb7fa3069fc874321b3edddbac7a4c120ed78cf41769f01b10d3af58e60
-  - skills/ninfenz/SKILL.md:aff2577e27fe04e2ebbaef72cdebcdb8bde03a4eaefcb0c1ccb0fc3aa61cd70c
+  - CONTRIBUTING.md:d6abc68828224f261afc7423483bff67b44627a10765d7c4e0ee751693ef5f9b
+  - skills/ninfenz/SKILL.md:5ef5858a08e6fd76a7cdee201938e0140e05257a7759a3ab27c05f9339109197
   - library/INDEX.md:2fcc4ca115a6f9e3d62ac4d4e91506c50459721bf8303c1f80225128c4488840
 
 ---

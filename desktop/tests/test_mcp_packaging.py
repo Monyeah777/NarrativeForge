@@ -131,5 +131,44 @@ class McpListingProjectionTest(unittest.TestCase):
                          "声明未指向人读投影件")
 
 
+class McpToolAnnotationsTest(unittest.TestCase):
+    """工具注解：只读红线必须**机读可证**（MCP 2025-03-26+ 的 annotations.readOnlyHint）。
+
+    为什么需要（2026-10-08）：`protocol/mcp_package.json` 的红线写着「只读：不新增任何写工具」，
+    但那是**散文**；MCP 客户端真正读的是 `tools/list` 里的 `annotations`——没有它，客户端只能对
+    每次调用弹窗确认（无法自动放行只读工具），红线在协议层等于不存在。本件把「每个工具都声明只读、
+    且该声明真的发布在 tools/list 上」钉住，并用变异负例逆验判据本身能红。
+    """
+
+    @staticmethod
+    def _offenders(tools):
+        return [t["name"] for t in tools
+                if (t.get("annotations") or {}).get("readOnlyHint") is not True]
+
+    def test_every_tool_declares_read_only(self):
+        self.assertGreaterEqual(len(mrt.TOOL_DEFS), 10, "工具面塌缩（判据可能空转）")
+        self.assertEqual([], self._offenders(mrt.TOOL_DEFS),
+                         "这些工具没声明 readOnlyHint（修复指引：加 annotations，别只写在散文里）")
+
+    def test_annotation_is_published_on_the_wire(self):
+        rt = mrt.McpRuntime({"mcp": {"name": "annot", "version": "0", "resources": []}})
+        out = rt.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
+        tools = out["result"]["tools"]
+        self.assertEqual(len(mrt.TOOL_DEFS), len(tools))
+        self.assertEqual([], self._offenders(tools), "注解没出现在 tools/list 上")
+
+    def test_no_tool_claims_to_be_destructive(self):
+        bad = [t["name"] for t in mrt.TOOL_DEFS
+               if (t.get("annotations") or {}).get("destructiveHint") is True]
+        self.assertEqual([], bad, "只读面出现 destructiveHint=true（与红线冲突）")
+
+    def test_check_detects_a_mislabeled_tool(self):
+        """变异负例：把某个工具标成非只读 → 助手必须抓到（否则本件空转）。"""
+        mutant = [dict(mrt.TOOL_DEFS[0]), dict(mrt.TOOL_DEFS[1])]
+        mutant[1]["annotations"] = {"readOnlyHint": False}
+        self.assertEqual([mutant[1]["name"]], self._offenders(mutant))
+        self.assertEqual([], self._offenders(mrt.TOOL_DEFS))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -27,7 +27,7 @@ ENTRY_DOCS = (
     "README.md", "README.en.md", "llms.txt", "docs/agent/ROUTES.md", "docs/agent/AGENT_START.md",
     "docs/agent/AI_ROUTING.md", "docs/meta/DEEP_DIVE.md", "AGENTS.md", "CONTRIBUTING.md", "SECURITY.md",
     "docs/mcp.md", "docs/terminal.md", "docs/ai-menu.md", "docs/library.md",
-    "docs/conformance.md",
+    "docs/nfal.md", "docs/conformance.md",
 )
 
 _TOKEN = re.compile(r"`([^`\n]+)`")

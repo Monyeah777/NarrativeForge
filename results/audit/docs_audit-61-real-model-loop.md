@@ -6,13 +6,13 @@ scope: 作者指令「执行」（承接「让这些模型替我干活，来构�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - scripts/serve_decision_model.py:69c401a98c6fcc81a7a04a274f061e65e20d0190bb38ccff1ba3fe2f6fa03db2
+  - scripts/serve_decision_model.py:ca019d14dcab3fb82a76ba414a5fdcf2a1d281cc699c7f88d2108b05771aa27b
   - desktop/src/core/decision_layer.py:4105c5e1b61adcc5a0b8b49568ec38df05705c2a02f2cdbb4d3f3c109b94aa99
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - community/通用核心基础包/modules/M94_通用节拍桥.md:5c9605e3becbec64e87d5d3ab32b7e25a22150d949d3b8cf787eaa1e01f0e2c4
   - community/校园西幻轻混组合包/modules/M92_轻混装配执行.md:1e261dcc10d0b7134d8194f6e548ecae0d7230d9ba8e258d48825627503360d6
-  - docs/decision-layer.md:46cd91d13c1b98120318b6aff5d720fc3abe22541de8b1b1762db57a0e8dbeeb
+  - docs/decision-layer.md:50755549b0970dbd64d7d98b4757011d55c586cd14172df5957d998a23c431a2
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
 
 ---

@@ -54,7 +54,8 @@ python scripts/nf.py render community/技术文档域包 --fmt agents --dest out
 python scripts/nf.py render community/技术文档域包 --fmt claude --dest out/
 python scripts/nf.py render community/技术文档域包 --fmt skill --dest out/
 
-python scripts/nf.py serve <mcp.json>
+python scripts/nf.py serve                      # 默认：实时仓库面（无需快照）
+python scripts/nf.py serve <mcp.json 快照>       # 可选：固化某次装配的成果面
 python scripts/nf.py who-refers <module_id>
 python scripts/nf.py impact <module_id>
 python scripts/nf.py rename --help

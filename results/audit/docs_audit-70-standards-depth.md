@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/domain_pack.py:768cccbafa835be8bf358b2d4e9d3510fd4a080c1ba8877fc5b82e400f2715a5
   - desktop/src/core/retriever.py:1bab0db39be26c025e37cecab19e65d8fb439140f3bb224e869b771666c777fd
   - desktop/tests/test_retriever.py:15b841c434d3cdecde9c12d326b04e642d176dfd59dd8dfe8287a3e496bb29e2
-  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
+  - verify.sh:06932ee691ac96922d199ed3662099dbf6094d62b16c7d3a263e4dfff64a6230
   - docs/domain-packs.md:4c9ee3987699c24f1d78910281b446287dceebb3a77632ef458a07ba618f62d0
 
 ---

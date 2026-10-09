@@ -1,0 +1,18 @@
+{
+  "schema": "nf-integration-strings/1",
+  "id": "site",
+  "locales": {
+    "zh": {
+      "title": "文档站点（人 + 机器入口）",
+      "summary": "静态站 + llms/agent/nf/facts 机器入口；离线体检与数字同步纳入常驻判据。"
+    },
+    "en": {
+      "title": "Documentation site (human + machine entries)",
+      "summary": "Static site plus llms/agent/nf/facts machine entries; offline checks and number sync run in the resident suite."
+    },
+    "ja": {
+      "title": "ドキュメントサイト（人 + 機械入口）",
+      "summary": "静的サイトと llms/agent/nf/facts の機械入口。オフライン検査と数値同期を常駐スイートで実行。"
+    }
+  }
+}

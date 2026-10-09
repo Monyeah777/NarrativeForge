@@ -827,6 +827,43 @@ class LiveResourceReachabilityTest(unittest.TestCase):
         self.assertTrue(self._call(rt, "resources/templates/list").get("result", {})
                         .get("resourceTemplates"), "模板面必须非空")
 
+    def test_template_substitution_is_readable(self):
+        """**按模板自然代入**的写法必须读得出来——模板不是装饰（2026-10-08 补）。
+
+        内部差距实证：`nf://repo/asset/{package}/{key}` 发布在 templates/list 上，但 resources/list
+        给的是 **percent-encoded** 形态；agent 按模板代入**中文包名**（未编码）去读 ⇒ 之前一律
+        「未知资源 uri」——即「模板可用」这条承诺无人核（上面那条只读了 list 给的形态）。
+        修法是读入时做一次**转义等价归一**（仍受白名单约束）；本件把该承诺钉住，并保证非空转：
+        至少要有一件「解码后与登记形态不同」的 uri，否则判据在打空气。
+        """
+        import urllib.parse as up
+
+        rt = self._rt()
+        listed, cursor = [], ""
+        while True:
+            body = self._call(rt, "resources/list", {"cursor": cursor} if cursor else {}).get("result") or {}
+            listed += [r["uri"] for r in body.get("resources") or []]
+            cursor = body.get("nextCursor") or ""
+            if not cursor:
+                break
+        by_kind = {}
+        for u in listed:
+            parts = u.split("/")
+            if len(parts) > 3:
+                by_kind.setdefault(parts[3], []).append(u)
+        decoded_differs, bad = 0, []
+        for kind in self.KINDS:
+            uri = (by_kind.get(kind) or [None])[0]
+            self.assertIsNotNone(uri, "live 面缺少 %s 类资源" % kind)
+            raw = up.unquote(uri)
+            if raw != uri:
+                decoded_differs += 1
+            resp = self._call(rt, "resources/read", {"uri": raw})
+            if "error" in resp or not resp.get("result"):
+                bad.append("%s :: %s" % (raw, str(resp.get("error"))[:60]))
+        self.assertEqual([], bad, "模板替身读不出（agent 按模板代入就会撞墙）：%s" % bad)
+        self.assertGreaterEqual(decoded_differs, 1, "所有 uri 都没有转义差异（判据可能空转）")
+
 
 class DeclaredSurfaceVsHandlersTest(unittest.TestCase):
     """声明面 ⇄ 实现面**逐名一致**：声明了没人接的工具是死面，接了没声明的工具是暗面。
@@ -866,6 +903,73 @@ class DeclaredSurfaceVsHandlersTest(unittest.TestCase):
             self.assertNotEqual(mrt.METHOD_NOT_FOUND, (resp.get("error") or {}).get("code"),
                                 "声明了却不可达：%s → %s" % (name, resp))
 
+
+
+#: 「声明了但置绝无此值不改变输出」的属性（每条须写明理由；本表**只许缩小**）
+NOOP_ALLOWED: dict = {}
+
+#: 每个工具的最小合法参数（用于「声明属性是否有效果」的行为普查）
+VALID_ARGS = {
+    "pipeline_ls": {}, "spec_ls": {}, "registry_query": {"query": "M08"},
+    "library_search": {"query": "叙事"}, "library_read": {"entry_id": "NF-1"},
+    "pattern_read": {"pattern_id": "single-source-truth"}, "knowledge_order": {},
+    "module_read": {"module_id": "M08"}, "pipeline_read": {"pipeline": "P01"},
+    "asset_get": {"key": "QUANT_METRICS", "package": "量化金融域包"},
+}
+#: 「绝无此值」的探针串：任何正常输入都不该与它等价
+IMPOSSIBLE = "__nf_no_such_value__"
+
+
+class ToolSchemaEffectTest(unittest.TestCase):
+    """声明即承诺：inputSchema 声明的每个属性都必须**真的有效果**。
+
+    内部差距实证（2026-10-08）：spec_ls 声明 tier「可选按分级过滤」，而 registry 的 protocols 里
+    根本没有分级字段——传任意 tier（含乱填）返回**完全相同**的全量清单，结果里也没有 tier 字段：
+    客户端以为筛过了，实际拿到全部（静默降级，比缺参数更坏）。修法是删掉该声明；本件把这条钉住：
+    声明了却在行为上无效果的属性必须进 NOOP_ALLOWED 并写明理由，否则红。
+    """
+
+    def _noop_properties(self, tool_name, props, call):
+        """→ 「置绝无此值后输出不变」的属性列表（与判据同源，便于变异负例复用）。"""
+        base = call(tool_name, dict(VALID_ARGS.get(tool_name, {})))
+        out = []
+        for p in props:
+            trial = dict(VALID_ARGS.get(tool_name, {}))
+            trial[p] = IMPOSSIBLE
+            if call(tool_name, trial) == base:
+                out.append(p)
+        return out
+
+    def test_every_declared_property_changes_the_response(self):
+        rt = mrt.McpRuntime({"mcp": {"name": "schema-effect", "version": "0", "resources": []}})
+        rt.handle({"jsonrpc": "2.0", "id": 0, "method": "resources/list"})   # 装载实时仓库面
+
+        def call(name, args):
+            return rt.handle({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+                              "params": {"name": name, "arguments": args}})
+
+        checked, bad = 0, []
+        for t in mrt.TOOL_DEFS:
+            props = sorted(t["inputSchema"].get("properties") or {})
+            for p in self._noop_properties(t["name"], props, call):
+                if (t["name"], p) in NOOP_ALLOWED:
+                    continue
+                bad.append("%s.%s" % (t["name"], p))
+            checked += len(props)
+        self.assertGreaterEqual(checked, 8, "属性面塌缩（判据可能空转）")
+        self.assertEqual([], bad, "声明了却没有任何效果的属性（静默降级；修法：实现它或删掉声明）")
+
+    def test_check_detects_a_noop_property(self):
+        """变异负例：忽略参数的桩必须被判据助手抓到；真的用参数的桩不得误报。"""
+        def ignoring(name, args):
+            return {"result": {"content": [{"type": "text", "text": "恒定输出"}]}}
+
+        def honoring(name, args):
+            return {"result": {"content": [{"type": "text",
+                                            "text": json.dumps(args, sort_keys=True)}]}}
+
+        self.assertEqual(["query"], self._noop_properties("registry_query", ["query"], ignoring))
+        self.assertEqual([], self._noop_properties("registry_query", ["query"], honoring))
 
 
 if __name__ == "__main__":

@@ -270,8 +270,13 @@ def _card(f: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def emit(base: str = "") -> List[str]:
-    base = _root(base)
+def render_doc() -> str:
+    """说明页全文（唯一真相 = 本函数；`docs/interop-thirdparty.md` 是它的逐字投影）。
+
+    独立成函数的原因：投影必须**可对账**。状态表是「第三方回填」的活件（`emit` 会重置它，
+    故不能在真仓重跑），而说明页是纯派生件——抽出来才能让常驻判据逐字节核它，
+    否则卡片改了而说明页没重出，门禁看不出来。
+    """
     doc = ["# 互操作性 · 他证通道（第三方可自跑）", "",
            "> 本页由 `python scripts/interop_thirdparty_kit.py --emit` 生成，禁止手改。",
            "> 定位：这些卡片是给**第三方**跑的，不冒充「本仓已他证」。回填表：`%s`。" % STATUS_REL,
@@ -287,9 +292,14 @@ def emit(base: str = "") -> List[str]:
            "",
            "## 他证卡", ""]
     doc += [_card(f) for f in FACES]
+    return "\n".join(doc) + "\n"
+
+
+def emit(base: str = "") -> List[str]:
+    base = _root(base)
     os.makedirs(os.path.join(base, os.path.dirname(DOC_REL)), exist_ok=True)
     with open(os.path.join(base, DOC_REL), "w", encoding="utf-8", newline="") as fh:
-        fh.write("\n".join(doc) + "\n")
+        fh.write(render_doc())
 
     rows = ["# 互操作性 · 他证回填状态表", "",
             "> 由 `python scripts/interop_thirdparty_kit.py --emit` 生成骨架；由第三方回填右侧字段。",

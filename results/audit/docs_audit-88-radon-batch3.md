@@ -7,8 +7,7 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/terminal.py:f723afe6a5f8fb298305615fa7041be6c066c1e83a8597099f578aa1c3149dc1
-  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
-
+  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

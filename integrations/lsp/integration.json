@@ -4,7 +4,7 @@
   "title": "编辑器接入（nf lsp）",
   "kind": "editor",
   "status": "active",
-  "version": "1.0.0",
+  "version": "2.7.0",
   "codeowner": "@Monyeah777",
   "tier": "core",
   "entry": {
@@ -17,7 +17,15 @@
     "docs/lsp.md"
   ],
   "evidence": [
-    "desktop/src/core/lsp.py"
+    "desktop/src/core/lsp.py",
+    "desktop/src/core/lsp_client.py",
+    "desktop/src/core/lsp_doc.py",
+    "desktop/src/core/lsp_framing.py",
+    "desktop/src/core/lsp_params.py",
+    "desktop/src/core/nf_language.py",
+    "desktop/tests/test_lsp.py",
+    "desktop/tests/fixtures/lsp/session.json",
+    "scripts/build_lsp_transcript.py"
   ],
-  "notes": "最小 LSP 服务器（stdio、full-sync、诊断 + quickfix），诊断源与 nf lint 同源。"
+  "notes": "编辑器接入（nf lsp）：stdio 分帧 + 会话状态机 + 诊断/quickfix + 领域智能（补全/悬停/跳定义/大纲/工作区符号）+ 结构化引用（只认 registry 登记关系）+ 折叠（标题小节与代码围栏）+ 客户端配置生成。协议行为由端到端帧级金标（22 条应答）与 check33 编辑器面判据双钉。"
 }

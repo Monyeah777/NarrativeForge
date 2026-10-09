@@ -6,12 +6,12 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——对应 62
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - protocol/locales.json:d70028db605845d75e792cd5f5b804638252cca8aba1f0a24c50e5783a6ba337
+  - protocol/locales.json:5279282b86cc0b755a23176acee0352d2e354291a3ef5fcada961752ca7548f2
   - docs/locales.md:cf3a21039dad98832b3cd92ead92adaa6559b38bd9c96006fea87f0af81a6dc7
   - docs/en/locales.md:348a2b32a6f04cf830cb332b47b0b05f59265332c2fe37ec79ee63c0563168fa
   - docs/ja/locales.md:7f870e599fc00ab10c998eb115350b7ceda21655a2ebfcf870f6a2b8300e5f34
-  - docs/en/mcp.md:5597f2b2ccef5aff8bf9da3581c24065e776989ce0c4e5409dccdbc9e108589a
-  - docs/ja/mcp.md:2cdf24c942ee621847874160ec64d31cf9fcca0891ed52a547fe3f1bf573d224
+  - docs/en/mcp.md:c27f0e22f7bdcb6dd983ff1e88db87d06b1b76ef7fec3b92d5ec63fa02be0c2d
+  - docs/ja/mcp.md:477e3fddc1a8c67d1f24e8d6779fe6b5d93dae30a0221ff3f1fea93f99c7edf0
   - docs/en/terminal.md:19fd82dd77b72366c4fb0cde2ce62294f9d14b7eac10242d1bf2f08480fee862
   - docs/ja/terminal.md:673e4869c326ba148893df4ed4e42f35a929f245269ce05ad9f7315235345783
   - docs/en/layers.md:211c4686053d4e1215ff384dad50e79809e01021bda2095afbd04f0be75b2373
@@ -26,8 +26,7 @@ subjects:
   - desktop/tests/fixtures/execution/rounds/bad_r2.json:9498fba916ea03db23cd75fb9279335ad92127850aab54adb73f5032f6b20d24
   - desktop/tests/fixtures/execution/rounds/bad_r3.json:985bc52b5a755bb6ca33a94817cb706beb9bfe6d9d13f7933f7bbcfe0ca46e8a
   - desktop/tests/fixtures/execution/rounds/gap_ok.json:55d09b1102f7729f31439fd68cf8ad25c7e0db55e0a9064db713a0ee582d4914
-  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
-
+  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

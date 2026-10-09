@@ -106,19 +106,69 @@ def _normalize(raw: Dict[str, Any], questions: Dict[str, Any]) -> Dict[str, Any]
     return out
 
 
+def _bad_request(reason: str) -> Dict[str, Any]:
+    """入参形状错误的统一响应体：**400**（客户端问题）而不是 500（服务端问题）。
+
+    为什么要分开（2026-10-08 修）：旧实现把「请求体不是 JSON / 缺 state / questions 是数组」
+    全回 500 —— 调用方（NF 决策层）据此会判定「服务端故障」并**重试**，而这类请求重试一万次
+    也不会成功；500 里还带着 Python 异常类名（JSONDecodeError/AttributeError），把人引向
+    排查服务端。本仓另两个服务面（LSP 的 -32602、MCP 的 -32602/-32600）早已分开，这里补齐。
+    """
+    return {"error": {"code": 400, "type": "invalid_request", "message": reason,
+                      "hint": "按 docs/decision-layer.md 的 systemone-http 契约发 "
+                              "{state: 字符串, questions: {qid: {type: ...}}}"}}
+
+
+def _input_problem(payload: Any) -> str:
+    """入参形状体检 → 问题说明（空串 = 通过）。只判形状，不判业务。"""
+    if not isinstance(payload, dict):
+        return "请求体须为 JSON 对象（收到 %s）" % type(payload).__name__
+    state = payload.get("state")
+    if not isinstance(state, str):
+        return "缺 state 或类型不符（须为字符串，收到 %s）" % type(state).__name__
+    questions = payload.get("questions")
+    if not isinstance(questions, dict) or not questions:
+        return ("缺 questions 或类型不符（须为非空对象 {qid: {type: ...}}，收到 %s）"
+                % type(questions).__name__)
+    for qid, q in questions.items():
+        if not isinstance(q, dict):
+            return "questions[%s] 须为对象（收到 %s）" % (qid, type(q).__name__)
+    return ""
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "nf-decision/1.0"
 
     def log_message(self, _fmt: str, *_args: Any) -> None:   # 静默：日志由调用方决定
         return
 
-    def _send(self, code: int, payload: Dict[str, Any]) -> None:
-        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    def _send(self, code: int, payload: Dict[str, Any], body: bool = True) -> None:
+        raw = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self.send_response(code)
         self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Content-Length", str(len(raw)))
         self.end_headers()
-        self.wfile.write(body)
+        if body:                               # HEAD 只回表头（协议如此）
+            self.wfile.write(raw)
+
+    def _drain(self, keep: int = MAX_BODY_BYTES) -> None:
+        """把已声明的请求体**读到丢弃**（最多 keep 字节）再回响应。
+
+        为什么必须读：HTTP/1.1 服务器不读完请求体就回响应并关连接，客户端在写/读之间会
+        拿到连接重置（实测 Windows 上表现为 `ConnectionAbortedError [WinError 10053]`）——
+        这是「未知路径也该给一个干净 404」的可见性缺口，不是客户端问题。keep 有界，
+        免得一个自称 2 GB 的请求把内存吃光（上限闸门仍然生效）。
+        """
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:      # 为何可以吞：Content-Length 非数字 ⇒ 视为「无请求体」，不读即回响应
+            return
+        remaining = min(length, keep)
+        while remaining > 0:
+            chunk = self.rfile.read(min(65536, remaining))
+            if not chunk:
+                break
+            remaining -= len(chunk)
 
     def do_GET(self) -> None:
         if self.path.rstrip("/") in ("/health", "/v1/health"):
@@ -126,26 +176,75 @@ class Handler(BaseHTTPRequestHandler):
             return
         self._send(404, {"error": "unknown path"})
 
-    def do_POST(self) -> None:
-        if self.path.rstrip("/") != "/v1/systemone":
-            self._send(404, {"error": "unknown path"})
-            return
+    def _read_body(self) -> Optional[bytes]:
+        """读入受限请求体；不合规时已回 413/500 并返回 None（只负责「拿字节」，不解析）。"""
         try:
             length = int(self.headers.get("Content-Length") or 0)
             if length <= 0 or length > MAX_BODY_BYTES:
+                self._drain()                  # 超限请求也要给一个可达的 413
                 self._send(413, {"error": "请求体须为 1..%d 字节（修复指引：只发 "
                                           "{state, questions} 两个键）" % MAX_BODY_BYTES})
-                return
-            payload = json.loads(self.rfile.read(length).decode("utf-8"))
-            state = payload.get("state")
-            questions = payload.get("questions") or {}
-            if not isinstance(state, str) or not questions:
-                raise ValueError("请求须含 state 字符串与非空 questions")
-            with AGENT_LOCK:                      # 模型非线程安全：串行化
-                raw = AGENT.predict(state, _to_laya_questions(questions))
-            self._send(200, _normalize(raw, questions))
-        except Exception as exc:                  # 任何失败都如实回 500，不猜
+                return None
+            return self.rfile.read(length)
+        except Exception as exc:                  # 传输面失败才是真的服务端错误
             self._send(500, {"error": {"type": type(exc).__name__, "message": str(exc)[:200]}})
+            return None
+
+    def do_POST(self) -> None:
+        if self.path.rstrip("/") != "/v1/systemone":
+            self._drain()                      # 不读完就回 404 会让客户端拿到连接重置
+            self._send(404, {"error": "unknown path"})
+            return
+        body = self._read_body()
+        if body is None:
+            return
+        try:
+            payload = json.loads(body.decode("utf-8"))
+        except ValueError as exc:
+            self._send(400, _bad_request("请求体不是合法 JSON：%s" % str(exc)[:120]))
+            return
+        problem = _input_problem(payload)
+        if problem:
+            self._send(400, _bad_request(problem))
+            return
+        try:
+            with AGENT_LOCK:                      # 模型非线程安全：串行化
+                raw = AGENT.predict(payload["state"], _to_laya_questions(payload["questions"]))
+        except Exception as exc:                  # 推理失败才是真的服务端错误
+            self._send(500, {"error": {"type": type(exc).__name__,
+                                       "message": str(exc)[:200]}})
+            return
+        self._send(200, _normalize(raw, payload["questions"]))
+
+    def do_PUT(self) -> None:
+        self._method_not_allowed()
+
+    def do_DELETE(self) -> None:
+        self._method_not_allowed()
+
+    def do_PATCH(self) -> None:
+        self._method_not_allowed()
+
+    def do_OPTIONS(self) -> None:
+        self._method_not_allowed()
+
+    def do_HEAD(self) -> None:
+        """只回状态与表头（HEAD 不该拿到 HTML 501——机器客户端会 curl -I 探活）。"""
+        ok = self.path.rstrip("/") in ("/health", "/v1/health")
+        self._send(200 if ok else 404, {"status": "ok"} if ok else {"error": "unknown path"},
+                   body=False)
+
+    def _method_not_allowed(self) -> None:
+        self._drain()
+        self.send_response(405)
+        self.send_header("Allow", "GET, POST, HEAD")
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        body = json.dumps({"error": "method not allowed",
+                           "allow": ["GET", "POST", "HEAD"]},
+                          ensure_ascii=False).encode("utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:

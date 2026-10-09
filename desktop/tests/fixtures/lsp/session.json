@@ -1,0 +1,2666 @@
+{
+  "schema": "nf-lsp-transcript/1",
+  "note": "客户端帧序列 → 服务端应答（端到端金标；根路径折成 nf-repo-root，today 固定）",
+  "today": "2026-10-08",
+  "client_messages": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "capabilities": {
+          "textDocument": {
+            "documentSymbol": {
+              "hierarchicalDocumentSymbolSupport": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "initialized",
+      "params": {}
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/didOpen",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md",
+          "text": "# 模块 M00  \n\n事件 narrative_event 与资产 ATTR_TEMPLATES\n"
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "textDocument/completion",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 0,
+          "character": 6
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 0,
+          "character": 6
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 0,
+          "character": 6
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "textDocument/documentSymbol",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "workspace/symbol",
+      "params": {
+        "query": "M00"
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "code": "trailing_ws"
+            },
+            {
+              "code": "final_newline"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/didChange",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "contentChanges": [
+          {
+            "text": "# 模块 M00\n\n事件 narrative_event 与资产 ATTR_TEMPLATES\n"
+          }
+        ]
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/willSave",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "reason": 1
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 9,
+      "method": "textDocument/willSaveWaitUntil",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "reason": 1
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "workspace/didChangeWatchedFiles",
+      "params": {
+        "changes": [
+          {
+            "uri": "file:///nf-repo-root/tmp_lsp_session.md",
+            "type": 2
+          }
+        ]
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "workspace/didChangeConfiguration",
+      "params": {
+        "settings": {}
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "$/setTrace",
+      "params": {
+        "value": "off"
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "$/cancelRequest",
+      "params": {
+        "id": 2
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/didSave",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 0,
+          "character": 6
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 10,
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 2,
+          "character": 1
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 11,
+      "method": "workspace/symbol",
+      "params": {
+        "query": "没有这个符号"
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 16,
+      "method": "textDocument/references",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 2,
+          "character": 4
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 17,
+      "method": "textDocument/foldingRange",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 12,
+      "method": "no/such",
+      "params": {}
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 13,
+      "method": "$/noSuchRequest",
+      "params": {}
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/didChange",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "contentChanges": [
+          {
+            "text": "# 模块 M00  \n"
+          },
+          {
+            "text": "# 模块 M00\n\n事件 narrative_event 与资产 ATTR_TEMPLATES\n"
+          }
+        ]
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/didClose",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 14,
+      "method": "textDocument/completion",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 0,
+          "character": 6
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "shutdown"
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 15,
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "file:///nf-repo-root/tmp_lsp_session.md"
+        },
+        "position": {
+          "line": 0,
+          "character": 6
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "exit"
+    }
+  ],
+  "server_messages": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "capabilities": {
+          "positionEncoding": "utf-16",
+          "textDocumentSync": {
+            "openClose": true,
+            "change": 1,
+            "save": true
+          },
+          "hoverProvider": true,
+          "completionProvider": {
+            "triggerCharacters": [
+              ":",
+              "`",
+              "\"",
+              "'",
+              "{",
+              "[",
+              " "
+            ],
+            "resolveProvider": false
+          },
+          "definitionProvider": true,
+          "documentSymbolProvider": true,
+          "workspaceSymbolProvider": true,
+          "referencesProvider": true,
+          "foldingRangeProvider": true,
+          "codeActionProvider": {
+            "codeActionKinds": [
+              "quickfix"
+            ]
+          }
+        },
+        "serverInfo": {
+          "name": "nf-lsp",
+          "version": "2.7.0"
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/publishDiagnostics",
+      "params": {
+        "uri": "file:///nf-repo-root/tmp_lsp_session.md",
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 8
+              },
+              "end": {
+                "line": 0,
+                "character": 10
+              }
+            },
+            "severity": 2,
+            "source": "nf",
+            "code": "trailing_ws",
+            "message": "存在行尾空白"
+          }
+        ]
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "isIncomplete": false,
+        "items": [
+          {
+            "label": "AI人力资源与招聘:M01",
+            "kind": 9,
+            "detail": "社区包 AI人力资源与招聘域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI人力资源与招聘:M01 · AI人力资源与招聘口径登记 · 归属：AI人力资源与招聘域包"
+            },
+            "sortText": "0_AI人力资源与招聘:M01"
+          },
+          {
+            "label": "AI人力资源与招聘:M02",
+            "kind": 9,
+            "detail": "社区包 AI人力资源与招聘域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI人力资源与招聘:M02 · AI人力资源与招聘收口与形态派生 · 归属：AI人力资源与招聘域包"
+            },
+            "sortText": "0_AI人力资源与招聘:M02"
+          },
+          {
+            "label": "AI保险:M01",
+            "kind": 9,
+            "detail": "社区包 AI保险域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI保险:M01 · AI保险口径登记 · 归属：AI保险域包"
+            },
+            "sortText": "0_AI保险:M01"
+          },
+          {
+            "label": "AI保险:M02",
+            "kind": 9,
+            "detail": "社区包 AI保险域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI保险:M02 · AI保险收口与形态派生 · 归属：AI保险域包"
+            },
+            "sortText": "0_AI保险:M02"
+          },
+          {
+            "label": "AI农业:M01",
+            "kind": 9,
+            "detail": "社区包 AI农业域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI农业:M01 · AI农业口径登记 · 归属：AI农业域包"
+            },
+            "sortText": "0_AI农业:M01"
+          },
+          {
+            "label": "AI农业:M02",
+            "kind": 9,
+            "detail": "社区包 AI农业域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI农业:M02 · AI农业收口与形态派生 · 归属：AI农业域包"
+            },
+            "sortText": "0_AI农业:M02"
+          },
+          {
+            "label": "AI制药与生物:M01",
+            "kind": 9,
+            "detail": "社区包 AI制药与生物域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI制药与生物:M01 · AI制药与生物口径登记 · 归属：AI制药与生物域包"
+            },
+            "sortText": "0_AI制药与生物:M01"
+          },
+          {
+            "label": "AI制药与生物:M02",
+            "kind": 9,
+            "detail": "社区包 AI制药与生物域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI制药与生物:M02 · AI制药与生物收口与形态派生 · 归属：AI制药与生物域包"
+            },
+            "sortText": "0_AI制药与生物:M02"
+          },
+          {
+            "label": "AI制造业:M01",
+            "kind": 9,
+            "detail": "社区包 AI制造业域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI制造业:M01 · AI制造业口径登记 · 归属：AI制造业域包"
+            },
+            "sortText": "0_AI制造业:M01"
+          },
+          {
+            "label": "AI制造业:M02",
+            "kind": 9,
+            "detail": "社区包 AI制造业域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI制造业:M02 · AI制造业收口与形态派生 · 归属：AI制造业域包"
+            },
+            "sortText": "0_AI制造业:M02"
+          },
+          {
+            "label": "AI医疗健康:M01",
+            "kind": 9,
+            "detail": "社区包 AI医疗健康域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI医疗健康:M01 · AI医疗健康口径登记 · 归属：AI医疗健康域包"
+            },
+            "sortText": "0_AI医疗健康:M01"
+          },
+          {
+            "label": "AI医疗健康:M02",
+            "kind": 9,
+            "detail": "社区包 AI医疗健康域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI医疗健康:M02 · AI医疗健康收口与形态派生 · 归属：AI医疗健康域包"
+            },
+            "sortText": "0_AI医疗健康:M02"
+          },
+          {
+            "label": "AI政务与公共事务:M01",
+            "kind": 9,
+            "detail": "社区包 AI政务与公共事务域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI政务与公共事务:M01 · AI政务与公共事务口径登记 · 归属：AI政务与公共事务域包"
+            },
+            "sortText": "0_AI政务与公共事务:M01"
+          },
+          {
+            "label": "AI政务与公共事务:M02",
+            "kind": 9,
+            "detail": "社区包 AI政务与公共事务域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI政务与公共事务:M02 · AI政务与公共事务收口与形态派生 · 归属：AI政务与公共事务域包"
+            },
+            "sortText": "0_AI政务与公共事务:M02"
+          },
+          {
+            "label": "AI教育:M01",
+            "kind": 9,
+            "detail": "社区包 AI教育域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI教育:M01 · AI教育口径登记 · 归属：AI教育域包"
+            },
+            "sortText": "0_AI教育:M01"
+          },
+          {
+            "label": "AI教育:M02",
+            "kind": 9,
+            "detail": "社区包 AI教育域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI教育:M02 · AI教育收口与形态派生 · 归属：AI教育域包"
+            },
+            "sortText": "0_AI教育:M02"
+          },
+          {
+            "label": "AI法律与合规:M01",
+            "kind": 9,
+            "detail": "社区包 AI法律与合规域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI法律与合规:M01 · AI法律与合规口径登记 · 归属：AI法律与合规域包"
+            },
+            "sortText": "0_AI法律与合规:M01"
+          },
+          {
+            "label": "AI法律与合规:M02",
+            "kind": 9,
+            "detail": "社区包 AI法律与合规域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI法律与合规:M02 · AI法律与合规收口与形态派生 · 归属：AI法律与合规域包"
+            },
+            "sortText": "0_AI法律与合规:M02"
+          },
+          {
+            "label": "AI系统:M25",
+            "kind": 9,
+            "detail": "社区包 AI系统域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI系统:M25 · 前置闭包求值 · 归属：AI系统域包"
+            },
+            "sortText": "0_AI系统:M25"
+          },
+          {
+            "label": "AI系统:M26",
+            "kind": 9,
+            "detail": "社区包 AI系统域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI系统:M26 · 装载序与就绪门 · 归属：AI系统域包"
+            },
+            "sortText": "0_AI系统:M26"
+          },
+          {
+            "label": "AI能源与电力:M01",
+            "kind": 9,
+            "detail": "社区包 AI能源与电力域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI能源与电力:M01 · AI能源与电力口径登记 · 归属：AI能源与电力域包"
+            },
+            "sortText": "0_AI能源与电力:M01"
+          },
+          {
+            "label": "AI能源与电力:M02",
+            "kind": 9,
+            "detail": "社区包 AI能源与电力域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI能源与电力:M02 · AI能源与电力收口与形态派生 · 归属：AI能源与电力域包"
+            },
+            "sortText": "0_AI能源与电力:M02"
+          },
+          {
+            "label": "AI金融投研与风控:M01",
+            "kind": 9,
+            "detail": "社区包 AI金融投研与风控域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI金融投研与风控:M01 · AI金融投研与风控口径登记 · 归属：AI金融投研与风控域包"
+            },
+            "sortText": "0_AI金融投研与风控:M01"
+          },
+          {
+            "label": "AI金融投研与风控:M02",
+            "kind": 9,
+            "detail": "社区包 AI金融投研与风控域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI金融投研与风控:M02 · AI金融投研与风控收口与形态派生 · 归属：AI金融投研与风控域包"
+            },
+            "sortText": "0_AI金融投研与风控:M02"
+          },
+          {
+            "label": "AI食品与餐饮:M01",
+            "kind": 9,
+            "detail": "社区包 AI食品与餐饮域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI食品与餐饮:M01 · AI食品与餐饮口径登记 · 归属：AI食品与餐饮域包"
+            },
+            "sortText": "0_AI食品与餐饮:M01"
+          },
+          {
+            "label": "AI食品与餐饮:M02",
+            "kind": 9,
+            "detail": "社区包 AI食品与餐饮域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 AI食品与餐饮:M02 · AI食品与餐饮收口与形态派生 · 归属：AI食品与餐饮域包"
+            },
+            "sortText": "0_AI食品与餐饮:M02"
+          },
+          {
+            "label": "M00",
+            "kind": 9,
+            "detail": "官方核心 · P00(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M00 · 数据结构 · 归属：官方核心 · 挂载：P00(active)"
+            },
+            "sortText": "0_M00"
+          },
+          {
+            "label": "M01",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M01 · 职业成长 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M01"
+          },
+          {
+            "label": "M02",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M02 · 种族天赋 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M02"
+          },
+          {
+            "label": "M03",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M03 · 技能融合 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M03"
+          },
+          {
+            "label": "M04",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M04 · 战斗系统 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M04"
+          },
+          {
+            "label": "M06",
+            "kind": 9,
+            "detail": "官方核心 · P30(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M06 · 任务剧情 · 归属：官方核心 · 挂载：P30(active)"
+            },
+            "sortText": "0_M06"
+          },
+          {
+            "label": "M07",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M07 · 地图区域 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M07"
+          },
+          {
+            "label": "M08",
+            "kind": 9,
+            "detail": "官方核心 · P10(available)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M08 · 季节天气 · 归属：官方核心 · 挂载：P10(available)"
+            },
+            "sortText": "0_M08"
+          },
+          {
+            "label": "M09",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M09 · 经济贸易 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M09"
+          },
+          {
+            "label": "M11",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M11 · 文字魔法 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M11"
+          },
+          {
+            "label": "M12",
+            "kind": 9,
+            "detail": "官方核心 · P50(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M12 · NPC 对话 · 归属：官方核心 · 挂载：P50(active)"
+            },
+            "sortText": "0_M12"
+          },
+          {
+            "label": "M13",
+            "kind": 9,
+            "detail": "官方核心 · P30(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M13 · NPC 交互 · 归属：官方核心 · 挂载：P30(active)"
+            },
+            "sortText": "0_M13"
+          },
+          {
+            "label": "M14",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M14 · 阵营声望 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M14"
+          },
+          {
+            "label": "M15",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M15 · 帮派势力 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M15"
+          },
+          {
+            "label": "M16",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M16 · 建筑据点 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M16"
+          },
+          {
+            "label": "M17",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M17 · 生产制造 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M17"
+          },
+          {
+            "label": "M18",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M18 · 混沌事件 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M18"
+          },
+          {
+            "label": "M19",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M19 · 遗传后代 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_M19"
+          },
+          {
+            "label": "M20",
+            "kind": 9,
+            "detail": "官方核心 · P70(active), P00(available)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M20 · 世界知识库 · 归属：官方核心 · 挂载：P70(active), P00(available)"
+            },
+            "sortText": "0_M20"
+          },
+          {
+            "label": "M23",
+            "kind": 9,
+            "detail": "官方核心 · P20(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M23 · 认知边界 · 归属：官方核心 · 挂载：P20(active)"
+            },
+            "sortText": "0_M23"
+          },
+          {
+            "label": "M24",
+            "kind": 9,
+            "detail": "官方核心 · P70(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M24 · 组合规则 · 归属：官方核心 · 挂载：P70(active)"
+            },
+            "sortText": "0_M24"
+          },
+          {
+            "label": "M40",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M40 · 关系深度 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M40"
+          },
+          {
+            "label": "M41",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M41 · 恋爱进阶 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M41"
+          },
+          {
+            "label": "M43",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M43 · 情敌系统 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M43"
+          },
+          {
+            "label": "M50",
+            "kind": 9,
+            "detail": "官方核心 · 未登记",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M50 · 主循环 · 归属：官方核心 · 挂载：未登记"
+            },
+            "sortText": "0_M50"
+          },
+          {
+            "label": "M55",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M55 · 匿名情书 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M55"
+          },
+          {
+            "label": "M57",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M57 · 朋友圈动态 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M57"
+          },
+          {
+            "label": "M58",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M58 · 电话通讯 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M58"
+          },
+          {
+            "label": "M59",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M59 · 群聊系统 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M59"
+          },
+          {
+            "label": "M65",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M65 · 幽灵遗憾 · 归属：校园情感领域包"
+            },
+            "sortText": "0_M65"
+          },
+          {
+            "label": "M80",
+            "kind": 9,
+            "detail": "官方核心 · P80(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M80 · 输出生成器 · 归属：官方核心 · 挂载：P80(active)"
+            },
+            "sortText": "0_M80"
+          },
+          {
+            "label": "M90",
+            "kind": 9,
+            "detail": "官方核心 · P90(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M90 · 技术文档结构 · 归属：官方核心 · 挂载：P90(active)"
+            },
+            "sortText": "0_M90"
+          },
+          {
+            "label": "M91",
+            "kind": 9,
+            "detail": "社区包 校园西幻轻混组合包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M91 · 异界身份桥 · 归属：校园西幻轻混组合包"
+            },
+            "sortText": "0_M91"
+          },
+          {
+            "label": "M92",
+            "kind": 9,
+            "detail": "社区包 校园西幻轻混组合包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M92 · 轻混装配执行 · 归属：校园西幻轻混组合包"
+            },
+            "sortText": "0_M92"
+          },
+          {
+            "label": "M93",
+            "kind": 9,
+            "detail": "社区包 通用核心基础包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M93 · 通用状态快照 · 归属：通用核心基础包"
+            },
+            "sortText": "0_M93"
+          },
+          {
+            "label": "M94",
+            "kind": 9,
+            "detail": "社区包 通用核心基础包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M94 · 通用节拍桥 · 归属：通用核心基础包"
+            },
+            "sortText": "0_M94"
+          },
+          {
+            "label": "M95",
+            "kind": 9,
+            "detail": "社区包 通用核心基础包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M95 · 通用决策汇总 · 归属：通用核心基础包"
+            },
+            "sortText": "0_M95"
+          },
+          {
+            "label": "M96",
+            "kind": 9,
+            "detail": "社区包 通用核心基础包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M96 · 通用输出润色 · 归属：通用核心基础包"
+            },
+            "sortText": "0_M96"
+          },
+          {
+            "label": "M97",
+            "kind": 9,
+            "detail": "社区包 技术文档域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M97 · 术语管理 · 归属：技术文档域包"
+            },
+            "sortText": "0_M97"
+          },
+          {
+            "label": "M98",
+            "kind": 9,
+            "detail": "社区包 技术文档域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 M98 · 修订记录 · 归属：技术文档域包"
+            },
+            "sortText": "0_M98"
+          },
+          {
+            "label": "三维与世界模型:M01",
+            "kind": 9,
+            "detail": "社区包 三维与世界模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 三维与世界模型:M01 · 三维口径登记 · 归属：三维与世界模型域包"
+            },
+            "sortText": "0_三维与世界模型:M01"
+          },
+          {
+            "label": "三维与世界模型:M02",
+            "kind": 9,
+            "detail": "社区包 三维与世界模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 三维与世界模型:M02 · 三维面收口与形态派生 · 归属：三维与世界模型域包"
+            },
+            "sortText": "0_三维与世界模型:M02"
+          },
+          {
+            "label": "上下文工程与长上下文:M01",
+            "kind": 9,
+            "detail": "社区包 上下文工程与长上下文域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 上下文工程与长上下文:M01 · 上下文工程与长上下文口径登记 · 归属：上下文工程与长上下文域包"
+            },
+            "sortText": "0_上下文工程与长上下文:M01"
+          },
+          {
+            "label": "上下文工程与长上下文:M02",
+            "kind": 9,
+            "detail": "社区包 上下文工程与长上下文域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 上下文工程与长上下文:M02 · 上下文工程与长上下文收口与形态派生 · 归属：上下文工程与长上下文域包"
+            },
+            "sortText": "0_上下文工程与长上下文:M02"
+          },
+          {
+            "label": "世界书与设定库:M01",
+            "kind": 9,
+            "detail": "社区包 世界书与设定库域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 世界书与设定库:M01 · 世界书与设定库口径登记 · 归属：世界书与设定库域包"
+            },
+            "sortText": "0_世界书与设定库:M01"
+          },
+          {
+            "label": "世界书与设定库:M02",
+            "kind": 9,
+            "detail": "社区包 世界书与设定库域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 世界书与设定库:M02 · 世界书与设定库收口与形态派生 · 归属：世界书与设定库域包"
+            },
+            "sortText": "0_世界书与设定库:M02"
+          },
+          {
+            "label": "个人助理与日常生活:M01",
+            "kind": 9,
+            "detail": "社区包 个人助理与日常生活域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 个人助理与日常生活:M01 · 个人助理与日常生活口径登记 · 归属：个人助理与日常生活域包"
+            },
+            "sortText": "0_个人助理与日常生活:M01"
+          },
+          {
+            "label": "个人助理与日常生活:M02",
+            "kind": 9,
+            "detail": "社区包 个人助理与日常生活域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 个人助理与日常生活:M02 · 个人助理与日常生活收口与形态派生 · 归属：个人助理与日常生活域包"
+            },
+            "sortText": "0_个人助理与日常生活:M02"
+          },
+          {
+            "label": "事件:M22",
+            "kind": 9,
+            "detail": "官方核心 · P30(active)",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 事件:M22 · 事件叙事 · 归属：官方核心 · 挂载：P30(active)"
+            },
+            "sortText": "0_事件:M22"
+          },
+          {
+            "label": "交通与出行:M01",
+            "kind": 9,
+            "detail": "社区包 交通与出行域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 交通与出行:M01 · 交通与出行口径登记 · 归属：交通与出行域包"
+            },
+            "sortText": "0_交通与出行:M01"
+          },
+          {
+            "label": "交通与出行:M02",
+            "kind": 9,
+            "detail": "社区包 交通与出行域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 交通与出行:M02 · 交通与出行收口与形态派生 · 归属：交通与出行域包"
+            },
+            "sortText": "0_交通与出行:M02"
+          },
+          {
+            "label": "产业与商业落地:M01",
+            "kind": 9,
+            "detail": "社区包 产业与商业落地域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 产业与商业落地:M01 · 产业与商业落地口径登记 · 归属：产业与商业落地域包"
+            },
+            "sortText": "0_产业与商业落地:M01"
+          },
+          {
+            "label": "产业与商业落地:M02",
+            "kind": 9,
+            "detail": "社区包 产业与商业落地域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 产业与商业落地:M02 · 产业与商业落地收口与形态派生 · 归属：产业与商业落地域包"
+            },
+            "sortText": "0_产业与商业落地:M02"
+          },
+          {
+            "label": "代码与软件工程:M01",
+            "kind": 9,
+            "detail": "社区包 代码与软件工程域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码与软件工程:M01 · 代码与软件工程口径登记 · 归属：代码与软件工程域包"
+            },
+            "sortText": "0_代码与软件工程:M01"
+          },
+          {
+            "label": "代码与软件工程:M02",
+            "kind": 9,
+            "detail": "社区包 代码与软件工程域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码与软件工程:M02 · 代码与软件工程收口与形态派生 · 归属：代码与软件工程域包"
+            },
+            "sortText": "0_代码与软件工程:M02"
+          },
+          {
+            "label": "代码大模型:M01",
+            "kind": 9,
+            "detail": "社区包 代码大模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码大模型:M01 · 代码口径登记 · 归属：代码大模型域包"
+            },
+            "sortText": "0_代码大模型:M01"
+          },
+          {
+            "label": "代码大模型:M02",
+            "kind": 9,
+            "detail": "社区包 代码大模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码大模型:M02 · 代码面收口与形态派生 · 归属：代码大模型域包"
+            },
+            "sortText": "0_代码大模型:M02"
+          },
+          {
+            "label": "代码审查与缺陷检测:M01",
+            "kind": 9,
+            "detail": "社区包 代码审查与缺陷检测域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码审查与缺陷检测:M01 · 审查口径登记 · 归属：代码审查与缺陷检测域包"
+            },
+            "sortText": "0_代码审查与缺陷检测:M01"
+          },
+          {
+            "label": "代码审查与缺陷检测:M02",
+            "kind": 9,
+            "detail": "社区包 代码审查与缺陷检测域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码审查与缺陷检测:M02 · 审查面收口与形态派生 · 归属：代码审查与缺陷检测域包"
+            },
+            "sortText": "0_代码审查与缺陷检测:M02"
+          },
+          {
+            "label": "代码生成与补全:M01",
+            "kind": 9,
+            "detail": "社区包 代码生成与补全域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码生成与补全:M01 · 代码生成口径登记 · 归属：代码生成与补全域包"
+            },
+            "sortText": "0_代码生成与补全:M01"
+          },
+          {
+            "label": "代码生成与补全:M02",
+            "kind": 9,
+            "detail": "社区包 代码生成与补全域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 代码生成与补全:M02 · 生成面收口与形态派生 · 归属：代码生成与补全域包"
+            },
+            "sortText": "0_代码生成与补全:M02"
+          },
+          {
+            "label": "企业培训与组织学习:M01",
+            "kind": 9,
+            "detail": "社区包 企业培训与组织学习域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 企业培训与组织学习:M01 · 企业培训与组织学习口径登记 · 归属：企业培训与组织学习域包"
+            },
+            "sortText": "0_企业培训与组织学习:M01"
+          },
+          {
+            "label": "企业培训与组织学习:M02",
+            "kind": 9,
+            "detail": "社区包 企业培训与组织学习域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 企业培训与组织学习:M02 · 企业培训与组织学习收口与形态派生 · 归属：企业培训与组织学习域包"
+            },
+            "sortText": "0_企业培训与组织学习:M02"
+          },
+          {
+            "label": "传媒与新闻:M01",
+            "kind": 9,
+            "detail": "社区包 传媒与新闻域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 传媒与新闻:M01 · 传媒与新闻口径登记 · 归属：传媒与新闻域包"
+            },
+            "sortText": "0_传媒与新闻:M01"
+          },
+          {
+            "label": "传媒与新闻:M02",
+            "kind": 9,
+            "detail": "社区包 传媒与新闻域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 传媒与新闻:M02 · 传媒与新闻收口与形态派生 · 归属：传媒与新闻域包"
+            },
+            "sortText": "0_传媒与新闻:M02"
+          },
+          {
+            "label": "信息抽取与结构化:M01",
+            "kind": 9,
+            "detail": "社区包 信息抽取与结构化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 信息抽取与结构化:M01 · 抽取口径登记 · 归属：信息抽取与结构化域包"
+            },
+            "sortText": "0_信息抽取与结构化:M01"
+          },
+          {
+            "label": "信息抽取与结构化:M02",
+            "kind": 9,
+            "detail": "社区包 信息抽取与结构化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 信息抽取与结构化:M02 · 抽取面收口与形态派生 · 归属：信息抽取与结构化域包"
+            },
+            "sortText": "0_信息抽取与结构化:M02"
+          },
+          {
+            "label": "具身智能与机器人:M01",
+            "kind": 9,
+            "detail": "社区包 具身智能与机器人域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 具身智能与机器人:M01 · 具身口径登记 · 归属：具身智能与机器人域包"
+            },
+            "sortText": "0_具身智能与机器人:M01"
+          },
+          {
+            "label": "具身智能与机器人:M02",
+            "kind": 9,
+            "detail": "社区包 具身智能与机器人域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 具身智能与机器人:M02 · 具身面收口与形态派生 · 归属：具身智能与机器人域包"
+            },
+            "sortText": "0_具身智能与机器人:M02"
+          },
+          {
+            "label": "内容分发与社区运营:M01",
+            "kind": 9,
+            "detail": "社区包 内容分发与社区运营域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 内容分发与社区运营:M01 · 内容分发与社区运营口径登记 · 归属：内容分发与社区运营域包"
+            },
+            "sortText": "0_内容分发与社区运营:M01"
+          },
+          {
+            "label": "内容分发与社区运营:M02",
+            "kind": 9,
+            "detail": "社区包 内容分发与社区运营域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 内容分发与社区运营:M02 · 内容分发与社区运营收口与形态派生 · 归属：内容分发与社区运营域包"
+            },
+            "sortText": "0_内容分发与社区运营:M02"
+          },
+          {
+            "label": "内容改写与风格迁移:M01",
+            "kind": 9,
+            "detail": "社区包 内容改写与风格迁移域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 内容改写与风格迁移:M01 · 内容改写与风格迁移口径登记 · 归属：内容改写与风格迁移域包"
+            },
+            "sortText": "0_内容改写与风格迁移:M01"
+          },
+          {
+            "label": "内容改写与风格迁移:M02",
+            "kind": 9,
+            "detail": "社区包 内容改写与风格迁移域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 内容改写与风格迁移:M02 · 内容改写与风格迁移收口与形态派生 · 归属：内容改写与风格迁移域包"
+            },
+            "sortText": "0_内容改写与风格迁移:M02"
+          },
+          {
+            "label": "分类与情感分析:M01",
+            "kind": 9,
+            "detail": "社区包 分类与情感分析域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 分类与情感分析:M01 · 分类口径登记 · 归属：分类与情感分析域包"
+            },
+            "sortText": "0_分类与情感分析:M01"
+          },
+          {
+            "label": "分类与情感分析:M02",
+            "kind": 9,
+            "detail": "社区包 分类与情感分析域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 分类与情感分析:M02 · 分类面收口与形态派生 · 归属：分类与情感分析域包"
+            },
+            "sortText": "0_分类与情感分析:M02"
+          },
+          {
+            "label": "参数高效微调:M01",
+            "kind": 9,
+            "detail": "社区包 参数高效微调域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 参数高效微调:M01 · 参数高效微调口径登记 · 归属：参数高效微调域包"
+            },
+            "sortText": "0_参数高效微调:M01"
+          },
+          {
+            "label": "参数高效微调:M02",
+            "kind": 9,
+            "detail": "社区包 参数高效微调域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 参数高效微调:M02 · 参数高效微调收口与形态派生 · 归属：参数高效微调域包"
+            },
+            "sortText": "0_参数高效微调:M02"
+          },
+          {
+            "label": "可观测性成本与可靠性:M01",
+            "kind": 9,
+            "detail": "社区包 可观测性成本与可靠性域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 可观测性成本与可靠性:M01 · 可观测性成本与可靠性口径登记 · 归属：可观测性成本与可靠性域包"
+            },
+            "sortText": "0_可观测性成本与可靠性:M01"
+          },
+          {
+            "label": "可观测性成本与可靠性:M02",
+            "kind": 9,
+            "detail": "社区包 可观测性成本与可靠性域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 可观测性成本与可靠性:M02 · 可观测性成本与可靠性收口与形态派生 · 归属：可观测性成本与可靠性域包"
+            },
+            "sortText": "0_可观测性成本与可靠性:M02"
+          },
+          {
+            "label": "可解释性与审计:M01",
+            "kind": 9,
+            "detail": "社区包 可解释性与审计域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 可解释性与审计:M01 · 可解释性与审计口径登记 · 归属：可解释性与审计域包"
+            },
+            "sortText": "0_可解释性与审计:M01"
+          },
+          {
+            "label": "可解释性与审计:M02",
+            "kind": 9,
+            "detail": "社区包 可解释性与审计域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 可解释性与审计:M02 · 可解释性与审计收口与形态派生 · 归属：可解释性与审计域包"
+            },
+            "sortText": "0_可解释性与审计:M02"
+          },
+          {
+            "label": "合成数据生成:M01",
+            "kind": 9,
+            "detail": "社区包 合成数据生成域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 合成数据生成:M01 · 合成数据生成口径登记 · 归属：合成数据生成域包"
+            },
+            "sortText": "0_合成数据生成:M01"
+          },
+          {
+            "label": "合成数据生成:M02",
+            "kind": 9,
+            "detail": "社区包 合成数据生成域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 合成数据生成:M02 · 合成数据生成收口与形态派生 · 归属：合成数据生成域包"
+            },
+            "sortText": "0_合成数据生成:M02"
+          },
+          {
+            "label": "合规与监管:M01",
+            "kind": 9,
+            "detail": "社区包 合规与监管域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 合规与监管:M01 · 合规与监管口径登记 · 归属：合规与监管域包"
+            },
+            "sortText": "0_合规与监管:M01"
+          },
+          {
+            "label": "合规与监管:M02",
+            "kind": 9,
+            "detail": "社区包 合规与监管域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 合规与监管:M02 · 合规与监管收口与形态派生 · 归属：合规与监管域包"
+            },
+            "sortText": "0_合规与监管:M02"
+          },
+          {
+            "label": "向量库与检索管线:M01",
+            "kind": 9,
+            "detail": "社区包 向量库与检索管线域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 向量库与检索管线:M01 · 向量库与检索管线口径登记 · 归属：向量库与检索管线域包"
+            },
+            "sortText": "0_向量库与检索管线:M01"
+          },
+          {
+            "label": "向量库与检索管线:M02",
+            "kind": 9,
+            "detail": "社区包 向量库与检索管线域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 向量库与检索管线:M02 · 向量库与检索管线收口与形态派生 · 归属：向量库与检索管线域包"
+            },
+            "sortText": "0_向量库与检索管线:M02"
+          },
+          {
+            "label": "图像生成与编辑:M01",
+            "kind": 9,
+            "detail": "社区包 图像生成与编辑域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 图像生成与编辑:M01 · 图像生成口径登记 · 归属：图像生成与编辑域包"
+            },
+            "sortText": "0_图像生成与编辑:M01"
+          },
+          {
+            "label": "图像生成与编辑:M02",
+            "kind": 9,
+            "detail": "社区包 图像生成与编辑域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 图像生成与编辑:M02 · 生成面收口与形态派生 · 归属：图像生成与编辑域包"
+            },
+            "sortText": "0_图像生成与编辑:M02"
+          },
+          {
+            "label": "图像生成与视觉创作:M01",
+            "kind": 9,
+            "detail": "社区包 图像生成与视觉创作域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 图像生成与视觉创作:M01 · 图像生成与视觉创作口径登记 · 归属：图像生成与视觉创作域包"
+            },
+            "sortText": "0_图像生成与视觉创作:M01"
+          },
+          {
+            "label": "图像生成与视觉创作:M02",
+            "kind": 9,
+            "detail": "社区包 图像生成与视觉创作域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 图像生成与视觉创作:M02 · 图像生成与视觉创作收口与形态派生 · 归属：图像生成与视觉创作域包"
+            },
+            "sortText": "0_图像生成与视觉创作:M02"
+          },
+          {
+            "label": "图像生成与视觉设计:M01",
+            "kind": 9,
+            "detail": "社区包 图像生成与视觉设计域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 图像生成与视觉设计:M01 · 图像生成与视觉设计口径登记 · 归属：图像生成与视觉设计域包"
+            },
+            "sortText": "0_图像生成与视觉设计:M01"
+          },
+          {
+            "label": "图像生成与视觉设计:M02",
+            "kind": 9,
+            "detail": "社区包 图像生成与视觉设计域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 图像生成与视觉设计:M02 · 图像生成与视觉设计收口与形态派生 · 归属：图像生成与视觉设计域包"
+            },
+            "sortText": "0_图像生成与视觉设计:M02"
+          },
+          {
+            "label": "多智能体协同:M01",
+            "kind": 9,
+            "detail": "社区包 多智能体协同域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多智能体协同:M01 · 多智能体协同口径登记 · 归属：多智能体协同域包"
+            },
+            "sortText": "0_多智能体协同:M01"
+          },
+          {
+            "label": "多智能体协同:M02",
+            "kind": 9,
+            "detail": "社区包 多智能体协同域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多智能体协同:M02 · 多智能体协同收口与形态派生 · 归属：多智能体协同域包"
+            },
+            "sortText": "0_多智能体协同:M02"
+          },
+          {
+            "label": "多模态大模型:M01",
+            "kind": 9,
+            "detail": "社区包 多模态大模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多模态大模型:M01 · 多模态口径登记 · 归属：多模态大模型域包"
+            },
+            "sortText": "0_多模态大模型:M01"
+          },
+          {
+            "label": "多模态大模型:M02",
+            "kind": 9,
+            "detail": "社区包 多模态大模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多模态大模型:M02 · 多模态面收口与形态派生 · 归属：多模态大模型域包"
+            },
+            "sortText": "0_多模态大模型:M02"
+          },
+          {
+            "label": "多语翻译与本地化:M01",
+            "kind": 9,
+            "detail": "社区包 多语翻译与本地化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多语翻译与本地化:M01 · 多语翻译与本地化口径登记 · 归属：多语翻译与本地化域包"
+            },
+            "sortText": "0_多语翻译与本地化:M01"
+          },
+          {
+            "label": "多语翻译与本地化:M02",
+            "kind": 9,
+            "detail": "社区包 多语翻译与本地化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多语翻译与本地化:M02 · 多语翻译与本地化收口与形态派生 · 归属：多语翻译与本地化域包"
+            },
+            "sortText": "0_多语翻译与本地化:M02"
+          },
+          {
+            "label": "多轮对话与角色扮演:M01",
+            "kind": 9,
+            "detail": "社区包 多轮对话与角色扮演域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多轮对话与角色扮演:M01 · 角色扮演口径登记 · 归属：多轮对话与角色扮演域包"
+            },
+            "sortText": "0_多轮对话与角色扮演:M01"
+          },
+          {
+            "label": "多轮对话与角色扮演:M02",
+            "kind": 9,
+            "detail": "社区包 多轮对话与角色扮演域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 多轮对话与角色扮演:M02 · 对话面收口与形态派生 · 归属：多轮对话与角色扮演域包"
+            },
+            "sortText": "0_多轮对话与角色扮演:M02"
+          },
+          {
+            "label": "大语言模型:M01",
+            "kind": 9,
+            "detail": "社区包 大语言模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 大语言模型:M01 · 模型与能力口径登记 · 归属：大语言模型域包"
+            },
+            "sortText": "0_大语言模型:M01"
+          },
+          {
+            "label": "大语言模型:M02",
+            "kind": 9,
+            "detail": "社区包 大语言模型域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 大语言模型:M02 · 能力面收口与形态派生 · 归属：大语言模型域包"
+            },
+            "sortText": "0_大语言模型:M02"
+          },
+          {
+            "label": "安全与对齐:M01",
+            "kind": 9,
+            "detail": "社区包 安全与对齐域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 安全与对齐:M01 · 安全与对齐口径登记 · 归属：安全与对齐域包"
+            },
+            "sortText": "0_安全与对齐:M01"
+          },
+          {
+            "label": "安全与对齐:M02",
+            "kind": 9,
+            "detail": "社区包 安全与对齐域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 安全与对齐:M02 · 安全与对齐收口与形态派生 · 归属：安全与对齐域包"
+            },
+            "sortText": "0_安全与对齐:M02"
+          },
+          {
+            "label": "对话与客服:M01",
+            "kind": 9,
+            "detail": "社区包 对话与客服域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 对话与客服:M01 · 对话与客服口径登记 · 归属：对话与客服域包"
+            },
+            "sortText": "0_对话与客服:M01"
+          },
+          {
+            "label": "对话与客服:M02",
+            "kind": 9,
+            "detail": "社区包 对话与客服域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 对话与客服:M02 · 对话与客服收口与形态派生 · 归属：对话与客服域包"
+            },
+            "sortText": "0_对话与客服:M02"
+          },
+          {
+            "label": "对齐与偏好优化:M01",
+            "kind": 9,
+            "detail": "社区包 对齐与偏好优化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 对齐与偏好优化:M01 · 对齐与偏好优化口径登记 · 归属：对齐与偏好优化域包"
+            },
+            "sortText": "0_对齐与偏好优化:M01"
+          },
+          {
+            "label": "对齐与偏好优化:M02",
+            "kind": 9,
+            "detail": "社区包 对齐与偏好优化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 对齐与偏好优化:M02 · 对齐与偏好优化收口与形态派生 · 归属：对齐与偏好优化域包"
+            },
+            "sortText": "0_对齐与偏好优化:M02"
+          },
+          {
+            "label": "嵌入与检索表示:M01",
+            "kind": 9,
+            "detail": "社区包 嵌入与检索表示域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 嵌入与检索表示:M01 · 嵌入口径登记 · 归属：嵌入与检索表示域包"
+            },
+            "sortText": "0_嵌入与检索表示:M01"
+          },
+          {
+            "label": "嵌入与检索表示:M02",
+            "kind": 9,
+            "detail": "社区包 嵌入与检索表示域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 嵌入与检索表示:M02 · 嵌入面收口与形态派生 · 归属：嵌入与检索表示域包"
+            },
+            "sortText": "0_嵌入与检索表示:M02"
+          },
+          {
+            "label": "平台与基础设施:M01",
+            "kind": 9,
+            "detail": "社区包 平台与基础设施域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 平台与基础设施:M01 · 平台与基础设施口径登记 · 归属：平台与基础设施域包"
+            },
+            "sortText": "0_平台与基础设施:M01"
+          },
+          {
+            "label": "平台与基础设施:M02",
+            "kind": 9,
+            "detail": "社区包 平台与基础设施域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 平台与基础设施:M02 · 平台与基础设施收口与形态派生 · 归属：平台与基础设施域包"
+            },
+            "sortText": "0_平台与基础设施:M02"
+          },
+          {
+            "label": "建筑与房地产:M01",
+            "kind": 9,
+            "detail": "社区包 建筑与房地产域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 建筑与房地产:M01 · 建筑与房地产口径登记 · 归属：建筑与房地产域包"
+            },
+            "sortText": "0_建筑与房地产:M01"
+          },
+          {
+            "label": "建筑与房地产:M02",
+            "kind": 9,
+            "detail": "社区包 建筑与房地产域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 建筑与房地产:M02 · 建筑与房地产收口与形态派生 · 归属：建筑与房地产域包"
+            },
+            "sortText": "0_建筑与房地产:M02"
+          },
+          {
+            "label": "开源与开发者生态:M01",
+            "kind": 9,
+            "detail": "社区包 开源与开发者生态域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 开源与开发者生态:M01 · 开源与开发者生态口径登记 · 归属：开源与开发者生态域包"
+            },
+            "sortText": "0_开源与开发者生态:M01"
+          },
+          {
+            "label": "开源与开发者生态:M02",
+            "kind": 9,
+            "detail": "社区包 开源与开发者生态域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 开源与开发者生态:M02 · 开源与开发者生态收口与形态派生 · 归属：开源与开发者生态域包"
+            },
+            "sortText": "0_开源与开发者生态:M02"
+          },
+          {
+            "label": "强化学习与决策:M01",
+            "kind": 9,
+            "detail": "社区包 强化学习与决策域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 强化学习与决策:M01 · 决策口径登记 · 归属：强化学习与决策域包"
+            },
+            "sortText": "0_强化学习与决策:M01"
+          },
+          {
+            "label": "强化学习与决策:M02",
+            "kind": 9,
+            "detail": "社区包 强化学习与决策域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 强化学习与决策:M02 · 决策面收口与形态派生 · 归属：强化学习与决策域包"
+            },
+            "sortText": "0_强化学习与决策:M02"
+          },
+          {
+            "label": "情感:M22",
+            "kind": 9,
+            "detail": "社区包 校园情感领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 情感:M22 · 三冲动驱动 · 归属：校园情感领域包"
+            },
+            "sortText": "0_情感:M22"
+          },
+          {
+            "label": "推理优化与加速:M01",
+            "kind": 9,
+            "detail": "社区包 推理优化与加速域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 推理优化与加速:M01 · 推理优化与加速口径登记 · 归属：推理优化与加速域包"
+            },
+            "sortText": "0_推理优化与加速:M01"
+          },
+          {
+            "label": "推理优化与加速:M02",
+            "kind": 9,
+            "detail": "社区包 推理优化与加速域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 推理优化与加速:M02 · 推理优化与加速收口与形态派生 · 归属：推理优化与加速域包"
+            },
+            "sortText": "0_推理优化与加速:M02"
+          },
+          {
+            "label": "推理服务与部署:M01",
+            "kind": 9,
+            "detail": "社区包 推理服务与部署域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 推理服务与部署:M01 · 推理服务与部署口径登记 · 归属：推理服务与部署域包"
+            },
+            "sortText": "0_推理服务与部署:M01"
+          },
+          {
+            "label": "推理服务与部署:M02",
+            "kind": 9,
+            "detail": "社区包 推理服务与部署域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 推理服务与部署:M02 · 推理服务与部署收口与形态派生 · 归属：推理服务与部署域包"
+            },
+            "sortText": "0_推理服务与部署:M02"
+          },
+          {
+            "label": "推荐排序与广告:M01",
+            "kind": 9,
+            "detail": "社区包 推荐排序与广告域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 推荐排序与广告:M01 · 推荐排序与广告口径登记 · 归属：推荐排序与广告域包"
+            },
+            "sortText": "0_推荐排序与广告:M01"
+          },
+          {
+            "label": "推荐排序与广告:M02",
+            "kind": 9,
+            "detail": "社区包 推荐排序与广告域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 推荐排序与广告:M02 · 推荐排序与广告收口与形态派生 · 归属：推荐排序与广告域包"
+            },
+            "sortText": "0_推荐排序与广告:M02"
+          },
+          {
+            "label": "提示工程与指令设计:M01",
+            "kind": 9,
+            "detail": "社区包 提示工程与指令设计域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 提示工程与指令设计:M01 · 提示工程与指令设计口径登记 · 归属：提示工程与指令设计域包"
+            },
+            "sortText": "0_提示工程与指令设计:M01"
+          },
+          {
+            "label": "提示工程与指令设计:M02",
+            "kind": 9,
+            "detail": "社区包 提示工程与指令设计域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 提示工程与指令设计:M02 · 提示工程与指令设计收口与形态派生 · 归属：提示工程与指令设计域包"
+            },
+            "sortText": "0_提示工程与指令设计:M02"
+          },
+          {
+            "label": "提示工程与提示模板:M01",
+            "kind": 9,
+            "detail": "社区包 提示工程与提示模板域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 提示工程与提示模板:M01 · 提示工程与提示模板口径登记 · 归属：提示工程与提示模板域包"
+            },
+            "sortText": "0_提示工程与提示模板:M01"
+          },
+          {
+            "label": "提示工程与提示模板:M02",
+            "kind": 9,
+            "detail": "社区包 提示工程与提示模板域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 提示工程与提示模板:M02 · 提示工程与提示模板收口与形态派生 · 归属：提示工程与提示模板域包"
+            },
+            "sortText": "0_提示工程与提示模板:M02"
+          },
+          {
+            "label": "搜索与信息聚合:M01",
+            "kind": 9,
+            "detail": "社区包 搜索与信息聚合域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 搜索与信息聚合:M01 · 搜索与信息聚合口径登记 · 归属：搜索与信息聚合域包"
+            },
+            "sortText": "0_搜索与信息聚合:M01"
+          },
+          {
+            "label": "搜索与信息聚合:M02",
+            "kind": 9,
+            "detail": "社区包 搜索与信息聚合域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 搜索与信息聚合:M02 · 搜索与信息聚合收口与形态派生 · 归属：搜索与信息聚合域包"
+            },
+            "sortText": "0_搜索与信息聚合:M02"
+          },
+          {
+            "label": "摘要与信息压缩:M01",
+            "kind": 9,
+            "detail": "社区包 摘要与信息压缩域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 摘要与信息压缩:M01 · 摘要口径登记 · 归属：摘要与信息压缩域包"
+            },
+            "sortText": "0_摘要与信息压缩:M01"
+          },
+          {
+            "label": "摘要与信息压缩:M02",
+            "kind": 9,
+            "detail": "社区包 摘要与信息压缩域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 摘要与信息压缩:M02 · 摘要面收口与形态派生 · 归属：摘要与信息压缩域包"
+            },
+            "sortText": "0_摘要与信息压缩:M02"
+          },
+          {
+            "label": "数字人与虚拟形象:M01",
+            "kind": 9,
+            "detail": "社区包 数字人与虚拟形象域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数字人与虚拟形象:M01 · 数字人与虚拟形象口径登记 · 归属：数字人与虚拟形象域包"
+            },
+            "sortText": "0_数字人与虚拟形象:M01"
+          },
+          {
+            "label": "数字人与虚拟形象:M02",
+            "kind": 9,
+            "detail": "社区包 数字人与虚拟形象域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数字人与虚拟形象:M02 · 数字人与虚拟形象收口与形态派生 · 归属：数字人与虚拟形象域包"
+            },
+            "sortText": "0_数字人与虚拟形象:M02"
+          },
+          {
+            "label": "数学与形式化推理:M01",
+            "kind": 9,
+            "detail": "社区包 数学与形式化推理域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数学与形式化推理:M01 · 推理口径登记 · 归属：数学与形式化推理域包"
+            },
+            "sortText": "0_数学与形式化推理:M01"
+          },
+          {
+            "label": "数学与形式化推理:M02",
+            "kind": 9,
+            "detail": "社区包 数学与形式化推理域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数学与形式化推理:M02 · 推理面收口与形态派生 · 归属：数学与形式化推理域包"
+            },
+            "sortText": "0_数学与形式化推理:M02"
+          },
+          {
+            "label": "数据分析与决策支持:M01",
+            "kind": 9,
+            "detail": "社区包 数据分析与决策支持域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据分析与决策支持:M01 · 数据分析与决策支持口径登记 · 归属：数据分析与决策支持域包"
+            },
+            "sortText": "0_数据分析与决策支持:M01"
+          },
+          {
+            "label": "数据分析与决策支持:M02",
+            "kind": 9,
+            "detail": "社区包 数据分析与决策支持域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据分析与决策支持:M02 · 数据分析与决策支持收口与形态派生 · 归属：数据分析与决策支持域包"
+            },
+            "sortText": "0_数据分析与决策支持:M02"
+          },
+          {
+            "label": "数据分析与表格理解:M01",
+            "kind": 9,
+            "detail": "社区包 数据分析与表格理解域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据分析与表格理解:M01 · 分析口径登记 · 归属：数据分析与表格理解域包"
+            },
+            "sortText": "0_数据分析与表格理解:M01"
+          },
+          {
+            "label": "数据分析与表格理解:M02",
+            "kind": 9,
+            "detail": "社区包 数据分析与表格理解域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据分析与表格理解:M02 · 分析面收口与形态派生 · 归属：数据分析与表格理解域包"
+            },
+            "sortText": "0_数据分析与表格理解:M02"
+          },
+          {
+            "label": "数据标注与标注质量:M01",
+            "kind": 9,
+            "detail": "社区包 数据标注与标注质量域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据标注与标注质量:M01 · 数据标注与标注质量口径登记 · 归属：数据标注与标注质量域包"
+            },
+            "sortText": "0_数据标注与标注质量:M01"
+          },
+          {
+            "label": "数据标注与标注质量:M02",
+            "kind": 9,
+            "detail": "社区包 数据标注与标注质量域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据标注与标注质量:M02 · 数据标注与标注质量收口与形态派生 · 归属：数据标注与标注质量域包"
+            },
+            "sortText": "0_数据标注与标注质量:M02"
+          },
+          {
+            "label": "数据采集与清洗:M01",
+            "kind": 9,
+            "detail": "社区包 数据采集与清洗域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据采集与清洗:M01 · 采集与清洗口径登记 · 归属：数据采集与清洗域包"
+            },
+            "sortText": "0_数据采集与清洗:M01"
+          },
+          {
+            "label": "数据采集与清洗:M02",
+            "kind": 9,
+            "detail": "社区包 数据采集与清洗域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 数据采集与清洗:M02 · 数据面收口与形态派生 · 归属：数据采集与清洗域包"
+            },
+            "sortText": "0_数据采集与清洗:M02"
+          },
+          {
+            "label": "文旅与酒店:M01",
+            "kind": 9,
+            "detail": "社区包 文旅与酒店域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 文旅与酒店:M01 · 文旅与酒店口径登记 · 归属：文旅与酒店域包"
+            },
+            "sortText": "0_文旅与酒店:M01"
+          },
+          {
+            "label": "文旅与酒店:M02",
+            "kind": 9,
+            "detail": "社区包 文旅与酒店域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 文旅与酒店:M02 · 文旅与酒店收口与形态派生 · 归属：文旅与酒店域包"
+            },
+            "sortText": "0_文旅与酒店:M02"
+          },
+          {
+            "label": "文本生成与创作:M01",
+            "kind": 9,
+            "detail": "社区包 文本生成与创作域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 文本生成与创作:M01 · 创作口径登记 · 归属：文本生成与创作域包"
+            },
+            "sortText": "0_文本生成与创作:M01"
+          },
+          {
+            "label": "文本生成与创作:M02",
+            "kind": 9,
+            "detail": "社区包 文本生成与创作域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 文本生成与创作:M02 · 创作面收口与形态派生 · 归属：文本生成与创作域包"
+            },
+            "sortText": "0_文本生成与创作:M02"
+          },
+          {
+            "label": "文档解析与版面理解:M01",
+            "kind": 9,
+            "detail": "社区包 文档解析与版面理解域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 文档解析与版面理解:M01 · 解析口径登记 · 归属：文档解析与版面理解域包"
+            },
+            "sortText": "0_文档解析与版面理解:M01"
+          },
+          {
+            "label": "文档解析与版面理解:M02",
+            "kind": 9,
+            "detail": "社区包 文档解析与版面理解域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 文档解析与版面理解:M02 · 解析面收口与形态派生 · 归属：文档解析与版面理解域包"
+            },
+            "sortText": "0_文档解析与版面理解:M02"
+          },
+          {
+            "label": "智能体与工作流编排:M01",
+            "kind": 9,
+            "detail": "社区包 智能体与工作流编排域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 智能体与工作流编排:M01 · 智能体与工作流编排口径登记 · 归属：智能体与工作流编排域包"
+            },
+            "sortText": "0_智能体与工作流编排:M01"
+          },
+          {
+            "label": "智能体与工作流编排:M02",
+            "kind": 9,
+            "detail": "社区包 智能体与工作流编排域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 智能体与工作流编排:M02 · 智能体与工作流编排收口与形态派生 · 归属：智能体与工作流编排域包"
+            },
+            "sortText": "0_智能体与工作流编排:M02"
+          },
+          {
+            "label": "智能体框架与工具调用:M01",
+            "kind": 9,
+            "detail": "社区包 智能体框架与工具调用域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 智能体框架与工具调用:M01 · 智能体框架与工具调用口径登记 · 归属：智能体框架与工具调用域包"
+            },
+            "sortText": "0_智能体框架与工具调用:M01"
+          },
+          {
+            "label": "智能体框架与工具调用:M02",
+            "kind": 9,
+            "detail": "社区包 智能体框架与工具调用域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 智能体框架与工具调用:M02 · 智能体框架与工具调用收口与形态派生 · 归属：智能体框架与工具调用域包"
+            },
+            "sortText": "0_智能体框架与工具调用:M02"
+          },
+          {
+            "label": "机器翻译与本地化:M01",
+            "kind": 9,
+            "detail": "社区包 机器翻译与本地化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 机器翻译与本地化:M01 · 翻译口径登记 · 归属：机器翻译与本地化域包"
+            },
+            "sortText": "0_机器翻译与本地化:M01"
+          },
+          {
+            "label": "机器翻译与本地化:M02",
+            "kind": 9,
+            "detail": "社区包 机器翻译与本地化域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 机器翻译与本地化:M02 · 本地化面收口与形态派生 · 归属：机器翻译与本地化域包"
+            },
+            "sortText": "0_机器翻译与本地化:M02"
+          },
+          {
+            "label": "模型运营与成本:M01",
+            "kind": 9,
+            "detail": "社区包 模型运营与成本域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 模型运营与成本:M01 · 模型运营与成本口径登记 · 归属：模型运营与成本域包"
+            },
+            "sortText": "0_模型运营与成本:M01"
+          },
+          {
+            "label": "模型运营与成本:M02",
+            "kind": 9,
+            "detail": "社区包 模型运营与成本域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 模型运营与成本:M02 · 模型运营与成本收口与形态派生 · 归属：模型运营与成本域包"
+            },
+            "sortText": "0_模型运营与成本:M02"
+          },
+          {
+            "label": "测试与用例生成:M01",
+            "kind": 9,
+            "detail": "社区包 测试与用例生成域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 测试与用例生成:M01 · 测试口径登记 · 归属：测试与用例生成域包"
+            },
+            "sortText": "0_测试与用例生成:M01"
+          },
+          {
+            "label": "测试与用例生成:M02",
+            "kind": 9,
+            "detail": "社区包 测试与用例生成域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 测试与用例生成:M02 · 测试面收口与形态派生 · 归属：测试与用例生成域包"
+            },
+            "sortText": "0_测试与用例生成:M02"
+          },
+          {
+            "label": "游戏与互动娱乐:M01",
+            "kind": 9,
+            "detail": "社区包 游戏与互动娱乐域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 游戏与互动娱乐:M01 · 游戏与互动娱乐口径登记 · 归属：游戏与互动娱乐域包"
+            },
+            "sortText": "0_游戏与互动娱乐:M01"
+          },
+          {
+            "label": "游戏与互动娱乐:M02",
+            "kind": 9,
+            "detail": "社区包 游戏与互动娱乐域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 游戏与互动娱乐:M02 · 游戏与互动娱乐收口与形态派生 · 归属：游戏与互动娱乐域包"
+            },
+            "sortText": "0_游戏与互动娱乐:M02"
+          },
+          {
+            "label": "版权与知识产权:M01",
+            "kind": 9,
+            "detail": "社区包 版权与知识产权域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 版权与知识产权:M01 · 版权与知识产权口径登记 · 归属：版权与知识产权域包"
+            },
+            "sortText": "0_版权与知识产权:M01"
+          },
+          {
+            "label": "版权与知识产权:M02",
+            "kind": 9,
+            "detail": "社区包 版权与知识产权域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 版权与知识产权:M02 · 版权与知识产权收口与形态派生 · 归属：版权与知识产权域包"
+            },
+            "sortText": "0_版权与知识产权:M02"
+          },
+          {
+            "label": "物流与供应链:M01",
+            "kind": 9,
+            "detail": "社区包 物流与供应链域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 物流与供应链:M01 · 物流与供应链口径登记 · 归属：物流与供应链域包"
+            },
+            "sortText": "0_物流与供应链:M01"
+          },
+          {
+            "label": "物流与供应链:M02",
+            "kind": 9,
+            "detail": "社区包 物流与供应链域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 物流与供应链:M02 · 物流与供应链收口与形态派生 · 归属：物流与供应链域包"
+            },
+            "sortText": "0_物流与供应链:M02"
+          },
+          {
+            "label": "生存:M10",
+            "kind": 9,
+            "detail": "社区包 西幻生存领域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 生存:M10 · 死亡重生 · 归属：西幻生存领域包"
+            },
+            "sortText": "0_生存:M10"
+          },
+          {
+            "label": "监督微调:M01",
+            "kind": 9,
+            "detail": "社区包 监督微调域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 监督微调:M01 · 监督微调口径登记 · 归属：监督微调域包"
+            },
+            "sortText": "0_监督微调:M01"
+          },
+          {
+            "label": "监督微调:M02",
+            "kind": 9,
+            "detail": "社区包 监督微调域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 监督微调:M02 · 监督微调收口与形态派生 · 归属：监督微调域包"
+            },
+            "sortText": "0_监督微调:M02"
+          },
+          {
+            "label": "知识管理与检索增强:M01",
+            "kind": 9,
+            "detail": "社区包 知识管理与检索增强域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 知识管理与检索增强:M01 · 知识管理与检索增强口径登记 · 归属：知识管理与检索增强域包"
+            },
+            "sortText": "0_知识管理与检索增强:M01"
+          },
+          {
+            "label": "知识管理与检索增强:M02",
+            "kind": 9,
+            "detail": "社区包 知识管理与检索增强域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 知识管理与检索增强:M02 · 知识管理与检索增强收口与形态派生 · 归属：知识管理与检索增强域包"
+            },
+            "sortText": "0_知识管理与检索增强:M02"
+          },
+          {
+            "label": "知识问答与检索增强:M01",
+            "kind": 9,
+            "detail": "社区包 知识问答与检索增强域包",
+            "documentation": {
+              "kind": "markdown",
+              "value": "模块 知识问答与检索增强:M01 · RAG 口径登记 · 归属：知识问答与检索增强域包"
+            },
+            "sortText": "0_知识问答与检索增强:M01"
+          }
+        ]
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "contents": {
+          "kind": "markdown",
+          "value": "**M00**（module）\n\n模块 M00 · 数据结构 · 归属：官方核心 · 挂载：P00(active)\n\n定义：`04_模块库/通用类/M00_数据结构.md`"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 5
+          },
+          "end": {
+            "line": 0,
+            "character": 8
+          }
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "result": {
+        "uri": "file:///nf-repo-root/04_%E6%A8%A1%E5%9D%97%E5%BA%93/%E9%80%9A%E7%94%A8%E7%B1%BB/M00_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.md",
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 0,
+            "character": 0
+          }
+        }
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "result": [
+        {
+          "name": "模块 M00",
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 10
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 0,
+              "character": 2
+            },
+            "end": {
+              "line": 0,
+              "character": 10
+            }
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "result": [
+        {
+          "name": "M00",
+          "kind": 9,
+          "containerName": "module",
+          "location": {
+            "uri": "file:///nf-repo-root/04_%E6%A8%A1%E5%9D%97%E5%BA%93/%E9%80%9A%E7%94%A8%E7%B1%BB/M00_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.md",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 0,
+                "character": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "result": [
+        {
+          "title": "NF：机械修复（final_newline、trailing_ws）",
+          "kind": "quickfix",
+          "isPreferred": true,
+          "diagnostics": [
+            {
+              "code": "trailing_ws"
+            },
+            {
+              "code": "final_newline"
+            }
+          ],
+          "edit": {
+            "changes": {
+              "file:///nf-repo-root/tmp_lsp_session.md": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 3,
+                      "character": 0
+                    }
+                  },
+                  "newText": "# 模块 M00\n\n事件 narrative_event 与资产 ATTR_TEMPLATES\n"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/publishDiagnostics",
+      "params": {
+        "uri": "file:///nf-repo-root/tmp_lsp_session.md",
+        "diagnostics": []
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 9,
+      "error": {
+        "code": -32601,
+        "message": "Method not found: textDocument/willSaveWaitUntil"
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/publishDiagnostics",
+      "params": {
+        "uri": "file:///nf-repo-root/tmp_lsp_session.md",
+        "diagnostics": []
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 10,
+      "result": null
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 11,
+      "result": []
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 16,
+      "result": [
+        {
+          "uri": "file:///nf-repo-root/04_%E6%A8%A1%E5%9D%97%E5%BA%93/%E4%BA%8B%E4%BB%B6%E7%B1%BB/M22_%E4%BA%8B%E4%BB%B6%E5%8F%99%E4%BA%8B.md",
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 0
+            }
+          }
+        },
+        {
+          "uri": "file:///nf-repo-root/04_%E6%A8%A1%E5%9D%97%E5%BA%93/%E9%80%9A%E7%94%A8%E7%B1%BB/M80_%E8%BE%93%E5%87%BA%E7%94%9F%E6%88%90%E5%99%A8.md",
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 17,
+      "result": [
+        {
+          "startLine": 0,
+          "endLine": 2,
+          "kind": "region"
+        }
+      ]
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 12,
+      "error": {
+        "code": -32601,
+        "message": "Method not found: no/such"
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 13,
+      "error": {
+        "code": -32601,
+        "message": "Method not found: $/noSuchRequest"
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/publishDiagnostics",
+      "params": {
+        "uri": "file:///nf-repo-root/tmp_lsp_session.md",
+        "diagnostics": []
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "method": "textDocument/publishDiagnostics",
+      "params": {
+        "uri": "file:///nf-repo-root/tmp_lsp_session.md",
+        "diagnostics": []
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 14,
+      "result": {
+        "isIncomplete": false,
+        "items": []
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "result": null
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 15,
+      "error": {
+        "code": -32600,
+        "message": "会话已 shutdown，仅接受 exit（修复指引：退出进程后重连）"
+      }
+    }
+  ],
+  "exit_code": 0,
+  "digest": "abf5d51fb6dad6cf73c3d8c8e026e42b2218d601d167a69471874a44ed0972fc"
+}

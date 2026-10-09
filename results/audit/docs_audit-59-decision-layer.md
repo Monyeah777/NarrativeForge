@@ -6,7 +6,7 @@ scope: 作者指令「拉取 jev 或 laya 这种模型作为决策层」——�
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
+  - verify.sh:06932ee691ac96922d199ed3662099dbf6094d62b16c7d3a263e4dfff64a6230
   - protocol/decision_layer.json:8429b9ccd1a9ce690f581de96d924034453027eb6c752ac204a25829cdd5e88f
   - protocol/normative.json:b041ba07b0d7a146add5d93fc65f868da8a5af7c8dd2a75d35ea482790e47b7c
   - protocol/data_contracts.json:2888c0e45d0a0a67303d1ba69bf271509d7690679546a1b696ce2c372f4d24eb
@@ -14,9 +14,9 @@ subjects:
   - desktop/src/core/receipts.py:afc48b24b00775b04b67200055d954c5ad735eff980921da9571e87ee13f169f
   - desktop/src/core/doc_hygiene.py:635926ce334273ceec59d8ec83d9234d5e14466d336d7c285efe0cf2f4e125ec
   - desktop/tests/test_decision_layer.py:785d68441b202b9ab208e86df7a34644207cb3b992818f57325e09f0b2f8dc54
-  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
+  - scripts/nf.py:f23801bcf642b3ac5a95a15068f776712aeff5a01a0ec20063646ddc1ec36036
   - scripts/pull_decision_model.py:f9344c0acb2a3e2761681dd2aff2b7f257153f8674e5d7582df9b0738220d347
-  - docs/decision-layer.md:46cd91d13c1b98120318b6aff5d720fc3abe22541de8b1b1762db57a0e8dbeeb
+  - docs/decision-layer.md:50755549b0970dbd64d7d98b4757011d55c586cd14172df5957d998a23c431a2
 
 ---
 

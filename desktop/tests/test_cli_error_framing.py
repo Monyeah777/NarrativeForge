@@ -553,7 +553,7 @@ class MachinePathRedactionTest(unittest.TestCase):
 
 
 class CwdIndependenceTest(unittest.TestCase):
-    """**收路径的命令不依赖进程 cwd**（口径：仓库相对路径一律相对仓库根）。
+    r"""**收路径的命令不依赖进程 cwd**（口径：仓库相对路径一律相对仓库根）。
 
     实测缺口（2026-10-01）：`_rel_to_root` 用 `os.path.abspath(target)` ⇒ 相对路径按**进程
     cwd** 解析，而同一份 CLI 的写盘侧 `_rel_out` 是**仓根**语义——同一口径两套实现。从

@@ -4,7 +4,7 @@
   "title": "MCP 服务面（nf serve）",
   "kind": "server",
   "status": "active",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "codeowner": "@Monyeah777",
   "tier": "core",
   "entry": {
@@ -20,5 +20,5 @@
     "desktop/src/core/mcp_runtime.py",
     "protocol/mcp_package.json"
   ],
-  "notes": "只读 MCP stdio 服务：resources/tools/prompts 全只读，dual-era 协议版本。"
+  "notes": "只读 MCP stdio 服务：resources/tools/prompts 全只读，dual-era 协议版本；参数按声明准入（含 arguments 非对象即 -32602）；10 个工具全部声明 annotations.readOnlyHint=true；资源 uri 读入时做转义等价归一；工具 inputSchema 只声明**真的有效果**的属性（无静默降级项）。"
 }

@@ -23,7 +23,7 @@
           "surfaces": 4,
           "tiers": 4
         },
-        "raises": 59,
+        "raises": 58,
         "sinks": 14
       },
       "status": "pass",
@@ -274,7 +274,7 @@
       "stats": {
         "contracts": 27,
         "passed": 27,
-        "root": "55db2e5d16575fc334669f15cacae90605e7ede386b1666c8ddd5188044c6333",
+        "root": "98ba443949b47d9d54428ad885fb6c24db34c5939ea1a13dc397319223cb99ab",
         "verdict": "conformant"
       },
       "status": "pass",
@@ -287,10 +287,10 @@
       "sample": [],
       "source": "audit.scan",
       "stats": {
-        "audits": 55,
+        "audits": 56,
         "legacy": 11,
-        "subjects_ok": 345,
-        "with_header": 44
+        "subjects_ok": 363,
+        "with_header": 45
       },
       "status": "warn",
       "warns": 1
@@ -344,11 +344,11 @@
       "sample": [],
       "source": "code_metrics.scan",
       "stats": {
-        "baseline": 177,
-        "files": 177,
-        "max_fn_cc": 113,
-        "max_fn_lines": 1060,
-        "max_lines": 7036
+        "baseline": 184,
+        "files": 187,
+        "max_fn_cc": 114,
+        "max_fn_lines": 1073,
+        "max_lines": 7063
       },
       "status": "pass",
       "warns": 0
@@ -390,7 +390,7 @@
       "source": "coupling_metrics.scan",
       "stats": {
         "cycles": 0,
-        "modules": 150,
+        "modules": 158,
         "registered_cycles": 0,
         "registered_sdp": 7,
         "sdp": 7
@@ -475,7 +475,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "f18b516277b4024f6b5666351fb2507ae76cc9426f6733ee7d8fdfebda810973",
+  "root_digest": "864bf4fb391ec3b5ad1655ef96836d43551e60f8d60dab93fe3f5a8b8b735838",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

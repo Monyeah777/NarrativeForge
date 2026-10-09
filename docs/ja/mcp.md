@@ -88,9 +88,11 @@ MCP stdio をサポートする任意のクライアントで、`nf.py serve` �
 | `notifications/initialized` | ✅ 静黙 | 通知は id を持たず、応答しません |
 | `ping` | ✅ | `{}` を返す |
 | `resources/list` | ✅ | スナップショット登録資源の純メタデータ（text フィールドなし） |
+| `resources/templates/list` | ✅ | RFC 6570 レベル1サブセットの資源テンプレート（library / pattern / module / pipeline / asset の5本）、実資源 uri の全被覆は check33 が断言 |
 | `resources/read` | ✅ | 許可リスト uri → `contents[].text`；未知 uri → `-32602` |
 | `tools/list` / `tools/call`（読み取り専用 · 検索面） | ✅ | 41 波C C7：library_search / registry_query / pipeline_ls / spec_ls（inputSchema は実在、すべて読み取り専用） |
 | `tools/list` / `tools/call`（読み取り専用 · コンテンツチャネル） | ✅ | 44：module_read / pipeline_read / asset_get——モジュール/パイプライン/資産の本文実質内容を返す（メタデータだけではない） |
+| `tools/list` のツール注釈 | ✅ | 10 ツールすべてが `annotations.readOnlyHint: true` を宣言（2026-10-08 以降）——「読み取り専用」は散文だけでなく、MCP クライアントが読み取り専用呼び出しを**自動許可**できます |
 | `prompts/list` / `prompts/get` | ✅ | 41 波C C7：assemble_guide ロードガイドテンプレート（読み取り専用） |
 | 書き込み経路ツール（未実装） | ❌ | 未知ツール → `-32602`；未知メソッド → `-32601`（読み取り専用安全層が構造的に書き込みを拒否） |
 

@@ -512,9 +512,13 @@ def _make_parser() -> argparse.ArgumentParser:
     sfp.add_argument("--json", action="store_true", help="输出结构化 JSON")
     ln.add_argument("--json", action="store_true", help="输出结构化 JSON")
     lp = sub.add_parser("lsp",
-                        help="最小 LSP 服务器（stdio：诊断 + quickfix，供编辑器接入；不写盘）",
-                        description="最小 LSP 服务器（stdio Content-Length 分帧；诊断/quickfix 与 nf lint 同源）")
+                        help="LSP 服务器（stdio：诊断/补全/悬停/跳定义/大纲/quickfix；不写盘）",
+                        description="LSP 服务器（stdio Content-Length 分帧；诊断与 nf lint 同源，"
+                                    "领域符号表来自 core/nf_language；--print-config 出编辑器配置）")
     lp.add_argument("--root", default="", help="仓库根（缺省 = 本仓库）")
+    from core.lsp_client import CLIENT_EDITORS as _lsp_editors   # 单一真相：lsp_client.render_client_config
+    lp.add_argument("--print-config", default="", choices=["", *_lsp_editors],
+                    help="只打印目标编辑器的现成配置（不启动服务）")
     lc = sub.add_parser("license",
                         help="图书馆许可证门（登记表「许可」列 + 条目内联声明双源校验）",
                         description="图书馆许可证门（内部差距：登记表无许可列，入库产物不承载共享条款）")
@@ -1129,6 +1133,15 @@ def _make_parser() -> argparse.ArgumentParser:
                      help="目标 shell（缺省 bash；需要 /dev/tcp 内建）")
     dsi.add_argument("--shell", dest="shell_opt", default=None, choices=("bash",),
                      help="目标 shell（目前只支持 bash：需要 /dev/tcp 内建）")
+
+    # NFA-L（声明式 + 命令式混合）：guard 表达式 解析/检查/编译/求值。
+    # 命令面实现收在 core.nfal_cli（此处只做入口，避免与 nf 命令面重复定义旗标）。
+    nfl = sub.add_parser("nfal",
+                         help="NFA-L 装配语言：guard 表达式 解析/检查/编译/求值（声明层借 YAML/IDL）",
+                         description="NFA-L：声明层借既有 YAML + JSON-Schema IDL，命令层是封闭 guard 表达式"
+                                     "（无用户函数/循环/赋值/IO）；用法见 docs/nfal.md")
+    nfl.add_argument("nfal_args", nargs=argparse.REMAINDER,
+                     help="透传给 NFA-L 的参数；完整用法见 nf nfal help")
     return p
 
 
@@ -2516,7 +2529,7 @@ CHECK_GUIDE = {
     "30": "缺什么：扩展判据缺失或版本字段 bump 无迁移记录。补什么：protocol/EXTENSION.md 判据 + bump 变更带 01 §7/02 §9.3 四步迁移记录。",
     "31": "缺什么：生成物过期（protocol/generated 与当前 schema/协议件不一致）。补什么：重跑 protocol_golden.write_golden 并随变更一并提交。",
     "32": "缺什么：质量纵深汇总违约（载荷注册表/资产 ledger/指令审计/资产密度·厚度·零引用/tool_face/world_model/world_slots 任一缺口）。补什么：跑 nf release 看细分失败项，修复后 verify 全绿；world_model 契约自查可用 nf worldmodel。",
-    "33": "缺什么：新面汇总任一子扫描红（MCP dual-era/stdio 帧纪律、attestation、基线回归评分、机械修复、正文 lint、许可证门、遥测 semconv、编码卫生、互操作导出与入仓面、文档命令面、决策层面、构建回路）。补什么：`nf doctor` 先定位，再按面跑 `nf interop --check` / `nf lint` / `nf score` / `nf telemetry` / `nf conformance`；编码卫生命中按 `docs/text-hygiene.md` 处置（隐形字符/行尾/重复键）。",
+    "33": "缺什么：新面汇总任一子扫描红（MCP dual-era/stdio 帧纪律、attestation、基线回归评分、机械修复、正文 lint、编辑器面（能力/诊断定位/didClose/退出码/领域智能/配置生成）、许可证门、遥测 semconv、编码卫生、互操作导出与入仓面、文档命令面、决策层面、构建回路）。补什么：`nf doctor` 先定位，再按面跑 `nf interop --check` / `nf lint` / `nf score` / `nf telemetry` / `nf conformance`；编码卫生命中按 `docs/text-hygiene.md` 处置（隐形字符/行尾/重复键）。",
     "34": "缺什么：云端图书馆面违约（frontmatter 真源缺字段、INDEX·ALIAS 投影漂移、生命周期状态越表、文档四型未覆盖、llms.txt 入口缺失、内容分级未声明）。补什么：`nf library verify` 看逐条失败；改条目 frontmatter 后 `nf library reindex` 重建投影（投影不是真源）。",
     "35": "缺什么：深化面违约（管线抽象执行 GraphSpec、馆藏回执单根、模块边界冻结、内容绑定批准、一致性报告工件、无效语料）。补什么：按失败项分别跑 `nf pipeline dryrun --all` / `nf library receipts --write` / `nf module signature --write` / `nf approve --verify` / `nf conformance --write`。",
     "36": "缺什么：治理面违约（一致性声明 CONFORMANCE、RFC 版本史、指令档机器面路由、实践包、跑分台、端点契约）。补什么：`nf conformance` 看契约面，并用 `nf rfc` / `nf driver` / `nf patterns verify` / `nf endpoint` 逐条对；改声明件后重跑。",
@@ -4985,10 +4998,16 @@ def _cmd_license(args):
 
 
 def _cmd_lsp(args):
-    """nf lsp：最小 LSP 服务器（stdio）。"""
+    """nf lsp：LSP 服务器（stdio）／客户端配置生成。"""
     from core import lsp as lsp_mod
     root = args.root or ROOT
-    return lsp_mod.LspServer(root=root).serve()
+    if args.print_config:
+        # 编辑器装配面：唯一真相 = lsp_client.render_client_config（docs/lsp.md 的示例由它产出）。
+        print("# 目标编辑器：%s；仓库根：%s" % (args.print_config, root))
+        from core import lsp_client as _lsp_client
+        print(_lsp_client.render_client_config(args.print_config, root), end="")
+        return 0
+    return lsp_mod.LspServer(root=root, explicit_root=bool(args.root)).serve()
 
 
 def _cmd_score(args):
@@ -6705,6 +6724,12 @@ def _cmd_stats(args) -> int:
     return 1 if issues else 0
 
 
+def _cmd_nfal(args) -> int:
+    """nf nfal：透传到 core.nfal_cli（guard 表达式的解析/检查/编译/求值）。"""
+    from core import nfal_cli
+    return nfal_cli.main(list(getattr(args, "nfal_args", []) or []))
+
+
 def main(argv=None) -> int:
     # 效率：`--version` 是最常被调用的探测命令，而构建 argparse 面 ≈100 ms——
     # 它不需要命令面，直接短路（输出与 argparse 的 version 动作逐字一致）。
@@ -6903,6 +6928,8 @@ def main(argv=None) -> int:
             # （实测输出「== nf audit（26 件）==」），已重命名为 _cmd_design_audit 修正。
             return _cmd_design_audit(args)
         return _cmd_design(args)
+    if args.cmd == "nfal":
+        return _cmd_nfal(args)
     if args.cmd != "run":
         _build_parser().print_help()
         return 2

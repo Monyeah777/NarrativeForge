@@ -32,6 +32,14 @@ SCHEMA_ID = "nf:integration"
 STRINGS_SCHEMA_ID = "nf:integration-strings"
 STRINGS_NAME = "strings.json"
 _PATH_TOKEN = re.compile(r"[A-Za-z0-9_./\\-]+\\.(?:py|sh|ps1|cmd|mjs|js|json|md|csproj|toml)")
+#: entry.command 里的 `nf <子命令>`（`python scripts/nf.py <子>` 与裸 `nf <子>` 两种形态）
+_NF_SUBCMD = re.compile(r"(?:\bpython\s+scripts/nf\.py|\bnf)\s+([a-z][a-z0-9-]*)")
+
+
+def _nf_subcommand(command: str) -> str:
+    """→ command 里的第一个 nf 子命令；没有（或只是 --flag）返回空串。"""
+    m = _NF_SUBCMD.search(command or "")
+    return m.group(1) if m else ""
 
 
 def entries(root: str = ".") -> List[Dict[str, Any]]:
@@ -132,6 +140,18 @@ def check(root: str = ".") -> Tuple[List[str], Dict[str, Any]]:
         for tok in _PATH_TOKEN.findall(str(entry.get("command") or "")):
             if not (r / tok).exists():
                 issues.append(rel + " entry.command 引用的件不在场：" + tok)
+        # 命令里的 **nf 子命令**也要在册（2026-10-08 补）：此前只查「引用的件在不在场」——
+        # 子命令名**拼错一个字母**时件仍都在场、判据全绿，用户照卡敲才发现命令不存在。
+        sub = _nf_subcommand(str(entry.get("command") or ""))
+        if sub:
+            try:
+                from core import prose_lint
+                known = prose_lint.cli_commands(str(r))
+            except Exception:
+                known = set()
+            if known and sub not in known:
+                issues.append(rel + " entry.command 的 nf 子命令未注册：" + sub
+                              + "（修复指引：核对 scripts/nf.py 的 argparse 面）")
         for key in ("docs", "evidence"):
             vals = e[key] if isinstance(e[key], list) else [e[key]]
             for v in vals:

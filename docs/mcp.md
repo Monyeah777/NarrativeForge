@@ -88,9 +88,11 @@ stdio 服务随调用进程生命周期运行（`Ctrl+C` 结束）。也可用 `
 | `notifications/initialized` | ✅ 静默 | 通知无 id，不应答 |
 | `ping` | ✅ | 返回 `{}` |
 | `resources/list` | ✅ | 快照登记资源纯元数据（无 text 字段） |
+| `resources/templates/list` | ✅ | RFC 6570 一级子集资源模板（library / pattern / module / pipeline / asset 五条），真实资源 uri 全覆盖由 check33 断言 |
 | `resources/read` | ✅ | 白名单 uri → `contents[].text`；未知 uri → `-32602` |
 | `tools/list` / `tools/call`（只读 · 检索面） | ✅ | 41 波C C7：library_search / registry_query / pipeline_ls / spec_ls（inputSchema 真实存在，全只读） |
 | `tools/list` / `tools/call`（只读 · 内容通道） | ✅ | 44：module_read / pipeline_read / asset_get——返回模块/管线/资产正文实质内容（不只元数据） |
+| `tools/list` 的工具注解 | ✅ | 10 个工具全部声明 `annotations.readOnlyHint: true`（2026-10-08 起）——「只读」不止写在散文里，MCP 客户端据此可**自动放行**只读调用，不必逐个弹窗 |
 | `prompts/list` / `prompts/get` | ✅ | 41 波C C7：assemble_guide 装载引导模板（只读） |
 | 写路径工具（未实现） | ❌ | 未知工具 → `-32602`；未知方法 → `-32601`（只读安全层天然拒写） |
 

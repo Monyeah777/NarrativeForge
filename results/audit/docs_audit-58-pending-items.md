@@ -6,13 +6,13 @@ scope: 作者指令「遗留全部补上」——处置 AUD-0009 §五 列出的
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
+  - verify.sh:06932ee691ac96922d199ed3662099dbf6094d62b16c7d3a263e4dfff64a6230
   - desktop/src/core/transparency_log.py:6a3ccb12f5376304c0926e5d2a490f08d10bfc3ca3fa5a76623d9f017bd12796
   - desktop/src/core/rating_gate.py:13f3a681d8fdbda1886bb7996d3cc2da609eac15dbf4455ac7b074d0920b6d10
   - desktop/src/core/interop_export.py:520aaf0edb53d5ab679d3a1568c315f45ce8301ead3df90411e3e67572dc269a
   - desktop/src/core/ccv3_adapter.py:ec9bfacffcb0dd6a73f88652a7273d631e40c4efd8cecfb00a5f0be831a511ad
   - desktop/src/core/export_schema.py:9052dc891be0c70ceb5b42544eceeceeeb4dee8c4f107b1ec660913cf922ad3d
-  - desktop/src/core/mcp_runtime.py:5baba43c842ce4f59878c0b54d14dd62bfcaa94c9523d74d41f39397945f4e69
+  - desktop/src/core/mcp_runtime.py:8ba6e7e2ad01182c0422529922b892f0b13d75612cea65add875262ad58693f7
   - desktop/src/core/import_adapter.py:d85c4bc3632106ad28d924ed0122834903eb6d7eddc614b661ab7fe3dfbef441
   - desktop/src/core/library.py:e5a867a775bbab717c882250187578b7d057c51a233c334190e5179f903918bf
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3

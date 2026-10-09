@@ -1732,24 +1732,67 @@ for p in targets:
 if pending:
     problems.append('机械修复面待办 %d 件：%s' % (len(pending), '、'.join(pending[:3])))
 
-# 5 正文 lint 可检出 + LSP 能力在位
+# 5 正文 lint 可检出 + 编辑器面协议行为（2026-10-07 收口）：旧版只断言
+#   codeActionProvider 一个布尔，而门禁自述写「编辑器面」——声明 > 实测（AUD 编辑器面审计）。
+#   现改为 lsp.check 真跑：能力声明 / 诊断定位 / didClose / 退出码 / 领域解析 / 补全·悬停·
+#   跳定义·大纲 / 客户端配置生成。
 if not prose_lint.lint_text('总而言之，我们应该谨慎。\n'):
     problems.append('正文 lint 未检出已知样例')
-if not lsp.LspServer().handle({'jsonrpc': '2.0', 'id': 1,
-                               'method': 'initialize'})[0]['result']['capabilities']['codeActionProvider']:
-    problems.append('LSP codeAction 能力缺失')
+try:
+    _lsp_issues, _lsp_stats = lsp.check('.')
+    for _li in _lsp_issues:
+        problems.append('编辑器面：%s' % _li)
+    _lsp_line = ('LSP 能力 %(capabilities)d 项 · 符号 %(modules)d 模块 / %(assets)d 资产 / '
+                 '%(events)d 事件 / %(layers)d 层位 / %(pipelines)d 管线 · 客户端配置 %(clients)d 种'
+                 % _lsp_stats)
+except Exception as _exc:
+    problems.append('编辑器面检查不可用：%s' % _exc)
+    _lsp_line = '不可用'
 
 # 6 许可证门：零 FAIL
 l_issues, l_stats = license_gate.scan('.')
 if l_issues:
     problems.append('许可证门 FAIL：%s' % '; '.join(l_issues))
 
-# 7 遥测 semconv：属性名对齐
-attrs = ts.attributes_for({'tool': 'nf assemble', 'phase': 'plan'})
-if (attrs.get('gen_ai.operation.name') != 'execute_tool'
-        or attrs.get('gen_ai.tool.name') != 'nf.assemble'):
-    problems.append('遥测 semconv 映射异常')
-
+# 7 遥测 semconv：属性映射 + 结构化入参/出参 + OTLP 形状/确定性（2026-10-07 扩面：
+#   旧判据只查两个属性名，而 to_span/to_export 的 OTLP 形状、属性列表形态、
+#   同输入确定性、traceId 留空纪律都无门禁项——声明「OTLP 形状对齐」却只判两点。）
+try:
+    _rec = {'tool': 'nf assemble', 'phase': 'plan', 'requirement': 'r',
+            'matched': 1, 'ok': True}
+    attrs = ts.attributes_for(_rec)
+    if (attrs.get('gen_ai.operation.name') != 'execute_tool'
+            or attrs.get('gen_ai.tool.name') != 'nf.assemble'
+            or attrs.get('gen_ai.agent.name') != 'ninfenz'
+            or not attrs.get('gen_ai.tool.call.id')):
+        problems.append('遥测 semconv 映射异常（operation/tool/agent/call.id）')
+    if (attrs.get('gen_ai.tool.call.arguments') or {}).get('requirement') != 'r':
+        problems.append('遥测入参面未落 gen_ai.tool.call.arguments')
+    if (attrs.get('gen_ai.tool.call.result') or {}).get('matched') != 1:
+        problems.append('遥测出参面未落 gen_ai.tool.call.result')
+    _span = ts.to_span(_rec)
+    _exp = ts.to_export([_rec, _rec])
+    _scope = _exp['resourceSpans'][0]['scopeSpans'][0]
+    if len(_scope['spans']) != 2:
+        problems.append('OTLP 形状：spans 数与记录数不符')
+    if _scope['scope']['name'] != ts.SCOPE_NAME:
+        problems.append('OTLP 形状：scope.name 非 %s' % ts.SCOPE_NAME)
+    _need = ('name', 'kind', 'traceId', 'spanId', 'attributes', 'status')
+    _miss = [k for k in _need if k not in _span]
+    if _miss:
+        problems.append('OTLP 形状：span 缺键 %s' % '、'.join(_miss))
+    if any(not isinstance(a, dict) or set(a) - {'key', 'value'}
+           for a in _span['attributes']):
+        problems.append('OTLP 形状：attributes 须为 {key,value} 列表')
+    if ts.to_export([_rec, _rec]) != _exp:
+        problems.append('OTLP 形状：同输入两次导出不一致（非确定性）')
+    if _span['traceId'] != '':
+        problems.append('OTLP 形状：traceId 应留空（时间戳纪律：由采集方外套）')
+    _ts_line = 'span 键 %d · 属性 %d · scope %s' % (len(_need), len(_span['attributes']),
+                                                   ts.SCOPE_NAME)
+except Exception as _exc:
+    problems.append('遥测 semconv 检查不可用：%s' % _exc)
+    _ts_line = '不可用'
 # 8 正文正规性（围栏配平 + mojibake 特征）：WARN 挂账，不判死（存量先可数，再逐波收）
 warns = []
 try:
@@ -1889,6 +1932,8 @@ except Exception as exc:
 print('新面统计：MCP %s · 评分 %.2f · 机械待办 %d · 许可 WARN %d · 正文正规性 WARN %d'
       % (mcp.PROTOCOL_VERSION, cur['score'], len(pending), len(l_stats['warnings']), len(warns)))
 print('新增面：编码卫生 %s · 互操作 %s · 文档命令面 %s' % (_th_line, _ie_line, _pl_line))
+print('编辑器面：%s' % _lsp_line)
+print('遥测面：%s' % _ts_line)
 print('决策层面：%s' % _dl_line)
 print('构建回路：%s' % _wl_line)
 # 失败必须**可诊断**：打印点放在全部 16 项检查之后——此前它在第 7 项之后就打印，
@@ -1904,7 +1949,7 @@ PYEOF
           case "$_txtline" in WARN:*) wn "${_txtline#WARN: }" ;; esac
         done < "$NFL_TMP"/nf_check33.log
       fi
-      ok '新面扫描通过（MCP dual-era / stdio 帧纪律 / attestation / 评分 / 机械修复 / 正文 lint / 许可证 / 遥测 / 编码卫生 / 互操作导出与入仓面一致 / 文档命令面 / 决策层面 / 构建回路）'
+      ok '新面扫描通过（MCP dual-era / stdio 帧纪律 / attestation / 评分 / 机械修复 / 正文 lint / 编辑器面（能力·定位·生命周期·领域智能·配置）/ 许可证 / 遥测 / 编码卫生 / 互操作导出与入仓面一致 / 文档命令面 / 决策层面 / 构建回路）'
     else
       no "新面扫描异常——$(tail -3 "$NFL_TMP"/nf_check33.log | tr '\n' ' ')"; err=1
     fi

@@ -7,9 +7,8 @@ verdict: pass
 auditor: 本轮执行者
 subjects:
   - desktop/src/core/domain_pack.py:768cccbafa835be8bf358b2d4e9d3510fd4a080c1ba8877fc5b82e400f2715a5
-  - desktop/src/core/prose_lint.py:757c0507afb9149c1bdafd7e0a0dabcb9a84165cd5414c84a3c95b1f77a80799
-  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
-
+  - desktop/src/core/prose_lint.py:d3d6789bc60e9fe664fa4c7af24c10d380f9aced70f2a494e812246da74d1a69
+  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

@@ -6,14 +6,14 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——62 计划
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - CHANGELOG.md:e7fa142426064b7725804b30c9ab035c421a69b7bef71e11849d9555be8a7b73
+  - CHANGELOG.md:812795aaa3f59aeb120a228f12a04478f08049642d6f1342a18bd939e70f0941
   - docs/meta/VERSION-MATRIX.md:abe7adfd40849a0191f738bb4d051ce487e811328d800c3049bbda7add455615
   - README.md:e2c3aaba8f56e8a7ca3a436b8075542d3cad0358e65dc8c62615a671bbddc987
   - desktop/src/core/changelog_gen.py:91f1c9eae7a48bbad209d041b48b2eb6d91dbe2eca36c08ee457ffdf21104e16
   - desktop/tests/test_changelog_gen.py:3ddb12cc2247f8bf5649dc4e64d7521fc40795aba93c90f8dd34fc3df47377b8
   - protocol/release_policy.json:0c8ecfad8f1f23101442dc8a1c301cecb0f0cb9e33d293dd0ceb4caadc94f96d
   - docs/release.md:b4ddbad660793dba16a125e2f1b351ecb3dec462785642107297dc70ff40e1d1
-  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
+  - scripts/nf.py:f23801bcf642b3ac5a95a15068f776712aeff5a01a0ec20063646ddc1ec36036
   - scripts/release_freeze.sh:30d8ae65f958d71e98411793affdacba75efaa5f0934373dab991e065fe530a3
 
 ---

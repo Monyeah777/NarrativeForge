@@ -259,6 +259,13 @@ IMPLICIT_HOOKS = {
     "scripts/serve_decision_model.py::Handler.do_GET":
         "http.server 按 HTTP 动词**按名派发**（方法名就是路由，全仓永远不会出现 `do_GET(`）",
     "scripts/serve_decision_model.py::Handler.do_POST": "同上（POST 路由）",
+    # 2026-10-08 补：未支持动词一律回 405 JSON（旧路径是 BaseHTTPRequestHandler 的 HTML 501）。
+    # 这几个方法**只被 http.server 按名派发**，全仓不会出现 `do_PUT(` 之类的显式调用。
+    "scripts/serve_decision_model.py::Handler.do_PUT": "同上（PUT 路由：回 405 + Allow）",
+    "scripts/serve_decision_model.py::Handler.do_PATCH": "同上（PATCH 路由：回 405 + Allow）",
+    "scripts/serve_decision_model.py::Handler.do_OPTIONS": "同上（OPTIONS 路由：回 405 + Allow）",
+    "scripts/serve_decision_model.py::Handler.do_DELETE": "同上（DELETE 路由：回 405 + Allow）",
+    "scripts/serve_decision_model.py::Handler.do_HEAD": "同上（HEAD 路由：只回状态与表头，探活用）",
     "scripts/serve_decision_model.py::Handler.log_message":
         "http.server 的日志钩子——框架回调，不显式调用",
 }

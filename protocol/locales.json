@@ -57,11 +57,11 @@
       "translations": {
         "en": {
           "path": "docs/en/mcp.md",
-          "source_sha256": "b6680ab1534c717008813793450af6f30791b9f3ccd5c2594b33f2a979a39896"
+          "source_sha256": "24afe867db3ac4a7395591ba4938a87d771afbe6c1d631e0e639eb9adeea7716"
         },
         "ja": {
           "path": "docs/ja/mcp.md",
-          "source_sha256": "b6680ab1534c717008813793450af6f30791b9f3ccd5c2594b33f2a979a39896"
+          "source_sha256": "24afe867db3ac4a7395591ba4938a87d771afbe6c1d631e0e639eb9adeea7716"
         }
       }
     },
@@ -88,6 +88,19 @@
         "ja": {
           "path": "docs/ja/layers.md",
           "source_sha256": "5663d35232562db296f433c5f940b3d4f3017978229290f1f6c0e9eff234d619"
+        }
+      }
+    },
+    {
+      "path": "docs/lsp.md",
+      "translations": {
+        "en": {
+          "path": "docs/en/lsp.md",
+          "source_sha256": "db91bbfed27d7e14eb63c72e58ad8e009ce44a2b6563c15982b644ec358eca39"
+        },
+        "ja": {
+          "path": "docs/ja/lsp.md",
+          "source_sha256": "db91bbfed27d7e14eb63c72e58ad8e009ce44a2b6563c15982b644ec358eca39"
         }
       }
     }

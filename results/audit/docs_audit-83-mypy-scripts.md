@@ -8,14 +8,13 @@ auditor: 本轮执行者
 subjects:
   - scripts/rebuild_selfcontained_sample.py:a03129592c21f6db459a6b69fcc9819e71aeb80418517fb9a43c2bbfc81c8e68
   - scripts/fde_sample_run.py:a891a76e559c4d68260ecc8ea03b9d76109a793e859e53cb42a0bc5b0edf9560
-  - scripts/serve_decision_model.py:69c401a98c6fcc81a7a04a274f061e65e20d0190bb38ccff1ba3fe2f6fa03db2
-  - scripts/interop_thirdparty_kit.py:05772f664348a3682b94a0f5dceaa5e9a39a91c0701ba7614bf121ac5f450202
+  - scripts/serve_decision_model.py:ca019d14dcab3fb82a76ba414a5fdcf2a1d281cc699c7f88d2108b05771aa27b
+  - scripts/interop_thirdparty_kit.py:9b5b7d592048d588279fb976add510bd677bd19c34acda7a5cb5a47d00173c5b
   - scripts/build_verification_cards.py:08e105daceb38ca1b907193b408dfeaec8ea5cb8943b47902c5301d2107d0960
   - scripts/geo_export.py:616992be1e6f5e8251b5a9aa98abc8d27dfee22ddb9152a335538f17e28ea06a
-  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
+  - scripts/nf.py:f23801bcf642b3ac5a95a15068f776712aeff5a01a0ec20063646ddc1ec36036
   - scripts/check_external_links.py:04cfe9fa4d7213021e60faac7ff88414db529090892ed38441ff61db8810861e
-  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
-
+  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

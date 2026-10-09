@@ -12,9 +12,8 @@ subjects:
   - desktop/src/core/intake.py:23007fd42c627df44dcce7ffa6873a28f5679a68f3b00351f32e728bb25dcbe0
   - desktop/src/core/world_slots.py:4d7dc220020f9b63b7aeef6f3cd74d1647fe575bbcd804778d61d9de5840aea4
   - desktop/src/core/pipelinerun.py:551bfd5e16424e630cc132fc32926d00bf7031f7e87163ff01cacc30698053bb
-  - desktop/src/core/mcp_runtime.py:5baba43c842ce4f59878c0b54d14dd62bfcaa94c9523d74d41f39397945f4e69
-  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
-
+  - desktop/src/core/mcp_runtime.py:8ba6e7e2ad01182c0422529922b892f0b13d75612cea65add875262ad58693f7
+  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

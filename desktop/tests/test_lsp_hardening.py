@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from core import lsp as lsp  # noqa: E402
+from core import lsp_framing  # noqa: E402   # 传输分帧已独立成模块（上限常量随之迁出）
 
 OK_FRAME = b'{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}'
 
@@ -61,7 +62,7 @@ class LspTransportHardeningTest(unittest.TestCase):
         按那个数分配/读取（负值更会「读到 EOF」）。现在两者都归 `-32700` 坏帧，会话照旧存活。
         """
         for payload in (b"Content-Length: 999999999999\r\n\r\n" + OK_FRAME,
-                        b"Content-Length: %d\r\n\r\n" % (lsp.MAX_MESSAGE_BYTES + 1) + OK_FRAME,
+                        b"Content-Length: %d\r\n\r\n" % (lsp_framing.MAX_MESSAGE_BYTES + 1) + OK_FRAME,
                         b"Content-Length: -5\r\n\r\n" + OK_FRAME):
             code, out = _serve(payload)
             self.assertEqual(0, code, payload[:30])
@@ -69,7 +70,7 @@ class LspTransportHardeningTest(unittest.TestCase):
 
     def test_oversized_header_line_is_bounded(self):
         """表头行本身也不能无界：不发换行的超长表头 ⇒ 坏帧（而不是把整条流读进内存）。"""
-        payload = b"X-Pad: " + b"y" * (lsp.MAX_MESSAGE_BYTES + 10) + b"\r\n\r\n" + OK_FRAME
+        payload = b"X-Pad: " + b"y" * (lsp_framing.MAX_MESSAGE_BYTES + 10) + b"\r\n\r\n" + OK_FRAME
         code, out = _serve(payload)
         self.assertEqual(0, code)
         self.assertIn(b"-32700", out)

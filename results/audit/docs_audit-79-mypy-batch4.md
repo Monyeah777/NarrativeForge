@@ -6,11 +6,10 @@ scope: 作者指令「按 rivet 62 计划执行（除外部）」——62 计划
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - desktop/src/core/lsp.py:24ed01d7dfc3af6e051a500376c488ac34717cdb9575e09d492b5dbfb974d260
+  - desktop/src/core/lsp.py:304e8edabe0c2878bc6fe997d957281cdc8b7cdfa7474b271bc25871690bc107
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
   - desktop/src/core/asset_contract.py:9a4e9ee0e73d03032218af84a0d6def58ab62b70bb84c8f697ab9f5e0743249c
-  - protocol/code_metrics_baseline.json:d8190542c7fb00374e809ba10c57d1402bb41e2d8238935acd7f987c91962d68
-
+  - protocol/code_metrics_baseline.json:078af3cef3c54af58af44f4e6eac1df58d53ea08a1bea9a52991cd673610ead4
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

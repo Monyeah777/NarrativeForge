@@ -339,6 +339,7 @@ def _md_title(text: str) -> str:
 TOOL_DEFS = [
     {
         "name": "pipeline_ls",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "列出 NF 管线清单（03_管线库 + community 包 pipelines）。",
         "inputSchema": {
             "type": "object",
@@ -348,15 +349,20 @@ TOOL_DEFS = [
     },
     {
         "name": "spec_ls",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "列出 registry protocols 协议包清单（id/version/模块数/类别）。",
+        # 2026-10-08 删除已声明的 `tier`：registry 的 protocols 里**没有分级字段**，过滤从未实现
+        # （实测：传任意 tier 返回完全相同的全量清单，结果里也没有 tier 字段）——「声明了不生效」
+        # 是静默降级，比缺个参数更坏；宁可不声明。若将来 registry 补了分级数据，再连同实现一起加回。
         "inputSchema": {
             "type": "object",
             "additionalProperties": False,
-            "properties": {"tier": {"type": "string", "description": "可选按分级过滤"}},
+            "properties": {},
         },
     },
     {
         "name": "registry_query",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "查询 registry 模块/协议（按 id/name/包 id 子串匹配，只读）。",
         "inputSchema": {
             "type": "object",
@@ -367,6 +373,7 @@ TOOL_DEFS = [
     },
     {
         "name": "library_search",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": ("仓库侧知识库检索：**馆藏条目（正文级，含标题/描述/标签/正文）** "
                         "+ docs + community README + 编号方案文档。"),
         "inputSchema": {
@@ -378,6 +385,7 @@ TOOL_DEFS = [
     },
     {
         "name": "library_read",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "取云端图书馆馆藏条目正文（按 NF 编号，大小写不敏感；返回 frontmatter + 全文）。",
         "inputSchema": {
             "type": "object",
@@ -389,6 +397,7 @@ TOOL_DEFS = [
     },
     {
         "name": "pattern_read",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "取实践包（patterns/）正文：按 id 返回 frontmatter + 可执行规则 + 正反例（只读）。",
         "inputSchema": {
             "type": "object",
@@ -401,6 +410,7 @@ TOOL_DEFS = [
     },
     {
         "name": "knowledge_order",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "解析知识源查询顺序（先合同级后参考级；可按可见性 clearance 裁剪）——双源知识层的机器面。",
         "inputSchema": {
             "type": "object",
@@ -413,6 +423,7 @@ TOOL_DEFS = [
     },
     {
         "name": "module_read",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "取模块正文实质内容（04_模块库 + community modules，按 id 或限定 id 解析）。",
         "inputSchema": {
             "type": "object",
@@ -423,6 +434,7 @@ TOOL_DEFS = [
     },
     {
         "name": "pipeline_read",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "取管线正文实质内容（03_管线库 + community pipelines，按 id 或相对路径）。",
         "inputSchema": {
             "type": "object",
@@ -433,6 +445,7 @@ TOOL_DEFS = [
     },
     {
         "name": "asset_get",
+        "annotations": {"readOnlyHint": True},   # 只读红线写成协议层可机读形式
         "description": "取资产正文实质内容（community/*/assets + 05 用户自定义，按键/包定位）。",
         "inputSchema": {
             "type": "object",
@@ -802,6 +815,24 @@ def _repo_resource_metas() -> list:
     return metas
 
 
+def _uri_escaped_alias(uri: str, known) -> str:
+    """「未编码 ↔ percent-encoded」等价的**已登记** uri（无等价返回空串）。
+
+    为什么需要（2026-10-08 实测缺口）：`resources/templates/list` 发布
+    `nf://repo/asset/{package}/{key}`，而 `resources/list` 给的是 **percent-encoded** 形态；
+    agent 按模板自然代入中文包名（未编码）去读 ⇒ 此前一律「未知资源 uri」——模板成了**不可用承诺**。
+    这里只做**转义等价归一**（不是模糊匹配，也不是新增白名单）：仍只认已登记 uri。
+    """
+    import urllib.parse as up          # 与本模块其它取件点同一风格（局部导入）
+    want = up.unquote(uri)
+    # 注意：**不能**因为「入参没有转义」就早退——恰恰是入参未编码、登记项已编码这种组合要归一
+    # （2026-10-08 实测：早退版让中文包名的模板替身依旧读不到，判据当场抓住）。
+    for k in known:
+        if up.unquote(k) == want:
+            return k
+    return ""
+
+
 def _repo_uri_source(uri: str) -> str:
     """nf://repo/<kind>/… → **来源件的仓库相对路径**（信任标注按来源判外来面）。
 
@@ -1076,9 +1107,18 @@ class McpRuntime:
         if not isinstance(params, dict) or not isinstance(params.get("name"), str):
             raise ValueError("tools/call 需 params{name, arguments}")
         name = params["name"]
-        args = params.get("arguments") or {}
-        if not isinstance(args, dict):
-            raise ValueError("arguments 须为对象")
+        # arguments 是**声明为对象**的字段：显式 null 视为未传，其余非对象一律参数非法。
+        # 修此处的理由（2026-10-08 实测）：旧写法把 []/""/0/False 这些**假值**静默当成「没传参数」
+        # 并继续执行——客户端以为走了位置参数，服务端却按默认值跑完并给了结果（静默降级）；
+        # 口径也与 prompts/get 不一致（那边早已拒绝非对象）。
+        raw_args = params.get("arguments")
+        if raw_args is None:
+            args: Dict[str, Any] = {}
+        elif isinstance(raw_args, dict):
+            args = raw_args
+        else:
+            raise ValueError("arguments 须为对象（收到 %s；修复指引：按 tools/list 的 inputSchema "
+                             "用 {name: value} 形式，勿传数组/标量）" % type(raw_args).__name__)
         handler = TOOL_HANDLERS.get(name)
         if handler is None:
             raise ValueError("未知工具：%s（只读工具面 = %s）"
@@ -1154,6 +1194,10 @@ class McpRuntime:
                 if k.lower() == low:
                     uri = k
                     break
+        if isinstance(uri, str) and uri not in self._repo_meta:
+            alias = _uri_escaped_alias(uri, self._repo_meta)
+            if alias:
+                uri = alias               # 未编码写法 → 已登记的 percent-encoded 形态
         if isinstance(uri, str) and uri in self._repo_meta:
             try:
                 rel = _repo_uri_source(uri)

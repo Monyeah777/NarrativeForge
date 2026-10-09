@@ -6,25 +6,25 @@ scope: 作者指示的七项任务（NF 深析 / 外部协议清单 ≥100 条 /
 verdict: pass
 auditor: 本轮执行者
 subjects:
-  - verify.sh:15d4a86c29537a3d884fecc946170ee78714e18211590257e4399b18b4f3a6f4
+  - verify.sh:06932ee691ac96922d199ed3662099dbf6094d62b16c7d3a263e4dfff64a6230
   - .gitattributes:f6fb4175293c85a259d4c60564352c811dded74210c1ad54ec4bfc0376a4188a
   - desktop/src/core/text_hygiene.py:63ceb140b09acf932f1eecd8b3a324889e61d18c8b4cda12d4130594d9eb94fd
   - desktop/src/core/interop_export.py:520aaf0edb53d5ab679d3a1568c315f45ce8301ead3df90411e3e67572dc269a
-  - desktop/src/core/mcp_runtime.py:5baba43c842ce4f59878c0b54d14dd62bfcaa94c9523d74d41f39397945f4e69
-  - desktop/src/core/prose_lint.py:757c0507afb9149c1bdafd7e0a0dabcb9a84165cd5414c84a3c95b1f77a80799
+  - desktop/src/core/mcp_runtime.py:8ba6e7e2ad01182c0422529922b892f0b13d75612cea65add875262ad58693f7
+  - desktop/src/core/prose_lint.py:d3d6789bc60e9fe664fa4c7af24c10d380f9aced70f2a494e812246da74d1a69
   - desktop/src/core/license_gate.py:602d29e257651283e5d51cd173568878ab7cb4daa385a79fd79e53cd37ff3889
   - desktop/src/core/doc_hygiene.py:635926ce334273ceec59d8ec83d9234d5e14466d336d7c285efe0cf2f4e125ec
   - desktop/src/core/endpoint.py:ddb7e4b0bbb2f60753f249a8b08fc0a1ba9629ff0f63ea24f91ca348204c373e
   - desktop/src/core/purity_scan.py:dcb81f0bab7511d9861e44e0511fcb7b1ce18d26213415a5add4cd533f891c30
-  - scripts/nf.py:80d1cbce69f7c8b559a94d030cc3d247f4f0b2cbfcb9d6f1a71cc1618c00aaa7
+  - scripts/nf.py:f23801bcf642b3ac5a95a15068f776712aeff5a01a0ec20063646ddc1ec36036
   - scripts/check_external_links.py:04cfe9fa4d7213021e60faac7ff88414db529090892ed38441ff61db8810861e
   - scripts/check_interop_schemas.py:d7a783e8f8612135b8df3b7e03bf1f0e24377df6d4649fd9aa42dbe3e7dfcae3
   - results/interop-schema-validation.md:e2546c6407416b61912ac351d14d20c171167e36be4d4d3461f6c2fceb56c0c9
   - docs/interop.md:f884a0533ed89aae8c83a2a44da491afb334c083dc05051158ac3a91e88e4f5c
   - docs/text-hygiene.md:36edf35f60bc669192443a8c16a4bcdc7c22408270fff5ea15308a16a756f986
   - docs/endpoint.md:4da6d07f9d0ed0a7166c028b1a4070a370f2edc9e70e700cce03c3d38b4e930f
-  - docs/mcp.md:b6680ab1534c717008813793450af6f30791b9f3ccd5c2594b33f2a979a39896
-  - llms.txt:fc34cf77fa1cbb802a33c6b0250f83d7d0844501880297750f4b279fe13f18a4
+  - docs/mcp.md:24afe867db3ac4a7395591ba4938a87d771afbe6c1d631e0e639eb9adeea7716
+  - llms.txt:60fa25a37167622423de2f8ecf49310ff6aa4774a04fedbc4ba486bda1836903
 
 ---
 

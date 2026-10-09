@@ -172,6 +172,23 @@ def _command_snippets(text: str) -> List[str]:
     return out
 
 
+def cli_commands(root: str = ".") -> set:
+    """CLI 子命令面（含别名）——`command_face` 与技能面判据共用同一份抽取（不各写一遍）。
+
+    别名也算命令面（2026-10-01 修）：`add_parser("shell", aliases=["terminal"])` 的 `nf terminal`
+    是 argparse 真能跑的；只认主名会把文档里的别名误判成「不是 CLI 子命令」。
+    """
+    nf_path = os.path.join(root, "scripts", "nf.py")
+    if not os.path.exists(nf_path):
+        return set()
+    with open(nf_path, encoding="utf-8") as fh:
+        nf_src = fh.read()
+    cmds = set(re.findall(r'sub\.add_parser\(\s*"([a-z0-9-]+)"', nf_src))
+    for group in re.findall(r"aliases\s*=\s*\[([^\]]*)\]", nf_src):
+        cmds.update(re.findall(r'"([a-z0-9-]+)"', group))
+    return cmds
+
+
 def command_face(root: str = ".") -> tuple:
     """文档命令面 ↔ CLI 注册表 / MCP 工具表一致性（外部标准净吸收：文档即接口面）。
 
@@ -181,18 +198,7 @@ def command_face(root: str = ".") -> tuple:
     判据只看「当作命令呈现的片段」（行内代码 / 围栏块），不判散文里的自然语言词。
     """
     import glob
-    nf_path = os.path.join(root, "scripts", "nf.py")
-    cmds = set()
-    if os.path.exists(nf_path):
-        with open(nf_path, encoding="utf-8") as fh:
-            nf_src = fh.read()
-        cmds = set(re.findall(r'sub\.add_parser\(\s*"([a-z0-9-]+)"', nf_src))
-        # **别名也算命令面**（2026-10-01 修）：`add_parser("shell", aliases=["terminal"])` 的
-        # `nf terminal` 是 argparse 真能跑的命令，而上面的正则只认主名 ⇒ 文档写别名反被判
-        # 「不是 CLI 子命令」（实测：`docs/terminal.md` 写 `nf terminal` 被本判据误红）。
-        # 口径与 `nf shell --commands` 一致——那张表里 `terminal` 本来就是在册条目。
-        for group in re.findall(r"aliases\s*=\s*\[([^\]]*)\]", nf_src):
-            cmds.update(re.findall(r'"([a-z0-9-]+)"', group))
+    cmds = cli_commands(root)
     try:
         import sys
         sys.path.insert(0, os.path.join(root, "desktop", "src"))

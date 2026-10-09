@@ -2,11 +2,11 @@
   "schema": "nf-driver/1",
   "note": "指令档的机器面路由表（机制借鉴 ACP 的 driver override）：有 MCP 实现就走 MCP；派发失败即停，禁止回退成文本步骤。文档头部为声明位，本文件为机读真源。",
   "bindings": {
-    "mcp.server": "python scripts/nf.py serve <mcp.json 快照>",
+    "mcp.server": "python scripts/nf.py serve",
     "mcp.tools": ["pipeline_ls", "spec_ls", "registry_query", "library_search",
                   "library_read", "module_read", "pipeline_read", "asset_get"],
     "mcp.prompts": ["assemble_guide"],
-    "setup": "nf run --fmt mcp → nf serve <快照>（详见 docs/mcp.md）"
+    "setup": "nf serve（默认实时仓库面，无需快照；仅固化某次装配成果面时才 nf run --fmt mcp → nf serve <快照>，详见 docs/mcp.md）"
   },
   "workflows": {
     "assemble": {

@@ -324,6 +324,12 @@
       "id": "AUD-0044",
       "title": "复杂度收敛第七批（json_schema._check 84→按关键字类拆分）",
       "verdict": "pass"
+    },
+    {
+      "date": "2026-10-07",
+      "id": "AUD-0045",
+      "title": "三轴接入生产级适配第一波（IDE/编辑器面 + 文档门户常驻判据 + 对外文档对账）",
+      "verdict": "pass"
     }
   ],
   "responseContract": {
