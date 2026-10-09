@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - name: 工具链自述 + 把 npm 升到支持 trusted publishing 的版本
         run: |
           node --version
@@ -72,7 +72,7 @@ jobs:
       contents: read
       packages: write          # 发布包到 GitHub Packages 必需
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - name: payload 暂存 + 发布前自检（先按 npmjs 口径自证，再改名）
         working-directory: packaging/npm
         run: |
