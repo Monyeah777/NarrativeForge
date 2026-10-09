@@ -25,7 +25,9 @@ def _load_state(path: str) -> Dict[str, Any]:
 
 def _parser() -> argparse.ArgumentParser:
     common = argparse.ArgumentParser(add_help=False)
-    common.add_argument("--root", default=".", help="NF 仓库根（真源：world_slots / event_registry / schema）")
+    # SUPPRESS：子解析器的默认值不得覆盖主解析器已给的 --root（argparse parents 的经典陷阱）
+    common.add_argument("--root", default=argparse.SUPPRESS,
+                        help="NF 仓库根（真源：world_slots / event_registry / schema）")
     ap = argparse.ArgumentParser(prog="nf nfal",
                                  description="NFA-L：NF 声明式(借 YAML/IDL) + 命令式(封闭 guard 表达式) 混合前端/后端")
     ap.add_argument("--root", default=".", help="NF 仓库根")
