@@ -6,7 +6,7 @@
 ## 覆盖
 | schema | 模块文档 | 机读契约 | 管线 | 协议包 | 台账条目 |
 | - | - | - | - | - | - |
-| 8 | 248 | 248 | 114 | 111 | 2 |
+| 9 | 248 | 248 | 114 | 111 | 2 |
 
 ## schema 定义
 - asset.schema.json
@@ -15,6 +15,7 @@
 - nf:integration
 - nf:integration-strings
 - nf:release-policy
+- nfh.schema.json
 - pipeline.schema.json
 - protocol.schema.json
 

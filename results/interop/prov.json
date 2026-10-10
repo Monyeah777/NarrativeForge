@@ -137,7 +137,7 @@
     {
       "@id": "nf:file/protocol/CONFORMANCE.md",
       "@type": "prov:Entity",
-      "nf:sha256": "8a223b9e964de2595f8e6f1370a205704b2e303d96f56af524d5b414715f6dd8"
+      "nf:sha256": "a2b8e6060438a631470b873f25e2f628b7651fba23736a7a8bf5ca64fb98766f"
     },
     {
       "@id": "nf:file/protocol/LAYERS.json",
@@ -295,6 +295,11 @@
       "nf:sha256": "4271c47cdd643524684f19a81c2d23dd6f9a1d85da704d7a49be870927e059b2"
     },
     {
+      "@id": "nf:file/protocol/schema/nfh.schema.json",
+      "@type": "prov:Entity",
+      "nf:sha256": "0aec8c6a465872ea090650468738b1d00e3886bd0e65b10ba21fada9f6fef346"
+    },
+    {
       "@id": "nf:file/protocol/schema/pipeline.schema.json",
       "@type": "prov:Entity",
       "nf:sha256": "f9f7d31669332afda85b11a53b6d1e57221a4577dd0b3cbb3367f01206a6aabf"
@@ -368,6 +373,6 @@
   "x-nf-counts": {
     "activities": 3,
     "agents": 3,
-    "entities": 62
+    "entities": 63
   }
 }

@@ -2,9 +2,9 @@
   "_type": "https://in-toto.io/Statement/v1",
   "predicate": {
     "algorithm": "RFC6962-style sha256 domain-separated",
-    "count": 57,
+    "count": 58,
     "note": "派生自 protocol/RECEIPTS.json；inclusion proof 留在原回执单根内。",
-    "root": "98cd16f3c10948640d324919731c7be259fb67c6717740a63ee372f3f34eac08",
+    "root": "53a4236d5106a8eed78333ef1ccbda05ace52f25379a11cd62d39c853728298f",
     "scope": "protocol"
   },
   "predicateType": "https://ninfenz.dev/attestation/protocol-receipts/v1",
@@ -125,7 +125,7 @@
     },
     {
       "digest": {
-        "sha256": "8a223b9e964de2595f8e6f1370a205704b2e303d96f56af524d5b414715f6dd8"
+        "sha256": "a2b8e6060438a631470b873f25e2f628b7651fba23736a7a8bf5ca64fb98766f"
       },
       "name": "protocol/CONFORMANCE.md"
     },
@@ -302,6 +302,12 @@
         "sha256": "4271c47cdd643524684f19a81c2d23dd6f9a1d85da704d7a49be870927e059b2"
       },
       "name": "protocol/schema/module.schema.json"
+    },
+    {
+      "digest": {
+        "sha256": "0aec8c6a465872ea090650468738b1d00e3886bd0e65b10ba21fada9f6fef346"
+      },
+      "name": "protocol/schema/nfh.schema.json"
     },
     {
       "digest": {

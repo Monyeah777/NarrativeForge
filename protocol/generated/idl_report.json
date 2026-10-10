@@ -2834,6 +2834,7 @@
     "nf:integration",
     "nf:integration-strings",
     "nf:release-policy",
+    "nfh.schema.json",
     "pipeline.schema.json",
     "protocol.schema.json"
   ]

@@ -13,7 +13,7 @@ subjects:
   - scripts/interop_thirdparty_kit.py:05772f664348a3682b94a0f5dceaa5e9a39a91c0701ba7614bf121ac5f450202
   - scripts/geo_export.py:616992be1e6f5e8251b5a9aa98abc8d27dfee22ddb9152a335538f17e28ea06a
   - scripts/fde_sample_run.py:a891a76e559c4d68260ecc8ea03b9d76109a793e859e53cb42a0bc5b0edf9560
-  - protocol/CONFORMANCE.md:8a223b9e964de2595f8e6f1370a205704b2e303d96f56af524d5b414715f6dd8
+  - protocol/CONFORMANCE.md:a2b8e6060438a631470b873f25e2f628b7651fba23736a7a8bf5ca64fb98766f
   - docs/fde-stack.md:79633a484dcf01cd92c03deac96d7b59f85489c1aa0ec4ad5489768d2702da8a
   - docs/fde-sample/README.md:c17984ad90f50d39131fd932c37915b978e28bf606f9c397128de1c8417e4168
   - docs/interop-thirdparty.md:637dff4598a4b8ff21f81090c20b625269cea49903d396a3fc2968f2f1e1f2fc
@@ -22,6 +22,10 @@ subjects:
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
+> 重签位（2026-10-10）：`protocol/CONFORMANCE.md` 绑定 digest 已重签——被审对象内容变更点 =
+> 「IDL schema 集」`8 件` → `9 件`（新增第 9 件 IDL schema `protocol/schema/nfh.schema.json`），
+> 并同步刷新其「最后更新」位；本件其余 subjects、scope 与 pass 结论均未变（重签理由：门禁
+> `nf-audit/1` 要求 `subjects` 逐条与当前字节一致，对象一改旧审计即失效——见 `core/audit.py`）。
 > subjects 不含派生物：`protocol/repo_stats.json`、`docs/standards/*`、`protocol/geo_export.json`、
 > `docs/fde-sample/evidence/*` 均为可复算投影（由脚本重跑逐字节可还原），按口径不入审计绑定。
 

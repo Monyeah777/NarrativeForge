@@ -41,7 +41,7 @@
         "module_docs": 248,
         "pipelines": 114,
         "protocols": 111,
-        "schema_files": 8
+        "schema_files": 9
       },
       "status": "pass",
       "warns": 0
@@ -475,7 +475,7 @@
       "warns": 0
     }
   ],
-  "root_digest": "f18b516277b4024f6b5666351fb2507ae76cc9426f6733ee7d8fdfebda810973",
+  "root_digest": "de4cee1ff73db936965b6a49540295a65ee4c435454bdc382e35f9066a111064",
   "schema": "nf-verify-report/1",
   "summary": {
     "error": 0,

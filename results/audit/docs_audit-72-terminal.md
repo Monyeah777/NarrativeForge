@@ -16,11 +16,15 @@ subjects:
   - desktop/src/core/doc_hygiene.py:635926ce334273ceec59d8ec83d9234d5e14466d336d7c285efe0cf2f4e125ec
   - docs/terminal.md:ebaf6a7600254cbfdb7dc0916e3f3d4aa802119e8bb7110e58f98d9beedd9c20
   - docs/L3_FROZEN.md:9dad824e749aac75ee4cf583adb48d0ede9c02a0a717ff43d314cbbfcb3cf3af
-  - protocol/CONFORMANCE.md:8a223b9e964de2595f8e6f1370a205704b2e303d96f56af524d5b414715f6dd8
+  - protocol/CONFORMANCE.md:a2b8e6060438a631470b873f25e2f628b7651fba23736a7a8bf5ca64fb98766f
 
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。
+> 重签位（2026-10-10）：`protocol/CONFORMANCE.md` 绑定 digest 已重签——被审对象内容变更点 =
+> 「IDL schema 集」`8 件` → `9 件`（新增第 9 件 IDL schema `protocol/schema/nfh.schema.json`），
+> 并同步刷新其「最后更新」位；本件其余 subjects、scope 与 pass 结论均未变（重签理由：门禁
+> `nf-audit/1` 要求 `subjects` 逐条与当前字节一致，对象一改旧审计即失效——见 `core/audit.py`）。
 > subjects 不含派生物：`protocol/repo_stats.json`、`results/interop/*.json`、`protocol/RECEIPTS.json`、
 > `protocol/conformance_report.json`、`docs/verification-cards.md` 均为可复算投影或随基线刷新的
 > 当前态文档，按既有口径不入审计绑定（它们由 check31/33/35/38 自证一致）。
