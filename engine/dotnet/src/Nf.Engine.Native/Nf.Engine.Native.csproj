@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    NF .NET 引擎线的 **C ABI 共享库**出口（NativeAOT）。
+
+    用途：给 desktop/src/core/engine_loader.py 一个可 dlopen 的原生库，暴露与 Rust 线同名的
+    ABI 符号 nf_engine_abi_version()。与 Nf.Engine 主库分离：主库仍是 BCL-only 的托管判据实现，
+    本件只是「原生出口壳」。
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AssemblyName>nf_engine_native</AssemblyName>
+    <PublishAot>true</PublishAot>
+    <NativeLib>Shared</NativeLib>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <StripSymbols>true</StripSymbols>
+  </PropertyGroup>
+</Project>

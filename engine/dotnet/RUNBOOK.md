@@ -13,6 +13,24 @@
 
 两个 PS1 的默认值按「**环境变量 → `probes/_paths.local.json` → PATH 通用名**」三级解析：换机器时只写本地配置，或设
 `NF_SNAPSHOT` / `NF_SNAPSHOT_OTHER` / `NF_CLI` / `NF_PYTHON` / `NF_DOTNET` / `NF_BASH`。
+## 0.1 C ABI 共享库出口（`src/Nf.Engine.Native/`）
+
+给 `desktop/src/core/engine_loader.py` 一个**可 dlopen 的原生库**：`NativeExports.cs` 用
+`[UnmanagedCallersOnly(EntryPoint = "nf_engine_abi_version")]` 导出与 Rust 线**同名同义**的 C ABI 符号。
+
+```powershell
+dotnet publish engine/dotnet/src/Nf.Engine.Native/Nf.Engine.Native.csproj -c Release -r win-x64 -o engine/dotnet/dist
+# → engine/dotnet/dist/nf_engine_native.dll
+python -c "import sys;sys.path.insert(0,'desktop/src');from core import engine_loader as el;print(el.engine_abi('engine/dotnet/dist/nf_engine_native.dll'))"
+```
+
+> **前置条件（2026-10-10 实测）**：`PublishAot=true` 需要 **Desktop Development for C++**（MSVC `link.exe` + Windows SDK）；
+> 缺它时 ILC 报 `Platform linker not found`（ILCompiler 8.0.31）；`dotnet build` 本身零警告零错误。
+> 本机装 VS Build Tools（`VC.Tools.x86.x64` + `Windows11SDK.22621`）后 **publish 成功**：产出
+> `nf_engine_native.dll`（1.1 MB），`engine_loader.engine_abi(...)` → **1**（真 dlopen + 调 C ABI），
+> `python scripts/engine_status.py` 列出该候选库。产物落 `engine/dotnet/dist/`（`.gitignore` 的 `dist/`，不入库）。
+> 本件是**独立的"原生出口壳"**，不改 `Nf.Engine` 主库的 **BCL-only** 依赖姿态（ADR-0005）。
+
 
 ## 1. 加一条判据（标准流程）
 

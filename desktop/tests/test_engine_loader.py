@@ -31,14 +31,20 @@ class EngineLoaderTest(unittest.TestCase):
         # 平台 C 运行库没有本仓的 ABI 符号 → 必须 fail-closed 返回 None（不假装成功）
         self.assertIsNone(el.engine_abi(el.c_library()))
 
-    def test_engine_abi_when_cdylib_built(self):
-        """Rust 线产出 cdylib 时（target/ 不入库），必须能真载入并取到 ABI 版本。"""
-        libs = el.provider_libs(str(ROOT), "rust")
-        if not libs:
-            self.skipTest("Rust cdylib 未构建（target/ 不入库）：仅已构建时验证真实装载")
-        got = el.engine_abi(str(ROOT / libs[0]))
-        self.assertIsInstance(got, int)
-        self.assertGreaterEqual(got, 1)
+    def test_engine_abi_for_every_built_provider_lib(self):
+        """引擎线产出原生库时（target/ 与 dist/ 均不入库），必须能真载入并取到 ABI 版本。
+
+        覆盖面 = 两条线：Rust cdylib（cargo --lib）与 .NET NativeAOT（dotnet publish -p:PublishAot）。
+        """
+        found = 0
+        for engine_dir in ("rust", "dotnet"):
+            for rel in el.provider_libs(str(ROOT), engine_dir):
+                got = el.engine_abi(str(ROOT / rel))
+                self.assertIsInstance(got, int, rel)
+                self.assertGreaterEqual(got, 1)
+                found += 1
+        if not found:
+            self.skipTest("两条引擎线均未构建原生库（target/ 与 dist/ 不入库）")
 
     def test_provider_libs_are_relative_sorted(self):
         libs = el.provider_libs(str(ROOT), "rust")
