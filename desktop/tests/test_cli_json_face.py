@@ -282,7 +282,16 @@ class JsonFaceCanonicalArgsTest(unittest.TestCase):
             except ValueError:
                 bad.append("%s（rc=%d，stdout 非 JSON）" % (name, p.returncode))
                 continue
-            if not isinstance(data, dict) or not ({"kind", "schema"} & set(data)):
+            if not isinstance(data, dict):
+                bad.append("%s（顶层非对象）" % name)
+                continue
+            if p.returncode != 0:
+                # 本判据管「**成功时**自带类型」（见模块头）：失败时的契约是失败信封
+                # {"ok": false, …}（不是面判别）。故 rc≠0 时改为核该信封，而不是要 kind/schema。
+                if data.get("ok") is not False:
+                    bad.append("%s（rc=%d 但非失败信封：%r）" % (name, p.returncode, data))
+                continue
+            if not ({"kind", "schema"} & set(data)):
                 bad.append("%s（缺面判别键）" % name)
         self.assertEqual([], bad, "需参面缺面判别键：%s" % bad)
 

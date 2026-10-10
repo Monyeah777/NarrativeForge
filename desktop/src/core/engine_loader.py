@@ -34,7 +34,13 @@ def c_library() -> str:
 
 
 def load(path: str) -> Optional[ctypes.CDLL]:
-    """载入共享库；失败返回 None（fail-closed），不抛异常。"""
+    """载入共享库；失败返回 None（fail-closed），不抛异常。
+
+    空串须先短路（2026-10-10 CI 实证）：POSIX 的 dlopen("") 返回**主程序句柄**而非报错，
+    于是 load("") 在 Linux 上不是 None——「缺件 fail-closed」在该平台被静默破坏。
+    """
+    if not str(path or "").strip():
+        return None
     try:
         return ctypes.CDLL(str(path))
     except OSError:
