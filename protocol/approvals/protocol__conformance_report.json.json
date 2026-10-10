@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-10-10",
   "approved_by": "Monyeah",
-  "note": "机械重批（同既有记录批准人）：docker-nfal 云端构建面 + 上下文修正后冻结链重算",
+  "note": "机械重批（同既有记录批准人）：跨平台 CI 修复（paths 绝对盘符/URI 归一/文档路径豁免）后冻结链重算",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "76a75024634a61c67895194278937a1aa838e4a1a761c794fbb9b38ab1da081b"

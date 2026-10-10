@@ -14,7 +14,7 @@ subjects:
   - scripts/geo_export.py:616992be1e6f5e8251b5a9aa98abc8d27dfee22ddb9152a335538f17e28ea06a
   - scripts/nf.py:2f0ae88f3f05e3d391a70a8f860724b8ed0c3ebe5b2182e2bd2d7606bde43d7e
   - scripts/check_external_links.py:04cfe9fa4d7213021e60faac7ff88414db529090892ed38441ff61db8810861e
-  - protocol/code_metrics_baseline.json:0a9483aa50592982fb1a8b4beb405bd5d833252dc019dc2d3346847e9254cfbc
+  - protocol/code_metrics_baseline.json:68f54b9b0e43aeddcca49e89a13226e4789748db6d7e065749faa0d6b27fd506
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

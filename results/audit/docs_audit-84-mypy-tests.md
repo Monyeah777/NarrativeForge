@@ -23,7 +23,7 @@ subjects:
   - desktop/tests/test_import_injection.py:bb39860e1dfa3276a648d38a7be3ec015279866a1407372f8c57c0a81a9fabc0
   - desktop/tests/test_gap_review.py:a66c19073a942e7e4d825ac759ffb9b2f8ecde7d981748f0290051cefb8a67fc
   - desktop/tests/test_explain_coverage.py:a64bc7bf7dacb57296b94d1babf8f2daa3aa51556d61676a603546804e4e3084
-  - desktop/tests/test_doc_reachability.py:7324aff14b764a2c7a547a9a1d2bcb894131ff45231151f0fd59b9a7fd219f0f
+  - desktop/tests/test_doc_reachability.py:368fcfff79565ad334c9f74b2a381f6d1e8b9b8d6df3261cec87997a4a875ab2
   - desktop/tests/test_dead_code.py:f6e0bc799efe991e04f18c2103e749634493848ef34373d539aa853af9facfb8
   - desktop/tests/test_daemon_parity.py:10582b2d9f5d7f9f6b2cb2f7e6bccc43b8b0ba1226d5153627ad7ff13cf89acb
   - desktop/tests/test_concept_graph_gate.py:446dbfd023c9d5171578ac4e7741c099fc40dce77e2f3bf1944f243f1f29a7e0
@@ -32,8 +32,7 @@ subjects:
   - desktop/tests/test_ccv3_adapter.py:38960758d0f9487b70e02963e3e79bfd0c1d30f1e6160944e3d5b65bdc584516
   - desktop/tests/test_ai_domain_closure.py:dc6a45d68ae576ae90a87700191ef5688aeb7db194139eff92317ecbc1140204
   - desktop/tests/test_terminal.py:4746211c2b01d9289a78198b5b8b5a4c5d5afd5303acc60f19ffbe63c9026ce7
-  - desktop/tests/test_nf_cli.py:dfbe0c927f7b14a5428d4cf347385c0f7d9753aaad86e6e63d95783dfb67fd58
-
+  - desktop/tests/test_nf_cli.py:3517ec3f2dfee09a020c72a833675c60c8b4695be3cc816b2dac7d909f3b36be
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

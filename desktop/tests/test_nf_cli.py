@@ -247,8 +247,11 @@ class NfCliSmokeTest(unittest.TestCase):
         / `patterns show` 一直是裁的。路径类入参**不裁**（POSIX 下尾随空格是合法文件名），
         故本件只钉标识符面。
         """
+        # 2026-10-10：原第 4 例【domain build --spec ' A01 '】依赖
+        # .rivet/private_archive/ai_packs/specs/（gitignored 内部档案）——fresh clone 上该
+        # spec 不在场，命令**应当**返回 1，故不能当 CI 判据；换成 tracked 数据面的标识符命令。
         for argv in (["related", " M90 "], ["who-refers", "M90 "],
-                     ["impact", " M90"], ["domain", "build", "--spec", " A01 "]):
+                     ["impact", " M90"], ["patterns", "show", " predicate-single-source "]):
             code, out = self._run(argv)
             self.assertEqual(0, code, "%s 应当接受带空白的标识符：%s" % (argv, out[:120]))
 

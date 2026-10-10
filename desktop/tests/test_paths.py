@@ -65,7 +65,10 @@ class ValidatePathTest(unittest.TestCase):
         口径与 `core.trust_boundary` 的参数面一致：带盘符一律拒。
         """
         with tempfile.TemporaryDirectory() as root:
-            for bad in ("C:foo", "z:evil.md", "C:tmp/x.md"):
+            # 2026-10-10 CI 实证补盘符**绝对**形态：POSIX 上 os.path.isabs 判 False，
+            # 账本面曾放行 C:/Windows/win.ini 而参数面拒——同一字符串不许有两个落点语义。
+            for bad in ("C:foo", "z:evil.md", "C:tmp/x.md",
+                        "C:/Windows/win.ini", "C:\\Windows\\win.ini"):
                 with self.assertRaises(paths.PathEscapeError, msg=bad):
                     paths.validate_path(root, bad)
             # 正例对照：正常的相对路径与（被允许的）根内绝对路径不受影响

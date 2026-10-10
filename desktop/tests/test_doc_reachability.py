@@ -127,6 +127,36 @@ EXEMPT_DOCS = {
     "docs/fde-stack.md": "FDE 样例文本——引用的 results/interop/* 为运行期产物",
     "engine/dotnet/_aux_golden.cs.txt": "负例 golden 夹具——含刻意不存在的路径",
 }
+#: 在场文档里**按设计指向在场外**的路径（生成物 / gitignored 内部档案）：fresh clone 不在场。
+#: 逐条写明理由；判定按**前缀边界**（`.rivet/scratchx` 不算命中 `.rivet/scratch`）。本表只许缩小。
+LIVING_PATH_EXEMPT = {
+    ".rivet/scratch": "内部档案暂存区（gitignored）：手稿/记录按设计引用，非仓库件",
+    "engine/rust/target": "Rust 构建产物目录（gitignored）：README/手稿指其布局，fresh clone 不在场",
+    "packaging/npm/payload": "npm 一键包暂存产物（gitignored）：由 npm run stage 生成",
+}
+
+
+def _is_exempt(cand: str) -> bool:
+    """cand 是否命中在场外豁免（前缀按边界，避免 .rivet/scratchx 误命中）。"""
+    return any(cand == k or cand.startswith(k + "/") for k in LIVING_PATH_EXEMPT)
+
+
+def _unresolved_paths(tokens: list, tops: set) -> list:
+    """文档 token 里**写成了真路径却走不到**的（含豁免；供判据与变异自证共用）。"""
+    out = []
+    for tok in tokens:
+        if "#" in tok:
+            continue
+        if not _looks_like_rel_path(tok, tops):
+            continue
+        cand = tok.strip().split("::", 1)[0]
+        if _is_exempt(cand):
+            continue
+        if not (ROOT / cand).exists():
+            out.append(cand)
+    return out
+
+
 def _living_docs() -> list:
     """全部「在场文档」（.md/.txt，排除结果归档与变更日志）——口径必须与仓库实况一致。
 
@@ -158,15 +188,19 @@ class LivingDocConsistencyTest(unittest.TestCase):
         for rel in self.docs:
             if rel in EXEMPT_DOCS:
                 continue
-            for tok in _tokens(rel):
-                if "#" in tok:
-                    continue
-                if not _looks_like_rel_path(tok, self.tops):
-                    continue
-                cand = tok.strip().split("::", 1)[0]
-                if not (ROOT / cand).exists():
-                    missing.append("%s <- %s" % (cand, rel))
+            for cand in _unresolved_paths(_tokens(rel), self.tops):
+                missing.append("%s <- %s" % (cand, rel))
         self.assertEqual([], sorted(set(missing)), "在场文档引用了不存在的路径")
+
+    def test_path_exempt_is_boundary_precise(self):
+        """豁免只认前缀边界：同类名不是豁免对象（防豁免表悄悄放宽）。"""
+        self.assertTrue(_is_exempt(".rivet/scratch/x.py"))
+        self.assertTrue(_is_exempt("engine/rust/target"))
+        self.assertTrue(_is_exempt("packaging/npm/payload/"))
+        self.assertFalse(_is_exempt(".rivet/scratchx"))
+        self.assertFalse(_is_exempt("engine/rust/targets"))
+        self.assertEqual(["docs/不存在的手册.md"],
+                         _unresolved_paths(["docs/不存在的手册.md"], self.tops))
 
     def test_living_docs_second_level_resolve(self):
         valid = _subcommands()

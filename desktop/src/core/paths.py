@@ -35,6 +35,11 @@ class PathEscapeError(ValueError):
 #: 口径：根内相对路径**不带盘符**，带盘符一律拒（与 `core.trust_boundary` 的参数面同源）。
 _DRIVE_RELATIVE = re.compile(r"^[A-Za-z]:(?![\\/])")
 
+#: 平台无关的绝对写法补判（2026-10-10 CI 实证）：POSIX 的 os.path.isabs 不认 Windows
+#: 盘符绝对（C:/x / C:\x）与 UNC（\\host\share）——账本面曾因此在 Linux 放行
+#: C:/Windows/win.ini，而参数面（trust_boundary._ABSOLUTE）拒，两套口径分叉。
+_WIN_ABS = re.compile(r"^(?:[A-Za-z]:[\\/]|\\\\)")
+
 #: 控制字符（\t \n \r 之外的 C0/C1 与 DEL）：文件名里出现即形状非法——Windows API 会静默
 #: 截断到 NUL 之前、POSIX 直接 `ValueError: embedded null byte`，两种都不是「可核验的产出」。
 _CONTROL = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
@@ -76,6 +81,11 @@ def contained(root: str, target: str) -> bool:
     return t == r or t.startswith(r + os.sep)
 
 
+def _is_absolute_write(text: str) -> bool:
+    """平台无关的绝对路径写法判据（POSIX isabs + Windows 盘符绝对/UNC）。"""
+    return os.path.isabs(text) or bool(_WIN_ABS.match(text))
+
+
 def validate_path(root: str, rel: str, *, allow_absolute: bool = False) -> str:
     """校验 `rel` 落在 `root` 内 → 返回根内绝对路径；否则抛 `PathEscapeError`。
 
@@ -85,7 +95,7 @@ def validate_path(root: str, rel: str, *, allow_absolute: bool = False) -> str:
     text = str(rel or "")
     if not text.strip():
         raise PathEscapeError("路径为空（修复指引：给出根内相对路径，如 assets/A1.md）")
-    if os.path.isabs(text) and not allow_absolute:
+    if _is_absolute_write(text) and not allow_absolute:
         raise PathEscapeError("不接受绝对路径：%s（修复指引：改用根内相对路径）" % text)
     issue = path_syntax_issue(text)
     if issue:

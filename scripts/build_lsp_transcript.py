@@ -85,7 +85,10 @@ def normalize(node):
     for v in sorted(set(variants), key=len, reverse=True):
         if v:
             node = _sub(node, v, ROOT_PLACEHOLDER)
-    return node
+    # 平台无关收口（2026-10-10 CI 实证）：file: URI 在 Windows 是 file:///C:/…（三斜杠），
+    # 在 POSIX 是 file:///home/…——按根路径替换后前者成 file:///nf-repo-root、后者成
+    # file://nf-repo-root（少一条斜杠），同一份夹具在两平台对不上。统一折成三斜杠形态。
+    return _sub(node, "file://" + ROOT_PLACEHOLDER, "file:///" + ROOT_PLACEHOLDER)
 
 
 def _core_frames(uri: str, doc) -> list:

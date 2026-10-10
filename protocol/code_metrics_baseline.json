@@ -446,7 +446,7 @@
       "max_fn_lines": 54
     },
     "desktop/src/core/paths.py": {
-      "lines": 135,
+      "lines": 145,
       "max_fn_cc": 9,
       "max_fn_lines": 34
     },
@@ -786,7 +786,7 @@
       "max_fn_lines": 90
     },
     "scripts/build_lsp_transcript.py": {
-      "lines": 221,
+      "lines": 224,
       "max_fn_cc": 8,
       "max_fn_lines": 39
     },
