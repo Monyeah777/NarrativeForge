@@ -81,6 +81,26 @@ def engines(root: str = ".") -> List[Dict[str, Any]]:
     return [p for p in providers(root) if p["engine"]]
 
 
+def engine_dirs(root: str = ".") -> List[str]:
+    """engine/ 下的实现目录名（按名排序；缺 engine/ 返回空）。"""
+    base = Path(root) / "engine"
+    if not base.is_dir():
+        return []
+    return sorted(p.name for p in base.iterdir() if p.is_dir() and not p.name.startswith("."))
+
+
+def issues(root: str = ".") -> List[str]:
+    """注册表完整性：每个 engine/ 实现目录都必须被某个接入面声明（缺 = 未登记的引擎线）。"""
+    declared = set()
+    for p in engines(root):
+        parts = str(p["entry_path"]).split("/")
+        if len(parts) >= 2 and parts[0] == "engine":
+            declared.add(parts[1])
+    return ["engine/%s/ 没有接入面声明（修复指引：加 integrations/<id>/integration.json，"
+            "entry.path 指向该目录）" % d
+            for d in engine_dirs(root) if d not in declared]
+
+
 def resolve(root: str = ".", want: str = "") -> Optional[Dict[str, Any]]:
     """按 provider id 或语言解析到一条记录；未命中 None。"""
     key = str(want).strip().lower()

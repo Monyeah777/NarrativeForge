@@ -5,6 +5,12 @@ edition = "2021"
 description = "NF 只读快线（Rust）—— 与 Python 真源逐字节对账"
 license = "MIT"
 
+# C ABI 共享库出口（2026-10-10）：给 core/engine_loader.py 一个可 dlopen 的 cdylib，
+# 暴露 ABI 版本号；与 bin（src/main.rs 只读快线）互不影响。符号名见 src/lib.rs 与 Python 侧 ABI_SYMBOL。
+[lib]
+name = "nf_rs"
+crate-type = ["cdylib", "rlib"]
+
 # 依赖姿态：sha2（RustCrypto）+ serde_json（仅读入）+ regex（本线固定正则）+ fancy-regex（真源数据驱动模式）
 #          + rustpython-parser / rustpython-ast（内置 Python 解析器，AST 类判据的地基）。
 #          **刻意不引 windows-sys / windows-link / iana-time / chrono**（见下方理由）。

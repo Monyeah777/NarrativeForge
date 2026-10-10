@@ -72,5 +72,23 @@ class MutationTest(unittest.TestCase):
             self.assertEqual([], er.providers(tmp))
 
 
+class RegistryCompletenessTest(unittest.TestCase):
+    def test_real_repo_engine_dirs_are_declared(self):
+        dirs = er.engine_dirs(str(ROOT))
+        self.assertIn("rust", dirs)
+        self.assertIn("dotnet", dirs)
+        self.assertEqual([], er.issues(str(ROOT)))
+
+    def test_undeclared_engine_dir_is_flagged(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _mk(tmp, "integrations/rust-fastlane/integration.json",
+                json.dumps(FACE, ensure_ascii=False))
+            _mk(tmp, "engine/rust/Cargo.toml", "[package]")
+            _mk(tmp, "engine/orphan/Cargo.toml", "[package]")
+            bad = er.issues(tmp)
+            self.assertTrue(any("orphan" in i for i in bad), bad)
+            self.assertEqual(["orphan", "rust"], er.engine_dirs(tmp))
+
+
 if __name__ == "__main__":
     unittest.main()

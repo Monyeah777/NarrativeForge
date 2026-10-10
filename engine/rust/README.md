@@ -3,6 +3,29 @@
 > **定位：只读快线的第三个实现面。**与 Python 侧（`verify.sh` + `desktop/src`）**并列**——不替代、不写盘、不改 `verify.sh` 基线。
 > 治理范式同 `engine/dotnet/`（见 `decisions/ADR-0005-新增NET引擎线.md`）：**只读判据面 + 与 Python 真源逐字节对账 + 写面不实现**。
 
+## C ABI 共享库（给动态加载面）
+
+本线除 bin（只读快线）外，另产一个 **cdylib**：`[lib] crate-type = ["cdylib","rlib"]` + `src/lib.rs`
+只导出 `nf_engine_abi_version()`（ABI 版本号）。用途是给 `desktop/src/core/engine_loader.py`
+一个可 dlopen 的共享库（Python 侧按同名字符串取符号 `ABI_SYMBOL`）。
+
+构建（产物入 `target/`，不入库）：
+
+```
+cargo build --release --lib --manifest-path engine/rust/Cargo.toml
+# → engine/rust/target/release/nf_rs.dll（Windows）/ libnf_rs.so（Linux）
+```
+
+自验：
+
+```
+python scripts/engine_status.py            # 候选共享库应列出该件
+python scripts/engine_status.py --abi      # dlopen + 调用一次（机制自证）
+```
+
+（`nf_engine_abi_version()` 的载入与调用实证见内部档案 63 §二十。）
+
+
 ## 评审者速览（2026-10-04 现值）
 
 **一句话**：本线是只读的**第二实现**，与 Python 真源**逐字节对账**；写面、执行层一概不碰。

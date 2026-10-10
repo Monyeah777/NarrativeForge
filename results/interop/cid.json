@@ -137,14 +137,14 @@
       "sha256": "a434491b89d398091cb9c1a44fd92fcf88100cefbc61513551380ec438f079a5"
     },
     {
-      "cid": "bafyreihxtc4cs2nqpke34mcopgoz6ob4j5ujsze2n3lnkojbmqycnme42i",
+      "cid": "bafyreifasdxekpzvmyqdxch4g74bi7errdheprsyex7vzjap7ktdvitdqa",
       "path": "protocol/LAYERS.json",
-      "sha256": "f798b82969b07a89be304e799d9f383c4f6899649a6ed6d53921643026b09cd2"
+      "sha256": "a090ee453f3566203b88fc37f8147c9188ce47c65825ff5ca40ffaa63aa26380"
     },
     {
-      "cid": "bafyreicspeucxbwmbn2vuiyxnlhoanjnfy2ufend55p4vwuwc5jmu5ki6i",
+      "cid": "bafyreibhha73zrcmn66k4oivnljnet3jv2o5sm5t5ovl77ae3gpiwf6ali",
       "path": "protocol/locales.json",
-      "sha256": "5279282b86cc0b755a23176acee0352d2e354291a3ef5fcada961752ca7548f2"
+      "sha256": "27383fbcc44c6fbcae39156ad2d24f69ae9dd933b3ebaabffc04d99e8b17c05a"
     },
     {
       "cid": "bafyreiamr3h23dy7emibiqw4riodahhmwdymxhrt2kj52dhljsvnzfhznu",

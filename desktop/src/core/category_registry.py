@@ -125,6 +125,21 @@ def locate(root: str, rel: str) -> List[str]:
     return sorted(hit)
 
 
+def _cover(mine: set, attributed_sets: Dict[str, set]) -> List[str]:
+    """mine 被哪些 LAYERS 派生品类的文件集完整包含（空集不算覆盖）。"""
+    if not mine:
+        return []
+    return sorted(cid for cid, s in attributed_sets.items() if mine <= s)
+
+
+def covered_by(root: str = ".", cat_id: str = "") -> List[str]:
+    """本品类被哪些 LAYERS 派生品类完整覆盖（命名子面判据）；未被任何阶覆盖即真空缺。"""
+    mine = set(files(root, cat_id))
+    att = {str(c["id"]): set(files(root, str(c["id"])))
+           for c in categories(root) if c.get("attributed")}
+    return _cover(mine, att)
+
+
 def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     """注册表自检 → (issues, warns, stats)：id 唯一 / 缺真源件 / 归属缺口如实报。"""
     issues: List[str] = []
@@ -132,6 +147,8 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     if not layers_doc(root):
         issues.append("缺抽象阶梯真源 %s（品类表无从派生；修复指引：在 NF 仓库根运行）" % LAYERS_REL)
     cats = categories(root)
+    filemap: Dict[str, set] = {str(c["id"]): set(files(root, str(c["id"]))) for c in cats}
+    att = {str(c["id"]): filemap[str(c["id"])] for c in cats if c.get("attributed")}
     seen: Dict[str, int] = {}
     empty: List[str] = []
     for c in cats:
@@ -139,7 +156,7 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
         seen[cid] = seen.get(cid, 0) + 1
         if not c["globs"]:
             issues.append("品类 %s 未声明任何 glob" % cid)
-        elif not files(root, cid):
+        elif not filemap[cid]:
             empty.append(cid)
     for cid, n in sorted(seen.items()):
         if n > 1:
@@ -154,9 +171,14 @@ def scan(root: str = ".") -> Tuple[List[str], List[str], Dict[str, Any]]:
     if empty:
         warns.append("以下品类 glob 未命中在場件（缺件或路径漂移）：%s" % "、".join(empty))
     unattributed = [str(c["id"]) for c in cats if not c.get("attributed")]
-    if unattributed:
+    facets = [cid for cid in unattributed if _cover(filemap[cid], att)]
+    uncovered = [cid for cid in unattributed if not _cover(filemap[cid], att)]
+    if facets:
+        warns.append("LAYERS 命名子面品类 %d 个（已被阶覆盖，仅作取件别名）：%s"
+                     % (len(facets), "、".join(facets)))
+    if uncovered:
         warns.append("LAYERS 未归属品类 %d 个（待回填抽象阶梯）：%s"
-                     % (len(unattributed), "、".join(unattributed)))
+                     % (len(uncovered), "、".join(uncovered)))
     stats = {"categories": len(cats), "attributed": len(cats) - len(unattributed),
              "unattributed": len(unattributed)}
     return issues, warns, stats

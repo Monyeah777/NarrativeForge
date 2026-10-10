@@ -38,7 +38,7 @@
         "globs": ["01_核心协议.md", "02_联动注册表.md", "06_Agent执行协议.md",
                   "07_官方核心出厂与社区预设导航.md", "STRATEGY.md",
                   "protocol/*.md", "protocol/*.json", "protocol/schema/*.json",
-                  "desktop/src/core/registry.json"],
+                  "desktop/src/core/registry.json", "integrations/*/integration.json"],
         "note": "协议真源 + 方向层（STRATEGY）+ 机读声明件面；protocol/ 下的派生物按 derived 名单豁免。"
       },
       "interface": {
@@ -58,7 +58,7 @@
       "change_tier": "additive",
       "source": {
         "globs": ["03_管线库/*.md", "04_模块库/*/*.md", "05_资产库/**/*",
-                  "community/**/*", "library/*.md"],
+                  "community/**/*", "library/*.md", "patterns/*/PATTERN.md"],
         "note": "内容真源（管线/模块/资产/域包/馆藏）；结构性变更（编号段、引用语义）按 bump 走 02 §9.3 四步迁移。"
       },
       "interface": {

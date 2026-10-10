@@ -42,8 +42,8 @@ Before changing anything, ask three questions; the answers are written in the ta
 
 | Rung | Source-of-truth surface | Interface surface (the only thing cross-rung dependency may rely on) | Existing criteria | Status / change class |
 |---|---|---|---|---|
-| **Contract** | `01_核心协议.md`, `02_联动注册表.md`, `06_Agent执行协议.md`, `07_官方核心出厂与社区预设导航.md`, `STRATEGY.md`, `protocol/*.md`, `protocol/*.json`, `protocol/schema/*.json`, `desktop/src/core/registry.json` | `protocol/schema/*.json`, `protocol/CONFORMANCE.md`, `desktop/src/core/registry.json` | check13, check28, check29, check30, check31 | active (bump) |
-| **Asset** | `03_管线库/*.md`, `04_模块库/*/*.md`, `05_资产库/**/*`, `community/**/*`, `library/*.md` | `community/*/protocol.yaml`, `05_资产库/provenance.json` | check7, check8, check9, check10, check11, check14, check15, check16, check23, check24, check34 | active (additive) |
+| **Contract** | `01_核心协议.md`, `02_联动注册表.md`, `06_Agent执行协议.md`, `07_官方核心出厂与社区预设导航.md`, `STRATEGY.md`, `protocol/*.md`, `protocol/*.json`, `protocol/schema/*.json`, `desktop/src/core/registry.json`, `integrations/*/integration.json` | `protocol/schema/*.json`, `protocol/CONFORMANCE.md`, `desktop/src/core/registry.json` | check13, check28, check29, check30, check31 | active (bump) |
+| **Asset** | `03_管线库/*.md`, `04_模块库/*/*.md`, `05_资产库/**/*`, `community/**/*`, `library/*.md`, `patterns/*/PATTERN.md` | `community/*/protocol.yaml`, `05_资产库/provenance.json` | check7, check8, check9, check10, check11, check14, check15, check16, check23, check24, check34 | active (additive) |
 | **Engine** | `desktop/src/core/*.py`, `desktop/tests/**/*.py`, `desktop/scripts/*.py`, `scripts/*.py`, `scripts/*.sh`, `scripts/nf`, `scripts/nf.cmd` | `scripts/nf.py` | check12, check17, check18, check19, check20, check21, check22, check27, check32, check33 | active (additive) |
 | **Exit** | `results/interop/*.json`, `docs/standards/*.md`, `docs/fde-sample/**/*` | `results/interop/*.json`, `docs/standards/index.md` | check18, check19, check22, check33, check38 | active (editorial) |
 

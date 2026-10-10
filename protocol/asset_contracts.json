@@ -103,7 +103,7 @@
         "rules",
         "tiers"
       ],
-      "sha256": "f798b82969b07a89be304e799d9f383c4f6899649a6ed6d53921643026b09cd2"
+      "sha256": "a090ee453f3566203b88fc37f8147c9188ce47c65825ff5ca40ffaa63aa26380"
     }
   ],
   "note": "数字资产契约声明面（三面：data / code / script）。data 面判格式 + 字段完整性 + 防篡改 + 输入输出一致性；code 面判 AST 规范 + 可证空指针 + 测试用例在场（安全漏洞面由 scripts/sast_check.py 的 bandit/ruff-S 计数棘轮与 purity_scan R6 守着，本面不重造第二套口径）；script 面判脚本自带 nf-io 头与声明的双源一致 + 链上 A 输出 ⊆ B 输入。真源单点：改本件即改契约，verify check40 与 nf asset contract 同源消费。",

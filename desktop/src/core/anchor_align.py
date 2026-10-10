@@ -21,6 +21,8 @@ from typing import Any, Dict, List
 CATALOG_REL = "protocol/standards_catalog.json"
 BINDING_REL = "protocol/standards_binding.json"
 _TOKEN = re.compile(r"[a-z0-9_]+")
+#: 标准目录的五个层（口径同 protocol/standards_catalog.json 的 coverage.by_layer）
+LAYERS = ("data", "eng", "form", "gov", "iface")
 _HAN = re.compile("[一-龥]+")
 
 
@@ -126,6 +128,95 @@ def intersect(root: str = ".", term: str = "", layer: str = "",
                          "title": str(s.get("title") or ""), "hits": hit,
                          "bound": sid in b})
     rows.sort(key=lambda r: (-int(r["hits"]), str(r["id"])))
+    return rows[:limit] if limit and limit > 0 else rows
+
+
+def pack_stats(root: str = ".") -> List[Dict[str, Any]]:
+    """逐域包标准对齐概览（按层覆盖宽度升序）：绑定数 / 标准数 / 各层计数 / 层覆盖宽度。"""
+    rows: List[Dict[str, Any]] = []
+    for p in (_read(root, BINDING_REL).get("packs") or []):
+        if not isinstance(p, dict):
+            continue
+        binds = [b for b in (p.get("bindings") or []) if isinstance(b, dict)]
+        layers: Dict[str, int] = {}
+        for b in binds:
+            lay = str(b.get("standard_layer") or "(未声明)")
+            layers[lay] = layers.get(lay, 0) + 1
+        rows.append({
+            "code": str(p.get("code") or ""),
+            "package": str(p.get("package") or ""),
+            "category": str(p.get("category") or ""),
+            "subdivisions": int(p.get("subdivisions") or 0),
+            "bindings": len(binds),
+            "distinct_standards": len({str(b.get("standard")) for b in binds if b.get("standard")}),
+            "layers": {k: layers[k] for k in sorted(layers)},
+            "layer_breadth": len(layers),
+            "missing_layers": [x for x in LAYERS if x not in layers],
+        })
+    return sorted(rows, key=lambda r: (int(r["layer_breadth"]), int(r["distinct_standards"]),
+                                       str(r["code"])))
+
+
+def shallow_packs(root: str = ".", max_breadth: int = 2) -> List[Dict[str, Any]]:
+    """层覆盖宽度 ≤ max_breadth 的域包（反向对齐的优先补强清单，按宽度升序）。"""
+    limit = max(0, int(max_breadth))
+    return [r for r in pack_stats(root) if int(r["layer_breadth"]) <= limit]
+
+
+def depends(root: str = ".") -> Dict[str, List[str]]:
+    """标准依赖图（id → depends_on 在册项，去重排序；悬空引用剔除）。"""
+    ids = {str(s.get("id")) for s in catalog(root)}
+    out: Dict[str, List[str]] = {}
+    for s in catalog(root):
+        sid = str(s.get("id"))
+        out[sid] = sorted({str(d) for d in (s.get("depends_on") or []) if str(d) in ids})
+    return out
+
+
+def dependents(root: str = ".") -> Dict[str, List[str]]:
+    """反向依赖图（id → 依赖它的 id 列表，按 id 排序）。"""
+    rev: Dict[str, List[str]] = {}
+    for sid, ds in depends(root).items():
+        for d in ds:
+            rev.setdefault(d, []).append(sid)
+    return {k: sorted(v) for k, v in rev.items()}
+
+
+def bootstrap(root: str = ".", term: str = "", depth: int = 1,
+              limit: int = 0) -> List[Dict[str, Any]]:
+    """正向自举：词汇命中标准（种子）→ 沿依赖与反向依赖各扩 depth 层。
+
+    返回 [{id, layer, title, hits, depth, via}]，按（depth 升、hits 降、id 升）排序；
+    hits 只在种子非零；via = 带入者（种子记 term，扩展节点记父标准 id）。depth=0 只回种子。
+    """
+    seeds = intersect(root, term, include_bound=True)
+    if not seeds:
+        return []
+    by_id = {str(s.get("id")): s for s in catalog(root)}
+    fwd, rev = depends(root), dependents(root)
+    nodes: Dict[str, Dict[str, Any]] = {}
+    frontier: List[str] = []
+    for s in seeds:
+        sid = str(s["id"])
+        nodes[sid] = {"id": sid, "layer": str(s.get("layer") or ""),
+                      "title": str(s.get("title") or ""), "hits": int(s["hits"]),
+                      "depth": 0, "via": str(term)}
+        frontier.append(sid)
+    for level in range(1, max(0, int(depth)) + 1):
+        nxt: List[str] = []
+        for sid in sorted(frontier):
+            for nb in sorted(set(fwd.get(sid, []) + rev.get(sid, []))):
+                if nb in nodes:
+                    continue
+                s = by_id.get(nb) or {}
+                nodes[nb] = {"id": nb, "layer": str(s.get("layer") or ""),
+                             "title": str(s.get("title") or ""), "hits": 0,
+                             "depth": level, "via": sid}
+                nxt.append(nb)
+        frontier = nxt
+        if not frontier:
+            break
+    rows = sorted(nodes.values(), key=lambda r: (int(r["depth"]), -int(r["hits"]), str(r["id"])))
     return rows[:limit] if limit and limit > 0 else rows
 
 

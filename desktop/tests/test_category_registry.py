@@ -125,5 +125,21 @@ class MutationTest(unittest.TestCase):
         self.assertTrue(any("重复" in i for i in issues), issues)
 
 
+class CoverageTest(unittest.TestCase):
+    def test_covered_by_distinguishes_facet_from_gap(self):
+        self.assertIn("tier:asset", cr.covered_by(str(ROOT), "core-pipelines"))
+        self.assertIn("level:content", cr.covered_by(str(ROOT), "community-pipelines"))
+        # 波 10：patterns 归 asset 阶、integrations 归 contract 阶后，全树归属缺口归零
+        self.assertIn("tier:asset", cr.covered_by(str(ROOT), "patterns"))
+        self.assertIn("tier:contract", cr.covered_by(str(ROOT), "integrations"))
+        self.assertEqual([], cr.covered_by(str(ROOT), "no-such-cat"))
+
+    def test_scan_reports_no_uncovered_after_backfill(self):
+        issues, warns, _stats = cr.scan(str(ROOT))
+        self.assertEqual([], issues)
+        self.assertTrue(any("命名子面" in w for w in warns), warns)
+        self.assertFalse(any("未归属" in w for w in warns), warns)
+
+
 if __name__ == "__main__":
     unittest.main()
