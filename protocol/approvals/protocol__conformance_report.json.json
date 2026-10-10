@@ -1,7 +1,7 @@
 {
   "approved_at": "2026-10-10",
   "approved_by": "Monyeah",
-  "note": "机械重批（同既有记录批准人）：云端剩余两红（失败信封/dlopen 空串）修复后冻结链重算",
+  "note": "机械重批（同既有记录批准人）：cross-platform 三平台红修复（_portable_path 等值 / Action relpath realpath）后冻结链重算",
   "schema": "nf-approval/1",
   "subject": "protocol/conformance_report.json",
   "subject_digest": "76a75024634a61c67895194278937a1aa838e4a1a761c794fbb9b38ab1da081b"

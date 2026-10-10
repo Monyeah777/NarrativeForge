@@ -9,7 +9,7 @@ subjects:
   - desktop/src/core/mcp_package.py:bc7d0a06a139427ca1d1f4988fcaa2b413d851556e6652254cb09c051578c273
   - desktop/src/core/conformance_scan.py:0020d25262b861fc089dd3b3c63fbf02429a1b00bd80803caf37f24bf82d7421
   - desktop/src/core/pack_combo.py:29b1b4d401ffd6d70d81a31be60262d00c6a3e132f79779effe9ad75b0300bf9
-  - protocol/code_metrics_baseline.json:68f54b9b0e43aeddcca49e89a13226e4789748db6d7e065749faa0d6b27fd506
+  - protocol/code_metrics_baseline.json:127153591f3a2e9a3860ac4c2995b2d368fb341d89af20e1a05d78dc344fd946
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

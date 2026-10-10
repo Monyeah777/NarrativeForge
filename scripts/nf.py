@@ -2415,6 +2415,10 @@ def _portable_path(p: object) -> str:
     for pref, repl in ((home, "~"), (ROOT, "."), (os.path.realpath(ROOT), ".")):
         if not pref:
             continue
+        if s == pref:
+            # 路径就是家目录/仓库根本身时也要折（2026-10-10 跨平台实测：daemon status 的
+            # root 恰等于仓库根，此前只判 startswith(pref+sep) 而漏掉等值）。
+            return repl
         for sep in (os.sep, "/"):
             if s.startswith(pref + sep):
                 return (repl + "/" + s[len(pref) + len(sep):]).replace("\\", "/")

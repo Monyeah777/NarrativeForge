@@ -8,7 +8,7 @@ auditor: 本轮执行者
 subjects:
   - desktop/src/core/decisions.py:63ce73c77315eea97081b72b5f0f7ffb18a94ab33f79e4cc3774ed9ebda69748
   - desktop/src/core/endpoint.py:ddb7e4b0bbb2f60753f249a8b08fc0a1ba9629ff0f63ea24f91ca348204c373e
-  - protocol/code_metrics_baseline.json:68f54b9b0e43aeddcca49e89a13226e4789748db6d7e065749faa0d6b27fd506
+  - protocol/code_metrics_baseline.json:127153591f3a2e9a3860ac4c2995b2d368fb341d89af20e1a05d78dc344fd946
 ---
 
 > 签收位：本件**未填 `accepted_by`/`accepted_at`**——验收签收属作者动作，执行者不自签。

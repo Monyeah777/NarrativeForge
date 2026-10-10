@@ -285,14 +285,16 @@ class JsonFaceCanonicalArgsTest(unittest.TestCase):
             if not isinstance(data, dict):
                 bad.append("%s（顶层非对象）" % name)
                 continue
-            if p.returncode != 0:
-                # 本判据管「**成功时**自带类型」（见模块头）：失败时的契约是失败信封
-                # {"ok": false, …}（不是面判别）。故 rc≠0 时改为核该信封，而不是要 kind/schema。
-                if data.get("ok") is not False:
-                    bad.append("%s（rc=%d 但非失败信封：%r）" % (name, p.returncode, data))
+            # 本判据管「**成功时**自带类型」（见模块头）。rc≠0 有两种合规形态：面判据**部分
+            # 命中**仍回面载荷（如 audit check 已带 kind 但发现失效）→ 判别键照收；否则须是
+            # 失败信封 {"ok": false, …}（模块头明写「不是面判别」）。
+            if {"kind", "schema"} & set(data):
                 continue
-            if not ({"kind", "schema"} & set(data)):
-                bad.append("%s（缺面判别键）" % name)
+            if p.returncode != 0 and data.get("ok") is False:
+                continue
+            bad.append("%s（rc=%d，%s）" % (
+                name, p.returncode,
+                "缺面判别键" if p.returncode == 0 else "既非面载荷也非失败信封"))
         self.assertEqual([], bad, "需参面缺面判别键：%s" % bad)
 
     def test_every_json_face_has_a_destination(self):

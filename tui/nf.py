@@ -316,7 +316,11 @@ class Action:
     def _value(self, param, root, raw: str) -> str:
         """参数取值：路径类参数过仓库包含性判据后归一成**根内相对路径**（写法统一，落盘可预测）。"""
         if param.kind == "path":
-            return os.path.relpath(validate_rel_path(root, raw), root).replace("\\", "/")
+            # 两侧都取 realpath 再算相对：macOS 的 /var→/private/var、Windows 的临时目录短名/
+            # 联接点会让 validate_rel_path 的 realpath 结果与 root 不同形，直接 relpath 会算出
+            # ../../private/var/... 这类假相对路径（2026-10-10 三平台门禁实测）。
+            full = validate_rel_path(root, raw)
+            return os.path.relpath(full, os.path.realpath(str(root))).replace("\\", "/")
         return raw
 
     def build(self, root, values) -> list:
