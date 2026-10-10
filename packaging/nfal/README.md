@@ -5,7 +5,9 @@
 
 ## 构建
 
-    docker build -t nfal packaging/nfal
+    docker build -f packaging/nfal/Dockerfile -t nfal .      # 上下文必须是仓库根（COPY 为根相对路径）
+
+云端零成本构建：.github/workflows/docker-nfal.yml（push 改动 packaging/nfal 或 nfal 引擎件即 build + 冒烟，不推注册表）。
 
 ## 运行
 

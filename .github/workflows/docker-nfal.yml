@@ -1,0 +1,27 @@
+name: docker-nfal
+# NFA-L 镜像的零成本云端构建面（本机无容器引擎时的构建出口）。
+# 只 build + 冒烟，不推注册表 —— 不引入额外凭据面。
+# 构建上下文 = 仓库根（packaging/nfal/Dockerfile 里 COPY desktop/src 是根相对路径）。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packaging/nfal/**'
+      - 'desktop/src/core/nf_expr.py'
+      - 'desktop/src/core/nfal.py'
+      - 'desktop/src/core/nfal_cli.py'
+      - '.github/workflows/docker-nfal.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    name: build-nfal-image
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - name: 构建镜像（上下文=仓库根）
+        run: docker build -f packaging/nfal/Dockerfile -t nfal:ci .
+      - name: 冒烟：容器内入口可跑（--help）
+        run: docker run --rm nfal:ci --help
