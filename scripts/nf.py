@@ -6642,7 +6642,11 @@ def _cmd_daemon(args) -> int:
                 print("  ✗ " + msg, file=sys.stderr)
                 return 1
             doc = dm.read_state()
-        code, out, err = dm.run_request(doc, argv)
+        try:
+            code, out, err = dm.run_request(doc, argv)
+        except OSError as exc:
+            return _machine_fail(
+                args, "守护未响应：%s（修复指引：nf daemon start 后重试）" % exc, 1)
         sys.stdout.write(out.decode("utf-8", "replace"))
         sys.stderr.write(err.decode("utf-8", "replace"))
         return code
@@ -6666,9 +6670,14 @@ def _cmd_daemon(args) -> int:
         if not (doc and dm.ping(doc)):
             ok, msg = dm.start(Path(ROOT))
             if not ok:
-                print("  ✗ " + msg, file=sys.stderr)
-                return 1
+                return _machine_fail(args, msg, 1)
             doc = dm.read_state()
+        if not (doc and dm.ping(doc)):
+            # 守护拉起后仍不可达：机器面须是失败信封，不许冒内部错误（2026-10-10 CI 实测：
+            # 无守护时 daemon bench --json 会抛 WinError 10061 连接被拒，stdout 非 JSON）。
+            return _machine_fail(
+                args, "守护未就绪（已尝试拉起但不可达）（修复指引：先 nf daemon stop 清掉"
+                      "陈旧状态后重试，或稍后重跑）", 1)
         rows: List[Dict[str, Any]] = []
         for argv in probes:
             cold = []
@@ -6680,7 +6689,12 @@ def _cmd_daemon(args) -> int:
             warm = []
             for _ in range(max(1, args.runs)):
                 t0 = _time.perf_counter()
-                dm.run_request(doc, argv)
+                try:
+                    dm.run_request(doc, argv)
+                except OSError as exc:
+                    return _machine_fail(
+                        args, "守护未响应（%s）：%s（修复指引：nf daemon start 后重试）"
+                              % (" ".join(argv), exc), 1)
                 warm.append((_time.perf_counter() - t0) * 1000)
             rows.append({"argv": argv, "cold_ms": round(min(cold), 1),
                          "daemon_ms": round(min(warm), 1),

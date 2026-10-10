@@ -13,7 +13,7 @@ subjects:
   - desktop/tests/test_doc_truth.py:384ce4b09c7a59149dd5f8d021bc094207b7f3a8d7a6d40eb3238da0a9ccfc3f
   - desktop/tests/test_site_face.py:d8e538a3af62d37994667d141dc940334d0821701644ceb8e34fbaf2ca07eb31
   - verify.sh:06932ee691ac96922d199ed3662099dbf6094d62b16c7d3a263e4dfff64a6230
-  - scripts/nf.py:0b3d8892f2f70d646fb11df36d0d5010176718583f83a2c819671b00bf9a00d4
+  - scripts/nf.py:fcf2531f7b3234afe1ef74f03a32eaa36142f2b85d6df02de72bde132f4ca86c
   - docs/lsp.md:db91bbfed27d7e14eb63c72e58ad8e009ce44a2b6563c15982b644ec358eca39
   - docs/mcp.md:24afe867db3ac4a7395591ba4938a87d771afbe6c1d631e0e639eb9adeea7716
   - docs/decision-layer.md:50755549b0970dbd64d7d98b4757011d55c586cd14172df5957d998a23c431a2
